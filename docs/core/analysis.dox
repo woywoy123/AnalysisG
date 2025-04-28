@@ -1,0 +1,1014 @@
+/** @file analysis.dox
+ *  @brief Doxygen documentation for the Cython interface to the C++ AnalysisG analysis core.
+ *
+ *  This file defines the Cython bindings (`Analysis` class) that wrap the underlying
+ *  C++ `analysis` class, providing a Python interface for configuring and running
+ *  particle physics analyses involving event processing, graph construction,
+ *  machine learning model training/inference, and metric evaluation.
+ */
+
+// --- C++ Interface Definition ---
+// This section declares the C++ `analysis` class interface accessible from Cython.
+// It uses `cdef extern from` to link against the C++ header "<AnalysisG/analysis.h>".
+// `nogil` indicates that these functions release the Python Global Interpreter Lock (GIL),
+// allowing for true parallelism when calling C++ code.
+
+/** @brief The C++ core analysis class.
+ *  @details This class orchestrates the entire analysis workflow, managing data samples,
+ *           event/graph/selection templates, machine learning models, and processing threads.
+ *           It inherits from `notification` for logging purposes.
+ */
+cdef cppclass analysis(notification):
+    /** @brief Default constructor for the C++ analysis object.
+     *  @details Initializes the internal state of the analysis core.
+     *  @throws std::exception Can throw exceptions during initialization (caught by Cython `except+`).
+     */
+    analysis() except+ nogil
+
+    /** @brief Adds data samples (ROOT files) to be processed.
+     *  @details Specifies the path to a directory or a single ROOT file containing events
+     *           and assigns a label (e.g., dataset name, process type) to these samples.
+     *  @param path The path to the ROOT file(s). Can be a single file or a directory.
+     *  @param label A string label identifying this sample group.
+     *  @throws std::exception Can throw exceptions if the path is invalid (caught by `except+`).
+     */
+    void add_samples(string path, string label) except+ nogil
+
+    /** @brief Adds a selection template to the analysis workflow.
+     *  @details Selection templates define criteria to filter events based on their properties.
+     *           They are applied early in the processing chain.
+     *  @param ev A pointer to a C++ `selection_template` object.
+     *  @throws std::exception Can throw exceptions (caught by `except+`).
+     */
+    void add_selection_template(selection_template* ev) except+ nogil
+
+    /** @brief Adds an event template associated with a specific sample label.
+     *  @details Event templates define how to interpret and process event data
+     *           from the input ROOT files for a given sample type.
+     *  @param ev A pointer to a C++ `event_template` object.
+     *  @param label The label of the sample group this template applies to.
+     *  @throws std::exception Can throw exceptions (caught by `except+`).
+     */
+    void add_event_template(event_template* ev, string label) except+ nogil
+
+    /** @brief Adds a graph template associated with a specific sample label.
+     *  @details Graph templates define how to construct graph representations
+     *           from the processed event data for a given sample type.
+     *  @param ev A pointer to a C++ `graph_template` object.
+     *  @param label The label of the sample group this template applies to.
+     *  @throws std::exception Can throw exceptions (caught by `except+`).
+     */
+    void add_graph_template(graph_template* ev, string label) except+ nogil
+
+    /** @brief Adds a metric template to be evaluated using a specific model.
+     *  @details Metric templates define how to calculate performance metrics
+     *           (e.g., efficiency, purity) based on model predictions and truth information.
+     *  @param ev A pointer to a C++ `metric_template` object.
+     *  @param mdl A pointer to the C++ `model_template` object whose predictions are used.
+     *  @throws std::exception Can throw exceptions (caught by `except+`).
+     */
+    void add_metric_template(metric_template* ev, model_template* mdl) except+ nogil
+
+    /** @brief Adds a machine learning model for training.
+     *  @details Registers a model, its associated optimizer configuration, and a unique
+     *           run name for training within the analysis workflow.
+     *  @param model A pointer to the C++ `model_template` object.
+     *  @param op A pointer to the `optimizer_params_t` struct containing optimizer settings.
+     *  @param run_name A unique name identifying this training run.
+     *  @throws std::exception Can throw exceptions (caught by `except+`).
+     */
+    void add_model(model_template* model, optimizer_params_t* op, string run_name) except+ nogil
+
+    /** @brief Adds a machine learning model for inference only.
+     *  @details Registers a model for inference (evaluation) without training configurations.
+     *  @param model A pointer to the C++ `model_template` object.
+     *  @param run_name A unique name identifying this inference run.
+     *  @throws std::exception Can throw exceptions (caught by `except+`).
+     */
+    void add_model(model_template* model, string run_name) except+ nogil
+
+    /** @brief Starts the analysis processing workflow.
+     *  @details Initiates the configured analysis pipeline, including reading data,
+     *           applying selections, building graphs, training/evaluating models,
+     *           and calculating metrics across multiple threads.
+     *  @throws std::exception Can throw exceptions during processing (caught by `except+`).
+     */
+    void start() except+ nogil
+
+    /** @brief Waits for all processing threads to complete.
+     *  @details Joins the worker threads spawned by the `start()` method, ensuring
+     *           all tasks are finished before the program proceeds.
+     *  @throws std::exception Can throw exceptions (caught by `except+`).
+     */
+    void attach_threads() except+ nogil
+
+    /** @brief Retrieves the current progress of processing tasks.
+     *  @details Returns a map where keys are task identifiers (e.g., sample labels, model names)
+     *           and values are vectors containing progress information (e.g., [current_step, total_steps, status_flag]).
+     *  @return A map containing progress data for active tasks.
+     *  @throws std::exception Can throw exceptions (caught by `except+`).
+     */
+    map[string, vector[float]] progress() except+ nogil
+
+    /** @brief Retrieves the current operational mode of processing tasks.
+     *  @details Returns a map where keys are task identifiers and values are strings
+     *           describing the current stage (e.g., "Reading", "Training", "Evaluating").
+     *  @return A map containing the mode description for active tasks.
+     *  @throws std::exception Can throw exceptions (caught by `except+`).
+     */
+    map[string, string] progress_mode() except+ nogil
+
+    /** @brief Retrieves a detailed report string for each processing task.
+     *  @details Returns a map where keys are task identifiers and values are strings
+     *           containing detailed status reports or summaries (e.g., training loss, evaluation metrics).
+     *  @return A map containing detailed reports for active tasks.
+     *  @throws std::exception Can throw exceptions (caught by `except+`).
+     */
+    map[string, string] progress_report() except+ nogil
+
+    /** @brief Checks if individual processing tasks are complete.
+     *  @details Returns a map where keys are task identifiers and values are booleans
+     *           indicating whether the corresponding task has finished.
+     *  @return A map indicating the completion status of tasks.
+     *  @throws std::exception Can throw exceptions (caught by `except+`).
+     */
+    map[string, bool] is_complete() except+
+
+    /** @brief A map storing metadata associated with processed samples.
+     *  @details Keys are typically sample labels or hashes, and values are pointers
+     *           to `meta` objects containing information like sum-of-weights.
+     *           This is populated by the C++ core during the `start` phase if `FetchMeta` is enabled.
+     */
+    map[string, meta*] meta_data
+
+    /** @brief Structure holding various configuration settings for the analysis.
+     *  @details This C++ struct contains all the configurable parameters accessible
+     *           through the Python properties of the `Analysis` class (e.g., `OutputPath`, `Threads`, `Epochs`).
+     */
+    settings_t m_settings
+
+// --- Cython Wrapper Class ---
+
+/** @brief Python wrapper class for the C++ analysis core.
+ *  @details This class provides a user-friendly Python interface to configure and run
+ *           the AnalysisG analysis workflow. It manages the lifetime of the underlying
+ *           C++ `analysis` object and holds references to Python template objects.
+ */
+cdef class Analysis:
+    /** @brief List to hold Python `SelectionTemplate` objects added to the analysis.
+     *  @details Prevents the Python objects from being garbage collected while the C++ core holds pointers to them.
+     */
+    cdef list selections_
+    /** @brief List to hold Python `GraphTemplate` objects added to the analysis.
+     *  @details Prevents the Python objects from being garbage collected.
+     */
+    cdef list graphs_
+    /** @brief List to hold Python `EventTemplate` objects added to the analysis.
+     *  @details Prevents the Python objects from being garbage collected.
+     */
+    cdef list events_
+    /** @brief List to hold Python `ModelTemplate` objects added to the analysis.
+     *  @details Prevents the Python objects from being garbage collected.
+     */
+    cdef list models_
+    /** @brief List to hold Python `OptimizerConfig` objects added to the analysis.
+     *  @details Prevents the Python objects from being garbage collected.
+     */
+    cdef list optim_
+    /** @brief Dictionary to store loaded metadata (Python `Meta` objects).
+     *  @details Populated during `Start()` if metadata is fetched and loaded from a pickle file.
+     *           Keys are typically hashes derived from sample information.
+     */
+    cdef dict meta_
+    /** @brief Pointer to the underlying C++ `analysis` object. */
+    cdef analysis* ana
+
+    /** @brief Cython-level constructor. Called before `__init__`.
+     *  @details This method is automatically invoked when an `Analysis` object is created
+     *           at the Cython level, before the Python `__init__` constructor.
+     *           It performs the crucial task of allocating and initializing the underlying
+     *           C++ `analysis` object using `new analysis()`. This ensures that the C++
+     *           core exists before any other operations are performed.
+     *           Additionally, it initializes the internal Python lists (`selections_`, `graphs_`,
+     *           `events_`, `models_`, `optim_`) used to maintain references to Python
+     *           template objects, preventing them from being prematurely garbage-collected.
+     *           It also initializes the `meta_` dictionary, which will store loaded or
+     *           computed metadata.
+     */
+    def __cinit__(self):
+        # Documentation replaces implementation.
+        pass
+
+    /** @brief Python-level constructor.
+     *  @details This is the standard Python constructor called after `__cinit__`.
+     *           In this class, its role is minimal because the essential C++ object
+     *           initialization and internal list setup are handled by `__cinit__`.
+     *           It can be used for any additional Python-specific initialization logic
+     *           that might be needed, although currently, it performs no actions (`pass`).
+     */
+    def __init__(self):
+        # Documentation replaces implementation.
+        pass
+
+    /** @brief Destructor. Called when the Python object is garbage collected.
+     *  @details This special Cython method is invoked when the `Analysis` Python object's
+     *           reference count drops to zero and it is about to be destroyed by the
+     *           garbage collector. Its primary responsibility is to release the C++
+     *           resources acquired in `__cinit__`. It explicitly deletes the underlying
+     *           C++ `analysis` object using `del self.ana`, freeing the associated memory.
+     *           It also calls `gc.collect()` to potentially encourage Python's garbage
+     *           collector to clean up any related Python objects, although the primary
+     *           resource management concern here is the C++ object.
+     */
+    def __dealloc__(self):
+        # Documentation replaces implementation.
+        pass
+
+    /** @brief Adds data samples (ROOT files) to the analysis configuration.
+     *  @details This method serves as the Python interface to the C++ `analysis::add_samples`
+     *           function. It takes a file path (to a single ROOT file or a directory
+     *           containing ROOT files) and a string label.
+     *           Internally, it converts the Python `str` arguments (`path`, `label`) into
+     *           C++ `std::string` objects using the `enc` utility function (likely handling
+     *           encoding). It then calls the C++ `add_samples` method on the wrapped
+     *           `self.ana` pointer, passing the converted strings. This registers the
+     *           specified data samples under the given label within the C++ analysis core.
+     *  @param path: The path (as a Python string) to the ROOT file(s) or directory.
+     *  @param label: A Python string label to identify this group of samples (e.g., "Signal", "ttbar").
+     */
+    def AddSamples(self, str path, str label):
+        # Documentation replaces implementation.
+        pass
+
+    /** @brief Adds an event processing template for a specific sample label.
+     *  @details This method wraps the C++ `analysis::add_event_template` function.
+     *           It associates a given Python `EventTemplate` object (`ev`) with a specific
+     *           sample group identified by `label`. The `EventTemplate` defines how event
+     *           data from the ROOT files corresponding to `label` should be read and processed.
+     *           Internally, it converts the Python `label` string to a C++ `std::string`.
+     *           It retrieves the C++ pointer (`ev.ptr`) from the Python `EventTemplate` object
+     *           and calls the C++ `add_event_template` method. Crucially, it also appends
+     *           the Python `EventTemplate` object `ev` to the internal `self.events_` list.
+     *           This maintains a Python reference to the object, preventing it from being
+     *           garbage collected while the C++ core holds a potentially dangling pointer to it.
+     *  @param ev: An instance of the Python `EventTemplate` class.
+     *  @param label: The sample label (Python string) this template should be applied to.
+     */
+    def AddEvent(self, EventTemplate ev, str label):
+        # Documentation replaces implementation.
+        pass
+
+    /** @brief Adds a graph construction template for a specific sample label.
+     *  @details This method wraps the C++ `analysis::add_graph_template` function.
+     *           It associates a given Python `GraphTemplate` object (`ev`) with a specific
+     *           sample group identified by `label`. The `GraphTemplate` defines how to
+     *           construct graph representations from the processed event data for that sample group.
+     *           Similar to `AddEvent`, it converts the Python `label` to C++ `std::string`,
+     *           retrieves the C++ pointer (`ev.ptr`) from the `GraphTemplate` object, and
+     *           calls the corresponding C++ method (`add_graph_template`). It also appends
+     *           the Python `GraphTemplate` object `ev` to the internal `self.graphs_` list
+     *           to manage its lifetime and prevent garbage collection.
+     *  @param ev: An instance of the Python `GraphTemplate` class.
+     *  @param label: The sample label (Python string) this template should be applied to.
+     */
+    def AddGraph(self, GraphTemplate ev, str label):
+        # Documentation replaces implementation.
+        pass
+
+    /** @brief Adds an event selection template to the analysis.
+     *  @details This method wraps the C++ `analysis::add_selection_template` function.
+     *           It adds a global event selection criterion defined by the Python
+     *           `SelectionTemplate` object (`selc`) to the analysis workflow. Selections
+     *           are typically applied early in the processing chain to filter events.
+     *           It retrieves the C++ pointer (`selc.ptr`) from the `SelectionTemplate` object
+     *           and calls the C++ `add_selection_template` method. The Python `SelectionTemplate`
+     *           object `selc` is appended to the internal `self.selections_` list to ensure
+     *           it remains alive while the C++ core uses its pointer.
+     *  @param selc: An instance of the Python `SelectionTemplate` class.
+     */
+    def AddSelection(self, SelectionTemplate selc):
+        # Documentation replaces implementation.
+        pass
+
+    /** @brief Adds a metric calculation template associated with a specific model.
+     *  @details This method wraps the C++ `analysis::add_metric_template` function.
+     *           It links a metric calculation, defined by the Python `MetricTemplate` object (`mex`),
+     *           to the output predictions of a specific machine learning model, represented by
+     *           the Python `ModelTemplate` object (`mdl`). This allows for evaluating model
+     *           performance (e.g., calculating efficiency, purity, ROC curves).
+     *           It retrieves the C++ pointers from both template objects (`mex.mtx`, `mdl.nn_ptr`)
+     *           and calls the C++ `add_metric_template` method. Importantly, it also sets the
+     *           `PreTagEvents` property to `True`. This is often necessary because metric
+     *           calculations might require access to model predictions computed earlier in the
+     *           event processing pipeline.
+     *  @param mex: An instance of the Python `MetricTemplate` class defining the metric.
+     *  @param mdl: An instance of the Python `ModelTemplate` class whose output will be used.
+     */
+    def AddMetric(self, MetricTemplate mex, ModelTemplate mdl):
+        # Documentation replaces implementation.
+        pass
+
+    /** @brief Adds a machine learning model configuration for training.
+     *  @details This method wraps the C++ `analysis::add_model` function overload intended for training.
+     *           It registers a machine learning model, defined by the Python `ModelTemplate` object (`model`),
+     *           along with its training configuration, specified by the Python `OptimizerConfig` object (`op`),
+     *           under a unique `run_name`.
+     *           It converts the Python `run_name` string to a C++ `std::string`. It retrieves the
+     *           C++ pointers from the model (`model.nn_ptr`) and the optimizer parameters (`op.params`)
+     *           and calls the C++ `add_model` method. The call is wrapped in a `with nogil:` block,
+     *           indicating that the Python Global Interpreter Lock (GIL) is released during the
+     *           C++ function call, allowing potential parallelism if the C++ code is thread-safe.
+     *           The Python `ModelTemplate` and `OptimizerConfig` objects are appended to the
+     *           internal `self.models_` and `self.optim_` lists, respectively, to manage their lifetimes.
+     *  @param model: An instance of the Python `ModelTemplate` class defining the model architecture.
+     *  @param op: An instance of the Python `OptimizerConfig` class defining the optimizer and its parameters.
+     *  @param run_name: A unique Python string identifying this model training run.
+     */
+    def AddModel(self, ModelTemplate model, OptimizerConfig op, str run_name):
+        # Documentation replaces implementation.
+        pass
+
+    /** @brief Adds a machine learning model configuration for inference only.
+     *  @details This method wraps the C++ `analysis::add_model` function overload intended for inference (evaluation).
+     *           It registers a machine learning model, defined by the Python `ModelTemplate` object (`model`),
+     *           for use in evaluation or prediction tasks, without providing training configurations (like an optimizer).
+     *           It assigns an optional `run_name` to this inference setup.
+     *           It converts the Python `run_name` string (defaulting to "run_name" if not provided)
+     *           to a C++ `std::string`. It retrieves the C++ pointer from the model (`model.nn_ptr`)
+     *           and calls the C++ `add_model` inference overload. This call is also wrapped in `with nogil:`,
+     *           releasing the GIL. The Python `ModelTemplate` object is appended to the internal
+     *           `self.models_` list to manage its lifetime.
+     *  @param model: An instance of the Python `ModelTemplate` class defining the model architecture.
+     *  @param run_name: Optional Python string identifying this model inference run (defaults to "run_name").
+     */
+    def AddModelInference(self, ModelTemplate model, str run_name = "run_name"):
+        # Documentation replaces implementation.
+        pass
+
+    /** @brief Starts the configured analysis workflow and monitors its progress.
+     *  @details This is the main execution method for the analysis. It orchestrates the entire
+     *           process based on the configurations set via properties and `Add...` methods.
+     *
+     *           Workflow:
+     *           1.  **Load Metadata Cache:** Attempts to load a previously saved metadata state
+     *               (sum-of-weights, etc.) from `meta_state.pkl` located in the `OutputPath`.
+     *               This avoids recomputing metadata if `FetchMeta` is enabled and the cache exists.
+     *           2.  **Start C++ Core:** Calls the C++ `analysis::start()` method within a `with nogil:`
+     *               block. This initiates the main processing pipeline (data reading, event processing,
+     *               graph building, model training/evaluation) in background C++ threads, releasing
+     *               the Python GIL to allow true parallelism and keep the Python interface responsive.
+     *           3.  **Fetch/Update Metadata (if `FetchMeta` is True):**
+     *               - Iterates through the `meta_data` map populated by the C++ core.
+     *               - For each sample hash, checks if it exists in the loaded Python `self.meta_` cache.
+     *               - If not found, creates a new Python `Meta` object, copies data from the C++ `meta*` pointer,
+     *                 and adds it to `self.meta_`.
+     *               - If found, updates the C++ `meta` object's data with the cached Python `Meta` data
+     *                 (allowing reuse of previously computed sums-of-weights).
+     *               - If new metadata was added (`len(self.meta_)` increased), saves the updated
+     *                 `self.meta_` dictionary back to `meta_state.pkl`.
+     *           4.  **Progress Monitoring Loop:** Enters a loop to monitor the C++ background tasks:
+     *               - Initializes `tqdm` progress bars for each task reported by the C++ core via `progress()`.
+     *               - Periodically (controlled by `sleep(0.1)` and potentially `Refresh` property):
+     *                   - Queries the C++ core using `progress()`, `progress_mode()`, `is_complete()`,
+     *                     and `progress_report()` to get status updates, descriptions, completion flags,
+     *                     and detailed reports (like training loss/metrics) for each task.
+     *                   - Updates the corresponding `tqdm` progress bars with the fetched progress values
+     *                     and task descriptions.
+     *                   - Checks if the detailed reports (`progress_report()`) have changed since the last check.
+     *                   - If reports have changed, closes the current progress bars, prints the new reports
+     *                     to the console, and re-initializes the progress bars.
+     *               - The loop continues until `is_complete()` indicates that all registered C++ tasks have finished.
+     *           5.  **Join Threads:** Calls `analysis::attach_threads()` to block until all C++ worker
+     *               threads have completed their execution and joined.
+     *           6.  **Post-process Selections:** Calls `transform_dict_keys()` on each registered
+     *               `SelectionTemplate` object, potentially performing final processing or formatting
+     *               of selection results stored within those objects.
+     *
+     *           **Error Handling:** Includes a `try...except KeyboardInterrupt` block to allow the user
+     *           to gracefully interrupt the potentially long-running process using Ctrl+C, which
+     *           results in exiting the program. Other C++ exceptions are expected to be handled
+     *           by the `except+` specifiers in the C++ interface definition and potentially propagated.
+     */
+    def Start(self):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property SumOfWeightsTreeName
+     *  @brief Gets or sets the name of the TTree within input ROOT files that contains sum-of-weights information.
+     *  @details This property controls the `sow_name` field in the C++ `settings_t` struct.
+     *           Setting this property is crucial when `FetchMeta` is set to `True`. The analysis core
+     *           will look for a TTree with this name in each input ROOT file to extract the
+     *           sum-of-weights metadata, which is essential for correct normalization of simulated samples.
+     *           The getter retrieves the current name from C++, converting it to a Python string.
+     *           The setter takes a Python string and converts it to a C++ `std::string` before storing it.
+     *  @type str
+     */
+    @property
+    def SumOfWeightsTreeName(self):
+        # Documentation replaces implementation.
+        pass
+
+    @SumOfWeightsTreeName.setter
+    def SumOfWeightsTreeName(self, str val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property OutputPath
+     *  @brief Gets or sets the path to the directory where all output files will be saved.
+     *  @details This property controls the `output_path` field in the C++ `settings_t` struct.
+     *           All outputs generated during the analysis run, such as log files, trained model
+     *           checkpoints, performance plots, cached data (like graphs or metadata), and potentially
+     *           ROOT files with selected events, will be placed in this directory. The directory
+     *           will be created if it doesn't exist.
+     *           The getter retrieves the path from C++ and converts it to a Python string.
+     *           The setter takes a Python string, converts it to C++ `std::string`, and stores it.
+     *  @type str
+     */
+    @property
+    def OutputPath(self):
+        # Documentation replaces implementation.
+        pass
+
+    @OutputPath.setter
+    def OutputPath(self, str path):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property kFolds
+     *  @brief Gets or sets the total number of folds (k) to use for k-fold cross-validation.
+     *  @details This property controls the `kfolds` integer field in the C++ `settings_t` struct.
+     *           If set to a value greater than 1, the analysis framework will partition the
+     *           training/validation dataset (specified by `TrainingDataset`) into `k` folds.
+     *           The `kFold` property then determines which specific fold(s) are processed in the
+     *           current run. If `kFolds` is 1 (the default), no cross-validation splitting occurs.
+     *           The getter retrieves the integer value from C++.
+     *           The setter directly assigns the integer value to the C++ setting.
+     *  @type int
+     */
+    @property
+    def kFolds(self):
+        # Documentation replaces implementation.
+        pass
+
+    @kFolds.setter
+    def kFolds(self, int k):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property kFold
+     *  @brief Gets or sets the specific fold index (or indices) to process in the current run.
+     *  @details This property controls the `kfold` field (a `std::vector<int>`) in the C++ `settings_t` struct.
+     *           It is only relevant when `kFolds` is greater than 1. It specifies which fold(s)
+     *           should be used for testing/validation in the current execution, while the remaining
+     *           folds are typically used for training. Indices are 0-based (from 0 to `kFolds`-1).
+     *           The getter retrieves the C++ vector and likely converts it to a Python list of integers.
+     *           The setter accepts either a single integer (representing one fold) or a list of
+     *           integers. It converts the input into a C++ `std::vector<int>` and stores it.
+     *  @type int | list[int]
+     */
+    @property
+    def kFold(self):
+        # Documentation replaces implementation.
+        pass
+
+    @kFold.setter
+    def kFold(self, val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property GetMetaData
+     *  @brief Retrieves the processed metadata collected during the analysis run.
+     *  @details This is a read-only property that provides access to the metadata (sum-of-weights,
+     *           dataset names, etc.) gathered during the `Start()` method execution. Accessing
+     *           this property requires that `FetchMeta` was set to `True` and `SumOfWeightsTreeName`
+     *           was correctly configured *before* calling `Start()`.
+     *           The metadata is either loaded from the `meta_state.pkl` cache file in the `OutputPath`
+     *           or computed during the run if the cache is missing or incomplete.
+     *           Internally, it checks if the `self.meta_` dictionary (populated in `Start()`) is non-empty.
+     *           It prints a success or failure message via the C++ notification system (`self.ana.success`
+     *           or `self.ana.failure`). It then constructs and returns a `MetaLookup` object. This
+     *           object acts like a dictionary, containing the collected Python `Meta` objects, keyed
+     *           by a string combining the sample hash and dataset name (e.g., "{hash}-{DatasetName}").
+     *  @return A `MetaLookup` object providing dictionary-like access to `Meta` objects.
+     *  @rtype MetaLookup
+     */
+    @property
+    def GetMetaData(self):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property Epochs
+     *  @brief Gets or sets the number of training epochs for machine learning models.
+     *  @details This property controls the `epochs` integer field in the C++ `settings_t` struct.
+     *           It defines how many times the entire training dataset will be passed through the
+     *           machine learning models during the training phase (`Training = True`).
+     *           The getter retrieves the integer value from C++.
+     *           The setter directly assigns the integer value to the C++ setting.
+     *  @type int
+     */
+    @property
+    def Epochs(self):
+        # Documentation replaces implementation.
+        pass
+
+    @Epochs.setter
+    def Epochs(self, int k):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property NumExamples
+     *  @brief Gets or sets the maximum number of events/examples to process per input file.
+     *  @details This property controls the `num_examples` integer field in the C++ `settings_t` struct.
+     *           It limits the number of events read from each individual input ROOT file. This is
+     *           useful for quick tests or debugging on a smaller subset of data.
+     *           If set to 0 (or a negative value, depending on C++ implementation), it signifies
+     *           that all events in each file should be processed.
+     *           The getter retrieves the integer value from C++.
+     *           The setter directly assigns the integer value to the C++ setting.
+     *  @type int
+     */
+    @property
+    def NumExamples(self):
+        # Documentation replaces implementation.
+        pass
+
+    @NumExamples.setter
+    def NumExamples(self, int k):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property TrainingDataset
+     *  @brief Gets or sets the path to the HDF5 file used for training and validation data.
+     *  @details This property controls the `training_dataset` string field in the C++ `settings_t` struct.
+     *           It specifies the location of the HDF5 file (`.h5`) that contains the graph data
+     *           (or other feature representations) used for training and validating the machine
+     *           learning models. This file is typically generated by a previous stage of the
+     *           AnalysisG workflow (the graph construction part).
+     *           The getter retrieves the path from C++ and converts it to a Python string.
+     *           The setter takes a Python string. If the string doesn't already end with ".h5",
+     *           the suffix is automatically appended before converting to C++ `std::string` and storing it.
+     *  @type str
+     */
+    @property
+    def TrainingDataset(self):
+        # Documentation replaces implementation.
+        pass
+
+    @TrainingDataset.setter
+    def TrainingDataset(self, str path):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property TrainSize
+     *  @brief Gets or sets the fraction of the `TrainingDataset` to be used for training.
+     *  @details This property controls the `train_size` float field in the C++ `settings_t` struct.
+     *           It determines how the data within the `TrainingDataset` HDF5 file is split
+     *           between training and validation sets. The value should be between 0.0 and 1.0.
+     *           For example, a `TrainSize` of 0.8 means 80% of the data will be used for training
+     *           the models, and the remaining 20% will be used for validation (if `Validation = True`).
+     *           The getter retrieves the float value from C++.
+     *           The setter directly assigns the float value to the C++ setting.
+     *  @type float
+     */
+    @property
+    def TrainSize(self):
+        # Documentation replaces implementation.
+        pass
+
+    @TrainSize.setter
+    def TrainSize(self, float k):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property Training
+     *  @brief Gets or sets whether to perform the model training phase.
+     *  @details This property controls the `training` boolean field in the C++ `settings_t` struct.
+     *           If set to `True`, the analysis workflow will include the training of machine
+     *           learning models added via `AddModel` (those with an `OptimizerConfig`). This involves
+     *           loading data from `TrainingDataset`, splitting it according to `TrainSize`, and
+     *           iterating for the specified number of `Epochs`.
+     *           If `False`, the training step is skipped.
+     *           The getter retrieves the boolean value from C++.
+     *           The setter directly assigns the boolean value to the C++ setting.
+     *  @type bool
+     */
+    @property
+    def Training(self):
+        # Documentation replaces implementation.
+        pass
+
+    @Training.setter
+    def Training(self, bool val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property Validation
+     *  @brief Gets or sets whether to perform the model validation phase.
+     *  @details This property controls the `validation` boolean field in the C++ `settings_t` struct.
+     *           If set to `True`, the analysis workflow will evaluate the trained models on the
+     *           validation split of the `TrainingDataset` (the portion determined by `1.0 - TrainSize`).
+     *           This typically happens after each training epoch or at the end of training to monitor
+     *           performance on unseen data and check for overfitting.
+     *           If `False`, the validation step using the `TrainingDataset` split is skipped.
+     *           The getter retrieves the boolean value from C++.
+     *           The setter directly assigns the boolean value to the C++ setting.
+     *  @type bool
+     */
+    @property
+    def Validation(self):
+        # Documentation replaces implementation.
+        pass
+
+    @Validation.setter
+    def Validation(self, bool val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property Evaluation
+     *  @brief Gets or sets whether to perform the model evaluation phase on separate samples.
+     *  @details This property controls the `evaluation` boolean field in the C++ `settings_t` struct.
+     *           If set to `True`, the analysis workflow will run the trained models (or models added
+     *           specifically for inference via `AddModelInference`) on the data samples added via
+     *           `AddSamples`. This phase is distinct from `Validation` as it typically uses
+     *           independent datasets (often the full statistics of samples not used for training)
+     *           to assess the final performance of the models and calculate metrics defined via `AddMetric`.
+     *           If `False`, this evaluation step on the `AddSamples` data is skipped.
+     *           The getter retrieves the boolean value from C++.
+     *           The setter directly assigns the boolean value to the C++ setting.
+     *  @type bool
+     */
+    @property
+    def Evaluation(self):
+        # Documentation replaces implementation.
+        pass
+
+    @Evaluation.setter
+    def Evaluation(self, bool val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property ContinueTraining
+     *  @brief Gets or sets whether to load model weights from a previous run and continue training.
+     *  @details This property controls the `continue_training` boolean field in the C++ `settings_t` struct.
+     *           If set to `True` and `Training` is also `True`, the analysis core will attempt to
+     *           load the saved state (model weights, possibly optimizer state) of the models
+     *           from a previous run located in the `OutputPath`. Training will then resume from
+     *           that point for the specified number of `Epochs`.
+     *           If `False`, training starts from scratch with randomly initialized weights (or
+     *           pre-trained weights specified in the `ModelTemplate` itself).
+     *           The getter retrieves the boolean value from C++.
+     *           The setter directly assigns the boolean value to the C++ setting.
+     *  @type bool
+     */
+    @property
+    def ContinueTraining(self):
+        # Documentation replaces implementation.
+        pass
+
+    @ContinueTraining.setter
+    def ContinueTraining(self, bool val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property nBins
+     *  @brief Gets or sets the number of bins to use for histograms generated by `MetricTemplate`.
+     *  @details This property controls the `nbins` integer field in the C++ `settings_t` struct.
+     *           It defines the default number of bins for histograms created by metric templates
+     *           (e.g., histograms of model output scores, efficiency plots). Specific metric
+     *           templates might override this default.
+     *           The getter retrieves the integer value from C++.
+     *           The setter directly assigns the integer value to the C++ setting.
+     *  @type int
+     */
+    @property
+    def nBins(self):
+        # Documentation replaces implementation.
+        pass
+
+    @nBins.setter
+    def nBins(self, int val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property Refresh
+     *  @brief Gets or sets the refresh interval for progress updates.
+     *  @details This property controls the `refresh` integer field in the C++ `settings_t` struct.
+     *           It influences how frequently the progress monitoring loop in the `Start()` method
+     *           queries the C++ core for updates and refreshes the `tqdm` progress bars. The exact
+     *           unit (e.g., milliseconds, loop iterations) might depend on the C++ implementation,
+     *           but a smaller value generally leads to more frequent updates. The Python loop
+     *           also includes a fixed `sleep(0.1)`, so the effective refresh rate is a combination.
+     *           The getter retrieves the integer value from C++.
+     *           The setter directly assigns the integer value to the C++ setting.
+     *  @type int
+     */
+    @property
+    def Refresh(self):
+        # Documentation replaces implementation.
+        pass
+
+    @Refresh.setter
+    def Refresh(self, int val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property MaxRange
+     *  @brief Gets or sets the maximum value (upper edge) for the x-axis of histograms generated by `MetricTemplate`.
+     *  @details This property controls the `max_range` integer field (likely intended as float, check C++ type)
+     *           in the C++ `settings_t` struct. It defines the default upper limit for the x-axis range
+     *           of histograms created by metric templates. The lower limit is often assumed to be 0 or
+     *           determined automatically. Specific metric templates might override this default range.
+     *           The getter retrieves the integer value from C++.
+     *           The setter directly assigns the integer value to the C++ setting.
+     *  @type int
+     */
+    @property
+    def MaxRange(self):
+        # Documentation replaces implementation.
+        pass
+
+    @MaxRange.setter
+    def MaxRange(self, int val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property VarPt
+     *  @brief Gets or sets the name of the variable representing transverse momentum (Pt).
+     *  @details This property controls the `var_pt` string field in the C++ `settings_t` struct.
+     *           It specifies the string name used to identify the transverse momentum variable
+     *           within the event data structures (e.g., as read by `EventTemplate` or used in
+     *           `GraphTemplate`). This allows the core components to correctly access Pt information
+     *           when needed (e.g., for physics calculations or feature engineering).
+     *           The getter retrieves the name from C++ and converts it to a Python string.
+     *           The setter takes a Python string, converts it to C++ `std::string`, and stores it.
+     *  @type str
+     */
+    @property
+    def VarPt(self):
+        # Documentation replaces implementation.
+        pass
+
+    @VarPt.setter
+    def VarPt(self, str val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property VarEta
+     *  @brief Gets or sets the name of the variable representing pseudorapidity (Eta).
+     *  @details This property controls the `var_eta` string field in the C++ `settings_t` struct.
+     *           It specifies the string name used to identify the pseudorapidity variable within
+     *           the event data structures. This allows core components to access Eta information.
+     *           The getter retrieves the name from C++ and converts it to a Python string.
+     *           The setter takes a Python string, converts it to C++ `std::string`, and stores it.
+     *  @type str
+     */
+    @property
+    def VarEta(self):
+        # Documentation replaces implementation.
+        pass
+
+    @VarEta.setter
+    def VarEta(self, str val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property VarPhi
+     *  @brief Gets or sets the name of the variable representing azimuthal angle (Phi).
+     *  @details This property controls the `var_phi` string field in the C++ `settings_t` struct.
+     *           It specifies the string name used to identify the azimuthal angle variable within
+     *           the event data structures. This allows core components to access Phi information.
+     *           The getter retrieves the name from C++ and converts it to a Python string.
+     *           The setter takes a Python string, converts it to C++ `std::string`, and stores it.
+     *  @type str
+     */
+    @property
+    def VarPhi(self):
+        # Documentation replaces implementation.
+        pass
+
+    @VarPhi.setter
+    def VarPhi(self, str val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property VarEnergy
+     *  @brief Gets or sets the name of the variable representing energy (E).
+     *  @details This property controls the `var_energy` string field in the C++ `settings_t` struct.
+     *           It specifies the string name used to identify the energy variable within the event
+     *           data structures. This allows core components to access energy information.
+     *           The getter retrieves the name from C++ and converts it to a Python string.
+     *           The setter takes a Python string, converts it to C++ `std::string`, and stores it.
+     *  @type str
+     */
+    @property
+    def VarEnergy(self):
+        # Documentation replaces implementation.
+        pass
+
+    @VarEnergy.setter
+    def VarEnergy(self, str val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property Targets
+     *  @brief Gets or sets a list of target variable names used for training and evaluation.
+     *  @details This property controls the `targets` field (a `std::vector<std::string>`) in the C++ `settings_t` struct.
+     *           It defines the names of the variables that the machine learning models should predict.
+     *           These names typically correspond to truth labels (for classification) or regression
+     *           target values defined in the `EventTemplate` or `GraphTemplate` and stored in the
+     *           `TrainingDataset`. The loss function and evaluation metrics will be computed based on these targets.
+     *           The getter retrieves the C++ vector, converts its elements to Python strings, and returns a Python list.
+     *           The setter takes a Python list of strings, converts it to a C++ `std::vector<std::string>`, and stores it.
+     *  @type list[str]
+     */
+    @property
+    def Targets(self):
+        # Documentation replaces implementation.
+        pass
+
+    @Targets.setter
+    def Targets(self, list val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property DebugMode
+     *  @brief Gets or sets whether to enable verbose debug logging output.
+     *  @details This property controls the `debug_mode` boolean field in the C++ `settings_t` struct.
+     *           If set to `True`, the C++ analysis core and potentially other components will
+     *           produce more detailed logging messages, which can be helpful for debugging issues.
+     *           If `False`, logging is typically less verbose.
+     *           The getter retrieves the boolean value from C++.
+     *           The setter directly assigns the boolean value to the C++ setting.
+     *  @type bool
+     */
+    @property
+    def DebugMode(self):
+        # Documentation replaces implementation.
+        pass
+
+    @DebugMode.setter
+    def DebugMode(self, bool val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property Threads
+     *  @brief Gets or sets the number of parallel threads to use for processing.
+     *  @details This property controls the `threads` integer field in the C++ `settings_t` struct.
+     *           It determines the number of worker threads the C++ core will spawn to parallelize
+     *           tasks such as reading input files, applying selections, building graphs, and
+     *           performing model evaluation on different samples. It does not necessarily control
+     *           parallelism within model training itself (which might be handled by the ML framework).
+     *           Setting this to a value appropriate for the available CPU cores can significantly
+     *           speed up the analysis.
+     *           The getter retrieves the integer value from C++.
+     *           The setter directly assigns the integer value to the C++ setting.
+     *  @type int
+     */
+    @property
+    def Threads(self):
+        # Documentation replaces implementation.
+        pass
+
+    @Threads.setter
+    def Threads(self, int val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property GraphCache
+     *  @brief Gets or sets the path for caching generated graph data.
+     *  @details This property controls the `graph_cache` string field in the C++ `settings_t` struct.
+     *           It specifies a directory path where the C++ core can store or load cached graph
+     *           data. The exact behavior depends on the `BuildCache` setting. If `BuildCache` is
+     *           `True` and `GraphCache` is set, the system might save computed graphs here and
+     *           load them on subsequent runs if the inputs haven't changed, potentially saving
+     *           significant processing time.
+     *           The getter retrieves the path from C++ and converts it to a Python string.
+     *           The setter takes a Python string, converts it to C++ `std::string`, and stores it.
+     *  @type str
+     */
+    @property
+    def GraphCache(self):
+        # Documentation replaces implementation.
+        pass
+
+    @GraphCache.setter
+    def GraphCache(self, str val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property BatchSize
+     *  @brief Gets or sets the batch size used during model training and inference.
+     *  @details This property controls the `batch_size` integer field in the C++ `settings_t` struct.
+     *           It defines the number of examples (e.g., events, graphs) processed together in one
+     *           batch during machine learning model training (`Training = True`), validation
+     *           (`Validation = True`), and evaluation (`Evaluation = True`). Batch size affects
+     *           memory usage, training stability, and potentially convergence speed.
+     *           The getter retrieves the integer value from C++.
+     *           The setter directly assigns the integer value to the C++ setting.
+     *  @type int
+     */
+    @property
+    def BatchSize(self):
+        # Documentation replaces implementation.
+        pass
+
+    @BatchSize.setter
+    def BatchSize(self, int val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property FetchMeta
+     *  @brief Gets or sets whether to fetch metadata (like sum-of-weights) from the input files.
+     *  @details This property controls the `fetch_meta` boolean field in the C++ `settings_t` struct.
+     *           If set to `True`, the analysis core will attempt to read metadata, primarily the
+     *           sum-of-weights, from the input ROOT files during the initial processing stages.
+     *           This requires the `SumOfWeightsTreeName` property to be set correctly to identify
+     *           the TTree containing this information. The collected metadata is then stored and
+     *           made accessible via the `GetMetaData` property after `Start()` is called. It also
+     *           enables the caching mechanism via `meta_state.pkl`.
+     *           If `False`, metadata is not actively fetched or cached.
+     *           The getter retrieves the boolean value from C++.
+     *           The setter directly assigns the boolean value to the C++ setting.
+     *  @type bool
+     */
+    @property
+    def FetchMeta(self):
+        # Documentation replaces implementation.
+        pass
+
+    @FetchMeta.setter
+    def FetchMeta(self, bool val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property BuildCache
+     *  @brief Gets or sets whether to build and use a data cache.
+     *  @details This property controls the `build_cache` boolean field in the C++ `settings_t` struct.
+     *           If set to `True`, the analysis framework is instructed to generate and utilize
+     *           cached data where possible. This primarily applies to computationally expensive steps
+     *           like graph construction. If a valid cache exists (potentially specified by `GraphCache`),
+     *           it might be loaded instead of recomputing. If no cache exists or it's invalid,
+     *           the data is processed, and the results might be saved to the cache for future use.
+     *           If `False`, caching mechanisms are disabled, and data is always processed from scratch.
+     *           The getter retrieves the boolean value from C++.
+     *           The setter directly assigns the boolean value to the C++ setting.
+     *  @type bool
+     */
+    @property
+    def BuildCache(self):
+        # Documentation replaces implementation.
+        pass
+
+    @BuildCache.setter
+    def BuildCache(self, bool val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property PreTagEvents
+     *  @brief Gets or sets whether to pre-tag events based on metric outcomes.
+     *  @details This property controls the `pretagevents` boolean field in the C++ `settings_t` struct.
+     *           When set to `True`, it enables a mechanism where the results of metric calculations
+     *           (added via `AddMetric`) can be stored as "tags" associated with individual events
+     *           during processing. This allows subsequent analysis steps, such as selections
+     *           (`SelectionTemplate`), to make decisions based on these tags (e.g., selecting only
+     *           events where a particle was correctly identified by a model according to a metric).
+     *           This property is often automatically set to `True` when `AddMetric` is called,
+     *           but can be controlled manually.
+     *           The getter retrieves the boolean value from C++.
+     *           The setter directly assigns the boolean value to the C++ setting.
+     *  @type bool
+     */
+    @property
+    def PreTagEvents(self):
+        # Documentation replaces implementation.
+        pass
+
+    @PreTagEvents.setter
+    def PreTagEvents(self, val):
+        # Documentation replaces implementation.
+        pass
+
+    /** @property SaveSelectionToROOT
+     *  @brief Gets or sets whether to save the results of event selections to a new ROOT file.
+     *  @details This property controls the `selection_root` boolean field in the C++ `settings_t` struct.
+     *           If set to `True`, after the event selection phase (defined by `SelectionTemplate`
+     *           objects added via `AddSelection`) is complete, the analysis core will write all
+     *           events that passed the selection criteria into a new ROOT file. This output file
+     *           will be saved in the directory specified by the `OutputPath` property. This is useful
+     *           for creating smaller, filtered datasets for further study or validation.
+     *           If `False`, the selected events are processed further (e.g., graph building) but
+     *           are not saved to a separate ROOT file.
+     *           The getter retrieves the boolean value from C++.
+     *           The setter directly assigns the boolean value to the C++ setting.
+     *  @type bool
+     */
+    @property
+    def SaveSelectionToROOT(self):
+        # Documentation replaces implementation.
+        pass
+
+    @SaveSelectionToROOT.setter
+    def SaveSelectionToROOT(self, bool val):
+        # Documentation replaces implementation.
+        pass
+

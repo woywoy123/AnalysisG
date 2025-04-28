@@ -1,0 +1,334 @@
+/**
+ * @file metric_template.pyx
+ * @brief Implements the MetricTemplate Cython class, wrapping the C++ metric_template.
+ *
+ * @details This file provides the concrete implementation for the `MetricTemplate`
+ * Cython class defined in `metric_template.pxd`. It handles the interaction
+ * between Python and the underlying C++ `metric_template` object, including
+ * memory management (`__cinit__`, `__dealloc__`), property accessors for
+ * configuration (`RunNames`, `Variables`), and the core data processing logic
+ * (`InterpretROOT`). It leverages Cython's capabilities for efficient C++
+ * interoperability and potential parallelism.
+ */
+
+// --- Cython Directives ---
+// distutils: language=c++
+// cython: language_level = 3
+// --- End Cython Directives ---
+
+// --- Imports ---
+# <<< Imports from libcpp (string, map, vector) >>>
+# <<< Imports from AnalysisG.core (tools, io, meta, structs) >>>
+# <<< Imports from Cython (parallel, operator) >>>
+// --- End Imports ---
+
+// --- C++ Extern Block ---
+// cdef extern from "<templates/metric_template.h>" nogil:
+//     # <<< Declaration of the C++ metric_template class, inheriting from tools and notification >>>
+//     # <<< Declaration of the C++ constructor (throwing exceptions, nogil) >>>
+//     # <<< Declaration of C++ member variables (name, run_names, variables) >>>
+// --- End C++ Extern Block ---
+
+// --- Helper Function: finder ---
+// cdef inline bool finder(string* fname, vector[string]* kfolds, vector[string]* epochs) nogil:
+    /**
+     * @brief Helper function (nogil) to check if a filename matches specified kfolds and epochs.
+     * @details This C++ inline function, callable without the Global Interpreter Lock (GIL),
+     *          is used to filter ROOT filenames based on patterns indicating k-fold
+     *          cross-validation (`kfold-X.root`) and training epoch (`epoch-Y/`).
+     *          It iterates through the provided `kfolds` and `epochs` vectors (containing
+     *          string representations of the desired numbers).
+     *
+     *          - It checks if the `fname` ends with the pattern "kfold-<ix>.root" for any `ix` in `kfolds`.
+     *          - It checks if the `fname` contains the pattern "/epoch-<ix>/" for any `ix` in `epochs`.
+     *
+     *          The function returns `true` if:
+     *          - The `kfolds` list is empty OR a matching k-fold pattern is found in `fname`.
+     *          AND
+     *          - The `epochs` list is empty OR a matching epoch pattern is found in `fname`.
+     *
+     *          This allows filtering files based on specified criteria or including all files
+     *          if the criteria lists are empty.
+     * @param fname Pointer to the C++ string representing the filename to check.
+     * @param kfolds Pointer to a C++ vector of strings representing the desired k-fold numbers.
+     * @param epochs Pointer to a C++ vector of strings representing the desired epoch numbers.
+     * @return bool True if the filename matches the criteria, False otherwise.
+     */
+    # --- Implementation Replaced with Comment ---
+    # Purpose: Check if a filename matches epoch/kfold criteria.
+    # Steps:
+    # 1. Initialize boolean flags `found_k` and `found_e` to false.
+    # 2. Iterate through `kfolds`: If `fname` ends with "kfold-<ix>.root", set `found_k` to true and break.
+    # 3. Iterate through `epochs`: If `fname` contains "/epoch-<ix>/", set `found_e` to true and break.
+    # 4. Return the logical expression: (`kfolds` is empty OR `found_k` is true) AND (`epochs` is empty OR `found_e` is true).
+    # --- End Implementation Comment ---
+
+// --- Cython Class Definition ---
+cdef class MetricTemplate(Tools):
+    # <<< C++ pointer member declaration (mtx) >>>
+    # <<< Public Python dictionary member declarations (root_leaves, root_fx) >>>
+
+    def __cinit__(self):
+        /**
+         * @brief C-level constructor (__cinit__ phase).
+         * @details This method is automatically called when a `MetricTemplate` object
+         *          is allocated. Its primary responsibilities are:
+         *          1. Allocate memory for a new C++ `metric_template` object on the heap
+         *             using `new metric_template()`. The `except+` in the C++ declaration
+         *             ensures C++ exceptions are converted to Python exceptions.
+         *          2. Store the pointer to the newly created C++ object in the `self.mtx` member.
+         *          3. Initialize the Python-level dictionaries `self.root_leaves` and
+         *             `self.root_fx` to empty dictionaries (`{}`). These dictionaries
+         *             are intended to be populated by the user before calling `InterpretROOT`.
+         * @throws MemoryError If memory allocation for the C++ object fails.
+         * @throws std::exception (propagated as Python exception) If the C++ constructor throws.
+         */
+        # --- Implementation Replaced with Comment ---
+        # Purpose: Allocate C++ object and initialize Python members.
+        # Steps:
+        # 1. `self.mtx = new metric_template()`: Allocate C++ object, handle potential exceptions.
+        # 2. `self.root_leaves = {}`: Initialize Python dictionary.
+        # 3. `self.root_fx = {}`: Initialize Python dictionary.
+        # --- End Implementation Comment ---
+        pass # Placeholder for Cython declaration
+
+    def __init__(self):
+        /**
+         * @brief Python-level constructor (__init__ phase).
+         * @details This method is called after `__cinit__` has successfully completed.
+         *          It's used for Python-specific initialization. In this class,
+         *          no further Python-level initialization is required beyond what's
+         *          done in `__cinit__`, so this method is empty.
+         */
+        # --- Implementation Replaced with Comment ---
+        # Purpose: Python-level initialization (currently none needed).
+        # Steps: (No steps performed)
+        # --- End Implementation Comment ---
+        pass # Placeholder for Cython declaration
+
+    def __dealloc__(self):
+        /**
+         * @brief C-level destructor (__dealloc__ phase).
+         * @details This method is automatically called when the `MetricTemplate` object's
+         *          reference count drops to zero and it's about to be garbage collected.
+         *          Its crucial role is to prevent memory leaks by explicitly deallocating
+         *          the C++ `metric_template` object that was allocated in `__cinit__`.
+         *          It uses `del self.mtx` which translates to `delete self.mtx;` in C++.
+         *          Failure to do this would result in leaking the memory occupied by the
+         *          C++ object.
+         */
+        # --- Implementation Replaced with Comment ---
+        # Purpose: Deallocate the C++ object to prevent memory leaks.
+        # Steps:
+        # 1. `del self.mtx`: Calls the C++ `delete` operator on the pointer `self.mtx`.
+        # --- End Implementation Comment ---
+        pass # Placeholder for Cython declaration
+
+    def __name__(self):
+        /**
+         * @brief Retrieves the name of the metric instance.
+         * @details Accesses the `name` member of the underlying C++ `metric_template`
+         *          object (`self.mtx.name`). The C++ `std::string` is converted
+         *          to a Python string using the `env` helper function (presumably
+         *          handling encoding/decoding).
+         * @return str The name of the metric as a Python string.
+         */
+        # --- Implementation Replaced with Comment ---
+        # Purpose: Get the metric name from the C++ object.
+        # Steps:
+        # 1. Access `self.mtx.name` (C++ std::string).
+        # 2. Convert the C++ string to a Python string using `env()`.
+        # 3. Return the Python string.
+        # --- End Implementation Comment ---
+        pass # Placeholder for Cython declaration
+
+    @property
+    def RunNames(self):
+        /**
+         * @brief Property getter for the run names configuration.
+         * @details Retrieves the `run_names` map (presumably `std::map<std::string, std::string>`)
+         *          from the underlying C++ object (`self.mtx.run_names`).
+         *          The C++ map is then converted into a Python dictionary using the
+         *          `as_basic_dict` helper function. This provides a Pythonic way
+         *          to access the run name mappings.
+         * @return dict A Python dictionary representing the run name configuration.
+         */
+        # --- Implementation Replaced with Comment ---
+        # Purpose: Get the run names map from C++ and return as a Python dict.
+        # Steps:
+        # 1. Get a copy of or reference to `self.mtx.run_names` (C++ map).
+        # 2. Convert the C++ map to a Python dictionary using `as_basic_dict()`.
+        # 3. Return the Python dictionary.
+        # --- End Implementation Comment ---
+        pass # Placeholder for Cython declaration
+
+    @RunNames.setter
+    def RunNames(self, dict val):
+        /**
+         * @brief Property setter for the run names configuration.
+         * @details Assigns a new run names configuration to the metric.
+         *          The input `val` (a Python dictionary) is converted into a
+         *          C++ `std::map<std::string, std::string>` using the `as_map`
+         *          helper function. This newly created C++ map is then assigned
+         *          to the `run_names` member of the underlying C++ object (`self.mtx.run_names`).
+         * @param val (dict): A Python dictionary containing the desired run name mappings (string keys, string values).
+         */
+        # --- Implementation Replaced with Comment ---
+        # Purpose: Set the run names map in the C++ object from a Python dict.
+        # Steps:
+        # 1. Declare a C++ map `o`.
+        # 2. Convert the input Python dictionary `val` into the C++ map `o` using `as_map()`.
+        # 3. Assign the C++ map `o` to `self.mtx.run_names`.
+        # --- End Implementation Comment ---
+        pass # Placeholder for Cython declaration
+
+    @property
+    def Variables(self):
+        /**
+         * @brief Property getter for the variable dependencies.
+         * @details Retrieves the `variables` vector (presumably `std::vector<std::string>`)
+         *          from the underlying C++ object (`self.mtx.variables`).
+         *          The C++ vector is then converted into a Python list using the
+         *          `env_vec` helper function (likely converting each C++ string
+         *          to a Python string). This provides a Pythonic way to access
+         *          the list of variable dependencies.
+         * @return list A Python list of strings representing the variable dependencies.
+         */
+        # --- Implementation Replaced with Comment ---
+        # Purpose: Get the variables vector from C++ and return as a Python list.
+        # Steps:
+        # 1. Get a copy of or reference to `self.mtx.variables` (C++ vector).
+        # 2. Convert the C++ vector to a Python list using `env_vec()`.
+        # 3. Return the Python list.
+        # --- End Implementation Comment ---
+        pass # Placeholder for Cython declaration
+
+    @Variables.setter
+    def Variables(self, list val):
+        /**
+         * @brief Property setter for the variable dependencies.
+         * @details Assigns a new list of variable dependencies to the metric.
+         *          The input `val` (a Python list of strings) is converted into a
+         *          C++ `std::vector<std::string>` using the `enc_list` helper function
+         *          (likely converting each Python string to a C++ string). This newly
+         *          created C++ vector is then assigned to the `variables` member of the
+         *          underlying C++ object (`self.mtx.variables`).
+         * @param val (list): A Python list of strings representing the variable dependencies.
+         */
+        # --- Implementation Replaced with Comment ---
+        # Purpose: Set the variables vector in the C++ object from a Python list.
+        # Steps:
+        # 1. Convert the input Python list `val` into a C++ vector using `enc_list()`.
+        # 2. Assign the resulting C++ vector to `self.mtx.variables`.
+        # --- End Implementation Comment ---
+        pass # Placeholder for Cython declaration
+
+    def Postprocessing(self):
+        /**
+         * @brief Hook for custom post-processing logic.
+         * @details This method is intended to be overridden by subclasses of `MetricTemplate`.
+         *          It is called automatically at the end of the `InterpretROOT` method,
+         *          after all ROOT file data has been processed. Subclasses should implement
+         *          their specific analysis, aggregation, plotting, or result-saving logic
+         *          within this method. The base implementation does nothing.
+         */
+        # --- Implementation Replaced with Comment ---
+        # Purpose: Provide an overridable hook for logic after ROOT file processing.
+        # Steps: (No steps performed in the base class)
+        # --- End Implementation Comment ---
+        pass # Placeholder for Cython declaration
+
+    def InterpretROOT(self, str path, list epochs = [], list kfolds = []):
+        /**
+         * @brief Processes ROOT files based on configuration and executes analysis functions.
+         * @details This is the core method that drives the data processing workflow.
+         *          It reads data from ROOT files specified by `path`, filters them based
+         *          on `epochs` and `kfolds`, iterates through the events/entries,
+         *          and calls user-defined functions provided in `self.root_fx` with
+         *          the corresponding data from `self.root_leaves`.
+         *
+         *          Workflow:
+         *          1.  **Validation:** Checks if `self.root_leaves` and `self.root_fx`
+         *              dictionaries have been populated. If not, prints error messages
+         *              using `self.mtx.failure` and returns `self` early.
+         *          2.  **Path Handling:** Normalizes the input `path` string to ensure it
+         *              ends with '*' if it's not a specific `.root` file, facilitating
+         *              directory or wildcard searching.
+         *          3.  **File Discovery & Filtering:**
+         *              - Converts Python `epochs` and `kfolds` lists to C++ vectors of strings (`epochs_`, `kfolds_`).
+         *              - If filtering is requested (epochs or kfolds provided), lists all `.root` files matching the `path` using `self.ptr.ls`.
+         *              - Uses a parallel `prange` loop with the `finder` helper function (nogil) to efficiently identify files matching the epoch/kfold criteria, storing matches in `idx_map`.
+         *              - If filtering was requested but no files matched, prints an error and exits using `self.mtx.failure` and `exit()`.
+         *              - Creates the final list of files to process (`lsx`).
+         *          4.  **Initialization:**
+         *              - Initializes control flags (`unpause`, `keep_going`).
+         *              - Creates `remap`: a dictionary mapping encoded function keys (from `root_fx`) to the actual Python function objects.
+         *              - Initializes C++ maps and vectors for managing processing state:
+         *                  - `mapfx`: Maps tree/branch keys to lists of leaf names associated with a function.
+         *                  - `mapdx`: Maps tree/branch keys to vectors of `data_t*` pointers (initially NULL).
+         *                  - `idx_map`: Tracks the current processing index for each function key.
+         *                  - `pause`, `endx`: Maps file paths to boolean flags controlling iteration state.
+         *          5.  **Function & Leaf Mapping:** Iterates through `self.root_leaves` and `self.root_fx` to populate `mapfx` and `mapdx`, linking function keys (like "TreeName" or "TreeName.BranchName") to the leaves they operate on and preparing slots for `data_t*` pointers. Also collects all unique leaf names needed.
+         *          6.  **IO Setup:**
+         *              - Creates an `IO` object (`iox`) responsible for reading the ROOT files (either the original `path` or the filtered `lsx` list).
+         *              - Configures the `IO` object with the required Tree names (from `root_leaves.keys()`) and Leaf names.
+         *              - Initializes the `IO` iterator (`iox.__iter__()`).
+         *          7.  **Data Pointer Mapping:**
+         *              - Retrieves the map of data pointers (`dmp = deref(iox.data_ops)`) from the `IO` object. Each key is a unique identifier (path + tree + leaf), and the value is a `data_t*`.
+         *              - Iterates through `dmp` and `mapfx` to fill the `mapdx` map, associating the correct `data_t*` pointers with the function keys based on matching tree/branch names.
+         *              - Initializes `pause` flags for each file path to `False`.
+         *              - Stores the mapping between file paths, tree names, and function keys in `mxf` for later synchronization.
+         *          8.  **Main Processing Loop (`while keep_going`):**
+         *              - **Data Gathering:** For each function key in `remap`:
+         *                  - Creates an empty dictionary `itx[key]`.
+         *                  - Iterates through the `data_t*` pointers associated with this function (`mapdx[key]`).
+         *                  - If the corresponding file is not paused or finished (`pause`, `endx`), calls `switch_board(dt)` (presumably extracts data for the current event) and merges the result into `itx[key]`.
+         *                  - Updates `unpause` flag and increments the index `idx_map[key]`.
+         *              - **Advance Iterators:** Uses a parallel `prange` loop (nogil) to call `dt.next()` on each active `data_t*` pointer, advancing them to the next event. Updates `endx` flags if a TTree finishes. Sets `keep_going` to `False` if all trees are finished.
+         *              - **Metadata Update:** If the event index `ix` is 0 (start of a new file/tree iteration cycle):
+         *                  - Extracts filename, epoch, kfold, and model name from the current file path (`kl`).
+         *                  - Creates a `meta` dictionary containing this information.
+         *                  - Updates the progress bar description (`iox.prg.set_description`).
+         *              - **Execute User Functions:** For each function key in `remap`:
+         *                  - If data was gathered (`len(itx[key]) > 0`), calls the user's Python function (`remap[key]`) passing `self`, the gathered data (`itx[key]`), and metadata (`{b"index" : ...} | meta`).
+         *              - **Synchronization:** Uses a parallel `prange` loop (nogil) to check if each data stream (`dmp[mxf[ix][1]]`) has reached the end of its current TTree entry (`mapx[kl][mxf[ix][0]]`). If so, sets the corresponding `pause[mxf[ix][1]]` flag to `True`. This synchronizes reading across potentially different TTrees within the same file.
+         *              - **Unpause Check:** Checks if all streams are paused (`unpause = True`). If so, clears `pause` and `idx_map` to prepare for the next file/iteration cycle.
+         *              - **Progress Update:** Updates the progress bar (`iox.prg.update(1)`).
+         *              - **Loop Termination:** Breaks the loop if `keep_going` is `False`.
+         *          9.  **Postprocessing:** Calls `self.Postprocessing()` to allow subclasses to perform final calculations or actions.
+         *          10. **Return:** Returns `self` to allow method chaining.
+         *
+         * @param path (str): Path to ROOT file(s) or directory. Supports wildcards ('*').
+         * @param epochs (list, optional): List of integer epochs to filter files by. Defaults to [].
+         * @param kfolds (list, optional): List of integer k-folds to filter files by. Defaults to [].
+         * @return MetricTemplate: Returns the instance (`self`).
+         * @throws SystemExit: If validation fails or no matching files are found after filtering.
+         */
+        # --- Implementation Replaced with Comment ---
+        # Purpose: Orchestrate ROOT file reading, filtering, data extraction, function execution, and postprocessing.
+        # Steps:
+        # 1. Validate `self.root_leaves` and `self.root_fx`. Return self if invalid.
+        # 2. Normalize `path` for wildcard matching.
+        # 3. Convert `epochs`, `kfolds` to C++ vectors (`epochs_`, `kfolds_`).
+        # 4. If filtering: List files (`lsx = self.ptr.ls(...)`).
+        # 5. If filtering: Use parallel `prange` and `finder` to populate `idx_map` with matching files.
+        # 6. If filtering and no files found: Print error and exit.
+        # 7. Update `lsx` with filtered file list from `idx_map`.
+        # 8. Initialize control flags (`unpause`, `keep_going`), `remap` dict, C++ maps/vectors (`mapfx`, `mapdx`, `idx_map`, `pause`, `endx`).
+        # 9. Populate `mapfx`, `mapdx` by mapping `root_leaves` and `root_fx`. Collect `leaves`.
+        # 10. Create and configure `IO` object (`iox`) with files, trees, leaves. Call `iox.__iter__()`.
+        # 11. Get data pointers map `dmp` from `iox`.
+        # 12. Map `data_t*` pointers from `dmp` into `mapdx` based on function keys. Initialize `pause` flags. Populate `mxf`.
+        # 13. Start `while keep_going` loop:
+        #     a. Gather data for current event into `itx` for each function key using `switch_board`.
+        #     b. Advance all data iterators (`dt.next()`) in parallel `prange`. Update `endx`, `keep_going`.
+        #     c. If start of file/cycle (`ix == 0`): Extract metadata (`kl`, `kfold`, `epoch`, `model_name`), update progress bar description.
+        #     d. For each function key with data in `itx`: Call user function `remap[key](...)`.
+        #     e. Check for TTree entry completion in parallel `prange`, set `pause` flags for synchronization.
+        #     f. Check if all streams are paused; if so, clear `pause`, `idx_map`.
+        #     g. Update progress bar (`iox.prg.update(1)`).
+        #     h. Break if `keep_going` is false.
+        # 14. Call `self.Postprocessing()`.
+        # 15. Return `self`.
+        # --- End Implementation Comment ---
+        pass # Placeholder for Cython declaration

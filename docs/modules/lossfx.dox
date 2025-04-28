@@ -1,0 +1,568 @@
+/**
+ * @file lossfx.h
+ * @brief Defines the lossfx class, a comprehensive utility designed to streamline the management
+ *        of PyTorch loss functions, optimization algorithms, and neural network weight
+ *        initialization strategies within a C++ environment.
+ *
+ * @details This header file introduces the `lossfx` class, which serves as a central hub
+ *          for handling various components crucial for training PyTorch models using the LibTorch C++ API.
+ *          It encapsulates the logic for:
+ *          - Translating human-readable string identifiers (like "mse" or "adam") into their
+ *            corresponding internal enumeration types (`loss_enum`, `opt_enum`) for programmatic use.
+ *            This facilitates configuration loading from files or user input.
+ *          - Computing the loss value between model predictions and ground truth targets using a
+ *            wide array of standard PyTorch loss functions. The class manages the instantiation
+ *            and lifecycle of these loss function modules.
+ *          - Constructing and configuring various PyTorch optimizers (e.g., Adam, SGD, RMSprop)
+ *            based on specified hyperparameters. It ensures that optimizer instances are created
+ *            and managed correctly, linking them to the model parameters they need to update.
+ *          - Applying different weight initialization schemes (like Xavier/Glorot or Kaiming/He)
+ *            to the layers (specifically linear layers) within a `torch::nn::Sequential` module.
+ *            This is essential for promoting stable and efficient training convergence.
+ *          - Managing the memory allocation and deallocation for the created loss function modules
+ *            and optimizer objects, preventing resource leaks through its destructor.
+ *          - Transferring the instantiated loss function modules to the appropriate computational
+ *            device (CPU or GPU) as specified by the user, ensuring compatibility with the rest
+ *            of the model and data tensors.
+ *
+ *          The class aims to provide a simplified and robust interface for common training loop
+ *          operations involving loss calculation, optimization, and model initialization in C++.
+ *          It leverages internal helper functions and manages object lifecycles to reduce boilerplate
+ *          code in the main training logic.
+ */
+
+#ifndef LOSSFX_H
+#define LOSSFX_H
+
+// -- Include directives are omitted as per the request --
+// #include <map>
+// #include <vector>
+// #include <string>
+// #include <tools/tools.h>
+// #include <torch/torch.h>
+// #include <structs/enums.h>
+// #include <structs/optimizer.h>
+
+/**
+ * @class lossfx
+ * @brief A manager class facilitating the use of PyTorch loss functions, optimizers, and
+ *        weight initialization techniques within C++ applications.
+ *
+ * @details The `lossfx` class inherits from a base class named `tools`, presumably gaining access
+ *          to common utility functions like string manipulation (e.g., converting strings to lowercase,
+ *          as used in `loss_string` and `optim_string`).
+ *
+ *          This class functions primarily as a factory and a manager. It centralizes the creation,
+ *          configuration, storage, and destruction of PyTorch optimizer objects (`torch::optim::Optimizer`)
+ *          and loss function modules (e.g., `torch::nn::MSELossImpl`). This abstraction simplifies
+ *          the setup and execution of the training process for neural networks built with LibTorch.
+ *
+ *          Key responsibilities include:
+ *          - Mapping string names to internal enums for selecting loss functions and optimizers.
+ *          - Providing a unified interface (`loss` method) to calculate the loss, regardless of the
+ *            specific loss function chosen.
+ *          - Offering a method (`build_optimizer`) to construct an optimizer based on configuration
+ *            parameters and associate it with model parameters. It manages the lifecycle of these
+ *            optimizers, ensuring only one instance per type is created per `lossfx` object.
+ *          - Implementing various weight initialization methods via the `weight_init` function.
+ *          - Ensuring loss function modules are instantiated (`build_loss_function`) and moved to the
+ *            correct device (`to` method).
+ *          - Handling cleanup of all dynamically allocated optimizer and loss function objects in its
+ *            destructor to prevent memory leaks.
+ */
+class lossfx : public tools
+{
+    public:
+        /**
+         * @brief Constructs a new `lossfx` object.
+         * @details This is the default constructor. It initializes the `lossfx` instance,
+         *          setting all internal pointers that hold optimizer instances (e.g., `m_adam`, `m_sgd`)
+         *          and loss function module instances (e.g., `m_mse`, `m_cross_entropy`) to `nullptr`.
+         *          This signifies that no optimizers or loss functions have been created yet by this
+         *          `lossfx` object. It ensures a clean state upon object creation.
+         */
+        lossfx();
+
+        /**
+         * @brief Destroys the `lossfx` object and cleans up associated resources.
+         * @details The destructor is crucial for preventing memory leaks. It systematically checks
+         *          each internal pointer variable that might hold a dynamically allocated optimizer
+         *          (like `m_adam`, `m_adagrad`, etc.) or a loss function module (like `m_bce`, `m_mse`, etc.).
+         *          If a pointer is not `nullptr`, it means an object was allocated during the lifetime
+         *          of this `lossfx` instance (e.g., via `build_optimizer` or `build_loss_function`).
+         *          The destructor then calls `delete` on that pointer to free the associated memory.
+         *          This ensures proper resource management for all objects created and managed by this class.
+         */
+        ~lossfx();
+
+        /**
+         * @brief Converts a string representation of a loss function name into its corresponding `loss_enum` value.
+         * @details This function takes a string, converts it to lowercase using the inherited `lower`
+         *          method (assumed from the `tools` base class), and compares it against a predefined
+         *          set of known loss function names (e.g., "mse", "crossentropyloss", "l1", "huber").
+         *          The comparison is case-insensitive due to the initial lowercase conversion.
+         * @param name The string identifier for the desired loss function (e.g., `"MSE"`, `"cross_entropy"`).
+         *             Case does not matter.
+         * @return The `loss_enum` value corresponding to the matched name (e.g., `loss_enum::mse`,
+         *         `loss_enum::cross_entropy`). If the input string `name` does not match any known
+         *         loss function identifier, it returns `loss_enum::invalid_loss` to indicate failure.
+         */
+        loss_enum loss_string(std::string name);
+
+        /**
+         * @brief Converts a string representation of an optimizer name into its corresponding `opt_enum` value.
+         * @details Similar to `loss_string`, this function takes a string identifier for an optimizer,
+         *          converts it to lowercase, and compares it against known optimizer names (e.g., "adam",
+         *          "sgd", "rmsprop", "adamw"). The comparison is case-insensitive.
+         * @param name The string identifier for the desired optimizer (e.g., `"Adam"`, `"SGD"`, `"RMSProp"`).
+         *             Case is ignored.
+         * @return The `opt_enum` value corresponding to the matched name (e.g., `opt_enum::adam`,
+         *         `opt_enum::sgd`). If the input string `name` does not match any recognized
+         *         optimizer identifier, it returns `opt_enum::invalid_optimizer` to signal an error.
+         */
+        opt_enum optim_string(std::string name);
+
+        /**
+         * @brief Computes the loss between a set of predictions and corresponding ground truth values.
+         * @details This function acts as the primary interface for loss calculation. It uses the
+         *          provided `loss_enum` value (`lss`) to determine which specific loss function
+         *          to apply. It first ensures the required loss function module has been instantiated
+         *          (implicitly or explicitly via `build_loss_function`). Then, it dispatches the
+         *          calculation to one of the private overloaded `_fx_loss` helper methods based on the
+         *          type of the instantiated loss function module associated with `lss`. These helper
+         *          methods handle the actual call to the loss function module's `forward` method.
+         * @param pred A pointer to a `torch::Tensor` containing the output predictions generated by the model.
+         *             The shape and type requirements depend on the specific loss function being used.
+         * @param truth A pointer to a `torch::Tensor` containing the ground truth labels or target values
+         *              corresponding to the predictions. Shape and type requirements also depend on the loss function.
+         * @param lss An enum value of type `loss_enum` specifying which loss function should be used
+         *            for the computation (e.g., `loss_enum::mse`, `loss_enum::cross_entropy`).
+         * @return A `torch::Tensor` containing the computed loss value. Typically, this is a scalar tensor
+         *         (containing a single value), especially if reduction (like mean or sum) is applied
+         *         within the loss function module. If the provided `lss` enum is invalid, or if the
+         *         corresponding loss function is not implemented or fails, an empty tensor (`torch::Tensor()`)
+         *         might be returned (as indicated by some `_fx_loss` implementations).
+         * @warning Ensure that the `pred` and `truth` tensors have compatible shapes, data types, and value ranges
+         *          as expected by the chosen loss function (`lss`). Also ensure the required loss function
+         *          module has been built using `build_loss_function` and moved to the correct device using `to`.
+         */
+        torch::Tensor loss(torch::Tensor* pred, torch::Tensor* truth, loss_enum lss);
+
+        /**
+         * @brief Initializes the weights of layers within a `torch::nn::Sequential` module using a specified method.
+         * @details This function iterates through all the modules contained within the provided `torch::nn::Sequential`
+         *          container (`data`). For each module, it checks if it is a `torch::nn::Linear` layer. If it is,
+         *          it applies the weight initialization strategy specified by the `method` parameter to the layer's
+         *          weight tensor. Common methods include Xavier (Glorot) initialization (uniform or normal) and
+         *          Kaiming (He) initialization (uniform or normal), often chosen based on the activation functions
+         *          used in the network. This function likely uses static helper functions within the class or
+         *          standard `torch::nn::init` functions to perform the actual initialization logic based on the `method` enum.
+         *          Bias terms might also be initialized (e.g., to zero) depending on the implementation.
+         * @param data A pointer to the `torch::nn::Sequential` module whose layers (specifically `Linear` layers)
+         *             need their weights initialized.
+         * @param method An enum value of type `mlp_init` specifying the desired weight initialization technique
+         *               (e.g., `mlp_init::xavier_uniform`, `mlp_init::kaiming_normal`).
+         * @note This function typically modifies the weight tensors of the layers within the `data` module in-place.
+         */
+        void weight_init(torch::nn::Sequential* data, mlp_init method);
+
+        /**
+         * @brief Constructs (if necessary) and returns a pointer to a PyTorch optimizer instance.
+         * @details This function serves as a factory for creating and retrieving optimizer objects.
+         *          It takes the desired optimizer type and its configuration parameters via the `op` struct
+         *          and the model parameters to be optimized via the `params` vector.
+         *          Based on the `optimizer_type` specified in `op`, it calls the corresponding private
+         *          `build_*` helper function (e.g., `build_adam`, `build_sgd`). These helpers handle the
+         *          actual instantiation using `torch::optim::<OptimizerType>(params, options)`.
+         *          Crucially, this function implements a singleton pattern per optimizer type *within this `lossfx` instance*.
+         *          It checks if an optimizer of the requested type has already been created (i.e., if the
+         *          corresponding member pointer like `m_adam` is not `nullptr`). If it exists, it returns the
+         *          existing pointer. If not, it creates the new optimizer instance, stores its pointer in the
+         *          appropriate member variable, and then returns the pointer.
+         * @param op A pointer to an `optimizer_params_t` struct. This struct must contain the desired
+         *           optimizer type (`op->optimizer_type`) and all necessary hyperparameters (e.g.,
+         *           `op->lr` for learning rate, `op->momentum`, `op->weight_decay`, etc.) required by
+         *           that specific optimizer.
+         * @param params A pointer to a `std::vector<torch::Tensor>` containing all the model parameters
+         *               (typically obtained via `model->parameters()`) that the optimizer should manage and update.
+         * @return A pointer to the created or retrieved `torch::optim::Optimizer` object. The ownership of the
+         *         memory pointed to remains with the `lossfx` object; the caller should *not* delete this pointer.
+         *         Returns `nullptr` if the optimizer type specified in `op` is invalid (`opt_enum::invalid_optimizer`)
+         *         or if the creation process fails for some reason (though standard LibTorch optimizers usually
+         *         throw exceptions on failure rather than returning null).
+         * @warning The lifetime of the returned optimizer is tied to the lifetime of the `lossfx` object.
+         *          Do not use the pointer after the `lossfx` object has been destroyed.
+         */
+        torch::optim::Optimizer* build_optimizer(optimizer_params_t* op, std::vector<torch::Tensor>* params);
+
+        /**
+         * @brief Ensures that the PyTorch module for a specific loss function is instantiated.
+         * @details This function checks if the loss function module corresponding to the given `loss_enum` (`lss`)
+         *          has already been created and stored in its respective member pointer (e.g., `m_mse` for `loss_enum::mse`).
+         *          If the pointer is `nullptr`, it proceeds to create a new instance of the appropriate
+         *          `torch::nn::<LossType>Impl` class (e.g., `torch::nn::MSELossImpl()`), potentially configuring
+         *          it with default options or options derived from elsewhere (though configuration options are
+         *          not explicitly passed here). The pointer to the newly created module is then stored in the
+         *          corresponding member variable. This mechanism allows for lazy initialization – loss function
+         *          modules are only created when they are first needed (either by calling `loss` or explicitly
+         *          calling `build_loss_function`).
+         * @param lss The `loss_enum` value identifying the loss function module to build or ensure exists.
+         * @return `true` if the loss function module corresponding to `lss` already exists or was successfully
+         *         created during this call. Returns `false` if the provided `lss` is `loss_enum::invalid_loss`
+         *         or if the instantiation fails for any reason.
+         * @note The created loss function modules are managed by the `lossfx` object and will be deleted by its destructor.
+         */
+        bool build_loss_function(loss_enum lss);
+
+        /**
+         * @brief Moves all currently instantiated loss function modules to a specified device (CPU or GPU).
+         * @details This function iterates through all the internal pointers that hold loss function modules
+         *          (e.g., `m_bce`, `m_mse`, `m_cross_entropy`, etc.). For each pointer that is not `nullptr`
+         *          (meaning the corresponding loss module has been instantiated via `build_loss_function`),
+         *          it calls the module's `to()` method, passing the device specified in the `torch::TensorOptions`
+         *          object pointed to by `op`. This is essential for ensuring that the loss calculations occur
+         *          on the same device as the model's output tensors and the target tensors, preventing device mismatch errors.
+         * @param op A pointer to a `torch::TensorOptions` object. The device specified within these options
+         *           (e.g., `op->device()`, which could be `torch::kCPU` or `torch::kCUDA`) determines the
+         *           target device for the loss function modules. Other options within the struct (like dtype)
+         *           are typically ignored by the module's `to()` method.
+         * @note This function should typically be called after creating the `lossfx` object and potentially
+         *       building the necessary loss functions, and before starting the training loop, especially
+         *       if training on a GPU. It modifies the loss function modules in-place.
+         */
+        void to(torch::TensorOptions*);
+
+    private:
+        /**
+         * @brief Internal helper function to create and configure an Adam optimizer instance.
+         * @details This function is called exclusively by `build_optimizer` when the requested optimizer
+         *          type is `opt_enum::adam`. It first checks if `m_adam` is `nullptr`. If it is,
+         *          it proceeds to create a new `torch::optim::Adam` instance. It configures the Adam
+         *          optimizer using hyperparameters extracted from the `op` struct, specifically:
+         *          - Learning rate (`op->lr`)
+         *          - Betas (`op->beta1`, `op->beta2`)
+         *          - Epsilon (`op->eps`)
+         *          - Weight decay (`op->weight_decay`)
+         *          - Amsgrad (`op->amsgrad`)
+         *          The new instance is initialized with the model parameters provided in `params`. The pointer
+         *          to the newly created optimizer is stored in the `m_adam` member variable. If `m_adam`
+         *          was already non-null, this function does nothing, ensuring only one Adam instance is managed.
+         * @param op Pointer to the `optimizer_params_t` struct containing configuration settings.
+         * @param params Pointer to the vector of model parameters (`torch::Tensor`) to be optimized.
+         */
+        void build_adam(optimizer_params_t* op, std::vector<torch::Tensor>* params);
+
+        /**
+         * @brief Internal helper function to create and configure an Adagrad optimizer instance.
+         * @details Called by `build_optimizer` for `opt_enum::adagrad`. Checks if `m_adagrad` is `nullptr`.
+         *          If so, creates a new `torch::optim::Adagrad` instance. Configures it using parameters
+         *          from `op`:
+         *          - Learning rate (`op->lr`)
+         *          - Learning rate decay (`op->lr_decay`)
+         *          - Weight decay (`op->weight_decay`)
+         *          - Initial accumulator value (`op->initial_accumulator_value`)
+         *          - Epsilon (`op->eps`)
+         *          Initializes with `params` and stores the pointer in `m_adagrad`. Does nothing if `m_adagrad` exists.
+         * @param op Pointer to the `optimizer_params_t` struct containing configuration settings.
+         * @param params Pointer to the vector of model parameters (`torch::Tensor`) to be optimized.
+         */
+        void build_adagrad(optimizer_params_t* op, std::vector<torch::Tensor>* params);
+
+        /**
+         * @brief Internal helper function to create and configure an AdamW optimizer instance.
+         * @details Called by `build_optimizer` for `opt_enum::adamw`. Checks if `m_adamw` is `nullptr`.
+         *          If so, creates a new `torch::optim::AdamW` instance. Configures it using parameters
+         *          from `op`:
+         *          - Learning rate (`op->lr`)
+         *          - Betas (`op->beta1`, `op->beta2`)
+         *          - Epsilon (`op->eps`)
+         *          - Weight decay (`op->weight_decay`)
+         *          - Amsgrad (`op->amsgrad`)
+         *          Initializes with `params` and stores the pointer in `m_adamw`. Does nothing if `m_adamw` exists.
+         * @param op Pointer to the `optimizer_params_t` struct containing configuration settings.
+         * @param params Pointer to the vector of model parameters (`torch::Tensor`) to be optimized.
+         */
+        void build_adamw(optimizer_params_t* op, std::vector<torch::Tensor>* params);
+
+        /**
+         * @brief Internal helper function to create and configure an LBFGS optimizer instance.
+         * @details Called by `build_optimizer` for `opt_enum::lbfgs`. Checks if `m_lbfgs` is `nullptr`.
+         *          If so, creates a new `torch::optim::LBFGS` instance. Configures it using parameters
+         *          from `op`:
+         *          - Learning rate (`op->lr`)
+         *          - Max iterations (`op->max_iter`)
+         *          - Max evaluations (`op->max_eval`)
+         *          - Tolerance gradient (`op->tolerance_grad`)
+         *          - Tolerance change (`op->tolerance_change`)
+         *          - History size (`op->history_size`)
+         *          - Line search function (potentially fixed or configurable, not explicitly shown in `op` fields)
+         *          Initializes with `params` and stores the pointer in `m_lbfgs`. Does nothing if `m_lbfgs` exists.
+         * @param op Pointer to the `optimizer_params_t` struct containing configuration settings.
+         * @param params Pointer to the vector of model parameters (`torch::Tensor`) to be optimized.
+         * @note LBFGS requires a closure to re-evaluate the model and calculate loss, which is handled differently
+         *       during the `optimizer->step()` call compared to first-order methods.
+         */
+        void build_lbfgs(optimizer_params_t* op, std::vector<torch::Tensor>* params);
+
+        /**
+         * @brief Internal helper function to create and configure an RMSprop optimizer instance.
+         * @details Called by `build_optimizer` for `opt_enum::rmsprop`. Checks if `m_rmsprop` is `nullptr`.
+         *          If so, creates a new `torch::optim::RMSprop` instance. Configures it using parameters
+         *          from `op`:
+         *          - Learning rate (`op->lr`)
+         *          - Alpha (smoothing constant) (`op->alpha`)
+         *          - Epsilon (`op->eps`)
+         *          - Weight decay (`op->weight_decay`)
+         *          - Momentum (`op->momentum`)
+         *          - Centered (`op->centered`)
+         *          Initializes with `params` and stores the pointer in `m_rmsprop`. Does nothing if `m_rmsprop` exists.
+         * @param op Pointer to the `optimizer_params_t` struct containing configuration settings.
+         * @param params Pointer to the vector of model parameters (`torch::Tensor`) to be optimized.
+         */
+        void build_rmsprop(optimizer_params_t* op, std::vector<torch::Tensor>* params);
+
+        /**
+         * @brief Internal helper function to create and configure an SGD optimizer instance.
+         * @details Called by `build_optimizer` for `opt_enum::sgd`. Checks if `m_sgd` is `nullptr`.
+         *          If so, creates a new `torch::optim::SGD` instance. Configures it using parameters
+         *          from `op`:
+         *          - Learning rate (`op->lr`)
+         *          - Momentum (`op->momentum`)
+         *          - Dampening (`op->dampening`)
+         *          - Weight decay (`op->weight_decay`)
+         *          - Nesterov momentum (`op->nesterov`)
+         *          Initializes with `params` and stores the pointer in `m_sgd`. Does nothing if `m_sgd` exists.
+         * @param op Pointer to the `optimizer_params_t` struct containing configuration settings.
+         * @param params Pointer to the vector of model parameters (`torch::Tensor`) to be optimized.
+         */
+        void build_sgd(optimizer_params_t* op, std::vector<torch::Tensor>* params);
+
+
+        // --- Loss Function Calculation Helpers ---
+        // These private methods provide type-safe dispatch targets for the public `loss` method.
+        // Each overload corresponds to a specific PyTorch loss function implementation class.
+        // They take the instantiated loss module, prediction tensor, and truth tensor,
+        // and call the `forward` method of the specific loss module. They might perform
+        // necessary checks or tensor manipulations (e.g., reshaping, type casting) if required
+        // by the specific loss function, although the current signatures suggest direct forwarding.
+
+        /**
+         * @brief Calculates loss using the Binary Cross Entropy loss function module.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::BCELossImpl` module.
+         * @param pred Pointer to the prediction tensor (probabilities, typically after sigmoid).
+         * @param truth Pointer to the target tensor (binary values, 0 or 1).
+         * @return The calculated BCE loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::BCELossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Binary Cross Entropy with Logits loss function module.
+         * @details More numerically stable than `BCELoss` preceded by a `Sigmoid` layer.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::BCEWithLogitsLossImpl` module.
+         * @param pred Pointer to the prediction tensor (raw logits, before sigmoid).
+         * @param truth Pointer to the target tensor (binary values, 0 or 1).
+         * @return The calculated BCEWithLogits loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::BCEWithLogitsLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Cosine Embedding loss function module.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::CosineEmbeddingLossImpl` module.
+         * @param pred Pointer to the first input tensor.
+         * @param truth Pointer to the second input tensor (or target label tensor depending on usage).
+         * @return The calculated Cosine Embedding loss tensor. (Note: Original comment indicates it currently returns an empty tensor).
+         * @warning The original comment suggests this might not be fully implemented.
+         */
+        torch::Tensor _fx_loss(torch::nn::CosineEmbeddingLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Cross Entropy loss function module.
+         * @details Combines `LogSoftmax` and `NLLLoss`. Suitable for multi-class classification.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::CrossEntropyLossImpl` module.
+         * @param pred Pointer to the prediction tensor (raw scores/logits for each class). Shape (N, C).
+         * @param truth Pointer to the target tensor (class indices). Shape (N).
+         * @return The calculated Cross Entropy loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::CrossEntropyLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Connectionist Temporal Classification loss function module.
+         * @details Used for sequence-to-sequence tasks like speech recognition where alignment is variable.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::CTCLossImpl` module.
+         * @param pred Pointer to the log-probabilities from the model output.
+         * @param truth Pointer to the target sequences.
+         * @return The calculated CTC loss tensor. (Note: Original comment indicates it currently returns an empty tensor).
+         * @warning The original comment suggests this might not be fully implemented. Requires specific input shapes and additional parameters (input lengths, target lengths).
+         */
+        torch::Tensor _fx_loss(torch::nn::CTCLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Hinge Embedding loss function module.
+         * @details Measures loss for learning embeddings or semi-supervised learning.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::HingeEmbeddingLossImpl` module.
+         * @param pred Pointer to the input tensor.
+         * @param truth Pointer to the target tensor containing labels (1 or -1).
+         * @return The calculated Hinge Embedding loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::HingeEmbeddingLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Huber loss function module (Smooth L1 Loss variant).
+         * @details Less sensitive to outliers than MSELoss, quadratic for small errors, linear for large errors.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::HuberLossImpl` module.
+         * @param pred Pointer to the prediction tensor.
+         * @param truth Pointer to the target tensor.
+         * @return The calculated Huber loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::HuberLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Kullback-Leibler Divergence loss function module.
+         * @details Measures the difference between two probability distributions.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::KLDivLossImpl` module.
+         * @param pred Pointer to the input tensor (log-probabilities).
+         * @param truth Pointer to the target tensor (probabilities).
+         * @return The calculated KL Divergence loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::KLDivLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the L1 loss function module (Mean Absolute Error).
+         * @param lossfx_ Pointer to an instantiated `torch::nn::L1LossImpl` module.
+         * @param pred Pointer to the prediction tensor.
+         * @param truth Pointer to the target tensor.
+         * @return The calculated L1 loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::L1LossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Margin Ranking loss function module.
+         * @details Used for ranking problems, ensuring inputs rank correctly relative to each other.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::MarginRankingLossImpl` module.
+         * @param pred Pointer to the first input tensor (or combined input).
+         * @param truth Pointer to the second input tensor (or target tensor indicating relative rank).
+         * @return The calculated Margin Ranking loss tensor. (Note: Original comment indicates it currently returns an empty tensor).
+         * @warning The original comment suggests this might not be fully implemented. Requires specific input setup (often two inputs and a target).
+         */
+        torch::Tensor _fx_loss(torch::nn::MarginRankingLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Mean Squared Error (L2) loss function module.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::MSELossImpl` module.
+         * @param pred Pointer to the prediction tensor.
+         * @param truth Pointer to the target tensor.
+         * @return The calculated MSE loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::MSELossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Multi-Label Margin loss function module.
+         * @details Suitable for multi-label classification problems where an input can belong to multiple categories. Hinge-based loss.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::MultiLabelMarginLossImpl` module.
+         * @param pred Pointer to the prediction tensor (scores for each class).
+         * @param truth Pointer to the target tensor (containing indices of the true labels).
+         * @return The calculated Multi-Label Margin loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::MultiLabelMarginLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Multi-Label Soft Margin loss function module.
+         * @details Suitable for multi-label classification problems. Binary cross-entropy based loss computed independently for each class.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::MultiLabelSoftMarginLossImpl` module.
+         * @param pred Pointer to the prediction tensor (scores/logits for each class).
+         * @param truth Pointer to the target tensor (binary matrix indicating true labels).
+         * @return The calculated Multi-Label Soft Margin loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::MultiLabelSoftMarginLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Multi-Margin loss function module.
+         * @details Hinge-based loss for multi-class classification. Alternative to Cross Entropy.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::MultiMarginLossImpl` module.
+         * @param pred Pointer to the prediction tensor (scores for each class).
+         * @param truth Pointer to the target tensor (class indices).
+         * @return The calculated Multi-Margin loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::MultiMarginLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Negative Log Likelihood loss function module.
+         * @details Useful for multi-class classification when the input is log-probabilities (output of LogSoftmax).
+         * @param lossfx_ Pointer to an instantiated `torch::nn::NLLLossImpl` module.
+         * @param pred Pointer to the prediction tensor (log-probabilities). Shape (N, C).
+         * @param truth Pointer to the target tensor (class indices). Shape (N).
+         * @return The calculated NLL loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::NLLLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Poisson Negative Log Likelihood loss function module.
+         * @details Suitable for target values that are counts or follow a Poisson distribution.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::PoissonNLLLossImpl` module.
+         * @param pred Pointer to the prediction tensor (expected counts, often model output).
+         * @param truth Pointer to the target tensor (observed counts).
+         * @return The calculated Poisson NLL loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::PoissonNLLLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Smooth L1 loss function module.
+         * @details A combination of L1 and L2 loss; less sensitive to outliers than MSE and smoother near zero than L1. Similar to Huber loss with delta=1.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::SmoothL1LossImpl` module.
+         * @param pred Pointer to the prediction tensor.
+         * @param truth Pointer to the target tensor.
+         * @return The calculated Smooth L1 loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::SmoothL1LossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Soft Margin loss function module.
+         * @details Optimizes a two-class classification logistic loss between input `x` and target `y` (1 or -1).
+         * @param lossfx_ Pointer to an instantiated `torch::nn::SoftMarginLossImpl` module.
+         * @param pred Pointer to the prediction tensor (scores/logits).
+         * @param truth Pointer to the target tensor (labels as 1 or -1).
+         * @return The calculated Soft Margin loss tensor.
+         */
+        torch::Tensor _fx_loss(torch::nn::SoftMarginLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Triplet Margin loss function module.
+         * @details Used for learning embeddings where the distance between an anchor and a positive sample should be smaller than the distance between the anchor and a negative sample by a margin.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::TripletMarginLossImpl` module.
+         * @param pred Pointer to the anchor input tensor.
+         * @param truth Pointer to the positive/negative input tensors (requires specific input setup).
+         * @return The calculated Triplet Margin loss tensor. (Note: Original comment indicates it currently returns an empty tensor).
+         * @warning The original comment suggests this might not be fully implemented. Requires three inputs: anchor, positive, and negative samples.
+         */
+        torch::Tensor _fx_loss(torch::nn::TripletMarginLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+        /**
+         * @brief Calculates loss using the Triplet Margin with Distance loss function module.
+         * @details Similar to Triplet Margin Loss, but allows specifying a custom distance function.
+         * @param lossfx_ Pointer to an instantiated `torch::nn::TripletMarginWithDistanceLossImpl` module.
+         * @param pred Pointer to the anchor input tensor.
+         * @param truth Pointer to the positive/negative input tensors (requires specific input setup).
+         * @return The calculated Triplet Margin with Distance loss tensor. (Note: Original comment indicates it currently returns an empty tensor).
+         * @warning The original comment suggests this might not be fully implemented. Requires three inputs and potentially a distance function.
+         */
+        torch::Tensor _fx_loss(torch::nn::TripletMarginWithDistanceLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);
+
+
+        // --- Member Variables ---
+        // These pointers hold the dynamically allocated instances of optimizers and loss function modules.
+        // They are initialized to nullptr and managed (created, stored, deleted) by the lossfx class methods.
+
+        // Optimizers (pointers managed by this class)
+        torch::optim::Adam*     m_adam;    ///< @brief Pointer holding the single instance of the Adam optimizer, if created. Managed by `build_optimizer` and the destructor. Initialized to `nullptr`.
+        torch::optim::Adagrad*  m_adagrad; ///< @brief Pointer holding the single instance of the Adagrad optimizer, if created. Managed by `build_optimizer` and the destructor. Initialized to `nullptr`.
+        torch::optim::AdamW*    m_adamw;   ///< @brief Pointer holding the single instance of the AdamW optimizer, if created. Managed by `build_optimizer` and the destructor. Initialized to `nullptr`.
+        torch::optim::LBFGS*    m_lbfgs;   ///< @brief Pointer holding the single instance of the LBFGS optimizer, if created. Managed by `build_optimizer` and the destructor. Initialized to `nullptr`.
+        torch::optim::RMSprop*  m_rmsprop; ///< @brief Pointer holding the single instance of the RMSprop optimizer, if created. Managed by `build_optimizer` and the destructor. Initialized to `nullptr`.
+        torch::optim::SGD*      m_sgd;     ///< @brief Pointer holding the single instance of the SGD optimizer, if created. Managed by `build_optimizer` and the destructor. Initialized to `nullptr`.
+
+        // Loss Functions (pointers managed by this class)
+        torch::nn::BCELossImpl*                       m_bce;                          ///< @brief Pointer holding the instance of the BCELoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::BCEWithLogitsLossImpl*             m_bce_with_logits;              ///< @brief Pointer holding the instance of the BCEWithLogitsLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::CosineEmbeddingLossImpl*           m_cosine_embedding;             ///< @brief Pointer holding the instance of the CosineEmbeddingLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::CrossEntropyLossImpl*              m_cross_entropy;                ///< @brief Pointer holding the instance of the CrossEntropyLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::CTCLossImpl*                       m_ctc;                          ///< @brief Pointer holding the instance of the CTCLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::HingeEmbeddingLossImpl*            m_hinge_embedding;              ///< @brief Pointer holding the instance of the HingeEmbeddingLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::HuberLossImpl*                     m_huber;                        ///< @brief Pointer holding the instance of the HuberLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::KLDivLossImpl*                     m_kl_div;                       ///< @brief Pointer holding the instance of the KLDivLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::L1LossImpl*                        m_l1;                           ///< @brief Pointer holding the instance of the L1Loss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::MarginRankingLossImpl*             m_margin_ranking;               ///< @brief Pointer holding the instance of the MarginRankingLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::MSELossImpl*                       m_mse;                          ///< @brief Pointer holding the instance of the MSELoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::MultiLabelMarginLossImpl*          m_multi_label_margin;           ///< @brief Pointer holding the instance of the MultiLabelMarginLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::MultiLabelSoftMarginLossImpl*      m_multi_label_soft_margin;      ///< @brief Pointer holding the instance of the MultiLabelSoftMarginLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::MultiMarginLossImpl*               m_multi_margin;                 ///< @brief Pointer holding the instance of the MultiMarginLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::NLLLossImpl*                       m_nll;                          ///< @brief Pointer holding the instance of the NLLLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::PoissonNLLLossImpl*                m_poisson_nll;                  ///< @brief Pointer holding the instance of the PoissonNLLLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::SmoothL1LossImpl*                  m_smooth_l1;                    ///< @brief Pointer holding the instance of the SmoothL1Loss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::SoftMarginLossImpl*                m_soft_margin;                  ///< @brief Pointer holding the instance of the SoftMarginLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::TripletMarginLossImpl*             m_triplet_margin;               ///< @brief Pointer holding the instance of the TripletMarginLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+        torch::nn::TripletMarginWithDistanceLossImpl* m_triplet_margin_with_distance; ///< @brief Pointer holding the instance of the TripletMarginWithDistanceLoss module, if created. Managed by `build_loss_function` and the destructor. Initialized to `nullptr`.
+
+};
+
+#endif // LOSSFX_H

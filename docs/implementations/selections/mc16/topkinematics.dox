@@ -1,0 +1,133 @@
+/**
+ * @file topkinematics.h
+ * @brief Defines the topkinematics class for analyzing top quark kinematics.
+ * @details This class inherits from selection_template and implements specific
+ *          logic for selecting events based on top quark properties and calculating
+ *          kinematic variables like pT, eta, phi, energy, DeltaR, and invariant mass
+ *          for different combinations of top quarks (resonant vs. spectator).
+ */
+
+#ifndef MC16_TOPKINEMATICS_H
+#define MC16_TOPKINEMATICS_H
+
+#include <bsm_4tops/event.h> // Include definition for bsm_4tops event structure
+#include <templates/selection_template.h> // Include base class definition
+
+#include <map>      // For std::map
+#include <string>   // For std::string
+#include <vector>   // For std::vector
+
+/**
+ * @class topkinematics
+ * @brief Implements event selection and kinematic analysis focused on top quarks.
+ * @details This class provides functionality to:
+ *          1. Select events containing exactly two top quarks originating from a resonance.
+ *          2. Calculate and store kinematic properties (pT, eta, phi, energy) for resonant
+ *             and spectator top quarks separately.
+ *          3. Calculate and store pairwise DeltaR values between resonant-resonant (RR),
+ *             resonant-spectator (RS), and spectator-spectator (SS) top quark pairs.
+ *          4. Calculate and store pairwise invariant masses for RR, RS, and SS top quark pairs.
+ *          5. Merge results from multiple instances (useful in parallel processing).
+ *          It inherits from selection_template, overriding its virtual methods.
+ */
+class topkinematics: public selection_template
+{
+    public:
+        /**
+         * @brief Constructor for the topkinematics class.
+         * @details Initializes the selection object and sets its name identifier to "top-kinematics".
+         */
+        topkinematics();
+
+        /**
+         * @brief Destructor for the topkinematics class.
+         * @details Handles the cleanup of resources used by the topkinematics object.
+         *          Overrides the virtual destructor from the base class.
+         */
+        ~topkinematics() override;
+
+        /**
+         * @brief Creates a new instance of the topkinematics class.
+         * @details Implements the virtual constructor pattern. Used to create copies
+         *          of the selection object, typically for parallel processing or cloning.
+         * @return selection_template* Pointer to the newly created topkinematics object,
+         *         cast to the base class pointer type.
+         * @override Inherited from selection_template.
+         */
+        selection_template* clone() override;
+
+        /**
+         * @brief Selects events based on the number of resonant top quarks.
+         * @details This function checks if the event (assumed to be of type bsm_4tops)
+         *          contains exactly two top quarks flagged as originating from a resonance (`from_res`).
+         * @param ev Pointer to the event object (of base type event_template).
+         * @return bool True if the event has exactly two resonant top quarks, false otherwise.
+         * @override Inherited from selection_template.
+         */
+        bool selection(event_template* ev) override;
+
+        /**
+         * @brief Executes the kinematic analysis strategy for the event.
+         * @details This function performs the main analysis logic:
+         *          1. Casts the event pointer to the specific bsm_4tops type.
+         *          2. Separates top quarks into resonant (`r_tops`) and spectator (`s_tops`) collections based on their `from_res` flag.
+         *          3. Calculates and stores pT, eta, phi, and energy for resonant tops in `res_top_kinematics`.
+         *          4. Calculates and stores pT, eta, phi, and energy for spectator tops in `spec_top_kinematics`.
+         *          5. Calculates pairwise DeltaR between resonant-spectator (RS), resonant-resonant (RR),
+         *             and spectator-spectator (SS) top pairs, storing results in `deltaR`.
+         *          6. Calculates pairwise invariant mass for RS, RR, and SS top pairs, storing results in `mass_combi`.
+         *          Units are converted where necessary (e.g., MeV to GeV).
+         * @param ev Pointer to the event object (of base type event_template).
+         * @return bool Always returns true, indicating the strategy was applied (actual event selection happens in the `selection` method).
+         * @override Inherited from selection_template.
+         */
+        bool strategy(event_template* ev) override;
+
+        /**
+         * @brief Merges data from another topkinematics object into this one.
+         * @details This function aggregates the kinematic data (kinematics, mass, DeltaR)
+         *          collected in another topkinematics instance (`sl`) into the current instance.
+         *          It iterates through the maps of the source object (`slt`) and appends
+         *          the vectors to the corresponding vectors in the current object (`this`).
+         *          A helper lambda function `lamb` is used to reduce code duplication.
+         * @param sl Pointer to another selection object (assumed to be topkinematics),
+         *           cast to the base class pointer type.
+         * @override Inherited from selection_template.
+         */
+        void merge(selection_template* sl) override;
+
+        /**
+         * @brief Map storing kinematic variables (pT, eta, phi, energy) for resonant top quarks.
+         * @details Keys are "pt", "eta", "phi", "energy". Values are vectors of floats containing
+         *          the respective kinematic variable for each resonant top quark processed.
+         *          Energy and pT are stored in GeV.
+         */
+        std::map<std::string, std::vector<float>> res_top_kinematics;
+
+        /**
+         * @brief Map storing kinematic variables (pT, eta, phi, energy) for spectator top quarks.
+         * @details Keys are "pt", "eta", "phi", "energy". Values are vectors of floats containing
+         *          the respective kinematic variable for each spectator top quark processed.
+         *          Energy and pT are stored in GeV.
+         */
+        std::map<std::string, std::vector<float>> spec_top_kinematics;
+
+        /**
+         * @brief Map storing invariant masses of top quark pairs.
+         * @details Keys are "RR" (resonant-resonant), "RS" (resonant-spectator),
+         *          "SS" (spectator-spectator). Values are vectors of floats containing the
+         *          invariant mass (in GeV) for each corresponding pair combination processed.
+         */
+        std::map<std::string, std::vector<float>> mass_combi;
+
+        /**
+         * @brief Map storing DeltaR values between top quark pairs.
+         * @details Keys are "RR" (resonant-resonant), "RS" (resonant-spectator),
+         *          "SS" (spectator-spectator). Values are vectors of floats containing the
+         *          DeltaR separation for each corresponding pair combination processed.
+         */
+        std::map<std::string, std::vector<float>> deltaR;
+
+};
+
+#endif // MC16_TOPKINEMATICS_H

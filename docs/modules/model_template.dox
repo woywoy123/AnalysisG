@@ -1,0 +1,308 @@
+#ifndef MODEL_TEMPLATE_H
+#define MODEL_TEMPLATE_H
+
+#include <notification/notification.h>
+#include <templates/graph_template.h>
+#include <templates/lossfx.h>
+#include <structs/settings.h>
+#include <structs/model.h>
+
+#ifdef PYC_CUDA
+#include <c10/cuda/CUDAStream.h>
+#include <ATen/cuda/CUDAGraph.h>
+#endif
+
+class metrics; 
+class analysis; 
+class model_template; 
+class metric_template;
+class optimizer; 
+class dataloader; 
+
+struct graph_t; 
+struct variable_t; 
+struct optimizer_params_t;
+struct model_report; 
+
+class model_template: 
+    public notification, 
+    public tools
+{
+/**
+ * @brief model_template Funktion
+ * 
+ * Detaillierte Beschreibung der model_template Funktion
+ */
+    public:
+        model_template();
+/**
+ * @brief ~model_template Funktion
+ * 
+ * Detaillierte Beschreibung der ~model_template Funktion
+ */
+        virtual ~model_template();
+
+        // set device of model
+        cproperty<int, model_template> device_index;
+        cproperty<std::string, model_template> name; 
+        cproperty<std::string, model_template> device;
+
+        // model state
+        int kfold; 
+        int epoch; 
+        bool is_mc = false; 
+        bool use_pkl = false; 
+        bool inference_mode = false; 
+
+        std::string model_checkpoint_path = ""; 
+        std::string weight_name = "event_weight";
+        std::string tree_name  = "nominal"; 
+
+        // target properties for each graph object: name - loss
+        cproperty<
+            std::map<std::string, std::string>, 
+            std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>
+        > o_graph;
+        
+        cproperty<
+            std::map<std::string, std::string>, 
+            std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>
+        > o_node; 
+
+        cproperty<
+            std::map<std::string, std::string>, 
+            std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>
+        > o_edge; 
+
+        // requested input features
+        cproperty<
+            std::vector<std::string>, 
+            std::map<std::string, torch::Tensor*>
+        > i_graph; 
+
+        cproperty<
+            std::vector<std::string>, 
+            std::map<std::string, torch::Tensor*>
+        > i_node; 
+
+        cproperty<
+            std::vector<std::string>, 
+            std::map<std::string, torch::Tensor*>
+        > i_edge; 
+
+        virtual model_template* clone(); 
+        virtual void forward(graph_t* data); 
+        virtual void train_sequence(bool mode); 
+/**
+ * @brief check_features Funktion
+ * 
+ * Detaillierte Beschreibung der check_features Funktion
+ */
+
+        void check_features(graph_t*);  
+/**
+ * @brief set_optimizer Funktion
+ * 
+ * Detaillierte Beschreibung der set_optimizer Funktion
+ */
+        void set_optimizer(std::string name); 
+/**
+ * @brief initialize Funktion
+ * 
+ * Detaillierte Beschreibung der initialize Funktion
+ */
+        void initialize(optimizer_params_t*);
+/**
+ * @brief clone_settings Funktion
+ * 
+ * Detaillierte Beschreibung der clone_settings Funktion
+ */
+
+        void clone_settings(model_settings_t* setd); 
+/**
+ * @brief import_settings Funktion
+ * 
+ * Detaillierte Beschreibung der import_settings Funktion
+ */
+        void import_settings(model_settings_t* setd); 
+/**
+ * @brief forward Funktion
+ * 
+ * Detaillierte Beschreibung der forward Funktion
+ */
+
+        void forward(graph_t* data, bool train); 
+/**
+ * @brief forward Funktion
+ * 
+ * Detaillierte Beschreibung der forward Funktion
+ */
+        void forward(std::vector<graph_t*> data, bool train); 
+/**
+ * @brief register_module Funktion
+ * 
+ * Detaillierte Beschreibung der register_module Funktion
+ */
+
+        void register_module(torch::nn::Sequential* data); 
+/**
+ * @brief register_module Funktion
+ * 
+ * Detaillierte Beschreibung der register_module Funktion
+ */
+        void register_module(torch::nn::Sequential* data, mlp_init weight_init); 
+/**
+ * @brief prediction_graph_feature Funktion
+ * 
+ * Detaillierte Beschreibung der prediction_graph_feature Funktion
+ */
+
+        void prediction_graph_feature(std::string, torch::Tensor); 
+/**
+ * @brief prediction_node_feature Funktion
+ * 
+ * Detaillierte Beschreibung der prediction_node_feature Funktion
+ */
+        void prediction_node_feature(std::string, torch::Tensor); 
+/**
+ * @brief prediction_edge_feature Funktion
+ * 
+ * Detaillierte Beschreibung der prediction_edge_feature Funktion
+ */
+        void prediction_edge_feature(std::string, torch::Tensor); 
+/**
+ * @brief prediction_extra Funktion
+ * 
+ * Detaillierte Beschreibung der prediction_extra Funktion
+ */
+        void prediction_extra(std::string, torch::Tensor); 
+/**
+ * @brief compute_loss Funktion
+ * 
+ * Detaillierte Beschreibung der compute_loss Funktion
+ */
+
+        torch::Tensor* compute_loss(std::string, graph_enum); 
+/**
+ * @brief evaluation_mode Funktion
+ * 
+ * Detaillierte Beschreibung der evaluation_mode Funktion
+ */
+
+        void evaluation_mode(bool mode = true); 
+/**
+ * @brief save_state Funktion
+ * 
+ * Detaillierte Beschreibung der save_state Funktion
+ */
+
+        void save_state(); 
+/**
+ * @brief restore_state Funktion
+ * 
+ * Detaillierte Beschreibung der restore_state Funktion
+ */
+        bool restore_state(); 
+
+        friend struct graph_t; 
+        friend class metrics; 
+        friend class analysis;
+        friend class optimizer; 
+        friend class dataloader; 
+        friend class metric_template; 
+
+    private:
+/**
+ * @brief clone Funktion
+ * 
+ * Detaillierte Beschreibung der clone Funktion
+ */
+        model_template* clone(int); 
+
+        static void set_input_features(
+                std::vector<std::string>*, 
+                std::map<std::string, torch::Tensor*>*
+        );
+
+        static void set_output_features(
+                std::map<std::string, std::string>*, 
+                std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>*
+        ); 
+
+
+        static void get_name(std::string*, model_template*);
+        static void set_name(std::string*, model_template*);
+
+        static void get_dev_index(int*, model_template*);
+        static void set_dev_index(int*, model_template*);
+/**
+ * @brief assign Funktion
+ * 
+ * Detaillierte Beschreibung der assign Funktion
+ */
+
+        template <typename G, typename F>
+        void assign(std::map<std::string, G>* inpt, graph_enum mode, F* data){
+            typename std::map<std::string, G>::iterator itr = inpt -> begin(); 
+/**
+ * @brief for Funktion
+ * 
+ * Detaillierte Beschreibung der for Funktion
+ */
+            for (; itr != inpt -> end(); ++itr){this -> assign_features(itr -> first, mode, data);}
+        }
+
+
+        static void set_device(std::string*, model_template*); 
+/**
+ * @brief assign_features Funktion
+ * 
+ * Detaillierte Beschreibung der assign_features Funktion
+ */
+        torch::Tensor* assign_features(std::string inpt, graph_enum type, graph_t* data); 
+/**
+ * @brief assign_features Funktion
+ * 
+ * Detaillierte Beschreibung der assign_features Funktion
+ */
+        torch::Tensor* assign_features(std::string inpt, graph_enum type, std::vector<graph_t*>* data); 
+/**
+ * @brief flush_outputs Funktion
+ * 
+ * Detaillierte Beschreibung der flush_outputs Funktion
+ */
+
+        void flush_outputs(); 
+
+        lossfx*                  m_loss   = nullptr; 
+        torch::TensorOptions*    m_option = nullptr; 
+        torch::optim::Optimizer* m_optim  = nullptr; 
+        torch::Tensor*         edge_index = nullptr; 
+        bool                    m_batched = false; 
+        int                  m_device_idx = -2; 
+
+        opt_enum         e_optim = opt_enum::invalid_optimizer;  
+        std::string      s_optim = ""; 
+        std::string      m_name  = "model-template"; 
+
+        std::vector<torch::nn::Sequential*> m_data = {};
+        std::vector<torch::Tensor*> _losses = {};  
+
+        std::map<std::string, torch::Tensor*> m_i_graph = {}; 
+        std::map<std::string, torch::Tensor*> m_i_node = {}; 
+        std::map<std::string, torch::Tensor*> m_i_edge = {}; 
+
+        std::map<std::string, torch::Tensor*> m_p_graph = {}; 
+        std::map<std::string, torch::Tensor*> m_p_node = {}; 
+        std::map<std::string, torch::Tensor*> m_p_edge = {}; 
+        std::map<std::string, torch::Tensor*> m_p_undef = {}; 
+
+        std::map<std::string, std::tuple<torch::Tensor*, loss_enum>> m_o_graph = {}; 
+        std::map<std::string, std::tuple<torch::Tensor*, loss_enum>> m_o_node = {}; 
+        std::map<std::string, std::tuple<torch::Tensor*, loss_enum>> m_o_edge = {}; 
+
+        std::map<graph_enum, std::map<std::string, torch::Tensor>> m_p_loss = {}; 
+}; 
+
+
+#endif

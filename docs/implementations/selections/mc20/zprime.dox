@@ -1,0 +1,107 @@
+/**
+ * @file zprime.h
+ * @brief Defines the zprime class for selecting events based on Z' -> ttbar resonance characteristics.
+ *
+ * This header file declares the zprime class, which inherits from selection_template.
+ * It is designed to identify events where two top quarks originate from a resonance (presumably a Z' boson)
+ * and calculates various kinematic properties related to these tops and their decay products at different stages
+ * (truth particle, truth jet, reconstructed jet).
+ */
+
+#ifndef ZPRIME_H
+#define ZPRIME_H
+
+#include <ssml_mc20/event.h> // Includes the specific event data structure used (ssml_mc20).
+#include <templates/selection_template.h> // Includes the base class for selections.
+
+/**
+ * @class zprime
+ * @brief Implements an event selection and analysis strategy for Z' -> ttbar events.
+ *
+ * This class provides the logic to:
+ * 1. Select events containing exactly two top quarks originating from a resonance (`selection` method).
+ * 2. Calculate and store the invariant masses of various combinations of particles related to these resonance tops
+ *    if the selection criteria are met (`strategy` method).
+ * 3. Merge results from different instances, typically used in parallel processing (`merge` method).
+ */
+class zprime: public selection_template
+{
+    public:
+        /**
+         * @brief Default constructor for the zprime class.
+         * Initializes the selection name to "zprime".
+         */
+        zprime();
+
+        /**
+         * @brief Destructor for the zprime class.
+         * Handles cleanup, although in this case, it's empty as resource management
+         * is likely handled by base classes or standard library containers.
+         */
+        ~zprime() override;
+
+        /**
+         * @brief Creates a copy (clone) of the current zprime object.
+         * This is essential for polymorphism and potentially for parallel processing frameworks.
+         * @return A pointer to a new zprime object allocated on the heap.
+         */
+        selection_template* clone() override;
+
+        /**
+         * @brief Selects events based on the presence of exactly two top quarks from a resonance.
+         * It iterates through the top quarks in the event (`ssml_mc20` type) and counts
+         * how many have the `from_res` flag set to true.
+         * @param ev Pointer to the event object (must be castable to `ssml_mc20*`).
+         * @return True if the event contains exactly two top quarks originating from a resonance, false otherwise.
+         */
+        bool selection(event_template* ev) override;
+
+        /**
+         * @brief Executes the analysis strategy for selected events.
+         * This method is called only if `selection(ev)` returns true. It identifies the
+         * resonance top quarks and calculates the invariant mass of:
+         * - The two resonance top quarks combined (`zprime_truth_tops`).
+         * - All direct children of the resonance top quarks combined (`zprime_children`).
+         * - All truth jets associated with the resonance tops, including leptons and neutrinos (`zprime_truthjets`).
+         * - All reconstructed jets associated with the resonance tops, including detector-level leptons and neutrinos (`zprime_jets`).
+         * These calculated masses (in GeV) are stored in the corresponding member vectors.
+         * @param ev Pointer to the event object (must be castable to `ssml_mc20*`).
+         * @return True if the strategy execution was successful (e.g., the ttbar system could be formed), false otherwise.
+         */
+        bool strategy(event_template* ev) override;
+
+        /**
+         * @brief Merges the collected data from another zprime instance into this one.
+         * This is used to combine results, typically after processing events in parallel.
+         * It appends the data from the vectors of the source object (`sl`) to the
+         * corresponding vectors in the current object (`this`).
+         * @param sl Pointer to another selection_template object (must be castable to `zprime*`).
+         */
+        void merge(selection_template* sl) override;
+
+        /**
+         * @brief Vector storing the invariant mass (in GeV) of the ttbar system formed by the two truth-level top quarks originating from the resonance.
+         * Each entry corresponds to one processed event passing the selection.
+         */
+        std::vector<float> zprime_truth_tops;
+
+        /**
+         * @brief Vector storing the invariant mass (in GeV) of the system formed by combining all direct truth-level children of the two resonance top quarks.
+         * Each entry corresponds to one processed event passing the selection.
+         */
+        std::vector<float> zprime_children;
+
+        /**
+         * @brief Vector storing the invariant mass (in GeV) of the system formed by combining all truth-level jets, leptons, and neutrinos associated with the decay of the two resonance top quarks.
+         * Each entry corresponds to one processed event passing the selection.
+         */
+        std::vector<float> zprime_truthjets;
+
+        /**
+         * @brief Vector storing the invariant mass (in GeV) of the system formed by combining all reconstructed jets and detector-level leptons/neutrinos associated with the decay of the two resonance top quarks.
+         * Each entry corresponds to one processed event passing the selection.
+         */
+        std::vector<float> zprime_jets;
+};
+
+#endif // ZPRIME_H

@@ -1,0 +1,136 @@
+/**
+ * @file parton.h
+ * @brief Defines the parton class for analyzing parton-level information in BSM 4-top events.
+ *
+ * This class inherits from selection_template and implements specific logic
+ * to study the relationship between reconstructed jets (both truth and detector level)
+ * and the underlying partons originating from top quarks. It calculates various
+ * kinematic distributions and fractions related to parton contributions to jets.
+ */
+
+#ifndef PARTON_H
+#define PARTON_H
+
+#include <bsm_4tops/event.h>
+#include <templates/selection_template.h>
+
+/**
+ * @class parton
+ * @brief A selection class designed for parton-level analysis within the bsm_4tops framework.
+ *
+ * This class implements event selection based on the number of top quarks and
+ * performs detailed analysis on the parton content of jets (truth and reco)
+ * associated with these top quarks. It calculates distributions related to the
+ * number of tops contributing to jets, the number of partons within jets,
+ * energy fractions of partons in jets, and the contribution of top decay products
+ * to the invariant mass of associated jets under various conditions.
+ */
+class parton: public selection_template
+{
+    public:
+        /**
+         * @brief Default constructor for the parton class.
+         * @details Initializes the selection name to "parton".
+         */
+        parton();
+
+        /**
+         * @brief Destructor for the parton class.
+         * @details Overrides the base class destructor. No specific cleanup needed here.
+         */
+        ~parton() override;
+
+        /**
+         * @brief Creates a clone of the current parton object.
+         * @details Implements the clone pattern for polymorphic behavior.
+         * @return A pointer to a new parton object allocated on the heap.
+         */
+        selection_template* clone() override;
+
+        /**
+         * @brief Merges data from another parton object into this one.
+         * @details This is typically used in parallel processing scenarios to combine
+         *          results from different threads or processes. It merges all the
+         *          internal map containers.
+         * @param sl A pointer to another selection_template object, expected to be a parton instance.
+         */
+        void merge(selection_template* sl) override;
+
+        /**
+         * @brief Defines the event selection criteria.
+         * @details Selects events that contain at least 2 but fewer than 5 top quarks
+         *          at the truth level.
+         * @param ev A pointer to the event object (expected to be a bsm_4tops event).
+         * @return True if the event passes the selection, false otherwise.
+         */
+        bool selection(event_template* ev) override;
+
+        /**
+         * @brief Implements the core analysis strategy for selected events.
+         * @details This method extracts truth jets, detector jets, and top quarks from the event.
+         *          It then calculates and fills various histograms (stored in maps) related to:
+         *          - Kinematics (pT, E) of jets categorized by the number of associated tops.
+         *          - Energy fraction of partons within jets, categorized by the number of partons.
+         *          - Energy fraction of specific parton types (by PDG ID) within jets.
+         *          - Contribution of top decay partons to the invariant mass of associated jets,
+         *            applying different energy fraction cuts and gluon handling strategies.
+         * @param ev A pointer to the event object (expected to be a bsm_4tops event).
+         * @return True always, indicating the strategy execution was successful (though the event might not contribute useful data if empty).
+         */
+        bool strategy(event_template* ev) override;
+
+        /**
+         * @brief Calculates the invariant mass contribution of a specific top quark to a collection of jets.
+         * @details This function iterates through a list of jets (either truth or reco). For each jet,
+         *          it identifies the partons originating from the specified top quark (`ti`).
+         *          It calculates the energy fraction of these partons relative to the jet's total energy.
+         *          Jets are included in the final mass calculation based on this energy fraction (`cut`)
+         *          and optionally based on the presence of gluons (`cut_gluon`).
+         *          The function can also populate a map (`fracx`) with the energy fractions calculated.
+         * @tparam g The type of the jet (e.g., truthjet, jet).
+         * @tparam gx The type of the parton associated with the jet (e.g., truthjetparton, jetparton).
+         * @param jts A vector of pointers to jets.
+         * @param fracx A pointer to a map where energy fractions per jet (categorized by the number of associated tops) can be stored. Can be nullptr if not needed.
+         * @param p A dummy pointer of the parton type, used for template deduction. Must be nullptr.
+         * @param ti A pointer to the top quark whose contribution is being calculated.
+         * @param cut The minimum energy fraction threshold for a jet to be included based on the top's parton contribution.
+         * @param cut_gluon A boolean flag indicating whether to apply special logic based on the presence of gluons among the top's partons in the jet.
+         *                  - If `cut_gluon` is false: include jet if energy fraction >= `cut`.
+         *                  - If `cut_gluon` is true and `cut` > 0: include jet if energy fraction >= `cut` AND the jet contains gluons from the top.
+         *                  - If `cut_gluon` is true and `cut` == 0: include jet if it contains NO gluons from the top.
+         *                  - If `cut_gluon` is true and `cut` < 0 (e.g., -1): include jet if it contains gluons from the top, regardless of energy fraction. (Used for `jet-gluon:inc`)
+         *                  - If `cut_gluon` is true and `cut` == 0 and `fracx` is null: include jet if it contains NO gluons from the top. (Used for `jet-gluon:rm`)
+         * @return The invariant mass calculated from the four-vectors of the selected jets.
+         */
+        template <typename g, typename gx>
+        float top_mass_contribution(std::vector<g*> jts, std::map<std::string, std::vector<float>>* fracx, gx* p, top* ti, float cut, bool cut_gluon);
+
+        /** @brief Stores transverse momentum (pT) of truth jets, keyed by the number of unique tops associated with the jet (e.g., "1::tops", "2::tops"). Values are in GeV. */
+        std::map<std::string, std::vector<float>> ntops_tjets_pt;
+        /** @brief Stores energy (E) of truth jets, keyed by the number of unique tops associated with the jet. Values are in GeV. */
+        std::map<std::string, std::vector<float>> ntops_tjets_e;
+
+        /** @brief Stores transverse momentum (pT) of reconstructed jets, keyed by the number of unique tops associated with the jet. Values are in GeV. */
+        std::map<std::string, std::vector<float>> ntops_jets_pt;
+        /** @brief Stores energy (E) of reconstructed jets, keyed by the number of unique tops associated with the jet. Values are in GeV. */
+        std::map<std::string, std::vector<float>> ntops_jets_e;
+
+        /** @brief Stores the energy fraction of all partons within a truth jet relative to the jet energy, keyed by the number of partons (e.g., "1::partons", "2::partons"). */
+        std::map<std::string, std::vector<float>> nparton_tjet_e;
+        /** @brief Stores the energy fraction of all partons within a reconstructed jet relative to the jet energy, keyed by the number of partons. */
+        std::map<std::string, std::vector<float>> nparton_jet_e;
+
+        /** @brief Stores the energy fraction of individual partons within a truth jet relative to the sum of parton energies in that jet, keyed by the absolute PDG ID of the parton (e.g., "5" for b-quarks, "21" for gluons). */
+        std::map<std::string, std::vector<float>> frac_parton_tjet_e;
+        /** @brief Stores the energy fraction of individual partons within a reconstructed jet relative to the sum of parton energies in that jet, keyed by the absolute PDG ID of the parton. */
+        std::map<std::string, std::vector<float>> frac_parton_jet_e;
+
+        /** @brief Stores the energy fraction contributed by a specific top quark to a truth jet, keyed by the total number of tops associated with that jet. Calculated within `top_mass_contribution`. */
+        std::map<std::string, std::vector<float>> frac_ntop_tjet_contribution;
+        /** @brief Stores the energy fraction contributed by a specific top quark to a reconstructed jet, keyed by the total number of tops associated with that jet. Calculated within `top_mass_contribution`. */
+        std::map<std::string, std::vector<float>> frac_ntop_jet_contribution;
+        /** @brief Stores the invariant mass calculated from jets associated with a hadronically decaying top quark, keyed by the energy fraction cut and jet type (e.g., "0.10::truthjet", "0.50::jet-gluon"). Calculated using `top_mass_contribution`. */
+        std::map<std::string, std::vector<float>> frac_mass_top;
+};
+
+#endif // PARTON_H

@@ -1,0 +1,1500 @@
+/**
+ * @file event.h
+ * @brief Defines the structure and processing logic for a specific event type.
+ *
+ * This header file declares the `event_name` class, which inherits from
+ * `event_template`. It specifies how data is extracted from input sources
+ * (like ROOT TTrees) and organized into accessible member variables, including
+ * collections of particles.
+ */
+#ifndef EVENTS_EVENTNAME_H
+#define EVENTS_EVENTNAME_H
+
+// --- Includes ---
+#include <templates/event_template.h> // Base class for event definitions
+#include "particles.h" // Definitions for custom particle types used in this event
+
+// --- Class Definition ---
+
+/**
+ * @class event_name
+ * @brief Represents a specific type of event data structure derived from input files.
+ *
+ * This class inherits from `event_template` and implements the necessary virtual
+ * methods to define how event data (leaves, branches, particles) is read,
+ * processed, and stored. Users interact with the public members (like vectors
+ * of particles or event-level variables) after the framework calls `build` and
+ * `CompileEvent`.
+ */
+class event_name: public event_template
+{
+    public:
+        /**
+         * @brief Constructor for the event_name class.
+         *
+         * Initializes the event object. Typically used to configure data fetching
+         * (e.g., specifying which leaves/branches to read from the input file using
+         * `add_leaf`), identify the relevant TTrees, and register internal particle
+         * containers with the framework using `register_particles`.
+         */
+        event_name();
+
+        /**
+         * @brief Destructor for the event_name class.
+         *
+         * Cleans up resources allocated by the event object. Marked as `override`
+         * to ensure it correctly overrides the virtual destructor in the base class
+         * `event_template`. The framework typically manages the memory of
+         * registered particles.
+         */
+        ~event_name() override;
+
+        // --- Public Data Members ---
+
+        /**
+         * @brief Stores pointers to processed custom particle objects.
+         *
+         * This vector is typically populated during the `CompileEvent` phase,
+         * transferring particle pointers from internal maps (`m_some_objects`)
+         * to this publicly accessible container for analysis use.
+         */
+        std::vector<custom_particle*> some_objects = {};
+
+        /**
+         * @brief Stores pointers to processed base particle template objects.
+         *
+         * Similar to `some_objects`, this vector holds pointers to particles,
+         * potentially of a different type or requiring a cast to the base
+         * `particle_template`. It's populated during `CompileEvent` from
+         * internal maps like `m_some_particles`.
+         */
+        std::vector<particle_template*> some_particles = {};
+
+        /**
+         * @brief An example event-level variable.
+         *
+         * Stores a floating-point value representing some characteristic of the
+         * entire event (e.g., missing transverse energy, total event weight).
+         * Its value is typically assigned during the `build` method by fetching
+         * data from the input source via `element_t`.
+         */
+        float some_variable = 0;
+
+        // --- Public Methods (Overrides) ---
+
+        /**
+         * @brief Creates a polymorphic copy of the event object.
+         * @return A pointer to a new `event_name` instance, cast to the base
+         *         `event_template*`.
+         *
+         * This method is used internally by the framework to create new instances
+         * of the specific event type when needed (e.g., for parallel processing).
+         * It implements the virtual `clone` method from the base class.
+         */
+        event_template* clone() override;
+
+        /**
+         * @brief Extracts and assigns event-level data from the input source.
+         * @param el A pointer to an `element_t` object, which acts as a temporary
+         *           container holding the data fetched from the input file (e.g., ROOT TTree)
+         *           for the current event entry.
+         *
+         * This method implements the core data extraction logic for non-particle
+         * variables. It uses the `element_t::get` method to retrieve values
+         * associated with keys (defined via `add_leaf` in the constructor) and
+         * assign them to the corresponding member variables (e.g., `some_variable`).
+         * Particle data is typically handled automatically by the framework via
+         * registered particle maps.
+         */
+        void build(element_t* el) override;
+
+        /**
+         * @brief Performs post-processing steps after initial data extraction.
+         *
+         * This method is called by the framework after `build` has been executed
+         * and after the framework has populated the internal particle maps
+         * (like `m_some_objects`, `m_some_particles`) that were registered in the
+         * constructor. Its primary role is often to transfer particle pointers
+         * from these internal maps to the public vectors (`some_objects`,
+         * `some_particles`) and perform any final calculations or object linking
+         * needed for the analysis.
+         */
+        void CompileEvent() override;
+
+    private:
+        // --- Private Data Members ---
+
+        /**
+         * @brief Internal map storing pointers to custom particles during processing.
+         *
+         * This map is registered with the framework using `register_particles`.
+         * The framework populates this map based on particle data found in the
+         * input file, using string keys (hashes) for identification. Pointers
+         * are typically moved to public vectors (like `some_objects`) in `CompileEvent`.
+         * The framework manages the memory of particles stored here.
+         */
+        std::map<std::string, custom_particle*> m_some_objects = {};
+
+        /**
+         * @brief Internal map storing pointers to another type of custom particle.
+         *
+         * Similar to `m_some_objects`, this map holds pointers to particles of type
+         * `custom_particle_v2` during the framework's processing stage. It's
+         * registered via `register_particles` and its contents are typically
+         * transferred (potentially with casting) to public vectors like
+         * `some_particles` during `CompileEvent`.
+         */
+        std::map<std::string, custom_particle_v2*> m_some_particles = {};
+};
+
+#endif // EVENTS_EVENTNAME_H
+
+// ========================================================================== //
+// FILE: event.cxx
+// ========================================================================== //
+
+/**
+ * @file event.cxx
+ * @brief Implements the methods of the `event_name` class defined in `event.h`.
+ */
+#include "event.h"
+
+/**
+ * @brief Constructor implementation for event_name.
+ *
+ * Sets the unique name identifier for this event implementation.
+ * Configures data fetching by specifying leaves to read from the input file
+ * using `add_leaf("internal_key", "leaf_name_in_file")`.
+ * Specifies the TTree names within the input ROOT file(s) that contain the
+ * necessary data.
+ * Registers internal particle maps (`m_some_objects`, `m_some_particles`) with
+ * the framework, allowing it to automatically populate them with particle
+ * data and manage their memory.
+ */
+event_name::event_name(){
+    // Implementation details:
+    // - Set `this->name`.
+    // - Call `this->add_leaf()` for each required non-particle branch/leaf.
+    // - Assign TTree names to `this->trees`.
+    // - Call `this->register_particles()` for each internal particle map.
+}
+
+/**
+ * @brief Destructor implementation for event_name.
+ *
+ * Currently empty. Resource cleanup, especially for particles stored in
+ * registered maps, is typically handled by the base class and framework.
+ */
+event_name::~event_name(){}
+
+/**
+ * @brief Clone method implementation.
+ * @return A pointer to a new `event_name` instance, cast to `event_template*`.
+ *
+ * Creates a new object of the `event_name` class on the heap and returns
+ * a pointer to it, satisfying the `clone` virtual function requirement for
+ * polymorphic copying.
+ */
+event_template* event_name::clone(){
+    // Implementation details:
+    // - Return `(event_template*)new event_name();`
+}
+
+/**
+ * @brief Build method implementation.
+ * @param el Pointer to the `element_t` object containing data for the current event.
+ *
+ * Retrieves data for event-level variables previously requested via `add_leaf`.
+ * Uses `el->get("internal_key", &this->member_variable)` to fetch the data
+ * associated with the key and store it in the corresponding member variable.
+ * Type casting is handled automatically by the `get` method based on the
+ * type of the provided variable pointer.
+ */
+void event_name::build(element_t* el){
+    // Implementation details:
+    // - Call `el->get("key", &this->variable)` for each variable added via `add_leaf`.
+}
+
+/**
+ * @brief CompileEvent method implementation.
+ *
+ * This method executes after the framework has processed the input data for
+ * the event, including populating the registered particle maps (`m_some_objects`,
+ * `m_some_particles`).
+ * It iterates through the internal particle maps.
+ * For each particle found in the maps, it adds the particle pointer (value in the map)
+ * to the corresponding public vector (`some_objects`, `some_particles`).
+ * Casting (e.g., `(particle_template*)itr2->second`) might be necessary if the
+ * public vector stores pointers to a base class type.
+ * This step makes the processed particles readily accessible for analysis tasks.
+ */
+void event_name::CompileEvent(){
+    // Implementation details:
+    // - Iterate through `this->m_some_objects`.
+    // - For each entry, `push_back` `itr->second` into `this->some_objects`.
+    // - Iterate through `this->m_some_particles`.
+    // - For each entry, `push_back` `(particle_template*)itr2->second` into `this->some_particles`.
+}
+
+
+// ========================================================================== //
+// FILE: graph_name.h
+// ========================================================================== //
+
+/**
+ * @file graph_name.h
+ * @brief Defines the structure for constructing graph representations of events.
+ *
+ * This header declares the `graph_name` class, inheriting from `graph_template`.
+ * It's responsible for defining how an `event_name` object is transformed into
+ * a graph structure (nodes, edges, features) suitable for GNN processing.
+ */
+#ifndef GRAPHS_GRAPHNAME_H
+#define GRAPHS_GRAPHNAME_H
+
+// --- Includes ---
+#include <event-name/some-event.h> // Include the specific event type this graph processes
+#include <templates/graph_template.h> // Base class for graph definitions
+
+// --- Class Definition ---
+
+/**
+ * @class graph_name
+ * @brief Constructs graph representations from `event_name` objects.
+ *
+ * Inherits from `graph_template` and implements the logic to define graph nodes
+ * (usually particles), edges (relationships between nodes), and associated features
+ * (graph-level, node-level, edge-level) using data from a processed `event_name` object.
+ * Feature extraction is typically defined using lambda functions.
+ */
+class graph_name: public graph_template
+{
+    public:
+        /**
+         * @brief Constructor for the graph_name class.
+         *
+         * Initializes the graph object, typically setting its name identifier.
+         */
+        graph_name();
+
+        /**
+         * @brief Destructor for the graph_name class.
+         */
+        ~graph_name();
+
+        // --- Public Methods (Overrides) ---
+
+        /**
+         * @brief Creates a polymorphic copy of the graph object.
+         * @return A pointer to a new `graph_name` instance, cast to the base
+         *         `graph_template*`.
+         *
+         * Used internally by the framework for creating instances of this specific
+         * graph type. Implements the virtual `clone` method from the base class.
+         */
+        graph_template* clone() override;
+
+        /**
+         * @brief Defines the graph construction logic for a single event.
+         *
+         * This core method implements the transformation from an `event_template`
+         * object (specifically, an `event_name` instance) into a graph. It involves:
+         * 1. Retrieving the processed event object.
+         * 2. Defining the nodes of the graph (e.g., using particles from the event).
+         * 3. Optionally defining the graph topology (which nodes are connected by edges).
+         * 4. Defining and adding graph-level, node-level, and edge-level features
+         *    (both truth and data features) using lambda functions.
+         */
+        void CompileEvent() override;
+
+};
+
+#endif // GRAPHS_GRAPHNAME_H
+
+
+// ========================================================================== //
+// FILE: graph-name.cxx
+// ========================================================================== //
+
+/**
+ * @file graph-name.cxx
+ * @brief Implements the methods of the `graph_name` class for graph construction.
+ */
+#include "graph-name.h"
+
+/**
+ * @brief Constructor implementation for graph_name.
+ *
+ * Sets the unique name identifier for this graph implementation.
+ */
+graph_name::graph_name(){
+    // Implementation details:
+    // - Set `this->name`.
+}
+
+/**
+ * @brief Destructor implementation for graph_name.
+ *
+ * Currently empty. Resource management is typically handled by the base class.
+ */
+graph_name::~graph_name(){}
+
+/**
+ * @brief Clone method implementation.
+ * @return A pointer to a new `graph_name` instance, cast to `graph_template*`.
+ *
+ * Creates a new object of the `graph_name` class on the heap.
+ */
+graph_template* graph_name::clone(){
+    // Implementation details:
+    // - Return `(graph_template*)new graph_name();`
+}
+
+/**
+ * @brief CompileEvent method implementation for graph construction.
+ *
+ * This method orchestrates the creation of a graph representation from an event.
+ * Steps involved:
+ * 1. Define Lambda Functions: Create lambda functions for extracting specific features:
+ *    - Graph-level features (truth/data): Take event pointer, output pointer.
+ *    - Node-level features (truth/data): Take particle pointer, output pointer.
+ *    - Edge-level features (truth/data): Take tuple of particle pointers, output pointer.
+ * 2. Get Event: Retrieve the fully processed event object using `this->get_event<event_name>()`.
+ * 3. Define Nodes: Extract the relevant particles (nodes) from the event object
+ *    (e.g., `event->some_var_with_particles`) and pass them to `this->define_nodes()`.
+ * 4. Define Topology (Optional): Define a lambda function that takes two particle pointers
+ *    and returns `true` if an edge should potentially exist between them. Pass this
+ *    lambda to `this->define_topology()`. If omitted, a fully connected graph is assumed initially.
+ * 5. Add Features: Use the `add_*_feature` methods (e.g., `add_graph_truth_feature`,
+ *    `add_node_data_feature`, `add_edge_truth_feature`) to attach the previously defined
+ *    lambda functions to the graph structure, giving each feature a unique name.
+ *    Pass the appropriate data source (event pointer for graph features, particle vector
+ *    for node features) where required.
+ * 6. Access Metadata (Optional): Access information like the source filename (`this->filename`)
+ *    or the raw event data container (`this->data`) if needed.
+ */
+void graph_name::CompileEvent(){
+    // Implementation details:
+    // - Define lambda functions (some_graph_fx, some_node_fx, etc.).
+    // - Get event: `event_name* event = this->get_event<event_name>();`
+    // - Get particles: `std::vector<particle_template*> particles = event->some_var_with_particles;`
+    // - Define nodes: `this->define_nodes(particles);`
+    // - (Optional) Define topology bias lambda and call `this->define_topology(bias_topology);`
+    // - Add features using `add_graph_truth_feature`, `add_node_data_feature`, etc.,
+    //   passing the event, particles vector, lambdas, and feature names.
+    // - Access `this->filename` or `this->data` if needed.
+}
+
+
+// ========================================================================== //
+// FILE: <model-name>.h
+// ========================================================================== //
+
+/**
+ * @file <model-name>.h
+ * @brief Defines the structure for a custom GNN model using LibTorch.
+ *
+ * This header declares the `<model-name>` class, inheriting from `model_template`.
+ * It outlines the architecture and forward pass logic of a specific GNN model
+ * implemented using the PyTorch C++ API (LibTorch).
+ */
+#ifndef MODELS_<MODEL-NAME>_H
+#define MODELS_<MODEL-NAME>_H
+
+// --- Includes ---
+#include <templates/model_template.h> // Base class for model definitions
+#include <torch/torch.h> // PyTorch C++ API headers
+
+// --- Class Definition ---
+
+/**
+ * @class <model-name>
+ * @brief Represents a specific GNN model architecture implemented in C++.
+ *
+ * Inherits from `model_template` and uses `torch::nn::Module` components
+ * (like `torch::nn::Linear`, `torch::nn::Sequential`, or custom modules)
+ * to define the neural network layers and structure. The `forward` method
+ * implements the computation flow for processing graph data.
+ */
+class <model-name>: public model_template
+{
+     public:
+        /**
+         * @brief Constructor for the <model-name> class.
+         *
+         * Initializes the model object. This is where the model's architecture
+         * (layers, modules) is defined and constructed. Importantly, all
+         * `torch::nn::Module` instances must be registered with the base class
+         * using `register_module` to ensure parameters are tracked and managed correctly.
+         */
+        <model-name>();
+
+        /**
+         * @brief Destructor for the <model-name> class.
+         *
+         * Handles cleanup. Note that registered `torch::nn::Module` instances are
+         * typically managed by the base class or LibTorch's shared pointer system,
+         * so manual deletion is often unnecessary.
+         */
+        ~<model-name>();
+
+        // --- Public Methods (Overrides) ---
+
+        /**
+         * @brief Creates a polymorphic copy of the model object.
+         * @return A pointer to a new `<model-name>` instance, cast to the base
+         *         `model_template*`.
+         *
+         * Used internally by the framework for creating instances of this specific
+         * model type. Implements the virtual `clone` method from the base class.
+         */
+        model_template* clone() override;
+
+        /**
+         * @brief Defines the forward pass computation of the model.
+         * @param data A pointer to a `graph_t` object containing the input graph data
+         *             (features, edge index) as `torch::Tensor` objects.
+         *
+         * This method implements the core logic of the GNN. It retrieves input tensors
+         * (graph, node, edge features, edge index) from the `graph_t` object,
+         * passes them through the defined network layers (`example_sequential_module`, etc.),
+         * performs computations (e.g., graph convolutions, pooling), and stores the
+         * resulting predictions back into the `graph_t` object using methods like
+         * `prediction_node_feature`. Optionally, extra tensors needed only for
+         * inference can be stored using `prediction_extra`.
+         */
+        void forward(graph_t* data) override;
+
+        // --- Model Layers ---
+
+        /**
+         * @brief Example pointer to a sequential neural network module.
+         *
+         * Represents a container for a sequence of PyTorch layers (e.g., Linear, ReLU).
+         * This must be initialized in the constructor and registered using `register_module`.
+         * Other `torch::nn::Module` pointers (e.g., for specific GNN layers,
+         * linear layers) should be declared here as well.
+         */
+        torch::nn::Sequential example_sequential_module = nullptr;
+        // Add other torch::nn::Module pointers here (e.g., Linear, GCNConv, etc.)
+
+     private:
+        // Add private helper methods or members if needed
+};
+
+#endif // MODELS_<MODEL-NAME>_H
+
+
+// ========================================================================== //
+// FILE: <model-name>.cxx
+// ========================================================================== //
+
+/**
+ * @file <model-name>.cxx
+ * @brief Implements the methods of the `<model-name>` GNN model class.
+ */
+#include "<model-name>.h"
+
+/**
+ * @brief Constructor implementation for <model-name>.
+ *
+ * Defines the model's architecture by instantiating `torch::nn::Module` objects
+ * (e.g., `torch::nn::Linear`, `torch::nn::Sequential`, custom GNN layers).
+ * Crucially, registers each instantiated module with the base class using
+ * `this->register_module("unique_module_name", this->module_pointer)`.
+ * Registration ensures that the module's parameters are discoverable by optimizers,
+ * correctly moved between devices (CPU/GPU), and managed by the framework.
+ */
+<model-name>::<model-name>(){
+    // Implementation details:
+    // - Instantiate torch::nn modules (e.g., `this->example_sequential_module = torch::nn::Sequential(...)`).
+    // - Register each module: `this->register_module("name", this->module_pointer);`
+}
+
+/**
+ * @brief Destructor implementation for <model-name>.
+ *
+ * Typically empty, as the memory management of registered `torch::nn::Module`
+ * instances is handled automatically through LibTorch's mechanisms and the
+ * base class registration.
+ */
+<model-name>::~<model-name>(){}
+
+/**
+ * @brief Clone method implementation.
+ * @return A pointer to a new `<model-name>` instance, cast to `model_template*`.
+ *
+ * Creates a new object of the `<model-name>` class on the heap.
+ */
+model_template* <model-name>::clone(){
+    // Implementation details:
+    // - Return `(model_template*)new <model-name>();`
+}
+
+/**
+ * @brief Forward method implementation.
+ * @param data Pointer to the `graph_t` object containing input graph tensors.
+ *
+ * Executes the model's computation graph:
+ * 1. Fetch Input Tensors: Retrieve graph, node, and edge feature tensors using
+ *    `data->get_data_graph("key")`, `data->get_data_node("key")`, `data->get_data_edge("key")`.
+ *    Get the edge index tensor using `data->edge_index`. Use `->data()` if direct tensor access is needed.
+ * 2. Perform Computations: Pass the input tensors through the registered modules
+ *    (e.g., `this->example_sequential_module->forward(node_features)`). Implement
+ *    the GNN message passing, aggregation, update steps, pooling, etc., as required
+ *    by the specific model architecture.
+ * 3. Store Predictions: Store the output tensors (predictions) back into the `graph_t`
+ *    object using `this->prediction_graph_feature("pred_key", output_tensor)`,
+ *    `this->prediction_node_feature(...)`, `this->prediction_edge_feature(...)`.
+ *    These keys are used later for loss calculation or accessing inference results.
+ * 4. Store Extra Inference Variables (Optional): If in inference mode (`this->inference_mode`),
+ *    store any additional intermediate tensors needed for analysis using
+ *    `this->prediction_extra("extra_key", intermediate_tensor)`.
+ */
+void <model-name>::forward(graph_t* data){
+    // Implementation details:
+    // - Get tensors: `torch::Tensor node_features = data->get_data_node("key");`, etc.
+    // - Get edge index: `torch::Tensor edge_index = data->edge_index;`
+    // - Pass tensors through modules: `torch::Tensor node_output = this->module->forward(...);`
+    // - Perform GNN operations.
+    // - Store predictions: `this->prediction_node_feature("key", node_output);`
+    // - (Optional) If `this->inference_mode`, store extra tensors: `this->prediction_extra("key", tensor);`
+}
+
+
+// ========================================================================== //
+// FILE: example_selection.h
+// ========================================================================== //
+
+/**
+ * @file example_selection.h
+ * @brief Defines an example analysis selection criteria.
+ *
+ * This header declares the `example_selection` class, inheriting from
+ * `selection_template`. It's used to implement specific event selection cuts
+ * or define analysis categories based on processed event data.
+ */
+#ifndef SELECTIONS_EXAMPLE_SELECTION_H
+#define SELECTIONS_EXAMPLE_SELECTION_H
+
+// --- Includes ---
+#include <<event-name>/event.h> // Include the specific event type this selection operates on
+#include <templates/selection_template.h> // Base class for selection definitions
+#include <vector> // For example data storage
+
+// --- Class Definition ---
+
+/**
+ * @class example_selection
+ * @brief Implements event selection logic based on `event_name` data.
+ *
+ * Inherits from `selection_template` and defines methods to apply cuts (`selection`),
+ * potentially execute alternative logic (`strategy`), and merge results from
+ * parallel processing (`merge`). It can also store derived quantities calculated
+ * during the selection process.
+ */
+class example_selection: public selection_template
+{
+    public:
+        /**
+         * @brief Constructor for the example_selection class.
+         *
+         * Initializes the selection object, typically setting its name identifier.
+         */
+        example_selection();
+
+        /**
+         * @brief Destructor for the example_selection class.
+         *
+         * Marked `override` for correct virtual destructor behavior.
+         */
+        ~example_selection() override;
+
+        // --- Public Methods (Overrides) ---
+
+        /**
+         * @brief Creates a polymorphic copy of the selection object.
+         * @return A pointer to a new `example_selection` instance, cast to the base
+         *         `selection_template*`.
+         *
+         * Used internally by the framework. Implements the virtual `clone` method.
+         */
+        selection_template* clone() override;
+
+        /**
+         * @brief Applies the main selection criteria to an event.
+         * @param ev A pointer to the base `event_template` object (which will be
+         *           cast to the specific event type, e.g., `event_name`).
+         * @return `true` if the event passes all selection cuts, `false` otherwise.
+         *
+         * This method contains the core logic for accepting or rejecting an event
+         * based on its properties (e.g., number of particles, variable values).
+         */
+        bool selection(event_template* ev) override;
+
+        /**
+         * @brief Defines an alternative processing strategy or selection variation.
+         * @param ev A pointer to the base `event_template` object.
+         * @return `true` if the strategy was applied successfully or the alternative
+         *         selection passed, `false` otherwise.
+         *
+         * This method can be used for various purposes, such as calculating
+         * quantities only for events passing the main `selection`, implementing
+         * different cut flows, or defining control regions. It often calls
+         * `this->selection(ev)` internally.
+         */
+        bool strategy(event_template* ev) override;
+
+        /**
+         * @brief Merges results from another instance of this selection.
+         * @param sl A pointer to another `selection_template` object (which will
+         *           be cast to `example_selection*`).
+         *
+         * This method is crucial for parallel processing. It combines data
+         * accumulated in another instance (`sl`) into the current instance (`this`).
+         * This typically involves merging histograms or appending data stored in
+         * member vectors (like `some_calculated_values`) using helpers like `merge_data`.
+         * It also registers the merged data for output using `write`.
+         */
+        void merge(selection_template* sl) override;
+
+        // --- Public Data Members ---
+
+        /**
+         * @brief Example vector to store calculated floating-point values.
+         *
+         * This member variable can be used to accumulate results or derived
+         * quantities during the `strategy` or `selection` methods (e.g., storing
+         * the invariant mass of selected particle pairs). The `merge` method
+         * handles combining these vectors from different parallel processes.
+         */
+        std::vector<float> some_calculated_values;
+};
+
+#endif // SELECTIONS_EXAMPLE_SELECTION_H
+
+
+// ========================================================================== //
+// FILE: example_selection.cxx
+// ========================================================================== //
+
+/**
+ * @file example_selection.cxx
+ * @brief Implements the methods of the `example_selection` class.
+ */
+#include "example_selection.h"
+
+/**
+ * @brief Constructor implementation for example_selection.
+ *
+ * Sets the unique name identifier for this selection implementation.
+ */
+example_selection::example_selection(){
+    // Implementation details:
+    // - Set `this->name`.
+}
+
+/**
+ * @brief Destructor implementation for example_selection.
+ *
+ * Currently empty.
+ */
+example_selection::~example_selection(){}
+
+/**
+ * @brief Clone method implementation.
+ * @return A pointer to a new `example_selection` instance, cast to `selection_template*`.
+ *
+ * Creates a new object of the `example_selection` class on the heap.
+ */
+selection_template* example_selection::clone(){
+    // Implementation details:
+    // - Return `(selection_template*)new example_selection();`
+}
+
+/**
+ * @brief Merge method implementation.
+ * @param sl Pointer to the `selection_template` object to merge from.
+ *
+ * Combines results from parallel processing jobs.
+ * 1. Cast Input: Cast the incoming `selection_template* sl` to the specific
+ *    derived type `example_selection* slt`.
+ * 2. Merge Data: Use base class helpers like `this->merge_data()` to combine
+ *    accumulated data members (e.g., append `slt->some_calculated_values` to
+ *    `this->some_calculated_values`). Merge histograms or other complex types
+ *    as needed.
+ * 3. Register Output: After merging, register the combined data members for
+ *    writing to the output ROOT file using `this->write(&this->data_member, "branch_name")`.
+ *    This ensures the final aggregated results are saved.
+ */
+void example_selection::merge(selection_template* sl){
+    // Implementation details:
+    // - Cast: `example_selection* slt = (example_selection*)sl;`
+    // - Merge vectors/histograms: `this->merge_data(&this->member, &slt->member);`
+    // - Register for output: `this->write(&this->member, "branch_name");`
+}
+
+/**
+ * @brief Selection method implementation.
+ * @param ev Pointer to the `event_template` object for the current event.
+ * @return `true` if the event passes the selection, `false` otherwise.
+ *
+ * Defines the primary event selection criteria.
+ * 1. Cast Event: Cast the `event_template* ev` to the specific event type this
+ *    selection operates on (e.g., `<event-name>* evn = (<event-name>*)ev;`).
+ * 2. Apply Cuts: Implement a series of checks based on event properties
+ *    (e.g., `evn->some_objects.size()`, `evn->some_variable`).
+ * 3. Return Result: Return `false` immediately if any cut fails. If all cuts
+ *    are passed, return `true`.
+ */
+bool example_selection::selection(event_template* ev){
+    // Implementation details:
+    // - Cast: `<event-name>* evn = (<event-name>*)ev;`
+    // - Apply cuts: `if (condition) { return false; }`
+    // - Return `true` if all cuts pass.
+}
+
+/**
+ * @brief Strategy method implementation.
+ * @param ev Pointer to the `event_template` object for the current event.
+ * @return `true` if the strategy logic was applied, `false` otherwise.
+ *
+ * Defines alternative processing or calculations, often performed only on events
+ * that pass the main selection.
+ * 1. Cast Event: Cast `event_template* ev` to the specific event type (`<event-name>* evn`).
+ * 2. Check Main Selection (Optional but common): Call `this->selection(ev)` to see
+ *    if the event passes the primary cuts.
+ * 3. Apply Strategy Logic: If the event passes (or based on other criteria),
+ *    perform calculations (e.g., `float val = evn->some_variable * 2.0;`).
+ * 4. Store Results: Store calculated values in member variables (e.g.,
+ *    `this->some_calculated_values.push_back(val);`).
+ * 5. Return Result: Return `true` if the strategy logic was executed, `false` otherwise.
+ */
+bool example_selection::strategy(event_template* ev){
+    // Implementation details:
+    // - Cast: `<event-name>* evn = (<event-name>*)ev;`
+    // - Check selection: `if (this->selection(ev)) { ... }`
+    // - Perform calculations.
+    // - Store results: `this->some_calculated_values.push_back(value);`
+    // - Return `true` if logic applied, `false` otherwise.
+}
+
+The EventTemplate Source Files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The `event_template` class serves as the base for defining how event data is structured and processed from input files (like ROOT n-tuples). You need to implement specific methods to handle data extraction and event compilation.
+
+**Header File (`event.h`) Example:**
+
+.. code:: C++
+
+    #ifndef EVENTS_EVENTNAME_H // Start of include guard to prevent multiple inclusions
+    #define EVENTS_EVENTNAME_H // Define the include guard macro
+
+    // --- Includes ---
+    #include <templates/event_template.h> // Include the base event template class definition
+    #include "particles.h" // Include the definition of custom particle types used in this event
+
+    // --- Class Definition ---
+    // Define a class 'event_name' that inherits publicly from 'event_template'
+    class event_name: public event_template
+    {
+          public: // Public members are accessible from outside the class
+                event_name(); // Constructor: Called when an object of the class is created
+                ~event_name() override; // Destructor: Called when an object is destroyed. 'override' ensures it overrides the base class virtual destructor.
+
+                // --- Public Data Members ---
+                // Vector to store pointers to custom particle objects after processing
+                std::vector<custom_particle*> some_objects = {};
+                // Vector to store pointers to base particle template objects after processing
+                std::vector<particle_template*> some_particles = {};
+                // A floating-point variable to store event-level information
+                float some_variable = 0;
+
+                // --- Public Methods (Overrides) ---
+                // Creates a new instance of this specific event type (needed internally)
+                event_template* clone() override;
+                // Extracts data for a single event from the input source (element_t)
+                void build(element_t* el) override;
+                // Performs additional processing after basic data extraction (e.g., truth matching)
+                void CompileEvent() override;
+
+          private: // Private members are only accessible from within the class
+                // --- Private Data Members ---
+                // Map to store pointers to custom particles, keyed by a string identifier (used during framework processing)
+                std::map<std::string, custom_particle*> m_some_objects = {};
+                // Map to store pointers to another type of custom particles (used during framework processing)
+                std::map<std::string, custom_particle_v2*> m_some_particles = {};
+    };
+
+    #endif // End of the include guard EVENTS_EVENTNAME_H
+
+**Source File (`event.cxx`) Example:**
+
+The source file implements the methods declared in the header.
+
+*   `clone`: Creates a copy of the event object.
+*   `build`: Extracts data from the input source (`element_t`) for the current event and populates event variables.
+*   `CompileEvent`: Performs post-processing steps after `build`, like organizing particles into public vectors.
+
+.. code:: C++
+
+    #include "event.h" // Include the header file for the event_name class
+
+    // --- Constructor Implementation ---
+    event_name::event_name(){
+          // Set the name identifier for this event implementation
+          this -> name = "event_name";
+
+          // --- Data Fetching Configuration ---
+          // Request the framework to fetch a leaf named "some_very_long_variable_name_in_root"
+          // from the input file and associate it with the key "some_variable".
+          this -> add_leaf("some_variable", "some_very_long_variable_name_in_root");
+
+          // Specify the TTree(s) in the ROOT file that contain the required data.
+          this -> trees = {"some-tree"};
+
+          // --- Particle Registration ---
+          // Register the private particle maps with the framework.
+          // The framework will manage populating these maps based on particle data in the input file.
+          this -> register_particles(&this -> m_some_objects);
+          this -> register_particles(&this -> m_some_particles);
+    }
+
+    // --- Destructor Implementation ---
+    // (Currently empty, but defined as required by the override)
+    event_name::~event_name(){}
+
+    // --- Clone Method Implementation ---
+    // Returns a pointer to a new instance of event_name, cast to the base class pointer type.
+    event_template* event_name::clone(){return (event_template*)new event_name();}
+
+    // --- Build Method Implementation ---
+    // 'el' is a pointer to an element_t object containing the data for the current event.
+    void event_name::build(element_t* el){
+          // Retrieve the data associated with the key "some_variable" (which corresponds to the leaf added in the constructor)
+          // and store it in the 'some_variable' member. The type is automatically deduced.
+          el -> get("some_variable", &this -> some_variable);
+    }
+
+    // --- CompileEvent Method Implementation ---
+    // This method is called after the framework has populated the registered particle maps.
+    void event_name::CompileEvent(){
+
+          // --- Process m_some_objects ---
+          // Create an iterator for the map m_some_objects.
+          std::map<std::string, custom_particle*>::iterator itr = this -> m_some_objects.begin();
+          // Loop through all elements in the map.
+          for (; itr != this -> m_some_objects.end(); ++itr){
+                // Add the particle pointer (the map's value) to the public vector 'some_objects'.
+                this -> some_objects.push_back(itr -> second);
+          }
+
+          // --- Process m_some_particles ---
+          // Create an iterator for the map m_some_particles.
+          std::map<std::string, custom_particle_v2*>::iterator itr2 = this -> m_some_particles.begin();
+          // Loop through all elements in the map.
+          for (; itr2 != this -> m_some_particles.end(); ++itr2){
+                // Add the particle pointer (the map's value), explicitly casting it to the base 'particle_template*',
+                // to the public vector 'some_particles'.
+                this -> some_particles.push_back((particle_template*)itr2 -> second);
+          }
+    }
+
+**Understanding `element_t`:**
+
+The `element_t` struct acts as a temporary container holding the data (leaves, branches) requested for a single event. The `get(key, &variable)` method retrieves the data associated with `key` (defined via `add_leaf` in the constructor) and automatically casts it to the type of `variable`.
+
+.. code:: C++
+
+    // Example: Define a variable to hold nested vector data
+    std::vector<std::vector<float>> some_nested_vector;
+
+    // Use element_t (el) to retrieve data associated with "some-key"
+    // The framework handles reading the correct data type from the input file.
+    el -> get("some-key", &some_nested_vector);
+
+**Particle Management:**
+
+Particles are stored internally using maps keyed by unique hash strings. Registering these maps (e.g., `register_particles(&this -> m_some_objects)`) allows the framework to manage their lifecycle, including memory deallocation. The `CompileEvent` method typically transfers pointers from these internal maps to more accessible public vectors.
+
+For more details, see the core-class documentation :ref:`event-template`.
+
+The GraphTemplate Source Files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The `graph_template` class is used to construct graph representations of events, suitable for Graph Neural Network (GNN) training. It allows defining nodes (often representing particles) and edges, along with their associated features. Features are assigned using lambda functions.
+
+**Header File (`graph_name.h`) Example:**
+
+.. code:: C++
+
+    #ifndef GRAPHS_GRAPHNAME_H // Start include guard
+    #define GRAPHS_GRAPHNAME_H // Define guard macro
+
+    // --- Includes ---
+    // Include the specific event header file that this graph will process.
+    // Replace "event-name/some-event.h" with the actual path.
+    #include "event-name/some-event.h"
+    #include <templates/graph_template.h> // Include the base graph template
+
+    // --- Class Definition ---
+    // Define 'graph_name' inheriting from 'graph_template'
+    class graph_name: public graph_template
+    {
+          public: // Public members
+                graph_name(); // Constructor
+                ~graph_name(); // Destructor
+
+                // --- Public Methods (Overrides) ---
+                // Creates a new instance of this specific graph type
+                graph_template* clone() override;
+                // Defines how to build the graph features and structure from an event
+                void CompileEvent() override;
+
+    };
+
+    #endif // End include guard GRAPHS_GRAPHNAME_H
+
+**Source File (`graph-name.cxx`) Example:**
+
+.. code:: C++
+
+    #include "graph-name.h" // Include the header for graph_name
+
+    // --- Boilerplate Code ---
+    // Constructor: Set the name identifier for this graph implementation
+    graph_name::graph_name(){this -> name = "graph-name";}
+    // Destructor: (Currently empty)
+    graph_name::~graph_name(){}
+    // Clone Method: Return a new instance cast to the base class pointer
+    graph_template* graph_name::clone(){return (graph_template*)new graph_name();}
+
+    // --- CompileEvent Method Implementation ---
+    // This method defines the graph construction logic for each event.
+    void graph_name::CompileEvent(){
+
+          // --- Lambda Function Definitions for Feature Extraction ---
+
+          // Graph-level truth feature: Is the event a signal event?
+          // Takes a pointer to the output boolean and a pointer to the specific event type.
+          auto some_graph_fx = [](bool* out, event_name* ev){*out = ev -> truth_signal_variable;};
+
+          // Node-level truth feature: Is the particle a top quark?
+          // Takes a pointer to the output integer and a pointer to a base particle.
+          auto some_node_fx = [](int* out, particle_template* p){*out = p -> is_top;};
+
+          // Edge-level truth feature: Do two particles belong to the same truth top?
+          // Takes a pointer to the output integer and a pointer to a tuple containing two particle pointers.
+          auto some_edge_fx = [](int* out, std::tuple<particle_template*, particle_template*>* e_ij){
+                // Access particles using std::get<index>(tuple)
+                *out = std::get<0>(*e_ij) -> top_index == std::get<1>(*e_ij) -> top_index;
+          };
+
+          // Graph-level data feature: Get missing transverse energy (MET).
+          // Takes a pointer to the output double and a pointer to the specific event type.
+          auto some_other_graph_fx = [](double* out, event_name* ev){*out = ev -> missing_et;};
+
+          // Node-level data feature: Get particle transverse momentum (pt).
+          // Takes a pointer to the output double and a pointer to a base particle.
+          auto some_other_node_fx = [](double* out, particle_template* p){*out = p -> pt;};
+
+          // Edge-level data feature: Calculate the pt difference between two particles.
+          // Takes a pointer to the output double and a pointer to a tuple of particle pointers.
+          auto some_other_edge_fx = [](double* out, std::tuple<particle_template*, particle_template*>* e_ij){
+                *out = std::get<0>(*e_ij) -> pt - std::get<1>(*e_ij) -> pt;
+          };
+
+
+          // --- Graph Construction ---
+
+          // Get a pointer to the fully processed event object, casting it to the specific event type.
+          event_name* event = this -> get_event<event_name>();
+          // Retrieve the vector of particles from the event object (assuming 'some_var_with_particles' exists).
+          // Replace 'some_var_with_particles' with the actual member name.
+          std::vector<particle_template*> particles = event -> some_var_with_particles;
+          // Define the nodes of the graph based on the retrieved particles.
+          this -> define_nodes(particles); // Assumes define_nodes takes a vector of particle pointers
+
+          // --- Optional: Define Graph Topology ---
+          // Define a lambda function to bias the edge creation (topology).
+          // Example: Only connect particles if one is a b-jet and the other is not.
+          auto bias_topology = [](particle_template* p1, particle_template* p2){return p1 -> is_b != p2 -> is_b;};
+          // Apply this topology bias. Edges will only be considered between pairs satisfying this condition.
+          // If omitted, a fully connected graph (all-to-all edges) is assumed initially.
+          this -> define_topology(bias_topology);
+
+          // --- Add Features to the Graph ---
+
+          // Add graph-level truth feature named "name-this-truth" using the defined lambda.
+          this -> add_graph_truth_feature<bool, event_name>(event, some_graph_fx, "name-this-truth");
+          // Add node-level truth feature "is_top" to all nodes (particles) using the defined lambda.
+          this -> add_node_truth_feature<int, particle_template>(particles, some_node_fx, "is_top"); // Pass particles vector
+          // Add edge-level truth feature "top_edge" to edges satisfying the topology, using the defined lambda.
+          this -> add_edge_truth_feature<int, particle_template>(some_edge_fx, "top_edge");
+
+          // Add graph-level data feature "some-other-data".
+          this -> add_graph_data_feature<double, event_name>(event, some_other_graph_fx, "some-other-data");
+          // Add node-level data feature "pt".
+          this -> add_node_data_feature<double, particle_template>(particles, some_other_node_fx, "pt"); // Pass particles vector
+          // Add edge-level data feature "delta-pt".
+          this -> add_edge_data_feature<double, particle_template>(some_other_edge_fx, "delta-pt");
+
+          // --- Accessing Metadata ---
+          // Access the path of the original ROOT file being processed.
+          std::string root_file_path = this -> filename;
+          // Access the raw event data container (event_t struct).
+          event_t ev_data = this -> data;
+    }
+
+This setup creates graph structures with features ready for GNN processing using PyTorch.
+
+For more details, see the core-class documentation :ref:`graph-template`.
+
+Installation of AnalysisG
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Dependencies:**
+
+*   **ROOT CERN:** Physics analysis framework. (`root-framework` in snap store or install from source/conda).
+*   **HDF5:** Data storage library (`libhdf5-dev` on Debian/Ubuntu).
+*   **RapidJSON:** Header-only JSON library (handled by CMake FetchContent).
+*   **LibTorch (PyTorch C++ API):** C++ interface for PyTorch (handled by CMake FetchContent).
+
+**Installation Steps:**
+
+.. code-block:: console
+
+    # 1. Clone the repository
+    git clone https://github.com/woywoy123/AnalysisG.git
+    cd AnalysisG
+
+    # 2. Create a build directory
+    mkdir build && cd build
+
+    # 3. Configure with CMake, build, and install (copy to Python site-packages)
+    #    The first cmake configures, make builds, the second cmake copies the build.
+    cmake .. && make -j12 && cmake ..
+
+**Important PyTorch ABI Compatibility Warning:**
+
+The C++ framework is compiled against a specific LibTorch version and ABI (Application Binary Interface). To ensure compatibility when using both the framework and `torch` in Python, you **must** install the matching Python `torch` package compiled with the `cxx11.abi`.
+
+If the framework uses LibTorch `2.4.0` (check CMake output or documentation), install the corresponding Python package:
+
+.. code-block:: console
+
+    # Uninstall any existing torch version first
+    pip uninstall torch torchvision torchaudio
+
+    # Install the CXX11 ABI compatible version (CPU example, adjust for CUDA if needed)
+    pip install "torch==2.4.0+cpu" -f https://download.pytorch.org/whl/torch_stable.html
+    # Or if a specific ABI tag is needed (less common now but was previously required):
+    # pip install "torch==2.4.0+cpu.cxx11.abi" -i https://download.pytorch.org/whl/
+
+Failure to use the ABI-compatible version will likely result in "missing symbols" errors at runtime. See PyTorch issue #51039 for background.
+
+The ModelTemplate Source Files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To add a custom GNN model, use the `model_template`. Create a new directory (e.g., `src/AnalysisG/models/my_model`) and copy the template files (`model.h`, `model.cxx`) into it, renaming them appropriately (e.g., `my_model.h`, `my_model.cxx`). You'll also need corresponding Cython interface files (`.pxd`, `.pyx`).
+
+**C++ Header File (`<model-name>.h`) Example:**
+
+.. code:: C++
+
+    #ifndef MODELS_<MODEL-NAME>_H // Start include guard, replace <MODEL-NAME>
+    #define MODELS_<MODEL-NAME>_H // Define guard macro
+
+    // --- Includes ---
+    #include <templates/model_template.h> // Include the base model template
+    #include <torch/torch.h> // Include PyTorch C++ headers
+
+    // --- Class Definition ---
+    // Define '<model-name>' inheriting from 'model_template'
+    class <model-name>: public model_template
+    {
+         public: // Public members
+              <model-name>(); // Constructor
+              ~<model-name>(); // Destructor
+
+              // --- Public Methods (Overrides) ---
+              // Creates a new instance of this specific model type
+              model_template* clone() override;
+              // Defines the forward pass of the model
+              void forward(graph_t* data) override;
+
+              // --- Model Layers ---
+              // Example: Pointer to a sequential neural network module
+              torch::nn::Sequential example_sequential_module = nullptr;
+              // Add other torch::nn::Module pointers here (e.g., Linear, GCNConv, etc.)
+
+         private: // Private members (if any)
+              // Add private helper methods or members if needed
+    };
+
+    #endif // End include guard MODELS_<MODEL-NAME>_H
+
+**C++ Source File (`<model-name>.cxx`) Example:**
+
+.. code:: C++
+
+    #include "<model-name>.h" // Include the model's header file
+
+    // --- Constructor Implementation ---
+    <model-name>::<model-name>(){
+         // --- Define Model Architecture ---
+         // Example: Create a simple sequential model
+         this -> example_sequential_module = torch::nn::Sequential(
+                    // Layer 1: Linear layer with 2 input features, 2 output features
+                    torch::nn::Linear(2, 2),
+                    // Activation Function: ReLU
+                    torch::nn::ReLU(),
+                    // Layer 2: Linear layer with 2 input features, 2 output features
+                    torch::nn::Linear(2, 2)
+         );
+
+         // --- Register Modules ---
+         // IMPORTANT: Register all torch::nn::Module instances with the base class.
+         // This makes their parameters discoverable by optimizers and handles device placement (CPU/GPU).
+         this -> register_module("example_seq_module", this -> example_sequential_module);
+         // Register other modules here...
+         // this -> register_module("my_linear_layer", this -> my_linear_layer);
+    }
+
+    // --- Destructor Implementation ---
+    // Note: Registered modules are automatically managed; manual deletion is usually not needed.
+    <model-name>::~<model-name>(){}
+
+    // --- Clone Method Implementation ---
+    // Return a new instance of the model, cast to the base class pointer.
+    model_template* <model-name>::clone(){
+         return (model_template*)new <model-name>();
+    }
+
+    // --- Forward Method Implementation ---
+    // Defines the computation performed during the model's forward pass.
+    // 'data' is a pointer to the graph_t object containing input graph data.
+    void <model-name>::forward(graph_t* data){
+
+         // --- Fetch Input Tensors ---
+         // Retrieve graph, node, and edge feature tensors from the graph_t object.
+         // Use -> data() to get the tensor data. Cloning might be necessary depending on subsequent operations.
+         torch::Tensor graph_features = data -> get_data_graph("graph-feature-key"); // Replace "graph-feature-key"
+         torch::Tensor node_features  = data -> get_data_node("node-feature-key");   // Replace "node-feature-key"
+         torch::Tensor edge_features  = data -> get_data_edge("edge-feature-key");   // Replace "edge-feature-key"
+         // Retrieve the edge index tensor (COO format: [2, num_edges])
+         torch::Tensor edge_index = data -> edge_index;
+
+         // --- Perform Model Computations ---
+         // Example: Pass node features through the sequential module
+         // Note: This is a placeholder; actual GNN logic would involve edge_index, etc.
+         torch::Tensor node_output = this -> example_sequential_module -> forward(node_features);
+         // ... perform graph convolutions, pooling, etc. ...
+         // torch::Tensor graph_output = some_pooling_op(node_output, ...);
+         // torch::Tensor edge_output = some_edge_op(node_features, edge_index, ...);
+
+         // --- Store Output Predictions ---
+         // Store the model's predictions back into the graph_t object using specific keys.
+         // These keys are used later for loss calculation or inference output.
+         // this -> prediction_graph_feature("graph_prediction", graph_output);
+         this -> prediction_node_feature("node_prediction", node_output);
+         // this -> prediction_edge_feature("edge_prediction", edge_output);
+
+         // --- Store Extra Inference Variables (Optional) ---
+         // If not in inference mode (i.e., during training), skip storing extra variables.
+         if (!this -> inference_mode){ return; }
+         // Store any additional tensors needed only during inference (e.g., intermediate activations).
+         // this -> prediction_extra("intermediate_activation", some_intermediate_tensor);
+    }
+
+Cython Interface Files
+^^^^^^^^^^^^^^^^^^^^^^
+
+Cython files bridge the C++ model implementation to Python, allowing instantiation and use within the Python-based framework components.
+
+**Header File (`<model-name>.pxd`) Example:**
+
+.. py:class:: <model-name>.pxd
+
+    # distutils: language=c++ // Specify C++ language for Cython
+    # cython: language_level=3 // Use Python 3 syntax
+
+    # --- Cython Imports ---
+    from libcpp cimport bool // Import C++ bool type
+    # Import the base C++ model template and the base Cython wrapper class
+    from AnalysisG.core.model_template cimport model_template, ModelTemplate
+
+    # --- C++ Class Declaration ---
+    # Declare the C++ class defined in "<model-name>.h" to Cython.
+    # Replace <models/<model-name>.h> with the actual path relative to where Cython runs.
+    cdef extern from "<models/<model-name>.h>" namespace "<namespace>": // Add namespace if applicable
+         cdef cppclass <model-name>(model_template): // Declare the C++ class inheriting from model_template
+              <model-name>() except + // Declare the constructor, 'except +' enables C++ exception handling
+
+    # --- Cython Wrapper Class Declaration ---
+    # Declare the Cython wrapper class inheriting from the base ModelTemplate wrapper.
+    # This class will hold a pointer to the C++ object.
+    cdef class <ModelNameWrapper>(ModelTemplate): pass // Replace <ModelNameWrapper>
+
+**Source File (`<model-name>.pyx`) Example:**
+
+.. py:class:: <model-name>.pyx
+
+    # distutils: language=c++ // Specify C++ language
+    # cython: language_level=3 // Use Python 3 syntax
+
+    # --- Cython Imports ---
+    # Import the base Cython wrapper class
+    from AnalysisG.core.model_template cimport ModelTemplate
+    # Import the C++ class and the Cython wrapper declaration from the .pxd file
+    from AnalysisG.models.<model-name> cimport <model-name>, <ModelNameWrapper> // Adjust path/names
+
+    # --- Cython Wrapper Class Implementation ---
+    # Implement the Cython wrapper class declared in the .pxd file.
+    cdef class <ModelNameWrapper>(ModelTemplate):
+         # --- Constructor (Cython __cinit__) ---
+         # Called when the Python object is first created.
+         def __cinit__(self):
+              # Create a new instance of the C++ model object on the heap
+              # and store the pointer in the 'nn_ptr' attribute (inherited from ModelTemplate).
+              self.nn_ptr = new <model-name>()
+
+         # --- Initializer (Python __init__) ---
+         # Called after __cinit__. Used for Python-level initialization (often empty here).
+         def __init__(self):
+              pass // No Python-specific initialization needed in this example
+
+         # --- Destructor (Cython __dealloc__) ---
+         # Called when the Python object's reference count drops to zero.
+         def __dealloc__(self):
+              # Delete the C++ object pointed to by nn_ptr to prevent memory leaks.
+              del self.nn_ptr
+         # Add any Python methods here to expose specific functionality if needed.
+         # def train_mode(self): (<model_template*>self.nn_ptr).train() # Example
+
+The ParticleTemplate Source Files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The `particle_template` serves as the base class for defining particles. You inherit from this class to create custom particle types with specific properties and methods relevant to your analysis. (Further details and examples would typically go here).
+
+The SelectionTemplate Source Files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Selections are used to apply analysis cuts or define specific event categories based on the processed event data. They inherit from `selection_template`.
+
+**C++ Header File (`example_selection.h`) Example:**
+
+.. code:: C++
+
+     #ifndef SELECTIONS_EXAMPLE_SELECTION_H // Start include guard
+     #define SELECTIONS_EXAMPLE_SELECTION_H // Define guard macro
+
+     // --- Includes ---
+     // Include the specific event header this selection operates on.
+     // Replace "event-name/event.h" with the actual path.
+     #include "event-name/event.h"
+     // Include the base selection template.
+     #include <templates/selection_template.h>
+     #include <vector> // Include vector for data storage example
+
+     // --- Class Definition ---
+     // Define 'example_selection' inheriting from 'selection_template'
+     class example_selection: public selection_template
+     {
+          public: // Public members
+                example_selection(); // Constructor
+                ~example_selection() override; // Destructor
+
+                // --- Public Methods (Overrides) ---
+                // Creates a new instance of this specific selection type
+                selection_template* clone() override;
+                // Defines the main selection logic (returns true if event passes, false otherwise)
+                bool selection(event_template* ev) override;
+                // Defines an alternative selection or processing strategy (optional)
+                bool strategy(event_template* ev) override;
+                // Defines how to merge results when running in parallel (e.g., histograms)
+                void merge(selection_template* sl) override;
+
+                // --- Public Data Members ---
+                // Example: Vector to store some floating-point values calculated during selection
+                std::vector<float> some_calculated_values; // Renamed <var-name>
+     };
+
+     #endif // End include guard SELECTIONS_EXAMPLE_SELECTION_H
+
+**C++ Source File (`example_selection.cxx`) Example:**
+
+.. code:: C++
+
+     #include "example_selection.h" // Include the selection's header file
+
+     // --- Constructor Implementation ---
+     // Set the name identifier for this selection implementation.
+     example_selection::example_selection(){this -> name = "example_selection";}
+
+     // --- Destructor Implementation ---
+     // (Currently empty)
+     example_selection::~example_selection(){}
+
+     // --- Clone Method Implementation ---
+     // Return a new instance cast to the base class pointer.
+     selection_template* example_selection::clone(){
+          return (selection_template*)new example_selection();
+     }
+
+     // --- Merge Method Implementation ---
+     // Merges data from another selection instance ('sl') into this one.
+     // This is crucial for combining results from parallel processing.
+     void example_selection::merge(selection_template* sl){
+          // Cast the base class pointer 'sl' to the specific derived type 'example_selection*'.
+          example_selection* slt = (example_selection*)sl;
+
+          // --- Merge Data Members ---
+          // Use the base class helper 'merge_data' to append data from slt's vector to this vector.
+          this -> merge_data(&this -> some_calculated_values, &slt -> some_calculated_values);
+
+          // --- Register Data for Output ---
+          // After merging, register the data member to be written to the output ROOT file
+          // under the specified branch name "some-name-for-ROOT".
+          this -> write(&this -> some_calculated_values, "some-name-for-ROOT");
+     }
+
+     // --- Selection Method Implementation ---
+     // Defines the primary cut or selection criteria.
+     // 'ev' is a pointer to the base event_template.
+     bool example_selection::selection(event_template* ev){
+          // Cast the event pointer to the specific type this selection works with.
+          // <event-name>* evn = (<event-name>*)ev; // Replace <event-name>
+          // --- Apply Selection Cuts ---
+          // Example: Check if the event has at least 4 particles in 'some_objects'
+          // if (evn -> some_objects.size() < 4) { return false; }
+          // Example: Check if 'some_variable' is greater than 100.0
+          // if (evn -> some_variable <= 100.0) { return false; }
+
+          // If all cuts are passed:
+          return true; // Event passes the selection
+     }
+
+     // --- Strategy Method Implementation ---
+     // Defines an alternative processing path or selection.
+     // Often used for different stages of analysis or variations.
+     bool example_selection::strategy(event_template* ev){
+          // Cast the event pointer to the specific type.
+          <event-name>* evn = (<event-name>*)ev; // Replace <event-name>
+
+          // --- Apply Strategy Logic ---
+          // Example: Calculate a value and store it if the event passes the main selection.
+          if (this -> selection(ev)){ // Check if the event passes the primary selection first
+              float calculated_value = evn -> some_variable * 2.0; // Example calculation
+              this -> some_calculated_values.push_back(calculated_value); // Store the value
+              return true; // Strategy step succeeded
+          }
+          return false; // Strategy step did not apply or failed
+     }
+
+Interfacing C++ Selections with Cython
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Similar to models, Cython wrappers are needed to use C++ selections from Python.
+
+**Header File (`example_selection.pxd`) Example:**
+
+.. py:class:: example_selection.pxd
+
+   # distutils: language=c++
+   # cython: language_level=3
+
+   # --- Cython Imports ---
+   from libcpp.vector cimport vector # Import C++ vector
+   from libcpp.string cimport string # Import C++ string
+   # Import base C++ selection template and base Cython wrapper
+   from AnalysisG.core.selection_template cimport selection_template, SelectionTemplate
+
+   # --- C++ Class Declaration ---
+   # Declare the C++ selection class to Cython. Adjust path as needed.
+   cdef extern from "example_selection.h":
+       cdef cppclass example_selection(selection_template):
+           example_selection() except + // Declare constructor with exception handling
+
+   # --- Cython Wrapper Class Declaration ---
+   # Declare the Cython wrapper inheriting from the base SelectionTemplate wrapper.
+   cdef class ExampleSelection(SelectionTemplate):
+       cdef example_selection* sel_ptr # Pointer to the C++ object (can rename 'tt')
+
+**Source File (`example_selection.pyx`) Example:**
+
+.. py:class:: example_selection.pyx
+
+   # distutils: language=c++
+   # cython: language_level=3
+
+   # --- Cython Imports ---
+   # Import helper functions if needed (e.g., for converting C++ containers to Python)
+   # from AnalysisG.core.tools cimport as_dict, as_list
+   # Import base Cython wrapper and declarations from the .pxd file
+   from AnalysisG.core.selection_template cimport SelectionTemplate
+   from AnalysisG.selections.example_selection cimport example_selection, ExampleSelection # Adjust path
+
+   # --- Cython Wrapper Class Implementation ---
+   cdef class ExampleSelection(SelectionTemplate):
+       # --- Constructor (Cython __cinit__) ---
+       def __cinit__(self):
+           # Create a new C++ selection object
+           cdef example_selection* ptr = new example_selection()
+           # Store the pointer in the base class 'ptr' attribute
+           self.ptr = ptr
+           # Also store it in the derived class specific pointer (optional but can be convenient)
+           self.sel_ptr = ptr
+
+       # --- Destructor (Cython __dealloc__) ---
+       def __dealloc__(self):
+           # Delete the C++ object when the Python wrapper is garbage collected
+           del self.sel_ptr # Deleting sel_ptr also deletes ptr if they point to the same object
+
+       # --- Optional: Expose Data ---
+       # Example: Method to get the calculated values as a Python list
+       def get_calculated_values(self):
+           # Convert the C++ std::vector<float> to a Python list
+           py_list = []
+           for val in self.sel_ptr.some_calculated_values:
+               py_list.append(val)
+           return py_list
+
+       # --- Placeholder for Dictionary Key Transformation ---
+       # (If the selection involved maps with std::string keys needing conversion)
+       cdef void transform_dict_keys(self):
+           # Implement conversion logic if necessary
+           pass
+
+Introduction to EventTemplates and ParticleTemplates
+----------------------------------------------------
+
+This framework relies on C++ for performance-critical event processing. You define custom event (`event_template`) and particle (`particle_template`) structures. CMake is used to compile and link these C++ components into the main Python package.
+
+The Source Files Structure
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To add a new event definition:
+
+1.  **Create a Folder:** Make a new directory inside `src/AnalysisG/events/` (e.g., `src/AnalysisG/events/my_analysis_event`).
+2.  **Create C++ Files:** Inside the new folder, create:
+    *   `CMakeLists.txt`: Defines how to build the code in this directory (copy and modify an existing one, e.g., from `bsm_4tops`).
+    *   `event.cxx`: Implementation of your event class.
+    *   `event.h`: Header declaration of your event class.
+    *   `particles.cxx`: Implementation of custom particle classes used by the event.
+    *   `particles.h`: Header declaration of custom particle classes.
+3.  **Create Cython Files:** Outside the event folder, likely in `src/AnalysisG/events/`, create the Cython interface files:
+    *   `event_<some_name>.pxd`: Cython header declaring the C++ event class and the Python wrapper.
+    *   `event_<some_name>.pyx`: Cython implementation of the Python wrapper class.
+4.  **Update Main CMake:** Modify the `CMakeLists.txt` in the parent `src/AnalysisG/events/` directory to include your new event subdirectory (e.g., add `add_subdirectory(my_analysis_event)`).
+
+TLDR (Too Long Do Read) - Template Locations
+--------------------------------------------
+
+Quick examples and starting points for each component type can be found in `src/AnalysisG/templates`:
+
+*   **events**: Base structure for defining event data processing (`event_template`).
+*   **graphs**: Base structure for defining graph construction for GNNs (`graph_template`).
+*   **selections**: Base structure for analysis selections/cuts (`selection_template`).
+*   **model**: Base structure for implementing GNN models (`model_template`).

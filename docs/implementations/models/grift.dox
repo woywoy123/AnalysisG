@@ -1,0 +1,294 @@
+/**
+ * @file grift.h
+ * @brief Defines the grift graph neural network model for particle physics analysis.
+ *
+ * This file contains the declaration of the `grift` class, which inherits from
+ * `model_template` and implements a specific GNN architecture. It includes
+ * definitions for the network layers, forward pass logic, message passing function,
+ * and configuration parameters.
+ */
+
+#ifndef GNN_GRIFT_H
+#define GNN_GRIFT_H
+#include <templates/model_template.h>
+#include <torch/torch.h> // Include torch for Tensor definitions
+
+// Forward declaration if graph_t is defined elsewhere
+class graph_t;
+
+/**
+ * @class grift
+ * @brief Implements the GRIFT (Graph Recurrent Interaction Feature Transformer) model.
+ *
+ * This class defines a graph neural network model designed for tasks in particle physics,
+ * likely involving reconstruction or classification based on particle interactions represented
+ * as a graph. It utilizes recurrent steps and several MLP components to process node and edge features.
+ * It inherits from the `model_template` base class.
+ */
+class grift: public model_template
+{
+    public:
+        /**
+         * @brief Constructor for the grift model.
+         *
+         * Initializes the neural network layers (RNNs and MLPs) with specified dimensions
+         * and activation functions. It also creates null tensor buffers used for initialization
+         * during the forward pass. The layers are registered as submodules.
+         * - Initializes `x_nulls`, `dx_nulls`, `te_nulls` as zero tensors for padding/initial states.
+         * - Defines `rnn_x`: Processes initial node features.
+         * - Defines `rnn_dx`: Computes edge messages based on connected node features and kinematics.
+         * - Defines `rnn_hxx`: Updates edge hidden states.
+         * - Defines `rnn_top_edge`: Predicts 'top_edge' features.
+         * - Defines `rnn_res_edge`: Predicts 'res_edge' features.
+         * - Defines `mlp_ntop`: Processes aggregated top features and event-level information.
+         * - Defines `mlp_sig`: Produces the final signal prediction based on aggregated edge features and top information.
+         * - Registers all network modules.
+         */
+        grift();
+
+        /**
+         * @brief Destructor for the grift model.
+         *
+         * Handles the cleanup of resources allocated by the grift object.
+         * Currently, it doesn't perform any specific actions beyond the default.
+         */
+        ~grift();
+
+        /**
+         * @brief Creates a clone of the current grift model instance.
+         *
+         * Allocates a new `grift` object and copies the configuration parameters
+         * (like dropout, is_mc, pagerank) from the current instance to the new one.
+         * The network weights are not explicitly copied here but are assumed to be
+         * handled by the base class or subsequent operations if needed (e.g., state dict loading).
+         *
+         * @return A pointer to the newly created `model_template` (specifically, a `grift` instance).
+         */
+        model_template* clone() override;
+
+        /**
+         * @brief Executes the forward pass of the grift model.
+         *
+         * Takes a graph data structure as input and processes it through the network.
+         * The process involves:
+         * 1. Extracting node features (kinematics, type) and edge indices from the input graph.
+         * 2. Extracting graph-level features (MET, lepton/jet counts).
+         * 3. Initializing node and edge hidden states using null tensors and the `rnn_x` network.
+         * 4. Iteratively performing message passing:
+         *    - Calculating edge messages using the `message` function.
+         *    - Updating edge hidden states using `rnn_hxx`.
+         *    - Predicting edge features (`top_edge`) using `rnn_top_edge`.
+         *    - Aggregating messages to update node states using `rnn_x`.
+         *    - Selecting active edges for the next iteration based on predictions.
+         * 5. Aggregating final `top_edge` predictions and node states.
+         * 6. Processing aggregated top information through `mlp_ntop`.
+         * 7. Calculating resonance edge features (`res_edge`) using `rnn_res_edge`.
+         * 8. Combining edge features and top information to produce the final signal prediction using `mlp_sig`.
+         * 9. Storing intermediate and final predictions (edge features, graph features) using `prediction_edge_feature` and `prediction_graph_feature`.
+         * 10. Optionally, calculating PageRank features and storing scores/truth information if not in inference mode or if requested.
+         *
+         * @param data A pointer to the input graph data structure (`graph_t`).
+         */
+        void forward(graph_t* data) override;
+
+        /**
+         * @brief Calculates the message passed along edges in the graph.
+         *
+         * This function computes features representing the interaction between two nodes (i and j)
+         * connected by an edge. It aggregates particle four-momenta (`pmc`) associated with
+         * the nodes and the edge, calculates kinematic variables (like invariant mass `M`),
+         * considers the number of particles involved (`nds`), and combines these with the
+         * current hidden states (`hx_i`, `hx_j`) of the nodes. The combined features are then
+         * passed through the `rnn_dx` network to produce the final edge message tensor.
+         *
+         * @param _trk_i Tensor representing track indices associated with the source node i.
+         * @param _trk_j Tensor representing track indices associated with the destination node j.
+         * @param pmc Tensor containing the four-momenta (Px, Py, Pz, E) of all particles in the event.
+         * @param hx_i Tensor representing the current hidden state of the source node i.
+         * @param hx_j Tensor representing the current hidden state of the destination node j.
+         * @return A tensor representing the calculated message for the edge(s).
+         */
+        torch::Tensor message(
+            torch::Tensor _trk_i, torch::Tensor _trk_j, torch::Tensor pmc,
+            torch::Tensor hx_i, torch::Tensor hx_j
+        );
+
+        // --- Neural Network Parameters ---
+
+        /** @brief Dimensionality of the hidden layers within the network modules. */
+        int _hidden = 1024;
+        /** @brief Dimensionality of the recurrent/node hidden states. */
+        int _xrec = 128;
+        /** @brief Dimensionality of the initial input node features (excluding recurrent state).
+         * Typically includes kinematics (M, Px, Py, Pz, E) and particle count (N). */
+        int _xin  = 6;
+        /** @brief Dimensionality of the output edge predictions (e.g., number of classes for edge classification). */
+        int _xout = 2;
+        /** @brief Dimensionality of the output from the `mlp_ntop` network. */
+        int _xtop = 5;
+
+        /** @brief Dropout probability (currently seems unused in the provided C++ code snippet but declared). */
+        double drop_out = 0.01;
+
+        // --- Misc Configuration ---
+
+        /** @brief Flag indicating whether the input data is Monte Carlo simulation (True) or real data (False). Affects whether truth information is accessed. */
+        bool is_mc = true;
+        /** @brief Initialization flag, set to true after the null tensors are moved to the correct device during the first forward pass. */
+        bool init  = false;
+        /** @brief Flag to enable/disable PageRank feature calculation and storage during inference. */
+        bool pagerank = true;
+
+        // --- Network Modules ---
+
+        /** @brief Sequential module for processing initial node features and updating node states. */
+        torch::nn::Sequential* rnn_x        = nullptr;
+        /** @brief Sequential module for calculating edge messages based on kinematics and node states. */
+        torch::nn::Sequential* rnn_dx       = nullptr;
+        /** @brief Sequential module for predicting 'top_edge' features. */
+        torch::nn::Sequential* rnn_top_edge = nullptr;
+        /** @brief Sequential module for predicting 'res_edge' (resonance edge) features. */
+        torch::nn::Sequential* rnn_res_edge = nullptr;
+        /** @brief Sequential module for updating edge hidden states based on messages and previous states. */
+        torch::nn::Sequential* rnn_hxx      = nullptr;
+        /** @brief MLP for processing aggregated top features and event-level information. */
+        torch::nn::Sequential* mlp_ntop     = nullptr;
+        /** @brief MLP for producing the final signal prediction based on aggregated edge features and top info. */
+        torch::nn::Sequential* mlp_sig      = nullptr;
+
+        // --- Null Tensors ---
+
+        /** @brief Null tensor used for initializing node recurrent states (integer type). */
+        torch::Tensor  x_nulls;
+        /** @brief Null tensor used for initializing edge message states (float type). */
+        torch::Tensor dx_nulls;
+        /** @brief Null tensor used for initializing 'top_edge' prediction states (float type). */
+        torch::Tensor te_nulls;
+};
+
+#endif // GNN_GRIFT_H
+
+// --- Cython Interface Definition (`grift.pxd`) ---
+// This block declares the C++ `grift` class to Cython, allowing it to be wrapped.
+# distutils: language=c++
+# cython: language_level=3
+
+from libcpp cimport int, bool
+from AnalysisG.core.model_template cimport model_template, ModelTemplate
+
+cdef extern from "<models/grift.h>":
+    /**
+     * @brief C++ grift class declaration for Cython.
+     *
+     * Exposes the grift class and its configurable members to the Cython wrapper.
+     */
+    cdef cppclass grift(model_template):
+
+        /**
+         * @brief Exposes the C++ constructor to Cython. Allows creating grift objects from Python.
+         */
+        grift() except+
+
+        /** @brief Exposes the _xrec member variable. */
+        int _xrec
+        /** @brief Exposes the _xin member variable. */
+        int _xin
+        /** @brief Exposes the drop_out member variable. */
+        double drop_out
+        /** @brief Exposes the is_mc member variable. */
+        bool is_mc
+        /** @brief Exposes the pagerank member variable. */
+        bool pagerank
+
+/**
+ * @brief Cython wrapper class for the C++ grift model.
+ *
+ * This class provides a Python interface to the underlying C++ `grift` implementation,
+ * inheriting from the base `ModelTemplate` wrapper. It allows creating, configuring,
+ * and using the `grift` model within a Python environment (likely PyTorch).
+ */
+cdef class Grift(ModelTemplate):
+    /** @brief Pointer to the underlying C++ grift object. */
+    cdef grift* rnn
+
+// --- Cython Implementation (`grift.pyx`) ---
+# distutils: language=c++
+# cython: language_level=3
+
+from AnalysisG.core.model_template cimport ModelTemplate
+
+/**
+ * @brief Python wrapper class implementation for the grift GNN model.
+ *
+ * Provides Pythonic access to the C++ grift model, including initialization
+ * and property setters/getters for configuration.
+ */
+cdef class Grift(ModelTemplate):
+    /**
+     * @brief Cython constructor (called before __init__).
+     *
+     * Creates a new instance of the C++ `grift` class and assigns it to the `rnn` pointer.
+     * Also links the `nn_ptr` (from the base class) to this C++ object.
+     */
+    def __cinit__(self):
+        pass # Implementation replaced by comment
+
+    /**
+     * @brief Python constructor (called after __cinit__).
+     *
+     * Currently empty, performs no additional Python-level initialization.
+     */
+    def __init__(self): pass
+
+    /**
+     * @brief Cython destructor.
+     *
+     * Deletes the C++ `grift` object pointed to by `rnn` to prevent memory leaks.
+     */
+    def __dealloc__(self):
+        pass # Implementation replaced by comment
+
+    /**
+     * @property xrec
+     * @brief Gets or sets the dimensionality of the recurrent/node hidden states (`_xrec`).
+     */
+    @property
+    def xrec(self): pass # Implementation replaced by comment
+    @xrec.setter
+    def xrec(self, int val): pass # Implementation replaced by comment
+
+    /**
+     * @property x
+     * @brief Gets or sets the dimensionality of the initial input node features (`_xin`).
+     */
+    @property
+    def x(self): pass # Implementation replaced by comment
+    @x.setter
+    def x(self, int val): pass # Implementation replaced by comment
+
+    /**
+     * @property is_mc
+     * @brief Gets or sets the flag indicating if the data is Monte Carlo (`is_mc`).
+     */
+    @property
+    def is_mc(self): pass # Implementation replaced by comment
+    @is_mc.setter
+    def is_mc(self, bool val): pass # Implementation replaced by comment
+
+    /**
+     * @property drop_out
+     * @brief Gets or sets the dropout probability (`drop_out`).
+     */
+    @property
+    def drop_out(self): pass # Implementation replaced by comment
+    @drop_out.setter
+    def drop_out(self, double val): pass # Implementation replaced by comment
+
+    /**
+     * @property PageRank
+     * @brief Gets or sets the flag to enable/disable PageRank calculation (`pagerank`).
+     */
+    @property
+    def PageRank(self): pass # Implementation replaced by comment
+    @PageRank.setter
+    def PageRank(self, bool v): pass # Implementation replaced by comment

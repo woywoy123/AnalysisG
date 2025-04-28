@@ -1,0 +1,745 @@
+/**
+ * @file gnn.dox
+ * @brief Implementation file for the gnn_event and related particle classes.
+ *
+ * This file contains the implementation details for the gnn_event class,
+ * which handles event data specific to Graph Neural Network (GNN) analysis,
+ * including observables, truth information, and particle reconstruction.
+ * It also implements the particle_gnn, top, and zprime classes used within
+ * the gnn_event structure.
+ */
+
+#include "gnn-event.h"
+
+/**
+ * @brief Default constructor for the gnn_event class.
+ *
+ * Initializes the event name and registers the leaves (branches) to be read
+ * from the input ROOT TTree. This includes observables like event weight,
+ * edge indices, GNN scores, jet/lepton counts, MET, phi, and also truth-level
+ * information. It sets the default tree name to "nominal" and registers
+ * the particle container `m_event_particles`.
+ */
+gnn_event::gnn_event();
+
+/**
+ * @brief Destructor for the gnn_event class.
+ *
+ * Deregisters the particle containers for reconstructed and truth Z' bosons
+ * and tops to ensure proper memory management and avoid dangling pointers
+ * when the event object is destroyed.
+ */
+gnn_event::~gnn_event();
+
+/**
+ * @brief Creates a clone of the current gnn_event object.
+ *
+ * This method provides a virtual constructor (copy mechanism) as required
+ * by the base `event_template` class. It allocates a new `gnn_event`
+ * instance on the heap and returns a pointer to it, cast to the base
+ * `event_template` type.
+ *
+ * @return event_template* Pointer to the newly created gnn_event object.
+ */
+event_template* gnn_event::clone();
+
+/**
+ * @brief Builds the event content from the underlying data element.
+ *
+ * Reads data from the provided `element_t` (typically representing a TTree entry)
+ * using the registered leaf names. It populates the member variables of the
+ * `gnn_event` object, including edge indices, GNN scores, event-level observables
+ * (weight, jet/lepton counts, MET, phi), and truth information. The `reduce`
+ * helper function is used to extract single values or vectors from the potentially
+ * nested data structure within `element_t`.
+ *
+ * @param el Pointer to the `element_t` object containing the raw event data.
+ */
+void gnn_event::build(element_t* el);
+
+/**
+ * @brief Compiles the event data, performing particle reconstruction and clustering.
+ *
+ * This is the core processing method for the `gnn_event`. It takes the raw data
+ * populated by the `build` method and performs the following steps:
+ * 1. Defines a lambda function `cluster` which implements a clustering algorithm
+ *    (potentially based on PageRank or a similar graph algorithm) to group
+ *    particles based on edge scores (e.g., top-likeness, Z'-likeness).
+ * 2. Sorts the initial `m_event_particles` by their index.
+ * 3. Determines predicted event-level properties like signal likelihood (`p_signal`, `s_signal`)
+ *    and number of tops (`p_ntops`, `s_ntops`) based on GNN output scores.
+ * 4. Processes the edge information (`m_edge_index`, `edge_top_scores`, `edge_res_scores`)
+ *    to build adjacency information and scores for both reconstructed (`reco_tops`, `reco_zprime`)
+ *    and truth (`real_tops`, `real_zprime`) particle clustering.
+ * 5. Applies the `cluster` lambda function to the truth particle maps (`real_tops`, `real_zprime`)
+ *    to reconstruct truth top and Z' candidates (`m_t_tops`, `m_t_zprime`).
+ * 6. Applies the `cluster` lambda function to the reconstructed particle maps (`reco_tops`, `reco_zprime`),
+ *    using the edge scores (`bin_top`, `bin_zprime`) potentially as input to the clustering
+ *    algorithm (e.g., PageRank), to reconstruct top and Z' candidates (`m_r_tops`, `m_r_zprime`).
+ *    Calculates an average score (`av_score`) for each reconstructed cluster.
+ * 7. Calculates properties (like number of leptons `n_leps`, number of nodes `n_nodes`) for
+ *    both truth and reconstructed tops and Z' bosons.
+ * 8. Vectorizes the final reconstructed and truth particle collections (`m_r_zprime`, `m_t_zprime`,
+ *    `m_r_tops`, `m_t_tops`, `m_event_particles`) into the public member vectors
+ *    (`r_zprime`, `t_zprime`, `r_tops`, `t_tops`, `event_particles`).
+ * 9. Clears intermediate data structures like `m_edge_index`.
+ */
+void gnn_event::CompileEvent();
+
+
+// ================== particle_gnn Implementation ==================
+
+#include "gnn-particles.h"
+
+/**
+ * @brief Default constructor for the particle_gnn class.
+ *
+ * Initializes the particle type to "gnn-particle" and registers the leaves
+ * (branches) specific to particles used in the GNN analysis, such as pt, eta,
+ * phi, energy, and a flag indicating if the particle is a lepton.
+ */
+particle_gnn::particle_gnn();
+
+/**
+ * @brief Destructor for the particle_gnn class.
+ *
+ * Currently empty, as `particle_gnn` doesn't manage additional resources
+ * beyond those handled by the base `particle_template`.
+ */
+particle_gnn::~particle_gnn();
+
+/**
+ * @brief Creates a clone of the current particle_gnn object.
+ *
+ * Provides a virtual constructor mechanism as required by the base
+ * `particle_template`. Allocates a new `particle_gnn` instance.
+ *
+ * @return particle_template* Pointer to the newly created particle_gnn object.
+ */
+particle_template* particle_gnn::clone();
+
+/**
+ * @brief Builds particle objects from the underlying data element.
+ *
+ * This static-like method (though not explicitly static) reads particle data
+ * (pt, eta, phi, energy, lepton flag) for potentially multiple particles
+ * from the provided `element_t`. For each particle entry found in the element,
+ * it creates a new `particle_gnn` object, populates its kinematic properties
+ * and lepton flag, assigns an index, calculates its hash, and stores it in the
+ * provided map `prt` keyed by the particle's hash.
+ *
+ * @param prt Pointer to a map where the created `particle_gnn` objects will be stored.
+ * @param el Pointer to the `element_t` object containing the raw particle data.
+ */
+void particle_gnn::build(std::map<std::string, particle_template*>* prt, element_t* el);
+
+// ================== top Implementation ==================
+
+/**
+ * @brief Default constructor for the top class.
+ *
+ * Initializes the particle type to "top".
+ */
+top::top();
+
+/**
+ * @brief Destructor for the top class.
+ *
+ * Currently empty.
+ */
+top::~top();
+
+// ================== zprime Implementation ==================
+
+/**
+ * @brief Default constructor for the zprime class.
+ *
+ * Initializes the particle type to "zprime".
+ */
+zprime::zprime();
+
+/**
+ * @brief Destructor for the zprime class.
+ *
+ * Currently empty.
+ */
+zprime::~zprime();
+
+
+// ================== gnn-event.h ==================
+
+#ifndef EVENTS_GNN_EVENT_H
+#define EVENTS_GNN_EVENT_H
+
+#include <templates/event_template.h>
+#include <inference/gnn-particles.h>
+
+/**
+ * @brief Template helper function to reduce a nested vector to a single value.
+ *
+ * Extracts data associated with `key` from the `element_t`. Assumes the data
+ * is stored as a `std::vector<std::vector<g>>`. It retrieves the first element
+ * of the outer vector and the first element of the inner vector (`tmp[0][0]`)
+ * and assigns it to the output variable `out`. If the key is not found, it does nothing.
+ *
+ * @tparam g The data type of the value to extract.
+ * @param el Pointer to the `element_t` object containing the data.
+ * @param key The string key identifying the data branch.
+ * @param out Pointer to the variable where the extracted value will be stored.
+ */
+template <typename g>
+void reduce(element_t* el, std::string key, g* out);
+
+/**
+ * @brief Template helper function to reduce a nested vector to a single vector.
+ *
+ * Extracts data associated with `key` from the `element_t`. Assumes the data
+ * is stored as a `std::vector<std::vector<g>>`.
+ * - If `dim` is -1, it retrieves the first inner vector (`tmp[0]`) and assigns it to `out`.
+ * - If `dim` is 0 (or any other non -1 value), it iterates through the outer vector
+ *   and extracts the first element (`tmp[x][0]`) from each inner vector, appending
+ *   it to the output vector `out`.
+ * If the key is not found, it does nothing.
+ *
+ * @tparam g The data type of the elements in the vector.
+ * @param el Pointer to the `element_t` object containing the data.
+ * @param key The string key identifying the data branch.
+ * @param out Pointer to the vector where the extracted data will be stored.
+ * @param dim Dimension specifier: -1 to extract the first inner vector, 0 to extract the first element of each inner vector.
+ */
+template <typename g>
+void reduce(element_t* el, std::string key, std::vector<g>* out, int dim);
+
+/**
+ * @class gnn_event
+ * @brief Represents an event specifically structured for GNN-based analysis.
+ *
+ * Inherits from `event_template` and adds members and methods relevant to
+ * processing GNN inputs and outputs. It stores observables, GNN predictions,
+ * reconstructed particles (tops, Z' bosons), and corresponding truth information.
+ * The `CompileEvent` method performs the core logic of reconstructing particles
+ * based on GNN edge predictions using a clustering algorithm.
+ */
+class gnn_event: public event_template
+{
+    public:
+        /**
+         * @brief Default constructor. See implementation notes.
+         */
+        gnn_event();
+        /**
+         * @brief Destructor. See implementation notes.
+         */
+        ~gnn_event() override;
+
+        // ------- observables ------- //
+        /** @brief Number of b-tagged jets in the event. */
+        int   num_bjets;
+        /** @brief Number of jets (double precision, might represent sum pT or similar). */
+        double num_jets;
+        /** @brief Number of leptons (double precision, might represent sum pT or similar). */
+        double num_leps;
+        /** @brief Missing transverse energy (MET). */
+        double met;
+        /** @brief Azimuthal angle of the MET vector. */
+        double phi;
+
+        // ------- MVA predictions ------ //
+        /** @brief Predicted number of top quarks (integer representation, e.g., index of max score). */
+        int   p_ntops;
+        /** @brief Predicted signal flag (integer representation, e.g., 0 for background, 1 for signal). */
+        int   p_signal;
+        /** @brief Score associated with the predicted number of top quarks (e.g., the maximum score). */
+        float s_ntops;
+        /** @brief Score associated with the signal prediction (e.g., the signal class probability). */
+        float s_signal;
+
+        /** @brief Vector of scores for different hypotheses of the number of top quarks. */
+        std::vector<float> ntops_scores;
+        /** @brief Vector of scores for signal vs background hypotheses (e.g., [background_score, signal_score]). */
+        std::vector<float> signal_scores;
+
+        /** @brief GNN output scores for edges representing Z' decay products (resonant edges). Shape: [n_edges, n_classes]. */
+        std::vector<std::vector<float>> edge_res_scores;
+        /** @brief GNN output scores for edges representing top decay products. Shape: [n_edges, n_classes]. */
+        std::vector<std::vector<float>> edge_top_scores;
+
+        // -------- reconstructed particles -------------- //
+        /** @brief Vector of pointers to reconstructed top quark candidates. */
+        std::vector<top*>    r_tops;
+        /** @brief Vector of pointers to reconstructed Z' boson candidates. */
+        std::vector<zprime*> r_zprime;
+        /** @brief Vector of pointers to all constituent particles (`particle_gnn`) in the event after processing. */
+        std::vector<particle_gnn*> event_particles;
+
+        // -------- truth particles ------- //
+        /** @brief Vector of pointers to truth top quarks. */
+        std::vector<top*> t_tops;
+        /** @brief Vector of pointers to truth Z' bosons. */
+        std::vector<zprime*> t_zprime;
+
+        /** @brief Truth labels for resonant edges (Z' decay). */
+        std::vector<int> t_edge_res;
+        /** @brief Truth labels for top decay edges. */
+        std::vector<int> t_edge_top;
+
+        /** @brief Truth number of top quarks in the event. */
+        int t_ntops;
+        /** @brief Truth signal flag (true if signal event, false otherwise). */
+        bool t_signal;
+
+        /**
+         * @brief Clones the event object. See implementation notes.
+         * @return event_template* Pointer to the new event object.
+         */
+        event_template* clone() override;
+        /**
+         * @brief Builds the event from raw data. See implementation notes.
+         * @param el Pointer to the data element.
+         */
+        void build(element_t* el) override;
+        /**
+         * @brief Compiles the event, performing reconstruction. See implementation notes.
+         */
+        void CompileEvent() override;
+
+    private:
+        /** @brief Internal storage for edge index pairs (source, destination). Shape: [n_edges, 2]. */
+        std::vector<std::vector<int>>        m_edge_index;
+        /** @brief Internal map storing constituent `particle_gnn` objects, keyed by hash, before vectorization. */
+        std::map<std::string, particle_gnn*> m_event_particles;
+
+        /** @brief Internal map storing reconstructed Z' candidates, keyed by hash, before vectorization. */
+        std::map<std::string, zprime*>  m_r_zprime;
+        /** @brief Internal map storing truth Z' candidates, keyed by hash, before vectorization. */
+        std::map<std::string, zprime*>  m_t_zprime;
+        /** @brief Internal map storing reconstructed top candidates, keyed by hash, before vectorization. */
+        std::map<std::string, top*>     m_r_tops;
+        /** @brief Internal map storing truth top candidates, keyed by hash, before vectorization. */
+        std::map<std::string, top*>     m_t_tops;
+
+        /**
+         * @brief Helper template to sort particles stored in a map by their integer index.
+         *
+         * Takes a map where keys are particle hashes (strings) and values are particle pointers (G*),
+         * and returns a map where keys are the particle indices (int) and values are the same
+         * particle pointers. Assumes particles have an accessible `index` member.
+         *
+         * @tparam G The particle class type (e.g., `particle_gnn`).
+         * @param ipt Pointer to the input map (hash -> particle*).
+         * @return std::map<int, G*> Output map (index -> particle*).
+         */
+        template <typename G>
+        std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt);
+
+        /**
+         * @brief Helper template to convert a map of particles to a vector of particles.
+         *
+         * Iterates through the input map `ipt` and appends the value (particle pointer)
+         * of each element to the output vector `vec`.
+         *
+         * @tparam m The key type of the map (e.g., `std::string`).
+         * @tparam G The mapped value type (particle class pointer, e.g., `top*`).
+         * @tparam Gx The type stored in the vector (can be the same as G or a base class, e.g., `top*`).
+         * @param ipt Pointer to the input map.
+         * @param vec Pointer to the output vector.
+         */
+        template <typename m, typename G, typename Gx>
+        void vectorize(std::map<m, G*>* ipt, std::vector<Gx*>* vec);
+
+        /**
+         * @brief Helper template to sum the four-vectors of constituent particles and create a composite particle.
+         *
+         * Creates a new composite particle object of type `G` (e.g., `top`, `zprime`).
+         * Iterates through the input vector `ch` containing pointers to constituent particles (`g*`, e.g., `particle_gnn*`).
+         * Adds the four-vector of each unique constituent particle to the composite particle using `iadd`.
+         * Registers each constituent particle as a child of the composite particle.
+         * Avoids double-counting constituents using a map `maps`.
+         *
+         * @tparam g The type of the constituent particles (e.g., `particle_gnn`).
+         * @tparam G The type of the composite particle to create (e.g., `top`).
+         * @param ch Pointer to the vector of constituent particle pointers.
+         * @param out Pointer to a pointer where the newly created composite particle will be stored.
+         */
+        template <typename g, typename G>
+        void sum(std::vector<g*>* ch, G** out);
+
+        /**
+         * @brief Debugging helper template to print a 2D vector (vector of vectors).
+         *
+         * Prints the content of a `std::vector<std::vector<g>>` to standard output
+         * in a formatted way, assuming a shape like [2, N] or [N, 2]. Primarily used
+         * for debugging edge scores or indices.
+         *
+         * @tparam g The data type within the vectors.
+         * @param data Pointer to the 2D vector to print.
+         */
+        template <typename g>
+        void print(std::vector<std::vector<g>>* data);
+
+        /**
+         * @brief Debugging helper template to print a map of maps (representing a matrix).
+         *
+         * Prints the content of a `std::map<g, std::map<g, k>>` to standard output,
+         * formatted as a matrix. Assumes keys `g` correspond to matrix indices (0 to N-1).
+         * Primarily used for debugging adjacency matrices or score matrices.
+         *
+         * @tparam g The key type (representing indices).
+         * @tparam k The value type in the inner map.
+         * @param data Pointer to the map of maps to print.
+         */
+        template <typename g, typename k>
+        void print(std::map<g, std::map<g, k>>* data);
+
+        /**
+         * @brief Debugging helper template to print a map (representing a vector or scores).
+         *
+         * Prints the content of a `std::map<g, k>` to standard output, formatted as a vector.
+         * Assumes keys `g` correspond to vector indices (0 to N-1). Primarily used for
+         * debugging score vectors (e.g., PageRank scores).
+         *
+         * @tparam g The key type (representing index).
+         * @tparam k The value type.
+         * @param data Pointer to the map to print.
+         */
+        template <typename g, typename k>
+        void print(std::map<g, k>* data);
+};
+
+
+#endif // EVENTS_GNN_EVENT_H
+
+
+// ================== gnn-particles.h ==================
+
+#ifndef EVENTS_PARTICLE_GNN_H
+#define EVENTS_PARTICLE_GNN_H
+
+#include <templates/particle_template.h>
+
+// Forward declarations for helper functions (if they were defined elsewhere)
+// template <typename g> void reduce(element_t* el, std::string key, std::vector<g>* out);
+// template <typename g> void reduce(element_t* el, std::string key, g* out);
+// template <typename g> void read(element_t* el, std::string key, std::vector<g>* out);
+
+/**
+ * @class particle_gnn
+ * @brief Represents a basic particle constituent used as input to the GNN.
+ *
+ * Inherits from `particle_template` and adds specific properties relevant
+ * for GNN processing, such as a flag indicating if the particle is a lepton.
+ * Its `build` method handles reading particle data from the input source.
+ */
+class particle_gnn: public particle_template
+{
+    public:
+        /**
+         * @brief Default constructor. See implementation notes.
+         */
+        particle_gnn();
+        /**
+         * @brief Destructor. See implementation notes.
+         */
+        ~particle_gnn();
+        /** @brief Flag indicating if the particle is a lepton (true) or not (false). */
+        bool lep;
+
+        /**
+         * @brief Clones the particle object. See implementation notes.
+         * @return particle_template* Pointer to the new particle object.
+         */
+        particle_template* clone() override;
+        /**
+         * @brief Builds particle objects from raw data. See implementation notes.
+         * @param prt Map to store created particles.
+         * @param el Pointer to the data element.
+         */
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
+};
+
+/**
+ * @class top
+ * @brief Represents a reconstructed or truth top quark candidate.
+ *
+ * Inherits from `particle_template`. This class is typically instantiated
+ * during the `CompileEvent` phase of `gnn_event` by summing constituent
+ * `particle_gnn` objects identified by the clustering algorithm. It stores
+ * additional properties like an average score from the reconstruction process,
+ * the number of constituent leptons, and the total number of constituents.
+ */
+class top: public particle_template
+{
+    public:
+        /**
+         * @brief Default constructor. See implementation notes.
+         */
+        top();
+        /**
+         * @brief Destructor. See implementation notes.
+         */
+        ~top();
+        /** @brief Average score associated with the reconstruction of this top candidate (e.g., from PageRank). */
+        float av_score;
+        /** @brief Number of constituent leptons within this top candidate. */
+        int n_leps;
+        /** @brief Number of constituent particles (`particle_gnn`) forming this top candidate. */
+        int n_nodes;
+};
+
+/**
+ * @class zprime
+ * @brief Represents a reconstructed or truth Z' boson candidate.
+ *
+ * Inherits from `particle_template`. Similar to the `top` class, this is
+ * typically instantiated during `CompileEvent` by summing constituents.
+ * It stores an average reconstruction score, the number of constituent leptons,
+ * and the total number of constituents.
+ */
+class zprime: public particle_template
+{
+    public:
+        /**
+         * @brief Default constructor. See implementation notes.
+         */
+        zprime();
+        /**
+         * @brief Destructor. See implementation notes.
+         */
+        ~zprime();
+        /** @brief Average score associated with the reconstruction of this Z' candidate (e.g., from PageRank). */
+        float av_score;
+        /** @brief Number of constituent leptons within this Z' candidate. */
+        int n_leps;
+        /** @brief Number of constituent particles (`particle_gnn`) forming this Z' candidate. */
+        int n_nodes;
+};
+
+
+#endif // EVENTS_PARTICLE_GNN_H
+
+
+// ================== event_gnn.pxd ==================
+
+# distutils: language=c++
+# cython: language_level=3
+
+from libcpp cimport bool
+from libcpp.map cimport map
+from libcpp.string cimport string
+from libcpp.vector cimport vector
+
+# Import necessary Cython definitions for wrapped C++ classes
+from AnalysisG.events.gnn.particle_gnn cimport top, zprime, particle_gnn # Assuming particle_gnn.pxd exists
+from AnalysisG.core.event_template cimport event_template, EventTemplate # Assuming event_template.pxd exists
+
+# Cython extern definition for the C++ gnn_event class
+cdef extern from "<inference/gnn-event.h>": # Use the actual header path
+
+    /**
+     * @brief C++ gnn_event class declaration for Cython.
+     *
+     * This block tells Cython about the existence and basic structure of the
+     * C++ `gnn_event` class, including its inheritance from `event_template`
+     * and its constructor.
+     */
+    cdef cppclass gnn_event(event_template):
+        /**
+         * @brief C++ constructor declaration for Cython.
+         * The `except+` keyword enables C++ exception handling translation to Python exceptions.
+         */
+        gnn_event() except+
+        # Add other methods/members if they need to be directly accessed from Cython
+
+/**
+ * @brief Cython wrapper class definition for gnn_event.
+ *
+ * This defines the Python class `EventGNN` that will wrap the C++ `gnn_event`.
+ * It inherits from `EventTemplate` (the Cython wrapper for `event_template`).
+ */
+cdef class EventGNN(EventTemplate):
+    /**
+     * @brief Pointer to the underlying C++ gnn_event object.
+     * This pointer holds the actual C++ instance managed by the Python wrapper.
+     */
+    cdef gnn_event* ev
+
+
+// ================== event_gnn.pyx ==================
+
+# distutils: language=c++
+# cython: language_level=3
+
+# Import the base Cython wrapper and the pxd definition for this module
+from AnalysisG.core.event_template cimport EventTemplate, event_template
+from AnalysisG.events.gnn.event_gnn cimport gnn_event # Import from the pxd
+
+/**
+ * @brief Cython implementation of the EventGNN wrapper class.
+ *
+ * This class provides a Python interface to the C++ `gnn_event` class.
+ */
+cdef class EventGNN(EventTemplate):
+
+    /**
+     * @brief Cython's C-level initialization method (called before __init__).
+     *
+     * Allocates a new C++ `gnn_event` object on the heap and stores its
+     * pointer in `self.ev`. It also assigns this pointer (cast to the base type)
+     * to `self.ptr` which is expected by the base `EventTemplate` class.
+     * Handles potential C++ exceptions during construction.
+     */
+    def __cinit__(self):
+        pass # Implementation replaced by comment
+
+    /**
+     * @brief Standard Python initializer.
+     *
+     * Usually kept minimal in Cython wrappers if most initialization happens
+     * in `__cinit__`. Can be used for Python-specific setup.
+     */
+    def __init__(self): pass
+
+    /**
+     * @brief Cython's C-level deallocation method.
+     *
+     * Ensures the C++ `gnn_event` object pointed to by `self.ev` is properly
+     * deleted when the Python `EventGNN` object is garbage collected, preventing
+     * memory leaks. The `del` keyword invokes the C++ destructor.
+     */
+    def __dealloc__(self):
+        pass # Implementation replaced by comment
+
+
+// ================== particle_gnn.pxd ==================
+
+# distutils: language=c++
+# cython: language_level=3
+
+from libcpp cimport bool
+from libcpp.map cimport map
+from libcpp.string cimport string
+from libcpp.vector cimport vector
+# Import base particle template definitions
+from AnalysisG.core.particle_template cimport particle_template, ParticleTemplate
+
+# Cython extern definitions for the C++ particle classes
+cdef extern from "<inference/gnn-particles.h>": # Use the actual header path
+
+    /**
+     * @brief C++ top class declaration for Cython.
+     * Inherits from `particle_template`.
+     */
+    cdef cppclass top(particle_template):
+        /** @brief C++ constructor declaration. */
+        top() except+
+        # Add members like av_score, n_leps, n_nodes if needed directly
+
+    /**
+     * @brief C++ zprime class declaration for Cython.
+     * Inherits from `particle_template`.
+     */
+    cdef cppclass zprime(particle_template):
+        /** @brief C++ constructor declaration. */
+        zprime() except+
+        # Add members like av_score, n_leps, n_nodes if needed directly
+
+    # If particle_gnn needs to be wrapped or used:
+    # cdef cppclass particle_gnn(particle_template):
+    #     particle_gnn() except+
+    #     bool lep
+
+/**
+ * @brief Cython wrapper class definition for the C++ top class.
+ * Inherits from `ParticleTemplate`.
+ */
+cdef class Top(ParticleTemplate):
+    /** @brief Pointer to the underlying C++ top object. */
+    cdef top* prt
+
+/**
+ * @brief Cython wrapper class definition for the C++ zprime class.
+ * Inherits from `ParticleTemplate`.
+ */
+cdef class ZPrime(ParticleTemplate):
+    /** @brief Pointer to the underlying C++ zprime object. */
+    cdef zprime* prt
+
+# If particle_gnn needs a wrapper:
+# cdef class ParticleGNN(ParticleTemplate):
+#     cdef particle_gnn* pgnn
+
+
+// ================== particle_gnn.pyx ==================
+
+# distutils: language=c++
+# cython: language_level=3
+
+# Import base wrapper and pxd definitions
+from AnalysisG.core.particle_template cimport ParticleTemplate, particle_template
+from AnalysisG.events.gnn.particle_gnn cimport top, zprime # Import from pxd
+
+/**
+ * @brief Cython implementation of the Top wrapper class.
+ * Provides a Python interface to the C++ `top` class.
+ */
+cdef class Top(ParticleTemplate):
+
+    /**
+     * @brief Cython C-level initialization.
+     * Allocates a C++ `top` object, stores pointer in `self.prt`,
+     * and assigns base pointer to `self.ptr`.
+     */
+    def __cinit__(self):
+        pass # Implementation replaced by comment
+
+    /** @brief Standard Python initializer. */
+    def __init__(self): pass
+
+    /**
+     * @brief Cython C-level deallocation.
+     * Deletes the C++ `top` object pointed to by `self.prt`.
+     */
+    def __dealloc__(self):
+        pass # Implementation replaced by comment
+
+    # Add property definitions here to expose C++ members like av_score, n_leps, n_nodes
+    # property av_score:
+    #     def __get__(self): return self.prt.av_score
+    # ... etc.
+
+
+/**
+ * @brief Cython implementation of the ZPrime wrapper class.
+ * Provides a Python interface to the C++ `zprime` class.
+ */
+cdef class ZPrime(ParticleTemplate):
+
+    /**
+     * @brief Cython C-level initialization.
+     * Allocates a C++ `zprime` object, stores pointer in `self.prt`,
+     * and assigns base pointer to `self.ptr`.
+     */
+    def __cinit__(self):
+        pass # Implementation replaced by comment
+
+    /** @brief Standard Python initializer. */
+    def __init__(self): pass
+
+    /**
+     * @brief Cython C-level deallocation.
+     * Deletes the C++ `zprime` object pointed to by `self.prt`.
+     */
+    def __dealloc__(self):
+        pass # Implementation replaced by comment
+
+    # Add property definitions here to expose C++ members like av_score, n_leps, n_nodes
+
+# If particle_gnn wrapper is needed:
+# cdef class ParticleGNN(ParticleTemplate):
+#     def __cinit__(self):
+#         self.pgnn = new particle_gnn()
+#         self.ptr = <particle_template*>self.pgnn
+#     def __init__(self): pass
+#     def __dealloc__(self): del self.pgnn
+#     property lep:
+#         def __get__(self): return self.pgnn.lep

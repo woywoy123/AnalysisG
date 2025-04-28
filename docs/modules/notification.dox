@@ -1,0 +1,229 @@
+/**
+ * @file notification.h
+ * @brief Defines the notification class for displaying formatted messages and progress bars.
+ *
+ * This class provides functionalities to output color-coded messages (success, warning,
+ * failure, info) to the standard output, along with various types of progress bars
+ * suitable for single and multi-threaded applications. It utilizes ANSI escape codes
+ * for text formatting and color.
+ */
+#ifndef NOTIFICATION_NOTIFICATION_H
+#define NOTIFICATION_NOTIFICATION_H
+
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <thread>
+#include <numeric> // Required for potential use in sum, although current implementation uses loop
+#include <chrono>  // Required for sleep in progressbar1, progressbar2, progressbar3
+#include <cstdio>  // Required for printf, fflush in progressbar(float, string)
+#include <iomanip> // Required for setprecision in progressbar(vector...)
+
+/**
+ * @class notification
+ * @brief Provides methods for displaying formatted console notifications and progress bars.
+ *
+ * This class allows for easy generation of styled messages (like success, warning, failure, info)
+ * with optional prefixes and boldness. It also includes several functions to display
+ * progress bars, catering to different scenarios including single progress tracking,
+ * aggregate progress from multiple sources, and simultaneous display of multiple progress bars
+ * for concurrent tasks. Thread monitoring and management utilities are also included.
+ */
+class notification
+{
+public:
+    /**
+     * @brief Default constructor for the notification class.
+     * Initializes a notification object with default settings.
+     */
+    notification();
+
+    /**
+     * @brief Destructor for the notification class.
+     * Handles any necessary cleanup. Currently empty.
+     */
+    ~notification();
+
+    /**
+     * @brief Displays a success message.
+     * Formats the provided message string with the success color code (default green)
+     * and the configured prefix, then prints it to standard output, followed by a newline.
+     * Respects the 'shush' setting.
+     * @param message The message content to display.
+     */
+    void success(std::string message);
+
+    /**
+     * @brief Displays a warning message.
+     * Formats the provided message string with the warning color code (default yellow)
+     * and the configured prefix, then prints it to standard output, followed by a newline.
+     * This message ignores the 'shush' setting to ensure warnings are always visible.
+     * @param message The message content to display.
+     */
+    void warning(std::string message);
+
+    /**
+     * @brief Displays a failure message.
+     * Formats the provided message string with the failure color code (default red)
+     * and the configured prefix, then prints it to standard output, followed by a newline.
+     * This message ignores the 'shush' setting to ensure failures are always visible.
+     * @param message The message content to display.
+     */
+    void failure(std::string message);
+
+    /**
+     * @brief Displays an informational message.
+     * Formats the provided message string with the info color code (default white/system default)
+     * and the configured prefix, then prints it to standard output, followed by a newline.
+     * Respects the 'shush' setting.
+     * @param message The message content to display.
+     */
+    void info(std::string message);
+
+    /**
+     * @brief Displays a simple, single-line progress bar.
+     * Prints a text-based progress bar to the console, overwriting the current line using '\r'.
+     * Includes a title and the percentage completion. Uses printf for potentially better
+     * performance with '\r'.
+     * @param lProgress The progress value, ranging from 0.0 to 1.0.
+     * @param title A string title to display next to the progress bar.
+     */
+    void progressbar(float lProgress, std::string title);
+
+    /**
+     * @brief Displays multiple progress bars, one per line.
+     * Takes vectors representing the current progress, target values, and titles for multiple
+     * concurrent tasks or items. Prints each progress bar on a separate line.
+     * @param threads Pointer to a vector containing the current progress count for each bar.
+     * @param trgt Pointer to a vector containing the target count for each bar.
+     * @param title Pointer to a vector containing the title string for each bar.
+     */
+    void progressbar(std::vector<size_t>* threads, std::vector<size_t>* trgt, std::vector<std::string>* title);
+
+    /**
+     * @brief Monitors and joins threads until all have completed.
+     * Iterates through the vector of thread pointers. If a thread is joinable, it joins the thread,
+     * deletes the thread object, and sets the pointer to nullptr. This continues until all
+     * thread pointers in the vector are nullptr or were never valid threads.
+     * This is a blocking call that waits for all specified threads to finish.
+     * @param thr Pointer to a vector of std::thread pointers. The vector will be modified in place.
+     */
+    void monitor(std::vector<std::thread*>* thr);
+
+    /**
+     * @brief Checks running threads, joins completed ones, and returns the count of still active threads.
+     * Iterates through the vectors of threads, progress, and targets.
+     * If a thread has completed its work (current progress equals target, or both are zero),
+     * it joins the thread, deletes it, and sets the pointer to nullptr.
+     * It counts and returns the number of threads that are still considered active (not null, joinable,
+     * and progress is not yet equal to the target).
+     * @param thr Pointer to a vector of std::thread pointers. Will be modified.
+     * @param prg Pointer to a vector representing the current progress of each thread.
+     * @param trgt Pointer to a vector representing the target progress for each thread.
+     * @return The number of threads still running (or not yet joined).
+     */
+    int running(std::vector<std::thread*>* thr, std::vector<size_t>* prg, std::vector<size_t>* trgt);
+
+    /**
+     * @brief Static method to display an aggregate progress bar updated periodically.
+     * Creates a temporary notification object to display a single progress bar representing
+     * the total progress summed from the `threads` vector towards the total target `l`.
+     * Updates the bar every 100ms until progress reaches ~99.5%, then shows 100%.
+     * @param threads Pointer to a vector containing the current progress of individual tasks/threads.
+     * @param l The total target value for the aggregated progress.
+     * @param title The title for the aggregate progress bar.
+     */
+    static void progressbar1(std::vector<size_t>* threads, size_t l, std::string title);
+
+    /**
+     * @brief Static method similar to progressbar1, but takes pointers for target and title.
+     * Creates a temporary notification object to display a single progress bar representing
+     * the total progress summed from the `threads` vector towards the total target `*l`.
+     * Updates the bar every 1ms until progress reaches ~99.5%, then shows 100%.
+     * Uses pointers for target and title, allowing them to potentially be modified externally.
+     * @param threads Pointer to a vector containing the current progress of individual tasks/threads.
+     * @param l Pointer to the total target value for the aggregated progress.
+     * @param title Pointer to the title string for the aggregate progress bar.
+     */
+    static void progressbar2(std::vector<size_t>* threads, size_t* l, std::string* title);
+
+    /**
+     * @brief Static method to display multiple progress bars simultaneously, updating in place.
+     * Creates a temporary notification object. Displays individual progress bars for each entry in
+     * `threads`/`l` vectors, plus an overall "Total Progress" bar. Uses ANSI escape codes
+     * to move the cursor up and clear lines, allowing the multi-bar display to refresh in place.
+     * Updates every 100ms. Handles optional titles; if a title is null, generates a default one.
+     * Cleans up dynamically allocated default titles.
+     * @param threads Pointer to a vector containing the current progress for each task.
+     * @param l Pointer to a vector containing the target value for each task.
+     * @param title Pointer to a vector of string pointers for each task's title (optional, can contain nullptrs).
+     */
+    static void progressbar3(std::vector<size_t>* threads, std::vector<size_t>* l, std::vector<std::string*>* title);
+
+    /**
+     * @brief Optional prefix string added before the main message content.
+     * Example: If prefix is "ModuleA", output might be "ModuleA::Success message".
+     * Defaults to an empty string.
+     */
+    std::string prefix;
+
+    /**
+     * @brief ANSI color code for warning messages. Default is 33 (yellow).
+     */
+    int _warning = 33;
+
+    /**
+     * @brief ANSI color code for failure messages. Default is 31 (red).
+     */
+    int _failure = 31;
+
+    /**
+     * @brief ANSI color code for success messages. Default is 32 (green).
+     */
+    int _success = 32;
+
+    /**
+     * @brief ANSI color code for informational messages. Default is 37 (white).
+     */
+    int _info = 37;
+
+    /**
+     * @brief Flag to enable bold text formatting (using ANSI code '1'). Default is false.
+     */
+    bool bold = false;
+
+    /**
+     * @brief Flag to suppress most output (success, info). Warnings and failures ignore this. Default is false.
+     */
+    bool shush = false;
+
+private:
+    /**
+     * @brief Internal helper function to format and print messages.
+     * Constructs the final output string including ANSI escape codes for color (based on `caller`),
+     * boldness (if `bold` is true), the optional `prefix`, and the message content.
+     * Resets formatting at the end. Prints the result to std::cout followed by a newline.
+     * Does nothing if `shush` is true (except for warnings/failures handled by callers).
+     * @param message Pointer to the message string to format and print.
+     */
+    void _format(std::string* message);
+
+    /**
+     * @brief Stores the ANSI color code for the current message type being processed.
+     * Set by public methods like success(), warning(), etc., before calling _format().
+     */
+    int caller;
+
+    /**
+     * @brief Template helper function to sum elements of a vector.
+     * Calculates the sum of all elements in the input vector.
+     * @tparam g The data type of the elements in the vector (e.g., size_t, int, float).
+     * @param inpt Pointer to the input vector.
+     * @return The sum of the elements in the vector.
+     */
+    template <typename g>
+    g sum(const std::vector<g>* inpt);
+};
+
+#endif // NOTIFICATION_NOTIFICATION_H

@@ -1,0 +1,266 @@
+/**
+ * @brief Dumps the graphs in the data set to HDF5 files.
+ *
+ * This function serializes the graph data, writes it to HDF5 files,
+ * and then validates the written cache. It uses multi-threading to
+ * accelerate the serialization and writing processes.
+ *
+ * @param path The path to the directory where the HDF5 files will be stored.
+ * @param threads The number of threads to use for parallel processing.
+ * @return True if the dumping and validation process is successful, false otherwise.
+ */
+bool dataloader::dump_graphs(std::string path, int threads);
+
+/**
+ * @brief Restores graphs from a list of cache paths.
+ *
+ * This function reads graph data from HDF5 files specified in the cache paths,
+ * deserializes the data, and reconstructs the graph objects. It uses multi-threading
+ * to accelerate the reading process.
+ *
+ * @param cache_ A vector of strings, where each string is a path to a cache file.
+ * @param threads The number of threads to use for parallel processing.
+ * @return A pointer to a map of string to graph_t*, where the string is the hash
+ *         of the graph and the graph_t* is a pointer to the restored graph object.
+ *         The caller is responsible for deleting the returned map and its contents.
+ */
+std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::string> cache_, int threads);
+
+/**
+ * @brief Restores graphs from a list of HDF5 files.
+ *
+ * This function takes a vector of file paths, reads graph data from the HDF5 files,
+ * deserializes the data, and adds the graphs to the data set. It uses multi-threading
+ * to accelerate the reading process.
+ *
+ * @param path A vector of strings, where each string is a path to an HDF5 file.
+ * @param threads The number of threads to use for parallel processing.
+ */
+void dataloader::restore_graphs(std::vector<std::string> path, int threads);
+
+/**
+ * @brief Restores graphs from a directory containing HDF5 files.
+ *
+ * This function lists all HDF5 files in the specified directory, reads graph data
+ * from these files, deserializes the data, and adds the graphs to the data set.
+ * It uses multi-threading to accelerate the reading process.
+ *
+ * @param path The path to the directory containing the HDF5 files.
+ * @param threads The number of threads to use for parallel processing.
+ */
+void dataloader::restore_graphs(std::string path, int threads);
+
+/**
+ * @brief Constructor for the dataloader class.
+ *
+ * Initializes the data structures used by the dataloader, including the data set,
+ * data index, test set, and train set.
+ */
+dataloader::dataloader();
+
+/**
+ * @brief Destructor for the dataloader class.
+ *
+ * Releases the memory allocated for the data structures used by the dataloader,
+ * including the data set, data index, test set, train set, and any cached data.
+ */
+dataloader::~dataloader();
+
+/**
+ * @brief Shuffles the elements of a vector of integers.
+ *
+ * This function shuffles the elements of the input vector using a Fisher-Yates shuffle algorithm.
+ *
+ * @param idx A pointer to the vector of integers to be shuffled.
+ */
+void dataloader::shuffle(std::vector<int>* idx);
+
+/**
+ * @brief Shuffles the elements of a vector of graph pointers.
+ *
+ * This function shuffles the elements of the input vector using a Fisher-Yates shuffle algorithm.
+ *
+ * @param idx A pointer to the vector of graph pointers to be shuffled.
+ */
+void dataloader::shuffle(std::vector<graph_t*>* idx);
+
+/**
+ * @brief Cleans and manages data element maps.
+ *
+ * This function checks if a given data map already exists in a vector of data maps.
+ * If it exists, the input data map is replaced with the existing one to save memory.
+ * If it doesn't exist, the input data map is added to the vector.
+ *
+ * @param data_map A pointer to a pointer to the data map to be cleaned.
+ * @param loader_map A pointer to the vector of data maps.
+ */
+void dataloader::clean_data_elements(
+    std::map<std::string, int>** data_map,
+    std::vector<std::map<std::string, int>*>* loader_map
+);
+
+/**
+ * @brief Extracts data from a graph object and adds it to the data set.
+ *
+ * This function extracts data from the input graph object, cleans the data
+ * elements, and adds the graph to the data set.
+ *
+ * @param gr A pointer to the graph object from which to extract data.
+ */
+void dataloader::extract_data(graph_t* gr);
+
+/**
+ * @brief Transfers graph data to a specified device.
+ *
+ * This function iterates through the data set and transfers the graph data
+ * to the specified device using the provided tensor options.
+ *
+ * @param op A pointer to the tensor options specifying the device and data type.
+ * @param num_ev A pointer to a size_t variable to store the total number of events. Optional.
+ * @param cur_evnt A pointer to a size_t variable to store the current event being processed. Optional.
+ */
+void dataloader::datatransfer(torch::TensorOptions* op, size_t* num_ev, size_t* cur_evnt);
+
+/**
+ * @brief Transfers graph data to multiple devices.
+ *
+ * This function iterates through a map of device indices to tensor options and
+ * transfers the graph data to each specified device.
+ *
+ * @param ops A pointer to a map of device indices to tensor options.
+ */
+void dataloader::datatransfer(std::map<int, torch::TensorOptions*>* ops);
+
+/**
+ * @brief Builds a batch of graphs for training or evaluation.
+ *
+ * This function takes a vector of graph pointers and builds a batch of graphs
+ * that can be used for training or evaluation. It transfers the graph data
+ * to the specified device and concatenates the tensors into a single batch.
+ *
+ * @param data A pointer to the vector of graph pointers to be batched.
+ * @param mdl A pointer to the model template.
+ * @param rep A pointer to the model report.
+ * @return A pointer to a vector of graph pointers representing the batched data.
+ */
+std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep);
+
+/**
+ * @brief Safely deletes a vector of graph pointers and their associated data.
+ *
+ * This function iterates through a vector of graph pointers, purges the data
+ * associated with each graph, deletes the graph object, and then clears the vector.
+ *
+ * @param data A pointer to the vector of graph pointers to be deleted.
+ */
+void dataloader::safe_delete(std::vector<graph_t*>* data);
+
+/**
+ * @brief Manages CUDA memory on the server.
+ *
+ * This function monitors the CUDA memory usage on the server and purges the
+ * memory associated with graphs that are not currently in use.
+ */
+void dataloader::cuda_memory_server();
+
+/**
+ * @brief Starts the CUDA memory server.
+ *
+ * This function starts a separate thread that monitors the CUDA memory usage
+ * and purges the memory associated with graphs that are not currently in use.
+ */
+void dataloader::start_cuda_server();
+
+/**
+ * @brief Gets a random subset of graphs from the data set.
+ *
+ * This function shuffles the data index and returns a vector of graph pointers
+ * to a random subset of the data set.
+ *
+ * @param num The number of graphs to retrieve.
+ * @return A vector of graph pointers to the random subset of graphs.
+ */
+std::vector<graph_t*> dataloader::get_random(int num);
+
+/**
+ * @brief Generates k-fold cross-validation sets.
+ *
+ * This function divides the training data into k folds and creates k training
+ * and validation sets for k-fold cross-validation.
+ *
+ * @param k The number of folds to create.
+ */
+void dataloader::generate_kfold_set(int k);
+
+/**
+ * @brief Generates a test set by splitting the data set.
+ *
+ * This function splits the data set into a training set and a test set based
+ * on the specified percentage.
+ *
+ * @param percentage The percentage of the data set to use for the test set.
+ */
+void dataloader::generate_test_set(float percentage);
+
+/**
+ * @brief Gets the training set for a specific fold in k-fold cross-validation.
+ *
+ * This function returns a vector of graph pointers to the training set for the
+ * specified fold in k-fold cross-validation.
+ *
+ * @param k The index of the fold to retrieve the training set for.
+ * @return A pointer to a vector of graph pointers representing the training set.
+ */
+std::vector<graph_t*>* dataloader::get_k_train_set(int k);
+
+/**
+ * @brief Gets the validation set for a specific fold in k-fold cross-validation.
+ *
+ * This function returns a vector of graph pointers to the validation set for the
+ * specified fold in k-fold cross-validation.
+ *
+ * @param k The index of the fold to retrieve the validation set for.
+ * @return A pointer to a vector of graph pointers representing the validation set.
+ */
+std::vector<graph_t*>* dataloader::get_k_validation_set(int k);
+
+/**
+ * @brief Gets the test set.
+ *
+ * This function returns a vector of graph pointers to the test set.
+ *
+ * @return A pointer to a vector of graph pointers representing the test set.
+ */
+std::vector<graph_t*>* dataloader::get_test_set();
+
+/**
+ * @brief Gets the data for inference, sorted by filename.
+ *
+ * This function returns a map of filenames to vectors of graph pointers,
+ * where each vector contains the graphs associated with that filename.
+ * The graphs in each vector are sorted by event index.
+ *
+ * @return A pointer to a map of filenames to vectors of graph pointers.
+ */
+std::map<std::string, std::vector<graph_t*>>* dataloader::get_inference();
+
+/**
+ * @brief Dumps the dataset information to a file.
+ *
+ * This function writes the dataset information, including the k-fold splits
+ * and the test set, to a file.
+ *
+ * @param path The path to the file to write the dataset information to.
+ */
+void dataloader::dump_dataset(std::string path);
+
+/**
+ * @brief Restores the dataset information from a file.
+ *
+ * This function reads the dataset information, including the k-fold splits
+ * and the test set, from a file.
+ *
+ * @param path The path to the file to read the dataset information from.
+ * @return True if the dataset information was successfully restored, false otherwise.
+ */
+bool dataloader::restore_dataset(std::string path);

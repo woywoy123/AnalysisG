@@ -1,0 +1,248 @@
+/**
+ * @file model_template.pxd
+ * @brief Defines the Cython interface (`.pxd`) for the C++ `model_template` class.
+ * @details This file serves as the primary Cython definition file, establishing
+ *          a crucial bridge between the Python environment and the underlying
+ *          C++ `model_template` implementation. It declares the structure and
+ *          interface of the C++ class (`model_template`) that Cython needs to
+ *          be aware of, and it defines the interface of the Cython wrapper
+ *          class (`ModelTemplate`). This allows the corresponding `.pyx` file
+ *          to implement the wrapper class, enabling Python code to instantiate,
+ *          interact with, and manage instances of the C++ `model_template` class.
+ *          The C++ class is designed for encapsulating complex model configurations,
+ *          parameters, and associated data structures (like graphs, nodes, and edges).
+ *
+ *          The core elements defined herein are:
+ *          1. The declaration of the C++ `model_template` class and its members
+ *             using `cdef extern from`.
+ *          2. The definition of the `ModelTemplate` Cython class (`cdef class`),
+ *             which will wrap a pointer to a C++ `model_template` object.
+ *
+ *          This `.pxd` file does not contain implementations, only declarations
+ *          necessary for Cython to understand the types and interfaces involved.
+ *          The actual implementation of the `ModelTemplate` wrapper methods and
+ *          logic resides in the corresponding `.pyx` file.
+ */
+
+// Import necessary C++ standard library types for declaration.
+// These imports make C++ types like bool, map, vector, and string available
+// for use in the Cython declarations below.
+from libcpp cimport bool
+from libcpp.map cimport map
+from libcpp.vector cimport vector
+from libcpp.string cimport string
+
+/**
+ * @brief Declares the C++ `model_template` class interface to Cython.
+ * @details This block uses `cdef extern from "<templates/model_template.h>" nogil:`
+ *          to inform Cython about the existence and structure of the C++ class
+ *          `model_template`, which is defined in the specified header file.
+ *          The `nogil` keyword indicates that methods called on this C++ class
+ *          can potentially be executed without the Python Global Interpreter Lock (GIL),
+ *          allowing for potential parallelism if the C++ code is thread-safe and
+ *          the GIL is released appropriately in the `.pyx` file.
+ */
+cdef extern from "<templates/model_template.h>" nogil:
+    /**
+     * @brief Declaration of the C++ `model_template` class.
+     * @details This mirrors the structure of the C++ class, allowing Cython
+     *          to interact with its members and methods. Only the members and
+     *          methods that need to be accessed from Cython are declared here.
+     */
+    cdef cppclass model_template:
+
+        /**
+         * @brief C++ Default Constructor declaration.
+         * @details Declares the default constructor for the `model_template` class.
+         *          The `except+` keyword tells Cython that this C++ constructor
+         *          can throw C++ exceptions, and Cython should automatically
+         *          translate them into Python exceptions (e.g., `std::bad_alloc`
+         *          might become `MemoryError`). The `nogil` indicates it can be
+         *          called without the GIL.
+         * @exception std::exception Can throw exceptions (e.g., memory allocation failure).
+         */
+        model_template() except+ nogil
+
+        /**
+         * @var o_graph
+         * @brief C++ member variable storing output graph information.
+         * @details Declares a `std::map` where both keys and values are `std::string`.
+         *          Intended to hold key-value pairs describing the output structure
+         *          of the model's graph (e.g., mapping internal feature names to output names).
+         * @type map[string, string] (std::map<std::string, std::string>)
+         */
+        map[string, string] o_graph
+
+        /**
+         * @var o_node
+         * @brief C++ member variable storing output node information.
+         * @details Declares a `std::map<std::string, std::string>` used to associate
+         *          output node identifiers or internal feature names (keys) with their
+         *          desired output names or properties (values).
+         * @type map[string, string] (std::map<std::string, std::string>)
+         */
+        map[string, string] o_node
+
+        /**
+         * @var o_edge
+         * @brief C++ member variable storing output edge information.
+         * @details Declares a `std::map<std::string, std::string>` representing
+         *          connections or relationships between output nodes/layers, mapping
+         *          internal edge feature names to output names.
+         * @type map[string, string] (std::map<std::string, std::string>)
+         */
+        map[string, string] o_edge
+
+        /**
+         * @var i_graph
+         * @brief C++ member variable storing required input graph information.
+         * @details Declares a `std::vector<std::string>` containing a list of strings,
+         *          typically representing the names or identifiers of input graph-level
+         *          features required by the model.
+         * @type vector[string] (std::vector<std::string>)
+         */
+        vector[string] i_graph
+
+        /**
+         * @var i_node
+         * @brief C++ member variable storing required input node information.
+         * @details Declares a `std::vector<std::string>` holding a list of strings
+         *          identifying the input node-level features required by the model.
+         * @type vector[string] (std::vector<std::string>)
+         */
+        vector[string] i_node
+
+        /**
+         * @var i_edge
+         * @brief C++ member variable storing required input edge information.
+         * @details Declares a `std::vector<std::string>` containing a list of strings
+         *          describing the input edge-level features required by the model.
+         * @type vector[string] (std::vector<std::string>)
+         */
+        vector[string] i_edge
+
+        /**
+         * @var device
+         * @brief C++ member variable specifying the target computation device.
+         * @details Declares a `std::string` indicating the hardware device (e.g., "cpu", "cuda:0")
+         *          where the model is intended to be executed.
+         * @type string (std::string)
+         */
+        string device
+
+        /**
+         * @var name
+         * @brief C++ member variable providing a descriptive name for the model.
+         * @details Declares a `std::string` used as a user-friendly identifier for this
+         *          specific model instance or configuration.
+         * @type string (std::string)
+         */
+        string name
+
+        /**
+         * @var weight_name
+         * @brief C++ member variable specifying the identifier for the model's weights.
+         * @details Declares a `std::string` used to name or reference the particular set
+         *          of weights associated with this model instance, useful when managing
+         *          multiple weight versions or components within a checkpoint.
+         * @type string (std::string)
+         */
+        string weight_name
+
+        /**
+         * @var tree_name
+         * @brief C++ member variable indicating the name of an associated data tree structure.
+         * @details Declares a `std::string` relevant for identifying the specific data source
+         *          (e.g., a TTree name in a ROOT file) from which input data is typically read.
+         * @type string (std::string)
+         */
+        string tree_name
+
+        /**
+         * @var model_checkpoint_path
+         * @brief C++ member variable storing the file path to the model checkpoint.
+         * @details Declares a `std::string` containing the full path to the file or directory
+         *          where the model's trained state (weights, optimizer state, etc.) is saved or loaded from.
+         * @type string (std::string)
+         */
+        string model_checkpoint_path
+
+/**
+ * @brief Defines the interface of the Cython `ModelTemplate` class.
+ * @details This `cdef class` declaration outlines the structure of the Python-level
+ *          wrapper class. It declares the attributes (member variables) and methods
+ *          that will be part of the `ModelTemplate` class accessible from Python
+ *          and used internally in the `.pyx` implementation file. This class acts
+ *          as an intermediary, providing a Pythonic interface to the C++ `model_template`
+ *          object. It handles the creation, ownership, and destruction of the
+ *          underlying C++ object.
+ */
+cdef class ModelTemplate:
+
+    /**
+     * @var rename
+     * @brief Internal flag controlling model naming behavior.
+     * @details Declares a C boolean (`bool` from `libcpp`) attribute. This flag
+     *          is used internally (primarily within the `.pyx` file) to track whether
+     *          the model's `name` has been explicitly set by the user through the
+     *          `name` property setter. If `False`, the `name` property might default
+     *          to the class name. If `True`, it uses the name stored in the C++ object.
+     *          It is not typically intended for direct access from user Python code,
+     *          although its visibility isn't strictly private in Cython unless declared
+     *          without `public` or `readonly`.
+     * @type bool (C++ boolean, mapped from Cython's bint)
+     */
+    cdef bool rename
+
+    /**
+     * @var nn_ptr
+     * @brief Pointer to the wrapped C++ `model_template` object.
+     * @details Declares a pointer (`*`) to an instance of the C++ `model_template`
+     *          class (which was declared earlier via `cdef extern from`). This internal
+     *          attribute holds the memory address of the underlying C++ object managed
+     *          by this Cython wrapper instance. It is the primary means by which the
+     *          `.pyx` implementation accesses the C++ object's members and methods.
+     *          Memory management (allocation via `new`, deallocation via `del`) for
+     *          the object pointed to by `nn_ptr` is handled in the `__cinit__` and
+     *          `__dealloc__` methods defined in the `.pyx` file. This pointer is not
+     *          intended for direct access from Python code.
+     * @type model_template* (Pointer to the C++ model_template class)
+     */
+    cdef model_template* nn_ptr;
+
+    /**
+     * @brief Declaration of an internal method to convert C++ map to Python dict.
+     * @details Declares a `cdef` method named `conv`. `cdef` methods are typically
+     *          optimized for speed and are primarily intended for internal use within
+     *          the Cython module (i.e., called from the `.pyx` file or other `cdef`
+     *          methods/functions). This method is designed to take a pointer to a
+     *          C++ `std::map<std::string, std::string>` and convert its contents
+     *          into a Python dictionary. The implementation resides in the `.pyx` file.
+     * @param self The instance of the `ModelTemplate` class.
+     * @param cpp_map A pointer (`*`) to the C++ `std::map<std::string, std::string>`
+     *                instance that needs to be converted. Passing by pointer avoids copying.
+     * @return A Python `dict` object containing the key-value pairs from the input C++ map,
+     *         with strings appropriately decoded for Python.
+     * @note This is an interface declaration; the implementation is in the `.pyx` file.
+     */
+    cdef dict conv(self, map[string, string]*)
+
+    /**
+     * @brief Declaration of an internal method to convert Python dict to C++ map and handle naming.
+     * @details Declares a `cdef` method named `cond`. This internal helper method
+     *          is designed to take a Python dictionary as input, convert it into a
+     *          C++ `std::map<std::string, std::string>`, and potentially perform
+     *          conditional logic (like setting the default model name if it hasn't
+     *          been set yet, based on the `rename` flag). The implementation in the
+     *          `.pyx` file handles the conversion (encoding Python strings to C++ strings)
+     *          and the conditional naming logic.
+     * @param self The instance of the `ModelTemplate` class.
+     * @param py_dict A Python `dict` object, likely containing string key-value pairs
+     *                representing configuration to be set in the C++ object.
+     * @return A C++ `std::map<std::string, std::string>` instance resulting from the
+     *         conversion of the input dictionary and potentially influenced by internal state.
+     * @note This is an interface declaration; the implementation is in the `.pyx` file.
+     *       The name "cond" might imply conditional behavior based on the input or state.
+     */
+    cdef map[string, string] cond(self, dict inpt)
+

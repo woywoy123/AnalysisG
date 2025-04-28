@@ -1,0 +1,665 @@
+/**
+ * @file combinatorial.dox
+ * @brief Implementation file for the combinatorial neutrino reconstruction selection strategy.
+ *
+ * This file contains the implementation details for the `combinatorial` class,
+ * which performs neutrino reconstruction using a combinatorial approach based on
+ * input particles (jets, leptons) and missing transverse energy (MET). It also
+ * defines the `packet_t` structure used for data storage during the process and
+ * helper functions. The core idea is to try different combinations of input
+ * particles (specifically b-jets and leptons) to reconstruct the two top quarks
+ * decaying leptonically in events like ttbar, solving for the kinematics of the
+ * two undetected neutrinos. Different strategies for selecting the input particles
+ * (e.g., using truth information, reconstructed jets) are implemented and compared.
+ */
+
+#include "combinatorial.h"
+#include <bsm_4tops/event.h>
+#include <pyc/pyc.h> // Include for potential Python/C++ interaction, likely for GPU computation via PyCUDA.
+
+// Forward declaration for the neutrino class, likely defined elsewhere.
+class neutrino;
+
+/**
+ * @struct packet_t
+ * @brief Structure to hold data for a single reconstruction configuration or strategy.
+ * @details This structure encapsulates all the necessary inputs and outputs for a
+ *          specific neutrino reconstruction attempt. It includes input particles,
+ *          truth-matching information (if available), reconstruction parameters,
+ *          and the resulting reconstructed neutrino candidates. An instance of this
+ *          packet is typically created for each reconstruction strategy (e.g., using
+ *          truth jets vs. reco jets).
+ */
+struct packet_t {
+
+    /**
+     * @brief Destructor for the packet_t struct.
+     * @details Cleans up dynamically allocated memory for the reconstructed neutrino solutions
+     *          stored in the nu1 and nu2 vectors. It iterates through both vectors and deletes
+     *          each particle_template pointer to prevent memory leaks. This is crucial as
+     *          the reconstruction process likely allocates these objects on the heap.
+     */
+    ~packet_t();
+
+    /** @brief Vector of particle_template pointers representing the input particles (jets, leptons) used for this reconstruction attempt. */
+    std::vector<particle_template*> particles = {};
+
+    /** @brief Vector of truth b-quark pointers associated with the leptonic top decays in the event. Used for matching and performance evaluation. */
+    std::vector<particle_template*> t_bquarks  = {};
+
+    /** @brief Vector of truth lepton pointers associated with the leptonic top decays in the event. Used for matching and performance evaluation. */
+    std::vector<particle_template*> t_leptons  = {};
+
+    /** @brief Vector of truth neutrino pointers associated with the leptonic top decays in the event. Used for calculating chi2 performance metric. */
+    std::vector<particle_template*> t_neutrino = {};
+
+    /** @brief Vector storing matching information for b-quarks for each solution. 1: correct pair, -1: swapped pair, 0: incorrect/no match. */
+    std::vector<int>  matched_bquarks = {};
+
+    /** @brief Vector storing matching information for leptons for each solution. 1: correct pair, -1: swapped pair, 0: incorrect/no match. */
+    std::vector<int>  matched_leptons = {};
+
+    /** @brief Vector storing the geometric distance or quality metric ('min' from neutrino object) for each reconstructed neutrino pair solution. */
+    std::vector<double> distance = {};
+
+    /** @brief Vector storing the chi-squared value comparing the first reconstructed neutrino (nu1) of each solution pair to the best-matching truth neutrino. */
+    std::vector<double> chi2_nu1 = {};
+
+    /** @brief Vector storing the chi-squared value comparing the second reconstructed neutrino (nu2) of each solution pair to the best-matching truth neutrino. */
+    std::vector<double> chi2_nu2 = {};
+
+    /** @brief Vector storing pointers to the first reconstructed neutrino object for each solution pair. Memory managed by packet_t destructor. */
+    std::vector<particle_template*> nu1 = {};
+
+    /** @brief Vector storing pointers to the second reconstructed neutrino object for each solution pair. Memory managed by packet_t destructor. */
+    std::vector<particle_template*> nu2 = {};
+
+    /** @brief A string identifier for this specific reconstruction strategy (e.g., "top_children", "truthjet", "jetleptons"). */
+    std::string name = "";
+
+    /** @brief String identifier for the compute device (e.g., "cuda:0") used for reconstruction, likely for GPU acceleration. */
+    std::string device = "cuda:0";
+
+    /** @brief The magnitude of the Missing Transverse Energy (MET) in the event. */
+    double met = 0;
+
+    /** @brief The phi angle of the Missing Transverse Energy (MET) vector in the event. */
+    double phi = 0;
+
+    /** @brief A small value used potentially as a threshold or tolerance in calculations (e.g., avoiding division by zero). */
+    double null = 1e-5;
+
+    /** @brief A value used for perturbation, possibly in numerical methods or sensitivity studies during reconstruction. */
+    double perturb = 1e-1;
+
+    /** @brief Number of steps or iterations, likely used in the numerical solver or optimization algorithm for neutrino kinematics. */
+    long steps = 20;
+
+    /** @brief Internal flag, potentially used during merging or processing to avoid redundant operations. */
+    bool _is_marked = false;
+};
+
+
+/**
+ * @class combinatorial
+ * @brief Implements a selection strategy based on combinatorial neutrino reconstruction.
+ * @details This class inherits from `selection_template` and provides the framework
+ *          for reconstructing neutrino pairs from leptonic top quark decays using
+ *          different sets of input particles (jets, leptons) and MET. It manages
+ *          multiple reconstruction attempts (`packet_t` instances) per event,
+ *          handles truth matching for performance evaluation, and facilitates
+ *          merging results from parallel processing.
+ */
+class combinatorial: public selection_template
+{
+    public:
+        /**
+         * @brief Default constructor for the combinatorial class.
+         * @details Initializes the selection name to "combinatorial" by calling the
+         *          base class constructor. Sets default values for configurable parameters
+         *          like top and W masses.
+         */
+        combinatorial();
+
+        /**
+         * @brief Destructor for the combinatorial class.
+         * @details Safely deletes the `packet_t` objects stored in the `storage` vector.
+         *          It iterates through the vector and deletes each pointer, preventing memory leaks
+         *          associated with the packets created during the event processing. This overrides
+         *          the base class destructor.
+         */
+        ~combinatorial() override;
+
+        /**
+         * @brief Clones the current combinatorial selection object.
+         * @details Creates a new instance of the `combinatorial` class on the heap.
+         *          It copies essential configuration parameters like the number of devices (`num_device`),
+         *          top mass (`masstop`), and W mass (`massw`) to the new instance. The `storage`
+         *          vector is not copied, as the clone will generate its own results. This method
+         *          is crucial for enabling parallel processing, where each thread or process needs
+         *          its own independent instance of the selection logic.
+         * @return selection_template* A pointer to the newly created `combinatorial` object,
+         *          casted to the base class pointer `selection_template`.
+         */
+        selection_template* clone() override;
+
+        /**
+         * @brief Performs basic event selection criteria.
+         * @details This method is intended to apply initial cuts to events before processing.
+         *          Currently, it always returns `true`, meaning no events are filtered out at this stage.
+         *          A commented-out section suggests it might have been intended to select events
+         *          based on the number of truth leptons from top decays (e.g., requiring exactly two).
+         *          The implementation might be simplified or intended to be configured elsewhere.
+         * @param ev Pointer to the event_template object (casted to `bsm_4tops*` internally)
+         *           containing the event data.
+         * @return bool Always returns `true` in the current implementation, indicating the event passes.
+         */
+        bool selection(event_template* ev) override;
+
+        /**
+         * @brief Executes the main combinatorial reconstruction strategy for an event.
+         * @details This is the core method where the neutrino reconstruction logic is orchestrated.
+         *          It performs the following steps:
+         *          1. Identifies detector leptons (electrons and muons).
+         *          2. Creates different `packet_t` instances (`pkt_tc`, `pkt_tj`, `pkt_jc`, `pkt_jl`)
+         *             representing different input particle strategies using `build_packet`.
+         *          3. Iterates through truth top quarks in the event (`evn->Tops`).
+         *          4. For each top quark, identifies its truth decay products (b-quark, lepton, neutrino)
+         *             and associated truth/reco jets and leptons using complex matching logic.
+         *          5. Updates the truth information (`t_bquarks`, `t_leptons`, `t_neutrino`) in the
+         *             corresponding packets using `update_state`. This links truth particles to the
+         *             different reconstruction scenarios.
+         *          6. Populates the `particles` vector in each packet with the appropriate set of
+         *             input particles (e.g., truth children, truth jets + leptons, reco jets + leptons,
+         *             detector objects).
+         *          7. Calls the `reconstruction` method for each packet to perform the actual
+         *             neutrino kinematic calculation.
+         *          8. Returns `true` indicating the strategy was executed (success/failure of reconstruction
+         *             is handled within the `reconstruction` method and stored in the packets).
+         * @param ev Pointer to the event_template object (casted to `bsm_4tops*` internally)
+         *           containing the event data.
+         * @return bool Always returns `true` in the current implementation.
+         */
+        bool strategy(event_template* ev) override;
+
+        /**
+         * @brief Merges the results from another combinatorial selection object into this one.
+         * @details This function is essential for combining results after parallel processing.
+         *          It takes a source `selection_template` pointer (casted to `combinatorial*`),
+         *          iterates through the `packet_t` objects stored in the source's `storage`,
+         *          and extracts the reconstructed data (neutrino kinematics, matching info, chi2 values, etc.).
+         *          For each packet in the source, it uses the `write` method (inherited from the base class)
+         *          to append the results to the corresponding data structures (likely ROOT branches or similar)
+         *          managed by the current object. It marks packets as processed (`_is_marked`) to potentially
+         *          avoid duplication, although the primary mechanism seems to be appending data via `write`.
+         * @param sl A pointer to the `selection_template` object (expected to be a `combinatorial` instance)
+         *           from which to merge results.
+         */
+        void merge(selection_template* sl) override;
+
+        /**
+         * @brief Updates the internal truth particle state and optionally adds them to a packet.
+         * @details This method manages the temporary storage of truth particle pointers (`b_qrk`, `lepton`, `nu_tru`)
+         *          identified during the iteration over truth top quarks in the `strategy` method.
+         *          If `data` is `nullptr`, it resets these internal pointers.
+         *          If `data` points to a valid `packet_t` object, and the internal pointers are set,
+         *          it appends the currently stored truth b-quark, lepton, and neutrino pointers to the
+         *          corresponding truth vectors (`t_bquarks`, `t_leptons`, `t_neutrino`) within that packet.
+         *          This function links the truth information relevant to a specific top decay to the
+         *          packet representing a particular reconstruction strategy.
+         * @param data Pointer to the `packet_t` object to update. If `nullptr`, resets internal state.
+         */
+        void update_state(packet_t* data);
+
+        /**
+         * @brief Performs the neutrino reconstruction using the data within a packet.
+         * @details This function takes a `packet_t` containing input particles, MET, and configuration.
+         *          It likely prepares the input data (particle four-vectors, MET) and calls an
+         *          external reconstruction algorithm (potentially a C++/CUDA implementation accessed
+         *          via `pyc.h` or similar). The algorithm attempts to find pairs of neutrino solutions
+         *          (`nu1`, `nu2`) consistent with the input kinematics and assumed top/W masses.
+         *          After obtaining solutions (stored as `std::vector<std::tuple<neutrino*, neutrino*>> nux`),
+         *          it iterates through them:
+         *          1. Allocates `neutrino` objects for each solution pair (these are later deleted by `packet_t::~packet_t`).
+         *          2. Stores pointers to these `neutrino` objects in the `nu1` and `nu2` vectors of the `packet_t`.
+         *          3. Stores the distance metric (`nu1->min`) associated with the solution.
+         *          4. Retrieves the corresponding truth neutrinos (`nu1_t`, `nu2_t`) using `safe_get`.
+         *          5. Calculates chi-squared values (`chi2_nu1`, `chi2_nu2`) comparing reconstructed neutrinos
+         *             to both possible truth neutrino assignments using the `chi2` helper function, storing the minimum chi2.
+         *          6. Performs matching between the input b-jets and leptons used for each solution (`nu1->bquark`, `nu1->lepton`, etc.)
+         *             and the truth b-quarks/leptons (`bqrk1`, `bqrk2`, `leps1`, `leps2`) retrieved using `safe_get`.
+         *          7. Stores the matching results (0, 1, or -1 for incorrect/no match, correct match, swapped match)
+         *             in `matched_bquarks` and `matched_leptons` vectors within the `packet_t`.
+         * @param data Pointer to the `packet_t` object containing inputs and storing results.
+         */
+        void reconstruction(packet_t* data);
+
+        /** @brief Number of compute devices (e.g., GPUs) available for parallel reconstruction. Defaults to 1. */
+        int num_device = 1;
+
+        /** @brief Assumed mass of the top quark (in MeV) used in the kinematic reconstruction. Default: 172.62 GeV. */
+        double masstop = 172.62*1000;
+
+        /** @brief Assumed mass of the W boson (in MeV) used in the kinematic reconstruction. Default: 80.385 GeV. */
+        double massw   = 80.385*1000;
+
+    private:
+        /** @brief Vector storing pointers to `packet_t` objects created during event processing. Managed by constructor/destructor. */
+        std::vector<packet_t*> storage = {};
+
+        /** @brief Temporary pointer to the truth neutrino identified for the current top decay being processed in `strategy`. */
+        particle_template* nu_tru = nullptr;
+
+        /** @brief Temporary pointer to the truth or reconstructed b-quark associated with the current top decay being processed in `strategy`. */
+        particle_template* b_qrk  = nullptr;
+
+        /** @brief Temporary pointer to the truth or reconstructed lepton associated with the current top decay being processed in `strategy`. */
+        particle_template* lepton = nullptr;
+
+        /**
+         * @brief Factory method to create and configure a new `packet_t` object.
+         * @details Creates a new `packet_t` on the heap, sets its `met`, `phi`, and `name` based on the
+         *          input event (`evnt`) and the provided strategy name (`name`). It assigns a compute
+         *          device string (e.g., "cuda:0", "cuda:1", ...) based on the current thread index
+         *          (`this->threadIdx`) and the total number of devices (`this->num_device`), enabling
+         *          distribution of work across devices in parallel execution. The newly created packet
+         *          is added to the `storage` vector, and a pointer to it is returned.
+         * @tparam g The type of the event object (e.g., `bsm_4tops`).
+         * @param evnt Pointer to the event object.
+         * @param name The name to assign to this packet/strategy.
+         * @return packet_t* Pointer to the newly created and stored `packet_t` object.
+         */
+        template <typename g>
+        packet_t* build_packet(g* evnt, std::string name);
+
+
+        /**
+         * @brief Utility function to upcast a vector of base particle pointers to a derived type.
+         * @details Takes a vector of `particle_template*` and returns a new vector containing
+         *          the same pointers, but cast to the derived type `g*`. This is unsafe if the
+         *          original pointers are not actually of type `g` or a derived type thereof.
+         * @tparam g The derived particle type to cast to (e.g., `top`, `jet`).
+         * @param inpt Pointer to the input vector of `particle_template*`.
+         * @return std::vector<g*> A new vector containing the upcast pointers.
+         */
+        template<typename g>
+        std::vector<g*> upcast(std::vector<particle_template*>* inpt);
+
+        /**
+         * @brief Utility function to upcast particle pointers stored in a map's values to a derived type.
+         * @details Takes a map where values are `particle_template*`, extracts the values into a
+         *          temporary vector using `vectorize` (assuming `vectorize` exists), and then calls
+         *          the other `upcast` overload to cast the pointers in the temporary vector to the
+         *          derived type `g*`.
+         * @tparam g The derived particle type to cast to.
+         * @param inpt Pointer to the input map (e.g., `std::map<std::string, particle_template*>`).
+         * @return std::vector<g*> A new vector containing the upcast pointers.
+         */
+        template<typename g>
+        std::vector<g*> upcast(std::map<std::string, particle_template*>* inpt);
+
+};
+
+
+/**
+ * @brief Calculates a chi-squared like distance between a reconstructed neutrino and a truth neutrino.
+ * @details Computes the squared Euclidean distance in momentum space (px, py, pz) between
+ *          the reconstructed neutrino (`nu`) and the truth neutrino (`nut`). This serves as a metric
+ *          to evaluate how well the reconstructed neutrino matches the true one. The calculation uses
+ *          the `vector<double> p()` method assumed to exist for the `neutrino` and `particle_template`
+ *          classes, returning a vector like {px, py, pz, E}.
+ * @param nu Pointer to the reconstructed `neutrino` object.
+ * @param nut Pointer to the `particle_template` object representing the true neutrino.
+ *            Can be `nullptr` if no truth information is available.
+ * @return double The calculated chi-squared value (sum of squared momentum differences).
+ *         Returns -1 if `nut` is `nullptr` or if either particle pointer is invalid.
+ */
+double chi2(neutrino* nu, particle_template* nut);
+
+/**
+ * @brief Safely retrieves a particle pointer from a vector, checking bounds, specifically for pairs.
+ * @details Checks if the input vector `data` contains exactly two elements. If the vector size is not 2,
+ *          or if the requested index `idx` is out of bounds (not 0 or 1), it returns `nullptr`.
+ *          Otherwise, it returns the `particle_template` pointer at the specified index `idx`.
+ *          This function is specifically used to safely access pairs of truth particles
+ *          (like the two b-quarks, two leptons, or two neutrinos from ttbar decay) stored in vectors
+ *          within the `packet_t` structure, preventing crashes due to incorrect vector sizes or indices.
+ * @param data Pointer to the vector of `particle_template*`.
+ * @param idx The index (0 or 1) of the element to retrieve.
+ * @return particle_template* Pointer to the particle at the specified index if conditions are met, otherwise `nullptr`.
+ */
+particle_template* safe_get(std::vector<particle_template*>* data, int idx);
+
+
+#endif // COMBINATORIAL_H (End of C++ Header Guard)
+
+// --- Start of Cython Code Documentation ---
+
+// These directives specify the language as C++ for distutils/setuptools
+// and enable Python 3 syntax features for Cython.
+# distutils: language=c++
+# cython: language_level=3
+
+// Import necessary C++ standard library components (map, vector, string)
+// and base classes from AnalysisG framework for use in Cython.
+from libcpp.map cimport map
+from libcpp.vector cimport vector
+from libcpp.string cimport string
+from AnalysisG.core.selection_template cimport *
+from AnalysisG.core.particle_template cimport *
+
+// This block declares the C++ components defined in "combinatorial.h"
+// making them accessible from Cython.
+cdef extern from "combinatorial.h":
+    /**
+     * @brief Cython declaration mirroring the C++ combinatorial class.
+     * @details Allows Cython code to create, manipulate, and call methods on
+     *          C++ `combinatorial` objects. It exposes specific public members
+     *          (`num_device`, `masstop`, `massw`) for direct access.
+     *          The `except +` indicates that C++ exceptions should be translated
+     *          into Python exceptions.
+     */
+    cdef cppclass combinatorial(selection_template):
+        combinatorial() except + // Constructor declaration
+        int num_device           // Exposed member variable
+        double masstop           // Exposed member variable
+        double massw             // Exposed member variable
+
+/**
+ * @brief Cython declaration mirroring a C++ neutrino class.
+ * @details Assumes a C++ class `neutrino` exists, inheriting from `particle_template`.
+ *          This declaration allows Cython to interact with C++ `neutrino` objects,
+ *          accessing their specific members related to reconstruction quality and matching.
+ *          The `nogil` keyword suggests methods might release the Global Interpreter Lock.
+ */
+cdef cppclass neutrino(particle_template):
+    neutrino() except+ nogil // Constructor declaration
+    double ellipse           // Reconstruction quality metric
+    double chi2              // Chi2 value compared to truth
+    int matched_bquark       // Matching status for b-quark
+    int matched_lepton       // Matching status for lepton
+
+
+/**
+ * @brief Cython class providing a Python interface to the C++ combinatorial selection.
+ * @details This class wraps the C++ `combinatorial` object (`tt`). It manages the
+ *          reading of analysis results (likely from ROOT files) into C++ data structures
+ *          (`pmu`, `pdgid`, `matched_bq`, etc.) using the `loader` function.
+ *          It provides an iterator interface (`__iter__`, `__next__`) that uses the
+ *          `Postprocessing` method to reconstruct Python `Event` objects containing
+ *          `Particle` and `Neutrino` wrappers for each event's results. It also exposes
+ *          configurable parameters (`NumDevice`, `MassTop`, `MassW`) of the C++ object
+ *          as Python properties.
+ */
+cdef class NuNuCombinatorial(SelectionTemplate):
+    /** @brief Pointer to the underlying C++ combinatorial object. */
+    cdef combinatorial* tt
+
+    /** @brief Internal index for iterating through events. */
+    cdef int ix
+    /** @brief Total number of events loaded, used for iteration bounds. */
+    cdef int lx
+
+    // --- Data Storage Maps ---
+    // These maps store the results read from the analysis output (e.g., ROOT file).
+    // The key is the strategy name (e.g., "top_children").
+    // The value is a vector (outer) over events, containing vectors (inner) of particle/solution data.
+
+    /** @brief Stores particle four-momenta (pt, eta, phi, e) for input particles. Structure: { strategy : [event][particle][pmu_component] } */
+    cdef map[string, vector[vector[vector[double]]]] pmu
+    /** @brief Stores PDG IDs for input particles. Structure: { strategy : [event][particle] } */
+    cdef map[string, vector[vector[int]]] pdgid
+
+    /** @brief Stores b-quark matching results. Structure: { strategy : [event][solution] } */
+    cdef map[string, vector[vector[int]]] matched_bq
+    /** @brief Stores lepton matching results. Structure: { strategy : [event][solution] } */
+    cdef map[string, vector[vector[int]]] matched_lp
+
+    /** @brief Stores the 'distance' or quality metric for each solution. Structure: { strategy : [event][solution] } */
+    cdef map[string, vector[vector[double]]] ellipse
+    /** @brief Stores chi2 values for the first neutrino of each solution. Structure: { strategy : [event][solution] } */
+    cdef map[string, vector[vector[double]]] chi2_nu1
+    /** @brief Stores chi2 values for the second neutrino of each solution. Structure: { strategy : [event][solution] } */
+    cdef map[string, vector[vector[double]]] chi2_nu2
+    /** @brief Stores four-momenta for the first reconstructed neutrino. Structure: { strategy : [event][solution][pmu_component] } */
+    cdef map[string, vector[vector[vector[double]]]] pmu_nu1
+    /** @brief Stores four-momenta for the second reconstructed neutrino. Structure: { strategy : [event][solution][pmu_component] } */
+    cdef map[string, vector[vector[vector[double]]]] pmu_nu2
+
+    /**
+     * @brief Destructor for the Cython wrapper.
+     * @details Ensures the underlying C++ `combinatorial` object pointed to by `tt`
+     *          (which is the same as `self.ptr` from the base class) is properly deleted
+     *          when the Python object goes out of scope, preventing memory leaks.
+     */
+    def __dealloc__(self): # Implementation removed, only declaration kept
+        pass
+
+    /**
+     * @brief C-level initialization of the Cython wrapper.
+     * @details Sets up the `root_leaves` dictionary, mapping branch names (like "top_children_pmu")
+     *          expected in the input ROOT file to the `loader` callback function. This dictionary
+     *          is used by the base class's reading mechanism. It also creates a new C++
+     *          `combinatorial` object on the heap, assigns its pointer to `self.ptr` (from the base class)
+     *          and `self.tt` (for typed access within this class), and initializes the event index `ix`.
+     */
+    def __cinit__(self): # Implementation removed, only declaration kept
+        pass
+
+    /**
+     * @brief Postprocessing step to convert loaded C++ data into Python objects for one event.
+     * @details This method is called by `__next__` for the current event index `self.ix`.
+     *          It iterates through the reconstruction strategies (`typx`). For each strategy:
+     *          1. Retrieves the C++ vectors containing results for the current event (`self.ix`)
+     *             from the storage maps (e.g., `self.pmu[name][self.ix]`).
+     *          2. Creates C++ `particle_template` objects for the input particles using `make_particle`.
+     *          3. Assigns these particles (wrapped in Python `Particle` objects) to the appropriate
+     *             list in the `ev.TruthTops` dictionary using `ev.assign_particles`.
+     *          4. Creates C++ `neutrino` objects for the reconstructed neutrino pairs using `make_neutrino`.
+     *          5. Assigns these neutrinos (wrapped in Python `Neutrino` objects) to the appropriate
+     *             list in the `ev.RecoTops` dictionary using `ev.assign_neutrinos`.
+     *          Finally, it returns the fully populated Python `Event` object containing all reconstructed
+     *          information for the current event index.
+     * @return Event A Python `Event` object containing the results for the event at index `self.ix`.
+     *         Returns None or raises an error if `self.ix` is invalid.
+     */
+    def Postprocessing(self): # Implementation removed, only declaration kept
+        pass
+
+    /**
+     * @brief Initializes the iterator.
+     * @details Resets the event index `self.ix` to 0 and returns `self`, making the
+     *          object iterable.
+     * @return self The iterator object itself.
+     */
+    def __iter__(self): # Implementation removed, only declaration kept
+        pass
+
+    /**
+     * @brief Returns the next event in the iteration.
+     * @details Checks if the current index `self.ix` has reached the end (`self.lx`).
+     *          If so, raises `StopIteration`. Otherwise, calls `Postprocessing` to
+     *          generate the `Event` object for the current index, increments `self.ix`,
+     *          and returns the `Event` object.
+     * @return Event The next processed event object.
+     * @raises StopIteration When all events have been processed.
+     */
+    def __next__(self): # Implementation removed, only declaration kept
+        pass
+
+    /**
+     * @brief Property getter for the number of compute devices.
+     * @return int The value of `num_device` from the C++ object.
+     */
+    @property
+    def NumDevice(self): # Implementation removed, only declaration kept
+        pass
+    /**
+     * @brief Property setter for the number of compute devices.
+     * @param val The integer value to set for `num_device` in the C++ object.
+     */
+    @NumDevice.setter
+    def NumDevice(self, int val): # Implementation removed, only declaration kept
+        pass
+
+    /**
+     * @brief Property getter for the assumed top quark mass.
+     * @return float The value of `masstop` (in MeV) from the C++ object.
+     */
+    @property
+    def MassTop(self): # Implementation removed, only declaration kept
+        pass
+    /**
+     * @brief Property setter for the assumed top quark mass.
+     * @param val The float value (in MeV) to set for `masstop` in the C++ object.
+     */
+    @MassTop.setter
+    def MassTop(self, float val): # Implementation removed, only declaration kept
+        pass
+
+    /**
+     * @brief Property getter for the assumed W boson mass.
+     * @return float The value of `massw` (in MeV) from the C++ object.
+     */
+    @property
+    def MassW(self): # Implementation removed, only declaration kept
+        pass
+    /**
+     * @brief Property setter for the assumed W boson mass.
+     * @param val The float value (in MeV) to set for `massw` in the C++ object.
+     */
+    @MassW.setter
+    def MassW(self, float val): # Implementation removed, only declaration kept
+        pass
+
+
+// --- Helper Cython Classes and Functions ---
+
+/**
+ * @brief Cython class wrapping a C++ neutrino object.
+ * @details Provides a Python interface to a C++ `neutrino` instance. It holds a pointer
+ *          (`nux`) to the C++ object. The actual `neutrino` class definition is assumed
+ *          to be in C++ and declared via `cdef cppclass`. This wrapper allows Python code
+ *          to hold references to and potentially interact with the C++ neutrino results.
+ *          Inherits from `ParticleTemplate` for potential polymorphism.
+ */
+cdef class Neutrino(ParticleTemplate):
+    /** @brief Pointer to the underlying C++ neutrino object. */
+    cdef neutrino* nux
+    /** @brief C-level initialization (placeholder). */
+    def __cinit__(self): pass
+    /** @brief Python-level initialization (placeholder). */
+    def __init__(self): pass
+    /** @brief Destructor to clean up the C++ object if owned (implementation depends on ownership). */
+    def __dealloc__(self): # Implementation removed, only declaration kept
+        pass
+
+/**
+ * @brief Cython class wrapping a C++ particle_template object.
+ * @details Provides a basic Python interface to a C++ `particle_template` instance.
+ *          It holds a pointer (`ptr`) to the C++ object. This allows Python code
+ *          to represent generic particles originating from the C++ analysis.
+ *          Inherits from `ParticleTemplate` base class.
+ */
+cdef class Particle(ParticleTemplate):
+    # Note: It holds 'ptr' inherited from ParticleTemplate base.
+    /** @brief C-level initialization (placeholder). */
+    def __cinit__(self): pass
+    /** @brief Python-level initialization (placeholder). */
+    def __init__(self): pass
+    /** @brief Destructor to clean up the C++ object if owned (implementation depends on ownership). */
+    def __dealloc__(self): # Implementation removed, only declaration kept
+        pass
+
+/**
+ * @brief Python class to aggregate results for a single event.
+ * @details This class acts as a container to hold the reconstructed results
+ *          (both input particles/truth and output neutrinos) for a single event,
+ *          organized by the reconstruction strategy used (e.g., "top_children").
+ *          It stores lists of wrapped `Particle` and `Neutrino` objects.
+ */
+cdef class Event:
+    /** @brief Dictionary storing input/truth particles. { strategy : [ [particle_list_1], [particle_list_2] ] } */
+    cdef public dict TruthTops
+    /** @brief Dictionary storing reconstructed neutrinos. { strategy : [ [neutrino_list_1], [neutrino_list_2] ] } */
+    cdef public dict RecoTops
+
+    /**
+     * @brief Initializes the Event object.
+     * @details Creates the `TruthTops` and `RecoTops` dictionaries, pre-populating them
+     *          with keys for each expected strategy name and initializing the values
+     *          as lists containing two empty lists (presumably for the two top quarks).
+     */
+    def __init__(self): # Implementation removed, only declaration kept
+        pass
+
+    /**
+     * @brief Assigns a vector of C++ particles to the appropriate list in TruthTops.
+     * @details Takes a strategy name and a C++ vector of `particle_template*`. It iterates
+     *          through the vector, creates a Python `Particle` wrapper for each C++ particle,
+     *          and appends the wrapper to one of the two lists under the given strategy name
+     *          in `self.TruthTops`, alternating between the lists based on the index (modulo 2).
+     * @param name The strategy name (C++ string).
+     * @param ptx Vector of C++ particle pointers.
+     */
+    cdef void assign_particles(self, string name, vector[particle_template*] ptx): # Implementation removed, only declaration kept
+        pass
+
+    /**
+     * @brief Assigns a vector of C++ neutrinos to the appropriate list in RecoTops.
+     * @details Takes a strategy name and a C++ vector of `neutrino*`. It iterates
+     *          through the vector, creates a Python `Neutrino` wrapper for each C++ neutrino,
+     *          and appends the wrapper to one of the two lists under the given strategy name
+     *          in `self.RecoTops`, alternating based on the index (modulo 2).
+     * @param name The strategy name (C++ string).
+     * @param ptx Vector of C++ neutrino pointers.
+     */
+    cdef void assign_neutrinos(self, string name, vector[neutrino*] ptx): # Implementation removed, only declaration kept
+        pass
+
+
+/**
+ * @brief Callback function to load data from ROOT branches into C++ maps.
+ * @details This function is designed to be used with the analysis framework's data loading
+ *          mechanism (likely TTree::SetBranchAddress or similar via the base class).
+ *          It takes the `NuNuCombinatorial` instance (`vl`) and a tuple `data` containing
+ *          the branch name and the data read for the current entry.
+ *          It parses the branch name to determine the strategy (`name_`) and the data type
+ *          (e.g., "pmu", "matched_bquark"). It then casts the data to the appropriate
+ *          C++ vector type and pushes it into the corresponding map within the `vl` object
+ *          (e.g., `vl.pmu[name_].push_back(...)`).
+ * @param vl The NuNuCombinatorial instance being filled.
+ * @param data A tuple: (branch_name_string, data_vector).
+ */
+cdef void loader(NuNuCombinatorial vl, tuple data): # Implementation removed, only declaration kept
+    pass
+
+
+/**
+ * @brief Factory function to create a C++ particle_template object from kinematic data.
+ * @details Allocates a new `particle_template` object on the heap. Sets its kinematic
+ *          properties (pt, eta, phi, e) and PDG ID from the provided C++ vector `pmu`
+ *          and integer `pdgid`.
+ * @param pmu Pointer to a C++ vector containing [pt, eta, phi, e].
+ * @param pdgid The PDG ID of the particle.
+ * @return particle_template* Pointer to the newly created C++ particle object.
+ */
+cdef particle_template* make_particle(vector[double]* pmu, int pdgid): # Implementation removed, only declaration kept
+    pass
+
+/**
+ * @brief Factory function to create a C++ neutrino object from kinematic and matching data.
+ * @details Allocates a new `neutrino` object on the heap. Sets its kinematic properties
+ *          (pt, eta, phi, e) from the `pmu` vector. Sets matching information (`matched_bquark`,
+ *          `matched_lepton`) and reconstruction quality metrics (`ellipse`, `chi2`) from the
+ *          provided arguments.
+ * @param pmu Pointer to a C++ vector containing [pt, eta, phi, e].
+ * @param lep Matched lepton status.
+ * @param bq Matched b-quark status.
+ * @param elp Ellipse/distance metric value.
+ * @param chi Chi-squared value.
+ * @return neutrino* Pointer to the newly created C++ neutrino object.
+ */
+cdef neutrino* make_neutrino(vector[double]* pmu, int lep, int bq, double elp, double chi): # Implementation removed, only declaration kept
+    pass
+

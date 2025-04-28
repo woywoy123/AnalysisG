@@ -1,0 +1,298 @@
+/**
+ * @file graph_template.pxd
+ * @brief Cython declarations for the C++ graph_template interface and its Python wrapper.
+ *
+ * @details This file provides the Cython interface (`.pxd`) for interacting with the C++
+ * `graph_template` class. It declares the C++ class structure and methods
+ * accessible from Cython, as well as the Cython wrapper class `GraphTemplate`
+ * used in Python code. It defines both the external C++ interface and the
+ * structure of the Python wrapper class. This includes the necessary C++
+ * members and methods that will be exposed or utilized through the Cython layer.
+ *
+ * The first part (`cdef extern from "<templates/graph_template.h>"`) declares the
+ * C++ `graph_template` class and its methods as they are defined in the corresponding
+ * header file. This allows Cython to understand the C++ interface. The `nogil`
+ * specifier indicates that these C++ functions can be called without the Python
+ * Global Interpreter Lock, enabling potential parallelism. The `except+` specifier
+ * ensures that C++ exceptions are translated into Python exceptions.
+ *
+ * The second part (`cdef class GraphTemplate`) declares the Cython extension type
+ * (Python class) that wraps the C++ `graph_template`. It defines the structure
+ * of the Python object, including a pointer (`ptr`) to the underlying C++ instance.
+ * This class serves as the bridge between Python code and the C++ implementation.
+ *
+ * The third part (implementation details, typically in a `.pyx` file but shown here
+ * for context) defines the methods of the `GraphTemplate` Python class. These methods
+ * implement the Python interface, often by calling the corresponding methods of the
+ * wrapped C++ object via the `ptr`. This includes lifecycle methods (`__cinit__`,
+ * `__dealloc__`), comparison methods (`__hash__`, `__eq__`), type checking (`is_self`),
+ * and properties (`index`, `Tree`, `PreSelection`) that expose C++ attributes to Python.
+ *
+ * @note This file uses C++ language features and requires Cython 3. It relies on
+ *       definitions from `<templates/graph_template.h>` and imports from
+ *       `libcpp` and other AnalysisG core modules. Compiler directives like
+ *       `# distutils: language=c++` and `# cython: language_level=3` configure
+ *       the build process and Cython language features.
+ */
+
+// --- C++ Interface Declaration (Extern Block) ---
+
+/**
+ * @brief C++ Interface for graph representation templates.
+ * @class graph_template
+ *
+ * @details This C++ class serves as a blueprint or interface for different
+ * graph implementations within the AnalysisG framework. It defines the core
+ * operations expected from any graph representation, such as building the
+ * graph from event data, applying selections, and comparing graphs.
+ * Specific graph implementations will inherit from or conform to this interface.
+ * This declaration makes the C++ class and its methods known to Cython.
+ */
+cdef extern from "<templates/graph_template.h>" nogil:
+    cdef cppclass graph_template:
+
+        /**
+         * @brief Default constructor for `graph_template`.
+         *
+         * @details Initializes a new instance of a graph representation. The specific
+         * initialization logic depends on the derived C++ class implementing this interface.
+         * It is declared `except+ nogil`, meaning it can potentially throw C++ exceptions
+         * (which will be translated to Python exceptions) and can be called without the GIL.
+         */
+        graph_template() except+ nogil
+
+        /**
+         * @brief Builds a graph representation from event data.
+         *
+         * @details This method takes a pointer to an `event_template` object, which
+         * contains the raw data (like particles, jets, etc.), and constructs the
+         * corresponding graph structure (nodes, edges, features). The specific
+         * graph construction algorithm is defined by the implementing C++ class.
+         *
+         * @param event A pointer to an `event_template` object containing the input event data.
+         * @return A raw pointer to the newly created `graph_template` instance representing the event.
+         *         The caller might be responsible for managing the memory of the returned object,
+         *         depending on the C++ implementation details and how it's wrapped in Cython.
+         * @throws May throw C++ exceptions during graph construction (e.g., memory allocation errors, invalid data),
+         *         which are translated to Python exceptions due to `except+`.
+         * @note Declared `nogil`, allowing GIL-free execution.
+         */
+        graph_template* build(event_template*) except+ nogil
+
+        /**
+         * @brief Equality comparison operator.
+         *
+         * @details Compares this `graph_template` instance with another instance (`p`)
+         * for equality. The criteria for equality (e.g., identical structure,
+         * node/edge features, associated event data) are defined by the specific
+         * C++ implementation.
+         *
+         * @param p A reference to another `graph_template` object to compare against.
+         * @return `true` if the two graph instances are considered equal according to the
+         *         C++ implementation's logic, `false` otherwise.
+         * @throws May throw C++ exceptions during comparison, translated via `except+`.
+         * @note Declared `nogil`, allowing GIL-free execution.
+         */
+        bool operator == (graph_template& p) except+ nogil
+
+        /**
+         * @brief Processes or finalizes the event data associated with the graph.
+         *
+         * @details This method performs operations on the event data after the initial
+         * graph structure might have been built. This could involve calculating
+         * derived features, applying calibrations, or finalizing object definitions
+         * based on the graph context. The exact operations depend on the C++ implementation.
+         *
+         * @throws May throw C++ exceptions during event compilation, translated via `except+`.
+         * @note Declared `nogil`, allowing GIL-free execution.
+         */
+        void CompileEvent() except+ nogil
+
+        /**
+         * @brief Applies preselection criteria to the graph or associated event.
+         *
+         * @details This method implements initial filtering or selection steps.
+         * It might remove nodes or edges based on certain criteria, flag the event,
+         * or perform other operations to quickly discard events or graph elements
+         * that are not of interest for further analysis. The specific preselection
+         * logic is defined by the C++ implementation.
+         *
+         * @throws May throw C++ exceptions during preselection, translated via `except+`.
+         * @note Declared `nogil`, allowing GIL-free execution.
+         */
+        void PreSelection() except+ nogil
+
+// --- Cython Wrapper Class Declaration ---
+
+/**
+ * @brief Cython wrapper class for the C++ `graph_template`.
+ * @class GraphTemplate
+ *
+ * @details This class provides a Python-friendly interface to the underlying C++
+ * `graph_template` object. It manages a pointer (`ptr`) to the C++ instance.
+ * Instances of this class are typically created and manipulated in Python code
+ * to interact with the C++ graph representations. It handles the lifecycle
+ * (creation/destruction) of the C++ object and exposes its functionality through
+ * Python methods and properties. Subclasses in Python might inherit from this
+ * class to add more Python-specific functionality or override behavior.
+ */
+cdef class GraphTemplate:
+    /**
+     * @brief Raw pointer to the underlying C++ `graph_template` instance.
+     *
+     * @details This member variable holds the memory address of the C++ object
+     * that this Cython class instance wraps. It is the primary link between the
+     * Python wrapper and the C++ implementation. Access to this pointer is
+     * typically managed within the Cython implementation (`.pyx`) file to call
+     * C++ methods. Direct access from Python code is generally discouraged.
+     */
+    cdef graph_template* ptr
+
+    // --- Cython Class Method Implementations (Conceptual Placeholders) ---
+    // Note: The actual implementation code is removed as requested,
+    // leaving only the declarations with detailed documentation.
+
+    /**
+     * @brief Cython-specific constructor (__cinit__).
+     * @details This special Cython method is called when a `GraphTemplate` object
+     *          is allocated in Python (`GraphTemplate()`). Its primary role
+     *          is to allocate and initialize the underlying C++ `graph_template`
+     *          object using `new graph_template()`. It assigns the pointer to the
+     *          newly created C++ object to the `self.ptr` member. This ensures
+     *          that the C++ resource exists before the standard Python `__init__`
+     *          is called. It includes a check (`if type(self) is not GraphTemplate: return`)
+     *          to prevent the base class `__cinit__` from allocating memory when a
+     *          subclass instance is created, assuming the subclass handles its own allocation.
+     * @throws May propagate C++ exceptions (translated to Python exceptions) if the
+     *         C++ constructor `graph_template()` throws.
+     */
+    def __cinit__(self): pass
+
+    /**
+     * @brief Standard Python constructor (__init__).
+     * @details This method is called after `__cinit__` has successfully allocated
+     *          the C++ object. It is used for standard Python object initialization
+     *          tasks that do not involve the C++ resource allocation itself. In this
+     *          specific implementation, it does nothing (`pass`), but subclasses
+     *          might override it to set Python attributes or perform other setup.
+     * @param self The instance of the GraphTemplate being initialized.
+     */
+    def __init__(self): pass
+
+    /**
+     * @brief Cython-specific destructor (__dealloc__).
+     * @details This special Cython method is called when the Python garbage collector
+     *          determines that a `GraphTemplate` object is no longer referenced and
+     *          should be destroyed. Its crucial role is to release the memory
+     *          occupied by the underlying C++ `graph_template` object using `del self.ptr`.
+     *          This prevents memory leaks by ensuring the C++ resource is properly
+     *          deallocated when the Python wrapper object is garbage collected.
+     *          Similar to `__cinit__`, it includes a check (`if type(self) is not GraphTemplate: return`)
+     *          to prevent the base class `__dealloc__` from deleting the pointer if the
+     *          instance is actually a subclass (assuming the subclass manages its own pointer).
+     * @param self The instance of the GraphTemplate being deallocated.
+     */
+    def __dealloc__(self): pass
+
+    /**
+     * @brief Computes the hash value for the GraphTemplate instance (__hash__).
+     * @details Enables `GraphTemplate` objects to be used as keys in Python dictionaries
+     *          or elements in sets. The hash is computed based on the `hash` attribute
+     *          of the underlying C++ `graph_template` object (`self.ptr.hash`). It takes
+     *          the first 8 characters of the C++ hash string, interprets them as a
+     *          hexadecimal number (base 0 automatically detects hex if prefixed like 0x,
+     *          but here it likely assumes hex or relies on string content), and converts
+     *          it to a Python integer. This aims to provide a reasonably unique hash
+     *          value based on the C++ object's identity.
+     * @param self The instance of the GraphTemplate.
+     * @return An integer representing the hash value derived from the C++ object's hash string.
+     */
+    def __hash__(self): pass
+
+    /**
+     * @brief Compares this GraphTemplate instance with another object for equality (__eq__).
+     * @details Defines the equality comparison (`==`) for `GraphTemplate` objects in Python.
+     *          First, it checks if the `other` object is an instance of `GraphTemplate`
+     *          or its subclass using `self.is_self(other)`. If not, they are unequal.
+     *          If the type check passes, it casts `other` to `GraphTemplate` (as `ev`)
+     *          and then compares the underlying C++ objects using the C++ `operator==`
+     *          (`self.ptr[0] == ev.ptr[0]`). Two `GraphTemplate` instances are considered
+     *          equal if and only if their wrapped C++ `graph_template` objects are equal
+     *          according to the C++ definition of equality.
+     * @param self The instance of the GraphTemplate on the left side of the comparison.
+     * @param other The object to compare with this instance.
+     * @return `True` if `other` is a compatible `GraphTemplate` instance and their
+     *         underlying C++ objects are equal, `False` otherwise.
+     */
+    def __eq__(self, other): pass
+
+    /**
+     * @brief Checks if the provided input object is an instance of GraphTemplate or its subclass.
+     * @details This helper method performs a type check. It returns `True` if the input
+     *          `inpt` is either a direct instance of `GraphTemplate` (`isinstance`) or
+     *          an instance of a class that inherits from `GraphTemplate` (`issubclass`).
+     *          This is used internally, for example in `__eq__`, to ensure comparisons
+     *          are only made between compatible types.
+     * @param self The instance of the GraphTemplate (method is part of the class).
+     * @param inpt The object whose type needs to be checked.
+     * @return `True` if `inpt` is an instance of `GraphTemplate` or a derived class,
+     *         `False` otherwise.
+     */
+    def is_self(self, inpt) -> bool: pass
+
+    /**
+     * @brief Gets the index associated with the native graph_template object.
+     * @property index
+     * @details Exposes the `index` member of the underlying C++ `graph_template` object
+     *          (`self.ptr.index`) as a read-only Python property named `index`. This allows
+     *          accessing the index value using attribute access syntax (e.g., `graph_obj.index`).
+     *          The index typically represents a unique identifier or position.
+     * @param self The instance of the GraphTemplate.
+     * @return The value of the `index` member from the C++ object (likely a `long` integer).
+     */
+    @property
+    def index(self): pass
+
+    /**
+     * @brief Gets the tree associated with the environment of the native graph_template.
+     * @property Tree
+     * @details Exposes the `tree` member (a string) of the underlying C++ `graph_template`
+     *          object (`self.ptr.tree`) as a read-only Python property named `Tree`.
+     *          It retrieves the C++ string and passes it to a helper function `env()`
+     *          (presumably defined elsewhere, possibly in `AnalysisG.core.tools`), which
+     *          likely interprets this string (e.g., a file path or identifier) to return
+     *          an appropriate Python representation of the associated tree structure
+     *          (e.g., a ROOT TTree wrapper, a file handle, etc.).
+     * @param self The instance of the GraphTemplate.
+     * @return The object representing the associated tree, as returned by the `env()` function.
+     *         The exact type depends on the implementation of `env()`.
+     */
+    @property
+    def Tree(self): pass
+
+    /**
+     * @brief Gets the current preselection status or criteria.
+     * @property PreSelection
+     * @details Exposes the `preselection` member (a boolean) of the underlying C++
+     *          `graph_template` object (`self.ptr.preselection`) as a Python property
+     *          named `PreSelection`. This allows reading the preselection status
+     *          using attribute access (e.g., `graph_obj.PreSelection`).
+     * @param self The instance of the GraphTemplate.
+     * @return The boolean value of the `preselection` member from the C++ object.
+     */
+    @property
+    def PreSelection(self): pass
+
+    /**
+     * @brief Sets the preselection status or criteria on the native graph_template.
+     * @setter PreSelection
+     * @details Provides the setter for the `PreSelection` property. This allows modifying
+     *          the `preselection` boolean member of the underlying C++ `graph_template`
+     *          object (`self.ptr.preselection = val`) using attribute assignment syntax
+     *          (e.g., `graph_obj.PreSelection = True`).
+     * @param self The instance of the GraphTemplate.
+     * @param val The new boolean value to be assigned to the C++ `preselection` member.
+     *            The input `val` will be implicitly converted to a C++ `bool` if possible.
+     */
+    @PreSelection.setter
+    def PreSelection(self, val): pass

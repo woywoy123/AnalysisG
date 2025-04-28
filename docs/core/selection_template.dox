@@ -1,0 +1,343 @@
+/**
+ * @file selection_template.pyx
+ * @brief Implements the Python wrapper class `SelectionTemplate` for the C++ `selection_template`.
+ * @details This Cython implementation file provides the Python interface and logic for the
+ *          `SelectionTemplate` class. It bridges the gap between Python analysis scripts
+ *          and the underlying C++ `selection_template` implementation within the AnalysisG
+ *          framework. It handles object creation, lifecycle management (including C++ object
+ *          lifetime), serialization (pickling), interaction with ROOT files via the `IO`
+ *          class, and provides access to selection results and metadata.
+ *
+ *          The file leverages Cython's capabilities to efficiently wrap C++ code, manage
+ *          memory, and expose functionality through Pythonic methods and properties. It
+ *          imports necessary C++ definitions and helper utilities from other parts of the
+ *          AnalysisG framework.
+ *
+ * @note The `# distutils: language=c++` and `# cython: language_level = 3` directives
+ *       configure the Cython build process.
+ */
+
+# --- Cython Imports ---
+# Imports C++ standard library types (bool, map, vector, string) for type hinting and interaction.
+# Imports C++ types (meta_t, event_template) from AnalysisG core structures and event templates.
+# Imports the C++ definition of the selection_template class itself.
+# Imports Python standard libraries (pathlib, pickle).
+# Imports AnalysisG core utilities (tools, meta, IO).
+
+# --- C++ Class Declaration (External Reference) ---
+# Declares the external C++ `selection_template` class from "templates/selection_template.h".
+# Specifies `nogil` for methods that can release the Python Global Interpreter Lock,
+# allowing potential parallelism when calling these C++ functions.
+# Specifies `except+` to automatically translate C++ exceptions into Python exceptions.
+# Lists the C++ members (variables and methods) that Cython needs to be aware of.
+# cdef extern from "<templates/selection_template.h>" nogil:
+#     cdef cppclass selection_template:
+#         selection_template() except+ nogil
+#         string name
+#         string hash
+#         string tree
+#         double index
+#         selection_template* build(event_template*) except+ nogil
+#         bool selection(event_template*) except+ nogil
+#         bool strategy(event_template*) except+ nogil
+#         void merge(selection_template*) except+ nogil
+#         vector[map[string, float]] reverse_hash(vector[string]* hashes) except+ nogil
+#         bool CompileEvent() except+ nogil
+#         bool operator == (selection_template& p) except+ nogil
+#         map[string, map[string, float]] passed_weights
+#         map[string, meta_t] matched_meta
+
+# --- Python Wrapper Class Definition ---
+cdef class SelectionTemplate:
+    """
+    @brief Python wrapper for the C++ `selection_template` class.
+    @details This class provides a user-friendly Python interface to the functionalities
+             of the C++ `selection_template`. It manages the underlying C++ object's
+             lifetime and translates data structures between Python and C++. Users can
+             create instances, configure them (implicitly or explicitly), access results
+             like passed weights and metadata, serialize/deserialize the template, and
+             interpret data from ROOT files based on defined leaf processing functions.
+    """
+
+    # --- Cython Member Variables ---
+    cdef selection_template* ptr
+    """
+    @var ptr
+    @brief A pointer to the underlying C++ `selection_template` object.
+    @details This pointer is managed by Cython. It holds the actual C++ instance
+             that performs the core selection logic. Direct access from Python is
+             not intended; interaction happens through the class methods.
+    """
+
+    cdef public dict root_leaves
+    """
+    @var root_leaves
+    @brief A Python dictionary mapping ROOT TTree leaf names to processing functions.
+    @details This dictionary is crucial for the `InterpretROOT` method. Keys are strings
+             representing the names of leaves (branches) to be read from a ROOT TTree.
+             Values are Python callable functions (e.g., methods or lambdas) that will
+             be invoked for each event, receiving the leaf name and its corresponding data
+             as arguments. This allows flexible, user-defined processing of ROOT data
+             within the context of the selection template. It is declared `public` for
+             easier access from Python.
+             Example: `{"Particle.PT": process_pt, "Event.MET": process_met}`
+    """
+
+    # --- Cython Special Methods (Lifecycle) ---
+
+    def __cinit__(self):
+        """
+        @brief Cython-level constructor (pre-initialization).
+        @details This method is called automatically when a `SelectionTemplate` object
+                 is allocated, *before* `__init__`. It's primarily used for initializing
+                 C-level resources. Here, it allocates a new C++ `selection_template`
+                 object using `new` and assigns its pointer to `self.ptr`. It also
+                 initializes the `root_leaves` dictionary as an empty Python dict.
+                 It includes a check `if type(self) is not SelectionTemplate: return`
+                 to prevent execution in derived class constructors if they don't
+                 explicitly call the base `__cinit__`.
+        @note This ensures that the C++ object exists before `__init__` is called.
+        """
+        pass # Implementation replaced with documentation
+
+    def __init__(self, inpt = None):
+        """
+        @brief Python-level constructor (post-initialization).
+        @details This method is called after `__cinit__`. It handles further Python-level
+                 initialization. If an input dictionary `inpt` is provided (typically
+                 during unpickling via `__reduce__`), it attempts to restore the state
+                 of the Python object and the underlying C++ object.
+                 It iterates through the object's attributes and tries to set their values
+                 from the `inpt["data"]` dictionary.
+                 It also restores the C++ maps `passed_weights` and `matched_meta` from
+                 `inpt["weights"]` and `inpt["meta"]` respectively, performing necessary
+                 type casting.
+        @param inpt An optional dictionary containing the state to restore, typically
+                    provided by the `__reduce__` method during unpickling. If `None`,
+                    no state restoration is performed.
+        """
+        pass # Implementation replaced with documentation
+
+    def __dealloc__(self):
+        """
+        @brief Cython-level deallocator.
+        @details Called automatically when the `SelectionTemplate` object's reference
+                 count drops to zero and it's about to be garbage collected. Its primary
+                 role here is to release the C++ memory allocated in `__cinit__`. It uses
+                 `del self.ptr` which translates to `delete ptr` in C++, ensuring the
+                 C++ `selection_template` object is properly destroyed and preventing
+                 memory leaks.
+                 It includes a check `if type(self) is not SelectionTemplate: return`
+                 to prevent execution in derived class destructors if they don't
+                 handle deallocation appropriately.
+        """
+        pass # Implementation replaced with documentation
+
+    # --- Python Special Methods (Core Functionality) ---
+
+    def __hash__(self):
+        """
+        @brief Calculates a hash value for the `SelectionTemplate` instance.
+        @details Enables the object to be used in hash-based collections like dictionaries
+                 and sets. It retrieves the C++ `hash` string member via `self.ptr.hash`,
+                 converts it to a Python string, takes the first 8 characters (assuming
+                 they represent a hexadecimal value), and converts this substring to an
+                 integer using base 0 (which auto-detects hex).
+        @return An integer hash value derived from the C++ object's hash string.
+        """
+        pass # Implementation replaced with documentation
+
+    def __name__(self):
+        """
+        @brief Returns the name of the selection template.
+        @details Provides a convenient way to access the name. It retrieves the C++ `name`
+                 string member via `self.ptr.name` and converts it to a Python string
+                 using the `env` helper function (presumably for encoding/decoding).
+        @return The name of the selection template as a Python string.
+        """
+        pass # Implementation replaced with documentation
+
+    def __reduce__(self):
+        """
+        @brief Provides state information for pickling (serialization).
+        @details Called by the `pickle` module when serializing the object. It gathers
+                 the necessary information to reconstruct the object later.
+                 It collects the values of non-callable attributes into a `data` dictionary.
+                 It retrieves the C++ maps `passed_weights` and `matched_meta` directly.
+                 It returns a tuple containing:
+                 1. The class object (`self.__class__`).
+                 2. A tuple containing a single dictionary (`out`) which holds the
+                    `data`, `weights`, and `meta` needed by `__init__` for reconstruction.
+        @return A tuple suitable for the `pickle` protocol to serialize the object.
+        """
+        pass # Implementation replaced with documentation
+
+    # --- Cython Helper Methods ---
+
+    cdef void transform_dict_keys(self):
+        """
+        @brief Internal helper method for transforming dictionary keys (placeholder).
+        @details This is a `cdef` method, meaning it's optimized for speed and primarily
+                 intended for internal use within the Cython module, potentially callable
+                 from other Cython code but not directly from Python. The implementation
+                 is currently empty (`pass`). Its intended purpose might have been related
+                 to converting keys between C++ map formats and Python dictionary formats,
+                 or other internal key manipulations, but it's not actively used in the
+                 provided snippet.
+        """
+        pass # Implementation replaced with documentation
+
+    # --- Public Methods ---
+
+    def dump(self, str path = "./pkl-data", str name = ""):
+        """
+        @brief Serializes (pickles) the `SelectionTemplate` object to a file.
+        @details Saves the current state of the object to a binary file using the `pickle`
+                 module. It first ensures the target directory specified by `path` exists,
+                 creating it if necessary. It determines the filename using the provided
+                 `name` or defaults to the object's name retrieved via `env(self.ptr.name)`.
+                 The final file path is constructed as `{path}/{name}.pkl`. It handles
+                 potential `OSError` during file writing.
+        @param path The directory path where the pickle file should be saved.
+                    Defaults to `"./pkl-data"`.
+        @param name The base name for the output pickle file (without the `.pkl` extension).
+                    If empty, the object's name (`self.ptr.name`) is used.
+        @throws OSError If the directory cannot be created or the file cannot be written.
+        @throws pickle.PicklingError If the object cannot be pickled for any reason.
+        """
+        pass # Implementation replaced with documentation
+
+    def load(self, str path = "./pkl-data", str name = ""):
+        """
+        @brief Deserializes (unpickles) a `SelectionTemplate` object from a file.
+        @details Loads a previously saved `SelectionTemplate` object from a pickle file.
+                 It determines the filename using the provided `name` or defaults to the
+                 object's name (obtained via `env(self.ptr.name)`, although this seems
+                 problematic as `self.ptr` might not be valid before loading; typically,
+                 `load` would be a class method or a standalone function).
+                 It attempts to open and unpickle the file `{path}/{name}.pkl`.
+                 Handles potential `OSError` (e.g., file not found) and `EOFError`
+                 (e.g., empty or corrupted file) during loading.
+        @param path The directory path where the pickle file is located.
+                    Defaults to `"./pkl-data"`.
+        @param name The base name of the input pickle file (without the `.pkl` extension).
+                    If empty, the object's name (`self.ptr.name`) is used (potential issue here).
+        @return The loaded `SelectionTemplate` object if successful, otherwise `None`.
+        @throws FileNotFoundError If the specified pickle file does not exist (via OSError).
+        @throws pickle.UnpicklingError If the file content cannot be unpickled.
+        @throws EOFError If the file is empty or truncated.
+        """
+        pass # Implementation replaced with documentation
+
+    @property
+    def PassedWeights(self):
+        """
+        @property PassedWeights
+        @brief Provides access to the weights of events/items that passed the selection.
+        @details This property returns a Python dictionary representation of the C++
+                 `passed_weights` map (`map[string, map[string, float]]`). The C++ map
+                 likely stores weights associated with specific criteria (outer map key)
+                 and specific events or objects (inner map key). The helper function
+                 `as_basic_dict_dict` (presumably defined elsewhere) handles the
+                 conversion from the C++ nested map to a Python nested dictionary.
+        @return A nested Python dictionary representing the passed weights.
+                Example: `{"SelectionStep1": {"Event1": 1.0, "Event2": 0.9}, ...}`
+        """
+        pass # Implementation replaced with documentation
+
+    def HashToWeightFile(self, hash_):
+        """
+        @brief Maps hash values to corresponding weight information (likely file paths or identifiers).
+        @details This method takes one or more hash values (representing events, datasets,
+                 or configurations) and uses the C++ `reverse_hash` method to look up
+                 associated weight information.
+                 It first converts the input `hash_` (which can be a single value, list,
+                 or dict keys) into a `vector[string]` suitable for the C++ function,
+                 using the `enc` helper function for encoding.
+                 It calls `self.ptr.reverse_hash` with the vector of hashes.
+                 The C++ method returns a `vector[map[string, float]]`. Each map in the
+                 vector is expected to contain a single key-value pair representing the
+                 looked-up information (e.g., a filename and a weight or identifier).
+                 It then converts each map in the result vector back into a Python tuple
+                 (containing the single key-value pair).
+        @param hash_ A single hash value (int/str), a list of hash values, or a dictionary
+                     whose keys are hash values.
+        @return A list of tuples, where each tuple represents the information retrieved
+                for a corresponding input hash. Example: `[("file1.root", 1.0), ("file2.root", 1.0)]`
+        """
+        pass # Implementation replaced with documentation
+
+    @property
+    def GetMetaData(self):
+        """
+        @property GetMetaData
+        @brief Provides access to metadata associated with matched elements in the selection.
+        @details This property returns a Python dictionary representation of the C++
+                 `matched_meta` map (`map[string, meta_t]`). The C++ map stores metadata
+                 objects (`meta_t`) associated with specific keys (strings, possibly
+                 representing selection steps or matched object identifiers).
+                 It iterates through the C++ map. For each key-value pair (`itm`), it creates
+                 a new Python `Meta` object (presumably another wrapper class defined in
+                 `AnalysisG.core.meta`), assigns the C++ `meta_t` (`itm.second`) to the
+                 `ptr.meta_data` member of the `Meta` wrapper, and stores this `Meta`
+                 object in the output Python dictionary `out` with the key converted
+                 from C++ string to Python string using `env(itm.first)`.
+        @return A Python dictionary mapping string keys to `Meta` objects containing the
+                associated metadata.
+        """
+        pass # Implementation replaced with documentation
+
+    def Postprocessing(self):
+        """
+        @brief Hook for performing postprocessing steps after data interpretation.
+        @details This method is intended to be called after processing data (e.g., after
+                 `InterpretROOT` finishes). It serves as a placeholder for any custom
+                 logic that needs to run once all data has been iterated through, such as
+                 final calculations, normalization, or cleanup. The current implementation
+                 is empty (`pass`) and should be overridden or extended in derived classes
+                 or specific use cases if postprocessing is needed.
+        """
+        pass # Implementation replaced with documentation
+
+    def InterpretROOT(self, str path, str tree):
+        """
+        @brief Processes data from a ROOT TTree based on the `root_leaves` configuration.
+        @details This method reads specified leaves from a TTree in a ROOT file (or files)
+                 and applies user-defined functions to the data for each event.
+                 1. **Validation:** Checks if `self.root_leaves` is populated. If not, prints
+                    an error and returns, as it needs this mapping to function.
+                 2. **Initialization:** Sets up necessary variables: C++ strings (`kx`, `ky`),
+                    Python lists (`rn`, `li`, `lo`), C++ vectors (`lx`, `lf`), maps for
+                    index association (`associate`, `idx`), and helper objects (`tools`, `IO`).
+                 3. **IO Configuration:** Creates an `IO` object (from `AnalysisG.core.io`),
+                    configures it with the input `path` (ROOT file(s)), `tree` name(s),
+                    the list of leaves to read (`li`, derived from `root_leaves.keys()`),
+                    and sets `Verbose` to `False`.
+                 4. **Event Loop:** Iterates through the events provided by the `IO` object.
+                    - **First Event Setup (if `trig` is False):**
+                        - Gets the actual leaf names available in the current file (`i`).
+                        - Tries to match available leaf names (`kx`) with the requested leaf
+                          names (`lx` from `root_leaves`) using `tools.ends_with`.
+                        - Populates `associate` map: `available_leaf_index -> requested_leaf_name`.
+                        - Populates `idx` map: `available_leaf_index -> root_leaves_function_index`.
+                        - Sets `trig` to `True` to skip this setup for subsequent events.
+                        - Stores the original keys from `root_leaves` in `rn`.
+                    - **Data Processing (All Events):**
+                        - Retrieves the data for the current event (`li = list(i.values())`).
+                        - Iterates through the `idx` map. For each `available_leaf_index` (`pi.first`)
+                          and its corresponding `root_leaves_function_index` (`pi.second`):
+                            - Calls the user-defined function `lo[pi.second]` (the function
+                              associated with the leaf in `root_leaves`).
+                            - Passes the function a tuple containing:
+                                - The original leaf name key from `root_leaves` (`rn[pi.second]`).
+                                - The actual data read from the ROOT file for that leaf (`li[pi.first]`).
+                 5. **Postprocessing:** Calls `self.Postprocessing()` after the loop finishes.
+                 6. **Return:** Returns `self`, potentially allowing method chaining.
+        @param path The path to the ROOT file(s) (can be a single file, a directory, or include wildcards).
+        @param tree The name of the TTree(s) within the ROOT file(s) to process.
+        @return The `SelectionTemplate` instance (`self`).
+        @note Requires the `root_leaves` attribute to be set beforehand with a dictionary
+              mapping leaf names to Python callable functions.
+        @note Relies heavily on the `AnalysisG.core.io.IO` class for ROOT file reading and iteration.
+        """
+        pass # Implementation replaced with documentation

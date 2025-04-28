@@ -1,0 +1,277 @@
+/**
+ * @file topkinematics.h
+ * @brief Defines the topkinematics class for analyzing top quark kinematics.
+ *
+ * This file contains the declaration and implementation of the topkinematics class,
+ * which inherits from selection_template. It is designed to select events based on
+ * the number of top quarks originating from a resonance and to calculate various
+ * kinematic properties and combinations of these top quarks.
+ */
+
+// Include the header file for this class.
+#include "topkinematics.h"
+
+/**
+ * @brief Default constructor for the topkinematics class.
+ * @details Initializes the selection name to "topkinematics".
+ */
+topkinematics::topkinematics();
+
+/**
+ * @brief Destructor for the topkinematics class.
+ * @details Handles the cleanup of resources used by the topkinematics object.
+ *          The override keyword indicates it overrides a virtual destructor in the base class.
+ */
+topkinematics::~topkinematics();
+
+/**
+ * @brief Creates a clone (deep copy) of the current topkinematics object.
+ * @details This method is used for polymorphism, allowing the creation of copies
+ *          of derived class objects through a base class pointer. It follows the
+ *          prototype pattern.
+ * @return selection_template* A pointer to the newly created topkinematics object,
+ *         cast to a base class pointer.
+ */
+selection_template* topkinematics::clone();
+
+/**
+ * @brief Merges data from another selection_template object into this one.
+ * @details This function combines the kinematic data collected by another
+ *          topkinematics instance (passed as a base class pointer) into the
+ *          current instance. It specifically merges the maps containing
+ *          kinematic variables, mass combinations, and delta R values.
+ * @param sl A pointer to the selection_template object to merge from. This object
+ *           is expected to be dynamically castable to topkinematics.
+ */
+void topkinematics::merge(selection_template* sl);
+
+/**
+ * @brief Applies the event selection criteria.
+ * @details This method determines if an event passes the selection requirements.
+ *          The specific criterion implemented here is that the event must contain
+ *          exactly two top quarks identified as originating from a resonance decay.
+ * @param ev A pointer to the event_template object representing the current event.
+ *           This object is expected to be dynamically castable to ssml_mc20.
+ * @return bool True if the event satisfies the selection criteria (exactly 2 resonant tops),
+ *         false otherwise.
+ */
+bool topkinematics::selection(event_template* ev);
+
+/**
+ * @brief Executes the analysis strategy for a selected event.
+ * @details This method calculates and stores various kinematic properties for the
+ *          top quarks in the event, provided the event has passed the selection.
+ *          It separates top quarks into resonant (from resonance) and spectator categories.
+ *          It calculates pt, eta, phi, and energy for both resonant and spectator tops.
+ *          It also calculates the Delta R separation and invariant mass for pairs of tops
+ *          in different combinations (Resonant-Spectator, Resonant-Resonant, Spectator-Spectator).
+ *          The results are stored in the class member maps.
+ * @param ev A pointer to the event_template object representing the current event.
+ *           This object is expected to be dynamically castable to ssml_mc20.
+ * @return bool Always returns true, indicating the strategy execution was successful
+ *         (or at least completed without errors). The actual success is determined
+ *         by whether the event passed the `selection` method beforehand.
+ */
+bool topkinematics::strategy(event_template* ev);
+
+// --- Header Guard and Class Definition ---
+
+#ifndef topkinematics_H
+#define topkinematics_H
+
+// Include necessary headers for event data structure and base class template.
+#include <ssml_mc20/event.h>
+#include <templates/selection_template.h>
+
+/**
+ * @class topkinematics
+ * @brief A selection class derived from selection_template for top quark kinematic analysis.
+ * @details This class implements event selection based on the origin of top quarks
+ *          (resonant vs. spectator) and calculates various kinematic distributions
+ *          like pT, eta, phi, energy, Delta R between pairs, and invariant mass of pairs.
+ *          It stores the results in maps for later analysis or plotting.
+ */
+class topkinematics: public selection_template
+{
+    public:
+        /**
+         * @brief Constructor. Initializes the selection name.
+         */
+        topkinematics();
+
+        /**
+         * @brief Virtual destructor. Ensures proper cleanup in derived classes.
+         */
+        ~topkinematics() override;
+
+        /**
+         * @brief Clones the current object. See prototype pattern.
+         * @return selection_template* Pointer to the new clone.
+         */
+        selection_template* clone() override;
+
+        /**
+         * @brief Selects events based on criteria (e.g., number of resonant tops).
+         * @param ev Pointer to the event data.
+         * @return bool True if the event passes selection, false otherwise.
+         */
+        bool selection(event_template* ev) override;
+
+        /**
+         * @brief Calculates kinematic variables for selected events.
+         * @param ev Pointer to the event data.
+         * @return bool True if the strategy execution completes.
+         */
+        bool strategy(event_template* ev) override;
+
+        /**
+         * @brief Merges data from another topkinematics instance.
+         * @param sl Pointer to the selection object to merge from.
+         */
+        void merge(selection_template* sl) override;
+
+        /**
+         * @brief Stores kinematic variables (pt, eta, phi, energy) for resonant top quarks.
+         * @details Keys are "pt", "eta", "phi", "energy". Values are vectors of floats.
+         */
+        std::map<std::string, std::vector<float>> res_top_kinematics;
+
+        /**
+         * @brief Stores kinematic variables (pt, eta, phi, energy) for spectator top quarks.
+         * @details Keys are "pt", "eta", "phi", "energy". Values are vectors of floats.
+         */
+        std::map<std::string, std::vector<float>> spec_top_kinematics;
+
+        /**
+         * @brief Stores invariant mass values for pairs of top quarks.
+         * @details Keys like "RS", "RR", "SS" denote Resonant-Spectator,
+         *          Resonant-Resonant, and Spectator-Spectator pairs, respectively.
+         *          Values are vectors of calculated invariant masses (in GeV).
+         */
+        std::map<std::string, std::vector<float>> mass_combi;
+
+        /**
+         * @brief Stores Delta R values for pairs of top quarks.
+         * @details Keys like "RS", "RR", "SS" denote Resonant-Spectator,
+         *          Resonant-Resonant, and Spectator-Spectator pairs, respectively.
+         *          Values are vectors of calculated Delta R separations.
+         */
+        std::map<std::string, std::vector<float>> deltaR;
+};
+
+#endif // topkinematics_H
+
+// --- Cython pxd file ---
+// Specifies C++ language and Cython language level for compilation.
+// # distutils: language=c++
+// # cython: language_level=3
+
+// Import necessary C++ standard library components for Cython.
+from libcpp.map cimport map
+from libcpp.vector cimport vector
+from libcpp.string cimport string
+// Import the base Cython class definition.
+from AnalysisG.core.selection_template cimport *
+
+/**
+ * @brief Cython extern definition for the C++ topkinematics class.
+ * @details This block declares the C++ topkinematics class structure to Cython,
+ *          allowing Cython code to interact with C++ objects. It specifies the
+ *          base class and the accessible member variables (the maps).
+ */
+cdef extern from "topkinematics.h":
+    cdef cppclass topkinematics(selection_template):
+        /**
+         * @brief C++ constructor declaration for Cython.
+         * @details `except +` indicates it can throw C++ exceptions that Cython can handle.
+         */
+        topkinematics() except +
+
+        /**
+         * @brief Declaration of the C++ member map for resonant top kinematics.
+         */
+        map[string, vector[float]] res_top_kinematics
+        /**
+         * @brief Declaration of the C++ member map for spectator top kinematics.
+         */
+        map[string, vector[float]] spec_top_kinematics
+        /**
+         * @brief Declaration of the C++ member map for top pair invariant masses.
+         */
+        map[string, vector[float]] mass_combi
+        /**
+         * @brief Declaration of the C++ member map for top pair Delta R values.
+         */
+        map[string, vector[float]] deltaR
+
+/**
+ * @brief Cython wrapper class for the C++ topkinematics class.
+ * @details This class provides a Python interface to the C++ topkinematics functionality.
+ *          It inherits from the Cython base class SelectionTemplate.
+ */
+cdef class TopKinematics(SelectionTemplate):
+    /**
+     * @brief Pointer to the underlying C++ topkinematics object.
+     */
+    cdef topkinematics* tt
+    /**
+     * @brief Python dictionary to hold resonant top kinematics, populated from the C++ map.
+     */
+    cdef public dict res_top_kinematics
+    /**
+     * @brief Python dictionary to hold spectator top kinematics, populated from the C++ map.
+     */
+    cdef public dict spec_top_kinematics
+    /**
+     * @brief Python dictionary to hold top pair invariant masses, populated from the C++ map.
+     */
+    cdef public dict mass_combi
+    /**
+     * @brief Python dictionary to hold top pair Delta R values, populated from the C++ map.
+     */
+    cdef public dict deltaR
+
+// --- Cython pyx file ---
+// Specifies C++ language and Cython language level for compilation.
+// # distutils: language=c++
+// # cython: language_level=3
+
+// Import helper function to convert C++ maps to Python dictionaries and the base class.
+from AnalysisG.core.tools cimport as_dict
+from AnalysisG.core.selection_template cimport *
+
+/**
+ * @brief Cython wrapper class implementation for topkinematics.
+ */
+cdef class TopKinematics(SelectionTemplate):
+    /**
+     * @brief Cython constructor (__cinit__).
+     * @details Called when a TopKinematics object is created in Python.
+     *          It instantiates a new C++ topkinematics object and stores a pointer to it
+     *          in both the base class `ptr` and the derived class `tt` member.
+     */
+    def __cinit__(self):
+        pass # Implementation replaced by documentation
+
+    /**
+     * @brief Cython destructor (__dealloc__).
+     * @details Called when the Python object's reference count drops to zero.
+     *          It ensures the C++ pointer `tt` is deleted. Note: The base class
+     *          SelectionTemplate likely handles deletion of `ptr`, so deleting `tt`
+     *          might be redundant or potentially problematic if `ptr` and `tt` point
+     *          to the same object managed by the base class. Careful memory management review needed.
+     *          Assuming base class handles deletion via `ptr`.
+     */
+    def __dealloc__(self):
+        pass # Implementation replaced by documentation
+
+    /**
+     * @brief Converts the C++ result maps to Python dictionaries.
+     * @details This C-defined method (`cdef`) is typically called after the C++
+     *          `strategy` method has populated the maps. It uses the `as_dict`
+     *          helper function to transform the C++ `std::map<std::string, std::vector<float>>`
+     *          members into Python dictionaries (`dict`) stored in the public attributes
+     *          of the Cython class, making the results accessible from Python.
+     */
+    cdef void transform_dict_keys(self):
+        pass # Implementation replaced by documentation

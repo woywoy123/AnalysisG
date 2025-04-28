@@ -1,0 +1,380 @@
+/**
+ * @file container.dox
+ * @brief Implementation file for the container class and entry_t struct.
+ *
+ * This file provides the definitions for the methods declared in container.h.
+ * It includes the constructor, destructor, and various methods for managing
+ * analysis objects like events, graphs, and selections within the container.
+ * It also implements the entry_t struct methods for managing collections
+ * of these objects associated with a specific hash.
+ */
+#include <container/container.h>
+#include <TSystem.h> // Include for ROOT system utilities, likely used in create_path
+
+/**
+ * @brief Default constructor for the container class.
+ * Initializes a new container object.
+ */
+container::container(){}
+
+/**
+ * @brief Destructor for the container class.
+ * Responsible for cleaning up all dynamically allocated memory.
+ * This includes deleting the metadata object, the filename string,
+ * destroying all entries in the random_access map, and cleaning up
+ * the merged selections map if it exists.
+ */
+container::~container(){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Retrieves all event templates associated with a specific label.
+ * If the provided label matches the container's label (or if the provided label is empty),
+ * it iterates through all entries in the random_access map and appends their
+ * event_template pointers to the output vector `out`.
+ *
+ * @param out Pointer to a std::vector<event_template*> where the found event pointers will be added.
+ * @param label The label to filter events by. If empty or matches the container's label, all events are considered.
+ */
+void container::get_events(std::vector<event_template*>* out, std::string label){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Adds metadata and the associated filename to the container.
+ * Stores the pointer to the metadata object and creates a copy of the filename string.
+ *
+ * @param data Pointer to the meta object containing metadata.
+ * @param fname The filename associated with the data being processed.
+ */
+void container::add_meta_data(meta* data, std::string fname){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Retrieves the metadata object associated with this container.
+ *
+ * @return meta* Pointer to the stored meta object. Returns nullptr if no metadata has been added.
+ */
+meta* container::get_meta_data(){return this -> meta_data;}
+
+/**
+ * @brief Adds a new entry to the random_access map or retrieves an existing one.
+ * If an entry with the given hash already exists, a pointer to it is returned.
+ * Otherwise, a new entry_t is created, initialized, assigned the hash,
+ * inserted into the map, and a pointer to the new entry is returned.
+ *
+ * @param hash The unique hash string identifying the entry.
+ * @return entry_t* Pointer to the existing or newly created entry_t object.
+ */
+entry_t* container::add_entry(std::string hash){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Adds an event_template to the appropriate entry based on its hash.
+ * If the container doesn't have a label yet, it adopts the provided label.
+ * It retrieves or creates the entry corresponding to the event's hash.
+ * Associates the container's metadata with the event.
+ * Checks if an event with the same name and tree already exists within the entry.
+ * If not, adds the event to the entry's event list.
+ *
+ * @param ev Pointer to the event_template object to add.
+ * @param _label The label associated with this event source.
+ * @return bool True if an identical event (same name, same tree) was already present in the entry, false otherwise.
+ */
+bool container::add_event_template(event_template* ev, std::string _label){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Adds a graph_template to the appropriate entry based on its hash.
+ * If the container doesn't have a label yet, it adopts the provided label.
+ * It retrieves or creates the entry corresponding to the graph's hash.
+ * Associates the container's metadata with the graph.
+ * Checks if a graph with the same name and tree already exists within the entry.
+ * If not, adds the graph to the entry's graph list.
+ *
+ * @param gr Pointer to the graph_template object to add.
+ * @param _label The label associated with this graph source.
+ * @return bool True if an identical graph (same name, same tree) was already present in the entry, false otherwise.
+ */
+bool container::add_graph_template(graph_template* gr, std::string _label){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Adds a selection_template to the appropriate entry based on its hash.
+ * It retrieves or creates the entry corresponding to the selection's hash.
+ * Associates the container's metadata with the selection.
+ * Checks if a selection with the same name and tree already exists within the entry.
+ * If not, adds the selection to the entry's selection list.
+ *
+ * @param sel Pointer to the selection_template object to add.
+ * @return bool True if an identical selection (same name, same tree) was already present in the entry, false otherwise.
+ */
+bool container::add_selection_template(selection_template* sel){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Compiles the data within the container, processing events, graphs, and selections.
+ * This method iterates through all entries in the `random_access` map.
+ * For each entry:
+ * 1. Compiles associated event templates (`CompileEvent`).
+ * 2. Handles selection templates:
+ *    - Initializes the `merged` map if selections exist and it's not already created.
+ *    - For the first entry processed, creates output file handles (`write_t`) for each selection if an `output_path` is set.
+ *    - Clones the selection templates from the first entry into the `merged` map, assigning the thread index and file handle.
+ *    - Compiles each selection template (`CompileEvent`), potentially performing bulk writes.
+ *    - Merges the results of the compiled selection into the corresponding template in the `merged` map.
+ *    - Writes data if output path is set and bulk writing is not enabled (`handles[name]->write()`).
+ * 3. Handles graph templates:
+ *    - Assigns the thread index.
+ *    - Executes preselection if defined.
+ *    - Compiles the graph template (`CompileEvent`).
+ *    - Exports the compiled graph data (`data_export`).
+ *    - Stores the exported graph data (`graph_t`) within the entry's `m_data` vector.
+ * 4. Destroys the processed entry's internal template vectors (`ev->destroy()`).
+ * 5. Increments the processed entry counter `l`.
+ * After processing all entries:
+ * 6. Finalizes bulk writing for merged selections.
+ * 7. Closes and deletes all output file handles.
+ * 8. Updates the counter `l` to the total number of entries processed.
+ *
+ * @param l Pointer to a size_t variable, used to track the number of processed entries. It's updated during and at the end of the function.
+ * @param threadIdx The index of the current processing thread, passed down to templates.
+ */
+void container::compile(size_t* l, int threadIdx){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Merges the compiled selection results from this container into a target map.
+ * If the container has compiled selections stored in its `merged` map, this function
+ * iterates through them. For each selection in `merged`, it finds the corresponding
+ * selection in the input map `inpt` and merges the results using the `merger` method.
+ * After merging, the selection object in the container's `merged` map is deleted.
+ * Finally, the container's `merged` map itself is cleared and deleted.
+ *
+ * @param inpt Pointer to the target map (typically a global or aggregator map)
+ *             where selection results should be merged into.
+ */
+void container::fill_selections(std::map<std::string, selection_template*>* inpt){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Populates a dataloader with the compiled graph data from this container.
+ * Iterates through all entries in the `random_access` map. For each entry,
+ * it iterates through the stored `graph_t` objects (results of graph compilation)
+ * in `m_data` and passes each one to the `dataloader`'s `extract_data` method.
+ * After processing an entry, its `m_data` vector is cleared.
+ * Finally, the container's `random_access` map is cleared, releasing the entries.
+ *
+ * @param dl Pointer to the dataloader object to populate.
+ */
+void container::populate_dataloader(dataloader* dl){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Returns the number of entries currently stored in the container.
+ *
+ * @return size_t The number of key-value pairs in the `random_access` map.
+ */
+size_t container::len(){return this -> random_access.size();}
+
+// ========================================================================
+// entry_t Implementation
+// ========================================================================
+
+#include <container/container.h> // Include header again (potentially redundant, depends on build system)
+
+/**
+ * @brief Initializes the vectors within the entry_t struct.
+ * Reserves space in the vectors to potentially avoid reallocations for small numbers of items.
+ */
+void entry_t::init(){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Destroys the contents of the entry_t struct.
+ * Calls the templated destroy method for each vector containing pointers
+ * (m_event, m_graph, m_selection) to delete the pointed-to objects and clear the vectors.
+ * Note: Does not clear m_data as ownership might be transferred (e.g., to dataloader).
+ */
+void entry_t::destroy(){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Checks if an event_template with the same tree and name already exists.
+ * Iterates through the `m_event` vector. If a match is found based on the `tree`
+ * and `name` members, it returns true. Otherwise, it adds the provided event
+ * pointer `ev` to the `m_event` vector and returns false.
+ *
+ * @param ev Pointer to the event_template to check and potentially add.
+ * @return bool True if an event with the same tree and name was already present, false otherwise.
+ */
+bool entry_t::has_event(event_template* ev){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Checks if a graph_template with the same tree and name already exists.
+ * Iterates through the `m_graph` vector. If a match is found based on the `tree`
+ * and `name` members, it returns true. Otherwise, it adds the provided graph
+ * pointer `gr` to the `m_graph` vector and returns false.
+ *
+ * @param gr Pointer to the graph_template to check and potentially add.
+ * @return bool True if a graph with the same tree and name was already present, false otherwise.
+ */
+bool entry_t::has_graph(graph_template* gr){
+    // Implementation replaced by documentation
+}
+
+/**
+ * @brief Checks if a selection_template with the same tree and name already exists.
+ * Iterates through the `m_selection` vector. If a match is found based on the `tree`
+ * and `name` members, it returns true. Otherwise, it adds the provided selection
+ * pointer `sel` to the `m_selection` vector and returns false.
+ *
+ * @param sel Pointer to the selection_template to check and potentially add.
+ * @return bool True if a selection with the same tree and name was already present, false otherwise.
+ */
+bool entry_t::has_selection(selection_template* sel){
+    // Implementation replaced by documentation
+}
+
+
+// ========================================================================
+// Header Content (container.h) - Included for context
+// ========================================================================
+
+#ifndef CONTAINER_H
+#define CONTAINER_H
+
+#include <meta/meta.h>
+#include <tools/tools.h>
+
+#include <templates/graph_template.h>
+#include <templates/event_template.h>
+#include <templates/selection_template.h>
+
+#include <generators/dataloader.h>
+
+/**
+ * @struct entry_t
+ * @brief Represents a collection of analysis objects associated with a unique hash.
+ *
+ * This struct holds vectors of pointers to different template types (event, graph, selection)
+ * that share the same origin or processing characteristics, identified by a hash string.
+ * It also stores the results of graph compilation (`m_data`).
+ */
+struct entry_t {
+    /** @brief Unique identifier string for this entry. */
+    std::string hash = "";
+    /** @brief Vector storing pointers to compiled graph data (`graph_t`). Ownership might be transferred. */
+    std::vector<graph_t*>                m_data  = {};
+    /** @brief Vector storing pointers to graph templates associated with this hash. */
+    std::vector<graph_template*>         m_graph = {};
+    /** @brief Vector storing pointers to event templates associated with this hash. */
+    std::vector<event_template*>         m_event = {};
+    /** @brief Vector storing pointers to selection templates associated with this hash. */
+    std::vector<selection_template*> m_selection = {};
+
+    /** @brief Initializes the internal vectors. @see entry_t::init() */
+    void init();
+    /** @brief Destroys the template objects pointed to by the vectors. @see entry_t::destroy() */
+    void destroy();
+    /** @brief Checks for existence and potentially adds an event template. @see entry_t::has_event() */
+    bool has_event(event_template* ev);
+    /** @brief Checks for existence and potentially adds a graph template. @see entry_t::has_graph() */
+    bool has_graph(graph_template* gr);
+    /** @brief Checks for existence and potentially adds a selection template. @see entry_t::has_selection() */
+    bool has_selection(selection_template* sel);
+
+    /**
+     * @brief Template function to delete objects pointed to by a vector and clear the vector.
+     * Iterates through the vector, deletes each element (assuming it's a pointer),
+     * sets the pointer to nullptr, and then swaps the vector with an empty one to release memory.
+     * @tparam g The type of the pointer stored in the vector.
+     * @param c Pointer to the std::vector<g*> to be cleared and whose elements are to be deleted.
+     */
+    template <typename g>
+    void destroy(std::vector<g*>* c){
+        // Implementation replaced by documentation
+    }
+};
+
+/**
+ * @class container
+ * @brief Manages collections of analysis objects (events, graphs, selections) and orchestrates their processing.
+ *
+ * Inherits from `tools` (presumably providing utility functions like `split`, `create_path`).
+ * Acts as a central hub during the analysis process, grouping related analysis templates
+ * based on a hash (often derived from event context) using the `entry_t` struct.
+ * It handles adding templates, associating metadata, compiling the templates, merging selection results,
+ * and populating dataloaders with graph data.
+ */
+class container: public tools
+{
+    public:
+        /** @brief Default constructor. @see container::container() */
+        container();
+        /** @brief Destructor. Cleans up allocated resources. @see container::~container() */
+        ~container();
+
+        /** @brief Adds metadata and associated filename. @see container::add_meta_data() */
+        void add_meta_data(meta*, std::string);
+        /** @brief Retrieves the stored metadata pointer. @see container::get_meta_data() */
+        meta* get_meta_data();
+
+        /** @brief Adds a selection template to the appropriate entry. @see container::add_selection_template() */
+        bool add_selection_template(selection_template*);
+        /** @brief Adds an event template to the appropriate entry. @see container::add_event_template() */
+        bool add_event_template(event_template*, std::string label);
+        /** @brief Adds a graph template to the appropriate entry. @see container::add_graph_template() */
+        bool add_graph_template(graph_template*, std::string label);
+
+        /** @brief Merges compiled selections into an external map. @see container::fill_selections() */
+        void fill_selections(std::map<std::string, selection_template*>* inpt);
+        /** @brief Retrieves event templates, optionally filtered by label. @see container::get_events() */
+        void get_events(std::vector<event_template*>*, std::string label);
+        /** @brief Populates a dataloader with compiled graph data. @see container::populate_dataloader() */
+        void populate_dataloader(dataloader* dl);
+        /** @brief Compiles all stored templates (events, graphs, selections). @see container::compile() */
+        void compile(size_t* len, int threadIdx);
+        /** @brief Returns the number of entries in the container. @see container::len() */
+        size_t len();
+
+        /** @brief Adds or retrieves an entry based on hash. @see container::add_entry() */
+        entry_t* add_entry(std::string hash);
+
+        /** @brief Pointer to the metadata object associated with this container's data. */
+        meta*        meta_data   = nullptr;
+        /** @brief Pointer to the string holding the filename of the original data source. */
+        std::string* filename    = nullptr;
+        /** @brief Pointer to the string specifying the base output path for results (e.g., selections). If nullptr, output might be disabled. */
+        std::string* output_path = nullptr;
+        /** @brief Label associated with the data source (e.g., sample type, dataset name). Used for organizing output. */
+        std::string     label    = "";
+
+        /**
+         * @brief Map storing `entry_t` objects, keyed by their hash string.
+         * Provides random access to collections of templates based on their shared hash.
+         */
+        std::map<std::string, entry_t> random_access;
+        /**
+         * @brief Map storing pointers to merged selection templates, keyed by selection name.
+         * This map holds the aggregated results of selections after the compile step.
+         * It is initialized during `compile` if selections are present and potentially written out.
+         * It is cleared and deleted after its contents are transferred (e.g., via `fill_selections`).
+         */
+        std::map<std::string, selection_template*>* merged = nullptr;
+};
+
+#endif // CONTAINER_H

@@ -1,0 +1,869 @@
+/**
+ * @file childrenkinematics.h
+ * @brief Defines the childrenkinematics C++ class and associated data structures for analyzing top quark decay product kinematics.
+ * @details This header declares the `childrenkinematics` C++ class, which inherits from `selection_template`.
+ *          It is designed to select events based on the number of resonant and spectator top quarks
+ *          and then collect detailed kinematic information about the decay products (children) of these tops.
+ *          The primary goal is to understand the properties of particles originating directly from top quark decays,
+ *          differentiating between tops produced via a resonance and those produced as spectators in a 4-top event context.
+ *          It also defines several helper structs (`kinematic_t`, `misc_t`, `perms_t`) to organize the collected kinematic,
+ *          decay mode, and permutation-related data points efficiently.
+ *          The corresponding Cython wrapper class (`ChildrenKinematics`), documented further down, handles the crucial interface
+ *          with the Python-based analysis framework. This includes managing the reading of data from ROOT files (via branch-to-handler mapping),
+ *          merging data collected by the C++ class instances (often in parallel processing scenarios), and performing post-processing
+ *          steps to transform the collected C++ data structures into Python dictionaries suitable for final analysis, histogramming, or plotting.
+ */
+
+#ifndef CHILDRENKINEMATICS_H
+#define CHILDRENKINEMATICS_H
+
+// --- Header Includes ---
+// @brief Includes the definition of the event data structure used in the analysis.
+// @details This would typically include a class like `bsm_4tops::event` which contains information
+//          about particles (jets, leptons, MET, truth particles) within a single collision event.
+//          The `childrenkinematics` class relies on this structure to access top quarks and their decay products.
+// #include <bsm_4tops/event.h> // (Example path)
+
+// @brief Includes the definition of the base class template for analysis selections.
+// @details This header provides the `selection_template` class, defining the common interface
+//          (methods like `selection`, `strategy`, `merge`, `clone`) that all analysis selection
+//          modules must implement. `childrenkinematics` inherits from this template.
+// #include <templates/selection_template.h> // (Example path)
+
+// @brief Includes standard C++ library components like vectors.
+// @details Provides `std::vector`, used extensively within the class and helper structs
+//          to store collections of kinematic data, decay information, and permutation results.
+// #include <vector>
+
+// @brief Includes standard C++ library components like maps (Implied by usage in .cxx).
+// @details Provides `std::map`, likely used internally within the `.cxx` implementation,
+//          potentially for organizing particles or intermediate results.
+// #include <map>
+
+// @brief Includes standard C++ library components like strings (Implied by usage in .cxx).
+// @details Provides `std::string`, likely used for naming, keys, or identifiers within the `.cxx` implementation.
+// #include <string>
+
+
+// --- Data Structures ---
+
+/**
+ * @struct kinematic_t
+ * @brief Structure to hold basic kinematic information of a single particle.
+ * @details This structure serves as a container for the fundamental four-vector components and particle type identification.
+ *          It is used to store the properties of individual decay products (children) from top quarks.
+ *          The units for momentum and energy components are conventionally GeV, although they might be stored
+ *          scaled (e.g., divided by 1000) within the analysis framework before being potentially rescaled later.
+ */
+struct kinematic_t {
+    /**
+     * @var pt
+     * @brief Transverse momentum (pt) of the particle.
+     * @details Represents the component of momentum perpendicular to the beam axis. Typically stored in GeV,
+     *          potentially scaled by 1/1000 during processing (i.e., stored in TeV).
+     *          Initialized value (commented out) suggests a default of 0.
+     */
+    float pt; // = 0;
+
+    /**
+     * @var energy
+     * @brief Total energy (E) of the particle.
+     * @details Represents the relativistic energy of the particle. Typically stored in GeV,
+     *          potentially scaled by 1/1000 during processing (i.e., stored in TeV).
+     *          Initialized value (commented out) suggests a default of 0.
+     */
+    float energy; // = 0;
+
+    /**
+     * @var eta
+     * @brief Pseudorapidity (eta) of the particle.
+     * @details A spatial coordinate describing the angle of the particle relative to the beam axis, defined as
+     *          `eta = -ln(tan(theta/2))`, where theta is the polar angle. It is a dimensionless quantity.
+     *          Initialized value (commented out) suggests a default of 0.
+     */
+    float eta; // = 0;
+
+    /**
+     * @var phi
+     * @brief Azimuthal angle (phi) of the particle.
+     * @details Represents the angle of the particle's momentum projection in the transverse plane, measured from the positive x-axis.
+     *          It is typically given in radians, ranging from -pi to +pi.
+     *          Initialized value (commented out) suggests a default of 0.
+     */
+    float phi; // = 0;
+
+    /**
+     * @var pdgid
+     * @brief Particle Data Group identifier (PDG ID).
+     * @details An integer code uniquely identifying the type of particle according to the Particle Data Group standard
+     *          (e.g., 6 for top quark, 5 for bottom quark, 11 for electron, 24 for W boson).
+     *          Initialized value (commented out) suggests a default of 0 (often used for undefined or placeholder).
+     */
+    int pdgid; // = 0;
+};
+
+/**
+ * @struct misc_t
+ * @brief Structure to hold extended kinematic and decay-related information for a particle, typically a top quark decay product.
+ * @details This structure enhances the basic `kinematic_t` information with properties specifically relevant to analyzing
+ *          the decay chain of a parent particle (like a top quark). It includes flags about the decay type (leptonic/hadronic),
+ *          angular separation from the parent, and fractional momentum/energy transfer.
+ */
+struct misc_t {
+    /**
+     * @var kin
+     * @brief Basic kinematic information (pt, energy, eta, phi, pdgid) of the particle.
+     * @details Embeds a `kinematic_t` structure to provide the fundamental four-vector and particle ID.
+     */
+    kinematic_t kin;
+
+    /**
+     * @var is_lep
+     * @brief Flag indicating if the particle originates from a leptonic decay chain.
+     * @details Set to `true` if the parent top quark decayed leptonically (producing an electron or muon and a neutrino, typically via a W boson),
+     *          and `false` if it decayed hadronically (producing quarks, typically via a W boson decaying to jets).
+     *          Initialized value (commented out) suggests a default of `false`.
+     */
+    bool is_lep; // = false;
+
+    /**
+     * @var mass_clust
+     * @brief Invariant mass calculated from clustered objects associated with this particle/decay.
+     * @details The exact definition is context-dependent within the analysis. It might represent the invariant mass
+     *          of jets associated with a hadronic decay, or some other combination of related particles. Units are typically GeV.
+     *          Initialized value (commented out) suggests a default of 0.
+     */
+    float mass_clust; // = 0;
+
+    /**
+     * @var delta_R
+     * @brief Angular separation (Delta R) between this particle (child) and its parent top quark.
+     * @details Calculated as `Delta R = sqrt( (eta_child - eta_parent)^2 + (phi_child - phi_parent)^2 )`, where phi difference is handled correctly across the -pi/+pi boundary.
+     *          It provides a measure of how collimated the decay product is with respect to the parent top's direction. Dimensionless.
+     *          Initialized value (commented out) suggests a default of 0.
+     */
+    float delta_R; // = 0;
+
+    /**
+     * @var frc_energy
+     * @brief Fraction of the parent top quark's energy carried by this child particle.
+     * @details Calculated as `E_child / E_parent`. Provides insight into the energy sharing within the decay. Dimensionless.
+     *          Initialized value (commented out) suggests a default of 0.
+     */
+    float frc_energy; // = 0;
+
+    /**
+     * @var frc_pt
+     * @brief Fraction of the parent top quark's transverse momentum carried by this child particle.
+     * @details Calculated as `pt_child / pt_parent`. Provides insight into the transverse momentum sharing within the decay. Dimensionless.
+     *          Initialized value (commented out) suggests a default of 0.
+     */
+    float frc_pt; // = 0;
+};
+
+/**
+ * @struct perms_t
+ * @brief Structure to hold information about pairs of top quark decay children, primarily for permutation and clustering studies.
+ * @details This structure aggregates properties calculated from considering two children, potentially originating from different parent top quarks.
+ *          It helps in analyzing correlations and combinatorial aspects, such as distinguishing between children from the same top versus different tops,
+ *          or children from resonant versus spectator tops.
+ */
+struct perms_t {
+    /**
+     * @var RR
+     * @brief Flag: True if both children in the pair originate from resonant top quarks.
+     * @details Helps categorize pairs based on the production mechanism of their parent tops.
+     *          Initialized value (commented out) suggests a default of `false`.
+     */
+    bool RR; // = false;
+
+    /**
+     * @var SS
+     * @brief Flag: True if both children in the pair originate from spectator top quarks.
+     * @details Helps categorize pairs based on the production mechanism of their parent tops.
+     *          Initialized value (commented out) suggests a default of `false`.
+     */
+    bool SS; // = false;
+
+    /**
+     * @var RS
+     * @brief Flag: True if one child originates from a resonant top and the other from a spectator top.
+     * @details Helps categorize pairs based on the production mechanism of their parent tops.
+     *          Initialized value (commented out) suggests a default of `false`.
+     */
+    bool RS; // = false;
+
+    /**
+     * @var CT
+     * @brief Flag: True if both children in the pair originate from the *same* parent top quark (Common Top).
+     * @details Distinguishes intra-top pairs from inter-top pairs.
+     *          Initialized value (commented out) suggests a default of `false`.
+     */
+    bool CT; // = false;
+
+    /**
+     * @var FT
+     * @brief Flag: True if the children in the pair originate from *different* parent top quarks (Different Top, often implies 'Far Top' contextually).
+     * @details Distinguishes inter-top pairs from intra-top pairs.
+     *          Initialized value (commented out) suggests a default of `false`.
+     */
+    bool FT; // = false;
+
+    /**
+     * @var delta_R
+     * @brief Angular separation (Delta R) between the two children forming the pair.
+     * @details Calculated as `Delta R = sqrt( (eta_child1 - eta_child2)^2 + (phi_child1 - phi_child2)^2 )`.
+     *          Useful for studying the angular correlations or clustering of decay products. Dimensionless.
+     *          Initialized value (commented out) suggests a default of 0.
+     */
+    float delta_R; // = 0;
+
+    /**
+     * @var top_pt
+     * @brief Transverse momentum (pt) of one of the parent top quarks involved in the pair.
+     * @details The documentation comment mentions `t2_`, suggesting it stores the pt of the second top quark considered when forming the pair combination.
+     *          Units are typically GeV.
+     *          Initialized value (commented out) suggests a default of 0.
+     */
+    float top_pt;  // = 0;
+
+    /**
+     * @var top_e
+     * @brief Energy (E) of one of the parent top quarks involved in the pair.
+     * @details Similar to `top_pt`, this likely stores the energy of the second top quark (`t2_`) in the pair combination.
+     *          Units are typically GeV.
+     *          Initialized value (commented out) suggests a default of 0.
+     */
+    float top_e;   // = 0;
+
+    /**
+     * @var mass
+     * @brief Invariant mass calculated from combining particles associated with the pair.
+     * @details The comment suggests this is the invariant mass calculated from *all* children of the *two* parent tops involved in forming this child-child pair.
+     *          This could be used, for example, in reconstructing the mass of the system formed by the two parent tops. Units are typically GeV.
+     *          Initialized value (commented out) suggests a default of 0.
+     */
+    float mass;    // = 0;
+};
+
+
+/**
+ * @class childrenkinematics
+ * @brief Implements an analysis selection strategy focused on the kinematics of top quark decay products (children).
+ * @details This class inherits from the `selection_template` base class, providing a concrete implementation
+ *          for a specific analysis task within a larger framework. Its primary responsibilities include:
+ *          1. **Event Selection:** Identifying events that meet specific criteria related to the number and type
+ *             of top quarks present (specifically, 2 resonant and 2 spectator tops). This is done in the `selection` method.
+ *          2. **Data Extraction & Calculation:** For selected events, extracting detailed information about the direct decay products
+ *             (children) of these top quarks. This involves collecting basic kinematics (`kinematic_t`), determining decay properties
+ *             like leptonic/hadronic origin and angular separation (`misc_t`), calculating fractional kinematics, and analyzing
+ *             pairs of children to understand permutations and correlations (`perms_t`). This logic resides in the `strategy` method.
+ *          3. **Result Aggregation:** Providing a mechanism (`merge` method) to combine the data collected by multiple instances
+ *             of this class, which is essential for parallel processing environments where different events are processed concurrently.
+ *          4. **Polymorphic Cloning:** Supporting the virtual constructor pattern via the `clone` method, allowing the framework
+ *             to create copies of the selection object through a base class pointer.
+ *          The extracted and calculated data is stored temporarily in public member vectors (`res_kinematics`, `spec_kinematics`, etc.).
+ *          These vectors are typically accessed later, often by the corresponding Cython wrapper (`ChildrenKinematics`), which handles
+ *          the final merging, post-processing, and output formatting (e.g., writing to ROOT files or creating Python data structures).
+ */
+class childrenkinematics: public selection_template
+{
+    public:
+        /**
+         * @brief Default constructor for the childrenkinematics class.
+         * @details Initializes the base class with a unique name identifier ("childrenkinematics") for this specific selection strategy.
+         *          It also ensures that the internal data storage vectors (`res_kinematics`, `spec_kinematics`, `res_decay_mode`,
+         *          `spec_decay_mode`, `top_clusters`) are properly initialized (typically as empty vectors).
+         */
+        childrenkinematics();
+
+        /**
+         * @brief Virtual destructor.
+         * @details Declared virtual to ensure that if a `childrenkinematics` object is deleted via a pointer
+         *          to its base class (`selection_template*`), the `childrenkinematics` destructor is correctly called,
+         *          allowing for proper cleanup of any resources allocated specifically by this derived class.
+         *          The `override` keyword confirms it overrides a virtual function from the base class.
+         */
+        ~childrenkinematics() override;
+
+        /**
+         * @brief Creates a new instance of the childrenkinematics selection (virtual constructor).
+         * @details Implements the virtual constructor idiom, a common pattern in C++ for achieving polymorphic cloning.
+         *          When called, this function allocates a new `childrenkinematics` object on the heap using its default constructor
+         *          (`new childrenkinematics()`). It then returns a pointer to this newly created object, but cast to the
+         *          base class type (`selection_template*`). This allows the framework managing selections to create copies
+         *          without needing to know the specific derived type at compile time.
+         *          The caller (usually the framework) assumes ownership of the returned pointer and is responsible for deleting it later.
+         *          This method overrides the pure virtual `clone()` method declared in the `selection_template` base class.
+         * @return selection_template* A pointer to the newly allocated `childrenkinematics` object, cast to its base class type.
+         */
+        selection_template* clone() override;
+
+        /**
+         * @brief Defines the event selection criteria based on top quark counts.
+         * @details This method implements the core logic for deciding whether an event is interesting for this specific analysis.
+         *          It receives a pointer to a generic event object (`event_template*`). It first attempts to cast this pointer
+         *          to the specific event type expected by this analysis (e.g., `bsm_4tops*`). If the cast is successful,
+         *          it inspects the event content, specifically counting the number of truth top quarks that are marked
+         *          as originating from a resonance (`from_res == true`) and those marked as spectators (`from_res == false`).
+         *          The event passes the selection only if it contains exactly two resonant tops AND exactly two spectator tops.
+         *          This method overrides the pure virtual `selection()` method from the `selection_template` base class.
+         * @param ev A pointer to the current event object, expected to hold information about truth top quarks and their properties.
+         *           It should be dynamically castable to the specific event type used (e.g., `bsm_4tops`).
+         * @return bool Returns `true` if the event contains exactly 2 resonant and 2 spectator top quarks, `false` otherwise.
+         */
+        bool selection(event_template* ev) override;
+
+        /**
+         * @brief Executes the main analysis strategy for events that pass the selection criteria.
+         * @details This method contains the core analysis logic and is invoked only for events that returned `true` from the `selection` method.
+         *          It performs a detailed extraction and calculation of kinematic properties related to the children of the selected top quarks.
+         *          The key steps are:
+         *          1. **Cast Event:** Casts the input `event_template* ev` to the specific event type (e.g., `bsm_4tops*`) to access detailed information.
+         *          2. **Group Tops:** Iterates through the top quarks in the event and separates them into two collections: one for resonant tops (`res_t`) and one for spectator tops (`spec_t`), based on their `from_res` flag.
+         *          3. **Process Resonant Tops:**
+         *             - Iterates through each resonant top quark (`t` in `res_t`).
+         *             - Identifies and collects its direct decay products (children).
+         *             - For each child, extracts basic kinematics (pt, E, eta, phi, pdgid) using a helper like `dump_kinematics` and stores them as a `kinematic_t` struct in the `res_kinematics` vector.
+         *             - Determines if the parent top's decay was leptonic or hadronic (e.g., by checking the children's PDG IDs).
+         *             - For each child, calculates extended information: its basic kinematics, the `is_lep` flag, Delta R relative to the parent top, and fractional pt/energy (`E_child / E_parent`, `pt_child / pt_parent`). This information is stored as a `misc_t` struct in the `res_decay_mode` vector.
+         *          4. **Process Spectator Tops:**
+         *             - Performs the same steps as described in (3) but for the spectator top quarks (`t` in `spec_t`).
+         *             - Stores basic child kinematics in `spec_kinematics` (`kinematic_t`).
+         *             - Stores extended child decay information in `spec_decay_mode` (`misc_t`).
+         *          5. **Create Pairs:** Conceptually (or explicitly) creates pairs of (parent top, child particle) for all resonant and spectator tops and their respective children.
+         *          6. **Process Pairs (Permutations):** Iterates through all unique pairs of these (parent top, child) objects. For each pair of children (child1 from top1, child2 from top2):
+         *             - Calculates properties stored in a `perms_t` struct:
+         *               - `RR`, `SS`, `RS` flags based on whether top1 and top2 are resonant or spectator.
+         *               - `CT` (Common Top) flag if top1 is the same as top2, `FT` (Different Top) flag otherwise.
+         *               - `delta_R` between child1 and child2.
+         *               - Kinematics (`top_pt`, `top_e`) of one of the parent tops (e.g., top2).
+         *               - Invariant `mass` calculated from all children of both top1 and top2 combined.
+         *             - Stores the resulting `perms_t` struct in the `top_clusters` vector.
+         *          This method overrides the pure virtual `strategy()` method from the `selection_template` base class.
+         * @param ev A pointer to the current event object, guaranteed to have passed the `selection` criteria and thus contain 2 resonant and 2 spectator tops.
+         * @return bool Typically returns `true` to indicate successful execution. Error handling might be implemented internally or assumed to be handled by called functions.
+         */
+        bool strategy(event_template* ev) override;
+
+        /**
+         * @brief Merges the accumulated data from another `childrenkinematics` instance into this one.
+         * @details This method is crucial for combining results when the analysis is run in parallel across multiple processes or threads.
+         *          Each process analyzes a subset of events and accumulates results in its own `childrenkinematics` instance. This `merge` function
+         *          is then called to consolidate these partial results into a single instance.
+         *          The steps involved are:
+         *          1. **Cast Input:** Takes a pointer to a generic `selection_template` object (`sl`) and dynamically casts it to a `childrenkinematics*` (`slt`). This assumes the input object is indeed of the correct derived type.
+         *          2. **Access Source Data:** Accesses the data vectors (`res_kinematics`, `spec_kinematics`, `res_decay_mode`, `spec_decay_mode`, `top_clusters`) of the source object (`slt`).
+         *          3. **Decompose and Write:** Iterates through the elements (structs like `kinematic_t`, `misc_t`, `perms_t`) in the source vectors.
+         *             - It uses internal helper functions or lambdas (like `lambK`, `lambM`, `lambP` mentioned in the original comment) to decompose each struct into its individual float, int, or bool members.
+         *             - For each decomposed member, it calls a `write()` method (presumably provided by the base class or framework). This `write()` method likely takes a key (e.g., `"res_pt"`, `"res_decay_islep"`, `"top_perm_RR"`) and a vector containing the values of that specific member across all structs in the source vector. This effectively flattens the structured data into separate arrays associated with specific keys, preparing it for output (e.g., to ROOT TTree branches).
+         *          *Alternative Implementation Note:* The commented-out `merge_data` calls in the original code suggest a previous or alternative implementation might have directly appended the vectors of structs from the source object (`slt`) to the corresponding vectors in the target object (`this`). The current description reflects the implementation using `write()` and flattened data.
+         *          This method overrides the `merge()` method from the `selection_template` base class.
+         * @param sl A pointer to another selection object, which must be of type `childrenkinematics`, whose collected data will be merged into the current object (`this`).
+         */
+        void merge(selection_template* sl) override;
+
+        // --- Public Data Members ---
+        // These vectors store the results collected by the `strategy` method for each processed event.
+        // They are typically cleared or managed by the framework between events and merged using the `merge` method.
+
+        /**
+         * @var res_kinematics
+         * @brief Vector storing basic kinematic information (`kinematic_t`) for children of resonant top quarks.
+         * @details Each element corresponds to one direct decay product of a resonant top quark found in the selected events.
+         *          Initialized as an empty vector.
+         */
+        std::vector<kinematic_t> res_kinematics; // = {};
+
+        /**
+         * @var spec_kinematics
+         * @brief Vector storing basic kinematic information (`kinematic_t`) for children of spectator top quarks.
+         * @details Each element corresponds to one direct decay product of a spectator top quark found in the selected events.
+         *          Initialized as an empty vector.
+         */
+        std::vector<kinematic_t> spec_kinematics; // = {};
+
+        /**
+         * @var res_decay_mode
+         * @brief Vector storing extended decay information (`misc_t`) for children of resonant top quarks.
+         * @details Each element contains richer information (basic kinematics, decay type, dR, fractional kinematics)
+         *          about a direct decay product of a resonant top quark.
+         *          Initialized as an empty vector.
+         */
+        std::vector<misc_t>  res_decay_mode; // = {};
+
+        /**
+         * @var spec_decay_mode
+         * @brief Vector storing extended decay information (`misc_t`) for children of spectator top quarks.
+         * @details Each element contains richer information about a direct decay product of a spectator top quark.
+         *          Initialized as an empty vector.
+         */
+        std::vector<misc_t>  spec_decay_mode; // = {};
+
+        /**
+         * @var top_clusters
+         * @brief Vector storing permutation/clustering information (`perms_t`) for pairs of top children.
+         * @details Each element represents a pair of children (from potentially different tops) and stores flags about their origins (RR/SS/RS, CT/FT),
+         *          their angular separation (dR), parent top kinematics, and combined mass information. Used for combinatorial studies.
+         *          Initialized as an empty vector.
+         */
+        std::vector<perms_t> top_clusters; // = {};
+
+    private:
+        // --- Private Helper Functions ---
+        // These functions encapsulate common tasks used within the public methods, primarily `strategy`.
+
+        /**
+         * @brief Helper function to extract kinematics from a particle and append them to a vector of `kinematic_t`.
+         * @tparam g The type of the particle object. This type must provide access to kinematic properties like
+         *           transverse momentum (`pt`), energy (`e`), pseudorapidity (`eta`), azimuthal angle (`phi`),
+         *           and Particle Data Group ID (`pdgid`), either as public members or via member functions.
+         * @param data A pointer to the `std::vector<kinematic_t>` where the extracted information should be stored.
+         *             The function will add a new `kinematic_t` element to the end of this vector.
+         * @param p A pointer to the particle object (`g*`) from which the kinematic information will be extracted.
+         * @details This function performs the following actions:
+         *          1. Creates a temporary `kinematic_t` struct.
+         *          2. Fills the struct's members (`pt`, `energy`, `eta`, `phi`, `pdgid`) using the corresponding values from the input particle `p`.
+         *          3. **Important Scaling:** It scales the `pt` and `energy` values obtained from the particle `p` by dividing them by 1000.0 before storing them in the struct. This implies the input particle `p` likely stores these values in MeV, and they are being converted to GeV for storage in `kinematic_t`.
+         *          4. Appends (pushes back) the filled `kinematic_t` struct onto the vector pointed to by `data`.
+         */
+        template <typename g>
+        void dump_kinematics(std::vector<kinematic_t>* data, g* p);
+        // {
+        //     // Implementation details:
+        //     // kinematic_t k;
+        //     // k.pt = p->pt / 1000.0f;
+        //     // k.energy = p->e / 1000.0f;
+        //     // k.eta = p->eta;
+        //     // k.phi = p->phi;
+        //     // k.pdgid = p->pdgid;
+        //     // data->push_back(k);
+        // }
+
+        /**
+         * @brief Helper function to extract kinematics from a particle and fill a pre-existing `kinematic_t` struct.
+         * @tparam g The type of the particle object, with the same requirements as the other `dump_kinematics` template (access to pt, e, eta, phi, pdgid).
+         * @param data A pointer to an existing `kinematic_t` struct whose members will be overwritten with the kinematic information from particle `p`.
+         * @param p A pointer to the particle object (`g*`) from which the kinematic information will be extracted.
+         * @details This function directly modifies the members of the `kinematic_t` struct pointed to by `data`.
+         *          It assigns the `pt` (scaled by 1/1000), `energy` (scaled by 1/1000), `eta`, `phi`, and `pdgid` values
+         *          obtained from particle `p` to the corresponding members of the `*data` struct. This is useful when
+         *          kinematics need to be stored within a larger structure (like `misc_t`) without creating a separate allocation.
+         */
+        template <typename g>
+        void dump_kinematics(kinematic_t* data, g* p);
+        // {
+        //     // Implementation details:
+        //     // data->pt = p->pt / 1000.0f;
+        //     // data->energy = p->e / 1000.0f;
+        //     // data->eta = p->eta;
+        //     // data->phi = p->phi;
+        //     // data->pdgid = p->pdgid;
+        // }
+
+        // --- Potentially other private helper functions used in strategy() ---
+        // @brief Example: Function to convert map values (pointers) into a vector of pointers.
+        // @details Might be used if particles are initially stored in a map keyed by some identifier.
+        // std::vector<particle_template*> vectorize(std::map<std::string, particle_template*>* map_ptr);
+
+        // @brief Example: Function template to merge the contents of one vector into another.
+        // @details Could be used for merging data internally or as part of the public `merge` logic
+        //          if a direct vector append strategy was used.
+        // template <typename T>
+        // void merge_data(std::vector<T>* target, std::vector<T>* source);
+
+        // @brief Example: Function to calculate the invariant mass of a collection of particles.
+        // @details Likely used in the `strategy` method to compute the `mass` member of the `perms_t` struct.
+        // float sum(std::vector<particle_template*>* particles);
+};
+
+#endif // CHILDRENKINEMATICS_H
+
+
+// --- Start of Cython (.pyx) Documentation ---
+// This section documents the Python/Cython wrapper class and associated helper functions,
+// which bridge the C++ implementation with the Python analysis framework.
+
+// --- Cython Imports and Declarations ---
+// @brief Imports necessary Cython definitions for C++ standard library types.
+// @details Allows Cython code to work directly with C++ `std::map`, `std::vector`, and `std::string`.
+// from libcpp.map cimport map
+// from libcpp.vector cimport vector
+// from libcpp.string cimport string
+
+// @brief Imports the Cython definition of the base selection template class.
+// @details Provides the `SelectionTemplate` Cython type, which `ChildrenKinematics` inherits from.
+// from AnalysisG.core.selection_template cimport *
+
+// @brief Imports utility functions from the AnalysisG core tools.
+// @details Specifically imports the `enc()` function, likely used for encoding Python strings (e.g., dictionary keys)
+//          into a format suitable for use as keys in C++ `std::map<string, ...>` (e.g., `std::string` or `char*`).
+// from AnalysisG.core.tools cimport * // For enc()
+
+// @brief Declares the C++ `childrenkinematics` class to Cython.
+// @details Makes the C++ class and its constructor visible to Cython, allowing the wrapper class
+//          to create and interact with instances of the C++ class. The `except +` indicates
+//          that C++ exceptions thrown by the constructor should be translated into Python exceptions.
+// cdef extern from "childrenkinematics.h":
+//     cdef cppclass childrenkinematics(selection_template):
+//         childrenkinematics() except +
+        // @brief Declaration of C++ member vectors (optional).
+        // @details While the C++ members are public, direct access from Cython might not be used.
+        //          The primary interaction seems to happen via the `merge` method in C++ and data retrieval
+        //          via handler functions feeding into C++ maps within the Cython class during the read phase,
+        //          followed by the `Postprocessing` step in Cython. If direct access were needed, members like
+        //          `vector[kinematic_t] res_kinematics` would be declared here.
+
+
+// --- Cython Helper Functions ---
+
+/**
+ * @brief Converts an integer Particle Data Group (PDG) ID to a human-readable string representation.
+ * @details Takes an integer PDG ID as input and returns a corresponding string label for the particle type.
+ *          It handles common particle IDs (like b-quark, electron, muon neutrino, gluon) and potentially uses
+ *          LaTeX formatting for symbols (e.g., "$\\nu_{\\mu}$" for a muon neutrino). It typically uses the absolute value
+ *          of the PDG ID to map particles and antiparticles to the same label. If the input ID is not recognized,
+ *          it returns a default string like "n/a".
+ * @param ipt The integer PDG ID of the particle.
+ * @return A `str` object representing the particle type (e.g., "b", "e", "$\\nu_{\\mu}$", "g", or "n/a").
+ */
+// cdef str pdgid(int ipt):
+    // Implementation maps absolute PDG ID values (e.g., abs(ipt)) to predefined strings.
+    // Example mapping: 5 -> "b", 11 -> "e", 14 -> "$\\nu_{\\mu}$", 21 -> "g", default -> "n/a"
+
+/**
+ * @brief Merges the contents of a source C++ float vector into a destination C++ float vector.
+ * @details This is a low-level utility function used by the handler functions (like `res`, `spc`, etc.).
+ *          It takes pointers to two `std::vector<float>` objects. It iterates through all elements in the source
+ *          vector (`iy`) and appends each element to the end of the destination vector (`ix`) using `push_back`.
+ * @param ix A pointer to the destination `std::vector<float>` which will be modified.
+ * @param iy A pointer to the source `std::vector<float>` whose elements will be appended to `ix`.
+ */
+// cdef void merge(vector[float]* ix, vector[float]* iy):
+    // Implementation iterates through *iy and calls ix.push_back() for each element.
+
+
+// --- Cython Handler Functions ---
+// These Python functions are designed to be called by the analysis framework when reading data
+// from input files (e.g., ROOT TTrees). They act as intermediaries, taking data associated with
+// specific branch names and merging it into temporary C++ maps within the `ChildrenKinematics` Cython object.
+// The mapping between branch names and these handlers is defined in the `root_leaves` dictionary.
+
+/**
+ * @brief Merges resonance particle kinematic data read from an input branch into the `ChildrenKinematics` object's temporary storage.
+ * @details This function is typically associated with branch names like "res_pt", "res_eta", etc.
+ *          It receives the `ChildrenKinematics` instance (`ck`) and a data tuple.
+ *          1. Extracts the base variable name (e.g., "pt") from the full branch name (`data[0]`, e.g., "res_pt").
+ *          2. Casts the incoming data payload (`data[1]`, e.g., a list or buffer of pt values for all resonance children in an event or file chunk) into a `vector[float]`.
+ *          3. Uses the C++ `merge` function (defined above) to append the contents of this data vector into the `vector[float]` associated with the extracted variable name key within the `ck.r_data` map (`map[string, vector[float]]`).
+ * @param ck The `ChildrenKinematics` Cython class instance being processed.
+ * @param data A Python tuple (or similar structure) where `data[0]` is the full branch name (string) from the input file, and `data[1]` is the corresponding data payload (e.g., a list of floats, or a memory buffer castable to `vector[float]`).
+ */
+// def res(ck, data):
+    // Implementation:
+    // 1. name = data[0].split("_")[1] # Extracts "pt" from "res_pt"
+    // 2. payload = <vector[float]>data[1] # Casts payload
+    // 3. merge(&ck.r_data[enc(name)], &payload) # Merges into map
+
+/**
+ * @brief Merges spectator particle kinematic data read from an input branch into the `ChildrenKinematics` object's temporary storage.
+ * @details Similar to `res`, but handles branches related to spectator children (e.g., "spec_eta", "spec_phi").
+ *          It extracts the base variable name (e.g., "eta"), casts the data payload to `vector[float]`, and merges it
+ *          into the corresponding entry in the `ck.s_data` map.
+ * @param ck The `ChildrenKinematics` Cython class instance.
+ * @param data A Python tuple containing the branch name (e.g., "spec_eta") and data payload.
+ */
+// def spc(ck, data):
+    // Implementation:
+    // 1. name = data[0].split("_")[1] # Extracts "eta" from "spec_eta"
+    // 2. payload = <vector[float]>data[1]
+    // 3. merge(&ck.s_data[enc(name)], &payload)
+
+/**
+ * @brief Merges resonance particle decay product data read from an input branch into the `ChildrenKinematics` object's temporary storage.
+ * @details Handles branches containing extended decay information for resonance children (e.g., "res_decay_dR", "res_decay_islep", "res_decay_frc_pt").
+ *          1. Extracts the variable name from the branch name (e.g., "dR", "islep", "frc_pt").
+ *          2. **Special Handling:** If the original branch name contains "frc" (e.g., "res_decay_frc_pt"), it prepends "frc." to the extracted name (resulting in "frc.pt"). This distinguishes fractional variables in the map keys.
+ *          3. Casts the data payload to `vector[float]`.
+ *          4. Merges the data into the corresponding entry in the `ck.r_decay` map using the (potentially prefixed) variable name as the key.
+ * @param ck The `ChildrenKinematics` Cython class instance.
+ * @param data A Python tuple containing the branch name (e.g., "res_decay_frc_pt") and data payload.
+ */
+// def rdcy(ck, data):
+    // Implementation:
+    // 1. name = data[0].split("res_decay_")[1] # Extracts "dR", "islep", "frc_pt"
+    // 2. if "frc" in data[0]: name = "frc." + name.split("frc_")[1] # Prefixes "frc." -> "frc.pt"
+    // 3. payload = <vector[float]>data[1]
+    // 4. merge(&ck.r_decay[enc(name)], &payload)
+
+/**
+ * @brief Merges spectator particle decay product data read from an input branch into the `ChildrenKinematics` object's temporary storage.
+ * @details Similar to `rdcy`, but handles branches related to spectator children decay info (e.g., "spec_decay_islep", "spec_decay_frc_e").
+ *          It extracts the variable name, prepends "frc." if necessary (e.g., "frc.e"), casts the data payload, and merges it into the `ck.s_decay` map.
+ * @param ck The `ChildrenKinematics` Cython class instance.
+ * @param data A Python tuple containing the branch name (e.g., "spec_decay_islep") and data payload.
+ */
+// def sdcy(ck, data):
+    // Implementation:
+    // 1. name = data[0].split("spec_decay_")[1]
+    // 2. if "frc" in data[0]: name = "frc." + name.split("frc_")[1]
+    // 3. payload = <vector[float]>data[1]
+    // 4. merge(&ck.s_decay[enc(name)], &payload)
+
+/**
+ * @brief Merges top permutation data read from an input branch into the `ChildrenKinematics` object's temporary storage.
+ * @details Handles branches containing information about pairs of children (e.g., "top_perm_RR", "top_perm_CT", "top_perm_dR", "top_perm_mass").
+ *          1. Extracts the variable name from the branch name (e.g., "RR", "CT", "dR", "mass").
+ *          2. Casts the data payload to `vector[float]` (even for boolean flags like RR/CT, which are likely stored as 0.0/1.0 floats in the input file).
+ *          3. Merges the data into the corresponding entry in the `ck.top_pem` map using the extracted variable name as the key.
+ * @param ck The `ChildrenKinematics` Cython class instance.
+ * @param data A Python tuple containing the branch name (e.g., "top_perm_RR") and data payload.
+ */
+// def tpm(ck, data):
+    // Implementation:
+    // 1. name = data[0].split("top_perm_")[1] # Extracts "RR", "CT", "dR"
+    // 2. payload = <vector[float]>data[1]
+    // 3. merge(&ck.top_pem[enc(name)], &payload)
+
+
+/**
+ * @brief A Cython class extending `SelectionTemplate` to handle and process the kinematics of top quark children particles.
+ * @details This class serves as the Python-facing interface and orchestrator for the `childrenkinematics` analysis.
+ *          It inherits from a base `SelectionTemplate` provided by the AnalysisG framework.
+ *
+ *          **Key Roles:**
+ *          1.  **C++ Object Management:** It creates and owns an instance of the C++ `childrenkinematics` class.
+ *          2.  **Data Ingestion:** It defines a mapping (`root_leaves`) from input data branch names (typically from ROOT TTrees)
+ *              to specific handler functions (`res`, `spc`, `rdcy`, `sdcy`, `tpm`). When the framework reads data,
+ *              this mapping directs the data chunks to the appropriate handler.
+ *          3.  **Temporary Storage:** The handler functions populate temporary C++ `std::map` members (`r_data`, `s_data`, `r_decay`, `s_decay`, `top_pem`)
+ *              within the Cython object. These maps store the raw data (as `std::vector<float>`) aggregated across potentially many events or file chunks, keyed by variable name (e.g., "pt", "eta", "dR", "frc.pt").
+ *          4.  **Post-processing:** After all input data has been read and merged into the temporary maps, the `Postprocessing` method is called.
+ *              This crucial method transforms the aggregated data from the C++ maps into structured Python dictionaries (`res_kinematics`, `spec_pdgid_kinematics`, `fractional`, `dr_clustering`, etc.). These dictionaries organize the data logically (e.g., grouped by particle type, decay mode, permutation type) making it ready for final analysis steps like histogramming or plotting in Python.
+ */
+// cdef class ChildrenKinematics(SelectionTemplate):
+    // --- Cython Member Declarations ---
+
+    /**
+     * @var tt
+     * @brief Pointer to the underlying C++ `childrenkinematics` object.
+     * @details This pointer provides access to the specific derived C++ class instance, allowing calls to its methods if needed (though interaction seems primarily through the base pointer and the merge mechanism).
+     */
+    // cdef childrenkinematics* tt
+
+    /**
+     * @var ptr
+     * @brief Pointer to the base class `selection_template` object.
+     * @details This pointer holds the address of the C++ `childrenkinematics` object, cast to its base type. It's likely used by the framework to interact with the selection polymorphically (e.g., calling `merge`, `clone`). It also likely manages the lifetime of the C++ object allocated in `__cinit__`.
+     */
+    // cdef selection_template* ptr // Added based on __cinit__
+
+    // --- Temporary C++ Data Storage ---
+    /**
+     * @var r_data
+     * @brief Temporary C++ map storing resonance children kinematics.
+     * @details Keyed by variable name (e.g., `b"pt"`, `b"eta"`, `b"pdgid"`). Values are `std::vector<float>` containing the aggregated data for that variable across all processed resonance children. Populated by the `res` handler. Cleared during `Postprocessing`.
+     */
+    // cdef map[string, vector[float]] r_data
+
+    /**
+     * @var s_data
+     * @brief Temporary C++ map storing spectator children kinematics.
+     * @details Similar to `r_data`, but for spectator children. Keyed by variable name (e.g., `b"pt"`). Populated by the `spc` handler. Cleared during `Postprocessing`.
+     */
+    // cdef map[string, vector[float]] s_data
+
+    /**
+     * @var r_decay
+     * @brief Temporary C++ map storing resonance decay product information.
+     * @details Keyed by variable name (e.g., `b"dR"`, `b"islep"`, `b"frc.pt"`). Stores extended decay info for resonance children. Populated by the `rdcy` handler. Cleared during `Postprocessing`.
+     */
+    // cdef map[string, vector[float]] r_decay
+
+    /**
+     * @var s_decay
+     * @brief Temporary C++ map storing spectator decay product information.
+     * @details Similar to `r_decay`, but for spectator children. Keyed by variable name (e.g., `b"dR"`, `b"frc.e"`). Populated by the `sdcy` handler. Cleared during `Postprocessing`.
+     */
+    // cdef map[string, vector[float]] s_decay
+
+    /**
+     * @var top_pem
+     * @brief Temporary C++ map storing top permutation information.
+     * @details Keyed by variable name (e.g., `b"RR"`, `b"CT"`, `b"dR"`, `b"mass"`). Stores properties of child pairs. Populated by the `tpm` handler. Cleared during `Postprocessing`.
+     */
+    // cdef map[string, vector[float]] top_pem
+
+    // --- Final Python Result Dictionaries ---
+    // These dictionaries are populated by the Postprocessing method.
+
+    /**
+     * @var res_kinematics
+     * @brief Python dictionary storing basic kinematics of all resonance children.
+     * @details Populated in `Postprocessing`. Keys are kinematic variable names (e.g., "pt", "eta"). Values are Python lists of floats containing all values for that variable across all resonance children. Structure: `{"pt": [...], "eta": [...], ...}`.
+     */
+    // cdef public dict res_kinematics
+
+    /**
+     * @var spec_kinematics
+     * @brief Python dictionary storing basic kinematics of all spectator children.
+     * @details Populated in `Postprocessing`. Similar structure to `res_kinematics`, but for spectator children. Structure: `{"pt": [...], "eta": [...], ...}`.
+     */
+    // cdef public dict spec_kinematics
+
+    /**
+     * @var res_pdgid_kinematics
+     * @brief Python dictionary storing kinematics of resonance children, grouped by particle type (PDG ID).
+     * @details Populated in `Postprocessing`. Outer keys are particle type strings (e.g., "b", "e", obtained via `pdgid()`). Inner keys are kinematic variable names ("pt", "eta", etc.). Values are Python lists of floats. Structure: `{"b": {"pt": [...], "eta": [...]}, "e": {"pt": [...], ...}}`.
+     */
+    // cdef public dict res_pdgid_kinematics
+
+    /**
+     * @var spec_pdgid_kinematics
+     * @brief Python dictionary storing kinematics of spectator children, grouped by particle type (PDG ID).
+     * @details Populated in `Postprocessing`. Similar structure to `res_pdgid_kinematics`, but for spectator children. Structure: `{"b": {"pt": [...], "eta": [...]}, ...}`.
+     */
+    // cdef public dict spec_pdgid_kinematics
+
+    /**
+     * @var res_decay_mode
+     * @brief Python dictionary storing decay kinematics of resonance children, grouped by decay mode (leptonic/hadronic).
+     * @details Populated in `Postprocessing`. Outer keys are "lep" and "had". Inner keys are kinematic variable names ("pt", "eta", etc.). Values are Python lists of floats containing kinematics of children from that decay mode. Structure: `{"lep": {"pt": [...], "eta": [...]}, "had": {"pt": [...], ...}}`.
+     */
+    // cdef public dict res_decay_mode
+
+    /**
+     * @var spec_decay_mode
+     * @brief Python dictionary storing decay kinematics of spectator children, grouped by decay mode (leptonic/hadronic).
+     * @details Populated in `Postprocessing`. Similar structure to `res_decay_mode`, but for spectator children. Structure: `{"lep": {"pt": [...], ...}, "had": {"pt": [...], ...}}`.
+     */
+    // cdef public dict spec_decay_mode
+
+    /**
+     * @var fractional
+     * @brief Python dictionary storing fractional pt/energy of decay products, grouped by origin, mode, and particle type.
+     * @details Populated in `Postprocessing`. Outer keys combine origin (resonant 'r' / spectator 's'), mode ('lep' / 'had'), and variable type ('pt' / 'energy'), e.g., "rlep-pt", "shad-energy". Inner keys are particle type strings ("b", "e", etc.). Values are Python lists of the corresponding fractional values (e.g., pt_child/pt_parent). Structure: `{"rlep-pt": {"b": [...], "W": [...]}, "shad-energy": {"b": [...], ...}}`.
+     */
+    // cdef public dict fractional
+
+    /**
+     * @var dr_clustering
+     * @brief Python dictionary storing Delta R between pairs of children, grouped by permutation type.
+     * @details Populated in `Postprocessing`. Keys are strings representing the permutation type, constructed from flags (e.g., "CTRR", "FTRS", "FTSS"). Values are Python lists of Delta R values between the children for pairs matching that type. Structure: `{"CTRR": [...], "FTRS": [...], ...}`.
+     */
+    // cdef public dict dr_clustering
+
+    /**
+     * @var top_children_dr
+     * @brief Python dictionary storing Delta R between parent top and child, grouped by origin and decay mode.
+     * @details Populated in `Postprocessing`. Keys combine origin ('r'/'s') and mode ('lep'/'had'), e.g., "rlep", "shad". Values are Python lists of Delta R values between parent tops and their children for that category. Structure: `{"rlep": [...], "shad": [...], ...}`.
+     */
+    // cdef public dict top_children_dr
+
+    /**
+     * @var root_leaves
+     * @brief Python dictionary mapping input branch names/patterns to their corresponding handler functions.
+     * @details Initialized in `__cinit__`. This dictionary is used by the framework to determine which handler function (`res`, `spc`, `rdcy`, `sdcy`, `tpm`) should process the data from a given input branch. Keys are typically branch names or patterns (e.g., "res_pt", "spec_decay_islep", "top_perm_*"). Values are the handler function objects themselves.
+     */
+    // cdef public dict root_leaves // Added based on __cinit__
+
+    /**
+     * @brief Initializes the ChildrenKinematics Cython object.
+     * @details This special Cython method is called when a `ChildrenKinematics` object is created. It performs the following setup tasks:
+     *          1.  **Setup Handler Mapping:** Populates the `self.root_leaves` dictionary. This involves creating key-value pairs where keys are the expected names (or patterns) of data branches in the input files (e.g., "res_pt", "spec_eta", "res_decay_islep", "spec_decay_frc_pt", "top_perm_RR") and values are references to the corresponding Python handler functions (`res`, `spc`, `rdcy`, `sdcy`, `tpm`). This mapping directs the flow of data during the reading phase.
+     *          2.  **Initialize Result Dictionaries:** Initializes all the public Python dictionaries (`self.res_kinematics`, `self.spec_kinematics`, `self.res_pdgid_kinematics`, `self.spec_pdgid_kinematics`, `self.res_decay_mode`, `self.spec_decay_mode`, `self.fractional`, `self.dr_clustering`, `self.top_children_dr`) as empty dictionaries (`{}`). These will be populated later during `Postprocessing`.
+     *          3.  **Create C++ Object:** Creates a new instance of the C++ `childrenkinematics` class on the heap using `new childrenkinematics()`.
+     *          4.  **Store Pointers:** Stores the pointer to the newly created C++ object in both `self.ptr` (as a base class `selection_template*` pointer) and `self.tt` (as a derived class `childrenkinematics*` pointer). The framework likely uses `self.ptr` for polymorphic operations, while `self.tt` could be used for derived-class-specific access if needed (though it doesn't seem to be used directly elsewhere in the provided code).
+     *          5.  **Initialize C++ Maps:** Implicitly, the C++ map members (`self.r_data`, `self.s_data`, etc.) are default-initialized as empty maps.
+     */
+    // def __cinit__(self):
+        // Implementation details:
+        // - self.root_leaves = {"res_pt": res, "res_eta": res, ..., "spec_kinematics": spc, ...,
+        //                       "res_decay_islep": rdcy, ..., "spec_decay_frc_pt": sdcy, ...,
+        //                       "top_perm_RR": tpm, ...}
+        // - self.res_kinematics = {}
+        // - self.spec_kinematics = {}
+        // - ... (initialize all other result dicts to {})
+        // - self.ptr = new childrenkinematics()
+        // - self.tt = <childrenkinematics*>self.ptr
+
+    /**
+     * @brief Deallocates resources when the Cython object is destroyed.
+     * @details This special Cython method is called when the `ChildrenKinematics` Python object's reference count drops to zero and it is garbage collected.
+     *          Its primary responsibility here is to prevent memory leaks by explicitly deleting the C++ `childrenkinematics` object that was allocated on the heap in `__cinit__`.
+     *          It uses `del self.ptr` (or equivalently `del self.tt`, as they point to the same object) to call the C++ destructor and free the associated memory.
+     */
+    // def __dealloc__(self):
+        // Implementation details:
+        // - del self.ptr // Or del self.tt
+
+    /**
+     * @brief Performs post-processing transformations on the aggregated data.
+     * @details This method is called after all input data has been read and merged into the temporary C++ maps (`r_data`, `s_data`, `r_decay`, `s_decay`, `top_pem`).
+     *          It orchestrates the conversion of this raw, aggregated data into the final, structured Python dictionaries used for analysis.
+     *
+     *          **Detailed Steps:**
+     *          1.  **Basic Kinematics (Resonance & Spectator):**
+     *              - Defines a list of basic kinematic keys (`kx = ["pt", "eta", "phi", "energy"]`).
+     *              - Iterates through `kx`. For each key `k`, copies the entire `std::vector<float>` from `self.r_data[enc(k)]` into `self.res_kinematics[k]` (converting to a Python list).
+     *              - Repeats the process for spectator particles, copying from `self.s_data` into `self.spec_kinematics`.
+     *
+     *          2.  **PDG ID Grouping (Resonance):**
+     *              - Retrieves the vector of PDG IDs for resonance children: `pdg = self.r_data[b"pdgid"]`.
+     *              - Iterates through the `pdg` vector using an index `i`.
+     *              - Skips entries where `pdg[i]` is 0 (potential placeholders).
+     *              - Converts the integer PDG ID to a string particle type `p` using `p = pdgid(int(pdg[i]))`.
+     *              - If `p` is not already a key in `self.res_pdgid_kinematics`, initializes `self.res_pdgid_kinematics[p]` as a dictionary with keys from `kx` mapping to empty lists (`{k : [] for k in kx}`).
+     *              - For each kinematic key `k` in `kx`, appends the corresponding kinematic value `self.r_data[enc(k)][i]` to the list `self.res_pdgid_kinematics[p][k]`.
+     *              - After the loop, clears the temporary map: `self.r_data.clear()`.
+     *
+     *          3.  **PDG ID Grouping (Spectator):**
+     *              - Performs the same process as step 2, but using `self.s_data` and populating `self.spec_pdgid_kinematics`.
+     *              - Clears the temporary map: `self.s_data.clear()`.
+     *
+     *          4.  **Decay Mode Processing (Resonance):**
+     *              - Retrieves the vector indicating leptonic decays: `dxm = self.r_decay[b"islep"]`.
+     *              - Iterates through `dxm` using index `i`.
+     *              - Determines the decay mode string `lx = "lep"` if `dxm[i]` is true (non-zero), otherwise `lx = "had"`.
+     *              - **Populate `res_decay_mode`:** If `lx` is not a key in `self.res_decay_mode`, initializes `self.res_decay_mode[lx]` as `{k : [] for k in kx}`. Then, for each `k` in `kx`, appends `self.r_decay[enc(k)][i]` to `self.res_decay_mode[lx][k]`.
+     *              - Retrieves the particle type string `p` using `p = pdgid(int(self.r_decay[b"pdgid"][i]))`.
+     *              - Creates a combined origin-mode key `lx = "r" + lx` (e.g., "rlep", "rhad").
+     *              - **Populate `top_children_dr`:** If `lx` is not a key in `self.top_children_dr`, initializes `self.top_children_dr[lx] = []`. Appends the parent-child Delta R `self.r_decay[b"dR"][i]` to `self.top_children_dr[lx]`.
+     *              - **Populate `fractional` (pt):** Creates the key `k = lx + "-pt"` (e.g., "rlep-pt"). If `k` is not in `self.fractional`, initializes `self.fractional[k] = {}`. If `p` is not in `self.fractional[k]`, initializes `self.fractional[k][p] = []`. Appends the fractional pt `self.r_decay[b"frc.pt"][i]` to `self.fractional[k][p]`.
+     *              - **Populate `fractional` (energy):** Creates the key `k = lx + "-energy"`. Performs the same initialization checks as for pt. Appends the fractional energy `self.r_decay[b"frc.e"][i]` to `self.fractional[k][p]`.
+     *              - After the loop, clears the temporary map: `self.r_decay.clear()`.
+     *
+     *          5.  **Decay Mode Processing (Spectator):**
+     *              - Performs the same process as step 4, but using `self.s_decay`.
+     *              - Populates `self.spec_decay_mode`.
+     *              - Uses combined keys starting with "s" (e.g., "slep", "shad") to populate `self.top_children_dr`.
+     *              - Uses combined keys starting with "s" (e.g., "slep-pt", "shad-energy") to populate `self.fractional`.
+     *              - Clears the temporary map: `self.s_decay.clear()`.
+     *
+     *          6.  **Permutation Processing:**
+     *              - Retrieves a vector from `top_pem` to determine the number of entries (using `b"mass"` as a proxy): `dxm = self.top_pem[b"mass"]`.
+     *              - Iterates from `i = 0` to `dxm.size() - 1`.
+     *              - Constructs a permutation key string `p` by concatenating flags based on the boolean values (likely stored as 0.0/1.0) in `self.top_pem`:
+     *                `p = "CT"*int(self.top_pem[b"CT"][i]) + "FT"*int(self.top_pem[b"FT"][i])`
+     *                `p += "RR"*int(self.top_pem[b"RR"][i]) + "SS"*int(self.top_pem[b"SS"][i]) + "RS"*int(self.top_pem[b"RS"][i])`
+     *                (Example result: "CTRR", "FTRS", "FTSS").
+     *              - **Populate `dr_clustering`:** If `p` is not a key in `self.dr_clustering`, initializes `self.dr_clustering[p] = []`. Appends the Delta R between the children in the pair `self.top_pem[b"dR"][i]` to `self.dr_clustering[p]`.
+     *              - After the loop, clears the temporary map: `self.top_pem.clear()`.
+     */
+    // def Postprocessing(self):
+        // Implementation follows the detailed steps described above, involving loops over the sizes
+        // of vectors retrieved from the C++ maps, conditional checks for initializing dictionary keys,
+        // list appends, calls to helper functions like pdgid() and enc(), and finally clearing the C++ maps.
+        // The actual code performing these steps is omitted here as per the request.
+
+
+    /**
+     * @brief Placeholder method, likely part of a broader template or unused in this specific implementation.
+     * @details This method is defined but contains only a `pass` statement, indicating it performs no actions.
+     *          It might exist to satisfy an interface requirement from the base class or framework, potentially
+     *          intended for transformations on dictionary keys that are not needed in this particular analysis module.
+     */
+    // cdef void transform_dict_keys(self):
+        // Implementation: pass
+
+// End of Cython class definition

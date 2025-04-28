@@ -1,0 +1,499 @@
+/**
+ * @file RecursiveGraphNeuralNetwork.dox
+ * @brief Defines the Cython wrapper and C++ implementation for the RecursiveGraphNeuralNetwork model.
+ *
+ * This file contains both the Cython code that wraps the C++ model for use in Python
+ * and the C++ implementation of the model itself, including its neural network architecture
+ * and forward pass logic.
+ */
+
+// --- Cython PXD Section (Declarations) ---
+
+/**
+ * @brief Cython directive specifying the C++ language.
+ */
+# distutils: language=c++
+/**
+ * @brief Cython directive setting the language level to Python 3.
+ */
+# cython: language_level=3
+
+/**
+ * @brief Import necessary C++ types from libcpp.
+ */
+from libcpp cimport int, bool
+/**
+ * @brief Import the base model template definitions from AnalysisG.
+ */
+from AnalysisG.core.model_template cimport model_template, ModelTemplate
+
+/**
+ * @brief C++ extern block declaring the recursivegraphneuralnetwork class.
+ * This makes the C++ class and its members available to Cython.
+ */
+cdef extern from "<models/RecursiveGraphNeuralNetwork.h>":
+    /**
+     * @brief Declaration of the C++ recursivegraphneuralnetwork class, inheriting from model_template.
+     */
+    cdef cppclass recursivegraphneuralnetwork(model_template):
+
+        /**
+         * @brief Constructor for the C++ class.
+         * @param rep The dimensionality of the representation space.
+         * @param drp The dropout rate.
+         * @throws std::exception Can throw exceptions during initialization.
+         */
+        recursivegraphneuralnetwork(int rep, double drp) except+
+
+        /** @brief Dimensionality of edge features. */
+        int _dx
+        /** @brief Dimensionality of node features. */
+        int _x
+        /** @brief Dimensionality of the output layer. */
+        int _output
+        /** @brief Dimensionality of the internal representation/hidden state. */
+        int _rep
+        /** @brief Target resonance mass for specific calculations. */
+        double res_mass
+        /** @brief Dropout probability used in network layers. */
+        double drop_out
+        /** @brief Flag indicating if the data includes Monte Carlo truth information. */
+        bool is_mc
+
+// --- Cython PYX Section (Implementation Wrapper) ---
+
+/**
+ * @brief Python class wrapping the C++ recursivegraphneuralnetwork.
+ *
+ * This class provides a Python interface to the underlying C++ model,
+ * handling object creation, deletion, and property access. It inherits
+ * from the AnalysisG ModelTemplate base class.
+ */
+cdef class RecursiveGraphNeuralNetwork(ModelTemplate):
+    /**
+     * @brief Pointer to the underlying C++ recursivegraphneuralnetwork object.
+     */
+    cdef recursivegraphneuralnetwork* rnn
+
+    /**
+     * @brief Cython constructor (called during object allocation).
+     * Initializes the C++ object `rnn` with default representation size and dropout.
+     * Sets the base class `nn_ptr` to point to the C++ object.
+     */
+    def __cinit__(self):
+        # Implementation details:
+        # - Creates a new C++ recursivegraphneuralnetwork instance with rep=1024, dropout=0.1.
+        # - Assigns the pointer to self.rnn.
+        # - Assigns the same pointer to self.nn_ptr for base class interaction.
+        pass # Replaced C++ object creation
+
+    /**
+     * @brief Standard Python initializer (called after __cinit__).
+     * Currently empty.
+     */
+    def __init__(self): pass
+
+    /**
+     * @brief Cython destructor (called during object deallocation).
+     * Deletes the C++ object pointed to by `nn_ptr` (and `rnn`) to prevent memory leaks.
+     */
+    def __dealloc__(self):
+        # Implementation details:
+        # - Deletes the C++ object pointed to by self.nn_ptr.
+        pass # Replaced C++ object deletion
+
+    /**
+     * @brief Property getter for the edge feature dimension (_dx).
+     * @return The value of the C++ _dx member.
+     */
+    @property
+    def dx(self):
+        # Implementation details:
+        # - Returns self.rnn._dx.
+        pass # Replaced return statement
+
+    /**
+     * @brief Property setter for the edge feature dimension (_dx).
+     * @param val The integer value to set.
+     */
+    @dx.setter
+    def dx(self, int val):
+        # Implementation details:
+        # - Sets self.rnn._dx = val.
+        pass # Replaced assignment
+
+    /**
+     * @brief Property getter for the node feature dimension (_x).
+     * @return The value of the C++ _x member.
+     */
+    @property
+    def x(self):
+        # Implementation details:
+        # - Returns self.rnn._x.
+        pass # Replaced return statement
+
+    /**
+     * @brief Property setter for the node feature dimension (_x).
+     * @param val The integer value to set.
+     */
+    @x.setter
+    def x(self, int val):
+        # Implementation details:
+        # - Sets self.rnn._x = val.
+        pass # Replaced assignment
+
+    /**
+     * @brief Property getter for the output dimension (_output).
+     * @return The value of the C++ _output member.
+     */
+    @property
+    def output(self):
+        # Implementation details:
+        # - Returns self.rnn._output.
+        pass # Replaced return statement
+
+    /**
+     * @brief Property setter for the output dimension (_output).
+     * @param val The integer value to set.
+     */
+    @output.setter
+    def output(self, int val):
+        # Implementation details:
+        # - Sets self.rnn._output = val.
+        pass # Replaced assignment
+
+    /**
+     * @brief Property getter for the representation dimension (_rep).
+     * @return The value of the C++ _rep member.
+     */
+    @property
+    def rep(self):
+        # Implementation details:
+        # - Returns self.rnn._rep.
+        pass # Replaced return statement
+
+    /**
+     * @brief Property setter for the representation dimension (_rep).
+     * @param val The integer value to set.
+     */
+    @rep.setter
+    def rep(self, int val):
+        # Implementation details:
+        # - Sets self.rnn._rep = val.
+        pass # Replaced assignment
+
+    /**
+     * @brief Property getter for the Monte Carlo flag (is_mc).
+     * @return The boolean value of the C++ is_mc member.
+     */
+    @property
+    def is_mc(self):
+        # Implementation details:
+        # - Returns self.rnn.is_mc.
+        pass # Replaced return statement
+
+    /**
+     * @brief Property setter for the Monte Carlo flag (is_mc).
+     * @param val The boolean value to set.
+     */
+    @is_mc.setter
+    def is_mc(self, bool val):
+        # Implementation details:
+        # - Sets self.rnn.is_mc = val.
+        pass # Replaced assignment
+
+    /**
+     * @brief Property getter for the resonance mass (res_mass).
+     * @return The double value of the C++ res_mass member.
+     */
+    @property
+    def res_mass(self):
+        # Implementation details:
+        # - Returns self.rnn.res_mass.
+        pass # Replaced return statement
+
+    /**
+     * @brief Property setter for the resonance mass (res_mass).
+     * @param val The double value to set.
+     */
+    @res_mass.setter
+    def res_mass(self, double val):
+        # Implementation details:
+        # - Sets self.rnn.res_mass = val.
+        pass # Replaced assignment
+
+    /**
+     * @brief Property getter for the dropout rate (drop_out).
+     * @return The double value of the C++ drop_out member.
+     */
+    @property
+    def drop_out(self):
+        # Implementation details:
+        # - Returns self.rnn.drop_out.
+        pass # Replaced return statement
+
+    /**
+     * @brief Property setter for the dropout rate (drop_out).
+     * @param val The double value to set.
+     */
+    @drop_out.setter
+    def drop_out(self, double val):
+        # Implementation details:
+        # - Sets self.rnn.drop_out = val.
+        pass # Replaced assignment
+
+// --- C++ Implementation Section ---
+
+/**
+ * @brief Include the corresponding C++ header file.
+ */
+#include <RecursiveGraphNeuralNetwork.h>
+/**
+ * @brief Include helper utilities, likely for Python/C++ interaction or tensor operations.
+ */
+#include <pyc/pyc.h>
+
+/**
+ * @brief Constructor for the recursivegraphneuralnetwork C++ class.
+ *
+ * Initializes the model parameters and defines the neural network architectures
+ * using torch::nn::Sequential modules. It sets up networks for edge feature
+ * processing (rnn_dx), node feature processing (rnn_x), message merging (rnn_merge),
+ * state updates (rnn_update), and various post-processing steps (exotic_mlp,
+ * node_aggr_mlp, ntops_mlp, exo_mlp). Modules are registered and initialized.
+ *
+ * @param rep The dimensionality of the internal representation space (_rep).
+ * @param drop_out The dropout probability to use in the network layers.
+ */
+recursivegraphneuralnetwork::recursivegraphneuralnetwork(int rep, double drop_out){
+    // Implementation details:
+    // 1. Assign constructor arguments `rep` and `drop_out` to member variables `_rep` and `drop_out`.
+    // 2. Define `rnn_dx`: Processes edge features. Takes concatenated edge physics features and hidden states. Uses Linear, LayerNorm, SiLU, Dropout, Sigmoid layers. Output dimension is `_rep`.
+    // 3. Define `rnn_x`: Processes node features. Takes concatenated node physics features and hidden state. Uses Linear, LayerNorm, Dropout layers. Output dimension is `_rep`.
+    // 4. Define `rnn_merge`: Merges information from edge features (hdx) and node hidden states (hx_i, hx_j). Uses Linear, LayerNorm, SiLU, Dropout layers. Output dimension is `_rep`.
+    // 5. Define `rnn_update`: Updates the edge state (G). Takes concatenated current message (H), message difference (H_ - H), previous edge state (G), and state difference. Uses Linear, LayerNorm, SiLU, Dropout layers. Output dimension is `_output`.
+    // 6. Define `exotic_mlp`: Processes features related to resonance detection. Takes concatenated cluster 4-vector, invariant mass difference, and edge state (G_). Uses Linear, LayerNorm, Dropout layers. Output dimension is `_output`.
+    // 7. Define `node_aggr_mlp`: Aggregates edge information (summed edge states) to node level. Takes concatenated summed edge states, cluster mass difference, cluster size info. Uses Linear, LayerNorm, Dropout layers. Output dimension is `_x`.
+    // 8. Define `ntops_mlp`: Predicts graph-level properties (e.g., number of tops). Takes aggregated node features and global event features (num_jets, num_leps, met). Uses Linear, LayerNorm, SiLU, Dropout, ReLU layers. Output dimension is `_x`.
+    // 9. Define `exo_mlp`: Predicts graph-level resonance properties. Takes concatenated graph features (ntops) and aggregated resonance edge features. Uses Linear, LayerNorm, SiLU, Dropout, ReLU layers. Output dimension is `_output`.
+    // 10. Register all defined `torch::nn::Sequential` modules with the base model_template class using `register_module` and specify Xavier uniform initialization.
+    pass // Replaced network definitions and registration
+}
+
+/**
+ * @brief Calculates the message passed along edges during the recursive process.
+ *
+ * This function computes the interaction message between two nodes (i and j) based on their
+ * kinematic features, hidden states, and the combined kinematics of the pair. It utilizes
+ * the `rnn_dx` and `rnn_merge` networks.
+ *
+ * @param _trk_i Tensor containing unique track/node indices for the source nodes of edges.
+ * @param _trk_j Tensor containing unique track/node indices for the destination nodes of edges.
+ * @param pmc Tensor containing the 4-vectors (Px, Py, Pz, E) for all nodes in the graph.
+ * @param pmc_i Tensor containing the 4-vectors for the source nodes.
+ * @param pmc_j Tensor containing the 4-vectors for the destination nodes.
+ * @param hx_i Tensor containing the hidden state vectors for the source nodes.
+ * @param hx_j Tensor containing the hidden state vectors for the destination nodes.
+ * @return torch::Tensor The computed edge message tensor, with dimension `_rep`.
+ */
+torch::Tensor recursivegraphneuralnetwork::message(
+        torch::Tensor _trk_i, torch::Tensor _trk_j,
+        torch::Tensor pmc, torch::Tensor pmc_i, torch::Tensor pmc_j,
+        torch::Tensor hx_i, torch::Tensor hx_j
+){
+    // Implementation details:
+    // 1. Concatenate source and destination track indices (`trk_ij`).
+    // 2. Aggregate `pmc` based on unique source (`pmc_i_`), destination (`pmc_j_`), and combined (`pmc_ij`) track indices.
+    // 3. Calculate invariant masses for individual nodes (`m_i`, `m_j`), pairs (`m_ij`), and aggregated nodes (`m_i_`, `m_j_`).
+    // 4. Calculate the DeltaR separation between source and destination nodes (`dr`).
+    // 5. Construct the feature vector `dx_` by concatenating various kinematic features and differences:
+    //    - Combined mass (`m_ij`), combined 4-vector (`pmc_ij`), DeltaR (`dr`).
+    //    - Source mass (`m_i`), mass difference (`m_j - m_i`).
+    //    - Aggregated source mass (`m_i_`), aggregated mass difference (`m_j_ - m_i_`).
+    //    - Source 4-vector (`pmc_i`), 4-vector difference (`pmc_j - pmc_i`).
+    //    - Aggregated source 4-vector (`pmc_i_`), aggregated 4-vector difference (`pmc_j_ - pmc_i_`).
+    //    - Source hidden state (`hx_i`), hidden state difference (`hx_j - hx_i`).
+    // 6. Pass the concatenated features `dx_` through the `rnn_dx` network to get edge features `hdx`.
+    // 7. Concatenate `hdx`, source hidden state `hx_i`, and hidden state difference `hx_j - hx_i`.
+    // 8. Pass the result through the `rnn_merge` network to compute the final message.
+    // 9. Return the computed message tensor.
+    pass // Replaced message calculation logic
+}
+
+/**
+ * @brief Executes the forward pass of the Recursive Graph Neural Network.
+ *
+ * Processes an input graph (`graph_t`) through the recursive message passing
+ * mechanism to predict edge classifications (e.g., top quark decay edges, resonance decay edges)
+ * and graph-level properties (e.g., number of top quarks, presence of a resonance).
+ * Stores predictions in the graph object.
+ *
+ * @param data Pointer to the graph data structure (`graph_t`) containing node features,
+ *             edge indices, graph features, and potentially truth information.
+ */
+void recursivegraphneuralnetwork::forward(graph_t* data){
+    // Implementation details:
+    // 1. Extract node features (pt, eta, phi, energy, is_lep) and convert to Cartesian 4-vectors (`pmc`).
+    // 2. Extract graph features (num_jets, num_leps, met, met_phi) and calculate MET Px, Py (`met_xy`). Calculate number of b-jets (`num_bjet`).
+    // 3. Get edge indices (`edge_index`) and separate source (`src`) and destination (`dst`) indices.
+    // 4. Initialize node hidden states (`hx`) using `rnn_x` based on initial node features (mass, pmc) and zero padding for the initial hidden state part.
+    // 5. Create node track indices (`trk`) from 0 to N-1.
+    // 6. Create an edge index mapping matrix (`idx_mat`) for efficient state updates.
+    // 7. Initialize loop variables: iteration counter (`iter`), previous message (`H_`), current edge state (`G_`), previous edge state (`G`).
+    // 8. Start the recursive loop:
+    //    a. Check termination conditions (no edges left or max iterations reached).
+    //    b. Get current source (`src_`) and destination (`dst_`) indices from `edge_index_`.
+    //    c. Calculate new messages (`H`) using the `message` function with current `trk`, `pmc`, and `hx`.
+    //    d. Initialize `H_` on the first iteration.
+    //    e. Get the linear indices (`idx`) corresponding to the current edges using `idx_mat`.
+    //    f. Update the edge state `G` using `rnn_update`, incorporating `H`, `H_`, `G`, and the previous state `G_.index({idx})`.
+    //    g. Update the global edge state `G_` at the corresponding indices `idx`, scaling by softmax probability.
+    //    h. Determine the predicted class (`sel`) for each edge based on `G.max({-1})`.
+    //    i. Check termination condition (no edges predicted as class 1 or max iterations).
+    //    j. Filter `G` and `H_` to keep only edges not predicted as class 1 (or the background class).
+    //    k. Update the active edges `edge_index_` based on `sel`.
+    //    l. Aggregate node features (`pmc_`) based on the current edge states `G_` using `pyc::graph::edge_aggregation`. Update `trk` indices.
+    //    m. Update node hidden states `hx` using `rnn_x` with the new aggregated features (`pmc_`) and the previous `hx`.
+    //    n. Increment `iter`.
+    // 9. Post-recursion: Aggregate final clusters based on `G_`.
+    // 10. Calculate resonance features: Aggregate `pmc` based on clusters (`z_pmc`), calculate invariant mass difference from `res_mass` (`z_inv`), concatenate features, and predict resonance edge likelihood (`res_edge`) using `exotic_mlp`.
+    // 11. Aggregate edge states (`G_`) to node level (`top_matrix`) using sums and include cluster mass difference and size info. Pass through `node_aggr_mlp`.
+    // 12. Aggregate node features (`top_matrix`) to graph level, include global features (`num_jets`, `num_leps`, `met_xy`), and predict graph properties (`ntops`) using `ntops_mlp`.
+    // 13. Predict final resonance likelihood (`is_res`) using `exo_mlp`, combining `ntops` and aggregated `res_edge` information.
+    // 14. Store predictions: graph features (`signal`, `ntops`), edge features (`top_edge`, `res_edge`) using `prediction_graph_feature` and `prediction_edge_feature`.
+    // 15. If in inference mode (`inference_mode` is true):
+    //     a. Store softmax scores for predictions (`top_edge_score`, `res_edge_score`, `ntops_score`, `is_res_score`).
+    //     b. Store auxiliary information (`is_lep`, `num_leps`, `num_jets`, `num_bjets`).
+    // 16. If Monte Carlo truth is available (`is_mc` is true):
+    //     a. Extract truth labels for graph (`ntops_t`, `signa_t`) and edges (`r_edge_t`, `t_edge_t`).
+    //     b. Store truth labels using `prediction_extra`.
+    pass // Replaced forward pass logic
+}
+
+/**
+ * @brief Destructor for the recursivegraphneuralnetwork C++ class.
+ * Default destructor, handles cleanup of registered modules automatically.
+ */
+recursivegraphneuralnetwork::~recursivegraphneuralnetwork(){}
+
+/**
+ * @brief Creates a clone of the current model instance.
+ *
+ * Allocates a new `recursivegraphneuralnetwork` object and copies the
+ * configuration parameters (_rep, drop_out, _dx, _x, _output, res_mass, is_mc)
+ * from the current object to the new one. Note that the network weights
+ * themselves are typically handled by the base class saving/loading mechanism,
+ * this primarily copies the hyperparameter configuration.
+ *
+ * @return model_template* Pointer to the newly created model instance.
+ */
+model_template* recursivegraphneuralnetwork::clone(){
+    // Implementation details:
+    // 1. Create a new `recursivegraphneuralnetwork` instance using the current `_rep` and `drop_out`.
+    // 2. Copy the values of `_dx`, `_x`, `_output`, `res_mass`, and `is_mc` from `this` object to the new `rnn` object.
+    // 3. Return the pointer to the new `rnn` object cast to `model_template*`.
+    pass // Replaced cloning logic
+}
+
+// --- C++ Header Section ---
+
+/** @brief Header guard to prevent multiple inclusions. */
+#ifndef RECURSIVEGRAPHNEURALNETWORK_H
+#define RECURSIVEGRAPHNEURALNETWORK_H
+
+/** @brief Include the base model template header. */
+#include <templates/model_template.h>
+
+/**
+ * @class recursivegraphneuralnetwork
+ * @brief Implements a Recursive Graph Neural Network model for particle physics analysis.
+ *
+ * This class defines a GNN architecture that uses a recursive message passing
+ * scheme to iteratively refine edge predictions and node representations. It aims
+ * to identify particle decay structures (like top quarks) and potentially resonances.
+ * It inherits from the `model_template` base class.
+ */
+class recursivegraphneuralnetwork: public model_template
+{
+    public:
+        /**
+         * @brief Constructor.
+         * @param rep Initial representation dimension. Defaults to 1024.
+         * @param dpt Initial dropout rate. Defaults to 0.1.
+         */
+        recursivegraphneuralnetwork(int rep = 1024, double dpt = 0.1);
+
+        /**
+         * @brief Destructor.
+         */
+        ~recursivegraphneuralnetwork();
+
+        /**
+         * @brief Clones the model configuration. See C++ implementation documentation.
+         * @return A pointer to the cloned model.
+         */
+        model_template* clone() override;
+
+        /**
+         * @brief Executes the forward pass. See C++ implementation documentation.
+         * @param data Pointer to the graph data.
+         */
+        void forward(graph_t*) override;
+
+        /**
+         * @brief Calculates edge messages. See C++ implementation documentation.
+         * @param trk_i Source node indices.
+         * @param trk_j Destination node indices.
+         * @param pmc All node 4-vectors.
+         * @param pmc_i Source node 4-vectors.
+         * @param pmc_j Destination node 4-vectors.
+         * @param hx_i Source node hidden states.
+         * @param hx_j Destination node hidden states.
+         * @return Computed edge message tensor.
+         */
+        torch::Tensor message(
+            torch::Tensor trk_i, torch::Tensor trk_j,
+            torch::Tensor pmc, torch::Tensor pmc_i, torch::Tensor pmc_j,
+            torch::Tensor hx_i, torch::Tensor hx_j
+        );
+
+        // --- Configuration Parameters ---
+        /** @brief Input edge feature dimension (derived from message inputs). Default: 26. */
+        int _dx     = 26;
+        /** @brief Input node feature dimension (mass + PxPyPzE). Default: 5. */
+        int _x      = 5;
+        /** @brief Output dimension for edge classification/regression tasks. Default: 2. */
+        int _output = 2;
+        /** @brief Internal representation dimension for hidden states. Default: 256. */
+        int _rep    = 256;
+        /** @brief Target resonance mass (e.g., Z boson mass) used in calculations. Default: 0. */
+        double res_mass = 0;
+        /** @brief Dropout probability used in network layers. Default: 0.1. */
+        double drop_out = 0.1;
+
+        // --- Miscellaneous Flags ---
+        /** @brief Flag indicating if Monte Carlo truth information is available and should be processed. Default: true. */
+        bool is_mc = true;
+
+        // --- Neural Network Modules ---
+        /** @brief Network processing initial node features. */
+        torch::nn::Sequential* rnn_x         = nullptr;
+        /** @brief Network processing raw edge features for message calculation. */
+        torch::nn::Sequential* rnn_dx        = nullptr;
+        /** @brief Network merging edge features and node states into a message. */
+        torch::nn::Sequential* rnn_merge     = nullptr;
+        /** @brief Network updating the edge state based on messages and previous states. */
+        torch::nn::Sequential* rnn_update    = nullptr;
+        /** @brief Network for predicting resonance-related edge features. */
+        torch::nn::Sequential* exotic_mlp    = nullptr;
+        /** @brief Network aggregating edge information to node level. */
+        torch::nn::Sequential* node_aggr_mlp = nullptr;
+        /** @brief Network predicting graph-level properties (e.g., number of tops). */
+        torch::nn::Sequential* ntops_mlp     = nullptr;
+        /** @brief Network predicting graph-level resonance likelihood. */
+        torch::nn::Sequential* exo_mlp       = nullptr;
+
+};
+
+/** @brief Closes the header guard. */
+#endif

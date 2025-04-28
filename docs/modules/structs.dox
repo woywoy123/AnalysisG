@@ -1,0 +1,859 @@
+/**
+ * @file structs.dox
+ * @brief This file defines structures and functions for data handling,
+ *        including dictionary generation, data type translation,
+ *        and interfacing with ROOT trees.
+ */
+
+/**
+ * @brief Builds a dictionary for a given data type.
+ *
+ * This function uses the ROOT interpreter to generate a dictionary
+ * for the specified data type, allowing it to be used in ROOT
+ * macros and applications.
+ *
+ * @param _name The name of the data type (e.g., "vector<double>").
+ * @param _shrt The include path for the data type (e.g., "vector").
+ */
+void buildDict(std::string _name, std::string _shrt);
+
+/**
+ * @brief Registers an include path with the ROOT interpreter.
+ *
+ * This function adds an include path to the ROOT interpreter's
+ * search path, allowing it to find header files for data types
+ * used in the analysis.
+ *
+ * @param pth The include path to register.
+ * @param is_abs A boolean indicating whether the path is absolute (true)
+ *               or relative (false).
+ */
+void registerInclude(std::string pth, bool is_abs);
+
+/**
+ * @brief Builds a dictionary and optionally excludes it.
+ *
+ * This function combines the dictionary building with an exclusion
+ * option. If `exl` is true, the dictionary is not built.
+ *
+ * @param name The name of the data type.
+ * @param incl The include path for the data type.
+ * @param exl A boolean indicating whether to exclude the data type
+ *            from dictionary generation.
+ */
+void buildPCM(std::string name, std::string incl, bool exl);
+
+/**
+ * @brief Builds dictionaries for all supported data types.
+ *
+ * This function calls `buildPCM` for each supported data type,
+ * ensuring that dictionaries are available for all commonly used
+ * types in the analysis.
+ */
+void buildAll();
+
+/**
+ * @brief Default constructor for the `bsc_t` struct.
+ */
+bsc_t::bsc_t();
+
+/**
+ * @brief Virtual destructor for the `bsc_t` struct.
+ */
+bsc_t::~bsc_t();
+
+/**
+ * @brief Counts the number of occurrences of a substring in a string.
+ *
+ * This function counts how many times a given substring appears within
+ * a string.
+ *
+ * @param str A pointer to the string to search.
+ * @param sub The substring to count.
+ * @return The number of occurrences of the substring in the string.
+ */
+int count(const std::string* str, const std::string sub);
+
+/**
+ * @brief Translates a ROOT type string to a `data_enum` value.
+ *
+ * This function takes a string representing a ROOT data type and
+ * returns the corresponding `data_enum` value. It handles both
+ * primitive types and vectors of various depths.
+ *
+ * @param root_str A pointer to the ROOT type string.
+ * @return The corresponding `data_enum` value.
+ */
+data_enum bsc_t::root_type_translate(std::string* root_str);
+
+/**
+ * @brief Returns the string representation of the `data_enum` type.
+ *
+ * This function returns a string representation of the `data_enum`
+ * type stored in the `bsc_t` object.
+ *
+ * @return The string representation of the `data_enum` type.
+ */
+std::string bsc_t::as_string();
+
+/**
+ * @brief Scans the buffer and returns a string of set data types.
+ *
+ * This function checks which data type flags are set in the `bsc_t`
+ * object and returns a string containing a list of the set types.
+ *
+ * @return A string listing the set data types.
+ */
+std::string bsc_t::scan_buffer();
+
+/**
+ * @brief Flushes the data buffer based on the current data type.
+ *
+ * This function clears the data buffer associated with the current
+ * `data_enum` type in the `bsc_t` object.
+ */
+void bsc_t::flush_buffer();
+
+/**
+ * @brief Sets the element value for a vector of vector of vector of floats.
+ * @param el Pointer to the vector of vector of vector of floats.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<std::vector<float>>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of vector of doubles.
+ * @param el Pointer to the vector of vector of vector of doubles.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<std::vector<double>>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of vector of longs.
+ * @param el Pointer to the vector of vector of vector of longs.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<std::vector<long>>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of vector of ints.
+ * @param el Pointer to the vector of vector of vector of ints.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<std::vector<int>>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of vector of bools.
+ * @param el Pointer to the vector of vector of vector of bools.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<std::vector<bool>>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of floats.
+ * @param el Pointer to the vector of vector of floats.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<float>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of doubles.
+ * @param el Pointer to the vector of vector of doubles.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<double>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of longs.
+ * @param el Pointer to the vector of vector of longs.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<long>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of ints.
+ * @param el Pointer to the vector of vector of ints.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<int>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of bools.
+ * @param el Pointer to the vector of vector of bools.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<bool>>* el);
+
+/**
+ * @brief Sets the element value for a vector of floats.
+ * @param el Pointer to the vector of floats.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<float>* el);
+
+/**
+ * @brief Sets the element value for a vector of doubles.
+ * @param el Pointer to the vector of doubles.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<double>* el);
+
+/**
+ * @brief Sets the element value for a vector of ints.
+ * @param el Pointer to the vector of ints.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<int>* el);
+
+/**
+ * @brief Sets the element value for a vector of bools.
+ * @param el Pointer to the vector of bools.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<bool>* el);
+
+/**
+ * @brief Sets the element value for a vector of longs.
+ * @param el Pointer to the vector of longs.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<long>* el);
+
+/**
+ * @brief Sets the element value for a vector of chars.
+ * @param el Pointer to the vector of chars.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<char>* el);
+
+/**
+ * @brief Sets the element value for a bool.
+ * @param el Pointer to the bool.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(bool* el);
+
+/**
+ * @brief Sets the element value for a double.
+ * @param el Pointer to the double.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(double* el);
+
+/**
+ * @brief Sets the element value for a float.
+ * @param el Pointer to the float.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(float* el);
+
+/**
+ * @brief Sets the element value for an int.
+ * @param el Pointer to the int.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(int* el);
+
+/**
+ * @brief Sets the element value for a long.
+ * @param el Pointer to the long.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(long* el);
+
+/**
+ * @brief Sets the element value for an unsigned long long.
+ * @param el Pointer to the unsigned long long.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(unsigned long long* el);
+
+/**
+ * @brief Sets the element value for an unsigned int.
+ * @param el Pointer to the unsigned int.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(unsigned int* el);
+
+/**
+ * @brief Sets the element value for a char.
+ * @param el Pointer to the char.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(char* el);
+
+/**
+ * @brief Sets the meta data for the element.
+ */
+void element_t::set_meta();
+
+/**
+ * @brief Moves to the next element.
+ * @return True if the move was successful, false otherwise.
+ */
+bool element_t::next();
+
+/**
+ * @brief Checks if the element is at the boundary.
+ * @return True if the element is at the boundary, false otherwise.
+ */
+bool element_t::boundary();
+
+/**
+ * @brief Default constructor for the `data_t` struct.
+ */
+data_t::data_t();
+
+/**
+ * @brief Destructor for the `data_t` struct.
+ */
+data_t::~data_t();
+
+/**
+ * @brief Flushes the data.
+ */
+void data_t::flush();
+
+/**
+ * @brief Initializes the data.
+ */
+void data_t::initialize();
+
+/**
+ * @brief Moves to the next data element.
+ * @return True if the move was successful, false otherwise.
+ */
+bool data_t::next();
+
+/**
+ * @brief Flushes the data.
+ */
+void graph_hdf5_w::flush_data();
+
+/**
+ * @brief Prints the model report.
+ * @return The string representation of the model report.
+ */
+std::string model_report::print();
+
+/**
+ * @brief Helper function to print the model report.
+ * @param data Pointer to the data map.
+ * @param title The title of the data.
+ * @return The string representation of the data.
+ */
+std::string model_report::prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string title);
+
+/**
+ * @brief Overloads the operator() for the `optimizer_params_t` struct.
+ */
+void optimizer_params_t::operator()();
+
+/**
+ * @brief Sets the learning rate.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_lr(double*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the learning rate decay.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_lr_decay(double*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the weight decay.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_weight_decay(double*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the initial accumulator value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_initial_accumulator_value(double*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the epsilon value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_eps(double*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the betas value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_betas(std::tuple<float, float>*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the amsgrad value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_amsgrad(bool*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the max iter value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_max_iter(int*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the max eval value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_max_eval(int*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the tolerance grad value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_tolerance_grad(double*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the tolerance change value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_tolerance_change(double*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the history size value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_history_size(int*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the centered value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_centered(bool*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the nesterov value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_nesterov(bool*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the alpha value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_alpha(double*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the momentum value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_momentum(double*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the dampening value.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_dampening(double*, optimizer_params_t* obj);
+
+/**
+ * @brief Sets the beta hack value.
+ * @param val Pointer to the vector of floats.
+ * @param obj Pointer to the `optimizer_params_t` object.
+ */
+void optimizer_params_t::set_beta_hack(std::vector<float>* val, optimizer_params_t* obj);
+
+/**
+ * @brief Fetches the data buffer.
+ */
+void data_t::fetch_buffer();
+
+/**
+ * @brief Translates the string type.
+ */
+void data_t::string_type();
+
+/**
+ * @brief Writes the data.
+ */
+void write_t::write();
+
+/**
+ * @brief Creates the data.
+ * @param tr_name The name of the tree.
+ * @param path The path to the file.
+ */
+void write_t::create(std::string tr_name, std::string path);
+
+/**
+ * @brief Closes the data.
+ */
+void write_t::close();
+
+/**
+ * @brief Processes the data.
+ * @param name Pointer to the name of the data.
+ * @return Pointer to the variable_t object.
+ */
+variable_t* write_t::process(std::string* name);
+
+/**
+ * @brief Default constructor for the `writer` struct.
+ */
+writer::writer();
+
+/**
+ * @brief Destructor for the `writer` struct.
+ */
+writer::~writer();
+
+/**
+ * @brief Creates the data.
+ * @param pth Pointer to the path of the data.
+ */
+void writer::create(std::string* pth);
+
+/**
+ * @brief Writes the data.
+ * @param tree Pointer to the tree of the data.
+ */
+void writer::write(std::string* tree);
+
+/**
+ * @brief Processes the data.
+ * @param tree Pointer to the tree of the data.
+ * @param name Pointer to the name of the data.
+ * @return Pointer to the variable_t object.
+ */
+variable_t* writer::process(std::string* tree, std::string* name);
+
+/**
+ * @brief Builds a dictionary and optionally excludes it.
+ * @param name The name of the data type.
+ * @param incl The include path for the data type.
+ * @param exl A boolean indicating whether to exclude the data type from dictionary generation.
+ */
+void buildPCM(std::string name, std::string incl, bool exl);
+
+/**
+ * @brief Registers an include path with the ROOT interpreter.
+ * @param name The include path to register.
+ * @param is_abs A boolean indicating whether the path is absolute (true) or relative (false).
+ */
+void registerInclude(std::string name, bool is_abs);
+
+/**
+ * @brief Builds a dictionary for a given data type.
+ * @param name The name of the data type (e.g., "vector<double>").
+ * @param incl The include path for the data type (e.g., "vector").
+ */
+void buildDict(std::string name, std::string incl);
+
+/**
+ * @brief Builds dictionaries for all supported data types.
+ */
+void buildAll();
+
+/**
+ * @brief Default constructor for the `bsc_t` struct.
+ */
+bsc_t::bsc_t();
+
+/**
+ * @brief Virtual destructor for the `bsc_t` struct.
+ */
+bsc_t::~bsc_t();
+
+/**
+ * @brief Flushes the data buffer based on the current data type.
+ */
+void bsc_t::flush_buffer();
+
+/**
+ * @brief Returns the string representation of the `data_enum` type.
+ * @return The string representation of the `data_enum` type.
+ */
+std::string bsc_t::as_string();
+
+/**
+ * @brief Scans the buffer and returns a string of set data types.
+ * @return A string listing the set data types.
+ */
+std::string bsc_t::scan_buffer();
+
+/**
+ * @brief Translates a ROOT type string to a `data_enum` value.
+ * @param root_str A pointer to the ROOT type string.
+ * @return The corresponding `data_enum` value.
+ */
+data_enum bsc_t::root_type_translate(std::string* root_str);
+
+/**
+ * @brief Sets the element value for a vector of vector of vector of floats.
+ * @param el Pointer to the vector of vector of vector of floats.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<std::vector<float>>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of vector of doubles.
+ * @param el Pointer to the vector of vector of vector of doubles.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<std::vector<double>>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of vector of longs.
+ * @param el Pointer to the vector of vector of vector of longs.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<std::vector<long>>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of vector of ints.
+ * @param el Pointer to the vector of vector of vector of ints.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<std::vector<int>>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of vector of bools.
+ * @param el Pointer to the vector of vector of vector of bools.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<std::vector<bool>>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of floats.
+ * @param el Pointer to the vector of vector of floats.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<float>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of doubles.
+ * @param el Pointer to the vector of vector of doubles.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<double>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of longs.
+ * @param el Pointer to the vector of vector of longs.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<long>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of ints.
+ * @param el Pointer to the vector of vector of ints.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<int>>* el);
+
+/**
+ * @brief Sets the element value for a vector of vector of bools.
+ * @param el Pointer to the vector of vector of bools.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<std::vector<bool>>* el);
+
+/**
+ * @brief Sets the element value for a vector of floats.
+ * @param el Pointer to the vector of floats.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<float>* el);
+
+/**
+ * @brief Sets the element value for a vector of doubles.
+ * @param el Pointer to the vector of doubles.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<double>* el);
+
+/**
+ * @brief Sets the element value for a vector of ints.
+ * @param el Pointer to the vector of ints.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<int>* el);
+
+/**
+ * @brief Sets the element value for a vector of bools.
+ * @param el Pointer to the vector of bools.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<bool>* el);
+
+/**
+ * @brief Sets the element value for a vector of longs.
+ * @param el Pointer to the vector of longs.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<long>* el);
+
+/**
+ * @brief Sets the element value for a vector of chars.
+ * @param el Pointer to the vector of chars.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(std::vector<char>* el);
+
+/**
+ * @brief Sets the element value for a bool.
+ * @param el Pointer to the bool.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(bool* el);
+
+/**
+ * @brief Sets the element value for a double.
+ * @param el Pointer to the double.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(double* el);
+
+/**
+ * @brief Sets the element value for a float.
+ * @param el Pointer to the float.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(float* el);
+
+/**
+ * @brief Sets the element value for an int.
+ * @param el Pointer to the int.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(int* el);
+
+/**
+ * @brief Sets the element value for a long.
+ * @param el Pointer to the long.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(long* el);
+
+/**
+ * @brief Sets the element value for an unsigned long long.
+ * @param el Pointer to the unsigned long long.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(unsigned long long* el);
+
+/**
+ * @brief Sets the element value for an unsigned int.
+ * @param el Pointer to the unsigned int.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(unsigned int* el);
+
+/**
+ * @brief Sets the element value for a char.
+ * @param el Pointer to the char.
+ * @return True if the element is set, false otherwise.
+ */
+bool bsc_t::element(char* el);
+
+/**
+ * @brief Sets the meta data for the element.
+ */
+void element_t::set_meta();
+
+/**
+ * @brief Moves to the next element.
+ * @return True if the move was successful, false otherwise.
+ */
+bool element_t::next();
+
+/**
+ * @brief Checks if the element is at the boundary.
+ * @return True if the element is at the boundary, false otherwise.
+ */
+bool element_t::boundary();
+
+/**
+ * @brief Default constructor for the `data_t` struct.
+ */
+data_t::data_t();
+
+/**
+ * @brief Destructor for the `data_t` struct.
+ */
+data_t::~data_t();
+
+/**
+ * @brief Flushes the data.
+ */
+void data_t::flush();
+
+/**
+ * @brief Initializes the data.
+ */
+void data_t::initialize();
+
+/**
+ * @brief Moves to the next data element.
+ * @return True if the move was successful, false otherwise.
+ */
+bool data_t::next();
+
+/**
+ * @brief Fetches the data buffer.
+ */
+void data_t::fetch_buffer();
+
+/**
+ * @brief Translates the string type.
+ */
+void data_t::string_type();
+
+/**
+ * @brief Writes the data.
+ */
+void write_t::write();
+
+/**
+ * @brief Creates the data.
+ * @param tr_name The name of the tree.
+ * @param path The path to the file.
+ */
+void write_t::create(std::string tr_name, std::string path);
+
+/**
+ * @brief Closes the data.
+ */
+void write_t::close();
+
+/**
+ * @brief Processes the data.
+ * @param name Pointer to the name of the data.
+ * @return Pointer to the variable_t object.
+ */
+variable_t* write_t::process(std::string* name);
+
+/**
+ * @brief Default constructor for the `writer` struct.
+ */
+writer::writer();
+
+/**
+ * @brief Destructor for the `writer` struct.
+ */
+writer::~writer();
+
+/**
+ * @brief Creates the data.
+ * @param pth Pointer to the path of the data.
+ */
+void writer::create(std::string* pth);
+
+/**
+ * @brief Writes the data.
+ * @param tree Pointer to the tree of the data.
+ */
+void writer::write(std::string* tree);
+
+/**
+ * @brief Processes the data.
+ * @param tree Pointer to the tree of the data.
+ * @param name Pointer to the name of the data.
+ * @return Pointer to the variable_t object.
+ */
+variable_t* writer::process(std::string* tree, std::string* name);

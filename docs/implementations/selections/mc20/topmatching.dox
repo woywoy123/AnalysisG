@@ -1,0 +1,178 @@
+/**
+ * @file topmatching.h
+ * @brief Defines the topmatching class for analyzing top quark kinematics and matching.
+ *
+ * This file contains the declaration of the topmatching class, which inherits
+ * from selection_template. It is designed to perform analysis related to
+ * truth-level top quarks, their decay products, and associated jets within
+ * the ssml_mc20 event format. It calculates and stores various kinematic
+ * properties like invariant masses for different combinations of particles.
+ */
+#ifndef MC16_TOPMATCHING_H
+#define MC16_TOPMATCHING_H
+
+#include <ssml_mc20/event.h>          // Includes the specific event data structure used.
+#include <templates/selection_template.h> // Includes the base class definition.
+
+/**
+ * @class topmatching
+ * @brief A selection class derived from selection_template for top quark analysis.
+ *
+ * This class implements the strategy for analyzing truth top quarks within an event.
+ * It identifies top quarks, their decay children (leptons, neutrinos, quarks resulting in jets),
+ * associated truth jets, and reconstructed jets. It calculates invariant masses of various
+ * combinations of these particles and categorizes them based on whether the top decay
+ * was leptonic or hadronic. The results are stored in member variables for later merging
+ * and analysis.
+ */
+class topmatching : public selection_template {
+public:
+    /**
+     * @brief Constructor for the topmatching class.
+     * Initializes the selection name to "top-kinematics".
+     */
+    topmatching();
+
+    /**
+     * @brief Destructor for the topmatching class.
+     * Default destructor.
+     */
+    ~topmatching() override;
+
+    /**
+     * @brief Creates a copy of the current topmatching object.
+     * Required for parallel processing to ensure each thread has its own instance.
+     * @return A pointer to a new topmatching object.
+     */
+    selection_template* clone() override;
+
+    /**
+     * @brief Basic event selection criteria (currently placeholder).
+     * This method is intended to apply initial event-level cuts. In this implementation,
+     * it always returns true, meaning all events passing prior selections are processed
+     * by the strategy method.
+     * @param ev Pointer to the event object (event_template).
+     * @return Always returns true in this implementation.
+     */
+    bool selection(event_template* ev) override;
+
+    /**
+     * @brief Implements the core analysis strategy for top matching.
+     * This method performs the main logic:
+     * 1. Casts the generic event_template to the specific ssml_mc20 type.
+     * 2. Iterates through truth top quarks found in the event.
+     * 3. For each top:
+     *    - Records the truth top mass.
+     *    - Identifies decay children and checks if the decay is leptonic.
+     *    - Calculates and stores the invariant mass of truth children (all, leptonic, hadronic).
+     *    - Calculates and stores the invariant mass of associated truth jets (+ leptonic children if applicable), categorized by decay type and number of jets.
+     *    - Calculates and stores the invariant mass of associated reconstructed jets (+ leptonic children if applicable), categorized by decay type.
+     *    - Attempts to match the decay lepton from the top to a lepton in the event's lepton collection.
+     *    - Calculates and stores the invariant mass of reconstructed jets + matched lepton + neutrinos, categorized by decay type, lepton flavor, and number of jets.
+     * @param ev Pointer to the event object (event_template).
+     * @return Returns true after processing the event.
+     */
+    bool strategy(event_template* ev) override;
+
+    /**
+     * @brief Merges data from another topmatching instance into this one.
+     * Used after parallel processing to combine results from different threads/jobs.
+     * It aggregates the contents of all the member vectors and maps.
+     * @param sl Pointer to another selection_template object (must be a topmatching instance).
+     */
+    void merge(selection_template* sl) override;
+
+    // --- Member Variables for Storing Results ---
+
+    /** @brief Stores the invariant mass (in GeV) of each truth top quark found. */
+    std::vector<float> truth_top;
+
+    /** @brief Stores flags (1) indicating tops found with no recorded children (potentially problematic). */
+    std::vector<int> no_children;
+
+    /**
+     * @brief Stores the invariant mass (in GeV) of the combination of all truth decay children of the top.
+     * Keys: "all" (all tops), "lep" (leptonically decaying tops), "had" (hadronically decaying tops).
+     */
+    std::map<std::string, std::vector<float>> truth_children;
+
+    /**
+     * @brief Stores the invariant mass (in GeV) of the combination of truth jets associated with the top
+     *        (plus leptonic children for leptonic decays).
+     * Keys: "all" (all tops), "lep" (leptonically decaying tops), "had" (hadronically decaying tops).
+     */
+    std::map<std::string, std::vector<float>> truth_jets;
+
+    /**
+     * @brief Stores the invariant mass (in GeV) from truth_jets["lep"], categorized by the number of truth jets.
+     * Keys: e.g., "1 - Truth Jets", "2 - Truth Jets", etc.
+     */
+    std::map<std::string, std::vector<float>> n_truth_jets_lep;
+
+    /**
+     * @brief Stores the invariant mass (in GeV) from truth_jets["had"], categorized by the number of truth jets.
+     * Keys: e.g., "1 - Truth Jets", "2 - Truth Jets", etc.
+     */
+    std::map<std::string, std::vector<float>> n_truth_jets_had;
+
+    /**
+     * @brief Stores the invariant mass (in GeV) of the combination of reconstructed jets associated with the top
+     *        (plus leptonic children for leptonic decays).
+     * Keys: "all" (all tops), "lep" (leptonically decaying tops), "had" (hadronically decaying tops).
+     */
+    std::map<std::string, std::vector<float>> jets_truth_leps;
+
+    /**
+     * @brief Stores the invariant mass (in GeV) of the combination of reconstructed jets, the matched event lepton (if found),
+     *        and truth neutrinos from the top decay.
+     * Keys: "all", "lep", "had", "lep-11" (electron), "lep-13" (muon), "lep-miss" (lepton not found/matched).
+     */
+    std::map<std::string, std::vector<float>> jet_leps;
+
+    /**
+     * @brief Stores the invariant mass (in GeV) from jet_leps["lep"], categorized by the number of reconstructed jets.
+     * Keys: e.g., "1 - Jets", "2 - Jets", etc.
+     */
+    std::map<std::string, std::vector<float>> n_jets_lep;
+
+    /**
+     * @brief Stores the invariant mass (in GeV) from jet_leps["had"], categorized by the number of reconstructed jets.
+     * Keys: e.g., "1 - Jets", "2 - Jets", etc.
+     */
+    std::map<std::string, std::vector<float>> n_jets_had;
+
+
+    /**
+     * @brief Utility template function to convert the values of a map into a vector.
+     * @tparam T The type of the objects pointed to by the map values.
+     * @param mp Pointer to a map where values are pointers of type T*.
+     * @return A vector containing the pointers from the map's values.
+     */
+    template <typename T>
+    std::vector<T*> vectorize(std::map<std::string, T*>* mp);
+
+    /**
+     * @brief Utility template function to downcast a vector of pointers to a base class pointer type.
+     * Specifically used here to cast derived particle types to particle_template*.
+     * @tparam T The derived class type.
+     * @param mp Pointer to a vector of pointers of type T*.
+     * @return A vector of particle_template pointers.
+     */
+    template <typename T>
+    std::vector<particle_template*> downcast(std::vector<T*>* mp);
+
+    // Note: Implementations for vectorize and downcast are typically expected in the header
+    // if they are templates and used across different compilation units,
+    // or defined in the .cpp file if only used internally.
+    // The provided code snippet shows them in the header.
+};
+
+#endif // MC16_TOPMATCHING_H
+        self.jet_leps         = as_dict(&self.tt.jet_leps)
+        self.n_jets_lep       = as_dict(&self.tt.n_jets_lep)
+        self.n_jets_had       = as_dict(&self.tt.n_jets_had)
+
+
+
+
+

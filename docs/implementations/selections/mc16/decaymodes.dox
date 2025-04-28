@@ -1,0 +1,145 @@
+/**
+ * @file decaymodes.h
+ * @brief Defines the decaymodes class for analyzing top quark decay patterns in BSM 4-top events.
+ *
+ * This class inherits from selection_template and implements specific logic
+ * to select events based on the number of resonant and spectator top quarks,
+ * and then analyze their decay modes (hadronic vs. leptonic) and charge correlations.
+ * It stores various kinematic and statistical information about the decay products.
+ */
+
+#ifndef SELECTION_DECAYMODES_H
+#define SELECTION_DECAYMODES_H
+
+#include <bsm_4tops/event.h> // Assuming this header defines bsm_4tops event structure
+#include <templates/selection_template.h> // Base class definition
+#include <vector>
+#include <map>
+#include <string>
+
+// Forward declaration if particle_template is defined elsewhere
+class particle_template;
+class event_template;
+class top; // Assuming 'top' class is defined, possibly in bsm_4tops/event.h
+
+/**
+ * @class decaymodes
+ * @brief Implements an analysis selection focused on top quark decay modes and charges.
+ *
+ * This class selects events containing exactly two top quarks originating from a resonance
+ * and two spectator top quarks. It then categorizes these tops based on their decay
+ * (hadronic 'H' or leptonic 'L') and the charge combination of leptons from leptonic decays
+ * (same-sign 'SS' or opposite-sign 'SO'). It calculates and stores the invariant mass
+ * of the decay products for different categories, as well as particle ID statistics.
+ */
+class decaymodes : public selection_template {
+public:
+    /**
+     * @brief Constructor for the decaymodes class.
+     * @details Initializes the selection name and pre-allocates keys in the result maps
+     *          for expected decay mode combinations (HH, HL, LL) and charge combinations (SS, SO)
+     *          for both resonant and spectator tops, as well as signal regions.
+     *          This pre-allocation ensures the keys exist even if no events populate them.
+     */
+    decaymodes();
+
+    /**
+     * @brief Destructor for the decaymodes class.
+     * @details Default destructor, handles cleanup of resources if necessary.
+     */
+    ~decaymodes() override;
+
+    /**
+     * @brief Creates a new instance of the decaymodes class.
+     * @details Implements the clone pattern required by the base class `selection_template`.
+     *          This is used for creating copies of the selection object, often needed in
+     *          parallel processing or analysis frameworks.
+     * @return A pointer to a new decaymodes object allocated on the heap, cast to selection_template*.
+     */
+    selection_template* clone() override;
+
+    /**
+     * @brief Merges data from another decaymodes instance into this one.
+     * @details This function combines the results collected by another instance (`sl`)
+     *          into the current instance. It's essential for aggregating results
+     *          when processing data in parallel or chunks.
+     *          - Vector data (like invariant masses in `res_top_modes`, `spec_top_modes`, etc., and `ntops`)
+     *            is merged by appending the contents of the source vector to the target vector.
+     *          - Map data containing counts (like `res_top_pdgid`, `spec_top_pdgid`, `all_pdgid`, `lepton_statistics`)
+     *            is merged by summing the counts for corresponding keys.
+     * @param sl A pointer to another selection_template object, which is expected to be
+     *           a decaymodes instance. It's cast internally.
+     */
+    void merge(selection_template* sl) override;
+
+    /**
+     * @brief Applies the event selection criteria.
+     * @details Determines if an event passes the basic selection requirements for this analysis.
+     *          Specifically, it checks if the event, cast to a `bsm_4tops` type, contains
+     *          exactly two top quarks identified as originating from a resonance (`from_res == true`)
+     *          and exactly two top quarks identified as spectators (`from_res == false`).
+     *          It also records the total number of tops found in the event.
+     * @param ev A pointer to the event object (event_template) to be evaluated.
+     * @return `true` if the event has 2 resonant and 2 spectator tops, `false` otherwise.
+     */
+    bool selection(event_template* ev) override;
+
+    /**
+     * @brief Executes the analysis strategy on a selected event.
+     * @details This function performs the detailed analysis on events that have passed
+     *          the `selection` criteria. It separates tops into resonant and spectator groups,
+     *          analyzes their decay products to determine decay modes (H/L) and charge
+     *          combinations (SS/SO), calculates the invariant mass of decay products for
+     *          each category, and populates the corresponding result maps.
+     *          - It iterates through resonant tops, determines if they decay hadronically (H) or
+     *            leptonically (L), identifies the charges of leptons from L decays, and calculates
+     *            the invariant mass of their combined children. Results are stored in
+     *            `res_top_modes` and `res_top_charges`. PDG IDs of children are counted in `res_top_pdgid`.
+     *          - It performs the same analysis for spectator tops, storing results in
+     *            `spec_top_modes`, `spec_top_charges`, and `spec_top_pdgid`.
+     *          - It counts PDG IDs for all top children in `all_pdgid`.
+     *          - It determines the overall lepton charge combination (SS/SO) considering leptons
+     *            from both resonant and spectator tops and stores the invariant mass of resonant
+     *            children in `signal_region` based on this combination.
+     *          - It generates a string summarizing the decay type (leptonic/hadronic), charge (if applicable),
+     *            and origin (resonant/spectator) for each top (e.g., "l(+)R.l(-)R.hS.hS.") and stores
+     *            statistics in `lepton_statistics`.
+     * @param ev A pointer to the event object (event_template) that passed the selection.
+     * @return `true` after processing the event (the return value might indicate success, though here it's always true).
+     */
+    bool strategy(event_template* ev) override;
+
+    // --- Member Variables ---
+
+    /** @brief Stores invariant masses of decay products from resonant tops, keyed by decay mode (HH, HL, LL). */
+    std::map<std::string, std::vector<double>> res_top_modes;
+    /** @brief Stores invariant masses of decay products from resonant tops, keyed by lepton charge combination (SS, SO). */
+    std::map<std::string, std::vector<double>> res_top_charges;
+    /** @brief Counts the occurrences of different particle PDG IDs among the decay products of resonant tops. Keyed by particle symbol/name. */
+    std::map<std::string, int> res_top_pdgid;
+
+    /** @brief Stores invariant masses of decay products from spectator tops, keyed by decay mode (HH, HL, LL). */
+    std::map<std::string, std::vector<double>> spec_top_modes;
+    /** @brief Stores invariant masses of decay products from spectator tops, keyed by lepton charge combination (SS, SO). */
+    std::map<std::string, std::vector<double>> spec_top_charges;
+    /** @brief Counts the occurrences of different particle PDG IDs among the decay products of spectator tops. Keyed by particle symbol/name. */
+    std::map<std::string, int> spec_top_pdgid;
+
+    /** @brief Counts the occurrences of different particle PDG IDs among all decay products (resonant and spectator). Keyed by particle symbol/name. */
+    std::map<std::string, int> all_pdgid;
+    /** @brief Stores invariant masses of resonant top decay products, keyed by the overall event lepton charge combination (SS, SO). Used for defining signal regions. */
+    std::map<std::string, std::vector<double>> signal_region;
+    /** @brief Stores counts of events based on a detailed classification string describing each top's decay type, charge, and origin (e.g., "l(+)R.l(-)R.hS.hS."). */
+    std::map<std::string, int> lepton_statistics;
+    /** @brief Stores the number of top quarks found in each processed event. */
+    std::vector<int> ntops;
+
+    // Helper methods (assumed to be defined in base class or elsewhere, not shown in provided code but used)
+    // double sum(std::vector<particle_template*>* particles);
+    // std::vector<particle_template*> vectorize(std::map<std::string, particle_template*>* particle_map);
+    // void merge_data(std::vector<T>* target, std::vector<T>* source); // Template for vector merge
+    // void merge_data(std::map<K, std::vector<V>>* target, std::map<K, std::vector<V>>* source); // Template for map<vec> merge
+    // void sum_data(std::map<K, int>* target, std::map<K, int>* source); // Template for map<int> merge
+};
+
+#endif // SELECTION_DECAYMODES_H

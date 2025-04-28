@@ -1,0 +1,785 @@
+/**
+ * @file validation.dox
+ * @brief Comprehensive Doxygen documentation for the validation selection process, C++ implementation, and Cython bindings.
+ *
+ * This document details the structure and functionality of the `validation` analysis selection,
+ * which focuses on dileptonic top pair events and neutrino reconstruction using various strategies.
+ * It covers the C++ data structures (`packet_t`), the core C++ analysis class (`validation`),
+ * the Cython interface definition (`validation.pxd`), and the Cython implementation (`validation.pyx`)
+ * that provides the Python bindings and data post-processing logic.
+ *
+ * Implementation code has been removed, leaving only declarations and detailed documentation.
+ */
+
+// ==========================================================================
+// C++ Header Definitions (Originally from validation.h)
+// ==========================================================================
+
+#ifndef VALIDATION_H
+#define VALIDATION_H
+
+// --- C++ Standard Library Includes ---
+// #include <vector>      // Provides std::vector container.
+// #include <string>      // Provides std::string class.
+// #include <map>         // Provides std::map container.
+
+// --- Analysis Framework Includes ---
+// #include <templates/selection_template.h> // Base class for analysis selections.
+
+// --- Forward Declarations ---
+// class particle_template; // Forward declaration for the base particle class, if needed.
+
+/**
+ * @struct packet_t
+ * @brief Data container for particle collections and neutrino reconstruction results per strategy.
+ *
+ * This structure serves as a temporary holding place for particles (b-quarks, leptons, true neutrinos)
+ * identified within a single event according to a specific reconstruction strategy (e.g., using truth
+ * children, truth jets). It aggregates these input particles along with the output of the neutrino
+ * reconstruction process, including solutions calculated under both static (fixed W/top mass) and
+ * dynamic (masses derived from input particles) assumptions. Associated metrics like solver distance
+ * or chi-squared values are also stored. Additionally, it holds event-level information such as MET
+ * (magnitude and phi) and parameters used by the neutrino solver (e.g., device, tolerance, step size).
+ *
+ * The primary role of this struct is data aggregation before results are finalized or written out.
+ * It manages the lifetime of dynamically allocated `particle_template` objects representing the
+ * reconstructed neutrinos via its destructor.
+ */
+struct packet_t {
+
+    /**
+     * @brief Destructor for packet_t.
+     * @details Responsible for cleaning up dynamically allocated `particle_template` objects
+     *          stored within the various neutrino solution vectors (`static_nu1`, `static_nu2`,
+     *          `dynamic_nu1`, `dynamic_nu2`). This prevents memory leaks when `packet_t`
+     *          objects are destroyed (e.g., during the `merge` step or `validation` destructor).
+     */
+    ~packet_t();
+
+    // --- Input Particle Collections ---
+
+    /** @brief Vector storing pointers to identified b-quark particles (or jets acting as proxies). */
+    std::vector<particle_template*> bquarks;
+
+    /** @brief Vector storing pointers to identified lepton particles. */
+    std::vector<particle_template*> leptons;
+
+    /** @brief Vector storing pointers to true neutrino particles (typically two for dileptonic ttbar). Often only filled for truth-based strategies. */
+    std::vector<particle_template*> neutrino;
+
+    /** @brief Combined vector storing pointers to all relevant input particles (b-quarks, leptons, true neutrinos) for this strategy. Useful for generic output branches. */
+    std::vector<particle_template*> objects;
+
+    // --- Static Neutrino Reconstruction Results ---
+
+    /** @brief Vector storing pointers to the first neutrino solutions found using static mass assumptions (fixed M_top, M_W). Each entry corresponds to a solution pair. */
+    std::vector<particle_template*> static_nu1;
+
+    /** @brief Vector storing pointers to the second neutrino solutions found using static mass assumptions. Paired with `static_nu1`. */
+    std::vector<particle_template*> static_nu2;
+
+    /** @brief Vector storing the distance or chi-squared metric associated with each static neutrino solution pair. */
+    std::vector<double> static_distances;
+
+    // --- Dynamic Neutrino Reconstruction Results ---
+
+    /** @brief Vector storing pointers to the first neutrino solutions found using dynamic mass assumptions (masses derived from input particles). */
+    std::vector<particle_template*> dynamic_nu1;
+
+    /** @brief Vector storing pointers to the second neutrino solutions found using dynamic mass assumptions. Paired with `dynamic_nu1`. */
+    std::vector<particle_template*> dynamic_nu2;
+
+    /** @brief Vector storing the distance or chi-squared metric associated with each dynamic neutrino solution pair. */
+    std::vector<double> dynamic_distances;
+
+    // --- Metadata and Solver Parameters ---
+
+    /** @brief A string identifier for the reconstruction strategy used to populate this packet (e.g., "top_children", "truthjet", "jetchildren", "jetleptons"). */
+    std::string name;
+
+    /** @brief Identifier for the computational device used by the neutrino solver (e.g., "cuda:0", "cpu"). Determined during packet creation. */
+    std::string device;
+
+    /** @brief The magnitude of the Missing Transverse Energy (MET) for the event. */
+    double met;
+
+    /** @brief The azimuthal angle (phi) of the MET vector for the event. */
+    double phi;
+
+    /** @brief A small numerical value, potentially used as a null threshold or minimum value in solver calculations (default: 1e-10). */
+    double null;
+
+    /** @brief Step size parameter used by the numerical neutrino solver (default: 1e-9). */
+    double step;
+
+    /** @brief Convergence tolerance parameter for the numerical neutrino solver (default: 1e-6). */
+    double tolerance;
+
+    /** @brief Timeout limit or maximum number of iterations for the numerical neutrino solver (default: 100). */
+    unsigned int timeout;
+
+    /** @brief An internal processing flag, potentially used to mark packets during merging or other operations (default: false). Its specific use is not fully documented here. */
+    bool _is_marked;
+};
+
+
+/**
+ * @class validation
+ * @brief C++ analysis class implementing event selection and neutrino reconstruction for dileptonic top pair events.
+ *
+ * This class inherits from the `selection_template` base class, providing concrete implementations
+ * for the virtual methods required by the analysis framework. Its primary responsibilities include:
+ * 1.  **Event Selection (`selection`):** Identifying events compatible with dileptonic top pair decays.
+ * 2.  **Strategy Execution (`strategy`):** Implementing different particle matching and grouping approaches
+ *     (based on truth children, truth jets, reconstructed jets, detector leptons) to prepare inputs for
+ *     neutrino reconstruction. This involves populating `packet_t` objects.
+ * 3.  **Neutrino Reconstruction (`reconstruction`):** Invoking an external solver (likely `pyc::nusol::NuNu` via Cython)
+ *     to calculate neutrino kinematics based on the particles collected in each `packet_t`.
+ * 4.  **Result Merging (`merge`):** Consolidating results from potentially parallel processing steps, typically
+ *     by writing the contents of `packet_t` objects to an output file (e.g., ROOT TTree) structured by strategy.
+ * 5.  **Cloning (`clone`):** Providing a mechanism to create independent copies of the analysis object,
+ *     essential for parallel execution frameworks.
+ *
+ * It utilizes the `packet_t` struct to manage intermediate data for each reconstruction strategy within an event.
+ */
+class validation: public selection_template
+{
+    public:
+        /**
+         * @brief Default constructor for the validation class.
+         * @details Initializes the selection's internal name to "validation". It may also set default
+         *          values for configuration parameters like `masstop`, `massw`, and potentially query
+         *          available computational devices to initialize `num_device`.
+         */
+        validation();
+
+        /**
+         * @brief Virtual destructor override.
+         * @details Ensures proper cleanup of resources managed by the `validation` object. Specifically,
+         *          it iterates through the `storage` vector and deletes all dynamically allocated
+         *          `packet_t` objects to prevent memory leaks.
+         */
+        ~validation() override;
+
+        /**
+         * @brief Creates a deep copy of the validation object on the heap.
+         * @details Implements the `clone` method from the `selection_template` base class. It allocates
+         *          a new `validation` object, copies essential configuration state (like `num_device`,
+         *          `masstop`, `massw`), and returns a pointer to the new object, cast to the base
+         *          class type (`selection_template*`). This is crucial for frameworks that run multiple
+         *          instances of the selection in parallel.
+         * @return selection_template* A pointer to the newly created `validation` object.
+         */
+        selection_template* clone() override;
+
+        /**
+         * @brief Implements the event selection logic.
+         * @details Overrides the `selection` method from `selection_template`. It examines the input
+         *          event (`ev`, typically cast to a more specific type like `bsm_4tops`) to determine
+         *          if it meets the criteria for a dileptonic top pair event. In this specific case,
+         *          it checks if the event contains exactly two top quarks that decayed leptonically.
+         * @param ev A pointer to the generic event object (`event_template`).
+         * @return bool `true` if the event passes the selection criteria, `false` otherwise.
+         */
+        bool selection(event_template* ev) override;
+
+        /**
+         * @brief Orchestrates particle matching and packet creation for different reconstruction strategies.
+         * @details This is the core method implementing the different analysis strategies. It overrides
+         *          the `strategy` method from `selection_template`. For a selected event (`ev`), it performs
+         *          the following steps for each defined strategy (top_children, truthjet, jetchildren, jetleptons):
+         *          1. Creates a `packet_t` object using `build_packet`.
+         *          2. Identifies the relevant particles (b-quarks/jets, leptons) according to the strategy's definition
+         *             (e.g., truth matching, jet matching, detector lepton matching).
+         *          3. Uses `update_state` to populate the `packet_t` with the identified particles.
+         *          4. After processing all tops/relevant objects and populating the packets for all strategies,
+         *             it calls the `reconstruction` method for each created `packet_t` to perform neutrino solving.
+         *          The `packet_t` objects created here are stored in the `storage` vector.
+         * @param ev A pointer to the generic event object (`event_template`).
+         * @return bool Typically returns `true` to indicate successful execution, though the base class allows `false`.
+         */
+        bool strategy(event_template* ev) override;
+
+        /**
+         * @brief Merges results from another `validation` instance into the current context (e.g., output file).
+         * @details Overrides the `merge` method from `selection_template`. This method is called (often at the end
+         *          of processing a batch or by a master process in parallel execution) to combine results. It takes
+         *          a pointer (`sl`) to another `selection_template` object (which must be a `validation` instance).
+         *          It iterates through the `storage` vector (containing `packet_t` pointers) of the input object (`sl`).
+         *          For each `packet_t`, it extracts the particle data and reconstruction results and writes them
+         *          to the appropriate output branches (e.g., in a ROOT TTree). The branch names are typically
+         *          constructed based on the packet's `name` (strategy) and the type of data (e.g., "top_children_pmu",
+         *          "truthjet_static_nu1_pmu", "met"). After writing, it usually deletes the processed `packet_t`
+         *          from the input object's storage to free memory.
+         * @param sl A pointer to the `selection_template` object whose results are to be merged.
+         */
+        void merge(selection_template* sl) override;
+
+        /**
+         * @brief Performs the neutrino kinematics reconstruction for a given packet.
+         * @details This method takes a populated `packet_t` structure (`data`) containing the input b-quarks,
+         *          leptons, and MET information for a specific strategy. It invokes the neutrino solver
+         *          (e.g., `pyc::nusol::NuNu`) twice:
+         *          1.  **Static Reconstruction:** Using fixed, predefined masses for the W boson (`massw`) and
+         *              top quark (`masstop`).
+         *          2.  **Dynamic Reconstruction:** Using masses derived from the four-vectors of the input
+         *              leptons and b-quarks within the packet.
+         *          The solver returns potential neutrino solutions (pairs of four-vectors) and associated
+         *          distance/chi-squared metrics. These results are used to create new `particle_template`
+         *          objects (dynamically allocated) representing the reconstructed neutrinos, which are then
+         *          stored in the appropriate vectors within the input `packet_t` (`static_nu1`, `static_nu2`,
+         *          `dynamic_nu1`, `dynamic_nu2`, `static_distances`, `dynamic_distances`).
+         * @param data A pointer to the `packet_t` struct containing input particles and MET, which will be updated
+         *             with the reconstruction results.
+         */
+        void reconstruction(packet_t* data);
+
+        /**
+         * @brief Updates the particle collections within a `packet_t` or resets internal state pointers.
+         * @details This helper function is called by `strategy` to manage the association of particles
+         *          with a specific `packet_t`.
+         *          - If `data` is not `nullptr`, it adds the particles currently pointed to by the internal
+         *            member pointers (`b_qrk`, `lepton`, `nu_tru`) to the corresponding vectors (`bquarks`,
+         *            `leptons`, `neutrino`, `objects`) within the provided `packet_t` (`data`). The true
+         *            neutrino (`nu_tru`) is typically added only if the packet's name indicates a truth-based
+         *            strategy (e.g., "top_children").
+         *          - If `data` is `nullptr`, it resets the internal state pointers (`b_qrk`, `lepton`, `nu_tru`)
+         *            to `nullptr`. This is typically done at the beginning of processing a new top quark pair
+         *            or particle group within the `strategy` method to clear the state from the previous group.
+         * @param data A pointer to the `packet_t` to be updated, or `nullptr` to reset the internal matching pointers.
+         */
+        void update_state(packet_t* data);
+
+        // --- Configuration Members ---
+
+        /** @brief The number of computational devices (e.g., GPUs) available for the neutrino solver to use for parallelization. Set via Cython interface. */
+        int num_device;
+
+        /** @brief The assumed mass of the top quark (in MeV, e.g., 172620.0 for 172.62 GeV) used in the static neutrino reconstruction. */
+        double masstop;
+
+        /** @brief The assumed mass of the W boson (in MeV, e.g., 80385.0 for 80.385 GeV) used in the static neutrino reconstruction. */
+        double massw;
+
+    private:
+        // --- Internal Storage and State ---
+
+        /** @brief A vector storing pointers to `packet_t` objects created during the `strategy` phase for the current event. These packets hold the intermediate results for each strategy before merging. The `merge` method processes and clears this storage, and the destructor ensures cleanup if merging doesn't happen. */
+        std::vector<packet_t*> storage;
+
+        /** @brief Temporary pointer holding the matched true neutrino particle during the execution of the `strategy` method. Used by `update_state`. */
+        particle_template* nu_tru;
+
+        /** @brief Temporary pointer holding the matched b-quark or b-jet particle during the execution of the `strategy` method. Used by `update_state`. */
+        particle_template* b_qrk;
+
+        /** @brief Temporary pointer holding the matched lepton particle during the execution of the `strategy` method. Used by `update_state`. */
+        particle_template* lepton;
+
+        // --- Private Helper Methods ---
+
+        /**
+         * @brief Creates, initializes, and stores a new `packet_t` object for a given strategy.
+         * @details This template function allocates a new `packet_t` on the heap. It initializes the packet's
+         *          `met` and `phi` from the event (`evnt`), sets its `name` based on the provided string,
+         *          and determines the `device` string (e.g., "cuda:0", "cuda:1", "cpu") for the solver,
+         *          typically by distributing work based on the current thread index (`threadIdx`, assumed
+         *          to be accessible in the execution context) and the total number of devices (`num_device`).
+         *          The newly created packet pointer is added to the `storage` vector, and the pointer is returned.
+         * @tparam g The specific type of the event object (e.g., `bsm_4tops`), allowing access to event properties like MET.
+         * @param evnt Pointer to the event object.
+         * @param name The string identifier for the strategy associated with this packet.
+         * @return packet_t* Pointer to the newly created, initialized, and stored packet.
+         */
+        template <typename g>
+        packet_t* build_packet(g* evnt, std::string name);
+
+        /**
+         * @brief Helper function to upcast a vector of base particle pointers (`particle_template*`) to a vector of derived particle pointers (`g*`).
+         * @details Iterates through the input vector (`inpt`) containing pointers to the base `particle_template` class.
+         *          For each element, it performs a `static_cast` or `dynamic_cast` to the specified derived type `g*`
+         *          and adds the result to a new vector, which is then returned. Useful when needing to access
+         *          derived class members from a collection stored as base class pointers.
+         * @tparam g The target derived particle class type (e.g., `top`, `jet`).
+         * @param inpt Pointer to the input vector of `particle_template*`.
+         * @return std::vector<g*> A new vector containing pointers cast to the derived type `g*`.
+         */
+        template<typename g>
+        std::vector<g*> upcast(std::vector<particle_template*>* inpt);
+
+        /**
+         * @brief Helper function to upcast particle pointers stored as values in a map to a vector of derived type pointers.
+         * @details This function first extracts the values (which are assumed to be `particle_template*`) from the input
+         *          map (`inpt`) and places them into a temporary `std::vector<particle_template*>`. It likely uses
+         *          an internal helper function like `vectorize` (not shown) for this map-to-vector conversion.
+         *          Then, it calls the vector version of `upcast` (documented above) on this temporary vector
+         *          to perform the cast to the derived type `g*`.
+         * @tparam g The target derived particle class type (e.g., `top_children`).
+         * @param inpt Pointer to the input map (e.g., `std::map<std::string, particle_template*>`).
+         * @return std::vector<g*> A new vector containing pointers from the map values, cast to the derived type `g*`.
+         */
+        template<typename g>
+        std::vector<g*> upcast(std::map<std::string, particle_template*>* inpt);
+
+}; // end class validation
+
+#endif // VALIDATION_H
+
+
+// ==========================================================================
+// Cython Interface Definition (Originally from validation.pxd)
+// ==========================================================================
+
+// --- Cython Compiler Directives ---
+// distutils: language=c++       // Specifies that the linked code is C++.
+// cython: language_level=3     // Uses Python 3 syntax and semantics.
+
+// --- C++ Standard Library Imports for Cython ---
+// from libcpp.map cimport map      // Makes std::map available in Cython.
+// from libcpp.vector cimport vector // Makes std::vector available in Cython.
+// from libcpp.string cimport string // Makes std::string available in Cython.
+
+// --- AnalysisG Core Imports for Cython ---
+// from AnalysisG.core.selection_template cimport * // Imports base C++ selection class definition.
+// from AnalysisG.core.particle_template cimport *  // Imports base C++ particle class definition.
+
+/**
+ * @brief Declares C++ classes and functions from "validation.h" for use in Cython.
+ * @details This block tells Cython about the C++ code defined in "validation.h" that the
+ *          `.pyx` file will interact with. It allows Cython to generate the correct C++
+ *          interfacing code.
+ */
+// cdef extern from "validation.h":
+
+    /**
+     * @brief Exposes the C++ `validation` class to Cython.
+     * @details Declares the `validation` class, specifying its inheritance from `selection_template`.
+     *          The `except +` indicates that the constructor can throw C++ exceptions, which Cython
+     *          should translate into Python exceptions.
+     */
+    // cdef cppclass validation(selection_template):
+        /**
+         * @brief Declares the C++ constructor.
+         */
+        // validation() except +
+
+        /**
+         * @brief Exposes the `num_device` public member variable.
+         */
+        // int num_device
+
+    /**
+     * @brief Declares a C++ `neutrino` class inheriting from `particle_template`.
+     * @details This defines a C++ class named `neutrino` specifically for use within the Cython
+     *          extension. It inherits from the base `particle_template` and adds a `distance`
+     *          member. This C++ class mirrors the structure needed by the Cython `Neutrino`
+     *          wrapper class and is used internally during post-processing to hold reconstructed
+     *          neutrino data before it's wrapped for Python.
+     */
+    // cdef cppclass neutrino(particle_template):
+        /** @brief Distance or chi-squared metric associated with the neutrino solution. */
+        // double distance
+
+    /**
+     * @brief Declares a C++ `event` class for holding processed event data.
+     * @details This defines a C++ class used internally by the Cython `Postprocessing` step
+     *          to aggregate all the information for a single event after reconstruction but
+     *          before final Python object creation. Its structure mirrors the data organization
+     *          needed by the Python `Event` wrapper class, holding MET, true neutrinos, and
+     *          reconstructed neutrinos and particles grouped by strategy name.
+     */
+    // cdef cppclass event:
+        /** @brief Event MET magnitude. */
+        // double met
+        /** @brief Event MET azimuthal angle. */
+        // double phi
+
+        /** @brief Vector of pointers to true neutrino particles in the event. */
+        // vector[particle_template*] truth_neutrino
+
+        /** @brief Map from strategy name (string) to a vector of dynamically reconstructed neutrino solution pairs. Each pair is a vector of two `neutrino*`. */
+        // map[string, vector[vector[neutrino*]]] dynamic_neutrino
+
+        /** @brief Map from strategy name (string) to a vector of statically reconstructed neutrino solution pairs. Each pair is a vector of two `neutrino*`. */
+        // map[string, vector[vector[neutrino*]]] static_neutrino
+
+        /** @brief Map from strategy name (string) to a vector of other associated particles (b-quarks, leptons) for that strategy. */
+        // map[string, vector[particle_template*]] particles
+
+// --- Inline C++ Helper Functions (Defined for Cython) ---
+
+/**
+ * @brief Creates a C++ `particle_template` object from kinematic data. (Inline C++ for Cython)
+ * @details This inline function is defined directly in the Cython interface (`.pxd` or included header)
+ *          for efficiency. It takes a pointer to a C++ vector of doubles representing the
+ *          four-momentum (`pmu`: assumed {pt, eta, phi, e}) and a PDG ID (`pdg`). It allocates
+ *          a new `particle_template` object on the heap, sets its kinematic properties and PDG ID,
+ *          assigns a default type ("particle"), and returns a pointer to it. Returns `NULL` if the
+ *          input `pmu` vector is empty.
+ * @param pmu Pointer to a `std::vector<double>` containing {pt, eta, phi, e}.
+ * @param pdg The Particle Data Group ID for the particle.
+ * @return particle_template* Pointer to the newly created C++ particle object, or `NULL`.
+ * @note `noexcept nogil`: Declared as not throwing C++ exceptions and callable without the Python Global Interpreter Lock.
+ */
+// cdef inline particle_template* make_particle(vector[double]* pmu, int pdg) noexcept nogil:
+    // Implementation details (creating new particle_template, setting members) are in the .pyx file.
+    // pass // Placeholder in .dox
+
+/**
+ * @brief Creates a C++ `neutrino` object from kinematic data and a distance metric. (Inline C++ for Cython)
+ * @details Similar to `make_particle`, this inline function creates a C++ `neutrino` object (which
+ *          inherits from `particle_template`). It takes the four-momentum vector (`pmu`) and a
+ *          distance value (`dst`). It allocates a new `neutrino` object, sets its kinematics,
+ *          assigns a default type ("particle"), sets the additional `distance` member, and returns
+ *          a pointer to it. Returns `NULL` if the input `pmu` vector is empty.
+ * @param pmu Pointer to a `std::vector<double>` containing {pt, eta, phi, e}.
+ * @param dst The distance or chi-squared value associated with this neutrino solution.
+ * @return neutrino* Pointer to the newly created C++ neutrino object, or `NULL`.
+ * @note `noexcept nogil`: Declared as not throwing C++ exceptions and callable without the Python GIL.
+ */
+// cdef inline neutrino* make_neutrino(vector[double]* pmu, double dst) noexcept nogil:
+    // Implementation details (creating new neutrino, setting members) are in the .pyx file.
+    // pass // Placeholder in .dox
+
+// --- Cython Class Definition ---
+
+/**
+ * @brief Cython wrapper class for the C++ `validation` selection.
+ * @details This class provides the Python interface to the C++ `validation` analysis logic.
+ *          It inherits from `SelectionTemplate` (the Cython wrapper for `selection_template`).
+ *          It holds a pointer (`tt`) to the underlying C++ `validation` object and manages
+ *          the lifecycle of this object. It also defines intermediate C++ data structures
+ *          (maps and vectors) to temporarily store data read from input files (e.g., ROOT TTrees)
+ *          before it's processed into the final Python `Event` objects. The `Postprocessing`
+ *          method orchestrates this transformation. It also exposes configuration parameters
+ *          like `NumDevices`.
+ */
+// cdef class Validation(SelectionTemplate):
+
+    /** @brief Pointer to the underlying C++ `validation` object. */
+    // cdef validation* tt
+
+    /** @brief Public Python list to store the final processed `Event` objects after `Postprocessing`. */
+    // cdef public list Events
+
+    // --- C++ Data Structures for Intermediate Storage (within Cython object) ---
+    // These members hold data loaded from input branches via the `loader` function,
+    // organized by strategy name (string key) and event index (outer vector).
+
+    /** @brief Intermediate storage for static nu1 Pmu: map[strategy_name] -> vector[event_idx] -> vector[solution_idx] -> vector[pt, eta, phi, e]. */
+    // cdef map[string, vector[vector[vector[double]]]] nu1_static
+    /** @brief Intermediate storage for static nu2 Pmu: map[strategy_name] -> vector[event_idx] -> vector[solution_idx] -> vector[pt, eta, phi, e]. */
+    // cdef map[string, vector[vector[vector[double]]]] nu2_static
+    /** @brief Intermediate storage for static distances: map[strategy_name] -> vector[event_idx] -> vector[solution_idx] -> distance. */
+    // cdef map[string, vector[vector[double]]]   static_distances
+
+    /** @brief Intermediate storage for dynamic nu1 Pmu: map[strategy_name] -> vector[event_idx] -> vector[solution_idx] -> vector[pt, eta, phi, e]. */
+    // cdef map[string, vector[vector[vector[double]]]] nu1_dynamic
+    /** @brief Intermediate storage for dynamic nu2 Pmu: map[strategy_name] -> vector[event_idx] -> vector[solution_idx] -> vector[pt, eta, phi, e]. */
+    // cdef map[string, vector[vector[vector[double]]]] nu2_dynamic
+    /** @brief Intermediate storage for dynamic distances: map[strategy_name] -> vector[event_idx] -> vector[solution_idx] -> distance. */
+    // cdef map[string, vector[vector[double]]]   dynamic_distances
+
+    /** @brief Intermediate storage for other particle Pmu (b, l, nu_true): map[strategy_name] -> vector[event_idx] -> vector[particle_idx] -> vector[pt, eta, phi, e]. */
+    // cdef map[string, vector[vector[vector[double]]]] pmu
+    /** @brief Intermediate storage for other particle PDG ID (b, l, nu_true): map[strategy_name] -> vector[event_idx] -> vector[particle_idx] -> pdgid. */
+    // cdef map[string, vector[vector[int]]] pdgid
+
+    /** @brief Intermediate storage for event MET values: vector[event_idx] -> met. */
+    // cdef vector[double] met
+    /** @brief Intermediate storage for event MET phi values: vector[event_idx] -> phi. */
+    // cdef vector[double] phi
+
+// --- Inline Cython/C++ Helper Function Declaration ---
+
+/**
+ * @brief Loads data from a single TBranch read operation into the intermediate C++ storage within the Validation object. (Inline Cython)
+ * @details This inline function is called by the AnalysisG framework for each branch read from the input file
+ *          that matches the keys in the `Validation.root_leaves` dictionary. It takes the `Validation`
+ *          instance (`vl`) and a tuple `data` containing the branch name (string) and the data payload
+ *          (typically a C++ vector object provided by ROOT/uproot).
+ *          It parses the branch name to determine the strategy (e.g., "top_children") and the data type
+ *          (e.g., "pmu", "pdgid", "static_nu1_pmu", "dynamic_dst", "met", "phi"). Based on this parsing,
+ *          it casts the data payload to the appropriate C++ vector type and appends it to the corresponding
+ *          intermediate storage map or vector within the `Validation` object (`vl`). For event-level data
+ *          like "met" and "phi", it directly appends the single value.
+ * @param vl The Cython `Validation` object instance.
+ * @param data A Python tuple `(branch_name_string, branch_data_payload)`.
+ */
+// cdef inline void loader(Validation vl, tuple data):
+    // Implementation details (parsing name, casting data, pushing to maps/vectors) are in the .pyx file.
+    // pass // Placeholder in .dox
+
+
+// ==========================================================================
+// Cython Implementation (Originally from validation.pyx)
+// ==========================================================================
+
+// --- Cython Compiler Directives ---
+// # distutils: language=c++
+// # cython: language_level=3
+
+// --- Python/Cython Imports ---
+// import vector as vxc // Imports the 'vector' library, aliased as vxc (likely for creating vector objects in Python).
+// from AnalysisG.core.particle_template cimport * // Imports C++ particle base definitions for Cython.
+// from AnalysisG.core.selection_template cimport * // Imports C++ selection base definitions for Cython.
+// from AnalysisG.core.tools cimport *             // Imports helper tools (e.g., `enc` for string encoding).
+// from cython.parallel cimport prange             // Imports Cython's parallel range for parallel loops.
+
+// --- Cython Wrapper Classes ---
+
+/**
+ * @brief Cython wrapper class for the C++ `neutrino` struct/class.
+ * @details Provides a Python interface to a C++ `neutrino` object (which inherits from
+ *          `particle_template` and adds a `distance` member). It holds a pointer (`ptx`)
+ *          to the underlying C++ object and manages its lifetime. It exposes particle
+ *          properties inherited from `ParticleTemplate` and the specific `distance` property.
+ */
+// cdef class Neutrino(ParticleTemplate):
+
+    /** @brief Pointer to the underlying C++ `neutrino` object. */
+    // cdef neutrino* ptx
+
+    /** @brief Public attribute exposing the chi2/distance value. Seems redundant with the `distance` property but might be used directly. */
+    // cdef public double chi2
+
+    /**
+     * @brief C-level initialization. Ensures the C++ pointer `ptx` is initialized to NULL.
+     * @details Called when the Python object is created, before `__init__`.
+     */
+    // def __cinit__(self): pass // Implementation: self.ptx = NULL
+
+    /**
+     * @brief C-level deallocation. Deletes the C++ `neutrino` object pointed to by `ptx`.
+     * @details Called when the Python object's reference count reaches zero. Uses `del self.ptx`
+     *          which translates to `delete this->ptx;`.
+     */
+    // def __dealloc__(self): pass // Implementation: del self.ptx
+
+    /**
+     * @property distance
+     * @brief Gets the distance value from the underlying C++ `neutrino` object.
+     * @details Accesses `self.ptx.distance`. If `ptx` is NULL (e.g., if the Python object
+     *          was created without an associated C++ object initially), it allocates a new
+     *          C++ `neutrino` object before accessing.
+     * @return double The distance value.
+     */
+    // @property
+    // def distance(self): pass // Implementation: return self.ptx.distance (with NULL check/allocation)
+
+    /**
+     * @property distance
+     * @brief Sets the distance value in the underlying C++ `neutrino` object.
+     * @details Sets `self.ptx.distance = v`. If `ptx` is NULL, it allocates a new
+     *          C++ `neutrino` object first.
+     * @param v The distance value to set.
+     */
+    // @distance.setter
+    // def distance(self, double v): pass // Implementation: self.ptx.distance = v (with NULL check/allocation)
+
+    /**
+     * @property vec
+     * @brief Returns a 4-vector representation of the particle using the `vector` library.
+     * @details Creates and returns a `vector.obj` (or similar) using the px, py, pz, energy
+     *          properties inherited from `ParticleTemplate`.
+     * @return object A 4-vector object (type depends on the 'vector' library).
+     */
+    // @property
+    // def vec(self): pass // Implementation: return vxc.obj(px=self.px, ...)
+
+/**
+ * @brief Cython wrapper class for the C++ `particle_template` class (generic particle).
+ * @details Provides a Python interface to a generic C++ `particle_template` object.
+ *          It inherits from `ParticleTemplate` (which handles the C++ pointer `ptr` and
+ *          basic property access). This class primarily adds the `vec` property and
+ *          ensures proper C++ object deallocation.
+ */
+// cdef class Particle(ParticleTemplate):
+
+    /**
+     * @brief C-level deallocation. Deletes the C++ `particle_template` object pointed to by `ptr`.
+     * @details Called when the Python object's reference count reaches zero. Uses `del self.ptr`
+     *          which translates to `delete this->ptr;`.
+     */
+    // def __dealloc__(self): pass // Implementation: del self.ptr
+
+    /**
+     * @property vec
+     * @brief Returns a 4-vector representation of the particle using the `vector` library.
+     * @details Creates and returns a `vector.obj` (or similar) using the px, py, pz, energy
+     *          properties inherited from `ParticleTemplate`.
+     * @return object A 4-vector object (type depends on the 'vector' library).
+     */
+    // @property
+    // def vec(self): pass // Implementation: return vxc.obj(px=self.px, ...)
+
+/**
+ * @brief Cython wrapper class for the C++ `event` struct/class. Holds final processed data for one event.
+ * @details This class provides the Python representation of a fully processed event. It holds a
+ *          pointer (`ptr`) to the internal C++ `event` object created during `Postprocessing`.
+ *          It exposes event-level properties (`met`, `phi`, `vec`) and provides Python collections
+ *          (`TruthNeutrinos`, `DynamicNeutrino`, `StaticNeutrino`, `Particles`) which are populated
+ *          by the `build` method by wrapping the C++ objects contained within the pointed-to C++ `event`.
+ */
+// cdef class Event:
+
+    /** @brief Pointer to the underlying C++ `event` object containing the processed data. */
+    // cdef event* ptr
+
+    /** @brief Public Python list storing `Particle` objects representing the true neutrinos. */
+    // cdef public list TruthNeutrinos
+
+    /** @brief Public Python dictionary storing dynamically reconstructed neutrinos. Structure: `{ strategy_name : { 0: [list of nu1 Neutrino objects], 1: [list of nu2 Neutrino objects] } }`. */
+    // cdef public dict DynamicNeutrino
+
+    /** @brief Public Python dictionary storing statically reconstructed neutrinos. Structure: `{ strategy_name : { 0: [list of nu1 Neutrino objects], 1: [list of nu2 Neutrino objects] } }`. */
+    // cdef public dict StaticNeutrino
+
+    /** @brief Public Python dictionary storing other associated particles (b, l). Structure: `{ strategy_name : { 0: [list of particle0 Particle objects], 1: [list of particle1 Particle objects] } }`. The 0/1 likely correspond to the two top decay chains. */
+    // cdef public dict Particles
+
+    /**
+     * @brief C-level deallocation. Deletes the C++ `event` object pointed to by `ptr`.
+     * @details Called when the Python `Event` object is garbage collected.
+     */
+    // def __dealloc__(self): pass // Implementation: del self.ptr
+
+    /**
+     * @brief C-level initialization. Ensures the C++ pointer `ptr` is initialized to NULL.
+     */
+    // def __cinit__(self): pass // Implementation: self.ptr = NULL
+
+    /**
+     * @brief Python-level initialization. Initializes the Python collection attributes (lists/dicts).
+     * @details Creates the empty list `TruthNeutrinos` and the nested dictionaries for
+     *          `DynamicNeutrino`, `StaticNeutrino`, and `Particles`, pre-populating the
+     *          keys with the known strategy names.
+     */
+    // def __init__(self): pass // Implementation: Initializes Python lists/dicts
+
+    /**
+     * @property met
+     * @brief Gets the MET magnitude from the underlying C++ `event` object.
+     * @return double The MET value.
+     */
+    // @property
+    // def met(self): pass // Implementation: return self.ptr.met
+
+    /**
+     * @property phi
+     * @brief Gets the MET azimuthal angle from the underlying C++ `event` object.
+     * @return double The MET phi value.
+     */
+    // @property
+    // def phi(self): pass // Implementation: return self.ptr.phi
+
+    /**
+     * @property vec
+     * @brief Returns a 2D vector representation of the MET using the `vector` library.
+     * @details Creates and returns a `vector.obj` (or similar) using the `met` and `phi` properties.
+     * @return object A 2D vector object (type depends on the 'vector' library).
+     */
+    // @property
+    // def vec(self): pass // Implementation: return vxc.obj(pt=self.met, phi=self.phi)
+
+    /**
+     * @brief Internal Cython method to populate the Python collections from the C++ `event` object.
+     * @details This `cdef` method is called after a Python `Event` object has been associated with
+     *          a C++ `event` object (via `ev.ptr = ...`). It iterates through the C++ vectors and maps
+     *          within `self.ptr` (e.g., `self.ptr.truth_neutrino`, `self.ptr.dynamic_neutrino`).
+     *          For each C++ particle (`particle_template*` or `neutrino*`) found, it creates the
+     *          corresponding Python wrapper object (`Particle` or `Neutrino`), assigns the C++ pointer
+     *          to the wrapper's internal pointer (`ptr` or `ptx`), and appends the wrapper object
+     *          to the appropriate Python list or dictionary (`self.TruthNeutrinos`, `self.DynamicNeutrino[k][t]`, etc.).
+     *          This effectively transfers ownership/access of the C++ data to the Python side via the wrappers.
+     */
+    // cdef build(self):
+        // Implementation details: Iterates C++ collections in self.ptr, creates Python wrappers (Particle, Neutrino),
+        // assigns C++ pointers to wrappers, appends wrappers to self.TruthNeutrinos, self.DynamicNeutrino, etc.
+        // pass // Placeholder in .dox
+
+/**
+ * @brief Cython wrapper class for the C++ `validation` selection (main analysis logic).
+ * @details This is the primary class users interact with in Python. It inherits from `SelectionTemplate`
+ *          (the base Cython wrapper). It manages the underlying C++ `validation` object (`tt`), defines
+ *          the mapping from ROOT branch names to the `loader` function (`root_leaves`), holds the
+ *          intermediate C++ data structures loaded from the file, implements the `Postprocessing` step
+ *          to convert intermediate data into final `Event` objects, and provides access to results
+ *          via the `Events` list and configuration via properties like `NumDevices`.
+ */
+// cdef class Validation(SelectionTemplate):
+
+    /**
+     * @brief C-level deallocation. Deletes the C++ `validation` object pointed to by `tt`.
+     * @details Called when the Python `Validation` object is garbage collected. Uses `del self.tt`.
+     */
+    // def __dealloc__(self): pass // Implementation: del self.tt
+
+    /**
+     * @brief C-level initialization. Creates the C++ `validation` object and sets up Python attributes.
+     * @details Called when the Python object is created, before `__init__`.
+     *          - Initializes `self.Events` to an empty Python list.
+     *          - Defines the expected strategy names (`typx`) and data attributes (`attrs`).
+     *          - Constructs the `self.root_leaves` dictionary. This dictionary maps expected ROOT branch names
+     *            (e.g., "top_children_pmu", "truthjet_static_nu1_pmu", "met") to the `loader` function. This mapping
+     *            is used by the AnalysisG framework to direct data from specific branches to the `loader`.
+     *          - Creates a new C++ `validation` object (`new validation()`) and assigns the returned pointer
+     *            to both `self.ptr` (the base class pointer) and `self.tt` (the derived class pointer).
+     */
+    // def __cinit__(self):
+        // Implementation details: Initializes Events=[], defines strategies/attrs, builds root_leaves dict mapping branch names to loader,
+        // creates C++ object: self.ptr = new validation(); self.tt = <validation*>self.ptr
+        // pass // Placeholder in .dox
+
+    /**
+     * @property NumDevices
+     * @brief Gets the number of computational devices configured in the C++ `validation` object.
+     * @return int The number of devices.
+     */
+    // @property
+    // def NumDevices(self): pass // Implementation: return self.tt.num_device
+
+    /**
+     * @property NumDevices
+     * @brief Sets the number of computational devices in the C++ `validation` object.
+     * @param vl The number of devices to set.
+     */
+    // @NumDevices.setter
+    // def NumDevices(self, int vl): pass // Implementation: self.tt.num_device = vl
+
+    /**
+     * @brief Processes the intermediate C++ data (loaded via `loader`) into final Python `Event` objects.
+     * @details This method is called after all input data has been loaded into the intermediate C++ maps
+     *          and vectors within the `Validation` object (e.g., `self.nu1_static`, `self.pmu`, `self.met`).
+     *          It performs the following steps:
+     *          1.  Declares local C++ pointers to the intermediate storage maps/vectors for easier access.
+     *          2.  Defines the list of strategy names (`names`).
+     *          3.  Uses a `prange` (parallel range) loop over the number of events (determined by `self.met.size()`).
+     *              The loop runs `nogil` (without the Python Global Interpreter Lock) for potential C++ level parallelism.
+     *          4.  **Inside the parallel loop (for each event `i`):**
+     *              a. Creates a new C++ `event` object (`otx`) on the heap.
+     *              b. Sets the `met` and `phi` for `otx` from the loaded vectors (`met.at(i)`, `phi.at(i)`).
+     *              c. Iterates through the strategy `names` (`base`).
+     *              d. For each strategy, iterates through the loaded particle data (`pmu.at(base).at(i)`, `pdgid.at(base).at(i)`)
+     *                 and uses the `make_particle` inline function to create C++ `particle_template` objects. These
+     *                 are added to either `otx.truth_neutrino` or `otx.particles[base]` based on `ptx.is_nu`.
+     *              e. Iterates through the loaded static neutrino solutions (`nu1_s.at(base).at(i)`, `nu2_s.at(base).at(i)`, `sta_dst.at(base).at(i)`)
+     *                 and uses `make_neutrino` to create pairs of C++ `neutrino` objects, storing each pair in `otx.static_neutrino[base]`.
+     *              f. Does the same for dynamic neutrino solutions, storing results in `otx.dynamic_neutrino[base]`.
+     *              g. Stores the pointer to the created C++ `event` object (`otx`) in a temporary C++ vector `evnts`.
+     *          5.  **After the parallel loop:**
+     *              a. Clears the intermediate C++ storage maps/vectors (`nu1_s.clear()`, `pmu.clear()`, etc.) to free memory.
+     *              b. Iterates through the C++ `event` pointers stored in the `evnts` vector.
+     *              c. For each C++ `event*` (`evnts[i]`):
+     *                  i. Creates a Python `Event` wrapper object (`ev = Event()`).
+     *                 ii. Assigns the C++ pointer to the wrapper: `ev.ptr = evnts[i]`.
+     *                iii. Calls `ev.build()` to populate the Python collections within the wrapper from the C++ data.
+     *                 iv. Appends the fully constructed Python `Event` object (`ev`) to the `self.Events` list.
+     *          This method transforms the raw, array-based data loaded from the file into structured, object-oriented
+     *          Python objects accessible via `self.Events`.
+     */
+    // def Postprocessing(self):
+        // Implementation details: See detailed steps above. Involves parallel loop (prange nogil), creating C++ event objects,
+        // populating them using make_particle/make_neutrino from intermediate storage, clearing intermediate storage,
+        // then creating Python Event wrappers, assigning C++ pointers, calling build(), and appending to self.Events.
+        // pass // Placeholder in .dox

@@ -1,0 +1,504 @@
+/**
+ * @file lossfx.dox
+ * @brief Cython PXD and PYX definitions for Optimizer Configuration.
+ * @details This file contains both the Cython interface definitions (`.pxd` style content)
+ *          for interacting with a C++ optimizer parameter structure (`optimizer_params_t`)
+ *          and the Python wrapper class (`OptimizerConfig`) implementation (`.pyx` style content)
+ *          that provides a user-friendly way to manage these parameters from Python.
+ *          It leverages C++ standard library features and Cython's capabilities for
+ *          efficient C++/Python interoperability. Cython language level 3 is specified.
+ *          The documentation covers both the C++ interface declarations and the
+ *          Python wrapper class methods and properties.
+ */
+
+// distutils: language=c++
+// cython: language_level=3
+
+// Import necessary C++ types for the interface definition.
+from libcpp cimport bool, float
+from libcpp.vector cimport vector
+from libcpp.string cimport string
+// Import helper functions potentially defined elsewhere (assumed from original code).
+from AnalysisG.core.tools cimport *
+// Import the Cython declarations for this module itself (standard practice).
+from AnalysisG.core.lossfx cimport *
+// Import Cython utility for operator overloading if needed (though not directly used in the final Python class).
+cimport cython.operator
+
+/**
+ * @brief Declares C++ entities from the optimizer header file.
+ * @details This block uses `cdef extern from` to make C++ classes and functions
+ *          defined in `<structs/optimizer.h>` available to Cython. The `nogil`
+ *          keyword signifies that functions within this block can be called without
+ *          the Python Global Interpreter Lock, enabling potential parallelism.
+ */
+cdef extern from "<structs/optimizer.h>" nogil:
+
+    /**
+     * @brief C++ structure holding optimizer configuration parameters.
+     * @details This declaration mirrors the C++ `optimizer_params_t` structure.
+     *          Cython uses this definition to understand the memory layout and
+     *          members of the C++ object it will interact with. It includes
+     *          both data members and function members relevant for the wrapper.
+     */
+    cdef cppclass optimizer_params_t:
+
+        /**
+         * @brief Function call operator (potentially triggers an action in C++).
+         * @details Declares the overloaded `operator()` for the C++ class.
+         *          This allows instances of the C++ class (or pointers to them)
+         *          to be "called" like functions. The `except+ nogil` indicates
+         *          it can throw C++ exceptions (translated to Python exceptions)
+         *          and operates without the GIL.
+         * @throws May throw C++ exceptions, translated by Cython.
+         */
+        void operator()() except+ nogil
+
+        /** @brief Name of the optimizer algorithm (e.g., "adam", "sgd"). Stored as a C++ string. */
+        string optimizer
+
+        /** @brief Learning rate: Step size for parameter updates. */
+        double lr
+        /** @brief Learning rate decay: Factor to decrease learning rate over time (0 for no decay). */
+        double lr_decay
+        /** @brief Weight decay (L2 penalty): Regularization term to prevent overfitting. */
+        double weight_decay
+        /** @brief Initial accumulator value: Used by adaptive optimizers (Adagrad, Adam, RMSprop). */
+        double initial_accumulator_value
+        /** @brief Epsilon: Small value for numerical stability in denominators (Adam, RMSprop). */
+        double eps
+        /** @brief Gradient tolerance: Stopping criterion based on gradient norm (LBFGS). */
+        double tolerance_grad
+        /** @brief Parameter change tolerance: Stopping criterion based on update size (LBFGS). */
+        double tolerance_change
+        /** @brief Alpha parameter: Smoothing constant for RMSprop and related optimizers. */
+        double alpha
+        /** @brief Momentum factor: Accelerates updates in the relevant direction (SGD, Adam). */
+        double momentum
+        /** @brief Dampening factor: Reduces gradient contribution in momentum updates. */
+        double dampening
+
+        /** @brief AMSGrad flag: Enables the AMSGrad variant for Adam/AdamW optimizers. */
+        bool amsgrad
+        /** @brief Centered flag: Enables centered variant for RMSprop optimizer. */
+        bool centered
+        /** @brief Nesterov momentum flag: Enables Nesterov accelerated gradient for SGD. */
+        bool nesterov
+
+        /** @brief Maximum iterations: Limit on optimization steps (LBFGS). */
+        int max_iter
+        /** @brief Maximum function evaluations: Limit on loss/gradient calls (LBFGS). */
+        int max_eval
+        /** @brief History size: Number of past updates stored (LBFGS). */
+        int history_size
+
+        /**
+         * @brief Beta parameters (for Adam/AdamW): Coefficients for running averages.
+         * @details Stored as a C++ vector of floats. Typically holds two values (beta1, beta2).
+         *          Using `vector[float]` might be a workaround if direct tuple mapping is complex.
+         */
+        vector[float] beta_hack
+
+/**
+ * @brief Cython wrapper class for managing C++ optimizer parameters.
+ * @details This `cdef class` provides a Pythonic interface to the C++
+ *          `optimizer_params_t` structure. It handles the lifecycle (allocation,
+ *          deallocation) of the C++ object and exposes its parameters through
+ *          Python properties for easy access and modification.
+ */
+cdef class OptimizerConfig:
+    """
+    @brief Configuration class for storing optimizer parameters.
+
+    This class encapsulates various parameters used to configure optimization algorithms.
+    It manages the lifecycle of an underlying C++ structure (`optimizer_params_t`)
+    for efficient parameter handling in Cython, providing a Python-friendly interface.
+    """
+
+    /**
+     * @brief Pointer to the managed C++ optimizer parameters object.
+     * @details This internal attribute holds the memory address of the C++
+     *          `optimizer_params_t` instance created and managed by this
+     *          `OptimizerConfig` object. It is used by the class methods
+     *          to interact directly with the C++ data.
+     */
+    cdef optimizer_params_t* params
+
+    def __cinit__(self):
+        """
+        @brief C-level constructor: Allocates the C++ object.
+        @details This special Cython method is called upon object creation, *before*
+                 `__init__`. It's responsible for allocating the underlying C++
+                 `optimizer_params_t` object using `new`. This ensures that the
+                 C++ resources exist before any Python-level initialization occurs.
+        """
+        pass # Implementation replaced by documentation
+
+    def __init__(self):
+        """
+        @brief Python-level initializer.
+        @details Called after `__cinit__`. This standard Python initializer can be used
+                 for any Python-specific setup, such as setting default values for
+                 attributes not directly mapped to C++ or performing other Python-side
+                 initialization logic. In this specific implementation, it does nothing.
+        """
+        pass # Implementation replaced by documentation
+
+    def __dealloc__(self):
+        """
+        @brief C-level destructor: Deallocates the C++ object.
+        @details This special Cython method is called when the Python object's
+                 reference count reaches zero, *before* `__del__`. It's crucial
+                 for releasing the C++ resources allocated in `__cinit__` by
+                 calling `del` (which translates to C++ `delete`) on the `params`
+                 pointer, preventing memory leaks.
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def Optimizer(self):
+        """
+        @brief Gets the name of the optimizer algorithm.
+        @details Retrieves the optimizer name stored in the underlying C++
+                 `optimizer_params_t` structure's `optimizer` member.
+                 The C++ `std::string` is converted to a Python string
+                 (potentially using a helper function `env`).
+        @return The name of the optimizer as a Python string.
+        """
+        pass # Implementation replaced by documentation
+
+    @Optimizer.setter
+    def Optimizer(self, str val):
+        """
+        @brief Sets the name of the optimizer algorithm.
+        @details Assigns the provided Python string `val` to the underlying C++
+                 `optimizer_params_t` structure's `optimizer` member.
+                 The Python string is converted to a C++ `std::string`
+                 (potentially using a helper function `enc`).
+        @param val The name of the optimizer (e.g., "adam", "sgd") as a Python string.
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def lr(self):
+        """
+        @brief Gets the learning rate.
+        @details Retrieves the learning rate value stored in the C++ structure's `lr` member.
+        @return The current learning rate (float).
+        """
+        pass # Implementation replaced by documentation
+
+    @lr.setter
+    def lr(self, double val):
+        """
+        @brief Sets the learning rate.
+        @details Assigns the provided `val` to the C++ structure's `lr` member.
+        @param val The new learning rate value (float, typically small and positive).
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def lr_decay(self):
+        """
+        @brief Gets the learning rate decay factor.
+        @details Retrieves the learning rate decay value from the C++ structure's `lr_decay` member.
+        @return The current learning rate decay factor (float).
+        """
+        pass # Implementation replaced by documentation
+
+    @lr_decay.setter
+    def lr_decay(self, double val):
+        """
+        @brief Sets the learning rate decay factor.
+        @details Assigns the provided `val` to the C++ structure's `lr_decay` member.
+        @param val The new learning rate decay factor (float, non-negative, 0 for no decay).
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def weight_decay(self):
+        """
+        @brief Gets the weight decay (L2 penalty) value.
+        @details Retrieves the weight decay value from the C++ structure's `weight_decay` member.
+        @return The current weight decay value (float).
+        """
+        pass # Implementation replaced by documentation
+
+    @weight_decay.setter
+    def weight_decay(self, double val):
+        """
+        @brief Sets the weight decay (L2 penalty) value.
+        @details Assigns the provided `val` to the C++ structure's `weight_decay` member.
+        @param val The new weight decay value (float, typically small and non-negative).
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def initial_accumulator_value(self):
+        """
+        @brief Gets the initial value for optimizer accumulators.
+        @details Retrieves the initial accumulator value from the C++ structure's
+                 `initial_accumulator_value` member. Used by adaptive optimizers.
+        @return The initial accumulator value (float).
+        """
+        pass # Implementation replaced by documentation
+
+    @initial_accumulator_value.setter
+    def initial_accumulator_value(self, double val):
+        """
+        @brief Sets the initial value for optimizer accumulators.
+        @details Assigns the provided `val` to the C++ structure's `initial_accumulator_value` member.
+        @param val The new initial accumulator value (float).
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def eps(self):
+        """
+        @brief Gets the epsilon value for numerical stability.
+        @details Retrieves the epsilon value from the C++ structure's `eps` member.
+                 Used to prevent division by zero in optimizers like Adam/RMSprop.
+        @return The current epsilon value (float).
+        """
+        pass # Implementation replaced by documentation
+
+    @eps.setter
+    def eps(self, double val):
+        """
+        @brief Sets the epsilon value for numerical stability.
+        @details Assigns the provided `val` to the C++ structure's `eps` member.
+        @param val The new epsilon value (float, typically a small positive number like 1e-8).
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def tolerance_grad(self):
+        """
+        @brief Gets the gradient tolerance for stopping criteria.
+        @details Retrieves the gradient tolerance from the C++ structure's `tolerance_grad` member.
+                 Used by optimizers like LBFGS.
+        @return The current gradient tolerance value (float).
+        """
+        pass # Implementation replaced by documentation
+
+    @tolerance_grad.setter
+    def tolerance_grad(self, double val):
+        """
+        @brief Sets the gradient tolerance for stopping criteria.
+        @details Assigns the provided `val` to the C++ structure's `tolerance_grad` member.
+        @param val The new tolerance value for the gradient norm (float).
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def tolerance_change(self):
+        """
+        @brief Gets the parameter change tolerance for stopping criteria.
+        @details Retrieves the parameter change tolerance from the C++ structure's
+                 `tolerance_change` member. Used by optimizers like LBFGS.
+        @return The current parameter change tolerance value (float).
+        """
+        pass # Implementation replaced by documentation
+
+    @tolerance_change.setter
+    def tolerance_change(self, double val):
+        """
+        @brief Sets the parameter change tolerance for stopping criteria.
+        @details Assigns the provided `val` to the C++ structure's `tolerance_change` member.
+        @param val The new tolerance value for parameter changes (float).
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def alpha(self):
+        """
+        @brief Gets the alpha parameter (often for RMSprop).
+        @details Retrieves the alpha value from the C++ structure's `alpha` member.
+                 Typically the smoothing constant in RMSprop.
+        @return The current alpha parameter value (float).
+        """
+        pass # Implementation replaced by documentation
+
+    @alpha.setter
+    def alpha(self, double val):
+        """
+        @brief Sets the alpha parameter.
+        @details Assigns the provided `val` to the C++ structure's `alpha` member.
+        @param val The new alpha parameter value (float, often between 0 and 1).
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def momentum(self):
+        """
+        @brief Gets the momentum factor.
+        @details Retrieves the momentum value from the C++ structure's `momentum` member.
+                 Helps accelerate updates and dampen oscillations.
+        @return The current momentum value (float).
+        """
+        pass # Implementation replaced by documentation
+
+    @momentum.setter
+    def momentum(self, double val):
+        """
+        @brief Sets the momentum factor.
+        @details Assigns the provided `val` to the C++ structure's `momentum` member.
+        @param val The new momentum value (float, typically between 0 and 1).
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def dampening(self):
+        """
+        @brief Gets the dampening factor for momentum.
+        @details Retrieves the dampening value from the C++ structure's `dampening` member.
+                 Reduces the gradient's contribution in momentum updates.
+        @return The current dampening factor (float).
+        """
+        pass # Implementation replaced by documentation
+
+    @dampening.setter
+    def dampening(self, double val):
+        """
+        @brief Sets the dampening factor for momentum.
+        @details Assigns the provided `val` to the C++ structure's `dampening` member.
+        @param val The new dampening factor value (float, non-negative).
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def amsgrad(self):
+        """
+        @brief Gets the AMSGrad variant flag (for Adam/AdamW).
+        @details Retrieves the boolean flag from the C++ structure's `amsgrad` member.
+        @return True if AMSGrad is enabled, False otherwise.
+        """
+        pass # Implementation replaced by documentation
+
+    @amsgrad.setter
+    def amsgrad(self, bool val):
+        """
+        @brief Sets the AMSGrad variant flag.
+        @details Assigns the provided boolean `val` to the C++ structure's `amsgrad` member.
+        @param val Set to True to enable AMSGrad, False to disable it.
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def centered(self):
+        """
+        @brief Gets the centered flag (for RMSprop).
+        @details Retrieves the boolean flag from the C++ structure's `centered` member.
+                 Determines if RMSprop normalizes by variance or uncentered second moment.
+        @return True if centered RMSprop is enabled, False otherwise.
+        """
+        pass # Implementation replaced by documentation
+
+    @centered.setter
+    def centered(self, bool val):
+        """
+        @brief Sets the centered flag for RMSprop.
+        @details Assigns the provided boolean `val` to the C++ structure's `centered` member.
+        @param val Set to True to enable centered RMSprop, False otherwise.
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def nesterov(self):
+        """
+        @brief Gets the Nesterov momentum flag (for SGD).
+        @details Retrieves the boolean flag from the C++ structure's `nesterov` member.
+        @return True if Nesterov momentum is enabled, False otherwise.
+        """
+        pass # Implementation replaced by documentation
+
+    @nesterov.setter
+    def nesterov(self, bool val):
+        """
+        @brief Sets the Nesterov momentum flag.
+        @details Assigns the provided boolean `val` to the C++ structure's `nesterov` member.
+        @param val Set to True to enable Nesterov momentum, False otherwise.
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def max_iter(self):
+        """
+        @brief Gets the maximum number of iterations.
+        @details Retrieves the maximum iterations limit from the C++ structure's `max_iter` member.
+                 Used as a stopping criterion, often by LBFGS.
+        @return The maximum allowed iterations (int).
+        """
+        pass # Implementation replaced by documentation
+
+    @max_iter.setter
+    def max_iter(self, int val):
+        """
+        @brief Sets the maximum number of iterations.
+        @details Assigns the provided integer `val` to the C++ structure's `max_iter` member.
+        @param val The new maximum number of iterations (positive integer).
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def max_eval(self):
+        """
+        @brief Gets the maximum number of function evaluations.
+        @details Retrieves the maximum function evaluation limit from the C++ structure's
+                 `max_eval` member. Used as a stopping criterion, often by LBFGS.
+        @return The maximum allowed function evaluations (int).
+        """
+        pass # Implementation replaced by documentation
+
+    @max_eval.setter
+    def max_eval(self, int val):
+        """
+        @brief Sets the maximum number of function evaluations.
+        @details Assigns the provided integer `val` to the C++ structure's `max_eval` member.
+        @param val The new maximum number of evaluations (positive integer).
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def history_size(self):
+        """
+        @brief Gets the history size (for LBFGS).
+        @details Retrieves the history size from the C++ structure's `history_size` member.
+                 Determines how many past updates LBFGS stores.
+        @return The current history size (int).
+        """
+        pass # Implementation replaced by documentation
+
+    @history_size.setter
+    def history_size(self, int val):
+        """
+        @brief Sets the history size for LBFGS.
+        @details Assigns the provided integer `val` to the C++ structure's `history_size` member.
+        @param val The new history size (positive integer).
+        """
+        pass # Implementation replaced by documentation
+
+    @property
+    def betas(self):
+        """
+        @brief Gets the beta parameters (for Adam, AdamW).
+        @details Retrieves the beta values stored in the C++ structure's `beta_hack`
+                 member (a `vector<float>`). It likely returns this vector directly
+                 or converts it to a suitable Python sequence (like a list or tuple).
+        @return The beta parameters, likely as a list or tuple [beta1, beta2].
+        """
+        pass # Implementation replaced by documentation
+
+    @betas.setter
+    def betas(self, tuple val):
+        """
+        @brief Sets the beta parameters (for Adam, AdamW).
+        @details Assigns the values from the provided Python tuple `val` to the
+                 C++ structure's `beta_hack` member (a `vector<float>`).
+                 It expects a tuple containing two float values (beta1, beta2).
+                 The implementation constructs a `vector<float>` from the tuple elements.
+        @param val A tuple containing two float values (beta1, beta2), typically
+                 between 0 and 1.
+        @throws TypeError if `val` is not a tuple of length 2 (implicit via indexing).
+        """
+        pass # Implementation replaced by documentation

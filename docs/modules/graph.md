@@ -1,81 +1,61 @@
 # Graph Module
 
-The Graph module is a fundamental component of the AnalysisG framework, responsible for representing physics events as graphs with nodes, edges, and features.
+@brief Graph-based data representation and manipulation framework
 
 ## Overview
 
-This module implements the graph data structure used throughout the framework, providing functionalities for defining graph topology, adding node and edge features, and exporting graph data for machine learning pipelines.
+The Graph module provides a flexible system for representing and manipulating graph-based data structures. It is designed to handle complex relationships between entities, such as particles in physics events.
 
 ## Key Components
 
-### graph_template class
+### graph_template
 
-```{eval-rst}
-.. doxygenclass:: graph_template
-   :members:
-   :protected-members:
-   :undoc-members:
+Base class for graph representations, providing core functionality for managing nodes, edges, and features.
+
+```cpp
+class graph_template: public tools
+{
+    // ...existing code...
+    void add_graph_data_feature(O* ev, X fx, std::string name);
+    void add_graph_truth_feature(O* ev, X fx, std::string name);
+    // ...existing code...
+};
 ```
 
-## Main Functionalities
+### graph_t
 
-### Graph Construction
+Struct for managing graph data, including event weights and batched events.
 
-The module provides methods to construct graph representations of physics events:
-- Node definition and association with physical particles
-- Edge construction between nodes based on physical criteria
-- Graph-level feature extraction from event properties
-
-### Feature Management
-
-The module supports adding different types of features to the graph:
-- `add_graph_feature()`: Adds features at the graph level
-- `add_node_feature()`: Adds features to individual nodes
-- `add_edge_feature()`: Adds features to edges between nodes
-
-### Feature Types
-
-Features are categorized into two main types:
-- **Truth features**: Properties from simulation or ground truth (prefixed with "T-")
-- **Data features**: Observable properties from detector measurements (prefixed with "D-")
-
-### Topology Definition
-
-The module provides methods to define the graph topology:
-- `define_topology()`: Creates the adjacency structure of the graph
-- Support for various topological patterns (fully connected, nearest neighbors, etc.)
-
-### Data Export
-
-Graph data can be exported to formats suitable for machine learning:
-- `data_export()`: Converts the internal graph representation to tensor-based format
-- Integration with PyTorch data structures for seamless model training
+```cpp
+struct graph_t {
+    torch::Tensor* get_event_weight(g* mdl);
+    template <typename g>
+    torch::Tensor* get_batch_index(g* mdl);
+    template <typename g>
+    torch::Tensor* get_batched_events(g* mdl);
+    // ...existing code...
+};
+```
 
 ## Usage Example
 
 ```cpp
-#include <templates/graph_template.h>
-#include <templates/event_template.h>
+// Create a graph object
+graph_template* graph = new graph_template();
 
-// Define a graph for a physics event
-graph_template* create_graph(event_template* event) {
-    // Create a new graph
-    graph_template* graph = new graph_template();
-    
-    // Build the graph from the event
-    graph->build(event);
-    
-    // Add node features
-    graph->add_node_data_feature<double, particle_template, decltype(pt)>(pt, "pt");
-    graph->add_node_data_feature<double, particle_template, decltype(eta)>(eta, "eta");
-    graph->add_node_data_feature<double, particle_template, decltype(phi)>(phi, "phi");
-    
-    // Add truth features for training
-    graph->add_node_truth_feature<int, particle_template, decltype(is_signal)>(is_signal, "signal");
-    
-    // Define the graph topology (fully connected in this example)
-    graph->define_topology(fulltopo);
-    
-    return graph;
-}
+// Add data features
+graph->add_graph_data_feature(event, missing_et, "met");
+graph->add_graph_data_feature(event, num_jets, "num_jets");
+
+// Add truth features
+graph->add_graph_truth_feature(event, event_weight, "weight");
+
+// Process the graph
+graph->CompileEvent();
 ```
+
+## Advanced Features
+
+- **Feature Management**: Add, remove, and query features for nodes, edges, and graphs.
+- **Batch Processing**: Efficiently handle batched graph data for machine learning models.
+- **Integration with PyTorch**: Seamless integration with PyTorch tensors for deep learning applications.

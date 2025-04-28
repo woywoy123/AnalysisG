@@ -1,0 +1,1450 @@
+/** @file tools.pxd
+ *  @brief Cython PXD header defining the interface for C++ utility functions and classes.
+ *
+ *  @details This file declares the C++ structures and functions that will be available
+ *  in Cython modules. It includes definitions for a C++ `tools` class,
+ *  various helper functions for type conversions between Python and C++,
+ *  and external C++ functions for data manipulation.
+ *
+ *  It utilizes Cython's features like `cdef extern from`, `cdef cppclass`,
+ *  `ctypedef fused`, and `except+ nogil` for efficient wrapping of C++ code
+ *  for use in Python, focusing on performance and releasing the Global
+ *  Interpreter Lock (GIL) where possible for concurrency. This header defines the *interface* that Cython uses to interact with the C++ code, allowing Cython (.pyx) files to compile against these declarations.
+ */
+
+// Standard C++ library types imported for use in declarations.
+// These lines inform Cython about the C++ types being used.
+// distutils: language=c++
+// cython: language_level=3
+
+// from libcpp cimport bool, int, float
+// from libcpp.map cimport map, pair
+// from libcpp.string cimport string
+// from libcpp.vector cimport vector
+// from cython.operator cimport dereference as dref
+// from libcpp.unordered_map cimport unordered_map
+
+/**
+ * @brief Declares external C++ definitions from the "<tools/tools.h>" header.
+ * @details This block uses `cdef extern from` to make C++ functions and classes
+ *          defined in the specified header file available to Cython. It allows
+ *          Cython code to call these C++ elements directly, bypassing the Python layer
+ *          for performance when Cython code calls other Cython/C++ code. The actual
+ *          linking to the compiled C++ code happens during the build process.
+ */
+// cdef extern from "<tools/tools.h>":
+
+    /**
+     * @brief C++ class providing various utility functions, primarily for file I/O and string manipulation.
+     *
+     * @details This Cython definition (`cdef cppclass`) exposes the C++ `tools` class methods
+     *          to Python via a wrapper class (defined later as `cdef class Tools`). It declares
+     *          the structure and methods of the C++ class so that Cython knows how to call them.
+     *          The `except+ nogil` specification attached to its methods indicates that C++
+     *          exceptions thrown by these methods should be automatically translated into Python
+     *          exceptions when called from Python code, and that the Python Global Interpreter
+     *          Lock (GIL) should be released during the execution of the C++ method call.
+     *          Releasing the GIL is crucial for allowing true parallelism in multi-threaded
+     *          Python applications when calling potentially long-running C++ operations like I/O
+     *          or complex computations.
+     */
+    // cdef cppclass tools:
+
+        /**
+         * @brief Constructor for the C++ tools class.
+         *
+         * @details Initializes an instance of the C++ `tools` utility class. This is the
+         *          declaration of the constructor as seen by Cython. The `except+` indicates
+         *          that if the C++ constructor throws an exception (e.g., `std::exception`),
+         *          it should be caught and converted into an appropriate Python exception
+         *          (like `MemoryError` if `new` fails, or a standard `Exception` for others).
+         *          The `nogil` keyword signifies that the GIL is not required to execute the
+         *          constructor and can be released, although constructors are often quick
+         *          unless they perform significant initialization work like file access.
+         * @throws std::exception If the underlying C++ constructor encounters an error during
+         *                        initialization. This C++ exception will be translated into a
+         *                        standard Python `Exception`.
+         * @nogil Specifies that the GIL can be released during the execution of the constructor.
+         */
+        // tools() except+ nogil
+
+        // --- io.cxx ---
+        // The following methods are typically implemented in a corresponding io.cxx file.
+
+        /**
+         * @brief Creates a directory path, including any necessary parent directories.
+         *
+         * @details This function provides functionality similar to the 'mkdir -p' command
+         *          in Unix-like systems. It ensures that the entire directory path specified
+         *          by `inpt` exists after the function call completes. If parent directories
+         *          do not exist, they will be created as well. The GIL is released (`nogil`)
+         *          during this potentially I/O-bound operation, allowing other Python threads
+         *          to run.
+         * @param inpt The directory path (as a C++ `std::string`) to create. This string should
+         *             represent a valid path according to the operating system's conventions.
+         * @throws std::exception If the path cannot be created (e.g., due to insufficient
+         *                        permissions, invalid path components, disk full, or other
+         *                        filesystem errors). This C++ exception is translated to a
+         *                        Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution, improving concurrency for I/O tasks.
+         */
+        // void create_path(string inpt) except+ nogil
+
+        /**
+         * @brief Deletes a file or directory path recursively.
+         *
+         * @details If the specified path `inpt` points to a directory, this function will
+         *          recursively delete all its contents (files and subdirectories) before
+         *          deleting the directory itself. If `inpt` points to a file, the file
+         *          will be deleted. The GIL is released (`nogil`) during this potentially
+         *          time-consuming filesystem operation. Care should be taken as this operation
+         *          is irreversible.
+         * @param inpt The file or directory path (as a C++ `std::string`) to delete.
+         * @throws std::exception If the path cannot be deleted (e.g., due to insufficient
+         *                        permissions, the path does not exist, the file is in use,
+         *                        or other filesystem errors). This C++ exception is translated
+         *                        to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // void delete_path(string inpt) except+ nogil
+
+        /**
+         * @brief Checks if a given path exists and corresponds to a regular file.
+         *
+         * @details This function performs a check on the filesystem to determine if the
+         *          provided path `inpt` exists and if it represents a regular file (as opposed
+         *          to a directory, symbolic link, device file, etc.). The GIL is released (`nogil`)
+         *          during the filesystem check, which involves system calls.
+         * @param inpt The path (as a C++ `std::string`) to check.
+         * @return `true` if the path exists and is a regular file, `false` otherwise (including
+         *         if the path doesn't exist, is a directory, or is another non-regular file type).
+         * @throws std::exception If an error occurs during the filesystem check (e.g., permission
+         *                        denied to access path components, path format invalid). This C++
+         *                        exception is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // bool is_file(string inpt) except+ nogil
+
+        /**
+         * @brief Renames or moves a file or directory.
+         *
+         * @details This function attempts to atomically rename the filesystem object at path
+         *          `start` to the path `target`. This can be used for both renaming within
+         *          the same directory and moving across directories on the same filesystem.
+         *          The atomicity and behavior (especially across different filesystems) depend
+         *          on the underlying C++ implementation (likely `std::filesystem::rename` or
+         *          a platform-specific equivalent like `rename(2)`). The GIL is released (`nogil`)
+         *          during this filesystem operation.
+         * @param start The original path (as a C++ `std::string`) of the file or directory.
+         * @param target The new path (as a C++ `std::string`) for the file or directory.
+         * @throws std::exception If the renaming operation fails. Common reasons include the
+         *                        source path `start` not existing, the `target` path already
+         *                        existing and not being replaceable (e.g., a non-empty directory),
+         *                        insufficient permissions, attempting an invalid operation (e.g.,
+         *                        moving a directory into one of its subdirectories), or crossing
+         *                        filesystem boundaries if not supported by the underlying call.
+         *                        This C++ exception is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // void rename(string start, string target) except+ nogil
+
+        /**
+         * @brief Computes the absolute path for a given path string.
+         *
+         * @details Takes an input path string `path`, which can be relative (e.g., "subdir/file.txt",
+         *          "../data") or absolute, and resolves it to its canonical absolute path based
+         *          on the current working directory of the process. It handles components like '.'
+         *          (current directory) and '..' (parent directory), and may resolve symbolic links
+         *          depending on the C++ implementation (e.g., `std::filesystem::absolute` or
+         *          `std::filesystem::canonical`). The GIL is released (`nogil`) during path resolution,
+         *          which may involve filesystem access.
+         * @param path The input path string (relative or absolute, as a C++ `std::string`).
+         * @return The corresponding absolute path as a C++ `std::string`. The format will be
+         *         platform-dependent (e.g., using '/' or '\' as separators).
+         * @throws std::exception If an error occurs during path resolution (e.g., filesystem
+         *                        errors when resolving components, path does not exist if using
+         *                        a canonicalizing function). This C++ exception is translated
+         *                        to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // string absolute_path(string path) except+ nogil
+
+        /**
+         * @brief Lists files within a directory, optionally filtering by extension.
+         *
+         * @details Scans the specified directory `path` and returns a list containing the names
+         *          (not the full paths) of the regular files found within it. If the `ext` parameter
+         *          is provided and non-empty, only files whose names end with that extension
+         *          (case-sensitivity of the comparison may depend on the C++ implementation and
+         *          the underlying filesystem) are included. If `ext` is empty, all regular files
+         *          in the directory are listed. Subdirectories and other file types are ignored.
+         *          The GIL is released (`nogil`) during the directory traversal and file checking.
+         * @param path The directory path (as a C++ `std::string`) to list files from.
+         * @param ext The file extension (e.g., ".txt", as a C++ `std::string`) to filter by.
+         *            Should include the leading dot if desired. If empty, no filtering by
+         *            extension is performed.
+         * @return A `std::vector<std::string>` containing the names (basename only) of the files
+         *         that match the criteria. The order is typically determined by the filesystem
+         *         directory iteration order.
+         * @throws std::exception If the provided `path` is not a directory, does not exist,
+         *                        or cannot be accessed due to permissions. This C++ exception
+         *                        is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // vector[string] ls(string path, string ext) except+ nogil
+
+        // --- strings.cxx ---
+        // The following methods are typically implemented in a corresponding strings.cxx file.
+
+        /**
+         * @brief Replaces all occurrences of a substring within a string (in-place modification).
+         *
+         * @details Modifies the C++ `std::string` object pointed to by `inpt` by replacing
+         *          every non-overlapping occurrence of the substring `rpl` with the string `rpwl`.
+         *          The modification happens directly on the string object passed via the pointer.
+         *          The GIL is released (`nogil`) during this potentially CPU-intensive string
+         *          manipulation operation.
+         * @param inpt Pointer to the `std::string` to modify. The content of this string
+         *             will be changed by the function. The pointer must be valid.
+         * @param rpl The substring (as a C++ `std::string`) to search for and replace. If empty,
+         *            the behavior might depend on the C++ implementation (often no changes).
+         * @param rpwl The string (as a C++ `std::string`) to replace occurrences of `rpl` with.
+         *             Can be empty.
+         * @throws std::exception If any underlying C++ string operation fails during the
+         *                        replacement process (e.g., memory allocation issues if the
+         *                        string grows significantly, although `std::string` handles this).
+         *                        This C++ exception is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // void replace(string* inpt, string rpl, string rpwl) except+ nogil
+
+        /**
+         * @brief Checks if a string contains a specific substring.
+         *
+         * @details Performs a search within the C++ `std::string` pointed to by `inpt` to
+         *          determine if the substring `trg` exists within it at least once. The search
+         *          is typically case-sensitive. The GIL is released (`nogil`) during the search
+         *          operation.
+         * @param inpt Pointer to the `std::string` to search within. The string itself is
+         *             not modified. The pointer must be valid.
+         * @param trg The substring (as a C++ `std::string`) to search for.
+         * @return `true` if the substring `trg` is found at least once within the string
+         *         pointed to by `inpt`, `false` otherwise. Returns `true` if `trg` is empty.
+         * @throws std::exception If any underlying C++ string operation fails during the search
+         *                        (unlikely for standard `string::find` unless the pointer is invalid).
+         *                        This C++ exception is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // bool has_string(string* inpt, string trg) except+ nogil
+
+        /**
+         * @brief Checks if a string ends with a specific suffix.
+         *
+         * @details Compares the end portion of the C++ `std::string` pointed to by `inpt`
+         *          with the provided `val` string to see if the main string terminates with
+         *          the suffix. The comparison is typically case-sensitive. The GIL is released
+         *          (`nogil`) during the comparison.
+         * @param inpt Pointer to the `std::string` to check. The string itself is not modified.
+         *             The pointer must be valid.
+         * @param val The suffix (as a C++ `std::string`) to check for at the end of the string.
+         * @return `true` if the string pointed to by `inpt` ends with the exact sequence of
+         *         characters in `val`, `false` otherwise. Returns `true` if `val` is empty.
+         *         Returns `false` if `val` is longer than the string pointed to by `inpt`.
+         * @throws std::exception If any underlying C++ string operation fails during the check
+         *                        (unlikely unless the pointer is invalid). This C++ exception
+         *                        is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // bool ends_with(string* inpt, string val) except+ nogil
+
+        /**
+         * @brief Checks if a vector of strings contains a specific target string.
+         *
+         * @details Iterates through the elements of the `std::vector<std::string>` pointed
+         *          to by `data` and compares each element with the target string `trg` using
+         *          the `==` operator for `std::string`. The GIL is released (`nogil`) during
+         *          this potentially lengthy iteration and comparison process.
+         * @param data Pointer to the `std::vector<std::string>` to search within. The vector
+         *             itself is not modified. The pointer must be valid.
+         * @param trg The string value (as a C++ `std::string`) to search for within the vector's
+         *            elements.
+         * @return `true` if at least one element in the vector is equal to `trg`, `false` if
+         *         `trg` is not found in the vector or if the vector is empty.
+         * @throws std::exception If any C++ operation (e.g., iteration, comparison, accessing
+         *                        invalid pointer `data`) fails during the search. This C++ exception
+         *                        is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // bool has_value(vector[string]* data, string trg) except+ nogil
+
+        /**
+         * @brief Splits a string into substrings based on a delimiter string.
+         *
+         * @details Breaks the input string `ipt` into a sequence of substrings. The splits
+         *          occur wherever the delimiter string `delm` is found. The delimiters
+         *          themselves are not included in the resulting substrings. Consecutive
+         *          delimiters may result in empty strings in the output vector, depending
+         *          on the specific C++ implementation logic. The GIL is released (`nogil`)
+         *          during the splitting process.
+         * @param ipt The input string (as a C++ `std::string`) to be split.
+         * @param delm The delimiter string (as a C++ `std::string`) used to identify split points.
+         *             If the delimiter is empty, the behavior is implementation-defined (might
+         *             split between characters or return the original string).
+         * @return A `std::vector<std::string>` containing the substrings obtained from splitting
+         *         `ipt`. If the delimiter is not found, the vector will contain `ipt` as its
+         *         single element. If `ipt` starts or ends with the delimiter, empty strings
+         *         may be included at the beginning or end of the result vector.
+         * @throws std::exception If any C++ string operation fails during the splitting process
+         *                        (e.g., memory allocation for the result vector). This C++
+         *                        exception is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // vector[string] split(string ipt, string delm) except+ nogil
+
+        /**
+         * @brief Splits a string into substrings of a fixed length.
+         *
+         * @details Divides the input string `ipt` into consecutive chunks, each of length `n`.
+         *          The last chunk in the result may be shorter than `n` if the total length
+         *          of `ipt` is not an exact multiple of `n`. The GIL is released (`nogil`)
+         *          during this operation.
+         * @param ipt The input string (as a C++ `std::string`) to be split into chunks.
+         * @param n The desired length (as an `int`) of each chunk. This value must be positive.
+         * @return A `std::vector<std::string>` containing the resulting fixed-length (or shorter last)
+         *         substrings. If the input string is empty, an empty vector is returned.
+         * @throws std::exception If any C++ string operation fails, or if the provided chunk
+         *                        size `n` is less than or equal to zero. This C++ exception
+         *                        is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // vector[string] split(string ipt, int n) except+ nogil
+
+        /**
+         * @brief Generates a hash of an input string, truncated to a specified length.
+         *
+         * @details Computes a hash value for the input string `inpt` using a specific hashing
+         *          algorithm determined by the C++ implementation (e.g., SHA-1, MD5, MurmurHash,
+         *          or a custom algorithm). The resulting hash, often represented as a hexadecimal
+         *          string, is then truncated to the desired length `l` by taking the first `l`
+         *          characters. The GIL is released (`nogil`) during the potentially CPU-intensive
+         *          hashing computation. The choice of hash algorithm affects collision probability
+         *          and performance.
+         * @param inpt The input string (as a C++ `std::string`) to hash. The binary content of
+         *             the string is typically hashed.
+         * @param l The desired length (as an `int`) of the output hash string. Must be non-negative
+         *          and not exceed the length of the full hash representation generated by the
+         *          underlying algorithm.
+         * @return The resulting hash string (as a C++ `std::string`) of length `l`.
+         * @throws std::exception If any C++ operation fails during the hashing process (e.g.,
+         *                        issues within the hashing library used, invalid length `l`).
+         *                        This C++ exception is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // string hash(string inpt, int l) except+ nogil
+
+        /**
+         * @brief Finds the maximum value in a vector of floats.
+         *
+         * @details Iterates through all the elements in the `std::vector<float>` pointed to
+         *          by `v` to find and return the largest floating-point value according to
+         *          standard float comparison rules (handling NaN, infinities as per IEEE 754).
+         *          The GIL is released (`nogil`) during the iteration.
+         * @param v Pointer to the `std::vector<float>` to search within. The vector is not
+         *          modified. The pointer must be valid.
+         * @return The maximum float value found in the vector. If the vector is empty, the
+         *         behavior depends on the C++ implementation; common choices include returning
+         *         `-INFINITY`, `std::numeric_limits<float>::lowest()`, or throwing an exception.
+         *         This documentation assumes it returns a value indicating emptiness or the lowest possible float.
+         * @throws std::exception If any C++ operation fails during the process (e.g., accessing
+         *                        an invalid pointer `v`). This C++ exception is translated to a
+         *                        Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // float max(vector[float]* v) except+ nogil
+
+        /**
+         * @brief Finds the minimum value in a vector of floats.
+         *
+         * @details Iterates through all the elements in the `std::vector<float>` pointed to
+         *          by `v` to find and return the smallest floating-point value, handling special
+         *          values like NaN and infinities according to IEEE 754 rules. The GIL is
+         *          released (`nogil`) during the iteration.
+         * @param v Pointer to the `std::vector<float>` to search within. The vector is not
+         *          modified. The pointer must be valid.
+         * @return The minimum float value found in the vector. If the vector is empty, the
+         *         behavior depends on the C++ implementation; common choices include returning
+         *         `+INFINITY`, `std::numeric_limits<float>::max()`, or throwing an exception.
+         *         This documentation assumes it returns a value indicating emptiness or the highest possible float.
+         * @throws std::exception If any C++ operation fails (e.g., accessing an invalid pointer `v`).
+         *                        This C++ exception is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // float min(vector[float]* v) except+ nogil
+
+        /**
+         * @brief Calculates the sum of all values in a vector of floats.
+         *
+         * @details Accumulates the sum of all floating-point elements present in the
+         *          `std::vector<float>` pointed to by `v`. Uses floating-point addition,
+         *          which may be subject to precision limitations and rounding errors for large
+         *          vectors or values with disparate magnitudes. The GIL is released (`nogil`)
+         *          during the summation process.
+         * @param v Pointer to the `std::vector<float>` whose elements are to be summed. The
+         *          vector is not modified. The pointer must be valid.
+         * @return The sum of the elements as a `float`. If the vector is empty, it returns 0.0f.
+         *         The result might be infinity if the sum overflows.
+         * @throws std::exception If any C++ operation fails (e.g., invalid pointer `v`). This
+         *                        C++ exception is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // float sum(vector[float]* v) except+ nogil
+
+        /**
+         * @brief Encodes a string using Base64 encoding.
+         *
+         * @details Converts the sequence of bytes represented by the C++ `std::string` pointed
+         *          to by `data` into its Base64 encoded string representation according to RFC 4648.
+         *          Base64 is commonly used to transmit binary data over mediums that are designed
+         *          for text (like JSON or XML). The GIL is released (`nogil`) during the encoding
+         *          process, which can be computationally intensive for large inputs.
+         * @param data Pointer to the `std::string` containing the raw data (sequence of bytes)
+         *             to encode. The pointer must be valid.
+         * @return The Base64 encoded data as a C++ `std::string`, containing only ASCII characters
+         *         from the Base64 alphabet (`A-Z`, `a-z`, `0-9`, `+`, `/`) and potentially padding (`=`).
+         * @throws std::exception If the Base64 encoding process fails for any reason (e.g.,
+         *                        memory allocation issues, errors in the underlying Base64 library).
+         *                        This C++ exception is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // string encode64(string* data) except+ nogil
+
+        /**
+         * @brief Decodes a Base64 encoded string.
+         *
+         * @details Converts a Base64 encoded string (pointed to by `data`) back into its
+         *          original sequence of bytes, represented as a C++ `std::string`. It expects
+         *          standard Base64 encoding (RFC 4648). The GIL is released (`nogil`) during
+         *          the decoding process. Whitespace characters within the input string might
+         *          be ignored depending on the C++ implementation.
+         * @param data Pointer to the Base64 encoded `std::string` to decode. The pointer must be valid.
+         * @return The decoded original data as a C++ `std::string` (sequence of bytes).
+         * @throws std::exception If the decoding process fails, for example, if the input
+         *                        string `data` contains characters outside the Base64 alphabet,
+         *                        has incorrect padding, or is otherwise corrupted. This C++
+         *                        exception is translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // string decode64(string* data) except+ nogil
+
+        /**
+         * @brief Discretizes a vector of integers into N chunks (sub-vectors).
+         *
+         * @details Partitions the elements of the input `std::vector<int>` (accessed via pointer `v`)
+         *          into `N` roughly equal-sized sub-vectors (chunks). The distribution aims to be
+         *          as even as possible. For example, if the vector has 10 elements and `N` is 3,
+         *          the chunks might have sizes 4, 3, 3. The GIL is released (`nogil`) during this
+         *          operation.
+         * @param v Pointer to the `std::vector<int>` to be discretized. The vector is not modified.
+         *          The pointer must be valid.
+         * @param N The desired number of chunks (as an `int`). Must be positive. If `N` is greater
+         *          than the number of elements in `v`, some resulting chunks might be empty.
+         * @return A `std::vector<std::vector<int>>` where each inner vector represents a chunk
+         *         of the original vector's elements. The order of elements within each chunk
+         *         relative to the original vector is preserved.
+         * @throws std::exception If `N` is not positive, if the pointer `v` is invalid, or if
+         *                        memory allocation for the result fails. This C++ exception is
+         *                        translated to a Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // vector[vector[int]] discretize(vector[int]* v, int N) except+ nogil
+
+        /**
+         * @brief Discretizes a vector of strings into N chunks (sub-vectors).
+         *
+         * @details Partitions the elements of the input `std::vector<std::string>` (accessed via
+         *          pointer `v`) into `N` roughly equal-sized sub-vectors (chunks), similar to the
+         *          integer version. The distribution aims for even chunk sizes. The GIL is released
+         *          (`nogil`) during this operation.
+         * @param v Pointer to the `std::vector<std::string>` to be discretized. The vector is not
+         *          modified. The pointer must be valid.
+         * @param N The desired number of chunks (as an `int`). Must be positive.
+         * @return A `std::vector<std::vector<std::string>>` where each inner vector is a chunk
+         *         containing elements from the original vector, preserving relative order.
+         * @throws std::exception If `N` is not positive, if the pointer `v` is invalid, or if
+         *                        memory allocation fails. This C++ exception is translated to a
+         *                        Python `Exception` via `except+`.
+         * @nogil Allows the GIL to be released during execution.
+         */
+        // vector[vector[string]] discretize(vector[string]* v, int N) except+ nogil
+
+/**
+ * @brief A Cython fused type definition, creating a type alias `base_types`.
+ *
+ * @details This `ctypedef fused` declaration defines a composite type `base_types` that
+ *          represents a union of several fundamental C++ types: `int`, `float`, `double`,
+ *          `bool`, and `std::string`. It allows Cython functions or methods defined later
+ *          to accept arguments or return values that could be any one of these types,
+ *          enabling template-like behavior within Cython without explicit C++ templates
+ *          in the PXD. Cython generates specialized versions of the function for each
+ *          type in the fused definition where needed. This is particularly useful for
+ *          creating generic container conversion functions (like `as_list`, `as_dict`)
+ *          that can handle vectors or maps containing these basic types.
+ */
+// ctypedef fused base_types:
+    // int
+    // float
+    // double
+    // bool
+    // string
+
+/**
+ * @brief Declares external C++ functions from "<tools/merge_cast.h>" for merging and summing data structures.
+ *
+ * @details This `cdef extern from` block imports function signatures from the specified C++ header file.
+ *          These functions appear to provide operations for merging or summing the contents of various
+ *          C++ standard library containers like `std::map` and `std::vector`. The specific behavior
+ *          (e.g., concatenation for vectors, key-based merging/overwriting/summing for maps) depends
+ *          on the C++ implementation of these overloaded functions. The `nogil` specifier attached
+ *          to the block indicates that the Python Global Interpreter Lock (GIL) is released during
+ *          calls to any of these C++ functions, allowing for potential parallelism if these operations
+ *          are computationally intensive and called from multiple Python threads. The functions
+ *          operate on pointers to the containers, suggesting they might modify the `out` container in-place.
+ */
+// cdef extern from "<tools/merge_cast.h>" nogil:
+
+    /** @brief Merges map `p2` into map `out` (string keys, int vector values).
+     *  @details For keys present in both maps, the vector from `p2` is appended to the vector in `out`.
+     *           Keys unique to `p2` are inserted into `out`. Modifies `out` in-place.
+     *  @param out Pointer to the destination map (`std::map<std::string, std::vector<int>>`).
+     *  @param p2 Pointer to the source map (`std::map<std::string, std::vector<int>>`). */
+    // cdef void merge_data(map[string, vector[int   ]]* out, map[string, vector[int   ]]* p2)
+    /** @brief Merges map `p2` into map `out` (string keys, float vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<std::string, std::vector<float>>`).
+     *  @param p2 Pointer to the source map (`std::map<std::string, std::vector<float>>`). */
+    // cdef void merge_data(map[string, vector[float ]]* out, map[string, vector[float ]]* p2)
+    /** @brief Merges map `p2` into map `out` (string keys, double vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<std::string, std::vector<double>>`).
+     *  @param p2 Pointer to the source map (`std::map<std::string, std::vector<double>>`). */
+    // cdef void merge_data(map[string, vector[double]]* out, map[string, vector[double]]* p2)
+    /** @brief Merges map `p2` into map `out` (string keys, bool vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<std::string, std::vector<bool>>`).
+     *  @param p2 Pointer to the source map (`std::map<std::string, std::vector<bool>>`). */
+    // cdef void merge_data(map[string, vector[bool  ]]* out, map[string, vector[bool  ]]* p2)
+
+    /** @brief Merges map `p2` into map `out` (int keys, int vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<int, std::vector<int>>`).
+     *  @param p2 Pointer to the source map (`std::map<int, std::vector<int>>`). */
+    // cdef void merge_data(map[int, vector[int   ]]* out, map[int, vector[int   ]]* p2)
+    /** @brief Merges map `p2` into map `out` (int keys, float vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<int, std::vector<float>>`).
+     *  @param p2 Pointer to the source map (`std::map<int, std::vector<float>>`). */
+    // cdef void merge_data(map[int, vector[float ]]* out, map[int, vector[float ]]* p2)
+    /** @brief Merges map `p2` into map `out` (int keys, double vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<int, std::vector<double>>`).
+     *  @param p2 Pointer to the source map (`std::map<int, std::vector<double>>`). */
+    // cdef void merge_data(map[int, vector[double]]* out, map[int, vector[double]]* p2)
+    /** @brief Merges map `p2` into map `out` (int keys, bool vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<int, std::vector<bool>>`).
+     *  @param p2 Pointer to the source map (`std::map<int, std::vector<bool>>`). */
+    // cdef void merge_data(map[int, vector[bool  ]]* out, map[int, vector[bool  ]]* p2)
+
+    /** @brief Merges map `p2` into map `out` (double keys, int vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<double, std::vector<int>>`).
+     *  @param p2 Pointer to the source map (`std::map<double, std::vector<int>>`). */
+    // cdef void merge_data(map[double, vector[int   ]]* out, map[double, vector[int   ]]* p2)
+    /** @brief Merges map `p2` into map `out` (double keys, float vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<double, std::vector<float>>`).
+     *  @param p2 Pointer to the source map (`std::map<double, std::vector<float>>`). */
+    // cdef void merge_data(map[double, vector[float ]]* out, map[double, vector[float ]]* p2)
+    /** @brief Merges map `p2` into map `out` (double keys, double vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<double, std::vector<double>>`).
+     *  @param p2 Pointer to the source map (`std::map<double, std::vector<double>>`). */
+    // cdef void merge_data(map[double, vector[double]]* out, map[double, vector[double]]* p2)
+    /** @brief Merges map `p2` into map `out` (double keys, bool vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<double, std::vector<bool>>`).
+     *  @param p2 Pointer to the source map (`std::map<double, std::vector<bool>>`). */
+    // cdef void merge_data(map[double, vector[bool  ]]* out, map[double, vector[bool  ]]* p2)
+
+    /** @brief Merges map `p2` into map `out` (bool keys, int vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<bool, std::vector<int>>`).
+     *  @param p2 Pointer to the source map (`std::map<bool, std::vector<int>>`). */
+    // cdef void merge_data(map[bool, vector[int   ]]* out, map[bool, vector[int   ]]* p2)
+    /** @brief Merges map `p2` into map `out` (bool keys, float vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<bool, std::vector<float>>`).
+     *  @param p2 Pointer to the source map (`std::map<bool, std::vector<float>>`). */
+    // cdef void merge_data(map[bool, vector[float ]]* out, map[bool, vector[float ]]* p2)
+    /** @brief Merges map `p2` into map `out` (bool keys, double vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<bool, std::vector<double>>`).
+     *  @param p2 Pointer to the source map (`std::map<bool, std::vector<double>>`). */
+    // cdef void merge_data(map[bool, vector[double]]* out, map[bool, vector[double]]* p2)
+    /** @brief Merges map `p2` into map `out` (bool keys, bool vector values).
+     *  @details Appends vectors for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<bool, std::vector<bool>>`).
+     *  @param p2 Pointer to the source map (`std::map<bool, std::vector<bool>>`). */
+    // cdef void merge_data(map[bool, vector[bool  ]]* out, map[bool, vector[bool  ]]* p2)
+
+    /** @brief Merges map `p2` into map `out` (string keys, int values).
+     *  @details For keys present in both maps, the value from `p2` overwrites the value in `out`.
+     *           Keys unique to `p2` are inserted into `out`. Modifies `out` in-place.
+     *  @param out Pointer to the destination map (`std::map<std::string, int>`).
+     *  @param p2 Pointer to the source map (`std::map<std::string, int>`). */
+    // cdef void merge_data(map[string, int   ]* out, map[string, int   ]* p2)
+    /** @brief Merges map `p2` into map `out` (string keys, float values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<std::string, float>`).
+     *  @param p2 Pointer to the source map (`std::map<std::string, float>`). */
+    // cdef void merge_data(map[string, float ]* out, map[string, float ]* p2)
+    /** @brief Merges map `p2` into map `out` (string keys, double values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<std::string, double>`).
+     *  @param p2 Pointer to the source map (`std::map<std::string, double>`). */
+    // cdef void merge_data(map[string, double]* out, map[string, double]* p2)
+    /** @brief Merges map `p2` into map `out` (string keys, bool values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<std::string, bool>`).
+     *  @param p2 Pointer to the source map (`std::map<std::string, bool>`). */
+    // cdef void merge_data(map[string, bool  ]* out, map[string, bool  ]* p2)
+
+    /** @brief Merges map `p2` into map `out` (int keys, int values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<int, int>`).
+     *  @param p2 Pointer to the source map (`std::map<int, int>`). */
+    // cdef void merge_data(map[int, int   ]* out, map[int, int   ]* p2)
+    /** @brief Merges map `p2` into map `out` (int keys, float values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<int, float>`).
+     *  @param p2 Pointer to the source map (`std::map<int, float>`). */
+    // cdef void merge_data(map[int, float ]* out, map[int, float ]* p2)
+    /** @brief Merges map `p2` into map `out` (int keys, double values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<int, double>`).
+     *  @param p2 Pointer to the source map (`std::map<int, double>`). */
+    // cdef void merge_data(map[int, double]* out, map[int, double]* p2)
+    /** @brief Merges map `p2` into map `out` (int keys, bool values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<int, bool>`).
+     *  @param p2 Pointer to the source map (`std::map<int, bool>`). */
+    // cdef void merge_data(map[int, bool  ]* out, map[int, bool  ]* p2)
+
+    /** @brief Merges map `p2` into map `out` (double keys, int values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<double, int>`).
+     *  @param p2 Pointer to the source map (`std::map<double, int>`). */
+    // cdef void merge_data(map[double, int   ]* out, map[double, int   ]* p2)
+    /** @brief Merges map `p2` into map `out` (double keys, float values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<double, float>`).
+     *  @param p2 Pointer to the source map (`std::map<double, float>`). */
+    // cdef void merge_data(map[double, float ]* out, map[double, float ]* p2)
+    /** @brief Merges map `p2` into map `out` (double keys, double values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<double, double>`).
+     *  @param p2 Pointer to the source map (`std::map<double, double>`). */
+    // cdef void merge_data(map[double, double]* out, map[double, double]* p2)
+    /** @brief Merges map `p2` into map `out` (double keys, bool values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<double, bool>`).
+     *  @param p2 Pointer to the source map (`std::map<double, bool>`). */
+    // cdef void merge_data(map[double, bool  ]* out, map[double, bool  ]* p2)
+
+    /** @brief Merges map `p2` into map `out` (bool keys, int values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<bool, int>`).
+     *  @param p2 Pointer to the source map (`std::map<bool, int>`). */
+    // cdef void merge_data(map[bool, int   ]* out, map[bool, int   ]* p2)
+    /** @brief Merges map `p2` into map `out` (bool keys, float values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<bool, float>`).
+     *  @param p2 Pointer to the source map (`std::map<bool, float>`). */
+    // cdef void merge_data(map[bool, float ]* out, map[bool, float ]* p2)
+    /** @brief Merges map `p2` into map `out` (bool keys, double values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<bool, double>`).
+     *  @param p2 Pointer to the source map (`std::map<bool, double>`). */
+    // cdef void merge_data(map[bool, double]* out, map[bool, double]* p2)
+    /** @brief Merges map `p2` into map `out` (bool keys, bool values).
+     *  @details Overwrites values for common keys; adds new keys from `p2`. Modifies `out`.
+     *  @param out Pointer to the destination map (`std::map<bool, bool>`).
+     *  @param p2 Pointer to the source map (`std::map<bool, bool>`). */
+    // cdef void merge_data(map[bool, bool  ]* out, map[bool, bool  ]* p2)
+
+
+    /** @brief Merges vector of vectors `p2` into `out` by appending inner vectors.
+     *  @details Appends all `std::vector<int>` elements contained within the vector `p2` to the end of vector `out`.
+     *           Modifies `out` in-place by increasing its size.
+     *  @param out Pointer to the destination vector (`std::vector<std::vector<int>>`).
+     *  @param p2 Pointer to the source vector (`std::vector<std::vector<int>>`). */
+    // cdef void merge_data(vector[vector[int   ]]* out, vector[vector[int   ]]*  p2)
+    /** @brief Merges vector of vectors `p2` into `out` by appending inner vectors.
+     *  @details Appends all `std::vector<float>` elements from `p2` to `out`. Modifies `out`.
+     *  @param out Pointer to the destination vector (`std::vector<std::vector<float>>`).
+     *  @param p2 Pointer to the source vector (`std::vector<std::vector<float>>`). */
+    // cdef void merge_data(vector[vector[float ]]* out, vector[vector[float ]]*  p2)
+    /** @brief Merges vector of vectors `p2` into `out` by appending inner vectors.
+     *  @details Appends all `std::vector<double>` elements from `p2` to `out`. Modifies `out`.
+     *  @param out Pointer to the destination vector (`std::vector<std::vector<double>>`).
+     *  @param p2 Pointer to the source vector (`std::vector<std::vector<double>>`). */
+    // cdef void merge_data(vector[vector[double]]* out, vector[vector[double]]*  p2)
+    /** @brief Merges vector of vectors `p2` into `out` by appending inner vectors.
+     *  @details Appends all `std::vector<bool>` elements from `p2` to `out`. Modifies `out`.
+     *  @param out Pointer to the destination vector (`std::vector<std::vector<bool>>`).
+     *  @param p2 Pointer to the source vector (`std::vector<std::vector<bool>>`). */
+    // cdef void merge_data(vector[vector[bool  ]]* out, vector[vector[bool  ]]*  p2)
+
+    /** @brief Merges vector `p2` into `out` by appending elements.
+     *  @details Appends all integer elements from vector `p2` to the end of vector `out`. Modifies `out` in-place.
+     *  @param out Pointer to the destination vector (`std::vector<int>`).
+     *  @param p2 Pointer to the source vector (`std::vector<int>`). */
+    // cdef void merge_data(vector[int   ]* out, vector[int   ]* p2)
+    /** @brief Merges vector `p2` into `out` by appending elements.
+     *  @details Appends all float elements from `p2` to `out`. Modifies `out`.
+     *  @param out Pointer to the destination vector (`std::vector<float>`).
+     *  @param p2 Pointer to the source vector (`std::vector<float>`). */
+    // cdef void merge_data(vector[float ]* out, vector[float ]* p2)
+    /** @brief Merges vector `p2` into `out` by appending elements.
+     *  @details Appends all double elements from `p2` to `out`. Modifies `out`.
+     *  @param out Pointer to the destination vector (`std::vector<double>`).
+     *  @param p2 Pointer to the source vector (`std::vector<double>`). */
+    // cdef void merge_data(vector[double]* out, vector[double]* p2)
+    /** @brief Merges vector `p2` into `out` by appending elements.
+     *  @details Appends all boolean elements from `p2` to `out`. Modifies `out`.
+     *  @param out Pointer to the destination vector (`std::vector<bool>`).
+     *  @param p2 Pointer to the source vector (`std::vector<bool>`). */
+    // cdef void merge_data(vector[bool  ]* out, vector[bool  ]* p2)
+
+    /** @brief Merges scalar `p2` into scalar `out` (int).
+     *  @details Assigns or combines the integer value pointed to by `p2` into the integer value pointed to by `out`.
+     *           The exact operation (e.g., assignment `*out = *p2`, addition `*out += *p2`) depends on the C++ implementation.
+     *           Modifies the value pointed to by `out`.
+     *  @param out Pointer to the destination integer.
+     *  @param p2 Pointer to the source integer. */
+    // cdef void merge_data(int   *  out, int   *  p2)
+    /** @brief Merges scalar `p2` into scalar `out` (float).
+     *  @details Assigns or combines the float value from `p2` into `out`. Modifies `*out`.
+     *  @param out Pointer to the destination float.
+     *  @param p2 Pointer to the source float. */
+    // cdef void merge_data(float *  out, float *  p2)
+    /** @brief Merges scalar `p2` into scalar `out` (double).
+     *  @details Assigns or combines the double value from `p2` into `out`. Modifies `*out`.
+     *  @param out Pointer to the destination double.
+     *  @param p2 Pointer to the source double. */
+    // cdef void merge_data(double*  out, double*  p2)
+    /** @brief Merges scalar `p2` into scalar `out` (bool).
+     *  @details Assigns or combines the boolean value from `p2` into `out` (e.g., assignment, logical OR `*out |= *p2`). Modifies `*out`.
+     *  @param out Pointer to the destination boolean.
+     *  @param p2 Pointer to the source boolean. */
+    // cdef void merge_data(bool  *  out, bool  *  p2)
+
+    /** @brief Sums vector `p2` into vector `out` element-wise (int).
+     *  @details Performs element-wise addition: `(*out)[i] += (*p2)[i]` for all `i`.
+     *           Assumes `out` and `p2` point to vectors of the same size. Modifies `out` in-place.
+     *  @param out Pointer to the destination vector (`std::vector<int>`), modified in-place.
+     *  @param p2 Pointer to the source vector (`std::vector<int>`). */
+    // cdef void sum_data(vector[int   ]* out, vector[int   ]* p2)
+    /** @brief Sums vector `p2` into vector `out` element-wise (float).
+     *  @details Performs element-wise addition: `(*out)[i] += (*p2)[i]`. Assumes same size. Modifies `out`.
+     *  @param out Pointer to the destination vector (`std::vector<float>`), modified in-place.
+     *  @param p2 Pointer to the source vector (`std::vector<float>`). */
+    // cdef void sum_data(vector[float ]* out, vector[float ]* p2)
+    /** @brief Sums vector `p2` into vector `out` element-wise (double).
+     *  @details Performs element-wise addition: `(*out)[i] += (*p2)[i]`. Assumes same size. Modifies `out`.
+     *  @param out Pointer to the destination vector (`std::vector<double>`), modified in-place.
+     *  @param p2 Pointer to the source vector (`std::vector<double>`). */
+    // cdef void sum_data(vector[double]* out, vector[double]* p2)
+    /** @brief Sums vector `p2` into vector `out` element-wise (bool).
+     *  @details Performs element-wise logical OR: `(*out)[i] |= (*p2)[i]`. Assumes same size. Modifies `out`.
+     *  @param out Pointer to the destination vector (`std::vector<bool>`), modified in-place.
+     *  @param p2 Pointer to the source vector (`std::vector<bool>`). */
+    // cdef void sum_data(vector[bool  ]* out, vector[bool  ]* p2)
+
+
+/**
+ * @brief Encodes a Python unicode string (`str`) into a C++ `std::string`.
+ *
+ * @details This Cython helper function (`cdef`) facilitates passing Python strings to C++ functions
+ *          expecting `std::string`. It performs the conversion using UTF-8 encoding,
+ *          which is a common standard for interoperability. The function takes a
+ *          Python 3 `str` object (which represents Unicode text) and returns its
+ *          equivalent representation as a C++ `std::string` (which typically stores bytes).
+ *          This function is implemented directly in Cython (likely in the corresponding .pyx file)
+ *          and is efficient for this common conversion task.
+ *
+ * @param val The Python unicode string (`str`) to encode. This should be a standard
+ *            Python string object.
+ * @return A C++ `std::string` object containing the UTF-8 encoded byte sequence
+ *         representing the input Python string.
+ * @note This function is essential when interfacing Cython code with C++ functions
+ *       that operate on `std::string` objects, ensuring correct text data transfer.
+ *       It implicitly handles potential `UnicodeEncodeError` if the Python string contains
+ *       characters not representable in UTF-8 (though this is rare for standard Unicode).
+ */
+cdef string enc(str val)
+
+/**
+ * @brief Decodes a C++ `std::string` into a Python unicode string (`str`).
+ *
+ * @details This Cython helper function (`cdef`) facilitates returning `std::string` results from C++
+ *          functions back to Python code. It assumes the input C++ `std::string`
+ *          contains text encoded using UTF-8. The function converts this byte
+ *          sequence back into a standard Python 3 `str` object (Unicode).
+ *          Like `enc`, this is implemented in Cython for efficiency.
+ *
+ * @param val The C++ `std::string` to decode. It is expected that this string
+ *            holds valid UTF-8 encoded character data.
+ * @return A Python unicode string (`str`) representing the text content decoded
+ *         from the input C++ string.
+ * @note This function is the counterpart to `enc` and is crucial for receiving
+ *       string data from C++ functions within a Python environment. If the C++
+ *       string does not contain valid UTF-8, the decoding may result in a
+ *       `UnicodeDecodeError` in Python.
+ */
+cdef str env(string val)
+
+/**
+ * @brief Converts a pointer to a C++ `std::vector<std::string>` into a Python list of strings.
+ *
+ * @details This Cython helper function (`cdef`) iterates through the elements of a C++ vector of strings,
+ *          which is accessed via a pointer. For each `std::string` element in the
+ *          vector, it calls the `env` function (defined above) to decode the string (assuming UTF-8)
+ *          into a Python unicode string (`str`). These decoded Python strings are
+ *          then collected into a new Python `list`. The function handles the dereferencing
+ *          of the input pointer.
+ *
+ * @param inpt A pointer (`*`) to the C++ `std::vector<std::string>` whose elements
+ *             are to be converted. The function will dereference this pointer to
+ *             access the vector's contents. The pointer must be valid.
+ * @return A Python `list` object where each element is a Python `str` corresponding
+ *         to the decoded string from the input C++ vector. The order of strings
+ *         in the list matches the order in the vector. Returns an empty list if the
+ *         input vector is empty or the pointer is null (if handled gracefully).
+ * @note This function assumes the strings within the C++ vector are UTF-8 encoded.
+ *       It provides a convenient way to return collections of strings from C++
+ *       to Python, leveraging the `env` function for individual string conversions.
+ */
+cdef list env_vec(vector[string]* inpt)
+
+/**
+ * @brief Converts a Python list of strings into a C++ `std::vector<std::string>`.
+ *
+ * @details This Cython helper function (`cdef`) takes a Python `list` object, where each element is expected
+ *          to be a Python unicode string (`str`). It iterates through the list, and
+ *          for each Python string, it calls the `enc` function (defined above) to encode it into a
+ *          C++ `std::string` using UTF-8 encoding. These resulting C++ strings are
+ *          collected into a new C++ `std::vector<std::string>`. This function performs
+ *          the necessary type checking and conversion for each element.
+ *
+ * @param inpt The Python `list` containing the string objects (`str`) to be encoded
+ *             and collected into a C++ vector. If the list contains non-string elements,
+ *             a `TypeError` might occur during the call to `enc`.
+ * @return A C++ `std::vector<std::string>` object containing the UTF-8 encoded
+ *         `std::string` representations of the strings from the input Python list.
+ *         The order of strings in the vector matches the order in the list.
+ * @note This function is useful for passing a collection of Python strings to a C++
+ *       function that expects a `std::vector<std::string>` as input. It relies on the
+ *       `enc` function for individual string conversions.
+ */
+cdef vector[string] enc_list(list inpt)
+
+/**
+ * @brief Converts a pointer to a C++ vector of fused base types (`vector[base_types]`) into a Python list.
+ *
+ * @details This Cython helper function (`cdef`) takes a pointer to a C++ `std::vector` whose elements can be
+ *          of any type defined within the `base_types` fused type (i.e., `int`, `float`,
+ *          `double`, `bool`, `std::string`). It iterates through the C++ vector (after
+ *          dereferencing the pointer `inp`). For each element, Cython automatically determines
+ *          its specific C++ type (because `base_types` is fused) and performs the appropriate
+ *          conversion to the corresponding Python type:
+ *          - C++ `int` -> Python `int`
+ *          - C++ `float`, `double` -> Python `float`
+ *          - C++ `bool` -> Python `bool`
+ *          - C++ `std::string` is decoded using the `env` function (assuming UTF-8) -> Python `str`.
+ *          The converted Python objects are collected into a new Python `list`.
+ *
+ * @param inp A pointer (`*`) to the C++ `std::vector` containing elements whose types
+ *            are among those defined in the `base_types` fused type. The pointer must be valid.
+ * @return A Python `list` containing the Python object representations of the elements
+ *         from the input C++ vector. The order is preserved. Returns an empty list if the
+ *         input vector is empty.
+ * @note The `base_types` fused type must be defined beforehand. This function relies
+ *       heavily on Cython's automatic type conversion capabilities between C++ base
+ *       types/std::string and their Python equivalents, using `env` specifically for strings.
+ */
+cdef list as_list(vector[base_types]* inp)
+
+
+/**
+ * @brief Converts a pointer to a C++ map (`map<string, vector<base_types>>`) into a Python dictionary.
+ *
+ * @details This Cython helper function (`cdef`) transforms a C++ `std::map` (accessed via a pointer `inpt`) into a
+ *          Python `dict`. The map is expected to have C++ `std::string` keys and
+ *          `std::vector<base_types>` values (where `base_types` is the fused type).
+ *          The function iterates through each key-value pair in the C++ map:
+ *          1. The `std::string` key is decoded from UTF-8 into a Python `str` using the `env` function.
+ *          2. The `std::vector<base_types>` value is converted into a Python `list` by calling the `as_list` function (defined above), which handles the conversion of each element within the vector based on its type.
+ *          The resulting Python string key and Python list value are added as a key-value
+ *          pair to the new Python dictionary.
+ *
+ * @param inpt A pointer (`*`) to the C++ `std::map<std::string, std::vector<base_types>>`
+ *             to be converted. The function dereferences this pointer. The pointer must be valid.
+ * @return A Python `dict` where keys are Python strings (decoded from the map's keys)
+ *         and values are Python lists (converted from the map's vector values using `as_list`).
+ *         The order of items in the dictionary will reflect the key order in the `std::map`.
+ * @note This function relies on the `env` and `as_list` helper functions for conversions.
+ *       It assumes map keys are UTF-8 encoded strings and vector elements are convertible
+ *       via `as_list`.
+ */
+cdef dict as_dict(map[string, vector[base_types]]* inpt)
+
+/**
+ * @brief Populates a C++ map (`map<string, base_types>`) from a Python dictionary.
+ *
+ * @details This Cython helper function (`cdef`) takes a Python dictionary (`dict`) and populates a pre-existing
+ *          C++ `std::map` (accessed via a pointer `out`) with its contents. It iterates
+ *          through the key-value pairs of the input Python dictionary `inpt`. For each pair:
+ *          1. The Python key is checked: if it's a `str`, it's encoded into a C++ `std::string` using UTF-8 via the `enc` function. If not a string, it might raise a `TypeError`.
+ *          2. The Python value is converted to its corresponding C++ type within the `base_types`
+ *             fused type. Cython handles the conversion automatically for basic types (Python `int` -> C++ `int`, Python `float` -> C++ `float`/`double`, Python `bool` -> C++ `bool`).
+ *             If the Python value is a `str`, it is explicitly encoded using the `enc` function to get a C++ `std::string`. If the value's type doesn't match one of the types in `base_types`, a `TypeError` may occur.
+ *          The resulting C++ `std::string` key and C++ `base_types` value are inserted
+ *          into the C++ map pointed to by `out`. If a key already exists in the map, its associated value is overwritten.
+ *
+ * @param inpt The input Python `dict`. Keys are expected to be strings, and values should
+ *             be types compatible with the `base_types` fused type (Python int, float, bool, str).
+ * @param out A pointer (`*`) to the C++ `std::map<std::string, base_types>` that will
+ *            be populated or updated with the data from the Python dictionary. The map
+ *            should be allocated and valid before calling this function. The function modifies the map in-place.
+ * @note This function modifies the C++ map pointed to by `out` in-place. It assumes
+ *       input dictionary keys are strings and values are convertible to `base_types`.
+ *       Error handling for incompatible types depends on Cython's conversion rules.
+ */
+cdef void as_map(dict inpt, map[string, base_types]* out)
+
+/**
+ * @brief Populates a C++ unordered_map (`unordered_map<string, base_types>`) from a Python dictionary.
+ *
+ * @details This Cython helper function (`cdef`) operates similarly to `as_map`, but populates a C++
+ *          `std::unordered_map` instead of a `std::map`. It takes a Python dictionary `inpt`
+ *          and fills the C++ unordered_map (accessed via a pointer `out`) with its data.
+ *          It iterates through the key-value pairs of the input Python dictionary:
+ *          1. The Python `str` key is encoded into a C++ `std::string` (UTF-8) using `enc`. Non-string keys likely cause a `TypeError`.
+ *          2. The Python value is converted to its corresponding C++ `base_types` equivalent.
+ *             Basic types (int, float, bool) are handled by Cython's automatic conversion.
+ *             Python `str` values are explicitly encoded using `enc`. Incompatible types may cause a `TypeError`.
+ *          The resulting C++ key-value pair is inserted into the unordered_map pointed
+ *          to by `out`. Existing keys will have their values updated.
+ *
+ * @param inpt The input Python `dict`. Keys should be strings, and values should be
+ *             Python types corresponding to those in `base_types` (int, float, bool, str).
+ * @param out A pointer (`*`) to the C++ `std::unordered_map<std::string, base_types>`
+ *            to be populated. The unordered_map must be allocated and valid beforehand.
+ * @note Modifies the C++ unordered_map pointed to by `out` in-place. The order of
+ *       elements in the C++ unordered_map is not guaranteed and depends on the hash function
+ *       and collisions.
+ */
+cdef void as_umap(dict inpt, unordered_map[string, base_types]* out)
+
+
+/**
+ * @brief Converts a pointer to a nested C++ map (`map<string, map<string, vector<base_types>>>`) into a nested Python dictionary.
+ *
+ * @details This Cython helper function (`cdef`) handles the conversion of a two-level nested C++ `std::map`
+ *          structure into an equivalent nested Python `dict`. It takes a pointer `inpt` to
+ *          the outer map. The function iterates through the key-value pairs of the
+ *          outer map:
+ *          1. The outer `std::string` key is decoded from UTF-8 to a Python `str` using `env`.
+ *          2. The inner map (`map<string, vector<base_types>>`) associated with the outer key
+ *             is converted into a Python `dict` by recursively calling the `as_dict` function (defined earlier).
+ *             `as_dict` handles the conversion of the inner map's string keys and vector values (containing `base_types`).
+ *          The resulting outer Python string key and the inner Python dictionary value
+ *          are added as a key-value pair to the new, top-level Python dictionary.
+ *
+ * @param inpt A pointer (`*`) to the nested C++ `std::map<std::string, std::map<std::string, std::vector<base_types>>>`
+ *             to be converted. The pointer must be valid.
+ * @return A nested Python `dict` (structure: `dict[str, dict[str, list]]`) representing the structure
+ *         and data of the input C++ map. The ordering of keys in both outer and inner dictionaries
+ *         will reflect the ordering in the corresponding `std::map`s.
+ * @note Relies on the `env` and `as_dict` helper functions for recursive conversion.
+ *       Assumes UTF-8 encoding for all string keys.
+ */
+cdef dict as_dict_dict(map[string, map[string, vector[base_types]]]* inpt)
+
+/**
+ * @brief Converts a pointer to a deeply nested C++ map (`map<string, map<string, map<string, vector<base_types>>>>`) into a deeply nested Python dictionary.
+ *
+ * @details This Cython helper function (`cdef`) converts a three-level nested C++ `std::map` structure into
+ *          an equivalent deeply nested Python `dict`. It accepts a pointer `inpt` to the
+ *          outermost map. The conversion proceeds recursively:
+ *          1. It iterates through the key-value pairs of the outermost map.
+ *          2. The outermost `std::string` key is decoded from UTF-8 to a Python `str` using `env`.
+ *          3. The value associated with the outer key, which is itself a nested map
+ *             (`map<string, map<string, vector<base_types>>>`), is converted into a
+ *             nested Python dictionary by recursively calling the `as_dict_dict` function (defined above).
+ *             `as_dict_dict` handles the conversion of the two inner levels of maps.
+ *          The resulting outer Python string key and the nested Python dictionary value
+ *          are added as a key-value pair to the new, top-level Python dictionary.
+ *
+ * @param inpt A pointer (`*`) to the deeply nested C++ `std::map<std::string, std::map<std::string, std::map<std::string, std::vector<base_types>>>>`
+ *             to be converted. The pointer must be valid.
+ * @return A deeply nested Python `dict` (structure: `dict[str, dict[str, dict[str, list]]]`) that
+ *         mirrors the structure and data of the input C++ map. Key ordering is preserved at all levels.
+ * @note Relies on the `env` and `as_dict_dict` helper functions for recursive conversion.
+ *       Assumes UTF-8 encoding for all string keys throughout the nested structure.
+ */
+cdef dict as_dict_dict_dict(map[string, map[string, map[string, vector[base_types]]]]* inpt)
+
+
+/**
+ * @brief Converts a pointer to a C++ map (`map<string, base_types>`) into a Python dictionary.
+ *
+ * @details This Cython helper function (`cdef`) transforms a simple C++ `std::map` (accessed via a pointer `inpt`)
+ *          with `std::string` keys and values of a `base_types` fused type into a
+ *          Python `dict`. It iterates through the key-value pairs of the C++ map:
+ *          1. The `std::string` key is decoded from UTF-8 into a Python `str` using the `env` function.
+ *          2. The value, which belongs to the `base_types` fused type (e.g., int, float,
+ *             bool, std::string), is converted to its corresponding Python type. Cython
+ *             handles the conversion for primitive types automatically. For `std::string`
+ *             values, the `env` function is implicitly used by Cython's conversion
+ *             mechanism (as `string` is part of `base_types`).
+ *          The resulting Python key-value pair is added to a new Python dictionary.
+ *
+ * @param inpt A pointer (`*`) to the C++ `std::map<std::string, base_types>` to be converted.
+ *             The pointer must be valid.
+ * @return A Python `dict` containing the data from the C++ map, with keys as Python strings
+ *         and values as corresponding Python objects (int, float, bool, str). The key order
+ *         matches the order in the `std::map`.
+ * @note Relies on the `env` function for key decoding and Cython's automatic type
+ *       conversion for values based on the `base_types` definition. Assumes keys are UTF-8.
+ */
+cdef dict as_basic_dict(map[string, base_types]* inpt)
+
+/**
+ * @brief Converts a pointer to a C++ unordered_map (`unordered_map<string, base_types>`) into a Python dictionary.
+ *
+ * @details This Cython helper function (`cdef`) converts a C++ `std::unordered_map` (accessed via pointer `inpt`)
+ *          with `std::string` keys and `base_types` values into a Python `dict`.
+ *          It iterates through the key-value pairs present in the unordered_map:
+ *          1. The `std::string` key is decoded from UTF-8 to a Python `str` using `env`.
+ *          2. The `base_types` value is converted to its equivalent Python object type
+ *             (int, float, bool, str), relying on Cython's automatic conversions
+ *             and implicitly using `env` for string values.
+ *          Each converted key-value pair is inserted into a new Python dictionary.
+ *
+ * @param inpt A pointer (`*`) to the C++ `std::unordered_map<std::string, base_types>`
+ *             to be converted. The pointer must be valid.
+ * @return A Python `dict` representing the data stored in the C++ unordered_map.
+ * @note Due to the nature of `unordered_map`, the order of items in the resulting
+ *       Python dictionary is not guaranteed to match any specific insertion order or
+ *       the order during iteration over the C++ map. Relies on `env` and Cython conversions.
+ *       Assumes keys are UTF-8.
+ */
+cdef dict as_basic_udict(unordered_map[string, base_types]* inpt)
+
+
+/**
+ * @brief Converts a pointer to a nested C++ map (`map<string, map<string, base_types>>`) into a nested Python dictionary.
+ *
+ * @details This Cython helper function (`cdef`) transforms a two-level nested C++ `std::map` structure, where
+ *          both inner and outer keys are `std::string` and inner values are of `base_types`,
+ *          into an equivalent nested Python `dict`. It takes a pointer `inpt` to the outer map.
+ *          The conversion proceeds as follows:
+ *          1. It iterates through the key-value pairs of the outer map.
+ *          2. The outer `std::string` key is decoded from UTF-8 to a Python `str` using `env`.
+ *          3. The inner map (`map<string, base_types>`) associated with the outer key
+ *             is converted into a Python `dict` by recursively calling the `as_basic_dict` function (defined above).
+ *             `as_basic_dict` handles the conversion of the inner map's string keys and base_type values.
+ *          The resulting outer Python string key and the inner Python dictionary value
+ *          are added as a key-value pair to the new, top-level Python dictionary.
+ *
+ * @param inpt A pointer (`*`) to the nested C++ `std::map<std::string, std::map<std::string, base_types>>`
+ *             to be converted. The pointer must be valid.
+ * @return A nested Python `dict` (structure: `dict[str, dict[str, base_type]]`) representing the
+ *         structure and data of the input C++ map. Key ordering is preserved at both levels.
+ *         `base_type` represents the Python equivalent of the C++ `base_types`.
+ * @note Relies on the `env` and `as_basic_dict` helper functions. Assumes UTF-8 encoding
+ *       for all string keys.
+ */
+cdef dict as_basic_dict_dict(map[string, map[string, base_types]]* inpt)
+
+/**
+ * @brief Converts a pointer to a nested C++ map (`map<string, map<float, base_types>>`) into a nested Python dictionary.
+ *
+ * @details This Cython helper function (`cdef`) converts a specific type of two-level nested C++ `std::map`
+ *          into a nested Python `dict`. The outer map has `std::string` keys, and its
+ *          values are inner maps. The inner maps have `float` keys and values of the
+ *          `base_types` fused type. The conversion works as follows:
+ *          1. It iterates through the key-value pairs of the outer map pointed to by `inpt`.
+ *          2. The outer `std::string` key is decoded from UTF-8 to a Python `str` using `env`.
+ *          3. The inner map (`map<float, base_types>`) is the value associated with the outer key.
+ *             Cython automatically handles the conversion of this inner map into a Python
+ *             dictionary. The C++ `float` keys become Python `float` keys. The C++ `base_types`
+ *             values are converted to their Python equivalents (int, float, bool, str using `env`).
+ *             This automatic conversion is a powerful feature of Cython's integration with C++ STL containers.
+ *          The resulting outer Python string key and the inner Python dictionary (with float keys)
+ *          are added as a key-value pair to the new, top-level Python dictionary.
+ *
+ * @param inpt A pointer (`*`) to the nested C++ `std::map<std::string, std::map<float, base_types>>`
+ *             to be converted. The pointer must be valid.
+ * @return A nested Python `dict` (structure: `dict[str, dict[float, base_type]]`) representing the
+ *         structure and data of the input C++ map. Outer key order is preserved. Inner key order (float) is preserved.
+ *         `base_type` represents the Python equivalent of the C++ `base_types`.
+ * @note Relies on `env` for outer key decoding and Cython's automatic conversion mechanisms
+ *       for the inner map (including keys and values) and `base_types` values. Assumes outer keys are UTF-8.
+ */
+cdef dict as_basic_dict_dict_f(map[string, map[float, base_types]]* inpt)
+
+
+/**
+ * @brief Cython wrapper class (`cdef class`) for the C++ `tools` utility class.
+ *
+ * @details This class serves as the Python-facing interface to the C++ `tools` functionality
+ *          declared earlier with `cdef cppclass tools`. It acts as a bridge between Python and C++.
+ *          It encapsulates a raw pointer (`ptr`) to an instance of the underlying C++ `tools` object,
+ *          which is allocated on the heap when a `Tools` object is created in Python.
+ *          This wrapper exposes the C++ methods (like `create_path`, `hash`, etc.) as Python methods
+ *          accessible on instances of `Tools`. These Python methods handle the necessary type
+ *          conversions between Python objects (e.g., `str`, `list`, `dict`, `int`) and their
+ *          corresponding C++ types (e.g., `std::string`, `std::vector`, `std::map`, `int`)
+ *          using the helper functions like `enc`, `env`, `as_list`, `as_dict`, etc., before
+ *          calling the C++ method via the `ptr` and after receiving results.
+ *
+ *          The lifecycle of the C++ object is carefully managed using Cython's special methods:
+ *          - `__cinit__`: Allocates the C++ `tools` object using `new` when the Python `Tools` object is created.
+ *          - `__dealloc__`: Deallocates the C++ `tools` object using `del` when the Python `Tools` object is garbage collected, preventing memory leaks.
+ *
+ *          Python users interact with instances of this `Tools` class. Method calls release the GIL
+ *          where the underlying C++ methods are marked `nogil`, allowing for concurrency. Exceptions
+ *          from C++ (marked `except+`) are automatically translated into Python exceptions.
+ */
+cdef class Tools:
+    /**
+     * @brief A raw C++ pointer to the heap-allocated C++ `tools` object instance.
+     *
+     * @details This member variable (`cdef tools* ptr`) holds the memory address of the actual C++ `tools`
+     *          instance that this Cython wrapper object manages. All method calls made on a Python
+     *          `Tools` instance are ultimately forwarded to the C++ object residing at this memory
+     *          address, using pointer dereferencing (e.g., `self.ptr.some_method(...)`).
+     *          The pointer is initialized in the `__cinit__` method by allocating memory with `new`
+     *          and the memory it points to is explicitly freed in the `__dealloc__` method using `del`.
+     *          This manual memory management is necessary because it holds a C++ object allocated outside
+     *          Python's standard memory management. Direct access or manipulation of this pointer
+     *          from Python code is not possible and interaction should only occur via the class's methods.
+     */
+    cdef tools* ptr
+
+    /**
+     * @brief Cython special method for C-level initialization (`__cinit__`).
+     * @details This method is automatically called by Cython when a `Tools` object is created
+     *          in Python (`my_tool = Tools()`), occurring *before* the Python-level `__init__` method.
+     *          Its primary responsibility here is to allocate the underlying C++ `tools` object on the
+     *          heap using the C++ `new` operator (`new tools()`) and store the resulting pointer
+     *          in the instance's `self.ptr` member variable. This ensures that every Python `Tools`
+     *          instance has a valid, corresponding C++ object associated with it right from the start.
+     *          The allocation calls the C++ constructor `tools()`, which was declared earlier with `except+ nogil`.
+     *          If the C++ constructor throws an exception, `__cinit__` will propagate it as a Python exception,
+     *          preventing the `Tools` object from being fully created.
+     * @throws Exception Can throw exceptions propagated from the C++ constructor (e.g., `MemoryError` if `new` fails).
+     */
+    # def __cinit__(self): ... # Implementation details omitted, handled by Cython based on declaration
+
+    /**
+     * @brief Standard Python initializer (`__init__`).
+     * @details This method is called immediately after `__cinit__` during the creation of a `Tools`
+     *          object in Python. In this specific implementation, it performs no additional
+     *          initialization tasks, as the essential C++ object allocation and pointer assignment
+     *          are handled entirely within `__cinit__`. It is included primarily to adhere to standard
+     *          Python class structure conventions. If there were any Python-level attributes or setup
+     *          required for the wrapper *after* the C++ object is guaranteed to exist, they would be
+     *          placed here.
+     */
+    # def __init__(self): ... # Implementation details omitted (likely 'pass')
+
+    /**
+     * @brief Cython special method for C-level deallocation (`__dealloc__`).
+     * @details This method is automatically called by Cython when the reference count of the
+     *          Python `Tools` object drops to zero, indicating that the object is about to be
+     *          garbage collected by Python. Its crucial role is to release the memory occupied by the
+     *          underlying C++ `tools` object that was allocated on the heap in `__cinit__`.
+     *          It achieves this by calling the C++ `delete` operator on the stored pointer (`del self.ptr`).
+     *          This explicit deallocation is vital to prevent memory leaks, as Python's garbage collector
+     *          does not manage memory allocated by C++ `new`. This method ensures that the C++ object's
+     *          destructor is called and its resources are properly cleaned up when the Python wrapper
+     *          is no longer needed.
+     */
+    # def __dealloc__(self): ... # Implementation details omitted, handled by Cython based on declaration
+
+    /**
+     * @brief Python method to create a directory path, including parent directories.
+     * @details This method serves as the Python interface to the C++ `tools::create_path` function.
+     *          It takes a Python string `pth` representing the desired directory path. Inside the method,
+     *          this Python string is first encoded into a C++ `std::string` using the `enc()` helper function.
+     *          Then, it calls the `create_path` method of the underlying C++ object via the stored pointer
+     *          (`self.ptr.create_path(...)`), passing the encoded C++ string. This operation mimics the
+     *          behavior of the `mkdir -p` command-line utility. The underlying C++ call releases the GIL.
+     * @param pth The directory path (as a Python `str`) to create. Can be relative or absolute.
+     * @throws Exception Translates C++ exceptions (e.g., permission errors, invalid path) caught via `except+`
+     *                   into standard Python exceptions (e.g., `OSError`, `PermissionError`).
+     */
+    def create_path(self, str pth): ...
+
+    /**
+     * @brief Python method to delete a file or directory path recursively.
+     * @details This method provides the Python interface for the C++ `tools::delete_path` function.
+     *          It accepts a Python string `pth` indicating the file or directory to remove.
+     *          The method encodes `pth` into a C++ `std::string` using `enc()`. It then invokes
+     *          `self.ptr.delete_path()` with the encoded string. If `pth` refers to a directory,
+     *          the C++ function recursively removes all its contents before removing the directory itself.
+     *          The underlying C++ call releases the GIL. Use with caution as deletion is permanent.
+     * @param pth The file or directory path (as a Python `str`) to delete.
+     * @throws Exception Translates C++ exceptions (e.g., path not found, permission errors, file in use)
+     *                   caught via `except+` into Python exceptions (e.g., `FileNotFoundError`, `PermissionError`, `OSError`).
+     */
+    def delete_path(self, str pth): ...
+
+    /**
+     * @brief Python method to check if a path exists and is a regular file.
+     * @details This method wraps the C++ `tools::is_file` function for use from Python.
+     *          It takes a Python string `pth` representing the path to check. The string is encoded
+     *          to a C++ `std::string` via `enc()`. The method then calls `self.ptr.is_file()` with
+     *          the encoded path. The C++ function performs the filesystem check (releasing the GIL)
+     *          and returns a boolean result.
+     * @param pth The path (as a Python `str`) to check.
+     * @return `True` if the path exists on the filesystem and refers to a regular file (not a directory,
+     *         symlink, etc.), `False` otherwise (including if the path does not exist).
+     * @throws Exception Translates potential C++ exceptions during filesystem access (e.g., permission denied
+     *                   to access parent directories) caught via `except+` into Python exceptions (e.g., `OSError`).
+     */
+    def is_file(self, str pth): ...
+
+    /**
+     * @brief Python method to rename or move a file or directory.
+     * @details This method provides a Python interface to the C++ `tools::rename` function.
+     *          It takes two Python strings: `src` (the original path) and `dst` (the new path).
+     *          Both strings are encoded into C++ `std::string` objects using `enc()`.
+     *          The method then calls `self.ptr.rename()` with these two encoded strings. The underlying
+     *          C++ function attempts the rename/move operation, releasing the GIL. Behavior across
+     *          filesystems depends on the C++ implementation.
+     * @param src The original path of the file or directory (as a Python `str`).
+     * @param dst The new path for the file or directory (as a Python `str`).
+     * @throws Exception Translates C++ exceptions (e.g., source not found, destination exists and cannot be
+     *                   overwritten, permission errors, invalid operation) caught via `except+` into Python
+     *                   exceptions (e.g., `FileNotFoundError`, `FileExistsError`, `PermissionError`, `OSError`).
+     */
+    def rename(self, str src, str dst): ...
+
+    /**
+     * @brief Python method to compute the absolute path for a given path.
+     * @details This method wraps the C++ `tools::absolute_path` function. It accepts a Python string `pth`
+     *          which can be a relative or absolute path. The string is encoded to a C++ `std::string` using `enc()`.
+     *          It calls `self.ptr.absolute_path()` with the encoded path. The C++ function resolves the path
+     *          (releasing the GIL) and returns the absolute path as a C++ `std::string`. This result is then
+     *          decoded back into a Python string using the `env()` helper function before being returned to the caller.
+     * @param pth The input path (relative or absolute, as a Python `str`).
+     * @return The corresponding absolute path as a Python `str`.
+     * @throws Exception Translates C++ exceptions encountered during path resolution (e.g., filesystem errors)
+     *                   caught via `except+` into Python exceptions (e.g., `OSError`).
+     */
+    def abs(self, str pth): ...
+
+    /**
+     * @brief Python method to list files within a directory, optionally filtering by extension.
+     * @details This method wraps the C++ `tools::ls` function. It takes a directory path `pth` (Python `str`)
+     *          and an optional file extension filter `ext` (Python `str`). Both strings are encoded to
+     *          C++ `std::string` using `enc()`. It calls `self.ptr.ls()` with the encoded path and extension.
+     *          The C++ function scans the directory (releasing the GIL), filters the files if `ext` is provided,
+     *          and returns the matching filenames (not full paths) as a `std::vector<std::string>`.
+     *          This vector is then converted into a Python `list` of Python strings using the `env_vec()` helper function.
+     * @param pth The directory path (as a Python `str`) to list.
+     * @param ext The file extension (as a Python `str`, e.g., ".txt") to filter by. If empty or omitted,
+     *            no filtering by extension is performed, and all regular files are listed.
+     * @return A Python `list` containing the names (as Python `str`) of the regular files found in the directory
+     *         that match the extension filter (if any).
+     * @throws Exception Translates C++ exceptions (e.g., path is not a directory, path does not exist,
+     *                   permission errors) caught via `except+` into Python exceptions (e.g., `NotADirectoryError`,
+     *                   `FileNotFoundError`, `PermissionError`).
+     */
+    def ls(self, str pth, str ext=""): ... # Default value added for clarity
+
+    /**
+     * @brief Python method to replace all occurrences of a substring within a string.
+     * @details This method provides a Python interface to the C++ `tools::replace` function, which modifies
+     *          a C++ string in-place. Since Python strings are immutable, this wrapper creates a new Python string.
+     *          It takes the original string `val`, the substring to replace `rpl`, and the replacement string `rpwl`
+     *          (all Python `str`).
+     *          1. Encodes `val`, `rpl`, and `rpwl` into C++ `std::string` objects using `enc()`.
+     *          2. Creates a modifiable C++ `std::string` copy (`sx`) from the encoded `val`.
+     *          3. Calls the C++ method `self.ptr.replace()` passing a pointer to `sx`, and the encoded `rpl` and `rpwl`.
+     *             The C++ method modifies `sx` in-place (releasing the GIL).
+     *          4. Decodes the modified C++ string `sx` back into a Python string using `env()`.
+     *          5. Returns the newly created Python string containing the replacements.
+     * @param val The original Python `str`.
+     * @param rpl The substring (Python `str`) to be replaced.
+     * @param rpwl The replacement string (Python `str`).
+     * @return A new Python `str` with all non-overlapping occurrences of `rpl` replaced by `rpwl`.
+     * @throws Exception Translates C++ exceptions during string manipulation caught via `except+` into Python exceptions.
+     */
+    def replace(self, str val, str rpl, str rpwl): ...
+
+    /**
+     * @brief Python method to check if a string contains a specific substring.
+     * @details Wraps the C++ `tools::has_string` method for Python use. It takes the main string `val`
+     *          and the target substring `rpl` (both Python `str`).
+     *          1. Encodes `val` and `rpl` into C++ `std::string` objects using `enc()`.
+     *          2. Creates a temporary C++ `std::string` copy (`sx`) of the encoded `val` because the C++ function expects a pointer.
+     *          3. Calls the C++ method `self.ptr.has_string()`, passing a pointer to `sx` and the encoded `rpl`.
+     *             The C++ method performs the search (releasing the GIL) and returns a boolean.
+     *          4. Returns the boolean result to the Python caller.
+     * @param val The main Python `str` to search within.
+     * @param rpl The substring (Python `str`) to search for.
+     * @return `True` if `rpl` is found as a substring within `val`, `False` otherwise.
+     * @throws Exception Translates C++ exceptions during the search caught via `except+` into Python exceptions.
+     */
+    def has_substring(self, str val, str rpl): ...
+
+    /**
+     * @brief Python method to check if a string ends with a specific suffix.
+     * @details Wraps the C++ `tools::ends_with` method. It accepts the main string `val` and the potential suffix `rpl` (both Python `str`).
+     *          1. Encodes `val` and `rpl` into C++ `std::string` objects using `enc()`.
+     *          2. Creates a temporary C++ `std::string` copy (`sx`) of the encoded `val`.
+     *          3. Calls the C++ method `self.ptr.ends_with()`, passing a pointer to `sx` and the encoded `rpl`.
+     *             The C++ method performs the check (releasing the GIL) and returns a boolean.
+     *          4. Returns the boolean result.
+     * @param val The main Python `str` to check.
+     * @param rpl The suffix (Python `str`) to check for at the end of `val`.
+     * @return `True` if `val` ends with the exact sequence of characters in `rpl`, `False` otherwise.
+     * @throws Exception Translates C++ exceptions during the check caught via `except+` into Python exceptions.
+     */
+    def ends_with(self, str val, str rpl): ...
+
+    /**
+     * @brief Python method to check if a list of strings contains a specific target string.
+     * @details Wraps the C++ `tools::has_value` method specialized for `vector<string>`.
+     *          It takes a Python `list` of strings (`data`) and a target Python `str` (`trg`).
+     *          1. Converts the input Python `list` (`data`) into a C++ `std::vector<std::string>` using the `enc_list()` helper function.
+     *          2. Encodes the target string `trg` into a C++ `std::string` using `enc()`.
+     *          3. Calls the C++ method `self.ptr.has_value()`, passing a pointer to the created C++ vector and the encoded target string.
+     *             The C++ method iterates through the vector (releasing the GIL) and returns a boolean.
+     *          4. Returns the boolean result.
+     * @param data The Python `list` of strings to search within. Expects a list containing only strings.
+     * @param trg The target string (Python `str`) to search for in the list elements.
+     * @return `True` if `trg` is found as an element in the `data` list, `False` otherwise.
+     * @throws Exception Translates C++ exceptions during the search caught via `except+` into Python exceptions.
+     *                   May also raise `TypeError` if `data` contains non-string elements during `enc_list`.
+     */
+    def has_value(self, list data, str trg): ...
+
+    /**
+     * @brief Python method to split a string by a delimiter or into fixed-length chunks.
+     * @details Wraps the overloaded C++ `tools::split` methods (one taking `string, string`, the other `string, int`).
+     *          It accepts the input string `data` (Python `str`) and a second argument `trg` which can be either
+     *          a Python `str` (delimiter) or a Python `int` (chunk size).
+     *          - **Type Dispatch:** The method internally checks the type of `trg`.
+     *          - **If `trg` is `str` (delimiter):**
+     *              1. Encodes `data` and `trg` into C++ `std::string` using `enc()`.
+     *              2. Calls `self.ptr.split(encoded_data, encoded_trg)`.
+     *          - **If `trg` is `int` (chunk size):**
+     *              1. Encodes `data` into a C++ `std::string` using `enc()`.
+     *              2. Calls `self.ptr.split(encoded_data, trg)`.
+     *          - **Result Handling:** In both cases, the C++ method returns a `std::vector<std::string>`.
+     *            This vector is converted to a Python `list` of Python strings using the `as_list()` helper function
+     *            (which implicitly uses `env` for the strings within the vector).
+     *          - **Error Handling:** If `trg` is neither `str` nor `int`, a `TypeError` is raised.
+     * @param data The input Python `str` to split.
+     * @param trg The delimiter (as Python `str`) or the chunk size (as Python `int`).
+     * @return A Python `list` of strings resulting from the split operation.
+     * @throws Exception Translates C++ exceptions (e.g., invalid chunk size <= 0) caught via `except+` into Python exceptions.
+     * @throws TypeError If `trg` is not a `str` or `int`.
+     */
+    def split(self, str data, trg): ...
+
+    /**
+     * @brief Python method to generate a hash of a string, truncated to a specified length.
+     * @details Wraps the C++ `tools::hash` method. It takes the input string `data` (Python `str`)
+     *          and an optional integer `lx` specifying the desired length of the hash output (defaults to 8).
+     *          1. Encodes the input string `data` into a C++ `std::string` using `enc()`.
+     *          2. Calls the C++ method `self.ptr.hash()` with the encoded string and the integer length `lx`.
+     *             The C++ method computes the hash (releasing the GIL) and returns the truncated result as a C++ `std::string`.
+     *          3. Decodes the resulting C++ `std::string` hash back into a Python string using `env()`.
+     *          4. Returns the Python string hash.
+     * @param data The input Python `str` to hash.
+     * @param lx The desired length of the output hash string (default is 8). Must be non-negative.
+     * @return The resulting hash as a Python `str` of length `lx`.
+     * @throws Exception Translates C++ exceptions during hashing (e.g., invalid length) caught via `except+` into Python exceptions.
+     */
+    def hash(self, str data, int lx = 8): ...
+
+    /**
+     * @brief Python method to encode a string using Base64 encoding.
+     * @details Wraps the C++ `tools::encode64` method. It takes a Python string `data`.
+     *          Note: While it takes a Python `str`, Base64 typically encodes binary data. This method
+     *          first encodes the Python `str` to bytes using UTF-8 (via `enc()`), and then Base64 encodes those bytes.
+     *          1. Encodes the input Python string `data` to a temporary C++ `std::string` (`v`) using `enc()`.
+     *          2. Calls the C++ method `self.ptr.encode64()`, passing a pointer to `v`. The C++ method performs
+     *             Base64 encoding (releasing the GIL) and returns the result as a C++ `std::string`.
+     *          3. Decodes the Base64 encoded C++ `std::string` result back into a Python string using `env()`.
+     *             (The Base64 result itself consists of ASCII characters, so `env` effectively copies it).
+     *          4. Returns the Base64 encoded string as a Python `str`.
+     * @param data The Python `str` whose UTF-8 byte representation should be Base64 encoded.
+     * @return The Base64 encoded data, represented as a Python `str`.
+     * @throws Exception Translates C++ exceptions during encoding caught via `except+` into Python exceptions.
+     */
+    def encode64(self, str data): ...
+
+    /**
+     * @brief Python method to decode a Base64 encoded string.
+     * @details Wraps the C++ `tools::decode64` method. It takes a Base64 encoded Python string `data`.
+     *          1. Encodes the input Base64 Python string `data` to a temporary C++ `std::string` (`v`) using `enc()`.
+     *             (This assumes the Base64 string itself is representable in UTF-8, which is true as it's ASCII).
+     *          2. Calls the C++ method `self.ptr.decode64()`, passing a pointer to `v`. The C++ method performs
+     *             Base64 decoding (releasing the GIL) and returns the original raw bytes as a C++ `std::string`.
+     *          3. Decodes the resulting C++ `std::string` (containing the original bytes) back into a Python string using `env()`.
+     *             This assumes the original data was valid UTF-8 text. If the original data was binary, decoding it
+     *             back to a Python `str` might fail or produce mojibake if it wasn't valid UTF-8.
+     * @param data The Base64 encoded Python `str` to decode.
+     * @return The decoded original data, represented as a Python `str` (assuming the original data was UTF-8 text).
+     * @throws Exception Translates C++ exceptions (e.g., invalid Base64 input format) caught via `except+` into Python exceptions.
+     *                   May also raise `UnicodeDecodeError` if the decoded bytes are not valid UTF-8.
+     */
+    def decode64(self, str data): ...
+
+    /**
+     * @brief Python method to discretize a list of strings or integers into N chunks.
+     * @details Wraps the overloaded C++ `tools::discretize` methods (one for `vector<int>`, one for `vector<string>`).
+     *          It takes a Python `list` (`data`) containing elements of a uniform type (either all strings or all integers)
+     *          and an integer `lx` representing the desired number of chunks (`N`).
+     *          - **Input Validation:** Checks if the input list `data` is empty. If so, returns an empty list immediately.
+     *          - **Type Dispatch:** Checks the type of the *first* element in the list (`data[0]`) to determine the data type.
+     *          - **If elements are `str`:**
+     *              1. Converts the entire Python list `data` to a `std::vector<std::string>` using `enc_list()`.
+     *              2. Calls `self.ptr.discretize(pointer_to_vector, lx)`. The C++ method partitions the vector (releasing GIL)
+     *                 and returns a `std::vector<std::vector<std::string>>`.
+     *              3. Cython automatically converts this nested C++ vector into a Python list of lists of strings (using `env` internally).
+     *          - **If elements are `int`:**
+     *              1. Casts the Python list `data` directly to a `std::vector<int>`. Cython handles this conversion efficiently for primitive types.
+     *              2. Calls `self.ptr.discretize(pointer_to_vector, lx)`. The C++ method partitions the vector (releasing GIL)
+     *                 and returns a `std::vector<std::vector<int>>`.
+     *              3. Cython automatically converts this nested C++ vector into a Python list of lists of integers.
+     *          - **Error Handling:** If the first element is neither `str` nor `int`, or if the list contains mixed types inconsistent
+     *            with the first element's type, behavior might lead to `TypeError` during conversion or return an empty list as a fallback.
+     * @param data The input Python `list` containing either only strings or only integers.
+     * @param lx The desired number of chunks (sub-lists) `N`. Must be positive.
+     * @return A Python `list` containing `lx` sub-lists. Each sub-list contains a portion of the original elements,
+     *         maintaining relative order. Returns an empty list if the input list is empty or contains unsupported/mixed types.
+     * @throws Exception Translates C++ exceptions (e.g., `lx` <= 0) caught via `except+` into Python exceptions.
+     *                   May raise `TypeError` during list conversion if elements are not uniformly strings or integers.
+     */
+    def discretize(self, list data, int lx): ...
+

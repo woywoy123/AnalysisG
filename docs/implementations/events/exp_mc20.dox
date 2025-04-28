@@ -1,0 +1,926 @@
+/**
+ * @file event.cxx
+ * @brief Implementation file for the particle and event classes specific to the exp_mc20 analysis.
+ *
+ * This file contains the implementation details for constructors, destructors,
+ * cloning functions, and build methods for various particle types (top, child,
+ * physics_detector, physics_truth, jet, electron, muon) and the main event
+ * class (exp_mc20). The build methods handle the extraction of data from
+ * underlying data structures (`element_t`) and populate the particle objects.
+ * The `exp_mc20::CompileEvent` method orchestrates the linking between different
+ * particle types within an event.
+ */
+
+#include <exp_mc20/event.h>
+#include "particles.h" // Assuming particles.h contains declarations for particle_template, element_t, etc.
+
+// --- top Class Implementation ---
+
+/**
+ * @brief Constructor for the top particle class.
+ * @details Initializes the particle type to "top" and registers the data leaves
+ *          (branches) associated with top quarks from the input data source.
+ *          These leaves include kinematic variables (pt, eta, phi, energy),
+ *          charge, and truth information (pdgid, index, barcode, status).
+ *          Finally, it applies a type-specific prefix to the leaf names.
+ */
+top::top(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Destructor for the top particle class.
+ * @details Default destructor, handles cleanup of resources if necessary.
+ */
+top::~top(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Clones the top particle object.
+ * @details Implements the virtual clone pattern. Creates a new top object
+ *          on the heap and returns a pointer to it, cast to the base
+ *          particle_template pointer.
+ * @return particle_template* Pointer to the newly created top object.
+ */
+particle_template* top::clone(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Builds top particle objects from input data.
+ * @details Extracts kinematic (pmu) and other properties (charge, index, pdgid)
+ *          for top particles from the provided `element_t` data structure.
+ *          It creates `top` objects, populates their member variables,
+ *          and stores them in the provided particle map (`prt`) keyed by their hash.
+ * @param prt Pointer to a map where created particle objects are stored (string hash -> particle_template*).
+ * @param el Pointer to the `element_t` object containing the raw event data for this particle type.
+ */
+void top::build(std::map<std::string, particle_template*>* prt, element_t* el){
+    // Implementation replaced with documentation
+}
+
+// --- child Class Implementation ---
+
+/**
+ * @brief Constructor for the child particle class.
+ * @details Initializes the particle type to "child" and registers the data leaves
+ *          associated with decay products (children) of top quarks.
+ *          Includes kinematic variables, charge, pdgid, and the index linking
+ *          back to the parent top quark. Applies a type-specific prefix.
+ */
+child::child(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Destructor for the child particle class.
+ */
+child::~child(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Clones the child particle object.
+ * @details Implements the virtual clone pattern for the child class.
+ * @return particle_template* Pointer to the newly created child object.
+ */
+particle_template* child::clone(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Builds child particle objects from input data.
+ * @details Extracts kinematic (pmu) and other properties (charge, index, pdgid)
+ *          for child particles from the `element_t` data. Creates `child` objects,
+ *          populates them, and stores them in the particle map (`prt`).
+ * @param prt Pointer to the particle map.
+ * @param el Pointer to the `element_t` data source.
+ */
+void child::build(std::map<std::string, particle_template*>* prt, element_t* el){
+    // Implementation replaced with documentation
+}
+
+// --- physics_detector Class Implementation ---
+
+/**
+ * @brief Constructor for the physics_detector particle class.
+ * @details Represents particles reconstructed at the detector level, potentially
+ *          linked to truth particles. Initializes type to "physdet", registers
+ *          kinematic leaves, charge, index, top_index (linking to truth tops),
+ *          and parton flavor information. Applies a type-specific prefix.
+ */
+physics_detector::physics_detector(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Destructor for the physics_detector particle class.
+ */
+physics_detector::~physics_detector(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Clones the physics_detector particle object.
+ * @details Implements the virtual clone pattern for the physics_detector class.
+ * @return particle_template* Pointer to the newly created physics_detector object.
+ */
+particle_template* physics_detector::clone(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Builds physics_detector particle objects from input data.
+ * @details Extracts properties (pmu, charge, index, top_index, parton flavor)
+ *          from the `element_t` data. Creates `physics_detector` objects.
+ *          Applies a filtering logic (lambda function) based on the `top_index`
+ *          to decide whether to keep the particle. Kept particles are stored
+ *          in the particle map (`prt`). Objects failing the filter are deleted.
+ * @param prt Pointer to the particle map.
+ * @param el Pointer to the `element_t` data source.
+ */
+void physics_detector::build(std::map<std::string, particle_template*>* prt, element_t* el){
+    // Implementation replaced with documentation
+}
+
+// --- physics_truth Class Implementation ---
+
+/**
+ * @brief Constructor for the physics_truth particle class.
+ * @details Represents truth-level particles relevant for physics analysis,
+ *          often associated with detector objects. Initializes type to "phystru",
+ *          registers kinematic leaves, charge, index, parton label, type,
+ *          and top_index. Applies a type-specific prefix.
+ */
+physics_truth::physics_truth(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Destructor for the physics_truth particle class.
+ */
+physics_truth::~physics_truth(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Clones the physics_truth particle object.
+ * @details Implements the virtual clone pattern for the physics_truth class.
+ * @return particle_template* Pointer to the newly created physics_truth object.
+ */
+particle_template* physics_truth::clone(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Builds physics_truth particle objects from input data.
+ * @details Extracts properties (pmu, charge, index, parton label, type, top_index)
+ *          from the `element_t` data. Creates `physics_truth` objects.
+ *          Applies a complex filtering and PDG ID assignment logic (lambda function)
+ *          based on particle type, PDG ID, and top_index. Kept particles are stored
+ *          in the particle map (`prt`). Objects failing the filter are deleted.
+ * @param prt Pointer to the particle map.
+ * @param el Pointer to the `element_t` data source.
+ */
+void physics_truth::build(std::map<std::string, particle_template*>* prt, element_t* el){
+    // Implementation replaced with documentation
+}
+
+// --- jet Class Implementation ---
+
+/**
+ * @brief Constructor for the jet particle class.
+ * @details Initializes the particle type to "jet". Registers kinematic leaves,
+ *          truth flavor (`_truthflav`), and truth parton label (`_truthPartonLabel`).
+ *          Commented-out lines suggest potential inclusion of b-tagging flags.
+ *          Applies a type-specific prefix.
+ */
+jet::jet(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Clones the jet particle object.
+ * @details Implements the virtual clone pattern for the jet class.
+ * @return particle_template* Pointer to the newly created jet object.
+ */
+particle_template* jet::clone(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Builds jet particle objects from input data.
+ * @details Extracts kinematic (pmu), flavor, and parton label information
+ *          from the `element_t` data. Creates `jet` objects, assigns an index,
+ *          populates flavor (`flav`) and PDG ID (`pdgid` from parton label),
+ *          and stores them in the particle map (`prt`).
+ * @param prt Pointer to the particle map.
+ * @param el Pointer to the `element_t` data source.
+ */
+void jet::build(std::map<std::string, particle_template*>* prt, element_t* el){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Destructor for the jet particle class.
+ */
+jet::~jet(){
+    // Implementation replaced with documentation
+}
+
+// --- electron Class Implementation ---
+
+/**
+ * @brief Constructor for the electron particle class.
+ * @details Initializes the particle type to "el". Registers kinematic leaves,
+ *          charge, tightness flag (`_isTight`), impact parameters (`_d0sig`,
+ *          `_delta_z0_sintheta`), and truth matching information (`_true_type`,
+ *          `_true_origin`). Applies a type-specific prefix.
+ */
+electron::electron(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Clones the electron particle object.
+ * @details Implements the virtual clone pattern for the electron class.
+ * @return particle_template* Pointer to the newly created electron object.
+ */
+particle_template* electron::clone(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Builds electron particle objects from input data.
+ * @details Extracts kinematic (pmu), charge, impact parameters (d0, z0),
+ *          tightness flag, and truth matching info (type, origin) from the
+ *          `element_t` data. Creates `electron` objects, assigns an index,
+ *          populates members, infers PDG ID from charge, and stores them
+ *          in the particle map (`prt`).
+ * @param prt Pointer to the particle map.
+ * @param el Pointer to the `element_t` data source.
+ */
+void electron::build(std::map<std::string, particle_template*>* prt, element_t* el){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Destructor for the electron particle class.
+ */
+electron::~electron(){}
+
+// --- muon Class Implementation ---
+
+/**
+ * @brief Constructor for the muon particle class.
+ * @details Initializes the particle type to "mu". Registers kinematic leaves,
+ *          charge, tightness flag (`_isTight`), impact parameters (`_d0sig`,
+ *          `_delta_z0_sintheta`), and truth matching information (`_true_type`,
+ *          `_true_origin`). Applies a type-specific prefix.
+ */
+muon::muon(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Clones the muon particle object.
+ * @details Implements the virtual clone pattern for the muon class.
+ * @return particle_template* Pointer to the newly created muon object.
+ */
+particle_template* muon::clone(){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Builds muon particle objects from input data.
+ * @details Extracts kinematic (pmu), charge, impact parameters (d0, z0),
+ *          tightness flag, and truth matching info (type, origin) from the
+ *          `element_t` data. Creates `muon` objects, assigns an index,
+ *          populates members, infers PDG ID from charge, and stores them
+ *          in the particle map (`prt`).
+ * @param prt Pointer to the particle map.
+ * @param el Pointer to the `element_t` data source.
+ */
+void muon::build(std::map<std::string, particle_template*>* prt, element_t* el){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Destructor for the muon particle class.
+ */
+muon::~muon(){
+    // Implementation replaced with documentation
+}
+
+// --- exp_mc20 Event Class Implementation ---
+
+/**
+ * @brief Constructor for the exp_mc20 event class.
+ * @details Sets the event name, registers event-level leaves (MET, weights, etc.),
+ *          specifies the TTree name to read ("nominal_Loose"), and registers
+ *          all particle types (top, child, physdet, phystru, electron, muon, jet)
+ *          that will be built for this event.
+ */
+exp_mc20::exp_mc20(){
+    this->name = "exp_mc20";
+    this->trees = {"nominal_Loose"};
+    this->add_leaf("MET", "met");
+    this->add_leaf("MET_phi", "met_phi");
+    this->add_leaf("SumET", "sumet");
+    this->add_leaf("AverageInteractionsPerCrossing", "mu");
+    this->register_particles(&this->m_tops);
+    this->register_particles(&this->m_children);
+    this->register_particles(&this->m_physdet);
+    this->register_particles(&this->m_phystru);
+    this->register_particles(&this->m_electrons);
+    this->register_particles(&this->m_muons);
+    this->register_particles(&this->m_jets);
+}
+
+/**
+ * @brief Destructor for the exp_mc20 event class.
+ * @details Handles cleanup of event resources. Note that particle objects
+ *          themselves are typically managed by the base class or analysis framework.
+ */
+exp_mc20::~exp_mc20(){}
+
+/**
+ * @brief Clones the exp_mc20 event object.
+ * @details Extracts event-wide variables like event number, MC weight, MET,
+ *          MET phi, sum ET, and average interactions per crossing (mu) from
+ *          the `element_t` data source and populates the corresponding members
+ *          of the `exp_mc20` object.
+ * @param el Pointer to the `element_t` object containing the raw event data.
+ */
+void exp_mc20::build(element_t* el){
+    // Implementation replaced with documentation
+}
+
+/**
+ * @brief Compiles the event by linking particles and populating final collections.
+ * @details This method is called after all individual particle types have been
+ *          built using their respective `build` methods. It performs the following steps:
+ *          1. Sorts truth top quarks by their index.
+ *          2. Vectorizes children, physics truth, and physics detector particles from their maps.
+ *          3. Establishes parent-child relationships between tops and their direct children.
+ *          4. Links physics truth particles to their corresponding parent top quarks based on `top_index`.
+ *          5. Links physics detector particles to their corresponding parent top quarks based on `top_index`.
+ *          6. Populates the combined `Detector` vector with electrons, muons, and jets.
+ *          7. Attempts to link detector objects (leptons, jets) to truth particles (physics_detector)
+ *             using a Delta R matching criterion (dR < 0.0001). If a match is found, the detector
+ *             object inherits the parents of the matched physics_detector particle.
+ *          8. Populates the final public vectors (Tops, TopChildren, PhysicsTruth, PhysicsDetector,
+ *             Jets, Leptons) for analysis access.
+ */
+void exp_mc20::CompileEvent(){
+    // Implementation replaced with documentation
+}
+
+
+// --- Header File Documentation ---
+
+#ifndef EVENTS_EXP_MC20_H
+#define EVENTS_EXP_MC20_H
+
+#include <exp_mc20/particles.h>
+#include <templates/event_template.h>
+
+/**
+ * @class exp_mc20
+ * @brief Represents a complete event structure for the exp_mc20 analysis.
+ * @details This class inherits from `event_template` and orchestrates the
+ *          reading, building, and linking of various particle types (tops,
+ *          leptons, jets, truth particles) within a single collision event.
+ *          It holds collections of reconstructed and truth particles, as well
+ *          as event-level information like MET and weights.
+ */
+class exp_mc20: public event_template
+{
+    public:
+        /**
+         * @brief Default constructor. Initializes event properties and registers particle types.
+         */
+        exp_mc20();
+
+        /**
+         * @brief Virtual destructor.
+         */
+        virtual ~exp_mc20();
+
+        /** @brief Vector containing pointers to the truth top quark objects in the event. */
+        std::vector<particle_template*> Tops;
+        /** @brief Vector containing pointers to the direct truth decay products (children) of the top quarks. */
+        std::vector<particle_template*> TopChildren;
+        /** @brief Vector containing pointers to relevant truth-level particles (e.g., quarks, gluons from matrix element). */
+        std::vector<particle_template*> PhysicsTruth;
+        /** @brief Vector containing pointers to detector-level physics objects potentially linked to truth. */
+        std::vector<particle_template*> PhysicsDetector;
+
+        /** @brief Vector containing pointers to reconstructed jet objects. */
+        std::vector<particle_template*> Jets;
+        /** @brief Vector containing pointers to reconstructed lepton (electron and muon) objects. */
+        std::vector<particle_template*> Leptons;
+        /** @brief Vector containing pointers to all major reconstructed detector objects (jets, electrons, muons). */
+        std::vector<particle_template*> Detector;
+
+        /** @brief Unique event identifier number. */
+        unsigned long long event_number = 0;
+        /** @brief Scalar sum of transverse energy in the event (used for MET calculation). */
+        float met_sum = 0;
+        /** @brief Missing transverse energy magnitude. */
+        float met = 0;
+        /** @brief Azimuthal angle (phi) of the missing transverse energy vector. */
+        float phi = 0;
+        /** @brief Average number of interactions per bunch crossing (pileup measure). */
+        float mu = 0;
+
+        /**
+         * @brief Creates a copy of the current event object. (Virtual constructor)
+         * @return event_template* Pointer to the new event object.
+         */
+        event_template* clone() override;
+
+        /**
+         * @brief Populates event-level variables from the data source.
+         * @param el Pointer to the data element containing event information.
+         */
+        void build(element_t* el) override;
+
+        /**
+         * @brief Links particles within the event and populates final collections.
+         * @details Called after individual particle `build` methods. Establishes
+         *          parent-child relationships and performs matching between
+         *          detector and truth objects.
+         */
+        void CompileEvent() override;
+
+    private:
+        /** @brief Internal map storing truth top objects during building phase, keyed by hash. */
+        std::map<std::string, top*>   m_tops;
+        /** @brief Internal map storing truth child objects during building phase, keyed by hash. */
+        std::map<std::string, child*> m_children;
+
+        /** @brief Internal map storing physics truth objects during building phase, keyed by hash. */
+        std::map<std::string, physics_truth*>    m_phystru;
+        /** @brief Internal map storing physics detector objects during building phase, keyed by hash. */
+        std::map<std::string, physics_detector*> m_physdet;
+
+        /** @brief Internal map storing jet objects during building phase, keyed by hash. */
+        std::map<std::string, jet*>      m_jets;
+        /** @brief Internal map storing muon objects during building phase, keyed by hash. */
+        std::map<std::string, muon*>     m_muons;
+        /** @brief Internal map storing electron objects during building phase, keyed by hash. */
+        std::map<std::string, electron*> m_electrons;
+
+        /**
+         * @brief Helper template function to sort particles stored in a map by their integer index.
+         * @tparam G The particle class type (e.g., `top`, `child`).
+         * @param ipt Pointer to the input map (string hash -> G*).
+         * @return std::map<int, G*> A map sorted by the particle's `index` member.
+         */
+        template <typename G>
+        std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt){
+            // Implementation details omitted, see .cxx file
+        }
+
+        /**
+         * @brief Helper template function to copy particle pointers from a map to a vector.
+         * @tparam m The key type of the map (typically std::string).
+         * @tparam G The value type (pointer to particle class) in the map.
+         * @tparam g The value type (pointer to particle class, potentially base class) for the vector.
+         * @param ipt Pointer to the input map.
+         * @param vec Pointer to the output vector to be populated.
+         */
+        template <typename m, typename G, typename g>
+        void vectorize(std::map<m, G*>* ipt, std::vector<g*>* vec){
+            // Implementation details omitted, see .cxx file
+        }
+
+};
+
+
+#endif // EVENTS_EXP_MC20_H
+
+
+#ifndef EVENTS_PARTICLES_EXP_MC20_H
+#define EVENTS_PARTICLES_EXP_MC20_H
+
+#include <templates/particle_template.h> // Contains base particle class and element_t definition
+#include <vector>
+#include <map>
+#include <string>
+
+/**
+ * @brief Template function to populate particle four-momentum (pT, eta, phi, E).
+ * @details Extracts kinematic variables (pt, eta, phi, energy) from the `element_t`
+ *          data source for a collection of particles. For each entry, it creates
+ *          a new particle object of type `g`, sets its kinematic properties,
+ *          and adds it to the output vector.
+ * @tparam g The specific particle class type (e.g., `top`, `jet`) to be created.
+ *           Must have pt, eta, phi, e members accessible.
+ * @param out Pointer to the vector where the newly created particle objects will be stored.
+ * @param el Pointer to the `element_t` object containing the raw kinematic data.
+ */
+template <typename g>
+void pmu(std::vector<g*>* out, element_t* el){
+    // Implementation details omitted, see .cxx file
+}
+
+/**
+ * @class top
+ * @brief Represents a truth top quark particle.
+ * @details Inherits from `particle_template` and adds specific properties
+ *          relevant to truth top quarks in the simulation, such as its index.
+ */
+class top: public particle_template
+{
+    public:
+        /** @brief Default constructor. */
+        top();
+        /** @brief Virtual destructor. */
+        virtual ~top();
+
+        /** @brief Index linking this top quark to related particles (e.g., children). Often the position in the original array. */
+        int top_index = -1; // Renamed from 'index' in implementation for clarity, assuming 'index' is the base class member.
+
+        /** @brief Creates a copy of this object. */
+        particle_template* clone() override;
+        /** @brief Populates this object from the data source. */
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
+
+        // Inherited members from particle_template (pt, eta, phi, e, charge, pdgid, index, barcode, status, hash, parents, children, etc.)
+        // Added barcode and status based on .pyx file hints
+        /** @brief Monte Carlo barcode identifying the particle in the event history. */
+        int barcode = 0;
+        /** @brief Monte Carlo status code indicating the particle's stage in the simulation/decay. */
+        int status = 0;
+};
+
+/**
+ * @class child
+ * @brief Represents a truth particle originating directly from a top quark decay.
+ * @details Inherits from `particle_template`. Contains information linking it
+ *          back to its parent top quark(s).
+ */
+class child: public particle_template
+{
+    public:
+        /** @brief Default constructor. */
+        child();
+        /** @brief Virtual destructor. */
+        virtual ~child();
+
+        /** @brief Index of the parent top quark(s). (Note: Implementation used 'index', header uses 'top_index' vector - reconciling based on header). */
+        std::vector<int> top_index = {};
+
+        /** @brief Creates a copy of this object. */
+        particle_template* clone() override;
+        /** @brief Populates this object from the data source. */
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
+
+        // Inherited members from particle_template
+        // Added barcode and status based on .pyx file hints
+        /** @brief Monte Carlo barcode identifying the particle in the event history. */
+        int barcode = 0;
+        /** @brief Monte Carlo status code indicating the particle's stage in the simulation/decay. */
+        int status = 0;
+};
+
+/**
+ * @class physics_detector
+ * @brief Represents a particle reconstructed at the detector level, potentially linked to truth.
+ * @details Inherits from `particle_template`. Used for objects like jets or leptons
+ *          that might be matched back to truth tops or partons.
+ */
+class physics_detector: public particle_template
+{
+    public:
+        /** @brief Default constructor. */
+        physics_detector();
+        /** @brief Virtual destructor. */
+        virtual ~physics_detector();
+
+        /** @brief Index/Indices of the associated truth top quark(s). */
+        std::vector<int> top_index = {};
+
+        /** @brief Creates a copy of this object. */
+        particle_template* clone() override;
+        /** @brief Populates this object from the data source, applying filters. */
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
+
+        // Inherited members from particle_template
+        // Added members based on .pyx file hints
+        /** @brief Label identifying the primary parton associated with this object (e.g., for jets). */
+        int parton_label = 0; // Assuming _trueflavor maps here
+        /** @brief Label related to cone-based matching or classification. */
+        int cone_label = 0; // Placeholder, specific meaning depends on analysis context
+
+        /** @brief Flag indicating if this object is classified as a jet. */
+        bool is_jet = false;
+        /** @brief Flag indicating if this object is classified as a lepton. */
+        bool is_lepton = false;
+        /** @brief Flag indicating if this object is classified as a photon. */
+        bool is_photon = false;
+};
+
+/**
+ * @class physics_truth
+ * @brief Represents a truth-level particle relevant for physics analysis (e.g., hard scatter partons).
+ * @details Inherits from `particle_template`. Often used as a reference for matching
+ *          reconstructed objects.
+ */
+class physics_truth: public particle_template
+{
+    public:
+        /** @brief Default constructor. */
+        physics_truth();
+        /** @brief Virtual destructor. */
+        virtual ~physics_truth();
+
+        /** @brief Index/Indices of the associated truth top quark(s). */
+        std::vector<int> top_index = {};
+
+        /** @brief Creates a copy of this object. */
+        particle_template* clone() override;
+        /** @brief Populates this object from the data source, applying filters. */
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
+
+        // Inherited members from particle_template
+        // Added members based on .pyx file hints
+        /** @brief Label identifying the primary parton associated with this truth object. */
+        int parton_label = 0; // Assuming _partontruthlabel maps here
+        /** @brief Label related to cone-based matching or classification at truth level. */
+        int cone_label = 0; // Placeholder, specific meaning depends on analysis context
+
+        /** @brief Flag indicating if this truth object corresponds to a jet initiator. */
+        bool is_jet = false;
+        /** @brief Flag indicating if this truth object corresponds to a lepton. */
+        bool is_lepton = false;
+        /** @brief Flag indicating if this truth object corresponds to a photon. */
+        bool is_photon = false;
+};
+
+/**
+ * @class electron
+ * @brief Represents a reconstructed electron object.
+ * @details Inherits from `particle_template` and adds electron-specific properties
+ *          like identification flags, impact parameters, and truth matching info.
+ */
+class electron: public particle_template
+{
+    public:
+        /** @brief Default constructor. */
+        electron();
+        /** @brief Virtual destructor. */
+        virtual ~electron();
+
+        /** @brief Transverse impact parameter significance (d0 / sigma_d0). */
+        float d0 = 0; // Corresponds to _d0sig
+        /** @brief Longitudinal impact parameter measurement (delta z0 * sin(theta)). */
+        float delta_z0 = 0; // Corresponds to _delta_z0_sintheta
+        /** @brief Flag indicating if the electron passes "Tight" identification criteria. */
+        bool is_tight = false; // Corresponds to _isTight
+        /** @brief Truth classification code for the electron type (e.g., prompt, conversion). */
+        int true_type = 0; // Corresponds to _true_type
+        /** @brief Truth classification code for the electron origin (e.g., W boson, b hadron). */
+        int true_origin = 0; // Corresponds to _true_origin
+
+        // Note: top_index is not directly read in build, but might be added later via matching.
+        /** @brief Index/Indices of associated truth top quark(s) (potentially filled later). */
+        std::vector<int> top_index = {};
+
+        /** @brief Creates a copy of this object. */
+        particle_template* clone() override;
+        /** @brief Populates this object from the data source. */
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
+
+        // Inherited members from particle_template (pt, eta, phi, e, charge, index, pdgid, hash, etc.)
+};
+
+
+/**
+ * @class muon
+ * @brief Represents a reconstructed muon object.
+ * @details Inherits from `particle_template` and adds muon-specific properties
+ *          like identification flags, impact parameters, and truth matching info.
+ */
+class muon: public particle_template
+{
+    public:
+        /** @brief Default constructor. */
+        muon();
+        /** @brief Virtual destructor. */
+        virtual ~muon();
+
+        /** @brief Transverse impact parameter significance (d0 / sigma_d0). */
+        float d0 = 0; // Corresponds to _d0sig
+        /** @brief Longitudinal impact parameter measurement (delta z0 * sin(theta)). */
+        float delta_z0 = 0; // Corresponds to _delta_z0_sintheta
+        /** @brief Flag indicating if the muon passes "Tight" identification criteria. */
+        bool is_tight = false; // Corresponds to _isTight
+        /** @brief Truth classification code for the muon type (e.g., prompt, cosmic). */
+        int true_type = 0; // Corresponds to _true_type
+        /** @brief Truth classification code for the muon origin (e.g., W boson, b hadron). */
+        int true_origin = 0; // Corresponds to _true_origin
+
+        // Note: top_index is not directly read in build, but might be added later via matching.
+        /** @brief Index/Indices of associated truth top quark(s) (potentially filled later). */
+        std::vector<int> top_index = {};
+
+        /** @brief Creates a copy of this object. */
+        particle_template* clone() override;
+        /** @brief Populates this object from the data source. */
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
+
+        // Inherited members from particle_template (pt, eta, phi, e, charge, index, pdgid, hash, etc.)
+};
+
+/**
+ * @class jet
+ * @brief Represents a reconstructed jet object.
+ * @details Inherits from `particle_template` and adds jet-specific properties
+ *          like b-tagging flags and truth flavor information.
+ */
+class jet: public particle_template
+{
+    public:
+        /** @brief Default constructor. */
+        jet();
+        /** @brief Virtual destructor. */
+        virtual ~jet();
+
+        // B-tagging flags (based on commented-out code and .pyx file)
+        /** @brief Flag indicating if the jet passes the 65% efficiency b-tagging working point. */
+        bool btag_65 = false; // Assumed name based on .pyx
+        /** @brief Flag indicating if the jet passes the 70% efficiency b-tagging working point. */
+        bool btag_70 = false; // Assumed name based on .pyx
+        /** @brief Flag indicating if the jet passes the 77% efficiency b-tagging working point. */
+        bool btag_77 = false; // Assumed name based on .pyx
+        /** @brief Flag indicating if the jet passes the 85% efficiency b-tagging working point. */
+        bool btag_85 = false; // Assumed name based on .pyx
+        /** @brief Flag indicating if the jet passes the 90% efficiency b-tagging working point. */
+        bool btag_90 = false; // Assumed name based on .pyx
+
+        /** @brief Truth flavor label associated with the jet (e.g., 5 for b-jet, 4 for c-jet, 0 for light/gluon). */
+        int flav = 0; // Corresponds to _truthflav
+        /** @brief Truth parton label associated with the jet (more detailed parton info). */
+        int label = 0; // Corresponds to _truthPartonLabel (used as pdgid in build)
+
+        // Note: top_index is not directly read in build, but might be added later via matching.
+        /** @brief Index/Indices of associated truth top quark(s) (potentially filled later). */
+        std::vector<int> top_index = {};
+
+        /** @brief Creates a copy of this object. */
+        particle_template* clone() override;
+        /** @brief Populates this object from the data source. */
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
+
+        // Inherited members from particle_template (pt, eta, phi, e, index, pdgid, hash, etc.)
+};
+
+#endif // EVENTS_PARTICLES_EXP_MC20_H
+
+// --- Cython Interface Files Documentation (Conceptual) ---
+// NOTE: The following are conceptual Doxygen comments for the Cython files,
+//       as Doxygen primarily targets C/C++. The structure mirrors the Python classes.
+
+// --- event_exp_mc20.pyx ---
+/**
+ * @file event_exp_mc20.pyx
+ * @brief Cython wrapper for the C++ exp_mc20 event class.
+ * @details Provides a Python interface to access event properties and particle
+ *          collections defined in the C++ `exp_mc20` class.
+ */
+
+/**
+ * @class ExpMC20
+ * @brief Python wrapper for the C++ `exp_mc20` event object.
+ * @details Inherits from `EventTemplate` (the Python base class wrapper).
+ *          Exposes event properties (MET, weight, event number, etc.) and
+ *          particle collections (Tops, Jets, Leptons, etc.) to Python.
+ */
+// cdef class ExpMC20(EventTemplate):
+    /** @brief Pointer to the underlying C++ exp_mc20 object. */
+    // cdef exp_mc20* exp
+
+    /**
+     * @brief Constructor: Creates the C++ object and sets up the pointer.
+     */
+    // def __cinit__(self): ...
+    /** @brief Standard Python initializer. */
+    // def __init__(self): ...
+    /** @brief Destructor: Deletes the underlying C++ object. */
+    // def __dealloc__(self): ...
+
+    // Properties mirroring C++ public members would be defined here
+    // (e.g., using @property decorators linking to C++ vector accessors)
+    // property Tops: ...
+    // property Jets: ...
+    // property Leptons: ...
+    // property event_number: ...
+    // property met: ...
+    // ...
+
+
+// --- particle_exp_mc20.pyx ---
+/**
+ * @file particle_exp_mc20.pyx
+ * @brief Cython wrappers for the C++ particle classes specific to exp_mc20.
+ * @details Defines Python classes (Top, Child, Jet, Electron, Muon, etc.) that
+ *          wrap their corresponding C++ counterparts, providing access to
+ *          particle properties and methods from Python.
+ */
+
+/**
+ * @class Top
+ * @brief Python wrapper for the C++ `top` particle object.
+ * @details Inherits from `ParticleTemplate` (Python wrapper base). Exposes
+ *          properties like kinematics, charge, pdgid, barcode, status, etc.
+ */
+// cdef class Top(ParticleTemplate):
+    /** @brief Pointer to the underlying C++ top object. */
+    // cdef top* p
+    /** @brief Publicly accessible barcode property. */
+    // cdef public int barcode
+    /** @brief Publicly accessible status property. */
+    // cdef public int status
+    // ... constructors, destructor ...
+
+/**
+ * @class Child
+ * @brief Python wrapper for the C++ `child` particle object.
+ */
+// cdef class Child(ParticleTemplate):
+    // cdef child* p
+    // cdef public int barcode
+    // cdef public int status
+    // ...
+
+/**
+ * @class PhysicsDetector
+ * @brief Python wrapper for the C++ `physics_detector` particle object.
+ */
+// cdef class PhysicsDetector(ParticleTemplate):
+    // cdef physics_detector* p
+    // cdef public int parton_label
+    // cdef public int cone_label
+    // cdef public bool is_jet
+    // cdef public bool is_lepton
+    // cdef public bool is_photon
+    // ...
+
+/**
+ * @class PhysicsTruth
+ * @brief Python wrapper for the C++ `physics_truth` particle object.
+ */
+// cdef class PhysicsTruth(ParticleTemplate):
+    // cdef physics_truth* p
+    // cdef public int parton_label
+    // cdef public int cone_label
+    // cdef public bool is_jet
+    // cdef public bool is_lepton
+    // cdef public bool is_photon
+    // ...
+
+/**
+ * @class Electron
+ * @brief Python wrapper for the C++ `electron` particle object.
+ */
+// cdef class Electron(ParticleTemplate):
+    // cdef electron* p
+    // cdef public float d0
+    // cdef public int true_type
+    // cdef public float delta_z0
+    // cdef public int true_origin
+    // cdef public bool is_tight
+    // ...
+
+/**
+ * @class Muon
+ * @brief Python wrapper for the C++ `muon` particle object.
+ */
+// cdef class Muon(ParticleTemplate):
+    // cdef muon* p
+    // cdef public float d0
+    // cdef public int true_type
+    // cdef public float delta_z0
+    // cdef public int true_origin
+    // cdef public bool is_tight
+    // ...
+
+/**
+ * @class Jet
+ * @brief Python wrapper for the C++ `jet` particle object.
+ */
+// cdef class Jet(ParticleTemplate):
+    // cdef jet* p
+    // cdef public bool btag_65
+    // cdef public bool btag_70
+    // cdef public bool btag_77
+    // cdef public bool btag_85
+    // cdef public bool btag_90
+    // cdef public int flav
+    // cdef public int label
+    // ...
+
