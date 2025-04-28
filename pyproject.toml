@@ -17,7 +17,6 @@ dependencies = [
     "scipy",
     "h5py",
     "scikit-learn",
-    "pyAMI-atlas"
 ]
 
 [tool.scikit-build]
