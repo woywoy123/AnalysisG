@@ -1,1 +1,1 @@
-DOXYFILE = src/Doxyfile.in
+DOXYFILE = Doxyfile

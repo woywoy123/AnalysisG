@@ -1,0 +1,873 @@
+/**
+ * @file particle_template.h
+ * @brief Defines the particle_template class, a versatile base class for representing particles in physics analysis frameworks.
+ *
+ * This header file introduces the `particle_template` class, designed to encapsulate the properties and relationships
+ * of particles encountered in high-energy physics simulations and experiments. It offers a flexible representation
+ * supporting both Cartesian (px, py, pz, E) and Polar (pt, eta, phi, E) four-vector coordinate systems.
+ *
+ * A key feature is the use of a custom property system (`cproperty`) for accessing kinematic variables. This system
+ * enables lazy evaluation (calculating values only when needed) and automatic, transparent conversion between the
+ * Cartesian and Polar coordinate systems. For instance, accessing `pt` will automatically trigger the calculation
+ * from px, py if the particle's state is currently Cartesian.
+ *
+ * Beyond kinematics, the class facilitates tracking particle lineage through parent and child relationships, stored
+ * as maps of particle pointers keyed by unique hash identifiers. It also provides mechanisms for identifying particles
+ * via their Particle Data Group (PDG) ID, symbolic representation (e.g., "e-", "mu+", "b"), and electric charge.
+ * Common physics calculations, such as the angular separation DeltaR (ΔR), are included as member functions.
+ */
+
+#ifndef PARTICLETEMPLATE_H
+#define PARTICLETEMPLATE_H
+
+// Include necessary headers for dependent structs (particles, property, element),
+// utility tools, standard library components (iostream, sstream, string, cstdlib,
+// cmath, vector, map).
+
+// Forward declarations for classes that might interact with particle_template,
+// preventing circular dependencies.
+// class event_template;
+// class selection_template;
+
+/**
+ * @class particle_template
+ * @brief A template class representing a generic particle with kinematic properties, identification, and relationships.
+ *
+ * This class serves as a foundational building block for representing particles. It inherits from the `tools`
+ * base class (presumably providing utility functions like hashing, string conversion, etc., though not shown in detail here).
+ *
+ * The core particle data (kinematics, IDs) is stored within an internal `particle_t` struct (`data` member). Access to these
+ * properties is mediated by the `cproperty` template instances (e.g., `pt`, `eta`, `px`, `pdgid`). This design allows for:
+ *   - **Lazy Evaluation:** Kinematic variables in one coordinate system are calculated only when requested if the particle
+ *     was defined using the other system.
+ *   - **Automatic Conversion:** Setting a property in one system (e.g., `pt`) automatically flags the other system's
+ *     components (px, py, pz) as needing recalculation upon access.
+ *   - **Encapsulation:** Hides the direct manipulation of the `particle_t` struct behind a consistent property interface.
+ *
+ * The class also manages decay chains or interaction histories by maintaining maps (`m_parents`, `m_children`) that store
+ * pointers to parent and child `particle_template` objects, respectively. These relationships are typically established
+ * using the `register_parent` and `register_child` methods.
+ *
+ * @note The term "template" in the class name might be slightly misleading in the C++ context, as it's not a C++ template
+ *       class (`template <typename T> class ...`). It likely signifies its role as a base or foundational pattern for
+ *       more specific particle types within the analysis framework.
+ */
+class particle_template // : public tools - Inherits from a base class providing utility functions.
+{
+    public:
+        /**
+         * @brief Default constructor.
+         *
+         * Initializes a new `particle_template` instance. Crucially, it sets up the `cproperty` members
+         * (e, mass, pt, eta, phi, px, py, pz, pdgid, symbol, charge, hash, is_b, is_lep, is_nu, is_add,
+         * lep_decay, parents, children, type, index) by associating them with their respective static
+         * getter and setter functions (e.g., `get_e`, `set_e`) and linking them to the newly created
+         * object instance (`this`). The underlying `particle_t` data structure (`data`) is typically
+         * default-initialized.
+         */
+        // particle_template();
+
+        /**
+         * @brief Virtual destructor.
+         *
+         * Ensures proper cleanup when a `particle_template` object (or a derived class object) is destroyed.
+         * Its primary role in this implementation is to manage the cleanup of the internal particle tracking map
+         * (`data.data_p`) which is used exclusively during the serialization process (`__reduce__`). If this map
+         * was allocated (i.e., `data.data_p` is not null), the destructor iterates through the map, deletes
+         * the managed `particle_template` pointers (unless they are null), clears the map, and finally deletes
+         * the map itself to prevent memory leaks associated with the deep copy mechanism of serialization.
+         */
+        // virtual ~particle_template();
+
+        /**
+         * @brief Constructor initializing from a particle_t struct pointer.
+         *
+         * Creates a `particle_template` instance and initializes its internal `data` member by copying
+         * the contents of the `particle_t` struct pointed to by `p`. It also performs the standard
+         * property setup by calling the default constructor implicitly via constructor delegation.
+         *
+         * @param p Pointer to a `particle_t` struct containing the initial particle data. The data is copied.
+         */
+        // explicit particle_template(particle_t* p);
+
+        /**
+         * @brief Copy constructor with an option for deep copying particle relationships.
+         *
+         * Creates a new `particle_template` by copying data from an existing one.
+         * The behavior regarding parent/child relationships depends on the `dump` flag.
+         *
+         * @param p Pointer to the `particle_template` object to copy from.
+         * @param dump If `true`, performs a deep copy of the particle graph (parents, children, and their
+         *             recursive relationships). This involves creating new `particle_template` objects for
+         *             all connected particles that haven't been visited yet during this copy operation.
+         *             An internal map (`data.data_p`) is used temporarily to track copied particles and avoid
+         *             infinite loops or redundant copies. This mode is essential for serialization (`__reduce__`).
+         *             If `false` (default), only the kinematic data and basic properties (like PDG ID, type, index)
+         *             stored in `p->data` are copied. The parent (`m_parents`) and child (`m_children`) maps
+         *             of the new particle are left empty, effectively detaching it from the original particle's graph.
+         *             The `data.parents` and `data.children` flags in the copied `data` are also cleared.
+         */
+        // explicit particle_template(particle_template* p, bool dump = false);
+
+        /**
+         * @brief Constructor initializing from Cartesian coordinates (px, py, pz, e).
+         *
+         * Creates a `particle_template` instance directly from its Cartesian four-vector components.
+         * The internal `data` struct is populated with these values. The `data.polar` flag is set to `true`,
+         * indicating that the polar coordinates (pt, eta, phi) are not yet calculated and need to be computed
+         * on demand if accessed later via their respective properties.
+         *
+         * @param px Momentum component in the x-direction.
+         * @param py Momentum component in the y-direction.
+         * @param pz Momentum component in the z-direction.
+         * @param e Energy of the particle.
+         */
+        // explicit particle_template(double px, double py, double pz, double e);
+
+        /**
+         * @brief Constructor initializing from Cartesian momentum components (px, py, pz).
+         *
+         * Creates a `particle_template` instance from its Cartesian momentum components. The energy (`e`)
+         * is not provided directly but will be calculated lazily when the `e` property is first accessed,
+         * typically using the formula E = sqrt(px^2 + py^2 + pz^2 + mass^2) (assuming mass is known or calculated).
+         * The internal `data` struct is populated with the given px, py, pz. The `data.polar` flag is set to `true`,
+         * indicating that polar coordinates need calculation. The `data.e` field is initialized by accessing the `e` property,
+         * triggering its initial calculation if necessary.
+         *
+         * @param px Momentum component in the x-direction.
+         * @param py Momentum component in the y-direction.
+         * @param pz Momentum component in the z-direction.
+         */
+        // explicit particle_template(double px, double py, double pz);
+
+        /**
+         * @brief Ensures the internal representation uses Cartesian coordinates (px, py, pz).
+         *
+         * If the particle's internal state (`data.polar`) indicates that polar coordinates (pt, eta, phi)
+         * are primary or that Cartesian coordinates are outdated (`data.cartesian` is true), this function
+         * calculates px, py, and pz based on the current pt, eta, and phi values. It then updates the
+         * `data.px`, `data.py`, `data.pz` members and sets `data.cartesian` to `false` to mark the
+         * Cartesian representation as up-to-date. If the Cartesian coordinates are already valid,
+         * the function does nothing.
+         *
+         * Calculation:
+         * px = pt * cos(phi)
+         * py = pt * sin(phi)
+         * pz = pt * sinh(eta)
+         */
+        // void to_cartesian();
+
+        /**
+         * @brief Ensures the internal representation uses Polar coordinates (pt, eta, phi).
+         *
+         * If the particle's internal state (`data.cartesian`) indicates that Cartesian coordinates (px, py, pz)
+         * are primary or that polar coordinates are outdated (`data.polar` is true), this function
+         * calculates pt, eta, and phi based on the current px, py, and pz values. It then updates the
+         * `data.pt`, `data.eta`, `data.phi` members and sets `data.polar` to `false` to mark the
+         * Polar representation as up-to-date. If the polar coordinates are already valid,
+         * the function does nothing.
+         *
+         * Calculation:
+         * pt = sqrt(px^2 + py^2)
+         * eta = asinh(pz / pt) (or alternative safe calculation for pt=0)
+         * phi = atan2(py, px)
+         */
+        // void to_polar();
+
+        /**
+         * @property e
+         * @brief Property providing access to the particle's energy (E).
+         *
+         * Accessing this property retrieves or sets the particle's energy.
+         * Getter (`get_e`): Returns the stored energy (`data.e`). If `data.e` is negative (indicating it needs calculation),
+         * it computes the energy using E = sqrt(px^2 + py^2 + pz^2 + mass^2), stores it, and returns it. Requires valid px, py, pz, and mass.
+         * Setter (`set_e`): Directly updates the stored energy (`data.e`). Note that changing energy might invalidate the mass if kinematics are inconsistent.
+         *              The consistency between E, p, and mass is primarily managed during calculation (e.g., in `get_mass`).
+         */
+        // cproperty<double, particle_template> e;
+        /** @brief Static setter function for the energy property. */
+        // void static set_e(double* val, particle_template* prt);
+        /** @brief Static getter function for the energy property. Implements lazy calculation if needed. */
+        // void static get_e(double* val, particle_template* prt);
+
+        /**
+         * @property mass
+         * @brief Property providing access to the particle's invariant mass (m).
+         *
+         * Accessing this property retrieves or sets the particle's invariant mass.
+         * Getter (`get_mass`): Returns the stored mass (`data.mass`). If `data.mass` is negative (indicating it needs calculation),
+         * it computes the mass using m^2 = E^2 - px^2 - py^2 - pz^2, stores sqrt(m^2) if m^2 >= 0, otherwise stores -1, and returns the stored value. Requires valid E, px, py, pz.
+         * Setter (`set_mass`): Directly updates the stored mass (`data.mass`). Note that changing mass might invalidate the energy if kinematics are inconsistent.
+         */
+        // cproperty<double, particle_template> mass;
+        /** @brief Static setter function for the mass property. */
+        // void static set_mass(double* val, particle_template* prt);
+        /** @brief Static getter function for the mass property. Implements lazy calculation if needed. Returns -1 for tachyonic cases (m^2 < 0). */
+        // void static get_mass(double* val, particle_template* prt);
+
+        /**
+         * @property pt
+         * @brief Property providing access to the particle's transverse momentum (Pt).
+         *
+         * Accessing this property retrieves or sets the particle's transverse momentum.
+         * Getter (`get_pt`): Ensures the particle's representation is Polar (calls `to_polar()` if needed) and returns `data.pt`.
+         * Setter (`set_pt`): Updates `data.pt` and sets `data.cartesian` to `true`, indicating that px, py, pz need recalculation if accessed later.
+         */
+        // cproperty<double, particle_template> pt;
+        /** @brief Static setter function for the pt property. Marks Cartesian coordinates for recalculation. */
+        // void static set_pt(double* val, particle_template* prt);
+        /** @brief Static getter function for the pt property. Ensures polar coordinates are calculated first. */
+        // void static get_pt(double* val, particle_template* prt);
+
+        /**
+         * @property eta
+         * @brief Property providing access to the particle's pseudorapidity (η).
+         *
+         * Accessing this property retrieves or sets the particle's pseudorapidity.
+         * Getter (`get_eta`): Ensures the particle's representation is Polar (calls `to_polar()` if needed) and returns `data.eta`.
+         * Setter (`set_eta`): Updates `data.eta` and sets `data.cartesian` to `true`, indicating that px, py, pz need recalculation if accessed later.
+         */
+        // cproperty<double, particle_template> eta;
+        /** @brief Static setter function for the eta property. Marks Cartesian coordinates for recalculation. */
+        // void static set_eta(double* val, particle_template* prt);
+        /** @brief Static getter function for the eta property. Ensures polar coordinates are calculated first. */
+        // void static get_eta(double* val, particle_template* prt);
+
+        /**
+         * @property phi
+         * @brief Property providing access to the particle's azimuthal angle (φ).
+         *
+         * Accessing this property retrieves or sets the particle's azimuthal angle.
+         * Getter (`get_phi`): Ensures the particle's representation is Polar (calls `to_polar()` if needed) and returns `data.phi`.
+         * Setter (`set_phi`): Updates `data.phi` and sets `data.cartesian` to `true`, indicating that px, py, pz need recalculation if accessed later.
+         */
+        // cproperty<double, particle_template> phi;
+        /** @brief Static setter function for the phi property. Marks Cartesian coordinates for recalculation. */
+        // void static set_phi(double* val, particle_template* prt);
+        /** @brief Static getter function for the phi property. Ensures polar coordinates are calculated first. */
+        // void static get_phi(double* val, particle_template* prt);
+
+
+        /**
+         * @property px
+         * @brief Property providing access to the particle's momentum component in the x-direction.
+         *
+         * Accessing this property retrieves or sets the particle's x-momentum.
+         * Getter (`get_px`): Ensures the particle's representation is Cartesian (calls `to_cartesian()` if needed) and returns `data.px`.
+         * Setter (`set_px`): Updates `data.px` and sets `data.polar` to `true`, indicating that pt, eta, phi need recalculation if accessed later.
+         */
+        // cproperty<double, particle_template> px;
+        /** @brief Static setter function for the px property. Marks polar coordinates for recalculation. */
+        // void static set_px(double* val, particle_template* prt);
+        /** @brief Static getter function for the px property. Ensures Cartesian coordinates are calculated first. */
+        // void static get_px(double* val, particle_template* prt);
+
+        /**
+         * @property py
+         * @brief Property providing access to the particle's momentum component in the y-direction.
+         *
+         * Accessing this property retrieves or sets the particle's y-momentum.
+         * Getter (`get_py`): Ensures the particle's representation is Cartesian (calls `to_cartesian()` if needed) and returns `data.py`.
+         * Setter (`set_py`): Updates `data.py` and sets `data.polar` to `true`, indicating that pt, eta, phi need recalculation if accessed later.
+         */
+        // cproperty<double, particle_template> py;
+        /** @brief Static setter function for the py property. Marks polar coordinates for recalculation. */
+        // void static set_py(double* val, particle_template* prt);
+        /** @brief Static getter function for the py property. Ensures Cartesian coordinates are calculated first. */
+        // void static get_py(double* val, particle_template* prt);
+
+        /**
+         * @property pz
+         * @brief Property providing access to the particle's momentum component in the z-direction.
+         *
+         * Accessing this property retrieves or sets the particle's z-momentum.
+         * Getter (`get_pz`): Ensures the particle's representation is Cartesian (calls `to_cartesian()` if needed) and returns `data.pz`.
+         * Setter (`set_pz`): Updates `data.pz` and sets `data.polar` to `true`, indicating that pt, eta, phi need recalculation if accessed later.
+         */
+        // cproperty<double, particle_template> pz;
+        /** @brief Static setter function for the pz property. Marks polar coordinates for recalculation. */
+        // void static set_pz(double* val, particle_template* prt);
+        /** @brief Static getter function for the pz property. Ensures Cartesian coordinates are calculated first. */
+        // void static get_pz(double* val, particle_template* prt);
+
+        /**
+         * @property pdgid
+         * @brief Property providing access to the particle's PDG ID (Particle Data Group identifier).
+         *
+         * Accessing this property retrieves or sets the particle's PDG ID.
+         * Getter (`get_pdgid`): Returns the stored `data.pdgid`. If `data.pdgid` is 0 (or uninitialized) and `data.symbol` is set,
+         * it attempts to infer the PDG ID from the symbol using a lookup mechanism (presumably within the `tools` base class or `particle_t`).
+         * Setter (`set_pdgid`): Directly updates `data.pdgid`.
+         */
+        // cproperty<int, particle_template> pdgid;
+        /** @brief Static setter function for the pdgid property. */
+        // void static set_pdgid(int* val, particle_template* prt);
+        /** @brief Static getter function for the pdgid property. Attempts inference from symbol if pdgid is not set. */
+        // void static get_pdgid(int* val, particle_template* prt);
+
+        /**
+         * @property symbol
+         * @brief Property providing access to the particle's symbolic representation (e.g., "e", "$\\mu$", "b").
+         *
+         * Accessing this property retrieves or sets the particle's symbol string.
+         * Getter (`get_symbol`): Returns the stored `data.symbol`. If `data.symbol` is empty and `data.pdgid` is set,
+         * it attempts to infer the symbol from the PDG ID using a lookup mechanism.
+         * Setter (`set_symbol`): Directly updates `data.symbol`.
+         */
+        // cproperty<std::string, particle_template> symbol;
+        /** @brief Static setter function for the symbol property. */
+        // void static set_symbol(std::string* val, particle_template* prt);
+        /** @brief Static getter function for the symbol property. Attempts inference from pdgid if symbol is not set. */
+        // void static get_symbol(std::string* val, particle_template* prt);
+
+        /**
+         * @property charge
+         * @brief Property providing access to the particle's electric charge.
+         *
+         * Accessing this property retrieves or sets the particle's electric charge.
+         * Getter (`get_charge`): Returns the stored `data.charge`. May potentially infer from PDG ID if not set explicitly (depends on implementation details not shown).
+         * Setter (`set_charge`): Directly updates `data.charge`.
+         */
+        // cproperty<double, particle_template> charge;
+        /** @brief Static setter function for the charge property. */
+        // void static set_charge(double* val, particle_template* prt);
+        /** @brief Static getter function for the charge property. */
+        // void static get_charge(double* val, particle_template* prt);
+
+        /**
+         * @property hash
+         * @brief Property providing access to a unique hash identifier for the particle. Read-only.
+         *
+         * Accessing this property retrieves a hash string uniquely identifying the particle, typically based on its kinematic properties.
+         * Getter (`get_hash`): Calculates and returns a hash string based on px, py, pz, and e. Ensures Cartesian coordinates are computed first.
+         * The hash is likely cached in `data.hash` after the first calculation. The hash function itself is likely provided by the `tools` base class.
+         * Setter: None (read-only property).
+         */
+        // cproperty<std::string, particle_template> hash;
+        /** @brief Static getter function for the hash property. Calculates hash based on Cartesian four-vector if not already computed. */
+        // void static get_hash(std::string* val, particle_template* prt);
+
+        /**
+         * @brief Checks if the particle's PDG ID matches any ID in the provided list (using absolute values).
+         *
+         * Iterates through the input vector `p` and compares the absolute value of each element with the
+         * absolute value of this particle's PDG ID (`this->pdgid`).
+         *
+         * @param p A vector of integer PDG IDs to check against.
+         * @return `true` if the absolute value of the particle's PDG ID is found in the list `p`, `false` otherwise.
+         */
+        // bool is(std::vector<int> p);
+
+        /**
+         * @property is_b
+         * @brief Property indicating if the particle is a b-quark or anti-b-quark. Read-only.
+         *
+         * Accessing this property checks if the particle is a b-quark.
+         * Getter (`get_isb`): Returns `true` if the absolute value of the particle's PDG ID (`this->pdgid`) is 5, `false` otherwise.
+         * Setter: None (read-only property).
+         */
+        // cproperty<bool, particle_template> is_b;
+        /** @brief Static getter function for the is_b property. Checks if abs(pdgid) == 5. */
+        // void static get_isb(bool* val, particle_template* prt);
+
+        /**
+         * @property is_lep
+         * @brief Property indicating if the particle is a lepton (e, mu, tau). Read-only.
+         *
+         * Accessing this property checks if the particle is an electron, muon, or tau (or their antiparticles).
+         * Getter (`get_islep`): Returns `true` if the absolute value of the particle's PDG ID (`this->pdgid`) matches any
+         * of the PDG IDs defined in the `data.lepdef` vector (presumably containing {11, 13, 15}), `false` otherwise.
+         * Setter: None (read-only property).
+         */
+        // cproperty<bool, particle_template> is_lep;
+        /** @brief Static getter function for the is_lep property. Checks if abs(pdgid) is in `data.lepdef`. */
+        // void static get_islep(bool* val, particle_template* prt);
+
+        /**
+         * @property is_nu
+         * @brief Property indicating if the particle is a neutrino. Read-only.
+         *
+         * Accessing this property checks if the particle is any flavor of neutrino (or antineutrino).
+         * Getter (`get_isnu`): Returns `true` if the absolute value of the particle's PDG ID (`this->pdgid`) matches any
+         * of the PDG IDs defined in the `data.nudef` vector (presumably containing {12, 14, 16}), `false` otherwise.
+         * Setter: None (read-only property).
+         */
+        // cproperty<bool, particle_template> is_nu;
+        /** @brief Static getter function for the is_nu property. Checks if abs(pdgid) is in `data.nudef`. */
+        // void static get_isnu(bool* val, particle_template* prt);
+
+        /**
+         * @property is_add
+         * @brief Property indicating if the particle is NOT a b-quark, lepton, or neutrino. Read-only.
+         *
+         * Accessing this property checks if the particle falls outside the specific categories of b-quark, lepton, or neutrino.
+         * Getter (`get_isadd`): Returns `true` if `is_b`, `is_lep`, and `is_nu` are all `false`, indicating it's some other type of particle (e.g., light quark, gluon, photon, composite hadron).
+         * Setter: None (read-only property).
+         */
+        // cproperty<bool, particle_template> is_add;
+        /** @brief Static getter function for the is_add property. Returns true if not b, not lepton, and not neutrino. */
+        // void static get_isadd(bool* val, particle_template* prt);
+
+        /**
+         * @property lep_decay
+         * @brief Property indicating if the particle has decayed leptonically. Read-only.
+         *
+         * Accessing this property checks the particle's children to determine if it underwent a leptonic decay.
+         * Getter (`get_lepdecay`): Iterates through the particle's children (`this->children`). Returns `true` if at least one child satisfies `is_lep == true` AND at least one (possibly different) child satisfies `is_nu == true`. Returns `false` otherwise.
+         * Setter: None (read-only property).
+         */
+        // cproperty<bool, particle_template> lep_decay;
+        /** @brief Static getter function for the lep_decay property. Checks children for at least one lepton and at least one neutrino. */
+        // void static get_lepdecay(bool* val, particle_template* prt);
+
+        /**
+         * @property parents
+         * @brief Property providing access to the map of parent particles.
+         *
+         * Accessing this property retrieves or sets the map of parent particles associated with this particle.
+         * Getter (`get_parents`): Returns a copy of the internal `m_parents` map, which stores pointers to parent particles keyed by their hash strings.
+         * Setter (`set_parents`): Clears the existing `m_parents` map. Then, iterates through the input map (`val`). For each entry in the input map, it calls `register_parent` to add the particle as a parent. If the input map is empty, it effectively just clears the parents.
+         */
+        // cproperty<std::map<std::string, particle_template*>, particle_template> parents;
+        /** @brief Static setter function for the parents property. Registers particles from the input map as parents. */
+        // void static set_parents(std::map<std::string, particle_template*>* val, particle_template* prt);
+        /** @brief Static getter function for the parents property. Returns the internal parent map. */
+        // void static get_parents(std::map<std::string, particle_template*>* val, particle_template* prt);
+
+        /**
+         * @property children
+         * @brief Property providing access to the map of child particles.
+         *
+         * Accessing this property retrieves or sets the map of child particles associated with this particle.
+         * Getter (`get_children`): Returns a copy of the internal `m_children` map, which stores pointers to child particles keyed by their hash strings.
+         * Setter (`set_children`): Clears the existing `m_children` map. Then, iterates through the input map (`val`). For each entry in the input map, it calls `register_child` to add the particle as a child. If the input map is empty, it effectively just clears the children.
+         */
+        // cproperty<std::map<std::string, particle_template*>, particle_template> children;
+        /** @brief Static setter function for the children property. Registers particles from the input map as children. */
+        // void static set_children(std::map<std::string, particle_template*>* val, particle_template* prt);
+        /** @brief Static getter function for the children property. Returns the internal child map. */
+        // void static get_children(std::map<std::string, particle_template*>* val, particle_template* prt);
+
+        /**
+         * @property type
+         * @brief Property providing access to a user-defined type string for the particle.
+         *
+         * Accessing this property retrieves or sets a string identifier for the particle's type, often reflecting its origin
+         * or role in the analysis (e.g., "Jet", "Electron", "TruthParticle", "RecoMuon").
+         * Getter (`get_type`): Returns the stored `data.type` string.
+         * Setter (`set_type`): Updates the stored `data.type` string.
+         */
+        // cproperty<std::string, particle_template> type;
+        /** @brief Static setter function for the type property. Updates `data.type`. */
+        // void static set_type(std::string* val, particle_template* prt);
+        /** @brief Static getter function for the type property. Returns `data.type`. */
+        // void static get_type(std::string* val, particle_template* prt);
+
+        /**
+         * @property index
+         * @brief Property providing access to a user-defined index for the particle.
+         *
+         * Accessing this property retrieves or sets an integer index, often used to identify the particle's position
+         * within a collection or its original index in an input data structure.
+         * Getter (`get_index`): Returns the stored `data.index`.
+         * Setter (`set_index`): Updates the stored `data.index`.
+         */
+        // cproperty<int, particle_template> index;
+        /** @brief Static setter function for the index property. Updates `data.index`. */
+        // void static set_index(int* val, particle_template* prt);
+        /** @brief Static getter function for the index property. Returns `data.index`. */
+        // void static get_index(int* val, particle_template* prt);
+
+        /**
+         * @brief Calculates the angular separation (Delta R) between this particle and another particle.
+         *
+         * Computes the distance in the η-φ plane using the formula:
+         * ΔR = sqrt( (η₁ - η₂)² + (Δφ)² )
+         * where Δφ is the difference in azimuthal angle, handled correctly to account for the 2π periodicity
+         * (Δφ is mapped to the range [-π, π] before squaring). Both particles' η and φ values are accessed
+         * via their respective properties, ensuring coordinate conversions happen if necessary.
+         *
+         * @param p Pointer to the other `particle_template` object.
+         * @return The calculated Delta R value (double).
+         */
+        // double DeltaR(particle_template* p);
+
+        /**
+         * @brief Equality comparison operator.
+         *
+         * Compares this particle to another particle (`p`) based on their unique hash identifiers.
+         * Accesses the `hash` property for both particles.
+         *
+         * @param p The `particle_template` object to compare against.
+         * @return `true` if the hash strings obtained from `this->hash` and `p.hash` are identical, `false` otherwise.
+         */
+        // bool operator == (particle_template& p);
+
+        /**
+         * @brief Addition operator (template version).
+         *
+         * Creates a new particle object of type `g` (which must inherit from `particle_template` and be
+         * default-constructible) representing the kinematic sum of this particle and particle `p`.
+         * It accesses the Cartesian four-vector components (px, py, pz, e) of both `this` and `p`, sums them component-wise,
+         * and assigns the results to the corresponding `data` members of the newly created particle `p2`.
+         * The `type` of the resulting particle `p2` is copied from `this->type`.
+         * The `polar` flag of `p2` is set to `true`, indicating its polar coordinates need calculation.
+         *
+         * @tparam g The type of the particle object to return. Must be derived from `particle_template`,
+         *           default-constructible, and possess a `data` member of type `particle_t` (or compatible).
+         * @param p The `particle_template` object (or derived type `g`) to add to this particle.
+         * @return A new particle object of type `g` representing the four-vector sum.
+         */
+        // template <typename g>
+        // g operator + (g& p);
+
+        /**
+         * @brief In-place addition operator.
+         *
+         * Modifies this particle by adding the four-vector of particle `p` to it.
+         * It first ensures both `this` particle and particle `p` have their Cartesian coordinates calculated
+         * by calling `to_cartesian()` on both. Then, it adds the px, py, pz, and e components of `p` to the
+         * corresponding components of `this`. Finally, it sets `this->data.polar` to `true`, marking the
+         * polar coordinates as needing recalculation.
+         *
+         * @param p Pointer to the `particle_template` object whose four-vector should be added to this particle.
+         */
+        // void operator += (particle_template* p);
+
+        /**
+         * @brief In-place addition method (alternative syntax).
+         *
+         * This method simply calls the `operator+=` with the provided particle pointer `p`.
+         * It serves as an alternative way to perform in-place addition.
+         *
+         * @param p Pointer to the `particle_template` object to add.
+         */
+        // void iadd(particle_template* p);
+
+        /**
+         * @brief Registers another particle as a parent of this particle.
+         *
+         * Adds a pointer to the particle `p` into the `m_parents` map, using the parent's hash (`p->hash`) as the key.
+         * This establishes a directed relationship from `p` to `this`. It also updates the `data.parents` set/flag
+         * within the `particle_t` struct to reflect the presence of parents (details depend on `particle_t` definition).
+         * Duplicate registration (adding the same parent twice) is prevented by the map's nature (keys are unique).
+         *
+         * @param p Pointer to the `particle_template` object to be registered as a parent.
+         * @return `true` if the parent was successfully added or already existed in the map. `false` is unlikely with current logic but could indicate an issue obtaining the hash.
+         */
+        // bool register_parent(particle_template* p);
+        /** @brief Map storing pointers to parent particles, keyed by the parent's unique hash string. */
+        // std::map<std::string, particle_template*> m_parents;
+
+        /**
+         * @brief Registers another particle as a child of this particle.
+         *
+         * Adds a pointer to the particle `p` into the `m_children` map, using the child's hash (`p->hash`) as the key.
+         * This establishes a directed relationship from `this` to `p`. It also updates the `data.children` set/flag
+         * within the `particle_t` struct to reflect the presence of children.
+         * Duplicate registration is prevented by the map.
+         *
+         * @param p Pointer to the `particle_template` object to be registered as a child.
+         * @return `true` if the child was successfully added. `false` if the child (based on hash) was already present in the `m_children` map.
+         */
+        // bool register_child(particle_template* p);
+        /** @brief Map storing pointers to child particles, keyed by the child's unique hash string. */
+        // std::map<std::string, particle_template*> m_children;
+
+        /**
+         * @brief Adds a key-value pair to the `leaves` map for storing additional properties.
+         *
+         * This method allows associating arbitrary string-based key-value pairs with the particle.
+         * This is often used to specify how certain particle properties should be stored in output formats
+         * like ROOT TTrees, where the `key` might be a desired branch name prefix/suffix and the `value`
+         * might be the specific variable name or formula. If `leaf` is empty, the `key` itself is used as the value.
+         *
+         * @param key The key string (e.g., "JetPt", "IsolationVar").
+         * @param leaf The value string (e.g., "pt", "trackIso / pt"). If empty, `key` is used.
+         */
+        // void add_leaf(std::string key, std::string leaf = "");
+        /** @brief Map storing key-value pairs for additional user-defined properties or output configuration (leaves). */
+        // std::map<std::string, std::string> leaves;
+
+        /**
+         * @brief Prepends the particle's `type` string to each value in the `leaves` map.
+         *
+         * Modifies the `leaves` map by iterating through its entries and prepending the string stored in
+         * `this->type` to the beginning of each value string. For example, if `type` is "Muon" and a leaf
+         * has key "Iso" and value "trackIso", the value will become "MuontrackIso". This is useful for
+         * creating unique branch names in output files when dealing with collections of particles of
+         * different types (e.g., "ElectronPt", "MuonPt").
+         */
+        // void apply_type_prefix();
+
+        /**
+         * @brief Prepares the particle and its connected graph for serialization (e.g., for Python's pickle).
+         *
+         * This method facilitates saving the state of a particle and its entire lineage (parents, children,
+         * parents of parents, etc.) in a format suitable for serialization. It performs a deep copy of the
+         * particle graph starting from `this` particle, using the copy constructor with `dump=true`.
+         * An internal tracking mechanism (`data.data_p` map and `_is_serial` flag) prevents infinite recursion
+         * in case of cyclic relationships and avoids redundant copies of particles already processed during
+         * the deep copy initiated by the first call to this function on a given graph.
+         *
+         * The method constructs a map where:
+         * - Keys are the unique hash strings of all particles found in the graph (starting from `this`).
+         * - Values are themselves maps, containing a single key "data" which maps to the `particle_t` struct
+         *   (containing the kinematic data, IDs, etc.) of the corresponding particle.
+         *
+         * Particles marked with the internal `_is_serial` flag during the deep copy process (indicating they were
+         * part of a graph already being serialized, perhaps from a different entry point) are excluded from the output map.
+         * The temporary map used for tracking (`data.data_p`) is managed and cleaned up appropriately.
+         *
+         * @return A `std::map<std::string, std::map<std::string, particle_t>>`. The outer map keys are particle hashes.
+         *         The inner map always contains {"data": particle_data}, where particle_data is the `particle_t` struct
+         *         for the particle identified by the outer key hash. Includes data for `this` particle and all unique,
+         *         recursively found parents and children not marked with `_is_serial`.
+         * @note This method is specifically named `__reduce__` to potentially integrate with Python's pickle protocol via bindings (e.g., Boost.Python, pybind11).
+         */
+        // std::map<std::string, std::map<std::string, particle_t>> __reduce__();
+
+        /**
+         * @brief Virtual method for building or configuring the particle based on external context.
+         *
+         * This method is intended as a hook for derived classes to implement specific logic for particle
+         * reconstruction, linking, or property calculation based on the broader event context or data from
+         * a specific input element (like a row in a data file or an object from another framework).
+         * The base class implementation does nothing. Derived classes should override this to perform
+         * tasks like associating the particle with tracks or clusters, calculating isolation variables,
+         * or linking it to generator-level truth information.
+         *
+         * @param event Pointer to a map representing the current event's particle collection (e.g., hash -> particle*).
+         *              Can be null or unused depending on the derived class's needs.
+         * @param el Pointer to an `element_t` struct, potentially containing raw data or pointers related to the
+         *           source of this particle. Can be null or unused.
+         */
+        // virtual void build(std::map<std::string, particle_template*>* event, element_t* el);
+
+        /**
+         * @brief Virtual method for creating a copy (clone) of the particle object.
+         *
+         * This method provides a standard way to create a polymorphic copy of a particle object.
+         * The base class implementation returns a new `particle_template` created using the default constructor,
+         * which is generally **not** a true clone (it doesn't copy data).
+         * Derived classes **must** override this method to return a new instance of their own type, properly
+         * initialized with a copy of the original object's data (including derived-specific members).
+         * Typically, the override would call the derived class's copy constructor.
+         *
+         * @return A pointer to a new `particle_template` object (or an object of a derived type). The caller is responsible for managing the memory of the returned object.
+         */
+        // virtual particle_template* clone();
+
+        /** @brief The underlying data structure holding the particle's core properties (kinematics, IDs, flags, etc.). */
+        // particle_t data;
+
+        /** @brief Internal flag used during the serialization process (`__reduce__`) to mark particles that have already been visited and processed within the current deep copy operation, preventing infinite loops and redundant copies. Reset implicitly when starting a new serialization. */
+        // bool _is_serial = false;
+        /** @brief A general-purpose boolean marker flag. Its specific meaning and usage are determined by the analysis code that uses the `particle_template` objects. It can be used for temporary marking during algorithms, selections, etc. */
+        // bool _is_marked = false;
+};
+#endif // PARTICLETEMPLATE_H
+    bool init = (!this -> data.data_p); 
+    std::map<std::string, particle_template*>* tr = nullptr; 
+    if (init){tr = new std::map<std::string, particle_template*>();}
+    else {tr = this -> data.data_p;}
+    (*tr)[this -> hash] = this; 
+    this -> _is_serial = p -> _is_serial; 
+
+    std::map<std::string, particle_template*> ch_ = p -> children; 
+    std::map<std::string, particle_template*> pr_ = p -> parents; 
+
+    std::map<std::string, particle_template*>::iterator itr; 
+    for (itr = ch_.begin(); itr != ch_.end(); ++itr){
+        itr -> second -> data.data_p = tr; 
+        if (!tr -> count(itr -> first)){(*tr)[itr -> first] = new particle_template(itr -> second, true);}
+        itr -> second -> data.data_p = nullptr; 
+
+        particle_template* pr = (*tr)[itr -> first];
+        this -> register_child(pr); 
+        pr -> data.data_p = nullptr; 
+        itr -> second -> _is_serial += p -> _is_serial; 
+        pr -> _is_serial = itr -> second -> _is_serial; 
+    }
+
+    for (itr = pr_.begin(); itr != pr_.end(); ++itr){
+        itr -> second -> data.data_p = tr; 
+        if (!tr -> count(itr -> first)){(*tr)[itr -> first] = new particle_template(itr -> second, true);}
+        itr -> second -> data.data_p = nullptr; 
+
+        particle_template* pr = (*tr)[itr -> first];
+        this -> register_parent(pr); 
+        pr -> data.data_p = nullptr; 
+        itr -> second -> _is_serial += p -> _is_serial; 
+        pr -> _is_serial = itr -> second -> _is_serial; 
+    }
+    if (init){this -> data.data_p = tr;}
+    else {this -> data.data_p = nullptr;}
+}
+
+std::map<std::string, std::map<std::string, particle_t>> particle_template::__reduce__(){
+    std::map<std::string, particle_template*>* tmp = this -> data.data_p; 
+    this -> data.data_p = nullptr; 
+
+    particle_template* t = new particle_template(this, true); 
+    std::map<std::string, std::map<std::string, particle_t>> out; 
+    std::map<std::string, particle_template*>::iterator itr = t -> data.data_p -> begin(); 
+    for (; itr != t -> data.data_p -> end(); ++itr){
+        if (itr -> second -> _is_serial){continue;}
+        out[itr -> first]["data"] = itr -> second -> data;
+    }
+    delete t; 
+    this -> data.data_p = tmp; 
+    return out; 
+}
+
+particle_template::particle_template(double px, double py, double pz, double e) : particle_template(){
+    particle_t* p = &this -> data; 
+    p -> px = px; p -> py = py; p -> pz = pz; p -> e = e; 
+    p -> polar = true; 
+}
+
+particle_template::particle_template(double px, double py, double pz) : particle_template() {
+    particle_t* p = &this -> data; 
+    p -> px = px; p -> py = py; p -> pz = pz; p -> e = this -> e; 
+    p -> polar = true; 
+}
+
+particle_template::~particle_template(){
+    if (!this -> data.data_p){return;}
+    std::string hash_ = this -> hash; 
+    (*this -> data.data_p)[hash_] = nullptr; 
+    std::map<std::string, particle_template*>::iterator itr = this -> data.data_p -> begin(); 
+    for (; itr != this -> data.data_p -> end(); ++itr){
+        if (!itr -> second){continue;}
+        delete itr -> second;
+        itr -> second = nullptr; 
+    }
+    this -> data.data_p -> clear(); 
+    delete this -> data.data_p; 
+}
+
+void particle_template::operator += (particle_template* p){
+    p -> to_cartesian(); 
+    this -> to_cartesian();
+    this -> data.px += double(p -> px); 
+    this -> data.py += double(p -> py); 
+    this -> data.pz += double(p -> pz); 
+    this -> data.e  += double(p -> e); 
+    this -> data.polar = true;
+}
+
+void particle_template::iadd(particle_template* p){
+    *this += p; 
+}
+
+bool particle_template::operator == (particle_template& p){
+    return this -> hash == p.hash; 
+}
+
+void particle_template::apply_type_prefix(){
+    std::map<std::string, std::string> lf = {}; 
+    std::map<std::string, std::string>::iterator itr = this -> leaves.begin();
+    for (; itr != this -> leaves.end(); ++itr){lf[itr -> first] = this -> type + itr -> second;}
+    this -> leaves = lf; 
+}
+
+
+void particle_template::build(std::map<std::string, particle_template*>*, element_t*){
+    return; 
+}
+
+particle_template* particle_template::clone(){return new particle_template();}
+#include <templates/particle_template.h>
+
+double particle_template::DeltaR(particle_template* part){
+    double sum = std::fabs( this -> phi - part -> phi);
+    sum = std::fmod(sum, 2*M_PI); 
+    sum = M_PI - std::fabs(sum - M_PI); 
+    sum = std::pow(sum, 2);
+    sum += std::pow(this -> eta - part -> eta, 2); 
+    return std::pow(sum, 0.5); 
+}
+
+void particle_template::get_e(double* v, particle_template* prt) {
+    particle_t* p = &prt -> data; 
+    if (p -> e >= 0){*v = p -> e; return;}
+    p -> e += std::pow(prt -> px, 2); 
+    p -> e += std::pow(prt -> py, 2); 
+    p -> e += std::pow(prt -> pz, 2); 
+    if (p -> mass >= 0){p -> e += p -> mass;}
+    p -> e  = std::pow(p -> e, 0.5); 
+    *v = p -> e; 
+}
+
+void particle_template::set_e(double* val, particle_template* prt){ 
+    prt -> data.e = *val; 
+}
+
+void particle_template::set_mass(double* val, particle_template* prt){ 
+    prt -> data.mass = *val; 
+}
+
+void particle_template::get_mass(double* val, particle_template* prt){
+    particle_t* p = &prt -> data; 
+    if (p -> mass > -1){ *val = p -> mass; return; }
+    p -> mass = 0; 
+    p -> mass -= std::pow(prt -> px, 2); 
+    p -> mass -= std::pow(prt -> py, 2); 
+    p -> mass -= std::pow(prt -> pz, 2); 
+    p -> mass += std::pow(prt -> e , 2); 
+    p -> mass = (p -> mass >= 0) ? std::pow(p -> mass, 0.5) : -1; 
+    *val = p -> mass; 
+}
+
+
+
+#include <templates/particle_template.h>
+
+void particle_template::set_pt(double* val, particle_template* prt){ 
+    prt -> data.pt = *val; 
+    prt -> data.cartesian = true;
+}
+
+void particle_template::get_pt(double* val, particle_template* prt){
+    prt -> to_polar(); 
+    *val = prt -> data.pt;
+}
+
+
+void particle_template::set_eta(double* val, particle_template* prt){ 
+    prt -> data.eta = *val; 
+    prt -> data.cartesian = true; 
+}
+
+void particle_template::get_eta(double* val, particle_template* prt){
+    prt -> to_polar(); 
+    *val = prt -> data.eta;
+}
+
+void particle_template::set_phi(double* val, particle_template* prt){ 
+    prt -> data.phi = *val; 
+    prt -> data.cartesian = true; 
+}
+
+
+void particle_template::get_phi(double* val, particle_template* prt){
+    prt -> to_polar(); 
+    *val = prt -> data.phi;
+}
+
+void particle_template::to_polar(){
+    particle_t* p = &this -> data; 
+    if (!p -> polar){ return; }
+
+    // Transverse Momenta
+    p -> pt  = std::pow(p -> px, 2); 
+    p -> pt += std::pow(p -> py, 2);
+    p -> pt  = std::pow(p -> pt, 0.5); 
+
+    // Rapidity 
+    p -> eta = std::asinh(p -> pz / p -> pt); 
+    p -> phi = std::atan2(p -> py, p -> px);  
+    p -> polar = false; 
+}
+

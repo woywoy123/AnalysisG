@@ -9,10 +9,11 @@ build:
     - doxygen
 
 sphinx:
-  configuration: docs/source/conf.py
+  configuration: docs/conf.py
   fail_on_warning: false
 
 python:
+  version: 3.8
   install:
     - requirements: docs/requirements.txt
     - method: pip
@@ -21,9 +22,13 @@ python:
         - docs
 
 formats:
+  - htmlzip
   - pdf
   - epub
 
 submodules:
   include: all
   recursive: true
+
+conda:
+  environment: docs/environment.yml

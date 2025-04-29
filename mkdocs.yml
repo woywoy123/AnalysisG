@@ -1,0 +1,91 @@
+site_name: AnalysisG Documentation
+site_description: Documentation for the AnalysisG framework for particle physics analysis
+site_author: AnalysisG Team
+
+repo_url: https://github.com/yourusername/AnalysisG
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: indigo
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed
+
+nav:
+  - Home: index.md
+  - Getting Started: 
+    - Overview: getting_started/index.md
+    - Installation: getting_started/installation.md
+    - First Steps: getting_started/first_steps.md
+  - User Guide:
+    - Overview: user_guide/index.md
+    - Data Input/Output: user_guide/data_io.md
+    - Configuration: user_guide/configuration.md
+    - Event Processing: user_guide/event_processing.md
+    - Object Selection: user_guide/object_selection.md
+    - Statistical Analysis: user_guide/statistics.md
+    - Visualization: user_guide/visualization.md
+  - API Reference:
+    - Overview: api/index.md
+    - Core: api/core.md
+    - Data: api/data.md
+    - Selection: api/selection.md
+    - Reconstruction: api/reconstruction.md
+    - Statistics: api/statistics.md
+    - Visualization: api/visualization.md
+    - Utils: api/utils.md
+  - Examples:
+    - Overview: examples/README.md
+  - Development:
+    - Overview: development/index.md
+    - Contributing: development/contributing.md
+    - Testing: development/testing.md
+    - Documentation: development/documentation.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          selection:
+            inherited_members: true
+          rendering:
+            show_source: true
+      watch:
+        - analysisg/
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/yourusername/AnalysisG
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/analysisg/
+
+copyright: Copyright &copy; 2023 AnalysisG Team

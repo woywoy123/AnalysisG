@@ -1,9 +1,48 @@
-# A Graph Neural Network Framework for High Energy Particle Physics
+# AnalysisG: Parameter-Free Generic Analysis
 
-[![building-analysisG](https://github.com/woywoy123/AnalysisG/actions/workflows/AnalysisG_build.yml/badge.svg)](https://github.com/woywoy123/AnalysisG/actions/workflows/AnalysisG_build.yml)
-[![Publish to PyPI](https://github.com/woywoy123/AnalysisG/actions/workflows/release.yaml/badge.svg)](https://github.com/woywoy123/AnalysisG/actions/workflows/release.yaml)
+AnalysisG is a framework for generating and analyzing financial models without requiring explicit parameter settings. It uses computational techniques to systematically evaluate performance across parameter spaces.
 
-# Getting Started:
-The framework and tutorials are outlined within read the docs, see here: https://analysisg.readthedocs.io/?badge=master
+## Project Structure
 
-[![Documentation Status](https://readthedocs.org/projects/analysisg/badge/?version=master)](https://analysisg.readthedocs.io/?badge=master)
+```
+AnalysisG/
+├── data/                # Data storage and processing
+├── models/              # Model implementations
+├── analysis/            # Analysis tools and utilities
+├── visualizations/      # Visualization functions
+├── examples/            # Example notebooks and scripts
+├── tests/               # Unit and integration tests
+└── docs/                # Documentation
+```
+
+## Core Concepts
+
+- **Parameter-free analysis**: Evaluate models across entire parameter spaces
+- **Robust optimization**: Find stable solutions across varied market conditions
+- **Statistical validation**: Rigorous testing of trading strategies
+
+## Getting Started
+
+```python
+# Basic usage example
+from analysisg import ParameterFreeAnalysis
+
+analyzer = ParameterFreeAnalysis()
+results = analyzer.evaluate(model, data)
+```
+
+## Documentation
+
+Detailed documentation is available in the `/docs` directory.
+
+## Requirements
+
+- Python 3.8+
+- NumPy
+- Pandas
+- Matplotlib
+- Scikit-learn
+
+## License
+
+[Insert License Information]

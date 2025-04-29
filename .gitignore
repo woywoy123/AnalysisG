@@ -33,3 +33,6 @@ local/**/*.png
 **/.tox
 **/.coverage*
 
+# Sphinx documentation
+docs/_build/
+
