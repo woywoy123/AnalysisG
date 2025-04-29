@@ -6,10 +6,17 @@ from AnalysisG.core.particle_template cimport *
 from AnalysisG.core.tools cimport *
 
 cdef class Neutrino(ParticleTemplate):
-    cdef neutrino* nux
-    def __cinit__(self): pass
-    def __init__(self): pass
-    def __dealloc__(self): del self.nux
+    def __cinit__(self): self.nux = NULL
+#    def __dealloc__(self): del self.nux
+
+    @property
+    def matched_bquark(self): return int(self.nux.matched_bquark)
+    @property
+    def matched_lepton(self): return int(self.nux.matched_lepton)
+    @property
+    def ellipse(self): return self.nux.ellipse
+    @property
+    def chi2(self): return self.nux.chi2
  
 cdef class Particle(ParticleTemplate):
     def __cinit__(self): pass
@@ -38,9 +45,9 @@ cdef class Event:
         cdef Neutrino px
         for v in range(ptx.size()):
             px = Neutrino()
-            px.ptr = ptx[v]
+            px.nux = ptx[v]
+            px.ptr = <particle_template*>(px.nux)
             self.RecoTops[env(name)][v % 2].append(px)
-
 
 
 cdef void loader(NuNuCombinatorial vl, tuple data):
@@ -72,6 +79,7 @@ cdef particle_template* make_particle(vector[double]* pmu, int pdgid):
 
 cdef neutrino* make_neutrino(vector[double]* pmu, int lep, int bq, double elp, double chi):
     cdef neutrino* ptx = new neutrino()
+    ptx.type = string(b"neutrino")
     ptx.pt  = pmu.at(0); ptx.eta = pmu.at(1)
     ptx.phi = pmu.at(2); ptx.e   = pmu.at(3)
     ptx.matched_bquark = bq; ptx.matched_lepton = lep

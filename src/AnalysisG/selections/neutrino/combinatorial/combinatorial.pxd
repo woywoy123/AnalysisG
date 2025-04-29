@@ -15,13 +15,19 @@ cdef extern from "combinatorial.h":
         double massw
 
 cdef cppclass neutrino(particle_template):
-    neutrino() except+ nogil
     double ellipse 
     double chi2
 
     int matched_bquark
     int matched_lepton
      
+
+cdef class Neutrino(ParticleTemplate):
+    cdef neutrino* nux
+
+cdef class Particle(ParticleTemplate): 
+    pass
+
 
 cdef class NuNuCombinatorial(SelectionTemplate):
     cdef combinatorial* tt

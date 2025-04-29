@@ -20,10 +20,6 @@ sl = NuNuCombinatorial()
 #ana.Start()
 
 sl.InterpretROOT("./ProjectName/Selections/" + sl.__name__() + "-" + ev.__name__() + "/ttbar/", "nominal")
-
-for i in sl:
-#    print(i.TruthTops)
-    try: print(i.RecoTops["top_children"][0][0])
-    except: pass
-
 #validation(None)
+combinatorial(sl)
+

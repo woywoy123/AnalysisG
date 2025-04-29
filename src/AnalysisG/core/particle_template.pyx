@@ -34,7 +34,7 @@ cdef class ParticleTemplate:
         if type(self) is not ParticleTemplate: return
         if not self.is_owner: return
         if self.ptr == NULL: return
-        del self.ptr
+        del self.ptr; self.ptr = NULL
 
     def __reduce__(self, dict dictout = {}):
         cdef map[string, map[string, particle_t]] mx
