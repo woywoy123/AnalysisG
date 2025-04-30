@@ -90,7 +90,7 @@ message(STATUS     "TORCH: ${TORCH_LIBRARIES}")
 add_subdirectory(src/AnalysisG)
 file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})
 
-if (DOXYGEN_FOUND)
+if (DOXYGEN_FOUND AND BUILD_DOC)
 set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/src/Doxyfile.in)
 set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
@@ -101,5 +101,5 @@ WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 COMMENT "Generating documentation with Doxygen" VERBATIM)
 else (DOXYGEN_FOUND)
 message("Doxygen need to be installed to generate the doxygen documentation")
-endif (DOXYGEN_FOUND)
+endif()
 

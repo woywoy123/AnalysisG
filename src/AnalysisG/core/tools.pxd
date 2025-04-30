@@ -30,9 +30,10 @@ cdef extern from "<tools/tools.h>":
         vector[string] split(string ipt, string delm) except+ nogil
         vector[string] split(string ipt, int n) except+ nogil
         string hash(string inpt, int l) except+ nogil
-        float max(vector[float]*) except+ nogil
-        float min(vector[float]*) except+ nogil
-        float sum(vector[float]*) except+ nogil
+        float  max(vector[float]*) except+ nogil
+        float  min(vector[float]*) except+ nogil
+        double min(vector[double]*) except+ nogil
+        float  sum(vector[float]*) except+ nogil
 
         string encode64(string* data) except+ nogil
         string decode64(string* data) except+ nogil

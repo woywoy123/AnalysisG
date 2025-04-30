@@ -20,6 +20,9 @@ sl = NuNuCombinatorial()
 #ana.Start()
 
 sl.InterpretROOT("./ProjectName/Selections/" + sl.__name__() + "-" + ev.__name__() + "/ttbar/", "nominal")
+print(sl.get("top_children", False).n_correct)
+print(sl.get("top_children", False).n_unmatched)
 #validation(None)
+exit()
 combinatorial(sl)
 

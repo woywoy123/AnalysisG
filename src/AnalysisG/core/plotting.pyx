@@ -476,6 +476,7 @@ cdef class TH1F(BasePlotting):
     def counts(self):
         try: return sum(self.__compile__(True)["H"]).counts()
         except ValueError: return []
+        except AttributeError: return []
 
     @property
     def Marker(self): return env(self.ptr.marker)

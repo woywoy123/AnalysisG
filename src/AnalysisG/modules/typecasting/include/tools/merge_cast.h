@@ -60,4 +60,10 @@ void contract_data(std::vector<g>* out, std::vector<std::vector<g>>* p2){
     for (size_t i(0); i < p2 -> size(); ++i){contract_data(out, &p2 -> at(i));}
 }
 
+// ----- needed for cython ----- //
+template <typename g>
+void release_vector(std::vector<g>* ipt){ ipt -> shrink_to_fit(); }
+
+
+
 #endif

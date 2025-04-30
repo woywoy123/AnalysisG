@@ -1,46 +1,5 @@
-import math
-
-def makeDict(inpt):     return {i : 0  for i in inpt}
-def protect(inpt):      return None if not len(inpt) else inpt[0]
-def percent(totl, rsd): return {i : 100*rsd[i] / totl[i] for i in totl}
-
-def get_nu(inpt):   return None if inpt is None else protect([i for i in inpt if i.is_nu ])
-def get_jet(inpt):  return None if inpt is None else protect([i for i in inpt if i.is_b  ])
-def get_ell(inpt):  return None if inpt is None else protect([i for i in inpt if i.is_lep])
-def get_pxt(inpt): 
-    x = [i for i in inpt if i is not None]
-    if len(x) < 2: return sum(x)
-    return None
-
-def sumx(inpt, ox, fx, nfx = None):
-    ix = range(len(inpt))
-    if nfx is None: 
-        for i in ix: ox += fx(inpt[i])
-        return ox
-
-    for i in ix: 
-        if not nfx(inpt[i]): continue
-        ox += fx(inpt[i])
-    return ox
-
-def bar(p, sym): return sym if p > 0 else "\\bar{" + sym + "}"
-
-def safe_pair(inpt):
-    n1, n2 = inpt
-    if len(n1) and len(n2):     return n1  , n2
-    if len(n1) and not len(n2): return None, n2
-    if not len(n1) and len(n2): return n1, None
-    return None, None
-
-def pdgid(p):
-    if abs(p) == 11: return bar(p, "e")
-    if abs(p) == 12: return bar(p, "\\nu_{e}")
-    if abs(p) == 13: return bar(p, "\\mu")
-    if abs(p) == 14: return bar(p, "\\nu_{\\mu}")
-    if abs(p) == 15: return bar(p, "\\tau")
-    if abs(p) == 16: return bar(p, "\\nu_{\\tau}")
-    print("!!!!!!!!!", p); exit()
-
+from .utils import *
+import tqdm
 
 class sets:
     def __init__(self, b = None, l = None, nu = None, rnu = None):
@@ -48,48 +7,83 @@ class sets:
         self.tru_l   = l
         self.tru_nu  = nu
         self.rnu     = rnu
+        self._truth_top = get_pxt([self.tru_b, self.tru_l, self.tru_nu])
+        self._reco_top  = get_pxt([self.tru_b, self.tru_l, self.rnu])
+        self._truth_W   = get_pxt([self.tru_l, self.tru_nu])
+        self._reco_W    = get_pxt([self.tru_l, self.rnu])
+        self._symbolic  = get_pdg([self.tru_l, self.tru_nu])
 
     @property
-    def truthtop(self): return get_pxt([self.tru_b, self.tru_l, self.tru_nu])
-    @property
-    def recotop(self): return get_pxt([self.tru_b, self.tru_l, self.rnu])
-    
-    @property
-    def truthW(self): return get_pxt([self.tru_l, self.tru_nu])
-    @property
-    def recoW(self): return get_pxt([self.tru_l, self.rnu])
+    def truthtop(self): return None if self._truth_top is None else self._truth_top.Mass / 1000.0
+    @property               
+    def recotop(self):  return None if self._reco_top  is None else self._reco_top.Mass  / 1000.0
+    @property          
+    def truthW(self):   return None if self._truth_W   is None else self._truth_W.Mass   / 1000.0
+    @property          
+    def recoW(self):    return None if self._reco_W    is None else self._reco_W.Mass    / 1000.0
+    @property         
+    def symbolic(self): return None if self._symbolic  is None else self._symbolic    
 
-
-class data:
-    def __init__(self):
-        self.swp_ls  = {}
-        self.swp_bs  = {}
-        self.swp_lb  = {}
-        self.swp_alb = {}
 
 class atomic:
-    def __init__(self):
-        self.n_correct    = 0 # <- correct matched
-        self.n_b_swapped  = 0 # <- only bs are swapped
-        self.n_l_swapped  = 0 # <- only leptons are swapped
-        self.n_bl_swapped = 0 # <- both bs and leptons are swapped
-        self.n_unmatched  = 0 # <- Unmatched or fake neutrino
-        self.n_non_nunu   = 0 # <- triggered on a non-dilepton event
+    def __init__(self, as_dx = False):
+        self.n_correct    = 0 if not as_dx else {} # <- correct matched
+        self.n_b_swapped  = 0 if not as_dx else {} # <- only bs are swapped
+        self.n_l_swapped  = 0 if not as_dx else {} # <- only leptons are swapped
+        self.n_bl_swapped = 0 if not as_dx else {} # <- both bs and leptons are swapped
+        self.n_unmatched  = 0 if not as_dx else {} # <- Unmatched or fake neutrino
+        self.n_non_nunu   = 0 if not as_dx else {} # <- triggered on a non-dilepton event
 
-        self.n_tru_nu  = 0
-        self.n_rec_nu  = 0
+        self.n_tru_nu  = 0 if not as_dx else {}
+        self.n_rec_nu  = 0 if not as_dx else {}
 
-        self.num_sols   = 0
-        self.merged_jet = 0
+        self.num_sols   = 0 if not as_dx else {}
+        self.merged_jet = 0 if not as_dx else {}
 
         self.truth_set  = []
         self.reco_set   = []
 
-        self.sets       = {0 : None, 1 : None}
-        self.swapped_bs = {0 : None, 1 : None}
-        self.swapped_bl = {0 : None, 1 : None}
-        self.swapped_ls = {0 : None, 1 : None}
-        self.fake_nus   = {0 : None, 1 : None}
+        self.sets       = {0 : None if not as_dx else {}, 1 : None if not as_dx else {}} 
+        self.swapped_bs = {0 : None if not as_dx else {}, 1 : None if not as_dx else {}} 
+        self.swapped_bl = {0 : None if not as_dx else {}, 1 : None if not as_dx else {}} 
+        self.swapped_ls = {0 : None if not as_dx else {}, 1 : None if not as_dx else {}} 
+        self.fake_nus   = {0 : None if not as_dx else {}, 1 : None if not as_dx else {}} 
+
+
+    def merge(self, _pdg, state, inpt):
+        try: state[_pdg] += [inpt]
+        except KeyError: state[_pdg] = [inpt]
+        return state
+
+    def __add__(self, other):
+        if other == 0: return atomic(True).__add__(self)
+        pdgx = extract(other.sets)
+        pdgx = extract(other.swapped_bs) if pdgx is None else pdgx
+        pdgx = extract(other.swapped_bl) if pdgx is None else pdgx
+        pdgx = extract(other.swapped_ls) if pdgx is None else pdgx
+        pdgx = extract(other.fake_nus)   if pdgx is None else pdgx
+        if pdgx is None: return self
+
+        for i in range(2):
+            self.sets[i]       = self.merge(pdgx, self.sets[i]      , other.sets[i])
+            self.swapped_bs[i] = self.merge(pdgx, self.swapped_bs[i], other.swapped_bs[i])
+            self.swapped_bl[i] = self.merge(pdgx, self.swapped_bl[i], other.swapped_bl[i])
+            self.swapped_ls[i] = self.merge(pdgx, self.swapped_ls[i], other.swapped_ls[i])
+            self.fake_nus[i]   = self.merge(pdgx, self.fake_nus[i]  , other.fake_nus[i])
+
+        self.n_correct    = self.merge(pdgx, self.n_correct   , other.n_correct   )
+        self.n_b_swapped  = self.merge(pdgx, self.n_b_swapped , other.n_b_swapped )
+        self.n_l_swapped  = self.merge(pdgx, self.n_l_swapped , other.n_l_swapped )
+        self.n_bl_swapped = self.merge(pdgx, self.n_bl_swapped, other.n_bl_swapped)
+        self.n_unmatched  = self.merge(pdgx, self.n_unmatched , other.n_unmatched )
+        self.n_non_nunu   = self.merge(pdgx, self.n_non_nunu  , other.n_non_nunu  )
+        self.n_tru_nu     = self.merge(pdgx, self.n_tru_nu    , other.n_tru_nu    )
+        self.n_rec_nu     = self.merge(pdgx, self.n_rec_nu    , other.n_rec_nu    )
+        self.num_sols     = self.merge(pdgx, self.num_sols    , other.num_sols    )
+        self.merged_jet   = self.merge(pdgx, self.merged_jet  , other.merged_jet  )
+        return self
+
+    def __radd__(self, other): return self.__add__(other)
 
     def match(self, chi2_match): 
         nt1, nt2 = safe_pair(self.truth_set)
@@ -182,25 +176,7 @@ class container:
     def get(self, name, chi2):
         if not chi2: datax = self.atomics[name]
         else:   datax = self.chi2_atomics[name]
-
-        # continue here with mass 
-        out = data()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return sum(datax)
 
     @property
     def efficiency(self):
@@ -267,6 +243,6 @@ def compiler(sel, names):
     con = container()
     for k in range(len(names)):
         n, c = names[k]
-        for i in sel: con.add(i.TruthTops[n], i.RecoTops[n], n, c)
+        for i in tqdm.tqdm(sel, desc = n): con.add(i.TruthTops[n], i.RecoTops[n], n, c)
     return con
 

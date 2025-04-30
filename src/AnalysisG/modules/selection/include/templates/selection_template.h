@@ -79,6 +79,7 @@ class selection_template: public tools
             prt -> _is_marked = true; 
             std::map<std::string, bool> maps; 
             for (size_t x(0); x < ch -> size(); ++x){
+                if (!ch -> at(x)){continue;}
                 if (maps[ch -> at(x) -> hash]){continue;}
                 maps[ch -> at(x) -> hash] = true;
                 prt -> iadd(ch -> at(x));

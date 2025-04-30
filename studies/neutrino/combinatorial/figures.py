@@ -1,25 +1,9 @@
 from AnalysisG.core.plotting import TH1F, TH2F
 from .helpers import compiler 
+from .utils import *
 import pandas
 
-typx = ["topchildren", "truthjet", "jetchildren", "jetleptons"]
-def statistics(data, eps = None):
-    losses = {i : loss(eps) for i in typx}
-    for i in range(len(data["topchildren"])):
-        if data["topchildren"][i] is None: continue
-        for k in typx: losses[k].add(data[k][i])
-    return losses
-
-
-def colors():
-    return iter(sorted(list(set([
-        "aqua", "orange", "green","blue","olive","teal","gold",
-        "darkblue","azure","lime","crimson","cyan","magenta","orchid",
-        "sienna","silver","salmon","chocolate", "navy", "plum", "indigo", 
-        "lightblue", "lavender", "ivory"
-    ]))))
-
-
+typx = ["top_children", "truthjet", "jetchildren", "jetleptons"]
 def statistics(collx):
     eff_all = collx.efficiency
 
@@ -31,10 +15,9 @@ def statistics(collx):
     chi2x   = eff_all["chi2-fitted"]
     print(pandas.DataFrame.from_dict(chi2x))
 
-
 def default(hist, pth):
     hist.Style = "ATLAS"
-    if pth is not None: hist.OutputDirectory = "figures/" + pth
+    if pth is not None: hist.OutputDirectory = "figures/combinatorial/" + pth
     hist.DPI = 300
     hist.TitleSize = 15
     hist.AutoScaling = True
@@ -56,9 +39,14 @@ def template(xdata, title, color = None, pth = None, params = {}):
     for i in params: setattr(thl, i, params[i])
     return thl
 
-
+def make(data_, fx):
+    out = []
+    for k in range(2): out += [data_[k][j] for j in data_[k]]
+    return fx(sum(out, []))
 
 def TopMasses(con):
+    def get_top_mass(inpt): return [i.truthtop for i in inpt if i if not None and i.truthtop is not None]
+
     para = {
         "xTitle" : "Invariant Mass for Leptonic Tops (GeV)", 
         "yTitle" : "Density (Arb.) / <units> (GeV)", 
@@ -67,20 +55,18 @@ def TopMasses(con):
         "Density" : False,
     }
     for i in typx:
-        data    = con.get(i, False)
-
-        swp_ls  = data.swp_ls
-        swp_bs  = data.swp_bs
-        swp_lb  = data.swp_lb
-        swp_alb = data.swp_alb
-
-
-
-
-
-
-
-
+        cols = colors()
+        data  = con.get(i, False)
+        top_sets   = template(make(data.sets      , get_top_mass), Fancy(i, "sets"  ), next(cols))
+        top_swp_b  = template(make(data.swapped_bs, get_top_mass), Fancy(i, "swp_b" ), next(cols))
+        top_swp_l  = template(make(data.swapped_ls, get_top_mass), Fancy(i, "swp_l" ), next(cols))
+        top_swp_bl = template(make(data.swapped_bl, get_top_mass), Fancy(i, "swp_bl"), next(cols))
+        top_fakes  = template(make(data.fake_nus  , get_top_mass), Fancy(i, "fake"  ), next(cols))
+        th1 = template(None, "Double Neutrino Reconstruction Performance " + Fancy(i), None, i, para)
+        th1.Stacked = True
+        th1.Histograms = sorted([top_sets, top_swp_b, top_swp_l, top_swp_bl, top_fakes], key = lambda x: sum(x.counts))
+        th1.Filename = "all_nunu"
+        th1.SaveFigure()
 
 def combinatorial(sel):
     types = [
@@ -94,5 +80,7 @@ def combinatorial(sel):
             ("jetleptons"  ,  True)
     ]
     con = compiler(sel, types)
+    TopMasses(con)
+    exit()
     statistics(con)
 

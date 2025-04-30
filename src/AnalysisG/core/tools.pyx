@@ -8,7 +8,6 @@ from libcpp.vector cimport vector
 from cython.operator cimport dereference as dref
 from libcpp.unordered_map cimport unordered_map
 
-
 cdef string enc(str val): return val.encode("utf-8")
 cdef str env(string val): return val.decode("utf-8")
 cdef list env_vec(vector[string]* inpt):
