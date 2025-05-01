@@ -27,6 +27,8 @@ cdef extern from "<plotting/plotting.h>" nogil:
         float get_max(string) except+ nogil
         float get_min(string) except+ nogil
         float sum_of_weights() except+ nogil
+        float  min(vector[float]*) except+ nogil
+        double min(vector[double]*) except+ nogil
         void build_error() except+ nogil
         void build_ROC(string name, int kfold, vector[int]* label, vector[vector[double]]* scores) except+ nogil
         vector[roc_t] get_ROC() except+ nogil

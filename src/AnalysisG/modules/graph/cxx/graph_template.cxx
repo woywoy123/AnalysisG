@@ -41,8 +41,12 @@ void graph_template::flush_particles(){
     this -> _topological_index = {}; 
     this -> nodes = {}; 
     this -> node_particles = {}; 
+    for (size_t x(0); x < this -> garbage.size(); ++x){
+        if (!this -> garbage[x]){continue;}
+        delete this -> garbage[x];
+    }
+    this -> garbage.clear();  
 }
-
 
 void graph_template::define_particle_nodes(std::vector<particle_template*>* prt){
     for (size_t x(0); x < prt -> size(); ++x){
@@ -84,65 +88,47 @@ void graph_template::define_topology(std::function<bool(particle_template*, part
     this -> m_topology = torch::cat({t1, t2}, 0); 
 }
 
-bool graph_template::double_neutrino(
-        double mass_top, double mass_wboson, 
-        double top_perc, double w_perc, double distance, int steps 
+std::pair<particle_template*, particle_template*> graph_template::double_neutrino(
+        std::vector<particle_template*> particles, double met, double phi, std::string device, 
+        particle_template* b1, particle_template* l1, particle_template* b2, particle_template* l2, 
+        double top_mass, double wboson_mass, double distance, double perturb, long steps
 ){
-    if (!this -> node_fx.count("D-pt")){return false;}
-    if (!this -> node_fx.count("D-eta")){return false;}
-    if (!this -> node_fx.count("D-phi")){return false;}
-    if (!this -> node_fx.count("D-energy")){return false;}
-    if (!this -> node_fx.count("D-is_lep")){return false;}
-    if (!this -> node_fx.count("D-is_b")){return false;}
-    if (!this -> graph_fx.count("D-met")){return false;}
-    if (!this -> graph_fx.count("D-phi")){return false;}
+    std::vector<std::pair<neutrino*, neutrino*>> nux; 
+    std::vector<double> metv = std::vector<double>({met}); 
+    std::vector<double> phiv = std::vector<double>({phi});
+    std::vector<std::vector<particle_template*>> prt = {particles}; 
+    nux = pyc::nusol::combinatorial(metv, phiv, prt, device, top_mass, wboson_mass, distance, perturb, steps); 
+    if (!nux.size()){return {nullptr, nullptr};}
 
-    torch::Tensor is_b   = this -> node_fx["D-is_b"]; 
-    torch::Tensor is_lep = this -> node_fx["D-is_lep"]; 
-    torch::Tensor chk = (is_b.view({-1}).sum({-1}) >= 2) * (is_lep.view({-1}).sum({-1}) >= 2); 
-    if (!chk.index({chk}).size({0})){return true;}
+    std::map<int, std::vector<size_t>> optimx = {};
+    for (size_t x(0); x < nux.size(); ++x){
+        neutrino* nu1 = std::get<0>(nux[x]);
+        neutrino* nu2 = std::get<1>(nux[x]); 
+        this -> garbage.push_back(nu1); 
+        this -> garbage.push_back(nu2); 
+        if (!nu1 || !nu2 || !b1 || !b2 || !l1 || !l2){continue;}
+        particle_template* b1_ = nu1 -> bquark;
+        particle_template* b2_ = nu2 -> bquark; 
+        nu1 -> bquark = nullptr; nu2 -> bquark = nullptr; 
 
-    torch::Tensor pt         = this -> node_fx["D-pt"].to(cu_pyc);
-    torch::Tensor eta        = this -> node_fx["D-eta"].to(cu_pyc);
-    torch::Tensor phi        = this -> node_fx["D-phi"].to(cu_pyc); 
-    torch::Tensor energy     = this -> node_fx["D-energy"].to(cu_pyc);
-    torch::Tensor pmc        = pyc::transform::separate::PxPyPzE(pt, eta, phi, energy); 
+        particle_template* l1_ = nu1 -> lepton;
+        particle_template* l2_ = nu2 -> lepton; 
+        nu1 -> lepton = nullptr; nu2 -> lepton = nullptr; 
 
-    torch::Tensor pid        = torch::cat({is_lep, is_b}, {-1}).to(cu_pyc); 
-    torch::Tensor edge_index = this -> m_topology.to(torch::kLong).to(cu_pyc); 
-    torch::Tensor met        = this -> graph_fx["D-met"].to(cu_pyc); 
-    torch::Tensor met_phi    = this -> graph_fx["D-phi"].to(cu_pyc);
-    torch::Tensor batch      = torch::zeros_like(pt.view({-1})).to(torch::kLong); 
-    torch::Tensor met_xy     = torch::cat({
-            pyc::transform::separate::Px(met, met_phi), 
-            pyc::transform::separate::Py(met, met_phi)
-    }, {-1});
+        int mx = 0;  
+        if (std::string(b1_ -> hash) == std::string(b1 -> hash)){nu1 -> bquark = b1_; ++mx;}
+        if (std::string(b1_ -> hash) == std::string(b2 -> hash)){nu1 -> bquark = b2_; ++mx;}
+        if (std::string(b2_ -> hash) == std::string(b1 -> hash)){nu2 -> bquark = b1_; ++mx;}
+        if (std::string(b2_ -> hash) == std::string(b2 -> hash)){nu2 -> bquark = b2_; ++mx;}
 
-    // protection against overloading the cuda cores.
-    std::this_thread::sleep_for(std::chrono::microseconds(10)); 
-    torch::Dict<std::string, torch::Tensor> nus = pyc::nusol::combinatorial(
-        edge_index, batch, pmc, pid, met_xy, mass_top, mass_wboson, top_perc, w_perc, steps, distance
-    ); 
-    
-    torch::Tensor l1 = nus.at("l1"); 
-    torch::Tensor l2 = nus.at("l2"); 
-
-    torch::Tensor b1 = nus.at("b1"); 
-    torch::Tensor b2 = nus.at("b2"); 
-
-
-
-    //if (!combi.index({combi}).size({0})){return true;}
-    //torch::Tensor lep1 = nus["combi"].index({combi, 2}).to(torch::kInt); 
-    //torch::Tensor lep2 = nus["combi"].index({combi, 3}).to(torch::kInt); 
-    //pmc.index_put_({lep1}, nus["nu_1f"] + pmc.index({lep1})); 
-    //pmc.index_put_({lep2}, nus["nu_2f"] + pmc.index({lep2}));
-    //pmc = transform::cuda::PtEtaPhiE(pmc).to(c10::kCPU);
-    //this -> node_fx["D-pt"]     = pmc.index({torch::indexing::Slice(), 0}).view({-1, 1}); 
-    //this -> node_fx["D-eta"]    = pmc.index({torch::indexing::Slice(), 1}).view({-1, 1}); 
-    //this -> node_fx["D-phi"]    = pmc.index({torch::indexing::Slice(), 2}).view({-1, 1}); 
-    //this -> node_fx["D-energy"] = pmc.index({torch::indexing::Slice(), 3}).view({-1, 1}); 
-    return true;
+        if (std::string(l1_ -> hash) == std::string(l1 -> hash)){nu1 -> lepton = l1_; ++mx;}
+        if (std::string(l1_ -> hash) == std::string(l2 -> hash)){nu1 -> lepton = l2_; ++mx;}
+        if (std::string(l2_ -> hash) == std::string(l1 -> hash)){nu2 -> lepton = l1_; ++mx;}
+        if (std::string(l2_ -> hash) == std::string(l2 -> hash)){nu2 -> lepton = l2_; ++mx;}
+        optimx[mx].push_back(x);
+    }
+    std::pair<neutrino*, neutrino*> nux_ = nux.at(optimx.rbegin() -> second.at(0));
+    return {std::get<0>(nux_), std::get<1>(nux_)}; 
 }
 
 graph_t* graph_template::data_export(){

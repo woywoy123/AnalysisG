@@ -50,7 +50,9 @@ cdef struct atomic:
     map[int, sets] swapped_bl
     map[int, sets] swapped_ls
     map[int, sets] fake_nus  
+    map[int, sets] loss
     string symbolics
+    bool ignore
 
 
 cdef struct export_t:
@@ -65,7 +67,8 @@ cdef struct export_t:
    map[string, vector[int]] n_rec_nu 
    map[string, vector[int]] num_sols 
    map[string, vector[int]] merged_jet
-   
+  
+   map[int, map[string, vector[sets]]] loss
    map[int, map[string, vector[sets]]] correct       
    map[int, map[string, vector[sets]]] swapped_bs 
    map[int, map[string, vector[sets]]] swapped_bl 

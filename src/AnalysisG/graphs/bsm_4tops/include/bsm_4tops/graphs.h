@@ -76,6 +76,7 @@ class graph_detector: public graph_template
         virtual ~graph_detector(); 
         graph_template* clone() override; 
         void CompileEvent() override; 
+        int num_cuda = 1; 
 }; 
 
 

@@ -91,7 +91,6 @@ void graph_jets_nonu::CompileEvent(){
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
-    this -> double_neutrino(); 
 }
 
 
@@ -177,5 +176,4 @@ void graph_detector::CompileEvent(){
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
-    this -> double_neutrino(); 
 }

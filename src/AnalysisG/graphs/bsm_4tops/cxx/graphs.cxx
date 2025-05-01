@@ -6,9 +6,7 @@
 // ---------------- GRAPH-TOPS ------------------- //
 graph_tops::graph_tops(){this -> name = "graph_tops";}
 graph_tops::~graph_tops(){}
-graph_template* graph_tops::clone(){
-    return (graph_template*)new graph_tops();
-}
+graph_template* graph_tops::clone(){return new graph_tops();}
 
 void graph_tops::CompileEvent(){
     bsm_4tops* event = this -> get_event<bsm_4tops>(); 
@@ -38,7 +36,7 @@ void graph_tops::CompileEvent(){
 // ---------------- GRAPH-TOPS ------------------- //
 graph_children::graph_children(){this -> name = "graph_children";}
 graph_children::~graph_children(){}
-graph_template* graph_children::clone(){return (graph_template*)new graph_children();}
+graph_template* graph_children::clone(){return new graph_children();}
 
 void graph_children::CompileEvent(){
     bsm_4tops* event = this -> get_event<bsm_4tops>(); 
@@ -79,7 +77,7 @@ void graph_children::CompileEvent(){
 // ---------------- GRAPH-TRUTHJETS ------------------- //
 graph_truthjets::graph_truthjets(){this -> name = "graph_truthjets";}
 graph_truthjets::~graph_truthjets(){}
-graph_template* graph_truthjets::clone(){return (graph_template*)new graph_truthjets();}
+graph_template* graph_truthjets::clone(){return new graph_truthjets();}
 
 void graph_truthjets::CompileEvent(){
     bsm_4tops* event = this -> get_event<bsm_4tops>(); 
@@ -128,7 +126,7 @@ void graph_truthjets::CompileEvent(){
 // ---------------- GRAPH-TRUTHJETS (No Neutrino) ------------------- //
 graph_truthjets_nonu::graph_truthjets_nonu(){this -> name = "graph_truthjets_nonu";}
 graph_truthjets_nonu::~graph_truthjets_nonu(){}
-graph_template* graph_truthjets_nonu::clone(){return (graph_template*)new graph_truthjets_nonu();}
+graph_template* graph_truthjets_nonu::clone(){return new graph_truthjets_nonu();}
 
 void graph_truthjets_nonu::CompileEvent(){
     bsm_4tops* event = this -> get_event<bsm_4tops>(); 
@@ -170,14 +168,13 @@ void graph_truthjets_nonu::CompileEvent(){
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
-    this -> double_neutrino(); 
 }
 
 
 // ---------------- GRAPH-JETS ------------------- //
 graph_jets::graph_jets(){this -> name = "graph_jets";}
 graph_jets::~graph_jets(){}
-graph_template* graph_jets::clone(){return (graph_template*)new graph_jets();}
+graph_template* graph_jets::clone(){return new graph_jets();}
 
 bool graph_jets::PreSelection(){
 //    bsm_4tops* evn = this -> get_event<bsm_4tops>();
@@ -233,7 +230,7 @@ void graph_jets::CompileEvent(){
 // ---------------- GRAPH-JETS (No Neutrino) ------------------- //
 graph_jets_nonu::graph_jets_nonu(){this -> name = "graph_jets_nonu";}
 graph_jets_nonu::~graph_jets_nonu(){}
-graph_template* graph_jets_nonu::clone(){return (graph_template*)new graph_jets_nonu();}
+graph_template* graph_jets_nonu::clone(){return new graph_jets_nonu();}
 
 void graph_jets_nonu::CompileEvent(){
     bsm_4tops* event = this -> get_event<bsm_4tops>(); 
@@ -275,14 +272,13 @@ void graph_jets_nonu::CompileEvent(){
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
-    this -> double_neutrino(); 
 }
 
 
 // ---------------- GRAPH-JETS-Detector leptons (with Neutrino) ------------------- //
 graph_jets_detector_lep::graph_jets_detector_lep(){this -> name = "graph_jets_detector_lep";}
 graph_jets_detector_lep::~graph_jets_detector_lep(){}
-graph_template* graph_jets_detector_lep::clone(){return (graph_template*)new graph_jets_detector_lep();}
+graph_template* graph_jets_detector_lep::clone(){return new graph_jets_detector_lep();}
 
 void graph_jets_detector_lep::CompileEvent(){
     bsm_4tops* event = this -> get_event<bsm_4tops>(); 
@@ -331,15 +327,28 @@ void graph_jets_detector_lep::CompileEvent(){
 // ---------------- GRAPH-JETS-Detector leptons (without Neutrino) ------------------- //
 graph_detector::graph_detector(){this -> name = "graph_detector";}
 graph_detector::~graph_detector(){}
-graph_template* graph_detector::clone(){return (graph_template*)new graph_detector();}
+graph_template* graph_detector::clone(){return new graph_detector();}
 
 void graph_detector::CompileEvent(){
+    std::string cu = "cuda:" + std::to_string(this -> threadIdx % this -> num_cuda);  
+
     bsm_4tops* event = this -> get_event<bsm_4tops>(); 
-    
-    std::vector<particle_template*> nodes = {}; 
     nodes.insert(nodes.end(), event -> Muons.begin(), event -> Muons.end()); 
     nodes.insert(nodes.end(), event -> Electrons.begin(), event -> Electrons.end()); 
-    nodes.insert(nodes.end(), event -> Jets.begin(), event -> Jets.end()); 
+
+    bool nx = nodes.size() == 2; 
+    std::vector<particle_template*> nunu = {}; 
+    for (size_t x(0); x < event -> Jets.size(); ++x){ 
+        nodes.push_back(event -> Jets[x]); 
+        if (!event -> Jets[x] -> is_b){continue;}
+        nunu.push_back(event -> Jets[x]);
+        if (nunu.size() < 2){continue;}
+        break;
+    }
+
+    std::pair<particle_template*, particle_template*> nux;
+    if (nx && nunu.size() >= 2){nux = this -> double_neutrino(nodes, event -> met, event -> phi, cu);}
+
     this -> define_particle_nodes(&nodes); 
     this -> define_topology(fulltopo); 
 
@@ -370,5 +379,4 @@ void graph_detector::CompileEvent(){
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
-    this -> double_neutrino(); 
 }

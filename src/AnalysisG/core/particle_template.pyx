@@ -13,12 +13,10 @@ from AnalysisG.core.particle_template cimport particle_template
 cdef class ParticleTemplate:
 
     def __cinit__(self):
-        self.children = []
-        self.parents = []
-        self.is_owner = True
         self.keys = []
-        self.ptr = NULL
-        if type(self) is not ParticleTemplate: return
+        self.parents = []
+        self.children = []
+        self.is_owner = True
         self.ptr = new particle_template()
 
     def __init__(self, inpt = None):
@@ -31,11 +29,10 @@ cdef class ParticleTemplate:
         self.ptr.data = <particle_t>(inpt[b"data"])
 
     def __dealloc__(self):
-        if type(self) is not ParticleTemplate: return
-        if not self.is_owner: return
-        if self.ptr == NULL: return
-        del self.ptr; self.ptr = NULL
-
+       if not self.is_owner: return
+       if self.ptr == NULL: return
+       del self.ptr; self.ptr = NULL
+    
     def __reduce__(self, dict dictout = {}):
         cdef map[string, map[string, particle_t]] mx
         cdef pair[string, map[string, particle_t]] itx
@@ -73,9 +70,17 @@ cdef class ParticleTemplate:
         if len(self.Parents):   p.Parents  += self.Parents
         return p
 
+    def __iadd__(self, ParticleTemplate other):
+        self.ptr.iadd(other.ptr)
+        if len(other.Children): self.Children += other.Children
+        if len(other.Parents):  self.Parents  += other.Parents
+        return self
+
     def __radd__(self, other):
-        if not self.is_self(other): return self
-        return self.__add__(other)
+        if isinstance(other, int) and other == 0: 
+            return self.clone().__iadd__(self)
+        if self.is_self(other): return self.__iadd__(other)
+        return self
 
     def __eq__(self, other):
         if not self.is_self(other): return False
@@ -98,10 +103,13 @@ cdef class ParticleTemplate:
         v.Type = self.Type
         return v
 
-    cdef void set_particle(self, particle_template* ox):
-        del self.ptr
-        self.ptr = ox
+    cdef bool set_particle(self, particle_template* ox):
+        if ox == NULL: return False
+        if not self.is_owner: pass
+        elif self.ptr != NULL: del self.ptr
         self.is_owner = False
+        self.ptr = ox
+        return True
 
     cdef list make_particle(self, map[string, particle_template*] px):
         cdef list out = []

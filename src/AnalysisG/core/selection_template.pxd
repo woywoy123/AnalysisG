@@ -34,11 +34,6 @@ cdef extern from "<templates/selection_template.h>" nogil:
         map[string, map[string, float]] passed_weights
         map[string, meta_t] matched_meta
 
-        void switch_board(particle_enum attrs, particle_template* ptr, vector[vector[double]]* data); 
-        void switch_board(particle_enum attrs, particle_template* ptr, vector[int]*    data); 
-        void switch_board(particle_enum attrs, particle_template* ptr, vector[double]* data); 
-        void switch_board(particle_enum attrs, particle_template* ptr, vector[bool]*   data); 
-
 cdef class SelectionTemplate:
     cdef selection_template* ptr
     cdef void transform_dict_keys(self)

@@ -15,7 +15,6 @@ VERBATIM COMMAND Python::Interpreter -m cython
     --capi-reexport-cincludes 
     --no-docstrings
     --verbose 
-    --3str 
     --output-file c${name}.cpp
     --cplus ${ANALYSISG_SOURCE_DIR}/${path}/${name}.pyx
 )
@@ -36,7 +35,6 @@ foreach(cyx IN LISTS PYX)
         --capi-reexport-cincludes 
         --no-docstrings
         --verbose 
-        --3str 
         --output-file c${name_}.cpp
         --cplus ${PYX} ${ANALYSISG_SOURCE_DIR}/${path}/${name_}.pyx
     )
@@ -60,7 +58,6 @@ VERBATIM COMMAND Python::Interpreter -m cython
     --capi-reexport-cincludes
     --no-docstrings
     --verbose 
-    --3str 
     --output-file c${name}.cpp
     --cplus ${ANALYSISG_SOURCE_DIR}/${path}/${name}.pyx
 )

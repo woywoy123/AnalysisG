@@ -8,7 +8,7 @@ from libcpp.vector cimport vector
 
 from AnalysisG.core.structs cimport particle_t
 
-cdef extern from "<templates/particle_template.h>" nogil:
+cdef extern from "<templates/particle_template.h>":
 
     cdef cppclass particle_template:
         particle_template() except+ nogil
@@ -17,7 +17,20 @@ cdef extern from "<templates/particle_template.h>" nogil:
         particle_template(particle_template* p, bool dump) except+ nogil
         particle_template(double px, double py, double pz, double e) except+ nogil
         particle_template(double px, double py, double pz) except+ nogil
+
+        void add_leaf(string key, string leaf) except+ nogil
+        double DeltaR(particle_template* p) except+ nogil
+
+        particle_template* operator+(particle_template* p) except+ nogil
+        void iadd(particle_template* p) except+ nogil
+        bool operator == (particle_template& p) except+ nogil
+        bool register_parent(particle_template* p) except+ nogil
+        bool register_child(particle_template* p) except+ nogil
         map[string, map[string, particle_t]] __reduce__() except+ nogil
+
+        void to_polar() except+ nogil
+        void to_cartesian() except+ nogil
+
 
         double mass
         double e
@@ -37,7 +50,6 @@ cdef extern from "<templates/particle_template.h>" nogil:
         string symbol
         double charge
 
-        double DeltaR(particle_template* p) except+ nogil
 
         bool is_lep
         bool is_nu
@@ -45,18 +57,6 @@ cdef extern from "<templates/particle_template.h>" nogil:
         bool is_add
         bool lep_decay
         bool _is_serial
-
-        void to_cartesian() except+ nogil
-        void to_polar() except+ nogil
-
-        void add_leaf(string key, string leaf) except+ nogil
-
-        bool operator == (particle_template& p) except+ nogil
-        particle_template* operator+(particle_template* p) except+ nogil
-        void iadd(particle_template* p) except+ nogil
-
-        bool register_parent(particle_template* p) except+ nogil
-        bool register_child(particle_template* p) except+ nogil
 
         map[string, particle_template*] parents
         map[string, particle_template*] children
@@ -70,9 +70,8 @@ cdef class ParticleTemplate:
     cdef list children
     cdef list parents
     cdef list make_particle(self, map[string, particle_template*] px)
-    cdef void set_particle(self, particle_template* ox)
+    cdef bool set_particle(self, particle_template* ox)
 
     cpdef ParticleTemplate clone(self)
     cpdef double DeltaR(self, ParticleTemplate inpt)
-
 

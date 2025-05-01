@@ -71,8 +71,8 @@ cdef vector[neutrino*] make_neutrino(vector[vector[double]]* pmu, vector[int]* l
 
 cdef atomic* get_ref(vector[atomic]* conx):
     cdef int ix = conx.size()
-    cdef map[int, sets] cm
-    conx.push_back(atomic(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, cm, cm, cm, cm, cm, b""))
+    cdef map[int, sets] cm1, cm2, cm3, cm4, cm5, cm6
+    conx.push_back(atomic(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, cm1, cm2, cm3, cm4, cm5, cm6, b"", False))
     return &conx.at(ix)
 
 cdef particle_template* protect(vector[particle_template*]* inx, bool nu, bool b, bool lep):
@@ -125,27 +125,37 @@ cdef sets make_sets(
         particle_template* tn, neutrino* rn, 
         selection_template* slx, string* sym
 ):
-    cdef sets sx = sets(tq, tl, tn, rn, NULL, NULL, NULL, NULL, rn.ellipse, rn.chi2, b"")
+    cdef double chi2 = -1
+    cdef double ellipse = 0
+    if rn != NULL: chi2 = rn.chi2; ellipse = rn.ellipse
 
+    cdef sets sx = sets(tq, tl, tn, rn, NULL, NULL, NULL, NULL, ellipse, chi2, b"")
     cdef vector[particle_template*] vc
     vc.push_back(tn)
     vc.push_back(tl)
-    sx.symbolic = get_pdg(vc)
-
     slx.sum(&vc, &sx.tru_wboson)
+    sx.symbolic = get_pdg(vc)
     vc.push_back(tq)
     slx.sum(&vc, &sx.tru_top)
     vc.clear()
 
-    vc.push_back(<particle_template*>(rn))
-    vc.push_back(tl)
-    slx.sum(&vc, &sx.rec_wboson)
-    
-    vc.push_back(tq)
-    slx.sum(&vc, &sx.rec_top)
     sym.append(sx.symbolic)
+    if rn == NULL: return sx
+    cdef vector[particle_template*] rc
+    rc.push_back(tl)
+    rc.push_back(<particle_template*>(rn))
+    slx.sum(&rc, &sx.rec_wboson)
+
+    rc.push_back(tq)
+    slx.sum(&rc, &sx.rec_top)
+
     return sx
 
+cdef bool protect_add(string key, map[string, vector[int]]* out, map[int, map[string, vector[sets]]]* out_v, map[int, sets]* atm_v, int v):
+    if v != 0: dref(out)[key].push_back(v)
+    cdef int i
+    for i in range(atm_v.size()): dref(out_v)[i][key].push_back(atm_v.at(i))
+    return True
 
 cdef void match(atomic* atm, map[int, vector[particle_template*]]* ts, map[int, vector[particle_template*]]* rs, bool chix, selection_template* slx):
     cdef vector[particle_template*]* nt1 = &ts.at(0) if ts.at(0).size() else NULL
@@ -159,7 +169,6 @@ cdef void match(atomic* atm, map[int, vector[particle_template*]]* ts, map[int, 
     atm.n_rec_nu += 0 if nr1 == NULL else 1
     atm.n_rec_nu += 0 if nr2 == NULL else 1
     atm.num_sols += 0 if nr1 == NULL else nr1.size()
-    if not atm.n_rec_nu: atm.symbolics = b"no-solutions"; return # all nus as lost if self.n_tru_nu > 0
 
     cdef particle_template* tru_nu1 = protect(nt1, True , False, False)
     cdef particle_template* tru_bq1 = protect(nt1, False,  True, False)
@@ -168,7 +177,19 @@ cdef void match(atomic* atm, map[int, vector[particle_template*]]* ts, map[int, 
     cdef particle_template* tru_nu2 = protect(nt2, True , False, False)
     cdef particle_template* tru_bq2 = protect(nt2, False,  True, False)
     cdef particle_template* tru_lp2 = protect(nt2, False, False,  True)
-
+    if not atm.n_rec_nu and not atm.n_tru_nu: 
+        atm.n_correct += 2
+        atm.symbolics = b"no-solutions - no-neutrinos";
+        atm.correct[0] = make_sets(tru_bq1, tru_lp1, tru_nu1, NULL, slx, &atm.symbolics)
+        atm.correct[1] = make_sets(tru_bq2, tru_lp2, tru_nu2, NULL, slx, &atm.symbolics)
+        return 
+    if not atm.n_rec_nu and atm.n_tru_nu == 2:
+        atm.symbolics = b"no-solutions - truth nunu";
+        atm.loss[0] = make_sets(tru_bq1, tru_lp1, tru_nu1, NULL, slx, &atm.symbolics)
+        atm.loss[1] = make_sets(tru_bq2, tru_lp2, tru_nu2, NULL, slx, &atm.symbolics)
+        return # all nus as lost if self.n_tru_nu > 0
+    if not atm.n_rec_nu and atm.n_tru_nu != 2: atm.ignore = True; return 
+    
     atm.merged_jet += 0 if tru_bq1 == NULL or tru_bq2 == NULL else string(tru_bq1.hash) == string(tru_bq2.hash)
     # -------- check whether the algorithm triggered in a non-dilepton event ------- #
     cdef tools tl = tools() 
@@ -197,12 +218,11 @@ cdef void match(atomic* atm, map[int, vector[particle_template*]]* ts, map[int, 
         ch2v.push_back(ch2)
     ch2v = <vector[double]>(sorted(ch2v))
     ch2 = dref(ch2v.begin()); ch2v.erase(ch2v.begin())
-    if ch2 < 0: atm.n_non_nunu += 2
     if not chix: nu1, nu2 = <neutrino*>(dref(nr1)[0]), <neutrino*>(dref(nr2)[0])
     elif chix and ch2 < 0 and not ch2v.size(): nu1, nu2 = <neutrino*>(NULL), <neutrino*>(NULL)
     elif chix and ch2 < 0 and ch2v.size(): nu1, nu2 = chx[ch2v[0]][0], chx[ch2v[0]][1]
     else: nu1, nu2 = chx[ch2][0], chx[ch2][1]
-    if nu1 == NULL or nu2 == NULL: atm.symbolics = b"fakes"; return 
+    if nu1 == NULL or nu2 == NULL: atm.symbolics = b"no-solutions @ chi2"; return 
 
     # ------ matched ----- #
     cdef bool mb = nu1.matched_bquark == 1 and nu2.matched_bquark == 1
@@ -240,6 +260,7 @@ cdef void match(atomic* atm, map[int, vector[particle_template*]]* ts, map[int, 
     # ----------------- fake neutrino ----------------- #
     else: 
         atm.n_unmatched += 2
+        atm.symbolics = b"fakes"
         atm.fake_nus[0] = make_sets(tru_bq1, tru_lp1, tru_nu1, nu1, slx, &atm.symbolics)
         atm.fake_nus[1] = make_sets(tru_bq2, tru_lp2, tru_nu2, nu2, slx, &atm.symbolics)
 
@@ -253,28 +274,22 @@ cdef export_t get_export(string name, container* con, bool ch2):
     cdef vector[atomic]* datax = &con.atomics[name] if ch2 else &con.chi2_atomics[name]
     cdef export_t exp
     cdef atomic* atm
-    cdef int ix, i
+    cdef int ix
+    cdef bool trig
 
     for ix in range(datax.size()):
         atm = &datax.at(ix)
-
-        exp.n_correct[atm.symbolics].push_back(atm.n_correct)
-        exp.n_b_swapped[atm.symbolics].push_back(atm.n_b_swapped)
-        exp.n_l_swapped[atm.symbolics].push_back(atm.n_l_swapped)
-        exp.n_bl_swapped[atm.symbolics].push_back(atm.n_bl_swapped)
-        exp.n_unmatched[atm.symbolics].push_back(atm.n_unmatched)
-        exp.n_non_nunu[atm.symbolics].push_back(atm.n_non_nunu)
+        if atm.ignore: continue
+        trig  = protect_add(atm.symbolics, &exp.n_correct   , &exp.correct   , &atm.correct   , atm.n_correct)
+        trig += protect_add(atm.symbolics, &exp.n_b_swapped , &exp.swapped_bs, &atm.swapped_bs, atm.n_b_swapped)
+        trig += protect_add(atm.symbolics, &exp.n_l_swapped , &exp.swapped_ls, &atm.swapped_ls, atm.n_l_swapped)
+        trig += protect_add(atm.symbolics, &exp.n_bl_swapped, &exp.swapped_bl, &atm.swapped_bl, atm.n_bl_swapped)
+        trig += protect_add(atm.symbolics, &exp.n_unmatched , &exp.fake_nus  , &atm.fake_nus  , atm.n_unmatched)
+        if not trig: continue
         exp.n_tru_nu[atm.symbolics].push_back(atm.n_tru_nu)
         exp.n_rec_nu[atm.symbolics].push_back(atm.n_rec_nu)
         exp.num_sols[atm.symbolics].push_back(atm.num_sols)
         exp.merged_jet[atm.symbolics].push_back(atm.merged_jet)
-
-        for i in range(2):
-            exp.correct[i][atm.symbolics].push_back(atm.correct[i])
-            exp.swapped_bs[i][atm.symbolics].push_back(atm.swapped_bs[i])
-            exp.swapped_bl[i][atm.symbolics].push_back(atm.swapped_bl[i])
-            exp.swapped_ls[i][atm.symbolics].push_back(atm.swapped_ls[i])
-            exp.fake_nus[i][atm.symbolics].push_back(atm.fake_nus[i])
 
     datax.clear()
     release_vector(datax)
