@@ -1,4 +1,5 @@
 from .utils import *
+from numba import jit
 import tqdm
 
 class sets:
@@ -14,15 +15,15 @@ class sets:
         self._symbolic  = get_pdg([self.tru_l, self.tru_nu])
 
     @property
-    def truthtop(self): return None if self._truth_top is None else self._truth_top.Mass / 1000.0
+    def truthtop(self): return self._truth_top
     @property               
-    def recotop(self):  return None if self._reco_top  is None else self._reco_top.Mass  / 1000.0
+    def recotop(self):  return self._reco_top 
     @property          
-    def truthW(self):   return None if self._truth_W   is None else self._truth_W.Mass   / 1000.0
+    def truthW(self):   return self._truth_W  
     @property          
-    def recoW(self):    return None if self._reco_W    is None else self._reco_W.Mass    / 1000.0
+    def recoW(self):    return self._reco_W   
     @property         
-    def symbolic(self): return None if self._symbolic  is None else self._symbolic    
+    def symbolic(self): return self._symbolic 
 
 
 class atomic:
@@ -43,12 +44,11 @@ class atomic:
         self.truth_set  = []
         self.reco_set   = []
 
-        self.sets       = {0 : None if not as_dx else {}, 1 : None if not as_dx else {}} 
+        self.correct    = {0 : None if not as_dx else {}, 1 : None if not as_dx else {}} 
         self.swapped_bs = {0 : None if not as_dx else {}, 1 : None if not as_dx else {}} 
         self.swapped_bl = {0 : None if not as_dx else {}, 1 : None if not as_dx else {}} 
         self.swapped_ls = {0 : None if not as_dx else {}, 1 : None if not as_dx else {}} 
         self.fake_nus   = {0 : None if not as_dx else {}, 1 : None if not as_dx else {}} 
-
 
     def merge(self, _pdg, state, inpt):
         try: state[_pdg] += [inpt]
@@ -57,7 +57,7 @@ class atomic:
 
     def __add__(self, other):
         if other == 0: return atomic(True).__add__(self)
-        pdgx = extract(other.sets)
+        pdgx = extract(other.correct)
         pdgx = extract(other.swapped_bs) if pdgx is None else pdgx
         pdgx = extract(other.swapped_bl) if pdgx is None else pdgx
         pdgx = extract(other.swapped_ls) if pdgx is None else pdgx
@@ -65,7 +65,7 @@ class atomic:
         if pdgx is None: return self
 
         for i in range(2):
-            self.sets[i]       = self.merge(pdgx, self.sets[i]      , other.sets[i])
+            self.correct[i]       = self.merge(pdgx, self.correct[i]      , other.correct[i])
             self.swapped_bs[i] = self.merge(pdgx, self.swapped_bs[i], other.swapped_bs[i])
             self.swapped_bl[i] = self.merge(pdgx, self.swapped_bl[i], other.swapped_bl[i])
             self.swapped_ls[i] = self.merge(pdgx, self.swapped_ls[i], other.swapped_ls[i])
@@ -110,6 +110,8 @@ class atomic:
         if not chi2_match: rnu1, rnu2 = nr1[0], nr2[0]
         else: rnu1, rnu2 = (None, None) if protect([i for i in mix if i > 0]) is None else chx[mix[0]]
         if rnu1 is None or rnu2 is None: return 
+        if tru_bq1 is None or tru_bq2 is None: return
+        if tru_lp1 is None or tru_lp2 is None: return
 
         # ------ matched ----- #
         mb = rnu1.matched_bquark == 1 and rnu2.matched_bquark == 1
@@ -122,8 +124,8 @@ class atomic:
         # ------ perfect match ----- #
         if mb and ml: 
             self.n_correct += 2
-            self.sets[0] = sets(tru_bq1, tru_lp1, tru_nu1, rnu1)
-            self.sets[1] = sets(tru_bq2, tru_lp2, tru_nu2, rnu2)
+            self.correct[0] = sets(tru_bq1, tru_lp1, tru_nu1, rnu1)
+            self.correct[1] = sets(tru_bq2, tru_lp2, tru_nu2, rnu2)
 
         # ------ swapped lepton and bquarks ----- #
         elif sb and sl: 

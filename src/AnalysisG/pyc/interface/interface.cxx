@@ -9,6 +9,14 @@
 #include <utils/utils.h>
 #endif
 
+neutrino::neutrino(){this -> type = "nunu";}
+neutrino::neutrino(double px, double py, double pz){
+    particle_t* p = &this -> data; 
+    p -> px = px; p -> py = py; p -> pz = pz; p -> e = this -> e; 
+    p -> polar = true; 
+    this -> type = "nunu";
+}
+
 neutrino::~neutrino(){
     if (this -> bquark){delete this -> bquark;}
     if (this -> lepton){delete this -> lepton;}

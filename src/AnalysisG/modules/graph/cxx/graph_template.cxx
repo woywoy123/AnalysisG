@@ -90,44 +90,44 @@ void graph_template::define_topology(std::function<bool(particle_template*, part
 
 std::pair<particle_template*, particle_template*> graph_template::double_neutrino(
         std::vector<particle_template*> particles, double met, double phi, std::string device, 
-        particle_template* b1, particle_template* l1, particle_template* b2, particle_template* l2, 
         double top_mass, double wboson_mass, double distance, double perturb, long steps
 ){
     std::vector<std::pair<neutrino*, neutrino*>> nux; 
     std::vector<double> metv = std::vector<double>({met}); 
     std::vector<double> phiv = std::vector<double>({phi});
     std::vector<std::vector<particle_template*>> prt = {particles}; 
+
+    #ifdef PYC_CUDA
     nux = pyc::nusol::combinatorial(metv, phiv, prt, device, top_mass, wboson_mass, distance, perturb, steps); 
+    #endif
+
     if (!nux.size()){return {nullptr, nullptr};}
 
-    std::map<int, std::vector<size_t>> optimx = {};
+    std::map<double, std::vector<size_t>> optimx = {};
     for (size_t x(0); x < nux.size(); ++x){
         neutrino* nu1 = std::get<0>(nux[x]);
         neutrino* nu2 = std::get<1>(nux[x]); 
         this -> garbage.push_back(nu1); 
         this -> garbage.push_back(nu2); 
-        if (!nu1 || !nu2 || !b1 || !b2 || !l1 || !l2){continue;}
+
+        // -------- force matching --------- //
         particle_template* b1_ = nu1 -> bquark;
         particle_template* b2_ = nu2 -> bquark; 
-        nu1 -> bquark = nullptr; nu2 -> bquark = nullptr; 
 
         particle_template* l1_ = nu1 -> lepton;
         particle_template* l2_ = nu2 -> lepton; 
-        nu1 -> lepton = nullptr; nu2 -> lepton = nullptr; 
 
-        int mx = 0;  
-        if (std::string(b1_ -> hash) == std::string(b1 -> hash)){nu1 -> bquark = b1_; ++mx;}
-        if (std::string(b1_ -> hash) == std::string(b2 -> hash)){nu1 -> bquark = b2_; ++mx;}
-        if (std::string(b2_ -> hash) == std::string(b1 -> hash)){nu2 -> bquark = b1_; ++mx;}
-        if (std::string(b2_ -> hash) == std::string(b2 -> hash)){nu2 -> bquark = b2_; ++mx;}
+        bool swp_b = nu1 -> DeltaR(b1_) > nu1 -> DeltaR(b2_); 
+        bool swp_l = nu1 -> DeltaR(l1_) > nu1 -> DeltaR(l2_); 
+        if (swp_b){nu1 -> bquark = b2_; nu2 -> bquark = b1_;}
+        if (swp_l){nu1 -> lepton = l2_; nu2 -> lepton = l1_;}
 
-        if (std::string(l1_ -> hash) == std::string(l1 -> hash)){nu1 -> lepton = l1_; ++mx;}
-        if (std::string(l1_ -> hash) == std::string(l2 -> hash)){nu1 -> lepton = l2_; ++mx;}
-        if (std::string(l2_ -> hash) == std::string(l1 -> hash)){nu2 -> lepton = l1_; ++mx;}
-        if (std::string(l2_ -> hash) == std::string(l2 -> hash)){nu2 -> lepton = l2_; ++mx;}
-        optimx[mx].push_back(x);
+        double dr = nu1 -> DeltaR(nu1 -> bquark) + nu1 -> DeltaR(nu1 -> lepton); 
+        dr += nu2 -> DeltaR(nu2 -> bquark) + nu2 -> DeltaR(nu2 -> lepton); 
+        optimx[dr].push_back(x);
     }
-    std::pair<neutrino*, neutrino*> nux_ = nux.at(optimx.rbegin() -> second.at(0));
+    if (!optimx.size()){return {nullptr, nullptr};}
+    std::pair<neutrino*, neutrino*> nux_ = nux.at(optimx.begin() -> second.at(0));
     return {std::get<0>(nux_), std::get<1>(nux_)}; 
 }
 

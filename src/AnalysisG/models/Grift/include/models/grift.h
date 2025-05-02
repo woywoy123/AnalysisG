@@ -23,7 +23,7 @@ class grift: public model_template
         int _xout = 2; 
         int _xtop = 5; 
 
-        double drop_out = 0.01; 
+        double drop_out = 0.1; 
 
         // Misc
         bool is_mc = true; 

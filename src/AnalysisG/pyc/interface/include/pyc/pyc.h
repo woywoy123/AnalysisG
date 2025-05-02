@@ -5,12 +5,13 @@
 #include <torch/all.h> 
 #include <templates/particle_template.h>
 
-class neutrino : public particle_template
+class neutrino: public particle_template
 {
     public:
-        using particle_template::particle_template; 
-        virtual ~neutrino(); 
+        neutrino(); 
+        neutrino(double px, double py, double pz);
 
+        virtual ~neutrino(); 
         double min = 0; 
         long l_idx = -1; 
         long b_idx = -1; 

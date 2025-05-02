@@ -12,6 +12,7 @@ struct model_report {
     int epoch; 
     bool is_complete = false; 
     metrics* waiting_plot = nullptr; 
+    std::vector<double> current_lr = {};
 
     std::map<mode_enum, std::map<std::string, float>> loss_graph = {}; 
     std::map<mode_enum, std::map<std::string, float>> loss_node = {}; 

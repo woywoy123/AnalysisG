@@ -64,6 +64,13 @@ enum class loss_enum {
     invalid_loss
 };
 
+enum class scheduler_enum{
+    steplr,
+    reducelronplateauscheduler,
+    lrscheduler,
+    invalid_scheduler
+};
+
 enum class graph_enum {
     data_graph , data_node , data_edge,
     truth_graph, truth_node, truth_edge,

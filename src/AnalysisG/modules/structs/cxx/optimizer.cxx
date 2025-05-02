@@ -1,6 +1,6 @@
 #include <structs/optimizer.h>
 
-void optimizer_params_t::operator()(){
+optimizer_params_t::optimizer_params_t(){
     this -> betas.set_setter(this -> set_betas);
     this -> betas.set_object(this);
 

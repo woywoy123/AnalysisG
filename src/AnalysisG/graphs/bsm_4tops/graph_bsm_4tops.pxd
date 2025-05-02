@@ -2,6 +2,7 @@
 # cython: language_level=3
 
 from AnalysisG.core.graph_template cimport graph_template, GraphTemplate
+from libcpp cimport bool, int
 
 cdef extern from "<bsm_4tops/graphs.h>":
     cdef cppclass graph_tops(graph_template):
@@ -27,6 +28,8 @@ cdef extern from "<bsm_4tops/graphs.h>":
 
     cdef cppclass graph_detector(graph_template):
         graph_detector() except+
+        bool force_match
+        int num_cuda
 
 
 cdef class GraphTops(GraphTemplate):
@@ -51,5 +54,5 @@ cdef class GraphDetectorLep(GraphTemplate):
     pass
 
 cdef class GraphDetector(GraphTemplate):
-    pass
+    cdef graph_detector* tt
 

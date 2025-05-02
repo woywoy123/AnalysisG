@@ -2,7 +2,6 @@
 #define GRAPHS_BSM4TOPS_H
 
 #include <templates/graph_template.h>
-#include <bsm_4tops/event.h>
 
 class graph_tops: public graph_template
 {
@@ -76,6 +75,8 @@ class graph_detector: public graph_template
         virtual ~graph_detector(); 
         graph_template* clone() override; 
         void CompileEvent() override; 
+        bool PreSelection() override; 
+        bool force_match = false; 
         int num_cuda = 1; 
 }; 
 

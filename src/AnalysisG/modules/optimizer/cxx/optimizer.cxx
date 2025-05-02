@@ -63,6 +63,12 @@ void optimizer::training_loop(int k, int epoch){
         this -> metric -> capture(mode_enum::training, k, epoch, l); 
     }
     model -> save_state(); 
+
+    mr -> current_lr = {}; 
+    std::vector<torch::optim::OptimizerParamGroup> para = model -> m_optim -> param_groups(); 
+    for (size_t x(0); x < para.size(); ++x){
+        mr -> current_lr.push_back(para.at(x).options().get_lr()); 
+    }
     if (!batched){return;}
     this -> loader -> safe_delete(smpl);
 }

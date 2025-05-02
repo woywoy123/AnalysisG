@@ -1,6 +1,6 @@
 #include <templates/lossfx.h>
 
-lossfx::lossfx(){}
+lossfx::lossfx(){this -> prefix = "optimizer";}
 lossfx::~lossfx(){
     if (this -> m_adam                        ){delete this -> m_adam                        ;}
     if (this -> m_adagrad                     ){delete this -> m_adagrad                     ;}
@@ -28,6 +28,10 @@ lossfx::~lossfx(){
     if (this -> m_soft_margin                 ){delete this -> m_soft_margin                 ;}
     if (this -> m_triplet_margin              ){delete this -> m_triplet_margin              ;}
     if (this -> m_triplet_margin_with_distance){delete this -> m_triplet_margin_with_distance;}
+
+    if (this -> m_steplr){delete this -> m_steplr;}
+    if (this -> m_rlp   ){delete this -> m_rlp   ;}
+    if (this -> m_lrs   ){delete this -> m_lrs   ;}
 }
 
 torch::optim::Optimizer* lossfx::build_optimizer(optimizer_params_t* op, std::vector<torch::Tensor>* params){
@@ -43,6 +47,21 @@ torch::optim::Optimizer* lossfx::build_optimizer(optimizer_params_t* op, std::ve
         default: return nullptr; 
     }
     return nullptr; 
+}
+
+void lossfx::build_scheduler(optimizer_params_t* op, torch::optim::Optimizer* opx){
+    scheduler_enum spx_ = scheduler_string(op -> scheduler);
+    if (op -> scheduler.size() && spx_ == scheduler_enum::invalid_scheduler){this -> failure("Invalid Scheduler: " + op -> scheduler);}
+    switch(spx_){
+        case scheduler_enum::steplr                    : this -> m_steplr = (this -> m_steplr) ? this -> m_steplr : new torch::optim::StepLR(*opx, op -> step_size, op -> gamma); return; 
+        case scheduler_enum::reducelronplateauscheduler: this -> m_rlp    = (this -> m_rlp   ) ? this -> m_rlp    : new torch::optim::ReduceLROnPlateauScheduler(*opx); return; 
+        default: return;
+    }
+}
+
+void lossfx::step(){
+    if (this -> m_steplr){this -> m_steplr -> step();}
+//    if (this -> m_rlp   ){this -> m_rlp -> step();}
 }
 
 bool lossfx::build_loss_function(loss_enum lss){

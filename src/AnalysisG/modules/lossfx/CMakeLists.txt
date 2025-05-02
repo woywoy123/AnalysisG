@@ -12,5 +12,5 @@ set(SOURCE_FILES
 add_library(clossfx STATIC ${SOURCE_FILES})
 target_include_directories(clossfx PRIVATE include/templates)
 target_include_directories(clossfx PUBLIC include)
-target_link_libraries(clossfx PUBLIC ${TORCH_LIBRARIES} cstructs ctools)
+target_link_libraries(clossfx PUBLIC ${TORCH_LIBRARIES} cstructs ctools cnotification)
 target_compile_options(clossfx PRIVATE -fPIC)

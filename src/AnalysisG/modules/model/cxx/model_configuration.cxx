@@ -132,6 +132,7 @@ void model_template::save_state(){
     pth += "state/epoch-" + std::to_string(this -> epoch) + "/"; 
     this -> create_path(pth); 
     pth += "kfold-" + std::to_string(this -> kfold); 
+    this -> m_loss -> step(); 
 
     if (this -> use_pkl){
         std::vector<std::vector<torch::Tensor>> data; 

@@ -36,3 +36,11 @@ opt_enum lossfx::optim_string(std::string name){
     return opt_enum::invalid_optimizer;
 }
 
+scheduler_enum lossfx::scheduler_string(std::string name){
+    name = this -> lower(&name);
+    if (name == "steplr" ){return scheduler_enum::steplr;}
+    if (name == "reducelronplateauscheduler"){return scheduler_enum::reducelronplateauscheduler;}
+    if (name == "lrscheduler"  ){return scheduler_enum::lrscheduler;}
+    return scheduler_enum::invalid_scheduler;
+}
+

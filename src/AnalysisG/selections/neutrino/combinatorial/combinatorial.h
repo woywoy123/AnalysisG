@@ -36,13 +36,6 @@ struct packet_t {
     bool _is_marked = false; 
 }; 
 
-
-
-
-
-
-
-
 class combinatorial: public selection_template
 {
     public:

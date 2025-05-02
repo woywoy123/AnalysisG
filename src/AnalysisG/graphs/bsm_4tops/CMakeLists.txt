@@ -3,6 +3,9 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/bsm_4tops/node_features.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/bsm_4tops/edge_features.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/bsm_4tops/graphs.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/edge_features.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/node_features.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/graph_features.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/graphs.cxx
 )
 

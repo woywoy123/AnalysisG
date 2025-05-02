@@ -5,6 +5,8 @@
 #include <structs/property.h>
 
 struct optimizer_params_t {
+    optimizer_params_t();
+
     std::string optimizer = ""; 
 
     cproperty<double, optimizer_params_t> lr;                           
@@ -28,6 +30,11 @@ struct optimizer_params_t {
 
     cproperty<std::tuple<float, float>, optimizer_params_t> betas; 
     cproperty<std::vector<float>, optimizer_params_t> beta_hack; 
+    
+    std::string scheduler = ""; 
+    unsigned int step_size = 1; 
+    double           gamma = 0.1;  
+    
 
     bool m_lr                        = false; 
     bool m_lr_decay                  = false; 
@@ -47,7 +54,6 @@ struct optimizer_params_t {
     bool m_dampening                 = false; 
     bool m_nesterov                  = false;
 
-    void operator()(); 
     void static set_eps(double*, optimizer_params_t* obj);                         
     void static set_lr(double*, optimizer_params_t* obj);
     void static set_lr_decay(double*, optimizer_params_t* obj);

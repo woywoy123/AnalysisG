@@ -8,8 +8,11 @@
 #include <torch/torch.h>
 #include <structs/enums.h>
 #include <structs/optimizer.h>
+#include <notification/notification.h>
 
-class lossfx : public tools
+class lossfx: 
+    public tools, 
+    public notification
 {
     public:
         lossfx();
@@ -17,12 +20,17 @@ class lossfx : public tools
 
         loss_enum loss_string(std::string name); 
         opt_enum optim_string(std::string name); 
+        scheduler_enum scheduler_string(std::string name);
+
         torch::Tensor loss(torch::Tensor* pred, torch::Tensor* truth, loss_enum lss); 
         void weight_init(torch::nn::Sequential* data, mlp_init method); 
 
         torch::optim::Optimizer* build_optimizer(optimizer_params_t* op, std::vector<torch::Tensor>* params); 
+        void build_scheduler(optimizer_params_t* op, torch::optim::Optimizer* opx); 
+
         bool build_loss_function(loss_enum lss); 
         void to(torch::TensorOptions*); 
+        void step(); 
 
     private:
         void build_adam(optimizer_params_t* op, std::vector<torch::Tensor>* params); 
@@ -55,7 +63,7 @@ class lossfx : public tools
         torch::Tensor _fx_loss(torch::nn::TripletMarginWithDistanceLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth);   
 
 
-        // Optimizers 
+        // ------------------ Optimizers ------------------ //
         torch::optim::Adam*     m_adam    = nullptr; 
         torch::optim::Adagrad*  m_adagrad = nullptr;
         torch::optim::AdamW*    m_adamw   = nullptr; 
@@ -63,6 +71,12 @@ class lossfx : public tools
         torch::optim::RMSprop*  m_rmsprop = nullptr; 
         torch::optim::SGD*      m_sgd     = nullptr;  
 
+        // ------------ learning rate scheduler -------------- //
+        torch::optim::StepLR*                     m_steplr = nullptr;
+        torch::optim::ReduceLROnPlateauScheduler* m_rlp    = nullptr; 
+        torch::optim::LRScheduler*                m_lrs    = nullptr; 
+
+        // ----------------- loss functions --------------------------- //
         torch::nn::BCELossImpl*                       m_bce                          = nullptr;    
         torch::nn::BCEWithLogitsLossImpl*             m_bce_with_logits              = nullptr;    
         torch::nn::CosineEmbeddingLossImpl*           m_cosine_embedding             = nullptr;    
@@ -83,6 +97,10 @@ class lossfx : public tools
         torch::nn::SoftMarginLossImpl*                m_soft_margin                  = nullptr;    
         torch::nn::TripletMarginLossImpl*             m_triplet_margin               = nullptr;    
         torch::nn::TripletMarginWithDistanceLossImpl* m_triplet_margin_with_distance = nullptr;    
+
+
+
+
 
 }; 
 

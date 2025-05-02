@@ -58,6 +58,8 @@ std::string model_report::print(){
     msg += this -> prx(&this -> accuracy_graph, "Graph Accuracy");
     msg += this -> prx(&this -> accuracy_node, "Node Accuracy"); 
     msg += this -> prx(&this -> accuracy_edge, "Edge Accuracy"); 
+    if (this -> current_lr.size()){msg += "Current LR: ";}
+    for (size_t x(0); x < this -> current_lr.size(); ++x){msg += std::to_string(this -> current_lr[x]) + " | ";}
     return msg; 
 }
 
@@ -73,6 +75,7 @@ std::string model_report::prx(std::map<mode_enum, std::map<std::string, float>>*
             case mode_enum::training:   out += "Training -> "; break;
             case mode_enum::validation: out += "Validation -> "; break;
             case mode_enum::evaluation: out += "Evaluation -> "; break; 
+            default: break;
         }
         for (itf = itx -> second.begin(); itf != itx -> second.end(); ++itf){
             out += itf -> first + ": " + std::to_string(itf -> second) + " | "; 

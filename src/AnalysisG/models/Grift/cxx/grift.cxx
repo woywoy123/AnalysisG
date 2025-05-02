@@ -1,6 +1,14 @@
 #include <grift.h>
 #include <pyc/pyc.h>
 
+model_template* grift::clone(){
+    grift* md = new grift(); 
+    md -> drop_out = this -> drop_out; 
+    md -> is_mc    = this -> is_mc; 
+    md -> pagerank = this -> pagerank;
+    return md; 
+}
+
 grift::grift(){
 
     // create the null buffers
@@ -12,6 +20,7 @@ grift::grift(){
             {"rnn_x_l1", torch::nn::Linear(this -> _xin + this -> _xrec, this -> _hidden)},
             {"rnn_x_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"rnn_x_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
+            {"rnn_x_dr", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_x_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"rnn_x_l3", torch::nn::Linear(this -> _hidden, this -> _xrec)}
     }); 
@@ -29,6 +38,7 @@ grift::grift(){
     this -> rnn_hxx = new torch::nn::Sequential({
             {"rnn_hxx_l1", torch::nn::Linear(this -> _xrec*4, this -> _hidden)}, 
             {"rnn_hxx_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_hhx_dr", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_hxx_l2", torch::nn::Linear(this -> _hidden, this -> _xrec)}
     }); 
 
@@ -36,6 +46,7 @@ grift::grift(){
             {"rnn_top_l1", torch::nn::Linear(this -> _xrec*4, this -> _hidden)}, 
             {"rnn_top_r1", torch::nn::ReLU()},
             {"rnn_top_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_top_dr", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_top_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
             {"rnn_top_t2", torch::nn::Sigmoid()},
             {"rnn_top_l3", torch::nn::Linear(this -> _hidden, this -> _xout)}
@@ -46,6 +57,7 @@ grift::grift(){
             {"rnn_res_l1", torch::nn::Linear(dxx_r, this -> _hidden)}, 
             {"rnn_res_r1", torch::nn::ReLU()},
             {"rnn_res_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_res_dr", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_res_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
             {"rnn_res_t2", torch::nn::Sigmoid()},
             {"rnn_res_l3", torch::nn::Linear(this -> _hidden, this -> _xout)}
@@ -55,6 +67,7 @@ grift::grift(){
             {"ntop_l1", torch::nn::Linear(this -> _xtop + this -> _xrec, this -> _xrec)}, 
             {"ntop_r1", torch::nn::ReLU()},
             {"ntop_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
+            {"ntop_dr", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"ntop_l2", torch::nn::Linear(this -> _xrec, this -> _xrec)}, 
             {"ntop_t2", torch::nn::Sigmoid()},
             {"ntop_l3", torch::nn::Linear(this -> _xrec, this -> _xtop)}
@@ -64,20 +77,19 @@ grift::grift(){
             {"res_l1", torch::nn::Linear(this -> _xout*2 + dxx_r + this -> _xtop*2, this -> _xrec*2)}, 
             {"res_r1", torch::nn::ReLU()},
             {"res_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec*2}))}, 
+            {"res_dr", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"res_l2", torch::nn::Linear(this -> _xrec*2, this -> _xrec)}, 
             {"res_t2", torch::nn::Sigmoid()},
             {"res_l3", torch::nn::Linear(this -> _xrec, this -> _xout)}
     }); 
 
-    this -> register_module(this -> rnn_x       );
-    this -> register_module(this -> rnn_dx      );
-    this -> register_module(this -> rnn_hxx     ); 
-    this -> register_module(this -> rnn_top_edge);
-    this -> register_module(this -> rnn_res_edge);
-    this -> register_module(this -> mlp_ntop    );
-    this -> register_module(this -> mlp_sig     );
-
-
+    this -> register_module(this -> rnn_x       , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_dx      , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_hxx     , mlp_init::xavier_uniform); 
+    this -> register_module(this -> rnn_top_edge, mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_res_edge, mlp_init::xavier_uniform);
+    this -> register_module(this -> mlp_ntop    , mlp_init::xavier_uniform);
+    this -> register_module(this -> mlp_sig     , mlp_init::xavier_uniform);
 }
 
 torch::Tensor grift::message(
@@ -119,11 +131,13 @@ void grift::forward(graph_t* data){
     torch::Tensor* phi         = data -> get_data_node("phi", this);
     torch::Tensor* energy      = data -> get_data_node("energy", this);
     torch::Tensor* is_lep      = data -> get_data_node("is_lep", this); 
-    torch::Tensor pmc          = pyc::transform::separate::PxPyPzE(*pt, *eta, *phi, *energy) / 1000.0; 
+    torch::Tensor pmc          = torch::cat({*pt, *eta, *phi, *energy}, {-1}) / 1000.0;
 
     torch::Tensor edge_index   = data -> get_edge_index(this) -> to(torch::kLong); 
     torch::Tensor src          = edge_index.index({0}).view({-1}); 
     torch::Tensor dst          = edge_index.index({1}).view({-1}); 
+
+    pmc = pyc::transform::combined::PxPyPzE(pmc);
 
     // the event features
     torch::Tensor* num_jets = data -> get_data_graph("num_jets", this); 
@@ -266,6 +280,7 @@ void grift::forward(graph_t* data){
 
     this -> prediction_graph_feature("ntops" , tmlp);
     this -> prediction_graph_feature("signal", isres_); 
+    
     if (!this -> inference_mode){return;}
     if (this -> pagerank){
         gr_ = pyc::graph::PageRankReconstruction(edge_index, top_edge, pmc); 
@@ -296,10 +311,4 @@ void grift::forward(graph_t* data){
 }
 
 grift::~grift(){}
-model_template* grift::clone(){
-    grift* md = new grift(); 
-    md -> drop_out = this -> drop_out; 
-    md -> is_mc    = this -> is_mc; 
-    md -> pagerank = this -> pagerank;
-    return md; 
-}
+

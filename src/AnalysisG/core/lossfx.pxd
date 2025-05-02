@@ -1,7 +1,7 @@
 # distutils: language=c++
 # cython: language_level=3
 
-from libcpp cimport bool
+from libcpp cimport bool, int
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 cimport cython.operator
@@ -12,6 +12,10 @@ cdef extern from "<structs/optimizer.h>" nogil:
 
         void operator()() except+ nogil
         string optimizer
+        string scheduler
+
+        double gamma
+        unsigned int step_size
 
         double lr
         double lr_decay

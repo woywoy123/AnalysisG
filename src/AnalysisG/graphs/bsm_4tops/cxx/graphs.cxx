@@ -1,7 +1,8 @@
-#include "graphs.h"
-#include "graph_features.h"
-#include "node_features.h"
-#include "edge_features.h"
+#include <bsm_4tops/graph_features.h>
+#include <bsm_4tops/node_features.h>
+#include <bsm_4tops/edge_features.h>
+#include <bsm_4tops/graphs.h>
+#include <bsm_4tops/event.h>
 
 // ---------------- GRAPH-TOPS ------------------- //
 graph_tops::graph_tops(){this -> name = "graph_tops";}
@@ -177,11 +178,11 @@ graph_jets::~graph_jets(){}
 graph_template* graph_jets::clone(){return new graph_jets();}
 
 bool graph_jets::PreSelection(){
-//    bsm_4tops* evn = this -> get_event<bsm_4tops>();
-//    std::vector<particle_template*> leptons; 
-//    for (size_t x(0); x < evn -> Electrons.size(); ++x){leptons.push_back(evn -> Electrons[x]);} 
-//    for (size_t x(0); x < evn -> Muons.size(); ++x){leptons.push_back(evn -> Muons[x]);} 
-//    if (leptons.size() != 2){return false;}
+    bsm_4tops* evn = this -> get_event<bsm_4tops>();
+    std::vector<particle_template*> leptons; 
+    for (size_t x(0); x < evn -> Electrons.size(); ++x){leptons.push_back(evn -> Electrons[x]);} 
+    for (size_t x(0); x < evn -> Muons.size(); ++x){leptons.push_back(evn -> Muons[x]);} 
+    if (leptons.size() != 2){return false;}
     return true; //leptons[0] -> charge == leptons[1] -> charge; 
 }
 
@@ -307,16 +308,16 @@ void graph_jets_detector_lep::CompileEvent(){
     this -> add_edge_truth_feature<int, particle_template>(top_edge, "top_edge"); 
 
     // ---------------- data -------------------- //
-    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et, "met"); 
-    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi, "phi"); 
-    this -> add_graph_data_feature<double, bsm_4tops>(event, num_jets, "num_jets"); 
-    this -> add_graph_data_feature<double, bsm_4tops>(event, num_leps, "num_leps"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et  , "met"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi , "phi"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, num_jets    , "num_jets"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, num_leps    , "num_leps"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, event_weight, "weight"); 
-    this -> add_graph_data_feature<long, bsm_4tops>(event, event_number, "event_number"); 
+    this -> add_graph_data_feature<long, bsm_4tops>(event, event_number  , "event_number"); 
 
-    this -> add_node_data_feature<double, particle_template>(pt, "pt"); 
-    this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
-    this -> add_node_data_feature<double, particle_template>(phi, "phi"); 
+    this -> add_node_data_feature<double, particle_template>(pt    , "pt"); 
+    this -> add_node_data_feature<double, particle_template>(eta   , "eta"); 
+    this -> add_node_data_feature<double, particle_template>(phi   , "phi"); 
     this -> add_node_data_feature<double, particle_template>(energy, "energy"); 
     this -> add_node_data_feature<double, particle_template>(charge, "charge"); 
 
@@ -327,29 +328,74 @@ void graph_jets_detector_lep::CompileEvent(){
 // ---------------- GRAPH-JETS-Detector leptons (without Neutrino) ------------------- //
 graph_detector::graph_detector(){this -> name = "graph_detector";}
 graph_detector::~graph_detector(){}
-graph_template* graph_detector::clone(){return new graph_detector();}
+graph_template* graph_detector::clone(){
+    graph_detector* gx = new graph_detector();
+    gx -> force_match  = this -> force_match;
+    gx -> num_cuda     = this -> num_cuda;
+    gx -> preselection = this -> preselection; 
+    return gx;
+}
+
+bool graph_detector::PreSelection(){
+    bsm_4tops* evn = this -> get_event<bsm_4tops>();
+    std::vector<particle_template*> leptons; 
+    for (size_t x(0); x < evn -> Electrons.size(); ++x){leptons.push_back(evn -> Electrons[x]);} 
+    for (size_t x(0); x < evn -> Muons.size(); ++x){leptons.push_back(evn -> Muons[x]);} 
+    return leptons.size() == 2; 
+}
 
 void graph_detector::CompileEvent(){
+    auto mutual =[](neutrino* n1, neutrino* n2, std::vector<particle_template*>* nx) -> void{
+        if (!n1 || !n2){return;}
+        particle_template* b1 = n1 -> bquark; particle_template* b2 = n2 -> bquark;
+        particle_template* l1 = n1 -> lepton; particle_template* l2 = n2 -> lepton; 
+        std::map<std::string, particle_template*> hash_map; 
+        for (size_t x(0); x < nx -> size(); ++x){hash_map[std::string(nx -> at(x) -> hash)] = nx -> at(x);}
+        nx -> push_back(n1); nx -> push_back(n2);
+        b1 = hash_map.at(std::string(b1 -> hash)); b2 = hash_map.at(std::string(b2 -> hash)); 
+        l1 = hash_map.at(std::string(l1 -> hash)); l2 = hash_map.at(std::string(l2 -> hash));
+
+        std::map<std::string, particle_template*> mx; 
+        std::map<std::string, particle_template*>::iterator itx; 
+
+        mx = b1 -> parents; 
+        for (itx = mx.begin(); itx != mx.end(); ++itx){n1 -> register_parent(itx -> second);} 
+        n1 -> register_parent(b1); 
+
+        mx = l1 -> parents; 
+        for (itx = mx.begin(); itx != mx.end(); ++itx){n1 -> register_parent(itx -> second);} 
+        n1 -> register_parent(l1); 
+
+        mx = b2 -> parents; 
+        for (itx = mx.begin(); itx != mx.end(); ++itx){n2 -> register_parent(itx -> second);} 
+        n2 -> register_parent(b2); 
+
+        mx = l2 -> parents; 
+        for (itx = mx.begin(); itx != mx.end(); ++itx){n2 -> register_parent(itx -> second);} 
+        n2 -> register_parent(l2); 
+
+    };
+
+
     std::string cu = "cuda:" + std::to_string(this -> threadIdx % this -> num_cuda);  
 
     bsm_4tops* event = this -> get_event<bsm_4tops>(); 
-    nodes.insert(nodes.end(), event -> Muons.begin(), event -> Muons.end()); 
-    nodes.insert(nodes.end(), event -> Electrons.begin(), event -> Electrons.end()); 
+    std::vector<particle_template*> _nodes = {}; 
+    _nodes.insert(_nodes.end(), event -> Muons.begin(), event -> Muons.end()); 
+    _nodes.insert(_nodes.end(), event -> Electrons.begin(), event -> Electrons.end()); 
 
-    bool nx = nodes.size() == 2; 
-    std::vector<particle_template*> nunu = {}; 
+    bool nx = _nodes.size() >= 2; 
+    std::vector<particle_template*> bjx = {}; 
     for (size_t x(0); x < event -> Jets.size(); ++x){ 
-        nodes.push_back(event -> Jets[x]); 
+        _nodes.push_back(event -> Jets[x]); 
         if (!event -> Jets[x] -> is_b){continue;}
-        nunu.push_back(event -> Jets[x]);
-        if (nunu.size() < 2){continue;}
-        break;
+        bjx.push_back(event -> Jets[x]);
     }
 
     std::pair<particle_template*, particle_template*> nux;
-    if (nx && nunu.size() >= 2){nux = this -> double_neutrino(nodes, event -> met, event -> phi, cu);}
-
-    this -> define_particle_nodes(&nodes); 
+    if (nx && bjx.size() >= 2){nux = this -> double_neutrino(_nodes, event -> met, event -> phi, cu);}
+    mutual((neutrino*)std::get<0>(nux), (neutrino*)std::get<1>(nux), &_nodes); 
+    this -> define_particle_nodes(&_nodes); 
     this -> define_topology(fulltopo); 
 
     // ---------------- truth ------------------- //
@@ -364,14 +410,14 @@ void graph_detector::CompileEvent(){
     this -> add_edge_truth_feature<int, particle_template>(top_edge, "top_edge"); 
 
     // ---------------- data -------------------- //
-    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et, "met"); 
-    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi, "phi"); 
-    this -> add_graph_data_feature<double, bsm_4tops>(event, num_jets, "num_jets"); 
-    this -> add_graph_data_feature<double, bsm_4tops>(event, num_leps, "num_leps"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et  , "met"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi , "phi"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, num_jets    , "num_jets"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, num_leps    , "num_leps"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, event_weight, "weight"); 
-    this -> add_graph_data_feature<long, bsm_4tops>(event, event_number, "event_number"); 
+    this -> add_graph_data_feature<long  , bsm_4tops>(event, event_number, "event_number"); 
 
-    this -> add_node_data_feature<double, particle_template>(pt, "pt"); 
+    this -> add_node_data_feature<double, particle_template>(pt , "pt"); 
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
     this -> add_node_data_feature<double, particle_template>(phi, "phi"); 
     this -> add_node_data_feature<double, particle_template>(energy, "energy"); 

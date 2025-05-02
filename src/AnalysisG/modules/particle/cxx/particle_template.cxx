@@ -78,6 +78,7 @@ particle_template::particle_template(){
     this -> index.set_setter(this -> set_index); 
     this -> index.set_getter(this -> get_index); 
     this -> index.set_object(this); 
+    this -> type = "particle_template"; 
 }
 
 particle_template::particle_template(particle_t* p) : particle_template(){this -> data = *p;}

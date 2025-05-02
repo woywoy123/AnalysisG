@@ -6,8 +6,6 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from AnalysisG.core.selection_template cimport *
 from AnalysisG.core.particle_template cimport *
-#from cython.operator cimport dereference as dref
-#from .helpers cimport *
 
 cdef extern from "combinatorial.h":
     cdef cppclass combinatorial(selection_template):
@@ -29,7 +27,6 @@ cdef class Neutrino(ParticleTemplate):
 
 cdef class Particle(ParticleTemplate): 
     pass
-
 
 cdef class NuNuCombinatorial(SelectionTemplate):
     cdef combinatorial* tt
@@ -85,30 +82,4 @@ cdef inline void loader(NuNuCombinatorial vl, tuple data):
     if "pmu"            in name: vl.pmu[name_].push_back(<vector[vector[double]]>(data[1]));     return
 
 
-#cdef inline void delete(map[int, vector[particle_template*]]* px):
-#    cdef int x 
-#    cdef pair[int, vector[particle_template*]] itx
-#    for itx in dref(px):
-#        for x in range(itx.second.size()): del itx.second[x]
-#
 
-#cdef class NuNuCombinatorial(SelectionTemplate):
-#    cdef combinatorial* tt
-#    cdef container con
-#   
-#    cdef map[int, event_t] evn
-#
-#    cdef map[string, export_t] data
-#
-#    cdef map[string, vector[vector[int]]] pdgid
-#    cdef map[string, vector[vector[vector[double]]]] pmu
-#
-#    cdef map[string, vector[vector[int]]] matched_bq
-#    cdef map[string, vector[vector[int]]] matched_lp
-#    
-#    cdef map[string, vector[vector[double]]] ellipse 
-#    cdef map[string, vector[vector[double]]] chi2_nu1
-#    cdef map[string, vector[vector[double]]] chi2_nu2
-#    cdef map[string, vector[vector[vector[double]]]] pmu_nu1
-#    cdef map[string, vector[vector[vector[double]]]] pmu_nu2
-#

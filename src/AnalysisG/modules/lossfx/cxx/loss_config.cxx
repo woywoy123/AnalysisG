@@ -36,7 +36,7 @@ torch::Tensor lossfx::_fx_loss(torch::nn::BCEWithLogitsLossImpl* lossfx_, torch:
 }
 
 torch::Tensor lossfx::_fx_loss(torch::nn::CosineEmbeddingLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth){
-//    return lossfx_ -> forward(*pred, truth -> view({-1}).to(torch::kInt64);
+    this -> failure("Not implemented! (modules/lossfx/cxx/loss_config.cxx)"); 
     return torch::Tensor(); 
 }
 
@@ -45,6 +45,7 @@ torch::Tensor lossfx::_fx_loss(torch::nn::CrossEntropyLossImpl* lossfx_, torch::
 }
 
 torch::Tensor lossfx::_fx_loss(torch::nn::CTCLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth){
+    this -> failure("Not implemented! (modules/lossfx/cxx/loss_config.cxx)"); 
     return torch::Tensor(); //lossfx_ -> forward(*pred, truth -> view({-1}).to(torch::kInt64)); 
 
 }
@@ -70,6 +71,7 @@ torch::Tensor lossfx::_fx_loss(torch::nn::L1LossImpl* lossfx_, torch::Tensor* pr
 }
 
 torch::Tensor lossfx::_fx_loss(torch::nn::MarginRankingLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth){
+    this -> failure("Not implemented! (modules/lossfx/cxx/loss_config.cxx)"); 
     return torch::Tensor(); //lossfx_ -> forward(*pred, truth -> view({-1}).to(torch::kInt64));
 
 }
@@ -110,10 +112,12 @@ torch::Tensor lossfx::_fx_loss(torch::nn::SoftMarginLossImpl* lossfx_, torch::Te
 }
 
 torch::Tensor lossfx::_fx_loss(torch::nn::TripletMarginLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth){
+    this -> failure("Not implemented! (modules/lossfx/cxx/loss_config.cxx)"); 
     return torch::Tensor(); //lossfx_ -> forward(*pred, truth -> view({-1}).to(torch::kInt64));
 }
 
 torch::Tensor lossfx::_fx_loss(torch::nn::TripletMarginWithDistanceLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth){
+    this -> failure("Not implemented! (modules/lossfx/cxx/loss_config.cxx)"); 
     return torch::Tensor(); //lossfx_ -> forward(*pred, truth -> view({-1}).to(torch::kInt64));
 }
 

@@ -8,6 +8,17 @@ void lossfx::build_adam(optimizer_params_t* op, std::vector<torch::Tensor>* para
     if (op -> m_weight_decay){optim_.weight_decay(op -> weight_decay);}
     if (op -> m_amsgrad)     {optim_.amsgrad(op -> amsgrad);}
     this -> m_adam = new torch::optim::Adam(*params, optim_); 
+
+    this -> success("Adam Parameters:"); 
+    this -> success("Learning Rate: " + std::to_string(op -> lr));
+    if (op -> m_betas){
+        this -> success("Betas: " + std::to_string(std::get<0>(std::tuple<float, float>(op -> betas))) + "-" +
+                                    std::to_string(std::get<1>(std::tuple<float, float>(op -> betas))));
+    }
+    if (op -> m_eps)         {this -> success("Eps: "          + std::to_string(op -> eps));}
+    if (op -> m_weight_decay){this -> success("Weight Decay: " + std::to_string(op -> weight_decay));}
+    if (op -> m_amsgrad)     {this -> success("AMS Grad: "     + std::to_string(op -> amsgrad));}
+    this -> build_scheduler(op, this -> m_adam); 
 }
 
 void lossfx::build_adagrad(optimizer_params_t* op, std::vector<torch::Tensor>* params){
@@ -17,7 +28,15 @@ void lossfx::build_adagrad(optimizer_params_t* op, std::vector<torch::Tensor>* p
     if (op -> m_weight_decay)             {optim_.weight_decay(op -> weight_decay);}
     if (op -> m_initial_accumulator_value){optim_.initial_accumulator_value(op -> initial_accumulator_value);}
     if (op -> m_eps)                      {optim_.eps(op -> eps);}
+
+    this -> success("ADA Grad Parameters:"); 
+    this -> success("Learning Rate: " + std::to_string(op -> lr));
+    if (op -> m_lr_decay)                 {this -> success("Learning Rate Decay: " + std::to_string(op -> lr_decay));}
+    if (op -> m_weight_decay)             {this -> success("Weight Decay: " + std::to_string(op -> weight_decay));}
+    if (op -> m_initial_accumulator_value){this -> success("IAV: " + std::to_string(op -> initial_accumulator_value));}
+    if (op -> m_eps)                      {this -> success("Eps: " + std::to_string(op -> eps));}
     this -> m_adagrad = new torch::optim::Adagrad(*params, optim_); 
+    this -> build_scheduler(op, this -> m_adagrad); 
 }
 
 void lossfx::build_adamw(optimizer_params_t* op, std::vector<torch::Tensor>* params){
@@ -27,7 +46,18 @@ void lossfx::build_adamw(optimizer_params_t* op, std::vector<torch::Tensor>* par
     if (op -> m_eps)         {optim_.eps(op -> eps);}
     if (op -> m_weight_decay){optim_.weight_decay(op -> weight_decay);}
     if (op -> m_amsgrad)     {optim_.amsgrad(op -> amsgrad);}
+
+    this -> success("AdamW Parameters:"); 
+    this -> success("Learning Rate: " + std::to_string(op -> lr));
+    if (op -> m_betas){
+        this -> success("Betas: " + std::to_string(std::get<0>(std::tuple<float, float>(op -> betas))) + "-" +
+                                    std::to_string(std::get<1>(std::tuple<float, float>(op -> betas))));
+    }
+    if (op -> m_eps)         {this -> success("Eps: "          + std::to_string(op -> eps));}
+    if (op -> m_weight_decay){this -> success("Weight Decay: " + std::to_string(op -> weight_decay));}
+    if (op -> m_amsgrad)     {this -> success("AMS Grad: "     + std::to_string(op -> amsgrad));}
     this -> m_adamw = new torch::optim::AdamW(*params, optim_); 
+    this -> build_scheduler(op, this -> m_adamw); 
 }
 
 void lossfx::build_lbfgs(optimizer_params_t* op, std::vector<torch::Tensor>* params){
@@ -40,6 +70,7 @@ void lossfx::build_lbfgs(optimizer_params_t* op, std::vector<torch::Tensor>* par
     if (op -> m_max_eval)        {optim_.max_eval(op -> max_eval);}
     if (op -> m_history_size)    {optim_.history_size(op -> history_size);}
     this -> m_lbfgs = new torch::optim::LBFGS(*params, optim_); 
+    this -> build_scheduler(op, this -> m_lbfgs); 
 }
 
 void lossfx::build_rmsprop(optimizer_params_t* op, std::vector<torch::Tensor>* params){
@@ -52,6 +83,7 @@ void lossfx::build_rmsprop(optimizer_params_t* op, std::vector<torch::Tensor>* p
     if (op -> m_centered)    {optim_.centered(op -> centered);}
  
     this -> m_rmsprop = new torch::optim::RMSprop(*params, optim_); 
+    this -> build_scheduler(op, this -> m_rmsprop); 
 }
 
 void lossfx::build_sgd(optimizer_params_t* op, std::vector<torch::Tensor>* params){
@@ -61,7 +93,16 @@ void lossfx::build_sgd(optimizer_params_t* op, std::vector<torch::Tensor>* param
     if (op -> m_dampening)   {optim_.dampening(op -> dampening);}
     if (op -> m_weight_decay){optim_.weight_decay(op -> weight_decay);}
     if (op -> m_nesterov)    {optim_.nesterov(op -> nesterov);}
+
+    this -> success("Stochastic Gradient Descent Parameters:"); 
+    this -> success("Learning Rate: " + std::to_string(op -> lr));
+    if (op -> m_momentum)    {this -> success("Momentum: "     + std::to_string(op -> momentum));}
+    if (op -> m_dampening)   {this -> success("Dampening: "    + std::to_string(op -> dampening));}
+    if (op -> m_weight_decay){this -> success("Weight Decay: " + std::to_string(op -> weight_decay));}
+    if (op -> m_nesterov)    {this -> success("Nesterov: "     + std::to_string(op -> nesterov));}
+
     this -> m_sgd = new torch::optim::SGD(*params, optim_); 
+    this -> build_scheduler(op, this -> m_sgd); 
 }
 
 
