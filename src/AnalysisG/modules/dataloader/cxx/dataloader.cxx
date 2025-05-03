@@ -168,6 +168,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
         for (ilx = loc -> begin(); ilx != loc -> end(); ++ilx){      
             std::string key = ilx -> first; 
             std::vector<torch::Tensor> arr;
+            arr.reserve(data -> size()); 
             for (size_t x(0); x < data -> size(); ++x){
                 graph_t* grx = (*data)[x]; 
                 torch::Tensor* val = grx -> return_any(loc, fx(grx), key, mdl -> device_index);
@@ -247,17 +248,18 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
 
         gr -> dev_edge_index[dev_]     = torch::cat(_edge_index, {-1}); 
         gr -> dev_event_weight[dev_]   = torch::cat(_event_weight, {0}); 
-        gr -> dev_batch_index[dev_]    = bx.clone().to(op -> device());
-        gr -> dev_batched_events[dev_] = bi.clone().to(op -> device()); 
+        gr -> dev_batch_index[dev_]    = bx.clone().to(op -> device(), true);
+        gr -> dev_batched_events[dev_] = bi.clone().to(op -> device(), true); 
+        #ifdef PYC_CUDA
+        torch::cuda::synchronize(dev_); 
+        #endif
         gr -> device_index[dev_] = true; 
-
         (*out)[index] = gr; 
-        torch::cuda::synchronize(); 
         if (!prg){return;}
         *prg = 1;
     }; 
 
-    int k = mdl -> kfold-1; 
+    int k   = mdl -> kfold-1; 
     int dev = mdl -> m_option -> device().index(); 
 
     std::vector<graph_t*>* out = nullptr; 

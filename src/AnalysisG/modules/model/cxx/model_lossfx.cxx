@@ -51,7 +51,6 @@ void model_template::train_sequence(bool train){
         else {lss += *this -> _losses[x];} 
         this -> _losses[x] = nullptr; 
     }
-
     lss.backward(); 
     this -> m_optim -> step();
 }

@@ -34,12 +34,12 @@ __device__ scalar_t _clp(scalar_t p){
 
 template <typename scalar_t>
 __device__ scalar_t _sqrt(scalar_t* p){
-    return (signbit(*p) && _clp(*p) < -0.0) ? -sqrt(abs(*p)) : sqrt(*p);
+    return (signbit(*p) || _clp(*p) < 0.0) ? -sqrt(abs(*p)) : sqrt(*p);
 }
 
 template <typename scalar_t>
 __device__ scalar_t _sqrt(scalar_t p){
-    return (signbit(p) && _clp(p) < -0.0) ? -sqrt(abs(p)) : sqrt(p);
+    return (signbit(p) || _clp(p) < 0.0) ? -sqrt(abs(p)) : sqrt(p);
 }
 
 template <typename scalar_t>
@@ -70,11 +70,12 @@ template <typename scalar_t>
 __device__ scalar_t pz_(scalar_t* _pt, scalar_t* _eta){return (*_pt) * sinh(*_eta);}
 
 template <typename scalar_t>
-__device__ scalar_t pt_(scalar_t* _px, scalar_t* _py){return sqrt((*_px) * (*_px) + (*_py) * (*_py));}
+__device__ scalar_t pt_(scalar_t* _px, scalar_t* _py){return _sqrt((*_px) * (*_px) + (*_py) * (*_py));}
 
 template <typename scalar_t>
 __device__ scalar_t eta_(scalar_t* _px, scalar_t* _py, scalar_t* _pz){
-    return (*_px + *_py) ? asinh(*_pz / sqrt((*_px) * (*_px) + (*_py) * (*_py))) : 0; 
+    scalar_t xt = (*_px) * (*_px) + (*_py) + (*_py); 
+    return (xt) ? asinh(*_pz / sqrt(xt)) : 0; 
 }
 
 template <typename scalar_t>

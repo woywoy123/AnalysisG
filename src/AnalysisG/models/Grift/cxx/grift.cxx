@@ -136,7 +136,6 @@ void grift::forward(graph_t* data){
     torch::Tensor edge_index   = data -> get_edge_index(this) -> to(torch::kLong); 
     torch::Tensor src          = edge_index.index({0}).view({-1}); 
     torch::Tensor dst          = edge_index.index({1}).view({-1}); 
-
     pmc = pyc::transform::combined::PxPyPzE(pmc);
 
     // the event features
@@ -167,7 +166,6 @@ void grift::forward(graph_t* data){
     torch::Tensor num_node = torch::ones_like(trk); 
     torch::Tensor node_i   = num_node.cumsum({0})-1;
     torch::Tensor node_i_  = node_i.clone();  
-
     torch::Tensor node_s = torch::cat({pyc::physics::cartesian::combined::M(pmc), pmc, num_node, node_rnn}, {-1}); 
     node_s = (*this -> rnn_x) -> forward(node_s.to(torch::kFloat32));
 
