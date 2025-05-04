@@ -2,6 +2,10 @@
 #include <transform/base.cuh>
 #include <utils/utils.cuh>
 
+#ifndef phys_th
+#define phys_th 128
+#endif
+
 torch::Tensor transform_::Px(torch::Tensor* pt, torch::Tensor* phi){
     const unsigned int dx = pt -> size(0); 
     torch::Tensor px_  = torch::zeros({dx, 1}, MakeOp(pt)); 
@@ -60,33 +64,35 @@ torch::Tensor transform_::Pz(torch::Tensor* pt, torch::Tensor* eta){
 torch::Tensor transform_::PxPyPz(torch::Tensor* pmu){
     const unsigned int dx = pmu -> size({0}); 
     const unsigned int dy = pmu -> size({-1});
-    const unsigned int s = sizeof(double)*dy; 
     torch::Tensor pmc = torch::zeros({dx, dy}, MakeOp(pmu)); 
 
-    const dim3 thd = dim3(1, dy); 
-    const dim3 blk = blk_(dx, 1, dy, dy);
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
+    const dim3 thd = dim3(thx, 4); 
+    const dim3 blk = blk_(dx, thx, 4, 4);
 
     AT_DISPATCH_FLOATING_TYPES(pmu -> scalar_type(), "pxpypz", [&]{ 
-        PxPyPzK<scalar_t><<<blk, thd, s>>>(
+        PxPyPzK<scalar_t, phys_th><<<blk, thd>>>(
              pmu -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-                pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>());
+                pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                dx, dy);
     }); 
     return pmc;   
 }
 
 torch::Tensor transform_::PxPyPzE(torch::Tensor* pmu){
+    const unsigned int dx = pmu -> size({0}); 
     const unsigned int dy = pmu -> size({-1});
     if (dy >= 4){return transform_::PxPyPz(pmu);}
-    const unsigned int dx = pmu -> size({0}); 
-    torch::Tensor pmc = torch::zeros({dx, 4}, MakeOp(pmu)); 
+    torch::Tensor pmc = torch::zeros({dx, dy}, MakeOp(pmu)); 
 
-    const dim3 thd = dim3(1, 4); 
-    const dim3 blk = blk_(dx, 1, 4, 4);
-
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
+    const dim3 thd = dim3(thx, 4); 
+    const dim3 blk = blk_(dx, thx, 4, 4);
     AT_DISPATCH_FLOATING_TYPES(pmu -> scalar_type(), "pxpypze", [&]{ 
-        PxPyPzEK<scalar_t><<<blk, thd>>>(
+        PxPyPzEK<scalar_t, phys_th><<<blk, thd>>>(
              pmu -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-                pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>());
+                pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                dx, dy);
     }); 
     return pmc;   
 }
@@ -149,31 +155,35 @@ torch::Tensor transform_::PtEtaPhi(torch::Tensor* pmc){
     const unsigned int dy = pmc -> size({-1});
     torch::Tensor pmu = torch::zeros({dx, dy}, MakeOp(pmc)); 
 
-    const dim3 thd = dim3(1, dy); 
-    const dim3 blk = blk_(dx, 1, dy, dy);
-    const unsigned int s = sizeof(double)*dy; 
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
+    const dim3 thd = dim3(thx, 4); 
+    const dim3 blk = blk_(dx, thx, 4, 4);
 
     AT_DISPATCH_FLOATING_TYPES(pmc -> scalar_type(), "ptetaphi", [&]{
-        PtEtaPhiK<scalar_t><<<blk, thd, s>>>(
+        PtEtaPhiK<scalar_t, phys_th><<<blk, thd>>>(
             pmc -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-               pmu.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()); 
+               pmu.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+               dx, dy
+        ); 
     }); 
     return pmu; 
 }
 
 torch::Tensor transform_::PtEtaPhiE(torch::Tensor* pmc){
     const unsigned int dy = pmc -> size({-1});
-    if (dy >= 4){return transform_::PtEtaPhi(pmc);}
     const unsigned int dx = pmc -> size({0}); 
+    if (dy < 4){return transform_::PtEtaPhi(pmc);}
     torch::Tensor pmu = torch::zeros({dx, 4}, MakeOp(pmc)); 
 
-    const dim3 thd = dim3(1, 4); 
-    const dim3 blk = blk_(dx, 1, 4, 4);
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
+    const dim3 thd = dim3(thx, 4); 
+    const dim3 blk = blk_(dx, thx, 4, 4);
 
     AT_DISPATCH_FLOATING_TYPES(pmc -> scalar_type(), "ptetaphie", [&]{
-        PtEtaPhiEK<scalar_t><<<blk, thd>>>(
+        PtEtaPhiEK<scalar_t, phys_th><<<blk, thd>>>(
             pmc -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-               pmu.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>());
+               pmu.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+               dx, dy);
     }); 
     return pmu;   
 }

@@ -121,7 +121,9 @@ namespace pyc {
        torch::Dict<std::string, torch::Tensor> NuNu(
                torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
                torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
-               torch::Tensor met_xy, torch::Tensor masses, double null = 10e-10); 
+               torch::Tensor met_xy, torch::Tensor masses, 
+               double null = 10e-10, double steps = 1e-6, 
+               double tolerance = 1e-6, long timeout = 1000); 
 
        torch::Dict<std::string, torch::Tensor> combinatorial(
                torch::Tensor edge_index, torch::Tensor batch , torch::Tensor pmc, 

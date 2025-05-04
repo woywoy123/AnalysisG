@@ -3,17 +3,19 @@
 #include <physics/physics.cuh>
 #include <physics/base.cuh>
 
+#define phys_th 128
+
 torch::Tensor physics_::P2(torch::Tensor* pmc){
     const unsigned int dx = pmc -> size({0}); 
     const unsigned int dy = pmc -> size({-1}); 
 
-    const unsigned int thx = (dx >= 128) ? 128 : dx; 
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
     const dim3 thd = dim3(thx, 3); 
     const dim3 blk = blk_(dx, thx, 3, 3);
     torch::Tensor p2 = torch::zeros({dx, 1}, MakeOp(pmc)); 
 
     AT_DISPATCH_FLOATING_TYPES(pmc -> scalar_type(), "P2", [&]{ 
-        _P2K<scalar_t, 128><<<blk, thd>>>(
+        _P2K<scalar_t, phys_th><<<blk, thd>>>(
              pmc -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                  p2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                  dx, dy
@@ -26,13 +28,13 @@ torch::Tensor physics_::P(torch::Tensor* pmc){
     const unsigned int dx = pmc -> size({0}); 
     const unsigned int dy = pmc -> size({-1}); 
 
-    const unsigned int thx = (dx >= 128) ? 128 : dx; 
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
     const dim3 thd = dim3(thx, 3); 
     const dim3 blk = blk_(dx, thx, 3, 3);
     torch::Tensor p = torch::zeros({dx, 1}, MakeOp(pmc)); 
 
     AT_DISPATCH_FLOATING_TYPES(pmc -> scalar_type(), "P", [&]{ 
-        _PK<scalar_t, 128><<<blk, thd>>>(
+        _PK<scalar_t, phys_th><<<blk, thd>>>(
              pmc -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                   p.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                   dx, dy);  
@@ -44,12 +46,12 @@ torch::Tensor physics_::Beta2(torch::Tensor* pmc){
     const unsigned int dx = pmc -> size({0}); 
     const unsigned int dy = pmc -> size({-1}); 
 
-    const unsigned int thx = (dx >= 128) ? 128 : dx; 
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
     const dim3 thd = dim3(thx, 4); 
     const dim3 blk = blk_(dx, thx, 4, 4);
     torch::Tensor b2 = torch::zeros({dx, 1}, MakeOp(pmc)); 
     AT_DISPATCH_FLOATING_TYPES(pmc -> scalar_type(), "Beta2", [&]{ 
-        _Beta2<scalar_t, 4><<<blk, thd>>>(
+        _Beta2<scalar_t, phys_th><<<blk, thd>>>(
                 pmc -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                     b2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                     dx, dy);  
@@ -62,12 +64,12 @@ torch::Tensor physics_::Beta(torch::Tensor* pmc){
     const unsigned int dy = pmc -> size({-1}); 
     torch::Tensor b = torch::zeros({dx, 1}, MakeOp(pmc)); 
 
-    const unsigned int thx = (dx >= 128) ? 128 : dx; 
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
     const dim3 thd = dim3(thx, 4); 
     const dim3 blk = blk_(dx, thx, 4, 4);
 
     AT_DISPATCH_FLOATING_TYPES(pmc -> scalar_type(), "Beta", [&]{ 
-        _Beta<scalar_t, 128><<<blk, thd>>>(
+        _Beta<scalar_t, phys_th><<<blk, thd>>>(
                 pmc -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                      b.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                      dx, dy);  
@@ -80,12 +82,12 @@ torch::Tensor physics_::M2(torch::Tensor* pmc){
     const unsigned int dy = pmc -> size({-1}); 
     torch::Tensor m2 = torch::zeros({dx, 1}, MakeOp(pmc)); 
 
-    const unsigned int thx = (dx >= 128) ? 128 : dx; 
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
     const dim3 thd = dim3(thx, 4); 
     const dim3 blk = blk_(dx, thx, 4, 4);
 
     AT_DISPATCH_FLOATING_TYPES(pmc -> scalar_type(), "M2", [&]{ 
-        _M2<scalar_t, 128><<<blk, thd>>>(
+        _M2<scalar_t, phys_th><<<blk, thd>>>(
                 pmc -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                     m2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                     dx, dy);  
@@ -98,12 +100,12 @@ torch::Tensor physics_::M(torch::Tensor* pmc){
     const unsigned int dy = pmc -> size({-1}); 
     torch::Tensor m = torch::zeros({dx, 1}, MakeOp(pmc)); 
 
-    const unsigned int thx = (dx >= 128) ? 128 : dx; 
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
     const dim3 thd = dim3(thx, 4); 
     const dim3 blk = blk_(dx, thx, 4, 4);
 
     AT_DISPATCH_FLOATING_TYPES(pmc -> scalar_type(), "M", [&]{ 
-        _M<scalar_t, 128><<<blk, thd>>>(
+        _M<scalar_t, phys_th><<<blk, thd>>>(
                 pmc -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                      m.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                      dx, dy
@@ -117,12 +119,12 @@ torch::Tensor physics_::Mt2(torch::Tensor* pmc){
     const unsigned int dy = pmc -> size({-1}); 
     torch::Tensor mt2 = torch::zeros({dx, 1}, MakeOp(pmc)); 
 
-    const unsigned int thx = (dx >= 128) ? 128 : dx; 
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
     const dim3 thd = dim3(thx, 4); 
     const dim3 blk = blk_(dx, thx, 4, 4);
 
     AT_DISPATCH_FLOATING_TYPES(pmc -> scalar_type(), "Mt2", [&]{ 
-        _Mt2<scalar_t, 128><<<blk, thd>>>(
+        _Mt2<scalar_t, phys_th><<<blk, thd>>>(
                 pmc -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                    mt2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                    dx, dy);  
@@ -135,12 +137,12 @@ torch::Tensor physics_::Mt(torch::Tensor* pmc){
     const unsigned int dy = pmc -> size({-1}); 
     torch::Tensor mt = torch::zeros({dx, 1}, MakeOp(pmc)); 
 
-    const unsigned int thx = (dx >= 128) ? 128 : dx; 
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
     const dim3 thd = dim3(thx, 4); 
     const dim3 blk = blk_(dx, thx, 4, 4);
 
     AT_DISPATCH_FLOATING_TYPES(pmc -> scalar_type(), "Mt", [&]{ 
-        _Mt<scalar_t, 128><<<blk, thd>>>(
+        _Mt<scalar_t, phys_th><<<blk, thd>>>(
                pmc -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                    mt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                    dx, dy);  
@@ -153,12 +155,12 @@ torch::Tensor physics_::Theta(torch::Tensor* pmc){
     const unsigned int dy = pmc -> size({-1}); 
     torch::Tensor theta = torch::zeros({dx, 1}, MakeOp(pmc)); 
 
-    const unsigned int thx = (dx >= 128) ? 128 : dx; 
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
     const dim3 thd = dim3(thx, 4); 
     const dim3 blk = blk_(dx, thx, 4, 4);
 
     AT_DISPATCH_FLOATING_TYPES(pmc -> scalar_type(), "theta", [&]{ 
-        _theta<scalar_t, 128><<<blk, thd>>>(
+        _theta<scalar_t, phys_th><<<blk, thd>>>(
                pmc -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                 theta.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                 dx, dy
@@ -172,12 +174,12 @@ torch::Tensor physics_::DeltaR(torch::Tensor* pmu1, torch::Tensor* pmu2){
     const unsigned int dy = pmu1 -> size({-1}); 
     torch::Tensor dr = torch::zeros({dx, 1}, MakeOp(pmu1)); 
 
-    const unsigned int thx = (dx >= 128) ? 128 : dx; 
+    const unsigned int thx = (dx >= phys_th) ? phys_th : dx; 
     const dim3 thd = dim3(thx, 4); 
     const dim3 blk = blk_(dx, thx, 4, 4);
 
     AT_DISPATCH_FLOATING_TYPES(pmu1 -> scalar_type(), "deltar", [&]{ 
-        _deltar<scalar_t, 128><<<blk, thd>>>(
+        _deltar<scalar_t, phys_th><<<blk, thd>>>(
               pmu1 -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
               pmu2 -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                    dr.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 

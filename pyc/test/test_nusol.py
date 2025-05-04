@@ -152,16 +152,17 @@ def test_nusol_nunu_cuda():
         x_ = next(ita)
         ev, l1, l2, b1, b2 = x_
         met_xy = ev.ten
-
+    
         print("_______", i, "________")
-        b1_ = pyc.cuda_transform_combined_pxpypze(b1.ten)
-        b2_ = pyc.cuda_transform_combined_pxpypze(b2.ten)
-        l1_ = pyc.cuda_transform_combined_pxpypze(l1.ten)
-        l2_ = pyc.cuda_transform_combined_pxpypze(l2.ten)
+        b1_ = pyc.cupyc_transform_combined_pxpypze(b1.ten)
+        b2_ = pyc.cupyc_transform_combined_pxpypze(b2.ten)
+        l1_ = pyc.cupyc_transform_combined_pxpypze(l1.ten)
+        l2_ = pyc.cupyc_transform_combined_pxpypze(l2.ten)
 
-        pred = pyc.cuda_nusol_nunu(b1_, b2_, l1_, l2_, met_xy, masses, 1e-9)
+        pred = pyc.cupyc_nusol_nunu(b1_, b2_, l1_, l2_, met_xy, masses, 1e-1, 5e-5, 0.01, 0)
         nu1c, nu2c = pred["nu1"].to(device = "cpu").view(-1, 3), pred["nu2"].to(device = "cpu").view(-1, 3)
 
+        #print(torch.cat([nu1c, nu2c], -1))
         data["mass"].append(masses)
         data["b1"].append(b1_)
         data["l1"].append(l1_)
@@ -171,16 +172,14 @@ def test_nusol_nunu_cuda():
         data["nu1"].append(pred["nu1"])
         data["nu2"].append(pred["nu2"])
 
-        Jacobi([172.68, 172.68, 80.365, 80.365, ev.vec.px, ev.vec.py], b1, b2, l1, l2, ev)
-
-        exit()
-
-
+#        Jacobi([172.68, 172.68, 80.365, 80.365, ev.vec.px, ev.vec.py], b1, b2, l1, l2, ev)
         try: nu  = DoubleNu((b1.vec, b2.vec), (l1.vec, l2.vec), ev)
         except numpy.linalg.LinAlgError: continue
         nu1T, nu2T = nu.nunu_s
         nu1T, nu2T = [torch.tensor(f.tolist(), dtype = torch.float64) for f in [nu1T, nu2T]]
+        if nu.lsq: continue
         if nu1T.size(0) == 0 and nu1c.size(0) == 0: continue
+        xm = None; ym = None
         for j in range(nu1T.size(0)):
             chi2 = None
             for k in range(nu1c.size(0)):
@@ -188,11 +187,18 @@ def test_nusol_nunu_cuda():
                 lm2  = ((abs(nu2T[j] - nu2c[k])/nu2T[j])**2).sum(-1)
                 chi_ = ((lm1**2 + lm2**2).sum(-1))**0.5
                 if chi2 is not None and chi2 < chi_: continue
-                chi2 = chi_
-            if not (chi2 < 10):
-                print("killing");
-                print(chi2)
-                exit()
+                chi2 = chi_.tolist()
+                if xm is None: xm = chi2
+                if xm < chi2: continue
+                xm = chi2; ym = nu1c
+      
+        print(xm)
+        if xm < 1e-1: continue
+        print(pred["K"])
+
+        print("killing");
+        print("--------")
+        exit()
 
 
     predx = pyc.cuda_nusol_nunu(
@@ -283,8 +289,8 @@ def test_nusol_combinatorial_cuda():
 if __name__ == "__main__":
     #test_nusol_base_matrix()
     #test_nusol_nu_cuda()
-    #test_nusol_nunu_cuda()
-    test_nusol_combinatorial_cuda()
+    test_nusol_nunu_cuda()
+    #test_nusol_combinatorial_cuda()
 
 
 

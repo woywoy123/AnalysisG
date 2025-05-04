@@ -54,7 +54,7 @@ def test_physics():
     def _cubeta2(dcu): return [dcu[:, 0], dcu[:, 1], dcu[:, 2], dcu[:, 3]]
     checkthis(test_c, dcc, _cubeta2, _beta2)
     checkthis(test_p, dcp, _cubeta2, _beta2, False)
-
+    
     def _beta(p): return p.beta
     def _cubeta(dcu): return [dcu[:, 0], dcu[:, 1], dcu[:, 2], dcu[:, 3]]
     checkthis(test_c, dcc, _cubeta, _beta)

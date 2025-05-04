@@ -273,7 +273,7 @@ std::tuple<torch::Tensor, torch::Tensor> nusol_::Intersection(torch::Tensor* A, 
     _A.index_put_({swp}, _tmp);
     
     // Find the non imaginary eigenvalue solutions
-    _tmp = torch::linalg::eigvals(operators_::Inverse(&_A).matmul(_B)); 
+    _tmp = torch::linalg_eigvals(operators_::Inverse(&_A).matmul(_B)); 
     torch::Tensor _r = torch::real(_tmp); 
     torch::Tensor msk = torch::isreal(_tmp)*torch::arange(3, 0, -1, op); 
     msk = torch::argmax(msk, -1, true); 
@@ -340,7 +340,7 @@ std::tuple<torch::Tensor, torch::Tensor> nusol_::Intersection(torch::Tensor* A, 
     torch::Tensor _t, d1, V, V_, diag; 
     V = torch::cross(_out.view(dim313), _A.view(dim133), 3); 
     V = torch::transpose(V, 2, 3); 
-    V = std::get<1>(torch::linalg::eig(V));
+    V = std::get<1>(torch::linalg_eig(V));
     V = torch::real(V);
     V = torch::transpose(V, 2, 3); 
     

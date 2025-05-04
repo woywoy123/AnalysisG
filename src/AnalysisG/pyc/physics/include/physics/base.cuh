@@ -70,7 +70,7 @@ __global__ void _Beta(
     sdata[threadIdx.x][threadIdx.y] = 0; 
     if (_idx >= dx || threadIdx.y >= dy){return;}
     double pn = pmc[_idx][threadIdx.y]; 
-    sdata[threadIdx.x][threadIdx.y] = (threadIdx.y == 3) ? _div(pn*pn) : pn*pn; 
+    sdata[threadIdx.x][threadIdx.y] = (threadIdx.y == 3) ? _div(pn) : pn*pn; 
     if (threadIdx.y){return;}
     __syncthreads();
     b[_idx][0] = _sqrt(_sum(sdata[threadIdx.x], 3))*sdata[threadIdx.x][3];
@@ -164,7 +164,7 @@ __global__ void _theta(
 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
     sdata[threadIdx.x][threadIdx.y] = 0; 
-    if (_idx >= dx || threadIdx.y >= dy){return;}
+    if (_idx >= dx || threadIdx.y > dy){return;}
     const bool sw = threadIdx.y < 3; 
     double pn = pmc[_idx][threadIdx.y-!sw];
 

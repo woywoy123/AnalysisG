@@ -4,6 +4,7 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/include/graph/base.cuh
     ${CMAKE_CURRENT_LIST_DIR}/pagerank.cu
     ${CMAKE_CURRENT_LIST_DIR}/graph.cu
+    ${CMAKE_CURRENT_LIST_DIR}/reconstruction.cu
 )
 
 add_library(cugraph STATIC ${SOURCE_FILES})

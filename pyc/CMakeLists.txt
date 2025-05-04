@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 project(pyc VERSION 5.0 LANGUAGES CXX CUDA)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CUDA_ARCHITECTURES "native")
+set(CMAKE_CUDA_ARCHITECTURES "all")
 
 include(CheckLanguage)
 include(FetchContent)
@@ -17,7 +17,7 @@ message(STATUS "CMAKE_CUDA_COMPILER = ${CMAKE_CUDA_COMPILER}")
 message(STATUS "CMAKE_CUDA_COMPILER_ID = ${CMAKE_CUDA_COMPILER_ID}")
 message(STATUS "CMAKE_CUDA_COMPILER_VERSION = ${CUDA_V}")
 
-FetchContent_Declare(torch URL "https://download.pytorch.org/libtorch/cu121/libtorch-shared-with-deps-2.5.1%2Bcu121.zip")
+FetchContent_Declare(torch URL "https://download.pytorch.org/libtorch/cu126/libtorch-cxx11-abi-shared-with-deps-2.7.0%2Bcu126.zip")
 FetchContent_MakeAvailable(torch)
 
 list(APPEND CMAKE_PREFIX_PATH ${torch_SOURCE_DIR})

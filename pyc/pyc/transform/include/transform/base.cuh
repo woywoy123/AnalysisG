@@ -30,43 +30,50 @@ __global__ void PzK(
     pz[idx][0] = pz_(&pt[idx][0], &eta[idx][0]);
 } 
 
-template <typename scalar_t>
+template <typename scalar_t, size_t size_x>
 __global__ void PxPyPzK(
         const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmu,
-              torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc
+              torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc, 
+        const unsigned int dx, const unsigned int dy
 ){
-    extern __shared__ double pmx[]; 
+    __shared__ double pmx[size_x][4]; 
 
     const unsigned int _idx = blockIdx.x*blockDim.x + threadIdx.x; 
-    pmx[threadIdx.y] = pmu[_idx][threadIdx.y]; 
+    pmx[threadIdx.x][threadIdx.y] = 0; 
+    if (_idx >= dx || threadIdx.y >= dy){return;}
+    pmx[threadIdx.x][threadIdx.y] = pmu[_idx][threadIdx.y]; 
     __syncthreads(); 
-    if (threadIdx.y == 0){pmc[_idx][threadIdx.y] = px_(&pmx[0], &pmx[2]); return;}
-    if (threadIdx.y == 1){pmc[_idx][threadIdx.y] = py_(&pmx[0], &pmx[2]); return;}
-    if (threadIdx.y == 2){pmc[_idx][threadIdx.y] = pz_(&pmx[0], &pmx[1]); return;}
-    pmc[_idx][threadIdx.y] = pmx[threadIdx.y]; 
+
+    if (threadIdx.y == 0){pmc[_idx][threadIdx.y] = px_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][2]); return;}
+    if (threadIdx.y == 1){pmc[_idx][threadIdx.y] = py_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][2]); return;}
+    if (threadIdx.y == 2){pmc[_idx][threadIdx.y] = pz_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]); return;}
+    pmc[_idx][threadIdx.y] = pmx[threadIdx.x][threadIdx.y]; 
 }
 
-template <typename scalar_t>
+template <typename scalar_t, size_t size_x>
 __global__ void PxPyPzEK(
         const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmu,
-              torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc
+              torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc,
+        const unsigned int dx, const unsigned int dy
 ){
-    __shared__ double pmx[4]; 
-    __shared__ double pmt[4]; 
+    __shared__ double pmx[size_x][4]; 
+    __shared__ double pmt[size_x][4]; 
 
     const unsigned int _idx = blockIdx.x*blockDim.x + threadIdx.x; 
-    if (threadIdx.y < 3){pmx[threadIdx.y] = pmu[_idx][threadIdx.y];}
-    else {pmt[threadIdx.y] = 0;}
-
+    pmx[threadIdx.x][threadIdx.y] = 0;
+    pmt[threadIdx.x][threadIdx.y] = 0;
+    if (_idx >= dx || threadIdx.y >= dy){return;}
+    pmx[threadIdx.x][threadIdx.y] = pmu[_idx][threadIdx.y]; 
     __syncthreads(); 
+
     double xt = 0; 
-    if (threadIdx.y == 0){xt = px_(&pmx[0], &pmx[2]);}
-    if (threadIdx.y == 1){xt = py_(&pmx[0], &pmx[2]);}
-    if (threadIdx.y == 2){xt = pz_(&pmx[0], &pmx[1]);}
-    pmt[threadIdx.y] = xt*xt;
+    if (threadIdx.y == 0){xt = px_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][2]);}
+    if (threadIdx.y == 1){xt = py_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][2]);}
+    if (threadIdx.y == 2){xt = pz_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
+    pmt[threadIdx.x][threadIdx.y] = xt*xt;
     __syncthreads(); 
 
-    if (threadIdx.y == 3){xt = _sqrt(_sum(pmt, 3));} 
+    if (threadIdx.y == 3){xt = _sqrt(_sum(pmt[threadIdx.x], 3));} 
     pmc[_idx][threadIdx.y] = xt; 
 }
 
@@ -101,50 +108,55 @@ __global__ void EtaK(
     eta[idx][0] = eta_(&pmc[idx][0], &pmc[idx][1], &pmc[idx][2]);
 }
 
-template <typename scalar_t>
+template <typename scalar_t, size_t size_x>
 __global__ void PtEtaPhiK(
     const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc, 
-          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmu
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmu, 
+    const unsigned int dx, const unsigned int dy
 ){
-    extern __shared__ double pmx[]; 
-
+    __shared__ double pmx[size_x][4]; 
     const unsigned int _idx = blockIdx.x*blockDim.x + threadIdx.x; 
-    pmx[threadIdx.y] = pmc[_idx][threadIdx.y]; 
+    pmx[threadIdx.x][threadIdx.y] = 0; 
+    if (_idx >= dx || threadIdx.y >= dy){return;}
+    pmx[threadIdx.x][threadIdx.y] = pmc[_idx][threadIdx.y]; 
     __syncthreads(); 
 
     double rx = 0; 
-    if (threadIdx.y == 0){rx = pt_(&pmx[0], &pmx[1]);}
+    if (threadIdx.y == 0){rx = pt_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
     else if (threadIdx.y == 1){
-        rx = pt_(&pmx[0], &pmx[1]); 
-        rx = eta_(&rx, &pmx[2]); 
+        rx = pt_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]); 
+        rx = eta_(&rx, &pmx[threadIdx.x][2]); 
     }
-    else if (threadIdx.y == 2){rx = phi_(&pmx[0], &pmx[1]);}
-    else {rx = pmx[threadIdx.y];}
+    else if (threadIdx.y == 2){rx = phi_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
+    else {rx = pmx[threadIdx.x][threadIdx.y];}
     pmu[_idx][threadIdx.y] = rx; 
 } 
 
-template <typename scalar_t>
+template <typename scalar_t, size_t size_x>
 __global__ void PtEtaPhiEK(
     const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc, 
-          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmu
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmu, 
+    const unsigned int dx, const unsigned int dy
 ){
-    __shared__ double pmx[4]; 
-    __shared__ double pmt[4]; 
+    __shared__ double pmx[size_x][4]; 
+    __shared__ double pmt[size_x][4]; 
 
     const unsigned int _idx = blockIdx.x*blockDim.x + threadIdx.x; 
+    if (_idx >= dx){return;}
+
     double rx = 0; 
     if (threadIdx.y < 3){rx = pmc[_idx][threadIdx.y];}
-    pmx[threadIdx.y] = rx; 
-    pmt[threadIdx.y] = rx*rx;  
+    pmx[threadIdx.x][threadIdx.y] = rx; 
+    pmt[threadIdx.x][threadIdx.y] = rx*rx;  
     __syncthreads(); 
 
-    if (threadIdx.y == 0){rx =  pt_(&pmx[0], &pmx[1]);}
+    if (threadIdx.y == 0){rx =  pt_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
     else if (threadIdx.y == 1){
-        rx = pt_(&pmx[0], &pmx[1]); 
-        rx = eta_(&rx, &pmx[2]); 
+        rx = pt_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]); 
+        rx = eta_(&rx, &pmx[threadIdx.x][2]); 
     }
-    else if (threadIdx.y == 2){rx = phi_(&pmx[0], &pmx[1]);}
-    else {rx = _sqrt(_sum(pmt, 3));}
+    else if (threadIdx.y == 2){rx = phi_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
+    else {rx = _sqrt(_sum(pmt[threadIdx.x], 3));}
     pmu[_idx][threadIdx.y] = rx; 
 }
 

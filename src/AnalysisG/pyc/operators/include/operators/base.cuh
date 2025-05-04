@@ -2,36 +2,28 @@
 #define CU_OPERATORS_BASE_H
 #include <utils/atomic.cuh>
 
-template <typename scalar_t>
+template <typename scalar_t, size_t size_x, size_t size_y>
 __global__ void _dot(
         const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v1, 
         const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v2, 
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out, 
-        const unsigned int dx, const unsigned int dy
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out, 
+        const unsigned int dx, const unsigned int dz
 ){
-    extern __shared__ double sdata[]; 
+    __shared__ double _vinx[size_x][size_y][size_y]; 
+    __shared__ double _viny[size_x][size_y][size_y]; 
 
-    const unsigned int _idx = (blockIdx.x * blockDim.x + threadIdx.x); 
+    const unsigned int _idx = threadIdx.x; 
     const unsigned int _idy = threadIdx.y; 
     const unsigned int _idz = threadIdx.z; 
-    const unsigned int idx = threadIdx.x*dy*dy*2; 
+    const unsigned int idx  = blockIdx.x * blockDim.x + threadIdx.x; 
+    _vinx[_idx][_idy][_idz] = 0; _viny[_idx][_idz][_idy] = 0; 
+    if (idx >= dx || _idy >= dz || _idz >= dz){return;}
 
-    const unsigned int _xi = (_idy * dy + _idz) + idx; 
-    const unsigned int _ri = (_xi / dy) % dy;
-    const unsigned int _rj = _xi % dy;  
-    if (_idx >= dx){return;}
-
-    sdata[_xi] = v1[_idx][_ri][_rj]; 
-    sdata[_xi + dy*dy] = v2[_idx][_rj][_ri]; 
-    __syncthreads(); 
-
-    double sm = 0; 
-    unsigned int rol = _ri*dy + idx; 
-    unsigned int col = _rj*dy + dy*dy + idx; 
-    for (size_t x(0); x < dy; ++x){sm += sdata[rol + x] * sdata[col + x];}
-    out[_idx][_ri][_rj] = sm; 
+    _vinx[_idx][_idy][_idz] = v1[idx][_idy][_idz]; 
+    _viny[_idx][_idz][_idy] = v2[idx][_idy][_idz]; 
+    __syncthreads();
+    out[idx][_idy][_idz] = _dot(_vinx[_idx][_idy], _viny[_idx][_idz], dz); 
 }
-
 
 template <typename scalar_t>
 __global__ void _cross(
@@ -55,7 +47,6 @@ __global__ void _cross(
     __syncthreads(); 
     out[_idx][_idy3][_idy2][threadIdx.z] = _cofactor(Av[threadIdx.y], 0, threadIdx.z); 
 }
-
 
 template <typename scalar_t>
 __global__ void _costheta(

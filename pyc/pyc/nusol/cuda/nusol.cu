@@ -2,15 +2,13 @@
 #include <nusol/base.cuh>
 #include <nusol/utils.cuh>
 #include <utils/utils.cuh>
-#include <operators/operators.cuh>
 
 std::map<std::string, torch::Tensor> nusol_::combinatorial(
     torch::Tensor* edge_index, torch::Tensor* batch, torch::Tensor* pmc, 
     torch::Tensor* pid, torch::Tensor* met_xy, 
-    double  mT, double   mW, double t_pm, double w_pm, 
-    long steps, double null, bool gev
+    double  mT, double mW, double null, double perturb, long steps, bool gev
 ){
-    const double   scale = (gev) ? 1.0/1000.0 : 1.0; 
+    const double   scale = (gev) ? 1.0 : 1.0/1000.0; 
     const double _mass_t = scale * mT; 
     const double _mass_w = scale * mW; 
 
@@ -92,7 +90,7 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         );
     }); 
     std::map<std::string, torch::Tensor> nus; 
-
+    if (n1.index({n1}).size({0})){return {};}
 //    if (n1.index({n1}).size({0})){
 //        std::map<std::string, torch::Tensor> s_nu; 
 //        torch::Tensor snu_metxy = metxy.index({ev_id}).index({n1.index({ev_id})}); 
@@ -125,7 +123,6 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         torch::Tensor params  = torch::cat({dnu_met, dnu_tw1, dnu_tw2}, {-1}); 
         const unsigned long thx = (lx > 24) ? 24 : lx; 
 
-        double perturb = 1e-3; // * (1/scale);   
         const dim3 thdx  = dim3(thx    , sqp+1       , 6   ); 
         const dim3 blkdx = blk_(lx, thx, sqp+1, sqp+1, 6, 6);
 
@@ -135,6 +132,8 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         dnu_met =   metxy.index({_msk}).index({idx}); 
         dnu_tw1 = mass_tw.index({_msk}).index({idx}); 
         dnu_tw2 = mass_tw.index({_msk}).index({idx}); 
+        double tmp_p = perturb * (1 + 999 * (!gev)); 
+        long tmp_s = 0; 
 
         for (size_t x(0); x < steps; ++x){
             AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "perturb", [&]{
@@ -147,7 +146,7 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
                 ); 
             });
 
-            nus = nusol_::NuNu(&_pmcb1, &_pmcb2, &_pmcl1, &_pmcl2, &dnu_met, null, &dnu_tw1, &dnu_tw2);
+            nus = nusol_::NuNu(&_pmcb1, &_pmcb2, &_pmcl1, &_pmcl2, &dnu_met, null, &dnu_tw1, &dnu_tw2, 1e-6, 0.01, tmp_s);
             torch::Tensor dnu_res = nus["distances"];
 
             AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "minimize", [&]{
@@ -156,7 +155,15 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
                     dnu_res.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
                          lx, perturb, sqp+1); 
             });
+
+            torch::Tensor solx = ((dnu_res != 0).sum({-1})*nus["passed"] != 0);
+            bool nox = (solx.index({solx}).size({0})) == 0; 
+            perturb = (nox) ? (0.5 -x%2)*(1 + rand() % (steps*(1+x)))*tmp_p : perturb; 
+            if (!nox){continue;}
+            if (x > 2){break;}
+            tmp_s = 100; 
         }
+
         idx = (torch::ones({lx, sqp+1}, MakeOp(batch)).cumsum({1}) - (sqp+1)).reshape({-1}) == 0;
         dst_.index_put_({_msk}, nus["distances"].index({idx})); 
         nu1_.index_put_({_msk}, nus["nu1"].index({idx})); 
@@ -184,15 +191,14 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
     }); 
 
 
-
     std::map<std::string, torch::Tensor> out;
     out["distances"] = sol; 
     out["l1"] = edge.index({torch::indexing::Slice(), 0, true}); 
     out["l2"] = edge.index({torch::indexing::Slice(), 1, true}); 
     out["b1"] = edge.index({torch::indexing::Slice(), 2, true}); 
     out["b2"] = edge.index({torch::indexing::Slice(), 3, true}); 
-    out["nu1"] = nu1;
-    out["nu2"] = nu2; 
+    out["nu1"] = nu1 * (1 / scale);
+    out["nu2"] = nu2 * (1 / scale); 
     out["msk"] = msk; 
     return out; 
 }

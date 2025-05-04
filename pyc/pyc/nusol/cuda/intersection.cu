@@ -1,7 +1,7 @@
-#include <operators/operators.cuh>
 #include <nusol/base.cuh>
 #include <nusol/device.cuh>
 #include <utils/utils.cuh>
+#include <operators/operators.cuh>
 
 #define _th_inter 8
 
@@ -34,6 +34,9 @@ __global__ void _swapAB(
     bool swp = abs(detB[_idx][0]) > abs(detA[_idx][0]); 
     double a_ = (!swp)*A_[idx][idy][idz] + (swp)*B_[idx][idy][idz]; 
     double b_ = (!swp)*B_[idx][idy][idz] + (swp)*A_[idx][idy][idz];
+    if (isnan(a_) || isinf(a_)){a_ = 0;}
+    if (isnan(b_) || isinf(b_)){b_ = 0;}
+
     A_[idx][idy][idz] = a_;  
     B_[idx][idy][idz] = b_;  
     __syncthreads(); 
@@ -93,6 +96,8 @@ __global__ void _factor_degen(
     double elx = 0; 
     if (-coG[idx][_idt][2][2] <= nulls){ elx = _leqnulls(coG[idx][_idt], g[idx][_idt], _idy, _idz); }
     else { elx = _gnulls(coG[idx][_idt], g[idx][_idt], _idy, _idz); }
+    if (isnan(elx) || isinf(elx)){elx = 0;}
+
 
     if (_idz == 0){Lins[_idx][_idt][_idy][1 - !sw] = elx;}
     if (_idz == 1){Lins[_idx][_idt][_idy][!sw] = elx;}
@@ -175,6 +180,7 @@ __global__ void _intersections(
 }
 
 std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torch::Tensor* B, double nulls){
+
     const unsigned int dx = A -> size({0}); 
     const unsigned int thx = (dx >= _th_inter) ? _th_inter : dx; 
     const dim3 thd  = dim3(thx, 3, 3);
@@ -199,18 +205,16 @@ std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torc
                    b_.packed_accessor64<double, 2, torch::RestrictPtrTraits>()); 
     });
 
-
     std::tuple<torch::Tensor, torch::Tensor> eigf = operators_::Eigenvalue(&inv_A_dot_B); 
     torch::Tensor real = std::get<0>(eigf); 
     torch::Tensor imag = std::get<1>(eigf); 
 
-    //torch::Tensor  msk = real.sum(-1) == 0 * imag.sum(-1) != 0; 
-    //if (msk.index({msk}).size({0}) != msk.size({0})){
-    //    torch::Tensor eig = torch::linalg::eigvals(inv_A_dot_B.index({msk == false})); 
-    //    real.index_put_({msk == false}, torch::real(eig).to(A -> scalar_type())); 
-    //    imag.index_put_({msk == false}, torch::imag(eig).to(A -> scalar_type())); 
-    //}
-    //std::cout << real << std::endl;
+    torch::Tensor  msk = real.sum(-1) == 0 * imag.sum(-1) != 0; 
+    if (msk.index({msk}).size({0}) != msk.size({0})){
+        torch::Tensor eig = torch::linalg_eigvals(inv_A_dot_B.index({msk == false}));
+        real.index_put_({msk == false}, torch::real(eig).to(A -> scalar_type())); 
+        imag.index_put_({msk == false}, torch::imag(eig).to(A -> scalar_type()));        
+    }
 
     AT_DISPATCH_ALL_TYPES(A -> scalar_type(), "B-e*A", [&]{
         _factor_degen<scalar_t, _th_inter><<<blkX, thdX>>>(
@@ -221,11 +225,13 @@ std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torc
                 lines.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
                 nulls); 
     });
+
     std::vector<signed long> dim313 = {-1, 9, 1, 3}; 
     std::vector<signed long> dim133 = {-1, 1, 3, 3}; 
     torch::Tensor V = torch::cross(lines.view(dim313), A -> view(dim133), 3); 
     V = torch::transpose(V.view({-1, 3, 3}), 1, 2);
-    V = std::get<1>(torch::linalg::eig(V)); 
+    try {V = std::get<1>(torch::linalg_eig(V));}
+    catch(...){abort();}
     V = torch::transpose(V.view({dx, 9, 3, 3}), 2, 3); 
 
     torch::Tensor s_pts = torch::zeros({dx, 6, 3}, MakeOp(A)); 

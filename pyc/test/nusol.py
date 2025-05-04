@@ -247,7 +247,6 @@ class DoubleNu(NuSol):
 
         V0 = np.outer([ev.vec.px, ev.vec.py, 0], [0, 0, 1])
         self.S = V0 - UnitCircle()
-
         N, N_ = sol1.N, sol2.N
         n_ = self.S.T.dot(N_).dot(self.S)
         n  = self.S.T.dot(N ).dot(self.S)
@@ -257,15 +256,16 @@ class DoubleNu(NuSol):
         self.solutionSets = [sol1, sol2]
         self.es = [ss.H_perp for ss in self.solutionSets]
         self.met = np.array([ev.vec.px, ev.vec.py, 1])
-
-        #if not v and leastsq:
-        #    es = [ss.H_perp for ss in self.solutionSets]
-        #    met = np.array([ev.vec.px, ev.vec.py, 1])
-        #    def nus(ts): return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts))
-        #    def residuals(params): return sum(nus(params), -met)[:2]
-        #    ts, _ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
-        #    v, v_ = [[i] for i in nus(ts)]
-        #    self.lsq = True
+    
+        self.lsq = False
+        if not v and leastsq:
+            #es = [ss.H_perp for ss in self.solutionSets]
+            #met = np.array([ev.vec.px, ev.vec.py, 1])
+            #def nus(ts): return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts))
+            #def residuals(params): return sum(nus(params), -met)[:2]
+            #ts, _ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
+            #v, v_ = [[i] for i in nus(ts)]
+            self.lsq = True
         for k, v in {"perp": v, "perp_": v_, "n_": n_, "n" : n}.items(): setattr(self, k, v)
 
     def nus(self, ts): return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(self.es, ts))
