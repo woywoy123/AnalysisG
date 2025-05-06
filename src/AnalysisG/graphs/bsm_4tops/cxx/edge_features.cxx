@@ -108,3 +108,54 @@ void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
 }
 
 
+void det_res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
+    std::map<std::string, particle_template*> p1x = std::get<0>(*pij) -> parents; 
+    std::map<std::string, particle_template*> p2x = std::get<1>(*pij) -> parents; 
+    *o = 0; 
+
+    std::map<std::string, particle_template*>::iterator itp; 
+    for (itp = p1x.begin(); itp != p1x.end(); ++itp){
+        if (!p2x.count(itp -> first)){continue;}
+        *o = 1; return;
+    }
+}
+
+void det_top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
+    std::map<std::string, particle_template*> p1x = std::get<0>(*pij) -> children; 
+    std::map<std::string, particle_template*> p2x = std::get<1>(*pij) -> children; 
+
+    *o = 0; 
+    if (p1x.size() < 3 || p2x.size() < 3){return;}
+    std::map<std::string, particle_template*>::iterator itp; 
+    for (itp = p1x.begin(); itp != p1x.end(); ++itp){
+        if (!p2x.count(itp -> first)){continue;}
+        *o = 1; return;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
