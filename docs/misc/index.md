@@ -16,11 +16,6 @@ This section provides information for developers who want to contribute to Analy
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-3. Install development dependencies
-   ```bash
-   pip install -e ".[dev]"
-   ```
-
 ## Code Structure
 
 The AnalysisG codebase is organized as follows:

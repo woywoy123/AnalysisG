@@ -248,15 +248,6 @@ void process_graph(const Graph& graph);
 void process_graph(Graph graph);
 ```
 
-## Continuous Integration (CI)
-
--   All pull requests must pass CI checks.
--   CI includes:
-    -   Builds on all supported platforms.
-    -   Unit and integration tests.
-    -   Linting (clang-format for C++, flake8/black for Python).
-    -   Documentation generation.
-
 ## Code Review Process
 
 1.  Fork and clone the repository.
