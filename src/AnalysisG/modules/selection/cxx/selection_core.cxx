@@ -46,10 +46,10 @@ bool selection_template::CompileEvent(){
 
 selection_template* selection_template::build(event_template* ev){
     selection_template* sel = this -> clone(); 
-    std::string name = sel -> name; 
+    std::string _name = sel -> name; 
     sel -> m_event  = ev; 
     sel -> data     = ev -> data; 
-    sel -> name     = name; 
+    sel -> name     = _name; 
     sel -> weight   = ev -> weight; 
     sel -> filename = ev -> filename;
     return sel; 
@@ -85,51 +85,51 @@ std::vector<std::map<std::string, float>> selection_template::reverse_hash(std::
     std::vector<std::map<std::string, float>> output; 
     output.assign(hashes -> size(), {{"None", 0}}); 
     for (size_t x(0); x < hashes -> size(); ++x){
-        std::string hash = (*hashes)[x]; 
+        std::string _hash = (*hashes)[x]; 
         std::map<std::string, std::map<std::string, float>>::iterator itr;
         for (itr = this -> passed_weights.begin(); itr != this -> passed_weights.end(); ++itr){
-            if (!itr -> second.count(hash)){continue;}
-            output[x] = {{itr -> first, itr -> second[hash]}}; 
+            if (!itr -> second.count(_hash)){continue;}
+            output[x] = {{itr -> first, itr -> second[_hash]}}; 
             break; 
         }
     }
     return output; 
 }
 
-void selection_template::switch_board(particle_enum attrs, particle_template* ptr, std::vector<int>* data){
+void selection_template::switch_board(particle_enum attrs, particle_template* ptr, std::vector<int>* _data){
     switch (attrs){
-        case particle_enum::pdgid: return data -> push_back(ptr -> pdgid);
-        case particle_enum::index: return data -> push_back(ptr -> index);
+        case particle_enum::pdgid: return _data -> push_back(ptr -> pdgid);
+        case particle_enum::index: return _data -> push_back(ptr -> index);
         default: return; 
     }
 }
 
-void selection_template::switch_board(particle_enum attrs, particle_template* ptr, std::vector<double>* data){
+void selection_template::switch_board(particle_enum attrs, particle_template* ptr, std::vector<double>* _data){
     switch (attrs){
-        case particle_enum::pt:     return data -> push_back(ptr -> pt); 
-        case particle_enum::eta:    return data -> push_back(ptr -> eta); 
-        case particle_enum::phi:    return data -> push_back(ptr -> phi); 
-        case particle_enum::energy: return data -> push_back(ptr -> e); 
-        case particle_enum::px:     return data -> push_back(ptr -> px); 
-        case particle_enum::py:     return data -> push_back(ptr -> py); 
-        case particle_enum::pz:     return data -> push_back(ptr -> pz); 
-        case particle_enum::mass:   return data -> push_back(ptr -> mass); 
-        case particle_enum::charge: return data -> push_back(ptr -> charge); 
+        case particle_enum::pt:     return _data -> push_back(ptr -> pt); 
+        case particle_enum::eta:    return _data -> push_back(ptr -> eta); 
+        case particle_enum::phi:    return _data -> push_back(ptr -> phi); 
+        case particle_enum::energy: return _data -> push_back(ptr -> e); 
+        case particle_enum::px:     return _data -> push_back(ptr -> px); 
+        case particle_enum::py:     return _data -> push_back(ptr -> py); 
+        case particle_enum::pz:     return _data -> push_back(ptr -> pz); 
+        case particle_enum::mass:   return _data -> push_back(ptr -> mass); 
+        case particle_enum::charge: return _data -> push_back(ptr -> charge); 
         default: return; 
     }
 }
 
-void selection_template::switch_board(particle_enum attrs, particle_template* ptr, std::vector<bool>* data){
+void selection_template::switch_board(particle_enum attrs, particle_template* ptr, std::vector<bool>* _data){
     switch (attrs){
-        case particle_enum::is_b:   return data -> push_back(ptr -> is_b); 
-        case particle_enum::is_lep: return data -> push_back(ptr -> is_lep); 
-        case particle_enum::is_nu:  return data -> push_back(ptr -> is_nu); 
-        case particle_enum::is_add: return data -> push_back(ptr -> is_add); 
+        case particle_enum::is_b:   return _data -> push_back(ptr -> is_b); 
+        case particle_enum::is_lep: return _data -> push_back(ptr -> is_lep); 
+        case particle_enum::is_nu:  return _data -> push_back(ptr -> is_nu); 
+        case particle_enum::is_add: return _data -> push_back(ptr -> is_add); 
         default: return; 
     }
 }
 
-void selection_template::switch_board(particle_enum attrs, particle_template* ptr, std::vector<std::vector<double>>* data){
+void selection_template::switch_board(particle_enum attrs, particle_template* ptr, std::vector<std::vector<double>>* _data){
     std::vector<double> tmp; 
     switch (attrs){
         case particle_enum::pmc: 
@@ -146,6 +146,6 @@ void selection_template::switch_board(particle_enum attrs, particle_template* pt
                 break; 
         default: return; 
     }
-    data -> push_back(tmp); 
+    _data -> push_back(tmp); 
 }
 

@@ -226,25 +226,25 @@ std::string meta::parse_string(std::string key, TTree* tr){
 void meta::scan_sow(TObject* obj){
     std::string obname = std::string(obj -> GetName()); 
     if (obj -> InheritsFrom("TTree")){
-        TTree* r = (TTree*)obj; 
+        TTree* _t = (TTree*)obj; 
         weights_t* wg = &this -> meta_data.misc[obname]; 
         if (obname == "AnalysisTracking"){
-            wg -> dsid = this -> parse_float("dsid", r); 
-            wg -> isAFII = this -> parse_float("isAFII", r); 
-            wg -> total_events_weighted = this -> parse_float("totalEventsWeighted", r); 
-            wg -> total_events = this -> parse_float("totalEvents", r); 
-            wg -> processed_events = this -> parse_float("processedEvents", r); 
-            wg -> processed_events_weighted = this -> parse_float("processedEventsWeighted", r); 
-            wg -> processed_events_weighted_squared = this -> parse_float("processedEventsWeightedSquared", r); 
-            wg -> generator = this -> parse_string("generators", r);  
-            wg -> ami_tag = this -> parse_string("AMITag", r);  
+            wg -> dsid = this -> parse_float("dsid", _t); 
+            wg -> isAFII = this -> parse_float("isAFII", _t); 
+            wg -> total_events_weighted = this -> parse_float("totalEventsWeighted", _t); 
+            wg -> total_events = this -> parse_float("totalEvents", _t); 
+            wg -> processed_events = this -> parse_float("processedEvents", _t); 
+            wg -> processed_events_weighted = this -> parse_float("processedEventsWeighted", _t); 
+            wg -> processed_events_weighted_squared = this -> parse_float("processedEventsWeightedSquared", _t); 
+            wg -> generator = this -> parse_string("generators", _t);  
+            wg -> ami_tag = this -> parse_string("AMITag", _t);  
             return; 
         }
         if (obname == "EventLoop_FileExecuted"){
-            TTreeReader r = TTreeReader(obj -> GetName()); 
-            TTreeReaderValue<TString> dr(r, "file");  
+            TTreeReader _r = TTreeReader(obj -> GetName()); 
+            TTreeReaderValue<TString> dr(_r, "file");  
             std::vector<std::string> data = {}; 
-            while(r.Next()){data.push_back(std::string(*dr));}
+            while(_r.Next()){data.push_back(std::string(*dr));}
             for (size_t x(0); x < data.size(); ++x){this -> meta_data.inputfiles[x] = data[x];}
         }
         return;

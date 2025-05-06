@@ -22,7 +22,7 @@ torch::Tensor lossfx::loss(torch::Tensor* pred, torch::Tensor* truth, loss_enum 
         case loss_enum::soft_margin                 : return this -> _fx_loss(this -> m_soft_margin                 , pred, truth);  
         case loss_enum::triplet_margin              : return this -> _fx_loss(this -> m_triplet_margin              , pred, truth);  
         case loss_enum::triplet_margin_with_distance: return this -> _fx_loss(this -> m_triplet_margin_with_distance, pred, truth); 
-        default: return torch::Tensor(); 
+        default: this -> warning("Invalid Loss Function!"); return torch::Tensor(); 
     }
 }
 

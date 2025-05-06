@@ -75,37 +75,37 @@ void graph_t::_purge_all(){
 torch::Tensor* graph_t::return_any(
     std::map<std::string, int>* loc, std::map<int, 
     std::vector<torch::Tensor>>* container, 
-    std::string name, int dev_
+    std::string _name, int dev_
 ){
-    if (!loc -> count(name)){return nullptr;}
-    int idx_ = (*loc)[name];
+    if (!loc -> count(_name)){return nullptr;}
+    int idx_ = (*loc)[_name];
     if (!container -> count(dev_)){return nullptr;} 
-    if (container -> at(dev_).size() <= idx_){return nullptr;}
+    if (int(container -> at(dev_).size()) <= idx_){return nullptr;}
     return &container -> at(dev_).at(idx_); 
 }
 
-torch::Tensor* graph_t::has_feature(graph_enum tp, std::string name, int dev){
+torch::Tensor* graph_t::has_feature(graph_enum tp, std::string _name, int dev){
     std::map<std::string, int>* pos_ = nullptr; 
     std::map<int, std::vector<torch::Tensor>>* dev_mp = nullptr; 
     switch(tp){
-        case graph_enum::data_edge   : pos_ = this -> data_map_edge  ; dev_mp = &this -> dev_data_edge  ; name = "D-" + name; break;  
-        case graph_enum::data_node   : pos_ = this -> data_map_node  ; dev_mp = &this -> dev_data_node  ; name = "D-" + name; break;  
-        case graph_enum::data_graph  : pos_ = this -> data_map_graph ; dev_mp = &this -> dev_data_graph ; name = "D-" + name; break;  
-        case graph_enum::truth_edge  : pos_ = this -> truth_map_edge ; dev_mp = &this -> dev_truth_edge ; name = "T-" + name; break;  
-        case graph_enum::truth_node  : pos_ = this -> truth_map_node ; dev_mp = &this -> dev_truth_node ; name = "T-" + name; break;  
-        case graph_enum::truth_graph : pos_ = this -> truth_map_graph; dev_mp = &this -> dev_truth_graph; name = "T-" + name; break;  
+        case graph_enum::data_edge   : pos_ = this -> data_map_edge  ; dev_mp = &this -> dev_data_edge  ; _name = "D-" + _name; break;  
+        case graph_enum::data_node   : pos_ = this -> data_map_node  ; dev_mp = &this -> dev_data_node  ; _name = "D-" + _name; break;  
+        case graph_enum::data_graph  : pos_ = this -> data_map_graph ; dev_mp = &this -> dev_data_graph ; _name = "D-" + _name; break;  
+        case graph_enum::truth_edge  : pos_ = this -> truth_map_edge ; dev_mp = &this -> dev_truth_edge ; _name = "T-" + _name; break;  
+        case graph_enum::truth_node  : pos_ = this -> truth_map_node ; dev_mp = &this -> dev_truth_node ; _name = "T-" + _name; break;  
+        case graph_enum::truth_graph : pos_ = this -> truth_map_graph; dev_mp = &this -> dev_truth_graph; _name = "T-" + _name; break;  
         case graph_enum::edge_index  : return (this -> dev_edge_index.count(dev)) ? &this -> dev_edge_index[dev] : nullptr; 
         case graph_enum::weight      : return (this -> dev_event_weight.count(dev)) ? &this -> dev_event_weight[dev] : nullptr; 
         case graph_enum::batch_index : return (this -> dev_batch_index.count(dev)) ? &this -> dev_batch_index[dev] : nullptr; 
         case graph_enum::batch_events: return (this -> dev_batched_events.count(dev)) ? &this -> dev_batched_events[dev] : nullptr; 
         default: return nullptr; 
     }
-    return this -> return_any(pos_, dev_mp, name, dev); 
+    return this -> return_any(pos_, dev_mp, _name, dev); 
 }
 
 void graph_t::_purge_data(std::map<int, torch::Tensor*>* data){
     if (!data){return;}
-std::map<int, torch::Tensor*>::iterator itr = data -> begin();
+    std::map<int, torch::Tensor*>::iterator itr = data -> begin();
     for (; itr != data -> end(); ++itr){delete itr -> second;}
     data -> clear(); 
 }

@@ -77,13 +77,13 @@ grift::grift(){
             {"res_l3", torch::nn::Linear(this -> _xrec, this -> _xout)}
     }); 
 
-    this -> register_module(this -> rnn_x       , mlp_init::xavier_uniform);
-    this -> register_module(this -> rnn_dx      , mlp_init::xavier_uniform);
-    this -> register_module(this -> rnn_hxx     , mlp_init::xavier_uniform); 
-    this -> register_module(this -> rnn_top_edge, mlp_init::xavier_uniform);
-    this -> register_module(this -> rnn_res_edge, mlp_init::xavier_uniform);
-    this -> register_module(this -> mlp_ntop    , mlp_init::xavier_uniform);
-    this -> register_module(this -> mlp_sig     , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_x       );// , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_dx      );// , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_hxx     );// , mlp_init::xavier_uniform); 
+    this -> register_module(this -> rnn_top_edge);// , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_res_edge);// , mlp_init::xavier_uniform);
+    this -> register_module(this -> mlp_ntop    );// , mlp_init::xavier_uniform);
+    this -> register_module(this -> mlp_sig     );// , mlp_init::xavier_uniform);
 }
 
 torch::Tensor grift::message(

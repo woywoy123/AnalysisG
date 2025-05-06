@@ -24,7 +24,7 @@ class cproperty
             this -> getter = c; 
         }
 
-        void set_object(G* obj){this -> obj = obj;}
+        void set_object(G* _obj){this -> obj = _obj;}
 
         cproperty& operator=(const T& val){
             this -> data = val; 
@@ -36,11 +36,6 @@ class cproperty
         T    operator+(const T& val){return this -> data + val;}
         bool operator==(const T& val){return this -> data == val;}
         bool operator!=(const T& val){return this -> data != val;}
-
-        std::ostream& operator<<(std::ostream& out){
-            out << this -> data; 
-            return out;  
-        }
 
         operator T(){
             if (!this -> has_getter){return this -> data;}

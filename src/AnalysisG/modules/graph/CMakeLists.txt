@@ -15,4 +15,4 @@ target_compile_definitions(cgraph_template PRIVATE PYC_CUDA ON)
 endif()
 
 target_compile_options(cgraph_template PRIVATE -fPIC)
-target_compile_options(cgraph_template PRIVATE -Wall -pedantic -Wextra)
+target_compile_options(cgraph_template PRIVATE -Wall -pedantic -Wextra -Wshadow)

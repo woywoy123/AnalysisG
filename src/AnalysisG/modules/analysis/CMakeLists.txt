@@ -19,5 +19,5 @@ target_link_libraries(canalysis PUBLIC
     cio ROOT::RIO ${TORCH_LIBRARIES}
 )
 target_compile_options(canalysis PRIVATE -fPIC)
-target_compile_options(canalysis PRIVATE -Wall -pedantic -Wextra)
+target_compile_options(canalysis PRIVATE -Wall -pedantic -Wextra -Wshadow)
 

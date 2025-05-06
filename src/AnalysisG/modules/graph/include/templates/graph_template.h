@@ -35,33 +35,33 @@ struct graph_t {
 
     public: 
         template <typename g>
-        torch::Tensor* get_truth_graph(std::string name, g* mdl){
-            return this -> has_feature(graph_enum::truth_graph, name, mdl -> device_index); 
+        torch::Tensor* get_truth_graph(std::string _name, g* mdl){
+            return this -> has_feature(graph_enum::truth_graph, _name, mdl -> device_index); 
         }
         
         template <typename g>
-        torch::Tensor* get_truth_node(std::string name, g* mdl){
-            return this -> has_feature(graph_enum::truth_node, name, mdl -> device_index); 
+        torch::Tensor* get_truth_node(std::string _name, g* mdl){
+            return this -> has_feature(graph_enum::truth_node, _name, mdl -> device_index); 
         }
         
         template <typename g>
-        torch::Tensor* get_truth_edge(std::string name, g* mdl){
-            return this -> has_feature(graph_enum::truth_edge, name, mdl -> device_index); 
+        torch::Tensor* get_truth_edge(std::string _name, g* mdl){
+            return this -> has_feature(graph_enum::truth_edge, _name, mdl -> device_index); 
         }
         
         template <typename g>
-        torch::Tensor* get_data_graph(std::string name, g* mdl){
-            return this -> has_feature(graph_enum::data_graph, name, mdl -> device_index); 
+        torch::Tensor* get_data_graph(std::string _name, g* mdl){
+            return this -> has_feature(graph_enum::data_graph, _name, mdl -> device_index); 
         }
         
         template <typename g>
-        torch::Tensor* get_data_node(std::string name, g* mdl){
-            return this -> has_feature(graph_enum::data_node, name, mdl -> device_index); 
+        torch::Tensor* get_data_node(std::string _name, g* mdl){
+            return this -> has_feature(graph_enum::data_node, _name, mdl -> device_index); 
         }
         
         template <typename g>
-        torch::Tensor* get_data_edge(std::string name, g* mdl){
-            return this -> has_feature(graph_enum::data_edge, name, mdl -> device_index); 
+        torch::Tensor* get_data_edge(std::string _name, g* mdl){
+            return this -> has_feature(graph_enum::data_edge, _name, mdl -> device_index); 
         }
         
         template <typename g>
@@ -84,7 +84,7 @@ struct graph_t {
             return this -> has_feature(graph_enum::batch_events, "", mdl -> device_index); 
         }
 
-        torch::Tensor* has_feature(graph_enum tp, std::string name, int dev); 
+        torch::Tensor* has_feature(graph_enum tp, std::string _name, int dev); 
         void add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_truth_node( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_truth_edge( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
@@ -169,7 +169,7 @@ struct graph_t {
         torch::Tensor* return_any(
                 std::map<std::string, int>* loc, 
                 std::map<int, std::vector<torch::Tensor>>* container, 
-                std::string name, int dev_);
+                std::string _name, int dev_);
 }; 
 
 
@@ -206,26 +206,26 @@ class graph_template: public tools
         G* get_event(){return (G*)this -> m_event;}
 
         template <typename G, typename O, typename X>
-        void add_graph_truth_feature(O* ev, X fx, std::string name){
+        void add_graph_truth_feature(O* ev, X fx, std::string _name){
             cproperty<G, O> cdef; 
             cdef.set_getter(fx);
             cdef.set_object(ev); 
             G r = cdef; 
-            this -> add_graph_feature(r, "T-" + name); 
+            this -> add_graph_feature(r, "T-" + _name); 
         }
 
 
         template <typename G, typename O, typename X>
-        void add_graph_data_feature(O* ev, X fx, std::string name){
+        void add_graph_data_feature(O* ev, X fx, std::string _name){
             cproperty<G, O> cdef; 
             cdef.set_getter(fx);
             cdef.set_object(ev); 
             G r = cdef; 
-            this -> add_graph_feature(r, "D-" + name); 
+            this -> add_graph_feature(r, "D-" + _name); 
         }
 
         template <typename G, typename O, typename X>
-        void add_node_truth_feature(X fx, std::string name){
+        void add_node_truth_feature(X fx, std::string _name){
             std::vector<G> nodes_data = {}; 
             std::map<int, particle_template*>::iterator itr = this -> node_particles.begin(); 
             for (; itr != this -> node_particles.end(); ++itr){
@@ -234,12 +234,12 @@ class graph_template: public tools
                 cdef.set_object((O*)itr -> second); 
                 nodes_data.push_back((G)cdef); 
             }
-            this -> add_node_feature(nodes_data, "T-" + name); 
+            this -> add_node_feature(nodes_data, "T-" + _name); 
         }
 
 
         template <typename G, typename O, typename X>
-        void add_node_data_feature(X fx, std::string name){
+        void add_node_data_feature(X fx, std::string _name){
             std::vector<G> nodes_data = {}; 
 
             std::map<int, particle_template*>::iterator itr = this -> node_particles.begin(); 
@@ -249,11 +249,11 @@ class graph_template: public tools
                 cdef.set_object((O*)itr -> second); 
                 nodes_data.push_back((G)cdef); 
             }
-            this -> add_node_feature(nodes_data, "D-" + name); 
+            this -> add_node_feature(nodes_data, "D-" + _name); 
         }
 
         template <typename G, typename O, typename X>
-        void add_edge_truth_feature(X fx, std::string name){
+        void add_edge_truth_feature(X fx, std::string _name){
             int dx = -1; 
             std::vector<G> edge_data = {}; 
             std::map<int, particle_template*>::iterator itr1;
@@ -271,12 +271,12 @@ class graph_template: public tools
                     edge_data.push_back(cdef); 
                 }
             }
-            this -> add_edge_feature(edge_data, "T-" + name); 
+            this -> add_edge_feature(edge_data, "T-" + _name); 
         }
 
 
         template <typename G, typename O, typename X>
-        void add_edge_data_feature(X fx, std::string name){
+        void add_edge_data_feature(X fx, std::string _name){
             int dx = -1; 
             std::vector<G> edge_data = {}; 
             std::map<int, particle_template*>::iterator itr1;
@@ -294,7 +294,7 @@ class graph_template: public tools
                     edge_data.push_back(cdef); 
                 }
             }
-            this -> add_edge_feature(edge_data, "D-" + name); 
+            this -> add_edge_feature(edge_data, "D-" + _name); 
         }
 
 

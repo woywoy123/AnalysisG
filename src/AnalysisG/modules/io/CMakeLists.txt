@@ -15,4 +15,4 @@ target_include_directories(cio PUBLIC include ${HDF5_CXX_INCLUDE_DIRS})
 
 target_link_libraries(cio PUBLIC ctools cstructs cmeta cnotification ROOT::Core ${HDF5_LIBRARIES})
 target_compile_options(cio PRIVATE -fPIC)
-target_compile_options(cio PRIVATE -Wall -pedantic -Wextra)
+target_compile_options(cio PRIVATE -Wall -pedantic -Wextra -Wshadow)

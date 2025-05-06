@@ -64,13 +64,13 @@ void model_template::set_device(std::string* dev, model_template* md){
     if (md -> m_option){delete md -> m_option; md -> m_option = nullptr;}    
     int device_n = -1; 
     c10::DeviceType device_enum; 
-    std::string device = md -> lower(dev); 
+    std::string _device = md -> lower(dev); 
 
-    if (md -> has_string(&device, "cuda:")){
+    if (md -> has_string(&_device, "cuda:")){
         device_enum = c10::kCUDA; 
-        device_n = std::stoi(md -> split(device, ":")[1]);  
+        device_n = std::stoi(md -> split(_device, ":")[1]);  
     }
-    else if (md -> has_string(&device, "cuda")){device_enum = c10::kCUDA; device_n = 0;}
+    else if (md -> has_string(&_device, "cuda")){device_enum = c10::kCUDA; device_n = 0;}
     else {device_enum = c10::kCPU;} 
 
     switch(device_enum){
@@ -88,12 +88,12 @@ void model_template::get_dev_index(int* nx, model_template* md){
 }
 void model_template::set_dev_index(int*, model_template*){}
 
-void model_template::set_optimizer(std::string name){
-    this -> e_optim = this -> m_loss -> optim_string(this -> lower(&name)); 
+void model_template::set_optimizer(std::string _name){
+    this -> e_optim = this -> m_loss -> optim_string(this -> lower(&_name)); 
     if (this -> e_optim != opt_enum::invalid_optimizer){}
     else {return this -> failure("Invalid Optimizer");}
-    this -> success("Using " + name + " as Optimizer"); 
-    this -> s_optim = name;
+    this -> success("Using " + _name + " as Optimizer"); 
+    this -> s_optim = _name;
 }
 
 void model_template::initialize(optimizer_params_t* op_params){

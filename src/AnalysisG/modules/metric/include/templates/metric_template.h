@@ -28,21 +28,21 @@ struct metric_t {
         int device = 0; 
 
         template <typename g>
-        g get(graph_enum grx, std::string name){
+        g get(graph_enum grx, std::string _name){
             g out = g(); 
-            if (!this -> h_maps[grx][name]){
-                std::cout << "\033[1;31m Variable not found: " << name << "\033[0m" << std::endl;
+            if (!this -> h_maps[grx][_name]){
+                std::cout << "\033[1;31m Variable not found: " << _name << "\033[0m" << std::endl;
                 return out;
             }
-            size_t idx = this -> v_maps[grx][name]; 
+            size_t idx = this -> v_maps[grx][_name]; 
             variable_t* v = (*this -> handl)[grx][idx]; 
             if (!v){
-                std::cout << "\033[1;31m Variable not found: " << name << "\033[0m" << std::endl;
+                std::cout << "\033[1;31m Variable not found: " << _name << "\033[0m" << std::endl;
                 return out;
             }
             if (v -> element(&out)){return out;}
             std::cout << "\033[1;31m Expected Type: " << v -> as_string(); 
-            std::cout << " -> " << name << "\033[0m" << std::endl;
+            std::cout << " -> " << _name << "\033[0m" << std::endl;
             return out; 
         }
         std::string mode(); 
@@ -79,17 +79,17 @@ class metric_template:
         virtual metric_template* clone(); 
 
         template <typename T>
-        void register_output(std::string tree, std::string name, T* t){ 
-            if (this -> handle){return this -> handle -> process(&tree, &name, t);}
+        void register_output(std::string tree, std::string __name, T* t){ 
+            if (this -> handle){return this -> handle -> process(&tree, &__name, t);}
             this -> handle = new writer();
             this -> handle -> create(&this -> _outdir); 
-            this -> handle -> process(&tree, &name, t); 
+            this -> handle -> process(&tree, &__name, t); 
         }
 
         template <typename T>
-        void write(std::string tree, std::string name, T* t, bool fill = false){
+        void write(std::string tree, std::string __name, T* t, bool fill = false){
             if (!this -> handle){return;}
-            this -> handle -> process(&tree, &name, t); 
+            this -> handle -> process(&tree, &__name, t); 
             if (!fill){return;}
             this -> handle -> write(&tree);
         }

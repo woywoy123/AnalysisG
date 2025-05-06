@@ -18,8 +18,8 @@ container::~container(){
     this -> merged = nullptr; 
 }
 
-void container::get_events(std::vector<event_template*>* out, std::string label){
-    if (label != this -> label && label.size()){return;}
+void container::get_events(std::vector<event_template*>* out, std::string _label){
+    if (_label != this -> label && _label.size()){return;}
     std::map<std::string, entry_t>::iterator itr = this -> random_access.begin(); 
     for (; itr != this -> random_access.end(); ++itr){
         std::vector<event_template*> rn = itr -> second.m_event; 

@@ -134,18 +134,18 @@ void particle_template::get_children(std::map<std::string, particle_template*>* 
 }
 
 bool particle_template::register_child(particle_template* p){
-    std::string hash = p -> hash; 
-    if (this -> data.children[hash]){return false;}
-    this -> m_children[hash] = p; 
-    this -> data.children[hash] = true; 
+    std::string hash_ = p -> hash; 
+    if (this -> data.children[hash_]){return false;}
+    this -> m_children[hash_] = p; 
+    this -> data.children[hash_] = true; 
     return true; 
 }
 
 bool particle_template::register_parent(particle_template* p){
-    std::string hash = p -> hash; 
-    if (this -> data.parents[hash]){return true;}
-    this -> m_parents[hash] = p; 
-    this -> data.parents[hash] = true; 
+    std::string hash_ = p -> hash; 
+    if (this -> data.parents[hash_]){return true;}
+    this -> m_parents[hash_] = p; 
+    this -> data.parents[hash_] = true; 
     return true; 
 }
 

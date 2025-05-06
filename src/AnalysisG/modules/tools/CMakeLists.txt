@@ -9,5 +9,5 @@ add_library(ctools STATIC ${SOURCE_FILES})
 target_include_directories(ctools PRIVATE include/tools)
 target_include_directories(ctools PUBLIC include)
 target_compile_options(ctools PRIVATE -fPIC)
-target_compile_options(ctools PRIVATE -Wall -pedantic -Wextra)
+target_compile_options(ctools PRIVATE -Wall -pedantic -Wextra -Wshadow)
 

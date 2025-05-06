@@ -86,31 +86,31 @@ void io::root_key_paths(std::string path, TTree*){
 
     for (size_t x(0); x < this -> leaves.size(); ++x){
         std::string name = this -> leaves[x]; 
-        TLeaf* lf = tr -> FindLeaf(name.c_str());
-        if (!lf){continue;}
+        TLeaf* _lf = tr -> FindLeaf(name.c_str());
+        if (!_lf){continue;}
 
-        TBranch* br = lf -> GetBranch();
+        TBranch* br = _lf -> GetBranch();
         std::string name_s = std::string(tr -> GetName()) + "."; 
         if (!br){
-            this -> leaf_data[file_name][name_s] = lf; 
-            this -> leaf_typed[file_name][name_s] = std::string(lf -> GetTypeName()); 
+            this -> leaf_data[file_name][name_s] = _lf; 
+            this -> leaf_typed[file_name][name_s] = std::string(_lf -> GetTypeName()); 
             continue;
         }
 
-        name_s += std::string(br -> GetName()) + "." + std::string(lf -> GetName());
+        name_s += std::string(br -> GetName()) + "." + std::string(_lf -> GetName());
 
         if (!br -> IsFolder()){
-            this -> leaf_data[file_name][name_s]  = lf; 
-            this -> leaf_typed[file_name][name_s] = lf -> GetTypeName(); 
+            this -> leaf_data[file_name][name_s]  = _lf; 
+            this -> leaf_typed[file_name][name_s] = _lf -> GetTypeName(); 
             continue;
         }
 
         for (TObject* obj : *br -> GetListOfLeaves()){
-            TLeaf* lf = (TLeaf*)obj; 
-            if (std::string(lf -> GetName()) != name){continue;}
-            std::string lx = name_s + "." + lf -> GetName(); 
-            this -> leaf_typed[file_name][lx] = std::string(lf -> GetTypeName()); 
-            this -> leaf_data[file_name][lx] = lf;
+            TLeaf* __lf = (TLeaf*)obj; 
+            if (std::string(__lf -> GetName()) != name){continue;}
+            std::string lx = name_s + "." + __lf -> GetName(); 
+            this -> leaf_typed[file_name][lx] = std::string(__lf -> GetTypeName()); 
+            this -> leaf_data[file_name][lx] = __lf;
         }
     }
 }

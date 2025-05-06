@@ -84,9 +84,9 @@ void optimizer::validation_loop(int k, int epoch){
     bool batched = this -> m_settings.batch_size > 1;
     if (batched){smpl = this -> loader -> build_batch(smpl, model, mr);}
 
-    torch::NoGradGuard no_grd;  
     size_t l = smpl -> size(); 
     mr -> num_evnt = l; 
+    torch::NoGradGuard no_grd;  
     for (size_t x(0); x < l; ++x){
         mr -> iters = x; 
         graph_t* gr = (*smpl)[x]; 

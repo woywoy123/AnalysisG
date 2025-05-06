@@ -44,7 +44,7 @@ class selection_template: public tools
         virtual bool strategy(event_template* ev);
         virtual void merge(selection_template* sel); 
         virtual void bulk_write(const long* idx, std::string* hx); 
-        virtual void write(std::vector<particle_template*>* particles, std::string name, particle_enum attrs); 
+        virtual void write(std::vector<particle_template*>* particles, std::string _name, particle_enum attrs); 
 
         void switch_board(particle_enum attrs, particle_template* ptr, std::vector<std::vector<double>>* data); 
         void switch_board(particle_enum attrs, particle_template* ptr, std::vector<int>*    data); 
@@ -52,15 +52,15 @@ class selection_template: public tools
         void switch_board(particle_enum attrs, particle_template* ptr, std::vector<bool>*   data); 
 
         template <typename g> 
-        void write(g* var, std::string name){
+        void write(g* var, std::string _name){
             if (!this -> handle){return;}
-            this -> handle -> process(&name) -> process(var, &name, this -> handle -> tree);
+            this -> handle -> process(&_name) -> process(var, &_name, this -> handle -> tree);
         }
 
         template <typename g> 
-        void write(g var, std::string name){
+        void write(g var, std::string _name){
             if (!this -> handle){return;}
-            this -> handle -> process(&name) -> process(&var, &name, this -> handle -> tree);
+            this -> handle -> process(&_name) -> process(&var, &_name, this -> handle -> tree);
         }
 
         std::vector<std::map<std::string, float>> reverse_hash(std::vector<std::string>* hashes); 
@@ -125,8 +125,8 @@ class selection_template: public tools
         std::vector<g*> make_unique(std::vector<g*>* inpt){
             std::map<std::string, g*> tmp; 
             for (size_t x(0); x < inpt -> size(); ++x){
-                std::string hash = (*inpt)[x] -> hash; 
-                tmp[hash] = (*inpt)[x]; 
+                std::string hash_ = (*inpt)[x] -> hash; 
+                tmp[hash_] = (*inpt)[x]; 
             } 
    
             typename std::vector<g*> out = {}; 

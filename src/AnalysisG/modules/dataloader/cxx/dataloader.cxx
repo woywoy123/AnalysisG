@@ -113,9 +113,9 @@ void dataloader::extract_data(graph_t* gr){
 
 
 void dataloader::datatransfer(torch::TensorOptions* op, size_t* num_ev, size_t* cur_evnt){
-    auto lamb = [](std::vector<graph_t*>* data, torch::TensorOptions* op, size_t* handle){
+    auto lamb = [](std::vector<graph_t*>* data, torch::TensorOptions* _op, size_t* handle){
         for (size_t f(0); f < data -> size(); ++f){
-            (*data)[f] -> transfer_to_device(op); 
+            (*data)[f] -> transfer_to_device(_op); 
             if (!handle){continue;}
             *handle = f+1;
         }
@@ -148,7 +148,7 @@ void dataloader::datatransfer(std::map<int, torch::TensorOptions*>* ops){
 
 
 
-std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep){
+std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, model_template* mdl, model_report* rep){
     auto g_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_graph;};
     auto n_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_node;};
     auto e_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_edge;};
@@ -158,7 +158,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
 
     auto collect = [this](
             model_template* mdl,
-            std::vector<graph_t*>* data, 
+            std::vector<graph_t*>* __data, 
             std::map<std::string, int>* loc, 
             std::map<int, std::vector<torch::Tensor>>* cnt, 
             std::function<std::map<int, std::vector<torch::Tensor>>* (graph_t*)> fx)
@@ -168,9 +168,9 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
         for (ilx = loc -> begin(); ilx != loc -> end(); ++ilx){      
             std::string key = ilx -> first; 
             std::vector<torch::Tensor> arr;
-            arr.reserve(data -> size()); 
-            for (size_t x(0); x < data -> size(); ++x){
-                graph_t* grx = (*data)[x]; 
+            arr.reserve(__data -> size()); 
+            for (size_t x(0); x < __data -> size(); ++x){
+                graph_t* grx = (*__data)[x]; 
                 torch::Tensor* val = grx -> return_any(loc, fx(grx), key, mdl -> device_index);
                 if (!val){continue;} 
                 arr.push_back(*val); 
@@ -265,9 +265,9 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
     std::vector<graph_t*>* out = nullptr; 
     if (rep && rep -> mode == "evaluation"){k = -1;}
 
-    std::vector<std::vector<graph_t*>> batched = this -> discretize(data, this -> setting -> batch_size); 
+    std::vector<std::vector<graph_t*>> batched = this -> discretize(_data, this -> setting -> batch_size); 
     int thr = this -> setting -> threads; 
-    bool skip = bool(thr > batched.size()); 
+    bool skip = thr > int(batched.size()); 
 
     if (rep && (rep -> mode == "validation" || rep -> mode == "evaluation") && this -> batched_cache.count(k)){
         out = this -> batched_cache[k];

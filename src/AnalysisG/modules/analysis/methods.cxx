@@ -164,14 +164,14 @@ void analysis::execution(
             index = add_content(&addhoc, content, index, "", t); 
             index = add_content(&md -> m_p_undef, content, index, "extra_", t); 
 
-            std::string bt = ""; 
+            std::string _bt = ""; 
             for (size_t i(0); i < content -> size(); ++i){
                 if (!(*content)[i].failed_branch){continue;}
-                std::string f = (*content)[i].variable_name + (*content)[i].scan_buffer(); 
-                bt += (!bt.size()) ? " > " + f : f; 
+                std::string _f = (*content)[i].variable_name + (*content)[i].scan_buffer(); 
+                _bt += (!_bt.size()) ? " > " + _f : _f; 
             }
-            if (bt.size()){
-                (*msg) = "\033[1;31m (Failed to Initialize Branch) " + bt + "\033[0m";
+            if (_bt.size()){
+                (*msg) = "\033[1;31m (Failed to Initialize Branch) " + _bt + "\033[0m";
                 std::this_thread::sleep_for(std::chrono::seconds(1));
                 break; 
             }

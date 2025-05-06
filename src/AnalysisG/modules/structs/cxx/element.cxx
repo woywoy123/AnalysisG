@@ -51,9 +51,9 @@ void data_t::flush(){
 }
 
 void data_t::initialize(){
-    TFile* c = (*this -> files_t)[this -> file_index]; 
-    if (!c){this -> file = nullptr; return;}
-    if (!c -> IsOpen()){
+    TFile* _c = (*this -> files_t)[this -> file_index]; 
+    if (!_c){this -> file = nullptr; return;}
+    if (!_c -> IsOpen()){
         this -> file = (*this -> files_t)[this -> file_index -1]; 
         if (this -> file){
             this -> file -> Close();
@@ -61,13 +61,13 @@ void data_t::initialize(){
             delete this -> file; 
         }
         (*this -> files_t)[this -> file_index -1] = nullptr; 
-        this -> file = c -> Open(c -> GetTitle()); 
+        this -> file = _c -> Open(_c -> GetTitle()); 
         (*this -> files_t)[this -> file_index] = this -> file; 
-        c = this -> file; 
+        _c = this -> file; 
     }
     else {this -> file = nullptr;}
 
-    this -> tree   = c -> Get<TTree>(this -> tree_name.c_str()); 
+    this -> tree   = _c -> Get<TTree>(this -> tree_name.c_str()); 
     this -> tree -> SetCacheSize(10000000U); 
     this -> tree -> AddBranchToCache("*", true);
     this -> leaf   = this -> tree -> FindLeaf(this -> leaf_name.c_str());
