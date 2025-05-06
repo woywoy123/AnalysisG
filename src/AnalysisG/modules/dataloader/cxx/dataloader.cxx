@@ -148,7 +148,7 @@ void dataloader::datatransfer(std::map<int, torch::TensorOptions*>* ops){
 
 
 
-std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, model_template* mdl, model_report* rep){
+std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, model_template* _mdl, model_report* rep){
     auto g_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_graph;};
     auto n_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_node;};
     auto e_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_edge;};
@@ -157,7 +157,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
     auto e_truth = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_truth_edge;};
 
     auto collect = [this](
-            model_template* mdl,
+            model_template* __mdl,
             std::vector<graph_t*>* __data, 
             std::map<std::string, int>* loc, 
             std::map<int, std::vector<torch::Tensor>>* cnt, 
@@ -171,7 +171,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
             arr.reserve(__data -> size()); 
             for (size_t x(0); x < __data -> size(); ++x){
                 graph_t* grx = (*__data)[x]; 
-                torch::Tensor* val = grx -> return_any(loc, fx(grx), key, mdl -> device_index);
+                torch::Tensor* val = grx -> return_any(loc, fx(grx), key, __mdl -> device_index);
                 if (!val){continue;} 
                 arr.push_back(*val); 
             } 
@@ -179,17 +179,17 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
             tmp[ilx -> second] = torch::Tensor(torch::cat(arr, {0}));
         }
         
-        int dev_ = (int)mdl -> m_option -> device().index();  
+        int dev_ = (int)__mdl -> m_option -> device().index();  
         for (ilx = loc -> begin(); ilx != loc -> end(); ++ilx){(*cnt)[dev_].push_back(tmp[ilx -> second]);}
     };  
 
     auto build_graph = [this, g_data, n_data, e_data, g_truth, n_truth, e_truth, collect](
             std::vector<graph_t*>* inpt, 
             std::vector<graph_t*>* out, 
-            model_template* mdl, 
+            model_template* __mdl, 
             size_t index, size_t* prg = nullptr
     ){
-        torch::TensorOptions* op = mdl -> m_option; 
+        torch::TensorOptions* op = __mdl -> m_option; 
         for (size_t x(0); x < inpt -> size(); ++x){
             (*inpt)[x] -> in_use = 1;
             (*inpt)[x] -> transfer_to_device(op); 
@@ -213,14 +213,14 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
         int dev_ = (int)op -> device().index();  
 
         // observables 
-        collect(mdl, inpt, gr -> data_map_graph, &gr -> dev_data_graph, g_data); 
-        collect(mdl, inpt, gr -> data_map_node,  &gr -> dev_data_node,  n_data); 
-        collect(mdl, inpt, gr -> data_map_edge,  &gr -> dev_data_edge,  e_data); 
+        collect(__mdl, inpt, gr -> data_map_graph, &gr -> dev_data_graph, g_data); 
+        collect(__mdl, inpt, gr -> data_map_node,  &gr -> dev_data_node,  n_data); 
+        collect(__mdl, inpt, gr -> data_map_edge,  &gr -> dev_data_edge,  e_data); 
 
         // truth data
-        collect(mdl, inpt, gr -> truth_map_graph, &gr -> dev_truth_graph, g_truth); 
-        collect(mdl, inpt, gr -> truth_map_node,  &gr -> dev_truth_node,  n_truth); 
-        collect(mdl, inpt, gr -> truth_map_edge,  &gr -> dev_truth_edge,  e_truth); 
+        collect(__mdl, inpt, gr -> truth_map_graph, &gr -> dev_truth_graph, g_truth); 
+        collect(__mdl, inpt, gr -> truth_map_node,  &gr -> dev_truth_node,  n_truth); 
+        collect(__mdl, inpt, gr -> truth_map_edge,  &gr -> dev_truth_edge,  e_truth); 
 
         int offset_nodes = 0; 
         std::vector<long> batch_index; 
@@ -228,9 +228,9 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
         std::vector<torch::Tensor> _event_weight; 
         for (size_t x(0); x < inpt -> size(); ++x){
             graph_t* grx = (*inpt)[x]; 
-            _edge_index.push_back((*grx -> get_edge_index(mdl)) + offset_nodes);
+            _edge_index.push_back((*grx -> get_edge_index(__mdl)) + offset_nodes);
             for (int t(0); t < grx -> num_nodes; ++t){batch_index.push_back(x);}
-            _event_weight.push_back(*grx -> get_event_weight(mdl)); 
+            _event_weight.push_back(*grx -> get_event_weight(__mdl)); 
             offset_nodes += grx -> num_nodes; 
             gr -> in_use = 0; 
             if (cached){continue;}
@@ -259,8 +259,8 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
         *prg = 1;
     }; 
 
-    int k   = mdl -> kfold-1; 
-    int dev = mdl -> m_option -> device().index(); 
+    int k   = _mdl -> kfold-1; 
+    int dev = _mdl -> m_option -> device().index(); 
 
     std::vector<graph_t*>* out = nullptr; 
     if (rep && rep -> mode == "evaluation"){k = -1;}
@@ -281,8 +281,8 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
 
     std::vector<std::thread*> th_(batched.size(), nullptr); 
     for (size_t x(0); x < batched.size(); ++x, ++r){
-        if (skip){build_graph(&batched[x], out, mdl, x); continue;}
-        th_[x] = new std::thread(build_graph, &batched[x], out, mdl, x, &prg[x]);
+        if (skip){build_graph(&batched[x], out, _mdl, x); continue;}
+        th_[x] = new std::thread(build_graph, &batched[x], out, _mdl, x, &prg[x]);
         while (r >= thr){r = this -> running(&th_, &prg, &trgt);}
     }
     this -> monitor(&th_); 

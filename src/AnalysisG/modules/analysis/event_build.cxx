@@ -97,6 +97,7 @@ void analysis::build_events(){
 
     int idx = 0; 
     size_t avg = nevents / this -> m_settings.threads;
+    if (avg == 0){avg = nevents;}
     std::string test_tree = trees_ -> at(0); 
     std::map<std::string, std::map<std::string, long>>::iterator ite = this -> reader -> tree_entries.begin(); 
     for (; ite != this -> reader -> tree_entries.end(); ++ite){

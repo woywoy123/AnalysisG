@@ -1,2 +1,2 @@
 from .RecursiveGraphNeuralNetwork.RecursiveGraphNeuralNetwork import *
-from .Grift.grift import Grift
+from .grift.grift import Grift

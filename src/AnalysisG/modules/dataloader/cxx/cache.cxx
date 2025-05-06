@@ -136,7 +136,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
 
     for (size_t t(0); t < quant.size(); ++t){delete serials[t]; serials[t] = nullptr;}
     prg -> join(); delete prg; 
-    for (size_t x(0); x < pth_verify.size(); ++x){
+    for (x = 0; x < pth_verify.size(); ++x){
         std::string nx = pth_verify[x];  
         this -> replace(&nx, "/.", "/"); 
         this -> rename(pth_verify[x], nx); 
@@ -147,7 +147,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
     std::map<std::string, graph_t*>* restored = this -> restore_graphs_(pth_verify, threads); 
 
     bool valid = true;
-    for (size_t x(0); x < this -> data_set -> size(); ++x){
+    for (x = 0; x < this -> data_set -> size(); ++x){
         graph_t* dt = (*this -> data_set)[x]; 
         if (dt -> preselection){continue;}
         valid = valid && restored -> count(*dt -> hash); 
@@ -255,7 +255,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
     std::vector<size_t> trgt = {};
     std::vector<size_t> handles = {};
     std::vector<std::string> cache_io = {}; 
-    std::map<std::string, std::vector<std::string>> data_set; 
+    std::map<std::string, std::vector<std::string>> data_set_; 
     for (size_t x(0); x < cache_.size(); ++x){
         std::string fname = cache_[x]; 
         std::vector<std::string> spl = this -> split(fname, "/"); 
@@ -267,15 +267,15 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         io ior = io();
         ior.start(fname, "read"); 
 
-        data_set[fname] = ior.dataset_names();  
+        data_set_[fname] = ior.dataset_names();  
         if (load_hash.size()){
-            std::vector<std::string>* check = &data_set[fname]; 
+            std::vector<std::string>* check = &data_set_[fname]; 
             std::vector<std::string>::iterator itx = check -> begin(); 
             for (; itx != check -> end();){itx = (load_hash[*itx]) ? ++itx : check -> erase(itx);}
         }
 
-        len_cache += data_set[fname].size();
-        trgt.push_back(data_set[fname].size()); 
+        len_cache += data_set_[fname].size();
+        trgt.push_back(data_set_[fname].size()); 
         handles.push_back(0); 
         ior.end(); 
         this -> progressbar(float((x+1)) / float(cache_.size()), "Checking HDF5 size: " + fname_); 
@@ -293,7 +293,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
     for (size_t x(0); x < cache_io.size(); ++x, ++tidx){
         std::vector<std::string> lsx = this -> split(cache_io[x], "/"); 
         title = "Reading HDF5 -> " + lsx[lsx.size()-1]; 
-        std::vector<std::string>* gr_ev = &data_set[cache_io[x]];
+        std::vector<std::string>* gr_ev = &data_set_[cache_io[x]];
         if (!gr_ev -> size()){continue;}
 
         cache_rebuild[x] = new std::vector<graph_t*>(gr_ev -> size(), nullptr); 

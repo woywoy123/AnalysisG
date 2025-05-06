@@ -349,31 +349,24 @@ void graph_detector::CompileEvent(){
         if (!n1 || !n2){return;}
         particle_template* b1 = n1 -> bquark; particle_template* b2 = n2 -> bquark;
         particle_template* l1 = n1 -> lepton; particle_template* l2 = n2 -> lepton; 
+
         std::map<std::string, particle_template*> hash_map; 
         for (size_t x(0); x < nx -> size(); ++x){hash_map[std::string(nx -> at(x) -> hash)] = nx -> at(x);}
         nx -> push_back(n1); nx -> push_back(n2);
         b1 = hash_map.at(std::string(b1 -> hash)); b2 = hash_map.at(std::string(b2 -> hash)); 
         l1 = hash_map.at(std::string(l1 -> hash)); l2 = hash_map.at(std::string(l2 -> hash));
 
-        std::map<std::string, particle_template*> mx; 
-        std::map<std::string, particle_template*>::iterator itx; 
-
-        mx = b1 -> parents; 
-        for (itx = mx.begin(); itx != mx.end(); ++itx){n1 -> register_parent(itx -> second);} 
         n1 -> register_parent(b1); 
-
-        mx = l1 -> parents; 
-        for (itx = mx.begin(); itx != mx.end(); ++itx){n1 -> register_parent(itx -> second);} 
+        n1 -> register_parent(n1); 
         n1 -> register_parent(l1); 
+        b1 -> register_parent(n1); 
+        l1 -> register_parent(n1); 
 
-        mx = b2 -> parents; 
-        for (itx = mx.begin(); itx != mx.end(); ++itx){n2 -> register_parent(itx -> second);} 
         n2 -> register_parent(b2); 
-
-        mx = l2 -> parents; 
-        for (itx = mx.begin(); itx != mx.end(); ++itx){n2 -> register_parent(itx -> second);} 
+        n2 -> register_parent(n2); 
         n2 -> register_parent(l2); 
-
+        b2 -> register_parent(n2); 
+        l2 -> register_parent(n2); 
     };
 
 
@@ -392,9 +385,14 @@ void graph_detector::CompileEvent(){
         bjx.push_back(event -> Jets[x]);
     }
 
-    std::pair<particle_template*, particle_template*> nux;
-    if (nx && bjx.size() >= 2){nux = this -> double_neutrino(_nodes, event -> met, event -> phi, cu);}
-    mutual((neutrino*)std::get<0>(nux), (neutrino*)std::get<1>(nux), &_nodes); 
+    if (nx && bjx.size() >= 2){
+        std::pair<particle_template*, particle_template*> nux;
+        nux = this -> double_neutrino(
+                _nodes, event -> met, event -> phi, cu, 
+                172.62*1000.0, 80.385*1000.0, 1e-5, 1e-1, 50
+        );
+        mutual((neutrino*)std::get<0>(nux), (neutrino*)std::get<1>(nux), &_nodes); 
+    }
     this -> define_particle_nodes(&_nodes); 
     this -> define_topology(fulltopo); 
 
