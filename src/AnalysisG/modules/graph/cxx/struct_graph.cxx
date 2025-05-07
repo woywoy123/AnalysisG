@@ -266,6 +266,7 @@ void graph_t::deserialize(graph_hdf5* m_hdf5){
     this -> hash         = new std::string(m_hdf5 -> hash);
     this -> filename     = new std::string(m_hdf5 -> filename);
     this -> num_nodes    = m_hdf5 -> num_nodes;
+    this -> preselection = !this -> num_nodes; 
     this -> event_index  = m_hdf5 -> event_index;
     this -> event_weight = m_hdf5 -> event_weight;
 

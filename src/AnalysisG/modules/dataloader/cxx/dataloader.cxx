@@ -172,8 +172,10 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
             for (size_t x(0); x < __data -> size(); ++x){
                 graph_t* grx = (*__data)[x]; 
                 torch::Tensor* val = grx -> return_any(loc, fx(grx), key, __mdl -> device_index);
-                if (!val){continue;} 
-                arr.push_back(*val); 
+                if (val){arr.push_back(*val); continue;}
+                this -> warning("broken graph!"); 
+                this -> warning("Hash: " + std::string(*grx -> hash) + " -> " + *grx -> filename); 
+                abort();
             } 
             if (!arr.size()){continue;}
             tmp[ilx -> second] = torch::Tensor(torch::cat(arr, {0}));
@@ -191,6 +193,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
     ){
         torch::TensorOptions* op = __mdl -> m_option; 
         for (size_t x(0); x < inpt -> size(); ++x){
+            if ((*inpt)[x] -> preselection){continue;}
             (*inpt)[x] -> in_use = 1;
             (*inpt)[x] -> transfer_to_device(op); 
         }

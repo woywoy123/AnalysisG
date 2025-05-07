@@ -360,12 +360,13 @@ void graph_detector::CompileEvent(){
 
     auto assign =[](
             std::map<std::string, particle_template*>* hash_mx, bool is_res, 
-            std::map<std::string, particle_template*>* out
+            std::map<std::string, particle_template*>* out, bool has_no_lnk
     ) -> void {
         std::map<std::string, particle_template*>::iterator itx_ = hash_mx -> begin(); 
         for (; itx_ != hash_mx -> end(); ++itx_){
             std::map<std::string, particle_template*>::iterator _itx = hash_mx -> begin(); 
             for (; _itx != hash_mx -> end(); ++_itx){
+                if (has_no_lnk){break;}
                 if (is_res){_itx -> second -> register_parent(itx_ -> second);}
                 else {_itx -> second -> register_child(itx_ -> second);}
             }
@@ -409,17 +410,11 @@ void graph_detector::CompileEvent(){
 
     std::map<int, std::map<std::string, particle_template*>>::iterator itt = hash_map_top.begin();
     for (; itt != hash_map_top.end(); ++itt){mutual((neutrino*)std::get<0>(nux), (neutrino*)std::get<1>(nux), &itt -> second);} 
-    for (itt = hash_map_top.begin(); itt != hash_map_top.end(); ++itt){
-        if (itt -> first < 0){continue;}
-        assign(&itt -> second, false, &nox);
-    } 
+    for (itt = hash_map_top.begin(); itt != hash_map_top.end(); ++itt){assign(&itt -> second, false, &nox, itt -> first < 0);} 
 
     std::map<bool, std::map<std::string, particle_template*>>::iterator itr = hash_map_res.begin();
     for (; itr != hash_map_res.end(); ++itr){mutual((neutrino*)std::get<0>(nux), (neutrino*)std::get<1>(nux), &itr -> second);} 
-    for (itr = hash_map_res.begin(); itr != hash_map_res.end(); ++itr){
-        if (!itr -> first){continue;}
-        assign(&itr -> second, true, &nox);
-    } 
+    for (itr = hash_map_res.begin(); itr != hash_map_res.end(); ++itr){assign(&itr -> second, true, &nox, itr -> first);} 
  
     std::vector<particle_template*> _nodes = {}; 
     std::map<std::string, particle_template*>::iterator itp; 

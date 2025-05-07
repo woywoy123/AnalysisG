@@ -117,9 +117,9 @@ void grift::forward(graph_t* data){
     // get the particle 4-vector and convert it to cartesian
     torch::Tensor batch_index  = data -> get_batch_index(this) -> view({-1}).clone(); 
     torch::Tensor event_index  = std::get<0>(torch::_unique(batch_index)); 
-    torch::Tensor* pt          = data -> get_data_node("pt", this);
-    torch::Tensor* eta         = data -> get_data_node("eta", this);
-    torch::Tensor* phi         = data -> get_data_node("phi", this);
+    torch::Tensor* pt          = data -> get_data_node("pt"    , this);
+    torch::Tensor* eta         = data -> get_data_node("eta"   , this);
+    torch::Tensor* phi         = data -> get_data_node("phi"   , this);
     torch::Tensor* energy      = data -> get_data_node("energy", this);
     torch::Tensor* is_lep      = data -> get_data_node("is_lep", this); 
     torch::Tensor pmc          = pyc::transform::combined::PxPyPzE(torch::cat({*pt, *eta, *phi, *energy}, {-1})) / 1000.0; 
