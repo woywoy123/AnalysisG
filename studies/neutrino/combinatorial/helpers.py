@@ -220,11 +220,11 @@ class container:
         for i in self.atomics:
             tn = sumx(self.atomics[i], 0, ftn)
             fp = sumx(self.atomics[i], 0, ffp)
-            fake_rate[i] = fp / (fp + tn)
+            fake_rate[i] = fp / ((fp + tn) if (fp + tn) else 1)
 
             tn = sumx(self.chi2_atomics[i], 0, ftn)
             fp = sumx(self.chi2_atomics[i], 0, ffp)
-            fake_rate_ch[i] = fp / (fp + tn)
+            fake_rate_ch[i] = fp / ((fp + tn) if (fp + tn) else 1)
 
 
         return {

@@ -6,13 +6,16 @@ import pandas
 def statistics(collx):
     eff_all = collx.efficiency
 
+    strx = ""
     nominal = eff_all["nominal"]
-    print("-------------- Nominal --------------- ")
-    print(pandas.DataFrame.from_dict(nominal))
-    
-    print("----------- Chi 2 assisted ----------- ")
+    strx += "-------------- Nominal ---------------\n"
+    strx += str(pandas.DataFrame.from_dict(nominal)) + "\n"
+    strx += "----------- Chi 2 assisted ----------- \n"
     chi2x   = eff_all["chi2-fitted"]
-    print(pandas.DataFrame.from_dict(chi2x))
+    strx += str(pandas.DataFrame.from_dict(chi2x))
+    f = open("log.txt", "w")
+    f.write(strx)
+    f.close()
 
 def default(hist, pth):
     hist.Style = "ATLAS"
