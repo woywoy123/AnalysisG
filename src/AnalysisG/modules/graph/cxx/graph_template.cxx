@@ -92,6 +92,7 @@ std::pair<particle_template*, particle_template*> graph_template::double_neutrin
         std::vector<particle_template*> particles, double met, double phi, std::string device, 
         double top_mass, double wboson_mass, double distance, double perturb, long steps
 ){
+    if (!particles.size()){return {nullptr, nullptr};}
     std::vector<std::pair<neutrino*, neutrino*>> nux; 
     std::vector<double> metv = std::vector<double>({met}); 
     std::vector<double> phiv = std::vector<double>({phi});
@@ -127,8 +128,7 @@ std::pair<particle_template*, particle_template*> graph_template::double_neutrin
         optimx[dr].push_back(x);
     }
     if (!optimx.size()){return {nullptr, nullptr};}
-    std::pair<neutrino*, neutrino*> nux_ = nux.at(optimx.begin() -> second.at(0));
-    return {std::get<0>(nux_), std::get<1>(nux_)}; 
+    return nux.at(optimx.begin() -> second.at(0));
 }
 
 graph_t* graph_template::data_export(){

@@ -351,11 +351,8 @@ void graph_detector::CompileEvent(){
         particle_template* l1 = n1 -> lepton; particle_template* l2 = n2 -> lepton; 
         std::string hb1 = b1 -> hash; std::string hl1 = l1 -> hash; std::string hn1 = n1 -> hash;
         std::string hb2 = b2 -> hash; std::string hl2 = l2 -> hash; std::string hn2 = n2 -> hash;
-        if (hash_mx -> count(hb1)){(*hash_mx)[hl1] = l1; (*hash_mx)[hn1] = n1;}
-        if (hash_mx -> count(hl1)){(*hash_mx)[hb1] = b1; (*hash_mx)[hn1] = n1;}
-
-        if (hash_mx -> count(hb2)){(*hash_mx)[hl2] = l2; (*hash_mx)[hn2] = n2;}
-        if (hash_mx -> count(hl2)){(*hash_mx)[hb2] = b2; (*hash_mx)[hn2] = n2;}
+        if (hash_mx -> count(hb1) || hash_mx -> count(hl1)){(*hash_mx)[hn1] = n1;}
+        if (hash_mx -> count(hb2) || hash_mx -> count(hl2)){(*hash_mx)[hn2] = n2;}
     };
 
     auto assign =[](
@@ -380,17 +377,15 @@ void graph_detector::CompileEvent(){
     bsm_4tops* event = this -> get_event<bsm_4tops>(); 
     std::map<int , std::map<std::string, particle_template*>> hash_map_top; 
     std::map<bool, std::map<std::string, particle_template*>> hash_map_res; 
-   
+  
     for (size_t x(0); x < event -> Muons.size(); ++x){
         muon* mx = (muon*)event -> Muons.at(x); 
-        (&mx -> parents) -> clear(); (&mx -> children) -> clear(); 
         hash_map_top[mx -> top_index][std::string(mx -> hash)] = mx; 
         hash_map_res[mx -> from_res][std::string(mx -> hash)] = mx; 
     }
 
     for (size_t x(0); x < event -> Electrons.size(); ++x){
         electron* mx = (electron*)event -> Electrons.at(x); 
-        (&mx -> parents) -> clear(); (&mx -> children) -> clear(); 
         hash_map_top[mx -> top_index][std::string(mx -> hash)] = mx; 
         hash_map_res[mx -> from_res][std::string(mx -> hash)] = mx; 
     }
@@ -401,7 +396,6 @@ void graph_detector::CompileEvent(){
             hash_map_top[mx -> top_index.at(y)][std::string(mx -> hash)] = mx; 
         }
         hash_map_res[bool(mx -> from_res)][std::string(mx -> hash)] = mx; 
-        (&mx -> parents) -> clear(); (&mx -> children) -> clear(); 
     }
 
     std::map<std::string, particle_template*> nox = {}; 
@@ -414,7 +408,7 @@ void graph_detector::CompileEvent(){
 
     std::map<bool, std::map<std::string, particle_template*>>::iterator itr = hash_map_res.begin();
     for (; itr != hash_map_res.end(); ++itr){mutual((neutrino*)std::get<0>(nux), (neutrino*)std::get<1>(nux), &itr -> second);} 
-    for (itr = hash_map_res.begin(); itr != hash_map_res.end(); ++itr){assign(&itr -> second, true, &nox, itr -> first);} 
+    for (itr = hash_map_res.begin(); itr != hash_map_res.end(); ++itr){assign(&itr -> second, true, &nox, !itr -> first);} 
  
     std::vector<particle_template*> _nodes = {}; 
     std::map<std::string, particle_template*>::iterator itp; 

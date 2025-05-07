@@ -98,7 +98,7 @@ struct graph_t {
         int       num_nodes = 0; 
         long    event_index = 0; 
         double event_weight = 1; 
-        bool   preselection = true;
+        bool   preselection = false;
         std::vector<long> batched_events = {}; 
 
         std::string* hash       = nullptr; 
@@ -396,7 +396,7 @@ class graph_template: public tools
         torch::TensorOptions* op = nullptr; 
         event_template* m_event = nullptr; 
 
-        bool m_preselection = true; 
+        bool m_preselection = false; 
         graph_template* build(event_template* el); 
         graph_t* data_export(); 
         event_t data; 
