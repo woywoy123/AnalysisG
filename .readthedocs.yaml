@@ -13,7 +13,6 @@ build:
   jobs:
     pre_build:
       # Generiere Doxygen-Dokumentation vor dem Sphinx-Build
-      - pip install -e .
       - cd docs && doxygen Doxyfile
       # Fix für XML-Probleme und fehlende index.xml
       - cd /home/docs/checkouts/readthedocs.org/user_builds/analysisg/checkouts/docs && python docs/fix_breathe_config.py
