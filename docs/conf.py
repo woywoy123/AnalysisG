@@ -28,9 +28,7 @@ html_theme = 'alabaster'
 html_static_path = []  # Removed '_static' to avoid warnings
 
 # -- Breathe configuration ---------------------------------------------------
-breathe_projects = {
-    "AnalysisG": "build/xml"
-}
+breathe_projects = {"AnalysisG": "/workspaces/AnalysisG/docs/docs/doxygen/xml"}
 breathe_default_project = "AnalysisG"
 
 # -- Additional configuration ------------------------------------------------
