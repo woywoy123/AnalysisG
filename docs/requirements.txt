@@ -3,3 +3,4 @@ sphinx_rtd_theme>=1.0.0
 breathe>=4.33.0
 sphinx-tabs>=3.2.0
 sphinx-copybutton>=0.5.0
+graphviz==0.20.3
