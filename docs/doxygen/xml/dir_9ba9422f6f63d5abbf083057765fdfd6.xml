@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_9ba9422f6f63d5abbf083057765fdfd6" kind="dir">
+    <compoundname>validation</compoundname>
+    <innerfile refid="studies_2neutrino_2validation_2____init_____8py">studies/neutrino/validation/__init__.py</innerfile>
+    <innerfile refid="validation_2classes_8py">validation/classes.py</innerfile>
+    <innerfile refid="neutrino_2validation_2figures_8py">neutrino/validation/figures.py</innerfile>
+    <innerfile refid="neutrino_2validation_2helper_8py">neutrino/validation/helper.py</innerfile>
+    <innerfile refid="validation_2nusol_8py">validation/nusol.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/neutrino/validation/"/>
+  </compounddef>
+</doxygen>

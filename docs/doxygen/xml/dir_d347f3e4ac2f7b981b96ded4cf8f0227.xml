@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_d347f3e4ac2f7b981b96ded4cf8f0227" kind="dir">
+    <compoundname>topreconstruction</compoundname>
+    <innerfile refid="topreconstruction_2figures_8py">topreconstruction/figures.py</innerfile>
+    <innerfile refid="topreconstruction_2main_8py">topreconstruction/main.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/topreconstruction/"/>
+  </compounddef>
+</doxygen>

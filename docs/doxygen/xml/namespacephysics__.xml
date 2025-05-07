@@ -1,0 +1,990 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacephysics__" kind="namespace" language="C++">
+    <compoundname>physics_</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacephysics___1ae22e22a969315629a6ae7549f7344805" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::P2</definition>
+        <argsstring>(torch::Tensor *px, torch::Tensor *py, torch::Tensor *pz)</argsstring>
+        <name>P2</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>px</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>py</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pz</declname>
+        </param>
+        <briefdescription>
+<para>Computes the square of the momentum magnitude. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>px</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the x-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>py</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the y-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pz</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the z-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the square of the momentum magnitude. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="24" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="12" bodyend="16" declfile="pyc/physics/include/physics/physics.h" declline="24" declcolumn="15"/>
+        <references refid="utils_8h_1a9c1cdc6384bce6bdc92ca917b3f656bf" compoundref="utils_8cxx" startline="7" endline="13">format</references>
+        <referencedby refid="namespacephysics___1a5b55715f9b9c607241139bf3541b03ab" compoundref="pyc_2physics_2physics_8cxx" startline="27" endline="30">Beta2</referencedby>
+        <referencedby refid="namespacephysics___1a941b75f458038a6d86dc28328606999c" compoundref="pyc_2physics_2physics_8cxx" startline="46" endline="51">M2</referencedby>
+        <referencedby refid="namespacephysics___1ab5a156a8862434e86693193360d27847" compoundref="pyc_2physics_2physics_8cxx" startline="18" endline="20">P</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a8cb63afce970e51324566b39dd3ca54a" compoundref="pyc_2interface_2physics_8cxx" startline="13" endline="16">pyc::physics::cartesian::separate::P2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1combined_1aba7856741341e1db62a5a4db61dbb953" compoundref="pyc_2interface_2physics_8cxx" startline="18" endline="21">pyc::physics::cartesian::combined::P2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1a164422e673f81c41b4a16f950beb8cdd" compoundref="pyc_2interface_2physics_8cxx" startline="23" endline="27">pyc::physics::polar::separate::P2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1a61c93f07eede4e32cdcf303a8a508946" compoundref="pyc_2interface_2physics_8cxx" startline="29" endline="33">pyc::physics::polar::combined::P2</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1a04d5875bbb80e829852070706190d8ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::P2</definition>
+        <argsstring>(torch::Tensor *pmc)</argsstring>
+        <name>P2</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+<para>Computes the square of the momentum magnitude from a momentum tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pmc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the momentum components. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the square of the momentum magnitude. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="32" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="5" bodyend="10" declfile="pyc/physics/include/physics/physics.h" declline="32" declcolumn="15"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1ac12a78b1943348345b940e510930f420" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::P</definition>
+        <argsstring>(torch::Tensor *px, torch::Tensor *py, torch::Tensor *pz)</argsstring>
+        <name>P</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>px</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>py</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pz</declname>
+        </param>
+        <briefdescription>
+<para>Computes the momentum magnitude. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>px</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the x-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>py</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the y-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pz</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the z-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the momentum magnitude. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="42" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="22" bodyend="25" declfile="pyc/physics/include/physics/physics.h" declline="42" declcolumn="15"/>
+        <references refid="utils_8h_1a9c1cdc6384bce6bdc92ca917b3f656bf" compoundref="utils_8cxx" startline="7" endline="13">format</references>
+        <referencedby refid="namespacenusol___1a526c0e4a558a1201624ea0b639bc747c" compoundref="nusol_2tensor_2nusol_8cxx" startline="198" endline="242">nusol_::BaseMatrix</referencedby>
+        <referencedby refid="namespacephysics___1a9ea85f47a64c014bc999d9c2015fec4f" compoundref="pyc_2physics_2physics_8cxx" startline="37" endline="39">Beta</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a3505dc653842be9622feb9094a0aa8cc" compoundref="pyc_2interface_2physics_8cxx" startline="36" endline="39">pyc::physics::cartesian::separate::P</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1combined_1a8d18df9edaf934cad512b70852a5a813" compoundref="pyc_2interface_2physics_8cxx" startline="41" endline="44">pyc::physics::cartesian::combined::P</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1a4de18b7ee3dff64515722df522605c7f" compoundref="pyc_2interface_2physics_8cxx" startline="47" endline="51">pyc::physics::polar::separate::P</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1a5760f3a249756acd268a9c66fdf53b17" compoundref="pyc_2interface_2physics_8cxx" startline="53" endline="57">pyc::physics::polar::combined::P</referencedby>
+        <referencedby refid="namespacephysics___1a6d323b672a05eb19edce0b4d818bdb7f" compoundref="pyc_2physics_2physics_8cxx" startline="88" endline="91">Theta</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1ab5a156a8862434e86693193360d27847" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::P</definition>
+        <argsstring>(torch::Tensor *pmc)</argsstring>
+        <name>P</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+<para>Computes the momentum magnitude from a momentum tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pmc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the momentum components. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the momentum magnitude. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="50" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="18" bodyend="20" declfile="pyc/physics/include/physics/physics.h" declline="50" declcolumn="15"/>
+        <references refid="namespacephysics___1ae22e22a969315629a6ae7549f7344805" compoundref="pyc_2physics_2physics_8cxx" startline="12" endline="16">P2</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1aace12d6d7317cd102e5059781d724151" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::Beta2</definition>
+        <argsstring>(torch::Tensor *px, torch::Tensor *py, torch::Tensor *pz, torch::Tensor *e)</argsstring>
+        <name>Beta2</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>px</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>py</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pz</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Computes the square of the beta factor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>px</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the x-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>py</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the y-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pz</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the z-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the energy of the system. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the square of the beta factor. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="61" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="32" bodyend="35" declfile="pyc/physics/include/physics/physics.h" declline="61" declcolumn="15"/>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="utils_8h_1a9c1cdc6384bce6bdc92ca917b3f656bf" compoundref="utils_8cxx" startline="7" endline="13">format</references>
+        <referencedby refid="namespacenusol___1a526c0e4a558a1201624ea0b639bc747c" compoundref="nusol_2tensor_2nusol_8cxx" startline="198" endline="242">nusol_::BaseMatrix</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1ac9464974b2e24ae9825795f48234e067" compoundref="pyc_2interface_2physics_8cxx" startline="60" endline="63">pyc::physics::cartesian::separate::Beta2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1combined_1a1614132c9009de833ba27233fd21655d" compoundref="pyc_2interface_2physics_8cxx" startline="65" endline="68">pyc::physics::cartesian::combined::Beta2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1a49c21afa9d65d851f1cfe13e35875ea3" compoundref="pyc_2interface_2physics_8cxx" startline="71" endline="75">pyc::physics::polar::separate::Beta2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1a20e7dc61ab62ab57496a8fc22f68a630" compoundref="pyc_2interface_2physics_8cxx" startline="77" endline="81">pyc::physics::polar::combined::Beta2</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1a5b55715f9b9c607241139bf3541b03ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::Beta2</definition>
+        <argsstring>(torch::Tensor *pmc)</argsstring>
+        <name>Beta2</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+<para>Computes the square of the beta factor from a momentum tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pmc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the momentum components. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the square of the beta factor. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="69" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="27" bodyend="30" declfile="pyc/physics/include/physics/physics.h" declline="69" declcolumn="15"/>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="namespacephysics___1ae22e22a969315629a6ae7549f7344805" compoundref="pyc_2physics_2physics_8cxx" startline="12" endline="16">P2</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1a3123f743b9c22850e7346d5f56a4441b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::Beta</definition>
+        <argsstring>(torch::Tensor *px, torch::Tensor *py, torch::Tensor *pz, torch::Tensor *e)</argsstring>
+        <name>Beta</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>px</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>py</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pz</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Computes the beta factor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>px</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the x-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>py</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the y-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pz</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the z-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the energy of the system. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the beta factor. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="80" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="41" bodyend="44" declfile="pyc/physics/include/physics/physics.h" declline="80" declcolumn="15"/>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="utils_8h_1a9c1cdc6384bce6bdc92ca917b3f656bf" compoundref="utils_8cxx" startline="7" endline="13">format</references>
+        <referencedby refid="namespacenusol___1a526c0e4a558a1201624ea0b639bc747c" compoundref="nusol_2tensor_2nusol_8cxx" startline="198" endline="242">nusol_::BaseMatrix</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1ab7fc9bc713e9578278cf535b7d296d99" compoundref="pyc_2interface_2physics_8cxx" startline="84" endline="87">pyc::physics::cartesian::separate::Beta</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1combined_1af5c9256b89e17319365e9c7841627e7a" compoundref="pyc_2interface_2physics_8cxx" startline="89" endline="92">pyc::physics::cartesian::combined::Beta</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1a49811b3e193170bb3f8d0a185b4fc07d" compoundref="pyc_2interface_2physics_8cxx" startline="95" endline="99">pyc::physics::polar::separate::Beta</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1a0150f0dac00fdc96ee3021c48c912f5a" compoundref="pyc_2interface_2physics_8cxx" startline="101" endline="105">pyc::physics::polar::combined::Beta</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1a9ea85f47a64c014bc999d9c2015fec4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::Beta</definition>
+        <argsstring>(torch::Tensor *pmc)</argsstring>
+        <name>Beta</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+<para>Computes the beta factor from a momentum tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pmc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the momentum components. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the beta factor. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="88" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="37" bodyend="39" declfile="pyc/physics/include/physics/physics.h" declline="88" declcolumn="15"/>
+        <references refid="namespacephysics___1ac12a78b1943348345b940e510930f420" compoundref="pyc_2physics_2physics_8cxx" startline="22" endline="25">P</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1a7787594305d4a156c31be581401b0b0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::M2</definition>
+        <argsstring>(torch::Tensor *px, torch::Tensor *py, torch::Tensor *pz, torch::Tensor *e)</argsstring>
+        <name>M2</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>px</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>py</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pz</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Computes the square of the invariant mass. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>px</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the x-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>py</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the y-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pz</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the z-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the energy of the system. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the square of the invariant mass. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="99" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="53" bodyend="56" declfile="pyc/physics/include/physics/physics.h" declline="99" declcolumn="15"/>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="utils_8h_1a9c1cdc6384bce6bdc92ca917b3f656bf" compoundref="utils_8cxx" startline="7" endline="13">format</references>
+        <referencedby refid="namespacenusol___1a526c0e4a558a1201624ea0b639bc747c" compoundref="nusol_2tensor_2nusol_8cxx" startline="198" endline="242">nusol_::BaseMatrix</referencedby>
+        <referencedby refid="namespacephysics___1a87db235f0b9b1b2a8c3696b4b7d4c009" compoundref="pyc_2physics_2physics_8cxx" startline="58" endline="61">M</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a822811be563d9cfe703ffc1c1688d343" compoundref="pyc_2interface_2physics_8cxx" startline="108" endline="111">pyc::physics::cartesian::separate::M2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1combined_1a2288acf9d44eb7c8f537dc732381967d" compoundref="pyc_2interface_2physics_8cxx" startline="113" endline="116">pyc::physics::cartesian::combined::M2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1a5166df2f83d8ea10350011307d165ed2" compoundref="pyc_2interface_2physics_8cxx" startline="119" endline="123">pyc::physics::polar::separate::M2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1aa79557e9e58fc548b41444667ebb1b62" compoundref="pyc_2interface_2physics_8cxx" startline="125" endline="129">pyc::physics::polar::combined::M2</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1a941b75f458038a6d86dc28328606999c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::M2</definition>
+        <argsstring>(torch::Tensor *pmc)</argsstring>
+        <name>M2</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+<para>Computes the square of the invariant mass from a momentum tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pmc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the momentum components. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the square of the invariant mass. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="107" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="46" bodyend="51" declfile="pyc/physics/include/physics/physics.h" declline="107" declcolumn="15"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28ad90ccffa01275a7a7795fb6d1274e75f">mass</references>
+        <references refid="namespacephysics___1ae22e22a969315629a6ae7549f7344805" compoundref="pyc_2physics_2physics_8cxx" startline="12" endline="16">P2</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1a64e8e583c57246f52851c0bff4137ebc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::M</definition>
+        <argsstring>(torch::Tensor *px, torch::Tensor *py, torch::Tensor *pz, torch::Tensor *e)</argsstring>
+        <name>M</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>px</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>py</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pz</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Computes the invariant mass. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>px</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the x-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>py</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the y-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pz</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the z-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the energy of the system. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the invariant mass. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="118" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="63" bodyend="66" declfile="pyc/physics/include/physics/physics.h" declline="118" declcolumn="15"/>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="utils_8h_1a9c1cdc6384bce6bdc92ca917b3f656bf" compoundref="utils_8cxx" startline="7" endline="13">format</references>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1adb6b95ef1d9eb19796bda77aa1d5caf6" compoundref="pyc_2interface_2physics_8cxx" startline="132" endline="135">pyc::physics::cartesian::separate::M</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1combined_1adc80247c6622f7cb166a81fa45b7b51d" compoundref="pyc_2interface_2physics_8cxx" startline="137" endline="140">pyc::physics::cartesian::combined::M</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1aaab901d4c62535312b57336a324c3461" compoundref="pyc_2interface_2physics_8cxx" startline="142" endline="146">pyc::physics::polar::separate::M</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1a03ec955a2641ce4f53ade06bff9ebaae" compoundref="pyc_2interface_2physics_8cxx" startline="148" endline="152">pyc::physics::polar::combined::M</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1a87db235f0b9b1b2a8c3696b4b7d4c009" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::M</definition>
+        <argsstring>(torch::Tensor *pmc)</argsstring>
+        <name>M</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+<para>Computes the invariant mass from a momentum tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pmc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the momentum components. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the invariant mass. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="126" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="58" bodyend="61" declfile="pyc/physics/include/physics/physics.h" declline="126" declcolumn="15"/>
+        <references refid="namespacephysics___1a7787594305d4a156c31be581401b0b0b" compoundref="pyc_2physics_2physics_8cxx" startline="53" endline="56">M2</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1a3d421991e1f29e21ba3d495c6ae6c93d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::Mt2</definition>
+        <argsstring>(torch::Tensor *pz, torch::Tensor *e)</argsstring>
+        <name>Mt2</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pz</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Computes the square of the transverse mass. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pz</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the z-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the energy of the system. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the square of the transverse mass. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="135" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="74" bodyend="76" declfile="pyc/physics/include/physics/physics.h" declline="135" declcolumn="15"/>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <referencedby refid="namespacephysics___1a82a8f3ce685f324e52dfea55d33fff03" compoundref="pyc_2physics_2physics_8cxx" startline="78" endline="81">Mt</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a732d6bb76e4a60ee810b312e27235974" compoundref="pyc_2interface_2physics_8cxx" startline="155" endline="158">pyc::physics::cartesian::separate::Mt2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1combined_1a111f70a5f3166ef67f2a6f41a19377b2" compoundref="pyc_2interface_2physics_8cxx" startline="160" endline="163">pyc::physics::cartesian::combined::Mt2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1ae3fb2671574519706f3c764499ce3164" compoundref="pyc_2interface_2physics_8cxx" startline="166" endline="170">pyc::physics::polar::separate::Mt2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1acc5e59b1f7549ce950cab57976edfd79" compoundref="pyc_2interface_2physics_8cxx" startline="172" endline="176">pyc::physics::polar::combined::Mt2</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1aa8aaa93322dec33a8159a197da3e8e62" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::Mt2</definition>
+        <argsstring>(torch::Tensor *pmc)</argsstring>
+        <name>Mt2</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+<para>Computes the square of the transverse mass from a momentum tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pmc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the momentum components. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the square of the transverse mass. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="143" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="68" bodyend="72" declfile="pyc/physics/include/physics/physics.h" declline="143" declcolumn="15"/>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1af5fecf9c76889e0e996dc44793e67153" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::Mt</definition>
+        <argsstring>(torch::Tensor *pz, torch::Tensor *e)</argsstring>
+        <name>Mt</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pz</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Computes the transverse mass. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pz</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the z-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the energy of the system. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the transverse mass. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="152" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="83" bodyend="86" declfile="pyc/physics/include/physics/physics.h" declline="152" declcolumn="15"/>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="namespacephysics___1a3d421991e1f29e21ba3d495c6ae6c93d" compoundref="pyc_2physics_2physics_8cxx" startline="74" endline="76">Mt2</references>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a28a5bc1982da9a36e87ce2e3e979a464" compoundref="pyc_2interface_2physics_8cxx" startline="178" endline="181">pyc::physics::cartesian::separate::Mt</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1combined_1aaf8cf1904c15a733221a1b44039989ce" compoundref="pyc_2interface_2physics_8cxx" startline="183" endline="186">pyc::physics::cartesian::combined::Mt</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1ab979af5143b4e4c7ad9abacf21ef9544" compoundref="pyc_2interface_2physics_8cxx" startline="188" endline="192">pyc::physics::polar::separate::Mt</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1acbeb9c6012612bd77cab7fe7871f0ccf" compoundref="pyc_2interface_2physics_8cxx" startline="194" endline="198">pyc::physics::polar::combined::Mt</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1a82a8f3ce685f324e52dfea55d33fff03" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::Mt</definition>
+        <argsstring>(torch::Tensor *pmc)</argsstring>
+        <name>Mt</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+<para>Computes the transverse mass from a momentum tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pmc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the momentum components. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the transverse mass. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="160" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="78" bodyend="81" declfile="pyc/physics/include/physics/physics.h" declline="160" declcolumn="15"/>
+        <references refid="namespacephysics___1a3d421991e1f29e21ba3d495c6ae6c93d" compoundref="pyc_2physics_2physics_8cxx" startline="74" endline="76">Mt2</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1a6d323b672a05eb19edce0b4d818bdb7f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::Theta</definition>
+        <argsstring>(torch::Tensor *pmc)</argsstring>
+        <name>Theta</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+<para>Computes the polar angle theta. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pmc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the momentum components. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the polar angle theta. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="168" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="88" bodyend="91" declfile="pyc/physics/include/physics/physics.h" declline="168" declcolumn="15"/>
+        <references refid="namespacephysics___1ac12a78b1943348345b940e510930f420" compoundref="pyc_2physics_2physics_8cxx" startline="22" endline="25">P</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <referencedby refid="nusol_2tensor_2nusol_8cxx_1a28531a30b80ecbd780392279d8a8adf3" compoundref="nusol_2tensor_2nusol_8cxx" startline="130" endline="153">Rotation</referencedby>
+        <referencedby refid="namespacepyc_1_1operators_1a5c947d6968337f95f86e6925acc63dfa" compoundref="interface_2operators_8cxx" startline="44" endline="49">pyc::operators::RT</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a82aecb485f9b6534ebcf8921b03c1bbc" compoundref="pyc_2interface_2physics_8cxx" startline="200" endline="203">pyc::physics::cartesian::separate::Theta</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1combined_1aefe1c7cb2cb523ab1118a6d1cabbfe69" compoundref="pyc_2interface_2physics_8cxx" startline="205" endline="208">pyc::physics::cartesian::combined::Theta</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1a40b284f030bc35051fe4ceb68e0b560e" compoundref="pyc_2interface_2physics_8cxx" startline="211" endline="215">pyc::physics::polar::separate::Theta</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1a6169c98dd89c2571d2871582b3fb1279" compoundref="pyc_2interface_2physics_8cxx" startline="217" endline="221">pyc::physics::polar::combined::Theta</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1a6e76ad80e9f8bade6a2014ecb7580a76" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::Theta</definition>
+        <argsstring>(torch::Tensor *px, torch::Tensor *py, torch::Tensor *pz)</argsstring>
+        <name>Theta</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>px</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>py</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pz</declname>
+        </param>
+        <briefdescription>
+<para>Computes the polar angle theta. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>px</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the x-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>py</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the y-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pz</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the z-component of momentum. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the polar angle theta. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="178" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="93" bodyend="96" declfile="pyc/physics/include/physics/physics.h" declline="178" declcolumn="15"/>
+        <references refid="utils_8h_1a9c1cdc6384bce6bdc92ca917b3f656bf" compoundref="utils_8cxx" startline="7" endline="13">format</references>
+        <references refid="namespacephysics___1ac12a78b1943348345b940e510930f420" compoundref="pyc_2physics_2physics_8cxx" startline="22" endline="25">P</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1a5f66fa5ca30082509e1284fbcb4b25be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::DeltaR</definition>
+        <argsstring>(torch::Tensor *pmu1, torch::Tensor *pmu2)</argsstring>
+        <name>DeltaR</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pmu1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pmu2</declname>
+        </param>
+        <briefdescription>
+<para>Computes the delta R separation between two particles. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pmu1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the first particle&apos;s momentum. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pmu2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the second particle&apos;s momentum. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the delta R separation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="187" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="98" bodyend="105" declfile="pyc/physics/include/physics/physics.h" declline="187" declcolumn="15"/>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1adbd2ec240755f1bf46b2c157f0325669" compoundref="pyc_2interface_2physics_8cxx" startline="223" endline="232">pyc::physics::cartesian::separate::DeltaR</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1combined_1ada89277d3b7f28e15501e5c943516fe0" compoundref="pyc_2interface_2physics_8cxx" startline="234" endline="239">pyc::physics::cartesian::combined::DeltaR</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1a126d69d61b586628696defeedc82f79c" compoundref="pyc_2interface_2physics_8cxx" startline="241" endline="247">pyc::physics::polar::separate::DeltaR</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1ae7398e6dca3f3b6fea2d769cc8d5d4de" compoundref="pyc_2interface_2physics_8cxx" startline="249" endline="252">pyc::physics::polar::combined::DeltaR</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacephysics___1af00266daeb6a7b5387326943d136eb57" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor physics_::DeltaR</definition>
+        <argsstring>(torch::Tensor *eta1, torch::Tensor *eta2, torch::Tensor *phi1, torch::Tensor *phi2)</argsstring>
+        <name>DeltaR</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>eta1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>eta2</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>phi1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>phi2</declname>
+        </param>
+        <briefdescription>
+<para>Computes the delta R separation between two particles. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>eta1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the pseudorapidity of the first particle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>eta2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the pseudorapidity of the second particle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>phi1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the azimuthal angle of the first particle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>phi2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for the azimuthal angle of the second particle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the delta R separation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/physics/include/physics/physics.h" line="198" column="15" bodyfile="pyc/physics/physics.cxx" bodystart="107" bodyend="114" declfile="pyc/physics/include/physics/physics.h" declline="198" declcolumn="15"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>&lt; Includes PyTorch C++ headers for tensor operations. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Namespace for physics-related functions. </para>
+    </detaileddescription>
+    <location file="pyc/physics/include/physics/physics.h" line="14" column="18"/>
+  </compounddef>
+</doxygen>

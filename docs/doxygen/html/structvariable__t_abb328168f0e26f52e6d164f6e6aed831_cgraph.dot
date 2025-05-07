@@ -1,0 +1,17 @@
+digraph "variable_t::process"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="variable_t::process",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="variable_t::build_switch",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structvariable__t.html#a658b5e8556268b7ae507aef14a5b1adb",tooltip=" "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="variable_t::create_meta",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structvariable__t.html#a2fdb004c324727113017b83666dcfb5f",tooltip=" "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="bsc_t::flush_buffer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbsc__t.html#a953a8bb68bdd6acd9c97d4c0eb965319",tooltip="Clears the internal buffer."];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="tensor_size",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$typecasting_8cxx.html#a080c0dde93a7b634e36c7b7f41ade0ed",tooltip=" "];
+}

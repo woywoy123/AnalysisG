@@ -1,0 +1,1158 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classgnn__event" kind="class" language="C++" prot="public">
+    <compoundname>gnn_event</compoundname>
+    <basecompoundref refid="classevent__template" prot="public" virt="non-virtual">event_template</basecompoundref>
+    <includes refid="gnn-event_8h" local="no">gnn-event.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classgnn__event_1ad7304d095be1acf08225083e4dd053f7" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int gnn_event::num_bjets</definition>
+        <argsstring></argsstring>
+        <name>num_bjets</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="31" column="15" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="31" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" compoundref="events_2gnn_2cxx_2event_8cxx" startline="38" endline="56">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a35268eefea5dfd0f70c79cc2853bb8ed" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double gnn_event::num_jets</definition>
+        <argsstring></argsstring>
+        <name>num_jets</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="32" column="16" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="32" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" compoundref="events_2gnn_2cxx_2event_8cxx" startline="38" endline="56">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a47373a568d8201b494deb13fc92cb9ff" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double gnn_event::num_leps</definition>
+        <argsstring></argsstring>
+        <name>num_leps</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="33" column="16" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="33" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" compoundref="events_2gnn_2cxx_2event_8cxx" startline="38" endline="56">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1ae8ac9965af2d9cb79cce878edb6c8bc8" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double gnn_event::met</definition>
+        <argsstring></argsstring>
+        <name>met</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="34" column="16" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1ae46e3ccd313bfdf8ead0578e4d41054f" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double gnn_event::phi</definition>
+        <argsstring></argsstring>
+        <name>phi</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="35" column="16" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="35" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" compoundref="events_2gnn_2cxx_2event_8cxx" startline="38" endline="56">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a6f88036ae273b5c5c9633839ffa81c0e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int gnn_event::p_ntops</definition>
+        <argsstring></argsstring>
+        <name>p_ntops</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="38" column="15" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="38" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1aab7a24d5e7ac602208b1cff2ea31ea4f" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int gnn_event::p_signal</definition>
+        <argsstring></argsstring>
+        <name>p_signal</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="39" column="15" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="39" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1ae0185eeb793def411cc4f6951ce81ffd" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float gnn_event::s_ntops</definition>
+        <argsstring></argsstring>
+        <name>s_ntops</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="40" column="15" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="40" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1afe31240cc587d682cff6a54d65dccd1c" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float gnn_event::s_signal</definition>
+        <argsstring></argsstring>
+        <name>s_signal</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="41" column="15" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="41" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a987cbe2e4c116259128b60c2ffc2b33e" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; float &gt;</type>
+        <definition>std::vector&lt;float&gt; gnn_event::ntops_scores</definition>
+        <argsstring></argsstring>
+        <name>ntops_scores</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="43" column="21" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="43" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" compoundref="events_2gnn_2cxx_2event_8cxx" startline="38" endline="56">build</referencedby>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1ac08b15295236ceb6167b960f599c90c7" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; float &gt;</type>
+        <definition>std::vector&lt;float&gt; gnn_event::signal_scores</definition>
+        <argsstring></argsstring>
+        <name>signal_scores</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="44" column="21" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="44" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" compoundref="events_2gnn_2cxx_2event_8cxx" startline="38" endline="56">build</referencedby>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a03d8f992c924d4b8e34278a2366640e8" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; std::vector&lt; float &gt; &gt;</type>
+        <definition>std::vector&lt;std::vector&lt;float&gt; &gt; gnn_event::edge_res_scores</definition>
+        <argsstring></argsstring>
+        <name>edge_res_scores</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="46" column="21" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="46" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" compoundref="events_2gnn_2cxx_2event_8cxx" startline="38" endline="56">build</referencedby>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1ad517905f9ec3ae570ccc186aa24f3a85" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; std::vector&lt; float &gt; &gt;</type>
+        <definition>std::vector&lt;std::vector&lt;float&gt; &gt; gnn_event::edge_top_scores</definition>
+        <argsstring></argsstring>
+        <name>edge_top_scores</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="47" column="21" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="47" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" compoundref="events_2gnn_2cxx_2event_8cxx" startline="38" endline="56">build</referencedby>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a723553af695434b7fb88754fafbb7875" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classtop" kindref="compound">top</ref> * &gt;</type>
+        <definition>std::vector&lt;top*&gt; gnn_event::r_tops</definition>
+        <argsstring></argsstring>
+        <name>r_tops</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="50" column="24" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="50" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a473e67cb2317484478c3deab1d98ed13" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classzprime" kindref="compound">zprime</ref> * &gt;</type>
+        <definition>std::vector&lt;zprime*&gt; gnn_event::r_zprime</definition>
+        <argsstring></argsstring>
+        <name>r_zprime</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="51" column="21" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="51" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a876f2baaf062806b25c3d248951dfcef" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__gnn" kindref="compound">particle_gnn</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_gnn*&gt; gnn_event::event_particles</definition>
+        <argsstring></argsstring>
+        <name>event_particles</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="52" column="21" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="52" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1ac7c50b35903998fdbc864b068466bed4" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classtop" kindref="compound">top</ref> * &gt;</type>
+        <definition>std::vector&lt;top*&gt; gnn_event::t_tops</definition>
+        <argsstring></argsstring>
+        <name>t_tops</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="55" column="21" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="55" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a2d1102a7f443965093b915031b999452" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classzprime" kindref="compound">zprime</ref> * &gt;</type>
+        <definition>std::vector&lt;zprime*&gt; gnn_event::t_zprime</definition>
+        <argsstring></argsstring>
+        <name>t_zprime</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="56" column="21" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="56" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1aabd2759ec6336a9ab28dbd855a0f4f58" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; gnn_event::t_edge_res</definition>
+        <argsstring></argsstring>
+        <name>t_edge_res</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="58" column="21" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="58" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" compoundref="events_2gnn_2cxx_2event_8cxx" startline="38" endline="56">build</referencedby>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a6178dbcad9820f7fe6b36f33f2f8ffab" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; gnn_event::t_edge_top</definition>
+        <argsstring></argsstring>
+        <name>t_edge_top</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="59" column="21" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="59" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" compoundref="events_2gnn_2cxx_2event_8cxx" startline="38" endline="56">build</referencedby>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a0601b77c54a0a174d124ce8741e924fc" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int gnn_event::t_ntops</definition>
+        <argsstring></argsstring>
+        <name>t_ntops</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="61" column="13" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="61" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" compoundref="events_2gnn_2cxx_2event_8cxx" startline="38" endline="56">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1ac6e99d3fcf8efcf8079fe08716f52b3d" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool gnn_event::t_signal</definition>
+        <argsstring></argsstring>
+        <name>t_signal</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="62" column="14" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="62" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" compoundref="events_2gnn_2cxx_2event_8cxx" startline="38" endline="56">build</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classgnn__event_1ae89c93a690d509ef5f13eada6b4ecfd5" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::vector&lt; int &gt; &gt;</type>
+        <definition>std::vector&lt;std::vector&lt;int&gt; &gt; gnn_event::m_edge_index</definition>
+        <argsstring></argsstring>
+        <name>m_edge_index</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="69" column="28" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a3210a5699622405d1f5434556121f1dd" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classparticle__gnn" kindref="compound">particle_gnn</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, particle_gnn*&gt; gnn_event::m_event_particles</definition>
+        <argsstring></argsstring>
+        <name>m_event_particles</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="70" column="18" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a99d8f06c4efef0525353beabb956e347" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classzprime" kindref="compound">zprime</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, zprime*&gt; gnn_event::m_r_zprime</definition>
+        <argsstring></argsstring>
+        <name>m_r_zprime</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="72" column="19" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a146d81aefa4de7f0a40b3e0020a4f8c6" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classzprime" kindref="compound">zprime</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, zprime*&gt; gnn_event::m_t_zprime</definition>
+        <argsstring></argsstring>
+        <name>m_t_zprime</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="73" column="19" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1ae89fbfc37e4b27bf04ca05095284025d" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classtop" kindref="compound">top</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, top*&gt; gnn_event::m_r_tops</definition>
+        <argsstring></argsstring>
+        <name>m_r_tops</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="74" column="22" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classgnn__event_1a9e9876a912932aff36e148ae7241c4c9" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classtop" kindref="compound">top</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, top*&gt; gnn_event::m_t_tops</definition>
+        <argsstring></argsstring>
+        <name>m_t_tops</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="75" column="22" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classgnn__event_1a3c9a7e52028ab3304bb23be24332009c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>gnn_event::gnn_event</definition>
+        <argsstring>()</argsstring>
+        <name>gnn_event</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="27" column="9" bodyfile="events/gnn/cxx/event.cxx" bodystart="3" bodyend="27"/>
+        <references refid="_3event-name_4_8cxx_1a5449d540d047658d711bb2a06d8656c2">add_leaf</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <references refid="_3event-name_4_8cxx_1a5e0f2787f92f983370938617945f3ec8" compoundref="_3event-name_4_8cxx" startline="6">trees</references>
+        <referencedby refid="classgnn__event_1ae5ad399474dcb1e8a7396e3d4da9932d" compoundref="events_2gnn_2cxx_2event_8cxx" startline="36" endline="36">clone</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classgnn__event_1a8ab0f5d799e1d2061eb8be50bdcf1e4a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>gnn_event::~gnn_event</definition>
+        <argsstring>() override</argsstring>
+        <name>~gnn_event</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="28" column="9" bodyfile="events/gnn/cxx/event.cxx" bodystart="29" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="classgnn__event_1ae5ad399474dcb1e8a7396e3d4da9932d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classevent__template" kindref="compound">event_template</ref> *</type>
+        <definition>event_template * gnn_event::clone</definition>
+        <argsstring>() override</argsstring>
+        <name>clone</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="64" column="24" bodyfile="events/gnn/cxx/event.cxx" bodystart="36" bodyend="36"/>
+        <references refid="classgnn__event_1a3c9a7e52028ab3304bb23be24332009c" compoundref="events_2gnn_2cxx_2event_8cxx" startline="3" endline="27">gnn_event</references>
+      </memberdef>
+      <memberdef kind="function" id="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void gnn_event::build</definition>
+        <argsstring>(element_t *el) override</argsstring>
+        <name>build</name>
+        <param>
+          <type><ref refid="structelement__t" kindref="compound">element_t</ref> *</type>
+          <declname>el</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="65" column="14" bodyfile="events/gnn/cxx/event.cxx" bodystart="38" bodyend="56"/>
+        <references refid="classgnn__event_1a03d8f992c924d4b8e34278a2366640e8" compoundref="gnn-event_8h" startline="46">edge_res_scores</references>
+        <references refid="classgnn__event_1ad517905f9ec3ae570ccc186aa24f3a85" compoundref="gnn-event_8h" startline="47">edge_top_scores</references>
+        <references refid="classgnn__event_1a987cbe2e4c116259128b60c2ffc2b33e" compoundref="gnn-event_8h" startline="43">ntops_scores</references>
+        <references refid="classgnn__event_1ad7304d095be1acf08225083e4dd053f7" compoundref="gnn-event_8h" startline="31">num_bjets</references>
+        <references refid="classgnn__event_1a35268eefea5dfd0f70c79cc2853bb8ed" compoundref="gnn-event_8h" startline="32">num_jets</references>
+        <references refid="classgnn__event_1a47373a568d8201b494deb13fc92cb9ff" compoundref="gnn-event_8h" startline="33">num_leps</references>
+        <references refid="classgnn__event_1ae46e3ccd313bfdf8ead0578e4d41054f" compoundref="gnn-event_8h" startline="35">phi</references>
+        <references refid="gnn-event_8h_1a3236b838b6476586b60077886232dced" compoundref="gnn-event_8h" startline="8" endline="12">reduce</references>
+        <references refid="classgnn__event_1ac08b15295236ceb6167b960f599c90c7" compoundref="gnn-event_8h" startline="44">signal_scores</references>
+        <references refid="classgnn__event_1aabd2759ec6336a9ab28dbd855a0f4f58" compoundref="gnn-event_8h" startline="58">t_edge_res</references>
+        <references refid="classgnn__event_1a6178dbcad9820f7fe6b36f33f2f8ffab" compoundref="gnn-event_8h" startline="59">t_edge_top</references>
+        <references refid="classgnn__event_1a0601b77c54a0a174d124ce8741e924fc" compoundref="gnn-event_8h" startline="61">t_ntops</references>
+        <references refid="classgnn__event_1ac6e99d3fcf8efcf8079fe08716f52b3d" compoundref="gnn-event_8h" startline="62">t_signal</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a7edabf994b76a00cbc60c95af337db8f">weight</references>
+      </memberdef>
+      <memberdef kind="function" id="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void gnn_event::CompileEvent</definition>
+        <argsstring>() override</argsstring>
+        <name>CompileEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="66" column="14" bodyfile="events/gnn/cxx/event.cxx" bodystart="58" bodyend="291"/>
+        <references refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" compoundref="structs_2cxx_2base_8cxx" startline="62" endline="67">count</references>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="classgnn__event_1a03d8f992c924d4b8e34278a2366640e8" compoundref="gnn-event_8h" startline="46">edge_res_scores</references>
+        <references refid="classgnn__event_1ad517905f9ec3ae570ccc186aa24f3a85" compoundref="gnn-event_8h" startline="47">edge_top_scores</references>
+        <references refid="_3name_4_8h_1a64e9fa75beda50a9e8400ee0d4e61984">end</references>
+        <references refid="classgnn__event_1a876f2baaf062806b25c3d248951dfcef" compoundref="gnn-event_8h" startline="52">event_particles</references>
+        <references refid="namespacesimply__plot_1a0bf6f892181cb5717d74445b1f88ec32" compoundref="simply__plot_8py" startline="621">simply_plot.hx</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86">index</references>
+        <references refid="classgnn__event_1a987cbe2e4c116259128b60c2ffc2b33e" compoundref="gnn-event_8h" startline="43">ntops_scores</references>
+        <references refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" compoundref="performance_2main_8py" startline="69">main.out</references>
+        <references refid="classgnn__event_1a6f88036ae273b5c5c9633839ffa81c0e" compoundref="gnn-event_8h" startline="38">p_ntops</references>
+        <references refid="classgnn__event_1aab7a24d5e7ac602208b1cff2ea31ea4f" compoundref="gnn-event_8h" startline="39">p_signal</references>
+        <references refid="classgnn__event_1a723553af695434b7fb88754fafbb7875" compoundref="gnn-event_8h" startline="50">r_tops</references>
+        <references refid="classgnn__event_1a473e67cb2317484478c3deab1d98ed13" compoundref="gnn-event_8h" startline="51">r_zprime</references>
+        <references refid="classgnn__event_1ae0185eeb793def411cc4f6951ce81ffd" compoundref="gnn-event_8h" startline="40">s_ntops</references>
+        <references refid="classgnn__event_1afe31240cc587d682cff6a54d65dccd1c" compoundref="gnn-event_8h" startline="41">s_signal</references>
+        <references refid="classgnn__event_1ac08b15295236ceb6167b960f599c90c7" compoundref="gnn-event_8h" startline="44">signal_scores</references>
+        <references refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" compoundref="test__experimental__mc20_8py" startline="7">test_experimental_mc20.t</references>
+        <references refid="classgnn__event_1aabd2759ec6336a9ab28dbd855a0f4f58" compoundref="gnn-event_8h" startline="58">t_edge_res</references>
+        <references refid="classgnn__event_1a6178dbcad9820f7fe6b36f33f2f8ffab" compoundref="gnn-event_8h" startline="59">t_edge_top</references>
+        <references refid="classgnn__event_1ac7c50b35903998fdbc864b068466bed4" compoundref="gnn-event_8h" startline="55">t_tops</references>
+        <references refid="classgnn__event_1a2d1102a7f443965093b915031b999452" compoundref="gnn-event_8h" startline="56">t_zprime</references>
+        <references refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" compoundref="mc16__matching_2main_8py" startline="108">main.tmp</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classgnn__event_1a6487d3f4e4103ce185d0ef2f3c0a3f9c" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename G</type>
+          </param>
+        </templateparamlist>
+        <type>std::map&lt; int, G * &gt;</type>
+        <definition>std::map&lt;int, G*&gt; gnn_event::sort_by_index</definition>
+        <argsstring>(std::map&lt; std::string, G * &gt; *ipt)</argsstring>
+        <name>sort_by_index</name>
+        <param>
+          <type>std::map&lt; std::string, G * &gt; *</type>
+          <declname>ipt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="78" column="18" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="78" bodyend="83"/>
+      </memberdef>
+      <memberdef kind="function" id="classgnn__event_1af8c9947527b786e2118ee40e445a055c" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename m</type>
+          </param>
+          <param>
+            <type>typename G</type>
+          </param>
+          <param>
+            <type>typename Gx</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void gnn_event::vectorize</definition>
+        <argsstring>(std::map&lt; m, G * &gt; *ipt, std::vector&lt; Gx * &gt; *vec)</argsstring>
+        <name>vectorize</name>
+        <param>
+          <type>std::map&lt; m, G * &gt; *</type>
+          <declname>ipt</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; Gx * &gt; *</type>
+          <declname>vec</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="86" column="14" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="86" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="function" id="classgnn__event_1abc9138d1f8997e74f0b3a9403716dffc" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+          <param>
+            <type>typename G</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void gnn_event::sum</definition>
+        <argsstring>(std::vector&lt; g * &gt; *ch, G **out)</argsstring>
+        <name>sum</name>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>ch</declname>
+        </param>
+        <param>
+          <type>G **</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="92" column="14" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="92" bodyend="101"/>
+      </memberdef>
+      <memberdef kind="function" id="classgnn__event_1aeeea20947722fe59a158298bcbdc585b" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void gnn_event::print</definition>
+        <argsstring>(std::vector&lt; std::vector&lt; g &gt;&gt; *data)</argsstring>
+        <name>print</name>
+        <param>
+          <type>std::vector&lt; std::vector&lt; g &gt;&gt; *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="104" column="14" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="104" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="classgnn__event_1a5adb27212b49856b64305205ed46197c" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+          <param>
+            <type>typename k</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void gnn_event::print</definition>
+        <argsstring>(std::map&lt; g, std::map&lt; g, k &gt;&gt; *data)</argsstring>
+        <name>print</name>
+        <param>
+          <type>std::map&lt; g, std::map&lt; g, k &gt;&gt; *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="124" column="14" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="124" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="function" id="classgnn__event_1aee8e45985435f430af659784ad81c3e9" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+          <param>
+            <type>typename k</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void gnn_event::print</definition>
+        <argsstring>(std::map&lt; g, k &gt; *data)</argsstring>
+        <name>print</name>
+        <param>
+          <type>std::map&lt; g, k &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/gnn/include/inference/gnn-event.h" line="143" column="14" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="143" bodyend="152"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>event_template</label>
+        <link refid="classevent__template"/>
+      </node>
+      <node id="1">
+        <label>gnn_event</label>
+        <link refid="classgnn__event"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="40">
+        <label>zprime</label>
+        <link refid="classzprime"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="38" relation="usage">
+          <edgelabel>zprime_truthjets</edgelabel>
+          <edgelabel>zprime_truth_tops</edgelabel>
+          <edgelabel>zprime_children</edgelabel>
+          <edgelabel>zprime_jets</edgelabel>
+        </childnode>
+      </node>
+      <node id="32">
+        <label>std::vector&lt; truthjet * &gt;</label>
+        <childnode refid="33" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="template-instance">
+          <edgelabel>&lt; truthjet * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>cproperty&lt; int, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="14" relation="template-instance">
+          <edgelabel>&lt; int, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>K</label>
+      </node>
+      <node id="12">
+        <label>T</label>
+      </node>
+      <node id="33">
+        <label>truthjet</label>
+        <link refid="classtruthjet"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="24" relation="usage">
+          <edgelabel>Tops</edgelabel>
+        </childnode>
+        <childnode refid="34" relation="usage">
+          <edgelabel>from_res</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>top_index</edgelabel>
+        </childnode>
+        <childnode refid="35" relation="usage">
+          <edgelabel>Parton</edgelabel>
+        </childnode>
+      </node>
+      <node id="35">
+        <label>std::vector&lt; truthjetparton * &gt;</label>
+        <childnode refid="36" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="template-instance">
+          <edgelabel>&lt; truthjetparton * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>particle_template</label>
+        <link refid="classparticle__template"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>m_children</edgelabel>
+          <edgelabel>m_parents</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>pdgid</edgelabel>
+          <edgelabel>index</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>is_lep</edgelabel>
+          <edgelabel>is_nu</edgelabel>
+          <edgelabel>is_add</edgelabel>
+          <edgelabel>is_b</edgelabel>
+          <edgelabel>lep_decay</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>charge</edgelabel>
+          <edgelabel>pt</edgelabel>
+          <edgelabel>mass</edgelabel>
+          <edgelabel>px</edgelabel>
+          <edgelabel>py</edgelabel>
+          <edgelabel>pz</edgelabel>
+          <edgelabel>phi</edgelabel>
+          <edgelabel>eta</edgelabel>
+          <edgelabel>e</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>leaves</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>symbol</edgelabel>
+          <edgelabel>type</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>data</edgelabel>
+        </childnode>
+        <childnode refid="23" relation="usage">
+          <edgelabel>parents</edgelabel>
+          <edgelabel>children</edgelabel>
+        </childnode>
+      </node>
+      <node id="22">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="12" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="29">
+        <label>std::vector&lt; jetparton * &gt;</label>
+        <childnode refid="30" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="template-instance">
+          <edgelabel>&lt; jetparton * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="37">
+        <label>std::vector&lt; std::vector&lt; float &gt; &gt;</label>
+        <childnode refid="22" relation="template-instance">
+          <edgelabel>&lt; std::vector&lt; float &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>particle_gnn</label>
+        <link refid="classparticle__gnn"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>std::vector&lt; float &gt;</label>
+        <childnode refid="22" relation="template-instance">
+          <edgelabel>&lt; float &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="36">
+        <label>truthjetparton</label>
+        <link refid="classtruthjetparton"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>topchild_index</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>std::map&lt; std::string, particle_template * &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::string, particle_template * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="23">
+        <label>cproperty&lt; std::map&lt; std::string, particle_template * &gt;, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="14" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, particle_template * &gt;, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="11" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="24">
+        <label>std::vector&lt; top * &gt;</label>
+        <childnode refid="25" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="template-instance">
+          <edgelabel>&lt; top * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="25">
+        <label>top</label>
+        <link refid="classtop"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="26" relation="usage">
+          <edgelabel>truthjets</edgelabel>
+          <edgelabel>leptons</edgelabel>
+          <edgelabel>jets</edgelabel>
+        </childnode>
+        <childnode refid="27" relation="usage">
+          <edgelabel>Jets</edgelabel>
+        </childnode>
+        <childnode refid="32" relation="usage">
+          <edgelabel>TruthJets</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>std::map&lt; std::string, bool &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::string, bool &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="31">
+        <label>cproperty&lt; bool, jet &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="14" relation="template-instance">
+          <edgelabel>&lt; bool, jet &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>cproperty&lt; T, G &gt;</label>
+        <link refid="classcproperty"/>
+      </node>
+      <node id="9">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="19">
+        <label>particle_t</label>
+        <link refid="structparticle__t"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>data_p</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>parents</edgelabel>
+          <edgelabel>children</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>symbol</edgelabel>
+          <edgelabel>type</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>nudef</edgelabel>
+          <edgelabel>lepdef</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>std::map&lt; std::string, std::string &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>keys</edgelabel>
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::string, std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>cproperty&lt; bool, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="14" relation="template-instance">
+          <edgelabel>&lt; bool, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::vector&lt; particle_gnn * &gt;</label>
+        <childnode refid="4" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="template-instance">
+          <edgelabel>&lt; particle_gnn * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="27">
+        <label>std::vector&lt; jet * &gt;</label>
+        <childnode refid="28" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="template-instance">
+          <edgelabel>&lt; jet * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="28">
+        <label>jet</label>
+        <link refid="classjet"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="29" relation="usage">
+          <edgelabel>Parton</edgelabel>
+        </childnode>
+        <childnode refid="24" relation="usage">
+          <edgelabel>Tops</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>top_index</edgelabel>
+        </childnode>
+        <childnode refid="31" relation="usage">
+          <edgelabel>from_res</edgelabel>
+        </childnode>
+      </node>
+      <node id="34">
+        <label>cproperty&lt; bool, truthjet &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="14" relation="template-instance">
+          <edgelabel>&lt; bool, truthjet &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="39">
+        <label>std::vector&lt; zprime * &gt;</label>
+        <childnode refid="40" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="template-instance">
+          <edgelabel>&lt; zprime * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="26">
+        <label>std::vector&lt; particle_template * &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="template-instance">
+          <edgelabel>&lt; particle_template * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>event_template</label>
+        <link refid="classevent__template"/>
+      </node>
+      <node id="16">
+        <label>cproperty&lt; double, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="14" relation="template-instance">
+          <edgelabel>&lt; double, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>cproperty&lt; std::string, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="14" relation="template-instance">
+          <edgelabel>&lt; std::string, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>gnn_event</label>
+        <link refid="classgnn__event"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>event_particles</edgelabel>
+        </childnode>
+        <childnode refid="24" relation="usage">
+          <edgelabel>t_tops</edgelabel>
+          <edgelabel>r_tops</edgelabel>
+        </childnode>
+        <childnode refid="37" relation="usage">
+          <edgelabel>edge_res_scores</edgelabel>
+          <edgelabel>edge_top_scores</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>t_edge_top</edgelabel>
+          <edgelabel>t_edge_res</edgelabel>
+        </childnode>
+        <childnode refid="38" relation="usage">
+          <edgelabel>ntops_scores</edgelabel>
+          <edgelabel>signal_scores</edgelabel>
+        </childnode>
+        <childnode refid="39" relation="usage">
+          <edgelabel>r_zprime</edgelabel>
+          <edgelabel>t_zprime</edgelabel>
+        </childnode>
+      </node>
+      <node id="21">
+        <label>std::vector&lt; int &gt;</label>
+        <childnode refid="22" relation="template-instance">
+          <edgelabel>&lt; int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+      <node id="30">
+        <label>jetparton</label>
+        <link refid="classjetparton"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>topchild_index</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>std::string</label>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="events/gnn/include/inference/gnn-event.h" line="25" column="1" bodyfile="events/gnn/include/inference/gnn-event.h" bodystart="24" bodyend="159"/>
+    <listofallmembers>
+      <member refid="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>build</name></member>
+      <member refid="classgnn__event_1ae5ad399474dcb1e8a7396e3d4da9932d" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>clone</name></member>
+      <member refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>CompileEvent</name></member>
+      <member refid="classgnn__event_1a03d8f992c924d4b8e34278a2366640e8" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>edge_res_scores</name></member>
+      <member refid="classgnn__event_1ad517905f9ec3ae570ccc186aa24f3a85" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>edge_top_scores</name></member>
+      <member refid="classgnn__event_1a876f2baaf062806b25c3d248951dfcef" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>event_particles</name></member>
+      <member refid="classgnn__event_1a3c9a7e52028ab3304bb23be24332009c" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>gnn_event</name></member>
+      <member refid="classgnn__event_1ae89c93a690d509ef5f13eada6b4ecfd5" prot="private" virt="non-virtual"><scope>gnn_event</scope><name>m_edge_index</name></member>
+      <member refid="classgnn__event_1a3210a5699622405d1f5434556121f1dd" prot="private" virt="non-virtual"><scope>gnn_event</scope><name>m_event_particles</name></member>
+      <member refid="classgnn__event_1ae89fbfc37e4b27bf04ca05095284025d" prot="private" virt="non-virtual"><scope>gnn_event</scope><name>m_r_tops</name></member>
+      <member refid="classgnn__event_1a99d8f06c4efef0525353beabb956e347" prot="private" virt="non-virtual"><scope>gnn_event</scope><name>m_r_zprime</name></member>
+      <member refid="classgnn__event_1a9e9876a912932aff36e148ae7241c4c9" prot="private" virt="non-virtual"><scope>gnn_event</scope><name>m_t_tops</name></member>
+      <member refid="classgnn__event_1a146d81aefa4de7f0a40b3e0020a4f8c6" prot="private" virt="non-virtual"><scope>gnn_event</scope><name>m_t_zprime</name></member>
+      <member refid="classgnn__event_1ae8ac9965af2d9cb79cce878edb6c8bc8" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>met</name></member>
+      <member refid="classgnn__event_1a987cbe2e4c116259128b60c2ffc2b33e" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>ntops_scores</name></member>
+      <member refid="classgnn__event_1ad7304d095be1acf08225083e4dd053f7" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>num_bjets</name></member>
+      <member refid="classgnn__event_1a35268eefea5dfd0f70c79cc2853bb8ed" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>num_jets</name></member>
+      <member refid="classgnn__event_1a47373a568d8201b494deb13fc92cb9ff" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>num_leps</name></member>
+      <member refid="classgnn__event_1a6f88036ae273b5c5c9633839ffa81c0e" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>p_ntops</name></member>
+      <member refid="classgnn__event_1aab7a24d5e7ac602208b1cff2ea31ea4f" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>p_signal</name></member>
+      <member refid="classgnn__event_1ae46e3ccd313bfdf8ead0578e4d41054f" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>phi</name></member>
+      <member refid="classgnn__event_1aeeea20947722fe59a158298bcbdc585b" prot="private" virt="non-virtual"><scope>gnn_event</scope><name>print</name></member>
+      <member refid="classgnn__event_1a5adb27212b49856b64305205ed46197c" prot="private" virt="non-virtual"><scope>gnn_event</scope><name>print</name></member>
+      <member refid="classgnn__event_1aee8e45985435f430af659784ad81c3e9" prot="private" virt="non-virtual"><scope>gnn_event</scope><name>print</name></member>
+      <member refid="classgnn__event_1a723553af695434b7fb88754fafbb7875" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>r_tops</name></member>
+      <member refid="classgnn__event_1a473e67cb2317484478c3deab1d98ed13" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>r_zprime</name></member>
+      <member refid="classgnn__event_1ae0185eeb793def411cc4f6951ce81ffd" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>s_ntops</name></member>
+      <member refid="classgnn__event_1afe31240cc587d682cff6a54d65dccd1c" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>s_signal</name></member>
+      <member refid="classgnn__event_1ac08b15295236ceb6167b960f599c90c7" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>signal_scores</name></member>
+      <member refid="classgnn__event_1a6487d3f4e4103ce185d0ef2f3c0a3f9c" prot="private" virt="non-virtual"><scope>gnn_event</scope><name>sort_by_index</name></member>
+      <member refid="classgnn__event_1abc9138d1f8997e74f0b3a9403716dffc" prot="private" virt="non-virtual"><scope>gnn_event</scope><name>sum</name></member>
+      <member refid="classgnn__event_1aabd2759ec6336a9ab28dbd855a0f4f58" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>t_edge_res</name></member>
+      <member refid="classgnn__event_1a6178dbcad9820f7fe6b36f33f2f8ffab" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>t_edge_top</name></member>
+      <member refid="classgnn__event_1a0601b77c54a0a174d124ce8741e924fc" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>t_ntops</name></member>
+      <member refid="classgnn__event_1ac6e99d3fcf8efcf8079fe08716f52b3d" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>t_signal</name></member>
+      <member refid="classgnn__event_1ac7c50b35903998fdbc864b068466bed4" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>t_tops</name></member>
+      <member refid="classgnn__event_1a2d1102a7f443965093b915031b999452" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>t_zprime</name></member>
+      <member refid="classgnn__event_1af8c9947527b786e2118ee40e445a055c" prot="private" virt="non-virtual"><scope>gnn_event</scope><name>vectorize</name></member>
+      <member refid="classgnn__event_1a8ab0f5d799e1d2061eb8be50bdcf1e4a" prot="public" virt="non-virtual"><scope>gnn_event</scope><name>~gnn_event</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

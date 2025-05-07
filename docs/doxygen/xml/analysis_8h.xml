@@ -1,0 +1,1001 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="analysis_8h" kind="file" language="C++">
+    <compoundname>analysis.h</compoundname>
+    <includes local="no">string</includes>
+    <includes refid="sampletracer_8h" local="no">generators/sampletracer.h</includes>
+    <includes refid="dataloader_8h" local="no">generators/dataloader.h</includes>
+    <includes refid="optimizer_2include_2generators_2optimizer_8h" local="no">generators/optimizer.h</includes>
+    <includes refid="graph__template_8h" local="no">templates/graph_template.h</includes>
+    <includes refid="event__template_8h" local="no">templates/event_template.h</includes>
+    <includes refid="metric__template_8h" local="no">templates/metric_template.h</includes>
+    <includes refid="selection__template_8h" local="no">templates/selection_template.h</includes>
+    <includes refid="model__template_8h" local="no">templates/model_template.h</includes>
+    <includes refid="settings_8h" local="no">structs/settings.h</includes>
+    <includes refid="io_8h" local="no">io/io.h</includes>
+    <includedby refid="analysis_8cxx" local="no">analysis.cxx</includedby>
+    <includedby refid="event__build_8cxx" local="no">event_build.cxx</includedby>
+    <includedby refid="graph__build_8cxx" local="no">graph_build.cxx</includedby>
+    <includedby refid="inference__build_8cxx" local="no">inference_build.cxx</includedby>
+    <includedby refid="methods_8cxx" local="no">methods.cxx</includedby>
+    <includedby refid="metric__build_8cxx" local="no">metric_build.cxx</includedby>
+    <includedby refid="optimizer__build_8cxx" local="no">optimizer_build.cxx</includedby>
+    <includedby refid="selection__build_8cxx" local="no">selection_build.cxx</includedby>
+    <incdepgraph>
+      <node id="3">
+        <label>generators/sampletracer.h</label>
+        <link refid="sampletracer_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="54">
+        <label>lossfx/lossfx.h</label>
+      </node>
+      <node id="13">
+        <label>functional</label>
+      </node>
+      <node id="61">
+        <label>structs/report.h</label>
+        <link refid="report_8h"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>structs/model.h</label>
+        <link refid="model_8h"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="37">
+        <label>templates/event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="17">
+        <label>cstdint</label>
+      </node>
+      <node id="52">
+        <label>structs/graph.h</label>
+      </node>
+      <node id="24">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>templates/selection_template.h</label>
+        <link refid="selection__template_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>TMultiGraph.h</label>
+      </node>
+      <node id="55">
+        <label>metrics/metrics.h</label>
+        <link refid="metrics_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>cmath</label>
+      </node>
+      <node id="62">
+        <label>templates/metric_template.h</label>
+        <link refid="metric__template_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="2">
+        <label>string</label>
+      </node>
+      <node id="43">
+        <label>torch/all.h</label>
+      </node>
+      <node id="10">
+        <label>map</label>
+      </node>
+      <node id="38">
+        <label>structs/event.h</label>
+        <link refid="modules_2structs_2include_2structs_2event_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>structs/settings.h</label>
+        <link refid="settings_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="41">
+        <label>pyc/pyc.h</label>
+        <link refid="pyc_8h"/>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>templates/graph_template.h</label>
+        <link refid="graph__template_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="64">
+        <label>io/io.h</label>
+        <link refid="io_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>TStyle.h</label>
+      </node>
+      <node id="48">
+        <label>random</label>
+      </node>
+      <node id="50">
+        <label>generators/optimizer.h</label>
+        <link refid="optimizer_2include_2generators_2optimizer_8h"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>tools/tensor_cast.h</label>
+        <link refid="tensor__cast_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>tuple</label>
+      </node>
+      <node id="9">
+        <label>vector</label>
+      </node>
+      <node id="15">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>TCanvas.h</label>
+      </node>
+      <node id="18">
+        <label>TFile.h</label>
+      </node>
+      <node id="34">
+        <label>sstream</label>
+      </node>
+      <node id="25">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>container/container.h</label>
+        <link refid="container_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>generators/dataloader.h</label>
+        <link refid="dataloader_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>plotting/plotting.h</label>
+        <link refid="plotting_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>tools/merge_cast.h</label>
+        <link refid="merge__cast_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>cstdlib</label>
+      </node>
+      <node id="33">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="22">
+        <label>TH1F.h</label>
+      </node>
+      <node id="21">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="8">
+        <label>iostream</label>
+      </node>
+      <node id="51">
+        <label>templates/model_template.h</label>
+        <link refid="model__template_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>meta/meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>TLegend.h</label>
+      </node>
+      <node id="40">
+        <label>mutex</label>
+      </node>
+      <node id="20">
+        <label>TBranch.h</label>
+      </node>
+      <node id="4">
+        <label>thread</label>
+      </node>
+      <node id="12">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>TTree.h</label>
+      </node>
+      <node id="49">
+        <label>algorithm</label>
+      </node>
+      <node id="65">
+        <label>H5Cpp.h</label>
+      </node>
+      <node id="56">
+        <label>TGraph.h</label>
+      </node>
+      <node id="1">
+        <label>analysis.h</label>
+        <link refid="analysis_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="8">
+        <label>optimizer_build.cxx</label>
+        <link refid="optimizer__build_8cxx"/>
+      </node>
+      <node id="3">
+        <label>event_build.cxx</label>
+        <link refid="event__build_8cxx"/>
+      </node>
+      <node id="6">
+        <label>methods.cxx</label>
+        <link refid="methods_8cxx"/>
+      </node>
+      <node id="9">
+        <label>selection_build.cxx</label>
+        <link refid="selection__build_8cxx"/>
+      </node>
+      <node id="5">
+        <label>inference_build.cxx</label>
+        <link refid="inference__build_8cxx"/>
+      </node>
+      <node id="7">
+        <label>metric_build.cxx</label>
+        <link refid="metric__build_8cxx"/>
+      </node>
+      <node id="4">
+        <label>graph_build.cxx</label>
+        <link refid="graph__build_8cxx"/>
+      </node>
+      <node id="2">
+        <label>analysis.cxx</label>
+        <link refid="analysis_8cxx"/>
+      </node>
+      <node id="1">
+        <label>analysis.h</label>
+        <link refid="analysis_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classanalysis" prot="public">analysis</innerclass>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="analysis_8h_1a1352af2664009de3ac2ca33abc009b15" prot="public" static="no">
+        <name>ANALYSIS_H</name>
+        <briefdescription>
+<para>&lt; Start of include guard for ANALYSIS_H to prevent multiple inclusions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Definition of ANALYSIS_H to signify the header has been included. Includes the standard string library for string manipulation. Includes the <computeroutput>sampletracer</computeroutput> class for tracking sample processing. Includes the <computeroutput>dataloader</computeroutput> class for managing data loading. Includes the <computeroutput>optimizer</computeroutput> class for model training. Includes the base template for graph structures. Includes the base template for event data. Includes the base template for performance metrics. Includes the base template for event selections. Includes the base template for machine learning models. Includes the structure for analysis-wide settings. Includes the <computeroutput>io</computeroutput> class for input/output operations. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/analysis/include/AnalysisG/analysis.h" line="13" column="9" bodyfile="modules/analysis/include/AnalysisG/analysis.h" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Defines the <computeroutput>analysis</computeroutput> class, the central orchestrator for physics analysis tasks. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file declares the <computeroutput>analysis</computeroutput> class, which manages the overall workflow of a physics analysis. It handles the setup of event data, selections, graph representations, machine learning models, and metrics. It also orchestrates the execution of the analysis, including event processing, model training/inference, and result aggregation. The class inherits from <computeroutput>notification</computeroutput> and <computeroutput>tools</computeroutput> for logging and utility functions, respectively. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>analysis.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Defines<sp/>the<sp/>`analysis`<sp/>class,<sp/>the<sp/>central<sp/>orchestrator<sp/>for<sp/>physics<sp/>analysis<sp/>tasks.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>declares<sp/>the<sp/>`analysis`<sp/>class,<sp/>which<sp/>manages<sp/>the<sp/>overall<sp/>workflow<sp/>of<sp/>a<sp/>physics<sp/>analysis.</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>It<sp/>handles<sp/>the<sp/>setup<sp/>of<sp/>event<sp/>data,<sp/>selections,<sp/>graph<sp/>representations,<sp/>machine<sp/>learning<sp/>models,</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>and<sp/>metrics.<sp/>It<sp/>also<sp/>orchestrates<sp/>the<sp/>execution<sp/>of<sp/>the<sp/>analysis,<sp/>including<sp/>event<sp/>processing,</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>model<sp/>training/inference,<sp/>and<sp/>result<sp/>aggregation.<sp/>The<sp/>class<sp/>inherits<sp/>from<sp/>`notification`<sp/>and<sp/>`tools`</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>for<sp/>logging<sp/>and<sp/>utility<sp/>functions,<sp/>respectively.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ANALYSIS_H<sp/></highlight><highlight class="comment">///&lt;<sp/>Start<sp/>of<sp/>include<sp/>guard<sp/>for<sp/>ANALYSIS_H<sp/>to<sp/>prevent<sp/>multiple<sp/>inclusions.</highlight></codeline>
+<codeline lineno="13" refid="analysis_8h_1a1352af2664009de3ac2ca33abc009b15" refkind="member"><highlight class="comment"></highlight><highlight class="normal">#define<sp/>ANALYSIS_H<sp/></highlight><highlight class="comment">///&lt;<sp/>Definition<sp/>of<sp/>ANALYSIS_H<sp/>to<sp/>signify<sp/>the<sp/>header<sp/>has<sp/>been<sp/>included.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>standard<sp/>string<sp/>library<sp/>for<sp/>string<sp/>manipulation.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="sampletracer_8h" kindref="compound">generators/sampletracer.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>`sampletracer`<sp/>class<sp/>for<sp/>tracking<sp/>sample<sp/>processing.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="dataloader_8h" kindref="compound">generators/dataloader.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>`dataloader`<sp/>class<sp/>for<sp/>managing<sp/>data<sp/>loading.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="optimizer_2include_2generators_2optimizer_8h" kindref="compound">generators/optimizer.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>`optimizer`<sp/>class<sp/>for<sp/>model<sp/>training.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="graph__template_8h" kindref="compound">templates/graph_template.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>base<sp/>template<sp/>for<sp/>graph<sp/>structures.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="event__template_8h" kindref="compound">templates/event_template.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>base<sp/>template<sp/>for<sp/>event<sp/>data.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="metric__template_8h" kindref="compound">templates/metric_template.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>base<sp/>template<sp/>for<sp/>performance<sp/>metrics.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="selection__template_8h" kindref="compound">templates/selection_template.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>base<sp/>template<sp/>for<sp/>event<sp/>selections.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="model__template_8h" kindref="compound">templates/model_template.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>base<sp/>template<sp/>for<sp/>machine<sp/>learning<sp/>models.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="settings_8h" kindref="compound">structs/settings.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>structure<sp/>for<sp/>analysis-wide<sp/>settings.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="io_8h" kindref="compound">io/io.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>`io`<sp/>class<sp/>for<sp/>input/output<sp/>operations.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="28"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>@class<sp/>analysis</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Orchestrates<sp/>the<sp/>entire<sp/>physics<sp/>analysis<sp/>workflow.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>The<sp/>`analysis`<sp/>class<sp/>is<sp/>the<sp/>main<sp/>driver<sp/>for<sp/>performing<sp/>a<sp/>physics<sp/>analysis.<sp/>It<sp/>manages</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>the<sp/>configuration,<sp/>data<sp/>processing,<sp/>model<sp/>execution,<sp/>and<sp/>result<sp/>collection.<sp/>Users<sp/>interact</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>with<sp/>this<sp/>class<sp/>to<sp/>define<sp/>the<sp/>analysis<sp/>steps,<sp/>add<sp/>samples,<sp/>specify<sp/>models,<sp/>and<sp/>run<sp/>the<sp/>analysis.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="classanalysis" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classanalysis" kindref="compound">analysis</ref>:<sp/></highlight><highlight class="comment">//<sp/>Defines<sp/>the<sp/>class<sp/>&apos;analysis&apos;.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classnotification" kindref="compound">notification</ref>,<sp/></highlight><highlight class="comment">///&lt;<sp/>Inherits<sp/>from<sp/>the<sp/>`notification`<sp/>class<sp/>for<sp/>logging<sp/>capabilities.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classtools" kindref="compound">tools</ref><sp/></highlight><highlight class="comment">///&lt;<sp/>Inherits<sp/>from<sp/>the<sp/>`tools`<sp/>class<sp/>for<sp/>utility<sp/>functions.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:<sp/></highlight><highlight class="comment">///&lt;<sp/>Public<sp/>access<sp/>specifier<sp/>for<sp/>the<sp/>following<sp/>members.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"></highlight><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Constructor<sp/>for<sp/>the<sp/>`analysis`<sp/>class.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Initializes<sp/>a<sp/>new<sp/>analysis<sp/>instance.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" kindref="member">analysis</ref>();</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Destructor<sp/>for<sp/>the<sp/>`analysis`<sp/>class.</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Cleans<sp/>up<sp/>resources,<sp/>such<sp/>as<sp/>deleting<sp/>dynamically<sp/>allocated<sp/>objects.</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classanalysis_1af5938086aabb68bf478a72b0593e4bb8" kindref="member">~analysis</ref>();<sp/></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Adds<sp/>data<sp/>samples<sp/>to<sp/>the<sp/>analysis.</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>path<sp/>Path<sp/>to<sp/>the<sp/>data<sp/>sample<sp/>(file<sp/>or<sp/>directory).</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>label<sp/>A<sp/>label<sp/>to<sp/>identify<sp/>this<sp/>sample.</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classanalysis_1ad49ba744577bd6d17f83efa48909f767" kindref="member">add_samples</ref>(std::string<sp/><ref refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" kindref="member">path</ref>,<sp/>std::string<sp/><ref refid="namespacemain_1aced2f0e5b178381f9f0a0bf045d8b11d" kindref="member">label</ref>);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Adds<sp/>a<sp/>selection<sp/>template<sp/>to<sp/>the<sp/>analysis.</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>sel<sp/>Pointer<sp/>to<sp/>a<sp/>`selection_template`<sp/>object.</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classanalysis_1a4ef9fa88fc930b37691ed93602c4b24c" kindref="member">add_selection_template</ref>(<ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="namespacemain_1a37e50d3a642b605bc387ae3703d9730b" kindref="member">sel</ref>);<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Adds<sp/>an<sp/>event<sp/>template<sp/>to<sp/>the<sp/>analysis,<sp/>associating<sp/>it<sp/>with<sp/>a<sp/>label.</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>ev<sp/>Pointer<sp/>to<sp/>an<sp/>`event_template`<sp/>object.</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>label<sp/>A<sp/>label<sp/>to<sp/>identify<sp/>this<sp/>event<sp/>template.</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classanalysis_1a6d71bcd8dfe9deb47acba686df1e0058" kindref="member">add_event_template</ref>(<ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>,<sp/>std::string<sp/><ref refid="namespacemain_1aced2f0e5b178381f9f0a0bf045d8b11d" kindref="member">label</ref>);<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Adds<sp/>a<sp/>graph<sp/>template<sp/>to<sp/>the<sp/>analysis,<sp/>associating<sp/>it<sp/>with<sp/>a<sp/>label.</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>gr<sp/>Pointer<sp/>to<sp/>a<sp/>`graph_template`<sp/>object.</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>label<sp/>A<sp/>label<sp/>to<sp/>identify<sp/>this<sp/>graph<sp/>template.</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classanalysis_1a03e15b76f9271d2c98f094cd7cdb3863" kindref="member">add_graph_template</ref>(<ref refid="classgraph__template" kindref="compound">graph_template</ref>*<sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref>,<sp/>std::string<sp/><ref refid="namespacemain_1aced2f0e5b178381f9f0a0bf045d8b11d" kindref="member">label</ref>);<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Adds<sp/>a<sp/>metric<sp/>template<sp/>to<sp/>the<sp/>analysis,<sp/>associating<sp/>it<sp/>with<sp/>a<sp/>model.</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>mx<sp/>Pointer<sp/>to<sp/>a<sp/>`metric_template`<sp/>object.</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>mdl<sp/>Pointer<sp/>to<sp/>a<sp/>`model_template`<sp/>object<sp/>that<sp/>this<sp/>metric<sp/>applies<sp/>to.</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classanalysis_1a33de64cfd2bc244ff02feb0cc9b2db58" kindref="member">add_metric_template</ref>(<ref refid="classmetric__template" kindref="compound">metric_template</ref>*<sp/><ref refid="namespacetest__evaluation_1a8b69c4c7eca9cf96bd54661475a5a81b" kindref="member">mx</ref>,<sp/><ref refid="classmodel__template" kindref="compound">model_template</ref>*<sp/><ref refid="namespacemain_1a6e037a1111374e9b39a470eb175616d0" kindref="member">mdl</ref>);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Adds<sp/>a<sp/>machine<sp/>learning<sp/>model<sp/>and<sp/>its<sp/>optimizer<sp/>parameters<sp/>to<sp/>the<sp/>analysis<sp/>for<sp/>training.</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>model<sp/>Pointer<sp/>to<sp/>a<sp/>`model_template`<sp/>object.</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>op<sp/>Pointer<sp/>to<sp/>an<sp/>`optimizer_params_t`<sp/>object<sp/>containing<sp/>optimizer<sp/>settings.</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>run_name<sp/>A<sp/>name<sp/>for<sp/>this<sp/>training<sp/>run<sp/>or<sp/>model<sp/>session.</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classanalysis_1a51e47012fc4522964dbfba5baa89090c" kindref="member">add_model</ref>(<ref refid="classmodel__template" kindref="compound">model_template</ref>*<sp/><ref refid="namespacemodel" kindref="compound">model</ref>,<sp/><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref>*<sp/><ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref>,<sp/>std::string<sp/>run_name);<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Adds<sp/>a<sp/>machine<sp/>learning<sp/>model<sp/>to<sp/>the<sp/>analysis,<sp/>typically<sp/>for<sp/>inference<sp/>or<sp/>metrics<sp/>without<sp/>explicit<sp/>optimizer<sp/>params<sp/>here.</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>model<sp/>Pointer<sp/>to<sp/>a<sp/>`model_template`<sp/>object.</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>run_name<sp/>A<sp/>name<sp/>for<sp/>this<sp/>model<sp/>session<sp/>(e.g.,<sp/>for<sp/>inference<sp/>or<sp/>pre-trained<sp/>model<sp/>metrics).</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classanalysis_1a51e47012fc4522964dbfba5baa89090c" kindref="member">add_model</ref>(<ref refid="classmodel__template" kindref="compound">model_template</ref>*<sp/><ref refid="namespacemodel" kindref="compound">model</ref>,<sp/>std::string<sp/>run_name);<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Attaches<sp/>or<sp/>manages<sp/>threads<sp/>for<sp/>parallel<sp/>processing,<sp/>if<sp/>implemented.</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classanalysis_1aef743f474198aafe72fdbc2abe2b0b29" kindref="member">attach_threads</ref>();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Starts<sp/>the<sp/>analysis<sp/>execution.</highlight></codeline>
+<codeline lineno="100"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>method<sp/>triggers<sp/>the<sp/>main<sp/>analysis<sp/>loop,<sp/>including<sp/>data<sp/>processing,<sp/>model<sp/>training/inference,<sp/>etc.</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" kindref="member">start</ref>();<sp/></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Retrieves<sp/>the<sp/>progress<sp/>of<sp/>different<sp/>analysis<sp/>tasks<sp/>or<sp/>model<sp/>trainings.</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>where<sp/>keys<sp/>are<sp/>task/model<sp/>names<sp/>and<sp/>values<sp/>are<sp/>vectors<sp/>of<sp/>floats<sp/>representing<sp/>progress<sp/>(e.g.,<sp/>percentage<sp/>or<sp/>epoch<sp/>number).</highlight></codeline>
+<codeline lineno="107"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::vector&lt;float&gt;&gt;<sp/><ref refid="classanalysis_1ab550330c7c309f24423fa3d48481ea64" kindref="member">progress</ref>();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="110"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Retrieves<sp/>the<sp/>current<sp/>mode<sp/>(e.g.,<sp/>training,<sp/>evaluating)<sp/>of<sp/>different<sp/>analysis<sp/>tasks.</highlight></codeline>
+<codeline lineno="111"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>where<sp/>keys<sp/>are<sp/>task/model<sp/>names<sp/>and<sp/>values<sp/>are<sp/>strings<sp/>describing<sp/>the<sp/>mode.</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::string&gt;<sp/><ref refid="classanalysis_1a14ff6c25448d59d0c6296c45ba180485" kindref="member">progress_mode</ref>();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Retrieves<sp/>a<sp/>textual<sp/>report<sp/>of<sp/>the<sp/>progress<sp/>or<sp/>status<sp/>of<sp/>different<sp/>analysis<sp/>tasks.</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>where<sp/>keys<sp/>are<sp/>task/model<sp/>names<sp/>and<sp/>values<sp/>are<sp/>strings<sp/>containing<sp/>progress<sp/>reports.</highlight></codeline>
+<codeline lineno="117"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::string&gt;<sp/><ref refid="classanalysis_1a6b719e04f433468bc84c45aa31abb400" kindref="member">progress_report</ref>();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Checks<sp/>if<sp/>specific<sp/>analysis<sp/>tasks<sp/>or<sp/>model<sp/>trainings<sp/>are<sp/>complete.</highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>where<sp/>keys<sp/>are<sp/>task/model<sp/>names<sp/>and<sp/>values<sp/>are<sp/>booleans<sp/>(true<sp/>if<sp/>complete,<sp/>false<sp/>otherwise).</highlight></codeline>
+<codeline lineno="122"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>bool&gt;<sp/><ref refid="classanalysis_1aa9288840e05af08f88af73f6ceca8f29" kindref="member">is_complete</ref>();</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125" refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structsettings__t" kindref="compound">settings_t</ref><sp/><ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Object<sp/>holding<sp/>the<sp/>analysis-wide<sp/>settings<sp/>and<sp/>configurations.</highlight></codeline>
+<codeline lineno="126" refid="classanalysis_1ac827f2b50df0df252ced2499df1aaa77" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>meta*&gt;<sp/><ref refid="classanalysis_1ac827f2b50df0df252ced2499df1aaa77" kindref="member">meta_data</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>storing<sp/>metadata<sp/>objects,<sp/>keyed<sp/>by<sp/>a<sp/>string<sp/>identifier<sp/>(e.g.,<sp/>sample<sp/>label).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:<sp/></highlight><highlight class="comment">///&lt;<sp/>Private<sp/>access<sp/>specifier<sp/>for<sp/>the<sp/>following<sp/>members.</highlight></codeline>
+<codeline lineno="129"><highlight class="comment"></highlight><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="130"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Checks<sp/>for<sp/>cached<sp/>data<sp/>and<sp/>potentially<sp/>loads<sp/>it<sp/>to<sp/>speed<sp/>up<sp/>processing.</highlight></codeline>
+<codeline lineno="131"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>check_cache();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="133"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="134"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Builds<sp/>the<sp/>project<sp/>structure,<sp/>possibly<sp/>setting<sp/>up<sp/>directories<sp/>or<sp/>initial<sp/>configurations.</highlight></codeline>
+<codeline lineno="135"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>build_project();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="137"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="138"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Builds<sp/>or<sp/>processes<sp/>event<sp/>data<sp/>based<sp/>on<sp/>the<sp/>added<sp/>event<sp/>templates<sp/>and<sp/>samples.</highlight></codeline>
+<codeline lineno="139"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>build_events();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="141"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="142"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Builds<sp/>or<sp/>applies<sp/>event<sp/>selections<sp/>based<sp/>on<sp/>the<sp/>added<sp/>selection<sp/>templates.</highlight></codeline>
+<codeline lineno="143"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>build_selections();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="145"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="146"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Builds<sp/>graph<sp/>representations<sp/>of<sp/>the<sp/>event<sp/>data<sp/>based<sp/>on<sp/>the<sp/>added<sp/>graph<sp/>templates.</highlight></codeline>
+<codeline lineno="147"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>build_graphs();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="149"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="150"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Sets<sp/>up<sp/>and<sp/>configures<sp/>machine<sp/>learning<sp/>model<sp/>sessions<sp/>for<sp/>training<sp/>or<sp/>inference.</highlight></codeline>
+<codeline lineno="151"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>build_model_session();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="153"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="154"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Sets<sp/>up<sp/>the<sp/>environment<sp/>for<sp/>model<sp/>inference<sp/>(prediction).</highlight></codeline>
+<codeline lineno="155"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>build_inference();</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="158"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="159"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Builds<sp/>or<sp/>calculates<sp/>metrics<sp/>for<sp/>evaluating<sp/>model<sp/>performance.</highlight></codeline>
+<codeline lineno="160"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>True<sp/>if<sp/>metric<sp/>building<sp/>was<sp/>successful,<sp/>false<sp/>otherwise.</highlight></codeline>
+<codeline lineno="161"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>build_metric();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="163"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="164"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Builds<sp/>or<sp/>calculates<sp/>metrics<sp/>across<sp/>different<sp/>data<sp/>folds<sp/>(e.g.,<sp/>for<sp/>k-fold<sp/>cross-validation).</highlight></codeline>
+<codeline lineno="165"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>build_metric_folds();</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="168"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="169"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Builds<sp/>or<sp/>configures<sp/>the<sp/>data<sp/>loader<sp/>for<sp/>training<sp/>or<sp/>evaluation.</highlight></codeline>
+<codeline lineno="170"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>training<sp/>Boolean<sp/>flag,<sp/>true<sp/>if<sp/>for<sp/>training,<sp/>false<sp/>if<sp/>for<sp/>evaluation/inference.</highlight></codeline>
+<codeline lineno="171"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>build_dataloader(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1adfa5b6ae994fc9e6e30dd3330929c03fac185ddac8b5a8f5aa23c5b80bc12d214" kindref="member">training</ref>);<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="173"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="174"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Fetches<sp/>tags,<sp/>possibly<sp/>related<sp/>to<sp/>data<sp/>versions,<sp/>processing<sp/>stages,<sp/>or<sp/>k-folds.</highlight></codeline>
+<codeline lineno="175"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>fetchtags();<sp/></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>started<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/><sp/></highlight><highlight class="comment">///&lt;<sp/>Flag<sp/>indicating<sp/>whether<sp/>the<sp/>analysis<sp/>has<sp/>been<sp/>started.<sp/>Initialized<sp/>to<sp/>false.</highlight></codeline>
+<codeline lineno="178"><highlight class="comment"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="179"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="180"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Static<sp/>helper<sp/>method<sp/>to<sp/>add<sp/>content<sp/>(features)<sp/>to<sp/>a<sp/>data<sp/>map<sp/>from<sp/>various<sp/>sources.</highlight></codeline>
+<codeline lineno="181"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>version<sp/>likely<sp/>handles<sp/>adding<sp/>features<sp/>from<sp/>a<sp/>TTree<sp/>to<sp/>torch::Tensor<sp/>objects.</highlight></codeline>
+<codeline lineno="182"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>data<sp/>Pointer<sp/>to<sp/>a<sp/>map<sp/>where<sp/>keys<sp/>are<sp/>feature<sp/>names<sp/>and<sp/>values<sp/>are<sp/>`torch::Tensor`<sp/>pointers.</highlight></codeline>
+<codeline lineno="183"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>content<sp/>Pointer<sp/>to<sp/>a<sp/>vector<sp/>of<sp/>`variable_t`<sp/>structs<sp/>describing<sp/>the<sp/>features<sp/>to<sp/>extract.</highlight></codeline>
+<codeline lineno="184"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>index<sp/>Current<sp/>event<sp/>index<sp/>or<sp/>entry<sp/>number.</highlight></codeline>
+<codeline lineno="185"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>prefx<sp/>A<sp/>prefix<sp/>string<sp/>for<sp/>feature<sp/>names.</highlight></codeline>
+<codeline lineno="186"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>tt<sp/>Pointer<sp/>to<sp/>the<sp/>TTree<sp/>to<sp/>read<sp/>from<sp/>(optional,<sp/>defaults<sp/>to<sp/>nullptr).</highlight></codeline>
+<codeline lineno="187"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>An<sp/>integer<sp/>status<sp/>code<sp/>(e.g.,<sp/>0<sp/>for<sp/>success).</highlight></codeline>
+<codeline lineno="188"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>add_content(</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor*&gt;*<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>,<sp/></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;variable_t&gt;*<sp/>content,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>,<sp/></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>prefx,<sp/>TTree*<sp/><ref refid="namespacernn__model_1a0b2ba28fd934d9a75a8e0494c70bd322" kindref="member">tt</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/>);<sp/></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="195"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="196"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Static<sp/>helper<sp/>method<sp/>to<sp/>add<sp/>content<sp/>(features)<sp/>to<sp/>a<sp/>data<sp/>map<sp/>from<sp/>a<sp/>buffer<sp/>of<sp/>tensors.</highlight></codeline>
+<codeline lineno="197"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>version<sp/>likely<sp/>handles<sp/>adding<sp/>features<sp/>from<sp/>pre-loaded<sp/>tensor<sp/>buffers.</highlight></codeline>
+<codeline lineno="198"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>data<sp/>Pointer<sp/>to<sp/>a<sp/>map<sp/>where<sp/>keys<sp/>are<sp/>feature<sp/>names<sp/>and<sp/>values<sp/>are<sp/>`torch::Tensor`<sp/>pointers.</highlight></codeline>
+<codeline lineno="199"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>buff<sp/>Pointer<sp/>to<sp/>a<sp/>vector<sp/>of<sp/>vectors<sp/>of<sp/>`torch::Tensor`<sp/>(the<sp/>buffer).</highlight></codeline>
+<codeline lineno="200"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>edge<sp/>Pointer<sp/>to<sp/>a<sp/>`torch::Tensor`<sp/>object<sp/>for<sp/>edge<sp/>features.</highlight></codeline>
+<codeline lineno="201"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>node<sp/>Pointer<sp/>to<sp/>a<sp/>`torch::Tensor`<sp/>object<sp/>for<sp/>node<sp/>features.</highlight></codeline>
+<codeline lineno="202"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>batch<sp/>Pointer<sp/>to<sp/>a<sp/>`torch::Tensor`<sp/>object<sp/>for<sp/>batch<sp/>information.</highlight></codeline>
+<codeline lineno="203"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>mask<sp/>Vector<sp/>of<sp/>long<sp/>integers<sp/>representing<sp/>a<sp/>mask.</highlight></codeline>
+<codeline lineno="204"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>add_content(</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor*&gt;*<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>,<sp/><ref refid="namespacehelper_1a6a86af0e435c054cabd85eebb8a45782" kindref="member">std::vector</ref>&lt;std::vector&lt;torch::Tensor&gt;&gt;*<sp/>buff,<sp/></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>edge,<sp/>torch::Tensor*<sp/>node,<sp/>torch::Tensor*<sp/><ref refid="_3name_4_8h_1a3d94067338cad267b90428afcc647e33" kindref="member">batch</ref>,<sp/>std::vector&lt;long&gt;<sp/>mask</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/>);<sp/></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="210"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="211"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Static<sp/>method<sp/>to<sp/>execute<sp/>a<sp/>model<sp/>(training<sp/>or<sp/>inference)<sp/>on<sp/>a<sp/>set<sp/>of<sp/>data.</highlight></codeline>
+<codeline lineno="212"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>mdx<sp/>Pointer<sp/>to<sp/>the<sp/>`model_template`<sp/>to<sp/>be<sp/>executed.</highlight></codeline>
+<codeline lineno="213"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>mds<sp/>`model_settings_t`<sp/>object<sp/>containing<sp/>settings<sp/>for<sp/>this<sp/>model<sp/>execution.</highlight></codeline>
+<codeline lineno="214"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>data<sp/>Pointer<sp/>to<sp/>a<sp/>vector<sp/>of<sp/>`graph_t`<sp/>objects<sp/>(input<sp/>data).</highlight></codeline>
+<codeline lineno="215"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>prg<sp/>Pointer<sp/>to<sp/>a<sp/>size_t<sp/>variable<sp/>for<sp/>progress<sp/>tracking.</highlight></codeline>
+<codeline lineno="216"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>output<sp/>Path<sp/>or<sp/>identifier<sp/>for<sp/>the<sp/>output.</highlight></codeline>
+<codeline lineno="217"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>content<sp/>Pointer<sp/>to<sp/>a<sp/>vector<sp/>of<sp/>`variable_t`<sp/>for<sp/>output<sp/>content<sp/>description.</highlight></codeline>
+<codeline lineno="218"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>msg<sp/>Pointer<sp/>to<sp/>a<sp/>string<sp/>for<sp/>status<sp/>messages.</highlight></codeline>
+<codeline lineno="219"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>execution(</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classmodel__template" kindref="compound">model_template</ref>*<sp/>mdx,<sp/><ref refid="structmodel__settings__t" kindref="compound">model_settings_t</ref><sp/>mds,<sp/>std::vector&lt;graph_t*&gt;*<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">*<sp/>prg,</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>output,<sp/>std::vector&lt;variable_t&gt;*<sp/>content,<sp/>std::string*<sp/>msg</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="225"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="226"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Static<sp/>method<sp/>to<sp/>execute<sp/>metric<sp/>calculation.</highlight></codeline>
+<codeline lineno="227"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>mt<sp/>Pointer<sp/>to<sp/>a<sp/>`metric_t`<sp/>object<sp/>(likely<sp/>containing<sp/>metric<sp/>definitions<sp/>and<sp/>results).</highlight></codeline>
+<codeline lineno="228"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>prg<sp/>Pointer<sp/>to<sp/>a<sp/>size_t<sp/>variable<sp/>for<sp/>progress<sp/>tracking.</highlight></codeline>
+<codeline lineno="229"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>msg<sp/>Pointer<sp/>to<sp/>a<sp/>string<sp/>for<sp/>status<sp/>messages.</highlight></codeline>
+<codeline lineno="230"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>execution_metric(<ref refid="structmetric__t" kindref="compound">metric_t</ref>*<sp/>mt,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">*<sp/>prg,<sp/>std::string*<sp/>msg);<sp/></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="233"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="234"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Static<sp/>method<sp/>to<sp/>initialize<sp/>a<sp/>training<sp/>loop<sp/>for<sp/>an<sp/>optimizer.</highlight></codeline>
+<codeline lineno="235"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>op<sp/>Pointer<sp/>to<sp/>the<sp/>`optimizer`<sp/>object.</highlight></codeline>
+<codeline lineno="236"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>k<sp/>The<sp/>k-fold<sp/>index<sp/>or<sp/>a<sp/>similar<sp/>loop<sp/>identifier.</highlight></codeline>
+<codeline lineno="237"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>model<sp/>Pointer<sp/>to<sp/>the<sp/>`model_template`<sp/>being<sp/>trained.</highlight></codeline>
+<codeline lineno="238"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>config<sp/>Pointer<sp/>to<sp/>the<sp/>`optimizer_params_t`<sp/>for<sp/>this<sp/>training<sp/>session.</highlight></codeline>
+<codeline lineno="239"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>rep<sp/>Double<sp/>pointer<sp/>to<sp/>a<sp/>`model_report`<sp/>object<sp/>to<sp/>store<sp/>training<sp/>reports.</highlight></codeline>
+<codeline lineno="240"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>initialize_loop(</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classoptimizer" kindref="compound">optimizer</ref>*<sp/><ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>k,<sp/><ref refid="classmodel__template" kindref="compound">model_template</ref>*<sp/><ref refid="namespacemodel" kindref="compound">model</ref>,<sp/></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref>*<sp/>config,<sp/><ref refid="structmodel__report" kindref="compound">model_report</ref>**<sp/>rep</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="246"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="247"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Templated<sp/>helper<sp/>method<sp/>to<sp/>safely<sp/>clone<sp/>objects<sp/>(e.g.,<sp/>event<sp/>or<sp/>graph<sp/>templates).</highlight></codeline>
+<codeline lineno="248"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@tparam<sp/>g<sp/>The<sp/>type<sp/>of<sp/>the<sp/>object<sp/>to<sp/>clone.</highlight></codeline>
+<codeline lineno="249"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>mp<sp/>Pointer<sp/>to<sp/>a<sp/>map<sp/>where<sp/>the<sp/>cloned<sp/>object<sp/>might<sp/>be<sp/>stored<sp/>or<sp/>looked<sp/>up.</highlight></codeline>
+<codeline lineno="250"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>in<sp/>Pointer<sp/>to<sp/>the<sp/>object<sp/>to<sp/>be<sp/>cloned.</highlight></codeline>
+<codeline lineno="251"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>safe_clone(std::map&lt;std::string,<sp/>g*&gt;*<sp/><ref refid="namespacemain_1ac9d6db74f9881581a3da042e88981de6" kindref="member">mp</ref>,<sp/>g*<sp/>in){</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref><sp/>=<sp/>in<sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>;<sp/></highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacemain_1ac9d6db74f9881581a3da042e88981de6" kindref="member">mp</ref><sp/>-&gt;<sp/><ref refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" kindref="member">count</ref>(<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>)){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*mp)[<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>]<sp/>=<sp/>in<sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a288a32e73fa14ea1042eac9569469fab" kindref="member">clone</ref>(1);<sp/></highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"></highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::string&gt;<sp/>file_labels<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>to<sp/>associate<sp/>file<sp/>paths<sp/>or<sp/>identifiers<sp/>with<sp/>user-defined<sp/>labels.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="260"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>event_template*&gt;<sp/>event_labels<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>storing<sp/>event<sp/>templates,<sp/>keyed<sp/>by<sp/>a<sp/>label.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="261"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>metric_template*&gt;<sp/>metric_names<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>storing<sp/>metric<sp/>templates,<sp/>keyed<sp/>by<sp/>a<sp/>name<sp/>or<sp/>identifier.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="262"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>selection_template*&gt;<sp/>selection_names<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>storing<sp/>selection<sp/>templates,<sp/>keyed<sp/>by<sp/>a<sp/>name<sp/>or<sp/>identifier.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="263"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>graph_template*&gt;&gt;<sp/>graph_labels<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>storing<sp/>graph<sp/>templates,<sp/>nested<sp/>by<sp/>two<sp/>string<sp/>keys<sp/>(e.g.,<sp/>category<sp/>and<sp/>label).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="264"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/>model_session_names<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Vector<sp/>storing<sp/>names<sp/>of<sp/>model<sp/>sessions<sp/>(e.g.,<sp/>for<sp/>different<sp/>training<sp/>runs).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="266"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>model_template*&gt;<sp/>model_inference<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>storing<sp/>models<sp/>configured<sp/>for<sp/>inference,<sp/>keyed<sp/>by<sp/>a<sp/>run<sp/>name.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="267"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>model_template*&gt;<sp/>model_metrics<sp/><sp/><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>storing<sp/>models<sp/>for<sp/>which<sp/>metrics<sp/>are<sp/>to<sp/>be<sp/>calculated,<sp/>keyed<sp/>by<sp/>a<sp/>run<sp/>name.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="268"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::tuple&lt;model_template*,<sp/>optimizer_params_t*&gt;&gt;<sp/>model_sessions<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Vector<sp/>storing<sp/>tuples<sp/>of<sp/>model<sp/>templates<sp/>and<sp/>their<sp/>optimizer<sp/>parameters<sp/>for<sp/>training<sp/>sessions.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="269"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>optimizer*&gt;<sp/>trainer<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>storing<sp/>optimizer<sp/>objects,<sp/>keyed<sp/>by<sp/>a<sp/>run<sp/>name<sp/>or<sp/>model<sp/>identifier.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="271"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>model_report*&gt;<sp/>reports<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>storing<sp/>model<sp/>reports<sp/>(e.g.,<sp/>training<sp/>progress,<sp/>evaluation<sp/>results),<sp/>keyed<sp/>by<sp/>a<sp/>run<sp/>name.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="272"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::thread*&gt;<sp/>threads<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Vector<sp/>to<sp/>store<sp/>pointers<sp/>to<sp/>`std::thread`<sp/>objects<sp/>for<sp/>multithreaded<sp/>execution.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="273"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>bool&gt;&gt;<sp/>in_cache<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>to<sp/>track<sp/>cache<sp/>status<sp/>for<sp/>data,<sp/>nested<sp/>by<sp/>two<sp/>string<sp/>keys<sp/>(e.g.,<sp/>sample<sp/>and<sp/>data<sp/>type).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="275"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>bool&gt;<sp/>skip_event_build<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>to<sp/>indicate<sp/>whether<sp/>event<sp/>building<sp/>should<sp/>be<sp/>skipped<sp/>for<sp/>certain<sp/>samples/labels.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="276"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::string&gt;<sp/>graph_types<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>to<sp/>store<sp/>types<sp/>of<sp/>graphs<sp/>associated<sp/>with<sp/>labels.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="277"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;folds_t&gt;*<sp/>tags<sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Pointer<sp/>to<sp/>a<sp/>vector<sp/>of<sp/>`folds_t`<sp/>(tags<sp/>for<sp/>data<sp/>partitioning/versioning).<sp/>Initialized<sp/>to<sp/>nullptr.</highlight></codeline>
+<codeline lineno="279"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classdataloader" kindref="compound">dataloader</ref>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceloader" kindref="compound">loader</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Pointer<sp/>to<sp/>the<sp/>`dataloader`<sp/>object.<sp/>Initialized<sp/>to<sp/>nullptr.</highlight></codeline>
+<codeline lineno="280"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classsampletracer" kindref="compound">sampletracer</ref>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tracer<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Pointer<sp/>to<sp/>the<sp/>`sampletracer`<sp/>object.<sp/>Initialized<sp/>to<sp/>nullptr.</highlight></codeline>
+<codeline lineno="281"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classio" kindref="compound">io</ref>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>reader<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Pointer<sp/>to<sp/>the<sp/>`io`<sp/>object<sp/>for<sp/>data<sp/>input.<sp/>Initialized<sp/>to<sp/>nullptr.</highlight></codeline>
+<codeline lineno="282"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="283"><highlight class="normal">};<sp/></highlight><highlight class="comment">//<sp/>End<sp/>of<sp/>class<sp/>&apos;analysis&apos;<sp/>definition.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"></highlight></codeline>
+<codeline lineno="285"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>ANALYSIS_H<sp/></highlight><highlight class="comment">///&lt;<sp/>End<sp/>of<sp/>include<sp/>guard<sp/>for<sp/>ANALYSIS_H.</highlight></codeline>
+    </programlisting>
+    <location file="modules/analysis/include/AnalysisG/analysis.h"/>
+  </compounddef>
+</doxygen>

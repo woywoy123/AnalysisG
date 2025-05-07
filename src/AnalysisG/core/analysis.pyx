@@ -1,3 +1,11 @@
+/**
+ * @file analysis.pyx
+ * @brief Implements the Analysis class for managing and processing data in the AnalysisG framework.
+ *
+ * This file provides methods for adding samples, events, graphs, selections, and metrics.
+ * It also includes properties for configuring analysis settings such as binning, ranges, and threading.
+ */
+
 # distutils: language=c++
 # cython: language_level=3
 
@@ -20,10 +28,24 @@ from tqdm import tqdm
 import pickle
 import gc
 
+/**
+ * @brief Factory function for creating progress bars.
+ *
+ * @param title The title of the progress bar.
+ * @param total The total number of steps for the progress bar.
+ * @return A tqdm progress bar instance.
+ */
 def factory(title, total): return tqdm(total = total, desc = title, leave = False, dynamic_ncols = True)
 
+/**
+ * @class Analysis
+ * @brief Manages data processing, including samples, events, graphs, and metrics.
+ */
 cdef class Analysis:
 
+    /**
+     * @brief Initializes the Analysis class.
+     */
     def __cinit__(self):
         self.ana = new analysis()
         self.selections_ = []
@@ -34,42 +56,91 @@ cdef class Analysis:
         self.meta_       = {}
 
     def __init__(self): pass
+
+    /**
+     * @brief Deallocates resources used by the Analysis class.
+     */
     def __dealloc__(self): del self.ana; gc.collect()
 
+    /**
+     * @brief Adds samples to the analysis.
+     *
+     * @param path The file path to the samples.
+     * @param label A label for the samples.
+     */
     def AddSamples(self, str path, str label):
         cdef string rm = enc(label)
         cdef string rn = enc(path)
         self.ana.add_samples(rn, rm)
 
+    /**
+     * @brief Adds an event template to the analysis.
+     *
+     * @param ev The event template to add.
+     * @param label A label for the event.
+     */
     def AddEvent(self, EventTemplate ev, str label):
         cdef string rm = enc(label)
         self.ana.add_event_template(ev.ptr, rm)
         self.events_.append(ev)
 
+    /**
+     * @brief Adds a graph template to the analysis.
+     *
+     * @param ev The graph template to add.
+     * @param label A label for the graph.
+     */
     def AddGraph(self, GraphTemplate ev, str label):
         cdef string rm = enc(label)
         self.ana.add_graph_template(ev.ptr, rm)
         self.graphs_.append(ev)
 
+    /**
+     * @brief Adds a selection template to the analysis.
+     *
+     * @param selc The selection template to add.
+     */
     def AddSelection(self, SelectionTemplate selc):
         self.ana.add_selection_template(selc.ptr)
         self.selections_.append(selc)
 
+    /**
+     * @brief Adds a metric template to the analysis.
+     *
+     * @param mex The metric template to add.
+     * @param mdl The model template associated with the metric.
+     */
     def AddMetric(self, MetricTemplate mex, ModelTemplate mdl):
         self.ana.add_metric_template(mex.mtx, mdl.nn_ptr)
         self.PreTagEvents = True
 
+    /**
+     * @brief Adds a model to the analysis.
+     *
+     * @param model The model template to add.
+     * @param op The optimizer configuration.
+     * @param run_name The name of the run.
+     */
     def AddModel(self, ModelTemplate model, OptimizerConfig op, str run_name):
         cdef string rm = enc(run_name)
         with nogil: self.ana.add_model(model.nn_ptr, op.params, rm)
         self.models_.append(model)
         self.optim_.append(op)
 
+    /**
+     * @brief Adds a model for inference to the analysis.
+     *
+     * @param model The model template to add.
+     * @param run_name The name of the run (default is "run_name").
+     */
     def AddModelInference(self, ModelTemplate model, str run_name = "run_name"):
         cdef string rm = enc(run_name)
         with nogil: self.ana.add_model(model.nn_ptr, rm)
         self.models_.append(model)
 
+    /**
+     * @brief Starts the analysis process.
+     */
     def Start(self):
         cdef str prj = self.OutputPath
         try: self.meta_ = pickle.load(open(prj + "/meta_state.pkl", "rb"))

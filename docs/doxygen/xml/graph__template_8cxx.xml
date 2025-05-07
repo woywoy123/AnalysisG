@@ -1,0 +1,531 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="graph__template_8cxx" kind="file" language="C++">
+    <compoundname>graph_template.cxx</compoundname>
+    <includes refid="graph__template_8h" local="no">templates/graph_template.h</includes>
+    <incdepgraph>
+      <node id="18">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="9">
+        <label>functional</label>
+      </node>
+      <node id="16">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="29">
+        <label>templates/event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="25">
+        <label>cstdint</label>
+      </node>
+      <node id="3">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>cmath</label>
+      </node>
+      <node id="22">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="5">
+        <label>string</label>
+      </node>
+      <node id="40">
+        <label>torch/all.h</label>
+      </node>
+      <node id="7">
+        <label>map</label>
+      </node>
+      <node id="30">
+        <label>structs/event.h</label>
+        <link refid="modules_2structs_2include_2structs_2event_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="38">
+        <label>pyc/pyc.h</label>
+        <link refid="pyc_8h"/>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>templates/graph_template.h</label>
+        <link refid="graph__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>graph_template.cxx</label>
+        <link refid="graph__template_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>tools/tensor_cast.h</label>
+        <link refid="tensor__cast_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>tuple</label>
+      </node>
+      <node id="6">
+        <label>vector</label>
+      </node>
+      <node id="34">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>TFile.h</label>
+      </node>
+      <node id="26">
+        <label>sstream</label>
+      </node>
+      <node id="4">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>cstdlib</label>
+      </node>
+      <node id="23">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="35">
+        <label>TH1F.h</label>
+      </node>
+      <node id="14">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="20">
+        <label>iostream</label>
+      </node>
+      <node id="21">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>meta/meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>mutex</label>
+      </node>
+      <node id="13">
+        <label>TBranch.h</label>
+      </node>
+      <node id="8">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>TTree.h</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="graph__template_8h" kindref="compound">templates/graph_template.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="classgraph__template_1ad496a2818827b70a95f491889b71663a" refkind="member"><highlight class="normal"><ref refid="classgraph__template_1ad496a2818827b70a95f491889b71663a" kindref="member">graph_template::graph_template</ref>(){</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>op<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>torch::TensorOptions(torch::kCPU);</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a11480635ca6d3d6901b92eeb6a6d1b92" kindref="member">name</ref>.<ref refid="classcproperty_1af4583ba4cf4ebc53f870a2de8f110da7" kindref="member">set_setter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>set_name);<sp/></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a11480635ca6d3d6901b92eeb6a6d1b92" kindref="member">name</ref>.<ref refid="classcproperty_1a41a70e8e01c9b1a20b94d2dbf1a6b214" kindref="member">set_object</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a5f4936125af525795b14a0858e100826" kindref="member">preselection</ref>.<ref refid="classcproperty_1af4583ba4cf4ebc53f870a2de8f110da7" kindref="member">set_setter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>set_preselection);<sp/></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a5f4936125af525795b14a0858e100826" kindref="member">preselection</ref>.<ref refid="classcproperty_1a31b26b5ffb20bbf8d8ee38e0755a9819" kindref="member">set_getter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>get_preselection);<sp/></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a5f4936125af525795b14a0858e100826" kindref="member">preselection</ref>.<ref refid="classcproperty_1a41a70e8e01c9b1a20b94d2dbf1a6b214" kindref="member">set_object</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a0b788130a844a3c492b4066af45692ed" kindref="member">hash</ref>.<ref refid="classcproperty_1a31b26b5ffb20bbf8d8ee38e0755a9819" kindref="member">set_getter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>get_hash);<sp/></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a0b788130a844a3c492b4066af45692ed" kindref="member">hash</ref>.<ref refid="classcproperty_1a41a70e8e01c9b1a20b94d2dbf1a6b214" kindref="member">set_object</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1ab63ea3b522ea06888cd300dd503d5ed9" kindref="member">tree</ref>.<ref refid="classcproperty_1a31b26b5ffb20bbf8d8ee38e0755a9819" kindref="member">set_getter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>get_tree);<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1ab63ea3b522ea06888cd300dd503d5ed9" kindref="member">tree</ref>.<ref refid="classcproperty_1a41a70e8e01c9b1a20b94d2dbf1a6b214" kindref="member">set_object</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a4e4936c3db17a37ef5b351b4ee614fc7" kindref="member">index</ref>.<ref refid="classcproperty_1a31b26b5ffb20bbf8d8ee38e0755a9819" kindref="member">set_getter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>get_index);<sp/></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a4e4936c3db17a37ef5b351b4ee614fc7" kindref="member">index</ref>.<ref refid="classcproperty_1a41a70e8e01c9b1a20b94d2dbf1a6b214" kindref="member">set_object</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1af57627b35bdb1004238679138f3e4fb2" kindref="member">weight</ref>.<ref refid="classcproperty_1a31b26b5ffb20bbf8d8ee38e0755a9819" kindref="member">set_getter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>get_weight);<sp/></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1af57627b35bdb1004238679138f3e4fb2" kindref="member">weight</ref>.<ref refid="classcproperty_1a41a70e8e01c9b1a20b94d2dbf1a6b214" kindref="member">set_object</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="classgraph__template_1a6ffa9e79ebf30fa1accdcf64b302c4e8" refkind="member"><highlight class="normal"><ref refid="classgraph__template_1a6ffa9e79ebf30fa1accdcf64b302c4e8" kindref="member">graph_template::~graph_template</ref>(){</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>op){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>op;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="classgraph__template_1ab40b594f7eb68cd9a5c8a2fc688bdd53" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classgraph__template_1ab40b594f7eb68cd9a5c8a2fc688bdd53" kindref="member">graph_template::operator == </ref>(<ref refid="classgraph__template" kindref="compound">graph_template</ref>&amp;<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref>){</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a0b788130a844a3c492b4066af45692ed" kindref="member">hash</ref><sp/>==<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref>.hash;<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="classgraph__template_1a010ead65c4f69b55b480f425e4f676e6" refkind="member"><highlight class="normal"><ref refid="classgraph__template" kindref="compound">graph_template</ref>*<sp/><ref refid="classgraph__template_1a010ead65c4f69b55b480f425e4f676e6" kindref="member">graph_template::clone</ref>(){</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classgraph__template_1ad496a2818827b70a95f491889b71663a" kindref="member">graph_template</ref>();<sp/></highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="classgraph__template_1acfb899ce640661e58f6246d7d9ea4491" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classgraph__template_1acfb899ce640661e58f6246d7d9ea4491" kindref="member">graph_template::flush_particles</ref>(){</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_event<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_topology<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_topological_index<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>nodes<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_particles<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="44"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="classgraph__template_1a18725eb3da8ab2866b415fed685465d1" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classgraph__template_1a18725eb3da8ab2866b415fed685465d1" kindref="member">graph_template::define_particle_nodes</ref>(std::vector&lt;particle_template*&gt;*<sp/>prt){</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>prt<sp/>-&gt;<sp/>size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>hash_<sp/>=<sp/>(*prt)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]<sp/>-&gt;<sp/><ref refid="classgraph__template_1a0b788130a844a3c492b4066af45692ed" kindref="member">hash</ref>;<sp/></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>nodes.count(hash_)){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n_nodes<sp/>=<sp/>(int)</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>nodes.size();</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_particles[n_nodes]<sp/>=<sp/>(*prt)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>nodes[hash_]<sp/>=<sp/>n_nodes;<sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>num_nodes<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>nodes.size();<sp/></highlight></codeline>
+<codeline lineno="56"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="classgraph__template_1af5d505282f6126e2fe5d2eab98507d40" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classgraph__template_1af5d505282f6126e2fe5d2eab98507d40" kindref="member">graph_template::define_topology</ref>(std::function&lt;</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">(<ref refid="classparticle__template" kindref="compound">particle_template</ref>*,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*)&gt;<sp/><ref refid="namespacemain_1a1eba0669b3d0fd1cef430ae99c82cc59" kindref="member">fx</ref>){</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>particle_template*&gt;::iterator<sp/>itr1;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>particle_template*&gt;::iterator<sp/>itr2;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_topology<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_topological_index<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>idx<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>src_,<sp/>dst_<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itr1<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_particles.begin();<sp/>itr1<sp/>!=<sp/><ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref><sp/>-&gt;<sp/>node_particles.end();<sp/>++itr1){</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itr2<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_particles.begin();<sp/>itr2<sp/>!=<sp/><ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref><sp/>-&gt;<sp/>node_particles.end();<sp/>++itr2){</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="namespacemain_1a1eba0669b3d0fd1cef430ae99c82cc59" kindref="member">fx</ref>(itr1<sp/>-&gt;<sp/>second,<sp/>itr2<sp/>-&gt;<sp/>second)){</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_topology.push_back({});<sp/></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_topological_index.push_back(-1);<sp/></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>src_.push_back(itr1<sp/>-&gt;<sp/>first);<sp/></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst_.push_back(itr2<sp/>-&gt;<sp/>first);<sp/><sp/></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_topology.push_back({itr1<sp/>-&gt;<sp/>first,<sp/>itr2<sp/>-&gt;<sp/>first});<sp/></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_topological_index.push_back(idx);<sp/></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++idx;<sp/></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>t1<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>to_tensor(src_,<sp/>torch::kInt,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">()).view({1,<sp/>-1});<sp/></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>t2<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>to_tensor(dst_,<sp/>torch::kInt,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">()).view({1,<sp/>-1});<sp/></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_topology<sp/>=<sp/>torch::cat({t1,<sp/>t2},<sp/>0);<sp/></highlight></codeline>
+<codeline lineno="85"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="classgraph__template_1aa2bef51e5e00b49425c8ac93bcd1f315" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classgraph__template_1aa2bef51e5e00b49425c8ac93bcd1f315" kindref="member">graph_template::double_neutrino</ref>(</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>mass_top,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>mass_wboson,<sp/></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>top_perc,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>w_perc,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>distance,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>steps<sp/></highlight></codeline>
+<codeline lineno="90"><highlight class="normal">){</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_fx.count(</highlight><highlight class="stringliteral">&quot;D-pt&quot;</highlight><highlight class="normal">)){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_fx.count(</highlight><highlight class="stringliteral">&quot;D-eta&quot;</highlight><highlight class="normal">)){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_fx.count(</highlight><highlight class="stringliteral">&quot;D-phi&quot;</highlight><highlight class="normal">)){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_fx.count(</highlight><highlight class="stringliteral">&quot;D-energy&quot;</highlight><highlight class="normal">)){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_fx.count(</highlight><highlight class="stringliteral">&quot;D-is_lep&quot;</highlight><highlight class="normal">)){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_fx.count(</highlight><highlight class="stringliteral">&quot;D-is_b&quot;</highlight><highlight class="normal">)){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>graph_fx.count(</highlight><highlight class="stringliteral">&quot;D-met&quot;</highlight><highlight class="normal">)){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>graph_fx.count(</highlight><highlight class="stringliteral">&quot;D-phi&quot;</highlight><highlight class="normal">)){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ae0da17ca8558064e75c801fadc3537a4" kindref="member">is_b</ref><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_fx[</highlight><highlight class="stringliteral">&quot;D-is_b&quot;</highlight><highlight class="normal">];<sp/></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778" kindref="member">is_lep</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_fx[</highlight><highlight class="stringliteral">&quot;D-is_lep&quot;</highlight><highlight class="normal">];<sp/></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>chk<sp/>=<sp/>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ae0da17ca8558064e75c801fadc3537a4" kindref="member">is_b</ref>.view({-1}).<ref refid="classtools_1a7b784121d8b368a64995feddc7083469" kindref="member">sum</ref>({-1})<sp/>&gt;=<sp/>2)<sp/>*<sp/>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778" kindref="member">is_lep</ref>.view({-1}).<ref refid="classtools_1a7b784121d8b368a64995feddc7083469" kindref="member">sum</ref>({-1})<sp/>&gt;=<sp/>2);<sp/></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!chk.index({chk}).size({0})){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="namespacetest__particles_1ae334386283ec557a6b2b6a30058de708" kindref="member">pt</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_fx[</highlight><highlight class="stringliteral">&quot;D-pt&quot;</highlight><highlight class="normal">].to(<ref refid="graph__template_8h_1a03c73400c4a1e5dcf5537b0d98657d49" kindref="member">cu_pyc</ref>);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="namespacetest__particles_1a648556978e44bc1b1da27c1270951db5" kindref="member">eta</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_fx[</highlight><highlight class="stringliteral">&quot;D-eta&quot;</highlight><highlight class="normal">].to(<ref refid="graph__template_8h_1a03c73400c4a1e5dcf5537b0d98657d49" kindref="member">cu_pyc</ref>);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="namespacetest__particles_1abb55ac0e421aeee040b7545a6d6705a3" kindref="member">phi</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_fx[</highlight><highlight class="stringliteral">&quot;D-phi&quot;</highlight><highlight class="normal">].to(<ref refid="graph__template_8h_1a03c73400c4a1e5dcf5537b0d98657d49" kindref="member">cu_pyc</ref>);<sp/></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a05e7d19a6d002118deef70d21ff4226e" kindref="member">energy</ref><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_fx[</highlight><highlight class="stringliteral">&quot;D-energy&quot;</highlight><highlight class="normal">].to(<ref refid="graph__template_8h_1a03c73400c4a1e5dcf5537b0d98657d49" kindref="member">cu_pyc</ref>);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespacepyc_1_1transform_1_1separate_1a720f165f6c3acc7c6ed1b33dd2c369bb" kindref="member">pyc::transform::separate::PxPyPzE</ref>(pt,<sp/>eta,<sp/>phi,<sp/>energy);<sp/></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pid<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>torch::cat({<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778" kindref="member">is_lep</ref>,<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ae0da17ca8558064e75c801fadc3537a4" kindref="member">is_b</ref>},<sp/>{-1}).to(<ref refid="graph__template_8h_1a03c73400c4a1e5dcf5537b0d98657d49" kindref="member">cu_pyc</ref>);<sp/></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7" kindref="member">edge_index</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_topology.to(torch::kLong).to(<ref refid="graph__template_8h_1a03c73400c4a1e5dcf5537b0d98657d49" kindref="member">cu_pyc</ref>);<sp/></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="classmet" kindref="compound">met</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>graph_fx[</highlight><highlight class="stringliteral">&quot;D-met&quot;</highlight><highlight class="normal">].to(<ref refid="graph__template_8h_1a03c73400c4a1e5dcf5537b0d98657d49" kindref="member">cu_pyc</ref>);<sp/></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>met_phi<sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>graph_fx[</highlight><highlight class="stringliteral">&quot;D-phi&quot;</highlight><highlight class="normal">].to(<ref refid="graph__template_8h_1a03c73400c4a1e5dcf5537b0d98657d49" kindref="member">cu_pyc</ref>);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="_3name_4_8h_1a3d94067338cad267b90428afcc647e33" kindref="member">batch</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>torch::zeros_like(<ref refid="namespacetest__particles_1ae334386283ec557a6b2b6a30058de708" kindref="member">pt</ref>.view({-1})).to(torch::kLong);<sp/></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>met_xy<sp/><sp/><sp/><sp/><sp/>=<sp/>torch::cat({</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacepyc_1_1transform_1_1separate_1a8707538e9073094f20ba7f80bf98757b" kindref="member">pyc::transform::separate::Px</ref>(<ref refid="classmet" kindref="compound">met</ref>,<sp/>met_phi),<sp/></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacepyc_1_1transform_1_1separate_1a213b45f87684e873b719a628675b3382" kindref="member">pyc::transform::separate::Py</ref>(<ref refid="classmet" kindref="compound">met</ref>,<sp/>met_phi)</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>},<sp/>{-1});</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>protection<sp/>against<sp/>overloading<sp/>the<sp/>cuda<sp/>cores.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>std::this_thread::sleep_for(std::chrono::microseconds(10));<sp/></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Dict&lt;std::string,<sp/>torch::Tensor&gt;<sp/>nus<sp/>=<sp/><ref refid="namespacepyc_1_1nusol_1a0b618f866aa33e16c704d828744335e1" kindref="member">pyc::nusol::combinatorial</ref>(</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>edge_index,<sp/><ref refid="_3name_4_8h_1a3d94067338cad267b90428afcc647e33" kindref="member">batch</ref>,<sp/>pmc,<sp/>pid,<sp/>met_xy,<sp/>mass_top,<sp/>mass_wboson,<sp/>top_perc,<sp/>w_perc,<sp/>steps,<sp/>distance</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>);<sp/></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a" kindref="member">l1</ref><sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;l1&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>l2<sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;l2&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>b1<sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;b1&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>b2<sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;b2&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//if<sp/>(!combi.index({combi}).size({0})){return<sp/>true;}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//torch::Tensor<sp/>lep1<sp/>=<sp/>nus[&quot;combi&quot;].index({combi,<sp/>2}).to(torch::kInt);<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//torch::Tensor<sp/>lep2<sp/>=<sp/>nus[&quot;combi&quot;].index({combi,<sp/>3}).to(torch::kInt);<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//pmc.index_put_({lep1},<sp/>nus[&quot;nu_1f&quot;]<sp/>+<sp/>pmc.index({lep1}));<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//pmc.index_put_({lep2},<sp/>nus[&quot;nu_2f&quot;]<sp/>+<sp/>pmc.index({lep2}));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//pmc<sp/>=<sp/>transform::cuda::PtEtaPhiE(pmc).to(c10::kCPU);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//this<sp/>-&gt;<sp/>node_fx[&quot;D-pt&quot;]<sp/><sp/><sp/><sp/><sp/>=<sp/>pmc.index({torch::indexing::Slice(),<sp/>0}).view({-1,<sp/>1});<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//this<sp/>-&gt;<sp/>node_fx[&quot;D-eta&quot;]<sp/><sp/><sp/><sp/>=<sp/>pmc.index({torch::indexing::Slice(),<sp/>1}).view({-1,<sp/>1});<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//this<sp/>-&gt;<sp/>node_fx[&quot;D-phi&quot;]<sp/><sp/><sp/><sp/>=<sp/>pmc.index({torch::indexing::Slice(),<sp/>2}).view({-1,<sp/>1});<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//this<sp/>-&gt;<sp/>node_fx[&quot;D-energy&quot;]<sp/>=<sp/>pmc.index({torch::indexing::Slice(),<sp/>3}).view({-1,<sp/>1});<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><ref refid="structgraph__t" kindref="compound">graph_t</ref>*<sp/>graph_template::data_export(){</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor*&gt;<sp/>g_tru_t<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor*&gt;<sp/>g_dat_t<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>g_tru_i<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>int&gt;();</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>g_dat_i<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>int&gt;();</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>build_export(&amp;g_tru_t,<sp/>g_tru_i,<sp/>&amp;g_dat_t,<sp/>g_dat_i,<sp/>&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>graph_fx);<sp/></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor*&gt;<sp/>n_tru_t<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor*&gt;<sp/>n_dat_t<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>n_tru_i<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>int&gt;();</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>n_dat_i<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>int&gt;();</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>build_export(&amp;n_tru_t,<sp/>n_tru_i,<sp/>&amp;n_dat_t,<sp/>n_dat_i,<sp/>&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>node_fx);<sp/></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor*&gt;<sp/>e_tru_t<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor*&gt;<sp/>e_dat_t<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>e_tru_i<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>int&gt;();</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>e_dat_i<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>int&gt;();</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>build_export(&amp;e_tru_t,<sp/>e_tru_i,<sp/>&amp;e_dat_t,<sp/>e_dat_i,<sp/>&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>edge_fx);<sp/></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structgraph__t" kindref="compound">graph_t</ref>*<sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="structgraph__t" kindref="compound">graph_t</ref>();<sp/></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7" kindref="member">edge_index</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>torch::Tensor(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_topology);<sp/><sp/></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/>add_truth_graph(&amp;g_tru_t,<sp/>g_tru_i);<sp/></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/>add_truth_node(&amp;n_tru_t,<sp/>n_tru_i);<sp/></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/>add_truth_edge(&amp;e_tru_t,<sp/>e_tru_i);<sp/></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/>add_data_graph(&amp;g_dat_t,<sp/>g_dat_i);<sp/></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/>add_data_node(&amp;n_dat_t,<sp/>n_dat_i);<sp/></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/>add_data_edge(&amp;e_dat_t,<sp/>e_dat_i);<sp/></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/>num_nodes<sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>num_nodes;<sp/></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/>event_index<sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a4e4936c3db17a37ef5b351b4ee614fc7" kindref="member">index</ref>;</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/>event_weight<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1af57627b35bdb1004238679138f3e4fb2" kindref="member">weight</ref>;<sp/></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/><ref refid="classgraph__template_1a5f4936125af525795b14a0858e100826" kindref="member">preselection</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a5f4936125af525795b14a0858e100826" kindref="member">preselection</ref>;<sp/></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/><ref refid="namespacemain_1af2a859d4730910c46691f179a6693f24" kindref="member">graph_name</ref><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::string(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a11480635ca6d3d6901b92eeb6a6d1b92" kindref="member">name</ref>);<sp/></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref>;<sp/></highlight></codeline>
+<codeline lineno="187"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><ref refid="classgraph__template" kindref="compound">graph_template</ref>*<sp/>graph_template::build(<ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>){</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structevent__t" kindref="compound">event_t</ref>*<sp/>data_<sp/>=<sp/>&amp;<ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/>data;<sp/></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/>data_<sp/>-&gt;<sp/><ref refid="classgraph__template_1a11480635ca6d3d6901b92eeb6a6d1b92" kindref="member">name</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a11480635ca6d3d6901b92eeb6a6d1b92" kindref="member">name</ref>;<sp/></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classgraph__template" kindref="compound">graph_template</ref>*<sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a010ead65c4f69b55b480f425e4f676e6" kindref="member">clone</ref>();<sp/></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/><ref refid="classgraph__template_1a5f4936125af525795b14a0858e100826" kindref="member">preselection</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classgraph__template_1a5f4936125af525795b14a0858e100826" kindref="member">preselection</ref>;<sp/></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/>m_event<sp/>=<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>;<sp/></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/>data<sp/>=<sp/>*data_;<sp/></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/><ref refid="classgraph__template_1ac1482a79b63e7d990f72778ce2fae6e0" kindref="member">filename</ref><sp/><sp/>=<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/><ref refid="classgraph__template_1ac1482a79b63e7d990f72778ce2fae6e0" kindref="member">filename</ref>;<sp/></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref><sp/>-&gt;<sp/><ref refid="classgraph__template_1ad1e698939baa2f62972bd7090758000e" kindref="member">meta_data</ref><sp/>=<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/><ref refid="classgraph__template_1ad1e698939baa2f62972bd7090758000e" kindref="member">meta_data</ref>;<sp/></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" kindref="member">gr</ref>;<sp/></highlight></codeline>
+<codeline lineno="201"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="203" refid="classgraph__template_1af6db04c1f266cc1d7da481e52784a30d" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classgraph__template_1af6db04c1f266cc1d7da481e52784a30d" kindref="member">graph_template::CompileEvent</ref>(){}</highlight></codeline>
+<codeline lineno="204" refid="classgraph__template_1afb21d1d87f82570a516f9e7b678bb115" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classgraph__template_1afb21d1d87f82570a516f9e7b678bb115" kindref="member">graph_template::PreSelection</ref>(){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/graph/cxx/graph_template.cxx"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,13 @@
+digraph "transform_::PtEtaPhiE"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="transform_::PtEtaPhiE",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Computes the transverse momentum (Pt), pseudorapidity (Eta), azimuthal angle (Phi),..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="pyc::transform::separate\l::PtEtaPhiE",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1transform_1_1separate.html#aa89702a61f7eecf64504a32f99b2f9af",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="pyc::transform::combined\l::PtEtaPhiE",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1transform_1_1combined.html#a540024e0d49fe477d984815f6844ea5a",tooltip=" "];
+}

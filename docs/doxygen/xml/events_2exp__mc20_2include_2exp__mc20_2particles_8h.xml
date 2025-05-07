@@ -1,0 +1,417 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="events_2exp__mc20_2include_2exp__mc20_2particles_8h" kind="file" language="C++">
+    <compoundname>events/exp_mc20/include/exp_mc20/particles.h</compoundname>
+    <includes refid="particle__template_8h" local="no">templates/particle_template.h</includes>
+    <includedby refid="events_2exp__mc20_2include_2exp__mc20_2event_8h" local="no">event.h</includedby>
+    <incdepgraph>
+      <node id="17">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="8">
+        <label>functional</label>
+      </node>
+      <node id="15">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="9">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="24">
+        <label>cstdint</label>
+      </node>
+      <node id="1">
+        <label>particles.h</label>
+        <link refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>cmath</label>
+      </node>
+      <node id="21">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="6">
+        <label>map</label>
+      </node>
+      <node id="18">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+      <node id="10">
+        <label>TFile.h</label>
+      </node>
+      <node id="25">
+        <label>sstream</label>
+      </node>
+      <node id="3">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>cstdlib</label>
+      </node>
+      <node id="22">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="13">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="19">
+        <label>iostream</label>
+      </node>
+      <node id="20">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>TBranch.h</label>
+      </node>
+      <node id="7">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>TTree.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>particles.h</label>
+        <link refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>mc20_exp.cxx</label>
+        <link refid="mc20__exp_8cxx"/>
+      </node>
+      <node id="4">
+        <label>graphs.h</label>
+        <link refid="exp__mc20_2include_2exp__mc20_2graphs_8h"/>
+      </node>
+      <node id="3">
+        <label>event.cxx</label>
+        <link refid="events_2exp__mc20_2cxx_2event_8cxx"/>
+      </node>
+      <node id="2">
+        <label>event.h</label>
+        <link refid="events_2exp__mc20_2include_2exp__mc20_2event_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classtop" prot="public">top</innerclass>
+    <innerclass refid="classchild" prot="public">child</innerclass>
+    <innerclass refid="classphysics__detector" prot="public">physics_detector</innerclass>
+    <innerclass refid="classphysics__truth" prot="public">physics_truth</innerclass>
+    <innerclass refid="classelectron" prot="public">electron</innerclass>
+    <innerclass refid="classmuon" prot="public">muon</innerclass>
+    <innerclass refid="classjet" prot="public">jet</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void pmu</definition>
+        <argsstring>(std::vector&lt; g * &gt; *out, element_t *el)</argsstring>
+        <name>pmu</name>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>out</declname>
+        </param>
+        <param>
+          <type><ref refid="structelement__t" kindref="compound">element_t</ref> *</type>
+          <declname>el</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/particles.h" line="7" column="6" bodyfile="events/exp_mc20/include/exp_mc20/particles.h" bodystart="7" bodyend="22"/>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" compoundref="performance_2main_8py" startline="69">main.out</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1a0150f0dac00fdc96ee3021c48c912f5a" compoundref="pyc_2interface_2physics_8cxx" startline="101" endline="105">pyc::physics::polar::combined::Beta</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1a20e7dc61ab62ab57496a8fc22f68a630" compoundref="pyc_2interface_2physics_8cxx" startline="77" endline="81">pyc::physics::polar::combined::Beta2</referencedby>
+        <referencedby refid="namespacegraph___1a7249186f32a05a8ff1601bff5deabdef" compoundref="graph_2graph_8cxx" startline="4" endline="63">graph_::edge_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1polar_1ab00a9b5d4070afc2aac6fd639d82c46b" compoundref="interface_2graph_8cxx" startline="102" endline="110">pyc::graph::polar::edge_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1a03ec955a2641ce4f53ade06bff9ebaae" compoundref="pyc_2interface_2physics_8cxx" startline="148" endline="152">pyc::physics::polar::combined::M</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1aa79557e9e58fc548b41444667ebb1b62" compoundref="pyc_2interface_2physics_8cxx" startline="125" endline="129">pyc::physics::polar::combined::M2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1acbeb9c6012612bd77cab7fe7871f0ccf" compoundref="pyc_2interface_2physics_8cxx" startline="194" endline="198">pyc::physics::polar::combined::Mt</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1acc5e59b1f7549ce950cab57976edfd79" compoundref="pyc_2interface_2physics_8cxx" startline="172" endline="176">pyc::physics::polar::combined::Mt2</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1polar_1a4b8251423b7ede00df4fbda3ab664485" compoundref="interface_2graph_8cxx" startline="112" endline="120">pyc::graph::polar::node_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1a5760f3a249756acd268a9c66fdf53b17" compoundref="pyc_2interface_2physics_8cxx" startline="53" endline="57">pyc::physics::polar::combined::P</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1a61c93f07eede4e32cdcf303a8a508946" compoundref="pyc_2interface_2physics_8cxx" startline="29" endline="33">pyc::physics::polar::combined::P2</referencedby>
+        <referencedby refid="namespacepyc_1_1transform_1_1combined_1abbdf26e52892e1a68c29b6ddd4419162" compoundref="interface_2transform_8cxx" startline="70" endline="75">pyc::transform::combined::Px</referencedby>
+        <referencedby refid="namespacepyc_1_1transform_1_1combined_1a8482b4b93214aac74261dddc72a2d9d5" compoundref="interface_2transform_8cxx" startline="106" endline="109">pyc::transform::combined::PxPyPz</referencedby>
+        <referencedby refid="namespacetransform___1a3cdf10dcac51733e3b2fb18cb2e6ff6e" compoundref="transform_2transform_8cxx" startline="40" endline="46">transform_::PxPyPz</referencedby>
+        <referencedby refid="namespacepyc_1_1transform_1_1combined_1a04bb607bea9c08f7133e6bcebf230076" compoundref="interface_2transform_8cxx" startline="116" endline="119">pyc::transform::combined::PxPyPzE</referencedby>
+        <referencedby refid="namespacetransform___1aba5f46ef65e5c3ed8a6f7e5075552aa2" compoundref="transform_2transform_8cxx" startline="48" endline="59">transform_::PxPyPzE</referencedby>
+        <referencedby refid="namespacepyc_1_1transform_1_1combined_1a07b48a29b544cd257e6a018bd42d665a" compoundref="interface_2transform_8cxx" startline="82" endline="87">pyc::transform::combined::Py</referencedby>
+        <referencedby refid="namespacepyc_1_1transform_1_1combined_1a7d45ffc9ddecc98c9dbafcbb1024b059" compoundref="interface_2transform_8cxx" startline="94" endline="99">pyc::transform::combined::Pz</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1combined_1a6169c98dd89c2571d2871582b3fb1279" compoundref="pyc_2interface_2physics_8cxx" startline="217" endline="221">pyc::physics::polar::combined::Theta</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>EVENTS_PARTICLES_EXP_MC20_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENTS_PARTICLES_EXP_MC20_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="particle__template_8h" kindref="compound">templates/particle_template.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="7" refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" kindref="member">pmu</ref>(std::vector&lt;g*&gt;*<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>,<sp/><ref refid="structelement__t" kindref="compound">element_t</ref>*<sp/>el){</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;float&gt;<sp/>pt,<sp/>eta,<sp/>phi,<sp/>en,<sp/>ch;<sp/><sp/></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>el<sp/>-&gt;<sp/>get(</highlight><highlight class="stringliteral">&quot;pt&quot;</highlight><highlight class="normal"><sp/><sp/><sp/><sp/>,<sp/>&amp;pt);<sp/></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>el<sp/>-&gt;<sp/>get(</highlight><highlight class="stringliteral">&quot;eta&quot;</highlight><highlight class="normal"><sp/><sp/><sp/>,<sp/>&amp;eta);<sp/></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/>el<sp/>-&gt;<sp/>get(</highlight><highlight class="stringliteral">&quot;phi&quot;</highlight><highlight class="normal"><sp/><sp/><sp/>,<sp/>&amp;phi);<sp/></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>el<sp/>-&gt;<sp/>get(</highlight><highlight class="stringliteral">&quot;energy&quot;</highlight><highlight class="normal">,<sp/>&amp;en);<sp/></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>pt.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>g*<sp/>prt<sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>g();<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/>pt<sp/><sp/>=<sp/>pt[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/>eta<sp/>=<sp/>eta[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/>phi<sp/>=<sp/>phi[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref><sp/><sp/><sp/>=<sp/>en[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>-&gt;<sp/>push_back(prt);<sp/></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classtop" kindref="compound">top</ref>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref></highlight></codeline>
+<codeline lineno="25"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtop_1a5c0780d4da9239cc8bd82ec6690ed4a7" kindref="member">top</ref>();<sp/></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classtop_1a0ea51ef948fa57baafd87c32bd7b35cc" kindref="member">~top</ref>();<sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="classtop_1af64ffa3c7ffb51dad513bd8d8a29bb0c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classtop_1af64ffa3c7ffb51dad513bd8d8a29bb0c" kindref="member">top_index</ref><sp/>=<sp/>-1;<sp/></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/><ref refid="classtop_1a2c72072a84fbc8524ce53522cfeb6cde" kindref="member">clone</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classtop_1ab0650ae5f6ec11376daccc4eaec70aca" kindref="member">build</ref>(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/><ref refid="structelement__t" kindref="compound">element_t</ref>*<sp/>el)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="classchild" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classchild" kindref="compound">child</ref>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref></highlight></codeline>
+<codeline lineno="37"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classchild_1a7d91433c5248187a730e33ec879b997c" kindref="member">child</ref>();<sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classchild_1af4d3ffe385258e369b9eccc248ac648f" kindref="member">~child</ref>();<sp/></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="classchild_1aaaf15d672706b2800b96a8ed621c2f48" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/><ref refid="classchild_1aaaf15d672706b2800b96a8ed621c2f48" kindref="member">top_index</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/><ref refid="classchild_1a72457141be1eb5cf307481e57ad9c123" kindref="member">clone</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classchild_1a0d20bf2242c077a04c0915c7cc3fa3db" kindref="member">build</ref>(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/><ref refid="structelement__t" kindref="compound">element_t</ref>*<sp/>el)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="classphysics__detector" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classphysics__detector" kindref="compound">physics_detector</ref>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref></highlight></codeline>
+<codeline lineno="49"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classphysics__detector_1abf291bec188f0293856db68c1599e0db" kindref="member">physics_detector</ref>();<sp/></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classphysics__detector_1a7992edcde975c2b8b6fa2519fd6a603b" kindref="member">~physics_detector</ref>();<sp/></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="classphysics__detector_1a978cb68eda7e46fc6ac33962dd8c617d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/><ref refid="classphysics__detector_1a978cb68eda7e46fc6ac33962dd8c617d" kindref="member">top_index</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/><ref refid="classphysics__detector_1aa1c4bc38f4f224d8784ca171651f704d" kindref="member">clone</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classphysics__detector_1a25363e01b143a8f8791c1987ca84591b" kindref="member">build</ref>(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/><ref refid="structelement__t" kindref="compound">element_t</ref>*<sp/>el)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="58"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="classphysics__truth" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classphysics__truth" kindref="compound">physics_truth</ref>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref></highlight></codeline>
+<codeline lineno="61"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classphysics__truth_1a644957f8003f51633717ab88013152ca" kindref="member">physics_truth</ref>();<sp/></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classphysics__truth_1af1b79766b5828a77da41491874ddbbc7" kindref="member">~physics_truth</ref>();<sp/></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="classphysics__truth_1a3187d83af953da305a5211565e5861dd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/><ref refid="classphysics__truth_1a3187d83af953da305a5211565e5861dd" kindref="member">top_index</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/><ref refid="classphysics__truth_1a33b88922348b82e1e3143d7bc56ccd63" kindref="member">clone</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classphysics__truth_1ad16513e352f5877b751d14f7d11b3f36" kindref="member">build</ref>(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/><ref refid="structelement__t" kindref="compound">element_t</ref>*<sp/>el)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="70"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classelectron" kindref="compound">electron</ref>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref></highlight></codeline>
+<codeline lineno="73"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:<sp/></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classelectron_1a61817d58c8dc313f400622d54007a27b" kindref="member">electron</ref>();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classelectron_1a78c2c6e1c921cc59f285643e70af7a98" kindref="member">~electron</ref>();</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="classelectron_1ae1a36acd1b9e110e9732a78abb2f97ce" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classelectron_1ae1a36acd1b9e110e9732a78abb2f97ce" kindref="member">d0</ref><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="79" refid="classelectron_1ae5efded9fe692a8077e7d0f43bafeceb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classelectron_1ae5efded9fe692a8077e7d0f43bafeceb" kindref="member">true_type</ref><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="80" refid="classelectron_1afbe00ef1469d5613c8236a161e4e273b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classelectron_1afbe00ef1469d5613c8236a161e4e273b" kindref="member">delta_z0</ref><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="81" refid="classelectron_1a88e4aa16540627eeb28b068ee9ac95a4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classelectron_1a88e4aa16540627eeb28b068ee9ac95a4" kindref="member">true_origin</ref><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="82" refid="classelectron_1a147bddda916912ed005c01667b537bc9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classelectron_1a147bddda916912ed005c01667b537bc9" kindref="member">is_tight</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="83" refid="classelectron_1a128a224190ec09d92c4eabfaa8297913" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/><ref refid="classelectron_1aecbd41ccf8b2726e6bfb6670c259470c" kindref="member">top_index</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/><ref refid="classelectron_1a1af9d73368ca91925ccb16fbccc6d199" kindref="member">clone</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classelectron_1a0c42ede122af63a3ba35b457379ea605" kindref="member">build</ref>(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/><ref refid="structelement__t" kindref="compound">element_t</ref>*<sp/>el)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classmuon" kindref="compound">muon</ref>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref></highlight></codeline>
+<codeline lineno="91"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:<sp/></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classmuon_1a9f92f79043e704ba0cd51f8491a51af5" kindref="member">muon</ref>();</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classmuon_1a23b8f0757ce9026d59adc56496785df2" kindref="member">~muon</ref>();</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96" refid="classmuon_1ab6626b4a03d7d8394733016eb83bbe2e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classmuon_1ab6626b4a03d7d8394733016eb83bbe2e" kindref="member">d0</ref><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="97" refid="classmuon_1a1ba9a17a596ba7d70634f3aa90d35188" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classmuon_1a1ba9a17a596ba7d70634f3aa90d35188" kindref="member">true_type</ref><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="98" refid="classmuon_1ae57e89a10550c64950df16194ec8c610" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classmuon_1ae57e89a10550c64950df16194ec8c610" kindref="member">delta_z0</ref><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="99" refid="classmuon_1aa321ceaa32e197c3205a9c7c2ad1917a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classmuon_1aa321ceaa32e197c3205a9c7c2ad1917a" kindref="member">true_origin</ref><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="100" refid="classmuon_1af6be0b2707e00af7d7b1f643db50d9cd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classmuon_1af6be0b2707e00af7d7b1f643db50d9cd" kindref="member">is_tight</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="101" refid="classmuon_1a6e8ad91bbcc24f2871a945e246600819" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/><ref refid="classmuon_1a39e0f7a7ba1878a89788e35a1082fc0d" kindref="member">top_index</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/><ref refid="classmuon_1a6d1eb638a70fedb6878cdcf7eb89f069" kindref="member">clone</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classmuon_1a0a9a46c18f6bbfae7bc6caa3f942793d" kindref="member">build</ref>(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/><ref refid="structelement__t" kindref="compound">element_t</ref>*<sp/>el)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classjet" kindref="compound">jet</ref>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref></highlight></codeline>
+<codeline lineno="108"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:<sp/></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classjet_1ae5a7844bf8bad33084fc7514e0567c2d" kindref="member">jet</ref>();</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classjet_1ae2542669bba8e815da2e4929de547705" kindref="member">~jet</ref>();<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113" refid="classjet_1a0032ff835e0e9fa3af170aafdc006bfa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classjet_1a0032ff835e0e9fa3af170aafdc006bfa" kindref="member">btag_65</ref>;<sp/></highlight></codeline>
+<codeline lineno="114" refid="classjet_1a4d17f9e666e077850e2f5679afcf0b53" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classjet_1a4d17f9e666e077850e2f5679afcf0b53" kindref="member">btag_70</ref>;<sp/></highlight></codeline>
+<codeline lineno="115" refid="classjet_1a7d4514c9661e6d7520b9f68a92c7eb6d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classjet_1a7d4514c9661e6d7520b9f68a92c7eb6d" kindref="member">btag_77</ref>;<sp/></highlight></codeline>
+<codeline lineno="116" refid="classjet_1a9cc562be58754001a19e73ca69f8b17d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classjet_1a9cc562be58754001a19e73ca69f8b17d" kindref="member">btag_85</ref>;<sp/></highlight></codeline>
+<codeline lineno="117" refid="classjet_1ad6e53e4d9b06ca8fc558218a9f62c2d8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classjet_1ad6e53e4d9b06ca8fc558218a9f62c2d8" kindref="member">btag_90</ref>;<sp/></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119" refid="classjet_1a3739285fdf18e443ed4fdcc191a6c7a2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classjet_1a3739285fdf18e443ed4fdcc191a6c7a2" kindref="member">flav</ref>;<sp/></highlight></codeline>
+<codeline lineno="120" refid="classjet_1acf59c1d9b907de72b69ed50884da7eb7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classjet_1acf59c1d9b907de72b69ed50884da7eb7" kindref="member">label</ref>;<sp/></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/><ref refid="classjet_1a188754c4dcc0e341ced6909dcf8f9567" kindref="member">top_index</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/><ref refid="classjet_1a9b32b4a83c16ee51db8745e30ab1b31d" kindref="member">clone</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classjet_1ad202deb7d9e738435479b50f9603f028" kindref="member">build</ref>(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/><ref refid="structelement__t" kindref="compound">element_t</ref>*<sp/>el)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="events/exp_mc20/include/exp_mc20/particles.h"/>
+  </compounddef>
+</doxygen>

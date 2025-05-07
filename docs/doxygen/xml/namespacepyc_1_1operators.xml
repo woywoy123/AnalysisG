@@ -1,0 +1,264 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacepyc_1_1operators" kind="namespace" language="C++">
+    <compoundname>pyc::operators</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacepyc_1_1operators_1ab614cf3043e983f0327b698e8c80af06" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::operators::Dot</definition>
+        <argsstring>(torch::Tensor v1, torch::Tensor v2)</argsstring>
+        <name>Dot</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>v2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="125" column="23" bodyfile="pyc/interface/operators.cxx" bodystart="13" bodyend="16" declfile="pyc/interface/include/pyc/pyc.h" declline="125" declcolumn="23"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespaceoperators___1a9c06ae4b1ec4e5f50d3db14bc1da2ef6" compoundref="operators_2operators_8cxx" startline="4" endline="7">operators_::Dot</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1operators_1af098f14372678c7e79bdd095305d90ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::operators::CosTheta</definition>
+        <argsstring>(torch::Tensor v1, torch::Tensor v2)</argsstring>
+        <name>CosTheta</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>v2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="126" column="23" bodyfile="pyc/interface/operators.cxx" bodystart="18" bodyend="21" declfile="pyc/interface/include/pyc/pyc.h" declline="126" declcolumn="23"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespaceoperators___1af012532b8e034b7d6cb733360e14f8d7" compoundref="operators_2operators_8cxx" startline="9" endline="14">operators_::CosTheta</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1operators_1a08ce9a10632751c377c359f2c8b2e889" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::operators::SinTheta</definition>
+        <argsstring>(torch::Tensor v1, torch::Tensor v2)</argsstring>
+        <name>SinTheta</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>v2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="127" column="23" bodyfile="pyc/interface/operators.cxx" bodystart="23" bodyend="26" declfile="pyc/interface/include/pyc/pyc.h" declline="127" declcolumn="23"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespaceoperators___1a0335a4a853f7cff5faa4bc7bc68e3a8a" compoundref="operators_2operators_8cxx" startline="16" endline="21">operators_::SinTheta</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1operators_1a99b031f4c597d8075f46fdf850a8bd41" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::operators::Rx</definition>
+        <argsstring>(torch::Tensor angle)</argsstring>
+        <name>Rx</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>angle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="128" column="23" bodyfile="pyc/interface/operators.cxx" bodystart="28" bodyend="31" declfile="pyc/interface/include/pyc/pyc.h" declline="128" declcolumn="23"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespaceoperators___1a7ce1f1b4f84306a157386ac5fd54ea1a" compoundref="operators_2operators_8cxx" startline="23" endline="35">operators_::Rx</references>
+        <referencedby refid="nusol_2tensor_2nusol_8cxx_1a28531a30b80ecbd780392279d8a8adf3" compoundref="nusol_2tensor_2nusol_8cxx" startline="130" endline="153">Rotation</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1operators_1abcfa7b9cf2af875ac48807e57dafffdc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::operators::Ry</definition>
+        <argsstring>(torch::Tensor angle)</argsstring>
+        <name>Ry</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>angle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="129" column="23" bodyfile="pyc/interface/operators.cxx" bodystart="33" bodyend="36" declfile="pyc/interface/include/pyc/pyc.h" declline="129" declcolumn="23"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespaceoperators___1a7f4dbc7ab056202b3b43d621f6c8df50" compoundref="operators_2operators_8cxx" startline="37" endline="49">operators_::Ry</references>
+        <referencedby refid="nusol_2tensor_2nusol_8cxx_1a28531a30b80ecbd780392279d8a8adf3" compoundref="nusol_2tensor_2nusol_8cxx" startline="130" endline="153">Rotation</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1operators_1a0a4de4024b67c144c057a812aa618c4b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::operators::Rz</definition>
+        <argsstring>(torch::Tensor angle)</argsstring>
+        <name>Rz</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>angle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="130" column="23" bodyfile="pyc/interface/operators.cxx" bodystart="38" bodyend="41" declfile="pyc/interface/include/pyc/pyc.h" declline="130" declcolumn="23"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespaceoperators___1a38a28124e97111d3a1f2809ce2039769" compoundref="operators_2operators_8cxx" startline="51" endline="63">operators_::Rz</references>
+        <referencedby refid="nusol_2tensor_2nusol_8cxx_1a28531a30b80ecbd780392279d8a8adf3" compoundref="nusol_2tensor_2nusol_8cxx" startline="130" endline="153">Rotation</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1operators_1a5c947d6968337f95f86e6925acc63dfa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::operators::RT</definition>
+        <argsstring>(torch::Tensor pmc_b, torch::Tensor pmc_mu)</argsstring>
+        <name>RT</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc_b</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc_mu</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="131" column="23" bodyfile="pyc/interface/operators.cxx" bodystart="44" bodyend="49" declfile="pyc/interface/include/pyc/pyc.h" declline="131" declcolumn="23"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacepyc_1_1transform_1_1combined_1a4305377c534019b9f8caa15e0c5f703e" compoundref="interface_2transform_8cxx" startline="38" endline="43">pyc::transform::combined::Phi</references>
+        <references refid="namespacephysics___1a6d323b672a05eb19edce0b4d818bdb7f" compoundref="pyc_2physics_2physics_8cxx" startline="88" endline="91">physics_::Theta</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1operators_1a5b271f36f06d0f527f2c92a9d96041d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::operators::CoFactors</definition>
+        <argsstring>(torch::Tensor matrix)</argsstring>
+        <name>CoFactors</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>matrix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="133" column="23" bodyfile="pyc/interface/operators.cxx" bodystart="51" bodyend="54" declfile="pyc/interface/include/pyc/pyc.h" declline="133" declcolumn="23"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespaceoperators___1a3d017da3c5169dfb4e1ca5da7cae0703" compoundref="operators_2operators_8cxx" startline="65" endline="84">operators_::CoFactors</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1operators_1a0aa896a26a1d7a623ce9c8f09473add9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::operators::Determinant</definition>
+        <argsstring>(torch::Tensor matrix)</argsstring>
+        <name>Determinant</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>matrix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="134" column="23" bodyfile="pyc/interface/operators.cxx" bodystart="56" bodyend="59" declfile="pyc/interface/include/pyc/pyc.h" declline="134" declcolumn="23"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespaceoperators___1a123a2d44cfea06825875800ebf21ae0d" compoundref="operators_2operators_8cxx" startline="86" endline="86">operators_::Determinant</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1operators_1a35e565272bd6223991498cb4965db10a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; torch::Tensor, torch::Tensor &gt;</type>
+        <definition>std::tuple&lt; torch::Tensor, torch::Tensor &gt; pyc::operators::Inverse</definition>
+        <argsstring>(torch::Tensor matrix)</argsstring>
+        <name>Inverse</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>matrix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="135" column="20" bodyfile="pyc/interface/operators.cxx" bodystart="61" bodyend="64" declfile="pyc/interface/include/pyc/pyc.h" declline="135" declcolumn="20"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespaceoperators___1aaf20282e41ff4961e01d222feb86bc47" compoundref="operators_2operators_8cxx" startline="87" endline="87">operators_::Inverse</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1operators_1a4c1fbc10c44075ccfd52cede9bd72b62" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; torch::Tensor, torch::Tensor &gt;</type>
+        <definition>std::tuple&lt; torch::Tensor, torch::Tensor &gt; pyc::operators::Eigenvalue</definition>
+        <argsstring>(torch::Tensor matrix)</argsstring>
+        <name>Eigenvalue</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>matrix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="136" column="20" bodyfile="pyc/interface/operators.cxx" bodystart="71" bodyend="74" declfile="pyc/interface/include/pyc/pyc.h" declline="136" declcolumn="20"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1operators_1a2eb6f48cfeb67f943bcbdf1f861d2903" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::operators::Cross</definition>
+        <argsstring>(torch::Tensor mat1, torch::Tensor mat2)</argsstring>
+        <name>Cross</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>mat1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>mat2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="137" column="23" bodyfile="pyc/interface/operators.cxx" bodystart="66" bodyend="69" declfile="pyc/interface/include/pyc/pyc.h" declline="137" declcolumn="23"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespaceoperators___1adbe7fd5192c2b058280996ad9529f6ed">operators_::Cross</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pyc/interface/include/pyc/pyc.h" line="124" column="23"/>
+  </compounddef>
+</doxygen>

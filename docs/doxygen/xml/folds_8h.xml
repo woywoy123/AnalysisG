@@ -1,0 +1,827 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="folds_8h" kind="file" language="C++">
+    <compoundname>folds.h</compoundname>
+    <includes local="no">string</includes>
+    <includedby refid="cache_8cxx" local="no">cache.cxx</includedby>
+    <includedby refid="dataset_8cxx" local="no">dataset.cxx</includedby>
+    <includedby refid="graph__template_8h" local="no">graph_template.h</includedby>
+    <includedby refid="io_8h" local="no">io.h</includedby>
+    <includedby refid="meta_2include_2meta_2meta_8h" local="no">meta.h</includedby>
+    <includedby refid="misc_8cxx" local="no">misc.cxx</includedby>
+    <includedby refid="structs_8cxx" local="no">structs.cxx</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>string</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="18">
+        <label>optimizer_build.cxx</label>
+        <link refid="optimizer__build_8cxx"/>
+      </node>
+      <node id="23">
+        <label>sampletracer.h</label>
+        <link refid="sampletracer_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>event_build.cxx</label>
+        <link refid="event__build_8cxx"/>
+      </node>
+      <node id="10">
+        <label>graphs.cxx</label>
+        <link refid="ssml__mc20_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="41">
+        <label>met.cxx</label>
+        <link refid="met_8cxx"/>
+      </node>
+      <node id="61">
+        <label>zprime.cxx</label>
+        <link refid="mc16_2zprime_2zprime_8cxx"/>
+      </node>
+      <node id="51">
+        <label>parton.cxx</label>
+        <link refid="parton_8cxx"/>
+      </node>
+      <node id="16">
+        <label>methods.cxx</label>
+        <link refid="methods_8cxx"/>
+      </node>
+      <node id="82">
+        <label>event_template.cxx</label>
+        <link refid="event__template_8cxx"/>
+      </node>
+      <node id="38">
+        <label>event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+      </node>
+      <node id="100">
+        <label>link.cxx</label>
+        <link refid="link_8cxx"/>
+      </node>
+      <node id="21">
+        <label>container.cxx</label>
+        <link refid="container_8cxx"/>
+      </node>
+      <node id="22">
+        <label>entries.cxx</label>
+        <link refid="entries_8cxx"/>
+      </node>
+      <node id="69">
+        <label>event.cxx</label>
+        <link refid="events_2gnn_2cxx_2event_8cxx"/>
+      </node>
+      <node id="78">
+        <label>topmatching.h</label>
+        <link refid="mc20_2topmatching_2topmatching_8h"/>
+        <childnode refid="79" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>toptruthjets.cxx</label>
+        <link refid="toptruthjets_8cxx"/>
+      </node>
+      <node id="50">
+        <label>parton.h</label>
+        <link refid="parton_8h"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="84">
+        <label>selection_template.h</label>
+        <link refid="selection__template_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+      </node>
+      <node id="96">
+        <label>accuracy.cxx</label>
+        <link refid="accuracy_8cxx"/>
+      </node>
+      <node id="1">
+        <label>folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>childrenkinematics.h</label>
+        <link refid="childrenkinematics_8h"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="67">
+        <label>mc20_exp.cxx</label>
+        <link refid="mc20__exp_8cxx"/>
+      </node>
+      <node id="39">
+        <label>event.h</label>
+        <link refid="events_2bsm__4tops_2include_2bsm__4tops_2event_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+      </node>
+      <node id="94">
+        <label>metric_template.h</label>
+        <link refid="metric__template_8h"/>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>toptruthjets.h</label>
+        <link refid="toptruthjets_8h"/>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>types.cxx</label>
+        <link refid="types_8cxx"/>
+      </node>
+      <node id="68">
+        <label>gnn-event.h</label>
+        <link refid="gnn-event_8h"/>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>selection_build.cxx</label>
+        <link refid="selection__build_8cxx"/>
+      </node>
+      <node id="77">
+        <label>topkinematics.cxx</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8cxx"/>
+      </node>
+      <node id="86">
+        <label>selection_core.cxx</label>
+        <link refid="selection__core_8cxx"/>
+      </node>
+      <node id="9">
+        <label>graphs.cxx</label>
+        <link refid="exp__mc20_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="28">
+        <label>optimizer.cxx</label>
+        <link refid="optimizer_2cxx_2optimizer_8cxx"/>
+      </node>
+      <node id="26">
+        <label>dataloader.cxx</label>
+        <link refid="dataloader_8cxx"/>
+      </node>
+      <node id="102">
+        <label>properties.cxx</label>
+        <link refid="metric_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="33">
+        <label>hdf5.cxx</label>
+        <link refid="hdf5_8cxx"/>
+      </node>
+      <node id="75">
+        <label>mc20_ref.cxx</label>
+        <link refid="mc20__ref_8cxx"/>
+      </node>
+      <node id="54">
+        <label>topkinematics.h</label>
+        <link refid="mc16_2topkinematics_2topkinematics_8h"/>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>topjets.cxx</label>
+        <link refid="topjets_8cxx"/>
+      </node>
+      <node id="2">
+        <label>cache.cxx</label>
+        <link refid="cache_8cxx"/>
+      </node>
+      <node id="105">
+        <label>structs.cxx</label>
+        <link refid="structs_8cxx"/>
+      </node>
+      <node id="6">
+        <label>graphs.h</label>
+        <link refid="exp__mc20_2include_2exp__mc20_2graphs_8h"/>
+      </node>
+      <node id="4">
+        <label>graph_template.h</label>
+        <link refid="graph__template_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>graphs.cxx</label>
+        <link refid="bsm__4tops_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="7">
+        <label>graphs.h</label>
+        <link refid="ssml__mc20_2include_2ssml__mc20_2graphs_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="91">
+        <label>validation.h</label>
+        <link refid="validation_8h"/>
+        <childnode refid="64" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>io.h</label>
+        <link refid="io_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="95">
+        <label>accuracy.h</label>
+        <link refid="accuracy_8h"/>
+        <childnode refid="96" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>inference_build.cxx</label>
+        <link refid="inference__build_8cxx"/>
+      </node>
+      <node id="92">
+        <label>&lt;selection-name&gt;.h</label>
+        <link refid="_3selection-name_4_8h"/>
+      </node>
+      <node id="27">
+        <label>optimizer.h</label>
+        <link refid="optimizer_2include_2generators_2optimizer_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="97">
+        <label>pagerank.h</label>
+        <link refid="pagerank_8h"/>
+        <childnode refid="98" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>graph_template.cxx</label>
+        <link refid="graph__template_8cxx"/>
+      </node>
+      <node id="34">
+        <label>io.cxx</label>
+        <link refid="io_2cxx_2io_8cxx"/>
+      </node>
+      <node id="45">
+        <label>decaymodes.cxx</label>
+        <link refid="decaymodes_8cxx"/>
+      </node>
+      <node id="99">
+        <label>base.cxx</label>
+        <link refid="metric_2cxx_2base_8cxx"/>
+      </node>
+      <node id="64">
+        <label>validation.cxx</label>
+        <link refid="validation_8cxx"/>
+      </node>
+      <node id="81">
+        <label>zprime.cxx</label>
+        <link refid="mc20_2zprime_2zprime_8cxx"/>
+      </node>
+      <node id="47">
+        <label>event.cxx</label>
+        <link refid="events_2bsm__4tops_2cxx_2event_8cxx"/>
+      </node>
+      <node id="52">
+        <label>topjets.h</label>
+        <link refid="topjets_8h"/>
+        <childnode refid="53" relation="include">
+        </childnode>
+      </node>
+      <node id="83">
+        <label>properties.cxx</label>
+        <link refid="event_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="17">
+        <label>metric_build.cxx</label>
+        <link refid="metric__build_8cxx"/>
+      </node>
+      <node id="103">
+        <label>&lt;name&gt;.h</label>
+        <link refid="_3name_4_8h"/>
+      </node>
+      <node id="57">
+        <label>topmatching.cxx</label>
+        <link refid="mc16_2topmatching_2topmatching_8cxx"/>
+      </node>
+      <node id="35">
+        <label>root.cxx</label>
+        <link refid="io_2cxx_2root_8cxx"/>
+      </node>
+      <node id="104">
+        <label>misc.cxx</label>
+        <link refid="misc_8cxx"/>
+      </node>
+      <node id="66">
+        <label>event.cxx</label>
+        <link refid="events_2exp__mc20_2cxx_2event_8cxx"/>
+      </node>
+      <node id="87">
+        <label>selection_template.cxx</label>
+        <link refid="selection__template_8cxx"/>
+      </node>
+      <node id="20">
+        <label>container.h</label>
+        <link refid="container_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="88">
+        <label>matching.h</label>
+        <link refid="matching_8h"/>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>dataloader.h</label>
+        <link refid="dataloader_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="80">
+        <label>zprime.h</label>
+        <link refid="mc20_2zprime_2zprime_8h"/>
+        <childnode refid="81" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>event.h</label>
+        <link refid="selections_2mc16_2event_2event_8h"/>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="79">
+        <label>topmatching.cxx</label>
+        <link refid="mc20_2topmatching_2topmatching_8cxx"/>
+      </node>
+      <node id="14">
+        <label>graph_build.cxx</label>
+        <link refid="graph__build_8cxx"/>
+      </node>
+      <node id="70">
+        <label>topefficiency.h</label>
+        <link refid="topefficiency_8h"/>
+        <childnode refid="71" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>event.cxx</label>
+        <link refid="selections_2mc16_2event_2event_8cxx"/>
+      </node>
+      <node id="24">
+        <label>sampletracer.cxx</label>
+        <link refid="sampletracer_8cxx"/>
+      </node>
+      <node id="30">
+        <label>properties.cxx</label>
+        <link refid="graph_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="56">
+        <label>topmatching.h</label>
+        <link refid="mc16_2topmatching_2topmatching_8h"/>
+        <childnode refid="57" relation="include">
+        </childnode>
+      </node>
+      <node id="76">
+        <label>topkinematics.h</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8h"/>
+        <childnode refid="77" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>dataset.cxx</label>
+        <link refid="dataset_8cxx"/>
+      </node>
+      <node id="90">
+        <label>combinatorial.h</label>
+        <link refid="combinatorial_8h"/>
+        <childnode refid="63" relation="include">
+        </childnode>
+      </node>
+      <node id="89">
+        <label>matching.cxx</label>
+        <link refid="matching_8cxx"/>
+      </node>
+      <node id="48">
+        <label>event.cxx</label>
+        <link refid="events_2ssml__mc20_2cxx_2event_8cxx"/>
+      </node>
+      <node id="101">
+        <label>metric.cxx</label>
+        <link refid="metric_8cxx"/>
+      </node>
+      <node id="73">
+        <label>regions.h</label>
+        <link refid="regions_8h"/>
+        <childnode refid="74" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>analysis.cxx</label>
+        <link refid="analysis_8cxx"/>
+      </node>
+      <node id="55">
+        <label>topkinematics.cxx</label>
+        <link refid="mc16_2topkinematics_2topkinematics_8cxx"/>
+      </node>
+      <node id="5">
+        <label>graphs.h</label>
+        <link refid="bsm__4tops_2include_2bsm__4tops_2graphs_8h"/>
+      </node>
+      <node id="63">
+        <label>combinatorial.cxx</label>
+        <link refid="combinatorial_8cxx"/>
+      </node>
+      <node id="40">
+        <label>met.h</label>
+        <link refid="met_8h"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>topefficiency.cxx</label>
+        <link refid="topefficiency_8cxx"/>
+      </node>
+      <node id="72">
+        <label>event.h</label>
+        <link refid="events_2ssml__mc20_2include_2ssml__mc20_2event_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>childrenkinematics.cxx</label>
+        <link refid="childrenkinematics_8cxx"/>
+      </node>
+      <node id="62">
+        <label>mc16_ref.cxx</label>
+        <link refid="mc16__ref_8cxx"/>
+      </node>
+      <node id="65">
+        <label>event.h</label>
+        <link refid="events_2exp__mc20_2include_2exp__mc20_2event_8h"/>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+      </node>
+      <node id="74">
+        <label>regions.cxx</label>
+        <link refid="regions_8cxx"/>
+      </node>
+      <node id="85">
+        <label>properties.cxx</label>
+        <link refid="selection_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="31">
+        <label>struct_graph.cxx</label>
+        <link refid="struct__graph_8cxx"/>
+      </node>
+      <node id="93">
+        <label>metric_template.cxx</label>
+        <link refid="metric__template_8cxx"/>
+      </node>
+      <node id="98">
+        <label>pagerank.cxx</label>
+        <link refid="pagerank_8cxx"/>
+      </node>
+      <node id="60">
+        <label>zprime.h</label>
+        <link refid="mc16_2zprime_2zprime_8h"/>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>decaymodes.h</label>
+        <link refid="decaymodes_8h"/>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>analysis.h</label>
+        <link refid="analysis_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structfolds__t" prot="public">folds_t</innerclass>
+    <innerclass refid="structgraph__hdf5" prot="public">graph_hdf5</innerclass>
+    <innerclass refid="structgraph__hdf5__w" prot="public">graph_hdf5_w</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>STRUCTS_FOLDS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>STRUCTS_FOLDS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5" refid="structfolds__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structfolds__t" kindref="compound">folds_t</ref><sp/>{</highlight></codeline>
+<codeline lineno="6" refid="structfolds__t_1abf8a14364fa18f04ba5d13e7d4b62556" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structfolds__t_1abf8a14364fa18f04ba5d13e7d4b62556" kindref="member">k</ref><sp/>=<sp/>-1;<sp/></highlight></codeline>
+<codeline lineno="7" refid="structfolds__t_1a19bd55f188f293e0559fea8c7160f5d2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structfolds__t_1a19bd55f188f293e0559fea8c7160f5d2" kindref="member">is_train</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="8" refid="structfolds__t_1a9e3977066fe54d5958e3063289e700ad" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structfolds__t_1a9e3977066fe54d5958e3063289e700ad" kindref="member">is_valid</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="9" refid="structfolds__t_1a867ad480e4469a457362c98dfe786d58" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structfolds__t_1a867ad480e4469a457362c98dfe786d58" kindref="member">is_eval</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="10" refid="structfolds__t_1a2f5c9cc76bcf002f95e4a67b3dcf2404" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structfolds__t_1a2f5c9cc76bcf002f95e4a67b3dcf2404" kindref="member">hash</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12" refid="structfolds__t_1ac1b2c0ceb933b397c1e54ceff495adf9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structfolds__t_1ac1b2c0ceb933b397c1e54ceff495adf9" kindref="member">flush_data</ref>(){</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structfolds__t_1a2f5c9cc76bcf002f95e4a67b3dcf2404" kindref="member">hash</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structfolds__t_1a2f5c9cc76bcf002f95e4a67b3dcf2404" kindref="member">hash</ref>);</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structfolds__t_1a2f5c9cc76bcf002f95e4a67b3dcf2404" kindref="member">hash</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline lineno="17"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="structgraph__hdf5" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structgraph__hdf5" kindref="compound">graph_hdf5</ref><sp/>{</highlight></codeline>
+<codeline lineno="21" refid="structgraph__hdf5_1a4c32f497b548f06050b4e16fadb2c840" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structgraph__hdf5_1a4c32f497b548f06050b4e16fadb2c840" kindref="member">num_nodes</ref><sp/>=<sp/>-1;<sp/></highlight></codeline>
+<codeline lineno="22" refid="structgraph__hdf5_1a114dc2b2be3fed1f839b7e8e80134cce" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structgraph__hdf5_1a114dc2b2be3fed1f839b7e8e80134cce" kindref="member">event_weight</ref><sp/>=<sp/>1;<sp/></highlight></codeline>
+<codeline lineno="23" refid="structgraph__hdf5_1ae22276649690dcace347ba9c2fab8240" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><sp/><sp/><ref refid="structgraph__hdf5_1ae22276649690dcace347ba9c2fab8240" kindref="member">event_index</ref><sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="structgraph__hdf5_1ab975032fd062ca1a569a12634c3ee11d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1ab975032fd062ca1a569a12634c3ee11d" kindref="member">hash</ref>;<sp/></highlight></codeline>
+<codeline lineno="26" refid="structgraph__hdf5_1a9f8e7f0c8466132ada000a9e17bf4b74" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1a9f8e7f0c8466132ada000a9e17bf4b74" kindref="member">filename</ref>;<sp/></highlight></codeline>
+<codeline lineno="27" refid="structgraph__hdf5_1a16de66ca84f82d2bccfea05f6061b37a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1a16de66ca84f82d2bccfea05f6061b37a" kindref="member">edge_index</ref>;<sp/></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="structgraph__hdf5_1ad75bec95c60ef18060d2c0c241179594" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1ad75bec95c60ef18060d2c0c241179594" kindref="member">data_map_graph</ref>;</highlight></codeline>
+<codeline lineno="30" refid="structgraph__hdf5_1ae79538fb49675ac88aeaa8b778c98b7b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1ae79538fb49675ac88aeaa8b778c98b7b" kindref="member">data_map_node</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="31" refid="structgraph__hdf5_1a7d3a7826a9f750c279d82061a1c37ada" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1a7d3a7826a9f750c279d82061a1c37ada" kindref="member">data_map_edge</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="structgraph__hdf5_1a41e49ecbf8c4efd0e1a0356b7522de04" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1a41e49ecbf8c4efd0e1a0356b7522de04" kindref="member">truth_map_graph</ref>;<sp/></highlight></codeline>
+<codeline lineno="34" refid="structgraph__hdf5_1a7bc6f3ce6c3222f914dc097d1b328cbe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1a7bc6f3ce6c3222f914dc097d1b328cbe" kindref="member">truth_map_node</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="35" refid="structgraph__hdf5_1a8429c19c930daad950d6cb2174db2d59" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1a8429c19c930daad950d6cb2174db2d59" kindref="member">truth_map_edge</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="structgraph__hdf5_1a92ceec70c0a5f21ed825c5c70e4f8ce5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1a92ceec70c0a5f21ed825c5c70e4f8ce5" kindref="member">data_graph</ref>;<sp/></highlight></codeline>
+<codeline lineno="38" refid="structgraph__hdf5_1a73845121c65b5b862ee126750d852622" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1a73845121c65b5b862ee126750d852622" kindref="member">data_node</ref>;<sp/></highlight></codeline>
+<codeline lineno="39" refid="structgraph__hdf5_1ac4861c215beded575738e21c5fa59106" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1ac4861c215beded575738e21c5fa59106" kindref="member">data_edge</ref>;<sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="structgraph__hdf5_1a6fe1f16ce2ae22186701645722003ca5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1a6fe1f16ce2ae22186701645722003ca5" kindref="member">truth_graph</ref>;<sp/></highlight></codeline>
+<codeline lineno="42" refid="structgraph__hdf5_1a1e27c30eda39ae231a8f71b6fe2d5b52" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1a1e27c30eda39ae231a8f71b6fe2d5b52" kindref="member">truth_node</ref>;<sp/></highlight></codeline>
+<codeline lineno="43" refid="structgraph__hdf5_1a70a4c5392483e6992bfaa8ef2dbcb4c1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structgraph__hdf5_1a70a4c5392483e6992bfaa8ef2dbcb4c1" kindref="member">truth_edge</ref>;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="structgraph__hdf5__w" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structgraph__hdf5__w" kindref="compound">graph_hdf5_w</ref><sp/>{</highlight></codeline>
+<codeline lineno="47" refid="structgraph__hdf5__w_1a79a4a8986816200b3f5bc756f228221e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structgraph__hdf5__w_1a79a4a8986816200b3f5bc756f228221e" kindref="member">num_nodes</ref><sp/>=<sp/>-1;<sp/></highlight></codeline>
+<codeline lineno="48" refid="structgraph__hdf5__w_1acb0cfcc862fda7dc61e30f5171ab00c3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structgraph__hdf5__w_1acb0cfcc862fda7dc61e30f5171ab00c3" kindref="member">event_weight</ref><sp/>=<sp/>1;<sp/></highlight></codeline>
+<codeline lineno="49" refid="structgraph__hdf5__w_1aa3d47b676e5d1619850191d760d4a33d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><sp/><sp/><ref refid="structgraph__hdf5__w_1aa3d47b676e5d1619850191d760d4a33d" kindref="member">event_index</ref><sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="structgraph__hdf5__w_1a5c9d2dfaa6338db369b4abdcf0e75abe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1a5c9d2dfaa6338db369b4abdcf0e75abe" kindref="member">hash</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="52" refid="structgraph__hdf5__w_1a9198a9bacbcf26fe8693857850f6b50b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1a9198a9bacbcf26fe8693857850f6b50b" kindref="member">filename</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="53" refid="structgraph__hdf5__w_1ae120fd519de71f933306d31f1be72c1b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1ae120fd519de71f933306d31f1be72c1b" kindref="member">edge_index</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="structgraph__hdf5__w_1a915653a3ebb476c45d3fd46ef6db5371" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1a915653a3ebb476c45d3fd46ef6db5371" kindref="member">data_map_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="56" refid="structgraph__hdf5__w_1a444b192a91dda61cc95f62aa59728eed" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1a444b192a91dda61cc95f62aa59728eed" kindref="member">data_map_node</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="57" refid="structgraph__hdf5__w_1a7f882e2f5e98b9534d48c09b74a6a7ac" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1a7f882e2f5e98b9534d48c09b74a6a7ac" kindref="member">data_map_edge</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="structgraph__hdf5__w_1ad0834c14e3c38389299edfed4c7c9988" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1ad0834c14e3c38389299edfed4c7c9988" kindref="member">truth_map_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="60" refid="structgraph__hdf5__w_1ae392c93b6d8c3f577b371d32d7726e6d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1ae392c93b6d8c3f577b371d32d7726e6d" kindref="member">truth_map_node</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="61" refid="structgraph__hdf5__w_1a7b722999eb122127a74d54fdefceb751" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1a7b722999eb122127a74d54fdefceb751" kindref="member">truth_map_edge</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63" refid="structgraph__hdf5__w_1afb699fddb7b93b341247d5d60a1968f8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1afb699fddb7b93b341247d5d60a1968f8" kindref="member">data_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="64" refid="structgraph__hdf5__w_1a67222f2f757174b05384203c0cb92090" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1a67222f2f757174b05384203c0cb92090" kindref="member">data_node</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="65" refid="structgraph__hdf5__w_1a4785757cb603488c4259ee6271620576" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1a4785757cb603488c4259ee6271620576" kindref="member">data_edge</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="structgraph__hdf5__w_1a65bcbe253b22f26a422fc6030db7517a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1a65bcbe253b22f26a422fc6030db7517a" kindref="member">truth_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="68" refid="structgraph__hdf5__w_1ad3328e9888f860e9045cc38bc208bc9c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1ad3328e9888f860e9045cc38bc208bc9c" kindref="member">truth_node</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="69" refid="structgraph__hdf5__w_1a4d1172eb1d81617686cddd309153d738" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structgraph__hdf5__w_1a4d1172eb1d81617686cddd309153d738" kindref="member">truth_edge</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" kindref="member">flush_data</ref>();</highlight></codeline>
+<codeline lineno="71"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="modules/structs/include/structs/folds.h"/>
+  </compounddef>
+</doxygen>

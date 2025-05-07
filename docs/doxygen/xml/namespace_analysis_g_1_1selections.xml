@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespace_analysis_g_1_1selections" kind="namespace" language="Python">
+    <compoundname>AnalysisG::selections</compoundname>
+    <innernamespace refid="namespace_analysis_g_1_1selections_1_1analysis">AnalysisG::selections::analysis</innernamespace>
+    <innernamespace refid="namespace_analysis_g_1_1selections_1_1example">AnalysisG::selections::example</innernamespace>
+    <innernamespace refid="namespace_analysis_g_1_1selections_1_1mc16">AnalysisG::selections::mc16</innernamespace>
+    <innernamespace refid="namespace_analysis_g_1_1selections_1_1mc20">AnalysisG::selections::mc20</innernamespace>
+    <innernamespace refid="namespace_analysis_g_1_1selections_1_1neutrino">AnalysisG::selections::neutrino</innernamespace>
+    <innernamespace refid="namespace_analysis_g_1_1selections_1_1performance">AnalysisG::selections::performance</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="selections/__init__.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

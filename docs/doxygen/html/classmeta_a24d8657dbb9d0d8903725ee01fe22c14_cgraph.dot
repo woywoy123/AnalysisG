@@ -1,0 +1,11 @@
+digraph "meta::scan_sow"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="meta::scan_sow",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Scans sum of weights (SoW) information from a ROOT object."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="tools::has_string",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtools.html#ad7229c72cee65da3605c4be82f9b42d4",tooltip="Checks if a string contains a specific substring."];
+}

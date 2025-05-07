@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacepyc_1_1physics" kind="namespace" language="C++">
+    <compoundname>pyc::physics</compoundname>
+    <innernamespace refid="namespacepyc_1_1physics_1_1cartesian">pyc::physics::cartesian</innernamespace>
+    <innernamespace refid="namespacepyc_1_1physics_1_1polar">pyc::physics::polar</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pyc/interface/include/pyc/pyc.h" line="69" column="21"/>
+  </compounddef>
+</doxygen>

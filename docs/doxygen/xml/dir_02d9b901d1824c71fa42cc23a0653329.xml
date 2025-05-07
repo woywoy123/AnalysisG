@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_02d9b901d1824c71fa42cc23a0653329" kind="dir">
+    <compoundname>tools</compoundname>
+    <innerfile refid="merge__cast_8h">merge_cast.h</innerfile>
+    <innerfile refid="tensor__cast_8h">tensor_cast.h</innerfile>
+    <innerfile refid="vector__cast_8h">vector_cast.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/typecasting/include/tools/"/>
+  </compounddef>
+</doxygen>

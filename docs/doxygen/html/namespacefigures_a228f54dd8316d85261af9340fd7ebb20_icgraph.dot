@@ -1,0 +1,24 @@
+digraph "figures.colr"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="figures.colr",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="figures.template_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#a4a39fa068eff3dab855d5b6cb4adcd60",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="figures.build_neutrino",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#a058f5436d5be255476b003d5b0604ade",tooltip=" "];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="figures.entry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#a4425b98eb197b43b0612e82573268ce2",tooltip=" "];
+  Node2 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="figures.build_operators",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#a6b3e9795944b859bb399b1e7b1617c78",tooltip=" "];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="figures.build_physics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#a3335c733eecb185c9fde797cdb3fdbb4",tooltip=" "];
+  Node6 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="figures.build_transform",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#af43ea0b9729419de92dcfe2178f11b33",tooltip=" "];
+  Node7 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

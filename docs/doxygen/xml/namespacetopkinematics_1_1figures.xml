@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacetopkinematics_1_1figures" kind="namespace" language="Python">
+    <compoundname>topkinematics::figures</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacetopkinematics_1_1figures_1a427990efa237130a61a87e720da80640" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topkinematics::figures::path</definition>
+        <argsstring>(hist)</argsstring>
+        <name>path</name>
+        <param>
+          <type>hist</type>
+          <defname>hist</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" line="8" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" bodystart="8" bodyend="12"/>
+        <references refid="namespacemain_1a5b4be1a6135a1aa22b30e809f67400c9" compoundref="mc16__matching_2main_8py" startline="120">main.default</references>
+        <referencedby refid="namespacetopkinematics_1_1figures_1ab6daf6308ab0d2c897c3fd5ef88e4725" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="150" endline="176">topkinematics.figures.top_delta_r</referencedby>
+        <referencedby refid="namespacetopkinematics_1_1figures_1a50741f3f4504d4933c80c3ac07392bcb" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="38" endline="62">topkinematics.figures.top_energy</referencedby>
+        <referencedby refid="namespacetopkinematics_1_1figures_1a2eb245517262dd1bc23563cc5759877c" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="86" endline="108">topkinematics.figures.top_eta</referencedby>
+        <referencedby refid="namespacetopkinematics_1_1figures_1a99c65e86a99491541bbd481b33a96fb8" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="177" endline="223">topkinematics.figures.top_pair_mass</referencedby>
+        <referencedby refid="namespacetopkinematics_1_1figures_1a0b86db90e176ea2c3ae6354753c62e58" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="63" endline="85">topkinematics.figures.top_phi</referencedby>
+        <referencedby refid="namespacetopkinematics_1_1figures_1aaed752ebec6ae222231267a8e49430a3" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="13" endline="37">topkinematics.figures.top_pt</referencedby>
+        <referencedby refid="namespacetopkinematics_1_1figures_1a45490c0b0b0ee1737b08775146b42bb4" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="109" endline="149">topkinematics.figures.top_pt_energy</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopkinematics_1_1figures_1aaed752ebec6ae222231267a8e49430a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topkinematics::figures::top_pt</definition>
+        <argsstring>(ana, mp)</argsstring>
+        <name>top_pt</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>mp</type>
+          <defname>mp</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" line="13" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" bodystart="13" bodyend="37"/>
+        <references refid="namespacetopkinematics_1_1figures_1a427990efa237130a61a87e720da80640" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="8" endline="12">topkinematics.figures.path</references>
+        <referencedby refid="namespacetopkinematics_1_1figures_1ab14fbfdf49f0f9ba47a88d48e6980153" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="224" endline="234">topkinematics.figures.TopKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopkinematics_1_1figures_1a50741f3f4504d4933c80c3ac07392bcb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topkinematics::figures::top_energy</definition>
+        <argsstring>(ana, mp)</argsstring>
+        <name>top_energy</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>mp</type>
+          <defname>mp</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" line="38" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" bodystart="38" bodyend="62"/>
+        <references refid="namespacetopkinematics_1_1figures_1a427990efa237130a61a87e720da80640" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="8" endline="12">topkinematics.figures.path</references>
+        <referencedby refid="namespacetopkinematics_1_1figures_1ab14fbfdf49f0f9ba47a88d48e6980153" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="224" endline="234">topkinematics.figures.TopKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopkinematics_1_1figures_1a0b86db90e176ea2c3ae6354753c62e58" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topkinematics::figures::top_phi</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_phi</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" line="63" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" bodystart="63" bodyend="85"/>
+        <references refid="namespacetopkinematics_1_1figures_1a427990efa237130a61a87e720da80640" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="8" endline="12">topkinematics.figures.path</references>
+        <referencedby refid="namespacetopkinematics_1_1figures_1ab14fbfdf49f0f9ba47a88d48e6980153" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="224" endline="234">topkinematics.figures.TopKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopkinematics_1_1figures_1a2eb245517262dd1bc23563cc5759877c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topkinematics::figures::top_eta</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_eta</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" line="86" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" bodystart="86" bodyend="108"/>
+        <references refid="namespacetopkinematics_1_1figures_1a427990efa237130a61a87e720da80640" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="8" endline="12">topkinematics.figures.path</references>
+        <referencedby refid="namespacetopkinematics_1_1figures_1ab14fbfdf49f0f9ba47a88d48e6980153" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="224" endline="234">topkinematics.figures.TopKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopkinematics_1_1figures_1a45490c0b0b0ee1737b08775146b42bb4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topkinematics::figures::top_pt_energy</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_pt_energy</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" line="109" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" bodystart="109" bodyend="149"/>
+        <references refid="namespacetopkinematics_1_1figures_1a427990efa237130a61a87e720da80640" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="8" endline="12">topkinematics.figures.path</references>
+        <referencedby refid="namespacetopkinematics_1_1figures_1ab14fbfdf49f0f9ba47a88d48e6980153" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="224" endline="234">topkinematics.figures.TopKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopkinematics_1_1figures_1ab6daf6308ab0d2c897c3fd5ef88e4725" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topkinematics::figures::top_delta_r</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_delta_r</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" line="150" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" bodystart="150" bodyend="176"/>
+        <references refid="namespacetopkinematics_1_1figures_1a427990efa237130a61a87e720da80640" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="8" endline="12">topkinematics.figures.path</references>
+        <referencedby refid="namespacetopkinematics_1_1figures_1ab14fbfdf49f0f9ba47a88d48e6980153" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="224" endline="234">topkinematics.figures.TopKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopkinematics_1_1figures_1a99c65e86a99491541bbd481b33a96fb8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topkinematics::figures::top_pair_mass</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_pair_mass</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" line="177" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" bodystart="177" bodyend="223"/>
+        <references refid="namespacetopkinematics_1_1figures_1a427990efa237130a61a87e720da80640" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="8" endline="12">topkinematics.figures.path</references>
+        <references refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" compoundref="selection__template_8h" startline="77" endline="89">selection_template::sum</references>
+        <referencedby refid="namespacetopkinematics_1_1figures_1ab14fbfdf49f0f9ba47a88d48e6980153" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="224" endline="234">topkinematics.figures.TopKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopkinematics_1_1figures_1ab14fbfdf49f0f9ba47a88d48e6980153" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topkinematics::figures::TopKinematics</definition>
+        <argsstring>(ana, mp)</argsstring>
+        <name>TopKinematics</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>mp</type>
+          <defname>mp</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" line="224" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" bodystart="224" bodyend="234"/>
+        <references refid="namespacetopkinematics_1_1figures_1ab6daf6308ab0d2c897c3fd5ef88e4725" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="150" endline="176">topkinematics.figures.top_delta_r</references>
+        <references refid="namespacetopkinematics_1_1figures_1a50741f3f4504d4933c80c3ac07392bcb" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="38" endline="62">topkinematics.figures.top_energy</references>
+        <references refid="namespacetopkinematics_1_1figures_1a2eb245517262dd1bc23563cc5759877c" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="86" endline="108">topkinematics.figures.top_eta</references>
+        <references refid="namespacetopkinematics_1_1figures_1a99c65e86a99491541bbd481b33a96fb8" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="177" endline="223">topkinematics.figures.top_pair_mass</references>
+        <references refid="namespacetopkinematics_1_1figures_1a0b86db90e176ea2c3ae6354753c62e58" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="63" endline="85">topkinematics.figures.top_phi</references>
+        <references refid="namespacetopkinematics_1_1figures_1aaed752ebec6ae222231267a8e49430a3" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="13" endline="37">topkinematics.figures.top_pt</references>
+        <references refid="namespacetopkinematics_1_1figures_1a45490c0b0b0ee1737b08775146b42bb4" compoundref="mc16__matching_2topkinematics_2figures_8py" startline="109" endline="149">topkinematics.figures.top_pt_energy</references>
+        <referencedby refid="namespacemain_1a7afac8f5e46c718321f188d7888c2de0" compoundref="mc16__matching_2main_8py" startline="60" endline="98">main.ExecuteStudy</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/figures.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

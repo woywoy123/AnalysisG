@@ -1,0 +1,17 @@
+digraph "validation.figures.KSTestingDynamic"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="validation.figures.KSTesting\lDynamic",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="validation.figures.Fancy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacevalidation_1_1figures.html#aeaea86b0a9280be8f01e82837691e66e",tooltip=" "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="validation.figures.template",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacevalidation_1_1figures.html#a5d5830588582cdacb9e25b3b5c437cb7",tooltip=" "];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="validation.figures.default",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacevalidation_1_1figures.html#a56f1fd5919df992a8fb9c9155f3b24d6",tooltip=" "];
+  Node3 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="tools::replace",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtools.html#aeae88ebd7116d59008600f0723716dba",tooltip="Replaces all occurrences of a substring in a string."];
+}

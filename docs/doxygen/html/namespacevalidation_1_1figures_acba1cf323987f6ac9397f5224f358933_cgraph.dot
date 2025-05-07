@@ -1,0 +1,62 @@
+digraph "validation.figures.validation"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="validation.figures.validation",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="validation.figures.Chi2Distribution",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacevalidation_1_1figures.html#acb17ab1fde05f304e383e18eeb0e1e30",tooltip=" "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="validation.figures.Fancy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacevalidation_1_1figures.html#aeaea86b0a9280be8f01e82837691e66e",tooltip=" "];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="validation.figures.template",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacevalidation_1_1figures.html#a5d5830588582cdacb9e25b3b5c437cb7",tooltip=" "];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="validation.figures.default",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacevalidation_1_1figures.html#a56f1fd5919df992a8fb9c9155f3b24d6",tooltip=" "];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="tools::replace",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtools.html#aeae88ebd7116d59008600f0723716dba",tooltip="Replaces all occurrences of a substring in a string."];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="validation.figures.Chi2Symbolic",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacevalidation_1_1figures.html#a2762e7ce7333ed68add0e1a533921bc9",tooltip=" "];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="validation.figures.colors",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacevalidation_1_1figures.html#ac17c0ce139623cf88cc9e72071e40107",tooltip=" "];
+  Node7 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="helper.compxl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a41ae8d2d649292f797a3a87c4778e47e",tooltip=" "];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="helper.compiler",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#ad0f763fc806c0d73759dfb3bdc613b1f",tooltip=" "];
+  Node10 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="helper.build_samples",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a25eb34bd07137c02434c8f7f353b751f",tooltip=" "];
+  Node10 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="helper.get_best",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a645d6ae76de83def2d6d406154e0dde1",tooltip=" "];
+  Node12 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="helper.chi2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a08ead3aca58b78c271e428072ba58d4e",tooltip=" "];
+  Node10 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="helper.get_dynamic",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a26ac568b4a822d1213047b4e03cf87be",tooltip=" "];
+  Node10 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="helper.get_masses",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#acf2d9d11f58e1812d4a781a923b8df36",tooltip=" "];
+  Node10 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="helper.get_pairs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a791f75e8bc3e9b06a9d7caed0ccb686e",tooltip=" "];
+  Node10 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="helper.get_static",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#aa66e4f18412a16d4c494aa6d5add0c92",tooltip=" "];
+  Node10 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="helper.make_types",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a4a2c74bb11174d786d65e73a6866a72c",tooltip=" "];
+  Node10 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="helper.vector",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a6a86af0e435c054cabd85eebb8a45782",tooltip=" "];
+  Node1 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="validation.figures.Ellipse\lDistance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacevalidation_1_1figures.html#aa6ee99f55d65d2d5abfb61e97be928c9",tooltip=" "];
+  Node20 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node21 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="validation.figures.KSTesting\lDynamic",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacevalidation_1_1figures.html#a899d1979918a6e7059f2e124da82905f",tooltip=" "];
+  Node21 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node22 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 [label="validation.figures.print\l_statistics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacevalidation_1_1figures.html#abb92a3355922cf131a52f2923442e6ab",tooltip=" "];
+  Node1 -> Node23 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 [label="validation.figures.statistics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacevalidation_1_1figures.html#a1f3a88831f1b858aa551063473f8d86f",tooltip=" "];
+  Node1 -> Node24 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node24 [label="validation::validation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation.html#af7971b5375679ccf457d463cb6b2d8d0",tooltip=" "];
+}

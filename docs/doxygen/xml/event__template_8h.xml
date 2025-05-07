@@ -1,0 +1,1115 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="event__template_8h" kind="file" language="C++">
+    <compoundname>event_template.h</compoundname>
+    <includes refid="particle__template_8h" local="no">templates/particle_template.h</includes>
+    <includes refid="property_8h" local="no">structs/property.h</includes>
+    <includes refid="element_8h" local="no">structs/element.h</includes>
+    <includes refid="modules_2structs_2include_2structs_2event_8h" local="no">structs/event.h</includes>
+    <includes refid="tools_8h" local="no">tools/tools.h</includes>
+    <includes refid="meta_2include_2meta_2meta_8h" local="no">meta/meta.h</includes>
+    <includedby refid="events_2bsm__4tops_2include_2bsm__4tops_2event_8h" local="no">event.h</includedby>
+    <includedby refid="events_2exp__mc20_2include_2exp__mc20_2event_8h" local="no">event.h</includedby>
+    <includedby refid="gnn-event_8h" local="no">gnn-event.h</includedby>
+    <includedby refid="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" local="no">event.h</includedby>
+    <includedby refid="analysis_8h" local="no">analysis.h</includedby>
+    <includedby refid="container_8h" local="no">container.h</includedby>
+    <includedby refid="event__template_8cxx" local="no">event_template.cxx</includedby>
+    <includedby refid="event_2cxx_2properties_8cxx" local="no">properties.cxx</includedby>
+    <includedby refid="graph__template_8h" local="no">graph_template.h</includedby>
+    <includedby refid="selection__template_8h" local="no">selection_template.h</includedby>
+    <incdepgraph>
+      <node id="17">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="8">
+        <label>functional</label>
+      </node>
+      <node id="15">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="1">
+        <label>event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="24">
+        <label>cstdint</label>
+      </node>
+      <node id="2">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>cmath</label>
+      </node>
+      <node id="21">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="6">
+        <label>map</label>
+      </node>
+      <node id="28">
+        <label>structs/event.h</label>
+        <link refid="modules_2structs_2include_2structs_2event_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="18">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+      <node id="32">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>TFile.h</label>
+      </node>
+      <node id="25">
+        <label>sstream</label>
+      </node>
+      <node id="3">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>cstdlib</label>
+      </node>
+      <node id="22">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="33">
+        <label>TH1F.h</label>
+      </node>
+      <node id="13">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="19">
+        <label>iostream</label>
+      </node>
+      <node id="20">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>meta/meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>TBranch.h</label>
+      </node>
+      <node id="7">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>TTree.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="58">
+        <label>optimizer_build.cxx</label>
+        <link refid="optimizer__build_8cxx"/>
+      </node>
+      <node id="63">
+        <label>sampletracer.h</label>
+        <link refid="sampletracer_8h"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>event_build.cxx</label>
+        <link refid="event__build_8cxx"/>
+      </node>
+      <node id="41">
+        <label>graphs.cxx</label>
+        <link refid="ssml__mc20_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="5">
+        <label>met.cxx</label>
+        <link refid="met_8cxx"/>
+      </node>
+      <node id="25">
+        <label>zprime.cxx</label>
+        <link refid="mc16_2zprime_2zprime_8cxx"/>
+      </node>
+      <node id="15">
+        <label>parton.cxx</label>
+        <link refid="parton_8cxx"/>
+      </node>
+      <node id="56">
+        <label>methods.cxx</label>
+        <link refid="methods_8cxx"/>
+      </node>
+      <node id="65">
+        <label>event_template.cxx</label>
+        <link refid="event__template_8cxx"/>
+      </node>
+      <node id="1">
+        <label>event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+      </node>
+      <node id="61">
+        <label>container.cxx</label>
+        <link refid="container_8cxx"/>
+      </node>
+      <node id="62">
+        <label>entries.cxx</label>
+        <link refid="entries_8cxx"/>
+      </node>
+      <node id="34">
+        <label>event.cxx</label>
+        <link refid="events_2gnn_2cxx_2event_8cxx"/>
+      </node>
+      <node id="47">
+        <label>topmatching.h</label>
+        <link refid="mc20_2topmatching_2topmatching_8h"/>
+        <childnode refid="48" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>toptruthjets.cxx</label>
+        <link refid="toptruthjets_8cxx"/>
+      </node>
+      <node id="14">
+        <label>parton.h</label>
+        <link refid="parton_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="77">
+        <label>selection_template.h</label>
+        <link refid="selection__template_8h"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>childrenkinematics.h</label>
+        <link refid="childrenkinematics_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>mc20_exp.cxx</label>
+        <link refid="mc20__exp_8cxx"/>
+      </node>
+      <node id="2">
+        <label>event.h</label>
+        <link refid="events_2bsm__4tops_2include_2bsm__4tops_2event_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>toptruthjets.h</label>
+        <link refid="toptruthjets_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>gnn-event.h</label>
+        <link refid="gnn-event_8h"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>selection_build.cxx</label>
+        <link refid="selection__build_8cxx"/>
+      </node>
+      <node id="46">
+        <label>topkinematics.cxx</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8cxx"/>
+      </node>
+      <node id="79">
+        <label>selection_core.cxx</label>
+        <link refid="selection__core_8cxx"/>
+      </node>
+      <node id="40">
+        <label>graphs.cxx</label>
+        <link refid="exp__mc20_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="73">
+        <label>optimizer.cxx</label>
+        <link refid="optimizer_2cxx_2optimizer_8cxx"/>
+      </node>
+      <node id="70">
+        <label>dataloader.cxx</label>
+        <link refid="dataloader_8cxx"/>
+      </node>
+      <node id="44">
+        <label>mc20_ref.cxx</label>
+        <link refid="mc20__ref_8cxx"/>
+      </node>
+      <node id="18">
+        <label>topkinematics.h</label>
+        <link refid="mc16_2topkinematics_2topkinematics_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>topjets.cxx</label>
+        <link refid="topjets_8cxx"/>
+      </node>
+      <node id="69">
+        <label>cache.cxx</label>
+        <link refid="cache_8cxx"/>
+      </node>
+      <node id="31">
+        <label>graphs.h</label>
+        <link refid="exp__mc20_2include_2exp__mc20_2graphs_8h"/>
+      </node>
+      <node id="67">
+        <label>graph_template.h</label>
+        <link refid="graph__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>graphs.cxx</label>
+        <link refid="bsm__4tops_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="38">
+        <label>graphs.h</label>
+        <link refid="ssml__mc20_2include_2ssml__mc20_2graphs_8h"/>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="84">
+        <label>validation.h</label>
+        <link refid="validation_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>inference_build.cxx</label>
+        <link refid="inference__build_8cxx"/>
+      </node>
+      <node id="85">
+        <label>&lt;selection-name&gt;.h</label>
+        <link refid="_3selection-name_4_8h"/>
+      </node>
+      <node id="72">
+        <label>optimizer.h</label>
+        <link refid="optimizer_2include_2generators_2optimizer_8h"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+      </node>
+      <node id="74">
+        <label>graph_template.cxx</label>
+        <link refid="graph__template_8cxx"/>
+      </node>
+      <node id="9">
+        <label>decaymodes.cxx</label>
+        <link refid="decaymodes_8cxx"/>
+      </node>
+      <node id="28">
+        <label>validation.cxx</label>
+        <link refid="validation_8cxx"/>
+      </node>
+      <node id="50">
+        <label>zprime.cxx</label>
+        <link refid="mc20_2zprime_2zprime_8cxx"/>
+      </node>
+      <node id="11">
+        <label>event.cxx</label>
+        <link refid="events_2bsm__4tops_2cxx_2event_8cxx"/>
+      </node>
+      <node id="16">
+        <label>topjets.h</label>
+        <link refid="topjets_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="66">
+        <label>properties.cxx</label>
+        <link refid="event_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="57">
+        <label>metric_build.cxx</label>
+        <link refid="metric__build_8cxx"/>
+      </node>
+      <node id="21">
+        <label>topmatching.cxx</label>
+        <link refid="mc16_2topmatching_2topmatching_8cxx"/>
+      </node>
+      <node id="30">
+        <label>event.cxx</label>
+        <link refid="events_2exp__mc20_2cxx_2event_8cxx"/>
+      </node>
+      <node id="80">
+        <label>selection_template.cxx</label>
+        <link refid="selection__template_8cxx"/>
+      </node>
+      <node id="60">
+        <label>container.h</label>
+        <link refid="container_8h"/>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+      </node>
+      <node id="81">
+        <label>matching.h</label>
+        <link refid="matching_8h"/>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+      </node>
+      <node id="68">
+        <label>dataloader.h</label>
+        <link refid="dataloader_8h"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>zprime.h</label>
+        <link refid="mc20_2zprime_2zprime_8h"/>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>event.h</label>
+        <link refid="selections_2mc16_2event_2event_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>topmatching.cxx</label>
+        <link refid="mc20_2topmatching_2topmatching_8cxx"/>
+      </node>
+      <node id="54">
+        <label>graph_build.cxx</label>
+        <link refid="graph__build_8cxx"/>
+      </node>
+      <node id="35">
+        <label>topefficiency.h</label>
+        <link refid="topefficiency_8h"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>event.cxx</label>
+        <link refid="selections_2mc16_2event_2event_8cxx"/>
+      </node>
+      <node id="64">
+        <label>sampletracer.cxx</label>
+        <link refid="sampletracer_8cxx"/>
+      </node>
+      <node id="75">
+        <label>properties.cxx</label>
+        <link refid="graph_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="20">
+        <label>topmatching.h</label>
+        <link refid="mc16_2topmatching_2topmatching_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>topkinematics.h</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8h"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>dataset.cxx</label>
+        <link refid="dataset_8cxx"/>
+      </node>
+      <node id="83">
+        <label>combinatorial.h</label>
+        <link refid="combinatorial_8h"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="82">
+        <label>matching.cxx</label>
+        <link refid="matching_8cxx"/>
+      </node>
+      <node id="12">
+        <label>event.cxx</label>
+        <link refid="events_2ssml__mc20_2cxx_2event_8cxx"/>
+      </node>
+      <node id="42">
+        <label>regions.h</label>
+        <link refid="regions_8h"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>analysis.cxx</label>
+        <link refid="analysis_8cxx"/>
+      </node>
+      <node id="19">
+        <label>topkinematics.cxx</label>
+        <link refid="mc16_2topkinematics_2topkinematics_8cxx"/>
+      </node>
+      <node id="3">
+        <label>graphs.h</label>
+        <link refid="bsm__4tops_2include_2bsm__4tops_2graphs_8h"/>
+      </node>
+      <node id="27">
+        <label>combinatorial.cxx</label>
+        <link refid="combinatorial_8cxx"/>
+      </node>
+      <node id="4">
+        <label>met.h</label>
+        <link refid="met_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>topefficiency.cxx</label>
+        <link refid="topefficiency_8cxx"/>
+      </node>
+      <node id="37">
+        <label>event.h</label>
+        <link refid="events_2ssml__mc20_2include_2ssml__mc20_2event_8h"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>childrenkinematics.cxx</label>
+        <link refid="childrenkinematics_8cxx"/>
+      </node>
+      <node id="26">
+        <label>mc16_ref.cxx</label>
+        <link refid="mc16__ref_8cxx"/>
+      </node>
+      <node id="29">
+        <label>event.h</label>
+        <link refid="events_2exp__mc20_2include_2exp__mc20_2event_8h"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>regions.cxx</label>
+        <link refid="regions_8cxx"/>
+      </node>
+      <node id="78">
+        <label>properties.cxx</label>
+        <link refid="selection_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="76">
+        <label>struct_graph.cxx</label>
+        <link refid="struct__graph_8cxx"/>
+      </node>
+      <node id="24">
+        <label>zprime.h</label>
+        <link refid="mc16_2zprime_2zprime_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>decaymodes.h</label>
+        <link refid="decaymodes_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>analysis.h</label>
+        <link refid="analysis_8h"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="event__template_8h_1a688ff48e3d362cece932fa16132e7c81" prot="public" static="no">
+        <name>EVENT_TEMPLATE_H</name>
+        <briefdescription>
+<para>&lt; Start des Include-Guards für EVENT_TEMPLATE_H, um Mehrfachinklusionen zu verhindern. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Definition von EVENT_TEMPLATE_H, um anzuzeigen, dass der Header inkludiert wurde. Inkludiert die <computeroutput><ref refid="classparticle__template" kindref="compound">particle_template</ref></computeroutput>-Klasse für die Partikel-Datenverarbeitung. Inkludiert die <computeroutput>cproperty</computeroutput>-Vorlage für die benutzerdefinierte Eigenschaftsverwaltung. Inkludiert die <computeroutput><ref refid="structelement__t" kindref="compound">element_t</ref></computeroutput>-Struktur, wahrscheinlich ein Basisdatenelement-Typ. Inkludiert die <computeroutput><ref refid="structevent__t" kindref="compound">event_t</ref></computeroutput>-Struktur für die Ereignisdatendarstellung. Inkludiert die <computeroutput>tools</computeroutput>-Klasse für Hilfsfunktionen. Inkludiert die <computeroutput>meta</computeroutput>-Klasse für Metadaten-Handling. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/event/include/templates/event_template.h" line="21" column="9" bodyfile="modules/event/include/templates/event_template.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Header file for the <ref refid="classevent__template" kindref="compound">event_template</ref> class. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Definiert die Basisvorlage-Klasse für Ereignisdaten-Darstellung und -Manipulation.</para>
+<para>This file contains the declaration of the <ref refid="classevent__template" kindref="compound">event_template</ref> class, which is a base template class for event data representation and manipulation.</para>
+<para>Diese Datei enthält die Deklaration der <computeroutput><ref refid="classevent__template" kindref="compound">event_template</ref></computeroutput>-Klasse, die als Basisvorlage für die Verarbeitung von Physik-Ereignisdaten dient. Sie bietet Funktionalitäten für die Verwaltung von Trees, Branches und Leaves in Physik-Datenstrukturen, sowie Eigenschaften wie Ereignisgewicht und Index. Die Klasse unterstützt auch die dynamische Registrierung von Partikeln und den Aufbau von Ereignissen aus Rohdaten.</para>
+<para>Die Ereignisarchitektur ist flexibel und erweiterbar gestaltet und ermöglicht die Anpassung an verschiedene Arten von Physikanalysen und Datenformate. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**<sp/>\file<sp/>event_template.h</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/>\brief<sp/>Header<sp/>file<sp/>for<sp/>the<sp/>event_template<sp/>class.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>This<sp/>file<sp/>contains<sp/>the<sp/>declaration<sp/>of<sp/>the<sp/>event_template<sp/>class,<sp/>which<sp/>is<sp/>a<sp/>base<sp/>template<sp/>class<sp/>for<sp/>event<sp/>data<sp/>representation<sp/>and<sp/>manipulation.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="7"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@file<sp/>event_template.h</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Definiert<sp/>die<sp/>Basisvorlage-Klasse<sp/>für<sp/>Ereignisdaten-Darstellung<sp/>und<sp/>-Manipulation.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>Diese<sp/>Datei<sp/>enthält<sp/>die<sp/>Deklaration<sp/>der<sp/>`event_template`-Klasse,<sp/>die<sp/>als<sp/>Basisvorlage</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>für<sp/>die<sp/>Verarbeitung<sp/>von<sp/>Physik-Ereignisdaten<sp/>dient.<sp/>Sie<sp/>bietet<sp/>Funktionalitäten<sp/>für<sp/>die<sp/>Verwaltung<sp/>von<sp/>Trees,</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>Branches<sp/>und<sp/>Leaves<sp/>in<sp/>Physik-Datenstrukturen,<sp/>sowie<sp/>Eigenschaften<sp/>wie<sp/>Ereignisgewicht</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>und<sp/>Index.<sp/>Die<sp/>Klasse<sp/>unterstützt<sp/>auch<sp/>die<sp/>dynamische<sp/>Registrierung<sp/>von<sp/>Partikeln<sp/>und<sp/>den<sp/>Aufbau<sp/>von<sp/>Ereignissen<sp/>aus<sp/>Rohdaten.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>Die<sp/>Ereignisarchitektur<sp/>ist<sp/>flexibel<sp/>und<sp/>erweiterbar<sp/>gestaltet<sp/>und<sp/>ermöglicht<sp/>die<sp/>Anpassung</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>an<sp/>verschiedene<sp/>Arten<sp/>von<sp/>Physikanalysen<sp/>und<sp/>Datenformate.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EVENT_TEMPLATE_H<sp/></highlight><highlight class="comment">///&lt;<sp/>Start<sp/>des<sp/>Include-Guards<sp/>für<sp/>EVENT_TEMPLATE_H,<sp/>um<sp/>Mehrfachinklusionen<sp/>zu<sp/>verhindern.</highlight></codeline>
+<codeline lineno="21" refid="event__template_8h_1a688ff48e3d362cece932fa16132e7c81" refkind="member"><highlight class="comment"></highlight><highlight class="normal">#define<sp/>EVENT_TEMPLATE_H<sp/></highlight><highlight class="comment">///&lt;<sp/>Definition<sp/>von<sp/>EVENT_TEMPLATE_H,<sp/>um<sp/>anzuzeigen,<sp/>dass<sp/>der<sp/>Header<sp/>inkludiert<sp/>wurde.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="particle__template_8h" kindref="compound">templates/particle_template.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Inkludiert<sp/>die<sp/>`particle_template`-Klasse<sp/>für<sp/>die<sp/>Partikel-Datenverarbeitung.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="property_8h" kindref="compound">structs/property.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Inkludiert<sp/>die<sp/>`cproperty`-Vorlage<sp/>für<sp/>die<sp/>benutzerdefinierte<sp/>Eigenschaftsverwaltung.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="element_8h" kindref="compound">structs/element.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Inkludiert<sp/>die<sp/>`element_t`-Struktur,<sp/>wahrscheinlich<sp/>ein<sp/>Basisdatenelement-Typ.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="modules_2structs_2include_2structs_2event_8h" kindref="compound">structs/event.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Inkludiert<sp/>die<sp/>`event_t`-Struktur<sp/>für<sp/>die<sp/>Ereignisdatendarstellung.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="tools_8h" kindref="compound">tools/tools.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Inkludiert<sp/>die<sp/>`tools`-Klasse<sp/>für<sp/>Hilfsfunktionen.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="meta_2include_2meta_2meta_8h" kindref="compound">meta/meta.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Inkludiert<sp/>die<sp/>`meta`-Klasse<sp/>für<sp/>Metadaten-Handling.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="30"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>@class<sp/>event_template</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Basisvorlage-Klasse<sp/>für<sp/>Ereignisdaten-Darstellung<sp/>und<sp/>-Manipulation.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>Erbt<sp/>von<sp/>`tools`,<sp/>um<sp/>Hilfsfunktionen<sp/>bereitzustellen.<sp/>Diese<sp/>Klasse<sp/>ist<sp/>dazu<sp/>gedacht,<sp/>für</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>spezifische<sp/>Ereignistypen<sp/>oder<sp/>Analysen<sp/>als<sp/>Unterklasse<sp/>verwendet<sp/>zu<sp/>werden.<sp/>Sie<sp/>verwaltet<sp/>Sammlungen<sp/>von<sp/>Trees,<sp/>Branches<sp/>und<sp/>Leaves,</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>die<sp/>die<sp/>Ereignisstruktur<sp/>definieren,<sp/>sowie<sp/>Eigenschaften<sp/>wie<sp/>Ereignisgewicht<sp/>und<sp/>Index.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>Sie<sp/>unterstützt<sp/>die<sp/>dynamische<sp/>Partikelregistrierung<sp/>und<sp/>den<sp/>Aufbau<sp/>von<sp/>Ereignissen<sp/>aus<sp/>Rohdaten.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/></highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>Die<sp/>Klasse<sp/>dient<sp/>als<sp/>zentrale<sp/>Komponente<sp/>im<sp/>AnalysisG-Framework<sp/>und<sp/>verbindet<sp/>Rohdaten</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>mit<sp/>Analyseobjekten<sp/>und<sp/>-algorithmen<sp/>auf<sp/>höherer<sp/>Ebene.<sp/>Sie<sp/>bietet<sp/>Schnittstellen<sp/>für<sp/>den<sp/>Datenzugriff,</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>die<sp/>Filterung<sp/>und<sp/>Transformation,<sp/>die<sp/>für<sp/>Physikanalysen<sp/>benötigt<sp/>werden.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classevent__template" kindref="compound">event_template</ref>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classtools" kindref="compound">tools</ref><sp/></highlight><highlight class="comment">//<sp/>Definiert<sp/>die<sp/>Klasse<sp/>&apos;event_template&apos;,<sp/>die<sp/>von<sp/>&apos;tools&apos;<sp/>erbt.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Standard-Konstruktor<sp/>für<sp/>event_template.</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/></highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Initialisiert<sp/>ein<sp/>leeres<sp/>Ereignis-Template<sp/>mit<sp/>Standard-Eigenschaften<sp/>und<sp/>Einstellungen.</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Richtet<sp/>Eigenschafts-Mappings<sp/>ein<sp/>und<sp/>initialisiert<sp/>Sammlungen.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classevent__template" kindref="compound">event_template</ref>();</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Destruktor<sp/>für<sp/>event_template.</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/></highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Bereinigt<sp/>zugewiesene<sp/>Ressourcen,<sp/>einschließlich<sp/>registrierter<sp/>Partikel<sp/>und<sp/>Datenstrukturen.</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~<ref refid="classevent__template" kindref="compound">event_template</ref>();</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Erstellt<sp/>eine<sp/>neue<sp/>Ereignis-Template-Instanz.</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>Zeiger<sp/>auf<sp/>das<sp/>neu<sp/>erstellte<sp/>event_template-Objekt.</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/></highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Factory-Methode,<sp/>die<sp/>eine<sp/>neue<sp/>Instanz<sp/>der<sp/>event_template-Klasse<sp/>erstellt<sp/>und<sp/>zurückgibt.</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Nützlich<sp/>für<sp/>die<sp/>Erstellung<sp/>von<sp/>abgeleiteten<sp/>Klasseninstanzen<sp/>in<sp/>einem<sp/>polymorphen<sp/>Kontext.</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/><ref refid="_3name_4_8h_1a288a32e73fa14ea1042eac9569469fab" kindref="member">clone</ref>();</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Virtuelle<sp/>Methode<sp/>zum<sp/>Zurücksetzen<sp/>des<sp/>Ereignis-Templates<sp/>auf<sp/>seinen<sp/>Anfangszustand.</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Löscht<sp/>alle<sp/>Ereignisdaten<sp/>und<sp/>bereitet<sp/>die<sp/>Vorlage<sp/>für<sp/>die<sp/>neue<sp/>Ereignisverarbeitung<sp/>vor.</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>reset();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Initialisiert<sp/>das<sp/>Ereignis-Template<sp/>mit<sp/>notwendigen<sp/>Einstellungen.</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Richtet<sp/>interne<sp/>Datenstrukturen<sp/>und<sp/>Konfigurationen<sp/>ein.<sp/>Diese<sp/>Methode<sp/>sollte<sp/>aufgerufen<sp/>werden,</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>bevor<sp/>andere<sp/>Operationen<sp/>auf<sp/>dem<sp/>Template<sp/>durchgeführt<sp/>werden.</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>initialize();</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Baut<sp/>ein<sp/>Ereignis<sp/>aus<sp/>Rohdaten<sp/>auf.</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Virtuelle<sp/>Methode,<sp/>die<sp/>Rohdaten<sp/>verarbeitet,<sp/>um<sp/>eine<sp/>strukturierte<sp/>Ereignisrepräsentation<sp/>zu<sp/>erstellen.</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Diese<sp/>Basismethode<sp/>leitet<sp/>die<sp/>Implementierung<sp/>an<sp/>die<sp/>überladene<sp/>build(element_t*)<sp/>Methode<sp/>weiter.</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>build();</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Baut<sp/>eine<sp/>Ereignisdatenstruktur<sp/>aus<sp/>einem<sp/>Element<sp/>auf.</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>el<sp/>Zeiger<sp/>auf<sp/>eine<sp/>element_t-Struktur,<sp/>die<sp/>Rohdaten<sp/>des<sp/>Ereignisses<sp/>enthält.</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Virtuelle<sp/>Methode,<sp/>die<sp/>Rohelement-Daten<sp/>verarbeitet,<sp/>um<sp/>die<sp/>Ereignisstruktur<sp/>aufzubauen.</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Diese<sp/>Methode<sp/>wird<sp/>typischerweise<sp/>in<sp/>abgeleiteten<sp/>Klassen<sp/>überschrieben,<sp/>um<sp/>spezifische<sp/>Ereignisformate<sp/>zu<sp/>handhaben.</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>build(<ref refid="structelement__t" kindref="compound">element_t</ref>*<sp/>el);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Baut<sp/>ein<sp/>Mapping<sp/>zwischen<sp/>Ereignisdatenstrukturen<sp/>und<sp/>Handlern<sp/>auf.</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>evnt<sp/>Zeiger<sp/>auf<sp/>eine<sp/>Map,<sp/>die<sp/>Strings<sp/>mit<sp/>data_t-Zeigern<sp/>verbindet.</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Erstellt<sp/>Beziehungen<sp/>zwischen<sp/>den<sp/>Trees,<sp/>Branches,<sp/>Leaves<sp/>des<sp/>Ereignisses<sp/>und<sp/>den<sp/></highlight></codeline>
+<codeline lineno="107"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>entsprechenden<sp/>Datenhandlern,<sp/>um<sp/>den<sp/>Datenzugriff<sp/>und<sp/>die<sp/>Manipulation<sp/>zu<sp/>erleichtern.</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>build_mapping(std::map&lt;std::string,<sp/>data_t*&gt;*<sp/>evnt);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="111"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Löscht<sp/>alle<sp/>Leaf-String-Referenzen.</highlight></codeline>
+<codeline lineno="113"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Setzt<sp/>interne<sp/>Sammlungen<sp/>von<sp/>Trees,<sp/>Branches<sp/>und<sp/>Leaves<sp/>zurück.</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Dies<sp/>ist<sp/>nützlich<sp/>bei<sp/>der<sp/>Vorbereitung<sp/>zur<sp/>Verarbeitung<sp/>eines<sp/>neuen<sp/>Ereignisformats.</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>clear_leaves();</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Registriert<sp/>ein<sp/>Partikel<sp/>zur<sp/>Nachverfolgung<sp/>in<sp/>diesem<sp/>Ereignis.</highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>name<sp/>Der<sp/>Name,<sp/>der<sp/>dieses<sp/>Partikel<sp/>identifiziert.</highlight></codeline>
+<codeline lineno="122"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>collection<sp/>Der<sp/>Typ<sp/>oder<sp/>die<sp/>Sammlung,<sp/>zu<sp/>der<sp/>dieses<sp/>Partikel<sp/>gehört<sp/>(z.B.<sp/>&quot;Electrons&quot;).</highlight></codeline>
+<codeline lineno="123"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>register_particle(std::string<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>,<sp/>std::string<sp/>collection);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="126"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Fügt<sp/>einen<sp/>Tree<sp/>zur<sp/>Ereignisstruktur<sp/>hinzu.</highlight></codeline>
+<codeline lineno="128"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>key<sp/>Der<sp/>Primärschlüssel<sp/>oder<sp/>Name<sp/>für<sp/>diesen<sp/>Tree.</highlight></codeline>
+<codeline lineno="129"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>tree<sp/>Der<sp/>spezifische<sp/>Tree-Name,<sp/>wenn<sp/>er<sp/>sich<sp/>vom<sp/>Schlüssel<sp/>unterscheidet,<sp/>oder<sp/>ein<sp/>Alias.</highlight></codeline>
+<codeline lineno="130"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>add_tree(std::string<sp/>key,<sp/>std::string<sp/>tree<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="133"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="134"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Fügt<sp/>einen<sp/>Branch<sp/>zur<sp/>Ereignisstruktur<sp/>hinzu.</highlight></codeline>
+<codeline lineno="135"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>key<sp/>Der<sp/>Primärschlüssel<sp/>oder<sp/>Name<sp/>für<sp/>diesen<sp/>Branch<sp/>(z.B.<sp/>&quot;Electrons&quot;).</highlight></codeline>
+<codeline lineno="136"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>branch<sp/>Der<sp/>spezifische<sp/>Branch-Name,<sp/>wenn<sp/>er<sp/>sich<sp/>vom<sp/>Schlüssel<sp/>unterscheidet,<sp/>oder<sp/>ein<sp/>Alias.</highlight></codeline>
+<codeline lineno="137"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>add_branch(std::string<sp/>key,<sp/>std::string<sp/>branch<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="140"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="141"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Fügt<sp/>ein<sp/>Leaf<sp/>(Variable)<sp/>zur<sp/>Ereignisstruktur<sp/>hinzu.</highlight></codeline>
+<codeline lineno="142"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>key<sp/>Der<sp/>Primärschlüssel<sp/>oder<sp/>Name<sp/>für<sp/>dieses<sp/>Leaf<sp/>(z.B.<sp/>&quot;Electrons.pt&quot;).</highlight></codeline>
+<codeline lineno="143"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>leaf<sp/>Der<sp/>spezifische<sp/>Leaf-Name,<sp/>wenn<sp/>er<sp/>sich<sp/>vom<sp/>Schlüssel<sp/>unterscheidet,<sp/>oder<sp/>ein<sp/>Alias.</highlight></codeline>
+<codeline lineno="144"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_3event-name_4_8cxx_1a5449d540d047658d711bb2a06d8656c2" kindref="member">add_leaf</ref>(std::string<sp/>key,<sp/>std::string<sp/>leaf<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Eigenschaften<sp/>mit<sp/>Property-Mapping</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="149"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="150"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Eigenschaft:<sp/>Ein<sp/>Name<sp/>für<sp/>dieses<sp/>Ereignis-Template<sp/>oder<sp/>diese<sp/>Instanz.</highlight></codeline>
+<codeline lineno="151"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/></highlight></codeline>
+<codeline lineno="152"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Diese<sp/>Eigenschaft<sp/>ermöglicht<sp/>das<sp/>Setzen<sp/>und<sp/>Abrufen<sp/>eines<sp/>benutzerdefinierten<sp/>Namens<sp/>für<sp/>das<sp/>Ereignis,</highlight></codeline>
+<codeline lineno="153"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>was<sp/>bei<sp/>der<sp/>Identifikation<sp/>oder<sp/>Kennzeichnung<sp/>von<sp/>Ereignissen<sp/>in<sp/>komplexen<sp/>Analysen<sp/>hilfreich<sp/>sein<sp/>kann.</highlight></codeline>
+<codeline lineno="154"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, event_template&gt;</ref><sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>;</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="156"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/></highlight></codeline>
+<codeline lineno="157"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Statischer<sp/>Setter<sp/>für<sp/>die<sp/>`name`-Eigenschaft.</highlight></codeline>
+<codeline lineno="158"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param[in]<sp/>name<sp/>Zeiger<sp/>auf<sp/>einen<sp/>String,<sp/>der<sp/>den<sp/>Namen<sp/>enthält.</highlight></codeline>
+<codeline lineno="159"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param[in]<sp/>ev<sp/>Zeiger<sp/>auf<sp/>die<sp/>`event_template`-Instanz.</highlight></codeline>
+<codeline lineno="160"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>set_name(std::string*,<sp/><ref refid="classevent__template" kindref="compound">event_template</ref>*);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="163"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="164"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Eigenschaft:<sp/>Ein<sp/>Hash-String,<sp/>der<sp/>möglicherweise<sp/>die<sp/>Konfiguration<sp/>oder<sp/>Quelle<sp/>dieses<sp/>Ereignisses<sp/>identifiziert.</highlight></codeline>
+<codeline lineno="165"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/></highlight></codeline>
+<codeline lineno="166"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Diese<sp/>Eigenschaft<sp/>speichert<sp/>einen<sp/>Hash-Wert,<sp/>der<sp/>typischerweise<sp/>zur<sp/>eindeutigen<sp/>Identifizierung<sp/>des<sp/>Ereignisses</highlight></codeline>
+<codeline lineno="167"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>oder<sp/>seiner<sp/>Konfiguration<sp/>verwendet<sp/>wird.<sp/>Dies<sp/>kann<sp/>für<sp/>Caching<sp/>oder<sp/>Querverweise<sp/>nützlich<sp/>sein.</highlight></codeline>
+<codeline lineno="168"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, event_template&gt;</ref><sp/>hash;</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="170"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/></highlight></codeline>
+<codeline lineno="171"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Statischer<sp/>Setter<sp/>für<sp/>die<sp/>`hash`-Eigenschaft.</highlight></codeline>
+<codeline lineno="172"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param[in]<sp/>hash<sp/>Zeiger<sp/>auf<sp/>einen<sp/>String,<sp/>der<sp/>den<sp/>Hash<sp/>enthält.</highlight></codeline>
+<codeline lineno="173"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param[in]<sp/>ev<sp/>Zeiger<sp/>auf<sp/>die<sp/>`event_template`-Instanz.</highlight></codeline>
+<codeline lineno="174"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>set_hash(std::string*,<sp/><ref refid="classevent__template" kindref="compound">event_template</ref>*);</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="177"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="178"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Eigenschaft:<sp/>Der<sp/>primäre<sp/>TTree-Name<sp/>für<sp/>dieses<sp/>Ereignis.</highlight></codeline>
+<codeline lineno="179"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/></highlight></codeline>
+<codeline lineno="180"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Diese<sp/>Eigenschaft<sp/>speichert<sp/>den<sp/>Namen<sp/>des<sp/>Haupt-TTrees,<sp/>aus<sp/>dem<sp/>dieses<sp/>Ereignis<sp/>stammt.</highlight></codeline>
+<codeline lineno="181"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Dies<sp/>ist<sp/>besonders<sp/>relevant,<sp/>wenn<sp/>mit<sp/>ROOT-Dateien<sp/>gearbeitet<sp/>wird,<sp/>die<sp/>mehrere<sp/>TTrees<sp/>enthalten.</highlight></codeline>
+<codeline lineno="182"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, event_template&gt;</ref><sp/>tree;</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="184"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/></highlight></codeline>
+<codeline lineno="185"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Statischer<sp/>Getter<sp/>für<sp/>die<sp/>`tree`-Eigenschaft.</highlight></codeline>
+<codeline lineno="186"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param[out]<sp/>name<sp/>Zeiger<sp/>auf<sp/>einen<sp/>String<sp/>zum<sp/>Speichern<sp/>des<sp/>Tree-Namens.</highlight></codeline>
+<codeline lineno="187"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param[in]<sp/>ev<sp/>Zeiger<sp/>auf<sp/>die<sp/>`event_template`-Instanz.</highlight></codeline>
+<codeline lineno="188"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>get_tree(std::string*,<sp/><ref refid="classevent__template" kindref="compound">event_template</ref>*);</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="191"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="192"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Eigenschaft:<sp/>Das<sp/>Ereignisgewicht,<sp/>das<sp/>für<sp/>Normalisierung<sp/>oder<sp/>Skalierung<sp/>verwendet<sp/>wird.</highlight></codeline>
+<codeline lineno="193"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/></highlight></codeline>
+<codeline lineno="194"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Diese<sp/>Eigenschaft<sp/>speichert<sp/>das<sp/>Gewicht<sp/>des<sp/>Ereignisses,<sp/>welches<sp/>typischerweise<sp/>für<sp/>die<sp/>Normalisierung,</highlight></codeline>
+<codeline lineno="195"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Cross-Section-Anpassungen<sp/>oder<sp/>andere<sp/>physikbasierte<sp/>Skalierungen<sp/>verwendet<sp/>wird.</highlight></codeline>
+<codeline lineno="196"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, event_template&gt;</ref><sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a7edabf994b76a00cbc60c95af337db8f" kindref="member">weight</ref>;</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="198"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/></highlight></codeline>
+<codeline lineno="199"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Statischer<sp/>Setter<sp/>für<sp/>die<sp/>`weight`-Eigenschaft.</highlight></codeline>
+<codeline lineno="200"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param[in]<sp/>val<sp/>Zeiger<sp/>auf<sp/>einen<sp/>double-Wert,<sp/>der<sp/>den<sp/>Gewichtswert<sp/>enthält.</highlight></codeline>
+<codeline lineno="201"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param[in]<sp/>ev<sp/>Zeiger<sp/>auf<sp/>die<sp/>`event_template`-Instanz.</highlight></codeline>
+<codeline lineno="202"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>set_weight(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*,<sp/><ref refid="classevent__template" kindref="compound">event_template</ref>*);</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="205"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="206"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Eigenschaft:<sp/>Der<sp/>Ereignisindex<sp/>oder<sp/>die<sp/>Eintragsnummer<sp/>im<sp/>Quell-TTree.</highlight></codeline>
+<codeline lineno="207"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/></highlight></codeline>
+<codeline lineno="208"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Diese<sp/>Eigenschaft<sp/>speichert<sp/>die<sp/>Position<sp/>oder<sp/>den<sp/>Index<sp/>des<sp/>Ereignisses<sp/>innerhalb<sp/>der<sp/>Quelldaten,</highlight></codeline>
+<codeline lineno="209"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>was<sp/>für<sp/>die<sp/>Rückverfolgung<sp/>oder<sp/>Identifizierung<sp/>einzelner<sp/>Ereignisse<sp/>nützlich<sp/>ist.</highlight></codeline>
+<codeline lineno="210"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;long, event_template&gt;</ref><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>;</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="212"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/></highlight></codeline>
+<codeline lineno="213"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Statischer<sp/>Setter<sp/>für<sp/>die<sp/>`index`-Eigenschaft.</highlight></codeline>
+<codeline lineno="214"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param[in]<sp/>val<sp/>Zeiger<sp/>auf<sp/>einen<sp/>long-Wert,<sp/>der<sp/>den<sp/>Indexwert<sp/>enthält.</highlight></codeline>
+<codeline lineno="215"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param[in]<sp/>ev<sp/>Zeiger<sp/>auf<sp/>die<sp/>`event_template`-Instanz.</highlight></codeline>
+<codeline lineno="216"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>set_index(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal">*,<sp/><ref refid="classevent__template" kindref="compound">event_template</ref>*);</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="219"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="220"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Eigenschaft:<sp/>Liste<sp/>der<sp/>TLeaf-Namen<sp/>(Variablen),<sp/>die<sp/>für<sp/>dieses<sp/>Ereignis<sp/>gelesen<sp/>werden<sp/>sollen.</highlight></codeline>
+<codeline lineno="221"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/></highlight></codeline>
+<codeline lineno="222"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Diese<sp/>Eigenschaft<sp/>speichert<sp/>die<sp/>Namen<sp/>aller<sp/>Variablen<sp/>oder<sp/>Datenfelder,<sp/>die<sp/>aus<sp/>den<sp/>Rohdaten</highlight></codeline>
+<codeline lineno="223"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>für<sp/>dieses<sp/>Ereignis<sp/>extrahiert<sp/>und<sp/>verfügbar<sp/>gemacht<sp/>werden<sp/>sollen.</highlight></codeline>
+<codeline lineno="224"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::vector&lt;std::string&gt;</ref>,<sp/><ref refid="classevent__template" kindref="compound">event_template</ref>&gt;<sp/>leaves;</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="226"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/></highlight></codeline>
+<codeline lineno="227"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Statischer<sp/>Getter<sp/>für<sp/>die<sp/>`leaves`-Eigenschaft.</highlight></codeline>
+<codeline lineno="228"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param[out]<sp/>inpt<sp/>Zeiger<sp/>auf<sp/>einen<sp/>Vektor<sp/>von<sp/>Strings<sp/>zum<sp/>Speichern<sp/>der<sp/>Leaf-Namen.</highlight></codeline>
+<codeline lineno="229"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param[in]<sp/>ev<sp/>Zeiger<sp/>auf<sp/>die<sp/>`event_template`-Instanz.</highlight></codeline>
+<codeline lineno="230"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>get_leaves(std::vector&lt;std::string&gt;*,<sp/><ref refid="classevent__template" kindref="compound">event_template</ref>*);</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="233"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="234"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Interne<sp/>Map<sp/>zur<sp/>Speicherung<sp/>von<sp/>Tree-Namen-Mappings<sp/>oder<sp/>Aliasen.</highlight></codeline>
+<codeline lineno="235"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/></highlight></codeline>
+<codeline lineno="236"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Diese<sp/>Map<sp/>verbindet<sp/>logische<sp/>Baumnamen<sp/>(als<sp/>Schlüssel<sp/>verwendet<sp/>in<sp/>der<sp/>Analyse)<sp/></highlight></codeline>
+<codeline lineno="237"><highlight class="comment"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="238"><highlight class="comment"><sp/><sp/><sp/><sp/>//<sp/>Particle<sp/>management<sp/>structures</highlight></codeline>
+<codeline lineno="239"><highlight class="comment"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="240"><highlight class="comment"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>particle_template*&gt;*&gt;<sp/>particle_link;<sp/>///&lt;<sp/>Map<sp/>of<sp/>registered<sp/>particles<sp/>by<sp/>type<sp/>and<sp/>name.</highlight></codeline>
+<codeline lineno="241"><highlight class="comment"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*(*)()&gt;<sp/>particle_generators;<sp/>///&lt;<sp/>Map<sp/>of<sp/>particle<sp/>generator<sp/>functions<sp/>by<sp/>type.</highlight></codeline>
+<codeline lineno="242"><highlight class="comment">};</highlight></codeline>
+<codeline lineno="243"><highlight class="comment"></highlight></codeline>
+<codeline lineno="244"><highlight class="comment">#endif<sp/>//<sp/>End<sp/>of<sp/>include<sp/>guard<sp/>for<sp/>EVENT_TEMPLATE_H</highlight></codeline>
+    </programlisting>
+    <location file="modules/event/include/templates/event_template.h"/>
+  </compounddef>
+</doxygen>

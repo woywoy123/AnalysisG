@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="ami_8py" kind="file" language="Python">
+    <compoundname>ami.py</compoundname>
+    <innerclass refid="classami_1_1_h_t_t_p" prot="public">ami::HTTP</innerclass>
+    <innerclass refid="classami_1_1_a_t_l_a_s" prot="public">ami::ATLAS</innerclass>
+    <innernamespace refid="namespaceami">ami</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespaceami" refkind="compound"><highlight class="keyword">from</highlight><highlight class="normal"><sp/>pyAMI.client<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>Client</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>pyAMI.httpclient<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>HttpClient</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>pyAMI_atlas.api<sp/></highlight><highlight class="keyword">as</highlight><highlight class="normal"><sp/>AtlasAPI</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>http.client</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>ssl</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="classami_1_1_h_t_t_p" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classami_1_1_h_t_t_p" kindref="compound">HTTP</ref>(HttpClient):</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9" refid="classami_1_1_h_t_t_p_1a1f889c58b8976aeffc08e4a8aa40c3d0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="classami_1_1_h_t_t_p_1a1f889c58b8976aeffc08e4a8aa40c3d0" kindref="member">__init__</ref>(self,<sp/>config):</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>super(HTTP,<sp/>self).<ref refid="classami_1_1_h_t_t_p_1a1f889c58b8976aeffc08e4a8aa40c3d0" kindref="member">__init__</ref>(config)</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12" refid="classami_1_1_h_t_t_p_1aefbcc6c7f88500ad4a364fb63adde608" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="classami_1_1_h_t_t_p_1aefbcc6c7f88500ad4a364fb63adde608" kindref="member">connect</ref>(self,<sp/>endpoint):</highlight></codeline>
+<codeline lineno="13" refid="classami_1_1_h_t_t_p_1a9a22e0161d305b1b6aab56c113c7b1cc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.<ref refid="classami_1_1_h_t_t_p_1a9a22e0161d305b1b6aab56c113c7b1cc" kindref="member">endpoint</ref><sp/>=<sp/>endpoint</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>confx<sp/>=<sp/>{</highlight><highlight class="stringliteral">&quot;host&quot;</highlight><highlight class="normal"><sp/>:<sp/>str(self.<ref refid="classami_1_1_h_t_t_p_1a9a22e0161d305b1b6aab56c113c7b1cc" kindref="member">endpoint</ref>[</highlight><highlight class="stringliteral">&quot;host&quot;</highlight><highlight class="normal">]),<sp/></highlight><highlight class="stringliteral">&quot;port&quot;</highlight><highlight class="normal"><sp/>:<sp/>int(self.<ref refid="classami_1_1_h_t_t_p_1a9a22e0161d305b1b6aab56c113c7b1cc" kindref="member">endpoint</ref>[</highlight><highlight class="stringliteral">&quot;port&quot;</highlight><highlight class="normal">]),<sp/></highlight><highlight class="stringliteral">&quot;context&quot;</highlight><highlight class="normal"><sp/>:<sp/></highlight><highlight class="keywordtype">None</highlight><highlight class="normal">}</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>self.<ref refid="classami_1_1_h_t_t_p_1a9a22e0161d305b1b6aab56c113c7b1cc" kindref="member">endpoint</ref>[</highlight><highlight class="stringliteral">&apos;prot&apos;</highlight><highlight class="normal">]<sp/>==<sp/></highlight><highlight class="stringliteral">&apos;http&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">pass</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">elif</highlight><highlight class="normal"><sp/>self.<ref refid="classami_1_1_h_t_t_p_1a9a22e0161d305b1b6aab56c113c7b1cc" kindref="member">endpoint</ref>[</highlight><highlight class="stringliteral">&apos;prot&apos;</highlight><highlight class="normal">]<sp/>==<sp/></highlight><highlight class="stringliteral">&apos;https&apos;</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>confx[</highlight><highlight class="stringliteral">&quot;context&quot;</highlight><highlight class="normal">]<sp/>=<sp/>self.create_unverified_context()</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>self.config.conn_mode<sp/>==<sp/>self.config.CONN_MODE_LOGIN:<sp/></highlight><highlight class="keywordflow">pass</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal">:<sp/>confx[</highlight><highlight class="stringliteral">&quot;context&quot;</highlight><highlight class="normal">].load_cert_chain(certfile<sp/>=<sp/>self.config.cert_file,<sp/>keyfile<sp/>=<sp/>self.config.key_file)</highlight></codeline>
+<codeline lineno="20" refid="classami_1_1_h_t_t_p_1ad27db62079edb1534cf7890668a20e14" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.<ref refid="classami_1_1_h_t_t_p_1ad27db62079edb1534cf7890668a20e14" kindref="member">connection</ref><sp/>=<sp/>http.client.HTTPSConnection(**confx)</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="classami_1_1_a_t_l_a_s" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classami_1_1_a_t_l_a_s" kindref="compound">ATLAS</ref>(Client):</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="classami_1_1_a_t_l_a_s_1a41bcb8f1af3ed6de1c14bd91214193ed" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="classami_1_1_a_t_l_a_s_1a41bcb8f1af3ed6de1c14bd91214193ed" kindref="member">__init__</ref>(self):</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>super(ATLAS,<sp/>self).<ref refid="classami_1_1_a_t_l_a_s_1a41bcb8f1af3ed6de1c14bd91214193ed" kindref="member">__init__</ref>(</highlight><highlight class="stringliteral">&quot;atlas&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="26" refid="classami_1_1_a_t_l_a_s_1a7a9fc96e161ae83509d38a90c6384b66" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.<ref refid="classami_1_1_a_t_l_a_s_1a7a9fc96e161ae83509d38a90c6384b66" kindref="member">httpClient</ref><sp/>=<sp/><ref refid="classami_1_1_h_t_t_p" kindref="compound">HTTP</ref>(self.config)</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="namespaceami_1a5aac5fcfea27c03769ad0ad47678d03a" refkind="member"><highlight class="normal">x<sp/>=<sp/><ref refid="classami_1_1_a_t_l_a_s" kindref="compound">ATLAS</ref>()</highlight></codeline>
+<codeline lineno="30" refid="namespaceami_1acda3c92816c4cae7e5af3d8089927376" refkind="member"><highlight class="normal">name<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;mc16_13TeV.412071.aMcAtNloPy8EG_A14_ttbar_hdamp258p75_dil_CFiltBVeto.deriv.DAOD_TOPQ1.e7129_a875_r10724_p4514&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal">print(AtlasAPI.get_dataset_info(x,<sp/>name))</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">#client<sp/>=<sp/>pyAMI.client.Client(&quot;atlas&quot;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">#print(client.config.cert_file)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="comment">#AtlasAPI.list_datasets(client,<sp/>patterns<sp/>=<sp/>[&quot;mc12_8TeV.%&quot;],<sp/>fields<sp/>=<sp/>[&quot;ldn&quot;],<sp/>type<sp/>=<sp/>&quot;AOD&quot;)</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/workspaces/AnalysisG/test/ami.py"/>
+  </compounddef>
+</doxygen>

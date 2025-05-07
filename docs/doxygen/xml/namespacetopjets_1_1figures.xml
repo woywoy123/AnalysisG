@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacetopjets_1_1figures" kind="namespace" language="Python">
+    <compoundname>topjets::figures</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topjets.figures.path</definition>
+        <argsstring>(hist)</argsstring>
+        <name>path</name>
+        <param>
+          <type>hist</type>
+          <defname>hist</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py" line="6" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py" bodystart="6" bodyend="11"/>
+        <referencedby refid="namespacetopjets_1_1figures_1a7b0ce4be5c33f468a3fafe0015ea87b6" compoundref="mc16__matching_2topjets_2figures_8py" startline="296" endline="385">topjets.figures.jet_contribution</referencedby>
+        <referencedby refid="namespacetopjets_1_1figures_1a5b399afa5e9c92e2d3232479b70879e1" compoundref="mc16__matching_2topjets_2figures_8py" startline="174" endline="295">topjets.figures.jet_partons</referencedby>
+        <referencedby refid="namespacetopjets_1_1figures_1a7be250620ef82d725fa29b10fa7e1aff" compoundref="mc16__matching_2topjets_2figures_8py" startline="96" endline="173">topjets.figures.top_jet_cluster</referencedby>
+        <referencedby refid="namespacetopjets_1_1figures_1a938bbdc505d069559a1b5da3558a8762" compoundref="mc16__matching_2topjets_2figures_8py" startline="12" endline="95">topjets.figures.top_mass_jets</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopjets_1_1figures_1a938bbdc505d069559a1b5da3558a8762" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topjets.figures.top_mass_jets</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_mass_jets</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py" line="12" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py" bodystart="12" bodyend="95"/>
+        <references refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" compoundref="mc16__matching_2topjets_2figures_8py" startline="6" endline="11">topjets.figures.path</references>
+        <referencedby refid="namespacetopjets_1_1figures_1aa7f75ee58012a93e0d54ea73c88bd9fb" compoundref="mc16__matching_2topjets_2figures_8py" startline="386" endline="395">topjets.figures.TopJets</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopjets_1_1figures_1a7be250620ef82d725fa29b10fa7e1aff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topjets.figures.top_jet_cluster</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_jet_cluster</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py" line="96" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py" bodystart="96" bodyend="173"/>
+        <references refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" compoundref="mc16__matching_2topjets_2figures_8py" startline="6" endline="11">topjets.figures.path</references>
+        <referencedby refid="namespacetopjets_1_1figures_1aa7f75ee58012a93e0d54ea73c88bd9fb" compoundref="mc16__matching_2topjets_2figures_8py" startline="386" endline="395">topjets.figures.TopJets</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopjets_1_1figures_1a5b399afa5e9c92e2d3232479b70879e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topjets.figures.jet_partons</definition>
+        <argsstring>(ana)</argsstring>
+        <name>jet_partons</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py" line="174" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py" bodystart="174" bodyend="295"/>
+        <references refid="classtopjets_1a27e693ebdfdb6a7b2dc3a32868c7ff1f" compoundref="topjets_8h" startline="19">topjets::jet_partons</references>
+        <references refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" compoundref="mc16__matching_2topjets_2figures_8py" startline="6" endline="11">topjets.figures.path</references>
+        <references refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" compoundref="selection__template_8h" startline="77" endline="89">selection_template::sum</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopjets_1_1figures_1a7b0ce4be5c33f468a3fafe0015ea87b6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topjets.figures.jet_contribution</definition>
+        <argsstring>(ana)</argsstring>
+        <name>jet_contribution</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py" line="296" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py" bodystart="296" bodyend="385"/>
+        <references refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" compoundref="mc16__matching_2topjets_2figures_8py" startline="6" endline="11">topjets.figures.path</references>
+        <referencedby refid="namespacetopjets_1_1figures_1aa7f75ee58012a93e0d54ea73c88bd9fb" compoundref="mc16__matching_2topjets_2figures_8py" startline="386" endline="395">topjets.figures.TopJets</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopjets_1_1figures_1aa7f75ee58012a93e0d54ea73c88bd9fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topjets.figures.TopJets</definition>
+        <argsstring>(ana)</argsstring>
+        <name>TopJets</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py" line="386" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py" bodystart="386" bodyend="395"/>
+        <references refid="namespacetopjets_1_1figures_1a7b0ce4be5c33f468a3fafe0015ea87b6" compoundref="mc16__matching_2topjets_2figures_8py" startline="296" endline="385">topjets.figures.jet_contribution</references>
+        <references refid="classtopjets_1a27e693ebdfdb6a7b2dc3a32868c7ff1f" compoundref="topjets_8h" startline="19">topjets::jet_partons</references>
+        <references refid="namespacetopjets_1_1figures_1a7be250620ef82d725fa29b10fa7e1aff" compoundref="mc16__matching_2topjets_2figures_8py" startline="96" endline="173">topjets.figures.top_jet_cluster</references>
+        <references refid="namespacetopjets_1_1figures_1a938bbdc505d069559a1b5da3558a8762" compoundref="mc16__matching_2topjets_2figures_8py" startline="12" endline="95">topjets.figures.top_mass_jets</references>
+        <referencedby refid="namespacemain_1a7afac8f5e46c718321f188d7888c2de0" compoundref="mc16__matching_2main_8py" startline="60" endline="98">main.ExecuteStudy</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

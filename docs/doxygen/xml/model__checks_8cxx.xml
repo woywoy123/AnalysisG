@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="model__checks_8cxx" kind="file" language="C++">
+    <compoundname>model_checks.cxx</compoundname>
+    <includes refid="model__template_8h" local="no">templates/model_template.h</includes>
+    <incdepgraph>
+      <node id="16">
+        <label>lossfx/lossfx.h</label>
+      </node>
+      <node id="12">
+        <label>functional</label>
+      </node>
+      <node id="14">
+        <label>structs/model.h</label>
+        <link refid="model_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>cstdint</label>
+      </node>
+      <node id="13">
+        <label>structs/graph.h</label>
+      </node>
+      <node id="15">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="6">
+        <label>map</label>
+      </node>
+      <node id="1">
+        <label>model_checks.cxx</label>
+        <link refid="model__checks_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+      <node id="7">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="8">
+        <label>iostream</label>
+      </node>
+      <node id="2">
+        <label>templates/model_template.h</label>
+        <link refid="model__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="model__template_8h" kindref="compound">templates/model_template.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>model_template::check_features(<ref refid="structgraph__t" kindref="compound">graph_t</ref>*<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>){</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1ac393d52139a06ce55e9b7872954ef17f" kindref="member">flush_outputs</ref>();<sp/></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref><sp/>-&gt;<sp/>transfer_to_device(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1a7b963ead986da475a0c6540971ac675b" kindref="member">m_option</ref>);<sp/></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor*&gt;::iterator<sp/>itr;<sp/></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itr<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1aeba2a7f8f13f4534b5eaccc93ff51628" kindref="member">m_i_graph</ref>.begin();<sp/>itr<sp/>!=<sp/><ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref><sp/>-&gt;<sp/><ref refid="classmodel__template_1aeba2a7f8f13f4534b5eaccc93ff51628" kindref="member">m_i_graph</ref>.end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>key<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Input<sp/>Graph<sp/>Feature:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>itr<sp/>-&gt;<sp/>first;<sp/></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>ten<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1afd196d00ade10419642d541a1eaaef21" kindref="member">assign_features</ref>(itr<sp/>-&gt;<sp/>first,<sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a05e49555101f3239adff74b7ab84b12b" kindref="member">graph_enum::data_graph</ref>,<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>);<sp/></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!ten){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>warning(key<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>not<sp/>found<sp/>in<sp/>graph.&quot;</highlight><highlight class="normal">);}</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>success(key<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>found<sp/>in<sp/>graph&quot;</highlight><highlight class="normal">);}</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itr<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1a92beed8d89fccea381550c27e91e11cd" kindref="member">m_i_node</ref>.begin();<sp/>itr<sp/>!=<sp/><ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref><sp/>-&gt;<sp/><ref refid="classmodel__template_1a92beed8d89fccea381550c27e91e11cd" kindref="member">m_i_node</ref>.end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>key<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Input<sp/>Node<sp/>Feature:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>itr<sp/>-&gt;<sp/>first;<sp/></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>ten<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1afd196d00ade10419642d541a1eaaef21" kindref="member">assign_features</ref>(itr<sp/>-&gt;<sp/>first,<sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a552cd5bfd507d39d3351ee8b6bc95445" kindref="member">graph_enum::data_node</ref>,<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>);<sp/></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!ten){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>warning(key<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>not<sp/>found<sp/>in<sp/>graph.&quot;</highlight><highlight class="normal">);}</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>success(key<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>found<sp/>in<sp/>graph.&quot;</highlight><highlight class="normal">);}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itr<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1a4af457aed96a7f7090142c86195b1427" kindref="member">m_i_edge</ref>.begin();<sp/>itr<sp/>!=<sp/><ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref><sp/>-&gt;<sp/><ref refid="classmodel__template_1a4af457aed96a7f7090142c86195b1427" kindref="member">m_i_edge</ref>.end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>key<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Input<sp/>Edge<sp/>Feature:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>itr<sp/>-&gt;<sp/>first;<sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>ten<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1afd196d00ade10419642d541a1eaaef21" kindref="member">assign_features</ref>(itr<sp/>-&gt;<sp/>first,<sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9af14d031091d837e57007a1fdea58e5fe" kindref="member">graph_enum::data_edge</ref>,<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>);<sp/></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!ten){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>warning(key<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>not<sp/>found<sp/>in<sp/>graph&quot;</highlight><highlight class="normal">);}</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>success(key<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>found<sp/>in<sp/>graph&quot;</highlight><highlight class="normal">);}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::tuple&lt;torch::Tensor*,<sp/>loss_enum&gt;&gt;::iterator<sp/>itx;<sp/></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itx<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1a04d8afa2416ad97d09469648308829ba" kindref="member">m_o_graph</ref>.begin();<sp/>itx<sp/>!=<sp/><ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref><sp/>-&gt;<sp/><ref refid="classmodel__template_1a04d8afa2416ad97d09469648308829ba" kindref="member">m_o_graph</ref>.end();<sp/>++itx){</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>key<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Truth<sp/>Graph<sp/>Feature:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>itx<sp/>-&gt;<sp/>first;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>ten<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1afd196d00ade10419642d541a1eaaef21" kindref="member">assign_features</ref>(itx<sp/>-&gt;<sp/>first,<sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a1d41882240fd339ed7bacd69ea90f587" kindref="member">graph_enum::truth_graph</ref>,<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>);<sp/></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1a3c50a6d40e2e2ad445189439107ed7ef" kindref="member">m_loss</ref><sp/>-&gt;<sp/>build_loss_function(std::get&lt;1&gt;(itx<sp/>-&gt;<sp/>second));<sp/></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!ten){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>warning(key<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>not<sp/>found<sp/>in<sp/>graph.&quot;</highlight><highlight class="normal">);}</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>success(key<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>found<sp/>in<sp/>graph&quot;</highlight><highlight class="normal">);}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itx<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1ac85acc672d6579d8e7ccbbaa5e153c64" kindref="member">m_o_node</ref>.begin();<sp/>itx<sp/>!=<sp/><ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref><sp/>-&gt;<sp/><ref refid="classmodel__template_1ac85acc672d6579d8e7ccbbaa5e153c64" kindref="member">m_o_node</ref>.end();<sp/>++itx){</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>key<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Truth<sp/>Node<sp/>Feature:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>itx<sp/>-&gt;<sp/>first;<sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>ten<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1afd196d00ade10419642d541a1eaaef21" kindref="member">assign_features</ref>(itx<sp/>-&gt;<sp/>first,<sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9ae895cb1e23c56f371dafbef2634572f5" kindref="member">graph_enum::truth_node</ref>,<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>);<sp/></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1a3c50a6d40e2e2ad445189439107ed7ef" kindref="member">m_loss</ref><sp/>-&gt;<sp/>build_loss_function(std::get&lt;1&gt;(itx<sp/>-&gt;<sp/>second));<sp/></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!ten){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>warning(key<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>not<sp/>found<sp/>in<sp/>graph.&quot;</highlight><highlight class="normal">);}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>success(key<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>found<sp/>in<sp/>graph.&quot;</highlight><highlight class="normal">);}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itx<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1a984ca129eee3c012038f53f5280be3ba" kindref="member">m_o_edge</ref>.begin();<sp/>itx<sp/>!=<sp/><ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref><sp/>-&gt;<sp/><ref refid="classmodel__template_1a984ca129eee3c012038f53f5280be3ba" kindref="member">m_o_edge</ref>.end();<sp/>++itx){</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>key<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Truth<sp/>Edge<sp/>Feature:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>itx<sp/>-&gt;<sp/>first;<sp/></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>ten<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1afd196d00ade10419642d541a1eaaef21" kindref="member">assign_features</ref>(itx<sp/>-&gt;<sp/>first,<sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9afc5bd8c8855a5bb98c0a2ffcf7d83a00" kindref="member">graph_enum::truth_edge</ref>,<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>);<sp/><sp/></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1a3c50a6d40e2e2ad445189439107ed7ef" kindref="member">m_loss</ref><sp/>-&gt;<sp/>build_loss_function(std::get&lt;1&gt;(itx<sp/>-&gt;<sp/>second));<sp/></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!ten){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>warning(key<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>not<sp/>found<sp/>in<sp/>graph&quot;</highlight><highlight class="normal">);}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>success(key<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>found<sp/>in<sp/>graph&quot;</highlight><highlight class="normal">);}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmodel__template_1ac6d8ddbdaf334cfefbe1e6361fd4ebbb" kindref="member">forward</ref>(<ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>);<sp/></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>train_sequence(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="56"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/model/cxx/model_checks.cxx"/>
+  </compounddef>
+</doxygen>

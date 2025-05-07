@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespace_analysis_g_1_1selections_1_1mc20" kind="namespace" language="Python">
+    <compoundname>AnalysisG::selections::mc20</compoundname>
+    <innernamespace refid="namespace_analysis_g_1_1selections_1_1mc20_1_1matching">AnalysisG::selections::mc20::matching</innernamespace>
+    <innernamespace refid="namespace_analysis_g_1_1selections_1_1mc20_1_1topmatching">AnalysisG::selections::mc20::topmatching</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="selections/mc20/__init__.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

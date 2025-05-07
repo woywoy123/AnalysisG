@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="structobject__data__t" kind="struct" language="C++" prot="public">
+    <compoundname>object_data_t</compoundname>
+    <includes refid="matching_8h" local="no">matching.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structobject__data__t_1af4dc82fe90ca7c2965e244c3fb858ac1" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int object_data_t::num_tops</definition>
+        <argsstring></argsstring>
+        <name>num_tops</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="6" column="9" bodyfile="selections/mc20/matching/matching.h" bodystart="6" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structobject__data__t_1ae285af481040b09da025548310b836e0" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int object_data_t::num_ltop</definition>
+        <argsstring></argsstring>
+        <name>num_ltop</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="7" column="9" bodyfile="selections/mc20/matching/matching.h" bodystart="7" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structobject__data__t_1ad40225b01d379ee2831c89cf744be82c" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int object_data_t::num_htop</definition>
+        <argsstring></argsstring>
+        <name>num_htop</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="8" column="9" bodyfile="selections/mc20/matching/matching.h" bodystart="8" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structobject__data__t_1aed553fc44fe0e8c1bd8dc0756529be32" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int object_data_t::num_false</definition>
+        <argsstring></argsstring>
+        <name>num_false</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="9" column="9" bodyfile="selections/mc20/matching/matching.h" bodystart="9" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structobject__data__t_1ae1358b317d85d512b6d9c2c07af998ba" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; object_data_t::mass</definition>
+        <argsstring></argsstring>
+        <name>mass</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="11" column="17" bodyfile="selections/mc20/matching/matching.h" bodystart="11" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structobject__data__t_1ab6a1790133e10ee8d214292edafff557" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; object_data_t::wrong_matched</definition>
+        <argsstring></argsstring>
+        <name>wrong_matched</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="12" column="17" bodyfile="selections/mc20/matching/matching.h" bodystart="12" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structobject__data__t_1a0c1e572b3c43d5abb339b34492be1b4f" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; object_data_t::num_jets</definition>
+        <argsstring></argsstring>
+        <name>num_jets</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="14" column="17" bodyfile="selections/mc20/matching/matching.h" bodystart="14" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structobject__data__t_1ac63e805581fbb5e223990c3c9bb7a762" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; object_data_t::is_leptonic</definition>
+        <argsstring></argsstring>
+        <name>is_leptonic</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="15" column="17" bodyfile="selections/mc20/matching/matching.h" bodystart="15" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structobject__data__t_1a0db59149b9a3ab36ac5672f4cc2ce6a4" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; object_data_t::is_hadronic</definition>
+        <argsstring></argsstring>
+        <name>is_hadronic</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="16" column="17" bodyfile="selections/mc20/matching/matching.h" bodystart="16" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structobject__data__t_1a1700f9a88ee76390e02c1673aea4f489" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; std::vector&lt; int &gt; &gt;</type>
+        <definition>std::vector&lt;std::vector&lt;int&gt; &gt; object_data_t::merged</definition>
+        <argsstring></argsstring>
+        <name>merged</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="17" column="17" bodyfile="selections/mc20/matching/matching.h" bodystart="17" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structobject__data__t_1a67e82e9f688d102beea09cf80fc1c65f" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; std::vector&lt; int &gt; &gt;</type>
+        <definition>std::vector&lt;std::vector&lt;int&gt; &gt; object_data_t::pdgid</definition>
+        <argsstring></argsstring>
+        <name>pdgid</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="18" column="17" bodyfile="selections/mc20/matching/matching.h" bodystart="18" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="5">
+        <label>T</label>
+      </node>
+      <node id="6">
+        <label>std::vector&lt; double &gt;</label>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; double &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::vector&lt; std::vector&lt; int &gt; &gt;</label>
+        <childnode refid="3" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; std::vector&lt; int &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>object_data_t</label>
+        <link refid="structobject__data__t"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>pdgid</edgelabel>
+          <edgelabel>merged</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>is_leptonic</edgelabel>
+          <edgelabel>is_hadronic</edgelabel>
+          <edgelabel>num_jets</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>mass</edgelabel>
+          <edgelabel>wrong_matched</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::vector&lt; int &gt;</label>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; int &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="selections/mc20/matching/matching.h" line="5" column="20" bodyfile="selections/mc20/matching/matching.h" bodystart="5" bodyend="19"/>
+    <listofallmembers>
+      <member refid="structobject__data__t_1a0db59149b9a3ab36ac5672f4cc2ce6a4" prot="public" virt="non-virtual"><scope>object_data_t</scope><name>is_hadronic</name></member>
+      <member refid="structobject__data__t_1ac63e805581fbb5e223990c3c9bb7a762" prot="public" virt="non-virtual"><scope>object_data_t</scope><name>is_leptonic</name></member>
+      <member refid="structobject__data__t_1ae1358b317d85d512b6d9c2c07af998ba" prot="public" virt="non-virtual"><scope>object_data_t</scope><name>mass</name></member>
+      <member refid="structobject__data__t_1a1700f9a88ee76390e02c1673aea4f489" prot="public" virt="non-virtual"><scope>object_data_t</scope><name>merged</name></member>
+      <member refid="structobject__data__t_1aed553fc44fe0e8c1bd8dc0756529be32" prot="public" virt="non-virtual"><scope>object_data_t</scope><name>num_false</name></member>
+      <member refid="structobject__data__t_1ad40225b01d379ee2831c89cf744be82c" prot="public" virt="non-virtual"><scope>object_data_t</scope><name>num_htop</name></member>
+      <member refid="structobject__data__t_1a0c1e572b3c43d5abb339b34492be1b4f" prot="public" virt="non-virtual"><scope>object_data_t</scope><name>num_jets</name></member>
+      <member refid="structobject__data__t_1ae285af481040b09da025548310b836e0" prot="public" virt="non-virtual"><scope>object_data_t</scope><name>num_ltop</name></member>
+      <member refid="structobject__data__t_1af4dc82fe90ca7c2965e244c3fb858ac1" prot="public" virt="non-virtual"><scope>object_data_t</scope><name>num_tops</name></member>
+      <member refid="structobject__data__t_1a67e82e9f688d102beea09cf80fc1c65f" prot="public" virt="non-virtual"><scope>object_data_t</scope><name>pdgid</name></member>
+      <member refid="structobject__data__t_1ab6a1790133e10ee8d214292edafff557" prot="public" virt="non-virtual"><scope>object_data_t</scope><name>wrong_matched</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

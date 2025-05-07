@@ -1,0 +1,267 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="structelement__t" kind="struct" language="C++" prot="public">
+    <compoundname>element_t</compoundname>
+    <includes refid="element_8h" local="no">element.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structelement__t_1a27bb2d124b61f403c5a10b06dbbc624d" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string element_t::tree</definition>
+        <argsstring></argsstring>
+        <name>tree</name>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="64" column="17" bodyfile="modules/structs/include/structs/element.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structelement__t_1a8d827985f90d907376f0004d3c9167ec" prot="public" static="no" mutable="no">
+        <type>long</type>
+        <definition>long element_t::event_index</definition>
+        <argsstring></argsstring>
+        <name>event_index</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="68" column="10" bodyfile="modules/structs/include/structs/element.h" bodystart="68" bodyend="-1"/>
+        <referencedby refid="structelement__t_1ad1d14c6f6ff8d681e0f67e910677abdd" compoundref="element_8cxx" startline="4" endline="10">set_meta</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structelement__t_1a2e12b3bb6994092f96095b7d30ae1c8b" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string element_t::filename</definition>
+        <argsstring></argsstring>
+        <name>filename</name>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="69" column="17" bodyfile="modules/structs/include/structs/element.h" bodystart="69" bodyend="-1"/>
+        <referencedby refid="structelement__t_1ad1d14c6f6ff8d681e0f67e910677abdd" compoundref="element_8cxx" startline="4" endline="10">set_meta</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structelement__t_1a97a3720029cb52e6fcb87c615bcc37ea" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="structdata__t" kindref="compound">data_t</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, data_t*&gt; element_t::handle</definition>
+        <argsstring></argsstring>
+        <name>handle</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="85" column="14" bodyfile="modules/structs/include/structs/element.h" bodystart="85" bodyend="-1"/>
+        <referencedby refid="structelement__t_1ab67039a7dc3d0aa9573aa49ae803329f" compoundref="element_8cxx" startline="19" endline="24">boundary</referencedby>
+        <referencedby refid="structelement__t_1a3adc8e28bfad2a83f43efd02f50e8f5a" compoundref="element_8h" startline="73" endline="84">get</referencedby>
+        <referencedby refid="structelement__t_1acc7bb2a70ad6b16874cebee6474a70ac" compoundref="element_8cxx" startline="12" endline="17">next</referencedby>
+        <referencedby refid="structelement__t_1ad1d14c6f6ff8d681e0f67e910677abdd" compoundref="element_8cxx" startline="4" endline="10">set_meta</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structelement__t_1acc7bb2a70ad6b16874cebee6474a70ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool element_t::next</definition>
+        <argsstring>()</argsstring>
+        <name>next</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="66" column="10" bodyfile="modules/structs/cxx/element.cxx" bodystart="12" bodyend="17"/>
+        <references refid="structelement__t_1a97a3720029cb52e6fcb87c615bcc37ea" compoundref="element_8h" startline="85">handle</references>
+      </memberdef>
+      <memberdef kind="function" id="structelement__t_1ad1d14c6f6ff8d681e0f67e910677abdd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void element_t::set_meta</definition>
+        <argsstring>()</argsstring>
+        <name>set_meta</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="67" column="10" bodyfile="modules/structs/cxx/element.cxx" bodystart="4" bodyend="10"/>
+        <references refid="structelement__t_1a8d827985f90d907376f0004d3c9167ec" compoundref="element_8h" startline="68">event_index</references>
+        <references refid="structelement__t_1a2e12b3bb6994092f96095b7d30ae1c8b" compoundref="element_8h" startline="69">filename</references>
+        <references refid="structelement__t_1a97a3720029cb52e6fcb87c615bcc37ea" compoundref="element_8h" startline="85">handle</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86">index</references>
+      </memberdef>
+      <memberdef kind="function" id="structelement__t_1ab67039a7dc3d0aa9573aa49ae803329f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool element_t::boundary</definition>
+        <argsstring>()</argsstring>
+        <name>boundary</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="70" column="10" bodyfile="modules/structs/cxx/element.cxx" bodystart="19" bodyend="24"/>
+        <references refid="structelement__t_1a97a3720029cb52e6fcb87c615bcc37ea" compoundref="element_8h" startline="85">handle</references>
+      </memberdef>
+      <memberdef kind="function" id="structelement__t_1a3adc8e28bfad2a83f43efd02f50e8f5a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool element_t::get</definition>
+        <argsstring>(std::string key, g *var)</argsstring>
+        <name>get</name>
+        <param>
+          <type>std::string</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type>g *</type>
+          <declname>var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="73" column="10" bodyfile="modules/structs/include/structs/element.h" bodystart="73" bodyend="84"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad">d</references>
+        <references refid="structelement__t_1a97a3720029cb52e6fcb87c615bcc37ea" compoundref="element_8h" startline="85">handle</references>
+        <references refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" compoundref="_3event-name_4_8cxx" startline="7">this</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="13">
+        <label>K</label>
+      </node>
+      <node id="9">
+        <label>T</label>
+      </node>
+      <node id="8">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="9" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>std::vector&lt; TFile * &gt;</label>
+        <childnode refid="8" relation="template-instance">
+          <edgelabel>&lt; TFile * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="12">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="13" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="11">
+        <label>std::vector&lt; std::string &gt;</label>
+        <childnode refid="3" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="template-instance">
+          <edgelabel>&lt; std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>element_t</label>
+        <link refid="structelement__t"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>handle</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>tree</edgelabel>
+          <edgelabel>filename</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>data_t</label>
+        <link refid="structdata__t"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>files_i</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>files_t</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>leaf_name</edgelabel>
+          <edgelabel>path</edgelabel>
+          <edgelabel>tree_name</edgelabel>
+          <edgelabel>branch_name</edgelabel>
+          <edgelabel>fname</edgelabel>
+          <edgelabel>leaf_type</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>files_s</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>std::vector&lt; long &gt;</label>
+        <childnode refid="8" relation="template-instance">
+          <edgelabel>&lt; long &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::map&lt; std::string, data_t * &gt;</label>
+        <childnode refid="3" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="template-instance">
+          <edgelabel>&lt; std::string, data_t * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>bsc_t</label>
+        <link refid="classbsc__t"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>buffer</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::string</label>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="modules/structs/include/structs/element.h" line="63" column="16" bodyfile="modules/structs/include/structs/element.h" bodystart="63" bodyend="86"/>
+    <listofallmembers>
+      <member refid="structelement__t_1ab67039a7dc3d0aa9573aa49ae803329f" prot="public" virt="non-virtual"><scope>element_t</scope><name>boundary</name></member>
+      <member refid="structelement__t_1a8d827985f90d907376f0004d3c9167ec" prot="public" virt="non-virtual"><scope>element_t</scope><name>event_index</name></member>
+      <member refid="structelement__t_1a2e12b3bb6994092f96095b7d30ae1c8b" prot="public" virt="non-virtual"><scope>element_t</scope><name>filename</name></member>
+      <member refid="structelement__t_1a3adc8e28bfad2a83f43efd02f50e8f5a" prot="public" virt="non-virtual"><scope>element_t</scope><name>get</name></member>
+      <member refid="structelement__t_1a97a3720029cb52e6fcb87c615bcc37ea" prot="public" virt="non-virtual"><scope>element_t</scope><name>handle</name></member>
+      <member refid="structelement__t_1acc7bb2a70ad6b16874cebee6474a70ac" prot="public" virt="non-virtual"><scope>element_t</scope><name>next</name></member>
+      <member refid="structelement__t_1ad1d14c6f6ff8d681e0f67e910677abdd" prot="public" virt="non-virtual"><scope>element_t</scope><name>set_meta</name></member>
+      <member refid="structelement__t_1a27bb2d124b61f403c5a10b06dbbc624d" prot="public" virt="non-virtual"><scope>element_t</scope><name>tree</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classsimply__plot_1_1_meta_x" kind="class" language="Python" prot="public">
+    <compoundname>simply_plot::MetaX</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">MetaLookup</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classsimply__plot_1_1_meta_x_1a049d73ffa20c33a86b4e0b3d05fa7b69" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def simply_plot.MetaX.title</definition>
+        <argsstring>(self)</argsstring>
+        <name>title</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="520" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="520" bodyend="521"/>
+        <references refid="classmeta_1a63ad3379066eb6b7c8bf7a7ea9ee0783" compoundref="meta_8cxx" startline="4" endline="126">meta::meta</references>
+      </memberdef>
+      <memberdef kind="function" id="classsimply__plot_1_1_meta_x_1a30b889442474a227ad6591d71932fb38" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def simply_plot.MetaX.SumOfWeights</definition>
+        <argsstring>(self)</argsstring>
+        <name>SumOfWeights</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="523" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="523" bodyend="524"/>
+      </memberdef>
+      <memberdef kind="function" id="classsimply__plot_1_1_meta_x_1a02ec6f7ef31664fa22b9fee8765a077a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def simply_plot.MetaX.GenerateData</definition>
+        <argsstring>(self)</argsstring>
+        <name>GenerateData</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="526" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="526" bodyend="527"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>MetaLookup</label>
+      </node>
+      <node id="1">
+        <label>simply_plot.MetaX</label>
+        <link refid="classsimply__plot_1_1_meta_x"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>MetaLookup</label>
+      </node>
+      <node id="1">
+        <label>simply_plot.MetaX</label>
+        <link refid="classsimply__plot_1_1_meta_x"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/workspaces/AnalysisG/test/simply_plot.py" line="517" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="517" bodyend="528"/>
+    <listofallmembers>
+      <member refid="classsimply__plot_1_1_meta_x_1a02ec6f7ef31664fa22b9fee8765a077a" prot="public" virt="non-virtual"><scope>simply_plot::MetaX</scope><name>GenerateData</name></member>
+      <member refid="classsimply__plot_1_1_meta_x_1a30b889442474a227ad6591d71932fb38" prot="public" virt="non-virtual"><scope>simply_plot::MetaX</scope><name>SumOfWeights</name></member>
+      <member refid="classsimply__plot_1_1_meta_x_1a049d73ffa20c33a86b4e0b3d05fa7b69" prot="public" virt="non-virtual"><scope>simply_plot::MetaX</scope><name>title</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

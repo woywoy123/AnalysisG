@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacepyc_1_1graph_1_1cartesian" kind="namespace" language="C++">
+    <compoundname>pyc::graph::cartesian</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacepyc_1_1graph_1_1cartesian_1a0c4efe06c06429b730d408323dcaf302" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Dict&lt; std::string, torch::Tensor &gt;</type>
+        <definition>torch::Dict&lt; std::string, torch::Tensor &gt; pyc::graph::cartesian::edge_aggregation</definition>
+        <argsstring>(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmc)</argsstring>
+        <name>edge_aggregation</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>edge_index</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>prediction</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="262" column="25" bodyfile="pyc/interface/graph.cxx" bodystart="144" bodyend="151" declfile="pyc/interface/include/pyc/pyc.h" declline="262" declcolumn="25"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacegraph___1a7249186f32a05a8ff1601bff5deabdef" compoundref="graph_2graph_8cxx" startline="4" endline="63">graph_::edge_aggregation</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7">edge_index</references>
+        <references refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" compoundref="performance_2main_8py" startline="69">main.out</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="namespacepyc_1ab174cc51f6efef06bdb0ba47ec3fe3bf" compoundref="interface_8cxx" startline="20" endline="25">pyc::std_to_dict</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1graph_1_1cartesian_1a876b2614216840138fb428e66f4938b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Dict&lt; std::string, torch::Tensor &gt;</type>
+        <definition>torch::Dict&lt; std::string, torch::Tensor &gt; pyc::graph::cartesian::node_aggregation</definition>
+        <argsstring>(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmc)</argsstring>
+        <name>node_aggregation</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>edge_index</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>prediction</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="266" column="25" bodyfile="pyc/interface/graph.cxx" bodystart="153" bodyend="160" declfile="pyc/interface/include/pyc/pyc.h" declline="266" declcolumn="25"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7">edge_index</references>
+        <references refid="namespacegraph___1af76bc3bdcf60cb8a46bdd978e5097376" compoundref="graph_2graph_8cxx" startline="65" endline="77">graph_::node_aggregation</references>
+        <references refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" compoundref="performance_2main_8py" startline="69">main.out</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="namespacepyc_1ab174cc51f6efef06bdb0ba47ec3fe3bf" compoundref="interface_8cxx" startline="20" endline="25">pyc::std_to_dict</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1graph_1_1cartesian_1a84c64361a1b6ab23b56915ab7f7290a0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Dict&lt; std::string, torch::Tensor &gt;</type>
+        <definition>torch::Dict&lt; std::string, torch::Tensor &gt; pyc::graph::cartesian::edge_aggregation</definition>
+        <argsstring>(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)</argsstring>
+        <name>edge_aggregation</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>edge_index</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>prediction</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>px</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>py</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pz</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="270" column="25" bodyfile="pyc/interface/graph.cxx" bodystart="162" bodyend="171" declfile="pyc/interface/include/pyc/pyc.h" declline="270" declcolumn="25"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="namespacegraph___1a7249186f32a05a8ff1601bff5deabdef" compoundref="graph_2graph_8cxx" startline="4" endline="63">graph_::edge_aggregation</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7">edge_index</references>
+        <references refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" compoundref="performance_2main_8py" startline="69">main.out</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="namespacepyc_1ab174cc51f6efef06bdb0ba47ec3fe3bf" compoundref="interface_8cxx" startline="20" endline="25">pyc::std_to_dict</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1graph_1_1cartesian_1a6a2ffe369ee9d484a004f40351db4215" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Dict&lt; std::string, torch::Tensor &gt;</type>
+        <definition>torch::Dict&lt; std::string, torch::Tensor &gt; pyc::graph::cartesian::node_aggregation</definition>
+        <argsstring>(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)</argsstring>
+        <name>node_aggregation</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>edge_index</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>prediction</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>px</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>py</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pz</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="275" column="25" bodyfile="pyc/interface/graph.cxx" bodystart="173" bodyend="182" declfile="pyc/interface/include/pyc/pyc.h" declline="275" declcolumn="25"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7">edge_index</references>
+        <references refid="namespacegraph___1af76bc3bdcf60cb8a46bdd978e5097376" compoundref="graph_2graph_8cxx" startline="65" endline="77">graph_::node_aggregation</references>
+        <references refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" compoundref="performance_2main_8py" startline="69">main.out</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="namespacepyc_1ab174cc51f6efef06bdb0ba47ec3fe3bf" compoundref="interface_8cxx" startline="20" endline="25">pyc::std_to_dict</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pyc/interface/include/pyc/pyc.h" line="261" column="27"/>
+  </compounddef>
+</doxygen>

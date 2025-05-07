@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_fb91096735c52f3a453d1a3e67025085" kind="dir">
+    <compoundname>event</compoundname>
+    <innerdir refid="dir_4890d7086010edaefcbaba6bc2038aa8">cxx</innerdir>
+    <innerdir refid="dir_6d6699b9700a868c010ac064655a9635">include</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/event/"/>
+  </compounddef>
+</doxygen>

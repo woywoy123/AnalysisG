@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_ef6710c4b5e9833ed53cc4607df67c64" kind="dir">
+    <compoundname>include</compoundname>
+    <innerdir refid="dir_e65c49a2742a49ec8fd2da1108014893">metrics</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/metrics/include/"/>
+  </compounddef>
+</doxygen>

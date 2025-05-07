@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="src_2_analysis_g_2selections_2example_2____init_____8py" kind="file" language="Python">
+    <compoundname>src/AnalysisG/selections/example/__init__.py</compoundname>
+    <innernamespace refid="namespace_analysis_g_1_1selections_1_1example">AnalysisG::selections::example</innernamespace>
+    <innernamespace refid="namespacemet">met</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespace_analysis_g_1_1selections_1_1example" refkind="compound"><highlight class="normal">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"><sp/>*<sp/>@file<sp/>__init__.py</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"><sp/>*<sp/>@brief<sp/>Imports<sp/>all<sp/>modules<sp/></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>the<sp/>`example`<sp/>package.</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>.met<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>*<sp/>///&lt;<sp/>Imports<sp/>all<sp/>functions<sp/></highlight><highlight class="keywordflow">and</highlight><highlight class="normal"><sp/>classes<sp/></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>the<sp/>`met`<sp/>module.</highlight></codeline>
+    </programlisting>
+    <location file="selections/example/__init__.py"/>
+  </compounddef>
+</doxygen>

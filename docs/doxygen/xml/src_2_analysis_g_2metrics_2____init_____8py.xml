@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="src_2_analysis_g_2metrics_2____init_____8py" kind="file" language="Python">
+    <compoundname>src/AnalysisG/metrics/__init__.py</compoundname>
+    <innernamespace refid="namespace_analysis_g_1_1metrics">AnalysisG::metrics</innernamespace>
+    <innernamespace refid="namespaceaccuracy_1_1metric__accuracy">accuracy::metric_accuracy</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespace_analysis_g_1_1metrics" refkind="compound"><highlight class="keyword">from</highlight><highlight class="normal"><sp/>.<ref refid="namespaceaccuracy_1_1metric__accuracy" kindref="compound">accuracy.metric_accuracy</ref><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>*</highlight></codeline>
+    </programlisting>
+    <location file="metrics/__init__.py"/>
+  </compounddef>
+</doxygen>

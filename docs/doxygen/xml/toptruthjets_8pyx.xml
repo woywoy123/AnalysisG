@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="toptruthjets_8pyx" kind="file" language="C++">
+    <compoundname>toptruthjets.pyx</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>distutils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level=3</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.selection_template<sp/>cimport<sp/>*</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.selections.mc16.toptruthjets.toptruthjets<sp/>cimport<sp/>*</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>*</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>TopTruthJets(SelectionTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__cinit__(self):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.ptr<sp/>=<sp/>new<sp/>toptruthjets()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.tt<sp/>=<sp/>&lt;toptruthjets*&gt;self.ptr</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__dealloc__(self):<sp/>del<sp/>self.ptr</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>void<sp/>transform_dict_keys(self):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.top_mass<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>as_dict_dict_dict(&amp;self.tt.top_mass)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.truthjet_partons<sp/><sp/><sp/><sp/><sp/>=<sp/>as_dict_dict_dict(&amp;self.tt.truthjet_partons)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.truthjets_contribute<sp/>=<sp/>as_dict_dict_dict(&amp;self.tt.truthjets_contribute)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.truthjet_top<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>as_dict_dict(&amp;self.tt.truthjet_top)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.truthjet_mass<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>as_dict(&amp;self.tt.truthjet_mass)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.ntops_lost<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>as_list(&amp;self.tt.ntops_lost)</highlight></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="selections/mc16/toptruthjets/toptruthjets.pyx"/>
+  </compounddef>
+</doxygen>

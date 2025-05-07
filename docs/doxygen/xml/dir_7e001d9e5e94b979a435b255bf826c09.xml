@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_7e001d9e5e94b979a435b255bf826c09" kind="dir">
+    <compoundname>physics</compoundname>
+    <innerdir refid="dir_0a9cd8667020f7a247bbdd406f78618f">include</innerdir>
+    <innerfile refid="pyc_2physics_2physics_8cxx">pyc/physics/physics.cxx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pyc/physics/"/>
+  </compounddef>
+</doxygen>

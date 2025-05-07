@@ -1,0 +1,831 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="structvariable__t" kind="struct" language="C++" prot="public">
+    <compoundname>variable_t</compoundname>
+    <basecompoundref refid="classbsc__t" prot="public" virt="non-virtual">bsc_t</basecompoundref>
+    <includes refid="vector__cast_8h" local="no">vector_cast.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structvariable__t_1a48d00c929a53fa85b3a0b973c632854f" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string variable_t::variable_name</definition>
+        <argsstring></argsstring>
+        <name>variable_name</name>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="94" column="21" bodyfile="modules/typecasting/include/tools/vector_cast.h" bodystart="94" bodyend="-1"/>
+        <referencedby refid="structvariable__t_1abb328168f0e26f52e6d164f6e6aed831" compoundref="typecasting_8cxx" startline="67" endline="97">process</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structvariable__t_1a68f2aadf526d222b7dd192f8f768b692" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool variable_t::failed_branch</definition>
+        <argsstring></argsstring>
+        <name>failed_branch</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="95" column="14" bodyfile="modules/typecasting/include/tools/vector_cast.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="structvariable__t_1ae7e4e596bd7bf8049a74a3052410d796" prot="private" static="no" mutable="no">
+        <type>friend</type>
+        <definition>friend variable_t::write_t</definition>
+        <argsstring></argsstring>
+        <name>write_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="98" column="16" bodyfile="modules/typecasting/include/tools/vector_cast.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structvariable__t_1a23eef53f63980447d472222d0398fdc1" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool variable_t::use_external</definition>
+        <argsstring></argsstring>
+        <name>use_external</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="99" column="14" bodyfile="modules/typecasting/include/tools/vector_cast.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structvariable__t_1aa56f7493f5a614907a076bfcca845215" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool variable_t::is_triggered</definition>
+        <argsstring></argsstring>
+        <name>is_triggered</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="100" column="14" bodyfile="modules/typecasting/include/tools/vector_cast.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structvariable__t_1ab24e9c1198bbfe4eae02d77a90d42d3f" prot="private" static="no" mutable="no">
+        <type>TBranch *</type>
+        <definition>TBranch* variable_t::tb</definition>
+        <argsstring></argsstring>
+        <name>tb</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="102" column="17" bodyfile="modules/typecasting/include/tools/vector_cast.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structvariable__t_1a7d3e9f6fdedcdc38860f2065204ffb12" prot="private" static="no" mutable="no">
+        <type>TTree *</type>
+        <definition>TTree* variable_t::tt</definition>
+        <argsstring></argsstring>
+        <name>tt</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="103" column="17" bodyfile="modules/typecasting/include/tools/vector_cast.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structvariable__t_1a119b9993d2aca4331bd5325a5ff98620" prot="private" static="no" mutable="no">
+        <type><ref refid="structmeta__t" kindref="compound">meta_t</ref> *</type>
+        <definition>meta_t* variable_t::mtx</definition>
+        <argsstring></argsstring>
+        <name>mtx</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="104" column="16" bodyfile="modules/typecasting/include/tools/vector_cast.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structvariable__t_1aac7276055229fc3b628fc612a9c22fdf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>variable_t::variable_t</definition>
+        <argsstring>()</argsstring>
+        <name>variable_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="66" column="9" bodyfile="modules/typecasting/cxx/typecasting.cxx" bodystart="10" bodyend="10"/>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a00b3029e56b65ffd0d7da293ccc5e1f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>variable_t::variable_t</definition>
+        <argsstring>(bool use_external)</argsstring>
+        <name>variable_t</name>
+        <param>
+          <type>bool</type>
+          <declname>use_external</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="67" column="9" bodyfile="modules/typecasting/cxx/typecasting.cxx" bodystart="11" bodyend="11"/>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a3ae26cbb367f83db713ce8cb8b99b7a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>variable_t::~variable_t</definition>
+        <argsstring>() override</argsstring>
+        <name>~variable_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="68" column="9" bodyfile="modules/typecasting/cxx/typecasting.cxx" bodystart="12" bodyend="16"/>
+        <references refid="classbsc__t_1a953a8bb68bdd6acd9c97d4c0eb965319" compoundref="structs_2cxx_2base_8cxx" startline="181" endline="263">bsc_t::flush_buffer</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae2181b5014a67159cc230c8fe0d6c5b6">unset</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a2fdb004c324727113017b83666dcfb5f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::create_meta</definition>
+        <argsstring>(meta_t *mt)</argsstring>
+        <name>create_meta</name>
+        <param>
+          <type><ref refid="structmeta__t" kindref="compound">meta_t</ref> *</type>
+          <declname>mt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="70" column="14" bodyfile="modules/typecasting/cxx/typecasting.cxx" bodystart="18" bodyend="28"/>
+        <referencedby refid="structvariable__t_1abb328168f0e26f52e6d164f6e6aed831" compoundref="typecasting_8cxx" startline="67" endline="97">process</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a658b5e8556268b7ae507aef14a5b1adb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::build_switch</definition>
+        <argsstring>(size_t s, torch::Tensor *tx)</argsstring>
+        <name>build_switch</name>
+        <param>
+          <type>size_t</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>tx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="71" column="14" bodyfile="modules/typecasting/cxx/typecasting.cxx" bodystart="30" bodyend="65"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af31ee5e3824f1f5e5d206bdf3029f22b">undef</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a4a175ba15731da1d56cd0661080d25">v_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae9dcbfc39e25f58c5cb2d56a73628c83">v_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3adc0a3ef1c0a22d00f983ff8888e99539">v_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a1df181eaa1bb40a0067c06ead197170d">v_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af2ba29a39b59f9dada29228faf1d9162">v_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3abc9d5ec2de60eb49e81bec2c9b23cfd9">vv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a53968916bfe73b9242b620faed3467d9">vv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab87401c18021d145be4a8817f174288b">vv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a671456455a0bd7f2c76e1802522bb1a0">vv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab82f4562f542972869578de73b3d76a9">vv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab2f1d7511d0bdb20e01eec35292cd074">vvv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a65d8432bf82050f6ba7d4cac129ef16b">vvv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a364a51462a906de978b6efdd6c85759f">vvv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2684cd9cda915142be58c31c5d92cd63">vvv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a115dd8071340ac2aeffb33c29e929571">vvv_l</references>
+        <referencedby refid="structvariable__t_1abb328168f0e26f52e6d164f6e6aed831" compoundref="typecasting_8cxx" startline="67" endline="97">process</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1abb328168f0e26f52e6d164f6e6aed831" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(torch::Tensor *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="72" column="14" bodyfile="modules/typecasting/cxx/typecasting.cxx" bodystart="67" bodyend="97"/>
+        <references refid="structvariable__t_1a658b5e8556268b7ae507aef14a5b1adb" compoundref="typecasting_8cxx" startline="30" endline="65">build_switch</references>
+        <references refid="structvariable__t_1a2fdb004c324727113017b83666dcfb5f" compoundref="typecasting_8cxx" startline="18" endline="28">create_meta</references>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="classbsc__t_1a953a8bb68bdd6acd9c97d4c0eb965319" compoundref="structs_2cxx_2base_8cxx" startline="181" endline="263">bsc_t::flush_buffer</references>
+        <references refid="typecasting_8cxx_1a080c0dde93a7b634e36c7b7f41ade0ed" compoundref="typecasting_8cxx" startline="3" endline="8">tensor_size</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae2181b5014a67159cc230c8fe0d6c5b6">unset</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a4a175ba15731da1d56cd0661080d25">v_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae9dcbfc39e25f58c5cb2d56a73628c83">v_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3adc0a3ef1c0a22d00f983ff8888e99539">v_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a1df181eaa1bb40a0067c06ead197170d">v_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af2ba29a39b59f9dada29228faf1d9162">v_l</references>
+        <references refid="structvariable__t_1a48d00c929a53fa85b3a0b973c632854f" compoundref="vector__cast_8h" startline="94">variable_name</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3abc9d5ec2de60eb49e81bec2c9b23cfd9">vv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a53968916bfe73b9242b620faed3467d9">vv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab87401c18021d145be4a8817f174288b">vv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a671456455a0bd7f2c76e1802522bb1a0">vv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab82f4562f542972869578de73b3d76a9">vv_l</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a57abdd7685174f3175f8b975686953ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(std::vector&lt; std::vector&lt; float &gt;&gt; *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>std::vector&lt; std::vector&lt; float &gt;&gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="75" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="3" bodyend="5"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab87401c18021d145be4a8817f174288b">vv_f</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1afc5b54c74541d7bfa3c36ae20b4d1c54" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(std::vector&lt; std::vector&lt; double &gt;&gt; *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>std::vector&lt; std::vector&lt; double &gt;&gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="76" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="7" bodyend="9"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a53968916bfe73b9242b620faed3467d9">vv_d</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a757493c26a5426118af61328536d785b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(std::vector&lt; std::vector&lt; long &gt;&gt; *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>std::vector&lt; std::vector&lt; long &gt;&gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="77" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="11" bodyend="13"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab82f4562f542972869578de73b3d76a9">vv_l</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a73408aaad2c066ecf078bfc1699c7f1d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(std::vector&lt; std::vector&lt; int &gt;&gt; *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>std::vector&lt; std::vector&lt; int &gt;&gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="78" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="15" bodyend="17"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a671456455a0bd7f2c76e1802522bb1a0">vv_i</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1af173f1ba6c1382a34558a8ecf1cbfc4b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(std::vector&lt; std::vector&lt; bool &gt;&gt; *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>std::vector&lt; std::vector&lt; bool &gt;&gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="79" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="19" bodyend="21"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3abc9d5ec2de60eb49e81bec2c9b23cfd9">vv_b</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a56d5251c44d6a7eae549a13650b5669d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(std::vector&lt; float &gt; *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>std::vector&lt; float &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="81" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="23" bodyend="25"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3adc0a3ef1c0a22d00f983ff8888e99539">v_f</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a85e71650dc42bf0c016b3b96925e85c0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(std::vector&lt; double &gt; *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>std::vector&lt; double &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="82" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="27" bodyend="29"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae9dcbfc39e25f58c5cb2d56a73628c83">v_d</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a097e8b78875c1c97af46af0592db7ceb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(std::vector&lt; long &gt; *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>std::vector&lt; long &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="83" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="31" bodyend="33"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af2ba29a39b59f9dada29228faf1d9162">v_l</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a8c3b1b96e0c1d85393fade779242717d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(std::vector&lt; int &gt; *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>std::vector&lt; int &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="84" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="35" bodyend="37"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a1df181eaa1bb40a0067c06ead197170d">v_i</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1adc7166efe960af387ec49f47807d61bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(std::vector&lt; bool &gt; *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>std::vector&lt; bool &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="85" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="39" bodyend="41"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a4a175ba15731da1d56cd0661080d25">v_b</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a8d1ac4fd8d3404a956f127b5d741f184" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(float *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>float *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="87" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="43" bodyend="45"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a84fe3a92f9d6fa4c53128a732cd4c358" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(double *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>double *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="88" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="47" bodyend="49"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad">d</references>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1aee7245ebee637ddaac944179fdf6006c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(long *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>long *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="89" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="51" bodyend="53"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33">l</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a2b01c65dbb43444b2a355c0d2fe646c0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(int *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>int *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="90" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="55" bodyend="57"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741">i</references>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1a63e05c0cf2e19a41c47e350a5959dd8a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void variable_t::process</definition>
+        <argsstring>(bool *data, std::string *varname, TTree *tr)</argsstring>
+        <name>process</name>
+        <param>
+          <type>bool *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>varname</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="91" column="14" bodyfile="modules/typecasting/cxx/root.cxx" bodystart="59" bodyend="61"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a92eb5ffee6ae2fec3ad71c777531578f">b</references>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="structvariable__t_1a35efa1aca52f54be53701f19713efeab" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+          <param>
+            <type>typename p</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void variable_t::add_data</definition>
+        <argsstring>(g *&amp;tx, torch::Tensor *data, std::vector&lt; signed long &gt; *s, p prim)</argsstring>
+        <name>add_data</name>
+        <param>
+          <type>g *&amp;</type>
+          <declname>tx</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; signed long &gt; *</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>p</type>
+          <declname>prim</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="107" column="14" bodyfile="modules/typecasting/include/tools/vector_cast.h" bodystart="107" bodyend="113"/>
+      </memberdef>
+      <memberdef kind="function" id="structvariable__t_1abd0bfdbf8de9ce048371c4d0e3002331" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void variable_t::add_data</definition>
+        <argsstring>(g *var, g *&amp;tx, std::string *name, TTree *tr=nullptr)</argsstring>
+        <name>add_data</name>
+        <param>
+          <type>g *</type>
+          <declname>var</declname>
+        </param>
+        <param>
+          <type>g *&amp;</type>
+          <declname>tx</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>TTree *</type>
+          <declname>tr</declname>
+          <defval>nullptr</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/typecasting/include/tools/vector_cast.h" line="116" column="14" bodyfile="modules/typecasting/include/tools/vector_cast.h" bodystart="116" bodyend="125"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>variable_t</label>
+        <link refid="structvariable__t"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>bsc_t</label>
+        <link refid="classbsc__t"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>variable_t</label>
+        <link refid="structvariable__t"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>variable_name</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="2">
+        <label>bsc_t</label>
+        <link refid="classbsc__t"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>buffer</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::string</label>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="modules/typecasting/include/tools/vector_cast.h" line="64" column="1" bodyfile="modules/typecasting/include/tools/vector_cast.h" bodystart="63" bodyend="126"/>
+    <listofallmembers>
+      <member refid="structvariable__t_1a35efa1aca52f54be53701f19713efeab" prot="private" virt="non-virtual"><scope>variable_t</scope><name>add_data</name></member>
+      <member refid="structvariable__t_1abd0bfdbf8de9ce048371c4d0e3002331" prot="private" virt="non-virtual"><scope>variable_t</scope><name>add_data</name></member>
+      <member refid="classbsc__t_1a7bf3182a49cfb5375bc556171d7e5598" prot="public" virt="non-virtual"><scope>variable_t</scope><name>as_string</name></member>
+      <member refid="classbsc__t_1a83f5611247dc2631d5f736a363d30e56" prot="public" virt="non-virtual"><scope>variable_t</scope><name>bsc_t</name></member>
+      <member refid="classbsc__t_1a69bf0e1aff0cd282e59ac3593af43360" prot="public" virt="non-virtual"><scope>variable_t</scope><name>buffer</name></member>
+      <member refid="structvariable__t_1a658b5e8556268b7ae507aef14a5b1adb" prot="public" virt="non-virtual"><scope>variable_t</scope><name>build_switch</name></member>
+      <member refid="structvariable__t_1a2fdb004c324727113017b83666dcfb5f" prot="public" virt="non-virtual"><scope>variable_t</scope><name>create_meta</name></member>
+      <member refid="structvariable__t_1a68f2aadf526d222b7dd192f8f768b692" prot="public" virt="non-virtual"><scope>variable_t</scope><name>failed_branch</name></member>
+      <member refid="classbsc__t_1a953a8bb68bdd6acd9c97d4c0eb965319" prot="public" virt="non-virtual"><scope>variable_t</scope><name>flush_buffer</name></member>
+      <member refid="structvariable__t_1aa56f7493f5a614907a076bfcca845215" prot="private" virt="non-virtual"><scope>variable_t</scope><name>is_triggered</name></member>
+      <member refid="structvariable__t_1a119b9993d2aca4331bd5325a5ff98620" prot="private" virt="non-virtual"><scope>variable_t</scope><name>mtx</name></member>
+      <member refid="structvariable__t_1abb328168f0e26f52e6d164f6e6aed831" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1a57abdd7685174f3175f8b975686953ee" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1afc5b54c74541d7bfa3c36ae20b4d1c54" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1a757493c26a5426118af61328536d785b" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1a73408aaad2c066ecf078bfc1699c7f1d" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1af173f1ba6c1382a34558a8ecf1cbfc4b" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1a56d5251c44d6a7eae549a13650b5669d" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1a85e71650dc42bf0c016b3b96925e85c0" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1a097e8b78875c1c97af46af0592db7ceb" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1a8c3b1b96e0c1d85393fade779242717d" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1adc7166efe960af387ec49f47807d61bb" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1a8d1ac4fd8d3404a956f127b5d741f184" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1a84fe3a92f9d6fa4c53128a732cd4c358" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1aee7245ebee637ddaac944179fdf6006c" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1a2b01c65dbb43444b2a355c0d2fe646c0" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="structvariable__t_1a63e05c0cf2e19a41c47e350a5959dd8a" prot="public" virt="non-virtual"><scope>variable_t</scope><name>process</name></member>
+      <member refid="classbsc__t_1a39907da14ea4fb20f71b47d0724bf1f2" prot="public" virt="non-virtual"><scope>variable_t</scope><name>root_type_translate</name></member>
+      <member refid="classbsc__t_1a29da8e58b1fff7d00b9535a4ba027898" prot="public" virt="non-virtual"><scope>variable_t</scope><name>scan_buffer</name></member>
+      <member refid="structvariable__t_1ab24e9c1198bbfe4eae02d77a90d42d3f" prot="private" virt="non-virtual"><scope>variable_t</scope><name>tb</name></member>
+      <member refid="structvariable__t_1a7d3e9f6fdedcdc38860f2065204ffb12" prot="private" virt="non-virtual"><scope>variable_t</scope><name>tt</name></member>
+      <member refid="structvariable__t_1a23eef53f63980447d472222d0398fdc1" prot="private" virt="non-virtual"><scope>variable_t</scope><name>use_external</name></member>
+      <member refid="structvariable__t_1a48d00c929a53fa85b3a0b973c632854f" prot="public" virt="non-virtual"><scope>variable_t</scope><name>variable_name</name></member>
+      <member refid="structvariable__t_1aac7276055229fc3b628fc612a9c22fdf" prot="public" virt="non-virtual"><scope>variable_t</scope><name>variable_t</name></member>
+      <member refid="structvariable__t_1a00b3029e56b65ffd0d7da293ccc5e1f8" prot="public" virt="non-virtual"><scope>variable_t</scope><name>variable_t</name></member>
+      <member refid="structvariable__t_1ae7e4e596bd7bf8049a74a3052410d796" prot="private" virt="non-virtual"><scope>variable_t</scope><name>write_t</name></member>
+      <member refid="classbsc__t_1a3fb1b96a0088b257842970eaca2e1233" prot="public" virt="non-virtual"><scope>variable_t</scope><name>~bsc_t</name></member>
+      <member refid="structvariable__t_1a3ae26cbb367f83db713ce8cb8b99b7a4" prot="public" virt="non-virtual"><scope>variable_t</scope><name>~variable_t</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

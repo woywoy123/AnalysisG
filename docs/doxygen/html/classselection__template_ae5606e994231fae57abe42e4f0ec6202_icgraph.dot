@@ -1,0 +1,25 @@
+digraph "selection_template::write"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="selection_template\l::write",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="topkinematics::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtopkinematics.html#a5e34069a535a6ea4914bc0a22792582b",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="topmatching::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtopmatching.html#af2e67b27bf5c2cb999bb03c432bd0b5d",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="validation::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation.html#a5bc9aad76ca75e21e70d5cf4e48c31e4",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="childrenkinematics\l::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classchildrenkinematics.html#ac92b71da90a3ea4f996cb7a578efcb9b",tooltip=" "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="matching::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmatching.html#a87394c2320fa7c7fc07cd58fe7c5b8d0",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="regions::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classregions.html#aefc0916bc31bfb139b311846a0e33c3a",tooltip=" "];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="combinatorial::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcombinatorial.html#afcb3e3c3c11238a745f3e591162a7ae0",tooltip=" "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="met::strategy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmet.html#a54e4795f6e1387cd2aa9e259ef147f3c",tooltip=" "];
+}

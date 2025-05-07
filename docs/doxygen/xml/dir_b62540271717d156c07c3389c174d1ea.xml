@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_b62540271717d156c07c3389c174d1ea" kind="dir">
+    <compoundname>metrics</compoundname>
+    <innerdir refid="dir_0c8de31aa4e2f4aed67cf8b0853f747d">cxx</innerdir>
+    <innerdir refid="dir_767a834bc52e384d2c750c8f408e20c1">include</innerdir>
+    <innerfile refid="src_2_analysis_g_2templates_2metrics_2____init_____8py">src/AnalysisG/templates/metrics/__init__.py</innerfile>
+    <innerfile refid="metric___3name_4_8pyx">metric_&lt;name&gt;.pyx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="templates/metrics/"/>
+  </compounddef>
+</doxygen>

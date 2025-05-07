@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacetopmatching_1_1figures" kind="namespace" language="Python">
+    <compoundname>topmatching::figures</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacetopmatching_1_1figures_1a252fe96b2c335af7eac3611043d66a2c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topmatching::figures::path</definition>
+        <argsstring>(hist)</argsstring>
+        <name>path</name>
+        <param>
+          <type>hist</type>
+          <defname>hist</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" line="6" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" bodystart="6" bodyend="10"/>
+        <referencedby refid="namespacetopmatching_1_1figures_1a90e02df371d38e50c38efe4f2b9e7935" compoundref="mc16__matching_2topmatching_2figures_8py" startline="53" endline="79">topmatching.figures.top_decay_channel_children</referencedby>
+        <referencedby refid="namespacetopmatching_1_1figures_1a1d935033e1110e1d402accb87d21a501" compoundref="mc16__matching_2topmatching_2figures_8py" startline="134" endline="194">topmatching.figures.top_decay_channel_jets_leps</referencedby>
+        <referencedby refid="namespacetopmatching_1_1figures_1ad0bca5556665f53ac5f1c5c4aa10b3a3" compoundref="mc16__matching_2topmatching_2figures_8py" startline="107" endline="133">topmatching.figures.top_decay_channel_jets_truth_leps</referencedby>
+        <referencedby refid="namespacetopmatching_1_1figures_1a24e5372eae7b36001711d64b01fb6dcf" compoundref="mc16__matching_2topmatching_2figures_8py" startline="80" endline="106">topmatching.figures.top_decay_channel_truth_jets</referencedby>
+        <referencedby refid="namespacetopmatching_1_1figures_1adefa98cb28158db6f68cf9aa94c10945" compoundref="mc16__matching_2topmatching_2figures_8py" startline="258" endline="322">topmatching.figures.top_jets_contributions</referencedby>
+        <referencedby refid="namespacetopmatching_1_1figures_1a94310935b765ba139420547f2347ee51" compoundref="mc16__matching_2topmatching_2figures_8py" startline="11" endline="52">topmatching.figures.top_matching</referencedby>
+        <referencedby refid="namespacetopmatching_1_1figures_1aa1e373042810aafb74db68cdb1a5eee0" compoundref="mc16__matching_2topmatching_2figures_8py" startline="195" endline="257">topmatching.figures.top_truth_jets_contributions</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopmatching_1_1figures_1a94310935b765ba139420547f2347ee51" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topmatching::figures::top_matching</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_matching</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" line="11" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" bodystart="11" bodyend="52"/>
+        <references refid="namespacetopmatching_1_1figures_1a252fe96b2c335af7eac3611043d66a2c" compoundref="mc16__matching_2topmatching_2figures_8py" startline="6" endline="10">topmatching.figures.path</references>
+        <referencedby refid="namespacetopmatching_1_1figures_1a445dbf4de7f7038eaf549bea421a2db7" compoundref="mc16__matching_2topmatching_2figures_8py" startline="323" endline="331">topmatching.figures.TopMatching</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopmatching_1_1figures_1a90e02df371d38e50c38efe4f2b9e7935" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topmatching::figures::top_decay_channel_children</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_decay_channel_children</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" line="53" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" bodystart="53" bodyend="79"/>
+        <references refid="namespacetopmatching_1_1figures_1a252fe96b2c335af7eac3611043d66a2c" compoundref="mc16__matching_2topmatching_2figures_8py" startline="6" endline="10">topmatching.figures.path</references>
+        <referencedby refid="namespacetopmatching_1_1figures_1a445dbf4de7f7038eaf549bea421a2db7" compoundref="mc16__matching_2topmatching_2figures_8py" startline="323" endline="331">topmatching.figures.TopMatching</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopmatching_1_1figures_1a24e5372eae7b36001711d64b01fb6dcf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topmatching::figures::top_decay_channel_truth_jets</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_decay_channel_truth_jets</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" line="80" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" bodystart="80" bodyend="106"/>
+        <references refid="namespacetopmatching_1_1figures_1a252fe96b2c335af7eac3611043d66a2c" compoundref="mc16__matching_2topmatching_2figures_8py" startline="6" endline="10">topmatching.figures.path</references>
+        <referencedby refid="namespacetopmatching_1_1figures_1a445dbf4de7f7038eaf549bea421a2db7" compoundref="mc16__matching_2topmatching_2figures_8py" startline="323" endline="331">topmatching.figures.TopMatching</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopmatching_1_1figures_1ad0bca5556665f53ac5f1c5c4aa10b3a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topmatching::figures::top_decay_channel_jets_truth_leps</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_decay_channel_jets_truth_leps</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" line="107" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" bodystart="107" bodyend="133"/>
+        <references refid="namespacetopmatching_1_1figures_1a252fe96b2c335af7eac3611043d66a2c" compoundref="mc16__matching_2topmatching_2figures_8py" startline="6" endline="10">topmatching.figures.path</references>
+        <referencedby refid="namespacetopmatching_1_1figures_1a445dbf4de7f7038eaf549bea421a2db7" compoundref="mc16__matching_2topmatching_2figures_8py" startline="323" endline="331">topmatching.figures.TopMatching</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopmatching_1_1figures_1a1d935033e1110e1d402accb87d21a501" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topmatching::figures::top_decay_channel_jets_leps</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_decay_channel_jets_leps</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" line="134" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" bodystart="134" bodyend="194"/>
+        <references refid="namespacetopmatching_1_1figures_1a252fe96b2c335af7eac3611043d66a2c" compoundref="mc16__matching_2topmatching_2figures_8py" startline="6" endline="10">topmatching.figures.path</references>
+        <referencedby refid="namespacetopmatching_1_1figures_1a445dbf4de7f7038eaf549bea421a2db7" compoundref="mc16__matching_2topmatching_2figures_8py" startline="323" endline="331">topmatching.figures.TopMatching</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopmatching_1_1figures_1aa1e373042810aafb74db68cdb1a5eee0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topmatching::figures::top_truth_jets_contributions</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_truth_jets_contributions</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" line="195" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" bodystart="195" bodyend="257"/>
+        <references refid="namespacetopmatching_1_1figures_1a252fe96b2c335af7eac3611043d66a2c" compoundref="mc16__matching_2topmatching_2figures_8py" startline="6" endline="10">topmatching.figures.path</references>
+        <referencedby refid="namespacetopmatching_1_1figures_1a445dbf4de7f7038eaf549bea421a2db7" compoundref="mc16__matching_2topmatching_2figures_8py" startline="323" endline="331">topmatching.figures.TopMatching</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopmatching_1_1figures_1adefa98cb28158db6f68cf9aa94c10945" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topmatching::figures::top_jets_contributions</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_jets_contributions</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" line="258" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" bodystart="258" bodyend="322"/>
+        <references refid="namespacetopmatching_1_1figures_1a252fe96b2c335af7eac3611043d66a2c" compoundref="mc16__matching_2topmatching_2figures_8py" startline="6" endline="10">topmatching.figures.path</references>
+        <referencedby refid="namespacetopmatching_1_1figures_1a445dbf4de7f7038eaf549bea421a2db7" compoundref="mc16__matching_2topmatching_2figures_8py" startline="323" endline="331">topmatching.figures.TopMatching</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopmatching_1_1figures_1a445dbf4de7f7038eaf549bea421a2db7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topmatching::figures::TopMatching</definition>
+        <argsstring>(ana)</argsstring>
+        <name>TopMatching</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" line="323" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" bodystart="323" bodyend="331"/>
+        <references refid="namespacetopmatching_1_1figures_1a90e02df371d38e50c38efe4f2b9e7935" compoundref="mc16__matching_2topmatching_2figures_8py" startline="53" endline="79">topmatching.figures.top_decay_channel_children</references>
+        <references refid="namespacetopmatching_1_1figures_1a1d935033e1110e1d402accb87d21a501" compoundref="mc16__matching_2topmatching_2figures_8py" startline="134" endline="194">topmatching.figures.top_decay_channel_jets_leps</references>
+        <references refid="namespacetopmatching_1_1figures_1ad0bca5556665f53ac5f1c5c4aa10b3a3" compoundref="mc16__matching_2topmatching_2figures_8py" startline="107" endline="133">topmatching.figures.top_decay_channel_jets_truth_leps</references>
+        <references refid="namespacetopmatching_1_1figures_1a24e5372eae7b36001711d64b01fb6dcf" compoundref="mc16__matching_2topmatching_2figures_8py" startline="80" endline="106">topmatching.figures.top_decay_channel_truth_jets</references>
+        <references refid="namespacetopmatching_1_1figures_1adefa98cb28158db6f68cf9aa94c10945" compoundref="mc16__matching_2topmatching_2figures_8py" startline="258" endline="322">topmatching.figures.top_jets_contributions</references>
+        <references refid="namespacetopmatching_1_1figures_1a94310935b765ba139420547f2347ee51" compoundref="mc16__matching_2topmatching_2figures_8py" startline="11" endline="52">topmatching.figures.top_matching</references>
+        <references refid="namespacetopmatching_1_1figures_1aa1e373042810aafb74db68cdb1a5eee0" compoundref="mc16__matching_2topmatching_2figures_8py" startline="195" endline="257">topmatching.figures.top_truth_jets_contributions</references>
+        <referencedby refid="namespacemain_1a7afac8f5e46c718321f188d7888c2de0" compoundref="mc16__matching_2main_8py" startline="60" endline="98">main.ExecuteStudy</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/mc16_matching/topmatching/figures.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

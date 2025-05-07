@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classami_1_1_h_t_t_p" kind="class" language="Python" prot="public">
+    <compoundname>ami::HTTP</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">HttpClient</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classami_1_1_h_t_t_p_1a9a22e0161d305b1b6aab56c113c7b1cc" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>ami.HTTP::endpoint</definition>
+        <argsstring></argsstring>
+        <name>endpoint</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/ami.py" line="13" column="1" bodyfile="/workspaces/AnalysisG/test/ami.py" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classami_1_1_h_t_t_p_1ad27db62079edb1534cf7890668a20e14" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>ami.HTTP::connection</definition>
+        <argsstring></argsstring>
+        <name>connection</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/ami.py" line="20" column="1" bodyfile="/workspaces/AnalysisG/test/ami.py" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classami_1_1_h_t_t_p_1a1f889c58b8976aeffc08e4a8aa40c3d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def ami.HTTP.__init__</definition>
+        <argsstring>(self, config)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/ami.py" line="9" column="1" bodyfile="/workspaces/AnalysisG/test/ami.py" bodystart="9" bodyend="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classami_1_1_h_t_t_p_1aefbcc6c7f88500ad4a364fb63adde608" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def ami.HTTP.connect</definition>
+        <argsstring>(self, endpoint)</argsstring>
+        <name>connect</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classami_1_1_h_t_t_p_1a9a22e0161d305b1b6aab56c113c7b1cc" kindref="member">endpoint</ref></type>
+          <defname>endpoint</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/ami.py" line="12" column="1" bodyfile="/workspaces/AnalysisG/test/ami.py" bodystart="12" bodyend="21"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>HttpClient</label>
+      </node>
+      <node id="1">
+        <label>ami.HTTP</label>
+        <link refid="classami_1_1_h_t_t_p"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>HttpClient</label>
+      </node>
+      <node id="1">
+        <label>ami.HTTP</label>
+        <link refid="classami_1_1_h_t_t_p"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/workspaces/AnalysisG/test/ami.py" line="7" column="1" bodyfile="/workspaces/AnalysisG/test/ami.py" bodystart="7" bodyend="22"/>
+    <listofallmembers>
+      <member refid="classami_1_1_h_t_t_p_1a1f889c58b8976aeffc08e4a8aa40c3d0" prot="public" virt="non-virtual"><scope>ami::HTTP</scope><name>__init__</name></member>
+      <member refid="classami_1_1_h_t_t_p_1aefbcc6c7f88500ad4a364fb63adde608" prot="public" virt="non-virtual"><scope>ami::HTTP</scope><name>connect</name></member>
+      <member refid="classami_1_1_h_t_t_p_1ad27db62079edb1534cf7890668a20e14" prot="public" virt="non-virtual"><scope>ami::HTTP</scope><name>connection</name></member>
+      <member refid="classami_1_1_h_t_t_p_1a9a22e0161d305b1b6aab56c113c7b1cc" prot="public" virt="non-virtual"><scope>ami::HTTP</scope><name>endpoint</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

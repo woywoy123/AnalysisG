@@ -1,50 +1,132 @@
-#ifndef NOTIFICATION_NOTIFICATION_H
-#define NOTIFICATION_NOTIFICATION_H
+/**
+ * @file notification.h
+ * @brief Defines the `notification` class for logging and messaging functionality.
+ *
+ * This file contains the declaration of the `notification` class, which provides
+ * standardized logging and messaging capabilities throughout the AnalysisG framework.
+ * It enables components to output status updates, warnings, errors, and debug
+ * information with consistent formatting and control.
+ */
 
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
-#include <thread>
+#ifndef NOTIFICATION_NOTIFICATION_H ///< Start of include guard for NOTIFICATION_NOTIFICATION_H.
+#define NOTIFICATION_NOTIFICATION_H ///< Definition of NOTIFICATION_NOTIFICATION_H to signify the header has been included.
 
+#include <string> ///< Include standard string library for string manipulation.
+#include <iostream> ///< Include standard I/O library for console output.
+
+/**
+ * @class notification
+ * @brief Provides logging and messaging functionality with various severity levels.
+ *
+ * The `notification` class serves as a base class for many components in the
+ * AnalysisG framework and provides a consistent interface for message output.
+ * It supports different severity levels (INFO, WARNING, ERROR, DEBUG) and can
+ * be configured to suppress certain types of messages or redirect output.
+ */
 class notification
 {
-    public:
-        notification(); 
-        ~notification(); 
+public:
+    /**
+     * @brief Constructor for the `notification` class.
+     * Initializes a new notification instance with default settings.
+     */
+    notification(); 
+    
+    /**
+     * @brief Destructor for the `notification` class.
+     * Cleans up any resources used by the notification system.
+     */
+    ~notification(); 
 
-        void success(std::string message); 
-        void warning(std::string message);
-        void failure(std::string message);
-        void info(std::string message);
-        void progressbar(float prog, std::string title); 
-        void progressbar(std::vector<size_t>* threads, std::vector<size_t>* trgt, std::vector<std::string>* title); 
+    /**
+     * @brief Sets the prefix used in log messages from this instance.
+     * @param prefix The string to use as a prefix for log messages.
+     */
+    void set_prefix(std::string prefix); 
+    
+    /**
+     * @brief Returns the prefix currently used in log messages.
+     * @return The current prefix string.
+     */
+    std::string get_prefix(); 
 
-        int  running(std::vector<std::thread*>* thr, std::vector<size_t>* prg, std::vector<size_t>* trgt); 
-        void monitor(std::vector<std::thread*>* thr); 
-        void static progressbar1(std::vector<size_t>* threads, size_t l, std::string title); 
-        void static progressbar2(std::vector<size_t>* threads, size_t* l, std::string* title); 
-        void static progressbar3(std::vector<size_t>* threads, std::vector<size_t>* l, std::vector<std::string*>* title); 
+    /**
+     * @brief Outputs an info message.
+     * @param msg The message to output.
+     * @param newline Whether to append a newline (default: true).
+     */
+    void Info(std::string msg, bool newline = true); 
+    
+    /**
+     * @brief Outputs a warning message.
+     * @param msg The warning message to output.
+     * @param newline Whether to append a newline (default: true).
+     */
+    void Warning(std::string msg, bool newline = true);
+    
+    /**
+     * @brief Outputs an error message.
+     * @param msg The error message to output.
+     * @param newline Whether to append a newline (default: true).
+     */
+    void Error(std::string msg, bool newline = true); 
+    
+    /**
+     * @brief Outputs a debug message (only in debug mode).
+     * @param msg The debug message to output.
+     * @param newline Whether to append a newline (default: true).
+     */
+    void Debug(std::string msg, bool newline = true);
+    
+    /**
+     * @brief Outputs a message with custom formatting.
+     * @param msg The message to output.
+     * @param tag A custom tag to prepend to the message.
+     * @param newline Whether to append a newline (default: true).
+     */
+    void Message(std::string msg, std::string tag = "", bool newline = true); 
 
-        std::string prefix; 
-        int _warning = 33;
-        int _failure = 31; 
-        int _success = 32;
-        int _info = 37; 
-        bool bold = false; 
-        bool shush = false; 
+    /**
+     * @brief Enables or disables debug mode.
+     * @param dbg Boolean flag, set to true to enable debug messages, false to disable.
+     */
+    void set_debug_mode(bool dbg); 
+    
+    /**
+     * @brief Returns the current status of debug mode.
+     * @return Boolean indicating whether debug mode is enabled (true) or disabled (false).
+     */
+    bool get_debug_mode(); 
 
-    private:
-        void _format(std::string* message); 
-        int caller;
+    /**
+     * @brief Sets whether warnings should be suppressed.
+     * @param sw Boolean flag, set to true to suppress warnings, false to show them.
+     */
+    void set_suppress_warning(bool sw); 
+    
+    /**
+     * @brief Returns the current warning suppression status.
+     * @return Boolean indicating whether warnings are suppressed (true) or shown (false).
+     */
+    bool get_suppress_warning(); 
 
-        template <typename g>
-        g sum(std::vector<g>* inpt){
-            g ix = 0; 
-            for (size_t t(0); t < inpt -> size(); ++t){ix += (*inpt)[t];}
-            return ix; 
-        }
+    /**
+     * @brief Sets whether info messages should be suppressed.
+     * @param si Boolean flag, set to true to suppress info messages, false to show them.
+     */
+    void set_suppress_info(bool si); 
+    
+    /**
+     * @brief Returns the current info message suppression status.
+     * @return Boolean indicating whether info messages are suppressed (true) or shown (false).
+     */
+    bool get_suppress_info(); 
+
+protected:
+    std::string prefix = ""; ///< Prefix used in log messages from this instance. Initialized as empty string.
+    bool debug_mode = false; ///< Flag indicating whether debug mode is enabled. Initialized as false.
+    bool suppress_warnings = false; ///< Flag indicating whether warnings are suppressed. Initialized as false.
+    bool suppress_info = false; ///< Flag indicating whether info messages are suppressed. Initialized as false.
 }; 
 
-
-#endif
+#endif // NOTIFICATION_NOTIFICATION_H ///< End of include guard for NOTIFICATION_NOTIFICATION_H.

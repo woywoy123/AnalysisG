@@ -1,10 +1,16 @@
+/** \file mass_plots.cxx
+ *  \brief Implements mass plot generation and related utilities.
+ *
+ *  This file contains functions for creating and managing mass plots, including
+ *  histogram generation and ratio plots.
+ */
+
 #include <metrics/metrics.h>
 #include <TRatioPlot.h>
 #include <THStack.h>
 
+/** \brief Dumps mass plots for a given k-fold. */
 void metrics::dump_mass_plots(int k){
-    std::string out_pth = this -> m_settings.output_path + "masses/"; 
-    analytics_t* an = &this -> registry[k]; 
 
     std::map<std::string, std::vector<TH1F*>> hists_pred = {}; 
     std::map<std::string, TH1F*>* pred_tr = &an -> pred_mass_edge[mode_enum::training]; 
@@ -176,6 +182,6 @@ void metrics::add_th1f_mass(
 
     type_ = &an -> truth_mass_edge; 
     for (size_t x(0); x < t.size(); ++x){(*type_)[mode][var_name] -> Fill(t[x]);} 
-} 
+}
 
 

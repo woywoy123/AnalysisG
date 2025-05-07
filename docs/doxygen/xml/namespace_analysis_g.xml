@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespace_analysis_g" kind="namespace" language="Python">
+    <compoundname>AnalysisG</compoundname>
+    <innernamespace refid="namespace_analysis_g_1_1core">AnalysisG::core</innernamespace>
+    <innernamespace refid="namespace_analysis_g_1_1events">AnalysisG::events</innernamespace>
+    <innernamespace refid="namespace_analysis_g_1_1graphs">AnalysisG::graphs</innernamespace>
+    <innernamespace refid="namespace_analysis_g_1_1metrics">AnalysisG::metrics</innernamespace>
+    <innernamespace refid="namespace_analysis_g_1_1models">AnalysisG::models</innernamespace>
+    <innernamespace refid="namespace_analysis_g_1_1selections">AnalysisG::selections</innernamespace>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_analysis_g_1adaef7e44322ce19d65aac1df425c6241" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def AnalysisG._getcmd</definition>
+        <argsstring>(cmd)</argsstring>
+        <name>_getcmd</name>
+        <param>
+          <type>cmd</type>
+          <defname>cmd</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="__init__.py" line="4" column="1" bodyfile="__init__.py" bodystart="4" bodyend="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_analysis_g_1a383c8e608ec845368c183d723c110e69" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def AnalysisG.config_pyami</definition>
+        <argsstring>()</argsstring>
+        <name>config_pyami</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="__init__.py" line="7" column="1" bodyfile="__init__.py" bodystart="7" bodyend="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_analysis_g_1abfe49e72f7c74dadbcd78ada02a14ecd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def AnalysisG.auth_pyami</definition>
+        <argsstring>()</argsstring>
+        <name>auth_pyami</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="__init__.py" line="12" column="1" bodyfile="__init__.py" bodystart="12" bodyend="30"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="__init__.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

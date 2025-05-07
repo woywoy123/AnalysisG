@@ -1,0 +1,692 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classexp__mc20" kind="class" language="C++" prot="public">
+    <compoundname>exp_mc20</compoundname>
+    <basecompoundref refid="classevent__template" prot="public" virt="non-virtual">event_template</basecompoundref>
+    <includes refid="events_2exp__mc20_2include_2exp__mc20_2event_8h" local="no">event.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classexp__mc20_1a3e5799271ec8d39b9e113b82fd216e91" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; exp_mc20::Tops</definition>
+        <argsstring></argsstring>
+        <name>Tops</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="13" column="21" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="13" bodyend="-1"/>
+        <referencedby refid="classexp__mc20_1ac468950eb1e018cd71513c6b5c013336" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="39" endline="100">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1a765ddc82330655cbc6306039c176bb68" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; exp_mc20::TopChildren</definition>
+        <argsstring></argsstring>
+        <name>TopChildren</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="14" column="21" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="14" bodyend="-1"/>
+        <referencedby refid="classexp__mc20_1ac468950eb1e018cd71513c6b5c013336" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="39" endline="100">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1a689869b5634e36b11f29650b16b63ffb" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; exp_mc20::PhysicsTruth</definition>
+        <argsstring></argsstring>
+        <name>PhysicsTruth</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="15" column="21" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="15" bodyend="-1"/>
+        <referencedby refid="classexp__mc20_1ac468950eb1e018cd71513c6b5c013336" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="39" endline="100">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1a02d75864e9230927bcd509bf0b00031b" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; exp_mc20::PhysicsDetector</definition>
+        <argsstring></argsstring>
+        <name>PhysicsDetector</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="16" column="21" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="16" bodyend="-1"/>
+        <referencedby refid="classexp__mc20_1ac468950eb1e018cd71513c6b5c013336" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="39" endline="100">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1ae5c78d253b9b74c1f1f41010b6490b4c" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; exp_mc20::Jets</definition>
+        <argsstring></argsstring>
+        <name>Jets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="18" column="21" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="18" bodyend="-1"/>
+        <referencedby refid="classexp__mc20_1ac468950eb1e018cd71513c6b5c013336" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="39" endline="100">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1a2952c7e0b31a8176123293e4e8762cd1" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; exp_mc20::Leptons</definition>
+        <argsstring></argsstring>
+        <name>Leptons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="19" column="21" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="19" bodyend="-1"/>
+        <referencedby refid="classexp__mc20_1ac468950eb1e018cd71513c6b5c013336" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="39" endline="100">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1ac459cca288e574448870a092c984207f" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; exp_mc20::Detector</definition>
+        <argsstring></argsstring>
+        <name>Detector</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="20" column="21" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="20" bodyend="-1"/>
+        <referencedby refid="classexp__mc20_1ac468950eb1e018cd71513c6b5c013336" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="39" endline="100">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1ae13adc5bca5d92fba5ac5ccdb3b2a788" prot="public" static="no" mutable="no">
+        <type>unsigned long long</type>
+        <definition>unsigned long long exp_mc20::event_number</definition>
+        <argsstring></argsstring>
+        <name>event_number</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="22" column="28" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="22" bodyend="-1"/>
+        <referencedby refid="classexp__mc20_1a0250aef348c56283ec760ac234015533" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="26" endline="37">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1ab4aa2bd8cf0270a5cb156da3fb206901" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float exp_mc20::met_sum</definition>
+        <argsstring></argsstring>
+        <name>met_sum</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="23" column="15" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="23" bodyend="-1"/>
+        <referencedby refid="classexp__mc20_1a0250aef348c56283ec760ac234015533" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="26" endline="37">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1a543a32e4237085794db9b5dae456dd8a" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float exp_mc20::met</definition>
+        <argsstring></argsstring>
+        <name>met</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="24" column="15" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1ac2e323cba868b4fe5d5adf2b4f89e25d" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float exp_mc20::phi</definition>
+        <argsstring></argsstring>
+        <name>phi</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="25" column="15" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="25" bodyend="-1"/>
+        <referencedby refid="classexp__mc20_1a0250aef348c56283ec760ac234015533" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="26" endline="37">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1acbef7b432a0e4eda0650155991ed3bea" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float exp_mc20::mu</definition>
+        <argsstring></argsstring>
+        <name>mu</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="26" column="15" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="26" bodyend="-1"/>
+        <referencedby refid="classloader_1_1_mdx_1ac44370ba597112d3dc84358e0c204abb" compoundref="loader_8py" startline="10" endline="12">loader.Mdx.__str__</referencedby>
+        <referencedby refid="classnusol_1_1_nu_sol_1a28b9c4ac506a152da20144d8a8d9ac11" compoundref="nusol_8py" startline="160" endline="166">nusol.NuSol.BaseMatrix</referencedby>
+        <referencedby refid="classvalidation_1_1nusol_1_1_nu_sol_1af9c5b785eac2717af7368d4957c43b39" compoundref="validation_2nusol_8py" startline="160" endline="166">validation.nusol.NuSol.BaseMatrix</referencedby>
+        <referencedby refid="classexp__mc20_1a0250aef348c56283ec760ac234015533" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="26" endline="37">build</referencedby>
+        <referencedby refid="classvalidation_1_1nusol_1_1_nu_sol_1abf299defc717937baad1b0ff7178cbeb" compoundref="validation_2nusol_8py" startline="138" endline="140">validation.nusol.NuSol.eps2</referencedby>
+        <referencedby refid="classnusol_1_1_nu_sol_1aeec089015d101c7d769efbfbd1044940" compoundref="nusol_8py" startline="138" endline="140">nusol.NuSol.eps2</referencedby>
+        <referencedby refid="classnusol_1_1_nu_sol_1a30b8066a6a47c9d0265bcd1b70a4c9bf" compoundref="nusol_8py" startline="135" endline="136">nusol.NuSol.Om2</referencedby>
+        <referencedby refid="classvalidation_1_1nusol_1_1_nu_sol_1a20b25b4263a18aceddf4b54bd23aac3e" compoundref="validation_2nusol_8py" startline="135" endline="136">validation.nusol.NuSol.Om2</referencedby>
+        <referencedby refid="classvalidation_1_1nusol_1_1_nu_sol_1a39b97a785680ab4ddf162f654b610857" compoundref="validation_2nusol_8py" startline="168" endline="174">validation.nusol.NuSol.R_T</referencedby>
+        <referencedby refid="classnusol_1_1_nu_sol_1aa6e2e7e12f3331995e34a516f6590a58" compoundref="nusol_8py" startline="168" endline="174">nusol.NuSol.R_T</referencedby>
+        <referencedby refid="classnusol_1_1_nu_sol_1a7b3b7f68ad5c6941f4f5fbb8f77cc429" compoundref="nusol_8py" startline="119" endline="123">nusol.NuSol.Sx</referencedby>
+        <referencedby refid="classvalidation_1_1nusol_1_1_nu_sol_1aa4261efb41acd505662f541fb694f11f" compoundref="validation_2nusol_8py" startline="119" endline="123">validation.nusol.NuSol.Sx</referencedby>
+        <referencedby refid="classnusol_1_1_nu_sol_1a6cef8840625c26f610d5d826f4c42f77" compoundref="nusol_8py" startline="130" endline="133">nusol.NuSol.w</referencedby>
+        <referencedby refid="classvalidation_1_1nusol_1_1_nu_sol_1a8211523206e9e79c2709fc1e2cbc13e8" compoundref="validation_2nusol_8py" startline="130" endline="133">validation.nusol.NuSol.w</referencedby>
+        <referencedby refid="classnusol_1_1_nu_sol_1af1457c81033dfb45d4f5b30be1e872c4" compoundref="nusol_8py" startline="114" endline="117">nusol.NuSol.x0</referencedby>
+        <referencedby refid="classvalidation_1_1nusol_1_1_nu_sol_1ae83be5801fcd37dec332a6b221e10747" compoundref="validation_2nusol_8py" startline="114" endline="117">validation.nusol.NuSol.x0</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classexp__mc20_1a8a4153708849364e2b7b664a9efb2e4a" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classtop" kindref="compound">top</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, top*&gt; exp_mc20::m_tops</definition>
+        <argsstring></argsstring>
+        <name>m_tops</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="33" column="20" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1aac3daf4250728c56ce441f80e4cee267" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classchild" kindref="compound">child</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, child*&gt; exp_mc20::m_children</definition>
+        <argsstring></argsstring>
+        <name>m_children</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="34" column="18" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1a3ca78e9f539122f3390ffed79b7c0515" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classphysics__truth" kindref="compound">physics_truth</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, physics_truth*&gt; exp_mc20::m_phystru</definition>
+        <argsstring></argsstring>
+        <name>m_phystru</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="36" column="21" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1ae986db63a2378c8523b7622962148859" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classphysics__detector" kindref="compound">physics_detector</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, physics_detector*&gt; exp_mc20::m_physdet</definition>
+        <argsstring></argsstring>
+        <name>m_physdet</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="37" column="18" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1a9d24772131829ca24231ef5f279148aa" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classjet" kindref="compound">jet</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, jet*&gt; exp_mc20::m_jets</definition>
+        <argsstring></argsstring>
+        <name>m_jets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="39" column="23" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1a1864bbabc816341009942767b870df57" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classmuon" kindref="compound">muon</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, muon*&gt; exp_mc20::m_muons</definition>
+        <argsstring></argsstring>
+        <name>m_muons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="40" column="22" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classexp__mc20_1acbbd7420f6ea92200b84e81f5fe4e71c" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classelectron" kindref="compound">electron</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, electron*&gt; exp_mc20::m_electrons</definition>
+        <argsstring></argsstring>
+        <name>m_electrons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="41" column="18" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classexp__mc20_1a0722113132ac84d16140b17c046ff4e7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>exp_mc20::exp_mc20</definition>
+        <argsstring>()</argsstring>
+        <name>exp_mc20</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="10" column="9" bodyfile="events/exp_mc20/cxx/event.cxx" bodystart="3" bodyend="20"/>
+        <references refid="_3event-name_4_8cxx_1a5449d540d047658d711bb2a06d8656c2">add_leaf</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <references refid="_3event-name_4_8cxx_1a5e0f2787f92f983370938617945f3ec8" compoundref="_3event-name_4_8cxx" startline="6">trees</references>
+        <referencedby refid="classexp__mc20_1a72d513c2a73ba9b037427be6dda52075" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="24" endline="24">clone</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classexp__mc20_1afe4dee33505dd76951de96ea4e6a3c30" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>exp_mc20::~exp_mc20</definition>
+        <argsstring>()</argsstring>
+        <name>~exp_mc20</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="11" column="17" bodyfile="events/exp_mc20/cxx/event.cxx" bodystart="22" bodyend="22"/>
+      </memberdef>
+      <memberdef kind="function" id="classexp__mc20_1a72d513c2a73ba9b037427be6dda52075" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classevent__template" kindref="compound">event_template</ref> *</type>
+        <definition>event_template * exp_mc20::clone</definition>
+        <argsstring>() override</argsstring>
+        <name>clone</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="28" column="24" bodyfile="events/exp_mc20/cxx/event.cxx" bodystart="24" bodyend="24"/>
+        <references refid="classexp__mc20_1a0722113132ac84d16140b17c046ff4e7" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="3" endline="20">exp_mc20</references>
+      </memberdef>
+      <memberdef kind="function" id="classexp__mc20_1a0250aef348c56283ec760ac234015533" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void exp_mc20::build</definition>
+        <argsstring>(element_t *el) override</argsstring>
+        <name>build</name>
+        <param>
+          <type><ref refid="structelement__t" kindref="compound">element_t</ref> *</type>
+          <declname>el</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="29" column="14" bodyfile="events/exp_mc20/cxx/event.cxx" bodystart="26" bodyend="37"/>
+        <references refid="classexp__mc20_1ae13adc5bca5d92fba5ac5ccdb3b2a788" compoundref="events_2exp__mc20_2include_2exp__mc20_2event_8h" startline="22">event_number</references>
+        <references refid="classexp__mc20_1ab4aa2bd8cf0270a5cb156da3fb206901" compoundref="events_2exp__mc20_2include_2exp__mc20_2event_8h" startline="23">met_sum</references>
+        <references refid="classexp__mc20_1acbef7b432a0e4eda0650155991ed3bea" compoundref="events_2exp__mc20_2include_2exp__mc20_2event_8h" startline="26">mu</references>
+        <references refid="classexp__mc20_1ac2e323cba868b4fe5d5adf2b4f89e25d" compoundref="events_2exp__mc20_2include_2exp__mc20_2event_8h" startline="25">phi</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a7edabf994b76a00cbc60c95af337db8f">weight</references>
+      </memberdef>
+      <memberdef kind="function" id="classexp__mc20_1ac468950eb1e018cd71513c6b5c013336" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void exp_mc20::CompileEvent</definition>
+        <argsstring>() override</argsstring>
+        <name>CompileEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="30" column="14" bodyfile="events/exp_mc20/cxx/event.cxx" bodystart="39" bodyend="100"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33">c</references>
+        <references refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1adbd2ec240755f1bf46b2c157f0325669" compoundref="pyc_2interface_2physics_8cxx" startline="223" endline="232">pyc::physics::cartesian::separate::DeltaR</references>
+        <references refid="classexp__mc20_1ac459cca288e574448870a092c984207f" compoundref="events_2exp__mc20_2include_2exp__mc20_2event_8h" startline="20">Detector</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86">index</references>
+        <references refid="classexp__mc20_1ae5c78d253b9b74c1f1f41010b6490b4c" compoundref="events_2exp__mc20_2include_2exp__mc20_2event_8h" startline="18">Jets</references>
+        <references refid="classexp__mc20_1a2952c7e0b31a8176123293e4e8762cd1" compoundref="events_2exp__mc20_2include_2exp__mc20_2event_8h" startline="19">Leptons</references>
+        <references refid="namespacemain_1aa6eea602ff3979e1ff2936eeeb7c1cd7" compoundref="performance_2main_8py" startline="157">main.parents</references>
+        <references refid="classexp__mc20_1a02d75864e9230927bcd509bf0b00031b" compoundref="events_2exp__mc20_2include_2exp__mc20_2event_8h" startline="16">PhysicsDetector</references>
+        <references refid="classexp__mc20_1a689869b5634e36b11f29650b16b63ffb" compoundref="events_2exp__mc20_2include_2exp__mc20_2event_8h" startline="15">PhysicsTruth</references>
+        <references refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" compoundref="test__experimental__mc20_8py" startline="7">test_experimental_mc20.t</references>
+        <references refid="classexp__mc20_1a765ddc82330655cbc6306039c176bb68" compoundref="events_2exp__mc20_2include_2exp__mc20_2event_8h" startline="14">TopChildren</references>
+        <references refid="classexp__mc20_1a3e5799271ec8d39b9e113b82fd216e91" compoundref="events_2exp__mc20_2include_2exp__mc20_2event_8h" startline="13">Tops</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classexp__mc20_1a447b2f8696217dd7c4a18845962a51b5" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename G</type>
+          </param>
+        </templateparamlist>
+        <type>std::map&lt; int, G * &gt;</type>
+        <definition>std::map&lt;int, G*&gt; exp_mc20::sort_by_index</definition>
+        <argsstring>(std::map&lt; std::string, G * &gt; *ipt)</argsstring>
+        <name>sort_by_index</name>
+        <param>
+          <type>std::map&lt; std::string, G * &gt; *</type>
+          <declname>ipt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="44" column="18" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="44" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="classexp__mc20_1ac2c6fcd6d21dcc541546c2e9b07f1e10" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename m</type>
+          </param>
+          <param>
+            <type>typename G</type>
+          </param>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void exp_mc20::vectorize</definition>
+        <argsstring>(std::map&lt; m, G * &gt; *ipt, std::vector&lt; g * &gt; *vec)</argsstring>
+        <name>vectorize</name>
+        <param>
+          <type>std::map&lt; m, G * &gt; *</type>
+          <declname>ipt</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>vec</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/exp_mc20/include/exp_mc20/event.h" line="52" column="14" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="52" bodyend="55"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>event_template</label>
+        <link refid="classevent__template"/>
+      </node>
+      <node id="1">
+        <label>exp_mc20</label>
+        <link refid="classexp__mc20"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="12">
+        <label>cproperty&lt; int, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; int, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>K</label>
+      </node>
+      <node id="11">
+        <label>T</label>
+      </node>
+      <node id="4">
+        <label>particle_template</label>
+        <link refid="classparticle__template"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>m_children</edgelabel>
+          <edgelabel>m_parents</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>pdgid</edgelabel>
+          <edgelabel>index</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>is_lep</edgelabel>
+          <edgelabel>is_nu</edgelabel>
+          <edgelabel>is_add</edgelabel>
+          <edgelabel>is_b</edgelabel>
+          <edgelabel>lep_decay</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>charge</edgelabel>
+          <edgelabel>pt</edgelabel>
+          <edgelabel>mass</edgelabel>
+          <edgelabel>px</edgelabel>
+          <edgelabel>py</edgelabel>
+          <edgelabel>pz</edgelabel>
+          <edgelabel>phi</edgelabel>
+          <edgelabel>eta</edgelabel>
+          <edgelabel>e</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>leaves</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>symbol</edgelabel>
+          <edgelabel>type</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>data</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>parents</edgelabel>
+          <edgelabel>children</edgelabel>
+        </childnode>
+      </node>
+      <node id="21">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="11" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>std::map&lt; std::string, particle_template * &gt;</label>
+        <childnode refid="7" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="template-instance">
+          <edgelabel>&lt; std::string, particle_template * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="22">
+        <label>cproperty&lt; std::map&lt; std::string, particle_template * &gt;, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, particle_template * &gt;, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="10" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="19">
+        <label>std::map&lt; std::string, bool &gt;</label>
+        <childnode refid="7" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="template-instance">
+          <edgelabel>&lt; std::string, bool &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>cproperty&lt; T, G &gt;</label>
+        <link refid="classcproperty"/>
+      </node>
+      <node id="8">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="18">
+        <label>particle_t</label>
+        <link refid="structparticle__t"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>data_p</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>parents</edgelabel>
+          <edgelabel>children</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>symbol</edgelabel>
+          <edgelabel>type</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>nudef</edgelabel>
+          <edgelabel>lepdef</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>std::map&lt; std::string, std::string &gt;</label>
+        <childnode refid="7" relation="usage">
+          <edgelabel>keys</edgelabel>
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="template-instance">
+          <edgelabel>&lt; std::string, std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>cproperty&lt; bool, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; bool, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::vector&lt; particle_template * &gt;</label>
+        <childnode refid="4" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="template-instance">
+          <edgelabel>&lt; particle_template * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>event_template</label>
+        <link refid="classevent__template"/>
+      </node>
+      <node id="15">
+        <label>cproperty&lt; double, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; double, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>exp_mc20</label>
+        <link refid="classexp__mc20"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>TopChildren</edgelabel>
+          <edgelabel>Detector</edgelabel>
+          <edgelabel>Jets</edgelabel>
+          <edgelabel>PhysicsDetector</edgelabel>
+          <edgelabel>PhysicsTruth</edgelabel>
+          <edgelabel>Leptons</edgelabel>
+          <edgelabel>Tops</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>cproperty&lt; std::string, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::string, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>std::vector&lt; int &gt;</label>
+        <childnode refid="21" relation="template-instance">
+          <edgelabel>&lt; int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+      <node id="7">
+        <label>std::string</label>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="events/exp_mc20/include/exp_mc20/event.h" line="8" column="1" bodyfile="events/exp_mc20/include/exp_mc20/event.h" bodystart="7" bodyend="57"/>
+    <listofallmembers>
+      <member refid="classexp__mc20_1a0250aef348c56283ec760ac234015533" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>build</name></member>
+      <member refid="classexp__mc20_1a72d513c2a73ba9b037427be6dda52075" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>clone</name></member>
+      <member refid="classexp__mc20_1ac468950eb1e018cd71513c6b5c013336" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>CompileEvent</name></member>
+      <member refid="classexp__mc20_1ac459cca288e574448870a092c984207f" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>Detector</name></member>
+      <member refid="classexp__mc20_1ae13adc5bca5d92fba5ac5ccdb3b2a788" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>event_number</name></member>
+      <member refid="classexp__mc20_1a0722113132ac84d16140b17c046ff4e7" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>exp_mc20</name></member>
+      <member refid="classexp__mc20_1ae5c78d253b9b74c1f1f41010b6490b4c" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>Jets</name></member>
+      <member refid="classexp__mc20_1a2952c7e0b31a8176123293e4e8762cd1" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>Leptons</name></member>
+      <member refid="classexp__mc20_1aac3daf4250728c56ce441f80e4cee267" prot="private" virt="non-virtual"><scope>exp_mc20</scope><name>m_children</name></member>
+      <member refid="classexp__mc20_1acbbd7420f6ea92200b84e81f5fe4e71c" prot="private" virt="non-virtual"><scope>exp_mc20</scope><name>m_electrons</name></member>
+      <member refid="classexp__mc20_1a9d24772131829ca24231ef5f279148aa" prot="private" virt="non-virtual"><scope>exp_mc20</scope><name>m_jets</name></member>
+      <member refid="classexp__mc20_1a1864bbabc816341009942767b870df57" prot="private" virt="non-virtual"><scope>exp_mc20</scope><name>m_muons</name></member>
+      <member refid="classexp__mc20_1ae986db63a2378c8523b7622962148859" prot="private" virt="non-virtual"><scope>exp_mc20</scope><name>m_physdet</name></member>
+      <member refid="classexp__mc20_1a3ca78e9f539122f3390ffed79b7c0515" prot="private" virt="non-virtual"><scope>exp_mc20</scope><name>m_phystru</name></member>
+      <member refid="classexp__mc20_1a8a4153708849364e2b7b664a9efb2e4a" prot="private" virt="non-virtual"><scope>exp_mc20</scope><name>m_tops</name></member>
+      <member refid="classexp__mc20_1a543a32e4237085794db9b5dae456dd8a" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>met</name></member>
+      <member refid="classexp__mc20_1ab4aa2bd8cf0270a5cb156da3fb206901" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>met_sum</name></member>
+      <member refid="classexp__mc20_1acbef7b432a0e4eda0650155991ed3bea" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>mu</name></member>
+      <member refid="classexp__mc20_1ac2e323cba868b4fe5d5adf2b4f89e25d" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>phi</name></member>
+      <member refid="classexp__mc20_1a02d75864e9230927bcd509bf0b00031b" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>PhysicsDetector</name></member>
+      <member refid="classexp__mc20_1a689869b5634e36b11f29650b16b63ffb" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>PhysicsTruth</name></member>
+      <member refid="classexp__mc20_1a447b2f8696217dd7c4a18845962a51b5" prot="private" virt="non-virtual"><scope>exp_mc20</scope><name>sort_by_index</name></member>
+      <member refid="classexp__mc20_1a765ddc82330655cbc6306039c176bb68" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>TopChildren</name></member>
+      <member refid="classexp__mc20_1a3e5799271ec8d39b9e113b82fd216e91" prot="public" virt="non-virtual"><scope>exp_mc20</scope><name>Tops</name></member>
+      <member refid="classexp__mc20_1ac2c6fcd6d21dcc541546c2e9b07f1e10" prot="private" virt="non-virtual"><scope>exp_mc20</scope><name>vectorize</name></member>
+      <member refid="classexp__mc20_1afe4dee33505dd76951de96ea4e6a3c30" prot="public" virt="virtual"><scope>exp_mc20</scope><name>~exp_mc20</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

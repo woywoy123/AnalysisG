@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespaceloader" kind="namespace" language="Python">
+    <compoundname>loader</compoundname>
+    <innerclass refid="classloader_1_1data" prot="public">loader::data</innerclass>
+    <innerclass refid="classloader_1_1_mdx" prot="public">loader::Mdx</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceloader_1a0b911cf7bb73654dc6e78991bc059d2b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def loader.construct</definition>
+        <argsstring>(pth, devices)</argsstring>
+        <name>construct</name>
+        <param>
+          <type>pth</type>
+          <defname>pth</defname>
+        </param>
+        <param>
+          <type>devices</type>
+          <defname>devices</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/loader.py" line="50" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/loader.py" bodystart="50" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceloader_1a156716082f9fff1abf9344f8a6fd4a2f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def loader.assignment</definition>
+        <argsstring>(pkt)</argsstring>
+        <name>assignment</name>
+        <param>
+          <type>pkt</type>
+          <defname>pkt</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/loader.py" line="66" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/loader.py" bodystart="66" bodyend="134"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/benchmarks/loader.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

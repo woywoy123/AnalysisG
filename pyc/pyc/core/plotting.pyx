@@ -1,3 +1,8 @@
+/**
+ * @file plotting.pyx
+ * @brief Provides plotting utilities for the AnalysisG framework.
+ */
+
 # distutils: language = c++
 # cython: language_level = 3
 
@@ -90,6 +95,10 @@ def chi2(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False):
     axis.axhline(0, linestyle = "--", color = "grey")
     return out
 
+/**
+ * @class BasePlotting
+ * @brief Base class for plotting utilities.
+ */
 cdef class BasePlotting:
     def __cinit__(self):
         self.ptr = new plotting()
@@ -108,7 +117,6 @@ cdef class BasePlotting:
         self._fig, self._ax = self.matpl.subplots(**com)
         try: self._ax.set_autoscale_on(self.ptr.auto_scale)
         except: self._ax[0].set_autoscale_on(self.ptr.auto_scale)
-
 
     cdef void __resetplt__(self):
         self.matpl.clf()

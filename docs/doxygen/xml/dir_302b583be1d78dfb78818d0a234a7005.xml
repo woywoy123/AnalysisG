@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_302b583be1d78dfb78818d0a234a7005" kind="dir">
+    <compoundname>graph</compoundname>
+    <innerfile refid="graph_8h">graph.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pyc/graph/include/graph/"/>
+  </compounddef>
+</doxygen>

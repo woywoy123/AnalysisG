@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_bc82bf3ca7c5362cfdb8685ad0dbd6e8" kind="dir">
+    <compoundname>mc16</compoundname>
+    <innerdir refid="dir_703aba85e66e9dd1d4fa0d9a68f179bd">childrenkinematics</innerdir>
+    <innerdir refid="dir_a9396c7da646f9875999db635f3cca1a">decaymodes</innerdir>
+    <innerdir refid="dir_2e9d20a53d33e238a569447abc5fa473">event</innerdir>
+    <innerdir refid="dir_4a043fcd21db257cf30fa0f423feb155">parton</innerdir>
+    <innerdir refid="dir_9fcb0f35887a888e860a29fb002828f9">topjets</innerdir>
+    <innerdir refid="dir_9514af935db44795a8af2c38ee8e1d16">topkinematics</innerdir>
+    <innerdir refid="dir_6ca00c4197a8cc317cb20091c3b5a024">topmatching</innerdir>
+    <innerdir refid="dir_d9e286823e47caaa17521f70d2069f49">toptruthjets</innerdir>
+    <innerdir refid="dir_f0a07fac305659b23b9980e6dd7026f7">zprime</innerdir>
+    <innerfile refid="src_2_analysis_g_2selections_2mc16_2____init_____8py">src/AnalysisG/selections/mc16/__init__.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="selections/mc16/"/>
+  </compounddef>
+</doxygen>

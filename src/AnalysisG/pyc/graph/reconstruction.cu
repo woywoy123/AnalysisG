@@ -3,6 +3,63 @@
 #include <utils/atomic.cuh>
 #include <utils/utils.cuh>
 
+// Include the header file for base graph CUDA utilities
+#include <graph/base.cuh>
+
+// Define a namespace for graph-related operations
+namespace graph_{
+
+    // Function to perform graph reconstruction using PageRank algorithm
+    // Takes tensors for edge indices, node features, masses, and track data as input
+    // Returns a map of string to PyTorch tensors representing the reconstructed graph components
+    std::map<std::string, torch::Tensor> reconstruction(
+            torch::Tensor* edge_index, // Tensor of edge indices
+            torch::Tensor* node_feature, // Tensor of node features
+            torch::Tensor* masses, // Tensor of node masses
+            torch::Tensor* trk_data // Tensor of track data
+    ){
+        // Get the number of events and nodes from the edge_index tensor
+        const unsigned int num_event = edge_index -> size(0);
+        const unsigned int num_nodes = edge_index -> size(1);
+
+        // Initialize output tensors for PageRank cluster, nodes, and particle four-momenta (pmc)
+        torch::Tensor prc = torch::zeros({num_event, num_nodes}, MakeOp(edge_index));
+        torch::Tensor prn = torch::zeros({num_event, num_nodes}, MakeOp(edge_index));
+        torch::Tensor pmx = torch::zeros({num_event, num_nodes, 4}, MakeOp(masses));
+
+        // Define thread and block dimensions for CUDA kernels
+        const dim3 ths = dim3(num_nodes, 1, 1);
+        const dim3 bls = dim3(num_event, 1, 1);
+
+        // Dispatch CUDA kernels for PageRank and particle reconstruction
+        // The AT_DISPATCH_FLOATING_TYPES macro ensures this code runs for float and double types
+        AT_DISPATCH_FLOATING_TYPES(node_feature -> scalar_type(), "PageRankReconstruction", [&]{
+            _pagerank_reconstruction<scalar_t><<<bls, ths>>>(
+                    // Pass packed tensor accessors for efficient CUDA memory access
+                    edge_index -> packed_accessor64<long, 2, torch::RestrictPtrTraits>(),
+                    node_feature -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                    masses -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                    trk_data -> packed_accessor64<long, 2, torch::RestrictPtrTraits>(),
+
+                    prc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                    prn.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                    pmx.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
+                    num_nodes
+            );
+        });
+
+        // Reshape the particle four-momenta tensor
+        torch::Tensor px = pmx.view({-1, 4});
+        // Store the output tensors in a map
+        std::map<std::string, torch::Tensor> out;
+        out["unique-pmc"] = pmx; // Store unique particle four-momenta
+        out["page-cluster"] = prc; // Store PageRank cluster assignments
+        out["page-nodes"] = prn; // Store PageRank node scores
+        // Calculate and store the invariant mass from the four-momenta
+        out["page-mass"] = physics_::M(&px).view({num_event, num_nodes});
+        return out; // Return the map of reconstructed graph components
+    }
+}
 
 template <typename scalar_t, size_t size_x>
 __global__ void _find_unique(

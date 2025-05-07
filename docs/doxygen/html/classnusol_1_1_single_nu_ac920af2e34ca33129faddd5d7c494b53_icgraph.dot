@@ -1,0 +1,13 @@
+digraph "nusol.SingleNu.calcX2"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="nusol.SingleNu.calcX2",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="nusol.SingleNu.chi2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classnusol_1_1_single_nu.html#a80332b12ac457a340376de6e5fa771c9",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="validation.nusol.SingleNu.chi2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_single_nu.html#a246a5fe5631287e82d67fe2bc5c9f777",tooltip=" "];
+}

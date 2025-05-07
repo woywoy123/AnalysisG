@@ -1,0 +1,882 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="selection__template_8h" kind="file" language="C++">
+    <compoundname>selection_template.h</compoundname>
+    <includes refid="particle__template_8h" local="no">templates/particle_template.h</includes>
+    <includes refid="event__template_8h" local="no">templates/event_template.h</includes>
+    <includes refid="property_8h" local="no">structs/property.h</includes>
+    <includes refid="modules_2structs_2include_2structs_2event_8h" local="no">structs/event.h</includes>
+    <includes refid="enums_8h" local="no">structs/enums.h</includes>
+    <includes refid="meta_2include_2meta_2meta_8h" local="no">meta/meta.h</includes>
+    <includes refid="vector__cast_8h" local="no">tools/vector_cast.h</includes>
+    <includes refid="merge__cast_8h" local="no">tools/merge_cast.h</includes>
+    <includes refid="tools_8h" local="no">tools/tools.h</includes>
+    <includedby refid="analysis_8h" local="no">analysis.h</includedby>
+    <includedby refid="container_8h" local="no">container.h</includedby>
+    <includedby refid="selection_2cxx_2properties_8cxx" local="no">properties.cxx</includedby>
+    <includedby refid="selection__core_8cxx" local="no">selection_core.cxx</includedby>
+    <includedby refid="selection__template_8cxx" local="no">selection_template.cxx</includedby>
+    <includedby refid="regions_8h" local="no">regions.h</includedby>
+    <includedby refid="met_8h" local="no">met.h</includedby>
+    <includedby refid="childrenkinematics_8h" local="no">childrenkinematics.h</includedby>
+    <includedby refid="decaymodes_8h" local="no">decaymodes.h</includedby>
+    <includedby refid="selections_2mc16_2event_2event_8h" local="no">event.h</includedby>
+    <includedby refid="parton_8h" local="no">parton.h</includedby>
+    <includedby refid="topjets_8h" local="no">topjets.h</includedby>
+    <includedby refid="mc16_2topkinematics_2topkinematics_8h" local="no">topkinematics.h</includedby>
+    <includedby refid="mc16_2topmatching_2topmatching_8h" local="no">topmatching.h</includedby>
+    <includedby refid="toptruthjets_8h" local="no">toptruthjets.h</includedby>
+    <includedby refid="mc16_2zprime_2zprime_8h" local="no">zprime.h</includedby>
+    <includedby refid="matching_8h" local="no">matching.h</includedby>
+    <includedby refid="mc20_2topkinematics_2topkinematics_8h" local="no">topkinematics.h</includedby>
+    <includedby refid="mc20_2topmatching_2topmatching_8h" local="no">topmatching.h</includedby>
+    <includedby refid="mc20_2zprime_2zprime_8h" local="no">zprime.h</includedby>
+    <includedby refid="combinatorial_8h" local="no">combinatorial.h</includedby>
+    <includedby refid="validation_8h" local="no">validation.h</includedby>
+    <includedby refid="topefficiency_8h" local="no">topefficiency.h</includedby>
+    <includedby refid="_3selection-name_4_8h" local="no"><selection-name>.h</includedby>
+    <incdepgraph>
+      <node id="17">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="8">
+        <label>functional</label>
+      </node>
+      <node id="15">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="28">
+        <label>templates/event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="24">
+        <label>cstdint</label>
+      </node>
+      <node id="2">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>selection_template.h</label>
+        <link refid="selection__template_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>cmath</label>
+      </node>
+      <node id="21">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="6">
+        <label>map</label>
+      </node>
+      <node id="29">
+        <label>structs/event.h</label>
+        <link refid="modules_2structs_2include_2structs_2event_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="18">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+      <node id="33">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>TFile.h</label>
+      </node>
+      <node id="25">
+        <label>sstream</label>
+      </node>
+      <node id="3">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>tools/merge_cast.h</label>
+        <link refid="merge__cast_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>cstdlib</label>
+      </node>
+      <node id="22">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="34">
+        <label>TH1F.h</label>
+      </node>
+      <node id="13">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="19">
+        <label>iostream</label>
+      </node>
+      <node id="20">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>meta/meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>TBranch.h</label>
+      </node>
+      <node id="7">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>TTree.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="9">
+        <label>optimizer_build.cxx</label>
+        <link refid="optimizer__build_8cxx"/>
+      </node>
+      <node id="14">
+        <label>sampletracer.h</label>
+        <link refid="sampletracer_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>event_build.cxx</label>
+        <link refid="event__build_8cxx"/>
+      </node>
+      <node id="22">
+        <label>met.cxx</label>
+        <link refid="met_8cxx"/>
+      </node>
+      <node id="42">
+        <label>zprime.cxx</label>
+        <link refid="mc16_2zprime_2zprime_8cxx"/>
+      </node>
+      <node id="32">
+        <label>parton.cxx</label>
+        <link refid="parton_8cxx"/>
+      </node>
+      <node id="7">
+        <label>methods.cxx</label>
+        <link refid="methods_8cxx"/>
+      </node>
+      <node id="12">
+        <label>container.cxx</label>
+        <link refid="container_8cxx"/>
+      </node>
+      <node id="13">
+        <label>entries.cxx</label>
+        <link refid="entries_8cxx"/>
+      </node>
+      <node id="50">
+        <label>topmatching.h</label>
+        <link refid="mc20_2topmatching_2topmatching_8h"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>toptruthjets.cxx</label>
+        <link refid="toptruthjets_8cxx"/>
+      </node>
+      <node id="31">
+        <label>parton.h</label>
+        <link refid="parton_8h"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>selection_template.h</label>
+        <link refid="selection__template_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>childrenkinematics.h</label>
+        <link refid="childrenkinematics_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>mc20_exp.cxx</label>
+        <link refid="mc20__exp_8cxx"/>
+      </node>
+      <node id="39">
+        <label>toptruthjets.h</label>
+        <link refid="toptruthjets_8h"/>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>selection_build.cxx</label>
+        <link refid="selection__build_8cxx"/>
+      </node>
+      <node id="49">
+        <label>topkinematics.cxx</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8cxx"/>
+      </node>
+      <node id="17">
+        <label>selection_core.cxx</label>
+        <link refid="selection__core_8cxx"/>
+      </node>
+      <node id="47">
+        <label>mc20_ref.cxx</label>
+        <link refid="mc20__ref_8cxx"/>
+      </node>
+      <node id="35">
+        <label>topkinematics.h</label>
+        <link refid="mc16_2topkinematics_2topkinematics_8h"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>topjets.cxx</label>
+        <link refid="topjets_8cxx"/>
+      </node>
+      <node id="56">
+        <label>validation.h</label>
+        <link refid="validation_8h"/>
+        <childnode refid="57" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>inference_build.cxx</label>
+        <link refid="inference__build_8cxx"/>
+      </node>
+      <node id="60">
+        <label>&lt;selection-name&gt;.h</label>
+        <link refid="_3selection-name_4_8h"/>
+      </node>
+      <node id="26">
+        <label>decaymodes.cxx</label>
+        <link refid="decaymodes_8cxx"/>
+      </node>
+      <node id="57">
+        <label>validation.cxx</label>
+        <link refid="validation_8cxx"/>
+      </node>
+      <node id="53">
+        <label>zprime.cxx</label>
+        <link refid="mc20_2zprime_2zprime_8cxx"/>
+      </node>
+      <node id="28">
+        <label>event.cxx</label>
+        <link refid="events_2bsm__4tops_2cxx_2event_8cxx"/>
+      </node>
+      <node id="33">
+        <label>topjets.h</label>
+        <link refid="topjets_8h"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>metric_build.cxx</label>
+        <link refid="metric__build_8cxx"/>
+      </node>
+      <node id="38">
+        <label>topmatching.cxx</label>
+        <link refid="mc16_2topmatching_2topmatching_8cxx"/>
+      </node>
+      <node id="18">
+        <label>selection_template.cxx</label>
+        <link refid="selection__template_8cxx"/>
+      </node>
+      <node id="11">
+        <label>container.h</label>
+        <link refid="container_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>matching.h</label>
+        <link refid="matching_8h"/>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>zprime.h</label>
+        <link refid="mc20_2zprime_2zprime_8h"/>
+        <childnode refid="53" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>event.h</label>
+        <link refid="selections_2mc16_2event_2event_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>topmatching.cxx</label>
+        <link refid="mc20_2topmatching_2topmatching_8cxx"/>
+      </node>
+      <node id="5">
+        <label>graph_build.cxx</label>
+        <link refid="graph__build_8cxx"/>
+      </node>
+      <node id="58">
+        <label>topefficiency.h</label>
+        <link refid="topefficiency_8h"/>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>event.cxx</label>
+        <link refid="selections_2mc16_2event_2event_8cxx"/>
+      </node>
+      <node id="15">
+        <label>sampletracer.cxx</label>
+        <link refid="sampletracer_8cxx"/>
+      </node>
+      <node id="37">
+        <label>topmatching.h</label>
+        <link refid="mc16_2topmatching_2topmatching_8h"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>topkinematics.h</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8h"/>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>combinatorial.h</label>
+        <link refid="combinatorial_8h"/>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>matching.cxx</label>
+        <link refid="matching_8cxx"/>
+      </node>
+      <node id="29">
+        <label>event.cxx</label>
+        <link refid="events_2ssml__mc20_2cxx_2event_8cxx"/>
+      </node>
+      <node id="19">
+        <label>regions.h</label>
+        <link refid="regions_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>analysis.cxx</label>
+        <link refid="analysis_8cxx"/>
+      </node>
+      <node id="36">
+        <label>topkinematics.cxx</label>
+        <link refid="mc16_2topkinematics_2topkinematics_8cxx"/>
+      </node>
+      <node id="55">
+        <label>combinatorial.cxx</label>
+        <link refid="combinatorial_8cxx"/>
+      </node>
+      <node id="21">
+        <label>met.h</label>
+        <link refid="met_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>topefficiency.cxx</label>
+        <link refid="topefficiency_8cxx"/>
+      </node>
+      <node id="24">
+        <label>childrenkinematics.cxx</label>
+        <link refid="childrenkinematics_8cxx"/>
+      </node>
+      <node id="45">
+        <label>mc16_ref.cxx</label>
+        <link refid="mc16__ref_8cxx"/>
+      </node>
+      <node id="20">
+        <label>regions.cxx</label>
+        <link refid="regions_8cxx"/>
+      </node>
+      <node id="16">
+        <label>properties.cxx</label>
+        <link refid="selection_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="41">
+        <label>zprime.h</label>
+        <link refid="mc16_2zprime_2zprime_8h"/>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>decaymodes.h</label>
+        <link refid="decaymodes_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>analysis.h</label>
+        <link refid="analysis_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classselection__template" prot="public">selection_template</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>SELECTION_TEMPLATE_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SELECTION_TEMPLATE_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="particle__template_8h" kindref="compound">templates/particle_template.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="event__template_8h" kindref="compound">templates/event_template.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="property_8h" kindref="compound">structs/property.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="modules_2structs_2include_2structs_2event_8h" kindref="compound">structs/event.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="enums_8h" kindref="compound">structs/enums.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="meta_2include_2meta_2meta_8h" kindref="compound">meta/meta.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="vector__cast_8h" kindref="compound">tools/vector_cast.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="merge__cast_8h" kindref="compound">tools/merge_cast.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="tools_8h" kindref="compound">tools/tools.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classcontainer" kindref="compound">container</ref>;<sp/></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18" refid="classselection__template" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classselection__template" kindref="compound">selection_template</ref>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classtools" kindref="compound">tools</ref></highlight></codeline>
+<codeline lineno="19"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classselection__template_1a4562a7ab32d93b5f2ca8a232a244041c" kindref="member">selection_template</ref>();<sp/></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1af0b32265d850bfcd861a7f4744426856" kindref="member">~selection_template</ref>();<sp/></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, selection_template&gt;</ref><sp/><ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref>;<sp/></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a19244d585754db14326c126a98000899" kindref="member">set_name</ref>(std::string*,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*);<sp/></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1ad0d6fa60bf0da8796a718532c0288d04" kindref="member">get_name</ref>(std::string*,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, selection_template&gt;</ref><sp/><ref refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" kindref="member">hash</ref>;<sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1acd31f17488bcf97dd8a5f1b3a7da1cdd" kindref="member">set_hash</ref>(std::string*,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*);<sp/></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a2f6cd45079e1fab94a163a38fbe005cd" kindref="member">get_hash</ref>(std::string*,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*);<sp/></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="classselection__template_1a57ff66ff6c5ff5af5e81298faf6bf521" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, selection_template&gt;</ref><sp/><ref refid="classselection__template_1a57ff66ff6c5ff5af5e81298faf6bf521" kindref="member">tree</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a4e61c1d63afdff7a6428fbf4c6297166" kindref="member">get_tree</ref>(std::string*,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*);<sp/></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="classselection__template_1a03816f18e6ce9351cd099525862c7c64" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, selection_template&gt;</ref><sp/><ref refid="classselection__template_1a03816f18e6ce9351cd099525862c7c64" kindref="member">weight</ref>;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1aa95e812106c1a933f1b65e82557939d3" kindref="member">set_weight</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*);<sp/></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1ae04fb8767d15273f80c5343e2f73384b" kindref="member">get_weight</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*);<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="classselection__template_1a2e1c4a9239afbfea9cd510b774c9c1fe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;long, selection_template&gt;</ref><sp/><ref refid="classselection__template_1a2e1c4a9239afbfea9cd510b774c9c1fe" kindref="member">index</ref>;<sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a8951c34758d3410f9d931b6011c3cca2" kindref="member">set_index</ref>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal">*,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*);<sp/></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="classselection__template_1a094ce1eb2b6463f88a8ad5f7dfd8e4b6" kindref="member">clone</ref>();<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a906e3f695a675e5a545fa4eab867cfd7" kindref="member">selection</ref>(<ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a01a81c84699bb054a8c320fc5575e17b" kindref="member">strategy</ref>(<ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1ad04ca3679a943defbd47c05a88448aba" kindref="member">merge</ref>(<ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="namespacemain_1a37e50d3a642b605bc387ae3703d9730b" kindref="member">sel</ref>);<sp/></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a6a9f6df015c9f8e48c65cacc249c4fdf" kindref="member">bulk_write</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal">*<sp/>idx,<sp/>std::string*<sp/><ref refid="namespacesimply__plot_1a0bf6f892181cb5717d74445b1f88ec32" kindref="member">hx</ref>);<sp/></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1ae5606e994231fae57abe42e4f0ec6202" kindref="member">write</ref>(std::vector&lt;particle_template*&gt;*<sp/>particles,<sp/>std::string<sp/><ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref>,<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28" kindref="member">particle_enum</ref><sp/>attrs);<sp/></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a41a437aca3bb2a7f854a66ff92942d46" kindref="member">switch_board</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28" kindref="member">particle_enum</ref><sp/>attrs,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>ptr,<sp/><ref refid="namespacehelper_1a6a86af0e435c054cabd85eebb8a45782" kindref="member">std::vector</ref>&lt;std::vector&lt;double&gt;&gt;*<sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>);<sp/></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a41a437aca3bb2a7f854a66ff92942d46" kindref="member">switch_board</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28" kindref="member">particle_enum</ref><sp/>attrs,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>ptr,<sp/>std::vector&lt;int&gt;*<sp/><sp/><sp/><sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>);<sp/></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a41a437aca3bb2a7f854a66ff92942d46" kindref="member">switch_board</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28" kindref="member">particle_enum</ref><sp/>attrs,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>ptr,<sp/>std::vector&lt;double&gt;*<sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>);<sp/></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a41a437aca3bb2a7f854a66ff92942d46" kindref="member">switch_board</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28" kindref="member">particle_enum</ref><sp/>attrs,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>ptr,<sp/>std::vector&lt;bool&gt;*<sp/><sp/><sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>);<sp/></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;<sp/></highlight></codeline>
+<codeline lineno="55" refid="classselection__template_1a67768227c6c6a8e69edd0dc618a70eb9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a67768227c6c6a8e69edd0dc618a70eb9" kindref="member">write</ref>(g*<sp/>var,<sp/>std::string<sp/><ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref>){</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>handle){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>handle<sp/>-&gt;<sp/>process(&amp;<ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref>)<sp/>-&gt;<sp/>process(var,<sp/>&amp;<ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref>,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>handle<sp/>-&gt;<sp/><ref refid="classselection__template_1a57ff66ff6c5ff5af5e81298faf6bf521" kindref="member">tree</ref>);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;<sp/></highlight></codeline>
+<codeline lineno="61" refid="classselection__template_1a0983bf7c4582968c8c3b1a970fb3689e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a0983bf7c4582968c8c3b1a970fb3689e" kindref="member">write</ref>(g<sp/>var,<sp/>std::string<sp/><ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref>){</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>handle){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>handle<sp/>-&gt;<sp/>process(&amp;<ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref>)<sp/>-&gt;<sp/>process(&amp;var,<sp/>&amp;<ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref>,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>handle<sp/>-&gt;<sp/><ref refid="classselection__template_1a57ff66ff6c5ff5af5e81298faf6bf521" kindref="member">tree</ref>);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;std::map&lt;std::string,<sp/>float&gt;&gt;<sp/><ref refid="classselection__template_1a2c99ad97301a85fc7c7257930d990cfd" kindref="member">reverse_hash</ref>(std::vector&lt;std::string&gt;*<sp/>hashes);<sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a9deff703f50fdff72bd1edf3664a9d75" kindref="member">CompileEvent</ref>();<sp/></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="classselection__template_1ae24cee9f302d7509a7009daea0bf0616" kindref="member">build</ref>(<ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>);<sp/></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a0e423716b1439b853d39904998074ecd" kindref="member">operator == </ref>(<ref refid="classselection__template" kindref="compound">selection_template</ref>&amp;<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref>);<sp/></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72" refid="classselection__template_1a15113e43e1451e9e65b9f327fcfc7e15" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/><ref refid="classselection__template_1a15113e43e1451e9e65b9f327fcfc7e15" kindref="member">meta_data</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="73" refid="classselection__template_1ad220a2da4b57303d8a5b162b6733024f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classselection__template_1ad220a2da4b57303d8a5b162b6733024f" kindref="member">filename</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="74" refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structevent__t" kindref="compound">event_t</ref><sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>;<sp/></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>k&gt;</highlight></codeline>
+<codeline lineno="77" refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" kindref="member">sum</ref>(std::vector&lt;g*&gt;*<sp/>ch,<sp/>k**<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>){</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>k*<sp/>prt<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>k();<sp/></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/>_is_marked<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>bool&gt;<sp/>maps;<sp/></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>ch<sp/>-&gt;<sp/>size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(maps[ch<sp/>-&gt;<sp/>at(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>)<sp/>-&gt;<sp/><ref refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" kindref="member">hash</ref>]){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>maps[ch<sp/>-&gt;<sp/>at(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>)<sp/>-&gt;<sp/><ref refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" kindref="member">hash</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/>iadd(ch<sp/>-&gt;<sp/>at(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>));</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>hash_<sp/>=<sp/>prt<sp/>-&gt;<sp/><ref refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" kindref="member">hash</ref>;<sp/></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>garbage[hash_].push_back((<ref refid="classparticle__template" kindref="compound">particle_template</ref>*)prt);<sp/></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*out)<sp/>=<sp/>prt;<sp/><sp/></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="92" refid="classselection__template_1a4faf71140920bc4cf0fc06072cecad07" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a4faf71140920bc4cf0fc06072cecad07" kindref="member">safe_delete</ref>(std::vector&lt;g*&gt;*<sp/>particles){</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>particles<sp/>-&gt;<sp/>size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(particles<sp/>-&gt;<sp/>at(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>)<sp/>-&gt;<sp/>_is_marked){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>particles<sp/>-&gt;<sp/>at(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>);<sp/></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*particles)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="101" refid="classselection__template_1af639e8d3a86f1fa5cdfd2fe58e2e5dfb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>g*<sp/><ref refid="classselection__template_1af639e8d3a86f1fa5cdfd2fe58e2e5dfb" kindref="member">sum</ref>(std::map&lt;std::string,<sp/>g*&gt;*<sp/>ch){</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>g*<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::vector&lt;g*&gt;<sp/>vec<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1a7e1560964237cf7b4846e24b300d7b9e" kindref="member">vectorize</ref>(ch);<sp/></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" kindref="member">sum</ref>(&amp;vec,<sp/>&amp;<ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>);<sp/></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>;<sp/></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="109" refid="classselection__template_1aefb54851b728057af466bf7a78caeda8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1aefb54851b728057af466bf7a78caeda8" kindref="member">sum</ref>(std::vector&lt;g*&gt;*<sp/>ch){</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" kindref="member">sum</ref>(ch,<sp/>&amp;prt);<sp/></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>prt<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ad90ccffa01275a7a7795fb6d1274e75f" kindref="member">mass</ref><sp/>/<sp/>1000;<sp/></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="116" refid="classselection__template_1a7e1560964237cf7b4846e24b300d7b9e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;g*&gt;<sp/><ref refid="classselection__template_1a7e1560964237cf7b4846e24b300d7b9e" kindref="member">vectorize</ref>(std::map&lt;std::string,<sp/>g*&gt;*<sp/>in){</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::vector&lt;g*&gt;<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>g*&gt;::iterator<sp/>itr<sp/>=<sp/>in<sp/>-&gt;<sp/>begin();<sp/></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itr<sp/>!=<sp/>in<sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a64e9fa75beda50a9e8400ee0d4e61984" kindref="member">end</ref>();<sp/>++itr){<ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>.push_back(itr<sp/>-&gt;<sp/>second);}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>;<sp/></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="124" refid="classselection__template_1ab760e9d895d74e62a9d4bfe436568a86" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;g*&gt;<sp/><ref refid="classselection__template_1ab760e9d895d74e62a9d4bfe436568a86" kindref="member">make_unique</ref>(std::vector&lt;g*&gt;*<sp/>inpt){</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>g*&gt;<sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref>;<sp/></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>inpt<sp/>-&gt;<sp/>size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" kindref="member">hash</ref><sp/>=<sp/>(*inpt)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]<sp/>-&gt;<sp/><ref refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" kindref="member">hash</ref>;<sp/></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref>[<ref refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" kindref="member">hash</ref>]<sp/>=<sp/>(*inpt)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::vector&lt;g*&gt;<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>g*&gt;::iterator<sp/>itr;<sp/></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itr<sp/>=<sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref>.begin();<sp/>itr<sp/>!=<sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref>.end();<sp/>++itr){<ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>.push_back(itr<sp/>-&gt;<sp/>second);}</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>;<sp/></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="138" refid="classselection__template_1ab32b926ee893cf56dc27913271658d1e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1ab32b926ee893cf56dc27913271658d1e" kindref="member">downcast</ref>(std::vector&lt;g*&gt;*<sp/>inpt,<sp/>std::vector&lt;particle_template*&gt;*<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>){</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>inpt<sp/>-&gt;<sp/>size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){<ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>-&gt;<sp/>push_back((<ref refid="classparticle__template" kindref="compound">particle_template</ref>*)(*inpt)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]);}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>o,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="143" refid="classselection__template_1a82f14833e404fbe0399a2a539eef75b1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a82f14833e404fbe0399a2a539eef75b1" kindref="member">upcast</ref>(std::map&lt;std::string,<sp/>o*&gt;*<sp/>inpt,<sp/>std::vector&lt;g*&gt;*<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>){</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>o*&gt;::iterator<sp/>itx<sp/>=<sp/>inpt<sp/>-&gt;<sp/>begin();<sp/></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itx<sp/>!=<sp/>inpt<sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a64e9fa75beda50a9e8400ee0d4e61984" kindref="member">end</ref>();<sp/>++itx){<ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>-&gt;<sp/>push_back((g*)itx<sp/>-&gt;<sp/>second);}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>o,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="149" refid="classselection__template_1ae5ce6c75d19fdbb2ab18ba05b3ea4c58" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1ae5ce6c75d19fdbb2ab18ba05b3ea4c58" kindref="member">upcast</ref>(std::vector&lt;o*&gt;*<sp/>inpt,<sp/>std::vector&lt;g*&gt;*<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>){</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>inpt<sp/>-&gt;<sp/>size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){<ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>-&gt;<sp/>push_back((g*)(*inpt)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]);}</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="154" refid="classselection__template_1ad27d2cd85c19147b85b1e96ce73bdade" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1ad27d2cd85c19147b85b1e96ce73bdade" kindref="member">get_leptonics</ref>(std::map&lt;std::string,<sp/>g*&gt;<sp/>inpt,<sp/>std::vector&lt;particle_template*&gt;*<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>){</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>g*&gt;::iterator<sp/>itr<sp/>=<sp/>inpt.begin();<sp/></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itr<sp/>!=<sp/>inpt.end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!itr<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778" kindref="member">is_lep</ref><sp/>&amp;&amp;<sp/>!itr<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d" kindref="member">is_nu</ref>){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>-&gt;<sp/>push_back((<ref refid="classparticle__template" kindref="compound">particle_template</ref>*)itr<sp/>-&gt;<sp/>second);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>j&gt;</highlight></codeline>
+<codeline lineno="163" refid="classselection__template_1a3009dc4bb45c47d96a5bdc4096bd6870" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a3009dc4bb45c47d96a5bdc4096bd6870" kindref="member">contains</ref>(std::vector&lt;g*&gt;*<sp/>inpt,<sp/>j*<sp/>pcheck){</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>inpt<sp/>-&gt;<sp/>size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((*inpt)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]<sp/>-&gt;<sp/><ref refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" kindref="member">hash</ref><sp/>!=<sp/>pcheck<sp/>-&gt;<sp/><ref refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" kindref="member">hash</ref>){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171" refid="classselection__template_1ac565e3beb94b557fc947a6f8afebfc4d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1ac565e3beb94b557fc947a6f8afebfc4d" kindref="member">threadIdx</ref><sp/>=<sp/>-1;<sp/></highlight></codeline>
+<codeline lineno="172" refid="classselection__template_1ad472a18c63b8b1d6e41fbe626b13fc40" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>float&gt;&gt;<sp/><ref refid="classselection__template_1ad472a18c63b8b1d6e41fbe626b13fc40" kindref="member">passed_weights</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="173" refid="classselection__template_1a50e7d1939618dcb8b6386f5e7a247e12" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>meta_t&gt;<sp/><ref refid="classselection__template_1a50e7d1939618dcb8b6386f5e7a247e12" kindref="member">matched_meta</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/><ref refid="classcontainer" kindref="compound">container</ref>;</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>bulk_write_out();<sp/></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>merger(<ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/>sl2);<sp/></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::unordered_map&lt;long,<sp/>std::string&gt;<sp/>sequence;<sp/></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>p_bulk_write<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structwrite__t" kindref="compound">write_t</ref>*<sp/>handle<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/>m_event<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::vector&lt;particle_template*&gt;&gt;<sp/>garbage<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="187"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="modules/selection/include/templates/selection_template.h"/>
+  </compounddef>
+</doxygen>

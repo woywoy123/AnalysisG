@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacetest__experimental__mc20" kind="namespace" language="Python">
+    <compoundname>test_experimental_mc20</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacetest__experimental__mc20_1a4cdcf8b1491b43d22ea14bd3cc0794e4" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string test_experimental_mc20.root1</definition>
+        <argsstring></argsstring>
+        <name>root1</name>
+        <initializer>=  &quot;./samples/mc20-experimental/*&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_experimental_mc20.py" line="6" column="1" bodyfile="/workspaces/AnalysisG/test/test_experimental_mc20.py" bodystart="6" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_experimental_mc20.t</definition>
+        <argsstring></argsstring>
+        <name>t</name>
+        <initializer>=  ExpMC20()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_experimental_mc20.py" line="7" column="1" bodyfile="/workspaces/AnalysisG/test/test_experimental_mc20.py" bodystart="7" bodyend="-1"/>
+        <referencedby refid="classparticle__template_1adf7b55df06b7621b0a6bc509f74d22ff" compoundref="particle__template_8cxx" startline="131" endline="145">particle_template::__reduce__</referencedby>
+        <referencedby refid="classcontainer_1af3587cb44d10ff140a3ae6d9b5e595d9" compoundref="container_8cxx" startline="37" endline="43">container::add_entry</referencedby>
+        <referencedby refid="classtop_1ab0650ae5f6ec11376daccc4eaec70aca" compoundref="bsm__4tops_2cxx_2particles_8cxx" startline="19" endline="33">top::build</referencedby>
+        <referencedby refid="classtruthjet_1a28cfe9ad59f100534c62ba702031860c" compoundref="bsm__4tops_2cxx_2particles_8cxx" startline="122" endline="140">truthjet::build</referencedby>
+        <referencedby refid="classdataloader_1ad973eae80b8c958e87642459f8a81b47" compoundref="dataloader_8cxx" startline="151" endline="292">dataloader::build_batch</referencedby>
+        <referencedby refid="classplotting_1a291087451228246d77c25588f05d0a0e" compoundref="plotting_8cxx" startline="65" endline="88">plotting::build_error</referencedby>
+        <referencedby refid="classexp__mc20_1ac468950eb1e018cd71513c6b5c013336" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="39" endline="100">exp_mc20::CompileEvent</referencedby>
+        <referencedby refid="classssml__mc20_1a0a01f1899566c4787d47ce29c2e8983e" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="119" endline="182">ssml_mc20::CompileEvent</referencedby>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">gnn_event::CompileEvent</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dataloader::dump_graphs</referencedby>
+        <referencedby refid="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" compoundref="tools_8h" startline="167" endline="174">tools::flush</referencedby>
+        <referencedby refid="classelectron_1a58500a1be1c6402f93e95db344109850" compoundref="leptons_8cxx" startline="97" endline="107">electron::get_from_res</referencedby>
+        <referencedby refid="classmuon_1af2d2d883266a542d239e134fe1427923" compoundref="leptons_8cxx" startline="42" endline="52">muon::get_from_res</referencedby>
+        <referencedby refid="classdataloader_1ade66521611fe2fcbe33562fe51d9692c" compoundref="dataset_8cxx" startline="104" endline="125">dataloader::get_inference</referencedby>
+        <referencedby refid="main_8cxx_1aca6025a19098a322f59ba63413be94cc" compoundref="main_8cxx" startline="24" endline="29">nulls</referencedby>
+        <referencedby refid="structwrite__t_1a0904b9e3b70f290625bf18d376f65023" compoundref="variable_8cxx" startline="48" endline="54">write_t::process</referencedby>
+        <referencedby refid="structwriter_1a01b953b19804473dcd5009c80ea47a29" compoundref="element_8h" startline="110" endline="112">writer::process</referencedby>
+        <referencedby refid="classmetric__template_1afb7814ecc901c36ada9b6bd974acab9a" compoundref="metric__template_8h" startline="82" endline="87">metric_template::register_output</referencedby>
+        <referencedby refid="classdecaymodes_1a27c4b05080846095204be5afb416f5a7" compoundref="decaymodes_8cxx" startline="44" endline="57">decaymodes::selection</referencedby>
+        <referencedby refid="classchildrenkinematics_1a6871ee24b0d7b78d33e33ac614e03ede" compoundref="childrenkinematics_8cxx" startline="107" endline="119">childrenkinematics::selection</referencedby>
+        <referencedby refid="classtopkinematics_1acf450e4907cff9104f1fc70fa04de276" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="31" endline="105">topkinematics::strategy</referencedby>
+        <referencedby refid="classdecaymodes_1abfec366758f5b7885063a349cfcda394" compoundref="decaymodes_8cxx" startline="59" endline="210">decaymodes::strategy</referencedby>
+        <referencedby refid="classzprime_1a36b1544f00cc1a4ed703ef304f923ea8" compoundref="mc16_2zprime_2zprime_8cxx" startline="30" endline="83">zprime::strategy</referencedby>
+        <referencedby refid="classtoptruthjets_1a39c1afcec2800b351fc047fbfa4f009f" compoundref="toptruthjets_8cxx" startline="22" endline="163">toptruthjets::strategy</referencedby>
+        <referencedby refid="classtopjets_1a72145e79c19febe5393d17220c980e2a" compoundref="topjets_8cxx" startline="22" endline="163">topjets::strategy</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">parton::strategy</referencedby>
+        <referencedby refid="classchildrenkinematics_1a9dfe1425443601d0af03eab580722b76" compoundref="childrenkinematics_8cxx" startline="121" endline="243">childrenkinematics::strategy</referencedby>
+        <referencedby refid="classtools_1a7b784121d8b368a64995feddc7083469" compoundref="tools_8h" startline="183" endline="187">tools::sum</referencedby>
+        <referencedby refid="classmetric__template_1a63bef91cbc8d4212598aa40f028ffa19" compoundref="metric__template_8h" startline="90" endline="95">metric_template::write</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__experimental__mc20_1a5dbf4d016af52a22f68506d17eb87e32" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_experimental_mc20.ana</definition>
+        <argsstring></argsstring>
+        <name>ana</name>
+        <initializer>=  Analysis()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_experimental_mc20.py" line="9" column="1" bodyfile="/workspaces/AnalysisG/test/test_experimental_mc20.py" bodystart="9" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/test/test_experimental_mc20.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

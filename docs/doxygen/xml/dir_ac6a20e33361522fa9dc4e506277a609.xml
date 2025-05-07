@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_ac6a20e33361522fa9dc4e506277a609" kind="dir">
+    <compoundname>model</compoundname>
+    <innerdir refid="dir_bbb990550ac3914c1780b52a3973d492">cxx</innerdir>
+    <innerdir refid="dir_c4c976d5afd2896076a6c31ee13de07b">include</innerdir>
+    <innerfile refid="_3model-name_4_8pyx">&lt;model-name&gt;.pyx</innerfile>
+    <innerfile refid="src_2_analysis_g_2templates_2model_2____init_____8py">src/AnalysisG/templates/model/__init__.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="templates/model/"/>
+  </compounddef>
+</doxygen>

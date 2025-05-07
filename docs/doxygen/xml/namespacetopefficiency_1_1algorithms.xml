@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacetopefficiency_1_1algorithms" kind="namespace" language="Python">
+    <compoundname>topefficiency::algorithms</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacetopefficiency_1_1algorithms_1a6c102f7886341eb4af3d7e559584793e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topefficiency.algorithms.mapping</definition>
+        <argsstring>(name)</argsstring>
+        <name>mapping</name>
+        <param>
+          <type><ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref></type>
+          <defname>name</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/topefficiency/algorithms.py" line="1" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/topefficiency/algorithms.py" bodystart="1" bodyend="49"/>
+        <referencedby refid="namespacetopefficiency_1_1figures_1a84945958e13f82db53a47ad3c22e7747" compoundref="performance_2topefficiency_2figures_8py" startline="34" endline="221">topefficiency.figures.top_kinematic_region</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopefficiency_1_1algorithms_1a1cd01db02a87861b68fb23f53c1d68c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topefficiency.algorithms.kinesplit</definition>
+        <argsstring>(reg)</argsstring>
+        <name>kinesplit</name>
+        <param>
+          <type>reg</type>
+          <defname>reg</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/topefficiency/algorithms.py" line="50" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/topefficiency/algorithms.py" bodystart="50" bodyend="55"/>
+        <references refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" compoundref="strings_8cxx" startline="23" endline="36">tools::split</references>
+        <referencedby refid="namespacetopefficiency_1_1algorithms_1a63630b5bb3f8ecbc939e408c9b0a269a" compoundref="algorithms_8py" startline="56" endline="123">topefficiency.algorithms.top_pteta</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopefficiency_1_1algorithms_1a63630b5bb3f8ecbc939e408c9b0a269a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topefficiency.algorithms.top_pteta</definition>
+        <argsstring>(stacks, data, metal)</argsstring>
+        <name>top_pteta</name>
+        <param>
+          <type>stacks</type>
+          <defname>stacks</defname>
+        </param>
+        <param>
+          <type><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref></type>
+          <defname>data</defname>
+        </param>
+        <param>
+          <type>metal</type>
+          <defname>metal</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/topefficiency/algorithms.py" line="56" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/topefficiency/algorithms.py" bodystart="56" bodyend="123"/>
+        <references refid="namespacetopefficiency_1_1algorithms_1a1cd01db02a87861b68fb23f53c1d68c9" compoundref="algorithms_8py" startline="50" endline="55">topefficiency.algorithms.kinesplit</references>
+        <referencedby refid="namespacetopefficiency_1_1figures_1a84945958e13f82db53a47ad3c22e7747" compoundref="performance_2topefficiency_2figures_8py" startline="34" endline="221">topefficiency.figures.top_kinematic_region</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopefficiency_1_1algorithms_1a1601482a96c96b99acd1cf00c09c6c34" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topefficiency.algorithms.roc_data_get</definition>
+        <argsstring>(stacks, data)</argsstring>
+        <name>roc_data_get</name>
+        <param>
+          <type>stacks</type>
+          <defname>stacks</defname>
+        </param>
+        <param>
+          <type><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref></type>
+          <defname>data</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/topefficiency/algorithms.py" line="124" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/topefficiency/algorithms.py" bodystart="124" bodyend="137"/>
+        <referencedby refid="namespacetopefficiency_1_1figures_1a99aec3d378a84585a16094cd7ba17767" compoundref="performance_2topefficiency_2figures_8py" startline="222" endline="248">topefficiency.figures.roc_data</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetopefficiency_1_1algorithms_1a929c237c8618a73b7cfa2f59f28ce972" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def topefficiency.algorithms.ntops_reco_compl</definition>
+        <argsstring>(stacks, data)</argsstring>
+        <name>ntops_reco_compl</name>
+        <param>
+          <type>stacks</type>
+          <defname>stacks</defname>
+        </param>
+        <param>
+          <type><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref></type>
+          <defname>data</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/topefficiency/algorithms.py" line="138" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/topefficiency/algorithms.py" bodystart="138" bodyend="165"/>
+        <referencedby refid="namespacetopefficiency_1_1figures_1a1759143049cc773286a27a94f37a2745" compoundref="performance_2topefficiency_2figures_8py" startline="249" endline="344">topefficiency.figures.ntops_reco</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/performance/topefficiency/algorithms.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

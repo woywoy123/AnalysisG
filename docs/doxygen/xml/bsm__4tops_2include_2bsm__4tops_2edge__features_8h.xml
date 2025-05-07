@@ -1,0 +1,365 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h" kind="file" language="C++">
+    <compoundname>bsm_4tops/include/bsm_4tops/edge_features.h</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1a9addd2275949f0828310adb01cc761a3" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void m_res_edge</definition>
+        <argsstring>(int *o, top *t)</argsstring>
+        <name>m_res_edge</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classtop" kindref="compound">top</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="5" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="5" bodyend="5"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1a86223e909a4ee55e18d84070c1b73673" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void m_res_edge</definition>
+        <argsstring>(int *o, top_children *t)</argsstring>
+        <name>m_res_edge</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classtop__children" kindref="compound">top_children</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="6" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="6" bodyend="6"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1ae4a33a3b268040fb5904f132aaf0d450" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void m_res_edge</definition>
+        <argsstring>(int *o, truthjet *t)</argsstring>
+        <name>m_res_edge</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classtruthjet" kindref="compound">truthjet</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="7" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="7" bodyend="7"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1af9c7bd40820b9fda7debc9d254e18dbe" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void m_res_edge</definition>
+        <argsstring>(int *o, jet *t)</argsstring>
+        <name>m_res_edge</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classjet" kindref="compound">jet</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="8" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="8" bodyend="8"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1aa3d967dcc3906851edeecb655905a293" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void m_res_edge</definition>
+        <argsstring>(int *o, electron *t)</argsstring>
+        <name>m_res_edge</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classelectron" kindref="compound">electron</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="9" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="9" bodyend="9"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1ad19101d8af614d70d0d7e1af191f9ee8" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void m_res_edge</definition>
+        <argsstring>(int *o, muon *t)</argsstring>
+        <name>m_res_edge</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classmuon" kindref="compound">muon</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="10" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="10" bodyend="10"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1a196518fb89ffbc60b3ca928dc80ac57d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void res_edge</definition>
+        <argsstring>(int *o, std::tuple&lt; particle_template *, particle_template * &gt; *pij)</argsstring>
+        <name>res_edge</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>std::tuple&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> *, <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt; *</type>
+          <declname>pij</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="12" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="12" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1a28ada91c16a5975605583559f663b268" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int m_top_edge</definition>
+        <argsstring>(top *t)</argsstring>
+        <name>m_top_edge</name>
+        <param>
+          <type><ref refid="classtop" kindref="compound">top</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="39" column="12" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="39" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1af3f9b75dc2e2c2a5a32594a44d512808" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int m_top_edge</definition>
+        <argsstring>(top_children *t)</argsstring>
+        <name>m_top_edge</name>
+        <param>
+          <type><ref refid="classtop__children" kindref="compound">top_children</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="40" column="12" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="40" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1a7e109a693f6842aec99eb63e452ec08e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>static std::vector&lt;int&gt; m_top_edge</definition>
+        <argsstring>(truthjet *t)</argsstring>
+        <name>m_top_edge</name>
+        <param>
+          <type><ref refid="classtruthjet" kindref="compound">truthjet</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="41" column="20" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="41" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1a1f1fce1fe4b947175573ff8805b2a1b5" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>static std::vector&lt;int&gt; m_top_edge</definition>
+        <argsstring>(jet *t)</argsstring>
+        <name>m_top_edge</name>
+        <param>
+          <type><ref refid="classjet" kindref="compound">jet</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="42" column="20" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="42" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1a323b8e05b854b83ddf719f49fbeb3565" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>static std::vector&lt;int&gt; m_top_edge</definition>
+        <argsstring>(electron *t)</argsstring>
+        <name>m_top_edge</name>
+        <param>
+          <type><ref refid="classelectron" kindref="compound">electron</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="43" column="20" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="43" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1a0cba9df8e2cebc953dbdcb811dac7ace" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>static std::vector&lt;int&gt; m_top_edge</definition>
+        <argsstring>(muon *t)</argsstring>
+        <name>m_top_edge</name>
+        <param>
+          <type><ref refid="classmuon" kindref="compound">muon</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="44" column="20" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="44" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2edge__features_8h_1af35cf309c4131ca516f825cf67635ceb" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void top_edge</definition>
+        <argsstring>(int *o, std::tuple&lt; particle_template *, particle_template * &gt; *pij)</argsstring>
+        <name>top_edge</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>std::tuple&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> *, <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt; *</type>
+          <declname>pij</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" line="46" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/edge_features.h" bodystart="46" bodyend="78"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>EDGE_FEATURES_BSM_4TOPS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EDGE_FEATURES_BSM_4TOPS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/>---------------------<sp/>Edge<sp/>Truth<sp/>---------------------<sp/>//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>m_res_edge(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classtop" kindref="compound">top</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){*o<sp/>*=<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>from_res;}</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>m_res_edge(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classtop__children" kindref="compound">top_children</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){*o<sp/>*=<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>from_res;}</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>m_res_edge(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classtruthjet" kindref="compound">truthjet</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){*o<sp/>*=<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>from_res;}</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>m_res_edge(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classjet" kindref="compound">jet</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){*o<sp/>*=<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>from_res;}</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>m_res_edge(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classelectron" kindref="compound">electron</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){*o<sp/>*=<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>from_res;}</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>m_res_edge(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classmuon" kindref="compound">muon</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){*o<sp/>*=<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>from_res;}</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>res_edge(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/>std::tuple&lt;particle_template*,<sp/>particle_template*&gt;*<sp/>pij){</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p1<sp/>=<sp/>std::get&lt;0&gt;(*pij);<sp/></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p2<sp/>=<sp/>std::get&lt;1&gt;(*pij);<sp/></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>type1<sp/>=<sp/>p1<sp/>-&gt;<sp/>type;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>type2<sp/>=<sp/>p2<sp/>-&gt;<sp/>type;<sp/></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>1;<sp/></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type1<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;top&quot;</highlight><highlight class="normal">){m_res_edge(o,<sp/>(<ref refid="classtop" kindref="compound">top</ref>*)p1);}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type2<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;top&quot;</highlight><highlight class="normal">){m_res_edge(o,<sp/>(<ref refid="classtop" kindref="compound">top</ref>*)p2);}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type1<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;children&quot;</highlight><highlight class="normal">){m_res_edge(o,<sp/>(<ref refid="classtop__children" kindref="compound">top_children</ref>*)p1);}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type2<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;children&quot;</highlight><highlight class="normal">){m_res_edge(o,<sp/>(<ref refid="classtop__children" kindref="compound">top_children</ref>*)p2);}</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type1<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;truthjets&quot;</highlight><highlight class="normal">){m_res_edge(o,<sp/>(<ref refid="classtruthjet" kindref="compound">truthjet</ref>*)p1);}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type2<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;truthjets&quot;</highlight><highlight class="normal">){m_res_edge(o,<sp/>(<ref refid="classtruthjet" kindref="compound">truthjet</ref>*)p2);}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type1<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;jet&quot;</highlight><highlight class="normal">){m_res_edge(o,<sp/>(<ref refid="classjet" kindref="compound">jet</ref>*)p1);}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type2<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;jet&quot;</highlight><highlight class="normal">){m_res_edge(o,<sp/>(<ref refid="classjet" kindref="compound">jet</ref>*)p2);}</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type1<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;el&quot;</highlight><highlight class="normal">){m_res_edge(o,<sp/>(<ref refid="classelectron" kindref="compound">electron</ref>*)p1);}</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type2<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;el&quot;</highlight><highlight class="normal">){m_res_edge(o,<sp/>(<ref refid="classelectron" kindref="compound">electron</ref>*)p2);}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type1<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;mu&quot;</highlight><highlight class="normal">){m_res_edge(o,<sp/>(<ref refid="classmuon" kindref="compound">muon</ref>*)p1);}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type2<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;mu&quot;</highlight><highlight class="normal">){m_res_edge(o,<sp/>(<ref refid="classmuon" kindref="compound">muon</ref>*)p2);}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>m_top_edge(<ref refid="classtop" kindref="compound">top</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/><ref refid="namespacetest__particles_1a52ad96e276e4660fc762de54c3aedd1d" kindref="member">index</ref>;}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>m_top_edge(<ref refid="classtop__children" kindref="compound">top_children</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>top_index;}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal">std::vector&lt;int&gt;<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>m_top_edge(<ref refid="classtruthjet" kindref="compound">truthjet</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>top_index;}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">std::vector&lt;int&gt;<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>m_top_edge(<ref refid="classjet" kindref="compound">jet</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>top_index;}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">std::vector&lt;int&gt;<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>m_top_edge(<ref refid="classelectron" kindref="compound">electron</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>top_index};}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal">std::vector&lt;int&gt;<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>m_top_edge(<ref refid="classmuon" kindref="compound">muon</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>top_index};}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>top_edge(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/>std::tuple&lt;particle_template*,<sp/>particle_template*&gt;*<sp/>pij){</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p1<sp/>=<sp/>std::get&lt;0&gt;(*pij);<sp/></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p2<sp/>=<sp/>std::get&lt;1&gt;(*pij);<sp/></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>type1<sp/>=<sp/>p1<sp/>-&gt;<sp/>type;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>type2<sp/>=<sp/>p2<sp/>-&gt;<sp/>type;<sp/></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>o1_<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type1<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;top&quot;</highlight><highlight class="normal">){o1_.push_back(m_top_edge((<ref refid="classtop" kindref="compound">top</ref>*)p1));}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type1<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;children&quot;</highlight><highlight class="normal">){o1_.push_back(m_top_edge((<ref refid="classtop__children" kindref="compound">top_children</ref>*)p1));}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type1<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;truthjets&quot;</highlight><highlight class="normal">){o1_<sp/>=<sp/>m_top_edge((<ref refid="classtruthjet" kindref="compound">truthjet</ref>*)p1);}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type1<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;jet&quot;</highlight><highlight class="normal">){o1_<sp/>=<sp/>m_top_edge((<ref refid="classjet" kindref="compound">jet</ref>*)p1);}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type1<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;mu&quot;</highlight><highlight class="normal">){o1_<sp/>=<sp/>m_top_edge((<ref refid="classmuon" kindref="compound">muon</ref>*)p1);}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type1<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;el&quot;</highlight><highlight class="normal">){o1_<sp/>=<sp/>m_top_edge((<ref refid="classelectron" kindref="compound">electron</ref>*)p1);}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>o2_<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type2<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;top&quot;</highlight><highlight class="normal">){o2_.push_back(m_top_edge((<ref refid="classtop" kindref="compound">top</ref>*)p2));}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type2<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;children&quot;</highlight><highlight class="normal">){o2_.push_back(m_top_edge((<ref refid="classtop__children" kindref="compound">top_children</ref>*)p2));}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type2<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;truthjets&quot;</highlight><highlight class="normal">){o2_<sp/>=<sp/>m_top_edge((<ref refid="classtruthjet" kindref="compound">truthjet</ref>*)p2);}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type2<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;jet&quot;</highlight><highlight class="normal">){o2_<sp/>=<sp/>m_top_edge((<ref refid="classjet" kindref="compound">jet</ref>*)p2);}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type2<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;mu&quot;</highlight><highlight class="normal">){o2_<sp/>=<sp/>m_top_edge((<ref refid="classmuon" kindref="compound">muon</ref>*)p2);}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type2<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;el&quot;</highlight><highlight class="normal">){o2_<sp/>=<sp/>m_top_edge((<ref refid="classelectron" kindref="compound">electron</ref>*)p2);}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>0;<sp/><sp/></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>o1_.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(o1_[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]<sp/>&lt;<sp/>0){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>y(0);<sp/>y<sp/>&lt;<sp/>o2_.size();<sp/>++y){</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(o2_[y]<sp/>&lt;<sp/>0){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(o1_[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]<sp/>!=<sp/>o2_[y]){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>1;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="graphs/bsm_4tops/include/bsm_4tops/edge_features.h"/>
+  </compounddef>
+</doxygen>

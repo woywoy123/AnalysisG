@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_e768429f67161f4ff2bd3175af80421d" kind="dir">
+    <compoundname>cxx</compoundname>
+    <innerfile refid="structs_2cxx_2base_8cxx">structs/cxx/base.cxx</innerfile>
+    <innerfile refid="element_8cxx">element.cxx</innerfile>
+    <innerfile refid="misc_8cxx">misc.cxx</innerfile>
+    <innerfile refid="structs_2cxx_2optimizer_8cxx">structs/cxx/optimizer.cxx</innerfile>
+    <innerfile refid="structs_8cxx">structs.cxx</innerfile>
+    <innerfile refid="variable_8cxx">variable.cxx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/structs/cxx/"/>
+  </compounddef>
+</doxygen>

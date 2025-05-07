@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="transform_2transform_8cxx" kind="file" language="C++">
+    <compoundname>transform/transform.cxx</compoundname>
+    <includes refid="transform_8h" local="no">transform/transform.h</includes>
+    <includes refid="utils_8h" local="no">utils/utils.h</includes>
+    <incdepgraph>
+      <node id="4">
+        <label>utils/utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>transform/transform.h</label>
+        <link refid="transform_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+      <node id="1">
+        <label>transform.cxx</label>
+        <link refid="transform_2transform_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>torch/torch.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_transform">Transform</innernamespace>
+    <briefdescription>
+<para>Implements transformation utilities for the <ref refid="namespace_analysis_g" kindref="compound">AnalysisG</ref> framework. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file provides the implementation of various transformation functions used for data preprocessing and manipulation within the framework. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>transform.cxx</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Implements<sp/>transformation<sp/>utilities<sp/>for<sp/>the<sp/>AnalysisG<sp/>framework.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>provides<sp/>the<sp/>implementation<sp/>of<sp/>various<sp/>transformation<sp/>functions</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>used<sp/>for<sp/>data<sp/>preprocessing<sp/>and<sp/>manipulation<sp/>within<sp/>the<sp/>framework.</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="transform_8h" kindref="compound">transform/transform.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="utils_8h" kindref="compound">utils/utils.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="12"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@namespace<sp/>Transform</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Contains<sp/>functions<sp/>for<sp/>data<sp/>transformation<sp/>and<sp/>preprocessing.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="namespacetransform___1a4573dda96168ebbd38a408e64cc3d5ff" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a4573dda96168ebbd38a408e64cc3d5ff" kindref="member">transform_::Px</ref>(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>phi){</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>pt<sp/>-&gt;<sp/>view({-1,<sp/>1})<sp/>*<sp/>torch::cos(phi<sp/>-&gt;<sp/>view({-1,<sp/>1}));</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21" refid="namespacetransform___1a51363ab29a6390a86a8ea75573a7a196" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a51363ab29a6390a86a8ea75573a7a196" kindref="member">transform_::Py</ref>(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>phi){</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>pt<sp/>-&gt;<sp/>view({-1,<sp/>1})<sp/>*<sp/>torch::sin(phi<sp/>-&gt;<sp/>view({-1,<sp/>1}));<sp/></highlight></codeline>
+<codeline lineno="23"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="namespacetransform___1a28be39b0041a97b1667ccd1ff301f784" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a28be39b0041a97b1667ccd1ff301f784" kindref="member">transform_::Pz</ref>(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>eta){</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>pt<sp/>-&gt;<sp/>view({-1,<sp/>1})<sp/>*<sp/>torch::sinh(eta<sp/>-&gt;<sp/>view({-1,<sp/>1}));<sp/></highlight></codeline>
+<codeline lineno="27"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" kindref="member">transform_::PxPyPz</ref>(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>eta,<sp/>torch::Tensor*<sp/>phi){</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>_px<sp/>=<sp/><ref refid="namespacetransform___1a4573dda96168ebbd38a408e64cc3d5ff" kindref="member">transform_::Px</ref>(pt,<sp/>phi);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>_py<sp/>=<sp/><ref refid="namespacetransform___1a51363ab29a6390a86a8ea75573a7a196" kindref="member">transform_::Py</ref>(pt,<sp/>phi);<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>_pz<sp/>=<sp/><ref refid="namespacetransform___1a28be39b0041a97b1667ccd1ff301f784" kindref="member">transform_::Pz</ref>(pt,<sp/>eta);<sp/></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::cat({_px,<sp/>_py,<sp/>_pz},<sp/>-1);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" kindref="member">transform_::PxPyPzE</ref>(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>eta,<sp/>torch::Tensor*<sp/>phi,<sp/>torch::Tensor*<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref>){</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::cat({<ref refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" kindref="member">transform_::PxPyPz</ref>(pt,<sp/>eta,<sp/>phi),<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref><sp/>-&gt;<sp/>view({-1,<sp/>1})},<sp/>-1);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="namespacetransform___1a3cdf10dcac51733e3b2fb18cb2e6ff6e" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" kindref="member">transform_::PxPyPz</ref>(torch::Tensor*<sp/><ref refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" kindref="member">pmu</ref>){</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pt<sp/><sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" kindref="member">pmu</ref>,<sp/>0);<sp/></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>eta<sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" kindref="member">pmu</ref>,<sp/>1);<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>phi<sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" kindref="member">pmu</ref>,<sp/>2);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" kindref="member">pmu</ref><sp/>-&gt;<sp/>size({-1})<sp/>&lt;<sp/>4){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" kindref="member">transform_::PxPyPz</ref>(&amp;pt,<sp/>&amp;eta,<sp/>&amp;phi);}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::cat({<ref refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" kindref="member">transform_::PxPyPz</ref>(&amp;pt,<sp/>&amp;eta,<sp/>&amp;phi),<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" kindref="member">pmu</ref>,<sp/>3).view({-1,<sp/>1})},<sp/>{-1});</highlight></codeline>
+<codeline lineno="46"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="namespacetransform___1aba5f46ef65e5c3ed8a6f7e5075552aa2" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" kindref="member">transform_::PxPyPzE</ref>(torch::Tensor*<sp/><ref refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" kindref="member">pmu</ref>){</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pt<sp/><sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" kindref="member">pmu</ref>,<sp/>0).view({-1,<sp/>1});<sp/></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>eta<sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" kindref="member">pmu</ref>,<sp/>1).view({-1,<sp/>1});<sp/></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>phi<sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" kindref="member">pmu</ref>,<sp/>2).view({-1,<sp/>1});<sp/></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref><sp/><sp/><sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" kindref="member">pmu</ref>,<sp/>3).view({-1,<sp/>1});<sp/></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>_px<sp/>=<sp/><ref refid="namespacetransform___1a4573dda96168ebbd38a408e64cc3d5ff" kindref="member">transform_::Px</ref>(&amp;pt,<sp/>&amp;phi);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>_py<sp/>=<sp/><ref refid="namespacetransform___1a51363ab29a6390a86a8ea75573a7a196" kindref="member">transform_::Py</ref>(&amp;pt,<sp/>&amp;phi);<sp/></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>_pz<sp/>=<sp/><ref refid="namespacetransform___1a28be39b0041a97b1667ccd1ff301f784" kindref="member">transform_::Pz</ref>(&amp;pt,<sp/>&amp;eta);<sp/></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::cat({_px,<sp/>_py,<sp/>_pz,<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref>},<sp/>-1);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="namespacetransform___1a7e398b6292d5d34c81497445060ec752" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a7e398b6292d5d34c81497445060ec752" kindref="member">transform_::Pt</ref>(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py){</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::sqrt(<sp/>px<sp/>-&gt;<sp/>pow(2)<sp/>+<sp/>py<sp/>-&gt;<sp/>pow(2)<sp/>).view({-1,<sp/>1});</highlight></codeline>
+<codeline lineno="64"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="namespacetransform___1a1bb9a982e999eb15e857e7c8c22c447f" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1aa90019603231f23c1e857b5f5832b587" kindref="member">transform_::Phi</ref>(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py){</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::atan2(<sp/>*py,<sp/>*px<sp/>).view({-1,<sp/>1});<sp/></highlight></codeline>
+<codeline lineno="68"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="namespacetransform___1aa90019603231f23c1e857b5f5832b587" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1aa90019603231f23c1e857b5f5832b587" kindref="member">transform_::Phi</ref>(torch::Tensor*<sp/>pmc){</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>px<sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>,<sp/>0);<sp/></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>py<sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>,<sp/>1);<sp/></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacetransform___1aa90019603231f23c1e857b5f5832b587" kindref="member">transform_::Phi</ref>(&amp;px,<sp/>&amp;py);<sp/><sp/></highlight></codeline>
+<codeline lineno="74"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="namespacetransform___1a86e364c3bd4a1a8785a3cdfb0a1e1573" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a86e364c3bd4a1a8785a3cdfb0a1e1573" kindref="member">transform_::PtEta</ref>(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>pz){</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::asinh(<sp/>pz<sp/>-&gt;<sp/>view({-1,<sp/>1})<sp/>/<sp/>pt<sp/>-&gt;<sp/>view({-1,<sp/>1})<sp/>);<sp/></highlight></codeline>
+<codeline lineno="78"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80" refid="namespacetransform___1acc7eba6662ac0e84d9810a61be60b0ef" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a82aaa223736b57490a8639752180e5ec" kindref="member">transform_::Eta</ref>(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py,<sp/>torch::Tensor*<sp/>pz){</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pt<sp/>=<sp/><ref refid="namespacetransform___1a7e398b6292d5d34c81497445060ec752" kindref="member">transform_::Pt</ref>(px,<sp/>py);<sp/></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacetransform___1a86e364c3bd4a1a8785a3cdfb0a1e1573" kindref="member">transform_::PtEta</ref>(&amp;pt,<sp/>pz);<sp/><sp/></highlight></codeline>
+<codeline lineno="83"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85" refid="namespacetransform___1a82aaa223736b57490a8639752180e5ec" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a82aaa223736b57490a8639752180e5ec" kindref="member">transform_::Eta</ref>(torch::Tensor*<sp/>pmc){</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>px<sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>,<sp/>0);<sp/></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>py<sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>,<sp/>1);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pz<sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>,<sp/>2);<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacetransform___1a82aaa223736b57490a8639752180e5ec" kindref="member">transform_::Eta</ref>(&amp;px,<sp/>&amp;py,<sp/>&amp;pz);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="namespacetransform___1a8d2ad529d804087c315e151410e4a7a1" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1adf008ef1e94217cd7a7dae8c53a127a6" kindref="member">transform_::PtEtaPhi</ref>(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py,<sp/>torch::Tensor*<sp/>pz){</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>_pt<sp/><sp/>=<sp/><ref refid="namespacetransform___1a7e398b6292d5d34c81497445060ec752" kindref="member">transform_::Pt</ref>(px,<sp/>py);<sp/></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>_eta<sp/>=<sp/><ref refid="namespacetransform___1a86e364c3bd4a1a8785a3cdfb0a1e1573" kindref="member">transform_::PtEta</ref>(&amp;_pt,<sp/>pz);<sp/></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>_phi<sp/>=<sp/><ref refid="namespacetransform___1aa90019603231f23c1e857b5f5832b587" kindref="member">transform_::Phi</ref>(px,<sp/>py);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::cat({_pt,<sp/>_eta,<sp/>_phi},<sp/>-1);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100" refid="namespacetransform___1adf008ef1e94217cd7a7dae8c53a127a6" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1adf008ef1e94217cd7a7dae8c53a127a6" kindref="member">transform_::PtEtaPhi</ref>(torch::Tensor*<sp/>pmc){</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>px<sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>,<sp/>0);<sp/></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>py<sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>,<sp/>1);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pz<sp/>=<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>,<sp/>2);<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref><sp/>-&gt;<sp/>size({-1})<sp/>&lt;<sp/>4){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacetransform___1adf008ef1e94217cd7a7dae8c53a127a6" kindref="member">transform_::PtEtaPhi</ref>(&amp;px,<sp/>&amp;py,<sp/>&amp;pz);}</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::cat({<ref refid="namespacetransform___1adf008ef1e94217cd7a7dae8c53a127a6" kindref="member">transform_::PtEtaPhi</ref>(&amp;px,<sp/>&amp;py,<sp/>&amp;pz),<sp/><ref refid="utils_8h_1aaec9ca2d20716add3c686abd989934d0" kindref="member">clip</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>,<sp/>3).view({-1,<sp/>1})},<sp/>{-1});</highlight></codeline>
+<codeline lineno="106"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108" refid="namespacetransform___1a0564930def9a67318624f21aa822860e" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a59a9589e3d78c302e6f52b2fcd5ceedb" kindref="member">transform_::PtEtaPhiE</ref>(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py,<sp/>torch::Tensor*<sp/>pz,<sp/>torch::Tensor*<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref>){</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::cat({<ref refid="namespacetransform___1adf008ef1e94217cd7a7dae8c53a127a6" kindref="member">transform_::PtEtaPhi</ref>(px,<sp/>py,<sp/>pz),<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref><sp/>-&gt;<sp/>view({-1,<sp/>1})},<sp/>-1);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112" refid="namespacetransform___1a59a9589e3d78c302e6f52b2fcd5ceedb" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a59a9589e3d78c302e6f52b2fcd5ceedb" kindref="member">transform_::PtEtaPhiE</ref>(torch::Tensor*<sp/>pmc){</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacetransform___1adf008ef1e94217cd7a7dae8c53a127a6" kindref="member">transform_::PtEtaPhi</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);<sp/></highlight></codeline>
+<codeline lineno="114"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="pyc/transform/transform.cxx"/>
+  </compounddef>
+</doxygen>

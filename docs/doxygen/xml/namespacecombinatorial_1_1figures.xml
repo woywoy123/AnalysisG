@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacecombinatorial_1_1figures" kind="namespace" language="Python">
+    <compoundname>combinatorial::figures</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacecombinatorial_1_1figures_1a131a9bc44d18c88afd35e9929c98d6f3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def combinatorial.figures.combinatorial</definition>
+        <argsstring>(sel)</argsstring>
+        <name>combinatorial</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/combinatorial/figures.py" line="10" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/combinatorial/figures.py" bodystart="10" bodyend="12"/>
+        <references refid="classcombinatorial_1a9d7ef868e8a8010b55c2055f7885cf41" compoundref="combinatorial_8cxx" startline="11" endline="11">combinatorial::combinatorial</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/neutrino/combinatorial/figures.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

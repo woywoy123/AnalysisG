@@ -1,0 +1,382 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="interfaces_8cxx" kind="file" language="C++">
+    <compoundname>interfaces.cxx</compoundname>
+    <includes refid="particle__template_8h" local="no">templates/particle_template.h</includes>
+    <incdepgraph>
+      <node id="17">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="8">
+        <label>functional</label>
+      </node>
+      <node id="15">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="9">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="24">
+        <label>cstdint</label>
+      </node>
+      <node id="2">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>cmath</label>
+      </node>
+      <node id="1">
+        <label>interfaces.cxx</label>
+        <link refid="interfaces_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="6">
+        <label>map</label>
+      </node>
+      <node id="18">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+      <node id="10">
+        <label>TFile.h</label>
+      </node>
+      <node id="25">
+        <label>sstream</label>
+      </node>
+      <node id="3">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>cstdlib</label>
+      </node>
+      <node id="22">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="13">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="19">
+        <label>iostream</label>
+      </node>
+      <node id="20">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>TBranch.h</label>
+      </node>
+      <node id="7">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>TTree.h</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="particle__template_8h" kindref="compound">templates/particle_template.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="classparticle__template_1ad9cf4aed3240fa987b364230a9929787" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1ad9cf4aed3240fa987b364230a9929787" kindref="member">particle_template::set_pdgid</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1aab985aafb4a7b02e2e2b9e25add9a44b" kindref="member">pdgid</ref><sp/>=<sp/>*val;<sp/></highlight></codeline>
+<codeline lineno="5"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="classparticle__template_1a1dd91fb218aee680bd4920044133828d" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a1dd91fb218aee680bd4920044133828d" kindref="member">particle_template::get_pdgid</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structparticle__t" kindref="compound">particle_t</ref>*<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>=<sp/>&amp;prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>;<sp/></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a3cc090c7528020fba8849e0850a5b2fc" kindref="member">pdgid</ref><sp/>!=<sp/>0){<sp/>*val<sp/>=<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a3cc090c7528020fba8849e0850a5b2fc" kindref="member">pdgid</ref>;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a7406ffe413d0668d76e8fc02fce5fcd5" kindref="member">symbol</ref>.size()<sp/>==<sp/>0){<sp/>*val<sp/>=<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a3cc090c7528020fba8849e0850a5b2fc" kindref="member">pdgid</ref>;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>std::string&gt;<sp/>sym<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{1,<sp/></highlight><highlight class="stringliteral">&quot;d&quot;</highlight><highlight class="normal">},<sp/>{2,<sp/></highlight><highlight class="stringliteral">&quot;u&quot;</highlight><highlight class="normal">},<sp/>{3,<sp/></highlight><highlight class="stringliteral">&quot;s&quot;</highlight><highlight class="normal">},<sp/></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{4,<sp/></highlight><highlight class="stringliteral">&quot;c&quot;</highlight><highlight class="normal">},<sp/>{5,<sp/></highlight><highlight class="stringliteral">&quot;b&quot;</highlight><highlight class="normal">},<sp/>{6,<sp/></highlight><highlight class="stringliteral">&quot;t&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{11,<sp/></highlight><highlight class="stringliteral">&quot;e&quot;</highlight><highlight class="normal">},<sp/>{12,<sp/></highlight><highlight class="stringliteral">&quot;$\\nu_{e}$&quot;</highlight><highlight class="normal">},<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{13,<sp/></highlight><highlight class="stringliteral">&quot;$\\mu$&quot;</highlight><highlight class="normal">},<sp/>{14,<sp/></highlight><highlight class="stringliteral">&quot;$\\nu_{\\mu}$&quot;</highlight><highlight class="normal">},<sp/></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{15,<sp/></highlight><highlight class="stringliteral">&quot;$\\tau$&quot;</highlight><highlight class="normal">},<sp/>{16,<sp/></highlight><highlight class="stringliteral">&quot;$\\nu_{\\tau}$&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{21,<sp/></highlight><highlight class="stringliteral">&quot;g&quot;</highlight><highlight class="normal">},<sp/>{22,<sp/></highlight><highlight class="stringliteral">&quot;$\\gamma$&quot;</highlight><highlight class="normal">}</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>};<sp/></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>std::string&gt;::iterator<sp/>it<sp/>=<sp/>sym.begin();<sp/></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>it<sp/>!=<sp/>sym.end();<sp/>++it){</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it<sp/>-&gt;<sp/>second<sp/>!=<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a7406ffe413d0668d76e8fc02fce5fcd5" kindref="member">symbol</ref>){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a3cc090c7528020fba8849e0850a5b2fc" kindref="member">pdgid</ref><sp/>=<sp/>it<sp/>-&gt;<sp/>first;<sp/></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*val<sp/>=<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a3cc090c7528020fba8849e0850a5b2fc" kindref="member">pdgid</ref>;<sp/></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>*val<sp/>=<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a3cc090c7528020fba8849e0850a5b2fc" kindref="member">pdgid</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="classparticle__template_1a3341f187b6b2699bfc65aa7b272d2424" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a3341f187b6b2699bfc65aa7b272d2424" kindref="member">particle_template::set_symbol</ref>(std::string*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1a685a4af94955c43aff8c2971806c2031" kindref="member">symbol</ref><sp/>=<sp/>*val;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="classparticle__template_1afa3165c6eb75d44985e3a679c05f2f35" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1afa3165c6eb75d44985e3a679c05f2f35" kindref="member">particle_template::get_symbol</ref>(std::string*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structparticle__t" kindref="compound">particle_t</ref>*<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>=<sp/>&amp;prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>;<sp/></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((<ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a7406ffe413d0668d76e8fc02fce5fcd5" kindref="member">symbol</ref>).size()<sp/>!=<sp/>0){*val<sp/>=<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a7406ffe413d0668d76e8fc02fce5fcd5" kindref="member">symbol</ref>;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>std::string&gt;<sp/>sym<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{1,<sp/></highlight><highlight class="stringliteral">&quot;d&quot;</highlight><highlight class="normal">},<sp/>{2,<sp/></highlight><highlight class="stringliteral">&quot;u&quot;</highlight><highlight class="normal">},<sp/>{3,<sp/></highlight><highlight class="stringliteral">&quot;s&quot;</highlight><highlight class="normal">},<sp/></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{4,<sp/></highlight><highlight class="stringliteral">&quot;c&quot;</highlight><highlight class="normal">},<sp/>{5,<sp/></highlight><highlight class="stringliteral">&quot;b&quot;</highlight><highlight class="normal">},<sp/>{6,<sp/></highlight><highlight class="stringliteral">&quot;t&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{11,<sp/></highlight><highlight class="stringliteral">&quot;e&quot;</highlight><highlight class="normal">},<sp/>{12,<sp/></highlight><highlight class="stringliteral">&quot;$\\nu_{e}$&quot;</highlight><highlight class="normal">},<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{13,<sp/></highlight><highlight class="stringliteral">&quot;$\\mu$&quot;</highlight><highlight class="normal">},<sp/>{14,<sp/></highlight><highlight class="stringliteral">&quot;$\\nu_{\\mu}$&quot;</highlight><highlight class="normal">},<sp/></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{15,<sp/></highlight><highlight class="stringliteral">&quot;$\\tau$&quot;</highlight><highlight class="normal">},<sp/>{16,<sp/></highlight><highlight class="stringliteral">&quot;$\\nu_{\\tau}$&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{21,<sp/></highlight><highlight class="stringliteral">&quot;g&quot;</highlight><highlight class="normal">},<sp/>{22,<sp/></highlight><highlight class="stringliteral">&quot;$\\gamma$&quot;</highlight><highlight class="normal">}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>};<sp/></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>std::stringstream<sp/>ss;<sp/></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>ss<sp/>&lt;&lt;<sp/>sym[std::abs(<ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a3cc090c7528020fba8849e0850a5b2fc" kindref="member">pdgid</ref>)];</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>*val<sp/>=<sp/>ss.str();<sp/></highlight></codeline>
+<codeline lineno="51"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="classparticle__template_1af21be977ccd925410e90221d8fadef32" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1af21be977ccd925410e90221d8fadef32" kindref="member">particle_template::set_charge</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1ab513cebd0bffa259c51919b28222ceff" kindref="member">charge</ref><sp/>=<sp/>*val;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57" refid="classparticle__template_1a92866b3a31350f8d7ae5e15c8a551b33" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a92866b3a31350f8d7ae5e15c8a551b33" kindref="member">particle_template::get_charge</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>*val<sp/>=<sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1ab513cebd0bffa259c51919b28222ceff" kindref="member">charge</ref>;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="classparticle__template_1a2a3735ec76637317bb78cafb8759b258" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a2a3735ec76637317bb78cafb8759b258" kindref="member">particle_template::get_isb</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){<sp/></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>*val<sp/>=<sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a0f07f2b1587b5b72e50f9da36f079a24" kindref="member">is</ref>({5});<sp/></highlight></codeline>
+<codeline lineno="63"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="classparticle__template_1a418dff4e2ee3f17d7a85a1e37c76b29f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a418dff4e2ee3f17d7a85a1e37c76b29f" kindref="member">particle_template::get_isnu</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){<sp/></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>*val<sp/>=<sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a0f07f2b1587b5b72e50f9da36f079a24" kindref="member">is</ref>(prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1a3bf8f40d3afaf9b4e2f5bd61ab4a3f60" kindref="member">nudef</ref>);<sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="classparticle__template_1a2d99515f664dbf8dab14061682e5bc6b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a2d99515f664dbf8dab14061682e5bc6b" kindref="member">particle_template::get_islep</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){<sp/></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>*val<sp/>=<sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a0f07f2b1587b5b72e50f9da36f079a24" kindref="member">is</ref>(prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1a1f1ab97f2cd743c82946af6dc8b22b0e" kindref="member">lepdef</ref>);<sp/></highlight></codeline>
+<codeline lineno="71"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="classparticle__template_1a58373d0f47618e85ab649a28ebe2b79a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a58373d0f47618e85ab649a28ebe2b79a" kindref="member">particle_template::get_isadd</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){<sp/></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>*val<sp/>=<sp/>!(prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a464c54ca63c5acc39b4176d682b6d522" kindref="member">is_lep</ref><sp/>||<sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a14634a76d7d004a68cea9b960b6fd7cc" kindref="member">is_nu</ref><sp/>||<sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a92698f3a11d2100d72fd159a11e6606f" kindref="member">is_b</ref>);<sp/></highlight></codeline>
+<codeline lineno="75"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="classparticle__template_1a0f07f2b1587b5b72e50f9da36f079a24" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a0f07f2b1587b5b72e50f9da36f079a24" kindref="member">particle_template::is</ref>(std::vector&lt;int&gt;<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref>){</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/><ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741" kindref="member">i</ref><sp/>:<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref>){<sp/></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(std::abs(<ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741" kindref="member">i</ref>)<sp/>!=<sp/>std::abs(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1aab985aafb4a7b02e2e2b9e25add9a44b" kindref="member">pdgid</ref>)){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}<sp/></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="84"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="classparticle__template_1ad101584e82d80dc3c560c2309867b8a7" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1ad101584e82d80dc3c560c2309867b8a7" kindref="member">particle_template::get_lepdecay</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>nu<sp/><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>lep<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;<sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref><sp/>=<sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1ade7a7410e1e467fdc4d01c618c379c4e" kindref="member">children</ref>;<sp/></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;::iterator<sp/>itr<sp/>=<sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref>.begin();<sp/></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itr<sp/>!=<sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref>.end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!nu)<sp/>{<sp/>nu<sp/><sp/>=<sp/>itr<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/><ref refid="classparticle__template_1a14634a76d7d004a68cea9b960b6fd7cc" kindref="member">is_nu</ref>;}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!lep){<sp/>lep<sp/>=<sp/>itr<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/><ref refid="classparticle__template_1a464c54ca63c5acc39b4176d682b6d522" kindref="member">is_lep</ref>;}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(lep<sp/>&amp;&amp;<sp/>nu){<sp/>*val<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>*val<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="97"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="classparticle__template_1a7fda73e06360bffd1bce45e7ba7370a5" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a7fda73e06360bffd1bce45e7ba7370a5" kindref="member">particle_template::add_leaf</ref>(std::string<sp/>key,<sp/>std::string<sp/>leaf){</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!leaf.size()){leaf<sp/>=<sp/>key;}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classparticle__template_1abc6e99b77acd945b6b3b7cbdd12f32b3" kindref="member">leaves</ref>[key]<sp/>=<sp/>leaf;<sp/></highlight></codeline>
+<codeline lineno="102"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104" refid="classparticle__template_1a9550be5b7d6267872dfce8d92e9b09f2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a9550be5b7d6267872dfce8d92e9b09f2" kindref="member">particle_template::set_parents</ref>(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;::iterator<sp/>itr<sp/>=<sp/>val<sp/>-&gt;<sp/>begin();</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itr<sp/>!=<sp/>val<sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a64e9fa75beda50a9e8400ee0d4e61984" kindref="member">end</ref>();<sp/>++itr){prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a1136fb07def4cd0385bd6d37b9ad68ff" kindref="member">register_parent</ref>(itr<sp/>-&gt;<sp/>second);}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(val<sp/>-&gt;<sp/>size()){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1a8d1b26196f6f1f3f9021e65ed476a76b" kindref="member">parents</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a3e4a34711699672f1c4e1e1d57e95929" kindref="member">m_parents</ref><sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="110"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112" refid="classparticle__template_1a0b63a8ae07f178fa8f30044683c615ad" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a0b63a8ae07f178fa8f30044683c615ad" kindref="member">particle_template::get_parents</ref>(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;::iterator<sp/>itr<sp/>=<sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a3e4a34711699672f1c4e1e1d57e95929" kindref="member">m_parents</ref>.begin();</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itr<sp/>!=<sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a3e4a34711699672f1c4e1e1d57e95929" kindref="member">m_parents</ref>.end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(val<sp/>-&gt;<sp/><ref refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" kindref="member">count</ref>(itr<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>)){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*val)[itr<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>]<sp/>=<sp/>itr<sp/>-&gt;<sp/>second;<sp/></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="118"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="classparticle__template_1af4814257c6e584f51eaefee09d5d9300" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1af4814257c6e584f51eaefee09d5d9300" kindref="member">particle_template::set_children</ref>(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;::iterator<sp/>itr<sp/>=<sp/>val<sp/>-&gt;<sp/>begin();</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itr<sp/>!=<sp/>val<sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a64e9fa75beda50a9e8400ee0d4e61984" kindref="member">end</ref>();<sp/>++itr){prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1aa8af18b783e4bd8647620ffa62a321d7" kindref="member">register_child</ref>(itr<sp/>-&gt;<sp/>second);}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(val<sp/>-&gt;<sp/>size()){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1af9fd0678b0c70f2dcb09be9bd9bbf9eb" kindref="member">children</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1aca9b414112368a9e513705dc368f9e5b" kindref="member">m_children</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="126"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128" refid="classparticle__template_1a0d6f5cadd815776a58be4d47e99c750d" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a0d6f5cadd815776a58be4d47e99c750d" kindref="member">particle_template::get_children</ref>(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;::iterator<sp/>itr<sp/>=<sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1aca9b414112368a9e513705dc368f9e5b" kindref="member">m_children</ref>.begin();</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itr<sp/>!=<sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1aca9b414112368a9e513705dc368f9e5b" kindref="member">m_children</ref>.end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(val<sp/>-&gt;<sp/><ref refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" kindref="member">count</ref>(itr<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>)){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*val)[itr<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>]<sp/>=<sp/>itr<sp/>-&gt;<sp/>second;<sp/></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="134"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136" refid="classparticle__template_1aa8af18b783e4bd8647620ffa62a321d7" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1aa8af18b783e4bd8647620ffa62a321d7" kindref="member">particle_template::register_child</ref>(<ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref>){</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref><sp/>=<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>;<sp/></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1af9fd0678b0c70f2dcb09be9bd9bbf9eb" kindref="member">children</ref>[<ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>]){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classparticle__template_1aca9b414112368a9e513705dc368f9e5b" kindref="member">m_children</ref>[<ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>]<sp/>=<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref>;<sp/></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1af9fd0678b0c70f2dcb09be9bd9bbf9eb" kindref="member">children</ref>[<ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="142"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144" refid="classparticle__template_1a1136fb07def4cd0385bd6d37b9ad68ff" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a1136fb07def4cd0385bd6d37b9ad68ff" kindref="member">particle_template::register_parent</ref>(<ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref>){</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref><sp/>=<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>;<sp/></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1a8d1b26196f6f1f3f9021e65ed476a76b" kindref="member">parents</ref>[<ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>]){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classparticle__template_1a3e4a34711699672f1c4e1e1d57e95929" kindref="member">m_parents</ref>[<ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>]<sp/>=<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref>;<sp/></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1a8d1b26196f6f1f3f9021e65ed476a76b" kindref="member">parents</ref>[<ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="150"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152" refid="classparticle__template_1a9c586cc0ac38cad5ccacf1bb4985e25b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a9c586cc0ac38cad5ccacf1bb4985e25b" kindref="member">particle_template::get_hash</ref>(std::string*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structparticle__t" kindref="compound">particle_t</ref>*<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>=<sp/>&amp;prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>;<sp/></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((<ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>).size()){*val<sp/>=<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a9d76454c51212c82aaa61b6328bb6545" kindref="member">to_cartesian</ref>();<sp/></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref><sp/><sp/>=<sp/>prt<sp/>-&gt;<sp/><ref refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" kindref="member">to_string</ref>(prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1aaea285da722e05111a27bc6496fc3fc5" kindref="member">px</ref>);<sp/></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref><sp/>+=<sp/>prt<sp/>-&gt;<sp/><ref refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" kindref="member">to_string</ref>(prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a1f9bfad685427e7c6ef5d16163eb6ea4" kindref="member">py</ref>);<sp/></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref><sp/>+=<sp/>prt<sp/>-&gt;<sp/><ref refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" kindref="member">to_string</ref>(prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a8d8e132523d5d11fab02bd3814c3c682" kindref="member">pz</ref>);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref><sp/>+=<sp/>prt<sp/>-&gt;<sp/><ref refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" kindref="member">to_string</ref>(prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a662321de0323372654542f6cd60464b7" kindref="member">e</ref>);<sp/></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref><sp/><sp/>=<sp/>prt<sp/>-&gt;<sp/>tools::hash(<ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>);<sp/></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>*val<sp/>=<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>-&gt;<sp/><ref refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" kindref="member">hash</ref>;<sp/></highlight></codeline>
+<codeline lineno="163"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165" refid="classparticle__template_1af7ffbf0f94819ca168cbb33e65e1c29e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1af7ffbf0f94819ca168cbb33e65e1c29e" kindref="member">particle_template::set_type</ref>(std::string*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1a4685c679a8f23b24b8c3db30bdc8acc0" kindref="member">type</ref><sp/>=<sp/>*val;<sp/><sp/></highlight></codeline>
+<codeline lineno="167"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169" refid="classparticle__template_1ab021726ef6c07bffdccecb7bda38ca86" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1ab021726ef6c07bffdccecb7bda38ca86" kindref="member">particle_template::get_type</ref>(std::string*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>*val<sp/>=<sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1a4685c679a8f23b24b8c3db30bdc8acc0" kindref="member">type</ref>;<sp/></highlight></codeline>
+<codeline lineno="171"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173" refid="classparticle__template_1a3ba07b65a181071a7c8c11e8ccdf3e91" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1a3ba07b65a181071a7c8c11e8ccdf3e91" kindref="member">particle_template::set_index</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1a949949f675971ad92ac332f103f8507d" kindref="member">index</ref><sp/>=<sp/>*val;<sp/><sp/></highlight></codeline>
+<codeline lineno="175"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177" refid="classparticle__template_1abb9421346892401cfc1d75142b46baf7" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classparticle__template_1abb9421346892401cfc1d75142b46baf7" kindref="member">particle_template::get_index</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>val,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>prt){</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/>*val<sp/>=<sp/>prt<sp/>-&gt;<sp/><ref refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" kindref="member">data</ref>.<ref refid="structparticle__t_1a949949f675971ad92ac332f103f8507d" kindref="member">index</ref>;<sp/></highlight></codeline>
+<codeline lineno="179"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/particle/cxx/interfaces.cxx"/>
+  </compounddef>
+</doxygen>

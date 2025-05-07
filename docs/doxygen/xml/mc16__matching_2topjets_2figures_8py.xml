@@ -1,0 +1,408 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="mc16__matching_2topjets_2figures_8py" kind="file" language="Python">
+    <compoundname>mc16_matching/topjets/figures.py</compoundname>
+    <innernamespace refid="namespacetopjets_1_1figures">topjets::figures</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespacetopjets_1_1figures" refkind="compound"><highlight class="keyword">from</highlight><highlight class="normal"><sp/><ref refid="namespace_analysis_g_1_1core_1_1plotting" kindref="compound">AnalysisG.core.plotting</ref><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>TH1F,<sp/>TH2F</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">global</highlight><highlight class="normal"><sp/>figure_path</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keyword">global</highlight><highlight class="normal"><sp/>mass_point</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6" refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(hist):</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.Style<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;ATLAS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.UseLateX<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.OutputDirectory<sp/>=<sp/>figure_path<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/top-jets/&quot;</highlight><highlight class="normal"><sp/>+<sp/>mass_point</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>hist</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12" refid="namespacetopjets_1_1figures_1a938bbdc505d069559a1b5da3558a8762" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetopjets_1_1figures_1a938bbdc505d069559a1b5da3558a8762" kindref="member">top_mass_jets</ref>(ana):</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>hists<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>x<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>[</highlight><highlight class="stringliteral">&quot;Leptonic&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Hadronic&quot;</highlight><highlight class="normal">]:</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th.Title<sp/>=<sp/>x</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th.xData<sp/>=<sp/>ana.top_mass[x.lower()][</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists<sp/>+=<sp/>[th]</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>th_<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.Histograms<sp/>=<sp/>hists</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Normalized<sp/>Invariant<sp/>Mass<sp/>of<sp/>Matched<sp/>Truth<sp/>Tops<sp/>\n<sp/>using<sp/>Jets<sp/>(and<sp/>Truth<sp/>Leptons/Neutrinos)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>of<sp/>Matched<sp/>Top<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Density<sp/>(Arb.)<sp/>/<sp/>(1<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.a&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.xBins<sp/>=<sp/>400</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.xMin<sp/><sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.xMax<sp/><sp/>=<sp/>400</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.xStep<sp/>=<sp/>20</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.Overflow<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.SaveFigure()</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>kx,<sp/>name<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>zip([</highlight><highlight class="stringliteral">&quot;Leptonic&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Hadronic&quot;</highlight><highlight class="normal">],<sp/>[</highlight><highlight class="stringliteral">&quot;b&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;c&quot;</highlight><highlight class="normal">]):</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists<sp/>=<sp/>{}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>x<sp/>=<sp/>kx.lower()</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cl<sp/>=<sp/>iter([</highlight><highlight class="stringliteral">&quot;orange&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;green&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;magenta&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;red&quot;</highlight><highlight class="normal">])</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>nj<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>sorted(ana.top_mass[</highlight><highlight class="stringliteral">&quot;njets&quot;</highlight><highlight class="normal">][x]):</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>data<sp/>=<sp/>ana.top_mass[</highlight><highlight class="stringliteral">&quot;njets&quot;</highlight><highlight class="normal">][x][nj]</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>int(nj)<sp/>&gt;<sp/>3:<sp/>title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\geq<sp/>4$<sp/>Jets&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal">:<sp/>title<sp/>=<sp/>str(nj)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>Jets&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>title<sp/></highlight><highlight class="keywordflow">not</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>hists:<sp/>hists[title]<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists[title]<sp/>+=<sp/>data</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>k<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>hists:</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th.Title<sp/>=<sp/>k</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th.xData<sp/>=<sp/>hists[k]</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th.Color<sp/>=<sp/>next(cl)</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th.Alpha<sp/>=<sp/>0.5</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists[k]<sp/>=<sp/>th</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Histograms<sp/>=<sp/>[hists[k]<sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>k<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>sorted(hists)][1:]<sp/>+<sp/>[[hists[k]<sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>k<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>sorted(hists)][0]]</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Normalized<sp/>Invariant<sp/>Mass<sp/>of<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>kx<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>Decaying<sp/>Truth<sp/>Top<sp/>\n<sp/>Segmented<sp/>by<sp/>n-Jet<sp/>Contributions&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>of<sp/>Matched<sp/>Top<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Density<sp/>(Arb.)<sp/>/<sp/>(1<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.&quot;</highlight><highlight class="normal"><sp/>+<sp/>name</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xBins<sp/>=<sp/>400</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xMin<sp/><sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xMax<sp/><sp/>=<sp/>400</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xStep<sp/>=<sp/>20</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Stacked<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Overflow<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.SaveFigure()</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>kx,<sp/>name<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>zip([</highlight><highlight class="stringliteral">&quot;Leptonic&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Hadronic&quot;</highlight><highlight class="normal">],<sp/>[</highlight><highlight class="stringliteral">&quot;d&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;e&quot;</highlight><highlight class="normal">]):</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>x<sp/>=<sp/>kx.lower()</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cl<sp/>=<sp/>iter([</highlight><highlight class="stringliteral">&quot;orange&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;green&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;magenta&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;red&quot;</highlight><highlight class="normal">])</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>nj<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>sorted(ana.top_mass[</highlight><highlight class="stringliteral">&quot;merged_tops&quot;</highlight><highlight class="normal">][x]):</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th.Title<sp/>=<sp/>str(nj)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;-Tops&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th.xData<sp/>=<sp/>ana.top_mass[</highlight><highlight class="stringliteral">&quot;merged_tops&quot;</highlight><highlight class="normal">][x][nj]</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th.Color<sp/>=<sp/>next(cl)</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th.Alpha<sp/>=<sp/>0.5</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists<sp/>+=<sp/>[th]</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Histograms<sp/>=<sp/>hists</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Normalized<sp/>Invariant<sp/>Mass<sp/>of<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>kx<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>Decaying<sp/>Truth<sp/>Tops<sp/>\n<sp/>Segmented<sp/>by<sp/>n-Tops<sp/>Contributing<sp/>to<sp/>matched<sp/>Jets&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>of<sp/>Matched<sp/>Top<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Density<sp/>(Arb.)<sp/>/<sp/>(1<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.&quot;</highlight><highlight class="normal"><sp/>+<sp/>name</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xBins<sp/>=<sp/>400</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xMin<sp/><sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xMax<sp/><sp/>=<sp/>400</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xStep<sp/>=<sp/>20</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Stacked<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Overflow<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.SaveFigure()</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96" refid="namespacetopjets_1_1figures_1a7be250620ef82d725fa29b10fa7e1aff" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetopjets_1_1figures_1a7be250620ef82d725fa29b10fa7e1aff" kindref="member">top_jet_cluster</ref>(ana):</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>hists<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>maps<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;background&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;resonant-leptonic&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;resonant-hadronic&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;spectator-leptonic&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;spectator-hadronic&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>x<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>maps:</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th.Title<sp/>=<sp/>x</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th.xData<sp/>=<sp/>ana.jet_top[x][</highlight><highlight class="stringliteral">&quot;dr&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists<sp/>+=<sp/>[th]</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>th_<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.Histograms<sp/>=<sp/>hists</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Normalized<sp/>$\\Delta<sp/>R$<sp/>Between<sp/>Jets<sp/>matched<sp/>to<sp/>a<sp/>Mutal<sp/>Top<sp/>\n<sp/>compared<sp/>to<sp/>Background<sp/>(Other<sp/>Jets)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>Between<sp/>Jets<sp/>(Arb.)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Density<sp/>(Arb.)<sp/>/<sp/>0.02&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.f&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.xBins<sp/>=<sp/>300</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.xMin<sp/><sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.xMax<sp/><sp/>=<sp/>6</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.xStep<sp/>=<sp/>0.4</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.Stacked<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.Overflow<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>th_.SaveFigure()</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>names<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;Resonance<sp/>(Leptonic)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Resonance<sp/>(Hadronic)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Spectator<sp/>(Leptonic)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Spectator<sp/>(Hadronic)&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>fig_<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;g&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;h&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;i&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;j&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>map_m<sp/>=<sp/>maps[1:]</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>n,<sp/>j,<sp/>f<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>zip(names,<sp/>map_m,<sp/>fig_):</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH2F())</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>Between<sp/>Jets<sp/>from<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>n<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>Top<sp/>\n<sp/>as<sp/>a<sp/>Function<sp/>of<sp/>the<sp/>Top&apos;s<sp/>Energy&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.xData<sp/>=<sp/>ana.jet_top[j][</highlight><highlight class="stringliteral">&quot;energy&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.yData<sp/>=<sp/>ana.jet_top[j][</highlight><highlight class="stringliteral">&quot;dr&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Truth<sp/>Top<sp/>Energy<sp/>/<sp/>(3<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>(Arb.)<sp/>/<sp/>0.02&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.xBins<sp/>=<sp/>500</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.yBins<sp/>=<sp/>200</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.xMax<sp/>=<sp/>1500</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.xStep<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.yMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.yMax<sp/>=<sp/>4.0</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.yStep<sp/>=<sp/>0.2</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;RdBu_r&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.&quot;</highlight><highlight class="normal"><sp/>+<sp/>f</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.SaveFigure()</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>fig_<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;k&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;l&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;m&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;n&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>n,<sp/>j,<sp/>f<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>zip(names,<sp/>map_m,<sp/>fig_):</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH2F())</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>Between<sp/>Jets<sp/>from<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>n<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>Top<sp/>\n<sp/>as<sp/>a<sp/>Function<sp/>of<sp/>the<sp/>Top&apos;s<sp/>Transverse<sp/>Momentum&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.xData<sp/>=<sp/>ana.jet_top[j][</highlight><highlight class="stringliteral">&quot;energy&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.yData<sp/>=<sp/>ana.jet_top[j][</highlight><highlight class="stringliteral">&quot;dr&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Truth<sp/>Top<sp/>$p_T$<sp/>/<sp/>(3<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>(Arb.)<sp/>/<sp/>0.02&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.xBins<sp/>=<sp/>500</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.yBins<sp/>=<sp/>200</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.xMax<sp/>=<sp/>1500</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.xStep<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.yMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.yMax<sp/>=<sp/>4.0</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.yStep<sp/>=<sp/>0.2</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;RdBu_r&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.&quot;</highlight><highlight class="normal"><sp/>+<sp/>f</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th2.SaveFigure()</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174" refid="namespacetopjets_1_1figures_1a5b399afa5e9c92e2d3232479b70879e1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="classtopjets_1a27e693ebdfdb6a7b2dc3a32868c7ff1f" kindref="member">jet_partons</ref>(ana):</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>data<sp/>=<sp/>ana.jet_partons</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/>maps<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;resonant-leptonic&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;resonant-hadronic&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;spectator-leptonic&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;spectator-hadronic&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;background&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/>symbolic<sp/>=<sp/>{}</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/>energy<sp/>=<sp/>{}</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/>transverse<sp/>=<sp/>{}</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>x<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>range(len(maps)):</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mode<sp/>=<sp/>maps[x]</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>k<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>data[mode]:</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;null&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>k<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;c&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">or</highlight><highlight class="normal"><sp/>k<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;d&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">or</highlight><highlight class="normal"><sp/>k<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;s&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">or</highlight><highlight class="normal"><sp/>k<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;u&quot;</highlight><highlight class="normal">:<sp/>title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;light-quark&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>k<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;b&quot;</highlight><highlight class="normal">:<sp/>title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;b-quark&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>k<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;g&quot;</highlight><highlight class="normal">:<sp/>title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;gluon&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>title<sp/></highlight><highlight class="keywordflow">not</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>symbolic:</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>symbolic[title]<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>energy[title]<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transverse[title]<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>symbolic[title]<sp/>+=<sp/>data[mode][k][</highlight><highlight class="stringliteral">&quot;dr&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>energy[title]<sp/>+=<sp/>data[mode][k][</highlight><highlight class="stringliteral">&quot;parton-energy&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transverse[title]<sp/>+=<sp/>data[mode][k][</highlight><highlight class="stringliteral">&quot;parton-pt&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/>hists<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>x<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>symbolic:</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xData<sp/>=<sp/>symbolic[x]</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Title<sp/>=<sp/>x</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists.append(th_)</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.Histograms<sp/>=<sp/>hists</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>Distribution<sp/>Between<sp/>\n<sp/>the<sp/>Jet<sp/>Axis<sp/>and<sp/>Ghost<sp/>Matched<sp/>Partons&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>Between<sp/>Jet<sp/>Axis<sp/>and<sp/>Matched<sp/>Ghost<sp/>Parton<sp/>(Arb.)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Entries<sp/>/<sp/>0.005&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.o&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.xBins<sp/>=<sp/>120</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.xMin<sp/><sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.xMax<sp/><sp/>=<sp/>0.6</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.xStep<sp/>=<sp/>0.05</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.Stacked<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.SaveFigure()</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/>th2<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH2F())</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>Between<sp/>Jet<sp/>Axis<sp/>and<sp/>Ghost<sp/>Matched<sp/>Partons<sp/>\n<sp/>as<sp/>a<sp/>function<sp/>of<sp/>Ghost<sp/>Parton<sp/>Energy&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xData<sp/>=<sp/><ref refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" kindref="member">sum</ref>([x<sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>x<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>energy.values()],<sp/>[])</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yData<sp/>=<sp/><ref refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" kindref="member">sum</ref>([x<sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>x<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>symbolic.values()],<sp/>[])</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Ghost<sp/>Matched<sp/>Parton<sp/>Energy<sp/>/<sp/>(2<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>Between<sp/>Jet<sp/>Axis<sp/>and<sp/>Parton<sp/>(Arb.)<sp/>/<sp/>0.005&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xBins<sp/>=<sp/>200</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yBins<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xStep<sp/>=<sp/>40</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yStep<sp/>=<sp/>0.05</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"></highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xMax<sp/>=<sp/>400</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yMax<sp/>=<sp/>0.5</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;RdBu_r&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.p&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.SaveFigure()</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"></highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/>th2<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH2F())</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>Between<sp/>Jet<sp/>Axis<sp/>and<sp/>Ghost<sp/>Matched<sp/>Partons<sp/>\n<sp/>as<sp/>a<sp/>function<sp/>of<sp/>Ghost<sp/>Parton<sp/>$p_T$&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xData<sp/>=<sp/><ref refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" kindref="member">sum</ref>([x<sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>x<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>transverse.values()],<sp/>[])</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yData<sp/>=<sp/><ref refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" kindref="member">sum</ref>([x<sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>x<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>symbolic.values()],<sp/>[])</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Ghost<sp/>Matched<sp/>Parton<sp/>$p_T$<sp/>/<sp/>(1<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>between<sp/>Jet<sp/>Axis<sp/>and<sp/>Parton<sp/>(Arb.)<sp/>/<sp/>0.005&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xBins<sp/>=<sp/>250</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yBins<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xStep<sp/>=<sp/>25</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yStep<sp/>=<sp/>0.05</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xMax<sp/>=<sp/>250</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yMax<sp/>=<sp/>0.5</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;RdBu_r&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.q&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.SaveFigure()</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/>names<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;Resonance<sp/>(Leptonic)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Resonance<sp/>(Hadronic)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Spectator<sp/>(Leptonic)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Spectator<sp/>(Hadronic)&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/>fig_<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;r&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;s&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;t&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;u&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>x<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>range(len(names)):</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>key<sp/>=<sp/>maps[x]</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>name<sp/>=<sp/>names[x]</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists<sp/>=<sp/>{}</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>k<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>data[key]:</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;null&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>k<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;c&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">or</highlight><highlight class="normal"><sp/>k<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;d&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">or</highlight><highlight class="normal"><sp/>k<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;s&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">or</highlight><highlight class="normal"><sp/>k<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;u&quot;</highlight><highlight class="normal">:<sp/>title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;light-quark&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>k<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;b&quot;</highlight><highlight class="normal">:<sp/>title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;b-quark&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>k<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;g&quot;</highlight><highlight class="normal">:<sp/>title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;gluon&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>title<sp/></highlight><highlight class="keywordflow">not</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>hists:<sp/>hists[title]<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists[title]<sp/>+=<sp/>data[key][k][</highlight><highlight class="stringliteral">&quot;dr&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"></highlight></codeline>
+<codeline lineno="276"><highlight class="normal"></highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>k<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>hists:</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Title<sp/>=<sp/>k</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xData<sp/>=<sp/>hists[k]</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists[k]<sp/>=<sp/>th_</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"></highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_p<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_p.Histograms<sp/>=<sp/>list(hists.values())</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_p.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>Between<sp/>the<sp/>Jet<sp/>Axis<sp/>and<sp/>Ghost<sp/>Matched<sp/>Partons<sp/>\n<sp/>for<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>name<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>Matched<sp/>Jets&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_p.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>Between<sp/>Jets<sp/>(Arb.)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_p.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Entries<sp/>/<sp/>0.02&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_p.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.&quot;</highlight><highlight class="normal"><sp/>+<sp/>fig_[x]</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_p.xBins<sp/>=<sp/>300</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_p.xMin<sp/><sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_p.xMax<sp/><sp/>=<sp/>0.6</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_p.xStep<sp/>=<sp/>0.05</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_p.Stacked<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_p.SaveFigure()</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"></highlight></codeline>
+<codeline lineno="296" refid="namespacetopjets_1_1figures_1a7b0ce4be5c33f468a3fafe0015ea87b6" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetopjets_1_1figures_1a7b0ce4be5c33f468a3fafe0015ea87b6" kindref="member">jet_contribution</ref>(ana):</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/>data<sp/>=<sp/>ana.jets_contribute</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"></highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/>th2<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH2F())</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Jet<sp/>to<sp/>Total<sp/>Ghost<sp/>Parton<sp/>Energy<sp/>Ratio<sp/>\n<sp/>as<sp/>a<sp/>function<sp/>of<sp/>Number<sp/>of<sp/>Constributing<sp/>Partons&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xData<sp/>=<sp/>data[</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;all&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;n-partons&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yData<sp/>=<sp/>data[</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;all&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;energy&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Number<sp/>of<sp/>Ghost<sp/>Matched<sp/>Partons&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Energy<sp/>Ratio<sp/>(Jet<sp/>/<sp/>$\\Sigma$<sp/>Ghost<sp/>Partons)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"></highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xBins<sp/>=<sp/>10</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yBins<sp/>=<sp/>120</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"></highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xMin<sp/>=<sp/>1</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xMax<sp/>=<sp/>11</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xStep<sp/>=<sp/>1</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"></highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yMin<sp/>=<sp/>0.4</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yMax<sp/>=<sp/>1.6</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yStep<sp/>=<sp/>0.1</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;RdBu_r&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="317"><highlight class="normal"></highlight></codeline>
+<codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.v&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.SaveFigure()</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"></highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/>th2<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH2F())</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Jet<sp/>to<sp/>Total<sp/>Ghost<sp/>Parton<sp/>$p_T$<sp/>Ratio<sp/>\n<sp/>as<sp/>a<sp/>function<sp/>of<sp/>Number<sp/>of<sp/>Contributing<sp/>Partons&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xData<sp/>=<sp/>data[</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;all&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;n-partons&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yData<sp/>=<sp/>data[</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;all&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;pt&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Number<sp/>of<sp/>Ghost<sp/>Matched<sp/>Partons&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$p_T$<sp/>Ratio<sp/>(Jet<sp/>/<sp/>$\\Sigma$<sp/>Ghost<sp/>Partons)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="327"><highlight class="normal"></highlight></codeline>
+<codeline lineno="328"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xBins<sp/>=<sp/>10</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yBins<sp/>=<sp/>120</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"></highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xMin<sp/>=<sp/>1</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xMax<sp/>=<sp/>11</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xStep<sp/>=<sp/>1</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"></highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yMin<sp/>=<sp/>0.4</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yMax<sp/>=<sp/>1.6</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yStep<sp/>=<sp/>0.1</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;RdBu_r&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="339"><highlight class="normal"></highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.w&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.SaveFigure()</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"></highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/>hists<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>nt<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>data[</highlight><highlight class="stringliteral">&quot;n-tops&quot;</highlight><highlight class="normal">]:</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xData<sp/>=<sp/>data[</highlight><highlight class="stringliteral">&quot;n-tops&quot;</highlight><highlight class="normal">][nt][</highlight><highlight class="stringliteral">&quot;energy_r&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Title<sp/>=<sp/>str(nt)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;-Tops&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists.append(th_)</highlight></codeline>
+<codeline lineno="349"><highlight class="normal"></highlight></codeline>
+<codeline lineno="350"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="351"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.Histograms<sp/>=<sp/>hists</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Energy<sp/>Ratio<sp/>of<sp/>n-Top<sp/>Contributions<sp/>to<sp/>Matched<sp/>Jet&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Energy<sp/>Ratio<sp/>($\\text{top}_{i}<sp/>/<sp/>\\Sigma_{i}^{n}<sp/>\\text{top}_{i}$)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="354"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Entries<sp/>/<sp/>0.01&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.x&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="356"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.xBins<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="357"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.xMin<sp/><sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.xMax<sp/><sp/>=<sp/>1</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.xStep<sp/>=<sp/>0.1</highlight></codeline>
+<codeline lineno="360"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.Stacked<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="361"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.yLogarithmic<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="362"><highlight class="normal"><sp/><sp/><sp/><sp/>th_p.SaveFigure()</highlight></codeline>
+<codeline lineno="363"><highlight class="normal"></highlight></codeline>
+<codeline lineno="364"><highlight class="normal"><sp/><sp/><sp/><sp/>th2<sp/>=<sp/><ref refid="namespacetopjets_1_1figures_1a47251819102516a1463ef58e1c35fde1" kindref="member">path</ref>(TH2F())</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Jet<sp/>Invariant<sp/>Mass<sp/>as<sp/>a<sp/>function<sp/>of<sp/>n-Top<sp/>Contributions&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="366"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xData<sp/>=<sp/>ana.jet_mass[</highlight><highlight class="stringliteral">&quot;n-tops&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yData<sp/>=<sp/>ana.jet_mass[</highlight><highlight class="stringliteral">&quot;all&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Number<sp/>of<sp/>matched<sp/>Tops&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="369"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Jet<sp/>Invariant<sp/>Mass<sp/>/<sp/>(1<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="370"><highlight class="normal"></highlight></codeline>
+<codeline lineno="371"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xBins<sp/>=<sp/>3</highlight></codeline>
+<codeline lineno="372"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yBins<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="373"><highlight class="normal"></highlight></codeline>
+<codeline lineno="374"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xMin<sp/>=<sp/>1</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xStep<sp/>=<sp/>1</highlight></codeline>
+<codeline lineno="376"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.xMax<sp/>=<sp/>4</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"></highlight></codeline>
+<codeline lineno="378"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="379"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yMax<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.yStep<sp/>=<sp/>10</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;RdBu_r&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="382"><highlight class="normal"></highlight></codeline>
+<codeline lineno="383"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.7.y&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="384"><highlight class="normal"><sp/><sp/><sp/><sp/>th2.SaveFigure()</highlight></codeline>
+<codeline lineno="385"><highlight class="normal"></highlight></codeline>
+<codeline lineno="386" refid="namespacetopjets_1_1figures_1aa7f75ee58012a93e0d54ea73c88bd9fb" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetopjets_1_1figures_1aa7f75ee58012a93e0d54ea73c88bd9fb" kindref="member">TopJets</ref>(ana):</highlight></codeline>
+<codeline lineno="387"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal">:<sp/><ref refid="namespacetopjets_1_1figures_1a938bbdc505d069559a1b5da3558a8762" kindref="member">top_mass_jets</ref>(ana)</highlight></codeline>
+<codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">except</highlight><highlight class="normal"><sp/>KeyError:<sp/></highlight><highlight class="keywordflow">pass</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="389"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal">:<sp/><ref refid="namespacetopjets_1_1figures_1a7be250620ef82d725fa29b10fa7e1aff" kindref="member">top_jet_cluster</ref>(ana)</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">except</highlight><highlight class="normal"><sp/>KeyError:<sp/></highlight><highlight class="keywordflow">pass</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="391"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal">:<sp/><ref refid="classtopjets_1a27e693ebdfdb6a7b2dc3a32868c7ff1f" kindref="member">jet_partons</ref>(ana)</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">except</highlight><highlight class="normal"><sp/>KeyError:<sp/></highlight><highlight class="keywordflow">pass</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal">:<sp/><ref refid="namespacetopjets_1_1figures_1a7b0ce4be5c33f468a3fafe0015ea87b6" kindref="member">jet_contribution</ref>(ana)</highlight></codeline>
+<codeline lineno="394"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">except</highlight><highlight class="normal"><sp/>KeyError:<sp/></highlight><highlight class="keywordflow">pass</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/workspaces/AnalysisG/studies/mc16_matching/topjets/figures.py"/>
+  </compounddef>
+</doxygen>

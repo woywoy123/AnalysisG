@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacetest__normalization" kind="namespace" language="Python">
+    <compoundname>test_normalization</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_normalization.evn</definition>
+        <argsstring></argsstring>
+        <name>evn</name>
+        <initializer>=  EventGNN()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_normalization.py" line="9" column="1" bodyfile="/workspaces/AnalysisG/test/test_normalization.py" bodystart="9" bodyend="-1"/>
+        <referencedby refid="classmatching_1a6a20dfdb8f6fa5a23a6859d869040417" compoundref="mc20__ref_8cxx" startline="4" endline="103">matching::current</referencedby>
+        <referencedby refid="classmatching_1a6925aacb40ca0e99f178d44959956fdb" compoundref="mc20__exp_8cxx" startline="4" endline="69">matching::experimental</referencedby>
+        <referencedby refid="classmatching_1a7c3eb589ac6ae85490aa698d73fe8b88" compoundref="mc16__ref_8cxx" startline="4" endline="114">matching::reference</referencedby>
+        <referencedby refid="classzprime_1afc0aceaa09722f791e253dc7536b2991" compoundref="mc16_2zprime_2zprime_8cxx" startline="18" endline="28">zprime::selection</referencedby>
+        <referencedby refid="classtopkinematics_1a887006b5f0787ab23dcf394c10b2e28e" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="23" endline="29">topkinematics::selection</referencedby>
+        <referencedby refid="classvalidation_1a0b29bd038e3900496cc2de454fc52615" compoundref="validation_8cxx" startline="40" endline="55">validation::selection</referencedby>
+        <referencedby refid="classchildrenkinematics_1a6871ee24b0d7b78d33e33ac614e03ede" compoundref="childrenkinematics_8cxx" startline="107" endline="119">childrenkinematics::selection</referencedby>
+        <referencedby refid="classcombinatorial_1a6d222547e0dce9eea6ca128cdba5a01f" compoundref="combinatorial_8cxx" startline="41" endline="56">combinatorial::selection</referencedby>
+        <referencedby refid="classtopmatching_1acbf5d299785f024b7a4b5bd92bbfcd6f" compoundref="mc16_2topmatching_2topmatching_8cxx" startline="33" endline="104">topmatching::strategy</referencedby>
+        <referencedby refid="classtoptruthjets_1a39c1afcec2800b351fc047fbfa4f009f" compoundref="toptruthjets_8cxx" startline="22" endline="163">toptruthjets::strategy</referencedby>
+        <referencedby refid="classevent_1a24e6fe83017430f5ba40a720cef76605" compoundref="selections_2mc16_2event_2event_8cxx" startline="19" endline="22">event::strategy</referencedby>
+        <referencedby refid="classzprime_1a36b1544f00cc1a4ed703ef304f923ea8" compoundref="mc16_2zprime_2zprime_8cxx" startline="30" endline="83">zprime::strategy</referencedby>
+        <referencedby refid="classtopkinematics_1acf450e4907cff9104f1fc70fa04de276" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="31" endline="105">topkinematics::strategy</referencedby>
+        <referencedby refid="classtopjets_1a72145e79c19febe5393d17220c980e2a" compoundref="topjets_8cxx" startline="22" endline="163">topjets::strategy</referencedby>
+        <referencedby refid="classmet_1a54e4795f6e1387cd2aa9e259ef147f3c" compoundref="met_8cxx" startline="16" endline="21">met::strategy</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">parton::strategy</referencedby>
+        <referencedby refid="classtopefficiency_1a208f0c2ad333886e46bf67c3f3732d63" compoundref="topefficiency_8cxx" startline="95" endline="176">topefficiency::strategy</referencedby>
+        <referencedby refid="classvalidation_1af388ba0e867008a75602581fdc2ed0f3" compoundref="validation_8cxx" startline="136" endline="197">validation::strategy</referencedby>
+        <referencedby refid="classchildrenkinematics_1a9dfe1425443601d0af03eab580722b76" compoundref="childrenkinematics_8cxx" startline="121" endline="243">childrenkinematics::strategy</referencedby>
+        <referencedby refid="classregions_1a238dd04a8c824c8db401e41d36cd428b" compoundref="regions_8cxx" startline="51" endline="824">regions::strategy</referencedby>
+        <referencedby refid="classcombinatorial_1a5cd8d199d3f8fe6c9f0b8e1c2e2f7bfd" compoundref="combinatorial_8cxx" startline="154" endline="229">combinatorial::strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__normalization_1a5d2ff73ec2f6e6dc86e792e8903aad75" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_normalization.sel</definition>
+        <argsstring></argsstring>
+        <name>sel</name>
+        <initializer>=  TopEfficiency()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_normalization.py" line="11" column="1" bodyfile="/workspaces/AnalysisG/test/test_normalization.py" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__normalization_1a90b70a189d761af446693bc1f82ecd02" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string test_normalization.root</definition>
+        <argsstring></argsstring>
+        <name>root</name>
+        <initializer>=  &quot;/home/tnom6927/Downloads/mc16/&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_normalization.py" line="13" column="1" bodyfile="/workspaces/AnalysisG/test/test_normalization.py" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__normalization_1aa863c42523f9462cd8ea76d77d973562" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_normalization.x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <initializer>=  Analysis()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_normalization.py" line="14" column="1" bodyfile="/workspaces/AnalysisG/test/test_normalization.py" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__normalization_1a5961db4fe70dd00ac7bd57c4a6ec6cd6" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_normalization.Threads</definition>
+        <argsstring></argsstring>
+        <name>Threads</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_normalization.py" line="19" column="1" bodyfile="/workspaces/AnalysisG/test/test_normalization.py" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__normalization_1a468836cc6d325ba0fd8127e426e91498" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_normalization.SumOfWeightsTreeName</definition>
+        <argsstring></argsstring>
+        <name>SumOfWeightsTreeName</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_normalization.py" line="20" column="1" bodyfile="/workspaces/AnalysisG/test/test_normalization.py" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/test/test_normalization.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

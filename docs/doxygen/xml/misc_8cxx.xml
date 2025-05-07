@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="misc_8cxx" kind="file" language="C++">
+    <compoundname>misc.cxx</compoundname>
+    <includes refid="element_8h" local="no">element.h</includes>
+    <includes refid="report_8h" local="no">report.h</includes>
+    <includes refid="folds_8h" local="no">folds.h</includes>
+    <incdepgraph>
+      <node id="10">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="19">
+        <label>report.h</label>
+        <link refid="report_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="2">
+        <label>element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="20">
+        <label>folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="13">
+        <label>string</label>
+      </node>
+      <node id="15">
+        <label>map</label>
+      </node>
+      <node id="11">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>vector</label>
+      </node>
+      <node id="3">
+        <label>TFile.h</label>
+      </node>
+      <node id="1">
+        <label>misc.cxx</label>
+        <link refid="misc_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="6">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="12">
+        <label>iostream</label>
+      </node>
+      <node id="16">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>TBranch.h</label>
+      </node>
+      <node id="4">
+        <label>TTree.h</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="element_8h" kindref="compound">element.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="report_8h" kindref="compound">report.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="folds_8h" kindref="compound">folds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5" refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" kindref="member">graph_hdf5_w::flush_data</ref>(){</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a5c9d2dfaa6338db369b4abdcf0e75abe" kindref="member">hash</ref>);<sp/></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a9198a9bacbcf26fe8693857850f6b50b" kindref="member">filename</ref>);<sp/></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1ae120fd519de71f933306d31f1be72c1b" kindref="member">edge_index</ref>);<sp/></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a915653a3ebb476c45d3fd46ef6db5371" kindref="member">data_map_graph</ref>);<sp/></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a444b192a91dda61cc95f62aa59728eed" kindref="member">data_map_node</ref>);<sp/></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a7f882e2f5e98b9534d48c09b74a6a7ac" kindref="member">data_map_edge</ref>);<sp/></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1ad0834c14e3c38389299edfed4c7c9988" kindref="member">truth_map_graph</ref>);<sp/></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1ae392c93b6d8c3f577b371d32d7726e6d" kindref="member">truth_map_node</ref>);</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a7b722999eb122127a74d54fdefceb751" kindref="member">truth_map_edge</ref>);<sp/></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1afb699fddb7b93b341247d5d60a1968f8" kindref="member">data_graph</ref>);<sp/></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a67222f2f757174b05384203c0cb92090" kindref="member">data_node</ref>);<sp/></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a4785757cb603488c4259ee6271620576" kindref="member">data_edge</ref>);<sp/></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a65bcbe253b22f26a422fc6030db7517a" kindref="member">truth_graph</ref>);<sp/></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1ad3328e9888f860e9045cc38bc208bc9c" kindref="member">truth_node</ref>);<sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>free(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a4d1172eb1d81617686cddd309153d738" kindref="member">truth_edge</ref>);<sp/></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a5c9d2dfaa6338db369b4abdcf0e75abe" kindref="member">hash</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a9198a9bacbcf26fe8693857850f6b50b" kindref="member">filename</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1ae120fd519de71f933306d31f1be72c1b" kindref="member">edge_index</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a915653a3ebb476c45d3fd46ef6db5371" kindref="member">data_map_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a444b192a91dda61cc95f62aa59728eed" kindref="member">data_map_node</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a7f882e2f5e98b9534d48c09b74a6a7ac" kindref="member">data_map_edge</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1ad0834c14e3c38389299edfed4c7c9988" kindref="member">truth_map_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1ae392c93b6d8c3f577b371d32d7726e6d" kindref="member">truth_map_node</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a7b722999eb122127a74d54fdefceb751" kindref="member">truth_map_edge</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1afb699fddb7b93b341247d5d60a1968f8" kindref="member">data_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a67222f2f757174b05384203c0cb92090" kindref="member">data_node</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a4785757cb603488c4259ee6271620576" kindref="member">data_edge</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a65bcbe253b22f26a422fc6030db7517a" kindref="member">truth_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1ad3328e9888f860e9045cc38bc208bc9c" kindref="member">truth_node</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__hdf5__w_1a4d1172eb1d81617686cddd309153d738" kindref="member">truth_edge</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="structmodel__report_1adf608068fd8471f81fd25aef15c36ca6" refkind="member"><highlight class="normal">std::string<sp/><ref refid="structmodel__report_1adf608068fd8471f81fd25aef15c36ca6" kindref="member">model_report::print</ref>(){</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>msg<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Run<sp/>Name:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1aa9701dc82b8aa458b03fddfda53ee550" kindref="member">run_name</ref>;<sp/></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>msg<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;<sp/>Epoch:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>std::to_string(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1a75abda4d9ccde149d9a3262d6ff691b8" kindref="member">epoch</ref>);<sp/></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>msg<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;<sp/>K-Fold:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>std::to_string(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1adf5e1b856c6c232e58a8f4f3c7d7e43a" kindref="member">k</ref>+1);<sp/></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>msg<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>msg<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;__________<sp/>LOSS<sp/>FEATURES<sp/>___________<sp/>\n&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>msg<sp/>+=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1af1c11cbca809e0dbbe7997d701fa496b" kindref="member">prx</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1ab1c314b22dc97bcd370e2aadaf47ecc0" kindref="member">loss_graph</ref>,<sp/></highlight><highlight class="stringliteral">&quot;Graph<sp/>Loss&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>msg<sp/>+=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1af1c11cbca809e0dbbe7997d701fa496b" kindref="member">prx</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1a816f23647dc696096ee13cb4a74a6797" kindref="member">loss_node</ref>,<sp/></highlight><highlight class="stringliteral">&quot;Node<sp/>Loss&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>msg<sp/>+=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1af1c11cbca809e0dbbe7997d701fa496b" kindref="member">prx</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1a3c8fb6e98b6ffb9850b8e05b0a30ff53" kindref="member">loss_edge</ref>,<sp/></highlight><highlight class="stringliteral">&quot;Edge<sp/>Loss&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>msg<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;__________<sp/>ACCURACY<sp/>FEATURES<sp/>___________<sp/>\n&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>msg<sp/>+=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1af1c11cbca809e0dbbe7997d701fa496b" kindref="member">prx</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1ae3c6c2b9af1b5777c93917711c522cc1" kindref="member">accuracy_graph</ref>,<sp/></highlight><highlight class="stringliteral">&quot;Graph<sp/>Accuracy&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>msg<sp/>+=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1af1c11cbca809e0dbbe7997d701fa496b" kindref="member">prx</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1aea301af649408612af8437610051390d" kindref="member">accuracy_node</ref>,<sp/></highlight><highlight class="stringliteral">&quot;Node<sp/>Accuracy&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>msg<sp/>+=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1af1c11cbca809e0dbbe7997d701fa496b" kindref="member">prx</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structmodel__report_1a87b9c82269761e9627cbd4756a986d7b" kindref="member">accuracy_edge</ref>,<sp/></highlight><highlight class="stringliteral">&quot;Edge<sp/>Accuracy&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>msg;<sp/></highlight></codeline>
+<codeline lineno="62"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64" refid="structmodel__report_1af1c11cbca809e0dbbe7997d701fa496b" refkind="member"><highlight class="normal">std::string<sp/><ref refid="structmodel__report_1af1c11cbca809e0dbbe7997d701fa496b" kindref="member">model_report::prx</ref>(std::map&lt;<ref refid="enums_8h_1adfa5b6ae994fc9e6e30dd3330929c03f" kindref="member">mode_enum</ref>,<sp/>std::map&lt;std::string,<sp/>float&gt;&gt;*<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>,<sp/>std::string<sp/>title){</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>trig<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>float&gt;::iterator<sp/>itf;<sp/></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;mode_enum,<sp/>std::map&lt;std::string,<sp/>float&gt;&gt;::iterator<sp/>itx;<sp/></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itx<sp/>=<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref><sp/>-&gt;<sp/>begin();<sp/>itx<sp/>!=<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref><sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a64e9fa75beda50a9e8400ee0d4e61984" kindref="member">end</ref>();<sp/>++itx){</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!itx<sp/>-&gt;<sp/>second.size()){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!trig){<ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>+=<sp/>title<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;:<sp/>\n&quot;</highlight><highlight class="normal">;<sp/>trig<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(itx<sp/>-&gt;<sp/>first){</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1adfa5b6ae994fc9e6e30dd3330929c03fac185ddac8b5a8f5aa23c5b80bc12d214" kindref="member">mode_enum::training</ref>:<sp/><sp/><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;Training<sp/>-&gt;<sp/>&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1adfa5b6ae994fc9e6e30dd3330929c03faa617908b172c473cb8e8cda059e55bf0" kindref="member">mode_enum::validation</ref>:<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;Validation<sp/>-&gt;<sp/>&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1adfa5b6ae994fc9e6e30dd3330929c03fad07182257bce13d49a5c183864e4a277" kindref="member">mode_enum::evaluation</ref>:<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;Evaluation<sp/>-&gt;<sp/>&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itf<sp/>=<sp/>itx<sp/>-&gt;<sp/>second.begin();<sp/>itf<sp/>!=<sp/>itx<sp/>-&gt;<sp/>second.end();<sp/>++itf){</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>+=<sp/>itf<sp/>-&gt;<sp/>first<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>std::to_string(itf<sp/>-&gt;<sp/>second)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>|<sp/>&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>;<sp/></highlight></codeline>
+<codeline lineno="83"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/structs/cxx/misc.cxx"/>
+  </compounddef>
+</doxygen>

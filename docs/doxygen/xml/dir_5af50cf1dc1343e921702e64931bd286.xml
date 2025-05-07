@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_5af50cf1dc1343e921702e64931bd286" kind="dir">
+    <compoundname>contraction</compoundname>
+    <innerfile refid="eigen_8cxx">eigen.cxx</innerfile>
+    <innerfile refid="example_8cxx">example.cxx</innerfile>
+    <innerfile refid="main_8cxx">main.cxx</innerfile>
+    <innerfile refid="merge_8cxx">merge.cxx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/test/contraction/"/>
+  </compounddef>
+</doxygen>

@@ -1,3 +1,9 @@
+/** \file topefficiency.cxx
+ *  \brief Implementation of the topefficiency class methods.
+ *
+ *  This file contains the implementation of the decaymode method and other related methods.
+ */
+
 #include "topefficiency.h"
 
 topefficiency::topefficiency(){this -> name = "topefficiency";}

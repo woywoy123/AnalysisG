@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_fdcd63d21136457be0281175b4adb2dd" kind="dir">
+    <compoundname>cxx</compoundname>
+    <innerfile refid="selection_2cxx_2properties_8cxx">selection/cxx/properties.cxx</innerfile>
+    <innerfile refid="selection__core_8cxx">selection_core.cxx</innerfile>
+    <innerfile refid="selection__template_8cxx">selection_template.cxx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/selection/cxx/"/>
+  </compounddef>
+</doxygen>

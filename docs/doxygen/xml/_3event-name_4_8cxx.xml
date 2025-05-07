@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="_3event-name_4_8cxx" kind="file" language="C++">
+    <compoundname>&lt;event-name&gt;.cxx</compoundname>
+    <includes local="no">event-name</includes>
+    <incdepgraph>
+      <node id="2">
+        <label>event-name</label>
+      </node>
+      <node id="1">
+        <label>&lt;event-name&gt;.cxx</label>
+        <link refid="_3event-name_4_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="_3event-name_4_8cxx_1a5e0f2787f92f983370938617945f3ec8" prot="public" static="no" mutable="no">
+        <type><ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref></type>
+        <definition>this trees</definition>
+        <argsstring></argsstring>
+        <name>trees</name>
+        <initializer>= {&quot;&lt;tree-<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>&gt;&quot;}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="templates/events/cxx/&lt;event-name&gt;.cxx" line="6" column="11" bodyfile="templates/events/cxx/&lt;event-name&gt;.cxx" bodystart="6" bodyend="-1"/>
+        <referencedby refid="classbsm__4tops_1aad7f017512edf6441313f48470d44fd5" compoundref="events_2bsm__4tops_2cxx_2event_8cxx" startline="3" endline="23">bsm_4tops::bsm_4tops</referencedby>
+        <referencedby refid="classexp__mc20_1a0722113132ac84d16140b17c046ff4e7" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="3" endline="20">exp_mc20::exp_mc20</referencedby>
+        <referencedby refid="classgnn__event_1a3c9a7e52028ab3304bb23be24332009c" compoundref="events_2gnn_2cxx_2event_8cxx" startline="3" endline="27">gnn_event::gnn_event</referencedby>
+        <referencedby refid="classssml__mc20_1a0e4485a5e50805da1a79ca645000fb10" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="3" endline="57">ssml_mc20::ssml_mc20</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" prot="public" static="no" mutable="no">
+        <type>this register_particle &amp;</type>
+        <definition>this register_particle&amp; this</definition>
+        <argsstring></argsstring>
+        <name>this</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="templates/events/cxx/&lt;event-name&gt;.cxx" line="7" column="11" bodyfile="templates/events/cxx/&lt;event-name&gt;.cxx" bodystart="7" bodyend="-1"/>
+        <referencedby refid="classcontainer_1a2f036c9c52b38b6fd462a2a72f553c41" compoundref="container_8cxx" startline="65" endline="133">container::compile</referencedby>
+        <referencedby refid="classgraph__template_1af5d505282f6126e2fe5d2eab98507d40" compoundref="graph__template_8cxx" startline="58" endline="85">graph_template::define_topology</referencedby>
+        <referencedby refid="classio_1a65ca69ec5f12d0f3a463396bcff84d77" compoundref="hdf5_8cxx" startline="28" endline="40">io::end</referencedby>
+        <referencedby refid="structelement__t_1a3adc8e28bfad2a83f43efd02f50e8f5a" compoundref="element_8h" startline="73" endline="84">element_t::get</referencedby>
+        <referencedby refid="classplotting_1abe13ad9c1fd870ebfad2c7692c251245" compoundref="plotting_8cxx" startline="124" endline="140">plotting::get_ROC</referencedby>
+        <referencedby refid="classanalysis_1ab550330c7c309f24423fa3d48481ea64" compoundref="optimizer__build_8cxx" startline="96" endline="106">analysis::progress</referencedby>
+        <referencedby refid="classanalysis_1a14ff6c25448d59d0c6296c45ba180485" compoundref="optimizer__build_8cxx" startline="115" endline="126">analysis::progress_mode</referencedby>
+        <referencedby refid="classanalysis_1a6b719e04f433468bc84c45aa31abb400" compoundref="optimizer__build_8cxx" startline="135" endline="146">analysis::progress_report</referencedby>
+        <referencedby refid="classio_1a65c36380ef79524e8235f792abe9625c" compoundref="io_2cxx_2root_8cxx" startline="301" endline="351">io::root_begin</referencedby>
+        <referencedby refid="classio_1a66a6d354d07e8aa4f9fdadc8f74a314b" compoundref="io_2cxx_2root_8cxx" startline="290" endline="299">io::root_size</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+        <referencedby refid="classplotting_1a67f238856d7f5c452a3d6376c57afbd5" compoundref="plotting_8cxx" startline="11" endline="20">plotting::~plotting</referencedby>
+        <referencedby refid="classselection__template_1af0b32265d850bfcd861a7f4744426856" compoundref="selection__core_8cxx" startline="26" endline="36">selection_template::~selection_template</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_3event-name_4_8cxx_1a5449d540d047658d711bb2a06d8656c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>h&lt; <ref refid="classevent" kindref="compound">event</ref>-<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref> &gt; ::&lt; <ref refid="classevent" kindref="compound">event</ref>-<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref> &gt; <ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref></type>
+        <definition>h&lt;event-name&gt; ::&lt;event-name&gt; this add_leaf</definition>
+        <argsstring>(&quot;&lt;key_name&gt;&quot;, &quot;&lt;leaf-name&gt;&quot;)</argsstring>
+        <name>add_leaf</name>
+        <param>
+          <type>&quot;&lt;key_name&gt;&quot;</type>
+        </param>
+        <param>
+          <type>&quot;&lt;leaf-<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>&gt;&quot;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="templates/events/cxx/&lt;event-name&gt;.cxx" line="5" column="11" declfile="templates/events/cxx/&lt;event-name&gt;.cxx" declline="5" declcolumn="11"/>
+        <referencedby refid="classbsm__4tops_1aad7f017512edf6441313f48470d44fd5" compoundref="events_2bsm__4tops_2cxx_2event_8cxx" startline="3" endline="23">bsm_4tops::bsm_4tops</referencedby>
+        <referencedby refid="classexp__mc20_1a0722113132ac84d16140b17c046ff4e7" compoundref="events_2exp__mc20_2cxx_2event_8cxx" startline="3" endline="20">exp_mc20::exp_mc20</referencedby>
+        <referencedby refid="classgnn__event_1a3c9a7e52028ab3304bb23be24332009c" compoundref="events_2gnn_2cxx_2event_8cxx" startline="3" endline="27">gnn_event::gnn_event</referencedby>
+        <referencedby refid="classssml__mc20_1a0e4485a5e50805da1a79ca645000fb10" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="3" endline="57">ssml_mc20::ssml_mc20</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;&lt;event-name&gt;</highlight><highlight class="normal">.h</highlight><highlight class="stringliteral">&quot;</highlight></codeline>
+<codeline lineno="2"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="3"><highlight class="stringliteral">&lt;event-name&gt;::&lt;event-name&gt;(){</highlight></codeline>
+<codeline lineno="4"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>this<sp/>-&gt;<sp/>name<sp/>=<sp/>&quot;</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">event</highlight><highlight class="normal">-<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>&gt;</highlight><highlight class="stringliteral">&quot;;<sp/></highlight></codeline>
+<codeline lineno="5"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>this<sp/>-&gt;<sp/>add_leaf(&quot;</highlight><highlight class="normal">&lt;key_name&gt;</highlight><highlight class="stringliteral">&quot;,<sp/>&quot;</highlight><highlight class="normal">&lt;leaf-<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>&gt;</highlight><highlight class="stringliteral">&quot;);<sp/></highlight></codeline>
+<codeline lineno="6" refid="_3event-name_4_8cxx_1a5e0f2787f92f983370938617945f3ec8" refkind="member"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>this<sp/>-&gt;<sp/>trees<sp/>=<sp/>{&quot;</highlight><highlight class="normal">&lt;tree-<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>&gt;</highlight><highlight class="stringliteral">&quot;};<sp/></highlight></codeline>
+<codeline lineno="7" refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" refkind="member"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>this<sp/>-&gt;<sp/>register_particle(&amp;this<sp/>-&gt;<sp/>m_particle);</highlight></codeline>
+<codeline lineno="8"><highlight class="stringliteral">}</highlight></codeline>
+<codeline lineno="9"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="10"><highlight class="stringliteral">&lt;event-name&gt;::~&lt;event-name&gt;(){}</highlight></codeline>
+<codeline lineno="11"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="12"><highlight class="stringliteral">event_template*<sp/>&lt;event-name&gt;::clone(){return<sp/>(event_template*)new<sp/>&lt;event-name&gt;();}</highlight></codeline>
+<codeline lineno="13"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="14"><highlight class="stringliteral">void<sp/>&lt;event-name&gt;::build(element_t*<sp/>el){</highlight></codeline>
+<codeline lineno="15"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>el<sp/>-&gt;<sp/>get(&quot;</highlight><highlight class="normal">&lt;key_name&gt;</highlight><highlight class="stringliteral">&quot;,<sp/>&amp;this<sp/>-&gt;<sp/>key_name);<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="stringliteral">}</highlight></codeline>
+<codeline lineno="17"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="18"><highlight class="stringliteral">void<sp/>&lt;event-name&gt;::CompileEvent(){</highlight></codeline>
+<codeline lineno="19"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>some_particle*&gt;<sp/>particle<sp/>=<sp/>this<sp/>-&gt;<sp/>m_particle;<sp/></highlight></codeline>
+<codeline lineno="20"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="21"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>//<sp/>do<sp/>some<sp/>stuff<sp/>here</highlight></codeline>
+<codeline lineno="22"><highlight class="stringliteral">}</highlight></codeline>
+    </programlisting>
+    <location file="templates/events/cxx/&lt;event-name&gt;.cxx"/>
+  </compounddef>
+</doxygen>

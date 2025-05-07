@@ -1,0 +1,313 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classbsc__t" kind="class" language="C++" prot="public">
+    <compoundname>bsc_t</compoundname>
+    <derivedcompoundref refid="structdata__t" prot="public" virt="non-virtual">data_t</derivedcompoundref>
+    <derivedcompoundref refid="structvariable__t" prot="public" virt="non-virtual">variable_t</derivedcompoundref>
+    <includes refid="modules_2structs_2include_2structs_2base_8h" local="no">base.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classbsc__t_1a69bf0e1aff0cd282e59ac3593af43360" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string bsc_t::buffer</definition>
+        <argsstring></argsstring>
+        <name>buffer</name>
+        <briefdescription>
+<para>Internal buffer for accumulating textual data. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="126" column="17" bodyfile="modules/structs/include/structs/base.h" bodystart="126" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classbsc__t_1a83f5611247dc2631d5f736a363d30e56" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>bsc_t::bsc_t</definition>
+        <argsstring>()</argsstring>
+        <name>bsc_t</name>
+        <briefdescription>
+<para>Constructor for the <ref refid="classbsc__t" kindref="compound">bsc_t</ref> class. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes a new basic structure instance with default settings. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="81" column="5" bodyfile="modules/structs/cxx/base.cxx" bodystart="59" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="classbsc__t_1a3fb1b96a0088b257842970eaca2e1233" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>bsc_t::~bsc_t</definition>
+        <argsstring>()</argsstring>
+        <name>~bsc_t</name>
+        <briefdescription>
+<para>Destructor for the <ref refid="classbsc__t" kindref="compound">bsc_t</ref> class. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Cleans up resources used by the basic structure instance. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="88" column="5" bodyfile="modules/structs/cxx/base.cxx" bodystart="60" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="classbsc__t_1a39907da14ea4fb20f71b47d0724bf1f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3" kindref="member">data_enum</ref></type>
+        <definition>data_enum bsc_t::root_type_translate</definition>
+        <argsstring>(std::string *root_str)</argsstring>
+        <name>root_type_translate</name>
+        <param>
+          <type>std::string *</type>
+          <declname>root_str</declname>
+        </param>
+        <briefdescription>
+<para>Translates a ROOT type string to an internal data enumeration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>root_str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string containing the ROOT type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The corresponding data_enum value.</para>
+</simplesect>
+This method parses a ROOT type string (e.g., &quot;vector&lt;float&gt;&quot;) and returns the corresponding internal data_enum value for type-safe operations. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="98" column="15" bodyfile="modules/structs/cxx/base.cxx" bodystart="70" bodyend="102"/>
+        <references refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" compoundref="structs_2cxx_2base_8cxx" startline="62" endline="67">count</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af31ee5e3824f1f5e5d206bdf3029f22b">undef</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a4a175ba15731da1d56cd0661080d25">v_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a98e177892ec59e08a8f69884cf483a">v_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae9dcbfc39e25f58c5cb2d56a73628c83">v_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3adc0a3ef1c0a22d00f983ff8888e99539">v_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a1df181eaa1bb40a0067c06ead197170d">v_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af2ba29a39b59f9dada29228faf1d9162">v_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a77211341d9470798b40e862fe11b7529">v_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aba90189bf02f6a38af85abba48078a15">v_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3abc9d5ec2de60eb49e81bec2c9b23cfd9">vv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aad825f9200bda0020b0a0297014fdc32">vv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a53968916bfe73b9242b620faed3467d9">vv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab87401c18021d145be4a8817f174288b">vv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a671456455a0bd7f2c76e1802522bb1a0">vv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab82f4562f542972869578de73b3d76a9">vv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab2f1d7511d0bdb20e01eec35292cd074">vvv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a65d8432bf82050f6ba7d4cac129ef16b">vvv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a364a51462a906de978b6efdd6c85759f">vvv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2684cd9cda915142be58c31c5d92cd63">vvv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a115dd8071340ac2aeffb33c29e929571">vvv_l</references>
+      </memberdef>
+      <memberdef kind="function" id="classbsc__t_1a7bf3182a49cfb5375bc556171d7e5598" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string bsc_t::as_string</definition>
+        <argsstring>()</argsstring>
+        <name>as_string</name>
+        <briefdescription>
+<para>Represents the object&apos;s state as a string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A string representation of the object.</para>
+</simplesect>
+This method returns a human-readable string representation of the object&apos;s current state, useful for debugging or logging. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="107" column="17" bodyfile="modules/structs/cxx/base.cxx" bodystart="104" bodyend="141"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a92eb5ffee6ae2fec3ad71c777531578f">b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33">c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad">d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741">i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33">l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7d5c009e4eb8bbc78647caeca308e61b">ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ad99863941edbd182b31e49c7653852d8">ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae2181b5014a67159cc230c8fe0d6c5b6">unset</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a4a175ba15731da1d56cd0661080d25">v_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a98e177892ec59e08a8f69884cf483a">v_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae9dcbfc39e25f58c5cb2d56a73628c83">v_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3adc0a3ef1c0a22d00f983ff8888e99539">v_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a1df181eaa1bb40a0067c06ead197170d">v_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af2ba29a39b59f9dada29228faf1d9162">v_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a77211341d9470798b40e862fe11b7529">v_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aba90189bf02f6a38af85abba48078a15">v_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3abc9d5ec2de60eb49e81bec2c9b23cfd9">vv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aad825f9200bda0020b0a0297014fdc32">vv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a53968916bfe73b9242b620faed3467d9">vv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab87401c18021d145be4a8817f174288b">vv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a671456455a0bd7f2c76e1802522bb1a0">vv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab82f4562f542972869578de73b3d76a9">vv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ad755fb257268c67072cf994d928af76d">vv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aa3169623c889a9e9d75e451cc3c6b4d4">vv_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab2f1d7511d0bdb20e01eec35292cd074">vvv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a600c1c4daf3ac45ac15b8e6ca1d60dc1">vvv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a65d8432bf82050f6ba7d4cac129ef16b">vvv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a364a51462a906de978b6efdd6c85759f">vvv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2684cd9cda915142be58c31c5d92cd63">vvv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a115dd8071340ac2aeffb33c29e929571">vvv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a91c372e91277817fdbe758459856cceb">vvv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae74e3ccabe3db235c56992c86812c959">vvv_ull</references>
+      </memberdef>
+      <memberdef kind="function" id="classbsc__t_1a29da8e58b1fff7d00b9535a4ba027898" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string bsc_t::scan_buffer</definition>
+        <argsstring>()</argsstring>
+        <name>scan_buffer</name>
+        <briefdescription>
+<para>Scans and returns the current buffer content. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A string containing the current buffer content.</para>
+</simplesect>
+This method returns the current content of the internal buffer, which is used for accumulating textual data during operations. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="116" column="17" bodyfile="modules/structs/cxx/base.cxx" bodystart="143" bodyend="178"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a92eb5ffee6ae2fec3ad71c777531578f">b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33">c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad">d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741">i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33">l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7d5c009e4eb8bbc78647caeca308e61b">ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ad99863941edbd182b31e49c7653852d8">ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a4a175ba15731da1d56cd0661080d25">v_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a98e177892ec59e08a8f69884cf483a">v_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae9dcbfc39e25f58c5cb2d56a73628c83">v_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3adc0a3ef1c0a22d00f983ff8888e99539">v_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a1df181eaa1bb40a0067c06ead197170d">v_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af2ba29a39b59f9dada29228faf1d9162">v_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a77211341d9470798b40e862fe11b7529">v_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aba90189bf02f6a38af85abba48078a15">v_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3abc9d5ec2de60eb49e81bec2c9b23cfd9">vv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aad825f9200bda0020b0a0297014fdc32">vv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a53968916bfe73b9242b620faed3467d9">vv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab87401c18021d145be4a8817f174288b">vv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a671456455a0bd7f2c76e1802522bb1a0">vv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab82f4562f542972869578de73b3d76a9">vv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ad755fb257268c67072cf994d928af76d">vv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aa3169623c889a9e9d75e451cc3c6b4d4">vv_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab2f1d7511d0bdb20e01eec35292cd074">vvv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a600c1c4daf3ac45ac15b8e6ca1d60dc1">vvv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a65d8432bf82050f6ba7d4cac129ef16b">vvv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a364a51462a906de978b6efdd6c85759f">vvv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2684cd9cda915142be58c31c5d92cd63">vvv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a115dd8071340ac2aeffb33c29e929571">vvv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a91c372e91277817fdbe758459856cceb">vvv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae74e3ccabe3db235c56992c86812c959">vvv_ull</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="classbsc__t_1a953a8bb68bdd6acd9c97d4c0eb965319" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void bsc_t::flush_buffer</definition>
+        <argsstring>()</argsstring>
+        <name>flush_buffer</name>
+        <briefdescription>
+<para>Clears the internal buffer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This method resets the internal buffer to an empty state, typically called after processing the buffer content. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="124" column="10" bodyfile="modules/structs/cxx/base.cxx" bodystart="181" bodyend="263"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a92eb5ffee6ae2fec3ad71c777531578f">b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33">c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad">d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741">i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33">l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7d5c009e4eb8bbc78647caeca308e61b">ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ad99863941edbd182b31e49c7653852d8">ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af31ee5e3824f1f5e5d206bdf3029f22b">undef</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae2181b5014a67159cc230c8fe0d6c5b6">unset</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a4a175ba15731da1d56cd0661080d25">v_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a98e177892ec59e08a8f69884cf483a">v_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae9dcbfc39e25f58c5cb2d56a73628c83">v_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3adc0a3ef1c0a22d00f983ff8888e99539">v_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a1df181eaa1bb40a0067c06ead197170d">v_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af2ba29a39b59f9dada29228faf1d9162">v_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a77211341d9470798b40e862fe11b7529">v_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aba90189bf02f6a38af85abba48078a15">v_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3abc9d5ec2de60eb49e81bec2c9b23cfd9">vv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aad825f9200bda0020b0a0297014fdc32">vv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a53968916bfe73b9242b620faed3467d9">vv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab87401c18021d145be4a8817f174288b">vv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a671456455a0bd7f2c76e1802522bb1a0">vv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab82f4562f542972869578de73b3d76a9">vv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ad755fb257268c67072cf994d928af76d">vv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aa3169623c889a9e9d75e451cc3c6b4d4">vv_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab2f1d7511d0bdb20e01eec35292cd074">vvv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a600c1c4daf3ac45ac15b8e6ca1d60dc1">vvv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a65d8432bf82050f6ba7d4cac129ef16b">vvv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a364a51462a906de978b6efdd6c85759f">vvv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2684cd9cda915142be58c31c5d92cd63">vvv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a115dd8071340ac2aeffb33c29e929571">vvv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a91c372e91277817fdbe758459856cceb">vvv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae74e3ccabe3db235c56992c86812c959">vvv_ull</references>
+        <referencedby refid="structdata__t_1a477bcdc3c7a3d316af645c419b4cae8f" compoundref="element_8cxx" startline="35" endline="51">data_t::flush</referencedby>
+        <referencedby refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">data_t::initialize</referencedby>
+        <referencedby refid="structvariable__t_1abb328168f0e26f52e6d164f6e6aed831" compoundref="typecasting_8cxx" startline="67" endline="97">variable_t::process</referencedby>
+        <referencedby refid="structdata__t_1af32e86059434e10bdac3be4d4a4ad01a" compoundref="element_8cxx" startline="29" endline="33">data_t::~data_t</referencedby>
+        <referencedby refid="structvariable__t_1a3ae26cbb367f83db713ce8cb8b99b7a4" compoundref="typecasting_8cxx" startline="12" endline="16">variable_t::~variable_t</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Basic structure class that provides type translation and buffer management. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class serves as a foundation for data type handling in the framework. It provides functionality to translate ROOT types to internal enumerations, manage string buffers, and format type information as strings. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>variable_t</label>
+        <link refid="structvariable__t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>data_t</label>
+        <link refid="structdata__t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>bsc_t</label>
+        <link refid="classbsc__t"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="1">
+        <label>bsc_t</label>
+        <link refid="classbsc__t"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>buffer</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::string</label>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="modules/structs/include/structs/base.h" line="74" column="12" bodyfile="modules/structs/include/structs/base.h" bodystart="74" bodyend="127"/>
+    <listofallmembers>
+      <member refid="classbsc__t_1a7bf3182a49cfb5375bc556171d7e5598" prot="public" virt="non-virtual"><scope>bsc_t</scope><name>as_string</name></member>
+      <member refid="classbsc__t_1a83f5611247dc2631d5f736a363d30e56" prot="public" virt="non-virtual"><scope>bsc_t</scope><name>bsc_t</name></member>
+      <member refid="classbsc__t_1a69bf0e1aff0cd282e59ac3593af43360" prot="public" virt="non-virtual"><scope>bsc_t</scope><name>buffer</name></member>
+      <member refid="classbsc__t_1a953a8bb68bdd6acd9c97d4c0eb965319" prot="public" virt="non-virtual"><scope>bsc_t</scope><name>flush_buffer</name></member>
+      <member refid="classbsc__t_1a39907da14ea4fb20f71b47d0724bf1f2" prot="public" virt="non-virtual"><scope>bsc_t</scope><name>root_type_translate</name></member>
+      <member refid="classbsc__t_1a29da8e58b1fff7d00b9535a4ba027898" prot="public" virt="non-virtual"><scope>bsc_t</scope><name>scan_buffer</name></member>
+      <member refid="classbsc__t_1a3fb1b96a0088b257842970eaca2e1233" prot="public" virt="non-virtual"><scope>bsc_t</scope><name>~bsc_t</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

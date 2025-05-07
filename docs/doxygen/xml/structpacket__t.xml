@@ -1,0 +1,761 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="structpacket__t" kind="struct" language="C++" prot="public">
+    <compoundname>packet_t</compoundname>
+    <includes refid="combinatorial_8h" local="no">combinatorial.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structpacket__t_1a725b9501aec36b4bbc77bec8841731b4" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::particles</definition>
+        <argsstring></argsstring>
+        <name>particles</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="12" column="17" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1ae6e4fab2e022ed08d57a1df2c1632030" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::t_bquarks</definition>
+        <argsstring></argsstring>
+        <name>t_bquarks</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="13" column="17" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a281b69189206fe4448301b8ad38f34db" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::t_leptons</definition>
+        <argsstring></argsstring>
+        <name>t_leptons</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="14" column="17" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a702d511343ed0ed5cf1b515e3d9d415d" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::t_neutrino</definition>
+        <argsstring></argsstring>
+        <name>t_neutrino</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="15" column="17" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1aaee05362c210c069a68362d8b7641825" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; packet_t::matched_bquarks</definition>
+        <argsstring></argsstring>
+        <name>matched_bquarks</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="17" column="18" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a9dfeb078931298d2c75e07f1707acea2" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; packet_t::matched_leptons</definition>
+        <argsstring></argsstring>
+        <name>matched_leptons</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="18" column="18" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1ad869ad25ca63d319014ca648a3428772" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; packet_t::distance</definition>
+        <argsstring></argsstring>
+        <name>distance</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="20" column="17" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a2024ee9527d215f3c779fde640ff7dd2" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; packet_t::chi2_nu1</definition>
+        <argsstring></argsstring>
+        <name>chi2_nu1</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="21" column="17" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="21" bodyend="-1"/>
+        <referencedby refid="classclasses_1_1nux_1a321f3be4ecbc7a9edb10a326d74d7523" compoundref="classes_8py" startline="78" endline="112">classes.nux.add</referencedby>
+        <referencedby refid="classvalidation_1_1classes_1_1nux_1a0dc54f21fe4b0bd8b9f04dee58365277" compoundref="validation_2classes_8py" startline="78" endline="112">validation.classes.nux.add</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1abcd90ffba0ec038384d5b0324789fd84" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; packet_t::chi2_nu2</definition>
+        <argsstring></argsstring>
+        <name>chi2_nu2</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="22" column="17" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="22" bodyend="-1"/>
+        <referencedby refid="classclasses_1_1nux_1a321f3be4ecbc7a9edb10a326d74d7523" compoundref="classes_8py" startline="78" endline="112">classes.nux.add</referencedby>
+        <referencedby refid="classvalidation_1_1classes_1_1nux_1a0dc54f21fe4b0bd8b9f04dee58365277" compoundref="validation_2classes_8py" startline="78" endline="112">validation.classes.nux.add</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1ae67227e9bd42b2b6011d09b9bcbc04a3" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::nu1</definition>
+        <argsstring></argsstring>
+        <name>nu1</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="24" column="17" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="24" bodyend="-1"/>
+        <referencedby refid="structpacket__t_1a1b862666c840e080576ce1088399f0b9" compoundref="combinatorial_8cxx" startline="5" endline="8">~packet_t</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a3557903b5a768aaabc2b95f858d29095" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::nu2</definition>
+        <argsstring></argsstring>
+        <name>nu2</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="25" column="17" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="25" bodyend="-1"/>
+        <referencedby refid="structpacket__t_1a1b862666c840e080576ce1088399f0b9" compoundref="combinatorial_8cxx" startline="5" endline="8">~packet_t</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1abc0295b19ed6836f50bfea007f91139b" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string packet_t::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="27" column="17" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1ad7f23e671564f23a7134e8556f5c4c8c" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string packet_t::device</definition>
+        <argsstring></argsstring>
+        <name>device</name>
+        <initializer>= &quot;cuda:0&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="28" column="17" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="28" bodyend="-1"/>
+        <referencedby refid="classloader_1_1data_1a46dab2b8dedbccccf6caf85ca0fae742" compoundref="loader_8py" startline="31" endline="49">loader.data.interpret</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a396c80a716c7fc442ab4be0f311888c6" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double packet_t::met</definition>
+        <argsstring></argsstring>
+        <name>met</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="30" column="12" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1aeb9c46132cad3888ea22dddd893069d2" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double packet_t::phi</definition>
+        <argsstring></argsstring>
+        <name>phi</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="31" column="12" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a6ce4cef125e54350dd535762a37c4fba" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double packet_t::null</definition>
+        <argsstring></argsstring>
+        <name>null</name>
+        <initializer>= 1e-5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="32" column="12" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a5abd1ee52b9b4f062202f41a01120aa7" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double packet_t::perturb</definition>
+        <argsstring></argsstring>
+        <name>perturb</name>
+        <initializer>= 1e-1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="33" column="12" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a5feb87584b26d492fd8948d42d1f3f60" prot="public" static="no" mutable="no">
+        <type>long</type>
+        <definition>long packet_t::steps</definition>
+        <argsstring></argsstring>
+        <name>steps</name>
+        <initializer>= 20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="35" column="10" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1ad5439e4bb6a2338b51f2e9991cb48ca6" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool packet_t::_is_marked</definition>
+        <argsstring></argsstring>
+        <name>_is_marked</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="36" column="10" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a13c67d03605ff0069f3035406b8c46ca" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::bquarks</definition>
+        <argsstring></argsstring>
+        <name>bquarks</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="10" column="17" bodyfile="selections/neutrino/validation/validation.h" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1abe779f8850665f911065489bbf8c11bc" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::leptons</definition>
+        <argsstring></argsstring>
+        <name>leptons</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="11" column="17" bodyfile="selections/neutrino/validation/validation.h" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a0f78dacf781267a387d5895cb991624d" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::neutrino</definition>
+        <argsstring></argsstring>
+        <name>neutrino</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="12" column="17" bodyfile="selections/neutrino/validation/validation.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a89d93ac3654cb267259d6ae82a8b5ec2" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::objects</definition>
+        <argsstring></argsstring>
+        <name>objects</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="13" column="17" bodyfile="selections/neutrino/validation/validation.h" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a1fcc7fb3ce1ad2a25da9e4c57a64119a" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::static_nu1</definition>
+        <argsstring></argsstring>
+        <name>static_nu1</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="15" column="17" bodyfile="selections/neutrino/validation/validation.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1abaa207e60fa958b8db9c0d521ae698f2" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::static_nu2</definition>
+        <argsstring></argsstring>
+        <name>static_nu2</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="16" column="17" bodyfile="selections/neutrino/validation/validation.h" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1af2c3b098575eea4484821e647cbd809e" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; packet_t::static_distances</definition>
+        <argsstring></argsstring>
+        <name>static_distances</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="17" column="17" bodyfile="selections/neutrino/validation/validation.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a0724338f3e3f650c97b4fb4b42d3a721" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::dynamic_nu1</definition>
+        <argsstring></argsstring>
+        <name>dynamic_nu1</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="19" column="17" bodyfile="selections/neutrino/validation/validation.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a72b0ec41b9f885d79f50d3fa28dd3031" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; packet_t::dynamic_nu2</definition>
+        <argsstring></argsstring>
+        <name>dynamic_nu2</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="20" column="17" bodyfile="selections/neutrino/validation/validation.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a8b3c41e2e91cb9908397b9b44c91d1fb" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; packet_t::dynamic_distances</definition>
+        <argsstring></argsstring>
+        <name>dynamic_distances</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="21" column="17" bodyfile="selections/neutrino/validation/validation.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a52644f85078d583733d08b9e42ecaa53" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double packet_t::step</definition>
+        <argsstring></argsstring>
+        <name>step</name>
+        <initializer>= 1e-9</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="29" column="12" bodyfile="selections/neutrino/validation/validation.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a20872bda52e0b010a6a22d37fa4c4d32" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double packet_t::tolerance</definition>
+        <argsstring></argsstring>
+        <name>tolerance</name>
+        <initializer>= 1e-6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="30" column="12" bodyfile="selections/neutrino/validation/validation.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structpacket__t_1a2666c75b15bea3a591b20f5405d0c625" prot="public" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int packet_t::timeout</definition>
+        <argsstring></argsstring>
+        <name>timeout</name>
+        <initializer>= 100</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="31" column="18" bodyfile="selections/neutrino/validation/validation.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structpacket__t_1a1b862666c840e080576ce1088399f0b9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>packet_t::~packet_t</definition>
+        <argsstring>()</argsstring>
+        <name>~packet_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="10" column="5" bodyfile="selections/neutrino/combinatorial/combinatorial.cxx" bodystart="5" bodyend="8"/>
+        <references refid="structpacket__t_1ae67227e9bd42b2b6011d09b9bcbc04a3" compoundref="combinatorial_8h" startline="24">nu1</references>
+        <references refid="structpacket__t_1a3557903b5a768aaabc2b95f858d29095" compoundref="combinatorial_8h" startline="25">nu2</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="structpacket__t_1a1b862666c840e080576ce1088399f0b9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>packet_t::~packet_t</definition>
+        <argsstring>()</argsstring>
+        <name>~packet_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/validation/validation.h" line="8" column="5"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="11">
+        <label>cproperty&lt; int, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="12" relation="template-instance">
+          <edgelabel>&lt; int, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>K</label>
+      </node>
+      <node id="10">
+        <label>T</label>
+      </node>
+      <node id="22">
+        <label>std::vector&lt; double &gt;</label>
+        <childnode refid="20" relation="template-instance">
+          <edgelabel>&lt; double &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>particle_template</label>
+        <link refid="classparticle__template"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>m_children</edgelabel>
+          <edgelabel>m_parents</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>pdgid</edgelabel>
+          <edgelabel>index</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>is_lep</edgelabel>
+          <edgelabel>is_nu</edgelabel>
+          <edgelabel>is_add</edgelabel>
+          <edgelabel>is_b</edgelabel>
+          <edgelabel>lep_decay</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>charge</edgelabel>
+          <edgelabel>pt</edgelabel>
+          <edgelabel>mass</edgelabel>
+          <edgelabel>px</edgelabel>
+          <edgelabel>py</edgelabel>
+          <edgelabel>pz</edgelabel>
+          <edgelabel>phi</edgelabel>
+          <edgelabel>eta</edgelabel>
+          <edgelabel>e</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>leaves</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>symbol</edgelabel>
+          <edgelabel>type</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>data</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>parents</edgelabel>
+          <edgelabel>children</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="10" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>std::map&lt; std::string, particle_template * &gt;</label>
+        <childnode refid="6" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="template-instance">
+          <edgelabel>&lt; std::string, particle_template * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="21">
+        <label>cproperty&lt; std::map&lt; std::string, particle_template * &gt;, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="12" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, particle_template * &gt;, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="9" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>std::map&lt; std::string, bool &gt;</label>
+        <childnode refid="6" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="template-instance">
+          <edgelabel>&lt; std::string, bool &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="12">
+        <label>cproperty&lt; T, G &gt;</label>
+        <link refid="classcproperty"/>
+      </node>
+      <node id="7">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="17">
+        <label>particle_t</label>
+        <link refid="structparticle__t"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>data_p</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>parents</edgelabel>
+          <edgelabel>children</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>symbol</edgelabel>
+          <edgelabel>type</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>nudef</edgelabel>
+          <edgelabel>lepdef</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>std::map&lt; std::string, std::string &gt;</label>
+        <childnode refid="6" relation="usage">
+          <edgelabel>keys</edgelabel>
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="template-instance">
+          <edgelabel>&lt; std::string, std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>cproperty&lt; bool, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="12" relation="template-instance">
+          <edgelabel>&lt; bool, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>packet_t</label>
+        <link refid="structpacket__t"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>t_neutrino</edgelabel>
+          <edgelabel>particles</edgelabel>
+          <edgelabel>objects</edgelabel>
+          <edgelabel>nu1</edgelabel>
+          <edgelabel>nu2</edgelabel>
+          <edgelabel>neutrino</edgelabel>
+          <edgelabel>leptons</edgelabel>
+          <edgelabel>static_nu1</edgelabel>
+          <edgelabel>dynamic_nu1</edgelabel>
+          <edgelabel>static_nu2</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>device</edgelabel>
+          <edgelabel>name</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>matched_leptons</edgelabel>
+          <edgelabel>matched_bquarks</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>chi2_nu1</edgelabel>
+          <edgelabel>chi2_nu2</edgelabel>
+          <edgelabel>static_distances</edgelabel>
+          <edgelabel>dynamic_distances</edgelabel>
+          <edgelabel>distance</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::vector&lt; particle_template * &gt;</label>
+        <childnode refid="3" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="template-instance">
+          <edgelabel>&lt; particle_template * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>cproperty&lt; double, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="12" relation="template-instance">
+          <edgelabel>&lt; double, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>cproperty&lt; std::string, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="12" relation="template-instance">
+          <edgelabel>&lt; std::string, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="19">
+        <label>std::vector&lt; int &gt;</label>
+        <childnode refid="20" relation="template-instance">
+          <edgelabel>&lt; int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+      <node id="6">
+        <label>std::string</label>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="selections/neutrino/combinatorial/combinatorial.h" line="8" column="15" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="8" bodyend="37"/>
+    <listofallmembers>
+      <member refid="structpacket__t_1ad5439e4bb6a2338b51f2e9991cb48ca6" prot="public" virt="non-virtual"><scope>packet_t</scope><name>_is_marked</name></member>
+      <member refid="structpacket__t_1a13c67d03605ff0069f3035406b8c46ca" prot="public" virt="non-virtual"><scope>packet_t</scope><name>bquarks</name></member>
+      <member refid="structpacket__t_1a2024ee9527d215f3c779fde640ff7dd2" prot="public" virt="non-virtual"><scope>packet_t</scope><name>chi2_nu1</name></member>
+      <member refid="structpacket__t_1abcd90ffba0ec038384d5b0324789fd84" prot="public" virt="non-virtual"><scope>packet_t</scope><name>chi2_nu2</name></member>
+      <member refid="structpacket__t_1ad7f23e671564f23a7134e8556f5c4c8c" prot="public" virt="non-virtual"><scope>packet_t</scope><name>device</name></member>
+      <member refid="structpacket__t_1ad869ad25ca63d319014ca648a3428772" prot="public" virt="non-virtual"><scope>packet_t</scope><name>distance</name></member>
+      <member refid="structpacket__t_1a8b3c41e2e91cb9908397b9b44c91d1fb" prot="public" virt="non-virtual"><scope>packet_t</scope><name>dynamic_distances</name></member>
+      <member refid="structpacket__t_1a0724338f3e3f650c97b4fb4b42d3a721" prot="public" virt="non-virtual"><scope>packet_t</scope><name>dynamic_nu1</name></member>
+      <member refid="structpacket__t_1a72b0ec41b9f885d79f50d3fa28dd3031" prot="public" virt="non-virtual"><scope>packet_t</scope><name>dynamic_nu2</name></member>
+      <member refid="structpacket__t_1abe779f8850665f911065489bbf8c11bc" prot="public" virt="non-virtual"><scope>packet_t</scope><name>leptons</name></member>
+      <member refid="structpacket__t_1aaee05362c210c069a68362d8b7641825" prot="public" virt="non-virtual"><scope>packet_t</scope><name>matched_bquarks</name></member>
+      <member refid="structpacket__t_1a9dfeb078931298d2c75e07f1707acea2" prot="public" virt="non-virtual"><scope>packet_t</scope><name>matched_leptons</name></member>
+      <member refid="structpacket__t_1a396c80a716c7fc442ab4be0f311888c6" prot="public" virt="non-virtual"><scope>packet_t</scope><name>met</name></member>
+      <member refid="structpacket__t_1abc0295b19ed6836f50bfea007f91139b" prot="public" virt="non-virtual"><scope>packet_t</scope><name>name</name></member>
+      <member refid="structpacket__t_1a0f78dacf781267a387d5895cb991624d" prot="public" virt="non-virtual"><scope>packet_t</scope><name>neutrino</name></member>
+      <member refid="structpacket__t_1ae67227e9bd42b2b6011d09b9bcbc04a3" prot="public" virt="non-virtual"><scope>packet_t</scope><name>nu1</name></member>
+      <member refid="structpacket__t_1a3557903b5a768aaabc2b95f858d29095" prot="public" virt="non-virtual"><scope>packet_t</scope><name>nu2</name></member>
+      <member refid="structpacket__t_1a6ce4cef125e54350dd535762a37c4fba" prot="public" virt="non-virtual"><scope>packet_t</scope><name>null</name></member>
+      <member refid="structpacket__t_1a89d93ac3654cb267259d6ae82a8b5ec2" prot="public" virt="non-virtual"><scope>packet_t</scope><name>objects</name></member>
+      <member refid="structpacket__t_1a725b9501aec36b4bbc77bec8841731b4" prot="public" virt="non-virtual"><scope>packet_t</scope><name>particles</name></member>
+      <member refid="structpacket__t_1a5abd1ee52b9b4f062202f41a01120aa7" prot="public" virt="non-virtual"><scope>packet_t</scope><name>perturb</name></member>
+      <member refid="structpacket__t_1aeb9c46132cad3888ea22dddd893069d2" prot="public" virt="non-virtual"><scope>packet_t</scope><name>phi</name></member>
+      <member refid="structpacket__t_1af2c3b098575eea4484821e647cbd809e" prot="public" virt="non-virtual"><scope>packet_t</scope><name>static_distances</name></member>
+      <member refid="structpacket__t_1a1fcc7fb3ce1ad2a25da9e4c57a64119a" prot="public" virt="non-virtual"><scope>packet_t</scope><name>static_nu1</name></member>
+      <member refid="structpacket__t_1abaa207e60fa958b8db9c0d521ae698f2" prot="public" virt="non-virtual"><scope>packet_t</scope><name>static_nu2</name></member>
+      <member refid="structpacket__t_1a52644f85078d583733d08b9e42ecaa53" prot="public" virt="non-virtual"><scope>packet_t</scope><name>step</name></member>
+      <member refid="structpacket__t_1a5feb87584b26d492fd8948d42d1f3f60" prot="public" virt="non-virtual"><scope>packet_t</scope><name>steps</name></member>
+      <member refid="structpacket__t_1ae6e4fab2e022ed08d57a1df2c1632030" prot="public" virt="non-virtual"><scope>packet_t</scope><name>t_bquarks</name></member>
+      <member refid="structpacket__t_1a281b69189206fe4448301b8ad38f34db" prot="public" virt="non-virtual"><scope>packet_t</scope><name>t_leptons</name></member>
+      <member refid="structpacket__t_1a702d511343ed0ed5cf1b515e3d9d415d" prot="public" virt="non-virtual"><scope>packet_t</scope><name>t_neutrino</name></member>
+      <member refid="structpacket__t_1a2666c75b15bea3a591b20f5405d0c625" prot="public" virt="non-virtual"><scope>packet_t</scope><name>timeout</name></member>
+      <member refid="structpacket__t_1a20872bda52e0b010a6a22d37fa4c4d32" prot="public" virt="non-virtual"><scope>packet_t</scope><name>tolerance</name></member>
+      <member refid="structpacket__t_1a1b862666c840e080576ce1088399f0b9" prot="public" virt="non-virtual"><scope>packet_t</scope><name>~packet_t</name></member>
+      <member refid="structpacket__t_1a1b862666c840e080576ce1088399f0b9" prot="public" virt="non-virtual"><scope>packet_t</scope><name>~packet_t</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

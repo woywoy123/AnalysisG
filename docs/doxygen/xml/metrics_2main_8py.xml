@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="metrics_2main_8py" kind="file" language="Python">
+    <compoundname>metrics/main.py</compoundname>
+    <innernamespace refid="namespacemain">main</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="keyword">import</highlight><highlight class="normal"><sp/>AnalysisG</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/><ref refid="namespace_analysis_g_1_1metrics" kindref="compound">AnalysisG.metrics</ref><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>AccuracyMetric</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4" refid="namespacemain_1a80457db91bd1110a9e4a8515839a2a4b" refkind="member"><highlight class="normal">sl<sp/>=<sp/>AccuracyMetric()</highlight></codeline>
+<codeline lineno="5"><highlight class="normal">sl.InterpretROOT(</highlight><highlight class="stringliteral">&quot;./accuracy/&quot;</highlight><highlight class="normal">)</highlight></codeline>
+    </programlisting>
+    <location file="/workspaces/AnalysisG/studies/metrics/main.py"/>
+  </compounddef>
+</doxygen>

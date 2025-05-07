@@ -1,0 +1,13 @@
+digraph "graph_template::add_node_data_feature"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="graph_template::add\l_node_data_feature",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="cproperty::set_getter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html#a31b26b5ffb20bbf8d8ee38e0755a9819",tooltip=" "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="cproperty::set_object",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html#a41a70e8e01c9b1a20b94d2dbf1a6b214",tooltip=" "];
+}

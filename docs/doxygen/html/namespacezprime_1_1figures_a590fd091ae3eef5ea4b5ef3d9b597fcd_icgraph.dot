@@ -1,0 +1,24 @@
+digraph "zprime.figures.path"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="zprime.figures.path",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="zprime.figures.zprime\l_mass_children",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacezprime_1_1figures.html#aab4bbc6a2366a64f5447e77b0d5324d8",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="zprime.figures.ZPrime",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacezprime_1_1figures.html#abff9842ae43efaa3520835ff1f67b874",tooltip=" "];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="main.ExecuteStudy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacemain.html#a7afac8f5e46c718321f188d7888c2de0",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="zprime.figures.zprime\l_mass_jets",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacezprime_1_1figures.html#a10489938372009dafcdc80ee0bc84dc6",tooltip=" "];
+  Node5 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="zprime.figures.zprime\l_mass_tops",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacezprime_1_1figures.html#aeba9863f597b75cc6cfc61dcd0fad85c",tooltip=" "];
+  Node6 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="zprime.figures.zprime\l_mass_truthjets",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacezprime_1_1figures.html#a1f0557387f4ed4f5e4115a4581a81de5",tooltip=" "];
+  Node7 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

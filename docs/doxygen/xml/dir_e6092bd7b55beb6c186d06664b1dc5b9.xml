@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_e6092bd7b55beb6c186d06664b1dc5b9" kind="dir">
+    <compoundname>analysis</compoundname>
+    <innerdir refid="dir_e670ea12b5157c979a191f916aa09e80">regions</innerdir>
+    <innerfile refid="src_2_analysis_g_2selections_2analysis_2____init_____8py">src/AnalysisG/selections/analysis/__init__.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="selections/analysis/"/>
+  </compounddef>
+</doxygen>

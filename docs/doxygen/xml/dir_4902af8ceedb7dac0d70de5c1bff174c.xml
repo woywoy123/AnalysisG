@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_4902af8ceedb7dac0d70de5c1bff174c" kind="dir">
+    <compoundname>neutrino</compoundname>
+    <innerdir refid="dir_6b7a348f2e66b98e3625e5e46f06336e">combinatorial</innerdir>
+    <innerdir refid="dir_9ba9422f6f63d5abbf083057765fdfd6">validation</innerdir>
+    <innerfile refid="classes_8py">classes.py</innerfile>
+    <innerfile refid="neutrino_2figures_8py">neutrino/figures.py</innerfile>
+    <innerfile refid="neutrino_2helper_8py">neutrino/helper.py</innerfile>
+    <innerfile refid="neutrino_2main_8py">neutrino/main.py</innerfile>
+    <innerfile refid="nusol_8py">nusol.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/neutrino/"/>
+  </compounddef>
+</doxygen>

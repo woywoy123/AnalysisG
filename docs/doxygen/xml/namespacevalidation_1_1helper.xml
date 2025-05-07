@@ -1,0 +1,292 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacevalidation_1_1helper" kind="namespace" language="Python">
+    <compoundname>validation::helper</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacevalidation_1_1helper_1afc7c3fdc13e574efe025e01c453cec1c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.helper.build_samples</definition>
+        <argsstring>(pth, pattern)</argsstring>
+        <name>build_samples</name>
+        <param>
+          <type>pth</type>
+          <defname>pth</defname>
+        </param>
+        <param>
+          <type>pattern</type>
+          <defname>pattern</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" line="9" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" bodystart="9" bodyend="10"/>
+        <referencedby refid="namespacevalidation_1_1helper_1a46d5b2543b76dfa5ed94e698ee11dee8" compoundref="neutrino_2validation_2helper_8py" startline="46" endline="150">validation.helper.compiler</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacevalidation_1_1helper_1a33c43c5e846fa64039b8e051ac44e398" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.helper.chi2</definition>
+        <argsstring>(t, r)</argsstring>
+        <name>chi2</name>
+        <param>
+          <type>t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type>r</type>
+          <defname>r</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" line="11" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" bodystart="11" bodyend="11"/>
+        <referencedby refid="namespacevalidation_1_1helper_1a38ef08d77af4d3ae70e70b036d4248f2" compoundref="neutrino_2validation_2helper_8py" startline="20" endline="30">validation.helper.get_best</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacevalidation_1_1helper_1aceee8e78760e20ca71b813572b142e8b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.helper.get_masses</definition>
+        <argsstring>(nu, b, lep)</argsstring>
+        <name>get_masses</name>
+        <param>
+          <type>nu</type>
+          <defname>nu</defname>
+        </param>
+        <param>
+          <type>b</type>
+          <defname>b</defname>
+        </param>
+        <param>
+          <type>lep</type>
+          <defname>lep</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" line="12" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" bodystart="12" bodyend="12"/>
+        <referencedby refid="namespacevalidation_1_1helper_1a46d5b2543b76dfa5ed94e698ee11dee8" compoundref="neutrino_2validation_2helper_8py" startline="46" endline="150">validation.helper.compiler</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacevalidation_1_1helper_1a1e318c3e9feb01b85338e94c53cd1563" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.helper.get_static</definition>
+        <argsstring>(ev, name)</argsstring>
+        <name>get_static</name>
+        <param>
+          <type>ev</type>
+          <defname>ev</defname>
+        </param>
+        <param>
+          <type><ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref></type>
+          <defname>name</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" line="13" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" bodystart="13" bodyend="13"/>
+        <referencedby refid="namespacevalidation_1_1helper_1a46d5b2543b76dfa5ed94e698ee11dee8" compoundref="neutrino_2validation_2helper_8py" startline="46" endline="150">validation.helper.compiler</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacevalidation_1_1helper_1ac597f11c1d7c70bb8943eff4efc59250" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.helper.get_dynamic</definition>
+        <argsstring>(ev, name)</argsstring>
+        <name>get_dynamic</name>
+        <param>
+          <type>ev</type>
+          <defname>ev</defname>
+        </param>
+        <param>
+          <type><ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref></type>
+          <defname>name</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" line="14" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" bodystart="14" bodyend="14"/>
+        <referencedby refid="namespacevalidation_1_1helper_1a46d5b2543b76dfa5ed94e698ee11dee8" compoundref="neutrino_2validation_2helper_8py" startline="46" endline="150">validation.helper.compiler</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacevalidation_1_1helper_1a8de0699952a18dd491485eaf03b9c990" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.helper.get_pairs</definition>
+        <argsstring>(ev, name, ix)</argsstring>
+        <name>get_pairs</name>
+        <param>
+          <type>ev</type>
+          <defname>ev</defname>
+        </param>
+        <param>
+          <type><ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref></type>
+          <defname>name</defname>
+        </param>
+        <param>
+          <type>ix</type>
+          <defname>ix</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" line="15" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" bodystart="15" bodyend="19"/>
+        <referencedby refid="namespacevalidation_1_1helper_1a46d5b2543b76dfa5ed94e698ee11dee8" compoundref="neutrino_2validation_2helper_8py" startline="46" endline="150">validation.helper.compiler</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacevalidation_1_1helper_1a38ef08d77af4d3ae70e70b036d4248f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.helper.get_best</definition>
+        <argsstring>(tnus, rnus)</argsstring>
+        <name>get_best</name>
+        <param>
+          <type>tnus</type>
+          <defname>tnus</defname>
+        </param>
+        <param>
+          <type>rnus</type>
+          <defname>rnus</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" line="20" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" bodystart="20" bodyend="30"/>
+        <references refid="namespacevalidation_1_1helper_1a33c43c5e846fa64039b8e051ac44e398" compoundref="neutrino_2validation_2helper_8py" startline="11" endline="11">validation.helper.chi2</references>
+        <referencedby refid="namespacevalidation_1_1helper_1a46d5b2543b76dfa5ed94e698ee11dee8" compoundref="neutrino_2validation_2helper_8py" startline="46" endline="150">validation.helper.compiler</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacevalidation_1_1helper_1a635134ec7a8a4065ccce59f99c9cb399" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.helper.make_types</definition>
+        <argsstring>(nus, leps, bs)</argsstring>
+        <name>make_types</name>
+        <param>
+          <type>nus</type>
+          <defname>nus</defname>
+        </param>
+        <param>
+          <type>leps</type>
+          <defname>leps</defname>
+        </param>
+        <param>
+          <type>bs</type>
+          <defname>bs</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" line="31" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" bodystart="31" bodyend="34"/>
+        <referencedby refid="namespacevalidation_1_1helper_1a46d5b2543b76dfa5ed94e698ee11dee8" compoundref="neutrino_2validation_2helper_8py" startline="46" endline="150">validation.helper.compiler</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacevalidation_1_1helper_1ab9183db04cddaa78a2aafac403df719f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.helper.vector</definition>
+        <argsstring>(inpt)</argsstring>
+        <name>vector</name>
+        <param>
+          <type>inpt</type>
+          <defname>inpt</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" line="35" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" bodystart="35" bodyend="35"/>
+        <referencedby refid="namespacevalidation_1_1helper_1a46d5b2543b76dfa5ed94e698ee11dee8" compoundref="neutrino_2validation_2helper_8py" startline="46" endline="150">validation.helper.compiler</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacevalidation_1_1helper_1a42b8789b90c32ef7c34ba40c4e600fd2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.helper.MPNuNu</definition>
+        <argsstring>(k)</argsstring>
+        <name>MPNuNu</name>
+        <param>
+          <type>k</type>
+          <defname>k</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" line="36" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" bodystart="36" bodyend="45"/>
+        <references refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" compoundref="selection__template_8h" startline="28">selection_template::hash</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacevalidation_1_1helper_1a46d5b2543b76dfa5ed94e698ee11dee8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.helper.compiler</definition>
+        <argsstring>(lx, name, build=False)</argsstring>
+        <name>compiler</name>
+        <param>
+          <type>lx</type>
+          <defname>lx</defname>
+        </param>
+        <param>
+          <type><ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref></type>
+          <defname>name</defname>
+        </param>
+        <param>
+          <type><ref refid="classselection__template_1ae24cee9f302d7509a7009daea0bf0616" kindref="member">build</ref></type>
+          <defname>build</defname>
+          <defval>False</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" line="46" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" bodystart="46" bodyend="150"/>
+        <references refid="namespacevalidation_1_1helper_1afc7c3fdc13e574efe025e01c453cec1c" compoundref="neutrino_2validation_2helper_8py" startline="9" endline="10">validation.helper.build_samples</references>
+        <references refid="namespacevalidation_1_1helper_1a38ef08d77af4d3ae70e70b036d4248f2" compoundref="neutrino_2validation_2helper_8py" startline="20" endline="30">validation.helper.get_best</references>
+        <references refid="namespacevalidation_1_1helper_1ac597f11c1d7c70bb8943eff4efc59250" compoundref="neutrino_2validation_2helper_8py" startline="14" endline="14">validation.helper.get_dynamic</references>
+        <references refid="namespacevalidation_1_1helper_1aceee8e78760e20ca71b813572b142e8b" compoundref="neutrino_2validation_2helper_8py" startline="12" endline="12">validation.helper.get_masses</references>
+        <references refid="namespacevalidation_1_1helper_1a8de0699952a18dd491485eaf03b9c990" compoundref="neutrino_2validation_2helper_8py" startline="15" endline="19">validation.helper.get_pairs</references>
+        <references refid="namespacevalidation_1_1helper_1a1e318c3e9feb01b85338e94c53cd1563" compoundref="neutrino_2validation_2helper_8py" startline="13" endline="13">validation.helper.get_static</references>
+        <references refid="namespacevalidation_1_1helper_1a635134ec7a8a4065ccce59f99c9cb399" compoundref="neutrino_2validation_2helper_8py" startline="31" endline="34">validation.helper.make_types</references>
+        <references refid="namespacevalidation_1_1helper_1ab9183db04cddaa78a2aafac403df719f" compoundref="neutrino_2validation_2helper_8py" startline="35" endline="35">validation.helper.vector</references>
+        <referencedby refid="namespacevalidation_1_1helper_1a1cb91b1b03cee9d56e53f56b8cc9b9e8" compoundref="neutrino_2validation_2helper_8py" startline="151" endline="159">validation.helper.compxl</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacevalidation_1_1helper_1a1cb91b1b03cee9d56e53f56b8cc9b9e8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.helper.compxl</definition>
+        <argsstring>(sl=None)</argsstring>
+        <name>compxl</name>
+        <param>
+          <type>sl</type>
+          <defname>sl</defname>
+          <defval>None</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" line="151" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" bodystart="151" bodyend="159"/>
+        <references refid="namespacevalidation_1_1helper_1a46d5b2543b76dfa5ed94e698ee11dee8" compoundref="neutrino_2validation_2helper_8py" startline="46" endline="150">validation.helper.compiler</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/neutrino/validation/helper.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

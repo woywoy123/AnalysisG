@@ -1,0 +1,37 @@
+digraph "model_template::model_template"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="model_template::model\l_template",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Constructor for the model_template class."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="model_template::get\l_dev_index",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmodel__template.html#a1ccf58b3ee8f6daa0e032fb316934cbd",tooltip="Static getter for the device_index property."];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="model_template::get_name",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmodel__template.html#a3e2ae9bb1ff5cb88411fa35d04fbaf8b",tooltip="Static getter for the name property."];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="model_template::set\l_dev_index",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmodel__template.html#ac4b5cf9bc73437cd847dc80cc5c1c75b",tooltip="Static setter for the device_index property."];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="model_template::set\l_device",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmodel__template.html#ad6ea8f7ffac83bd49123286ed4cd9fda",tooltip="Static setter for the device property."];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="tools::has_string",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtools.html#ad7229c72cee65da3605c4be82f9b42d4",tooltip="Checks if a string contains a specific substring."];
+  Node5 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="tools::split",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0",tooltip="Splits a string into a vector of substrings based on a delimiter."];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="cproperty::set_getter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html#a31b26b5ffb20bbf8d8ee38e0755a9819",tooltip=" "];
+  Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="model_template::set\l_input_features",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmodel__template.html#a042ce754045343eade6e54d556854859",tooltip="Sets input features for a specific feature map."];
+  Node1 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="model_template::set_name",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmodel__template.html#ad1a321ec8ca5e79c79322c83ef70b7c5",tooltip="Static setter for the name property."];
+  Node1 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="cproperty::set_object",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html#a41a70e8e01c9b1a20b94d2dbf1a6b214",tooltip=" "];
+  Node1 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="model_template::set\l_output_features",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmodel__template.html#a977402549135f0f763157b1282b44173",tooltip="Sets output features for a specific feature map."];
+  Node12 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_3name_4_8h.html#a64e9fa75beda50a9e8400ee0d4e61984",tooltip=" "];
+  Node12 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="lossfx::loss_string",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlossfx.html#a1ff4ab72a5193a641f3184f2fa77daf9",tooltip=" "];
+  Node1 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="cproperty::set_setter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html#af4583ba4cf4ebc53f870a2de8f110da7",tooltip=" "];
+}

@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="plotting_8cxx" kind="file" language="C++">
+    <compoundname>plotting.cxx</compoundname>
+    <includes refid="plotting_8h" local="no">plotting/plotting.h</includes>
+    <includes local="no">cmath</includes>
+    <incdepgraph>
+      <node id="7">
+        <label>functional</label>
+      </node>
+      <node id="10">
+        <label>cstdint</label>
+      </node>
+      <node id="13">
+        <label>cmath</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="11">
+        <label>map</label>
+      </node>
+      <node id="12">
+        <label>tuple</label>
+      </node>
+      <node id="9">
+        <label>vector</label>
+      </node>
+      <node id="3">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>plotting/plotting.h</label>
+        <link refid="plotting_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>iostream</label>
+      </node>
+      <node id="6">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>plotting.cxx</label>
+        <link refid="plotting_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+<para>Implementation of plotting utilities. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file contains the implementation of various plotting utilities used in the <ref refid="namespace_analysis_g" kindref="compound">AnalysisG</ref> project. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**<sp/>\file<sp/>plotting.cxx</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/>\brief<sp/>Implementation<sp/>of<sp/>plotting<sp/>utilities.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>This<sp/>file<sp/>contains<sp/>the<sp/>implementation<sp/>of<sp/>various<sp/>plotting<sp/>utilities<sp/>used<sp/>in<sp/>the<sp/>AnalysisG<sp/>project.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="plotting_8h" kindref="compound">plotting/plotting.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10" refid="classplotting_1a2b975fd0d4c29b75a23f4f397ce9240c" refkind="member"><highlight class="normal"><ref refid="classplotting_1a2b975fd0d4c29b75a23f4f397ce9240c" kindref="member">plotting::plotting</ref>(){}</highlight></codeline>
+<codeline lineno="11" refid="classplotting_1a67f238856d7f5c452a3d6376c57afbd5" refkind="member"><highlight class="normal"><ref refid="classplotting_1a67f238856d7f5c452a3d6376c57afbd5" kindref="member">plotting::~plotting</ref>(){<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>std::vector&lt;std::vector&lt;double&gt;&gt;*&gt;::iterator<sp/>itx;<sp/><sp/></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;int,<sp/>std::vector&lt;std::vector&lt;double&gt;&gt;*&gt;&gt;::iterator<sp/>itm;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itm<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" kindref="member">roc_data</ref>.begin();<sp/>itm<sp/>!=<sp/><ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref><sp/>-&gt;<sp/><ref refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" kindref="member">roc_data</ref>.end();<sp/>++itm){</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itx<sp/>=<sp/>itm<sp/>-&gt;<sp/>second.begin();<sp/>itx<sp/>!=<sp/>itm<sp/>-&gt;<sp/>second.end();<sp/>++itx){</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" kindref="member">roc_data</ref>[itm<sp/>-&gt;<sp/>first][itx<sp/>-&gt;<sp/>first];</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a70975d4616ff707c72737b042b7336b5" kindref="member">labels</ref>[itm<sp/>-&gt;<sp/>first][itx<sp/>-&gt;<sp/>first];<sp/></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" refkind="member"><highlight class="normal">std::string<sp/><ref refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" kindref="member">plotting::build_path</ref>(){</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" kindref="member">path</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a66c02c3630a2ddb7ed8a865912821668" kindref="member">output_path</ref>;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" kindref="member">ends_with</ref>(&amp;<ref refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" kindref="member">path</ref>,<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal">)){<ref refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" kindref="member">path</ref><sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" kindref="member">create_path</ref>(<ref refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" kindref="member">path</ref>);<sp/></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" kindref="member">create_path</ref>(<ref refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" kindref="member">path</ref><sp/>+<sp/></highlight><highlight class="stringliteral">&quot;raw/&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" kindref="member">path</ref><sp/>+=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a65010c1d42e3e2f36390ed00e52070f2" kindref="member">filename</ref>;<sp/></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" kindref="member">path</ref><sp/>+=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1ad7e6f80b340a86dd287b0e5baa2599cf" kindref="member">extension</ref>;<sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" kindref="member">path</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="30"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="classplotting_1a5a598f64f38a5c6fe9cd06a58983ea25" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classplotting_1a5a598f64f38a5c6fe9cd06a58983ea25" kindref="member">plotting::get_max</ref>(std::string<sp/>dim){</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(dim<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;x&quot;</highlight><highlight class="normal">){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>max(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a82d8ab7c80e0e0f132c849deb8248f0a" kindref="member">x_data</ref>);}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(dim<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;y&quot;</highlight><highlight class="normal">){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>max(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a3168e2d75fe29b6bbbfbe5fc9db11371" kindref="member">y_data</ref>);}</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;<sp/></highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="classplotting_1ae5b9ced73a9b2c8e5e9570d7e719755f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classplotting_1ae5b9ced73a9b2c8e5e9570d7e719755f" kindref="member">plotting::get_min</ref>(std::string<sp/>dim){</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(dim<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;x&quot;</highlight><highlight class="normal">){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>min(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a82d8ab7c80e0e0f132c849deb8248f0a" kindref="member">x_data</ref>);}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(dim<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;y&quot;</highlight><highlight class="normal">){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>min(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a3168e2d75fe29b6bbbfbe5fc9db11371" kindref="member">y_data</ref>);}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;<sp/></highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="classplotting_1a1760124c718705cf9edcfb2789abbe9e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classplotting_1a1760124c718705cf9edcfb2789abbe9e" kindref="member">plotting::sum_of_weights</ref>(){</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a3242285ecbd4cd026d47b2d62b293f85" kindref="member">weights</ref>.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>+=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a3242285ecbd4cd026d47b2d62b293f85" kindref="member">weights</ref>.at(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>);<sp/></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="classplotting_1a8d26e0eb29163870ddbdecbfc2332b1b" refkind="member"><highlight class="normal">std::tuple&lt;float,<sp/>float&gt;<sp/><ref refid="classplotting_1a8d26e0eb29163870ddbdecbfc2332b1b" kindref="member">plotting::mean_stdev</ref>(std::vector&lt;float&gt;*<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>){</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="namespacernn__model_1adb2a219b00c736d006b49d8b12ee884e" kindref="member">n</ref><sp/>=<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref><sp/>-&gt;<sp/>size();</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacernn__model_1adb2a219b00c736d006b49d8b12ee884e" kindref="member">n</ref><sp/>&lt;<sp/>2){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{(*data)[0],<sp/>0};}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>mean<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>k<sp/>:<sp/>*<ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>){mean<sp/>+=<sp/>k;}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>mean<sp/>=<sp/>mean<sp/>/<sp/><ref refid="namespacernn__model_1adb2a219b00c736d006b49d8b12ee884e" kindref="member">n</ref>;<sp/></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>stdev<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>k<sp/>:<sp/>*<ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>){stdev<sp/>+=<sp/>std::pow(k<sp/>-<sp/>mean,<sp/>2);}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{mean,<sp/>std::pow(stdev<sp/>/<sp/>(<ref refid="namespacernn__model_1adb2a219b00c736d006b49d8b12ee884e" kindref="member">n</ref>-1),<sp/>0.5)};<sp/></highlight></codeline>
+<codeline lineno="63"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="classplotting_1a291087451228246d77c25588f05d0a0e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classplotting_1a291087451228246d77c25588f05d0a0e" kindref="member">plotting::build_error</ref>(){</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a39e4f4e50b9e8d727e34a8247707116b" kindref="member">y_error_down</ref>.size()){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;float,<sp/>std::vector&lt;float&gt;&gt;<sp/>maps;<sp/></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a82d8ab7c80e0e0f132c849deb8248f0a" kindref="member">x_data</ref>.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a82d8ab7c80e0e0f132c849deb8248f0a" kindref="member">x_data</ref>[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>maps[<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>].push_back(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a3168e2d75fe29b6bbbfbe5fc9db11371" kindref="member">y_data</ref>[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]);<sp/></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a82d8ab7c80e0e0f132c849deb8248f0a" kindref="member">x_data</ref>.clear();</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a3168e2d75fe29b6bbbfbe5fc9db11371" kindref="member">y_data</ref>.clear();</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;float,<sp/>std::vector&lt;float&gt;&gt;::iterator<sp/>itr;<sp/></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itr<sp/>=<sp/>maps.begin();<sp/>itr<sp/>!=<sp/>maps.end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::tuple&lt;float,<sp/>float&gt;<sp/>r<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a8d26e0eb29163870ddbdecbfc2332b1b" kindref="member">mean_stdev</ref>(&amp;itr<sp/>-&gt;<sp/>second);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a82d8ab7c80e0e0f132c849deb8248f0a" kindref="member">x_data</ref>.push_back(itr<sp/>-&gt;<sp/>first);<sp/></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a3168e2d75fe29b6bbbfbe5fc9db11371" kindref="member">y_data</ref>.push_back(std::get&lt;0&gt;(r));<sp/></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>up<sp/>=<sp/>std::get&lt;0&gt;(r)<sp/>+<sp/>std::get&lt;1&gt;(r);<sp/></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>down<sp/>=<sp/>std::get&lt;0&gt;(r)<sp/>-<sp/>std::get&lt;1&gt;(r);<sp/></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(down<sp/>&lt;<sp/>0){down<sp/>=<sp/>0;}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a39e4f4e50b9e8d727e34a8247707116b" kindref="member">y_error_down</ref>.push_back(down);<sp/></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a253404a5e3aa9207f6f014e1ebc9f94d" kindref="member">y_error_up</ref>.push_back(up);<sp/></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90" refid="classplotting_1a2d9afaf0eab31995f968c53801f60de2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classplotting_1a2d9afaf0eab31995f968c53801f60de2" kindref="member">plotting::build_ROC</ref>(</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1a03af30b15df550f87e1dd197bb3679e1" kindref="member">kfold</ref>,<sp/>std::vector&lt;int&gt;*<sp/><ref refid="namespacemain_1aced2f0e5b178381f9f0a0bf045d8b11d" kindref="member">label</ref>,<sp/><ref refid="namespacehelper_1a6a86af0e435c054cabd85eebb8a45782" kindref="member">std::vector</ref>&lt;std::vector&lt;double&gt;&gt;*<sp/>scores</highlight></codeline>
+<codeline lineno="92"><highlight class="normal">){</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>clx<sp/>=<sp/>(scores)<sp/>?<sp/>scores<sp/>-&gt;<sp/>at(0).size()<sp/>:<sp/>(1<sp/>+<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>max(<ref refid="namespacemain_1aced2f0e5b178381f9f0a0bf045d8b11d" kindref="member">label</ref>));</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>lsx<sp/>=<sp/>(scores)<sp/>?<sp/>scores<sp/>-&gt;<sp/>size()<sp/>:<sp/><ref refid="namespacemain_1aced2f0e5b178381f9f0a0bf045d8b11d" kindref="member">label</ref><sp/>-&gt;<sp/>size();</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" kindref="member">roc_data</ref>[<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>].<ref refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" kindref="member">count</ref>(<ref refid="namespacemain_1a03af30b15df550f87e1dd197bb3679e1" kindref="member">kfold</ref>)){</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(scores){</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" kindref="member">roc_data</ref>[<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>][<ref refid="namespacemain_1a03af30b15df550f87e1dd197bb3679e1" kindref="member">kfold</ref>];</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" kindref="member">roc_data</ref>[<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>][<ref refid="namespacemain_1a03af30b15df550f87e1dd197bb3679e1" kindref="member">kfold</ref>]<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>generate&lt;double&gt;(lsx,<sp/>clx);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!scores){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" kindref="member">roc_data</ref>[<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>][<ref refid="namespacemain_1a03af30b15df550f87e1dd197bb3679e1" kindref="member">kfold</ref>]<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>generate&lt;double&gt;(lsx,<sp/>clx);}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" kindref="member">roc_data</ref>[<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>][<ref refid="namespacemain_1a03af30b15df550f87e1dd197bb3679e1" kindref="member">kfold</ref>]<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>generate&lt;double&gt;(lsx,<sp/>clx);}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a70975d4616ff707c72737b042b7336b5" kindref="member">labels</ref>[<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>].<ref refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" kindref="member">count</ref>(<ref refid="namespacemain_1a03af30b15df550f87e1dd197bb3679e1" kindref="member">kfold</ref>)){</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacemain_1aced2f0e5b178381f9f0a0bf045d8b11d" kindref="member">label</ref>){</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a70975d4616ff707c72737b042b7336b5" kindref="member">labels</ref>[<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>][<ref refid="namespacemain_1a03af30b15df550f87e1dd197bb3679e1" kindref="member">kfold</ref>];</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a70975d4616ff707c72737b042b7336b5" kindref="member">labels</ref>[<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>][<ref refid="namespacemain_1a03af30b15df550f87e1dd197bb3679e1" kindref="member">kfold</ref>]<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>generate&lt;int&gt;(lsx,<sp/>clx);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="namespacemain_1aced2f0e5b178381f9f0a0bf045d8b11d" kindref="member">label</ref>){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a70975d4616ff707c72737b042b7336b5" kindref="member">labels</ref>[<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>][<ref refid="namespacemain_1a03af30b15df550f87e1dd197bb3679e1" kindref="member">kfold</ref>]<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>generate&lt;int&gt;(lsx,<sp/>clx);}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a70975d4616ff707c72737b042b7336b5" kindref="member">labels</ref>[<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>][<ref refid="namespacemain_1a03af30b15df550f87e1dd197bb3679e1" kindref="member">kfold</ref>]<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>generate&lt;int&gt;(lsx,<sp/>clx);}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::vector&lt;double&gt;&gt;*<sp/>vs<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" kindref="member">roc_data</ref>[<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>][<ref refid="namespacemain_1a03af30b15df550f87e1dd197bb3679e1" kindref="member">kfold</ref>];<sp/></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::vector&lt;int<sp/><sp/><sp/>&gt;&gt;*<sp/>vt<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a70975d4616ff707c72737b042b7336b5" kindref="member">labels</ref>[<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>][<ref refid="namespacemain_1a03af30b15df550f87e1dd197bb3679e1" kindref="member">kfold</ref>];<sp/></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>lsx;<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>y(0);<sp/>y<sp/>&lt;<sp/>clx*(1<sp/>-<sp/>!scores);<sp/>++y){(*vs)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>][y]<sp/>=<sp/>scores<sp/>-&gt;<sp/>at(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>).at(y);}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>y(0);<sp/>y<sp/>&lt;<sp/>clx*(1<sp/>-<sp/>!<ref refid="namespacemain_1aced2f0e5b178381f9f0a0bf045d8b11d" kindref="member">label</ref><sp/>);<sp/>++y){(*vt)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>][y]<sp/>=<sp/><ref refid="namespacemain_1aced2f0e5b178381f9f0a0bf045d8b11d" kindref="member">label</ref><sp/><sp/>-&gt;<sp/>at(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>)<sp/>==<sp/>y;}</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124" refid="classplotting_1abe13ad9c1fd870ebfad2c7692c251245" refkind="member"><highlight class="normal">std::vector&lt;roc_t&gt;<sp/><ref refid="classplotting_1abe13ad9c1fd870ebfad2c7692c251245" kindref="member">plotting::get_ROC</ref>(){</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;roc_t&gt;<sp/>outp;<sp/></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>std::vector&lt;std::vector&lt;double&gt;&gt;*&gt;::iterator<sp/>itx;<sp/><sp/></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;int,<sp/>std::vector&lt;std::vector&lt;double&gt;&gt;*&gt;&gt;::iterator<sp/>itm;</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itm<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" kindref="member">roc_data</ref>.begin();<sp/>itm<sp/>!=<sp/><ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref><sp/>-&gt;<sp/><ref refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" kindref="member">roc_data</ref>.end();<sp/>++itm){</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itx<sp/>=<sp/>itm<sp/>-&gt;<sp/>second.begin();<sp/>itx<sp/>!=<sp/>itm<sp/>-&gt;<sp/>second.end();<sp/>++itx){</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structroc__t" kindref="compound">roc_t</ref><sp/>rc;<sp/></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rc.<ref refid="structroc__t_1aa13b64491cd08e0ac619e8fc9ed10441" kindref="member">kfold</ref><sp/><sp/>=<sp/>itx<sp/>-&gt;<sp/>first;<sp/></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rc.<ref refid="structroc__t_1a2ec8bddabc2505f75a393fef20ec743f" kindref="member">model</ref><sp/><sp/>=<sp/>itm<sp/>-&gt;<sp/>first;</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rc.<ref refid="structroc__t_1aa6bdb298cbd76d552e10b168e0d6f9b3" kindref="member">truth</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a70975d4616ff707c72737b042b7336b5" kindref="member">labels</ref>[itm<sp/>-&gt;<sp/>first][itx<sp/>-&gt;<sp/>first];<sp/></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rc.<ref refid="structroc__t_1a232f98b2aac1f99ac58569891f85f901" kindref="member">scores</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" kindref="member">roc_data</ref>[itm<sp/>-&gt;<sp/>first][itx<sp/>-&gt;<sp/>first];<sp/></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rc.<ref refid="structroc__t_1a12327f6d3cdaeb7789a70cd0f68477ff" kindref="member">cls</ref><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classplotting_1a70975d4616ff707c72737b042b7336b5" kindref="member">labels</ref>[itm<sp/>-&gt;<sp/>first][itx<sp/>-&gt;<sp/>first]<sp/>-&gt;<sp/>at(0).size();<sp/></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>outp.push_back(rc);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>outp;<sp/></highlight></codeline>
+<codeline lineno="140"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="modules/plotting/cxx/plotting.cxx"/>
+  </compounddef>
+</doxygen>

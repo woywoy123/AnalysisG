@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_6fbf878e53381cf7d78c9001cbe8a427" kind="dir">
+    <compoundname>cxx</compoundname>
+    <innerfile refid="_3particle-name_4_8cxx">&lt;particle-name&gt;.cxx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="templates/particles/cxx/"/>
+  </compounddef>
+</doxygen>

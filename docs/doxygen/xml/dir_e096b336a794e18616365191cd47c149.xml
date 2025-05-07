@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_e096b336a794e18616365191cd47c149" kind="dir">
+    <compoundname>analysis</compoundname>
+    <innerfile refid="analysis_2figures_8py">analysis/figures.py</innerfile>
+    <innerfile refid="analysis_2main_8py">analysis/main.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/analysis/"/>
+  </compounddef>
+</doxygen>

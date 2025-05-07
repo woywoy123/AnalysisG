@@ -1,0 +1,11 @@
+digraph "bsm_4tops" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_826186e6744bfa5e2707899c34479bbe {
+    graph [ bgcolor="#ddddee", pencolor="black", label="include" fontname="Helvetica", fontsize="10", URL="dir_826186e6744bfa5e2707899c34479bbe.html"]
+  dir_7d22090b8555f4e40ccced88c7281d11 [shape=box, label="bsm_4tops", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_7d22090b8555f4e40ccced88c7281d11.html"];
+  }
+  dir_ee3c23494b4011e6a628e4900ef262df [shape=box label="modules" fillcolor="white" style="filled" color="red" URL="dir_ee3c23494b4011e6a628e4900ef262df.html"];
+  dir_7d22090b8555f4e40ccced88c7281d11->dir_ee3c23494b4011e6a628e4900ef262df [headlabel="2", labeldistance=1.5 headhref="dir_000111_000074.html"];
+}

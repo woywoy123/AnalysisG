@@ -1,3 +1,11 @@
+/**
+ * @file metric_template.pxd
+ * @brief Provides type definitions and class declarations for metric templates in the AnalysisG framework.
+ *
+ * This file defines the structure and behavior of metric templates, including methods for managing
+ * metrics, evaluating models, and computing performance metrics.
+ */
+
 # distutils: language=c++
 # cython: language_level = 3
 
@@ -30,7 +38,50 @@ cdef inline bool finder(string* fname, vector[string]* kfolds, vector[string]* e
         found_e = True; break
     return (kfolds.size() == 0 or found_k)*(epochs.size() == 0 or found_e)
 
+/**
+ * @namespace MetricTemplate
+ * @brief Contains the MetricTemplate class and related utilities for managing metrics.
+ */
+
+/**
+ * @class MetricTemplate
+ * @brief Represents a metric used for evaluating models.
+ *
+ * This class provides methods for setting metric parameters, computing metrics, and retrieving results.
+ */
 cdef class MetricTemplate(Tools):
     cdef metric_template* mtx
     cdef public dict root_leaves
     cdef public dict root_fx
+    cdef dict parameters_ ///< Dictionary of parameters associated with the metric.
+    cdef dict results_ ///< Dictionary of results computed by the metric.
+
+    /**
+     * @brief Sets a parameter for the metric.
+     *
+     * @param key The key of the parameter.
+     * @param value The value of the parameter.
+     */
+    void set_parameter(string key, string value)
+
+    /**
+     * @brief Retrieves a parameter from the metric.
+     *
+     * @param key The key of the parameter.
+     * @return The value of the parameter.
+     */
+    string get_parameter(string key)
+
+    /**
+     * @brief Computes the metric based on the provided data.
+     *
+     * @param data The data used for computing the metric.
+     */
+    void compute_metric(dict data)
+
+    /**
+     * @brief Retrieves the results of the metric computation.
+     *
+     * @return A dictionary containing the results.
+     */
+    dict get_results()

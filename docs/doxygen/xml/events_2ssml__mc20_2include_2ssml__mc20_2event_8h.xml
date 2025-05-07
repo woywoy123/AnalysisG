@@ -1,0 +1,495 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" kind="file" language="C++">
+    <compoundname>events/ssml_mc20/include/ssml_mc20/event.h</compoundname>
+    <includes refid="events_2ssml__mc20_2include_2ssml__mc20_2particles_8h" local="no">ssml_mc20/particles.h</includes>
+    <includes refid="event__template_8h" local="no">templates/event_template.h</includes>
+    <includedby refid="ssml__mc20_2include_2ssml__mc20_2graphs_8h" local="no">graphs.h</includedby>
+    <includedby refid="regions_8h" local="no">regions.h</includedby>
+    <includedby refid="mc20__ref_8cxx" local="no">mc20_ref.cxx</includedby>
+    <includedby refid="mc20_2topkinematics_2topkinematics_8h" local="no">topkinematics.h</includedby>
+    <includedby refid="mc20_2topmatching_2topmatching_8h" local="no">topmatching.h</includedby>
+    <includedby refid="mc20_2zprime_2zprime_8h" local="no">zprime.h</includedby>
+    <incdepgraph>
+      <node id="18">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="9">
+        <label>functional</label>
+      </node>
+      <node id="16">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="29">
+        <label>templates/event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="25">
+        <label>cstdint</label>
+      </node>
+      <node id="3">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>cmath</label>
+      </node>
+      <node id="22">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="5">
+        <label>string</label>
+      </node>
+      <node id="7">
+        <label>map</label>
+      </node>
+      <node id="30">
+        <label>structs/event.h</label>
+        <link refid="modules_2structs_2include_2structs_2event_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="19">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>vector</label>
+      </node>
+      <node id="34">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>TFile.h</label>
+      </node>
+      <node id="26">
+        <label>sstream</label>
+      </node>
+      <node id="4">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>cstdlib</label>
+      </node>
+      <node id="23">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="35">
+        <label>TH1F.h</label>
+      </node>
+      <node id="14">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="20">
+        <label>iostream</label>
+      </node>
+      <node id="21">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>meta/meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>TBranch.h</label>
+      </node>
+      <node id="2">
+        <label>ssml_mc20/particles.h</label>
+        <link refid="events_2ssml__mc20_2include_2ssml__mc20_2particles_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>TTree.h</label>
+      </node>
+      <node id="1">
+        <label>event.h</label>
+        <link refid="events_2ssml__mc20_2include_2ssml__mc20_2event_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="5">
+        <label>graphs.cxx</label>
+        <link refid="ssml__mc20_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="11">
+        <label>topmatching.h</label>
+        <link refid="mc20_2topmatching_2topmatching_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>topkinematics.cxx</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8cxx"/>
+      </node>
+      <node id="4">
+        <label>graphs.cxx</label>
+        <link refid="exp__mc20_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="8">
+        <label>mc20_ref.cxx</label>
+        <link refid="mc20__ref_8cxx"/>
+      </node>
+      <node id="3">
+        <label>graphs.cxx</label>
+        <link refid="bsm__4tops_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="2">
+        <label>graphs.h</label>
+        <link refid="ssml__mc20_2include_2ssml__mc20_2graphs_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>zprime.cxx</label>
+        <link refid="mc20_2zprime_2zprime_8cxx"/>
+      </node>
+      <node id="13">
+        <label>zprime.h</label>
+        <link refid="mc20_2zprime_2zprime_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>topmatching.cxx</label>
+        <link refid="mc20_2topmatching_2topmatching_8cxx"/>
+      </node>
+      <node id="9">
+        <label>topkinematics.h</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>regions.h</label>
+        <link refid="regions_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>event.h</label>
+        <link refid="events_2ssml__mc20_2include_2ssml__mc20_2event_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>regions.cxx</label>
+        <link refid="regions_8cxx"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classssml__mc20" prot="public">ssml_mc20</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>EVENTS_SSML_MC20_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENTS_SSML_MC20_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="events_2ssml__mc20_2include_2ssml__mc20_2particles_8h" kindref="compound">ssml_mc20/particles.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="event__template_8h" kindref="compound">templates/event_template.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="classssml__mc20" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classevent__template" kindref="compound">event_template</ref></highlight></codeline>
+<codeline lineno="8"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classssml__mc20_1a0e4485a5e50805da1a79ca645000fb10" kindref="member">ssml_mc20</ref>();<sp/></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a3aa964ec7d56fa948bf22a2cf5185278" kindref="member">~ssml_mc20</ref>();<sp/></highlight></codeline>
+<codeline lineno="12" refid="classssml__mc20_1ae834046f05f66b8b11e8feb0026e760a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1ae834046f05f66b8b11e8feb0026e760a" kindref="member">eventNumber</ref>;<sp/></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="classssml__mc20_1a65ec6bd1062d9eccb3c9aff6d7084e02" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a65ec6bd1062d9eccb3c9aff6d7084e02" kindref="member">event_category</ref>;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="classssml__mc20_1abb918cc3dfe1c0bc5aba6736ce28a2b8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1abb918cc3dfe1c0bc5aba6736ce28a2b8" kindref="member">weight_mc</ref>;<sp/></highlight></codeline>
+<codeline lineno="17" refid="classssml__mc20_1a233d656a1fb51d7da80a5708a41e0f65" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a233d656a1fb51d7da80a5708a41e0f65" kindref="member">weight_pileup</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="18" refid="classssml__mc20_1a0ba497ac0068c691d872f63fda6c7f95" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a0ba497ac0068c691d872f63fda6c7f95" kindref="member">weight_beamspot</ref>;<sp/></highlight></codeline>
+<codeline lineno="19" refid="classssml__mc20_1a1c02c7587791631a5fe92f290cea68aa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a1c02c7587791631a5fe92f290cea68aa" kindref="member">weight_jvt_effSF</ref>;<sp/></highlight></codeline>
+<codeline lineno="20" refid="classssml__mc20_1a36dabd5f761bcf8c229fe578d949d383" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a36dabd5f761bcf8c229fe578d949d383" kindref="member">weight_lep_tightSF</ref>;<sp/></highlight></codeline>
+<codeline lineno="21" refid="classssml__mc20_1aadb6df6886f3e1f40c3f8866891065d8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1aadb6df6886f3e1f40c3f8866891065d8" kindref="member">weight_ftag_effSF</ref>;<sp/></highlight></codeline>
+<codeline lineno="22" refid="classssml__mc20_1a1270bfa446a1327d4521544e4b8d41f9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a1270bfa446a1327d4521544e4b8d41f9" kindref="member">global_trigger_SF</ref>;<sp/></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="classssml__mc20_1aa9378c3828e15067e5d69a001d1ffb2b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1aa9378c3828e15067e5d69a001d1ffb2b" kindref="member">phi</ref>;<sp/></highlight></codeline>
+<codeline lineno="25" refid="classssml__mc20_1ab39d3930d0c29d96b72862e851397028" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1ab39d3930d0c29d96b72862e851397028" kindref="member">met</ref>;</highlight></codeline>
+<codeline lineno="26" refid="classssml__mc20_1a5b4bd0115e39ae1c72e8e242af7f705f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a5b4bd0115e39ae1c72e8e242af7f705f" kindref="member">met_sum</ref>;<sp/></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="classssml__mc20_1ac6983b6da1ce79aa95fb2c1dc9ccd838" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1ac6983b6da1ce79aa95fb2c1dc9ccd838" kindref="member">HT_all</ref>;</highlight></codeline>
+<codeline lineno="29" refid="classssml__mc20_1aea2545ae34c0f920c5427cda77a9a688" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1aea2545ae34c0f920c5427cda77a9a688" kindref="member">pass_ssee</ref>;<sp/></highlight></codeline>
+<codeline lineno="30" refid="classssml__mc20_1aa10d1d21ca090aa3c0ce84947e5f5209" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1aa10d1d21ca090aa3c0ce84947e5f5209" kindref="member">pass_ssem</ref>;<sp/></highlight></codeline>
+<codeline lineno="31" refid="classssml__mc20_1a35f93df59bcb12241a7547a98f4321e8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a35f93df59bcb12241a7547a98f4321e8" kindref="member">pass_ssmm</ref>;<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="classssml__mc20_1a56e3327fe6adf28f4eeb0001b7551cde" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a56e3327fe6adf28f4eeb0001b7551cde" kindref="member">pass_eem_zveto</ref>;<sp/></highlight></codeline>
+<codeline lineno="34" refid="classssml__mc20_1af50adf84e392655df448928fb5f98dc4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1af50adf84e392655df448928fb5f98dc4" kindref="member">pass_eee_zveto</ref>;<sp/></highlight></codeline>
+<codeline lineno="35" refid="classssml__mc20_1acc06662a3ce3be83f3d65bfbc014c029" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1acc06662a3ce3be83f3d65bfbc014c029" kindref="member">pass_emm_zveto</ref>;<sp/></highlight></codeline>
+<codeline lineno="36" refid="classssml__mc20_1abfeeaa3c501555f036960028e2c88985" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1abfeeaa3c501555f036960028e2c88985" kindref="member">pass_mmm_zveto</ref>;<sp/></highlight></codeline>
+<codeline lineno="37" refid="classssml__mc20_1a8567c9c8e822f083f406931e8a3d3032" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a8567c9c8e822f083f406931e8a3d3032" kindref="member">pass_llll_zveto</ref>;<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="classssml__mc20_1af3483b9c05af7d25eef96a2ad047b69f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1af3483b9c05af7d25eef96a2ad047b69f" kindref="member">pass_eem</ref>;<sp/></highlight></codeline>
+<codeline lineno="40" refid="classssml__mc20_1a9af92f89f83f2734eb8828c4ae024a1a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a9af92f89f83f2734eb8828c4ae024a1a" kindref="member">pass_eee</ref>;<sp/></highlight></codeline>
+<codeline lineno="41" refid="classssml__mc20_1a77d17a03534df2dae5fa51b0c141b809" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a77d17a03534df2dae5fa51b0c141b809" kindref="member">pass_emm</ref>;<sp/></highlight></codeline>
+<codeline lineno="42" refid="classssml__mc20_1ae57527d86bb37189dc9d6d368265cb3c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1ae57527d86bb37189dc9d6d368265cb3c" kindref="member">pass_mmm</ref>;<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="classssml__mc20_1a5c4a1c629f9b0b9d75f135dcc94a51ec" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a5c4a1c629f9b0b9d75f135dcc94a51ec" kindref="member">broken_event</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="classssml__mc20_1a3e4ebf5e73d2b2446337587ef427635c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a3e4ebf5e73d2b2446337587ef427635c" kindref="member">n_electrons</ref>;</highlight></codeline>
+<codeline lineno="47" refid="classssml__mc20_1aeb049b6154b661c27d235701a88b2c26" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1aeb049b6154b661c27d235701a88b2c26" kindref="member">n_fjets</ref>;</highlight></codeline>
+<codeline lineno="48" refid="classssml__mc20_1a1352227122854688fbc4ff996f0458df" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a1352227122854688fbc4ff996f0458df" kindref="member">n_jets</ref>;<sp/></highlight></codeline>
+<codeline lineno="49" refid="classssml__mc20_1a7fe6a11403148a78142bb22e52ccf899" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a7fe6a11403148a78142bb22e52ccf899" kindref="member">n_leptons</ref>;<sp/></highlight></codeline>
+<codeline lineno="50" refid="classssml__mc20_1a3c55c1a890d3b29a8cc1847b0daf8e57" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a3c55c1a890d3b29a8cc1847b0daf8e57" kindref="member">n_muons</ref>;<sp/></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="classssml__mc20_1ad9562d961021d1c06a7f52edd407d7e2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/><ref refid="classssml__mc20_1ad9562d961021d1c06a7f52edd407d7e2" kindref="member">Tops</ref>;<sp/></highlight></codeline>
+<codeline lineno="53" refid="classssml__mc20_1ae2a21bc00e4f775f4124c1e4ab6f431c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/><ref refid="classssml__mc20_1ae2a21bc00e4f775f4124c1e4ab6f431c" kindref="member">TruthChildren</ref>;<sp/></highlight></codeline>
+<codeline lineno="54" refid="classssml__mc20_1a438939504678531e5569b7135c039a0b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/><ref refid="classssml__mc20_1a438939504678531e5569b7135c039a0b" kindref="member">Zprime</ref>;<sp/></highlight></codeline>
+<codeline lineno="55" refid="classssml__mc20_1a49814580c26e56783d5a6a5eacf6f629" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/><ref refid="classssml__mc20_1a49814580c26e56783d5a6a5eacf6f629" kindref="member">Leptsn</ref>;<sp/></highlight></codeline>
+<codeline lineno="56" refid="classssml__mc20_1ac68c35e7669d76c308162e4dfb9b955c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/><ref refid="classssml__mc20_1ac68c35e7669d76c308162e4dfb9b955c" kindref="member">Electrons</ref>;<sp/></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="classssml__mc20_1acd02bf989125b9f6b58750e4a4d1506d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/><ref refid="classssml__mc20_1acd02bf989125b9f6b58750e4a4d1506d" kindref="member">Jets</ref>;<sp/></highlight></codeline>
+<codeline lineno="59" refid="classssml__mc20_1ac61ae24f3200376f8f465c922eb1ea51" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/><ref refid="classssml__mc20_1ac61ae24f3200376f8f465c922eb1ea51" kindref="member">Leptons</ref>;<sp/></highlight></codeline>
+<codeline lineno="60" refid="classssml__mc20_1af7893aa9d4350fb7c95b785266beb8e8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/><ref refid="classssml__mc20_1af7893aa9d4350fb7c95b785266beb8e8" kindref="member">Detector</ref>;<sp/></highlight></codeline>
+<codeline lineno="61" refid="classssml__mc20_1a97cc3f945471ffd8927e93a4e3f4a74b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/><ref refid="classssml__mc20_1a97cc3f945471ffd8927e93a4e3f4a74b" kindref="member">TruthJets</ref>;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/><ref refid="classssml__mc20_1a0288589673651d09780e970bba8437d8" kindref="member">clone</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" kindref="member">build</ref>(<ref refid="structelement__t" kindref="compound">element_t</ref>*<sp/>el)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classssml__mc20_1a0a01f1899566c4787d47ce29c2e8983e" kindref="member">CompileEvent</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>jet*&gt;<sp/><sp/><sp/><sp/><sp/><sp/>m_jets;<sp/></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>muon*&gt;<sp/><sp/><sp/><sp/><sp/>m_muons;<sp/></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>electron*&gt;<sp/>m_electrons;<sp/></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>lepton*&gt;<sp/><sp/><sp/>m_leptons;<sp/></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>zboson*&gt;<sp/><sp/><sp/>m_zprime;<sp/></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>top*&gt;<sp/><sp/><sp/><sp/><sp/><sp/>m_tops;<sp/></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>parton*&gt;<sp/><sp/><sp/><sp/>m_partons;<sp/></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>truthjet*&gt;<sp/><sp/>m_truthjets;<sp/></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>G&gt;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>G*&gt;<sp/>sort_by_index(std::map&lt;std::string,<sp/>G*&gt;*<sp/>ipt){</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>G*&gt;<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>G*&gt;::iterator<sp/>ix<sp/>=<sp/>ipt<sp/>-&gt;<sp/>begin();</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>ix<sp/>!=<sp/>ipt<sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a64e9fa75beda50a9e8400ee0d4e61984" kindref="member">end</ref>();<sp/>++ix){<ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>[int(ix<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>)]<sp/>=<sp/>ix<sp/>-&gt;<sp/>second;}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>;<sp/></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>m,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>G,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>vectorize(std::map&lt;m,<sp/>G*&gt;*<sp/>ipt,<sp/>std::vector&lt;g*&gt;*<sp/>vec){</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::map&lt;m,<sp/>G*&gt;::iterator<sp/>ix<sp/>=<sp/>ipt<sp/>-&gt;<sp/>begin();</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>ix<sp/>!=<sp/>ipt<sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a64e9fa75beda50a9e8400ee0d4e61984" kindref="member">end</ref>();<sp/>++ix){vec<sp/>-&gt;<sp/>push_back(ix<sp/>-&gt;<sp/>second);}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>lx&gt;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>match_object(std::map&lt;int,<sp/>top*&gt;*<sp/>topx,<sp/>std::map&lt;std::string,<sp/>lx*&gt;*<sp/>objects){</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>lx*&gt;::iterator<sp/>ite<sp/>=<sp/>objects<sp/>-&gt;<sp/>begin();</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>brk<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>ite<sp/>!=<sp/>objects<sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a64e9fa75beda50a9e8400ee0d4e61984" kindref="member">end</ref>();<sp/>++ite){</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>idx<sp/>=<sp/>ite<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/>top_index;<sp/></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>ty<sp/>=<sp/>ite<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/>type;<sp/></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>tx<sp/>=<sp/>(<ref refid="classparticle__template" kindref="compound">particle_template</ref>*)ite<sp/>-&gt;<sp/>second;<sp/></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>brk<sp/>+=<sp/>idx<sp/>==<sp/>-2;<sp/></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ty<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;mu&quot;</highlight><highlight class="normal"><sp/>||<sp/>ty<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;el&quot;</highlight><highlight class="normal">){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classssml__mc20_1ac61ae24f3200376f8f465c922eb1ea51" kindref="member">Leptons</ref>.push_back(tx);}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ty<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;jet&quot;</highlight><highlight class="normal">){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classssml__mc20_1acd02bf989125b9f6b58750e4a4d1506d" kindref="member">Jets</ref>.push_back(tx);}</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ty<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;truth_jet&quot;</highlight><highlight class="normal">){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classssml__mc20_1a97cc3f945471ffd8927e93a4e3f4a74b" kindref="member">TruthJets</ref>.push_back(tx);}</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ty<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;parton&quot;</highlight><highlight class="normal">){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classssml__mc20_1ae2a21bc00e4f775f4124c1e4ab6f431c" kindref="member">TruthChildren</ref>.push_back(tx);}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(idx<sp/>&lt;<sp/>0<sp/>||<sp/>!topx<sp/>-&gt;<sp/><ref refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" kindref="member">count</ref>(idx)){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtop" kindref="compound">top</ref>*<sp/>tp<sp/>=<sp/>(*topx)[idx];<sp/></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ty<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;mu&quot;</highlight><highlight class="normal"><sp/>||<sp/>ty<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;el&quot;</highlight><highlight class="normal">){tp<sp/>-&gt;<sp/>leptons.push_back(tx);}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ty<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;jet&quot;</highlight><highlight class="normal">){tp<sp/>-&gt;<sp/>jets.push_back(tx);}</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ty<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;truth_jet&quot;</highlight><highlight class="normal">){tp<sp/>-&gt;<sp/>truthjets.push_back(tx);}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ty<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;parton&quot;</highlight><highlight class="normal">){</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tp<sp/>-&gt;<sp/>register_child(tx);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tx<sp/>-&gt;<sp/>register_parent((<ref refid="classparticle__template" kindref="compound">particle_template</ref>*)tp);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>brk;<sp/></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="events/ssml_mc20/include/ssml_mc20/event.h"/>
+  </compounddef>
+</doxygen>

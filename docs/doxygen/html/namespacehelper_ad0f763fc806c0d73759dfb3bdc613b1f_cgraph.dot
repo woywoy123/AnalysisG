@@ -1,0 +1,27 @@
+digraph "helper.compiler"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="helper.compiler",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="helper.build_samples",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a25eb34bd07137c02434c8f7f353b751f",tooltip=" "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="helper.get_best",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a645d6ae76de83def2d6d406154e0dde1",tooltip=" "];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="helper.chi2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a08ead3aca58b78c271e428072ba58d4e",tooltip=" "];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="helper.get_dynamic",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a26ac568b4a822d1213047b4e03cf87be",tooltip=" "];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="helper.get_masses",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#acf2d9d11f58e1812d4a781a923b8df36",tooltip=" "];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="helper.get_pairs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a791f75e8bc3e9b06a9d7caed0ccb686e",tooltip=" "];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="helper.get_static",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#aa66e4f18412a16d4c494aa6d5add0c92",tooltip=" "];
+  Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="helper.make_types",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a4a2c74bb11174d786d65e73a6866a72c",tooltip=" "];
+  Node1 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="helper.vector",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a6a86af0e435c054cabd85eebb8a45782",tooltip=" "];
+}

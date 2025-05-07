@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="topreconstruction_2figures_8py" kind="file" language="Python">
+    <compoundname>topreconstruction/figures.py</compoundname>
+    <innernamespace refid="namespacefigures">figures</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="keyword">from</highlight><highlight class="normal"><sp/><ref refid="namespace_analysis_g_1_1core_1_1plotting" kindref="compound">AnalysisG.core.plotting</ref><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>TH1F,<sp/>TH2F</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="namespacefigures_1a1d2684578320c9dd2425ab8c2417994b" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacefigures_1a1d2684578320c9dd2425ab8c2417994b" kindref="member">path</ref>(hist):</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.UseLateX<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.Style<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;ATLAS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.OutputDirectory<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./output&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>of<sp/>Candidate<sp/>Top<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Tops<sp/>/<sp/>($2$<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.xMin<sp/><sp/><sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.yMin<sp/><sp/><sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.xStep<sp/><sp/>=<sp/>20</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.xMax<sp/><sp/><sp/>=<sp/>400</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.xBins<sp/><sp/>=<sp/>200</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.Stacked<sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.Overflow<sp/><sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.ShowCount<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>hist</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="namespacefigures_1a934100c55ad615e54ac62cbc68f1a48b" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacefigures_1a934100c55ad615e54ac62cbc68f1a48b" kindref="member">revert_mapping</ref>(data):</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>pred_mass<sp/>=<sp/>data.p_topmass</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>scr_mass<sp/><sp/>=<sp/>data.prob_tops</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>mass<sp/><sp/>=<sp/>{}</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>score<sp/>=<sp/>{}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>pred_mass:</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v_mass<sp/>=<sp/>pred_mass[i]</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>s_mass<sp/>=<sp/>scr_mass[i]</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>h<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>v_mass:</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>h<sp/></highlight><highlight class="keywordflow">not</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>score:<sp/>mass[h]<sp/>=<sp/>[];<sp/>score[h]<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mass[h]<sp/><sp/>+=<sp/>v_mass[h]</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>score[h]<sp/>+=<sp/>s_mass[h]</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>score,<sp/>mass</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="namespacefigures_1a60692f1bf2ff486f2ee5d3206108def8" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" kindref="member">entry</ref>(ttbar,<sp/>tttt,<sp/>meta):</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>tttt_score,<sp/>tttt_mass<sp/>=<sp/><ref refid="namespacefigures_1a934100c55ad615e54ac62cbc68f1a48b" kindref="member">revert_mapping</ref>(tttt)</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>ttbar_score,<sp/>ttbar_mass<sp/>=<sp/><ref refid="namespacefigures_1a934100c55ad615e54ac62cbc68f1a48b" kindref="member">revert_mapping</ref>(ttbar)</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>th2t<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>th2t.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;red&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>th2t.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>th2t.ErrorBars<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>th2t.xData<sp/>=<sp/>[i<sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>sum(ttbar_score.values(),<sp/>[])<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>i<sp/>&lt;<sp/>0.99]</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>th2t.Title<sp/>=<sp/></highlight><highlight class="stringliteral">r&apos;$\bar{t}t$&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>th4t<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>th4t.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;blue&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>th4t.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>th4t.ErrorBars<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>th4t.xData<sp/>=<sp/>[i<sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>sum(tttt_score.values(),<sp/>[])<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>i<sp/>&lt;<sp/>0.99]</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>th4t.Title<sp/>=<sp/></highlight><highlight class="stringliteral">r&apos;$\bar{t}t\bar{t}t$&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Histograms<sp/>=<sp/>[th2t,<sp/>th4t]</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">#thpx.Density<sp/>=<sp/>True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Page<sp/>Rank<sp/>Scores<sp/>of<sp/>Reconstructed<sp/>Top<sp/>Candidates&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Page<sp/>Rank<sp/>Score<sp/>of<sp/>Candidate<sp/>Tops<sp/>(Arb.)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Normalized<sp/>by<sp/>the<sp/>number<sp/>of<sp/>Top<sp/>Candidates<sp/>(Arb.)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xMax<sp/>=<sp/>1.01</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xBins<sp/>=<sp/>200</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xStep<sp/>=<sp/>0.1</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Overflow<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Style<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;ATLAS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;pagerank&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.OutputDirectory<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./output/&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.SaveFigure()</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>ttbar_msc<sp/>=<sp/>sum(ttbar_score.values(),<sp/>[])</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>tttt_msc<sp/><sp/>=<sp/>sum(tttt_score.values(),<sp/>[])</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>ttbar_mx<sp/>=<sp/>sum(ttbar_mass.values(),<sp/>[])</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>tttt_mx<sp/><sp/>=<sp/>sum(tttt_mass.values(),<sp/>[])</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>truth<sp/><sp/>=<sp/>sum([sum(ttbar.t_topmass[i].values(),<sp/>[])<sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>ttbar.t_topmass],<sp/>[])</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>truth<sp/>+=<sp/>sum([sum(tttt.t_topmass[i].values(),<sp/>[])<sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>tttt.t_topmass],<sp/>[])</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>tht<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>tht.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;orange&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>tht.xData<sp/>=<sp/>truth</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>tht.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&apos;Truth<sp/>Tops&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>th2t<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>th2t.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;red&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>th2t.xData<sp/>=<sp/>ttbar_mx</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>th2t.Title<sp/>=<sp/></highlight><highlight class="stringliteral">r&apos;$\bar{t}t$&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>th4t<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>th4t.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;blue&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>th4t.xData<sp/>=<sp/>tttt_mx</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>th4t.Title<sp/>=<sp/></highlight><highlight class="stringliteral">r&apos;$\bar{t}t\bar{t}t$&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Histogram<sp/>=<sp/>tht</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Stacked<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Histograms<sp/>=<sp/>[th2t,<sp/>th4t]</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Unweighted<sp/>Invariant<sp/>Mass<sp/>of<sp/>Reconstructed<sp/>Top<sp/>Candidates&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>of<sp/>Top<sp/>Candidate<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Number<sp/>of<sp/>Top<sp/>Candidates<sp/>/<sp/>(1<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xMin<sp/>=<sp/>80</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xMax<sp/>=<sp/>300</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xBins<sp/>=<sp/>220</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xStep<sp/>=<sp/>20</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Overflow<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Style<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;ATLAS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;top-mass&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.OutputDirectory<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./output/&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.SaveFigure()</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx<sp/>=<sp/>TH2F()</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;PageRank<sp/>Score<sp/>as<sp/>a<sp/>Function<sp/>of<sp/>Top<sp/>Candidate<sp/>Invariant<sp/>Mass<sp/>($t\\bar{t}$)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>of<sp/>Top<sp/>Candidate<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Page<sp/>Rank<sp/>Score<sp/>of<sp/>Top<sp/>Candidate<sp/>(Arb.)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xMin<sp/><sp/>=<sp/>80</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xMax<sp/><sp/>=<sp/>300</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xBins<sp/>=<sp/>220</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xStep<sp/>=<sp/>20</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yStep<sp/>=<sp/>0.1</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yBins<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yMax<sp/>=<sp/>1.0</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;magma&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xData<sp/>=<sp/>[ttbar_mx[i]<sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>range(len(ttbar_msc))<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>ttbar_msc[i]<sp/>&lt;<sp/>0.95]</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yData<sp/>=<sp/>[ttbar_msc[i]<sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>range(len(ttbar_msc))<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>ttbar_msc[i]<sp/>&lt;<sp/>0.95]</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Style<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;ATLAS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;top-mass-ttbar&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.OutputDirectory<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./output/&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.SaveFigure()</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx<sp/>=<sp/>TH2F()</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;PageRank<sp/>Score<sp/>as<sp/>a<sp/>Function<sp/>of<sp/>Top<sp/>Candidate<sp/>Invariant<sp/>Mass<sp/>($t\\bar{t}t\\bar{t}$)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>of<sp/>Top<sp/>Candidate<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Page<sp/>Rank<sp/>Score<sp/>of<sp/>Top<sp/>Candidate<sp/>(Arb.)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xMin<sp/><sp/>=<sp/>80</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xMax<sp/><sp/>=<sp/>300</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xBins<sp/>=<sp/>220</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xStep<sp/>=<sp/>20</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yStep<sp/>=<sp/>0.1</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yBins<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yMax<sp/>=<sp/>1.0</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;magma&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.xData<sp/>=<sp/>[tttt_mx[i]<sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>range(len(tttt_msc))<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>tttt_msc[i]<sp/>&lt;<sp/>0.95]</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.yData<sp/>=<sp/>[tttt_msc[i]<sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>range(len(tttt_msc))<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>tttt_msc[i]<sp/>&lt;<sp/>0.95]</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Style<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;ATLAS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;top-mass-tttt&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.OutputDirectory<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./output/&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>thpx.SaveFigure()</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/workspaces/AnalysisG/studies/topreconstruction/figures.py"/>
+  </compounddef>
+</doxygen>

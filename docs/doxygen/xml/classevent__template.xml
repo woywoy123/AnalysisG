@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classevent__template" kind="class" language="C++" prot="public">
+    <compoundname>event_template</compoundname>
+    <derivedcompoundref refid="classbsm__4tops" prot="public" virt="non-virtual">bsm_4tops</derivedcompoundref>
+    <derivedcompoundref refid="classexp__mc20" prot="public" virt="non-virtual">exp_mc20</derivedcompoundref>
+    <derivedcompoundref refid="classgnn__event" prot="public" virt="non-virtual">gnn_event</derivedcompoundref>
+    <derivedcompoundref refid="classssml__mc20" prot="public" virt="non-virtual">ssml_mc20</derivedcompoundref>
+    <includes refid="event__template_8h" local="no">event_template.h</includes>
+    <briefdescription>
+<para>Basisvorlage-Klasse für Ereignisdaten-Darstellung und -Manipulation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Erbt von <computeroutput>tools</computeroutput>, um Hilfsfunktionen bereitzustellen. Diese Klasse ist dazu gedacht, für spezifische Ereignistypen oder Analysen als Unterklasse verwendet zu werden. Sie verwaltet Sammlungen von Trees, Branches und Leaves, die die Ereignisstruktur definieren, sowie Eigenschaften wie Ereignisgewicht und Index. Sie unterstützt die dynamische Partikelregistrierung und den Aufbau von Ereignissen aus Rohdaten.</para>
+<para>Die Klasse dient als zentrale Komponente im AnalysisG-Framework und verbindet Rohdaten mit Analyseobjekten und -algorithmen auf höherer Ebene. Sie bietet Schnittstellen für den Datenzugriff, die Filterung und Transformation, die für Physikanalysen benötigt werden. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>bsm_4tops</label>
+        <link refid="classbsm__4tops"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>event_template</label>
+        <link refid="classevent__template"/>
+      </node>
+      <node id="3">
+        <label>exp_mc20</label>
+        <link refid="classexp__mc20"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>gnn_event</label>
+        <link refid="classgnn__event"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>ssml_mc20</label>
+        <link refid="classssml__mc20"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="modules/event/include/templates/event_template.h" line="30" column="1"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

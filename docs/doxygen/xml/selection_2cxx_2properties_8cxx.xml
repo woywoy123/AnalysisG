@@ -1,0 +1,341 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="selection_2cxx_2properties_8cxx" kind="file" language="C++">
+    <compoundname>selection/cxx/properties.cxx</compoundname>
+    <includes refid="selection__template_8h" local="no">templates/selection_template.h</includes>
+    <incdepgraph>
+      <node id="18">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="9">
+        <label>functional</label>
+      </node>
+      <node id="16">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="29">
+        <label>templates/event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="25">
+        <label>cstdint</label>
+      </node>
+      <node id="3">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>templates/selection_template.h</label>
+        <link refid="selection__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>cmath</label>
+      </node>
+      <node id="22">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="5">
+        <label>string</label>
+      </node>
+      <node id="7">
+        <label>map</label>
+      </node>
+      <node id="30">
+        <label>structs/event.h</label>
+        <link refid="modules_2structs_2include_2structs_2event_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="19">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>vector</label>
+      </node>
+      <node id="34">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>TFile.h</label>
+      </node>
+      <node id="26">
+        <label>sstream</label>
+      </node>
+      <node id="4">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>tools/merge_cast.h</label>
+        <link refid="merge__cast_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>cstdlib</label>
+      </node>
+      <node id="23">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="35">
+        <label>TH1F.h</label>
+      </node>
+      <node id="14">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="20">
+        <label>iostream</label>
+      </node>
+      <node id="21">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>meta/meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>TBranch.h</label>
+      </node>
+      <node id="8">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>TTree.h</label>
+      </node>
+      <node id="1">
+        <label>properties.cxx</label>
+        <link refid="selection_2cxx_2properties_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="selection__template_8h" kindref="compound">templates/selection_template.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="classselection__template_1a19244d585754db14326c126a98000899" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a19244d585754db14326c126a98000899" kindref="member">selection_template::set_name</ref>(std::string*<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>){</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>.<ref refid="structevent__t_1a0d5d73198c6bf2664010e952fde287bd" kindref="member">name</ref><sp/>=<sp/>*<ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref>;<sp/></highlight></codeline>
+<codeline lineno="5"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="classselection__template_1ad0d6fa60bf0da8796a718532c0288d04" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1ad0d6fa60bf0da8796a718532c0288d04" kindref="member">selection_template::get_name</ref>(std::string*<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>){</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/>*<ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref><sp/>=<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>.<ref refid="structevent__t_1a0d5d73198c6bf2664010e952fde287bd" kindref="member">name</ref>;<sp/></highlight></codeline>
+<codeline lineno="9"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11" refid="classselection__template_1acd31f17488bcf97dd8a5f1b3a7da1cdd" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1acd31f17488bcf97dd8a5f1b3a7da1cdd" kindref="member">selection_template::set_hash</ref>(std::string*<sp/><ref refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" kindref="member">path</ref>,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>){</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>.<ref refid="structevent__t_1a34c3a0cdf480b7dff4144989d80a53d9" kindref="member">hash</ref>.size()){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>=<sp/>*<ref refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" kindref="member">path</ref><sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/><ref refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" kindref="member">to_string</ref>(<ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/><ref refid="classselection__template_1a2e1c4a9239afbfea9cd510b774c9c1fe" kindref="member">index</ref>);<sp/></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>.<ref refid="structevent__t_1a34c3a0cdf480b7dff4144989d80a53d9" kindref="member">hash</ref><sp/>=<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/>tools::hash(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>,<sp/>18);<sp/></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>*<ref refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" kindref="member">path</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18" refid="classselection__template_1a2f6cd45079e1fab94a163a38fbe005cd" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a2f6cd45079e1fab94a163a38fbe005cd" kindref="member">selection_template::get_hash</ref>(std::string*<sp/>val,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>){</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>*val<sp/>=<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>.<ref refid="structevent__t_1a34c3a0cdf480b7dff4144989d80a53d9" kindref="member">hash</ref>;<sp/></highlight></codeline>
+<codeline lineno="20"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="classselection__template_1a4e61c1d63afdff7a6428fbf4c6297166" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a4e61c1d63afdff7a6428fbf4c6297166" kindref="member">selection_template::get_tree</ref>(std::string*<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>){</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>*<ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref><sp/>=<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>.<ref refid="structevent__t_1a313f1f055a86fd413dbd14f2dbfa6ed9" kindref="member">tree</ref>;<sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="classselection__template_1aa95e812106c1a933f1b65e82557939d3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1aa95e812106c1a933f1b65e82557939d3" kindref="member">selection_template::set_weight</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>inpt,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>){</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>.<ref refid="structevent__t_1a4d9b9926d247fe1b0392ce01f59ae459" kindref="member">weight</ref><sp/>=<sp/>*inpt;<sp/></highlight></codeline>
+<codeline lineno="28"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="classselection__template_1ae04fb8767d15273f80c5343e2f73384b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1ae04fb8767d15273f80c5343e2f73384b" kindref="member">selection_template::get_weight</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>inpt,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>){</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>*inpt<sp/>=<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>.<ref refid="structevent__t_1a4d9b9926d247fe1b0392ce01f59ae459" kindref="member">weight</ref>;<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="classselection__template_1a8951c34758d3410f9d931b6011c3cca2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a8951c34758d3410f9d931b6011c3cca2" kindref="member">selection_template::set_index</ref>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal">*<sp/>inpt,<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>){</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref><sp/>-&gt;<sp/><ref refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" kindref="member">data</ref>.<ref refid="structevent__t_1a64d57a05a578b1fb8990a73c1116bc4c" kindref="member">index</ref><sp/>=<sp/>*inpt;<sp/></highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/selection/cxx/properties.cxx"/>
+  </compounddef>
+</doxygen>

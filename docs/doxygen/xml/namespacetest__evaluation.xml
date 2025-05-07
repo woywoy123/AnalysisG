@@ -1,0 +1,361 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacetest__evaluation" kind="namespace" language="Python">
+    <compoundname>test_evaluation</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacetest__evaluation_1a5461075e7dbeff4563ce8e01c8df5082" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.ev</definition>
+        <argsstring></argsstring>
+        <name>ev</name>
+        <initializer>=  BSM4Tops()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="9" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="9" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.gr</definition>
+        <argsstring></argsstring>
+        <name>gr</name>
+        <initializer>=  GraphJets()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="10" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="10" bodyend="-1"/>
+        <referencedby refid="classsampletracer_1ad73efb019d62fdf2b9acf9de1653ac16" compoundref="sampletracer_8cxx" startline="79" endline="81">sampletracer::add_graph</referencedby>
+        <referencedby refid="classcontainer_1afbc7149d2b63dfba5c5be2d50c12566a" compoundref="container_8cxx" startline="52" endline="57">container::add_graph_template</referencedby>
+        <referencedby refid="classdataloader_1ad973eae80b8c958e87642459f8a81b47" compoundref="dataloader_8cxx" startline="151" endline="292">dataloader::build_batch</referencedby>
+        <referencedby refid="classcontainer_1a2f036c9c52b38b6fd462a2a72f553c41" compoundref="container_8cxx" startline="65" endline="133">container::compile</referencedby>
+        <referencedby refid="classdataloader_1a6a829ac2b88dd9655a52bdf3e3701259" compoundref="dataset_8cxx" startline="129" endline="173">dataloader::dump_dataset</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dataloader::dump_graphs</referencedby>
+        <referencedby refid="metric_2cxx_2base_8cxx_1a9d5b281373d6c58d7eca2aec10ca074c" compoundref="metric_2cxx_2base_8cxx" startline="48" endline="66">enums_to_string</referencedby>
+        <referencedby refid="classdataloader_1a281bac1652b78652581bad461b1cc966" compoundref="dataloader_8cxx" startline="102" endline="112">dataloader::extract_data</referencedby>
+        <referencedby refid="classmodel__template_1a3f4085b3bae7b25b1dfc6f94fa509f94" compoundref="model__template_8cxx" startline="207" endline="230">model_template::forward</referencedby>
+        <referencedby refid="classdataloader_1ade66521611fe2fcbe33562fe51d9692c" compoundref="dataset_8cxx" startline="104" endline="125">dataloader::get_inference</referencedby>
+        <referencedby refid="structentry__t_1abc33229ff4bb06455ad71e206e2475e2" compoundref="entries_8cxx" startline="30" endline="41">entry_t::has_graph</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1af7140ebd0d7eab658dd3671fd49797c7" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.gn</definition>
+        <argsstring></argsstring>
+        <name>gn</name>
+        <initializer>=  Grift()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="12" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1ac1dc34f8a9e04748e843e86935f61a43" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="13" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1a43cf09ddd6ce9b90f4868264ed076e1a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.o_edge</definition>
+        <argsstring></argsstring>
+        <name>o_edge</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="14" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1adbdf0a20777ff430835a35e31cf5904e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.o_graph</definition>
+        <argsstring></argsstring>
+        <name>o_graph</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="15" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1aeeed0ff005534096e9b45c458cc8447d" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.i_node</definition>
+        <argsstring></argsstring>
+        <name>i_node</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="16" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1a83eb3ff11759e0d0f7c9d138e15c5cb1" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.i_graph</definition>
+        <argsstring></argsstring>
+        <name>i_graph</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="17" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1ae99b74776bf22e16c54289f73930cee9" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.device</definition>
+        <argsstring></argsstring>
+        <name>device</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="18" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1ac9c7a132e3aca2377473da6aa9345cc2" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.opti</definition>
+        <argsstring></argsstring>
+        <name>opti</name>
+        <initializer>=  OptimizerConfig()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="20" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1ae78d4ee936f22df51b3ea7a299df8f6b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.Optimizer</definition>
+        <argsstring></argsstring>
+        <name>Optimizer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="21" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1a2d277fe69716773dde8e426144d4e4e6" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.lr</definition>
+        <argsstring></argsstring>
+        <name>lr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="22" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1a1a04d86e4ca7e59af5948d7d74097e3e" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string test_evaluation.root1</definition>
+        <argsstring></argsstring>
+        <name>root1</name>
+        <initializer>=  &quot;./samples/dilepton/*&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="25" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1a4fccf5d88691e18ed966e14a61e927cb" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string test_evaluation.base_dir</definition>
+        <argsstring></argsstring>
+        <name>base_dir</name>
+        <initializer>=  &quot;./ProjectName/Grift/&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="28" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1a8b69c4c7eca9cf96bd54661475a5a81b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.mx</definition>
+        <argsstring></argsstring>
+        <name>mx</name>
+        <initializer>=  AccuracyMetric()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="29" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="29" bodyend="-1"/>
+        <referencedby refid="classanalysis_1a33de64cfd2bc244ff02feb0cc9b2db58" compoundref="analysis_8cxx" startline="64" endline="68">analysis::add_metric_template</referencedby>
+        <referencedby refid="classphysics__truth_1ad16513e352f5877b751d14f7d11b3f36" compoundref="exp__mc20_2cxx_2particles_8cxx" startline="136" endline="181">physics_truth::build</referencedby>
+        <referencedby refid="classssml__mc20_1a0a01f1899566c4787d47ce29c2e8983e" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="119" endline="182">ssml_mc20::CompileEvent</referencedby>
+        <referencedby refid="namespacegraph___1a7249186f32a05a8ff1601bff5deabdef" compoundref="graph_2graph_8cxx" startline="4" endline="63">graph_::edge_aggregation</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1aa3168bdac8c08e1741bd418c9c6c6572" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.RunNames</definition>
+        <argsstring></argsstring>
+        <name>RunNames</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="30" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1ae8c37dabf3998545798fcdb20f6a4e47" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.Variables</definition>
+        <argsstring></argsstring>
+        <name>Variables</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="45" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1a54d764b9e3330c894981d1cf05ffc0c4" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.ana</definition>
+        <argsstring></argsstring>
+        <name>ana</name>
+        <initializer>=  Analysis()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="56" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1a54035b6ad6bb0f615b153586fb75f830" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.TrainingDataset</definition>
+        <argsstring></argsstring>
+        <name>TrainingDataset</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="57" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1a872c8c8e61d9cbbb2e6345e49b879bdc" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.Threads</definition>
+        <argsstring></argsstring>
+        <name>Threads</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="58" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1ad1b985fff81db896c5386db043224c7d" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.BatchSize</definition>
+        <argsstring></argsstring>
+        <name>BatchSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="59" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1a60ddfcb683cb30886fd934a233a853a7" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.GraphCache</definition>
+        <argsstring></argsstring>
+        <name>GraphCache</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="62" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1a885163b9c6ffb23eb81e749b907e600f" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.Validation</definition>
+        <argsstring></argsstring>
+        <name>Validation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="67" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1a90a57802a0a543afdb064a0db93cfd8a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.Evaluation</definition>
+        <argsstring></argsstring>
+        <name>Evaluation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="68" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__evaluation_1aab456a52861f97b0f27a8c3adebc1557" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_evaluation.Training</definition>
+        <argsstring></argsstring>
+        <name>Training</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="69" column="1" bodyfile="/workspaces/AnalysisG/test/test_evaluation.py" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/test/test_evaluation.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,347 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="met_8cxx" kind="file" language="C++">
+    <compoundname>met.cxx</compoundname>
+    <includes refid="met_8h" local="yes">met.h</includes>
+    <incdepgraph>
+      <node id="20">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="1">
+        <label>met.cxx</label>
+        <link refid="met_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>functional</label>
+      </node>
+      <node id="18">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="31">
+        <label>templates/event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="27">
+        <label>cstdint</label>
+      </node>
+      <node id="5">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>templates/selection_template.h</label>
+        <link refid="selection__template_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>cmath</label>
+      </node>
+      <node id="3">
+        <label>bsm_4tops/event.h</label>
+        <link refid="events_2bsm__4tops_2include_2bsm__4tops_2event_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="7">
+        <label>string</label>
+      </node>
+      <node id="9">
+        <label>map</label>
+      </node>
+      <node id="32">
+        <label>structs/event.h</label>
+        <link refid="modules_2structs_2include_2structs_2event_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="21">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>bsm_4tops/particles.h</label>
+        <link refid="events_2bsm__4tops_2include_2bsm__4tops_2particles_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>vector</label>
+      </node>
+      <node id="36">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>TFile.h</label>
+      </node>
+      <node id="28">
+        <label>sstream</label>
+      </node>
+      <node id="6">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>tools/merge_cast.h</label>
+        <link refid="merge__cast_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>cstdlib</label>
+      </node>
+      <node id="25">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="37">
+        <label>TH1F.h</label>
+      </node>
+      <node id="16">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="22">
+        <label>iostream</label>
+      </node>
+      <node id="23">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>meta/meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>TBranch.h</label>
+      </node>
+      <node id="10">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>TTree.h</label>
+      </node>
+      <node id="2">
+        <label>met.h</label>
+        <link refid="met_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="met_8h" kindref="compound">met.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="classmet_1a8ba06b3d954f59aa8ed0b805d4b5daa5" refkind="member"><highlight class="normal"><ref refid="classmet_1a8ba06b3d954f59aa8ed0b805d4b5daa5" kindref="member">met::met</ref>(){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;met&quot;</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="4" refid="classmet_1a0fd6528617392146c0bc4a6f5ee24ca7" refkind="member"><highlight class="normal"><ref refid="classmet_1a0fd6528617392146c0bc4a6f5ee24ca7" kindref="member">met::~met</ref>(){}</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6" refid="classmet_1af4d30ffd6bfeadbd27d72d1dc74e7803" refkind="member"><highlight class="normal"><ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="classmet_1af4d30ffd6bfeadbd27d72d1dc74e7803" kindref="member">met::clone</ref>(){</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(<ref refid="classselection__template" kindref="compound">selection_template</ref>*)</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classmet_1a8ba06b3d954f59aa8ed0b805d4b5daa5" kindref="member">met</ref>();</highlight></codeline>
+<codeline lineno="8"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10" refid="classmet_1a53a217f21ee3d8969f6125e58254971c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classmet_1a53a217f21ee3d8969f6125e58254971c" kindref="member">met::merge</ref>(<ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="namespacemain_1a80457db91bd1110a9e4a8515839a2a4b" kindref="member">sl</ref>){</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classmet" kindref="compound">met</ref>*<sp/>slt<sp/>=<sp/>(<ref refid="classmet" kindref="compound">met</ref>*)<ref refid="namespacemain_1a80457db91bd1110a9e4a8515839a2a4b" kindref="member">sl</ref>;<sp/></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="merge__cast_8h_1a205af11d07be8d10770e7392817fc5c3" kindref="member">merge_data</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmet_1ab83cd4d51dcd75aa1a6c05b5ada15831" kindref="member">missing_et</ref>,<sp/>&amp;slt<sp/>-&gt;<sp/><ref refid="classmet_1ab83cd4d51dcd75aa1a6c05b5ada15831" kindref="member">missing_et</ref>);<sp/></highlight></codeline>
+<codeline lineno="13"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15" refid="classmet_1a96c17deabca2d1a4ac63b1fa74426bbb" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classmet_1a96c17deabca2d1a4ac63b1fa74426bbb" kindref="member">met::selection</ref>(<ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="16" refid="classmet_1a54e4795f6e1387cd2aa9e259ef147f3c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classmet_1a54e4795f6e1387cd2aa9e259ef147f3c" kindref="member">met::strategy</ref>(<ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>){</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>=<sp/>(<ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*)<ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>;<sp/></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1ae5606e994231fae57abe42e4f0ec6202" kindref="member">write</ref>(<ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>-&gt;<sp/><ref refid="classmet" kindref="compound">met</ref>,<sp/></highlight><highlight class="stringliteral">&quot;missing_et&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmet_1ab83cd4d51dcd75aa1a6c05b5ada15831" kindref="member">missing_et</ref>[<ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>-&gt;<sp/><ref refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" kindref="member">hash</ref>]<sp/>=<sp/><ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>-&gt;<sp/><ref refid="classmet_1a8ba06b3d954f59aa8ed0b805d4b5daa5" kindref="member">met</ref>;<sp/></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="21"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="selections/example/met/met.cxx"/>
+  </compounddef>
+</doxygen>

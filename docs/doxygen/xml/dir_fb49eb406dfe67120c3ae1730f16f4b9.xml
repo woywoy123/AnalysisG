@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_fb49eb406dfe67120c3ae1730f16f4b9" kind="dir">
+    <compoundname>tools</compoundname>
+    <innerfile refid="tools_8h">tools.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/tools/include/tools/"/>
+  </compounddef>
+</doxygen>

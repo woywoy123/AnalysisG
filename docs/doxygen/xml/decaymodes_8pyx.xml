@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="decaymodes_8pyx" kind="file" language="C++">
+    <compoundname>decaymodes.pyx</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>distutils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level=3</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>*</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.selection_template<sp/>cimport<sp/>*</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>DecayModes(SelectionTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__cinit__(self):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.ptr<sp/>=<sp/>new<sp/>decaymodes()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.tt<sp/>=<sp/>&lt;decaymodes*&gt;self.ptr</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__dealloc__(self):<sp/>del<sp/>self.ptr</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>void<sp/>transform_dict_keys(self):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.res_top_modes<sp/><sp/><sp/><sp/><sp/>=<sp/>as_dict(&amp;self.tt.res_top_modes)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.res_top_charges<sp/><sp/><sp/>=<sp/>as_dict(&amp;self.tt.res_top_charges)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.res_top_pdgid<sp/><sp/><sp/><sp/><sp/>=<sp/>as_basic_dict(&amp;self.tt.res_top_pdgid)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.spec_top_modes<sp/><sp/><sp/><sp/>=<sp/>as_dict(&amp;self.tt.spec_top_modes)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.spec_top_charges<sp/><sp/>=<sp/>as_dict(&amp;self.tt.spec_top_charges)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.spec_top_pdgid<sp/><sp/><sp/><sp/>=<sp/>as_basic_dict(&amp;self.tt.spec_top_pdgid)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.all_pdgid<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>as_basic_dict(&amp;self.tt.all_pdgid)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.signal_region<sp/><sp/><sp/><sp/><sp/>=<sp/>as_dict(&amp;self.tt.signal_region)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.lepton_statistics<sp/>=<sp/>as_basic_dict(&amp;self.tt.lepton_statistics)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.ntops<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>list(self.tt.ntops)</highlight></codeline>
+    </programlisting>
+    <location file="selections/mc16/decaymodes/decaymodes.pyx"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="topkinematics_8pyx" kind="file" language="C++">
+    <compoundname>topkinematics.pyx</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>distutils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level=3</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>as_dict</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.selection_template<sp/>cimport<sp/>*</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">def<sp/>res_data(zp,<sp/>data):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>name,<sp/>val<sp/>=<sp/>data</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>keys<sp/>=<sp/>[&quot;energy&quot;,<sp/>&quot;eta&quot;,<sp/>&quot;phi&quot;,<sp/>&quot;pt&quot;]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>zp.res_top_kinematics<sp/>is<sp/>None:<sp/>zp.res_top_kinematics<sp/>=<sp/>{k<sp/>:<sp/>[]<sp/>for<sp/>k<sp/>in<sp/>keys}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>i<sp/>in<sp/>keys:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>i<sp/>not<sp/>in<sp/>name:<sp/>continue</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>zp.res_top_kinematics[i]<sp/>+=<sp/>val</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>break</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">def<sp/>spec_data(zp,<sp/>data):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>name,<sp/>val<sp/>=<sp/>data</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>keys<sp/>=<sp/>[&quot;energy&quot;,<sp/>&quot;eta&quot;,<sp/>&quot;phi&quot;,<sp/>&quot;pt&quot;]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>zp.spec_top_kinematics<sp/>is<sp/>None:<sp/>zp.spec_top_kinematics<sp/>=<sp/>{k<sp/>:<sp/>[]<sp/>for<sp/>k<sp/>in<sp/>keys}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>i<sp/>in<sp/>keys:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>i<sp/>not<sp/>in<sp/>name:<sp/>continue</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>zp.spec_top_kinematics[i]<sp/>+=<sp/>val</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>break</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">def<sp/>mass_data(zp,<sp/>data):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>name,<sp/>val<sp/>=<sp/>data</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>keys<sp/>=<sp/>[&quot;RR&quot;,<sp/>&quot;RS&quot;,<sp/>&quot;SS&quot;]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>zp.mass_combi<sp/>is<sp/>None:<sp/>zp.mass_combi<sp/>=<sp/>{k<sp/>:<sp/>[]<sp/>for<sp/>k<sp/>in<sp/>keys}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>i<sp/>in<sp/>keys:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>i<sp/>not<sp/>in<sp/>name:<sp/>continue</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>zp.mass_combi[i]<sp/>+=<sp/>val</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>break</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">def<sp/>dr_data(zp,<sp/>data):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>name,<sp/>val<sp/>=<sp/>data</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>keys<sp/>=<sp/>[&quot;RR&quot;,<sp/>&quot;RS&quot;,<sp/>&quot;SS&quot;]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>zp.deltaR<sp/>is<sp/>None:<sp/>zp.deltaR<sp/>=<sp/>{k<sp/>:<sp/>[]<sp/>for<sp/>k<sp/>in<sp/>keys}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>i<sp/>in<sp/>keys:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>i<sp/>not<sp/>in<sp/>name:<sp/>continue</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>zp.deltaR[i]<sp/>+=<sp/>val</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>break</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>TopKinematics(SelectionTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__cinit__(self):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.root_leaves<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;res_energy&quot;:<sp/>res_data,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;res_eta&quot;<sp/><sp/><sp/>:<sp/>res_data,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;res_phi&quot;<sp/><sp/><sp/>:<sp/>res_data,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;res_pt&quot;<sp/><sp/><sp/><sp/>:<sp/>res_data,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;spec_energy&quot;:<sp/>spec_data,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;spec_eta&quot;<sp/><sp/><sp/>:<sp/>spec_data,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;spec_phi&quot;<sp/><sp/><sp/>:<sp/>spec_data,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;spec_pt&quot;<sp/><sp/><sp/><sp/>:<sp/>spec_data,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;mass_RR&quot;<sp/><sp/><sp/><sp/>:<sp/>mass_data,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;mass_RS&quot;<sp/><sp/><sp/><sp/>:<sp/>mass_data,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;mass_SS&quot;<sp/><sp/><sp/><sp/>:<sp/>mass_data,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;dr_RR&quot;<sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>dr_data,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;dr_RS&quot;<sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>dr_data,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;dr_SS&quot;<sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>dr_data</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.ptr<sp/>=<sp/>new<sp/>topkinematics()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.tt<sp/>=<sp/>&lt;topkinematics*&gt;self.ptr</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__dealloc__(self):<sp/>del<sp/>self.tt</highlight></codeline>
+    </programlisting>
+    <location file="selections/mc16/topkinematics/topkinematics.pyx"/>
+  </compounddef>
+</doxygen>

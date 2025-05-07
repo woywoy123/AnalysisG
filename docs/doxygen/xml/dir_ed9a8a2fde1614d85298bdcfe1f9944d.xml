@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_ed9a8a2fde1614d85298bdcfe1f9944d" kind="dir">
+    <compoundname>templates</compoundname>
+    <innerfile refid="lossfx_8h">lossfx.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/lossfx/include/templates/"/>
+  </compounddef>
+</doxygen>

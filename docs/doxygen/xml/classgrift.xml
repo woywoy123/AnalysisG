@@ -1,0 +1,719 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classgrift" kind="class" language="C++" prot="public">
+    <compoundname>grift</compoundname>
+    <basecompoundref refid="classmodel__template" prot="public" virt="non-virtual">model_template</basecompoundref>
+    <includes refid="grift_8h" local="no">grift.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classgrift_1ad827bfad756a12824381f94f7b2cb3d8" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int grift::_hidden</definition>
+        <argsstring></argsstring>
+        <name>_hidden</name>
+        <initializer>= 1024</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="19" column="13" bodyfile="models/Grift/include/models/grift.h" bodystart="19" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1a7c1d51046c3fcb915df034bdb27c30be" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int grift::_xrec</definition>
+        <argsstring></argsstring>
+        <name>_xrec</name>
+        <initializer>= 128</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="20" column="13" bodyfile="models/Grift/include/models/grift.h" bodystart="20" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1aaa92cf7d52eff6b0f14c14115e207f10" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int grift::_xin</definition>
+        <argsstring></argsstring>
+        <name>_xin</name>
+        <initializer>= 6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="22" column="13" bodyfile="models/Grift/include/models/grift.h" bodystart="22" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1a43458d7f08b0eba58ce135757bb0d267" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int grift::_xout</definition>
+        <argsstring></argsstring>
+        <name>_xout</name>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="23" column="13" bodyfile="models/Grift/include/models/grift.h" bodystart="23" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1a5146e0de9e69d82a41124d4ecadfbd80" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int grift::_xtop</definition>
+        <argsstring></argsstring>
+        <name>_xtop</name>
+        <initializer>= 5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="24" column="13" bodyfile="models/Grift/include/models/grift.h" bodystart="24" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1a3fae59a0ea0db34bb58fcfe0b8786367" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double grift::drop_out</definition>
+        <argsstring></argsstring>
+        <name>drop_out</name>
+        <initializer>= 0.01</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="26" column="16" bodyfile="models/Grift/include/models/grift.h" bodystart="26" bodyend="-1"/>
+        <referencedby refid="classgrift_1aaa79c30c964e2edac2d6d49f2f95b9a3" compoundref="grift_8cxx" startline="299" endline="305">clone</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1a70e49ae763a2140c4f8529740fb5eafb" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool grift::is_mc</definition>
+        <argsstring></argsstring>
+        <name>is_mc</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="29" column="14" bodyfile="models/Grift/include/models/grift.h" bodystart="29" bodyend="-1"/>
+        <referencedby refid="classgrift_1aaa79c30c964e2edac2d6d49f2f95b9a3" compoundref="grift_8cxx" startline="299" endline="305">clone</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1ab656189bf071ad00eaf7ef02a35d7ca5" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool grift::init</definition>
+        <argsstring></argsstring>
+        <name>init</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="30" column="14" bodyfile="models/Grift/include/models/grift.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1ac50616e32295342e4380d7c505fb2384" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool grift::pagerank</definition>
+        <argsstring></argsstring>
+        <name>pagerank</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="31" column="14" bodyfile="models/Grift/include/models/grift.h" bodystart="31" bodyend="-1"/>
+        <referencedby refid="classgrift_1aaa79c30c964e2edac2d6d49f2f95b9a3" compoundref="grift_8cxx" startline="299" endline="305">clone</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1acc8efddfe120699812360168acf591fb" prot="public" static="no" mutable="no">
+        <type>torch::nn::Sequential *</type>
+        <definition>torch::nn::Sequential* grift::rnn_x</definition>
+        <argsstring></argsstring>
+        <name>rnn_x</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="33" column="31" bodyfile="models/Grift/include/models/grift.h" bodystart="33" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1a458a7c7b0432fad6d05011be083c267d" prot="public" static="no" mutable="no">
+        <type>torch::nn::Sequential *</type>
+        <definition>torch::nn::Sequential* grift::rnn_dx</definition>
+        <argsstring></argsstring>
+        <name>rnn_dx</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="34" column="31" bodyfile="models/Grift/include/models/grift.h" bodystart="34" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+        <referencedby refid="classgrift_1ad610edcd0cab14b57197a846ab8a8caf" compoundref="grift_8cxx" startline="83" endline="110">message</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1a5ef63ba07362596ccac3dae0f09a8698" prot="public" static="no" mutable="no">
+        <type>torch::nn::Sequential *</type>
+        <definition>torch::nn::Sequential* grift::rnn_top_edge</definition>
+        <argsstring></argsstring>
+        <name>rnn_top_edge</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="35" column="31" bodyfile="models/Grift/include/models/grift.h" bodystart="35" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1a85258abec73c9f68169ad86b94dc77eb" prot="public" static="no" mutable="no">
+        <type>torch::nn::Sequential *</type>
+        <definition>torch::nn::Sequential* grift::rnn_res_edge</definition>
+        <argsstring></argsstring>
+        <name>rnn_res_edge</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="36" column="31" bodyfile="models/Grift/include/models/grift.h" bodystart="36" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1a3d5f9213a0f6b79f9aafa816f43374d3" prot="public" static="no" mutable="no">
+        <type>torch::nn::Sequential *</type>
+        <definition>torch::nn::Sequential* grift::rnn_hxx</definition>
+        <argsstring></argsstring>
+        <name>rnn_hxx</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="37" column="31" bodyfile="models/Grift/include/models/grift.h" bodystart="37" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1abb57b1fe8aed10f3a2dd75b3541fac66" prot="public" static="no" mutable="no">
+        <type>torch::nn::Sequential *</type>
+        <definition>torch::nn::Sequential* grift::mlp_ntop</definition>
+        <argsstring></argsstring>
+        <name>mlp_ntop</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="39" column="31" bodyfile="models/Grift/include/models/grift.h" bodystart="39" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1a84acf79e92b6b3e40f2a8b9a778dd7d5" prot="public" static="no" mutable="no">
+        <type>torch::nn::Sequential *</type>
+        <definition>torch::nn::Sequential* grift::mlp_sig</definition>
+        <argsstring></argsstring>
+        <name>mlp_sig</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="40" column="31" bodyfile="models/Grift/include/models/grift.h" bodystart="40" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1aaa7c11516d263a4836a41be837d7e1a9" prot="public" static="no" mutable="no">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor grift::x_nulls</definition>
+        <argsstring></argsstring>
+        <name>x_nulls</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="41" column="24" bodyfile="models/Grift/include/models/grift.h" bodystart="41" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1a3cb45924f35438bfc067f1f3def85ccd" prot="public" static="no" mutable="no">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor grift::dx_nulls</definition>
+        <argsstring></argsstring>
+        <name>dx_nulls</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="42" column="23" bodyfile="models/Grift/include/models/grift.h" bodystart="42" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classgrift_1adbee9ab6dab48dab201effd8565d5309" prot="public" static="no" mutable="no">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor grift::te_nulls</definition>
+        <argsstring></argsstring>
+        <name>te_nulls</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="43" column="23" bodyfile="models/Grift/include/models/grift.h" bodystart="43" bodyend="-1"/>
+        <referencedby refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>grift::grift</definition>
+        <argsstring>()</argsstring>
+        <name>grift</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="8" column="9" bodyfile="models/Grift/cxx/grift.cxx" bodystart="4" bodyend="81"/>
+        <references refid="classgrift_1ad827bfad756a12824381f94f7b2cb3d8" compoundref="grift_8h" startline="19">_hidden</references>
+        <references refid="classgrift_1aaa92cf7d52eff6b0f14c14115e207f10" compoundref="grift_8h" startline="22">_xin</references>
+        <references refid="classgrift_1a43458d7f08b0eba58ce135757bb0d267" compoundref="grift_8h" startline="23">_xout</references>
+        <references refid="classgrift_1a7c1d51046c3fcb915df034bdb27c30be" compoundref="grift_8h" startline="20">_xrec</references>
+        <references refid="classgrift_1a5146e0de9e69d82a41124d4ecadfbd80" compoundref="grift_8h" startline="24">_xtop</references>
+        <references refid="classgrift_1a3cb45924f35438bfc067f1f3def85ccd" compoundref="grift_8h" startline="42">dx_nulls</references>
+        <references refid="classgrift_1abb57b1fe8aed10f3a2dd75b3541fac66" compoundref="grift_8h" startline="39">mlp_ntop</references>
+        <references refid="classgrift_1a84acf79e92b6b3e40f2a8b9a778dd7d5" compoundref="grift_8h" startline="40">mlp_sig</references>
+        <references refid="classmodel__template_1a456e96f75278fed9c8d6f4dbff885e39" compoundref="model__template_8cxx" startline="69" endline="72">model_template::register_module</references>
+        <references refid="classgrift_1a458a7c7b0432fad6d05011be083c267d" compoundref="grift_8h" startline="34">rnn_dx</references>
+        <references refid="classgrift_1a3d5f9213a0f6b79f9aafa816f43374d3" compoundref="grift_8h" startline="37">rnn_hxx</references>
+        <references refid="classgrift_1a85258abec73c9f68169ad86b94dc77eb" compoundref="grift_8h" startline="36">rnn_res_edge</references>
+        <references refid="classgrift_1a5ef63ba07362596ccac3dae0f09a8698" compoundref="grift_8h" startline="35">rnn_top_edge</references>
+        <references refid="classgrift_1acc8efddfe120699812360168acf591fb" compoundref="grift_8h" startline="33">rnn_x</references>
+        <references refid="classgrift_1adbee9ab6dab48dab201effd8565d5309" compoundref="grift_8h" startline="43">te_nulls</references>
+        <references refid="classgrift_1aaa7c11516d263a4836a41be837d7e1a9" compoundref="grift_8h" startline="41">x_nulls</references>
+        <referencedby refid="classgrift_1aaa79c30c964e2edac2d6d49f2f95b9a3" compoundref="grift_8cxx" startline="299" endline="305">clone</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classgrift_1a4111a27451210051b02077a40536705b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>grift::~grift</definition>
+        <argsstring>()</argsstring>
+        <name>~grift</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="9" column="9" bodyfile="models/Grift/cxx/grift.cxx" bodystart="298" bodyend="298"/>
+      </memberdef>
+      <memberdef kind="function" id="classgrift_1aaa79c30c964e2edac2d6d49f2f95b9a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classmodel__template" kindref="compound">model_template</ref> *</type>
+        <definition>model_template * grift::clone</definition>
+        <argsstring>() override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classmodel__template_1aa4342444b93659e670d921fcba9bd689">clone</reimplements>
+        <briefdescription>
+<para>Creates a clone of the model template. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates and returns a clone of this model template.</para>
+<para><simplesect kind="return"><para>A pointer to a new <ref refid="classmodel__template" kindref="compound">model_template</ref> instance that is a copy of this one.</para>
+</simplesect>
+<simplesect kind="return"><para>A new <ref refid="classmodel__template" kindref="compound">model_template</ref> instance. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="10" column="24" bodyfile="models/Grift/cxx/grift.cxx" bodystart="299" bodyend="305"/>
+        <references refid="classgrift_1a3fae59a0ea0db34bb58fcfe0b8786367" compoundref="grift_8h" startline="26">drop_out</references>
+        <references refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" compoundref="grift_8cxx" startline="4" endline="81">grift</references>
+        <references refid="classgrift_1a70e49ae763a2140c4f8529740fb5eafb" compoundref="grift_8h" startline="29">is_mc</references>
+        <references refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" compoundref="test__ssml__mc20_8py" startline="13">test_ssml_mc20.md</references>
+        <references refid="classgrift_1ac50616e32295342e4380d7c505fb2384" compoundref="grift_8h" startline="31">pagerank</references>
+        <referencedby refid="classgrift_1a72f7575fbd1d744d4f9053e5b8b7ee38" compoundref="grift_8cxx" startline="112" endline="296">forward</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classgrift_1a72f7575fbd1d744d4f9053e5b8b7ee38" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void grift::forward</definition>
+        <argsstring>(graph_t *) override</argsstring>
+        <name>forward</name>
+        <reimplements refid="classmodel__template_1ac6d8ddbdaf334cfefbe1e6361fd4ebbb">forward</reimplements>
+        <param>
+          <type><ref refid="structgraph__t" kindref="compound">graph_t</ref> *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+<para>Virtual forward pass method for a single graph. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default implementation of the forward pass for a single graph.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the <ref refid="structgraph__t" kindref="compound">graph_t</ref> structure containing input data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This method should be overridden by derived classes to implement the forward pass logic.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the <ref refid="structgraph__t" kindref="compound">graph_t</ref> structure containing input data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This is a placeholder that derived classes should override with their specific implementation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="11" column="14" bodyfile="models/Grift/cxx/grift.cxx" bodystart="112" bodyend="296"/>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a056d3cfa6a17e1cb57fb271ce3e605a8">batch_index</references>
+        <references refid="classgrift_1aaa79c30c964e2edac2d6d49f2f95b9a3" compoundref="grift_8cxx" startline="299" endline="305">clone</references>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7">edge_index</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a05e7d19a6d002118deef70d21ff4226e">energy</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28aeba021d91b44a97dec2588bbea58a447">eta</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778">is_lep</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28acb7a24bb7528f934b841b34c3a73e0c7">phi</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28afc9fdf084e290f26a270390dc49061a2">pt</references>
+        <references refid="namespacepyc_1_1transform_1_1separate_1a720f165f6c3acc7c6ed1b33dd2c369bb" compoundref="interface_2transform_8cxx" startline="111" endline="114">pyc::transform::separate::PxPyPzE</references>
+        <referencedby refid="classgrift_1ad610edcd0cab14b57197a846ab8a8caf" compoundref="grift_8cxx" startline="83" endline="110">message</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classgrift_1ad610edcd0cab14b57197a846ab8a8caf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor grift::message</definition>
+        <argsstring>(torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc, torch::Tensor hx_i, torch::Tensor hx_j)</argsstring>
+        <name>message</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>trk_i</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>trk_j</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>hx_i</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>hx_j</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="models/Grift/include/models/grift.h" line="13" column="23" bodyfile="models/Grift/cxx/grift.cxx" bodystart="83" bodyend="110"/>
+        <references refid="classgrift_1a72f7575fbd1d744d4f9053e5b8b7ee38" compoundref="grift_8cxx" startline="112" endline="296">forward</references>
+        <references refid="namespacepyc_1_1physics_1_1cartesian_1_1combined_1adc80247c6622f7cb166a81fa45b7b51d" compoundref="pyc_2interface_2physics_8cxx" startline="137" endline="140">pyc::physics::cartesian::combined::M</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="classgrift_1a458a7c7b0432fad6d05011be083c267d" compoundref="grift_8h" startline="34">rnn_dx</references>
+        <references refid="classtools_1a7b784121d8b368a64995feddc7083469" compoundref="tools_8h" startline="183" endline="187">tools::sum</references>
+        <references refid="namespacepyc_1_1graph_1a6b142e7f996e314f3c8a971e471d6d95" compoundref="interface_2graph_8cxx" startline="93" endline="100">pyc::graph::unique_aggregation</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>grift</label>
+        <link refid="classgrift"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>model_template</label>
+        <link refid="classmodel__template"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>notification</label>
+        <link refid="classnotification"/>
+      </node>
+      <node id="3">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="17">
+        <label>K</label>
+      </node>
+      <node id="12">
+        <label>T</label>
+      </node>
+      <node id="1">
+        <label>grift</label>
+        <link refid="classgrift"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="12" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="17" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>lossfx</label>
+        <link refid="classlossfx"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>cproperty&lt; std::vector&lt; std::string &gt;, std::map&lt; std::string, torch::Tensor * &gt; &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="8" relation="template-instance">
+          <edgelabel>&lt; std::vector&lt; std::string &gt;, std::map&lt; std::string, torch::Tensor * &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>cproperty&lt; T, G &gt;</label>
+        <link refid="classcproperty"/>
+      </node>
+      <node id="2">
+        <label>model_template</label>
+        <link refid="classmodel__template"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>o_node</edgelabel>
+          <edgelabel>o_graph</edgelabel>
+          <edgelabel>i_edge</edgelabel>
+          <edgelabel>i_node</edgelabel>
+          <edgelabel>o_edge</edgelabel>
+          <edgelabel>i_graph</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>m_loss</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>m_data</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>device</edgelabel>
+          <edgelabel>name</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>model_checkpoint_path</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>device_index</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>m_o_node</edgelabel>
+          <edgelabel>m_o_graph</edgelabel>
+          <edgelabel>m_i_edge</edgelabel>
+          <edgelabel>m_i_node</edgelabel>
+          <edgelabel>m_i_graph</edgelabel>
+          <edgelabel>m_o_edge</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="15">
+        <label>std::map&lt; std::string, torch::Tensor * &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="template-instance">
+          <edgelabel>&lt; std::string, torch::Tensor * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>cproperty&lt; int, model_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="8" relation="template-instance">
+          <edgelabel>&lt; int, model_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>cproperty&lt; std::string, model_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="8" relation="template-instance">
+          <edgelabel>&lt; std::string, model_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>std::vector&lt; torch::nn::Sequential * &gt;</label>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; torch::nn::Sequential * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>notification</label>
+        <link refid="classnotification"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>prefix</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+      <node id="5">
+        <label>std::string</label>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="models/Grift/include/models/grift.h" line="6" column="1" bodyfile="models/Grift/include/models/grift.h" bodystart="5" bodyend="44"/>
+    <listofallmembers>
+      <member refid="classgrift_1ad827bfad756a12824381f94f7b2cb3d8" prot="public" virt="non-virtual"><scope>grift</scope><name>_hidden</name></member>
+      <member refid="classgrift_1aaa92cf7d52eff6b0f14c14115e207f10" prot="public" virt="non-virtual"><scope>grift</scope><name>_xin</name></member>
+      <member refid="classgrift_1a43458d7f08b0eba58ce135757bb0d267" prot="public" virt="non-virtual"><scope>grift</scope><name>_xout</name></member>
+      <member refid="classgrift_1a7c1d51046c3fcb915df034bdb27c30be" prot="public" virt="non-virtual"><scope>grift</scope><name>_xrec</name></member>
+      <member refid="classgrift_1a5146e0de9e69d82a41124d4ecadfbd80" prot="public" virt="non-virtual"><scope>grift</scope><name>_xtop</name></member>
+      <member refid="classtools_1a408b66ad73b7b4bb962634c14a55b619" prot="public" virt="non-virtual"><scope>grift</scope><name>absolute_path</name></member>
+      <member refid="classmodel__template_1afd196d00ade10419642d541a1eaaef21" prot="public" virt="non-virtual"><scope>grift</scope><name>assign_features</name></member>
+      <member refid="classmodel__template_1ad443a513269e2a5f95d6063c840bc324" prot="public" virt="non-virtual"><scope>grift</scope><name>assign_features</name></member>
+      <member refid="classgrift_1aaa79c30c964e2edac2d6d49f2f95b9a3" prot="public" virt="virtual"><scope>grift</scope><name>clone</name></member>
+      <member refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" prot="public" virt="non-virtual"><scope>grift</scope><name>create_path</name></member>
+      <member refid="classnotification_1a8dd1ebb578269118b18bf7f0e176bf14" prot="public" virt="non-virtual"><scope>grift</scope><name>Debug</name></member>
+      <member refid="classnotification_1aa14ded524569ac1d7fd121c161a733be" prot="protected" virt="non-virtual"><scope>grift</scope><name>debug_mode</name></member>
+      <member refid="classtools_1a1f8f5e775e758e3d2442a9dd46daf78c" prot="public" virt="non-virtual"><scope>grift</scope><name>delete_path</name></member>
+      <member refid="classmodel__template_1ada63515f11116b4fa42e9cf75e79a77c" prot="public" virt="non-virtual"><scope>grift</scope><name>device</name></member>
+      <member refid="classmodel__template_1a72d13c3d3b7444e8d6a2a5e8d9b7969e" prot="public" virt="non-virtual"><scope>grift</scope><name>device_index</name></member>
+      <member refid="classgrift_1a3fae59a0ea0db34bb58fcfe0b8786367" prot="public" virt="non-virtual"><scope>grift</scope><name>drop_out</name></member>
+      <member refid="classgrift_1a3cb45924f35438bfc067f1f3def85ccd" prot="public" virt="non-virtual"><scope>grift</scope><name>dx_nulls</name></member>
+      <member refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" prot="public" virt="non-virtual"><scope>grift</scope><name>ends_with</name></member>
+      <member refid="classnotification_1ab0c3843575c157d799e532a9ea5acbd0" prot="public" virt="non-virtual"><scope>grift</scope><name>Error</name></member>
+      <member refid="classtools_1a86175bf887f3e82780cb72910181961d" prot="public" virt="non-virtual"><scope>grift</scope><name>extract</name></member>
+      <member refid="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" prot="public" virt="non-virtual"><scope>grift</scope><name>flush</name></member>
+      <member refid="classmodel__template_1ac393d52139a06ce55e9b7872954ef17f" prot="public" virt="non-virtual"><scope>grift</scope><name>flush_outputs</name></member>
+      <member refid="classgrift_1a72f7575fbd1d744d4f9053e5b8b7ee38" prot="public" virt="virtual"><scope>grift</scope><name>forward</name></member>
+      <member refid="classmodel__template_1a6b9c9f24d7800179c2d8f1f7eff59acc" prot="public" virt="virtual" ambiguityscope="model_template::"><scope>grift</scope><name>forward</name></member>
+      <member refid="classmodel__template_1a3f4085b3bae7b25b1dfc6f94fa509f94" prot="public" virt="virtual" ambiguityscope="model_template::"><scope>grift</scope><name>forward</name></member>
+      <member refid="classnotification_1ae25782afd10b3cb5fffe17afaf4fffc0" prot="public" virt="non-virtual"><scope>grift</scope><name>get_debug_mode</name></member>
+      <member refid="classmodel__template_1a1ccf58b3ee8f6daa0e032fb316934cbd" prot="public" virt="non-virtual"><scope>grift</scope><name>get_dev_index</name></member>
+      <member refid="classmodel__template_1a3e2ae9bb1ff5cb88411fa35d04fbaf8b" prot="public" virt="non-virtual"><scope>grift</scope><name>get_name</name></member>
+      <member refid="classnotification_1aa0aad214cf167691e516ecc343306244" prot="public" virt="non-virtual"><scope>grift</scope><name>get_prefix</name></member>
+      <member refid="classnotification_1a3a12e8eaf363a320abee5393436123f0" prot="public" virt="non-virtual"><scope>grift</scope><name>get_suppress_info</name></member>
+      <member refid="classnotification_1ab53313e9343e9ef6deaefa2bdd3a837a" prot="public" virt="non-virtual"><scope>grift</scope><name>get_suppress_warning</name></member>
+      <member refid="classgrift_1a8c3babc97f67eedd8105da8e245bdcef" prot="public" virt="non-virtual"><scope>grift</scope><name>grift</name></member>
+      <member refid="classtools_1ad7229c72cee65da3605c4be82f9b42d4" prot="public" virt="non-virtual"><scope>grift</scope><name>has_string</name></member>
+      <member refid="classtools_1a13633d4d63c55bcf537ff141e7605f13" prot="public" virt="non-virtual"><scope>grift</scope><name>has_value</name></member>
+      <member refid="classmodel__template_1a7bcc136fa8a82e33800a2cef7b5f1dea" prot="public" virt="non-virtual"><scope>grift</scope><name>i_edge</name></member>
+      <member refid="classmodel__template_1aed99e1a8ff065523a63a0b816cfa2b65" prot="public" virt="non-virtual"><scope>grift</scope><name>i_graph</name></member>
+      <member refid="classmodel__template_1a08760c35dc8eff882f9b0d4e39c84ead" prot="public" virt="non-virtual"><scope>grift</scope><name>i_node</name></member>
+      <member refid="classnotification_1a2ea9e0828e3d323b5bb5cdecc8f018a8" prot="public" virt="non-virtual"><scope>grift</scope><name>Info</name></member>
+      <member refid="classgrift_1ab656189bf071ad00eaf7ef02a35d7ca5" prot="public" virt="non-virtual"><scope>grift</scope><name>init</name></member>
+      <member refid="classtools_1a47d3d261edcb898daab56721e18d1e67" prot="public" virt="non-virtual"><scope>grift</scope><name>is_file</name></member>
+      <member refid="classgrift_1a70e49ae763a2140c4f8529740fb5eafb" prot="public" virt="non-virtual"><scope>grift</scope><name>is_mc</name></member>
+      <member refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" prot="public" virt="non-virtual"><scope>grift</scope><name>ls</name></member>
+      <member refid="classmodel__template_1ad5ad4c3451f1b6732e91dc8949d656d0" prot="public" virt="non-virtual"><scope>grift</scope><name>m_data</name></member>
+      <member refid="classmodel__template_1a4af457aed96a7f7090142c86195b1427" prot="public" virt="non-virtual"><scope>grift</scope><name>m_i_edge</name></member>
+      <member refid="classmodel__template_1aeba2a7f8f13f4534b5eaccc93ff51628" prot="public" virt="non-virtual"><scope>grift</scope><name>m_i_graph</name></member>
+      <member refid="classmodel__template_1a92beed8d89fccea381550c27e91e11cd" prot="public" virt="non-virtual"><scope>grift</scope><name>m_i_node</name></member>
+      <member refid="classmodel__template_1a3c50a6d40e2e2ad445189439107ed7ef" prot="public" virt="non-virtual"><scope>grift</scope><name>m_loss</name></member>
+      <member refid="classmodel__template_1a984ca129eee3c012038f53f5280be3ba" prot="public" virt="non-virtual"><scope>grift</scope><name>m_o_edge</name></member>
+      <member refid="classmodel__template_1a04d8afa2416ad97d09469648308829ba" prot="public" virt="non-virtual"><scope>grift</scope><name>m_o_graph</name></member>
+      <member refid="classmodel__template_1ac85acc672d6579d8e7ccbbaa5e153c64" prot="public" virt="non-virtual"><scope>grift</scope><name>m_o_node</name></member>
+      <member refid="classmodel__template_1a7b963ead986da475a0c6540971ac675b" prot="public" virt="non-virtual"><scope>grift</scope><name>m_option</name></member>
+      <member refid="classnotification_1a47e2d300e33c44a24b0c51d9e9a83914" prot="public" virt="non-virtual"><scope>grift</scope><name>Message</name></member>
+      <member refid="classgrift_1ad610edcd0cab14b57197a846ab8a8caf" prot="public" virt="non-virtual"><scope>grift</scope><name>message</name></member>
+      <member refid="classgrift_1abb57b1fe8aed10f3a2dd75b3541fac66" prot="public" virt="non-virtual"><scope>grift</scope><name>mlp_ntop</name></member>
+      <member refid="classgrift_1a84acf79e92b6b3e40f2a8b9a778dd7d5" prot="public" virt="non-virtual"><scope>grift</scope><name>mlp_sig</name></member>
+      <member refid="classmodel__template_1a95ac60e080148009edd1e00c3ed7fae7" prot="public" virt="non-virtual"><scope>grift</scope><name>model_checkpoint_path</name></member>
+      <member refid="classmodel__template_1af47db8a6a8514fda6e3b714813c07f6d" prot="public" virt="non-virtual"><scope>grift</scope><name>model_template</name></member>
+      <member refid="classmodel__template_1ad54c75a638641e0bb68d14554011de2f" prot="public" virt="non-virtual"><scope>grift</scope><name>name</name></member>
+      <member refid="classnotification_1a3ec5fe2d8db29cf32853858ff58fdbd7" prot="public" virt="non-virtual"><scope>grift</scope><name>notification</name></member>
+      <member refid="classmodel__template_1a4afc692af0708c956868caddf4645b13" prot="public" virt="non-virtual"><scope>grift</scope><name>o_edge</name></member>
+      <member refid="classmodel__template_1a4d890527f81e130c4882941619e0008b" prot="public" virt="non-virtual"><scope>grift</scope><name>o_graph</name></member>
+      <member refid="classmodel__template_1a11d6087907ddd31994bfad5f98583761" prot="public" virt="non-virtual"><scope>grift</scope><name>o_node</name></member>
+      <member refid="classgrift_1ac50616e32295342e4380d7c505fb2384" prot="public" virt="non-virtual"><scope>grift</scope><name>pagerank</name></member>
+      <member refid="classnotification_1a913d4c8a7736df782f900dd436cfeaa6" prot="protected" virt="non-virtual"><scope>grift</scope><name>prefix</name></member>
+      <member refid="classtools_1a4450b1e48193bef904b44f7a90aaee98" prot="public" virt="non-virtual"><scope>grift</scope><name>put</name></member>
+      <member refid="classmodel__template_1a456e96f75278fed9c8d6f4dbff885e39" prot="public" virt="non-virtual"><scope>grift</scope><name>register_module</name></member>
+      <member refid="classmodel__template_1a8929bec347c8d7a7cb3b6c355d6139d8" prot="public" virt="non-virtual"><scope>grift</scope><name>register_module</name></member>
+      <member refid="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" prot="public" virt="non-virtual"><scope>grift</scope><name>rename</name></member>
+      <member refid="classtools_1aeae88ebd7116d59008600f0723716dba" prot="public" virt="non-virtual"><scope>grift</scope><name>replace</name></member>
+      <member refid="classgrift_1a458a7c7b0432fad6d05011be083c267d" prot="public" virt="non-virtual"><scope>grift</scope><name>rnn_dx</name></member>
+      <member refid="classgrift_1a3d5f9213a0f6b79f9aafa816f43374d3" prot="public" virt="non-virtual"><scope>grift</scope><name>rnn_hxx</name></member>
+      <member refid="classgrift_1a85258abec73c9f68169ad86b94dc77eb" prot="public" virt="non-virtual"><scope>grift</scope><name>rnn_res_edge</name></member>
+      <member refid="classgrift_1a5ef63ba07362596ccac3dae0f09a8698" prot="public" virt="non-virtual"><scope>grift</scope><name>rnn_top_edge</name></member>
+      <member refid="classgrift_1acc8efddfe120699812360168acf591fb" prot="public" virt="non-virtual"><scope>grift</scope><name>rnn_x</name></member>
+      <member refid="classnotification_1a5a69a50032f5dcf38bed2bb27dc048fc" prot="public" virt="non-virtual"><scope>grift</scope><name>set_debug_mode</name></member>
+      <member refid="classmodel__template_1ac4b5cf9bc73437cd847dc80cc5c1c75b" prot="public" virt="non-virtual"><scope>grift</scope><name>set_dev_index</name></member>
+      <member refid="classmodel__template_1ad6ea8f7ffac83bd49123286ed4cd9fda" prot="public" virt="non-virtual"><scope>grift</scope><name>set_device</name></member>
+      <member refid="classmodel__template_1a042ce754045343eade6e54d556854859" prot="public" virt="non-virtual"><scope>grift</scope><name>set_input_features</name></member>
+      <member refid="classmodel__template_1ad1a321ec8ca5e79c79322c83ef70b7c5" prot="public" virt="non-virtual"><scope>grift</scope><name>set_name</name></member>
+      <member refid="classmodel__template_1a977402549135f0f763157b1282b44173" prot="public" virt="non-virtual"><scope>grift</scope><name>set_output_features</name></member>
+      <member refid="classnotification_1a575db6b2e3b67a7d679205600d83b576" prot="public" virt="non-virtual"><scope>grift</scope><name>set_prefix</name></member>
+      <member refid="classnotification_1a58eec7023935cff9332ce21e58fc3f5a" prot="public" virt="non-virtual"><scope>grift</scope><name>set_suppress_info</name></member>
+      <member refid="classnotification_1a9bb77ba73a5f25af292e9eea8a8de970" prot="public" virt="non-virtual"><scope>grift</scope><name>set_suppress_warning</name></member>
+      <member refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" prot="public" virt="non-virtual"><scope>grift</scope><name>split</name></member>
+      <member refid="classtools_1a7b784121d8b368a64995feddc7083469" prot="public" virt="non-virtual"><scope>grift</scope><name>sum</name></member>
+      <member refid="classnotification_1a77a99c28092cf053b395805c75dde6da" prot="protected" virt="non-virtual"><scope>grift</scope><name>suppress_info</name></member>
+      <member refid="classnotification_1ab2d4ba20d7bc164eece8982b413eab13" prot="protected" virt="non-virtual"><scope>grift</scope><name>suppress_warnings</name></member>
+      <member refid="classgrift_1adbee9ab6dab48dab201effd8565d5309" prot="public" virt="non-virtual"><scope>grift</scope><name>te_nulls</name></member>
+      <member refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" prot="public" virt="non-virtual"><scope>grift</scope><name>to_string</name></member>
+      <member refid="classtools_1a882f089d855dc4b3e0b60c591e11b092" prot="public" virt="non-virtual"><scope>grift</scope><name>to_string</name></member>
+      <member refid="classtools_1af0028ec6242448428f7c548b6e7cb714" prot="public" virt="non-virtual"><scope>grift</scope><name>tools</name></member>
+      <member refid="classtools_1a69be8c55f9fd7036080317a2ce98d4de" prot="public" virt="non-virtual"><scope>grift</scope><name>trim</name></member>
+      <member refid="classtools_1ab46f1f3892604cb366b861cb54ce30e0" prot="public" virt="non-virtual"><scope>grift</scope><name>type_name</name></member>
+      <member refid="classnotification_1ab758dafbb449e142fb68e11c0470b5c9" prot="public" virt="non-virtual"><scope>grift</scope><name>Warning</name></member>
+      <member refid="classgrift_1aaa7c11516d263a4836a41be837d7e1a9" prot="public" virt="non-virtual"><scope>grift</scope><name>x_nulls</name></member>
+      <member refid="classgrift_1a4111a27451210051b02077a40536705b" prot="public" virt="non-virtual"><scope>grift</scope><name>~grift</name></member>
+      <member refid="classmodel__template_1ab6ce719a1c6262912927d4fc33e8842a" prot="public" virt="virtual"><scope>grift</scope><name>~model_template</name></member>
+      <member refid="classnotification_1a0b7272463b149418caf592e398cae64e" prot="public" virt="non-virtual"><scope>grift</scope><name>~notification</name></member>
+      <member refid="classtools_1a04762ddd5cc588520c89a387341f77f4" prot="public" virt="non-virtual"><scope>grift</scope><name>~tools</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,458 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="interface_8cxx" kind="file" language="C++">
+    <compoundname>interface.cxx</compoundname>
+    <includes refid="pyc_8h" local="no">pyc/pyc.h</includes>
+    <includes refid="tensor__cast_8h" local="no">tools/tensor_cast.h</includes>
+    <includes refid="vector__cast_8h" local="no">tools/vector_cast.h</includes>
+    <includes refid="utils_8h" local="no">utils/utils.h</includes>
+    <incdepgraph>
+      <node id="20">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="11">
+        <label>functional</label>
+      </node>
+      <node id="1">
+        <label>interface.cxx</label>
+        <link refid="interface_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="12">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="27">
+        <label>cstdint</label>
+      </node>
+      <node id="5">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>cmath</label>
+      </node>
+      <node id="24">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="7">
+        <label>string</label>
+      </node>
+      <node id="4">
+        <label>torch/all.h</label>
+      </node>
+      <node id="32">
+        <label>utils/utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>map</label>
+      </node>
+      <node id="2">
+        <label>pyc/pyc.h</label>
+        <link refid="pyc_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>tools/tensor_cast.h</label>
+        <link refid="tensor__cast_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>tuple</label>
+      </node>
+      <node id="8">
+        <label>vector</label>
+      </node>
+      <node id="13">
+        <label>TFile.h</label>
+      </node>
+      <node id="28">
+        <label>sstream</label>
+      </node>
+      <node id="6">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>cstdlib</label>
+      </node>
+      <node id="25">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="16">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="22">
+        <label>iostream</label>
+      </node>
+      <node id="23">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>TBranch.h</label>
+      </node>
+      <node id="10">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>TTree.h</label>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="interface_8cxx_1a59ebbc78ff144f4bc1c28db0770a21d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="classneutrino" kindref="compound">neutrino</ref> * &gt;</type>
+        <definition>std::vector&lt;neutrino*&gt; construct_particle</definition>
+        <argsstring>(torch::Tensor *inpt, torch::Tensor *ln, torch::Tensor *bn, std::vector&lt; double &gt; *dst)</argsstring>
+        <name>construct_particle</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>inpt</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>ln</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>bn</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt; *</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/interface.cxx" line="54" column="13" bodyfile="pyc/interface/interface.cxx" bodystart="54" bodyend="80"/>
+        <references refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" compoundref="performance_2main_8py" startline="69">main.out</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="typecasting_8cxx_1a080c0dde93a7b634e36c7b7f41ade0ed" compoundref="typecasting_8cxx" startline="3" endline="8">tensor_size</references>
+        <references refid="vector__cast_8h_1a9888ed684385b240692f6cb6e4c6b82e" compoundref="vector__cast_8h" startline="40" endline="51">tensor_to_vector</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+        <referencedby refid="namespacepyc_1_1nusol_1ae7700849ae562ae11fd360bf94fe154d" compoundref="interface_8cxx" startline="123" endline="177">pyc::nusol::combinatorial</referencedby>
+        <referencedby refid="namespacepyc_1_1nusol_1adb902ce7bc71e3a4cf26f2f1e88e856c" compoundref="interface_8cxx" startline="82" endline="121">pyc::nusol::NuNu</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="pyc_8h" kindref="compound">pyc/pyc.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="tensor__cast_8h" kindref="compound">tools/tensor_cast.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="vector__cast_8h" kindref="compound">tools/vector_cast.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>PYC_CUDA</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;utils/utils.cuh&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#else<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="utils_8h" kindref="compound">utils/utils.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12" refid="classneutrino_1a1c9956db4c554c01a07977d801970de0" refkind="member"><highlight class="normal"><ref refid="classneutrino_1a1c9956db4c554c01a07977d801970de0" kindref="member">neutrino::~neutrino</ref>(){</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classneutrino_1a3484bfc48d1ebc5ebdeb9966f1297cb6" kindref="member">bquark</ref>){</highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classneutrino_1a3484bfc48d1ebc5ebdeb9966f1297cb6" kindref="member">bquark</ref>;}</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classlepton" kindref="compound">lepton</ref>){</highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classneutrino_1a7be5886637dbd42037a06f191abb3e9e" kindref="member">lepton</ref>;}</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classneutrino_1a3484bfc48d1ebc5ebdeb9966f1297cb6" kindref="member">bquark</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classlepton" kindref="compound">lepton</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="17"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="namespacepyc_1ab174cc51f6efef06bdb0ba47ec3fe3bf" refkind="member"><highlight class="normal">torch::Dict&lt;std::string,<sp/>torch::Tensor&gt;<sp/><ref refid="namespacepyc_1ab174cc51f6efef06bdb0ba47ec3fe3bf" kindref="member">pyc::std_to_dict</ref>(std::map&lt;std::string,<sp/>torch::Tensor&gt;*<sp/>inpt){</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Dict&lt;std::string,<sp/>torch::Tensor&gt;<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;::iterator<sp/>itr<sp/>=<sp/>inpt<sp/>-&gt;<sp/>begin();<sp/></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itr<sp/>!=<sp/>inpt<sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a64e9fa75beda50a9e8400ee0d4e61984" kindref="member">end</ref>();<sp/>++itr){<ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>.insert(itr<sp/>-&gt;<sp/>first,<sp/>itr<sp/>-&gt;<sp/>second);}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>;<sp/></highlight></codeline>
+<codeline lineno="25"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="namespacepyc_1a28f5ffe47cca2a3cbaffaf73dbd0993c" refkind="member"><highlight class="normal">torch::Dict&lt;std::string,<sp/>torch::Tensor&gt;<sp/><ref refid="namespacepyc_1ab174cc51f6efef06bdb0ba47ec3fe3bf" kindref="member">pyc::std_to_dict</ref>(std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>inpt){</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacepyc_1ab174cc51f6efef06bdb0ba47ec3fe3bf" kindref="member">pyc::std_to_dict</ref>(&amp;inpt);<sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="namespacepyc_1a805d5f639681452081ee6778d6f7a1ea" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(std::vector&lt;double&gt;*<sp/>inpt){</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::TensorOptions<sp/>ops<sp/>=<sp/>torch::TensorOptions(torch::kCPU);<sp/></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>build_tensor(inpt,<sp/>torch::kDouble,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">(),<sp/>&amp;ops).view({-1,<sp/>int(inpt<sp/>-&gt;<sp/>size())});</highlight></codeline>
+<codeline lineno="34"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="namespacepyc_1a28e3b0ea1f06859dbe8416d54214f973" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(std::vector&lt;long&gt;*<sp/>inpt){</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::TensorOptions<sp/>ops<sp/>=<sp/>torch::TensorOptions(torch::kCPU);<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>build_tensor(inpt,<sp/>torch::kLong,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal">(),<sp/>&amp;ops).view({-1,<sp/>int(inpt<sp/>-&gt;<sp/>size())});</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(<ref refid="namespacehelper_1a6a86af0e435c054cabd85eebb8a45782" kindref="member">std::vector</ref>&lt;std::vector&lt;double&gt;&gt;*<sp/>inpt){</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;torch::Tensor&gt;<sp/><ref refid="namespacehelper_1a60d07b59d3989fec2a0b9944156184a7" kindref="member">mrg</ref>;<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>inpt<sp/>-&gt;<sp/>size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){<ref refid="namespacehelper_1a60d07b59d3989fec2a0b9944156184a7" kindref="member">mrg</ref>.push_back(<ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(&amp;(*inpt)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]));}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::cat(<ref refid="namespacehelper_1a60d07b59d3989fec2a0b9944156184a7" kindref="member">mrg</ref>,<sp/>{0});<sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="namespacepyc_1a62843610f791246167e83e780cda22d8" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(<ref refid="namespacehelper_1a6a86af0e435c054cabd85eebb8a45782" kindref="member">std::vector</ref>&lt;std::vector&lt;long&gt;&gt;*<sp/>inpt){</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;torch::Tensor&gt;<sp/><ref refid="namespacehelper_1a60d07b59d3989fec2a0b9944156184a7" kindref="member">mrg</ref>;<sp/></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>inpt<sp/>-&gt;<sp/>size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){<ref refid="namespacehelper_1a60d07b59d3989fec2a0b9944156184a7" kindref="member">mrg</ref>.push_back(<ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(&amp;(*inpt)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]));}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::cat(<ref refid="namespacehelper_1a60d07b59d3989fec2a0b9944156184a7" kindref="member">mrg</ref>,<sp/>{0});<sp/></highlight></codeline>
+<codeline lineno="51"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="interface_8cxx_1a59ebbc78ff144f4bc1c28db0770a21d4" refkind="member"><highlight class="normal">std::vector&lt;neutrino*&gt;<sp/><ref refid="interface_8cxx_1a59ebbc78ff144f4bc1c28db0770a21d4" kindref="member">construct_particle</ref>(torch::Tensor*<sp/>inpt,<sp/>torch::Tensor*<sp/>ln,<sp/>torch::Tensor*<sp/>bn,<sp/>std::vector&lt;double&gt;*<sp/>dst){</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::vector&lt;double&gt;&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>;<sp/></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;signed<sp/>long&gt;<sp/>s<sp/>=<sp/><ref refid="typecasting_8cxx_1a080c0dde93a7b634e36c7b7f41ade0ed" kindref="member">tensor_size</ref>(inpt);<sp/></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="vector__cast_8h_1a9888ed684385b240692f6cb6e4c6b82e" kindref="member">tensor_to_vector</ref>(inpt,<sp/>&amp;<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>,<sp/>&amp;s,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">(0));</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::vector&lt;long&gt;&gt;<sp/>_l,<sp/>_b;<sp/></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ln){</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>s<sp/>=<sp/><ref refid="typecasting_8cxx_1a080c0dde93a7b634e36c7b7f41ade0ed" kindref="member">tensor_size</ref>(ln);<sp/></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="vector__cast_8h_1a9888ed684385b240692f6cb6e4c6b82e" kindref="member">tensor_to_vector</ref>(ln,<sp/>&amp;_l,<sp/>&amp;s,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal">(0));</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="vector__cast_8h_1a9888ed684385b240692f6cb6e4c6b82e" kindref="member">tensor_to_vector</ref>(bn,<sp/>&amp;_b,<sp/>&amp;s,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal">(0));</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>o<sp/>=<sp/>0;<sp/><sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>dst<sp/>-&gt;<sp/>size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){o<sp/>+=<sp/>(*dst)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]<sp/>!=<sp/>0;}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!o){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{};}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;neutrino*&gt;<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>(o,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);<sp/>o<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!(*dst)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classneutrino" kindref="compound">neutrino</ref>*<sp/>nx<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classneutrino" kindref="compound">neutrino</ref>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>][0],<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>][1],<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>][2]);<sp/></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nx<sp/>-&gt;<sp/>min<sp/><sp/><sp/>=<sp/>(*dst)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nx<sp/>-&gt;<sp/>b_idx<sp/>=<sp/>(bn)<sp/>?<sp/>_b[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>][0]<sp/>:<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>/<sp/>6;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nx<sp/>-&gt;<sp/>l_idx<sp/>=<sp/>(ln)<sp/>?<sp/>_l[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>][0]<sp/>:<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>/<sp/>6;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>[o]<sp/>=<sp/>nx;<sp/>++o;<sp/></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>;<sp/></highlight></codeline>
+<codeline lineno="80"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="namespacepyc_1_1nusol_1adb902ce7bc71e3a4cf26f2f1e88e856c" refkind="member"><highlight class="normal">std::vector&lt;std::pair&lt;neutrino*,<sp/>neutrino*&gt;&gt;<sp/><ref refid="namespacepyc_1_1nusol_1a9650527ae538fa27121bedfb79a1fbe6" kindref="member">pyc::nusol::NuNu</ref>(</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacehelper_1a6a86af0e435c054cabd85eebb8a45782" kindref="member">std::vector</ref>&lt;std::vector&lt;double&gt;&gt;*<sp/>pmc_b1,<sp/><ref refid="namespacehelper_1a6a86af0e435c054cabd85eebb8a45782" kindref="member">std::vector</ref>&lt;std::vector&lt;double&gt;&gt;*<sp/>pmc_b2,<sp/></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacehelper_1a6a86af0e435c054cabd85eebb8a45782" kindref="member">std::vector</ref>&lt;std::vector&lt;double&gt;&gt;*<sp/>pmc_l1,<sp/><ref refid="namespacehelper_1a6a86af0e435c054cabd85eebb8a45782" kindref="member">std::vector</ref>&lt;std::vector&lt;double&gt;&gt;*<sp/>pmc_l2,<sp/></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;double&gt;*<sp/><ref refid="classmet" kindref="compound">met</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>std::vector&lt;double&gt;*<sp/>phi,<sp/></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacehelper_1a6a86af0e435c054cabd85eebb8a45782" kindref="member">std::vector</ref>&lt;std::vector&lt;double&gt;&gt;*<sp/>mass1,<sp/><ref refid="namespacehelper_1a6a86af0e435c054cabd85eebb8a45782" kindref="member">std::vector</ref>&lt;std::vector&lt;double&gt;&gt;*<sp/>mass2,</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">null</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>step,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>tolerance,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>timeout</highlight></codeline>
+<codeline lineno="88"><highlight class="normal">){</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>b1<sp/><sp/><sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(pmc_b1);<sp/></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>b2<sp/><sp/><sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(pmc_b2);<sp/></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a" kindref="member">l1</ref><sp/><sp/><sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(pmc_l1);<sp/></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>l2<sp/><sp/><sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(pmc_l2);<sp/></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="namespacernn__model_1a3d5657621f343e53150d482e59f6abed" kindref="member">m1</ref><sp/><sp/><sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(mass1);<sp/></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>m2<sp/><sp/><sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(mass2);<sp/></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>met_<sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(<ref refid="classmet" kindref="compound">met</ref>).view({-1,<sp/>1});<sp/></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>phi_<sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(phi).view({-1,<sp/>1});<sp/></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>b1<sp/><sp/><sp/>=<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;b1<sp/><sp/>);<sp/></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>b2<sp/><sp/><sp/>=<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;b2<sp/><sp/>);<sp/></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a" kindref="member">l1</ref><sp/><sp/><sp/>=<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;<ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a" kindref="member">l1</ref><sp/><sp/>);<sp/></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>l2<sp/><sp/><sp/>=<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;l2<sp/><sp/>);<sp/></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacernn__model_1a3d5657621f343e53150d482e59f6abed" kindref="member">m1</ref><sp/><sp/><sp/>=<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;<ref refid="namespacernn__model_1a3d5657621f343e53150d482e59f6abed" kindref="member">m1</ref><sp/><sp/>);<sp/></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>m2<sp/><sp/><sp/>=<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;m2<sp/><sp/>);<sp/></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>met_<sp/>=<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;met_);<sp/></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>phi_<sp/>=<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;phi_);<sp/></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>metxy<sp/>=<sp/>torch::cat({<ref refid="namespacepyc_1_1transform_1_1separate_1a8707538e9073094f20ba7f80bf98757b" kindref="member">pyc::transform::separate::Px</ref>(met_,<sp/>phi_),<sp/><ref refid="namespacepyc_1_1transform_1_1separate_1a213b45f87684e873b719a628675b3382" kindref="member">pyc::transform::separate::Py</ref>(met_,<sp/>phi_)},<sp/>{-1});<sp/></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Dict&lt;std::string,<sp/>torch::Tensor&gt;<sp/>nus<sp/>=<sp/><ref refid="namespacepyc_1_1nusol_1a9650527ae538fa27121bedfb79a1fbe6" kindref="member">pyc::nusol::NuNu</ref>(b1,<sp/>b2,<sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a" kindref="member">l1</ref>,<sp/>l2,<sp/>metxy,<sp/></highlight><highlight class="keyword">null</highlight><highlight class="normal">,<sp/><ref refid="namespacernn__model_1a3d5657621f343e53150d482e59f6abed" kindref="member">m1</ref>,<sp/>m2,<sp/>step,<sp/>tolerance,<sp/>timeout);<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>nu1<sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;nu1&quot;</highlight><highlight class="normal">).view({-1,<sp/>3});<sp/></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>nu2<sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;nu2&quot;</highlight><highlight class="normal">).view({-1,<sp/>3});<sp/></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>dis<sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;distances&quot;</highlight><highlight class="normal">).view({-1});<sp/></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;double&gt;<sp/>dist;<sp/></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="vector__cast_8h_1a9888ed684385b240692f6cb6e4c6b82e" kindref="member">tensor_to_vector</ref>(&amp;dis,<sp/>&amp;dist);<sp/></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::pair&lt;neutrino*,<sp/>neutrino*&gt;&gt;<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>;<sp/></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;neutrino*&gt;<sp/>nu1_<sp/>=<sp/><ref refid="interface_8cxx_1a59ebbc78ff144f4bc1c28db0770a21d4" kindref="member">construct_particle</ref>(&amp;nu1,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/>&amp;dist);<sp/><sp/></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;neutrino*&gt;<sp/>nu2_<sp/>=<sp/><ref refid="interface_8cxx_1a59ebbc78ff144f4bc1c28db0770a21d4" kindref="member">construct_particle</ref>(&amp;nu2,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/>&amp;dist);<sp/></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>nu1_.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){<ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>.push_back({nu1_[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>],<sp/>nu2_[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]});}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>;<sp/></highlight></codeline>
+<codeline lineno="121"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123" refid="namespacepyc_1_1nusol_1ae7700849ae562ae11fd360bf94fe154d" refkind="member"><highlight class="normal">std::vector&lt;std::pair&lt;neutrino*,<sp/>neutrino*&gt;&gt;<sp/><ref refid="namespacepyc_1_1nusol_1a0b618f866aa33e16c704d828744335e1" kindref="member">pyc::nusol::combinatorial</ref>(</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;double&gt;*<sp/>met_,<sp/>std::vector&lt;double&gt;*<sp/>phi_,<sp/><ref refid="namespacehelper_1a6a86af0e435c054cabd85eebb8a45782" kindref="member">std::vector</ref>&lt;std::vector&lt;double&gt;&gt;*<sp/>pmc_,<sp/></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;long&gt;*<sp/><sp/><sp/>bth_,<sp/><sp/>std::vector&lt;long&gt;*<sp/>is_b_,<sp/>std::vector&lt;long&gt;*<sp/>is_l_,<sp/>std::string<sp/><ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespacenusol_1a1e559ea5155167464c23cac0cff8c6c6" kindref="member">mT</ref>,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespacenusol_1ab14e609dc13d5daf1dcf4d62089f666a" kindref="member">mW</ref>,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">null</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>perturb,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>steps</highlight></codeline>
+<codeline lineno="127"><highlight class="normal">){</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::vector&lt;long&gt;&gt;<sp/>edge_index_<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>edge_index_.push_back({});</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>edge_index_.push_back({});<sp/></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>bth_<sp/>-&gt;<sp/>size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>ix<sp/>=<sp/>(*bth_)[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>y(0);<sp/>y<sp/>&lt;<sp/>bth_<sp/>-&gt;<sp/>size();<sp/>++y){</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>iy<sp/>=<sp/>(*bth_)[y];<sp/></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(iy<sp/>!=<sp/>ix){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>edge_index_[0].push_back(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal">(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>));<sp/></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>edge_index_[1].push_back(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal">(y));</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!steps){std::cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;FAILURE<sp/>steps<sp/>parameter<sp/>set<sp/>to<sp/>0&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>std::endl;<sp/>abort();}</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="classmet" kindref="compound">met</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(met_);<sp/></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>phi<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(phi_);<sp/></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(pmc_);<sp/></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>isb<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(is_b_);<sp/></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>isl<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(is_l_);<sp/></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>bth<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(bth_);<sp/></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7" kindref="member">edge_index</ref><sp/>=<sp/><ref refid="namespacepyc_1aed2996264099d57c7d42ac156c54981d" kindref="member">pyc::tensorize</ref>(&amp;edge_index_);<sp/></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>bth<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;bth).view({-1});</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classmet" kindref="compound">met</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;<ref refid="classmet" kindref="compound">met</ref>).view({-1,<sp/>1});</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>phi<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;phi).view({-1,<sp/>1});<sp/></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7" kindref="member">edge_index</ref><sp/>=<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;<ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7" kindref="member">edge_index</ref>);<sp/><sp/></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pid<sp/><sp/><sp/>=<sp/>torch::cat({<ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;isl).view({-1,<sp/>1}),<sp/><ref refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" kindref="member">changedev</ref>(<ref refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" kindref="member">dev</ref>,<sp/>&amp;isb).view({-1,<sp/>1})},<sp/>{-1});<sp/></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>metxy<sp/>=<sp/>torch::cat({<ref refid="namespacepyc_1_1transform_1_1separate_1a8707538e9073094f20ba7f80bf98757b" kindref="member">pyc::transform::separate::Px</ref>(<ref refid="classmet" kindref="compound">met</ref>,<sp/>phi),<sp/><ref refid="namespacepyc_1_1transform_1_1separate_1a213b45f87684e873b719a628675b3382" kindref="member">pyc::transform::separate::Py</ref>(<ref refid="classmet" kindref="compound">met</ref>,<sp/>phi)},<sp/>{-1});<sp/></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Dict&lt;std::string,<sp/>torch::Tensor&gt;<sp/>nus<sp/>=<sp/><ref refid="namespacepyc_1_1nusol_1a0b618f866aa33e16c704d828744335e1" kindref="member">pyc::nusol::combinatorial</ref>(<ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7" kindref="member">edge_index</ref>,<sp/>bth,<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>,<sp/>pid,<sp/>metxy,<sp/><ref refid="namespacenusol_1a1e559ea5155167464c23cac0cff8c6c6" kindref="member">mT</ref>,<sp/><ref refid="namespacenusol_1ab14e609dc13d5daf1dcf4d62089f666a" kindref="member">mW</ref>,<sp/></highlight><highlight class="keyword">null</highlight><highlight class="normal">,<sp/>perturb,<sp/>steps);<sp/></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!nus.contains(</highlight><highlight class="stringliteral">&quot;nu1&quot;</highlight><highlight class="normal">)){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{};}</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>nu1<sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;nu1&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>nu2<sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;nu2&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a" kindref="member">l1</ref><sp/><sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;l1&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>l2<sp/><sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;l2&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>b1<sp/><sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;b1&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>b2<sp/><sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;b2&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>dis<sp/>=<sp/>nus.at(</highlight><highlight class="stringliteral">&quot;distances&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;double&gt;<sp/>dist;<sp/></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="vector__cast_8h_1a9888ed684385b240692f6cb6e4c6b82e" kindref="member">tensor_to_vector</ref>(&amp;dis,<sp/>&amp;dist);<sp/></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;neutrino*&gt;<sp/>nu1_<sp/>=<sp/><ref refid="interface_8cxx_1a59ebbc78ff144f4bc1c28db0770a21d4" kindref="member">construct_particle</ref>(&amp;nu1,<sp/>&amp;<ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a" kindref="member">l1</ref>,<sp/>&amp;b1,<sp/>&amp;dist);<sp/><sp/></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;neutrino*&gt;<sp/>nu2_<sp/>=<sp/><ref refid="interface_8cxx_1a59ebbc78ff144f4bc1c28db0770a21d4" kindref="member">construct_particle</ref>(&amp;nu2,<sp/>&amp;l2,<sp/>&amp;b2,<sp/>&amp;dist);<sp/></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::pair&lt;neutrino*,<sp/>neutrino*&gt;&gt;<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>nu1_.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){<ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>.push_back({nu1_[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>],<sp/>nu2_[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]});}</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>;<sp/></highlight></codeline>
+<codeline lineno="177"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="pyc/interface/interface.cxx"/>
+  </compounddef>
+</doxygen>

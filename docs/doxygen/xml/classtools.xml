@@ -1,0 +1,1317 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classtools" kind="class" language="C++" prot="public">
+    <compoundname>tools</compoundname>
+    <derivedcompoundref refid="classanalysis" prot="public" virt="non-virtual">analysis</derivedcompoundref>
+    <derivedcompoundref refid="classcontainer" prot="public" virt="non-virtual">container</derivedcompoundref>
+    <derivedcompoundref refid="classdataloader" prot="public" virt="non-virtual">dataloader</derivedcompoundref>
+    <derivedcompoundref refid="classgraph__template" prot="public" virt="non-virtual">graph_template</derivedcompoundref>
+    <derivedcompoundref refid="classio" prot="public" virt="non-virtual">io</derivedcompoundref>
+    <derivedcompoundref refid="classlossfx" prot="public" virt="non-virtual">lossfx</derivedcompoundref>
+    <derivedcompoundref refid="classmeta" prot="public" virt="non-virtual">meta</derivedcompoundref>
+    <derivedcompoundref refid="classmetric__template" prot="public" virt="non-virtual">metric_template</derivedcompoundref>
+    <derivedcompoundref refid="classmetrics" prot="public" virt="non-virtual">metrics</derivedcompoundref>
+    <derivedcompoundref refid="classmodel__template" prot="public" virt="non-virtual">model_template</derivedcompoundref>
+    <derivedcompoundref refid="classoptimizer" prot="public" virt="non-virtual">optimizer</derivedcompoundref>
+    <derivedcompoundref refid="classparticle__template" prot="public" virt="non-virtual">particle_template</derivedcompoundref>
+    <derivedcompoundref refid="classplotting" prot="public" virt="non-virtual">plotting</derivedcompoundref>
+    <derivedcompoundref refid="classsampletracer" prot="public" virt="non-virtual">sampletracer</derivedcompoundref>
+    <derivedcompoundref refid="classselection__template" prot="public" virt="non-virtual">selection_template</derivedcompoundref>
+    <includes refid="tools_8h" local="no">tools.h</includes>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classtools_1af0028ec6242448428f7c548b6e7cb714" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>tools::tools</definition>
+        <argsstring>()</argsstring>
+        <name>tools</name>
+        <briefdescription>
+<para>Constructor for the <computeroutput>tools</computeroutput> class. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes a new tools instance. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="36" column="5" bodyfile="modules/tools/cxx/tools.cxx" bodystart="2" bodyend="2"/>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dataloader::dump_graphs</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a04762ddd5cc588520c89a387341f77f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>tools::~tools</definition>
+        <argsstring>()</argsstring>
+        <name>~tools</name>
+        <briefdescription>
+<para>Destructor for the <computeroutput>tools</computeroutput> class. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Cleans up resources used by the tools instance. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="42" column="5" bodyfile="modules/tools/cxx/tools.cxx" bodystart="3" bodyend="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; tools::split</definition>
+        <argsstring>(std::string inpt, std::string del)</argsstring>
+        <name>split</name>
+        <param>
+          <type>std::string</type>
+          <declname>inpt</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>del</declname>
+        </param>
+        <briefdescription>
+<para>Splits a string into a vector of substrings based on a delimiter. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input string to split. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>del</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The delimiter. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A vector of substrings. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="140" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="23" bodyend="36"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86">index</references>
+        <references refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" compoundref="performance_2main_8py" startline="69">main.out</references>
+        <referencedby refid="classcontainer_1a2f036c9c52b38b6fd462a2a72f553c41" compoundref="container_8cxx" startline="65" endline="133">container::compile</referencedby>
+        <referencedby refid="classsampletracer_1a30d25d5a298b3c5698aee99ede11ce79" compoundref="sampletracer_8cxx" startline="95" endline="146">sampletracer::compile_objects</referencedby>
+        <referencedby refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" compoundref="tools_2cxx_2io_8cxx" startline="6" endline="16">create_path</referencedby>
+        <referencedby refid="classmeta_1a35d142708b4b66eeb857eb0c204e459b" compoundref="meta_8cxx" startline="274" endline="279">meta::hash</referencedby>
+        <referencedby refid="namespacetopefficiency_1_1algorithms_1a1cd01db02a87861b68fb23f53c1d68c9" compoundref="algorithms_8py" startline="50" endline="55">topefficiency.algorithms.kinesplit</referencedby>
+        <referencedby refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" compoundref="tools_2cxx_2io_8cxx" startline="35" endline="47">ls</referencedby>
+        <referencedby refid="classio_1a65c36380ef79524e8235f792abe9625c" compoundref="io_2cxx_2root_8cxx" startline="301" endline="351">io::root_begin</referencedby>
+        <referencedby refid="classmodel__template_1ad6ea8f7ffac83bd49123286ed4cd9fda" compoundref="model__configuration_8cxx" startline="63" endline="82">model_template::set_device</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a69be8c55f9fd7036080317a2ce98d4de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::trim</definition>
+        <argsstring>(std::string s)</argsstring>
+        <name>trim</name>
+        <param>
+          <type>std::string</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Removes whitespace from the beginning and end of a string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to trim. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The trimmed string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="147" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1ab46f1f3892604cb366b861cb54ce30e0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::string</type>
+        <definition>std::string tools::type_name</definition>
+        <argsstring>()</argsstring>
+        <name>type_name</name>
+        <briefdescription>
+<para>Gets the type name of a variable as a string (for debugging). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type to get the name of. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The name of the type as a string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Gets the type name via RTTI.</para>
+<para>&lt; Returns the type name.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="155" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="155" bodyend="158"/>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a7b784121d8b368a64995feddc7083469" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>g</type>
+        <definition>g tools::sum</definition>
+        <argsstring>(std::vector&lt; g &gt; *inpt)</argsstring>
+        <name>sum</name>
+        <param>
+          <type>std::vector&lt; g &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+<para>Sums the elements of a vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>g</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of elements in the vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the vector to sum. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The sum of all elements. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Initialize the output variable.</para>
+<para>&lt; Return the sum.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="183" column="7" bodyfile="modules/tools/include/tools/tools.h" bodystart="183" bodyend="187"/>
+        <references refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" compoundref="performance_2main_8py" startline="69">main.out</references>
+        <references refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" compoundref="test__experimental__mc20_8py" startline="7">test_experimental_mc20.t</references>
+        <referencedby refid="classsampletracer_1a30d25d5a298b3c5698aee99ede11ce79" compoundref="sampletracer_8cxx" startline="95" endline="146">sampletracer::compile_objects</referencedby>
+        <referencedby refid="classparticle__template_1a575d99bd23ac34125328e4d23518ff52" compoundref="modules_2particle_2cxx_2physics_8cxx" startline="3" endline="10">particle_template::DeltaR</referencedby>
+        <referencedby refid="classgraph__template_1aa2bef51e5e00b49425c8ac93bcd1f315" compoundref="graph__template_8cxx" startline="87" endline="146">graph_template::double_neutrino</referencedby>
+        <referencedby refid="classgrift_1ad610edcd0cab14b57197a846ab8a8caf" compoundref="grift_8cxx" startline="83" endline="110">grift::message</referencedby>
+        <referencedby refid="classzprime_1a36b1544f00cc1a4ed703ef304f923ea8" compoundref="mc16_2zprime_2zprime_8cxx" startline="30" endline="83">zprime::strategy</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">parton::strategy</referencedby>
+        <referencedby refid="classparton_1a1f13c60a6b920f983afdb18f352c4b2d" compoundref="parton_8h" startline="22" endline="68">parton::top_mass_contribution</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classtools_1aed9f3247b474a8fb1840860d51cde7ca" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::create_path</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>create_path</name>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Creates a directory path, including parent directories if needed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory path to create. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="49" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="6" bodyend="16"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="9" endline="14">childrenkinematics.figures.path</references>
+        <references refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" compoundref="strings_8cxx" startline="23" endline="36">split</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" compoundref="plotting_8cxx" startline="22" endline="30">plotting::build_path</referencedby>
+        <referencedby refid="classcontainer_1a2f036c9c52b38b6fd462a2a72f553c41" compoundref="container_8cxx" startline="65" endline="133">container::compile</referencedby>
+        <referencedby refid="classmetrics_1a60ff488f6951bae8d98bc7a03bc6e464" compoundref="mass__plots_8cxx" startline="13" endline="115">metrics::dump_mass_plots</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a1f8f5e775e758e3d2442a9dd46daf78c" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::delete_path</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>delete_path</name>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Deletes a directory path and its contents. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory path to delete. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="55" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="22" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a47d3d261edcb898daab56721e18d1e67" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::is_file</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>is_file</name>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a path refers to an existing file. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the path is a file and exists, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="62" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="30" bodyend="33"/>
+        <references refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="9" endline="14">childrenkinematics.figures.path</references>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::rename</definition>
+        <argsstring>(std::string start, std::string target)</argsstring>
+        <name>rename</name>
+        <param>
+          <type>std::string</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>target</declname>
+        </param>
+        <briefdescription>
+<para>Renames a file or directory. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>start</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The original path. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The new path. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="69" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="18" bodyend="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a408b66ad73b7b4bb962634c14a55b619" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::absolute_path</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>absolute_path</name>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Converts a relative path to an absolute path. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The absolute version of the path. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="76" column="24" bodyfile="modules/tools/cxx/io.cxx" bodystart="49" bodyend="51"/>
+        <references refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="9" endline="14">childrenkinematics.figures.path</references>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; tools::ls</definition>
+        <argsstring>(std::string path, std::string ext=&quot;&quot;)</argsstring>
+        <name>ls</name>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>ext</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+<para>Lists files in a directory, optionally filtered by extension. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ext</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>File extension filter. If empty, all files are listed. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A vector of filenames in the directory. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="84" column="24" bodyfile="modules/tools/cxx/io.cxx" bodystart="35" bodyend="47"/>
+        <references refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" compoundref="strings_8cxx" startline="71" endline="75">ends_with</references>
+        <references refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" compoundref="performance_2main_8py" startline="69">main.out</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="9" endline="14">childrenkinematics.figures.path</references>
+        <references refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" compoundref="strings_8cxx" startline="23" endline="36">split</references>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classdataloader_1ae3bba702555507d8b6e5567c34d19142" compoundref="cache_8cxx" startline="334" endline="337">dataloader::restore_graphs</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1afd037c109d75a9f119ec042e1ba922d9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::to_string</definition>
+        <argsstring>(double val)</argsstring>
+        <name>to_string</name>
+        <param>
+          <type>double</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+<para>Converts a double value to a string with standard precision. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The string representation of the value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="92" column="24" bodyfile="modules/tools/cxx/strings.cxx" bodystart="59" bodyend="63"/>
+        <referencedby refid="classdataloader_1ac35a068b2e42d77b1fe986c65e3c2d24" compoundref="dataset_8cxx" startline="12" endline="39">dataloader::generate_kfold_set</referencedby>
+        <referencedby refid="classdataloader_1a086338e3e9670d253041f54888995611" compoundref="dataset_8cxx" startline="41" endline="59">dataloader::generate_test_set</referencedby>
+        <referencedby refid="classparticle__template_1a9c586cc0ac38cad5ccacf1bb4985e25b" compoundref="interfaces_8cxx" startline="152" endline="163">particle_template::get_hash</referencedby>
+        <referencedby refid="classtopefficiency_1aae4a7f46ed0d168dd12f6ab5e9074a76" compoundref="topefficiency_8cxx" startline="57" endline="79">topefficiency::region</referencedby>
+        <referencedby refid="classdataloader_1a5fddffa25c532953896e2d1646ca1dc4" compoundref="dataset_8cxx" startline="175" endline="221">dataloader::restore_dataset</referencedby>
+        <referencedby refid="classselection__template_1acd31f17488bcf97dd8a5f1b3a7da1cdd" compoundref="selection_2cxx_2properties_8cxx" startline="11" endline="16">selection_template::set_hash</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">parton::strategy</referencedby>
+        <referencedby refid="classparton_1a1f13c60a6b920f983afdb18f352c4b2d" compoundref="parton_8h" startline="22" endline="68">parton::top_mass_contribution</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a882f089d855dc4b3e0b60c591e11b092" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::to_string</definition>
+        <argsstring>(double val, int prec)</argsstring>
+        <name>to_string</name>
+        <param>
+          <type>double</type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>prec</declname>
+        </param>
+        <briefdescription>
+<para>Converts a double value to a string with specified precision. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to convert. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of decimal places to consider. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The string representation of the value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="100" column="24" bodyfile="modules/tools/cxx/strings.cxx" bodystart="91" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1aeae88ebd7116d59008600f0723716dba" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::replace</definition>
+        <argsstring>(std::string *in, std::string repl_str, std::string repl_with)</argsstring>
+        <name>replace</name>
+        <param>
+          <type>std::string *</type>
+          <declname>in</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>repl_str</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>repl_with</declname>
+        </param>
+        <briefdescription>
+<para>Replaces all occurrences of a substring in a string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string to modify. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>repl_str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to replace. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>repl_with</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The replacement string. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="108" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="5" bodyend="21"/>
+        <referencedby refid="classmeta_1aaed15ab5be8f7a86c79373f24abfc952" compoundref="meta_8cxx" startline="133" endline="152">meta::parse_json</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+        <referencedby refid="namespacevalidation_1_1figures_1a5d5830588582cdacb9e25b3b5c437cb7" compoundref="neutrino_2validation_2figures_8py" startline="56" endline="67">validation.figures.template</referencedby>
+        <referencedby refid="namespacetopefficiency_1_1figures_1a84945958e13f82db53a47ad3c22e7747" compoundref="performance_2topefficiency_2figures_8py" startline="34" endline="221">topefficiency.figures.top_kinematic_region</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1ad7229c72cee65da3605c4be82f9b42d4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::has_string</definition>
+        <argsstring>(std::string *inpt, std::string trg)</argsstring>
+        <name>has_string</name>
+        <param>
+          <type>std::string *</type>
+          <declname>inpt</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>trg</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a string contains a specific substring. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to search for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the substring is found, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="116" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="65" bodyend="69"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <referencedby refid="classmeta_1a24d8657dbb9d0d8903725ee01fe22c14" compoundref="meta_8cxx" startline="226" endline="272">meta::scan_sow</referencedby>
+        <referencedby refid="classmodel__template_1ad6ea8f7ffac83bd49123286ed4cd9fda" compoundref="model__configuration_8cxx" startline="63" endline="82">model_template::set_device</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a3d538da5310467c9321b27cd6a75b9af" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::ends_with</definition>
+        <argsstring>(std::string *inpt, std::string val)</argsstring>
+        <name>ends_with</name>
+        <param>
+          <type>std::string *</type>
+          <declname>inpt</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a string ends with a specific substring. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to check for at the end. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the string ends with the substring, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="124" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="71" bodyend="75"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33">l</references>
+        <referencedby refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" compoundref="plotting_8cxx" startline="22" endline="30">plotting::build_path</referencedby>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" compoundref="tools_2cxx_2io_8cxx" startline="35" endline="47">ls</referencedby>
+        <referencedby refid="classmeta_1aaed15ab5be8f7a86c79373f24abfc952" compoundref="meta_8cxx" startline="133" endline="152">meta::parse_json</referencedby>
+        <referencedby refid="classio_1aacb050c4cb6c10038d6bf8edb7244a28" compoundref="io_2cxx_2root_8cxx" startline="181" endline="288">io::scan_keys</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a13633d4d63c55bcf537ff141e7605f13" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::has_value</definition>
+        <argsstring>(std::vector&lt; std::string &gt; *data, std::string trg)</argsstring>
+        <name>has_value</name>
+        <param>
+          <type>std::vector&lt; std::string &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>trg</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a vector of strings contains a specific string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the vector to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to search for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the string is found in the vector, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="132" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="77" bodyend="83"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+        <referencedby refid="classio_1aacb050c4cb6c10038d6bf8edb7244a28" compoundref="io_2cxx_2root_8cxx" startline="181" endline="288">io::scan_keys</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void tools::flush</definition>
+        <argsstring>(std::vector&lt; T * &gt; *inpt)</argsstring>
+        <name>flush</name>
+        <param>
+          <type>std::vector&lt; T * &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+<para>Empties a vector and all objects it points to. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of pointers in the vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the vector to empty. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Loop through all elements in the vector.</para>
+<para>&lt; Delete the object the pointer points to.</para>
+<para>&lt; Set the pointer to nullptr to avoid dangling pointers.</para>
+<para>&lt; Clear the vector.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="167" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="167" bodyend="174"/>
+        <references refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" compoundref="test__experimental__mc20_8py" startline="7">test_experimental_mc20.t</references>
+        <referencedby refid="classsampletracer_1a30d25d5a298b3c5698aee99ede11ce79" compoundref="sampletracer_8cxx" startline="95" endline="146">sampletracer::compile_objects</referencedby>
+        <referencedby refid="classio_1a1c994985d2405202c19fb391cc43a5de" compoundref="io_2cxx_2root_8cxx" startline="358" endline="373">io::root_end</referencedby>
+        <referencedby refid="classanalysis_1af5938086aabb68bf478a72b0593e4bb8" compoundref="analysis_8cxx" startline="36" endline="46">analysis::~analysis</referencedby>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">dataloader::~dataloader</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a4450b1e48193bef904b44f7a90aaee98" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void tools::put</definition>
+        <argsstring>(std::vector&lt; g * &gt; *out, std::vector&lt; g * &gt; *src, std::vector&lt; int &gt; *trg)</argsstring>
+        <name>put</name>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>out</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; *</type>
+          <declname>trg</declname>
+        </param>
+        <briefdescription>
+<para>Fills a vector with pointers from another vector based on a selection index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>g</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of objects being pointed to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output vector to fill. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the source vector to select from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to a vector of indices for selection. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Clear the output vector.</para>
+<para>&lt; Reserve space for the output elements.</para>
+<para>&lt; Loop through each selected index.</para>
+<para>&lt; Get the object at the selected index.</para>
+<para>&lt; Add it to the output vector.</para>
+<para>&lt; Mark the object as in use.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="197" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="197" bodyend="205"/>
+        <references refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" compoundref="performance_2main_8py" startline="69">main.out</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+        <referencedby refid="classdataloader_1ae243f6005ad6f4e2600b44d7ee6d40ed" compoundref="dataset_8cxx" startline="61" endline="80">dataloader::get_k_train_set</referencedby>
+        <referencedby refid="classdataloader_1a132ebd49d79e9339c2aa96ba9cfd6bc7" compoundref="dataset_8cxx" startline="82" endline="90">dataloader::get_k_validation_set</referencedby>
+        <referencedby refid="classdataloader_1a7a0c887638c888df9b55cbdf45c816c9" compoundref="dataset_8cxx" startline="92" endline="102">dataloader::get_test_set</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a86175bf887f3e82780cb72910181961d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename C</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void tools::extract</definition>
+        <argsstring>(std::vector&lt; T &gt; *prop, std::vector&lt; C * &gt; *src, void(*get_prop)(T *, C *))</argsstring>
+        <name>extract</name>
+        <param>
+          <type>std::vector&lt; T &gt; *</type>
+          <declname>prop</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; C * &gt; *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>void(*)(T *, C *)</type>
+          <declname>get_prop</declname>
+        </param>
+        <briefdescription>
+<para>Extracts a specific property from a vector of objects into a new vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of objects in the source vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of the property to extract. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prop</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output vector to fill with property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the source vector of objects. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>get_prop</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function pointer to extract the property from an object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Clear the properties vector.</para>
+<para>&lt; Reserve space for the property values.</para>
+<para>&lt; Loop through each object in the source vector.</para>
+<para>&lt; Create a default-initialized property variable.</para>
+<para>&lt; Call the provided function to extract the property.</para>
+<para>&lt; Add the property value to the output vector.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="216" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="216" bodyend="224"/>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Provides a wide range of utility functions used throughout the framework. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <computeroutput>tools</computeroutput> class serves as a toolkit, offering methods for file operations, string manipulations, container operations, type information retrieval, and more. Many classes in the <ref refid="namespace_analysis_g" kindref="compound">AnalysisG</ref> framework inherit from <computeroutput>tools</computeroutput> to gain access to these common functionalities, promoting code reuse and consistency. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="42">
+        <label>zprime</label>
+        <link refid="classzprime"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>graph_jets_detector_lep</label>
+        <link refid="classgraph__jets__detector__lep"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>muon</label>
+        <link refid="classmuon"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>container</label>
+        <link refid="classcontainer"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>meta</label>
+        <link refid="classmeta"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>decaymodes</label>
+        <link refid="classdecaymodes"/>
+        <childnode refid="45" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>analysis</label>
+        <link refid="classanalysis"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>truthjet</label>
+        <link refid="classtruthjet"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>zboson</label>
+        <link refid="classzboson"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>accuracy_metric</label>
+        <link refid="classaccuracy__metric"/>
+        <childnode refid="17" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>lepton</label>
+        <link refid="classlepton"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>particle_template</label>
+        <link refid="classparticle__template"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>top_children</label>
+        <link refid="classtop__children"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>grift</label>
+        <link refid="classgrift"/>
+        <childnode refid="21" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>graph_truthjets_nonu</label>
+        <link refid="classgraph__truthjets__nonu"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>particle_gnn</label>
+        <link refid="classparticle__gnn"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>childrenkinematics</label>
+        <link refid="classchildrenkinematics"/>
+        <childnode refid="45" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>topmatching</label>
+        <link refid="classtopmatching"/>
+        <childnode refid="45" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>truthjetparton</label>
+        <link refid="classtruthjetparton"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>optimizer</label>
+        <link refid="classoptimizer"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>graph_jets</label>
+        <link refid="classgraph__jets"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>toptruthjets</label>
+        <link refid="classtoptruthjets"/>
+        <childnode refid="45" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>graph_children</label>
+        <link refid="classgraph__children"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>topefficiency</label>
+        <link refid="classtopefficiency"/>
+        <childnode refid="45" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>top</label>
+        <link refid="classtop"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>metrics</label>
+        <link refid="classmetrics"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>parton</label>
+        <link refid="classparton"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>graph_truthjets</label>
+        <link refid="classgraph__truthjets"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>met</label>
+        <link refid="classmet"/>
+        <childnode refid="45" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>topkinematics</label>
+        <link refid="classtopkinematics"/>
+        <childnode refid="45" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>plotting</label>
+        <link refid="classplotting"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>dataloader</label>
+        <link refid="classdataloader"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>selection_template</label>
+        <link refid="classselection__template"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>lossfx</label>
+        <link refid="classlossfx"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>model_template</label>
+        <link refid="classmodel__template"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>topjets</label>
+        <link refid="classtopjets"/>
+        <childnode refid="45" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>validation</label>
+        <link refid="classvalidation"/>
+        <childnode refid="45" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>physics_detector</label>
+        <link refid="classphysics__detector"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>matching</label>
+        <link refid="classmatching"/>
+        <childnode refid="45" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>graph_jets_nonu</label>
+        <link refid="classgraph__jets__nonu"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>event</label>
+        <link refid="classevent"/>
+        <childnode refid="45" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>jet</label>
+        <link refid="classjet"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>graph_tops</label>
+        <link refid="classgraph__tops"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>physics_truth</label>
+        <link refid="classphysics__truth"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>sampletracer</label>
+        <link refid="classsampletracer"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>electron</label>
+        <link refid="classelectron"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>neutrino</label>
+        <link refid="classneutrino"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>metric_template</label>
+        <link refid="classmetric__template"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>combinatorial</label>
+        <link refid="classcombinatorial"/>
+        <childnode refid="45" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>pagerank_metric</label>
+        <link refid="classpagerank__metric"/>
+        <childnode refid="17" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>io</label>
+        <link refid="classio"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>child</label>
+        <link refid="classchild"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>graph_template</label>
+        <link refid="classgraph__template"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>regions</label>
+        <link refid="classregions"/>
+        <childnode refid="45" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>graph_detector</label>
+        <link refid="classgraph__detector"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+      <node id="23">
+        <label>recursivegraphneuralnetwork</label>
+        <link refid="classrecursivegraphneuralnetwork"/>
+        <childnode refid="21" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>jetparton</label>
+        <link refid="classjetparton"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="modules/tools/include/tools/tools.h" line="30" column="1" bodyfile="modules/tools/include/tools/tools.h" bodystart="29" bodyend="225"/>
+    <listofallmembers>
+      <member refid="classtools_1a408b66ad73b7b4bb962634c14a55b619" prot="public" virt="non-virtual"><scope>tools</scope><name>absolute_path</name></member>
+      <member refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" prot="public" virt="non-virtual"><scope>tools</scope><name>create_path</name></member>
+      <member refid="classtools_1a1f8f5e775e758e3d2442a9dd46daf78c" prot="public" virt="non-virtual"><scope>tools</scope><name>delete_path</name></member>
+      <member refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" prot="public" virt="non-virtual"><scope>tools</scope><name>ends_with</name></member>
+      <member refid="classtools_1a86175bf887f3e82780cb72910181961d" prot="public" virt="non-virtual"><scope>tools</scope><name>extract</name></member>
+      <member refid="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" prot="public" virt="non-virtual"><scope>tools</scope><name>flush</name></member>
+      <member refid="classtools_1ad7229c72cee65da3605c4be82f9b42d4" prot="public" virt="non-virtual"><scope>tools</scope><name>has_string</name></member>
+      <member refid="classtools_1a13633d4d63c55bcf537ff141e7605f13" prot="public" virt="non-virtual"><scope>tools</scope><name>has_value</name></member>
+      <member refid="classtools_1a47d3d261edcb898daab56721e18d1e67" prot="public" virt="non-virtual"><scope>tools</scope><name>is_file</name></member>
+      <member refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" prot="public" virt="non-virtual"><scope>tools</scope><name>ls</name></member>
+      <member refid="classtools_1a4450b1e48193bef904b44f7a90aaee98" prot="public" virt="non-virtual"><scope>tools</scope><name>put</name></member>
+      <member refid="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" prot="public" virt="non-virtual"><scope>tools</scope><name>rename</name></member>
+      <member refid="classtools_1aeae88ebd7116d59008600f0723716dba" prot="public" virt="non-virtual"><scope>tools</scope><name>replace</name></member>
+      <member refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" prot="public" virt="non-virtual"><scope>tools</scope><name>split</name></member>
+      <member refid="classtools_1a7b784121d8b368a64995feddc7083469" prot="public" virt="non-virtual"><scope>tools</scope><name>sum</name></member>
+      <member refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" prot="public" virt="non-virtual"><scope>tools</scope><name>to_string</name></member>
+      <member refid="classtools_1a882f089d855dc4b3e0b60c591e11b092" prot="public" virt="non-virtual"><scope>tools</scope><name>to_string</name></member>
+      <member refid="classtools_1af0028ec6242448428f7c548b6e7cb714" prot="public" virt="non-virtual"><scope>tools</scope><name>tools</name></member>
+      <member refid="classtools_1a69be8c55f9fd7036080317a2ce98d4de" prot="public" virt="non-virtual"><scope>tools</scope><name>trim</name></member>
+      <member refid="classtools_1ab46f1f3892604cb366b861cb54ce30e0" prot="public" virt="non-virtual"><scope>tools</scope><name>type_name</name></member>
+      <member refid="classtools_1a04762ddd5cc588520c89a387341f77f4" prot="public" virt="non-virtual"><scope>tools</scope><name>~tools</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

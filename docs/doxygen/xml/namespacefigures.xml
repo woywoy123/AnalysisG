@@ -1,0 +1,1574 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacefigures" kind="namespace" language="Python">
+    <compoundname>figures</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacefigures_1ab1b5de7ba5b599fe9520f23dc22e9d82" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list figures.typx</definition>
+        <argsstring></argsstring>
+        <name>typx</name>
+        <initializer>=  [&quot;topchildren&quot;, &quot;<ref refid="classtruthjet" kindref="compound">truthjet</ref>&quot;, &quot;jetchildren&quot;, &quot;jetleptons&quot;]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/figures.py" line="5" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/figures.py" bodystart="5" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacefigures_1add122a74ca67d638d0fb0b299a4802d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.template_hist</definition>
+        <argsstring>(title, weights, data, bins, xmax, xtitle, xmin=None, xstep=None, fname=None)</argsstring>
+        <name>template_hist</name>
+        <param>
+          <type>title</type>
+          <defname>title</defname>
+        </param>
+        <param>
+          <type>weights</type>
+          <defname>weights</defname>
+        </param>
+        <param>
+          <type>data</type>
+          <defname>data</defname>
+        </param>
+        <param>
+          <type>bins</type>
+          <defname>bins</defname>
+        </param>
+        <param>
+          <type>xmax</type>
+          <defname>xmax</defname>
+        </param>
+        <param>
+          <type>xtitle</type>
+          <defname>xtitle</defname>
+        </param>
+        <param>
+          <type>xmin</type>
+          <defname>xmin</defname>
+          <defval>None</defval>
+        </param>
+        <param>
+          <type>xstep</type>
+          <defname>xstep</defname>
+          <defval>None</defval>
+        </param>
+        <param>
+          <type>fname</type>
+          <defname>fname</defname>
+          <defval>None</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="3" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="3" bodyend="20"/>
+        <referencedby refid="namespacefigures_1aee12770fcae74aea334a4e7b2b7774e1" compoundref="analysis_2figures_8py" startline="52" endline="56">CR1b3le</referencedby>
+        <referencedby refid="namespacefigures_1a1098026204eae17b921065ceebb72be7" compoundref="analysis_2figures_8py" startline="47" endline="51">CR1b3lem</referencedby>
+        <referencedby refid="namespacefigures_1a05183b2d7b13db1d146846c1607f395a" compoundref="analysis_2figures_8py" startline="57" endline="61">CR1b3lm</referencedby>
+        <referencedby refid="namespacefigures_1ac4f134cc0b8b3dc3dd83427e5557c443" compoundref="analysis_2figures_8py" startline="77" endline="81">CR1bminus</referencedby>
+        <referencedby refid="namespacefigures_1a1f85cef3f3b44885f07d963ab8050bf9" compoundref="analysis_2figures_8py" startline="72" endline="76">CR1bplus</referencedby>
+        <referencedby refid="namespacefigures_1a2934a7660cf3785301e503ab34a1d7f9" compoundref="analysis_2figures_8py" startline="27" endline="31">CRttbarCO2l_CO</referencedby>
+        <referencedby refid="namespacefigures_1a529d6c0b5be4f794e93de3e30413809a" compoundref="analysis_2figures_8py" startline="32" endline="36">CRttbarCO2l_CO_2b</referencedby>
+        <referencedby refid="namespacefigures_1a032a8e7126679a3da7099a66f43a0b70" compoundref="analysis_2figures_8py" startline="37" endline="41">CRttbarCO2l_gstr</referencedby>
+        <referencedby refid="namespacefigures_1ae807c2b73621981ae598033f8aa880a3" compoundref="analysis_2figures_8py" startline="42" endline="46">CRttbarCO2l_gstr_2b</referencedby>
+        <referencedby refid="namespacefigures_1a4e34cbdff38177e3c192ff4439407749" compoundref="analysis_2figures_8py" startline="82" endline="86">CRttW2l</referencedby>
+        <referencedby refid="namespacefigures_1ac53318ad1fde76d5250b3a930dae2246" compoundref="analysis_2figures_8py" startline="67" endline="71">CRttW2l_minus</referencedby>
+        <referencedby refid="namespacefigures_1a66037dc90f56b62709c8003c43172c34" compoundref="analysis_2figures_8py" startline="62" endline="66">CRttW2l_plus</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1ac41d4d9a2bd79cec2e9c79c766acfdf1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.GetValues</definition>
+        <argsstring>(sel, key)</argsstring>
+        <name>GetValues</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <param>
+          <type>key</type>
+          <defname>key</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="21" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="21" bodyend="26"/>
+        <referencedby refid="namespacefigures_1aee12770fcae74aea334a4e7b2b7774e1" compoundref="analysis_2figures_8py" startline="52" endline="56">CR1b3le</referencedby>
+        <referencedby refid="namespacefigures_1a1098026204eae17b921065ceebb72be7" compoundref="analysis_2figures_8py" startline="47" endline="51">CR1b3lem</referencedby>
+        <referencedby refid="namespacefigures_1a05183b2d7b13db1d146846c1607f395a" compoundref="analysis_2figures_8py" startline="57" endline="61">CR1b3lm</referencedby>
+        <referencedby refid="namespacefigures_1ac4f134cc0b8b3dc3dd83427e5557c443" compoundref="analysis_2figures_8py" startline="77" endline="81">CR1bminus</referencedby>
+        <referencedby refid="namespacefigures_1a1f85cef3f3b44885f07d963ab8050bf9" compoundref="analysis_2figures_8py" startline="72" endline="76">CR1bplus</referencedby>
+        <referencedby refid="namespacefigures_1a2934a7660cf3785301e503ab34a1d7f9" compoundref="analysis_2figures_8py" startline="27" endline="31">CRttbarCO2l_CO</referencedby>
+        <referencedby refid="namespacefigures_1a529d6c0b5be4f794e93de3e30413809a" compoundref="analysis_2figures_8py" startline="32" endline="36">CRttbarCO2l_CO_2b</referencedby>
+        <referencedby refid="namespacefigures_1a032a8e7126679a3da7099a66f43a0b70" compoundref="analysis_2figures_8py" startline="37" endline="41">CRttbarCO2l_gstr</referencedby>
+        <referencedby refid="namespacefigures_1ae807c2b73621981ae598033f8aa880a3" compoundref="analysis_2figures_8py" startline="42" endline="46">CRttbarCO2l_gstr_2b</referencedby>
+        <referencedby refid="namespacefigures_1a4e34cbdff38177e3c192ff4439407749" compoundref="analysis_2figures_8py" startline="82" endline="86">CRttW2l</referencedby>
+        <referencedby refid="namespacefigures_1ac53318ad1fde76d5250b3a930dae2246" compoundref="analysis_2figures_8py" startline="67" endline="71">CRttW2l_minus</referencedby>
+        <referencedby refid="namespacefigures_1a66037dc90f56b62709c8003c43172c34" compoundref="analysis_2figures_8py" startline="62" endline="66">CRttW2l_plus</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a2934a7660cf3785301e503ab34a1d7f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.CRttbarCO2l_CO</definition>
+        <argsstring>(sel)</argsstring>
+        <name>CRttbarCO2l_CO</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="27" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="27" bodyend="31"/>
+        <references refid="namespacefigures_1ac41d4d9a2bd79cec2e9c79c766acfdf1" compoundref="analysis_2figures_8py" startline="21" endline="26">GetValues</references>
+        <references refid="namespacefigures_1add122a74ca67d638d0fb0b299a4802d7" compoundref="analysis_2figures_8py" startline="3" endline="20">template_hist</references>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a529d6c0b5be4f794e93de3e30413809a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.CRttbarCO2l_CO_2b</definition>
+        <argsstring>(sel)</argsstring>
+        <name>CRttbarCO2l_CO_2b</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="32" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="32" bodyend="36"/>
+        <references refid="namespacefigures_1ac41d4d9a2bd79cec2e9c79c766acfdf1" compoundref="analysis_2figures_8py" startline="21" endline="26">GetValues</references>
+        <references refid="namespacefigures_1add122a74ca67d638d0fb0b299a4802d7" compoundref="analysis_2figures_8py" startline="3" endline="20">template_hist</references>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a032a8e7126679a3da7099a66f43a0b70" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.CRttbarCO2l_gstr</definition>
+        <argsstring>(sel)</argsstring>
+        <name>CRttbarCO2l_gstr</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="37" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="37" bodyend="41"/>
+        <references refid="namespacefigures_1ac41d4d9a2bd79cec2e9c79c766acfdf1" compoundref="analysis_2figures_8py" startline="21" endline="26">GetValues</references>
+        <references refid="namespacefigures_1add122a74ca67d638d0fb0b299a4802d7" compoundref="analysis_2figures_8py" startline="3" endline="20">template_hist</references>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1ae807c2b73621981ae598033f8aa880a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.CRttbarCO2l_gstr_2b</definition>
+        <argsstring>(sel)</argsstring>
+        <name>CRttbarCO2l_gstr_2b</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="42" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="42" bodyend="46"/>
+        <references refid="namespacefigures_1ac41d4d9a2bd79cec2e9c79c766acfdf1" compoundref="analysis_2figures_8py" startline="21" endline="26">GetValues</references>
+        <references refid="namespacefigures_1add122a74ca67d638d0fb0b299a4802d7" compoundref="analysis_2figures_8py" startline="3" endline="20">template_hist</references>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a1098026204eae17b921065ceebb72be7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.CR1b3lem</definition>
+        <argsstring>(sel)</argsstring>
+        <name>CR1b3lem</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="47" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="47" bodyend="51"/>
+        <references refid="namespacefigures_1ac41d4d9a2bd79cec2e9c79c766acfdf1" compoundref="analysis_2figures_8py" startline="21" endline="26">GetValues</references>
+        <references refid="namespacefigures_1add122a74ca67d638d0fb0b299a4802d7" compoundref="analysis_2figures_8py" startline="3" endline="20">template_hist</references>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1aee12770fcae74aea334a4e7b2b7774e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.CR1b3le</definition>
+        <argsstring>(sel)</argsstring>
+        <name>CR1b3le</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="52" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="52" bodyend="56"/>
+        <references refid="namespacefigures_1ac41d4d9a2bd79cec2e9c79c766acfdf1" compoundref="analysis_2figures_8py" startline="21" endline="26">GetValues</references>
+        <references refid="namespacefigures_1add122a74ca67d638d0fb0b299a4802d7" compoundref="analysis_2figures_8py" startline="3" endline="20">template_hist</references>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a05183b2d7b13db1d146846c1607f395a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.CR1b3lm</definition>
+        <argsstring>(sel)</argsstring>
+        <name>CR1b3lm</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="57" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="57" bodyend="61"/>
+        <references refid="namespacefigures_1ac41d4d9a2bd79cec2e9c79c766acfdf1" compoundref="analysis_2figures_8py" startline="21" endline="26">GetValues</references>
+        <references refid="namespacefigures_1add122a74ca67d638d0fb0b299a4802d7" compoundref="analysis_2figures_8py" startline="3" endline="20">template_hist</references>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a66037dc90f56b62709c8003c43172c34" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.CRttW2l_plus</definition>
+        <argsstring>(sel)</argsstring>
+        <name>CRttW2l_plus</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="62" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="62" bodyend="66"/>
+        <references refid="namespacefigures_1ac41d4d9a2bd79cec2e9c79c766acfdf1" compoundref="analysis_2figures_8py" startline="21" endline="26">GetValues</references>
+        <references refid="namespacefigures_1add122a74ca67d638d0fb0b299a4802d7" compoundref="analysis_2figures_8py" startline="3" endline="20">template_hist</references>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1ac53318ad1fde76d5250b3a930dae2246" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.CRttW2l_minus</definition>
+        <argsstring>(sel)</argsstring>
+        <name>CRttW2l_minus</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="67" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="67" bodyend="71"/>
+        <references refid="namespacefigures_1ac41d4d9a2bd79cec2e9c79c766acfdf1" compoundref="analysis_2figures_8py" startline="21" endline="26">GetValues</references>
+        <references refid="namespacefigures_1add122a74ca67d638d0fb0b299a4802d7" compoundref="analysis_2figures_8py" startline="3" endline="20">template_hist</references>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a1f85cef3f3b44885f07d963ab8050bf9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.CR1bplus</definition>
+        <argsstring>(sel)</argsstring>
+        <name>CR1bplus</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="72" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="72" bodyend="76"/>
+        <references refid="namespacefigures_1ac41d4d9a2bd79cec2e9c79c766acfdf1" compoundref="analysis_2figures_8py" startline="21" endline="26">GetValues</references>
+        <references refid="namespacefigures_1add122a74ca67d638d0fb0b299a4802d7" compoundref="analysis_2figures_8py" startline="3" endline="20">template_hist</references>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1ac4f134cc0b8b3dc3dd83427e5557c443" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.CR1bminus</definition>
+        <argsstring>(sel)</argsstring>
+        <name>CR1bminus</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="77" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="77" bodyend="81"/>
+        <references refid="namespacefigures_1ac41d4d9a2bd79cec2e9c79c766acfdf1" compoundref="analysis_2figures_8py" startline="21" endline="26">GetValues</references>
+        <references refid="namespacefigures_1add122a74ca67d638d0fb0b299a4802d7" compoundref="analysis_2figures_8py" startline="3" endline="20">template_hist</references>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a4e34cbdff38177e3c192ff4439407749" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.CRttW2l</definition>
+        <argsstring>(sel)</argsstring>
+        <name>CRttW2l</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="82" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="82" bodyend="86"/>
+        <references refid="namespacefigures_1ac41d4d9a2bd79cec2e9c79c766acfdf1" compoundref="analysis_2figures_8py" startline="21" endline="26">GetValues</references>
+        <references refid="namespacefigures_1add122a74ca67d638d0fb0b299a4802d7" compoundref="analysis_2figures_8py" startline="3" endline="20">template_hist</references>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a17abcf146f7542dbbd8f7cd0fcb905a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.VRttZ3l</definition>
+        <argsstring>(sel)</argsstring>
+        <name>VRttZ3l</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="87" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="87" bodyend="89"/>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a61ccb5db4a6741f71aa9449bd2ff183f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.VRttWCRSR</definition>
+        <argsstring>(sel)</argsstring>
+        <name>VRttWCRSR</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="90" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="90" bodyend="92"/>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a90279eaf2304f52d1bc8ce1ff7436c69" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.SR4b</definition>
+        <argsstring>(sel)</argsstring>
+        <name>SR4b</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="93" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="93" bodyend="95"/>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a27e7689e5fd8ca547d2b245e8b20065e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.SR2b</definition>
+        <argsstring>(sel)</argsstring>
+        <name>SR2b</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="96" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="96" bodyend="98"/>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a0e9582fa49bfccb8613d558076e59326" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.SR3b</definition>
+        <argsstring>(sel)</argsstring>
+        <name>SR3b</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="99" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="99" bodyend="101"/>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a01a262135408ef112caab6089b6d2153" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.SR2b2l</definition>
+        <argsstring>(sel)</argsstring>
+        <name>SR2b2l</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="102" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="102" bodyend="104"/>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1acd1f9fbbf1d411bd84a0d8fdc58d32d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.SR2b3l4l</definition>
+        <argsstring>(sel)</argsstring>
+        <name>SR2b3l4l</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="105" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="105" bodyend="107"/>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1ad967e15d608b2336d830455d6b2cd2f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.SR2b4l</definition>
+        <argsstring>(sel)</argsstring>
+        <name>SR2b4l</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="108" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="108" bodyend="110"/>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1ac254c035535dd6ffeea655c156ad88fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.SR3b2l</definition>
+        <argsstring>(sel)</argsstring>
+        <name>SR3b2l</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="111" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="111" bodyend="113"/>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a0a0571e315f1b3b6842a4cc08ff03f30" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.SR3b3l4l</definition>
+        <argsstring>(sel)</argsstring>
+        <name>SR3b3l4l</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="114" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="114" bodyend="116"/>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1acd400bdf8261f3f759cf0bdb45024227" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.SR3b4l</definition>
+        <argsstring>(sel)</argsstring>
+        <name>SR3b4l</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="117" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="117" bodyend="119"/>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a41fbeb64408c27ef0998366eb501a390" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.SR4b4l</definition>
+        <argsstring>(sel)</argsstring>
+        <name>SR4b4l</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="120" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="120" bodyend="122"/>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a2985a2cf0d3069d5da5c86ec0e564c4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.SR</definition>
+        <argsstring>(sel)</argsstring>
+        <name>SR</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="123" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="123" bodyend="125"/>
+        <referencedby refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</referencedby>
+        <referencedby refid="classregions_1aefc0916bc31bfb139b311846a0e33c3a" compoundref="regions_8cxx" startline="10" endline="45">regions::merge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures::entry</definition>
+        <argsstring>(sel)</argsstring>
+        <name>entry</name>
+        <param>
+          <type>sel</type>
+          <defname>sel</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="126" column="1" bodyfile="/workspaces/AnalysisG/studies/analysis/figures.py" bodystart="126" bodyend="152"/>
+        <references refid="namespacefigures_1a4e34cbdff38177e3c192ff4439407749" compoundref="analysis_2figures_8py" startline="82" endline="86">CRttW2l</references>
+        <references refid="namespacefigures_1a2985a2cf0d3069d5da5c86ec0e564c4f" compoundref="analysis_2figures_8py" startline="123" endline="125">SR</references>
+        <references refid="namespacefigures_1a27e7689e5fd8ca547d2b245e8b20065e" compoundref="analysis_2figures_8py" startline="96" endline="98">SR2b</references>
+        <references refid="namespacefigures_1a01a262135408ef112caab6089b6d2153" compoundref="analysis_2figures_8py" startline="102" endline="104">SR2b2l</references>
+        <references refid="namespacefigures_1acd1f9fbbf1d411bd84a0d8fdc58d32d4" compoundref="analysis_2figures_8py" startline="105" endline="107">SR2b3l4l</references>
+        <references refid="namespacefigures_1ad967e15d608b2336d830455d6b2cd2f0" compoundref="analysis_2figures_8py" startline="108" endline="110">SR2b4l</references>
+        <references refid="namespacefigures_1a0e9582fa49bfccb8613d558076e59326" compoundref="analysis_2figures_8py" startline="99" endline="101">SR3b</references>
+        <references refid="namespacefigures_1ac254c035535dd6ffeea655c156ad88fe" compoundref="analysis_2figures_8py" startline="111" endline="113">SR3b2l</references>
+        <references refid="namespacefigures_1a0a0571e315f1b3b6842a4cc08ff03f30" compoundref="analysis_2figures_8py" startline="114" endline="116">SR3b3l4l</references>
+        <references refid="namespacefigures_1acd400bdf8261f3f759cf0bdb45024227" compoundref="analysis_2figures_8py" startline="117" endline="119">SR3b4l</references>
+        <references refid="namespacefigures_1a90279eaf2304f52d1bc8ce1ff7436c69" compoundref="analysis_2figures_8py" startline="93" endline="95">SR4b</references>
+        <references refid="namespacefigures_1a41fbeb64408c27ef0998366eb501a390" compoundref="analysis_2figures_8py" startline="120" endline="122">SR4b4l</references>
+        <references refid="namespacefigures_1a61ccb5db4a6741f71aa9449bd2ff183f" compoundref="analysis_2figures_8py" startline="90" endline="92">VRttWCRSR</references>
+        <references refid="namespacefigures_1a17abcf146f7542dbbd8f7cd0fcb905a4" compoundref="analysis_2figures_8py" startline="87" endline="89">VRttZ3l</references>
+        <referencedby refid="namespacefigures_1a4425b98eb197b43b0612e82573268ce2" compoundref="benchmarks_2figures_8py" startline="169" endline="177">entry</referencedby>
+        <referencedby refid="namespacefigures_1a0f675134a908de3a789c674dd3cc17d4" compoundref="mc20__experimental_2figures_8py" startline="93" endline="173">entry_point</referencedby>
+        <referencedby refid="namespacefigures_1ad368148d68f494d607deac54588bdc02" compoundref="neutrino_2figures_8py" startline="316" endline="338">METError</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a228f54dd8316d85261af9340fd7ebb20" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.colr</definition>
+        <argsstring>(dev)</argsstring>
+        <name>colr</name>
+        <param>
+          <type>dev</type>
+          <defname>dev</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="4" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="4" bodyend="7"/>
+        <referencedby refid="namespacefigures_1a4a39fa068eff3dab855d5b6cb4adcd60" compoundref="benchmarks_2figures_8py" startline="70" endline="83">template_line</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a189dd544ec7719d9b492297fb3eb6c34" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.fancy</definition>
+        <argsstring>(dev)</argsstring>
+        <name>fancy</name>
+        <param>
+          <type>dev</type>
+          <defname>dev</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="8" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="8" bodyend="11"/>
+        <referencedby refid="namespacefigures_1a4a39fa068eff3dab855d5b6cb4adcd60" compoundref="benchmarks_2figures_8py" startline="70" endline="83">template_line</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a2fbbd4f8b54e2d13674de162462abcc0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.fancy_title</definition>
+        <argsstring>(key)</argsstring>
+        <name>fancy_title</name>
+        <param>
+          <type>key</type>
+          <defname>key</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="12" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="12" bodyend="42"/>
+        <referencedby refid="namespacefigures_1a058f5436d5be255476b003d5b0604ade" compoundref="benchmarks_2figures_8py" startline="133" endline="142">build_neutrino</referencedby>
+        <referencedby refid="namespacefigures_1a6b3e9795944b859bb399b1e7b1617c78" compoundref="benchmarks_2figures_8py" startline="122" endline="132">build_operators</referencedby>
+        <referencedby refid="namespacefigures_1a3335c733eecb185c9fde797cdb3fdbb4" compoundref="benchmarks_2figures_8py" startline="143" endline="155">build_physics</referencedby>
+        <referencedby refid="namespacefigures_1af43ea0b9729419de92dcfe2178f11b33" compoundref="benchmarks_2figures_8py" startline="156" endline="168">build_transform</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a7ee41137be54dd7077f88c9521feec33" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.fancy_modes</definition>
+        <argsstring>()</argsstring>
+        <name>fancy_modes</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="43" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="43" bodyend="53"/>
+        <referencedby refid="namespacefigures_1a058f5436d5be255476b003d5b0604ade" compoundref="benchmarks_2figures_8py" startline="133" endline="142">build_neutrino</referencedby>
+        <referencedby refid="namespacefigures_1a6b3e9795944b859bb399b1e7b1617c78" compoundref="benchmarks_2figures_8py" startline="122" endline="132">build_operators</referencedby>
+        <referencedby refid="namespacefigures_1a3335c733eecb185c9fde797cdb3fdbb4" compoundref="benchmarks_2figures_8py" startline="143" endline="155">build_physics</referencedby>
+        <referencedby refid="namespacefigures_1af43ea0b9729419de92dcfe2178f11b33" compoundref="benchmarks_2figures_8py" startline="156" endline="168">build_transform</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a1938963e3bd84f9d907e902245004675" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.fnames</definition>
+        <argsstring>(key)</argsstring>
+        <name>fnames</name>
+        <param>
+          <type>key</type>
+          <defname>key</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="54" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="54" bodyend="65"/>
+        <referencedby refid="namespacefigures_1a058f5436d5be255476b003d5b0604ade" compoundref="benchmarks_2figures_8py" startline="133" endline="142">build_neutrino</referencedby>
+        <referencedby refid="namespacefigures_1a6b3e9795944b859bb399b1e7b1617c78" compoundref="benchmarks_2figures_8py" startline="122" endline="132">build_operators</referencedby>
+        <referencedby refid="namespacefigures_1a3335c733eecb185c9fde797cdb3fdbb4" compoundref="benchmarks_2figures_8py" startline="143" endline="155">build_physics</referencedby>
+        <referencedby refid="namespacefigures_1af43ea0b9729419de92dcfe2178f11b33" compoundref="benchmarks_2figures_8py" startline="156" endline="168">build_transform</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1aba811d02feff3882765b0cd0bf35a9a7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.xdata</definition>
+        <argsstring>(data, mode)</argsstring>
+        <name>xdata</name>
+        <param>
+          <type>data</type>
+          <defname>data</defname>
+        </param>
+        <param>
+          <type>mode</type>
+          <defname>mode</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="66" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="66" bodyend="66"/>
+        <referencedby refid="namespacefigures_1a4a39fa068eff3dab855d5b6cb4adcd60" compoundref="benchmarks_2figures_8py" startline="70" endline="83">template_line</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1ab89ecfcd96b075d0293c94e9fcddfc26" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.ydata</definition>
+        <argsstring>(data, mode)</argsstring>
+        <name>ydata</name>
+        <param>
+          <type>data</type>
+          <defname>data</defname>
+        </param>
+        <param>
+          <type>mode</type>
+          <defname>mode</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="67" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="67" bodyend="67"/>
+        <referencedby refid="namespacefigures_1a4a39fa068eff3dab855d5b6cb4adcd60" compoundref="benchmarks_2figures_8py" startline="70" endline="83">template_line</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a8e2cc7f92566a231cde20dac93768561" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.edata</definition>
+        <argsstring>(data, mode)</argsstring>
+        <name>edata</name>
+        <param>
+          <type>data</type>
+          <defname>data</defname>
+        </param>
+        <param>
+          <type>mode</type>
+          <defname>mode</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="68" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="68" bodyend="69"/>
+        <referencedby refid="namespacefigures_1a4a39fa068eff3dab855d5b6cb4adcd60" compoundref="benchmarks_2figures_8py" startline="70" endline="83">template_line</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a4a39fa068eff3dab855d5b6cb4adcd60" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.template_line</definition>
+        <argsstring>(title, data, mode, linst=&quot;-&quot;, misc=None)</argsstring>
+        <name>template_line</name>
+        <param>
+          <type>title</type>
+          <defname>title</defname>
+        </param>
+        <param>
+          <type>data</type>
+          <defname>data</defname>
+        </param>
+        <param>
+          <type>mode</type>
+          <defname>mode</defname>
+        </param>
+        <param>
+          <type>linst</type>
+          <defname>linst</defname>
+          <defval>&quot;-&quot;</defval>
+        </param>
+        <param>
+          <type>misc</type>
+          <defname>misc</defname>
+          <defval>None</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="70" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="70" bodyend="83"/>
+        <references refid="namespacefigures_1a228f54dd8316d85261af9340fd7ebb20" compoundref="benchmarks_2figures_8py" startline="4" endline="7">colr</references>
+        <references refid="namespacefigures_1a8e2cc7f92566a231cde20dac93768561" compoundref="benchmarks_2figures_8py" startline="68" endline="69">edata</references>
+        <references refid="namespacefigures_1a189dd544ec7719d9b492297fb3eb6c34" compoundref="benchmarks_2figures_8py" startline="8" endline="11">fancy</references>
+        <references refid="namespacefigures_1aba811d02feff3882765b0cd0bf35a9a7" compoundref="benchmarks_2figures_8py" startline="66" endline="66">xdata</references>
+        <references refid="namespacefigures_1ab89ecfcd96b075d0293c94e9fcddfc26" compoundref="benchmarks_2figures_8py" startline="67" endline="67">ydata</references>
+        <referencedby refid="namespacefigures_1a058f5436d5be255476b003d5b0604ade" compoundref="benchmarks_2figures_8py" startline="133" endline="142">build_neutrino</referencedby>
+        <referencedby refid="namespacefigures_1a6b3e9795944b859bb399b1e7b1617c78" compoundref="benchmarks_2figures_8py" startline="122" endline="132">build_operators</referencedby>
+        <referencedby refid="namespacefigures_1a3335c733eecb185c9fde797cdb3fdbb4" compoundref="benchmarks_2figures_8py" startline="143" endline="155">build_physics</referencedby>
+        <referencedby refid="namespacefigures_1af43ea0b9729419de92dcfe2178f11b33" compoundref="benchmarks_2figures_8py" startline="156" endline="168">build_transform</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a90424b7dffd463be2ab9be36bf689719" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.template_Tline</definition>
+        <argsstring>(ytitle, opx, fname, lines)</argsstring>
+        <name>template_Tline</name>
+        <param>
+          <type>ytitle</type>
+          <defname>ytitle</defname>
+        </param>
+        <param>
+          <type>opx</type>
+          <defname>opx</defname>
+        </param>
+        <param>
+          <type>fname</type>
+          <defname>fname</defname>
+        </param>
+        <param>
+          <type>lines</type>
+          <defname>lines</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="84" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="84" bodyend="121"/>
+        <references refid="namespacemain_1afb1c72e4dc711507a45f671246a1cf7b" compoundref="benchmarks_2main_8py" startline="22">main.defaults</references>
+        <referencedby refid="namespacefigures_1a058f5436d5be255476b003d5b0604ade" compoundref="benchmarks_2figures_8py" startline="133" endline="142">build_neutrino</referencedby>
+        <referencedby refid="namespacefigures_1a6b3e9795944b859bb399b1e7b1617c78" compoundref="benchmarks_2figures_8py" startline="122" endline="132">build_operators</referencedby>
+        <referencedby refid="namespacefigures_1a3335c733eecb185c9fde797cdb3fdbb4" compoundref="benchmarks_2figures_8py" startline="143" endline="155">build_physics</referencedby>
+        <referencedby refid="namespacefigures_1af43ea0b9729419de92dcfe2178f11b33" compoundref="benchmarks_2figures_8py" startline="156" endline="168">build_transform</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a6b3e9795944b859bb399b1e7b1617c78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.build_operators</definition>
+        <argsstring>(pkt)</argsstring>
+        <name>build_operators</name>
+        <param>
+          <type>pkt</type>
+          <defname>pkt</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="122" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="122" bodyend="132"/>
+        <references refid="namespacefigures_1a7ee41137be54dd7077f88c9521feec33" compoundref="benchmarks_2figures_8py" startline="43" endline="53">fancy_modes</references>
+        <references refid="namespacefigures_1a2fbbd4f8b54e2d13674de162462abcc0" compoundref="benchmarks_2figures_8py" startline="12" endline="42">fancy_title</references>
+        <references refid="namespacefigures_1a1938963e3bd84f9d907e902245004675" compoundref="benchmarks_2figures_8py" startline="54" endline="65">fnames</references>
+        <references refid="namespacefigures_1a4a39fa068eff3dab855d5b6cb4adcd60" compoundref="benchmarks_2figures_8py" startline="70" endline="83">template_line</references>
+        <references refid="namespacefigures_1a90424b7dffd463be2ab9be36bf689719" compoundref="benchmarks_2figures_8py" startline="84" endline="121">template_Tline</references>
+        <referencedby refid="namespacefigures_1a4425b98eb197b43b0612e82573268ce2" compoundref="benchmarks_2figures_8py" startline="169" endline="177">entry</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a058f5436d5be255476b003d5b0604ade" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.build_neutrino</definition>
+        <argsstring>(pkt)</argsstring>
+        <name>build_neutrino</name>
+        <param>
+          <type>pkt</type>
+          <defname>pkt</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="133" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="133" bodyend="142"/>
+        <references refid="namespacefigures_1a7ee41137be54dd7077f88c9521feec33" compoundref="benchmarks_2figures_8py" startline="43" endline="53">fancy_modes</references>
+        <references refid="namespacefigures_1a2fbbd4f8b54e2d13674de162462abcc0" compoundref="benchmarks_2figures_8py" startline="12" endline="42">fancy_title</references>
+        <references refid="namespacefigures_1a1938963e3bd84f9d907e902245004675" compoundref="benchmarks_2figures_8py" startline="54" endline="65">fnames</references>
+        <references refid="namespacefigures_1a4a39fa068eff3dab855d5b6cb4adcd60" compoundref="benchmarks_2figures_8py" startline="70" endline="83">template_line</references>
+        <references refid="namespacefigures_1a90424b7dffd463be2ab9be36bf689719" compoundref="benchmarks_2figures_8py" startline="84" endline="121">template_Tline</references>
+        <referencedby refid="namespacefigures_1a4425b98eb197b43b0612e82573268ce2" compoundref="benchmarks_2figures_8py" startline="169" endline="177">entry</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a3335c733eecb185c9fde797cdb3fdbb4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.build_physics</definition>
+        <argsstring>(pkt, frame)</argsstring>
+        <name>build_physics</name>
+        <param>
+          <type>pkt</type>
+          <defname>pkt</defname>
+        </param>
+        <param>
+          <type>frame</type>
+          <defname>frame</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="143" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="143" bodyend="155"/>
+        <references refid="namespacefigures_1a7ee41137be54dd7077f88c9521feec33" compoundref="benchmarks_2figures_8py" startline="43" endline="53">fancy_modes</references>
+        <references refid="namespacefigures_1a2fbbd4f8b54e2d13674de162462abcc0" compoundref="benchmarks_2figures_8py" startline="12" endline="42">fancy_title</references>
+        <references refid="namespacefigures_1a1938963e3bd84f9d907e902245004675" compoundref="benchmarks_2figures_8py" startline="54" endline="65">fnames</references>
+        <references refid="namespacefigures_1a4a39fa068eff3dab855d5b6cb4adcd60" compoundref="benchmarks_2figures_8py" startline="70" endline="83">template_line</references>
+        <references refid="namespacefigures_1a90424b7dffd463be2ab9be36bf689719" compoundref="benchmarks_2figures_8py" startline="84" endline="121">template_Tline</references>
+        <referencedby refid="namespacefigures_1a4425b98eb197b43b0612e82573268ce2" compoundref="benchmarks_2figures_8py" startline="169" endline="177">entry</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1af43ea0b9729419de92dcfe2178f11b33" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.build_transform</definition>
+        <argsstring>(pkt)</argsstring>
+        <name>build_transform</name>
+        <param>
+          <type>pkt</type>
+          <defname>pkt</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="156" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="156" bodyend="168"/>
+        <references refid="namespacefigures_1a7ee41137be54dd7077f88c9521feec33" compoundref="benchmarks_2figures_8py" startline="43" endline="53">fancy_modes</references>
+        <references refid="namespacefigures_1a2fbbd4f8b54e2d13674de162462abcc0" compoundref="benchmarks_2figures_8py" startline="12" endline="42">fancy_title</references>
+        <references refid="namespacefigures_1a1938963e3bd84f9d907e902245004675" compoundref="benchmarks_2figures_8py" startline="54" endline="65">fnames</references>
+        <references refid="namespacefigures_1a4a39fa068eff3dab855d5b6cb4adcd60" compoundref="benchmarks_2figures_8py" startline="70" endline="83">template_line</references>
+        <references refid="namespacefigures_1a90424b7dffd463be2ab9be36bf689719" compoundref="benchmarks_2figures_8py" startline="84" endline="121">template_Tline</references>
+        <referencedby refid="namespacefigures_1a4425b98eb197b43b0612e82573268ce2" compoundref="benchmarks_2figures_8py" startline="169" endline="177">entry</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a4425b98eb197b43b0612e82573268ce2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures::entry</definition>
+        <argsstring>(pkt, devices)</argsstring>
+        <name>entry</name>
+        <param>
+          <type>pkt</type>
+          <defname>pkt</defname>
+        </param>
+        <param>
+          <type>devices</type>
+          <defname>devices</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/benchmarks/figures.py" line="169" column="1" bodyfile="/workspaces/AnalysisG/studies/benchmarks/figures.py" bodystart="169" bodyend="177"/>
+        <references refid="namespacefigures_1a058f5436d5be255476b003d5b0604ade" compoundref="benchmarks_2figures_8py" startline="133" endline="142">build_neutrino</references>
+        <references refid="namespacefigures_1a6b3e9795944b859bb399b1e7b1617c78" compoundref="benchmarks_2figures_8py" startline="122" endline="132">build_operators</references>
+        <references refid="namespacefigures_1a3335c733eecb185c9fde797cdb3fdbb4" compoundref="benchmarks_2figures_8py" startline="143" endline="155">build_physics</references>
+        <references refid="namespacefigures_1af43ea0b9729419de92dcfe2178f11b33" compoundref="benchmarks_2figures_8py" startline="156" endline="168">build_transform</references>
+        <references refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a74a531b0712b7208d101cfa2bef6879e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.null_cut</definition>
+        <argsstring>(p, m, pdg, is_l, nj)</argsstring>
+        <name>null_cut</name>
+        <param>
+          <type>p</type>
+          <defname>p</defname>
+        </param>
+        <param>
+          <type>m</type>
+          <defname>m</defname>
+        </param>
+        <param>
+          <type>pdg</type>
+          <defname>pdg</defname>
+        </param>
+        <param>
+          <type>is_l</type>
+          <defname>is_l</defname>
+        </param>
+        <param>
+          <type>nj</type>
+          <defname>nj</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" line="6" column="1" bodyfile="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" bodystart="6" bodyend="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1ab5f9677628a6e5050889317c4d93712b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.enforce_sym</definition>
+        <argsstring>(p, m, pgd, is_l, nj)</argsstring>
+        <name>enforce_sym</name>
+        <param>
+          <type>p</type>
+          <defname>p</defname>
+        </param>
+        <param>
+          <type>m</type>
+          <defname>m</defname>
+        </param>
+        <param>
+          <type>pgd</type>
+          <defname>pgd</defname>
+        </param>
+        <param>
+          <type>is_l</type>
+          <defname>is_l</defname>
+        </param>
+        <param>
+          <type>nj</type>
+          <defname>nj</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" line="7" column="1" bodyfile="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" bodystart="7" bodyend="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a8529e2b0a11d1e5ed9d86de397eb2986" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.enforce_sym_tj</definition>
+        <argsstring>(p, m, pgd, is_l, nj)</argsstring>
+        <name>enforce_sym_tj</name>
+        <param>
+          <type>p</type>
+          <defname>p</defname>
+        </param>
+        <param>
+          <type>m</type>
+          <defname>m</defname>
+        </param>
+        <param>
+          <type>pgd</type>
+          <defname>pgd</defname>
+        </param>
+        <param>
+          <type>is_l</type>
+          <defname>is_l</defname>
+        </param>
+        <param>
+          <type>nj</type>
+          <defname>nj</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" line="11" column="1" bodyfile="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" bodystart="11" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a1d2fbf9a5f4cfcf60d72529c7a0657a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.enforce_sym_jet</definition>
+        <argsstring>(p, m, pgd, is_l, nj)</argsstring>
+        <name>enforce_sym_jet</name>
+        <param>
+          <type>p</type>
+          <defname>p</defname>
+        </param>
+        <param>
+          <type>m</type>
+          <defname>m</defname>
+        </param>
+        <param>
+          <type>pgd</type>
+          <defname>pgd</defname>
+        </param>
+        <param>
+          <type>is_l</type>
+          <defname>is_l</defname>
+        </param>
+        <param>
+          <type>nj</type>
+          <defname>nj</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" line="28" column="1" bodyfile="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" bodystart="28" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a24abefb0dd409355a4c92f5f5c574616" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.Tabular</definition>
+        <argsstring>(topx, target, title, mode, rec=None)</argsstring>
+        <name>Tabular</name>
+        <param>
+          <type>topx</type>
+          <defname>topx</defname>
+        </param>
+        <param>
+          <type>target</type>
+          <defname>target</defname>
+        </param>
+        <param>
+          <type>title</type>
+          <defname>title</defname>
+        </param>
+        <param>
+          <type>mode</type>
+          <defname>mode</defname>
+        </param>
+        <param>
+          <type>rec</type>
+          <defname>rec</defname>
+          <defval>None</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" line="31" column="1" bodyfile="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" bodystart="31" bodyend="66"/>
+        <references refid="namespacehelper_1aab41deb5b495c4d4c993788bdf5c5947" compoundref="mc20__experimental_2helper_8py" startline="4" endline="5">helper.mag</references>
+        <references refid="namespacehelper_1a60d07b59d3989fec2a0b9944156184a7" compoundref="mc20__experimental_2helper_8py" startline="6" endline="13">helper.mrg</references>
+        <references refid="namespacehelper_1a3fd1d534ecf2a857026ff37351ada130" compoundref="mc20__experimental_2helper_8py" startline="30" endline="33">helper.pc</references>
+        <referencedby refid="namespacefigures_1a0f675134a908de3a789c674dd3cc17d4" compoundref="mc20__experimental_2figures_8py" startline="93" endline="173">entry_point</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a3abe481f6f64afcd8cc17a8f6fd8719c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.TabularFlow</definition>
+        <argsstring>(topx, stat, title, mode, min_, max_)</argsstring>
+        <name>TabularFlow</name>
+        <param>
+          <type>topx</type>
+          <defname>topx</defname>
+        </param>
+        <param>
+          <type>stat</type>
+          <defname>stat</defname>
+        </param>
+        <param>
+          <type>title</type>
+          <defname>title</defname>
+        </param>
+        <param>
+          <type>mode</type>
+          <defname>mode</defname>
+        </param>
+        <param>
+          <type>min_</type>
+          <defname>min_</defname>
+        </param>
+        <param>
+          <type>max_</type>
+          <defname>max_</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" line="67" column="1" bodyfile="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" bodystart="67" bodyend="92"/>
+        <references refid="namespacehelper_1aab41deb5b495c4d4c993788bdf5c5947" compoundref="mc20__experimental_2helper_8py" startline="4" endline="5">helper.mag</references>
+        <references refid="namespacehelper_1a60d07b59d3989fec2a0b9944156184a7" compoundref="mc20__experimental_2helper_8py" startline="6" endline="13">helper.mrg</references>
+        <references refid="namespacehelper_1a3fd1d534ecf2a857026ff37351ada130" compoundref="mc20__experimental_2helper_8py" startline="30" endline="33">helper.pc</references>
+        <referencedby refid="namespacefigures_1a0f675134a908de3a789c674dd3cc17d4" compoundref="mc20__experimental_2figures_8py" startline="93" endline="173">entry_point</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a0f675134a908de3a789c674dd3cc17d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.entry_point</definition>
+        <argsstring>(fancy, mode, pth, tree, plt=False)</argsstring>
+        <name>entry_point</name>
+        <param>
+          <type><ref refid="namespacefigures_1a189dd544ec7719d9b492297fb3eb6c34" kindref="member">fancy</ref></type>
+          <defname>fancy</defname>
+        </param>
+        <param>
+          <type>mode</type>
+          <defname>mode</defname>
+        </param>
+        <param>
+          <type>pth</type>
+          <defname>pth</defname>
+        </param>
+        <param>
+          <type>tree</type>
+          <defname>tree</defname>
+        </param>
+        <param>
+          <type>plt</type>
+          <defname>plt</defname>
+          <defval>False</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" line="93" column="1" bodyfile="/workspaces/AnalysisG/studies/mc20_experimental/figures.py" bodystart="93" bodyend="173"/>
+        <references refid="namespacehelper_1ac97f044c8d7cf2b58b2b44df1a74b652" compoundref="mc20__experimental_2helper_8py" startline="217" endline="339">helper.constrain_top_mass</references>
+        <references refid="namespacehelper_1aacadb5cce954c297cac29d885c72eec5" compoundref="mc20__experimental_2helper_8py" startline="340" endline="456">helper.constrain_top_njets</references>
+        <references refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</references>
+        <references refid="namespacehelper_1a1214e059db067d1b76aa4d659c8e15e0" compoundref="mc20__experimental_2helper_8py" startline="482" endline="490">helper.fetch_all</references>
+        <references refid="namespacehelper_1af6a93f8b228f72389ec67f159c067410" compoundref="mc20__experimental_2helper_8py" startline="480" endline="481">helper.fetch_data</references>
+        <references refid="namespacefigures_1a24abefb0dd409355a4c92f5f5c574616" compoundref="mc20__experimental_2figures_8py" startline="31" endline="66">Tabular</references>
+        <references refid="namespacefigures_1a3abe481f6f64afcd8cc17a8f6fd8719c" compoundref="mc20__experimental_2figures_8py" startline="67" endline="92">TabularFlow</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a824a4d7830d6fcd7057304ad0a7fde54" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.statistics</definition>
+        <argsstring>(data, eps=None)</argsstring>
+        <name>statistics</name>
+        <param>
+          <type>data</type>
+          <defname>data</defname>
+        </param>
+        <param>
+          <type>eps</type>
+          <defname>eps</defname>
+          <defval>None</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/figures.py" line="6" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/figures.py" bodystart="6" bodyend="13"/>
+        <referencedby refid="namespacefigures_1ad368148d68f494d607deac54588bdc02" compoundref="neutrino_2figures_8py" startline="316" endline="338">METError</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a17ca733e3099a3ac6f20226459f11024" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.colors</definition>
+        <argsstring>()</argsstring>
+        <name>colors</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/figures.py" line="14" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/figures.py" bodystart="14" bodyend="21"/>
+        <referencedby refid="namespacefigures_1a57a2564ead1905fb340ac1f51669848e" compoundref="neutrino_2figures_8py" startline="267" endline="315">Chi2Symbolic</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a5700cf0a95ba76503f75942234684645" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.print_statistics</definition>
+        <argsstring>(data)</argsstring>
+        <name>print_statistics</name>
+        <param>
+          <type>data</type>
+          <defname>data</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/figures.py" line="22" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/figures.py" bodystart="22" bodyend="27"/>
+        <referencedby refid="namespacefigures_1ad368148d68f494d607deac54588bdc02" compoundref="neutrino_2figures_8py" startline="316" endline="338">METError</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a4617eb2e9c8d3954ea76bc8f3db2c6ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.Fancy</definition>
+        <argsstring>(tl)</argsstring>
+        <name>Fancy</name>
+        <param>
+          <type>tl</type>
+          <defname>tl</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/figures.py" line="28" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/figures.py" bodystart="28" bodyend="41"/>
+        <referencedby refid="namespacefigures_1a3dd94963602c9cc00334c7254dd18550" compoundref="neutrino_2figures_8py" startline="130" endline="164">Chi2Distribution</referencedby>
+        <referencedby refid="namespacefigures_1a57a2564ead1905fb340ac1f51669848e" compoundref="neutrino_2figures_8py" startline="267" endline="315">Chi2Symbolic</referencedby>
+        <referencedby refid="namespacefigures_1ac5c60d7ebce6520ce5287e377d210fdd" compoundref="neutrino_2figures_8py" startline="165" endline="266">EllipseDistance</referencedby>
+        <referencedby refid="namespacefigures_1aa38e86204ba8539b9aadf0ccb555867e" compoundref="neutrino_2figures_8py" startline="68" endline="129">KSTestingDynamic</referencedby>
+        <referencedby refid="namespacefigures_1ad368148d68f494d607deac54588bdc02" compoundref="neutrino_2figures_8py" startline="316" endline="338">METError</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1ab237102b5b926b7362955a66dde278ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.default</definition>
+        <argsstring>(hist, pth)</argsstring>
+        <name>default</name>
+        <param>
+          <type>hist</type>
+          <defname>hist</defname>
+        </param>
+        <param>
+          <type>pth</type>
+          <defname>pth</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/figures.py" line="42" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/figures.py" bodystart="42" bodyend="55"/>
+        <referencedby refid="namespacefigures_1ac5c60d7ebce6520ce5287e377d210fdd" compoundref="neutrino_2figures_8py" startline="165" endline="266">EllipseDistance</referencedby>
+        <referencedby refid="namespacefigures_1ad368148d68f494d607deac54588bdc02" compoundref="neutrino_2figures_8py" startline="316" endline="338">METError</referencedby>
+        <referencedby refid="namespacefigures_1a8858806b667542fd46e0fd6293924b11" compoundref="neutrino_2figures_8py" startline="56" endline="67">template</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a8858806b667542fd46e0fd6293924b11" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.template</definition>
+        <argsstring>(xdata, title, color=None, pth=None, params={})</argsstring>
+        <name>template</name>
+        <param>
+          <type><ref refid="namespacefigures_1aba811d02feff3882765b0cd0bf35a9a7" kindref="member">xdata</ref></type>
+          <defname>xdata</defname>
+        </param>
+        <param>
+          <type>title</type>
+          <defname>title</defname>
+        </param>
+        <param>
+          <type>color</type>
+          <defname>color</defname>
+          <defval>None</defval>
+        </param>
+        <param>
+          <type>pth</type>
+          <defname>pth</defname>
+          <defval>None</defval>
+        </param>
+        <param>
+          <type>params</type>
+          <defname>params</defname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/figures.py" line="56" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/figures.py" bodystart="56" bodyend="67"/>
+        <references refid="namespacefigures_1ab237102b5b926b7362955a66dde278ad" compoundref="neutrino_2figures_8py" startline="42" endline="55">default</references>
+        <referencedby refid="namespacefigures_1a3dd94963602c9cc00334c7254dd18550" compoundref="neutrino_2figures_8py" startline="130" endline="164">Chi2Distribution</referencedby>
+        <referencedby refid="namespacefigures_1a57a2564ead1905fb340ac1f51669848e" compoundref="neutrino_2figures_8py" startline="267" endline="315">Chi2Symbolic</referencedby>
+        <referencedby refid="namespacefigures_1ac5c60d7ebce6520ce5287e377d210fdd" compoundref="neutrino_2figures_8py" startline="165" endline="266">EllipseDistance</referencedby>
+        <referencedby refid="namespacefigures_1aa38e86204ba8539b9aadf0ccb555867e" compoundref="neutrino_2figures_8py" startline="68" endline="129">KSTestingDynamic</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1aa38e86204ba8539b9aadf0ccb555867e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.KSTestingDynamic</definition>
+        <argsstring>(data)</argsstring>
+        <name>KSTestingDynamic</name>
+        <param>
+          <type>data</type>
+          <defname>data</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/figures.py" line="68" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/figures.py" bodystart="68" bodyend="129"/>
+        <references refid="namespacefigures_1a4617eb2e9c8d3954ea76bc8f3db2c6ab" compoundref="neutrino_2figures_8py" startline="28" endline="41">Fancy</references>
+        <references refid="namespacefigures_1a8858806b667542fd46e0fd6293924b11" compoundref="neutrino_2figures_8py" startline="56" endline="67">template</references>
+        <referencedby refid="namespacefigures_1ad368148d68f494d607deac54588bdc02" compoundref="neutrino_2figures_8py" startline="316" endline="338">METError</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a3dd94963602c9cc00334c7254dd18550" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.Chi2Distribution</definition>
+        <argsstring>(data)</argsstring>
+        <name>Chi2Distribution</name>
+        <param>
+          <type>data</type>
+          <defname>data</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/figures.py" line="130" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/figures.py" bodystart="130" bodyend="164"/>
+        <references refid="namespacefigures_1a4617eb2e9c8d3954ea76bc8f3db2c6ab" compoundref="neutrino_2figures_8py" startline="28" endline="41">Fancy</references>
+        <references refid="namespacefigures_1a8858806b667542fd46e0fd6293924b11" compoundref="neutrino_2figures_8py" startline="56" endline="67">template</references>
+        <referencedby refid="namespacefigures_1ad368148d68f494d607deac54588bdc02" compoundref="neutrino_2figures_8py" startline="316" endline="338">METError</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1ac5c60d7ebce6520ce5287e377d210fdd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.EllipseDistance</definition>
+        <argsstring>(data)</argsstring>
+        <name>EllipseDistance</name>
+        <param>
+          <type>data</type>
+          <defname>data</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/figures.py" line="165" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/figures.py" bodystart="165" bodyend="266"/>
+        <references refid="namespacefigures_1ab237102b5b926b7362955a66dde278ad" compoundref="neutrino_2figures_8py" startline="42" endline="55">default</references>
+        <references refid="namespacefigures_1a4617eb2e9c8d3954ea76bc8f3db2c6ab" compoundref="neutrino_2figures_8py" startline="28" endline="41">Fancy</references>
+        <references refid="namespacefigures_1a8858806b667542fd46e0fd6293924b11" compoundref="neutrino_2figures_8py" startline="56" endline="67">template</references>
+        <referencedby refid="namespacefigures_1ad368148d68f494d607deac54588bdc02" compoundref="neutrino_2figures_8py" startline="316" endline="338">METError</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a57a2564ead1905fb340ac1f51669848e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.Chi2Symbolic</definition>
+        <argsstring>(data)</argsstring>
+        <name>Chi2Symbolic</name>
+        <param>
+          <type>data</type>
+          <defname>data</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/figures.py" line="267" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/figures.py" bodystart="267" bodyend="315"/>
+        <references refid="namespacefigures_1a17ca733e3099a3ac6f20226459f11024" compoundref="neutrino_2figures_8py" startline="14" endline="21">colors</references>
+        <references refid="namespacefigures_1a4617eb2e9c8d3954ea76bc8f3db2c6ab" compoundref="neutrino_2figures_8py" startline="28" endline="41">Fancy</references>
+        <references refid="namespacefigures_1a8858806b667542fd46e0fd6293924b11" compoundref="neutrino_2figures_8py" startline="56" endline="67">template</references>
+        <referencedby refid="namespacefigures_1ad368148d68f494d607deac54588bdc02" compoundref="neutrino_2figures_8py" startline="316" endline="338">METError</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1ad368148d68f494d607deac54588bdc02" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.METError</definition>
+        <argsstring>(data)</argsstring>
+        <name>METError</name>
+        <param>
+          <type>data</type>
+          <defname>data</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/figures.py" line="316" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/figures.py" bodystart="316" bodyend="338"/>
+        <references refid="namespacefigures_1a3dd94963602c9cc00334c7254dd18550" compoundref="neutrino_2figures_8py" startline="130" endline="164">Chi2Distribution</references>
+        <references refid="namespacefigures_1a57a2564ead1905fb340ac1f51669848e" compoundref="neutrino_2figures_8py" startline="267" endline="315">Chi2Symbolic</references>
+        <references refid="namespacehelper_1a41ae8d2d649292f797a3a87c4778e47e" compoundref="neutrino_2helper_8py" startline="151" endline="159">helper.compxl</references>
+        <references refid="namespacefigures_1ab237102b5b926b7362955a66dde278ad" compoundref="neutrino_2figures_8py" startline="42" endline="55">default</references>
+        <references refid="namespacefigures_1ac5c60d7ebce6520ce5287e377d210fdd" compoundref="neutrino_2figures_8py" startline="165" endline="266">EllipseDistance</references>
+        <references refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</references>
+        <references refid="namespacefigures_1a4617eb2e9c8d3954ea76bc8f3db2c6ab" compoundref="neutrino_2figures_8py" startline="28" endline="41">Fancy</references>
+        <references refid="namespacefigures_1aa38e86204ba8539b9aadf0ccb555867e" compoundref="neutrino_2figures_8py" startline="68" endline="129">KSTestingDynamic</references>
+        <references refid="namespacefigures_1a5700cf0a95ba76503f75942234684645" compoundref="neutrino_2figures_8py" startline="22" endline="27">print_statistics</references>
+        <references refid="namespacefigures_1a824a4d7830d6fcd7057304ad0a7fde54" compoundref="neutrino_2figures_8py" startline="6" endline="13">statistics</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a1d2684578320c9dd2425ab8c2417994b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.path</definition>
+        <argsstring>(hist)</argsstring>
+        <name>path</name>
+        <param>
+          <type>hist</type>
+          <defname>hist</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/topreconstruction/figures.py" line="3" column="1" bodyfile="/workspaces/AnalysisG/studies/topreconstruction/figures.py" bodystart="3" bodyend="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a934100c55ad615e54ac62cbc68f1a48b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.revert_mapping</definition>
+        <argsstring>(data)</argsstring>
+        <name>revert_mapping</name>
+        <param>
+          <type>data</type>
+          <defname>data</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/topreconstruction/figures.py" line="19" column="1" bodyfile="/workspaces/AnalysisG/studies/topreconstruction/figures.py" bodystart="19" bodyend="33"/>
+        <referencedby refid="namespacefigures_1a60692f1bf2ff486f2ee5d3206108def8" compoundref="topreconstruction_2figures_8py" startline="34" endline="162">entry</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacefigures_1a60692f1bf2ff486f2ee5d3206108def8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def figures.entry</definition>
+        <argsstring>(ttbar, tttt, meta)</argsstring>
+        <name>entry</name>
+        <param>
+          <type>ttbar</type>
+          <defname>ttbar</defname>
+        </param>
+        <param>
+          <type>tttt</type>
+          <defname>tttt</defname>
+        </param>
+        <param>
+          <type><ref refid="classmeta" kindref="compound">meta</ref></type>
+          <defname>meta</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/topreconstruction/figures.py" line="34" column="1" bodyfile="/workspaces/AnalysisG/studies/topreconstruction/figures.py" bodystart="34" bodyend="162"/>
+        <references refid="namespacefigures_1a14189d6700a7bc291b499af0fb1c6180" compoundref="analysis_2figures_8py" startline="126" endline="152">entry</references>
+        <references refid="namespacefigures_1a934100c55ad615e54ac62cbc68f1a48b" compoundref="topreconstruction_2figures_8py" startline="19" endline="33">revert_mapping</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/analysis/figures.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

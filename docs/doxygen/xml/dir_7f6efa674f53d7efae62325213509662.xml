@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_7f6efa674f53d7efae62325213509662" kind="dir">
+    <compoundname>lossfx</compoundname>
+    <innerdir refid="dir_1da3f0eaa9f91739bdce20760bd83d71">cxx</innerdir>
+    <innerdir refid="dir_0339d01db2bb45d6b5ee1700ecd0fa58">include</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/lossfx/"/>
+  </compounddef>
+</doxygen>

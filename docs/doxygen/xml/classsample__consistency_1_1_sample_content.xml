@@ -1,0 +1,223 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classsample__consistency_1_1_sample_content" kind="class" language="Python" prot="public">
+    <compoundname>sample_consistency::SampleContent</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classsample__consistency_1_1_sample_content_1ac39551d9fadef04978bc7e8df17dbc7f" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>sample_consistency.SampleContent::_isdata</definition>
+        <argsstring></argsstring>
+        <name>_isdata</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/sample_consistency.py" line="8" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/sample_consistency.py" bodystart="8" bodyend="-1"/>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a5789fa6af7ab493815d4ffc8d4289351" compoundref="sample__consistency_8py" startline="7" endline="15">sample_consistency.SampleContent.__init__</referencedby>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a2c466248adbb922bfb1e45a472bc0f34" compoundref="sample__consistency_8py" startline="16" endline="36">sample_consistency.SampleContent.addSample</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classsample__consistency_1_1_sample_content_1a21bd680c89233425af2454d2d9c8e572" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>sample_consistency.SampleContent::_kfold</definition>
+        <argsstring></argsstring>
+        <name>_kfold</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/sample_consistency.py" line="9" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/sample_consistency.py" bodystart="9" bodyend="-1"/>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a5789fa6af7ab493815d4ffc8d4289351" compoundref="sample__consistency_8py" startline="7" endline="15">sample_consistency.SampleContent.__init__</referencedby>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a2c466248adbb922bfb1e45a472bc0f34" compoundref="sample__consistency_8py" startline="16" endline="36">sample_consistency.SampleContent.addSample</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classsample__consistency_1_1_sample_content_1a61bc51ad781130ba11b44637f1ad6f2a" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>sample_consistency.SampleContent::_epoch</definition>
+        <argsstring></argsstring>
+        <name>_epoch</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/sample_consistency.py" line="10" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/sample_consistency.py" bodystart="10" bodyend="-1"/>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a5789fa6af7ab493815d4ffc8d4289351" compoundref="sample__consistency_8py" startline="7" endline="15">sample_consistency.SampleContent.__init__</referencedby>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a2c466248adbb922bfb1e45a472bc0f34" compoundref="sample__consistency_8py" startline="16" endline="36">sample_consistency.SampleContent.addSample</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classsample__consistency_1_1_sample_content_1a16616a423fc64e462ad398ec37e1cbb5" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>sample_consistency.SampleContent::_mrk</definition>
+        <argsstring></argsstring>
+        <name>_mrk</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/sample_consistency.py" line="11" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/sample_consistency.py" bodystart="11" bodyend="-1"/>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a5789fa6af7ab493815d4ffc8d4289351" compoundref="sample__consistency_8py" startline="7" endline="15">sample_consistency.SampleContent.__init__</referencedby>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a2c466248adbb922bfb1e45a472bc0f34" compoundref="sample__consistency_8py" startline="16" endline="36">sample_consistency.SampleContent.addSample</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classsample__consistency_1_1_sample_content_1af75bf5254fa4b32823ebd7a3dce4a2f3" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>sample_consistency.SampleContent::_trig</definition>
+        <argsstring></argsstring>
+        <name>_trig</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/sample_consistency.py" line="12" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/sample_consistency.py" bodystart="12" bodyend="-1"/>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a5789fa6af7ab493815d4ffc8d4289351" compoundref="sample__consistency_8py" startline="7" endline="15">sample_consistency.SampleContent.__init__</referencedby>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a2c466248adbb922bfb1e45a472bc0f34" compoundref="sample__consistency_8py" startline="16" endline="36">sample_consistency.SampleContent.addSample</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classsample__consistency_1_1_sample_content_1a77cea28c0ac361717838367318bc0757" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>sample_consistency.SampleContent::_samples</definition>
+        <argsstring></argsstring>
+        <name>_samples</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/sample_consistency.py" line="13" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/sample_consistency.py" bodystart="13" bodyend="-1"/>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a5789fa6af7ab493815d4ffc8d4289351" compoundref="sample__consistency_8py" startline="7" endline="15">sample_consistency.SampleContent.__init__</referencedby>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a2c466248adbb922bfb1e45a472bc0f34" compoundref="sample__consistency_8py" startline="16" endline="36">sample_consistency.SampleContent.addSample</referencedby>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1ac31c369f905ec99cc73970dc51fa31db" compoundref="sample__consistency_8py" startline="37" endline="37">sample_consistency.SampleContent.__iter__</referencedby>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a51cee21066158f983c0385d55d489dfd" compoundref="sample__consistency_8py" startline="38" endline="41">sample_consistency.SampleContent.__next__</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classsample__consistency_1_1_sample_content_1ad25ea1f512761bf800b51dbb43111354" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>sample_consistency.SampleContent::_iter</definition>
+        <argsstring></argsstring>
+        <name>_iter</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/sample_consistency.py" line="14" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/sample_consistency.py" bodystart="14" bodyend="-1"/>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a5789fa6af7ab493815d4ffc8d4289351" compoundref="sample__consistency_8py" startline="7" endline="15">sample_consistency.SampleContent.__init__</referencedby>
+        <referencedby refid="classsample__consistency_1_1_sample_content_1a51cee21066158f983c0385d55d489dfd" compoundref="sample__consistency_8py" startline="38" endline="41">sample_consistency.SampleContent.__next__</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classsample__consistency_1_1_sample_content_1a5789fa6af7ab493815d4ffc8d4289351" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def sample_consistency.SampleContent.__init__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/sample_consistency.py" line="7" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/sample_consistency.py" bodystart="7" bodyend="15"/>
+        <references refid="classsample__consistency_1_1_sample_content_1a61bc51ad781130ba11b44637f1ad6f2a" compoundref="sample__consistency_8py" startline="10">sample_consistency.SampleContent._epoch</references>
+        <references refid="classsample__consistency_1_1_sample_content_1ac39551d9fadef04978bc7e8df17dbc7f" compoundref="sample__consistency_8py" startline="8">sample_consistency.SampleContent._isdata</references>
+        <references refid="classsample__consistency_1_1_sample_content_1ad25ea1f512761bf800b51dbb43111354" compoundref="sample__consistency_8py" startline="14">sample_consistency.SampleContent._iter</references>
+        <references refid="classsample__consistency_1_1_sample_content_1a21bd680c89233425af2454d2d9c8e572" compoundref="sample__consistency_8py" startline="9">sample_consistency.SampleContent._kfold</references>
+        <references refid="classsample__consistency_1_1_sample_content_1a16616a423fc64e462ad398ec37e1cbb5" compoundref="sample__consistency_8py" startline="11">sample_consistency.SampleContent._mrk</references>
+        <references refid="classsample__consistency_1_1_sample_content_1a77cea28c0ac361717838367318bc0757" compoundref="sample__consistency_8py" startline="13">sample_consistency.SampleContent._samples</references>
+        <references refid="classsample__consistency_1_1_sample_content_1af75bf5254fa4b32823ebd7a3dce4a2f3" compoundref="sample__consistency_8py" startline="12">sample_consistency.SampleContent._trig</references>
+      </memberdef>
+      <memberdef kind="function" id="classsample__consistency_1_1_sample_content_1a2c466248adbb922bfb1e45a472bc0f34" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def sample_consistency.SampleContent.addSample</definition>
+        <argsstring>(self, inpt)</argsstring>
+        <name>addSample</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>inpt</type>
+          <defname>inpt</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/sample_consistency.py" line="16" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/sample_consistency.py" bodystart="16" bodyend="36"/>
+        <references refid="classsample__consistency_1_1_sample_content_1a61bc51ad781130ba11b44637f1ad6f2a" compoundref="sample__consistency_8py" startline="10">sample_consistency.SampleContent._epoch</references>
+        <references refid="classsample__consistency_1_1_sample_content_1ac39551d9fadef04978bc7e8df17dbc7f" compoundref="sample__consistency_8py" startline="8">sample_consistency.SampleContent._isdata</references>
+        <references refid="classsample__consistency_1_1_sample_content_1a21bd680c89233425af2454d2d9c8e572" compoundref="sample__consistency_8py" startline="9">sample_consistency.SampleContent._kfold</references>
+        <references refid="classsample__consistency_1_1_sample_content_1a16616a423fc64e462ad398ec37e1cbb5" compoundref="sample__consistency_8py" startline="11">sample_consistency.SampleContent._mrk</references>
+        <references refid="classsample__consistency_1_1_sample_content_1a77cea28c0ac361717838367318bc0757" compoundref="sample__consistency_8py" startline="13">sample_consistency.SampleContent._samples</references>
+        <references refid="classsample__consistency_1_1_sample_content_1af75bf5254fa4b32823ebd7a3dce4a2f3" compoundref="sample__consistency_8py" startline="12">sample_consistency.SampleContent._trig</references>
+      </memberdef>
+      <memberdef kind="function" id="classsample__consistency_1_1_sample_content_1ac31c369f905ec99cc73970dc51fa31db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def sample_consistency.SampleContent.__iter__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__iter__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/sample_consistency.py" line="37" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/sample_consistency.py" bodystart="37" bodyend="37"/>
+        <references refid="classsample__consistency_1_1_sample_content_1a77cea28c0ac361717838367318bc0757" compoundref="sample__consistency_8py" startline="13">sample_consistency.SampleContent._samples</references>
+      </memberdef>
+      <memberdef kind="function" id="classsample__consistency_1_1_sample_content_1a51cee21066158f983c0385d55d489dfd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def sample_consistency.SampleContent.__next__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__next__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/sample_consistency.py" line="38" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/sample_consistency.py" bodystart="38" bodyend="41"/>
+        <references refid="classsample__consistency_1_1_sample_content_1ad25ea1f512761bf800b51dbb43111354" compoundref="sample__consistency_8py" startline="14">sample_consistency.SampleContent._iter</references>
+        <references refid="classsample__consistency_1_1_sample_content_1a77cea28c0ac361717838367318bc0757" compoundref="sample__consistency_8py" startline="13">sample_consistency.SampleContent._samples</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/performance/sample_consistency.py" line="5" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/sample_consistency.py" bodystart="5" bodyend="42"/>
+    <listofallmembers>
+      <member refid="classsample__consistency_1_1_sample_content_1a5789fa6af7ab493815d4ffc8d4289351" prot="public" virt="non-virtual"><scope>sample_consistency::SampleContent</scope><name>__init__</name></member>
+      <member refid="classsample__consistency_1_1_sample_content_1ac31c369f905ec99cc73970dc51fa31db" prot="public" virt="non-virtual"><scope>sample_consistency::SampleContent</scope><name>__iter__</name></member>
+      <member refid="classsample__consistency_1_1_sample_content_1a51cee21066158f983c0385d55d489dfd" prot="public" virt="non-virtual"><scope>sample_consistency::SampleContent</scope><name>__next__</name></member>
+      <member refid="classsample__consistency_1_1_sample_content_1a61bc51ad781130ba11b44637f1ad6f2a" prot="private" virt="non-virtual"><scope>sample_consistency::SampleContent</scope><name>_epoch</name></member>
+      <member refid="classsample__consistency_1_1_sample_content_1ac39551d9fadef04978bc7e8df17dbc7f" prot="private" virt="non-virtual"><scope>sample_consistency::SampleContent</scope><name>_isdata</name></member>
+      <member refid="classsample__consistency_1_1_sample_content_1ad25ea1f512761bf800b51dbb43111354" prot="private" virt="non-virtual"><scope>sample_consistency::SampleContent</scope><name>_iter</name></member>
+      <member refid="classsample__consistency_1_1_sample_content_1a21bd680c89233425af2454d2d9c8e572" prot="private" virt="non-virtual"><scope>sample_consistency::SampleContent</scope><name>_kfold</name></member>
+      <member refid="classsample__consistency_1_1_sample_content_1a16616a423fc64e462ad398ec37e1cbb5" prot="private" virt="non-virtual"><scope>sample_consistency::SampleContent</scope><name>_mrk</name></member>
+      <member refid="classsample__consistency_1_1_sample_content_1a77cea28c0ac361717838367318bc0757" prot="private" virt="non-virtual"><scope>sample_consistency::SampleContent</scope><name>_samples</name></member>
+      <member refid="classsample__consistency_1_1_sample_content_1af75bf5254fa4b32823ebd7a3dce4a2f3" prot="private" virt="non-virtual"><scope>sample_consistency::SampleContent</scope><name>_trig</name></member>
+      <member refid="classsample__consistency_1_1_sample_content_1a2c466248adbb922bfb1e45a472bc0f34" prot="public" virt="non-virtual"><scope>sample_consistency::SampleContent</scope><name>addSample</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

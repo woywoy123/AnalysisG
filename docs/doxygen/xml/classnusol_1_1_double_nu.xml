@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classnusol_1_1_double_nu" kind="class" language="Python" prot="public">
+    <compoundname>nusol::DoubleNu</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classnusol_1_1_double_nu_1afaa56b33157279e1e8921c25d273110b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>nusol.DoubleNu::lsq</definition>
+        <argsstring></argsstring>
+        <name>lsq</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/nusol.py" line="221" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/nusol.py" bodystart="221" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnusol_1_1_double_nu_1a940d1a4f23619a3b800e361fdebb6cd6" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>nusol.DoubleNu::ev</definition>
+        <argsstring></argsstring>
+        <name>ev</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/nusol.py" line="224" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/nusol.py" bodystart="224" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnusol_1_1_double_nu_1a8ccddbf851b24a2de983d1d74fb87913" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>nusol.DoubleNu::solutionSets</definition>
+        <argsstring></argsstring>
+        <name>solutionSets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/nusol.py" line="228" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/nusol.py" bodystart="228" bodyend="-1"/>
+        <referencedby refid="classnusol_1_1_double_nu_1aabed99ff187d1138f64625a4f8bb19eb" compoundref="nusol_8py" startline="253" endline="279">nusol.DoubleNu.nunu_s</referencedby>
+        <referencedby refid="classvalidation_1_1nusol_1_1_double_nu_1a8a2190fdff5344ebd9f5960453091c6c" compoundref="validation_2nusol_8py" startline="253" endline="279">validation.nusol.DoubleNu.nunu_s</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classnusol_1_1_double_nu_1a457ff68933d9932934e2ba6ff1a387cb" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>nusol.DoubleNu::S</definition>
+        <argsstring></argsstring>
+        <name>S</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/nusol.py" line="231" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/nusol.py" bodystart="231" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnusol_1_1_double_nu_1a28bd4d5dba3ab49f3c0aa4fa212bd8db" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>nusol.DoubleNu::failed</definition>
+        <argsstring></argsstring>
+        <name>failed</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/nusol.py" line="233" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/nusol.py" bodystart="233" bodyend="-1"/>
+        <referencedby refid="classnusol_1_1_double_nu_1aabed99ff187d1138f64625a4f8bb19eb" compoundref="nusol_8py" startline="253" endline="279">nusol.DoubleNu.nunu_s</referencedby>
+        <referencedby refid="classvalidation_1_1nusol_1_1_double_nu_1a8a2190fdff5344ebd9f5960453091c6c" compoundref="validation_2nusol_8py" startline="253" endline="279">validation.nusol.DoubleNu.nunu_s</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnusol_1_1_double_nu_1aca1af209a059e80da672f83fe6e92e95" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def nusol.DoubleNu.__init__</definition>
+        <argsstring>(self, bs, mus, ev, mW1, mT1, mW2, mT2)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>bs</type>
+          <defname>bs</defname>
+        </param>
+        <param>
+          <type>mus</type>
+          <defname>mus</defname>
+        </param>
+        <param>
+          <type><ref refid="classnusol_1_1_double_nu_1a940d1a4f23619a3b800e361fdebb6cd6" kindref="member">ev</ref></type>
+          <defname>ev</defname>
+        </param>
+        <param>
+          <type>mW1</type>
+          <defname>mW1</defname>
+        </param>
+        <param>
+          <type>mT1</type>
+          <defname>mT1</defname>
+        </param>
+        <param>
+          <type>mW2</type>
+          <defname>mW2</defname>
+        </param>
+        <param>
+          <type>mT2</type>
+          <defname>mT2</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/nusol.py" line="220" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/nusol.py" bodystart="220" bodyend="252"/>
+      </memberdef>
+      <memberdef kind="function" id="classnusol_1_1_double_nu_1aabed99ff187d1138f64625a4f8bb19eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def nusol.DoubleNu.nunu_s</definition>
+        <argsstring>(self)</argsstring>
+        <name>nunu_s</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Solution pairs for neutrino momenta</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/nusol.py" line="253" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/nusol.py" bodystart="253" bodyend="279"/>
+        <references refid="classnusol_1_1_double_nu_1a28bd4d5dba3ab49f3c0aa4fa212bd8db" compoundref="nusol_8py" startline="233">nusol.DoubleNu.failed</references>
+        <references refid="classnusol_1_1_double_nu_1a8ccddbf851b24a2de983d1d74fb87913" compoundref="nusol_8py" startline="228">nusol.DoubleNu.solutionSets</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/neutrino/nusol.py" line="218" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/nusol.py" bodystart="218" bodyend="279"/>
+    <listofallmembers>
+      <member refid="classnusol_1_1_double_nu_1aca1af209a059e80da672f83fe6e92e95" prot="public" virt="non-virtual"><scope>nusol::DoubleNu</scope><name>__init__</name></member>
+      <member refid="classnusol_1_1_double_nu_1a940d1a4f23619a3b800e361fdebb6cd6" prot="public" virt="non-virtual"><scope>nusol::DoubleNu</scope><name>ev</name></member>
+      <member refid="classnusol_1_1_double_nu_1a28bd4d5dba3ab49f3c0aa4fa212bd8db" prot="public" virt="non-virtual"><scope>nusol::DoubleNu</scope><name>failed</name></member>
+      <member refid="classnusol_1_1_double_nu_1afaa56b33157279e1e8921c25d273110b" prot="public" virt="non-virtual"><scope>nusol::DoubleNu</scope><name>lsq</name></member>
+      <member refid="classnusol_1_1_double_nu_1aabed99ff187d1138f64625a4f8bb19eb" prot="public" virt="non-virtual"><scope>nusol::DoubleNu</scope><name>nunu_s</name></member>
+      <member refid="classnusol_1_1_double_nu_1a457ff68933d9932934e2ba6ff1a387cb" prot="public" virt="non-virtual"><scope>nusol::DoubleNu</scope><name>S</name></member>
+      <member refid="classnusol_1_1_double_nu_1a8ccddbf851b24a2de983d1d74fb87913" prot="public" virt="non-virtual"><scope>nusol::DoubleNu</scope><name>solutionSets</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

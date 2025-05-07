@@ -1,0 +1,1444 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="structgraph__t" kind="struct" language="C++" prot="public">
+    <compoundname>graph_t</compoundname>
+    <includes refid="graph__template_8h" local="no">graph_template.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structgraph__t_1a45783311aac5e6f50f23246f0cf407d1" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int graph_t::num_nodes</definition>
+        <argsstring></argsstring>
+        <name>num_nodes</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="98" column="19" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="98" bodyend="-1"/>
+        <referencedby refid="structgraph__t_1a77606e05956ba39041023a3a36f53967" compoundref="struct__graph_8cxx" startline="141" endline="173">transfer_to_device</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1af5c8af15275269308e0ed7876ddb7979" prot="public" static="no" mutable="no">
+        <type>long</type>
+        <definition>long graph_t::event_index</definition>
+        <argsstring></argsstring>
+        <name>event_index</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="99" column="17" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a07320e7cdf65b625be449ac9ca4515a6" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double graph_t::event_weight</definition>
+        <argsstring></argsstring>
+        <name>event_weight</name>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="100" column="16" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="100" bodyend="-1"/>
+        <referencedby refid="structgraph__t_1a77606e05956ba39041023a3a36f53967" compoundref="struct__graph_8cxx" startline="141" endline="173">transfer_to_device</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1ac2b2cef7e657d1d2e7e80ee0a4505a56" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool graph_t::preselection</definition>
+        <argsstring></argsstring>
+        <name>preselection</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="101" column="16" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1aae57bfddbd780dd7d1d31b5e7801f054" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; long &gt;</type>
+        <definition>std::vector&lt;long&gt; graph_t::batched_events</definition>
+        <argsstring></argsstring>
+        <name>batched_events</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="102" column="21" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="102" bodyend="-1"/>
+        <referencedby refid="structgraph__t_1a77606e05956ba39041023a3a36f53967" compoundref="struct__graph_8cxx" startline="141" endline="173">transfer_to_device</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1aa328c3ea8390a298f03825e6da2b35c6" prot="public" static="no" mutable="no">
+        <type>std::string *</type>
+        <definition>std::string* graph_t::hash</definition>
+        <argsstring></argsstring>
+        <name>hash</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="104" column="21" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="104" bodyend="-1"/>
+        <referencedby refid="structgraph__t_1ad3a4eb80d85daea2502643917b6e775d" compoundref="struct__graph_8cxx" startline="40" endline="73">_purge_all</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a098e26b54baf5d08f2b8e097b18fe103" prot="public" static="no" mutable="no">
+        <type>std::string *</type>
+        <definition>std::string* graph_t::filename</definition>
+        <argsstring></argsstring>
+        <name>filename</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="105" column="21" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="105" bodyend="-1"/>
+        <referencedby refid="structgraph__t_1ad3a4eb80d85daea2502643917b6e775d" compoundref="struct__graph_8cxx" startline="40" endline="73">_purge_all</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a6438be190c714f65ec0c07030c40fcd3" prot="public" static="no" mutable="no">
+        <type>std::string *</type>
+        <definition>std::string* graph_t::graph_name</definition>
+        <argsstring></argsstring>
+        <name>graph_name</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="106" column="21" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="106" bodyend="-1"/>
+        <referencedby refid="structgraph__t_1ad3a4eb80d85daea2502643917b6e775d" compoundref="struct__graph_8cxx" startline="40" endline="73">_purge_all</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1aa67dffe651350434d32397c44fd6348d" prot="public" static="no" mutable="no">
+        <type>c10::DeviceType</type>
+        <definition>c10::DeviceType graph_t::device</definition>
+        <argsstring></argsstring>
+        <name>device</name>
+        <initializer>= c10::kCPU</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="108" column="25" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="108" bodyend="-1"/>
+        <referencedby refid="classloader_1_1data_1a46dab2b8dedbccccf6caf85ca0fae742" compoundref="loader_8py" startline="31" endline="49">loader.data.interpret</referencedby>
+        <referencedby refid="structgraph__t_1a77606e05956ba39041023a3a36f53967" compoundref="struct__graph_8cxx" startline="141" endline="173">transfer_to_device</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a34d3bffce34616ac6ee3ea977fc9c13e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int graph_t::in_use</definition>
+        <argsstring></argsstring>
+        <name>in_use</name>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="109" column="13" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="109" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="structgraph__t_1abeec94bf59baeb91f5ee1017bfc0dd82" prot="private" static="no" mutable="no">
+        <type>friend</type>
+        <definition>friend graph_t::graph_template</definition>
+        <argsstring></argsstring>
+        <name>graph_template</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="112" column="16" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a084be2b1da25ee875f63a4aa77d88f61" prot="private" static="no" mutable="no">
+        <type>friend</type>
+        <definition>friend graph_t::dataloader</definition>
+        <argsstring></argsstring>
+        <name>dataloader</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="113" column="16" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1ae27dcf0ec2f328c398371a8ed2eaf457" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool graph_t::is_owner</definition>
+        <argsstring></argsstring>
+        <name>is_owner</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="114" column="14" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1acb3118d240b9b0379875a6b0d369338f" prot="private" static="no" mutable="no">
+        <type>std::mutex</type>
+        <definition>std::mutex graph_t::mut</definition>
+        <argsstring></argsstring>
+        <name>mut</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="115" column="20" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a94d2c88d95027f99ced5a277a7b3ede1" prot="private" static="no" mutable="no">
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor* graph_t::edge_index</definition>
+        <argsstring></argsstring>
+        <name>edge_index</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="117" column="23" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1aba19616dcf7797d5e448c0102ee3f523" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, int &gt; *</type>
+        <definition>std::map&lt;std::string, int&gt;* graph_t::data_map_graph</definition>
+        <argsstring></argsstring>
+        <name>data_map_graph</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="118" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="118" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a040856b8d872b3e376dba1b198593dcb" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, int &gt; *</type>
+        <definition>std::map&lt;std::string, int&gt;* graph_t::data_map_node</definition>
+        <argsstring></argsstring>
+        <name>data_map_node</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="119" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="119" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a3b453e69fd01149ef51fe19553333765" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, int &gt; *</type>
+        <definition>std::map&lt;std::string, int&gt;* graph_t::data_map_edge</definition>
+        <argsstring></argsstring>
+        <name>data_map_edge</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="120" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a7180f4ed02a74de898b8bf1d9a69cb21" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, int &gt; *</type>
+        <definition>std::map&lt;std::string, int&gt;* graph_t::truth_map_graph</definition>
+        <argsstring></argsstring>
+        <name>truth_map_graph</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="122" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a504df9445cff6941b7400018196853ec" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, int &gt; *</type>
+        <definition>std::map&lt;std::string, int&gt;* graph_t::truth_map_node</definition>
+        <argsstring></argsstring>
+        <name>truth_map_node</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="123" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="123" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a8d420f4c95eaa2cb48495b8580db72c5" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, int &gt; *</type>
+        <definition>std::map&lt;std::string, int&gt;* graph_t::truth_map_edge</definition>
+        <argsstring></argsstring>
+        <name>truth_map_edge</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="124" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a01667c92da47321d226224ef8ad308f9" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; torch::Tensor * &gt; *</type>
+        <definition>std::vector&lt;torch::Tensor*&gt;* graph_t::data_graph</definition>
+        <argsstring></argsstring>
+        <name>data_graph</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="126" column="21" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="126" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; torch::Tensor * &gt; *</type>
+        <definition>std::vector&lt;torch::Tensor*&gt;* graph_t::data_node</definition>
+        <argsstring></argsstring>
+        <name>data_node</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="127" column="21" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="127" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; torch::Tensor * &gt; *</type>
+        <definition>std::vector&lt;torch::Tensor*&gt;* graph_t::data_edge</definition>
+        <argsstring></argsstring>
+        <name>data_edge</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="128" column="21" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; torch::Tensor * &gt; *</type>
+        <definition>std::vector&lt;torch::Tensor*&gt;* graph_t::truth_graph</definition>
+        <argsstring></argsstring>
+        <name>truth_graph</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="130" column="21" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="130" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; torch::Tensor * &gt; *</type>
+        <definition>std::vector&lt;torch::Tensor*&gt;* graph_t::truth_node</definition>
+        <argsstring></argsstring>
+        <name>truth_node</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="131" column="21" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="131" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; torch::Tensor * &gt; *</type>
+        <definition>std::vector&lt;torch::Tensor*&gt;* graph_t::truth_edge</definition>
+        <argsstring></argsstring>
+        <name>truth_edge</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="132" column="21" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1ade6528a9765e57b3e97e8b592b7eea01" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, std::vector&lt; torch::Tensor &gt; &gt;</type>
+        <definition>std::map&lt;int, std::vector&lt;torch::Tensor&gt; &gt; graph_t::dev_data_graph</definition>
+        <argsstring></argsstring>
+        <name>dev_data_graph</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="134" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="134" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a7a6970a53271836b9cdaadc119f858bd" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, std::vector&lt; torch::Tensor &gt; &gt;</type>
+        <definition>std::map&lt;int, std::vector&lt;torch::Tensor&gt; &gt; graph_t::dev_data_node</definition>
+        <argsstring></argsstring>
+        <name>dev_data_node</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="135" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1aa44f093bc29e1b93cd455c869bb243ca" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, std::vector&lt; torch::Tensor &gt; &gt;</type>
+        <definition>std::map&lt;int, std::vector&lt;torch::Tensor&gt; &gt; graph_t::dev_data_edge</definition>
+        <argsstring></argsstring>
+        <name>dev_data_edge</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="136" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="136" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1af6a637275ec81b124419c9eaacffe16d" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, std::vector&lt; torch::Tensor &gt; &gt;</type>
+        <definition>std::map&lt;int, std::vector&lt;torch::Tensor&gt; &gt; graph_t::dev_truth_graph</definition>
+        <argsstring></argsstring>
+        <name>dev_truth_graph</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="138" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="138" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1aac8c9a8b7a087ce800fb75177f3cc61f" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, std::vector&lt; torch::Tensor &gt; &gt;</type>
+        <definition>std::map&lt;int, std::vector&lt;torch::Tensor&gt; &gt; graph_t::dev_truth_node</definition>
+        <argsstring></argsstring>
+        <name>dev_truth_node</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="139" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="139" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a275356d1457af6ebe051007deaf89356" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, std::vector&lt; torch::Tensor &gt; &gt;</type>
+        <definition>std::map&lt;int, std::vector&lt;torch::Tensor&gt; &gt; graph_t::dev_truth_edge</definition>
+        <argsstring></argsstring>
+        <name>dev_truth_edge</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="140" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a28d3d754f3db1eb988994404317ba75a" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, torch::Tensor &gt;</type>
+        <definition>std::map&lt;int, torch::Tensor&gt; graph_t::dev_edge_index</definition>
+        <argsstring></argsstring>
+        <name>dev_edge_index</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="142" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="142" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1ae0f8545bd9771bd73ad4ad82860487c0" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, torch::Tensor &gt;</type>
+        <definition>std::map&lt;int, torch::Tensor&gt; graph_t::dev_batch_index</definition>
+        <argsstring></argsstring>
+        <name>dev_batch_index</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="143" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="143" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a9fa436e9337aa7d1ef36e8ffe9d69a9f" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, torch::Tensor &gt;</type>
+        <definition>std::map&lt;int, torch::Tensor&gt; graph_t::dev_event_weight</definition>
+        <argsstring></argsstring>
+        <name>dev_event_weight</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="144" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a13c522dd8bb343cc210d5961e2a234d1" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, torch::Tensor &gt;</type>
+        <definition>std::map&lt;int, torch::Tensor&gt; graph_t::dev_batched_events</definition>
+        <argsstring></argsstring>
+        <name>dev_batched_events</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="145" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="145" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__t_1a7750c4f68a7a55075e4a6be06a712432" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, bool &gt;</type>
+        <definition>std::map&lt;int, bool&gt; graph_t::device_index</definition>
+        <argsstring></argsstring>
+        <name>device_index</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="146" column="18" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="146" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structgraph__t_1abda9dfeaacecc673821c4e257757e696" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor* graph_t::get_truth_graph</definition>
+        <argsstring>(std::string name, g *mdl)</argsstring>
+        <name>get_truth_graph</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>g *</type>
+          <declname>mdl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="38" column="23" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="38" bodyend="40"/>
+        <references refid="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" compoundref="struct__graph_8cxx" startline="89" endline="106">has_feature</references>
+        <references refid="namespacemain_1a6e037a1111374e9b39a470eb175616d0" compoundref="performance_2main_8py" startline="141">main.mdl</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a1d41882240fd339ed7bacd69ea90f587">truth_graph</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a13f8f063418d86ef02d689a5eb1c4c27" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor* graph_t::get_truth_node</definition>
+        <argsstring>(std::string name, g *mdl)</argsstring>
+        <name>get_truth_node</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>g *</type>
+          <declname>mdl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="43" column="23" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="43" bodyend="45"/>
+        <references refid="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" compoundref="struct__graph_8cxx" startline="89" endline="106">has_feature</references>
+        <references refid="namespacemain_1a6e037a1111374e9b39a470eb175616d0" compoundref="performance_2main_8py" startline="141">main.mdl</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9ae895cb1e23c56f371dafbef2634572f5">truth_node</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a07d7b1e3dfca59d39e0082d48acd3e03" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor* graph_t::get_truth_edge</definition>
+        <argsstring>(std::string name, g *mdl)</argsstring>
+        <name>get_truth_edge</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>g *</type>
+          <declname>mdl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="48" column="23" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="48" bodyend="50"/>
+        <references refid="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" compoundref="struct__graph_8cxx" startline="89" endline="106">has_feature</references>
+        <references refid="namespacemain_1a6e037a1111374e9b39a470eb175616d0" compoundref="performance_2main_8py" startline="141">main.mdl</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9afc5bd8c8855a5bb98c0a2ffcf7d83a00">truth_edge</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a44adf511fd42adf859e4252e6e41162d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor* graph_t::get_data_graph</definition>
+        <argsstring>(std::string name, g *mdl)</argsstring>
+        <name>get_data_graph</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>g *</type>
+          <declname>mdl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="53" column="23" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="53" bodyend="55"/>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a05e49555101f3239adff74b7ab84b12b">data_graph</references>
+        <references refid="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" compoundref="struct__graph_8cxx" startline="89" endline="106">has_feature</references>
+        <references refid="namespacemain_1a6e037a1111374e9b39a470eb175616d0" compoundref="performance_2main_8py" startline="141">main.mdl</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a253af0f407ce0db0bb724bf9af57ed47" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor* graph_t::get_data_node</definition>
+        <argsstring>(std::string name, g *mdl)</argsstring>
+        <name>get_data_node</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>g *</type>
+          <declname>mdl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="58" column="23" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="58" bodyend="60"/>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a552cd5bfd507d39d3351ee8b6bc95445">data_node</references>
+        <references refid="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" compoundref="struct__graph_8cxx" startline="89" endline="106">has_feature</references>
+        <references refid="namespacemain_1a6e037a1111374e9b39a470eb175616d0" compoundref="performance_2main_8py" startline="141">main.mdl</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a31148f05db7d1dd1fa9fc59e6199b3b3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor* graph_t::get_data_edge</definition>
+        <argsstring>(std::string name, g *mdl)</argsstring>
+        <name>get_data_edge</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>g *</type>
+          <declname>mdl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="63" column="23" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="63" bodyend="65"/>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9af14d031091d837e57007a1fdea58e5fe">data_edge</references>
+        <references refid="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" compoundref="struct__graph_8cxx" startline="89" endline="106">has_feature</references>
+        <references refid="namespacemain_1a6e037a1111374e9b39a470eb175616d0" compoundref="performance_2main_8py" startline="141">main.mdl</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a90bfdbe0fbb8ea8ecfec51537c025507" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor* graph_t::get_edge_index</definition>
+        <argsstring>(g *mdl)</argsstring>
+        <name>get_edge_index</name>
+        <param>
+          <type>g *</type>
+          <declname>mdl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="68" column="23" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="68" bodyend="70"/>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7">edge_index</references>
+        <references refid="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" compoundref="struct__graph_8cxx" startline="89" endline="106">has_feature</references>
+        <references refid="namespacemain_1a6e037a1111374e9b39a470eb175616d0" compoundref="performance_2main_8py" startline="141">main.mdl</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1aaf94016d9b75968d9224db2ca2797112" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor* graph_t::get_event_weight</definition>
+        <argsstring>(g *mdl)</argsstring>
+        <name>get_event_weight</name>
+        <param>
+          <type>g *</type>
+          <declname>mdl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="73" column="23" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="73" bodyend="75"/>
+        <references refid="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" compoundref="struct__graph_8cxx" startline="89" endline="106">has_feature</references>
+        <references refid="namespacemain_1a6e037a1111374e9b39a470eb175616d0" compoundref="performance_2main_8py" startline="141">main.mdl</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a7edabf994b76a00cbc60c95af337db8f">weight</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a9389e5895ed9031ef4ac52c294b6d5d4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor* graph_t::get_batch_index</definition>
+        <argsstring>(g *mdl)</argsstring>
+        <name>get_batch_index</name>
+        <param>
+          <type>g *</type>
+          <declname>mdl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="78" column="23" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="78" bodyend="80"/>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a056d3cfa6a17e1cb57fb271ce3e605a8">batch_index</references>
+        <references refid="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" compoundref="struct__graph_8cxx" startline="89" endline="106">has_feature</references>
+        <references refid="namespacemain_1a6e037a1111374e9b39a470eb175616d0" compoundref="performance_2main_8py" startline="141">main.mdl</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1ac0e1769115c61075b40290f6749fddbf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor* graph_t::get_batched_events</definition>
+        <argsstring>(g *mdl)</argsstring>
+        <name>get_batched_events</name>
+        <param>
+          <type>g *</type>
+          <declname>mdl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="83" column="23" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="83" bodyend="85"/>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9ab889a33c698ac4a15cb9a4f6fab7d1e2">batch_events</references>
+        <references refid="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" compoundref="struct__graph_8cxx" startline="89" endline="106">has_feature</references>
+        <references refid="namespacemain_1a6e037a1111374e9b39a470eb175616d0" compoundref="performance_2main_8py" startline="141">main.mdl</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor * graph_t::has_feature</definition>
+        <argsstring>(graph_enum tp, std::string name, int dev)</argsstring>
+        <name>has_feature</name>
+        <param>
+          <type><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9" kindref="member">graph_enum</ref></type>
+          <declname>tp</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="87" column="23" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="89" bodyend="106"/>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9ab889a33c698ac4a15cb9a4f6fab7d1e2">batch_events</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a056d3cfa6a17e1cb57fb271ce3e605a8">batch_index</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9af14d031091d837e57007a1fdea58e5fe">data_edge</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a05e49555101f3239adff74b7ab84b12b">data_graph</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a552cd5bfd507d39d3351ee8b6bc95445">data_node</references>
+        <references refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" compoundref="performance_2main_8py" startline="142">main.dev</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7">edge_index</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9afc5bd8c8855a5bb98c0a2ffcf7d83a00">truth_edge</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a1d41882240fd339ed7bacd69ea90f587">truth_graph</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9ae895cb1e23c56f371dafbef2634572f5">truth_node</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a7edabf994b76a00cbc60c95af337db8f">weight</references>
+        <referencedby refid="structgraph__t_1a9389e5895ed9031ef4ac52c294b6d5d4" compoundref="graph__template_8h" startline="78" endline="80">get_batch_index</referencedby>
+        <referencedby refid="structgraph__t_1ac0e1769115c61075b40290f6749fddbf" compoundref="graph__template_8h" startline="83" endline="85">get_batched_events</referencedby>
+        <referencedby refid="structgraph__t_1a31148f05db7d1dd1fa9fc59e6199b3b3" compoundref="graph__template_8h" startline="63" endline="65">get_data_edge</referencedby>
+        <referencedby refid="structgraph__t_1a44adf511fd42adf859e4252e6e41162d" compoundref="graph__template_8h" startline="53" endline="55">get_data_graph</referencedby>
+        <referencedby refid="structgraph__t_1a253af0f407ce0db0bb724bf9af57ed47" compoundref="graph__template_8h" startline="58" endline="60">get_data_node</referencedby>
+        <referencedby refid="structgraph__t_1a90bfdbe0fbb8ea8ecfec51537c025507" compoundref="graph__template_8h" startline="68" endline="70">get_edge_index</referencedby>
+        <referencedby refid="structgraph__t_1aaf94016d9b75968d9224db2ca2797112" compoundref="graph__template_8h" startline="73" endline="75">get_event_weight</referencedby>
+        <referencedby refid="structgraph__t_1a07d7b1e3dfca59d39e0082d48acd3e03" compoundref="graph__template_8h" startline="48" endline="50">get_truth_edge</referencedby>
+        <referencedby refid="structgraph__t_1abda9dfeaacecc673821c4e257757e696" compoundref="graph__template_8h" startline="38" endline="40">get_truth_graph</referencedby>
+        <referencedby refid="structgraph__t_1a13f8f063418d86ef02d689a5eb1c4c27" compoundref="graph__template_8h" startline="43" endline="45">get_truth_node</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a240e5e6342673e9436f7e02606e051a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::add_truth_graph</definition>
+        <argsstring>(std::map&lt; std::string, torch::Tensor * &gt; *data, std::map&lt; std::string, int &gt; *maps)</argsstring>
+        <name>add_truth_graph</name>
+        <param>
+          <type>std::map&lt; std::string, torch::Tensor * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::map&lt; std::string, int &gt; *</type>
+          <declname>maps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="88" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="4" bodyend="8"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a8b35caee94522d24ccf73316cf42d6fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::add_truth_node</definition>
+        <argsstring>(std::map&lt; std::string, torch::Tensor * &gt; *data, std::map&lt; std::string, int &gt; *maps)</argsstring>
+        <name>add_truth_node</name>
+        <param>
+          <type>std::map&lt; std::string, torch::Tensor * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::map&lt; std::string, int &gt; *</type>
+          <declname>maps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="89" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="10" bodyend="14"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1ab2957c1a4e2e35dcec6d85b9c5cd289f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::add_truth_edge</definition>
+        <argsstring>(std::map&lt; std::string, torch::Tensor * &gt; *data, std::map&lt; std::string, int &gt; *maps)</argsstring>
+        <name>add_truth_edge</name>
+        <param>
+          <type>std::map&lt; std::string, torch::Tensor * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::map&lt; std::string, int &gt; *</type>
+          <declname>maps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="90" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="16" bodyend="20"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1ab96d9f7d4e64882fb6527ffb5a12a80f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::add_data_graph</definition>
+        <argsstring>(std::map&lt; std::string, torch::Tensor * &gt; *data, std::map&lt; std::string, int &gt; *maps)</argsstring>
+        <name>add_data_graph</name>
+        <param>
+          <type>std::map&lt; std::string, torch::Tensor * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::map&lt; std::string, int &gt; *</type>
+          <declname>maps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="91" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="22" bodyend="26"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1ada25cd27a1b91c458f6994b7369f5b3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::add_data_node</definition>
+        <argsstring>(std::map&lt; std::string, torch::Tensor * &gt; *data, std::map&lt; std::string, int &gt; *maps)</argsstring>
+        <name>add_data_node</name>
+        <param>
+          <type>std::map&lt; std::string, torch::Tensor * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::map&lt; std::string, int &gt; *</type>
+          <declname>maps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="92" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="28" bodyend="32"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a3bd07dc62caec3b38fef61bc198c16e7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::add_data_edge</definition>
+        <argsstring>(std::map&lt; std::string, torch::Tensor * &gt; *data, std::map&lt; std::string, int &gt; *maps)</argsstring>
+        <name>add_data_edge</name>
+        <param>
+          <type>std::map&lt; std::string, torch::Tensor * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::map&lt; std::string, int &gt; *</type>
+          <declname>maps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="93" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="34" bodyend="38"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a77606e05956ba39041023a3a36f53967" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::transfer_to_device</definition>
+        <argsstring>(torch::TensorOptions *dev)</argsstring>
+        <name>transfer_to_device</name>
+        <param>
+          <type>torch::TensorOptions *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="95" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="141" bodyend="173"/>
+        <references refid="structgraph__t_1aae57bfddbd780dd7d1d31b5e7801f054" compoundref="graph__template_8h" startline="102">batched_events</references>
+        <references refid="namespacemain_1a7036efb6f19b478d668e5ba8e23d215d" compoundref="performance_2main_8py" startline="142">main.dev</references>
+        <references refid="structgraph__t_1aa67dffe651350434d32397c44fd6348d" compoundref="graph__template_8h" startline="108">device</references>
+        <references refid="namespacesample__consistency_1a85366822fbdd064f24b53f9236541c0f" compoundref="sample__consistency_8py" startline="54">sample_consistency.dt</references>
+        <references refid="structgraph__t_1a07320e7cdf65b625be449ac9ca4515a6" compoundref="graph__template_8h" startline="100">event_weight</references>
+        <references refid="structgraph__t_1a45783311aac5e6f50f23246f0cf407d1" compoundref="graph__template_8h" startline="98">num_nodes</references>
+        <references refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" compoundref="test__generator_8py" startline="28">test_generator.op</references>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1ad3a4eb80d85daea2502643917b6e775d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::_purge_all</definition>
+        <argsstring>()</argsstring>
+        <name>_purge_all</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="96" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="40" bodyend="73"/>
+        <references refid="structgraph__t_1a098e26b54baf5d08f2b8e097b18fe103" compoundref="graph__template_8h" startline="105">filename</references>
+        <references refid="structgraph__t_1a6438be190c714f65ec0c07030c40fcd3" compoundref="graph__template_8h" startline="106">graph_name</references>
+        <references refid="structgraph__t_1aa328c3ea8390a298f03825e6da2b35c6" compoundref="graph__template_8h" startline="104">hash</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::meta_serialize</definition>
+        <argsstring>(std::map&lt; std::string, int &gt; *data, std::string *out)</argsstring>
+        <name>meta_serialize</name>
+        <param>
+          <type>std::map&lt; std::string, int &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="148" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="181" bodyend="185"/>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a8ea6c151c23bf198c9545ff6fcac2cc0" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::meta_serialize</definition>
+        <argsstring>(std::vector&lt; torch::Tensor * &gt; *data, std::string *out)</argsstring>
+        <name>meta_serialize</name>
+        <param>
+          <type>std::vector&lt; torch::Tensor * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="149" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="187" bodyend="197"/>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1aaeeca5594501e477e71ed4ef9d6ca6c9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::meta_serialize</definition>
+        <argsstring>(torch::Tensor *data, std::string *out)</argsstring>
+        <name>meta_serialize</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="150" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="199" bodyend="206"/>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a7903f37a8f508f24fe014a0f990e5a80" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::serialize</definition>
+        <argsstring>(graph_hdf5 *m_hdf5)</argsstring>
+        <name>serialize</name>
+        <param>
+          <type><ref refid="structgraph__hdf5" kindref="compound">graph_hdf5</ref> *</type>
+          <declname>m_hdf5</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="151" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="208" bodyend="232"/>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::meta_deserialize</definition>
+        <argsstring>(std::map&lt; std::string, int &gt; *data, std::string *inpt)</argsstring>
+        <name>meta_deserialize</name>
+        <param>
+          <type>std::map&lt; std::string, int &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="153" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="235" bodyend="244"/>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a737563f80880f63df627e2828d0033a3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::meta_deserialize</definition>
+        <argsstring>(std::vector&lt; torch::Tensor * &gt; *data, std::string *inpt)</argsstring>
+        <name>meta_deserialize</name>
+        <param>
+          <type>std::vector&lt; torch::Tensor * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="154" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="246" bodyend="256"/>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1af4f580dd0ff85a787cc326bc01184b83" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor * graph_t::meta_deserialize</definition>
+        <argsstring>(std::string *inpt)</argsstring>
+        <name>meta_deserialize</name>
+        <param>
+          <type>std::string *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="155" column="23" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="258" bodyend="265"/>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a0882983ec9ceb5c309e4c64b38105214" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::deserialize</definition>
+        <argsstring>(graph_hdf5 *m_hdf5)</argsstring>
+        <name>deserialize</name>
+        <param>
+          <type><ref refid="structgraph__hdf5" kindref="compound">graph_hdf5</ref> *</type>
+          <declname>m_hdf5</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="156" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="267" bodyend="307"/>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a56e85043c369ce37c0d78f3221a9d5c8" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::_purge_data</definition>
+        <argsstring>(std::vector&lt; torch::Tensor * &gt; *data)</argsstring>
+        <name>_purge_data</name>
+        <param>
+          <type>std::vector&lt; torch::Tensor * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="158" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="115" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1ab8e93af4431e56b00000fbb4fa939af9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::_purge_data</definition>
+        <argsstring>(std::map&lt; int, torch::Tensor * &gt; *data)</argsstring>
+        <name>_purge_data</name>
+        <param>
+          <type>std::map&lt; int, torch::Tensor * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="159" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="108" bodyend="113"/>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a15938dd60e01582b3e2ac9c5585397fb" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::_purge_data</definition>
+        <argsstring>(std::map&lt; int, std::vector&lt; torch::Tensor * &gt; * &gt; *data)</argsstring>
+        <name>_purge_data</name>
+        <param>
+          <type>std::map&lt; int, std::vector&lt; torch::Tensor * &gt; * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="160" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="123" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1ac74016cadba28de168c1d78bb8c1536d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; torch::Tensor * &gt; *</type>
+        <definition>std::vector&lt; torch::Tensor * &gt; * graph_t::add_content</definition>
+        <argsstring>(std::map&lt; std::string, torch::Tensor * &gt; *inpt)</argsstring>
+        <name>add_content</name>
+        <param>
+          <type>std::map&lt; std::string, torch::Tensor * &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="161" column="21" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="134" bodyend="139"/>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a4dadfed7cebfedd7f9f4acd4ca2e79e9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_t::_transfer_to_device</definition>
+        <argsstring>(std::vector&lt; torch::Tensor &gt; *trg, std::vector&lt; torch::Tensor * &gt; *data, torch::TensorOptions *dev)</argsstring>
+        <name>_transfer_to_device</name>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>trg</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>torch::TensorOptions *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="163" column="14" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="175" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="structgraph__t_1a14d15da9b30dca1e0879fd5a7d33fa58" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor *</type>
+        <definition>torch::Tensor * graph_t::return_any</definition>
+        <argsstring>(std::map&lt; std::string, int &gt; *loc, std::map&lt; int, std::vector&lt; torch::Tensor &gt;&gt; *container, std::string name, int dev_)</argsstring>
+        <name>return_any</name>
+        <param>
+          <type>std::map&lt; std::string, int &gt; *</type>
+          <declname>loc</declname>
+        </param>
+        <param>
+          <type>std::map&lt; int, std::vector&lt; torch::Tensor &gt;&gt; *</type>
+          <declname>container</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dev_</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/graph/include/templates/graph_template.h" line="169" column="23" bodyfile="modules/graph/cxx/struct_graph.cxx" bodystart="76" bodyend="85"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="4">
+        <label>T</label>
+      </node>
+      <node id="3">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="4" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>graph_t</label>
+        <link refid="structgraph__t"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>batched_events</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>graph_name</edgelabel>
+          <edgelabel>filename</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="2">
+        <label>std::vector&lt; long &gt;</label>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; long &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>std::string</label>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="modules/graph/include/templates/graph_template.h" line="34" column="14" bodyfile="modules/graph/include/templates/graph_template.h" bodystart="34" bodyend="173"/>
+    <listofallmembers>
+      <member refid="structgraph__t_1ad3a4eb80d85daea2502643917b6e775d" prot="public" virt="non-virtual"><scope>graph_t</scope><name>_purge_all</name></member>
+      <member refid="structgraph__t_1a56e85043c369ce37c0d78f3221a9d5c8" prot="private" virt="non-virtual"><scope>graph_t</scope><name>_purge_data</name></member>
+      <member refid="structgraph__t_1ab8e93af4431e56b00000fbb4fa939af9" prot="private" virt="non-virtual"><scope>graph_t</scope><name>_purge_data</name></member>
+      <member refid="structgraph__t_1a15938dd60e01582b3e2ac9c5585397fb" prot="private" virt="non-virtual"><scope>graph_t</scope><name>_purge_data</name></member>
+      <member refid="structgraph__t_1a4dadfed7cebfedd7f9f4acd4ca2e79e9" prot="private" virt="non-virtual"><scope>graph_t</scope><name>_transfer_to_device</name></member>
+      <member refid="structgraph__t_1ac74016cadba28de168c1d78bb8c1536d" prot="private" virt="non-virtual"><scope>graph_t</scope><name>add_content</name></member>
+      <member refid="structgraph__t_1a3bd07dc62caec3b38fef61bc198c16e7" prot="public" virt="non-virtual"><scope>graph_t</scope><name>add_data_edge</name></member>
+      <member refid="structgraph__t_1ab96d9f7d4e64882fb6527ffb5a12a80f" prot="public" virt="non-virtual"><scope>graph_t</scope><name>add_data_graph</name></member>
+      <member refid="structgraph__t_1ada25cd27a1b91c458f6994b7369f5b3c" prot="public" virt="non-virtual"><scope>graph_t</scope><name>add_data_node</name></member>
+      <member refid="structgraph__t_1ab2957c1a4e2e35dcec6d85b9c5cd289f" prot="public" virt="non-virtual"><scope>graph_t</scope><name>add_truth_edge</name></member>
+      <member refid="structgraph__t_1a240e5e6342673e9436f7e02606e051a9" prot="public" virt="non-virtual"><scope>graph_t</scope><name>add_truth_graph</name></member>
+      <member refid="structgraph__t_1a8b35caee94522d24ccf73316cf42d6fa" prot="public" virt="non-virtual"><scope>graph_t</scope><name>add_truth_node</name></member>
+      <member refid="structgraph__t_1aae57bfddbd780dd7d1d31b5e7801f054" prot="public" virt="non-virtual"><scope>graph_t</scope><name>batched_events</name></member>
+      <member refid="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" prot="private" virt="non-virtual"><scope>graph_t</scope><name>data_edge</name></member>
+      <member refid="structgraph__t_1a01667c92da47321d226224ef8ad308f9" prot="private" virt="non-virtual"><scope>graph_t</scope><name>data_graph</name></member>
+      <member refid="structgraph__t_1a3b453e69fd01149ef51fe19553333765" prot="private" virt="non-virtual"><scope>graph_t</scope><name>data_map_edge</name></member>
+      <member refid="structgraph__t_1aba19616dcf7797d5e448c0102ee3f523" prot="private" virt="non-virtual"><scope>graph_t</scope><name>data_map_graph</name></member>
+      <member refid="structgraph__t_1a040856b8d872b3e376dba1b198593dcb" prot="private" virt="non-virtual"><scope>graph_t</scope><name>data_map_node</name></member>
+      <member refid="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" prot="private" virt="non-virtual"><scope>graph_t</scope><name>data_node</name></member>
+      <member refid="structgraph__t_1a084be2b1da25ee875f63a4aa77d88f61" prot="private" virt="non-virtual"><scope>graph_t</scope><name>dataloader</name></member>
+      <member refid="structgraph__t_1a0882983ec9ceb5c309e4c64b38105214" prot="private" virt="non-virtual"><scope>graph_t</scope><name>deserialize</name></member>
+      <member refid="structgraph__t_1ae0f8545bd9771bd73ad4ad82860487c0" prot="private" virt="non-virtual"><scope>graph_t</scope><name>dev_batch_index</name></member>
+      <member refid="structgraph__t_1a13c522dd8bb343cc210d5961e2a234d1" prot="private" virt="non-virtual"><scope>graph_t</scope><name>dev_batched_events</name></member>
+      <member refid="structgraph__t_1aa44f093bc29e1b93cd455c869bb243ca" prot="private" virt="non-virtual"><scope>graph_t</scope><name>dev_data_edge</name></member>
+      <member refid="structgraph__t_1ade6528a9765e57b3e97e8b592b7eea01" prot="private" virt="non-virtual"><scope>graph_t</scope><name>dev_data_graph</name></member>
+      <member refid="structgraph__t_1a7a6970a53271836b9cdaadc119f858bd" prot="private" virt="non-virtual"><scope>graph_t</scope><name>dev_data_node</name></member>
+      <member refid="structgraph__t_1a28d3d754f3db1eb988994404317ba75a" prot="private" virt="non-virtual"><scope>graph_t</scope><name>dev_edge_index</name></member>
+      <member refid="structgraph__t_1a9fa436e9337aa7d1ef36e8ffe9d69a9f" prot="private" virt="non-virtual"><scope>graph_t</scope><name>dev_event_weight</name></member>
+      <member refid="structgraph__t_1a275356d1457af6ebe051007deaf89356" prot="private" virt="non-virtual"><scope>graph_t</scope><name>dev_truth_edge</name></member>
+      <member refid="structgraph__t_1af6a637275ec81b124419c9eaacffe16d" prot="private" virt="non-virtual"><scope>graph_t</scope><name>dev_truth_graph</name></member>
+      <member refid="structgraph__t_1aac8c9a8b7a087ce800fb75177f3cc61f" prot="private" virt="non-virtual"><scope>graph_t</scope><name>dev_truth_node</name></member>
+      <member refid="structgraph__t_1aa67dffe651350434d32397c44fd6348d" prot="public" virt="non-virtual"><scope>graph_t</scope><name>device</name></member>
+      <member refid="structgraph__t_1a7750c4f68a7a55075e4a6be06a712432" prot="private" virt="non-virtual"><scope>graph_t</scope><name>device_index</name></member>
+      <member refid="structgraph__t_1a94d2c88d95027f99ced5a277a7b3ede1" prot="private" virt="non-virtual"><scope>graph_t</scope><name>edge_index</name></member>
+      <member refid="structgraph__t_1af5c8af15275269308e0ed7876ddb7979" prot="public" virt="non-virtual"><scope>graph_t</scope><name>event_index</name></member>
+      <member refid="structgraph__t_1a07320e7cdf65b625be449ac9ca4515a6" prot="public" virt="non-virtual"><scope>graph_t</scope><name>event_weight</name></member>
+      <member refid="structgraph__t_1a098e26b54baf5d08f2b8e097b18fe103" prot="public" virt="non-virtual"><scope>graph_t</scope><name>filename</name></member>
+      <member refid="structgraph__t_1a9389e5895ed9031ef4ac52c294b6d5d4" prot="public" virt="non-virtual"><scope>graph_t</scope><name>get_batch_index</name></member>
+      <member refid="structgraph__t_1ac0e1769115c61075b40290f6749fddbf" prot="public" virt="non-virtual"><scope>graph_t</scope><name>get_batched_events</name></member>
+      <member refid="structgraph__t_1a31148f05db7d1dd1fa9fc59e6199b3b3" prot="public" virt="non-virtual"><scope>graph_t</scope><name>get_data_edge</name></member>
+      <member refid="structgraph__t_1a44adf511fd42adf859e4252e6e41162d" prot="public" virt="non-virtual"><scope>graph_t</scope><name>get_data_graph</name></member>
+      <member refid="structgraph__t_1a253af0f407ce0db0bb724bf9af57ed47" prot="public" virt="non-virtual"><scope>graph_t</scope><name>get_data_node</name></member>
+      <member refid="structgraph__t_1a90bfdbe0fbb8ea8ecfec51537c025507" prot="public" virt="non-virtual"><scope>graph_t</scope><name>get_edge_index</name></member>
+      <member refid="structgraph__t_1aaf94016d9b75968d9224db2ca2797112" prot="public" virt="non-virtual"><scope>graph_t</scope><name>get_event_weight</name></member>
+      <member refid="structgraph__t_1a07d7b1e3dfca59d39e0082d48acd3e03" prot="public" virt="non-virtual"><scope>graph_t</scope><name>get_truth_edge</name></member>
+      <member refid="structgraph__t_1abda9dfeaacecc673821c4e257757e696" prot="public" virt="non-virtual"><scope>graph_t</scope><name>get_truth_graph</name></member>
+      <member refid="structgraph__t_1a13f8f063418d86ef02d689a5eb1c4c27" prot="public" virt="non-virtual"><scope>graph_t</scope><name>get_truth_node</name></member>
+      <member refid="structgraph__t_1a6438be190c714f65ec0c07030c40fcd3" prot="public" virt="non-virtual"><scope>graph_t</scope><name>graph_name</name></member>
+      <member refid="structgraph__t_1abeec94bf59baeb91f5ee1017bfc0dd82" prot="private" virt="non-virtual"><scope>graph_t</scope><name>graph_template</name></member>
+      <member refid="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" prot="public" virt="non-virtual"><scope>graph_t</scope><name>has_feature</name></member>
+      <member refid="structgraph__t_1aa328c3ea8390a298f03825e6da2b35c6" prot="public" virt="non-virtual"><scope>graph_t</scope><name>hash</name></member>
+      <member refid="structgraph__t_1a34d3bffce34616ac6ee3ea977fc9c13e" prot="public" virt="non-virtual"><scope>graph_t</scope><name>in_use</name></member>
+      <member refid="structgraph__t_1ae27dcf0ec2f328c398371a8ed2eaf457" prot="private" virt="non-virtual"><scope>graph_t</scope><name>is_owner</name></member>
+      <member refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" prot="private" virt="non-virtual"><scope>graph_t</scope><name>meta_deserialize</name></member>
+      <member refid="structgraph__t_1a737563f80880f63df627e2828d0033a3" prot="private" virt="non-virtual"><scope>graph_t</scope><name>meta_deserialize</name></member>
+      <member refid="structgraph__t_1af4f580dd0ff85a787cc326bc01184b83" prot="private" virt="non-virtual"><scope>graph_t</scope><name>meta_deserialize</name></member>
+      <member refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" prot="private" virt="non-virtual"><scope>graph_t</scope><name>meta_serialize</name></member>
+      <member refid="structgraph__t_1a8ea6c151c23bf198c9545ff6fcac2cc0" prot="private" virt="non-virtual"><scope>graph_t</scope><name>meta_serialize</name></member>
+      <member refid="structgraph__t_1aaeeca5594501e477e71ed4ef9d6ca6c9" prot="private" virt="non-virtual"><scope>graph_t</scope><name>meta_serialize</name></member>
+      <member refid="structgraph__t_1acb3118d240b9b0379875a6b0d369338f" prot="private" virt="non-virtual"><scope>graph_t</scope><name>mut</name></member>
+      <member refid="structgraph__t_1a45783311aac5e6f50f23246f0cf407d1" prot="public" virt="non-virtual"><scope>graph_t</scope><name>num_nodes</name></member>
+      <member refid="structgraph__t_1ac2b2cef7e657d1d2e7e80ee0a4505a56" prot="public" virt="non-virtual"><scope>graph_t</scope><name>preselection</name></member>
+      <member refid="structgraph__t_1a14d15da9b30dca1e0879fd5a7d33fa58" prot="private" virt="non-virtual"><scope>graph_t</scope><name>return_any</name></member>
+      <member refid="structgraph__t_1a7903f37a8f508f24fe014a0f990e5a80" prot="private" virt="non-virtual"><scope>graph_t</scope><name>serialize</name></member>
+      <member refid="structgraph__t_1a77606e05956ba39041023a3a36f53967" prot="public" virt="non-virtual"><scope>graph_t</scope><name>transfer_to_device</name></member>
+      <member refid="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" prot="private" virt="non-virtual"><scope>graph_t</scope><name>truth_edge</name></member>
+      <member refid="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" prot="private" virt="non-virtual"><scope>graph_t</scope><name>truth_graph</name></member>
+      <member refid="structgraph__t_1a8d420f4c95eaa2cb48495b8580db72c5" prot="private" virt="non-virtual"><scope>graph_t</scope><name>truth_map_edge</name></member>
+      <member refid="structgraph__t_1a7180f4ed02a74de898b8bf1d9a69cb21" prot="private" virt="non-virtual"><scope>graph_t</scope><name>truth_map_graph</name></member>
+      <member refid="structgraph__t_1a504df9445cff6941b7400018196853ec" prot="private" virt="non-virtual"><scope>graph_t</scope><name>truth_map_node</name></member>
+      <member refid="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" prot="private" virt="non-virtual"><scope>graph_t</scope><name>truth_node</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

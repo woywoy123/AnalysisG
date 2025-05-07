@@ -1,0 +1,47 @@
+digraph "merge_data"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="merge_data",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="decaymodes::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classdecaymodes.html#a65b4213eb7aa8ede49b8113064824f99",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="met::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmet.html#a53a217f21ee3d8969f6125e58254971c",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="topjets::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtopjets.html#a6d490674013bf38deb85e41d31aa2b9a",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="toptruthjets::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtoptruthjets.html#acc1a029bbab73d3c6bc2a121ee64def2",tooltip=" "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="parton::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classparton.html#ad1c47645aa3bfaf68c1bd33e6bf069d9",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="topefficiency::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtopefficiency.html#a4565cb0f6f962119593181f2bc313bd0",tooltip=" "];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="regions::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classregions.html#aefc0916bc31bfb139b311846a0e33c3a",tooltip=" "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="combinatorial::merge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcombinatorial.html#afcb3e3c3c11238a745f3e591162a7ae0",tooltip=" "];
+  Node1 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="merge_data",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$merge__cast_8h.html#ae137607c46405e7e2c40786984696a32",tooltip=" "];
+  Node1 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="matching::reference",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmatching.html#a7c3eb589ac6ae85490aa698d73fe8b88",tooltip=" "];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="matching::strategy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmatching.html#afbde71106947fe0f714151794c7f6259",tooltip=" "];
+  Node1 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="topmatching::strategy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtopmatching.html#acbf5d299785f024b7a4b5bd92bbfcd6f",tooltip=" "];
+  Node1 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="decaymodes::strategy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classdecaymodes.html#abfec366758f5b7885063a349cfcda394",tooltip=" "];
+  Node1 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="zprime::strategy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classzprime.html#a36b1544f00cc1a4ed703ef304f923ea8",tooltip=" "];
+  Node1 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="toptruthjets::strategy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtoptruthjets.html#a39c1afcec2800b351fc047fbfa4f009f",tooltip=" "];
+  Node1 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="topjets::strategy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtopjets.html#a72145e79c19febe5393d17220c980e2a",tooltip=" "];
+  Node1 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="validation::strategy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation.html#af388ba0e867008a75602581fdc2ed0f3",tooltip=" "];
+  Node1 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="childrenkinematics\l::strategy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classchildrenkinematics.html#a9dfe1425443601d0af03eab580722b76",tooltip=" "];
+  Node1 -> Node20 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="combinatorial::strategy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcombinatorial.html#a5cd8d199d3f8fe6c9f0b8e1c2e2f7bfd",tooltip=" "];
+}

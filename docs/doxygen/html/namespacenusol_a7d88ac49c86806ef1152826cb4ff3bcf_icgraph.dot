@@ -1,0 +1,13 @@
+digraph "nusol.intersections_ellipse_line"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="nusol.intersections\l_ellipse_line",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="nusol.intersections\l_ellipses",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacenusol.html#a76d07a88575c3aef5cc2e16fe062d57c",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="nusol.SingleNu.__init__",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classnusol_1_1_single_nu.html#afd4e5140dddde86c7e01e4ff735542e9",tooltip=" "];
+}

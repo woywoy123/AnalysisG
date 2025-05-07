@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="_3particle-name_4_8cxx" kind="file" language="C++">
+    <compoundname>&lt;particle-name&gt;.cxx</compoundname>
+    <includes local="no">particle-name</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>&lt;particle-name&gt;.cxx</label>
+        <link refid="_3particle-name_4_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>particle-name</label>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_3particle-name_4_8cxx_1a1329e649cb35f3b344be1ad5c717fda5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>h&lt; <ref refid="classparticle" kindref="compound">particle</ref>-<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref> &gt; ::&lt; <ref refid="classparticle" kindref="compound">particle</ref>-<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref> &gt; <ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref></type>
+        <definition>h&lt;particle-name&gt; ::&lt;particle-name&gt; this add_leaf</definition>
+        <argsstring>(&quot;&lt;kinematic-key&gt;&quot;, &quot;&lt;leaf-name-of-kinematic&gt;&quot;)</argsstring>
+        <name>add_leaf</name>
+        <param>
+          <type>&quot;&lt;kinematic-key&gt;&quot;</type>
+        </param>
+        <param>
+          <type>&quot;&lt;leaf-<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>-of-kinematic&gt;&quot;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="templates/particles/cxx/&lt;particle-name&gt;.cxx" line="5" column="11" declfile="templates/particles/cxx/&lt;particle-name&gt;.cxx" declline="5" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="_3particle-name_4_8cxx_1a9960e5ad2af646e7b4728232fd646f18" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_3event-name_4_8cxx_1ad909c3cfb5bcea8ede732f1c3da64879" kindref="member">this</ref></type>
+        <definition>this apply_type_prefix</definition>
+        <argsstring>()</argsstring>
+        <name>apply_type_prefix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="templates/particles/cxx/&lt;particle-name&gt;.cxx" line="9" column="11" declfile="templates/particles/cxx/&lt;particle-name&gt;.cxx" declline="9" declcolumn="11"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;&lt;particle-name&gt;</highlight><highlight class="normal">.h</highlight><highlight class="stringliteral">&quot;</highlight></codeline>
+<codeline lineno="2"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="3"><highlight class="stringliteral">&lt;particle-name&gt;::&lt;particle-name&gt;(){</highlight></codeline>
+<codeline lineno="4"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>this<sp/>-&gt;<sp/>type<sp/>=<sp/>&quot;</highlight><highlight class="normal">&lt;some-<ref refid="classparticle" kindref="compound">particle</ref>&gt;</highlight><highlight class="stringliteral">&quot;;<sp/></highlight></codeline>
+<codeline lineno="5"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>this<sp/>-&gt;<sp/>add_leaf(&quot;</highlight><highlight class="normal">&lt;kinematic-key&gt;</highlight><highlight class="stringliteral">&quot;,<sp/>&quot;</highlight><highlight class="normal">&lt;leaf-<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>-of-kinematic&gt;</highlight><highlight class="stringliteral">&quot;);<sp/></highlight></codeline>
+<codeline lineno="6"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="7"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>//<sp/>adds<sp/>&lt;some-particle&gt;/&lt;leaf-name-of-kinematic&gt;</highlight></codeline>
+<codeline lineno="8"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>//<sp/>to<sp/>the<sp/>search<sp/>when<sp/>looking<sp/>at<sp/>leaves.<sp/></highlight></codeline>
+<codeline lineno="9"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>this<sp/>-&gt;<sp/>apply_type_prefix();<sp/></highlight></codeline>
+<codeline lineno="10"><highlight class="stringliteral">}</highlight></codeline>
+<codeline lineno="11"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="12"><highlight class="stringliteral">&lt;particle-name&gt;::~&lt;particle-name&gt;(){}</highlight></codeline>
+<codeline lineno="13"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="14"><highlight class="stringliteral">particle_template*<sp/>&lt;particle-name&gt;::clone(){return<sp/>(event_template*)new<sp/>&lt;particle-name&gt;();}</highlight></codeline>
+<codeline lineno="15"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="16"><highlight class="stringliteral">void<sp/>build(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/>element_t*<sp/>el){</highlight></codeline>
+<codeline lineno="17"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>//<sp/>here<sp/>the<sp/>framework<sp/>builds<sp/>the<sp/>particle<sp/>and<sp/>assigns<sp/>values<sp/>to<sp/>the<sp/>object.</highlight></codeline>
+<codeline lineno="18"><highlight class="stringliteral"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="19"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>std::vector&lt;float&gt;<sp/>some_kinematic<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="20"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>el<sp/>-&gt;<sp/>get(&quot;</highlight><highlight class="normal">&lt;kinematic-key&gt;</highlight><highlight class="stringliteral">&quot;,<sp/>&amp;some_kinematic);<sp/></highlight></codeline>
+<codeline lineno="21"><highlight class="stringliteral"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="22"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>for<sp/>(int<sp/>x(0);<sp/>x<sp/>&lt;<sp/>some_kinematic.size();<sp/>++x){</highlight></codeline>
+<codeline lineno="23"><highlight class="stringliteral"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;particle-name&gt;*<sp/>p<sp/>=<sp/>new<sp/>&lt;particle-name&gt;();<sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="stringliteral"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p<sp/>-&gt;<sp/>key_variable<sp/>=<sp/>some_kinematic[x];<sp/></highlight></codeline>
+<codeline lineno="25"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="26"><highlight class="stringliteral"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>IMPORTANT!<sp/>Make<sp/>the<sp/>particle<sp/>available<sp/>to<sp/>the<sp/>event.</highlight></codeline>
+<codeline lineno="27"><highlight class="stringliteral"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*prt)[std::string(p<sp/>-&gt;<sp/>hash)]<sp/>=<sp/>p;<sp/></highlight></codeline>
+<codeline lineno="28"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="29"><highlight class="stringliteral">}</highlight></codeline>
+    </programlisting>
+    <location file="templates/particles/cxx/&lt;particle-name&gt;.cxx"/>
+  </compounddef>
+</doxygen>

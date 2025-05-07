@@ -1,0 +1,1364 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classlossfx" kind="class" language="C++" prot="public">
+    <compoundname>lossfx</compoundname>
+    <basecompoundref refid="classtools" prot="public" virt="non-virtual">tools</basecompoundref>
+    <includes refid="lossfx_8h" local="no">lossfx.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classlossfx_1a9fc57ac3a9e6e99c529f8d7aaf0cf1c2" prot="private" static="no" mutable="no">
+        <type>torch::optim::Adam *</type>
+        <definition>torch::optim::Adam* lossfx::m_adam</definition>
+        <argsstring></argsstring>
+        <name>m_adam</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="59" column="32" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a583a624ee84b31e8e1044f457db64656" prot="private" static="no" mutable="no">
+        <type>torch::optim::Adagrad *</type>
+        <definition>torch::optim::Adagrad* lossfx::m_adagrad</definition>
+        <argsstring></argsstring>
+        <name>m_adagrad</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="60" column="32" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1abb45f1e051f02f58ea6b76524a4a81cb" prot="private" static="no" mutable="no">
+        <type>torch::optim::AdamW *</type>
+        <definition>torch::optim::AdamW* lossfx::m_adamw</definition>
+        <argsstring></argsstring>
+        <name>m_adamw</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="61" column="32" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a854adb1493c8086c32ec061095aa5a1a" prot="private" static="no" mutable="no">
+        <type>torch::optim::LBFGS *</type>
+        <definition>torch::optim::LBFGS* lossfx::m_lbfgs</definition>
+        <argsstring></argsstring>
+        <name>m_lbfgs</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="62" column="32" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1ac48de70702743e5373f286dc296c3fa3" prot="private" static="no" mutable="no">
+        <type>torch::optim::RMSprop *</type>
+        <definition>torch::optim::RMSprop* lossfx::m_rmsprop</definition>
+        <argsstring></argsstring>
+        <name>m_rmsprop</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="63" column="32" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a1998f85bb4b642111588ed3665f51d82" prot="private" static="no" mutable="no">
+        <type>torch::optim::SGD *</type>
+        <definition>torch::optim::SGD* lossfx::m_sgd</definition>
+        <argsstring></argsstring>
+        <name>m_sgd</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="64" column="32" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a66d148486c9f9c1d3cbf5f2009a0c09a" prot="private" static="no" mutable="no">
+        <type>torch::nn::BCELossImpl *</type>
+        <definition>torch::nn::BCELossImpl* lossfx::m_bce</definition>
+        <argsstring></argsstring>
+        <name>m_bce</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="66" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a6e3bbc1b202bd998bdbe0e78ee837772" prot="private" static="no" mutable="no">
+        <type>torch::nn::BCEWithLogitsLossImpl *</type>
+        <definition>torch::nn::BCEWithLogitsLossImpl* lossfx::m_bce_with_logits</definition>
+        <argsstring></argsstring>
+        <name>m_bce_with_logits</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="67" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a4980df50afbdd5ca7fc9ec0fa19c9de9" prot="private" static="no" mutable="no">
+        <type>torch::nn::CosineEmbeddingLossImpl *</type>
+        <definition>torch::nn::CosineEmbeddingLossImpl* lossfx::m_cosine_embedding</definition>
+        <argsstring></argsstring>
+        <name>m_cosine_embedding</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="68" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a19e28bac398e2eb81efa1d542473fde9" prot="private" static="no" mutable="no">
+        <type>torch::nn::CrossEntropyLossImpl *</type>
+        <definition>torch::nn::CrossEntropyLossImpl* lossfx::m_cross_entropy</definition>
+        <argsstring></argsstring>
+        <name>m_cross_entropy</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="69" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1ac6652f7172778a3a93986121eb5139b8" prot="private" static="no" mutable="no">
+        <type>torch::nn::CTCLossImpl *</type>
+        <definition>torch::nn::CTCLossImpl* lossfx::m_ctc</definition>
+        <argsstring></argsstring>
+        <name>m_ctc</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="70" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1af84f965aa88d89668acea7b64aa66681" prot="private" static="no" mutable="no">
+        <type>torch::nn::HingeEmbeddingLossImpl *</type>
+        <definition>torch::nn::HingeEmbeddingLossImpl* lossfx::m_hinge_embedding</definition>
+        <argsstring></argsstring>
+        <name>m_hinge_embedding</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="71" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1ae4eda3dc8f2e63be8fb8edf5e3ffc9d3" prot="private" static="no" mutable="no">
+        <type>torch::nn::HuberLossImpl *</type>
+        <definition>torch::nn::HuberLossImpl* lossfx::m_huber</definition>
+        <argsstring></argsstring>
+        <name>m_huber</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="72" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1af8e01f1208c6461ade69efaac64578af" prot="private" static="no" mutable="no">
+        <type>torch::nn::KLDivLossImpl *</type>
+        <definition>torch::nn::KLDivLossImpl* lossfx::m_kl_div</definition>
+        <argsstring></argsstring>
+        <name>m_kl_div</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="73" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a8371d45ba54447881621e72289ecaae1" prot="private" static="no" mutable="no">
+        <type>torch::nn::L1LossImpl *</type>
+        <definition>torch::nn::L1LossImpl* lossfx::m_l1</definition>
+        <argsstring></argsstring>
+        <name>m_l1</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="74" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1aa8db0e5614312643942001da0ce715cd" prot="private" static="no" mutable="no">
+        <type>torch::nn::MarginRankingLossImpl *</type>
+        <definition>torch::nn::MarginRankingLossImpl* lossfx::m_margin_ranking</definition>
+        <argsstring></argsstring>
+        <name>m_margin_ranking</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="75" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a68742fc97a5805acde39e4572644b39e" prot="private" static="no" mutable="no">
+        <type>torch::nn::MSELossImpl *</type>
+        <definition>torch::nn::MSELossImpl* lossfx::m_mse</definition>
+        <argsstring></argsstring>
+        <name>m_mse</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="76" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1aa1b0e0152977a99faf724a2b62e6a0aa" prot="private" static="no" mutable="no">
+        <type>torch::nn::MultiLabelMarginLossImpl *</type>
+        <definition>torch::nn::MultiLabelMarginLossImpl* lossfx::m_multi_label_margin</definition>
+        <argsstring></argsstring>
+        <name>m_multi_label_margin</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="77" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a7ce5648f5dcfa9e72a4ec26a3dad2877" prot="private" static="no" mutable="no">
+        <type>torch::nn::MultiLabelSoftMarginLossImpl *</type>
+        <definition>torch::nn::MultiLabelSoftMarginLossImpl* lossfx::m_multi_label_soft_margin</definition>
+        <argsstring></argsstring>
+        <name>m_multi_label_soft_margin</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="78" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a26f160dc1711516c779839c79c6195a9" prot="private" static="no" mutable="no">
+        <type>torch::nn::MultiMarginLossImpl *</type>
+        <definition>torch::nn::MultiMarginLossImpl* lossfx::m_multi_margin</definition>
+        <argsstring></argsstring>
+        <name>m_multi_margin</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="79" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a68d9a688e7bbc95e5276f9bf635c06d0" prot="private" static="no" mutable="no">
+        <type>torch::nn::NLLLossImpl *</type>
+        <definition>torch::nn::NLLLossImpl* lossfx::m_nll</definition>
+        <argsstring></argsstring>
+        <name>m_nll</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="80" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a07352b83c400aa82d4089c0e6a3b6f36" prot="private" static="no" mutable="no">
+        <type>torch::nn::PoissonNLLLossImpl *</type>
+        <definition>torch::nn::PoissonNLLLossImpl* lossfx::m_poisson_nll</definition>
+        <argsstring></argsstring>
+        <name>m_poisson_nll</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="81" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1afe5f56e596b8c661752faaa23951f604" prot="private" static="no" mutable="no">
+        <type>torch::nn::SmoothL1LossImpl *</type>
+        <definition>torch::nn::SmoothL1LossImpl* lossfx::m_smooth_l1</definition>
+        <argsstring></argsstring>
+        <name>m_smooth_l1</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="82" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="82" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1ad986c830b3c08cbb46dfd3d2289d945e" prot="private" static="no" mutable="no">
+        <type>torch::nn::SoftMarginLossImpl *</type>
+        <definition>torch::nn::SoftMarginLossImpl* lossfx::m_soft_margin</definition>
+        <argsstring></argsstring>
+        <name>m_soft_margin</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="83" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1ac42a9f3dfa37d2309047a54b59108322" prot="private" static="no" mutable="no">
+        <type>torch::nn::TripletMarginLossImpl *</type>
+        <definition>torch::nn::TripletMarginLossImpl* lossfx::m_triplet_margin</definition>
+        <argsstring></argsstring>
+        <name>m_triplet_margin</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="84" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a2831c952f193c87cdf6d4091b8814119" prot="private" static="no" mutable="no">
+        <type>torch::nn::TripletMarginWithDistanceLossImpl *</type>
+        <definition>torch::nn::TripletMarginWithDistanceLossImpl* lossfx::m_triplet_margin_with_distance</definition>
+        <argsstring></argsstring>
+        <name>m_triplet_margin_with_distance</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="85" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classlossfx_1a0dfb87cf32550ff80324405e91a4d683" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>lossfx::lossfx</definition>
+        <argsstring>()</argsstring>
+        <name>lossfx</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="15" column="9" bodyfile="modules/lossfx/cxx/lossfx.cxx" bodystart="3" bodyend="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>lossfx::~lossfx</definition>
+        <argsstring>()</argsstring>
+        <name>~lossfx</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="16" column="9" bodyfile="modules/lossfx/cxx/lossfx.cxx" bodystart="4" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a1ff4ab72a5193a641f3184f2fa77daf9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4" kindref="member">loss_enum</ref></type>
+        <definition>loss_enum lossfx::loss_string</definition>
+        <argsstring>(std::string name)</argsstring>
+        <name>loss_string</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="18" column="19" bodyfile="modules/lossfx/cxx/switching.cxx" bodystart="3" bodyend="26"/>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a8460edce9cfd317d188e4094a829d268">bce</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a4b6eb4a6d3c80f0b45a6d2729d88bd54">bce_with_logits</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac0da5373194331377b9493c324577fcd">cosine_embedding</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a781976f30d9e46de27ab80d7d826f8cd">cross_entropy</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a07fe9417379102199a4905bba9447d9f">ctc</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a287e98c92c24cbd0faa1478b05267965">hinge_embedding</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3291aaac20f3d603d96744c1f0890028">huber</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a9200d0e1b2d19e36dcfe3d5c95adf0c0">invalid_loss</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ad0dca0c7cabb02ce1fb3ca60d7d33fae">kl_div</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a">l1</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a5b4962920d8fac8709b19e3bdaa7fd2b">margin_ranking</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a7f04af006bdeba02616023b6e6c68409">mse</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a88fce617a00079ebdc676e7b1ca7d3e6">multi_label_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3f7b800dc458e42692727f37e71e7776">multi_label_soft_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4abec3568ca5dc8bc57bfc38ea05c5546e">multi_margin</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac48f1775934ec894d2836d18cc34025c">nll</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4aafa5b2975d6d0d9b946a67ec56dadd82">poisson_nll</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ab2f5e937ee27b943f474a71bef4bd68d">smooth_l1</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a1262c7917d237a7aaf50acc1d86ca6dc">soft_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a0c42fd404f3fb4389be2ca1b91be4fe1">triplet_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a2aa70a3395f2f1604df452897e6d8b76">triplet_margin_with_distance</references>
+        <referencedby refid="classmodel__template_1a977402549135f0f763157b1282b44173" compoundref="model__lossfx_8cxx" startline="3" endline="14">model_template::set_output_features</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a7c434ad6cf74c729de1fa85674e93e04" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65d" kindref="member">opt_enum</ref></type>
+        <definition>opt_enum lossfx::optim_string</definition>
+        <argsstring>(std::string name)</argsstring>
+        <name>optim_string</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="19" column="18" bodyfile="modules/lossfx/cxx/switching.cxx" bodystart="28" bodyend="37"/>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65daa0f35e86dd5bb2b719f97ea019f94d11">adagrad</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da1d7c2923c1684726dc23d2901c4d8157">adam</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65dae07a255e00ea5c3cf8c1133216345d22">adamw</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da633e37fcfedfc73d71e9cd57dc6b265c">invalid_optimizer</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da4632d55006c23361062c3507792ee9a4">lbfgs</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65dae5fa12a38876eb9d9260de4f93cf9765">rmsprop</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da0f7e401c396b92d3864b22a970fa322a">sgd</references>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::loss</definition>
+        <argsstring>(torch::Tensor *pred, torch::Tensor *truth, loss_enum lss)</argsstring>
+        <name>loss</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <param>
+          <type><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4" kindref="member">loss_enum</ref></type>
+          <declname>lss</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="20" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="3" bodyend="27"/>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a8460edce9cfd317d188e4094a829d268">bce</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a4b6eb4a6d3c80f0b45a6d2729d88bd54">bce_with_logits</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac0da5373194331377b9493c324577fcd">cosine_embedding</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a781976f30d9e46de27ab80d7d826f8cd">cross_entropy</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a07fe9417379102199a4905bba9447d9f">ctc</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a287e98c92c24cbd0faa1478b05267965">hinge_embedding</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3291aaac20f3d603d96744c1f0890028">huber</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ad0dca0c7cabb02ce1fb3ca60d7d33fae">kl_div</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a">l1</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a5b4962920d8fac8709b19e3bdaa7fd2b">margin_ranking</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a7f04af006bdeba02616023b6e6c68409">mse</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a88fce617a00079ebdc676e7b1ca7d3e6">multi_label_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3f7b800dc458e42692727f37e71e7776">multi_label_soft_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4abec3568ca5dc8bc57bfc38ea05c5546e">multi_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac48f1775934ec894d2836d18cc34025c">nll</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4aafa5b2975d6d0d9b946a67ec56dadd82">poisson_nll</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ab2f5e937ee27b943f474a71bef4bd68d">smooth_l1</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a1262c7917d237a7aaf50acc1d86ca6dc">soft_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a0c42fd404f3fb4389be2ca1b91be4fe1">triplet_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a2aa70a3395f2f1604df452897e6d8b76">triplet_margin_with_distance</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a8afc0d1aa169bcebb072b8b4278b2e88" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::weight_init</definition>
+        <argsstring>(torch::nn::Sequential *data, mlp_init method)</argsstring>
+        <name>weight_init</name>
+        <param>
+          <type>torch::nn::Sequential *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type><ref refid="model__template_8h_1a04569a45296869bf184d4b79d10487dd" kindref="member">mlp_init</ref></type>
+          <declname>method</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="21" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="113" bodyend="123"/>
+        <references refid="namespacechildrenkinematics_1_1figures_1ab80f4cf948eb988fce6030ca8bd484ea" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="22" endline="31">childrenkinematics.figures.apply</references>
+        <references refid="namespacemain_1aa7f7a57dd94ac214b133aba964145812" compoundref="mc16__matching_2main_8py" startline="117">main.method</references>
+        <references refid="model__template_8h_1a04569a45296869bf184d4b79d10487ddaebc81705969b8c5ae986b0b2ec08d1d5" compoundref="model__template_8h" startline="33">normal</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::optim::Optimizer *</type>
+        <definition>torch::optim::Optimizer * lossfx::build_optimizer</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_optimizer</name>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="23" column="33" bodyfile="modules/lossfx/cxx/lossfx.cxx" bodystart="33" bodyend="46"/>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65daa0f35e86dd5bb2b719f97ea019f94d11">adagrad</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da1d7c2923c1684726dc23d2901c4d8157">adam</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65dae07a255e00ea5c3cf8c1133216345d22">adamw</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da4632d55006c23361062c3507792ee9a4">lbfgs</references>
+        <references refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" compoundref="test__generator_8py" startline="28">test_generator.op</references>
+        <references refid="classlossfx_1a7c434ad6cf74c729de1fa85674e93e04" compoundref="switching_8cxx" startline="28" endline="37">optim_string</references>
+        <references refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" compoundref="rnn__model_8py" startline="22">rnn_model.params</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65dae5fa12a38876eb9d9260de4f93cf9765">rmsprop</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da0f7e401c396b92d3864b22a970fa322a">sgd</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool lossfx::build_loss_function</definition>
+        <argsstring>(loss_enum lss)</argsstring>
+        <name>build_loss_function</name>
+        <param>
+          <type><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4" kindref="member">loss_enum</ref></type>
+          <declname>lss</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="24" column="14" bodyfile="modules/lossfx/cxx/lossfx.cxx" bodystart="48" bodyend="74"/>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a8460edce9cfd317d188e4094a829d268">bce</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a4b6eb4a6d3c80f0b45a6d2729d88bd54">bce_with_logits</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac0da5373194331377b9493c324577fcd">cosine_embedding</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a781976f30d9e46de27ab80d7d826f8cd">cross_entropy</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a07fe9417379102199a4905bba9447d9f">ctc</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a287e98c92c24cbd0faa1478b05267965">hinge_embedding</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3291aaac20f3d603d96744c1f0890028">huber</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ad0dca0c7cabb02ce1fb3ca60d7d33fae">kl_div</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a">l1</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a5b4962920d8fac8709b19e3bdaa7fd2b">margin_ranking</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a7f04af006bdeba02616023b6e6c68409">mse</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a88fce617a00079ebdc676e7b1ca7d3e6">multi_label_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3f7b800dc458e42692727f37e71e7776">multi_label_soft_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4abec3568ca5dc8bc57bfc38ea05c5546e">multi_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac48f1775934ec894d2836d18cc34025c">nll</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4aafa5b2975d6d0d9b946a67ec56dadd82">poisson_nll</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ab2f5e937ee27b943f474a71bef4bd68d">smooth_l1</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a1262c7917d237a7aaf50acc1d86ca6dc">soft_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a0c42fd404f3fb4389be2ca1b91be4fe1">triplet_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a2aa70a3395f2f1604df452897e6d8b76">triplet_margin_with_distance</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::to</definition>
+        <argsstring>(torch::TensorOptions *)</argsstring>
+        <name>to</name>
+        <param>
+          <type>torch::TensorOptions *</type>
+          <defname>op</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="25" column="14" bodyfile="modules/lossfx/cxx/lossfx.cxx" bodystart="76" bodyend="97"/>
+        <references refid="namespacemain_1aa13220b81a6693a30ef1862bd1846aa1" compoundref="performance_2main_8py" startline="149">main.device</references>
+        <references refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" compoundref="test__generator_8py" startline="28">test_generator.op</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classlossfx_1aacba578f0f439b9346ac23d54dbbcf15" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::build_adam</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_adam</name>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="28" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="3" bodyend="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a07ff248174aba99522c667988ac6ea88" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::build_adagrad</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_adagrad</name>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="29" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="13" bodyend="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a325d4d01cb1010736fc2a21b781e192b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::build_adamw</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_adamw</name>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="30" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="23" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a5a00feb19bbe247285eadfbd66f2dcb3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::build_lbfgs</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_lbfgs</name>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="31" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="33" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a14a8ead313c89c9f668fe6287edb0eed" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::build_rmsprop</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_rmsprop</name>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="32" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="45" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1af24d08de685c3bdb88029a9a2d30dc8b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::build_sgd</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_sgd</name>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="33" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="57" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a5a3c5b59645060ddbf22b4208c443da4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::BCELossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::BCELossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="36" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="29" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a69a625eb998a062525d5f1b64bb9abc4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::BCEWithLogitsLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::BCEWithLogitsLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="37" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="33" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a56935e03824196a34050727a8fb170da" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::CosineEmbeddingLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::CosineEmbeddingLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="38" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="38" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1af687262ac7d99a1aed689fdc22ae92f6" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::CrossEntropyLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::CrossEntropyLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="39" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="43" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1ad321d1e53a419104d6cae4be9dbce50d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::CTCLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::CTCLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="40" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="47" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1aa02bfeb76e2a68dd36a9d2925f2d32cc" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::HingeEmbeddingLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::HingeEmbeddingLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="41" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="52" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a21af0ec515a7fbf427ddf981ade09423" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::HuberLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::HuberLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="42" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="57" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a842c7af78750b162c6aa9360bade3470" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::KLDivLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::KLDivLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="43" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="62" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1ab6d6edc04d81882e0ef68b1250b0d8e9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::L1LossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::L1LossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="44" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="67" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1acba53b9019c7b8946d3ec17f0e10a084" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::MarginRankingLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::MarginRankingLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="45" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="72" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a650b2ac6d41d2c1b0f127cb10d512eee" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::MSELossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::MSELossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="46" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="77" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1ad5e7aed7b55be27e4364db93cdbbe28f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::MultiLabelMarginLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::MultiLabelMarginLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="47" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="82" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1acad9701213595705f0eda32556daf4cc" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::MultiLabelSoftMarginLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::MultiLabelSoftMarginLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="48" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="87" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a4aed2e4a95099472fe4f82b34058bde7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::MultiMarginLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::MultiMarginLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="49" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="92" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a37143dba84ab416ef2e2e78ae2fe3a29" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::NLLLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::NLLLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="50" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="96" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1aebdfc428d88e1684ae2849c078f72d57" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::PoissonNLLLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::PoissonNLLLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="51" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="100" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1acdc6ea18cbc56eb50054b9b1c072a645" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::SmoothL1LossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::SmoothL1LossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="52" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="104" bodyend="106"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a1d67ca12ba26d88cdd24c953eb44f64e" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::SoftMarginLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::SoftMarginLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="53" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="108" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1aa5b79ec835066824f34f559f624449a3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::TripletMarginLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::TripletMarginLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="54" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="112" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1ae2d7f58b30de13327ad0fbcf8ec8975c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::TripletMarginWithDistanceLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <param>
+          <type>torch::nn::TripletMarginWithDistanceLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="55" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="116" bodyend="118"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>lossfx</label>
+        <link refid="classlossfx"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>lossfx</label>
+        <link refid="classlossfx"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+    </collaborationgraph>
+    <location file="modules/lossfx/include/templates/lossfx.h" line="13" column="1" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="12" bodyend="87"/>
+    <listofallmembers>
+      <member refid="classlossfx_1a5a3c5b59645060ddbf22b4208c443da4" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a69a625eb998a062525d5f1b64bb9abc4" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a56935e03824196a34050727a8fb170da" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1af687262ac7d99a1aed689fdc22ae92f6" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1ad321d1e53a419104d6cae4be9dbce50d" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1aa02bfeb76e2a68dd36a9d2925f2d32cc" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a21af0ec515a7fbf427ddf981ade09423" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a842c7af78750b162c6aa9360bade3470" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1ab6d6edc04d81882e0ef68b1250b0d8e9" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1acba53b9019c7b8946d3ec17f0e10a084" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a650b2ac6d41d2c1b0f127cb10d512eee" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1ad5e7aed7b55be27e4364db93cdbbe28f" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1acad9701213595705f0eda32556daf4cc" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a4aed2e4a95099472fe4f82b34058bde7" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a37143dba84ab416ef2e2e78ae2fe3a29" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1aebdfc428d88e1684ae2849c078f72d57" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1acdc6ea18cbc56eb50054b9b1c072a645" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a1d67ca12ba26d88cdd24c953eb44f64e" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1aa5b79ec835066824f34f559f624449a3" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1ae2d7f58b30de13327ad0fbcf8ec8975c" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classtools_1a408b66ad73b7b4bb962634c14a55b619" prot="public" virt="non-virtual"><scope>lossfx</scope><name>absolute_path</name></member>
+      <member refid="classlossfx_1a07ff248174aba99522c667988ac6ea88" prot="private" virt="non-virtual"><scope>lossfx</scope><name>build_adagrad</name></member>
+      <member refid="classlossfx_1aacba578f0f439b9346ac23d54dbbcf15" prot="private" virt="non-virtual"><scope>lossfx</scope><name>build_adam</name></member>
+      <member refid="classlossfx_1a325d4d01cb1010736fc2a21b781e192b" prot="private" virt="non-virtual"><scope>lossfx</scope><name>build_adamw</name></member>
+      <member refid="classlossfx_1a5a00feb19bbe247285eadfbd66f2dcb3" prot="private" virt="non-virtual"><scope>lossfx</scope><name>build_lbfgs</name></member>
+      <member refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" prot="public" virt="non-virtual"><scope>lossfx</scope><name>build_loss_function</name></member>
+      <member refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" prot="public" virt="non-virtual"><scope>lossfx</scope><name>build_optimizer</name></member>
+      <member refid="classlossfx_1a14a8ead313c89c9f668fe6287edb0eed" prot="private" virt="non-virtual"><scope>lossfx</scope><name>build_rmsprop</name></member>
+      <member refid="classlossfx_1af24d08de685c3bdb88029a9a2d30dc8b" prot="private" virt="non-virtual"><scope>lossfx</scope><name>build_sgd</name></member>
+      <member refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" prot="public" virt="non-virtual"><scope>lossfx</scope><name>create_path</name></member>
+      <member refid="classtools_1a1f8f5e775e758e3d2442a9dd46daf78c" prot="public" virt="non-virtual"><scope>lossfx</scope><name>delete_path</name></member>
+      <member refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" prot="public" virt="non-virtual"><scope>lossfx</scope><name>ends_with</name></member>
+      <member refid="classtools_1a86175bf887f3e82780cb72910181961d" prot="public" virt="non-virtual"><scope>lossfx</scope><name>extract</name></member>
+      <member refid="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" prot="public" virt="non-virtual"><scope>lossfx</scope><name>flush</name></member>
+      <member refid="classtools_1ad7229c72cee65da3605c4be82f9b42d4" prot="public" virt="non-virtual"><scope>lossfx</scope><name>has_string</name></member>
+      <member refid="classtools_1a13633d4d63c55bcf537ff141e7605f13" prot="public" virt="non-virtual"><scope>lossfx</scope><name>has_value</name></member>
+      <member refid="classtools_1a47d3d261edcb898daab56721e18d1e67" prot="public" virt="non-virtual"><scope>lossfx</scope><name>is_file</name></member>
+      <member refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" prot="public" virt="non-virtual"><scope>lossfx</scope><name>loss</name></member>
+      <member refid="classlossfx_1a1ff4ab72a5193a641f3184f2fa77daf9" prot="public" virt="non-virtual"><scope>lossfx</scope><name>loss_string</name></member>
+      <member refid="classlossfx_1a0dfb87cf32550ff80324405e91a4d683" prot="public" virt="non-virtual"><scope>lossfx</scope><name>lossfx</name></member>
+      <member refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" prot="public" virt="non-virtual"><scope>lossfx</scope><name>ls</name></member>
+      <member refid="classlossfx_1a583a624ee84b31e8e1044f457db64656" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_adagrad</name></member>
+      <member refid="classlossfx_1a9fc57ac3a9e6e99c529f8d7aaf0cf1c2" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_adam</name></member>
+      <member refid="classlossfx_1abb45f1e051f02f58ea6b76524a4a81cb" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_adamw</name></member>
+      <member refid="classlossfx_1a66d148486c9f9c1d3cbf5f2009a0c09a" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_bce</name></member>
+      <member refid="classlossfx_1a6e3bbc1b202bd998bdbe0e78ee837772" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_bce_with_logits</name></member>
+      <member refid="classlossfx_1a4980df50afbdd5ca7fc9ec0fa19c9de9" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_cosine_embedding</name></member>
+      <member refid="classlossfx_1a19e28bac398e2eb81efa1d542473fde9" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_cross_entropy</name></member>
+      <member refid="classlossfx_1ac6652f7172778a3a93986121eb5139b8" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_ctc</name></member>
+      <member refid="classlossfx_1af84f965aa88d89668acea7b64aa66681" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_hinge_embedding</name></member>
+      <member refid="classlossfx_1ae4eda3dc8f2e63be8fb8edf5e3ffc9d3" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_huber</name></member>
+      <member refid="classlossfx_1af8e01f1208c6461ade69efaac64578af" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_kl_div</name></member>
+      <member refid="classlossfx_1a8371d45ba54447881621e72289ecaae1" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_l1</name></member>
+      <member refid="classlossfx_1a854adb1493c8086c32ec061095aa5a1a" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_lbfgs</name></member>
+      <member refid="classlossfx_1aa8db0e5614312643942001da0ce715cd" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_margin_ranking</name></member>
+      <member refid="classlossfx_1a68742fc97a5805acde39e4572644b39e" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_mse</name></member>
+      <member refid="classlossfx_1aa1b0e0152977a99faf724a2b62e6a0aa" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_multi_label_margin</name></member>
+      <member refid="classlossfx_1a7ce5648f5dcfa9e72a4ec26a3dad2877" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_multi_label_soft_margin</name></member>
+      <member refid="classlossfx_1a26f160dc1711516c779839c79c6195a9" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_multi_margin</name></member>
+      <member refid="classlossfx_1a68d9a688e7bbc95e5276f9bf635c06d0" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_nll</name></member>
+      <member refid="classlossfx_1a07352b83c400aa82d4089c0e6a3b6f36" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_poisson_nll</name></member>
+      <member refid="classlossfx_1ac48de70702743e5373f286dc296c3fa3" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_rmsprop</name></member>
+      <member refid="classlossfx_1a1998f85bb4b642111588ed3665f51d82" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_sgd</name></member>
+      <member refid="classlossfx_1afe5f56e596b8c661752faaa23951f604" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_smooth_l1</name></member>
+      <member refid="classlossfx_1ad986c830b3c08cbb46dfd3d2289d945e" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_soft_margin</name></member>
+      <member refid="classlossfx_1ac42a9f3dfa37d2309047a54b59108322" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_triplet_margin</name></member>
+      <member refid="classlossfx_1a2831c952f193c87cdf6d4091b8814119" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_triplet_margin_with_distance</name></member>
+      <member refid="classlossfx_1a7c434ad6cf74c729de1fa85674e93e04" prot="public" virt="non-virtual"><scope>lossfx</scope><name>optim_string</name></member>
+      <member refid="classtools_1a4450b1e48193bef904b44f7a90aaee98" prot="public" virt="non-virtual"><scope>lossfx</scope><name>put</name></member>
+      <member refid="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" prot="public" virt="non-virtual"><scope>lossfx</scope><name>rename</name></member>
+      <member refid="classtools_1aeae88ebd7116d59008600f0723716dba" prot="public" virt="non-virtual"><scope>lossfx</scope><name>replace</name></member>
+      <member refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" prot="public" virt="non-virtual"><scope>lossfx</scope><name>split</name></member>
+      <member refid="classtools_1a7b784121d8b368a64995feddc7083469" prot="public" virt="non-virtual"><scope>lossfx</scope><name>sum</name></member>
+      <member refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" prot="public" virt="non-virtual"><scope>lossfx</scope><name>to</name></member>
+      <member refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" prot="public" virt="non-virtual"><scope>lossfx</scope><name>to_string</name></member>
+      <member refid="classtools_1a882f089d855dc4b3e0b60c591e11b092" prot="public" virt="non-virtual"><scope>lossfx</scope><name>to_string</name></member>
+      <member refid="classtools_1af0028ec6242448428f7c548b6e7cb714" prot="public" virt="non-virtual"><scope>lossfx</scope><name>tools</name></member>
+      <member refid="classtools_1a69be8c55f9fd7036080317a2ce98d4de" prot="public" virt="non-virtual"><scope>lossfx</scope><name>trim</name></member>
+      <member refid="classtools_1ab46f1f3892604cb366b861cb54ce30e0" prot="public" virt="non-virtual"><scope>lossfx</scope><name>type_name</name></member>
+      <member refid="classlossfx_1a8afc0d1aa169bcebb072b8b4278b2e88" prot="public" virt="non-virtual"><scope>lossfx</scope><name>weight_init</name></member>
+      <member refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" prot="public" virt="non-virtual"><scope>lossfx</scope><name>~lossfx</name></member>
+      <member refid="classtools_1a04762ddd5cc588520c89a387341f77f4" prot="public" virt="non-virtual"><scope>lossfx</scope><name>~tools</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,780 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="structentry__t" kind="struct" language="C++" prot="public">
+    <compoundname>entry_t</compoundname>
+    <includes refid="container_8h" local="no">container.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structentry__t_1a18b538911b3605d930eae31cc72487cb" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string entry_t::hash</definition>
+        <argsstring></argsstring>
+        <name>hash</name>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/container/include/container/container.h" line="14" column="17" bodyfile="modules/container/include/container/container.h" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structentry__t_1a45608e1c64eb289c8a31038f2542bfa1" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt;</type>
+        <definition>std::vector&lt;graph_t*&gt; entry_t::m_data</definition>
+        <argsstring></argsstring>
+        <name>m_data</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/container/include/container/container.h" line="15" column="32" bodyfile="modules/container/include/container/container.h" bodystart="15" bodyend="-1"/>
+        <referencedby refid="structentry__t_1ae7ca9449dc53f1e150959c9e9934ec58" compoundref="entries_8cxx" startline="4" endline="9">init</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structentry__t_1aea3e204d6a88be5bd693df01d2f175dd" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classgraph__template" kindref="compound">graph_template</ref> * &gt;</type>
+        <definition>std::vector&lt;graph_template*&gt; entry_t::m_graph</definition>
+        <argsstring></argsstring>
+        <name>m_graph</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/container/include/container/container.h" line="16" column="25" bodyfile="modules/container/include/container/container.h" bodystart="16" bodyend="-1"/>
+        <referencedby refid="structentry__t_1ace0828ea4f8ef8c6dc0a0b06c4a58877" compoundref="entries_8cxx" startline="11" endline="15">destroy</referencedby>
+        <referencedby refid="structentry__t_1abc33229ff4bb06455ad71e206e2475e2" compoundref="entries_8cxx" startline="30" endline="41">has_graph</referencedby>
+        <referencedby refid="structentry__t_1ae7ca9449dc53f1e150959c9e9934ec58" compoundref="entries_8cxx" startline="4" endline="9">init</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structentry__t_1a040f8566aed6af378fc855bfcff690a7" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classevent__template" kindref="compound">event_template</ref> * &gt;</type>
+        <definition>std::vector&lt;event_template*&gt; entry_t::m_event</definition>
+        <argsstring></argsstring>
+        <name>m_event</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/container/include/container/container.h" line="17" column="25" bodyfile="modules/container/include/container/container.h" bodystart="17" bodyend="-1"/>
+        <referencedby refid="structentry__t_1ace0828ea4f8ef8c6dc0a0b06c4a58877" compoundref="entries_8cxx" startline="11" endline="15">destroy</referencedby>
+        <referencedby refid="structentry__t_1a51900c29580cbd9411453888b0461bb8" compoundref="entries_8cxx" startline="17" endline="28">has_event</referencedby>
+        <referencedby refid="structentry__t_1ae7ca9449dc53f1e150959c9e9934ec58" compoundref="entries_8cxx" startline="4" endline="9">init</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structentry__t_1a347cc881994371e2ae5f5a61dcccde3c" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classselection__template" kindref="compound">selection_template</ref> * &gt;</type>
+        <definition>std::vector&lt;selection_template*&gt; entry_t::m_selection</definition>
+        <argsstring></argsstring>
+        <name>m_selection</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/container/include/container/container.h" line="18" column="17" bodyfile="modules/container/include/container/container.h" bodystart="18" bodyend="-1"/>
+        <referencedby refid="structentry__t_1ace0828ea4f8ef8c6dc0a0b06c4a58877" compoundref="entries_8cxx" startline="11" endline="15">destroy</referencedby>
+        <referencedby refid="structentry__t_1a22ab56b9d72de37d3b0e2678cf9b7cd9" compoundref="entries_8cxx" startline="43" endline="54">has_selection</referencedby>
+        <referencedby refid="structentry__t_1ae7ca9449dc53f1e150959c9e9934ec58" compoundref="entries_8cxx" startline="4" endline="9">init</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structentry__t_1ae7ca9449dc53f1e150959c9e9934ec58" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void entry_t::init</definition>
+        <argsstring>()</argsstring>
+        <name>init</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/container/include/container/container.h" line="20" column="10" bodyfile="modules/container/cxx/entries.cxx" bodystart="4" bodyend="9"/>
+        <references refid="structentry__t_1a45608e1c64eb289c8a31038f2542bfa1" compoundref="container_8h" startline="15">m_data</references>
+        <references refid="structentry__t_1a040f8566aed6af378fc855bfcff690a7" compoundref="container_8h" startline="17">m_event</references>
+        <references refid="structentry__t_1aea3e204d6a88be5bd693df01d2f175dd" compoundref="container_8h" startline="16">m_graph</references>
+        <references refid="structentry__t_1a347cc881994371e2ae5f5a61dcccde3c" compoundref="container_8h" startline="18">m_selection</references>
+      </memberdef>
+      <memberdef kind="function" id="structentry__t_1ace0828ea4f8ef8c6dc0a0b06c4a58877" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void entry_t::destroy</definition>
+        <argsstring>()</argsstring>
+        <name>destroy</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/container/include/container/container.h" line="21" column="10" bodyfile="modules/container/cxx/entries.cxx" bodystart="11" bodyend="15"/>
+        <references refid="structentry__t_1a040f8566aed6af378fc855bfcff690a7" compoundref="container_8h" startline="17">m_event</references>
+        <references refid="structentry__t_1aea3e204d6a88be5bd693df01d2f175dd" compoundref="container_8h" startline="16">m_graph</references>
+        <references refid="structentry__t_1a347cc881994371e2ae5f5a61dcccde3c" compoundref="container_8h" startline="18">m_selection</references>
+      </memberdef>
+      <memberdef kind="function" id="structentry__t_1a51900c29580cbd9411453888b0461bb8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool entry_t::has_event</definition>
+        <argsstring>(event_template *ev)</argsstring>
+        <name>has_event</name>
+        <param>
+          <type><ref refid="classevent__template" kindref="compound">event_template</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/container/include/container/container.h" line="22" column="10" bodyfile="modules/container/cxx/entries.cxx" bodystart="17" bodyend="28"/>
+        <references refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" compoundref="analysis_2main_8py" startline="10">main.ev</references>
+        <references refid="structentry__t_1a040f8566aed6af378fc855bfcff690a7" compoundref="container_8h" startline="17">m_event</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="structentry__t_1abc33229ff4bb06455ad71e206e2475e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool entry_t::has_graph</definition>
+        <argsstring>(graph_template *gr)</argsstring>
+        <name>has_graph</name>
+        <param>
+          <type><ref refid="classgraph__template" kindref="compound">graph_template</ref> *</type>
+          <declname>gr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/container/include/container/container.h" line="23" column="10" bodyfile="modules/container/cxx/entries.cxx" bodystart="30" bodyend="41"/>
+        <references refid="namespacetest__evaluation_1a70e34453939a185a280d3f31145b29af" compoundref="test__evaluation_8py" startline="10">test_evaluation.gr</references>
+        <references refid="structentry__t_1aea3e204d6a88be5bd693df01d2f175dd" compoundref="container_8h" startline="16">m_graph</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="structentry__t_1a22ab56b9d72de37d3b0e2678cf9b7cd9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool entry_t::has_selection</definition>
+        <argsstring>(selection_template *sel)</argsstring>
+        <name>has_selection</name>
+        <param>
+          <type><ref refid="classselection__template" kindref="compound">selection_template</ref> *</type>
+          <declname>sel</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/container/include/container/container.h" line="24" column="10" bodyfile="modules/container/cxx/entries.cxx" bodystart="43" bodyend="54"/>
+        <references refid="structentry__t_1a347cc881994371e2ae5f5a61dcccde3c" compoundref="container_8h" startline="18">m_selection</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <references refid="namespacemain_1a37e50d3a642b605bc387ae3703d9730b" compoundref="analysis_2main_8py" startline="11">main.sel</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="structentry__t_1a83a0c3a780c55c58e3da0ec3f58a3d30" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void entry_t::destroy</definition>
+        <argsstring>(std::vector&lt; g * &gt; *c)</argsstring>
+        <name>destroy</name>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/container/include/container/container.h" line="27" column="10" bodyfile="modules/container/include/container/container.h" bodystart="27" bodyend="33"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33">c</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="17">
+        <label>cproperty&lt; std::vector&lt; int &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::vector&lt; int &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>meta</label>
+        <link refid="classmeta"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+        <childnode refid="15" relation="public-inheritance">
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>config</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>run_number</edgelabel>
+          <edgelabel>events</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>dsid</edgelabel>
+          <edgelabel>nFiles</edgelabel>
+          <edgelabel>datasetNumber</edgelabel>
+          <edgelabel>totalEvents</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>fileSize</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>LFN</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>inputrange</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>keyword</edgelabel>
+          <edgelabel>weights</edgelabel>
+          <edgelabel>keywords</edgelabel>
+          <edgelabel>fileGUID</edgelabel>
+        </childnode>
+        <childnode refid="23" relation="usage">
+          <edgelabel>principalPhysicsGroup</edgelabel>
+          <edgelabel>DatasetName</edgelabel>
+          <edgelabel>generatorName</edgelabel>
+          <edgelabel>productionStep</edgelabel>
+          <edgelabel>campaign</edgelabel>
+          <edgelabel>projectName</edgelabel>
+          <edgelabel>physicsShort</edgelabel>
+          <edgelabel>logicalDatasetName</edgelabel>
+          <edgelabel>conditionsTag</edgelabel>
+          <edgelabel>derivationFormat</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="24" relation="usage">
+          <edgelabel>cross_section_nb</edgelabel>
+          <edgelabel>completion</edgelabel>
+          <edgelabel>cross_section_fb</edgelabel>
+          <edgelabel>ecmEnergy</edgelabel>
+          <edgelabel>event_index</edgelabel>
+          <edgelabel>sum_of_weights</edgelabel>
+          <edgelabel>beam_energy</edgelabel>
+          <edgelabel>cross_section_pb</edgelabel>
+          <edgelabel>genFiltEff</edgelabel>
+          <edgelabel>eventNumber</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="usage">
+          <edgelabel>misc</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="usage">
+          <edgelabel>inputfiles</edgelabel>
+        </childnode>
+        <childnode refid="27" relation="usage">
+          <edgelabel>isMC</edgelabel>
+          <edgelabel>found</edgelabel>
+        </childnode>
+      </node>
+      <node id="30">
+        <label>cproperty&lt; double, graph_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; double, graph_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="34">
+        <label>std::map&lt; std::string, meta_t &gt;</label>
+        <childnode refid="7" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="35" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="37" relation="template-instance">
+          <edgelabel>&lt; std::string, meta_t &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="38">
+        <label>K</label>
+      </node>
+      <node id="6">
+        <label>T</label>
+      </node>
+      <node id="18">
+        <label>cproperty&lt; unsigned int, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; unsigned int, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="29">
+        <label>cproperty&lt; long, graph_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; long, graph_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="40">
+        <label>weights_t</label>
+        <link refid="structweights__t"/>
+        <childnode refid="41" relation="usage">
+          <edgelabel>hist_data</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>generator</edgelabel>
+          <edgelabel>ami_tag</edgelabel>
+        </childnode>
+      </node>
+      <node id="47">
+        <label>std::vector&lt; double &gt;</label>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; double &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="49">
+        <label>cproperty&lt; long, selection_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; long, selection_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="6" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="31">
+        <label>std::vector&lt; selection_template * &gt;</label>
+        <childnode refid="32" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; selection_template * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="23">
+        <label>cproperty&lt; std::string, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::string, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="39">
+        <label>std::map&lt; std::string, weights_t &gt;</label>
+        <childnode refid="40" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="37" relation="template-instance">
+          <edgelabel>&lt; std::string, weights_t &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::vector&lt; graph_t * &gt;</label>
+        <childnode refid="3" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; graph_t * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>graph_t</label>
+        <link refid="structgraph__t"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>batched_events</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>graph_name</edgelabel>
+          <edgelabel>filename</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+      </node>
+      <node id="37">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="38" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="24">
+        <label>cproperty&lt; double, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; double, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="45">
+        <label>std::map&lt; int, std::string &gt;</label>
+        <childnode refid="7" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="37" relation="template-instance">
+          <edgelabel>&lt; int, std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="19">
+        <label>cproperty&lt; std::vector&lt; double &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::vector&lt; double &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="21">
+        <label>cproperty&lt; std::map&lt; int, int &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; int, int &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="42">
+        <label>std::map&lt; int, int &gt;</label>
+        <childnode refid="37" relation="template-instance">
+          <edgelabel>&lt; int, int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="32">
+        <label>selection_template</label>
+        <link refid="classselection__template"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+        <childnode refid="33" relation="usage">
+          <edgelabel>data</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>meta_data</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>filename</edgelabel>
+        </childnode>
+        <childnode refid="34" relation="usage">
+          <edgelabel>matched_meta</edgelabel>
+        </childnode>
+        <childnode refid="48" relation="usage">
+          <edgelabel>passed_weights</edgelabel>
+        </childnode>
+        <childnode refid="49" relation="usage">
+          <edgelabel>index</edgelabel>
+        </childnode>
+        <childnode refid="50" relation="usage">
+          <edgelabel>name</edgelabel>
+          <edgelabel>tree</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="51" relation="usage">
+          <edgelabel>weight</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>cproperty&lt; std::map&lt; std::string, std::string &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, std::string &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>cproperty&lt; T, G &gt;</label>
+        <link refid="classcproperty"/>
+      </node>
+      <node id="50">
+        <label>cproperty&lt; std::string, selection_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::string, selection_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="22">
+        <label>cproperty&lt; std::vector&lt; std::string &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::vector&lt; std::string &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="26">
+        <label>cproperty&lt; std::map&lt; int, std::string &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; int, std::string &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="52">
+        <label>std::vector&lt; event_template * &gt;</label>
+        <childnode refid="53" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; event_template * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="35">
+        <label>meta_t</label>
+        <link refid="structmeta__t"/>
+        <childnode refid="36" relation="usage">
+          <edgelabel>LFN</edgelabel>
+        </childnode>
+        <childnode refid="39" relation="usage">
+          <edgelabel>misc</edgelabel>
+        </childnode>
+        <childnode refid="42" relation="usage">
+          <edgelabel>inputrange</edgelabel>
+        </childnode>
+        <childnode refid="43" relation="usage">
+          <edgelabel>config</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>principalPhysicsGroup</edgelabel>
+          <edgelabel>DatasetName</edgelabel>
+          <edgelabel>generatorName</edgelabel>
+          <edgelabel>productionStep</edgelabel>
+          <edgelabel>campaign</edgelabel>
+          <edgelabel>projectName</edgelabel>
+          <edgelabel>physicsShort</edgelabel>
+          <edgelabel>logicalDatasetName</edgelabel>
+          <edgelabel>conditionsTag</edgelabel>
+          <edgelabel>derivationFormat</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="44" relation="usage">
+          <edgelabel>run_number</edgelabel>
+          <edgelabel>events</edgelabel>
+        </childnode>
+        <childnode refid="45" relation="usage">
+          <edgelabel>inputfiles</edgelabel>
+        </childnode>
+        <childnode refid="46" relation="usage">
+          <edgelabel>keyword</edgelabel>
+          <edgelabel>weights</edgelabel>
+          <edgelabel>keywords</edgelabel>
+          <edgelabel>fileGUID</edgelabel>
+        </childnode>
+        <childnode refid="47" relation="usage">
+          <edgelabel>fileSize</edgelabel>
+        </childnode>
+      </node>
+      <node id="43">
+        <label>std::map&lt; std::string, std::string &gt;</label>
+        <childnode refid="7" relation="usage">
+          <edgelabel>keys</edgelabel>
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="37" relation="template-instance">
+          <edgelabel>&lt; std::string, std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>std::vector&lt; graph_template * &gt;</label>
+        <childnode refid="10" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; graph_template * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="46">
+        <label>std::vector&lt; std::string &gt;</label>
+        <childnode refid="7" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="48">
+        <label>std::map&lt; std::string, std::map&lt; std::string, float &gt; &gt;</label>
+        <childnode refid="41" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="37" relation="template-instance">
+          <edgelabel>&lt; std::string, std::map&lt; std::string, float &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="41">
+        <label>std::map&lt; std::string, float &gt;</label>
+        <childnode refid="7" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="37" relation="template-instance">
+          <edgelabel>&lt; std::string, float &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>entry_t</label>
+        <link refid="structentry__t"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>m_data</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>m_graph</edgelabel>
+        </childnode>
+        <childnode refid="31" relation="usage">
+          <edgelabel>m_selection</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="52" relation="usage">
+          <edgelabel>m_event</edgelabel>
+        </childnode>
+      </node>
+      <node id="27">
+        <label>cproperty&lt; bool, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; bool, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="33">
+        <label>event_t</label>
+        <link refid="structevent__t"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>name</edgelabel>
+          <edgelabel>tree</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>std::vector&lt; long &gt;</label>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; long &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="28">
+        <label>cproperty&lt; std::string, graph_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::string, graph_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="53">
+        <label>event_template</label>
+        <link refid="classevent__template"/>
+      </node>
+      <node id="10">
+        <label>graph_template</label>
+        <link refid="classgraph__template"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>preselection</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>meta_data</edgelabel>
+        </childnode>
+        <childnode refid="28" relation="usage">
+          <edgelabel>name</edgelabel>
+          <edgelabel>tree</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>filename</edgelabel>
+        </childnode>
+        <childnode refid="29" relation="usage">
+          <edgelabel>index</edgelabel>
+        </childnode>
+        <childnode refid="30" relation="usage">
+          <edgelabel>weight</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>cproperty&lt; std::map&lt; std::string, int &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, int &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="51">
+        <label>cproperty&lt; double, selection_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; double, selection_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="36">
+        <label>std::map&lt; std::string, int &gt;</label>
+        <childnode refid="7" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="37" relation="template-instance">
+          <edgelabel>&lt; std::string, int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="12">
+        <label>cproperty&lt; bool, graph_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; bool, graph_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>notification</label>
+        <link refid="classnotification"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>prefix</edgelabel>
+        </childnode>
+      </node>
+      <node id="44">
+        <label>std::vector&lt; int &gt;</label>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+      <node id="7">
+        <label>std::string</label>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>cproperty&lt; std::map&lt; std::string, weights_t &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, weights_t &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="modules/container/include/container/container.h" line="13" column="14" bodyfile="modules/container/include/container/container.h" bodystart="13" bodyend="34"/>
+    <listofallmembers>
+      <member refid="structentry__t_1ace0828ea4f8ef8c6dc0a0b06c4a58877" prot="public" virt="non-virtual"><scope>entry_t</scope><name>destroy</name></member>
+      <member refid="structentry__t_1a83a0c3a780c55c58e3da0ec3f58a3d30" prot="public" virt="non-virtual"><scope>entry_t</scope><name>destroy</name></member>
+      <member refid="structentry__t_1a51900c29580cbd9411453888b0461bb8" prot="public" virt="non-virtual"><scope>entry_t</scope><name>has_event</name></member>
+      <member refid="structentry__t_1abc33229ff4bb06455ad71e206e2475e2" prot="public" virt="non-virtual"><scope>entry_t</scope><name>has_graph</name></member>
+      <member refid="structentry__t_1a22ab56b9d72de37d3b0e2678cf9b7cd9" prot="public" virt="non-virtual"><scope>entry_t</scope><name>has_selection</name></member>
+      <member refid="structentry__t_1a18b538911b3605d930eae31cc72487cb" prot="public" virt="non-virtual"><scope>entry_t</scope><name>hash</name></member>
+      <member refid="structentry__t_1ae7ca9449dc53f1e150959c9e9934ec58" prot="public" virt="non-virtual"><scope>entry_t</scope><name>init</name></member>
+      <member refid="structentry__t_1a45608e1c64eb289c8a31038f2542bfa1" prot="public" virt="non-virtual"><scope>entry_t</scope><name>m_data</name></member>
+      <member refid="structentry__t_1a040f8566aed6af378fc855bfcff690a7" prot="public" virt="non-virtual"><scope>entry_t</scope><name>m_event</name></member>
+      <member refid="structentry__t_1aea3e204d6a88be5bd693df01d2f175dd" prot="public" virt="non-virtual"><scope>entry_t</scope><name>m_graph</name></member>
+      <member refid="structentry__t_1a347cc881994371e2ae5f5a61dcccde3c" prot="public" virt="non-virtual"><scope>entry_t</scope><name>m_selection</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

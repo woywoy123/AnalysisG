@@ -1,0 +1,35 @@
+digraph "selection_template::selection_template"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="selection_template\l::selection_template",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="selection_template\l::get_hash",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classselection__template.html#a2f6cd45079e1fab94a163a38fbe005cd",tooltip=" "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="selection_template\l::get_name",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classselection__template.html#ad0d6fa60bf0da8796a718532c0288d04",tooltip=" "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="selection_template\l::get_tree",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classselection__template.html#a4e61c1d63afdff7a6428fbf4c6297166",tooltip=" "];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="selection_template\l::get_weight",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classselection__template.html#ae04fb8767d15273f80c5343e2f73384b",tooltip=" "];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="cproperty::set_getter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html#a31b26b5ffb20bbf8d8ee38e0755a9819",tooltip=" "];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="selection_template\l::set_hash",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classselection__template.html#acd31f17488bcf97dd8a5f1b3a7da1cdd",tooltip=" "];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="childrenkinematics.figures.path",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechildrenkinematics_1_1figures.html#a4b217acaa3fe7d5c60c04978cbf782dc",tooltip=" "];
+  Node7 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="tools::to_string",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtools.html#afd037c109d75a9f119ec042e1ba922d9",tooltip="Converts a double value to a string with standard precision."];
+  Node1 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="selection_template\l::set_index",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classselection__template.html#a8951c34758d3410f9d931b6011c3cca2",tooltip=" "];
+  Node1 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="selection_template\l::set_name",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classselection__template.html#a19244d585754db14326c126a98000899",tooltip=" "];
+  Node1 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="cproperty::set_object",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html#a41a70e8e01c9b1a20b94d2dbf1a6b214",tooltip=" "];
+  Node1 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="cproperty::set_setter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html#af4583ba4cf4ebc53f870a2de8f110da7",tooltip=" "];
+  Node1 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="selection_template\l::set_weight",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classselection__template.html#aa95e812106c1a933f1b65e82557939d3",tooltip=" "];
+}

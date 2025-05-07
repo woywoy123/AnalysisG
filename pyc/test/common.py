@@ -167,7 +167,18 @@ def loadsPage():
     try: return pickle.load(open("data.pkl", "rb"))
     except: interpret(); loadsPage()
 
-def interpret(num = None, pth = "log.txt"):
+"""
+@file common.py
+@brief Contains utility functions for interpreting and processing event data.
+"""
+
+def interpret(num=None, pth="log.txt"):
+    """
+    @brief Interprets event data from a log file and saves it as a pickle file.
+
+    @param num Optional integer specifying the number of events to process.
+    @param pth Path to the log file (default: "log.txt").
+    """
     pr_i = None
     event_i = -1
     save = {}
@@ -197,5 +208,5 @@ def interpret(num = None, pth = "log.txt"):
         if "pr" in nxt or "PR" in nxt: save[event_i].PR[nxt.replace("-", "").split("_")[-1].replace(" ","")] = s
         
     for i in save: save[i].parse()
-    pickle.dump(save, open("data.pkl", "wb"))    
+    pickle.dump(save, open("data.pkl", "wb"))
 

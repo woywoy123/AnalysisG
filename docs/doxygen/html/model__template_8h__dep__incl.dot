@@ -1,0 +1,66 @@
+digraph "model_template.h"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="model_template.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Defines the base template class for machine learning models in the AnalysisG framework."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="grift.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$grift_8h.html",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="grift.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$grift_8cxx.html",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="RecursiveGraphNeuralNetwork.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_recursive_graph_neural_network_8h.html",tooltip=" "];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="RecursiveGraphNeuralNetwork.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_recursive_graph_neural_network_8cxx.html",tooltip=" "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="analysis.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$analysis_8h.html",tooltip="Defines the analysis class, the central orchestrator for physics analysis tasks."];
+  Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="analysis.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$analysis_8cxx.html",tooltip=" "];
+  Node6 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="event_build.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$event__build_8cxx.html",tooltip=" "];
+  Node6 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="graph_build.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$graph__build_8cxx.html",tooltip=" "];
+  Node6 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="inference_build.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$inference__build_8cxx.html",tooltip=" "];
+  Node6 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="methods.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$methods_8cxx.html",tooltip=" "];
+  Node6 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="metric_build.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$metric__build_8cxx.html",tooltip=" "];
+  Node6 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="optimizer_build.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$optimizer__build_8cxx.html",tooltip="Implementation of model session creation and management in the analysis class."];
+  Node6 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="selection_build.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$selection__build_8cxx.html",tooltip=" "];
+  Node1 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="dataloader.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dataloader_8cxx.html",tooltip=" "];
+  Node1 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="base.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$metric_2cxx_2base_8cxx.html",tooltip=" "];
+  Node1 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="link.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$link_8cxx.html",tooltip=" "];
+  Node1 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="metric_template.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$metric__template_8cxx.html",tooltip=" "];
+  Node1 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="metrics.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$metrics_8h.html",tooltip="Header file for the metrics class."];
+  Node19 -> Node20 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="loss_plots.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$loss__plots_8cxx.html",tooltip=" "];
+  Node19 -> Node21 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="mass_plots.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mass__plots_8cxx.html",tooltip="Implements mass plot generation and related utilities."];
+  Node19 -> Node22 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 [label="metrics.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$metrics_8cxx.html",tooltip="Implementation of the metrics class methods."];
+  Node19 -> Node23 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 [label="optimizer.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$optimizer_2include_2generators_2optimizer_8h.html",tooltip=" "];
+  Node23 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 -> Node24 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node24 [label="optimizer.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$optimizer_2cxx_2optimizer_8cxx.html",tooltip=" "];
+  Node1 -> Node25 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node25 [label="model_checks.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$model__checks_8cxx.html",tooltip=" "];
+  Node1 -> Node26 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node26 [label="model_configuration.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$model__configuration_8cxx.html",tooltip=" "];
+  Node1 -> Node27 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node27 [label="model_lossfx.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$model__lossfx_8cxx.html",tooltip=" "];
+  Node1 -> Node28 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node28 [label="model_template.cxx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$model__template_8cxx.html",tooltip="Implementation of the model_template class methods."];
+  Node1 -> Node23 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node29 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 [label="\<model-name\>.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_3model-name_4_8h.html",tooltip=" "];
+}

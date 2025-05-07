@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_87a29c23d590312a5267cdb54e7e9d33" kind="dir">
+    <compoundname>decaymodes</compoundname>
+    <innerfile refid="studies_2mc16__matching_2decaymodes_2____init_____8py">studies/mc16_matching/decaymodes/__init__.py</innerfile>
+    <innerfile refid="mc16__matching_2decaymodes_2figures_8py">mc16_matching/decaymodes/figures.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/mc16_matching/decaymodes/"/>
+  </compounddef>
+</doxygen>

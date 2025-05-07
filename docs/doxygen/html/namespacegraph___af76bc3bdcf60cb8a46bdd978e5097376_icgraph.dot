@@ -1,0 +1,15 @@
+digraph "graph_::node_aggregation"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="graph_::node_aggregation",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="pyc::graph::node_aggregation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1graph.html#a122f7af31a0d3d53790f3389ffef5073",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="pyc::graph::polar::\lnode_aggregation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1graph_1_1polar.html#a2214179747b4d328f815a532e6d4fdcf",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="pyc::graph::cartesian\l::node_aggregation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1graph_1_1cartesian.html#a876b2614216840138fb428e66f4938b8",tooltip=" "];
+}

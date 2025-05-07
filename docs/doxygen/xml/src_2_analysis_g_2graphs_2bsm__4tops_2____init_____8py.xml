@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="src_2_analysis_g_2graphs_2bsm__4tops_2____init_____8py" kind="file" language="Python">
+    <compoundname>src/AnalysisG/graphs/bsm_4tops/__init__.py</compoundname>
+    <innernamespace refid="namespace_analysis_g_1_1graphs_1_1bsm__4tops">AnalysisG::graphs::bsm_4tops</innernamespace>
+    <innernamespace refid="namespacegraph__bsm__4tops">graph_bsm_4tops</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespace_analysis_g_1_1graphs_1_1bsm__4tops" refkind="compound"><highlight class="keyword">from</highlight><highlight class="normal"><sp/>.graph_bsm_4tops<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>*</highlight></codeline>
+    </programlisting>
+    <location file="graphs/bsm_4tops/__init__.py"/>
+  </compounddef>
+</doxygen>

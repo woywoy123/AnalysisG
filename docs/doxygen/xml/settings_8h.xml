@@ -1,0 +1,460 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="settings_8h" kind="file" language="C++">
+    <compoundname>settings.h</compoundname>
+    <includes local="no">string</includes>
+    <includes local="no">vector</includes>
+    <includedby refid="analysis_8h" local="no">analysis.h</includedby>
+    <includedby refid="dataloader_8h" local="no">dataloader.h</includedby>
+    <includedby refid="io_8h" local="no">io.h</includedby>
+    <includedby refid="metrics_8h" local="no">metrics.h</includedby>
+    <includedby refid="optimizer_2include_2generators_2optimizer_8h" local="no">optimizer.h</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>string</label>
+      </node>
+      <node id="1">
+        <label>settings.h</label>
+        <link refid="settings_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="9">
+        <label>optimizer_build.cxx</label>
+        <link refid="optimizer__build_8cxx"/>
+      </node>
+      <node id="15">
+        <label>sampletracer.h</label>
+        <link refid="sampletracer_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>event_build.cxx</label>
+        <link refid="event__build_8cxx"/>
+      </node>
+      <node id="7">
+        <label>methods.cxx</label>
+        <link refid="methods_8cxx"/>
+      </node>
+      <node id="13">
+        <label>container.cxx</label>
+        <link refid="container_8cxx"/>
+      </node>
+      <node id="14">
+        <label>entries.cxx</label>
+        <link refid="entries_8cxx"/>
+      </node>
+      <node id="30">
+        <label>metrics.cxx</label>
+        <link refid="metrics_8cxx"/>
+      </node>
+      <node id="27">
+        <label>metrics.h</label>
+        <link refid="metrics_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>types.cxx</label>
+        <link refid="types_8cxx"/>
+      </node>
+      <node id="10">
+        <label>selection_build.cxx</label>
+        <link refid="selection__build_8cxx"/>
+      </node>
+      <node id="21">
+        <label>optimizer.cxx</label>
+        <link refid="optimizer_2cxx_2optimizer_8cxx"/>
+      </node>
+      <node id="1">
+        <label>settings.h</label>
+        <link refid="settings_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>dataloader.cxx</label>
+        <link refid="dataloader_8cxx"/>
+      </node>
+      <node id="23">
+        <label>hdf5.cxx</label>
+        <link refid="hdf5_8cxx"/>
+      </node>
+      <node id="29">
+        <label>mass_plots.cxx</label>
+        <link refid="mass__plots_8cxx"/>
+      </node>
+      <node id="17">
+        <label>cache.cxx</label>
+        <link refid="cache_8cxx"/>
+      </node>
+      <node id="22">
+        <label>io.h</label>
+        <link refid="io_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>inference_build.cxx</label>
+        <link refid="inference__build_8cxx"/>
+      </node>
+      <node id="20">
+        <label>optimizer.h</label>
+        <link refid="optimizer_2include_2generators_2optimizer_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>io.cxx</label>
+        <link refid="io_2cxx_2io_8cxx"/>
+      </node>
+      <node id="8">
+        <label>metric_build.cxx</label>
+        <link refid="metric__build_8cxx"/>
+      </node>
+      <node id="25">
+        <label>root.cxx</label>
+        <link refid="io_2cxx_2root_8cxx"/>
+      </node>
+      <node id="12">
+        <label>container.h</label>
+        <link refid="container_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>dataloader.h</label>
+        <link refid="dataloader_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>graph_build.cxx</label>
+        <link refid="graph__build_8cxx"/>
+      </node>
+      <node id="16">
+        <label>sampletracer.cxx</label>
+        <link refid="sampletracer_8cxx"/>
+      </node>
+      <node id="28">
+        <label>loss_plots.cxx</label>
+        <link refid="loss__plots_8cxx"/>
+      </node>
+      <node id="19">
+        <label>dataset.cxx</label>
+        <link refid="dataset_8cxx"/>
+      </node>
+      <node id="3">
+        <label>analysis.cxx</label>
+        <link refid="analysis_8cxx"/>
+      </node>
+      <node id="2">
+        <label>analysis.h</label>
+        <link refid="analysis_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structsettings__t" prot="public">settings_t</innerclass>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="settings_8h_1a20fce544d114fd3b6ab443e9a0da6b0f" prot="public" static="no">
+        <name>SETTINGS_STRUCTS_H</name>
+        <briefdescription>
+<para>&lt; Include guard start for SETTINGS_STRUCTS_H. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Definition of the include guard. Includes the standard string library for string handling. Includes the standard vector container for sequence storage. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="12" column="9" bodyfile="modules/structs/include/structs/settings.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Defines the <computeroutput><ref refid="structsettings__t" kindref="compound">settings_t</ref></computeroutput> structure for global configuration of the <ref refid="namespace_analysis_g" kindref="compound">AnalysisG</ref> framework. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file contains the declaration of the <computeroutput><ref refid="structsettings__t" kindref="compound">settings_t</ref></computeroutput> structure, which serves as a central configuration container for the <ref refid="namespace_analysis_g" kindref="compound">AnalysisG</ref> framework. It holds various settings related to file paths, machine learning parameters, visualization options, and runtime behavior that affect the overall operation of the analysis pipeline. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>settings.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Defines<sp/>the<sp/>`settings_t`<sp/>structure<sp/>for<sp/>global<sp/>configuration<sp/>of<sp/>the<sp/>AnalysisG<sp/>framework.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>contains<sp/>the<sp/>declaration<sp/>of<sp/>the<sp/>`settings_t`<sp/>structure,<sp/>which<sp/>serves<sp/>as<sp/>a<sp/>central</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>configuration<sp/>container<sp/>for<sp/>the<sp/>AnalysisG<sp/>framework.<sp/>It<sp/>holds<sp/>various<sp/>settings<sp/>related<sp/>to</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>file<sp/>paths,<sp/>machine<sp/>learning<sp/>parameters,<sp/>visualization<sp/>options,<sp/>and<sp/>runtime<sp/>behavior</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>that<sp/>affect<sp/>the<sp/>overall<sp/>operation<sp/>of<sp/>the<sp/>analysis<sp/>pipeline.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SETTINGS_STRUCTS_H<sp/></highlight><highlight class="comment">///&lt;<sp/>Include<sp/>guard<sp/>start<sp/>for<sp/>SETTINGS_STRUCTS_H.</highlight></codeline>
+<codeline lineno="12" refid="settings_8h_1a20fce544d114fd3b6ab443e9a0da6b0f" refkind="member"><highlight class="comment"></highlight><highlight class="normal">#define<sp/>SETTINGS_STRUCTS_H<sp/></highlight><highlight class="comment">///&lt;<sp/>Definition<sp/>of<sp/>the<sp/>include<sp/>guard.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>standard<sp/>string<sp/>library<sp/>for<sp/>string<sp/>handling.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>standard<sp/>vector<sp/>container<sp/>for<sp/>sequence<sp/>storage.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="17"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@struct<sp/>settings_t</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Contains<sp/>all<sp/>configuration<sp/>settings<sp/>for<sp/>an<sp/>analysis<sp/>session.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>settings_t<sp/>structure<sp/>is<sp/>used<sp/>throughout<sp/>the<sp/>AnalysisG<sp/>framework<sp/>to<sp/>configure</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>various<sp/>aspects<sp/>of<sp/>the<sp/>analysis<sp/>pipeline,<sp/>including<sp/>paths<sp/>for<sp/>input/output,</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>machine<sp/>learning<sp/>parameters,<sp/>visualization<sp/>settings,<sp/>and<sp/>runtime<sp/>behavior<sp/>options.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="structsettings__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structsettings__t" kindref="compound">settings_t</ref><sp/>{</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Path<sp/>where<sp/>output<sp/>files<sp/>and<sp/>directories<sp/>will<sp/>be<sp/>created.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>&quot;./ProjectName&quot;.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="structsettings__t_1adfb471fcc454bdfb97309137a9c75d9e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structsettings__t_1adfb471fcc454bdfb97309137a9c75d9e" kindref="member">output_path</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./ProjectName&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Name<sp/>for<sp/>this<sp/>analysis<sp/>run<sp/>or<sp/>session,<sp/>used<sp/>for<sp/>organizing<sp/>outputs.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>empty<sp/>string.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="structsettings__t_1a48599c1af0e6a91c4ded28d191f17981" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structsettings__t_1a48599c1af0e6a91c4ded28d191f17981" kindref="member">run_name</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Name<sp/>for<sp/>Sum-Of-Weights<sp/>reference,<sp/>used<sp/>in<sp/>normalization.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>empty<sp/>string.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="structsettings__t_1adad654b52cb13537d3a0052bae3c7a16" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structsettings__t_1adad654b52cb13537d3a0052bae3c7a16" kindref="member">sow_name</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Path<sp/>for<sp/>caching<sp/>metadata<sp/>to<sp/>avoid<sp/>repeated<sp/>retrieval.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>current<sp/>directory<sp/>(&quot;./&quot;).</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="structsettings__t_1ac5fbabdc9b3d4bec81b34f0f0906663f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structsettings__t_1ac5fbabdc9b3d4bec81b34f0f0906663f" kindref="member">metacache_path</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Whether<sp/>to<sp/>fetch<sp/>metadata<sp/>from<sp/>external<sp/>sources<sp/>(e.g.,<sp/>AMI<sp/>database).</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>false.</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="structsettings__t_1a96582b3e03788f3a9599b8801dc38ec2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1a96582b3e03788f3a9599b8801dc38ec2" kindref="member">fetch_meta</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Whether<sp/>to<sp/>apply<sp/>pre-tagging<sp/>to<sp/>events<sp/>before<sp/>full<sp/>processing.</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>false.</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="structsettings__t_1a2e1b9a538a4421480ac8726699575b3e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1a2e1b9a538a4421480ac8726699575b3e" kindref="member">pretagevents</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Machine<sp/>learning<sp/>settings</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Number<sp/>of<sp/>training<sp/>epochs<sp/>for<sp/>machine<sp/>learning<sp/>models.</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>10.</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="structsettings__t_1ab1ea0b6cb2fcc7c77af0424e55c39e1e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1ab1ea0b6cb2fcc7c77af0424e55c39e1e" kindref="member">epochs</ref><sp/>=<sp/>10;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Number<sp/>of<sp/>folds<sp/>for<sp/>k-fold<sp/>cross-validation.</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>10.</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="structsettings__t_1a7e4a89f57124d740aee08c1dff380320" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1a7e4a89f57124d740aee08c1dff380320" kindref="member">kfolds</ref><sp/>=<sp/>10;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Batch<sp/>size<sp/>for<sp/>model<sp/>training.</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>1.</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80" refid="structsettings__t_1a574cb98d49f69c527eed1fe1c64e22a5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1a574cb98d49f69c527eed1fe1c64e22a5" kindref="member">batch_size</ref><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Specific<sp/>fold<sp/>indices<sp/>to<sp/>use<sp/>if<sp/>not<sp/>using<sp/>all<sp/>folds.</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>empty<sp/>(use<sp/>all<sp/>folds).</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="structsettings__t_1ab01c824ea8fe49508bb2899b75e59bbe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/><ref refid="structsettings__t_1ab01c824ea8fe49508bb2899b75e59bbe" kindref="member">kfold</ref><sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Number<sp/>of<sp/>example<sp/>events/objects<sp/>to<sp/>generate<sp/>or<sp/>display.</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>3.</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="structsettings__t_1adceeed92a9cc6cf8517b6b93358d1f75" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1adceeed92a9cc6cf8517b6b93358d1f75" kindref="member">num_examples</ref><sp/>=<sp/>3;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Percentage<sp/>of<sp/>data<sp/>to<sp/>use<sp/>for<sp/>training<sp/>(vs<sp/>validation/testing).</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>50%.</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98" refid="structsettings__t_1af8bf8b05ab282c3e253234cbc4fbca6a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1af8bf8b05ab282c3e253234cbc4fbca6a" kindref="member">train_size</ref><sp/>=<sp/>50;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="100"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Whether<sp/>to<sp/>perform<sp/>model<sp/>training.</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>true.</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104" refid="structsettings__t_1a0647b7d24f25513943e22f779f798a26" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1a0647b7d24f25513943e22f779f798a26" kindref="member">training</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="107"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Whether<sp/>to<sp/>perform<sp/>validation<sp/>during<sp/>training.</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>true.</highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110" refid="structsettings__t_1a5d6938cad5a0394586414f188c123302" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespacevalidation" kindref="compound">validation</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="113"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Whether<sp/>to<sp/>evaluate<sp/>models<sp/>after<sp/>training.</highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>true.</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116" refid="structsettings__t_1a1eb752fc0b20923757796ef50942718e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1a1eb752fc0b20923757796ef50942718e" kindref="member">evaluation</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Whether<sp/>to<sp/>continue<sp/>training<sp/>from<sp/>previous<sp/>checkpoints<sp/>if<sp/>available.</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>true.</highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122" refid="structsettings__t_1a6abaa304e12b300faa9e6b3159b5071c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1a6abaa304e12b300faa9e6b3159b5071c" kindref="member">continue_training</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="124"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="125"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Path<sp/>or<sp/>identifier<sp/>for<sp/>the<sp/>training<sp/>dataset.</highlight></codeline>
+<codeline lineno="126"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>empty<sp/>string.</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128" refid="structsettings__t_1a7d18701471e1d25160f18d8ee2442f75" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structsettings__t_1a7d18701471e1d25160f18d8ee2442f75" kindref="member">training_dataset</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="130"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="131"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Path<sp/>for<sp/>caching<sp/>graph<sp/>structures<sp/>to<sp/>avoid<sp/>recomputation.</highlight></codeline>
+<codeline lineno="132"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>empty<sp/>string.</highlight></codeline>
+<codeline lineno="133"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134" refid="structsettings__t_1a432e549d09bb6a2e87fa37abf2468e83" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structsettings__t_1a432e549d09bb6a2e87fa37abf2468e83" kindref="member">graph_cache</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Plotting<sp/>configuration<sp/>variables</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="138"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="139"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Name<sp/>of<sp/>the<sp/>variable<sp/>representing<sp/>transverse<sp/>momentum<sp/>for<sp/>plotting.</highlight></codeline>
+<codeline lineno="140"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>&quot;pt&quot;.</highlight></codeline>
+<codeline lineno="141"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142" refid="structsettings__t_1a1b9f41a1149bcdf6cd95370c9180da5e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structsettings__t_1a1b9f41a1149bcdf6cd95370c9180da5e" kindref="member">var_pt</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;pt&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="144"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="145"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Name<sp/>of<sp/>the<sp/>variable<sp/>representing<sp/>pseudorapidity<sp/>for<sp/>plotting.</highlight></codeline>
+<codeline lineno="146"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>&quot;eta&quot;.</highlight></codeline>
+<codeline lineno="147"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148" refid="structsettings__t_1a9da2e640dacd62e6bb91103979abb6c3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structsettings__t_1a9da2e640dacd62e6bb91103979abb6c3" kindref="member">var_eta</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;eta&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="150"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="151"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Name<sp/>of<sp/>the<sp/>variable<sp/>representing<sp/>azimuthal<sp/>angle<sp/>for<sp/>plotting.</highlight></codeline>
+<codeline lineno="152"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>&quot;phi&quot;.</highlight></codeline>
+<codeline lineno="153"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154" refid="structsettings__t_1ae14143c2b463ac78fc5c12ae9065d83e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structsettings__t_1ae14143c2b463ac78fc5c12ae9065d83e" kindref="member">var_phi</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;phi&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="156"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="157"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Name<sp/>of<sp/>the<sp/>variable<sp/>representing<sp/>energy<sp/>for<sp/>plotting.</highlight></codeline>
+<codeline lineno="158"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>&quot;energy&quot;.</highlight></codeline>
+<codeline lineno="159"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160" refid="structsettings__t_1ad37e257f133d620250214c01eef0fcda" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structsettings__t_1ad37e257f133d620250214c01eef0fcda" kindref="member">var_energy</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;energy&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="162"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="163"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Target<sp/>variables<sp/>or<sp/>attributes<sp/>for<sp/>modeling<sp/>or<sp/>plotting.</highlight></codeline>
+<codeline lineno="164"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>empty.</highlight></codeline>
+<codeline lineno="165"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166" refid="structsettings__t_1a235f1da734eb8851bd798d74d417ec7d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="structsettings__t_1a235f1da734eb8851bd798d74d417ec7d" kindref="member">targets</ref><sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="168"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="169"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Number<sp/>of<sp/>bins<sp/>for<sp/>histograms.</highlight></codeline>
+<codeline lineno="170"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>400.</highlight></codeline>
+<codeline lineno="171"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172" refid="structsettings__t_1a1c59290b131395e78ca09ee55829bc91" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1a1c59290b131395e78ca09ee55829bc91" kindref="member">nbins</ref><sp/>=<sp/>400;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="174"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="175"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Refresh<sp/>rate<sp/>for<sp/>progress<sp/>displays,<sp/>in<sp/>iterations.</highlight></codeline>
+<codeline lineno="176"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>10.</highlight></codeline>
+<codeline lineno="177"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="178" refid="structsettings__t_1a9094b04f880b6360af1245e4ab6c225e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1a9094b04f880b6360af1245e4ab6c225e" kindref="member">refresh</ref><sp/>=<sp/>10;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="180"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="181"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Maximum<sp/>range<sp/>for<sp/>histograms<sp/>or<sp/>plots.</highlight></codeline>
+<codeline lineno="182"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>400.</highlight></codeline>
+<codeline lineno="183"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184" refid="structsettings__t_1a1bb7bcd7803eafb1da81844bb1c99b59" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1a1bb7bcd7803eafb1da81844bb1c99b59" kindref="member">max_range</ref><sp/>=<sp/>400;</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="186"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="187"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Number<sp/>of<sp/>threads<sp/>for<sp/>parallel<sp/>processing.</highlight></codeline>
+<codeline lineno="188"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>10.</highlight></codeline>
+<codeline lineno="189"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="190" refid="structsettings__t_1a383cb4d94ff68571dc4cd2e8a9f4d00f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1a383cb4d94ff68571dc4cd2e8a9f4d00f" kindref="member">threads</ref><sp/>=<sp/>10;</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="192"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="193"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Whether<sp/>to<sp/>enable<sp/>additional<sp/>debug<sp/>output.</highlight></codeline>
+<codeline lineno="194"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>false.</highlight></codeline>
+<codeline lineno="195"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196" refid="structsettings__t_1a5df915d5d0eb7dd35eb8ada846a7aaa4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1a5df915d5d0eb7dd35eb8ada846a7aaa4" kindref="member">debug_mode</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="198"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="199"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Whether<sp/>to<sp/>build<sp/>and<sp/>use<sp/>a<sp/>cache<sp/>for<sp/>intermediate<sp/>results.</highlight></codeline>
+<codeline lineno="200"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>false.</highlight></codeline>
+<codeline lineno="201"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="202" refid="structsettings__t_1a4eca9affb4c99a15e46c00ce9f7b7835" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1a4eca9affb4c99a15e46c00ce9f7b7835" kindref="member">build_cache</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="204"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="205"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Whether<sp/>to<sp/>store<sp/>selection<sp/>results<sp/>in<sp/>ROOT<sp/>format.</highlight></codeline>
+<codeline lineno="206"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Default<sp/>is<sp/>false.</highlight></codeline>
+<codeline lineno="207"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="208" refid="structsettings__t_1aff9924a1c481cffcc00438dc3d93194a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structsettings__t_1aff9924a1c481cffcc00438dc3d93194a" kindref="member">selection_root</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="209"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>SETTINGS_STRUCTS_H<sp/></highlight><highlight class="comment">///&lt;<sp/>End<sp/>of<sp/>include<sp/>guard.</highlight></codeline>
+    </programlisting>
+    <location file="modules/structs/include/structs/settings.h"/>
+  </compounddef>
+</doxygen>

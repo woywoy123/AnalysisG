@@ -1,0 +1,1272 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="meta_2include_2meta_2meta_8h" kind="file" language="C++">
+    <compoundname>meta/include/meta/meta.h</compoundname>
+    <includes refid="structs_2include_2structs_2meta_8h" local="no">structs/meta.h</includes>
+    <includes refid="folds_8h" local="no">structs/folds.h</includes>
+    <includes refid="property_8h" local="no">structs/property.h</includes>
+    <includes local="no">rapidjson/document.h</includes>
+    <includes refid="notification_8h" local="no">notification/notification.h</includes>
+    <includes refid="tools_8h" local="no">tools/tools.h</includes>
+    <includes local="no">TFile.h</includes>
+    <includes local="no">TTree.h</includes>
+    <includes local="no">TBranch.h</includes>
+    <includes local="no">TLeaf.h</includes>
+    <includes local="no">TH1F.h</includes>
+    <includedby refid="container_8h" local="no">container.h</includedby>
+    <includedby refid="event__template_8h" local="no">event_template.h</includedby>
+    <includedby refid="io_8h" local="no">io.h</includedby>
+    <includedby refid="metric__template_8cxx" local="no">metric_template.cxx</includedby>
+    <includedby refid="metric__template_8h" local="no">metric_template.h</includedby>
+    <includedby refid="selection__core_8cxx" local="no">selection_core.cxx</includedby>
+    <includedby refid="selection__template_8cxx" local="no">selection_template.cxx</includedby>
+    <includedby refid="selection__template_8h" local="no">selection_template.h</includedby>
+    <incdepgraph>
+      <node id="9">
+        <label>functional</label>
+      </node>
+      <node id="13">
+        <label>cstdint</label>
+      </node>
+      <node id="7">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="6">
+        <label>map</label>
+      </node>
+      <node id="10">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="2">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+      <node id="11">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>TFile.h</label>
+      </node>
+      <node id="12">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>TH1F.h</label>
+      </node>
+      <node id="17">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="3">
+        <label>iostream</label>
+      </node>
+      <node id="1">
+        <label>meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>TBranch.h</label>
+      </node>
+      <node id="8">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>TTree.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="13">
+        <label>optimizer_build.cxx</label>
+        <link refid="optimizer__build_8cxx"/>
+      </node>
+      <node id="5">
+        <label>sampletracer.h</label>
+        <link refid="sampletracer_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>event_build.cxx</label>
+        <link refid="event__build_8cxx"/>
+      </node>
+      <node id="56">
+        <label>graphs.cxx</label>
+        <link refid="ssml__mc20_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="20">
+        <label>met.cxx</label>
+        <link refid="met_8cxx"/>
+      </node>
+      <node id="40">
+        <label>zprime.cxx</label>
+        <link refid="mc16_2zprime_2zprime_8cxx"/>
+      </node>
+      <node id="30">
+        <label>parton.cxx</label>
+        <link refid="parton_8cxx"/>
+      </node>
+      <node id="11">
+        <label>methods.cxx</label>
+        <link refid="methods_8cxx"/>
+      </node>
+      <node id="66">
+        <label>event_template.cxx</label>
+        <link refid="event__template_8cxx"/>
+      </node>
+      <node id="16">
+        <label>event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+      </node>
+      <node id="99">
+        <label>link.cxx</label>
+        <link refid="link_8cxx"/>
+      </node>
+      <node id="3">
+        <label>container.cxx</label>
+        <link refid="container_8cxx"/>
+      </node>
+      <node id="4">
+        <label>entries.cxx</label>
+        <link refid="entries_8cxx"/>
+      </node>
+      <node id="49">
+        <label>event.cxx</label>
+        <link refid="events_2gnn_2cxx_2event_8cxx"/>
+      </node>
+      <node id="62">
+        <label>topmatching.h</label>
+        <link refid="mc20_2topmatching_2topmatching_8h"/>
+        <childnode refid="63" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>toptruthjets.cxx</label>
+        <link refid="toptruthjets_8cxx"/>
+      </node>
+      <node id="29">
+        <label>parton.h</label>
+        <link refid="parton_8h"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="78">
+        <label>selection_template.h</label>
+        <link refid="selection__template_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+      </node>
+      <node id="95">
+        <label>accuracy.cxx</label>
+        <link refid="accuracy_8cxx"/>
+      </node>
+      <node id="21">
+        <label>childrenkinematics.h</label>
+        <link refid="childrenkinematics_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>mc20_exp.cxx</label>
+        <link refid="mc20__exp_8cxx"/>
+      </node>
+      <node id="17">
+        <label>event.h</label>
+        <link refid="events_2bsm__4tops_2include_2bsm__4tops_2event_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="93">
+        <label>metric_template.h</label>
+        <link refid="metric__template_8h"/>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>toptruthjets.h</label>
+        <link refid="toptruthjets_8h"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="91">
+        <label>types.cxx</label>
+        <link refid="types_8cxx"/>
+      </node>
+      <node id="48">
+        <label>gnn-event.h</label>
+        <link refid="gnn-event_8h"/>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>selection_build.cxx</label>
+        <link refid="selection__build_8cxx"/>
+      </node>
+      <node id="61">
+        <label>topkinematics.cxx</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8cxx"/>
+      </node>
+      <node id="80">
+        <label>selection_core.cxx</label>
+        <link refid="selection__core_8cxx"/>
+      </node>
+      <node id="55">
+        <label>graphs.cxx</label>
+        <link refid="exp__mc20_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="74">
+        <label>optimizer.cxx</label>
+        <link refid="optimizer_2cxx_2optimizer_8cxx"/>
+      </node>
+      <node id="71">
+        <label>dataloader.cxx</label>
+        <link refid="dataloader_8cxx"/>
+      </node>
+      <node id="101">
+        <label>properties.cxx</label>
+        <link refid="metric_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="88">
+        <label>hdf5.cxx</label>
+        <link refid="hdf5_8cxx"/>
+      </node>
+      <node id="59">
+        <label>mc20_ref.cxx</label>
+        <link refid="mc20__ref_8cxx"/>
+      </node>
+      <node id="33">
+        <label>topkinematics.h</label>
+        <link refid="mc16_2topkinematics_2topkinematics_8h"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>topjets.cxx</label>
+        <link refid="topjets_8cxx"/>
+      </node>
+      <node id="70">
+        <label>cache.cxx</label>
+        <link refid="cache_8cxx"/>
+      </node>
+      <node id="46">
+        <label>graphs.h</label>
+        <link refid="exp__mc20_2include_2exp__mc20_2graphs_8h"/>
+      </node>
+      <node id="68">
+        <label>graph_template.h</label>
+        <link refid="graph__template_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>graphs.cxx</label>
+        <link refid="bsm__4tops_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="53">
+        <label>graphs.h</label>
+        <link refid="ssml__mc20_2include_2ssml__mc20_2graphs_8h"/>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+      </node>
+      <node id="85">
+        <label>validation.h</label>
+        <link refid="validation_8h"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="87">
+        <label>io.h</label>
+        <link refid="io_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+      </node>
+      <node id="94">
+        <label>accuracy.h</label>
+        <link refid="accuracy_8h"/>
+        <childnode refid="95" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>inference_build.cxx</label>
+        <link refid="inference__build_8cxx"/>
+      </node>
+      <node id="86">
+        <label>&lt;selection-name&gt;.h</label>
+        <link refid="_3selection-name_4_8h"/>
+      </node>
+      <node id="73">
+        <label>optimizer.h</label>
+        <link refid="optimizer_2include_2generators_2optimizer_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+      </node>
+      <node id="96">
+        <label>pagerank.h</label>
+        <link refid="pagerank_8h"/>
+        <childnode refid="97" relation="include">
+        </childnode>
+      </node>
+      <node id="75">
+        <label>graph_template.cxx</label>
+        <link refid="graph__template_8cxx"/>
+      </node>
+      <node id="89">
+        <label>io.cxx</label>
+        <link refid="io_2cxx_2io_8cxx"/>
+      </node>
+      <node id="24">
+        <label>decaymodes.cxx</label>
+        <link refid="decaymodes_8cxx"/>
+      </node>
+      <node id="98">
+        <label>base.cxx</label>
+        <link refid="metric_2cxx_2base_8cxx"/>
+      </node>
+      <node id="43">
+        <label>validation.cxx</label>
+        <link refid="validation_8cxx"/>
+      </node>
+      <node id="65">
+        <label>zprime.cxx</label>
+        <link refid="mc20_2zprime_2zprime_8cxx"/>
+      </node>
+      <node id="26">
+        <label>event.cxx</label>
+        <link refid="events_2bsm__4tops_2cxx_2event_8cxx"/>
+      </node>
+      <node id="31">
+        <label>topjets.h</label>
+        <link refid="topjets_8h"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="67">
+        <label>properties.cxx</label>
+        <link refid="event_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="12">
+        <label>metric_build.cxx</label>
+        <link refid="metric__build_8cxx"/>
+      </node>
+      <node id="102">
+        <label>&lt;name&gt;.h</label>
+        <link refid="_3name_4_8h"/>
+      </node>
+      <node id="36">
+        <label>topmatching.cxx</label>
+        <link refid="mc16_2topmatching_2topmatching_8cxx"/>
+      </node>
+      <node id="90">
+        <label>root.cxx</label>
+        <link refid="io_2cxx_2root_8cxx"/>
+      </node>
+      <node id="45">
+        <label>event.cxx</label>
+        <link refid="events_2exp__mc20_2cxx_2event_8cxx"/>
+      </node>
+      <node id="81">
+        <label>selection_template.cxx</label>
+        <link refid="selection__template_8cxx"/>
+      </node>
+      <node id="2">
+        <label>container.h</label>
+        <link refid="container_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="82">
+        <label>matching.h</label>
+        <link refid="matching_8h"/>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>dataloader.h</label>
+        <link refid="dataloader_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+      </node>
+      <node id="64">
+        <label>zprime.h</label>
+        <link refid="mc20_2zprime_2zprime_8h"/>
+        <childnode refid="65" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>event.h</label>
+        <link refid="selections_2mc16_2event_2event_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>topmatching.cxx</label>
+        <link refid="mc20_2topmatching_2topmatching_8cxx"/>
+      </node>
+      <node id="9">
+        <label>graph_build.cxx</label>
+        <link refid="graph__build_8cxx"/>
+      </node>
+      <node id="50">
+        <label>topefficiency.h</label>
+        <link refid="topefficiency_8h"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>event.cxx</label>
+        <link refid="selections_2mc16_2event_2event_8cxx"/>
+      </node>
+      <node id="15">
+        <label>sampletracer.cxx</label>
+        <link refid="sampletracer_8cxx"/>
+      </node>
+      <node id="76">
+        <label>properties.cxx</label>
+        <link refid="graph_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="35">
+        <label>topmatching.h</label>
+        <link refid="mc16_2topmatching_2topmatching_8h"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>topkinematics.h</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8h"/>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+      </node>
+      <node id="72">
+        <label>dataset.cxx</label>
+        <link refid="dataset_8cxx"/>
+      </node>
+      <node id="84">
+        <label>combinatorial.h</label>
+        <link refid="combinatorial_8h"/>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="83">
+        <label>matching.cxx</label>
+        <link refid="matching_8cxx"/>
+      </node>
+      <node id="27">
+        <label>event.cxx</label>
+        <link refid="events_2ssml__mc20_2cxx_2event_8cxx"/>
+      </node>
+      <node id="100">
+        <label>metric.cxx</label>
+        <link refid="metric_8cxx"/>
+      </node>
+      <node id="57">
+        <label>regions.h</label>
+        <link refid="regions_8h"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>analysis.cxx</label>
+        <link refid="analysis_8cxx"/>
+      </node>
+      <node id="34">
+        <label>topkinematics.cxx</label>
+        <link refid="mc16_2topkinematics_2topkinematics_8cxx"/>
+      </node>
+      <node id="18">
+        <label>graphs.h</label>
+        <link refid="bsm__4tops_2include_2bsm__4tops_2graphs_8h"/>
+      </node>
+      <node id="42">
+        <label>combinatorial.cxx</label>
+        <link refid="combinatorial_8cxx"/>
+      </node>
+      <node id="19">
+        <label>met.h</label>
+        <link refid="met_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>topefficiency.cxx</label>
+        <link refid="topefficiency_8cxx"/>
+      </node>
+      <node id="52">
+        <label>event.h</label>
+        <link refid="events_2ssml__mc20_2include_2ssml__mc20_2event_8h"/>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>childrenkinematics.cxx</label>
+        <link refid="childrenkinematics_8cxx"/>
+      </node>
+      <node id="41">
+        <label>mc16_ref.cxx</label>
+        <link refid="mc16__ref_8cxx"/>
+      </node>
+      <node id="44">
+        <label>event.h</label>
+        <link refid="events_2exp__mc20_2include_2exp__mc20_2event_8h"/>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>regions.cxx</label>
+        <link refid="regions_8cxx"/>
+      </node>
+      <node id="79">
+        <label>properties.cxx</label>
+        <link refid="selection_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="77">
+        <label>struct_graph.cxx</label>
+        <link refid="struct__graph_8cxx"/>
+      </node>
+      <node id="92">
+        <label>metric_template.cxx</label>
+        <link refid="metric__template_8cxx"/>
+      </node>
+      <node id="97">
+        <label>pagerank.cxx</label>
+        <link refid="pagerank_8cxx"/>
+      </node>
+      <node id="39">
+        <label>zprime.h</label>
+        <link refid="mc16_2zprime_2zprime_8h"/>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>decaymodes.h</label>
+        <link refid="decaymodes_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>analysis.h</label>
+        <link refid="analysis_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classmeta" prot="public">meta</innerclass>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="meta_2include_2meta_2meta_8h_1a40b396e23248bb43efdd1a2144d65dc4" prot="public" static="no">
+        <name>META_META_H</name>
+        <briefdescription>
+<para>&lt; Start of include guard for META_META_H to prevent multiple inclusions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Definition of META_META_H to signify the header has been included. Includes the definition of the <computeroutput><ref refid="structmeta__t" kindref="compound">meta_t</ref></computeroutput> structure, which likely holds raw metadata. Includes the definition of the <computeroutput><ref refid="structfolds__t" kindref="compound">folds_t</ref></computeroutput> structure, possibly for k-fold cross-validation or data partitioning. Includes the definition of the <computeroutput>cproperty</computeroutput> template, a custom property system. Includes the RapidJSON library for parsing JSON formatted metadata. Includes the <computeroutput>notification</computeroutput> class, likely for logging or messaging. Includes the <computeroutput>tools</computeroutput> class, providing utility functions. Includes ROOT&apos;s TFile class for file input/output operations. Includes ROOT&apos;s TTree class for handling tree-like data structures. Includes ROOT&apos;s TBranch class for accessing branches within a TTree. Includes ROOT&apos;s TLeaf class for accessing leaves (data elements) within a TBranch. Includes ROOT&apos;s TH1F class for 1-dimensional histograms with float precision. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/meta/include/meta/meta.h" line="12" column="9" bodyfile="modules/meta/include/meta/meta.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Handles metadata operations and provides utilities for managing metadata-related tasks. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file defines the <computeroutput>meta</computeroutput> class, which is responsible for accessing, parsing, and managing various metadata attributes associated with physics analysis datasets. It includes functionalities for handling information like Monte Carlo status, event numbers, cross-sections, dataset identifiers, and more. The class also interfaces with ROOT objects and JSON data for metadata retrieval. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>meta.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Handles<sp/>metadata<sp/>operations<sp/>and<sp/>provides<sp/>utilities<sp/>for<sp/>managing<sp/>metadata-related<sp/>tasks.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/></highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>defines<sp/>the<sp/>`meta`<sp/>class,<sp/>which<sp/>is<sp/>responsible<sp/>for<sp/>accessing,<sp/>parsing,<sp/>and<sp/>managing<sp/></highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>various<sp/>metadata<sp/>attributes<sp/>associated<sp/>with<sp/>physics<sp/>analysis<sp/>datasets.<sp/>It<sp/>includes<sp/>functionalities<sp/></highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>for<sp/>handling<sp/>information<sp/>like<sp/>Monte<sp/>Carlo<sp/>status,<sp/>event<sp/>numbers,<sp/>cross-sections,<sp/>dataset<sp/>identifiers,<sp/></highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>and<sp/>more.<sp/>The<sp/>class<sp/>also<sp/>interfaces<sp/>with<sp/>ROOT<sp/>objects<sp/>and<sp/>JSON<sp/>data<sp/>for<sp/>metadata<sp/>retrieval.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>META_META_H<sp/></highlight><highlight class="comment">///&lt;<sp/>Start<sp/>of<sp/>include<sp/>guard<sp/>for<sp/>META_META_H<sp/>to<sp/>prevent<sp/>multiple<sp/>inclusions.</highlight></codeline>
+<codeline lineno="12" refid="meta_2include_2meta_2meta_8h_1a40b396e23248bb43efdd1a2144d65dc4" refkind="member"><highlight class="comment"></highlight><highlight class="normal">#define<sp/>META_META_H<sp/></highlight><highlight class="comment">///&lt;<sp/>Definition<sp/>of<sp/>META_META_H<sp/>to<sp/>signify<sp/>the<sp/>header<sp/>has<sp/>been<sp/>included.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="structs_2include_2structs_2meta_8h" kindref="compound">structs/meta.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>definition<sp/>of<sp/>the<sp/>`meta_t`<sp/>structure,<sp/>which<sp/>likely<sp/>holds<sp/>raw<sp/>metadata.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="folds_8h" kindref="compound">structs/folds.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>definition<sp/>of<sp/>the<sp/>`folds_t`<sp/>structure,<sp/>possibly<sp/>for<sp/>k-fold<sp/>cross-validation<sp/>or<sp/>data<sp/>partitioning.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="property_8h" kindref="compound">structs/property.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>definition<sp/>of<sp/>the<sp/>`cproperty`<sp/>template,<sp/>a<sp/>custom<sp/>property<sp/>system.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;rapidjson/document.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>RapidJSON<sp/>library<sp/>for<sp/>parsing<sp/>JSON<sp/>formatted<sp/>metadata.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="notification_8h" kindref="compound">notification/notification.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>`notification`<sp/>class,<sp/>likely<sp/>for<sp/>logging<sp/>or<sp/>messaging.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="tools_8h" kindref="compound">tools/tools.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>`tools`<sp/>class,<sp/>providing<sp/>utility<sp/>functions.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;TFile.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>ROOT&apos;s<sp/>TFile<sp/>class<sp/>for<sp/>file<sp/>input/output<sp/>operations.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;TTree.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>ROOT&apos;s<sp/>TTree<sp/>class<sp/>for<sp/>handling<sp/>tree-like<sp/>data<sp/>structures.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;TBranch.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>ROOT&apos;s<sp/>TBranch<sp/>class<sp/>for<sp/>accessing<sp/>branches<sp/>within<sp/>a<sp/>TTree.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;TLeaf.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>ROOT&apos;s<sp/>TLeaf<sp/>class<sp/>for<sp/>accessing<sp/>leaves<sp/>(data<sp/>elements)<sp/>within<sp/>a<sp/>TBranch.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;TH1F.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>ROOT&apos;s<sp/>TH1F<sp/>class<sp/>for<sp/>1-dimensional<sp/>histograms<sp/>with<sp/>float<sp/>precision.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="26"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>@class<sp/>meta</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Provides<sp/>properties<sp/>and<sp/>methods<sp/>for<sp/>metadata<sp/>management.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/></highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>The<sp/>`meta`<sp/>class<sp/>inherits<sp/>from<sp/>`tools`<sp/>(providing<sp/>utility<sp/>functions)<sp/>and<sp/>`notification`<sp/></highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>(providing<sp/>logging/messaging<sp/>capabilities).<sp/>It<sp/>offers<sp/>a<sp/>comprehensive<sp/>interface<sp/>for<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>handling<sp/>various<sp/>metadata<sp/>attributes<sp/>such<sp/>as<sp/>event<sp/>numbers,<sp/>cross-sections,<sp/>dataset<sp/>information,</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>and<sp/>other<sp/>parameters<sp/>crucial<sp/>for<sp/>physics<sp/>analysis.<sp/>It<sp/>supports<sp/>reading<sp/>metadata<sp/>from<sp/></highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>ROOT<sp/>files<sp/>and<sp/>JSON<sp/>sources.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="classmeta" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classmeta" kindref="compound">meta</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classtools" kindref="compound">tools</ref>,<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classnotification" kindref="compound">notification</ref><sp/>{<sp/></highlight><highlight class="comment">//<sp/>Defines<sp/>the<sp/>class<sp/>&apos;meta&apos;<sp/>inheriting<sp/>from<sp/>&apos;tools&apos;<sp/>and<sp/>&apos;notification&apos;.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:<sp/></highlight><highlight class="comment">///&lt;<sp/>Public<sp/>access<sp/>specifier<sp/>for<sp/>the<sp/>following<sp/>members.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"></highlight><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Constructor<sp/>for<sp/>the<sp/>`meta`<sp/>class.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Initializes<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`meta`<sp/>class.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classmeta_1a63ad3379066eb6b7c8bf7a7ea9ee0783" kindref="member">meta</ref>();</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Destructor<sp/>for<sp/>the<sp/>`meta`<sp/>class.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Cleans<sp/>up<sp/>resources<sp/>used<sp/>by<sp/>the<sp/>`meta`<sp/>instance,<sp/>such<sp/>as<sp/>the<sp/>RapidJSON<sp/>document.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classmeta_1a79162376cde773abd70adce92c5e7a55" kindref="member">~meta</ref>();</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Retrieves<sp/>tags<sp/>based<sp/>on<sp/>a<sp/>hash.</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>hash<sp/>The<sp/>hash<sp/>string<sp/>used<sp/>to<sp/>identify<sp/>and<sp/>retrieve<sp/>the<sp/>specific<sp/>set<sp/>of<sp/>tags.</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>A<sp/>constant<sp/>pointer<sp/>to<sp/>a<sp/>`folds_t`<sp/>structure<sp/>containing<sp/>the<sp/>tags,<sp/>or<sp/>nullptr<sp/>if<sp/>not<sp/>found.</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structfolds__t" kindref="compound">folds_t</ref>*<sp/><ref refid="classmeta_1a32ee372f54cfc605055e09fd6091c5b5" kindref="member">get_tags</ref>(std::string<sp/><ref refid="classmeta_1a35d142708b4b66eeb857eb0c204e459b" kindref="member">hash</ref>);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Scans<sp/>data<sp/>from<sp/>a<sp/>generic<sp/>ROOT<sp/>object<sp/>(e.g.,<sp/>TTree,<sp/>TH1).</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>method<sp/>is<sp/>likely<sp/>used<sp/>to<sp/>extract<sp/>metadata<sp/>embedded<sp/>within<sp/>ROOT<sp/>objects.</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>obj<sp/>Pointer<sp/>to<sp/>the<sp/>ROOT<sp/>TObject<sp/>to<sp/>scan<sp/>for<sp/>metadata.</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classmeta_1ac20aa6b655d77e02eb08aabe78b6af7e" kindref="member">scan_data</ref>(TObject*<sp/>obj);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Scans<sp/>sum<sp/>of<sp/>weights<sp/>(SoW)<sp/>information<sp/>from<sp/>a<sp/>ROOT<sp/>object.</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>is<sp/>often<sp/>important<sp/>for<sp/>normalizing<sp/>Monte<sp/>Carlo<sp/>simulations.</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>obj<sp/>Pointer<sp/>to<sp/>the<sp/>ROOT<sp/>TObject<sp/>to<sp/>scan<sp/>for<sp/>sum<sp/>of<sp/>weights<sp/>information.</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classmeta_1a24d8657dbb9d0d8903725ee01fe22c14" kindref="member">scan_sow</ref>(TObject*<sp/>obj);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Parses<sp/>a<sp/>JSON<sp/>string<sp/>to<sp/>extract<sp/>metadata.</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>inpt<sp/>The<sp/>JSON<sp/>string<sp/>containing<sp/>metadata<sp/>to<sp/>be<sp/>parsed.</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classmeta_1aaed15ab5be8f7a86c79373f24abfc952" kindref="member">parse_json</ref>(std::string<sp/>inpt);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Generates<sp/>a<sp/>hash<sp/>for<sp/>a<sp/>given<sp/>filename.</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>hash<sp/>can<sp/>be<sp/>used<sp/>for<sp/>caching<sp/>or<sp/>uniquely<sp/>identifying<sp/>file-specific<sp/>metadata.</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>fname<sp/>The<sp/>filename<sp/>(or<sp/>path)<sp/>for<sp/>which<sp/>to<sp/>generate<sp/>the<sp/>hash.</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>The<sp/>generated<sp/>hash<sp/>string.</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classmeta_1a35d142708b4b66eeb857eb0c204e459b" kindref="member">hash</ref>(std::string<sp/><ref refid="namespacesample__consistency_1a55a51c365bbd868bf90c826e36c51ad3" kindref="member">fname</ref>);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Properties:<sp/>These<sp/>are<sp/>cproperty<sp/>members,<sp/>a<sp/>custom<sp/>property<sp/>system<sp/>allowing<sp/>getter/setter<sp/>logic.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="classmeta_1ab0e42b287be5935f4a673ddd783ec498" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;bool, meta&gt;</ref><sp/><ref refid="classmeta_1ab0e42b287be5935f4a673ddd783ec498" kindref="member">isMC</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>Indicates<sp/>whether<sp/>the<sp/>dataset<sp/>is<sp/>Monte<sp/>Carlo<sp/>(MC)<sp/>simulation<sp/>(true)<sp/>or<sp/>real<sp/>data<sp/>(false).</highlight></codeline>
+<codeline lineno="87" refid="classmeta_1ad3569d07c83c22f1c98f923b3fe08ce3" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;bool, meta&gt;</ref><sp/><ref refid="classmeta_1ad3569d07c83c22f1c98f923b3fe08ce3" kindref="member">found</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>Indicates<sp/>whether<sp/>the<sp/>required<sp/>metadata<sp/>was<sp/>successfully<sp/>found<sp/>and<sp/>loaded.</highlight></codeline>
+<codeline lineno="88" refid="classmeta_1aca08c4a4129c1d34307962823bd986f7" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, meta&gt;</ref><sp/><ref refid="classmeta_1aca08c4a4129c1d34307962823bd986f7" kindref="member">eventNumber</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>number<sp/>of<sp/>events<sp/>in<sp/>the<sp/>dataset<sp/>or<sp/>a<sp/>specific<sp/>file.</highlight></codeline>
+<codeline lineno="89" refid="classmeta_1abb58b9418610e148e26b0d9a7968bc29" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, meta&gt;</ref><sp/><ref refid="classmeta_1abb58b9418610e148e26b0d9a7968bc29" kindref="member">event_index</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>An<sp/>index<sp/>related<sp/>to<sp/>events,<sp/>possibly<sp/>for<sp/>iteration<sp/>or<sp/>identification.</highlight></codeline>
+<codeline lineno="90" refid="classmeta_1a4289afe6a2c6b19a57802eb613a3cef3" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, meta&gt;</ref><sp/><ref refid="classmeta_1a4289afe6a2c6b19a57802eb613a3cef3" kindref="member">totalSize</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>total<sp/>size<sp/>of<sp/>the<sp/>dataset,<sp/>potentially<sp/>in<sp/>bytes<sp/>or<sp/>some<sp/>other<sp/>unit.</highlight></codeline>
+<codeline lineno="91" refid="classmeta_1a82665b5b47b4589ce9911005967fd8a4" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, meta&gt;</ref><sp/><ref refid="classmeta_1a82665b5b47b4589ce9911005967fd8a4" kindref="member">kfactor</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>k-factor,<sp/>a<sp/>theoretical<sp/>correction<sp/>factor<sp/>used<sp/>in<sp/>physics<sp/>calculations.</highlight></codeline>
+<codeline lineno="92" refid="classmeta_1a3cdfb2156bd753446f3ebe4eb058e3a2" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, meta&gt;</ref><sp/><ref refid="classmeta_1a3cdfb2156bd753446f3ebe4eb058e3a2" kindref="member">ecmEnergy</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>center-of-mass<sp/>energy<sp/>of<sp/>the<sp/>collision<sp/>(e.g.,<sp/>in<sp/>GeV<sp/>or<sp/>TeV).</highlight></codeline>
+<codeline lineno="93" refid="classmeta_1a997b8c3386945b17284b0d1b6c7c60ba" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, meta&gt;</ref><sp/><ref refid="classmeta_1a997b8c3386945b17284b0d1b6c7c60ba" kindref="member">genFiltEff</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>generator<sp/>filter<sp/>efficiency<sp/>for<sp/>MC<sp/>simulations.</highlight></codeline>
+<codeline lineno="94" refid="classmeta_1a8508206c904b6da70cbf3442bdc11b57" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, meta&gt;</ref><sp/><ref refid="classmeta_1a8508206c904b6da70cbf3442bdc11b57" kindref="member">completion</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>measure<sp/>of<sp/>the<sp/>dataset&apos;s<sp/>processing<sp/>completion,<sp/>if<sp/>applicable.</highlight></codeline>
+<codeline lineno="95" refid="classmeta_1a4541d9a502b52f390bfe192452d29d8c" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, meta&gt;</ref><sp/><ref refid="classmeta_1a4541d9a502b52f390bfe192452d29d8c" kindref="member">beam_energy</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>energy<sp/>of<sp/>the<sp/>colliding<sp/>beams.</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97" refid="classmeta_1a4bf84d1d9bafa83e8cf16d68e970fdbd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, meta&gt;</ref><sp/><ref refid="classmeta_1a4bf84d1d9bafa83e8cf16d68e970fdbd" kindref="member">cross_section_nb</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>physics<sp/>process<sp/>cross-section<sp/>in<sp/>nanobarns<sp/>(nb).</highlight></codeline>
+<codeline lineno="98" refid="classmeta_1a8132a07c71be0663c9dd37aa683e52be" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, meta&gt;</ref><sp/><ref refid="classmeta_1a8132a07c71be0663c9dd37aa683e52be" kindref="member">cross_section_fb</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>physics<sp/>process<sp/>cross-section<sp/>in<sp/>femtobarns<sp/>(fb).</highlight></codeline>
+<codeline lineno="99" refid="classmeta_1a0afd4567f1bba1c0043d38217510bcf3" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, meta&gt;</ref><sp/><ref refid="classmeta_1a0afd4567f1bba1c0043d38217510bcf3" kindref="member">cross_section_pb</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>physics<sp/>process<sp/>cross-section<sp/>in<sp/>picobarns<sp/>(pb).</highlight></codeline>
+<codeline lineno="100"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101" refid="classmeta_1a4b4f867f32918d904c2c83e07d5a0914" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, meta&gt;</ref><sp/><ref refid="classmeta_1a4b4f867f32918d904c2c83e07d5a0914" kindref="member">campaign_luminosity</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>integrated<sp/>luminosity<sp/>of<sp/>the<sp/>data-taking<sp/>campaign.</highlight></codeline>
+<codeline lineno="102" refid="classmeta_1aac7753a039608875cd5a9ac66700e587" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;double, meta&gt;</ref><sp/><ref refid="classmeta_1aac7753a039608875cd5a9ac66700e587" kindref="member">sum_of_weights</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>sum<sp/>of<sp/>event<sp/>weights,<sp/>crucial<sp/>for<sp/>MC<sp/>normalization.</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104" refid="classmeta_1a2b29b1d9fb17658c49c5f34adb523031" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;unsigned int, meta&gt;</ref><sp/><ref refid="classmeta_1a2b29b1d9fb17658c49c5f34adb523031" kindref="member">dsid</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>Dataset<sp/>Identifier<sp/>(DSID),<sp/>a<sp/>unique<sp/>number<sp/>for<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="105" refid="classmeta_1aa777f0fddc0be5b510c7f6714acfc1a1" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;unsigned int, meta&gt;</ref><sp/><ref refid="classmeta_1aa777f0fddc0be5b510c7f6714acfc1a1" kindref="member">nFiles</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>number<sp/>of<sp/>files<sp/>associated<sp/>with<sp/>this<sp/>dataset.</highlight></codeline>
+<codeline lineno="106" refid="classmeta_1acf1fa18515c2dbf69475063ba348c0a6" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;unsigned int, meta&gt;</ref><sp/><ref refid="classmeta_1acf1fa18515c2dbf69475063ba348c0a6" kindref="member">totalEvents</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>total<sp/>number<sp/>of<sp/>events<sp/>across<sp/>all<sp/>files<sp/>in<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="107" refid="classmeta_1aaf40f206f3498485c0cbc8611f9cb1e1" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;unsigned int, meta&gt;</ref><sp/><ref refid="classmeta_1aaf40f206f3498485c0cbc8611f9cb1e1" kindref="member">datasetNumber</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>Another<sp/>numerical<sp/>identifier<sp/>for<sp/>the<sp/>dataset,<sp/>possibly<sp/>synonymous<sp/>with<sp/>DSID.</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109" refid="classmeta_1a68a242a824761379c015193c918da1f9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1a68a242a824761379c015193c918da1f9" kindref="member">derivationFormat</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>format<sp/>of<sp/>the<sp/>derived<sp/>data<sp/>(e.g.,<sp/>DAOD_PHYS).</highlight></codeline>
+<codeline lineno="110" refid="classmeta_1a6de8b2b6198e5ea010938d5a315f0090" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1a6de8b2b6198e5ea010938d5a315f0090" kindref="member">AMITag</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>AMI<sp/>(ATLAS<sp/>Metadata<sp/>Interface)<sp/>tag<sp/>for<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="111" refid="classmeta_1a4e5b2648fd0c6ea311c759254377cac5" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1a4e5b2648fd0c6ea311c759254377cac5" kindref="member">generators</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>Information<sp/>about<sp/>the<sp/>Monte<sp/>Carlo<sp/>event<sp/>generators<sp/>used.</highlight></codeline>
+<codeline lineno="112" refid="classmeta_1adfd916ea2a0fdbe3f55de09f34d76010" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1adfd916ea2a0fdbe3f55de09f34d76010" kindref="member">identifier</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>generic<sp/>string<sp/>identifier<sp/>for<sp/>the<sp/>metadata<sp/>or<sp/>dataset.</highlight></codeline>
+<codeline lineno="113" refid="classmeta_1af953a7a7492880e56af8154554f462e7" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1af953a7a7492880e56af8154554f462e7" kindref="member">DatasetName</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>human-readable<sp/>name<sp/>of<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="114" refid="classmeta_1aeac2dd9165bfccff2d47357ff4ff75d1" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1aeac2dd9165bfccff2d47357ff4ff75d1" kindref="member">prodsysStatus</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>status<sp/>of<sp/>the<sp/>dataset<sp/>in<sp/>the<sp/>production<sp/>system.</highlight></codeline>
+<codeline lineno="115" refid="classmeta_1a142900f4130114e6a0861c49e3216776" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1a142900f4130114e6a0861c49e3216776" kindref="member">dataType</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>type<sp/>of<sp/>data<sp/>(e.g.,<sp/>&quot;mc&quot;,<sp/>&quot;data&quot;).</highlight></codeline>
+<codeline lineno="116" refid="classmeta_1a010d7051430c846fca8edf3a77833b22" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1a010d7051430c846fca8edf3a77833b22" kindref="member">version</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>Version<sp/>string<sp/>for<sp/>the<sp/>dataset<sp/>or<sp/>metadata<sp/>schema.</highlight></codeline>
+<codeline lineno="117" refid="classmeta_1ad949489e1cdf85496e2bf51d7b315574" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1ad949489e1cdf85496e2bf51d7b315574" kindref="member">PDF</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>Information<sp/>about<sp/>the<sp/>Parton<sp/>Density<sp/>Function<sp/>(PDF)<sp/>used<sp/>in<sp/>MC<sp/>generation.</highlight></codeline>
+<codeline lineno="118" refid="classmeta_1af733265ff2b94accdb80bd6e5198a5c3" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1af733265ff2b94accdb80bd6e5198a5c3" kindref="member">AtlasRelease</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>ATLAS<sp/>software<sp/>release<sp/>version<sp/>used<sp/>for<sp/>processing.</highlight></codeline>
+<codeline lineno="119" refid="classmeta_1abda331442a20a39a7e71acab9f1a541d" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1abda331442a20a39a7e71acab9f1a541d" kindref="member">principalPhysicsGroup</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>main<sp/>physics<sp/>group<sp/>associated<sp/>with<sp/>this<sp/>dataset<sp/>(e.g.,<sp/>&quot;SM&quot;,<sp/>&quot;SUSY&quot;).</highlight></codeline>
+<codeline lineno="120" refid="classmeta_1a39413e5635d945732a86577ff392ac8a" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1a39413e5635d945732a86577ff392ac8a" kindref="member">physicsShort</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>short<sp/>description<sp/>of<sp/>the<sp/>physics<sp/>process<sp/>or<sp/>analysis.</highlight></codeline>
+<codeline lineno="121" refid="classmeta_1aa86326034f1f74557108d37b4914c621" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1aa86326034f1f74557108d37b4914c621" kindref="member">generatorName</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>specific<sp/>name<sp/>of<sp/>the<sp/>MC<sp/>event<sp/>generator.</highlight></codeline>
+<codeline lineno="122" refid="classmeta_1a25eb3a339b878a630b7fe0c6aacaea32" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1a25eb3a339b878a630b7fe0c6aacaea32" kindref="member">geometryVersion</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>version<sp/>of<sp/>the<sp/>detector<sp/>geometry<sp/>simulation<sp/>used.</highlight></codeline>
+<codeline lineno="123" refid="classmeta_1af7aeab02c2153871a4aa08eb8e114094" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1af7aeab02c2153871a4aa08eb8e114094" kindref="member">conditionsTag</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>tag<sp/>for<sp/>the<sp/>detector<sp/>conditions<sp/>database.</highlight></codeline>
+<codeline lineno="124" refid="classmeta_1a3fc75bdbf1e75744c990a50b21c952f3" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1a3fc75bdbf1e75744c990a50b21c952f3" kindref="member">generatorTune</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>specific<sp/>tune<sp/>(parameter<sp/>set)<sp/>of<sp/>the<sp/>MC<sp/>generator.</highlight></codeline>
+<codeline lineno="125" refid="classmeta_1af3037bcdf7da061d55b6c6e613763460" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1af3037bcdf7da061d55b6c6e613763460" kindref="member">amiStatus</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>status<sp/>of<sp/>the<sp/>dataset<sp/>in<sp/>the<sp/>AMI<sp/>catalog.</highlight></codeline>
+<codeline lineno="126" refid="classmeta_1a94f672065939d8c29551e5ccf980aacb" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1a94f672065939d8c29551e5ccf980aacb" kindref="member">beamType</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>type<sp/>of<sp/>colliding<sp/>beams<sp/>(e.g.,<sp/>&quot;pp&quot;,<sp/>&quot;PbPb&quot;).</highlight></codeline>
+<codeline lineno="127" refid="classmeta_1ab03a527e6de925239dbee8b6ddea7f46" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1ab03a527e6de925239dbee8b6ddea7f46" kindref="member">productionStep</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>step<sp/>in<sp/>the<sp/>data<sp/>production<sp/>chain<sp/>(e.g.,<sp/>&quot;recon&quot;,<sp/>&quot;merge&quot;).</highlight></codeline>
+<codeline lineno="128" refid="classmeta_1a5f6cf07c9584e16c2d79fbcc53cebeba" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1a5f6cf07c9584e16c2d79fbcc53cebeba" kindref="member">projectName</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>name<sp/>of<sp/>the<sp/>project<sp/>this<sp/>dataset<sp/>belongs<sp/>to<sp/>(e.g.,<sp/>&quot;mc16_13TeV&quot;).</highlight></codeline>
+<codeline lineno="129" refid="classmeta_1af80a1704ac18b80792418f212fa495e8" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1af80a1704ac18b80792418f212fa495e8" kindref="member">statsAlgorithm</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>Algorithm<sp/>used<sp/>for<sp/>statistical<sp/>combination<sp/>or<sp/>analysis.</highlight></codeline>
+<codeline lineno="130" refid="classmeta_1aebee62ddee4e73ad27b1d79a78222275" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1aebee62ddee4e73ad27b1d79a78222275" kindref="member">genFilterNames</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>Names<sp/>of<sp/>any<sp/>generator-level<sp/>filters<sp/>applied.</highlight></codeline>
+<codeline lineno="131" refid="classmeta_1aa57891adfc8a716cb3ba2c19362e3fcf" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1aa57891adfc8a716cb3ba2c19362e3fcf" kindref="member">file_type</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>type<sp/>of<sp/>the<sp/>file<sp/>(e.g.,<sp/>&quot;ROOT&quot;,<sp/>&quot;HDF5&quot;).</highlight></codeline>
+<codeline lineno="132" refid="classmeta_1a6d78fc69df28f8b5673235084ee32937" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1a6d78fc69df28f8b5673235084ee32937" kindref="member">sample_name</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>user-defined<sp/>name<sp/>for<sp/>the<sp/>sample.</highlight></codeline>
+<codeline lineno="133" refid="classmeta_1a41296b78a33bd0ebaa58626afaa763ca" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1a41296b78a33bd0ebaa58626afaa763ca" kindref="member">logicalDatasetName</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>Logical<sp/>Dataset<sp/>Name<sp/>(LFN)<sp/>as<sp/>used<sp/>in<sp/>grid<sp/>systems.</highlight></codeline>
+<codeline lineno="134" refid="classmeta_1ad5307d12fa5da19dc8e938f76705bd00" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::string, meta&gt;</ref><sp/><ref refid="classmeta_1ad5307d12fa5da19dc8e938f76705bd00" kindref="member">campaign</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>The<sp/>data-taking<sp/>or<sp/>simulation<sp/>campaign<sp/>(e.g.,<sp/>&quot;mc16a&quot;,<sp/>&quot;Run2&quot;).</highlight></codeline>
+<codeline lineno="135"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="136" refid="classmeta_1a14abb252cb3ee7637b8e7530f30b966b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::vector&lt;std::string&gt;</ref>,<sp/><ref refid="classmeta" kindref="compound">meta</ref>&gt;<sp/><ref refid="classmeta_1a14abb252cb3ee7637b8e7530f30b966b" kindref="member">keywords</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>list<sp/>of<sp/>keywords<sp/>associated<sp/>with<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="137" refid="classmeta_1a25f9eca600500121ca02bc09eb6db3c1" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::vector&lt;std::string&gt;</ref>,<sp/><ref refid="classmeta" kindref="compound">meta</ref>&gt;<sp/><ref refid="classmeta_1a25f9eca600500121ca02bc09eb6db3c1" kindref="member">weights</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>list<sp/>of<sp/>weight<sp/>names<sp/>or<sp/>definitions.</highlight></codeline>
+<codeline lineno="138" refid="classmeta_1a1f71374707a87ef0efe19d0005f240a2" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::vector&lt;std::string&gt;</ref>,<sp/><ref refid="classmeta" kindref="compound">meta</ref>&gt;<sp/><ref refid="classmeta_1a1f71374707a87ef0efe19d0005f240a2" kindref="member">keyword</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>(Possibly<sp/>redundant<sp/>with<sp/>&apos;keywords&apos;)<sp/>A<sp/>list<sp/>of<sp/>keywords.</highlight></codeline>
+<codeline lineno="139" refid="classmeta_1ad5392a640da7ecda23d616ca22ea109b" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::vector&lt;std::string&gt;</ref>,<sp/><ref refid="classmeta" kindref="compound">meta</ref>&gt;<sp/><ref refid="classmeta_1ad5392a640da7ecda23d616ca22ea109b" kindref="member">fileGUID</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>list<sp/>of<sp/>Globally<sp/>Unique<sp/>Identifiers<sp/>(GUIDs)<sp/>for<sp/>the<sp/>files.</highlight></codeline>
+<codeline lineno="140"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141" refid="classmeta_1a01d9d7ee975cf69b695309d3c301d16b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::vector&lt;int&gt;</ref>,<sp/><ref refid="classmeta" kindref="compound">meta</ref>&gt;<sp/><ref refid="classmeta_1a01d9d7ee975cf69b695309d3c301d16b" kindref="member">events</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>list<sp/>of<sp/>event<sp/>counts,<sp/>possibly<sp/>per<sp/>file<sp/>or<sp/>run.</highlight></codeline>
+<codeline lineno="142" refid="classmeta_1a21c40d9f0907f6e56330201ffd5fcc05" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::vector&lt;int&gt;</ref>,<sp/><ref refid="classmeta" kindref="compound">meta</ref>&gt;<sp/><ref refid="classmeta_1a21c40d9f0907f6e56330201ffd5fcc05" kindref="member">run_number</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>list<sp/>of<sp/>run<sp/>numbers.</highlight></codeline>
+<codeline lineno="143" refid="classmeta_1a228714ffad528afa7800be63c9767718" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::vector&lt;double&gt;</ref>,<sp/><ref refid="classmeta" kindref="compound">meta</ref>&gt;<sp/><ref refid="classmeta_1a228714ffad528afa7800be63c9767718" kindref="member">fileSize</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>list<sp/>of<sp/>file<sp/>sizes.</highlight></codeline>
+<codeline lineno="144"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145" refid="classmeta_1a7a108860a95134ea983e9a78185e75d7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::map&lt;int, int&gt;</ref>,<sp/><ref refid="classmeta" kindref="compound">meta</ref>&gt;<sp/><ref refid="classmeta_1a7a108860a95134ea983e9a78185e75d7" kindref="member">inputrange</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>map<sp/>defining<sp/>input<sp/>ranges,<sp/>possibly<sp/>for<sp/>event<sp/>processing.</highlight></codeline>
+<codeline lineno="146" refid="classmeta_1a9b71bf1793e1eb5f897a3c9de0e63583" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::map&lt;int, std::string&gt;</ref>,<sp/><ref refid="classmeta" kindref="compound">meta</ref>&gt;<sp/><ref refid="classmeta_1a9b71bf1793e1eb5f897a3c9de0e63583" kindref="member">inputfiles</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>map<sp/>linking<sp/>an<sp/>index<sp/>to<sp/>input<sp/>file<sp/>names/paths.</highlight></codeline>
+<codeline lineno="147"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148" refid="classmeta_1a041bd996ff676eff47aa6a8afb9731ac" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::map&lt;std::string, int&gt;</ref>,<sp/><ref refid="classmeta" kindref="compound">meta</ref>&gt;<sp/><ref refid="classmeta_1a041bd996ff676eff47aa6a8afb9731ac" kindref="member">LFN</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>map<sp/>from<sp/>Logical<sp/>File<sp/>Names<sp/>(LFNs)<sp/>to<sp/>an<sp/>integer<sp/>(e.g.,<sp/>count<sp/>or<sp/>index).</highlight></codeline>
+<codeline lineno="149" refid="classmeta_1acd9e0f928ee90bf84d5cec534fff2dda" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::map&lt;std::string, weights_t&gt;</ref>,<sp/><ref refid="classmeta" kindref="compound">meta</ref>&gt;<sp/><ref refid="classmeta_1acd9e0f928ee90bf84d5cec534fff2dda" kindref="member">misc</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>map<sp/>for<sp/>miscellaneous<sp/>weights<sp/>or<sp/>related<sp/>information,<sp/>using<sp/>`weights_t`<sp/>struct.</highlight></codeline>
+<codeline lineno="150"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151" refid="classmeta_1a93116e7174fe68d48b46f00b82a2173a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcproperty" kindref="compound">cproperty&lt;std::map&lt;std::string, std::string&gt;</ref>,<sp/><ref refid="classmeta" kindref="compound">meta</ref>&gt;<sp/><ref refid="classmeta_1a93116e7174fe68d48b46f00b82a2173a" kindref="member">config</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Property:<sp/>A<sp/>map<sp/>for<sp/>general<sp/>configuration<sp/>settings<sp/>as<sp/>key-value<sp/>string<sp/>pairs.</highlight></codeline>
+<codeline lineno="152"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:<sp/></highlight><highlight class="comment">///&lt;<sp/>Private<sp/>access<sp/>specifier<sp/>for<sp/>the<sp/>following<sp/>members.</highlight></codeline>
+<codeline lineno="154"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>rapidjson::Document*<sp/>rpd<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Pointer<sp/>to<sp/>a<sp/>RapidJSON<sp/>document<sp/>object,<sp/>used<sp/>for<sp/>parsing<sp/>JSON<sp/>metadata.<sp/>Initialized<sp/>to<sp/>nullptr.</highlight></codeline>
+<codeline lineno="155"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>metacache_path;<sp/></highlight><highlight class="comment">///&lt;<sp/>String<sp/>storing<sp/>the<sp/>path<sp/>to<sp/>a<sp/>metadata<sp/>cache,<sp/>if<sp/>used.</highlight></codeline>
+<codeline lineno="156"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structmeta__t" kindref="compound">meta_t</ref><sp/>meta_data;<sp/></highlight><highlight class="comment">///&lt;<sp/>Instance<sp/>of<sp/>`meta_t`<sp/>struct,<sp/>likely<sp/>holding<sp/>the<sp/>raw<sp/>or<sp/>processed<sp/>metadata<sp/>values.</highlight></codeline>
+<codeline lineno="157"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158" refid="classmeta_1a16a8ca527d3bb66711ffa93078d4e9de" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classanalysis" kindref="compound">analysis</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Declares<sp/>the<sp/>`analysis`<sp/>class<sp/>as<sp/>a<sp/>friend,<sp/>allowing<sp/>it<sp/>to<sp/>access<sp/>private<sp/>members<sp/>of<sp/>`meta`.</highlight></codeline>
+<codeline lineno="159"><highlight class="comment"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="160"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="161"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Internal<sp/>method<sp/>to<sp/>compile<sp/>or<sp/>process<sp/>metadata<sp/>after<sp/>parsing.</highlight></codeline>
+<codeline lineno="162"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>might<sp/>involve<sp/>organizing,<sp/>validating,<sp/>or<sp/>transforming<sp/>the<sp/>raw<sp/>metadata.</highlight></codeline>
+<codeline lineno="163"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacehelper_1ad0f763fc806c0d73759dfb3bdc613b1f" kindref="member">compiler</ref>();</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;folds_t&gt;*<sp/>folds<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Pointer<sp/>to<sp/>a<sp/>vector<sp/>of<sp/>`folds_t`<sp/>structures,<sp/>possibly<sp/>for<sp/>k-fold<sp/>data.<sp/>Initialized<sp/>to<sp/>nullptr.</highlight></codeline>
+<codeline lineno="166"><highlight class="comment"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="167"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="168"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Parses<sp/>a<sp/>float<sp/>value<sp/>from<sp/>a<sp/>TTree<sp/>based<sp/>on<sp/>a<sp/>key.</highlight></codeline>
+<codeline lineno="169"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>key<sp/>The<sp/>key<sp/>(branch/leaf<sp/>name)<sp/>to<sp/>look<sp/>for<sp/>in<sp/>the<sp/>TTree.</highlight></codeline>
+<codeline lineno="170"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>tr<sp/>Pointer<sp/>to<sp/>the<sp/>TTree<sp/>to<sp/>parse<sp/>from.</highlight></codeline>
+<codeline lineno="171"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>The<sp/>parsed<sp/>float<sp/>value.<sp/>Returns<sp/>0<sp/>if<sp/>not<sp/>found<sp/>or<sp/>on<sp/>error.</highlight></codeline>
+<codeline lineno="172"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>parse_float(std::string<sp/>key,<sp/>TTree*<sp/>tr);</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="175"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="176"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Parses<sp/>a<sp/>string<sp/>value<sp/>from<sp/>a<sp/>TTree<sp/>based<sp/>on<sp/>a<sp/>key.</highlight></codeline>
+<codeline lineno="177"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>key<sp/>The<sp/>key<sp/>(branch/leaf<sp/>name)<sp/>to<sp/>look<sp/>for<sp/>in<sp/>the<sp/>TTree.</highlight></codeline>
+<codeline lineno="178"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>tr<sp/>Pointer<sp/>to<sp/>the<sp/>TTree<sp/>to<sp/>parse<sp/>from.</highlight></codeline>
+<codeline lineno="179"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>The<sp/>parsed<sp/>string<sp/>value.<sp/>Returns<sp/>empty<sp/>string<sp/>if<sp/>not<sp/>found<sp/>or<sp/>on<sp/>error.</highlight></codeline>
+<codeline lineno="180"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>parse_string(std::string<sp/>key,<sp/>TTree*<sp/>tr);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Static<sp/>getter<sp/>methods<sp/>for<sp/>cproperty<sp/>system.<sp/>These<sp/>are<sp/>callbacks<sp/>used<sp/>by<sp/>cproperty.</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="184"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>isMC<sp/>property.</highlight></codeline>
+<codeline lineno="185"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>boolean<sp/>value.</highlight></codeline>
+<codeline lineno="186"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance<sp/>from<sp/>which<sp/>to<sp/>get<sp/>the<sp/>value.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_isMC(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="188"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>found<sp/>property.</highlight></codeline>
+<codeline lineno="189"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>boolean<sp/>value.</highlight></codeline>
+<codeline lineno="190"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_found(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="192"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>eventNumber<sp/>property.</highlight></codeline>
+<codeline lineno="193"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>double<sp/>value.</highlight></codeline>
+<codeline lineno="194"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_eventNumber(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="196"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>totalSize<sp/>property.</highlight></codeline>
+<codeline lineno="197"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>double<sp/>value.</highlight></codeline>
+<codeline lineno="198"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_totalSize(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="200"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>event_index<sp/>property.</highlight></codeline>
+<codeline lineno="201"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>double<sp/>value.</highlight></codeline>
+<codeline lineno="202"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_event_index(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="204"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>kfactor<sp/>property.</highlight></codeline>
+<codeline lineno="205"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>double<sp/>value.</highlight></codeline>
+<codeline lineno="206"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_kfactor(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="208"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>ecmEnergy<sp/>property.</highlight></codeline>
+<codeline lineno="209"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>double<sp/>value.</highlight></codeline>
+<codeline lineno="210"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_ecmEnergy(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="212"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>genFiltEff<sp/>property.</highlight></codeline>
+<codeline lineno="213"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>double<sp/>value.</highlight></codeline>
+<codeline lineno="214"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_genFiltEff(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="216"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>completion<sp/>property.</highlight></codeline>
+<codeline lineno="217"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>double<sp/>value.</highlight></codeline>
+<codeline lineno="218"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_completion(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="220"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>beam_energy<sp/>property.</highlight></codeline>
+<codeline lineno="221"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>double<sp/>value.</highlight></codeline>
+<codeline lineno="222"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_beam_energy(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="225"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>cross_section_pb<sp/>property.</highlight></codeline>
+<codeline lineno="226"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>double<sp/>value<sp/>(picobarns).</highlight></codeline>
+<codeline lineno="227"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_cross_section_pb(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="229"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>cross_section_nb<sp/>property.</highlight></codeline>
+<codeline lineno="230"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>double<sp/>value<sp/>(nanobarns).</highlight></codeline>
+<codeline lineno="231"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_cross_section_nb(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="233"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>cross_section_fb<sp/>property.</highlight></codeline>
+<codeline lineno="234"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>double<sp/>value<sp/>(femtobarns).</highlight></codeline>
+<codeline lineno="235"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_cross_section_fb(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="238"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>campaign_luminosity<sp/>property.</highlight></codeline>
+<codeline lineno="239"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>double<sp/>value.</highlight></codeline>
+<codeline lineno="240"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_campaign_luminosity(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="242"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>dsid<sp/>property.</highlight></codeline>
+<codeline lineno="243"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>unsigned<sp/>int<sp/>value.</highlight></codeline>
+<codeline lineno="244"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_dsid(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="246"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>nFiles<sp/>property.</highlight></codeline>
+<codeline lineno="247"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>unsigned<sp/>int<sp/>value.</highlight></codeline>
+<codeline lineno="248"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_nFiles(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="250"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>totalEvents<sp/>property.</highlight></codeline>
+<codeline lineno="251"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>unsigned<sp/>int<sp/>value.</highlight></codeline>
+<codeline lineno="252"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_totalEvents(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="254"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>datasetNumber<sp/>property.</highlight></codeline>
+<codeline lineno="255"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>unsigned<sp/>int<sp/>value.</highlight></codeline>
+<codeline lineno="256"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_datasetNumber(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="258"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>derivationFormat<sp/>property.</highlight></codeline>
+<codeline lineno="259"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="260"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_derivationFormat(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="262"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>AMITag<sp/>property.</highlight></codeline>
+<codeline lineno="263"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="264"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_AMITag(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="266"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>generators<sp/>property.</highlight></codeline>
+<codeline lineno="267"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="268"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_generators(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="270"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>identifier<sp/>property.</highlight></codeline>
+<codeline lineno="271"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="272"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_identifier(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="274"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>DatasetName<sp/>property.</highlight></codeline>
+<codeline lineno="275"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="276"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_DatasetName(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="278"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>prodsysStatus<sp/>property.</highlight></codeline>
+<codeline lineno="279"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="280"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_prodsysStatus(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="282"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>dataType<sp/>property.</highlight></codeline>
+<codeline lineno="283"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="284"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_dataType(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="286"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>version<sp/>property.</highlight></codeline>
+<codeline lineno="287"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="288"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_version(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="290"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>PDF<sp/>property.</highlight></codeline>
+<codeline lineno="291"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="292"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_PDF(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="294"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>AtlasRelease<sp/>property.</highlight></codeline>
+<codeline lineno="295"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="296"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_AtlasRelease(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="298"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>principalPhysicsGroup<sp/>property.</highlight></codeline>
+<codeline lineno="299"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="300"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_principalPhysicsGroup(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="302"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>physicsShort<sp/>property.</highlight></codeline>
+<codeline lineno="303"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="304"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_physicsShort(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="306"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>generatorName<sp/>property.</highlight></codeline>
+<codeline lineno="307"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="308"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_generatorName(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="310"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>geometryVersion<sp/>property.</highlight></codeline>
+<codeline lineno="311"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="312"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_geometryVersion(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="314"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>conditionsTag<sp/>property.</highlight></codeline>
+<codeline lineno="315"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="316"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_conditionsTag(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="318"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>generatorTune<sp/>property.</highlight></codeline>
+<codeline lineno="319"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="320"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_generatorTune(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="322"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>amiStatus<sp/>property.</highlight></codeline>
+<codeline lineno="323"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="324"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_amiStatus(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="326"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>beamType<sp/>property.</highlight></codeline>
+<codeline lineno="327"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="328"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="329"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_beamType(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="330"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>productionStep<sp/>property.</highlight></codeline>
+<codeline lineno="331"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="332"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_productionStep(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="334"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>projectName<sp/>property.</highlight></codeline>
+<codeline lineno="335"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="336"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_projectName(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="338"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>statsAlgorithm<sp/>property.</highlight></codeline>
+<codeline lineno="339"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="340"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_statsAlgorithm(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="342"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>genFilterNames<sp/>property.</highlight></codeline>
+<codeline lineno="343"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="344"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_genFilterNames(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="346"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>file_type<sp/>property.</highlight></codeline>
+<codeline lineno="347"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="348"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_file_type(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="350"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>sample_name<sp/>property.</highlight></codeline>
+<codeline lineno="351"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="352"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_sample_name(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="354"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>logicalDatasetName<sp/>property.</highlight></codeline>
+<codeline lineno="355"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="356"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="357"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_logicalDatasetName(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="358"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>campaign<sp/>property.</highlight></codeline>
+<codeline lineno="359"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>string<sp/>value.</highlight></codeline>
+<codeline lineno="360"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="361"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_campaign(std::string*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="362"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>keywords<sp/>property.</highlight></codeline>
+<codeline lineno="363"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>vector<sp/>of<sp/>strings.</highlight></codeline>
+<codeline lineno="364"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="365"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_keywords(std::vector&lt;std::string&gt;*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="366"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>weights<sp/>property.</highlight></codeline>
+<codeline lineno="367"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>vector<sp/>of<sp/>strings.</highlight></codeline>
+<codeline lineno="368"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="369"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_weights(std::vector&lt;std::string&gt;*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="370"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>keyword<sp/>property.</highlight></codeline>
+<codeline lineno="371"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>vector<sp/>of<sp/>strings.</highlight></codeline>
+<codeline lineno="372"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_keyword(std::vector&lt;std::string&gt;*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="374"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>fileGUID<sp/>property.</highlight></codeline>
+<codeline lineno="375"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>vector<sp/>of<sp/>strings<sp/>(GUIDs).</highlight></codeline>
+<codeline lineno="376"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_fileGUID(std::vector&lt;std::string&gt;*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="378"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>events<sp/>property.</highlight></codeline>
+<codeline lineno="379"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>vector<sp/>of<sp/>integers.</highlight></codeline>
+<codeline lineno="380"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="381"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_events(std::vector&lt;int&gt;*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="382"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>run_number<sp/>property.</highlight></codeline>
+<codeline lineno="383"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>vector<sp/>of<sp/>integers.</highlight></codeline>
+<codeline lineno="384"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="385"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_run_number(std::vector&lt;int&gt;*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="386"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>fileSize<sp/>property.</highlight></codeline>
+<codeline lineno="387"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>vector<sp/>of<sp/>doubles.</highlight></codeline>
+<codeline lineno="388"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="389"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_fileSize(std::vector&lt;double&gt;*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="391"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>inputrange<sp/>property.</highlight></codeline>
+<codeline lineno="392"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>map<sp/>of<sp/>int<sp/>to<sp/>int.</highlight></codeline>
+<codeline lineno="393"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="394"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_inputrange(std::map&lt;int,<sp/>int&gt;*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="395"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>inputfiles<sp/>property.</highlight></codeline>
+<codeline lineno="396"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>map<sp/>of<sp/>int<sp/>to<sp/>string.</highlight></codeline>
+<codeline lineno="397"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="398"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_inputfiles(std::map&lt;int,<sp/>std::string&gt;*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight></codeline>
+<codeline lineno="399"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="400"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>LFN<sp/>property.</highlight></codeline>
+<codeline lineno="401"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>map<sp/>of<sp/>string<sp/>to<sp/>int.</highlight></codeline>
+<codeline lineno="402"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="403"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_LFN(std::map&lt;std::string,<sp/>int&gt;*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="404"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>misc<sp/>property.</highlight></codeline>
+<codeline lineno="405"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>map<sp/>of<sp/>string<sp/>to<sp/>`weights_t`.</highlight></codeline>
+<codeline lineno="406"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="407"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_misc(std::map&lt;std::string,<sp/>weights_t&gt;*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight></codeline>
+<codeline lineno="408"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="409"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>config<sp/>property.</highlight></codeline>
+<codeline lineno="410"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>map<sp/>of<sp/>string<sp/>to<sp/>string.</highlight></codeline>
+<codeline lineno="411"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="412"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_config(std::map&lt;std::string,<sp/>std::string&gt;*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="413"><highlight class="comment"><sp/><sp/><sp/><sp/>/**<sp/>@brief<sp/>Static<sp/>getter<sp/>for<sp/>the<sp/>sum_of_weights<sp/>property.</highlight></codeline>
+<codeline lineno="414"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[out]<sp/>value<sp/>Pointer<sp/>to<sp/>store<sp/>the<sp/>retrieved<sp/>double<sp/>value.</highlight></codeline>
+<codeline lineno="415"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/>@param[in]<sp/>instance<sp/>Pointer<sp/>to<sp/>the<sp/>`meta`<sp/>instance.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="416"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>get_sum_of_weights(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value,<sp/><ref refid="classmeta" kindref="compound">meta</ref>*<sp/>instance);</highlight></codeline>
+<codeline lineno="417"><highlight class="normal">};<sp/></highlight><highlight class="comment">//<sp/>End<sp/>of<sp/>class<sp/>&apos;meta&apos;<sp/>definition.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="418"><highlight class="normal"></highlight></codeline>
+<codeline lineno="419"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>META_META_H<sp/></highlight><highlight class="comment">///&lt;<sp/>End<sp/>of<sp/>include<sp/>guard<sp/>for<sp/>META_META_H.</highlight></codeline>
+    </programlisting>
+    <location file="modules/meta/include/meta/meta.h"/>
+  </compounddef>
+</doxygen>

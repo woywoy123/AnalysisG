@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="metric__accuracy_8pyx" kind="file" language="C++">
+    <compoundname>metric_accuracy.pyx</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>distutils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level=3</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>cython.parallel<sp/>import<sp/>prange</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>*</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>extern<sp/>from<sp/>&quot;&lt;tools/merge_cast.h&gt;&quot;:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>void<sp/>merge_data(vector[plt_roc_t*]*<sp/>oux,<sp/>vector[plt_roc_t*]*<sp/>inx)<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>tuple<sp/>mx_index(vector[double]*<sp/>sc):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>int<sp/>x,<sp/>i</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>double<sp/>s<sp/>=<sp/>0</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>i<sp/>in<sp/>range(sc.size()):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>s<sp/>&gt;<sp/>sc.at(i):<sp/>continue</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>s<sp/>=<sp/>sc.at(i);<sp/>x<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x,<sp/>s)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>void<sp/>get_data(AccuracyMetric<sp/>vl,<sp/>dict<sp/>data,<sp/>dict<sp/>meta):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>int<sp/>epoch<sp/>=<sp/>meta[b&quot;epoch&quot;]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>int<sp/>kfold<sp/>=<sp/>meta[b&quot;kfold&quot;]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>int<sp/>ntops</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>tuple<sp/>mx</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[double]<sp/>score</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>string<sp/>model<sp/>=<sp/>meta[b&quot;model_name&quot;]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>string<sp/>mode<sp/>=<sp/>b&quot;&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>string<sp/>key</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>tools<sp/>tl</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>key<sp/>in<sp/>data:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>mode.size():<sp/>pass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>elif<sp/>not<sp/>mode.size()<sp/>and<sp/>tl.has_string(&amp;key,<sp/>b&quot;evaluation&quot;):<sp/>mode<sp/>=<sp/>b&quot;evaluation&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>elif<sp/>not<sp/>mode.size()<sp/>and<sp/>tl.has_string(&amp;key,<sp/>b&quot;validation&quot;):<sp/>mode<sp/>=<sp/>b&quot;validation&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>elif<sp/>not<sp/>mode.size()<sp/>and<sp/>tl.has_string(&amp;key,<sp/>b&quot;training&quot;):<sp/><sp/><sp/>mode<sp/>=<sp/>b&quot;training&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>else:<sp/>continue</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ntops<sp/>=<sp/>data[b&quot;event_accuracy_&quot;<sp/>+<sp/>mode<sp/>+<sp/>b&quot;.ntop_truth.ntop_truth&quot;]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>score<sp/>=<sp/>data[b&quot;event_accuracy_&quot;<sp/>+<sp/>mode<sp/>+<sp/>b&quot;.ntop_scores.ntop_scores&quot;]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mx<sp/><sp/><sp/><sp/>=<sp/>mx_index(&amp;score)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/><sp/><sp/>tl.has_string(&amp;key,<sp/>b&quot;ntop_truth&quot;<sp/>):<sp/>vl.event_level[mode][epoch].ntops_truth[model][kfold].push_back(ntops)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>elif<sp/>tl.has_string(&amp;key,<sp/>b&quot;edge&quot;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>):<sp/>vl.event_level[mode][epoch].edge_scores[model][ntops].push_back(data[key])</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>elif<sp/>tl.has_string(&amp;key,<sp/>b&quot;ntop_scores&quot;):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vl.event_level[mode][epoch].ntop_score[model][kfold].push_back(score)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vl.event_level[mode][epoch].ntru_npred_ntop[model][ntops][mx[0]].push_back(mx[1])</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>else:<sp/>continue</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>vector[plt_roc_t*]<sp/>make_roc(plt_roc_t*<sp/>out,<sp/>modelx_t*<sp/>inx):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>plt_roc_t*<sp/>mt</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[plt_roc_t*]<sp/>mxo</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>pair[string,<sp/>map[int,<sp/>vector[int]]]<sp/>itx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>pair[int,<sp/>vector[vector[double]]]<sp/><sp/>its</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>itx<sp/>in<sp/>inx.ntops_truth:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>its<sp/>in<sp/>inx.ntop_score[itx.first]:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mt<sp/>=<sp/>new<sp/>plt_roc_t()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mt.kfold<sp/>=<sp/>its.first</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mt.model<sp/>=<sp/>itx.first<sp/>+<sp/>b&quot;@&quot;<sp/>+<sp/>out.model</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>merge_data(&amp;mt.scores,<sp/>&amp;its.second)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mt.variable<sp/>=<sp/>out.variable<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>merge_data(&amp;mt.truth,<sp/>&amp;itx.second[its.first])</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mxo.push_back(mt)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>mxo</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>AccuracyMetric(MetricTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__cinit__(self):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.root_leaves<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;event_accuracy_training&quot;<sp/><sp/><sp/>:<sp/>[&quot;ntop_truth&quot;,<sp/>&quot;ntop_scores&quot;,<sp/>&quot;edge&quot;],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;event_accuracy_validation&quot;<sp/>:<sp/>[&quot;ntop_truth&quot;,<sp/>&quot;ntop_scores&quot;,<sp/>&quot;edge&quot;],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;event_accuracy_evaluation&quot;<sp/>:<sp/>[&quot;ntop_truth&quot;,<sp/>&quot;ntop_scores&quot;,<sp/>&quot;edge&quot;],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.root_fx<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;event_accuracy_training&quot;<sp/><sp/><sp/>:<sp/>get_data,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;event_accuracy_validation&quot;<sp/>:<sp/>get_data,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;event_accuracy_evaluation&quot;<sp/>:<sp/>get_data,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.mtx<sp/>=<sp/>new<sp/>accuracy_metric()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.mtr<sp/>=<sp/>&lt;accuracy_metric*&gt;(self.mtx)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>Postprocessing(self):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>int<sp/>e,<sp/>k</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>plt_roc_t<sp/>rx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>plt_roc_t*<sp/>rxp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>vector[int]<sp/>epochs</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>vector[plt_roc_t*]<sp/>data_o</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>pair[string,<sp/>map[int,<sp/>modelx_t]]<sp/>itm</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>pair[int,<sp/>vector[plt_roc_t*]]<sp/>eitr</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>map[int,<sp/>vector[plt_roc_t*]]<sp/>data_i</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>ROC<sp/>rxc</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>list<sp/>plts<sp/>=<sp/>[]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>map[int,<sp/>plotting*]<sp/>plts_ptr</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>itm<sp/>in<sp/>self.event_level:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>epochs<sp/>=<sp/>&lt;vector[int]&gt;(sorted(list(set(list(itm.second)))))</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>e<sp/>in<sp/>epochs:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rx<sp/>=<sp/>plt_roc_t()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rx.epoch<sp/>=<sp/>e</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rx.model<sp/>=<sp/>itm.first</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rx.variable<sp/>=<sp/>b&quot;Top<sp/>Multiplicity<sp/>Performance&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>data_o<sp/>=<sp/>make_roc(&amp;rx,<sp/>&amp;itm.second[e])</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>merge_data(&amp;data_i[e],<sp/>&amp;data_o)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print(data_i[e].size())</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>epochs<sp/>=<sp/>[eitr.first<sp/>for<sp/>eitr<sp/>in<sp/>data_i]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>e<sp/>in<sp/>epochs:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rxc<sp/>=<sp/>ROC()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>plts_ptr[e]<sp/>=<sp/>rxc.ptr</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>plts.append(rxc)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print(epochs)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>e<sp/>in<sp/>prange(epochs.size(),<sp/>nogil<sp/>=<sp/>True,<sp/>num_threads<sp/>=<sp/>epochs.size()):<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>e<sp/>=<sp/>epochs[e]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>k<sp/>in<sp/>range(data_i[e].size()):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rxp<sp/>=<sp/>data_i[e][k]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>plts_ptr[e].build_ROC(rxp.model,<sp/>rxp.kfold,<sp/>&amp;rxp.truth,<sp/>&amp;rxp.scores)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>rxc<sp/>in<sp/>plts:<sp/>rxc.__compile__()</highlight></codeline>
+    </programlisting>
+    <location file="metrics/accuracy/metric_accuracy.pyx"/>
+  </compounddef>
+</doxygen>

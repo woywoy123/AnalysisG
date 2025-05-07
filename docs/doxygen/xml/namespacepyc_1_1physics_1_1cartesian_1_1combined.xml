@@ -1,0 +1,220 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacepyc_1_1physics_1_1cartesian_1_1combined" kind="namespace" language="C++">
+    <compoundname>pyc::physics::cartesian::combined</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1aba7856741341e1db62a5a4db61dbb953" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::cartesian::combined::P2</definition>
+        <argsstring>(torch::Tensor pmc)</argsstring>
+        <name>P2</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="84" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="18" bodyend="21" declfile="pyc/interface/include/pyc/pyc.h" declline="84" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1ae22e22a969315629a6ae7549f7344805" compoundref="pyc_2physics_2physics_8cxx" startline="12" endline="16">physics_::P2</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1a8d18df9edaf934cad512b70852a5a813" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::cartesian::combined::P</definition>
+        <argsstring>(torch::Tensor pmc)</argsstring>
+        <name>P</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="85" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="41" bodyend="44" declfile="pyc/interface/include/pyc/pyc.h" declline="85" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1ac12a78b1943348345b940e510930f420" compoundref="pyc_2physics_2physics_8cxx" startline="22" endline="25">physics_::P</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1a1614132c9009de833ba27233fd21655d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::cartesian::combined::Beta2</definition>
+        <argsstring>(torch::Tensor pmc)</argsstring>
+        <name>Beta2</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="86" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="65" bodyend="68" declfile="pyc/interface/include/pyc/pyc.h" declline="86" declcolumn="31"/>
+        <references refid="namespacephysics___1aace12d6d7317cd102e5059781d724151" compoundref="pyc_2physics_2physics_8cxx" startline="32" endline="35">physics_::Beta2</references>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1af5c9256b89e17319365e9c7841627e7a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::cartesian::combined::Beta</definition>
+        <argsstring>(torch::Tensor pmc)</argsstring>
+        <name>Beta</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="87" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="89" bodyend="92" declfile="pyc/interface/include/pyc/pyc.h" declline="87" declcolumn="31"/>
+        <references refid="namespacephysics___1a3123f743b9c22850e7346d5f56a4441b" compoundref="pyc_2physics_2physics_8cxx" startline="41" endline="44">physics_::Beta</references>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1a2288acf9d44eb7c8f537dc732381967d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::cartesian::combined::M2</definition>
+        <argsstring>(torch::Tensor pmc)</argsstring>
+        <name>M2</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="88" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="113" bodyend="116" declfile="pyc/interface/include/pyc/pyc.h" declline="88" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1a7787594305d4a156c31be581401b0b0b" compoundref="pyc_2physics_2physics_8cxx" startline="53" endline="56">physics_::M2</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1adc80247c6622f7cb166a81fa45b7b51d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::cartesian::combined::M</definition>
+        <argsstring>(torch::Tensor pmc)</argsstring>
+        <name>M</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="89" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="137" bodyend="140" declfile="pyc/interface/include/pyc/pyc.h" declline="89" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1a64e8e583c57246f52851c0bff4137ebc" compoundref="pyc_2physics_2physics_8cxx" startline="63" endline="66">physics_::M</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <referencedby refid="classgrift_1ad610edcd0cab14b57197a846ab8a8caf" compoundref="grift_8cxx" startline="83" endline="110">grift::message</referencedby>
+        <referencedby refid="classrecursivegraphneuralnetwork_1a7c83216c5899b14dcc03ccf368209ee1" compoundref="_recursive_graph_neural_network_8cxx" startline="105" endline="141">recursivegraphneuralnetwork::message</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1a111f70a5f3166ef67f2a6f41a19377b2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::cartesian::combined::Mt2</definition>
+        <argsstring>(torch::Tensor pmc)</argsstring>
+        <name>Mt2</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="90" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="160" bodyend="163" declfile="pyc/interface/include/pyc/pyc.h" declline="90" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1a3d421991e1f29e21ba3d495c6ae6c93d" compoundref="pyc_2physics_2physics_8cxx" startline="74" endline="76">physics_::Mt2</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1aaf8cf1904c15a733221a1b44039989ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::cartesian::combined::Mt</definition>
+        <argsstring>(torch::Tensor pmc)</argsstring>
+        <name>Mt</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="91" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="183" bodyend="186" declfile="pyc/interface/include/pyc/pyc.h" declline="91" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1af5fecf9c76889e0e996dc44793e67153" compoundref="pyc_2physics_2physics_8cxx" startline="83" endline="86">physics_::Mt</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1aefe1c7cb2cb523ab1118a6d1cabbfe69" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::cartesian::combined::Theta</definition>
+        <argsstring>(torch::Tensor pmc)</argsstring>
+        <name>Theta</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="92" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="205" bodyend="208" declfile="pyc/interface/include/pyc/pyc.h" declline="92" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="namespacephysics___1a6d323b672a05eb19edce0b4d818bdb7f" compoundref="pyc_2physics_2physics_8cxx" startline="88" endline="91">physics_::Theta</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1ada89277d3b7f28e15501e5c943516fe0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::cartesian::combined::DeltaR</definition>
+        <argsstring>(torch::Tensor pmc1, torch::Tensor pmc2)</argsstring>
+        <name>DeltaR</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="93" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="234" bodyend="239" declfile="pyc/interface/include/pyc/pyc.h" declline="93" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1a5f66fa5ca30082509e1284fbcb4b25be" compoundref="pyc_2physics_2physics_8cxx" startline="98" endline="105">physics_::DeltaR</references>
+        <references refid="namespacetransform___1adf008ef1e94217cd7a7dae8c53a127a6" compoundref="transform_2transform_8cxx" startline="100" endline="106">transform_::PtEtaPhi</references>
+        <referencedby refid="classrecursivegraphneuralnetwork_1a7c83216c5899b14dcc03ccf368209ee1" compoundref="_recursive_graph_neural_network_8cxx" startline="105" endline="141">recursivegraphneuralnetwork::message</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pyc/interface/include/pyc/pyc.h" line="83" column="30"/>
+  </compounddef>
+</doxygen>

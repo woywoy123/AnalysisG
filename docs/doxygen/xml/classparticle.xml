@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classparticle" kind="class" language="C++" prot="public">
+    <compoundname>particle</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classparticle_1a495d29153ac393249a96503c585236bd" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int particle::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/example.cxx" line="10" column="13" bodyfile="/workspaces/AnalysisG/test/contraction/example.cxx" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classparticle_1a1897895be9c0165ab947d53d76c9c9dd" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int particle::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/example.cxx" line="11" column="13" bodyfile="/workspaces/AnalysisG/test/contraction/example.cxx" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classparticle_1a5225483b35b28edcf29be553a367a952" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double particle::t</definition>
+        <argsstring></argsstring>
+        <name>t</name>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/example.cxx" line="12" column="16" bodyfile="/workspaces/AnalysisG/test/contraction/example.cxx" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classparticle_1a31e82afa2044567396e7357613a1438f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>particle::particle</definition>
+        <argsstring>()</argsstring>
+        <name>particle</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/example.cxx" line="7" column="9" bodyfile="/workspaces/AnalysisG/test/contraction/example.cxx" bodystart="7" bodyend="7"/>
+      </memberdef>
+      <memberdef kind="function" id="classparticle_1a6527e937e7db59e6edb6ae051c51866e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>particle::~particle</definition>
+        <argsstring>()</argsstring>
+        <name>~particle</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/example.cxx" line="8" column="9" bodyfile="/workspaces/AnalysisG/test/contraction/example.cxx" bodystart="8" bodyend="8"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/test/contraction/example.cxx" line="4" column="15" bodyfile="/workspaces/AnalysisG/test/contraction/example.cxx" bodystart="4" bodyend="14"/>
+    <listofallmembers>
+      <member refid="classparticle_1a31e82afa2044567396e7357613a1438f" prot="public" virt="non-virtual"><scope>particle</scope><name>particle</name></member>
+      <member refid="classparticle_1a5225483b35b28edcf29be553a367a952" prot="public" virt="non-virtual"><scope>particle</scope><name>t</name></member>
+      <member refid="classparticle_1a495d29153ac393249a96503c585236bd" prot="public" virt="non-virtual"><scope>particle</scope><name>x</name></member>
+      <member refid="classparticle_1a1897895be9c0165ab947d53d76c9c9dd" prot="public" virt="non-virtual"><scope>particle</scope><name>y</name></member>
+      <member refid="classparticle_1a6527e937e7db59e6edb6ae051c51866e" prot="public" virt="non-virtual"><scope>particle</scope><name>~particle</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,301 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="io_2cxx_2io_8cxx" kind="file" language="C++">
+    <compoundname>io/cxx/io.cxx</compoundname>
+    <includes refid="io_8h" local="no">io/io.h</includes>
+    <includes local="no">io/cfg.h</includes>
+    <includes local="no">TSystem.h</includes>
+    <includes local="no">thread</includes>
+    <incdepgraph>
+      <node id="26">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="18">
+        <label>functional</label>
+      </node>
+      <node id="10">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="24">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="22">
+        <label>cstdint</label>
+      </node>
+      <node id="16">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="3">
+        <label>map</label>
+      </node>
+      <node id="30">
+        <label>structs/settings.h</label>
+        <link refid="settings_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="13">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>io/cfg.h</label>
+      </node>
+      <node id="2">
+        <label>io/io.h</label>
+        <link refid="io_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>io.cxx</label>
+        <link refid="io_2cxx_2io_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>TSystem.h</label>
+      </node>
+      <node id="15">
+        <label>vector</label>
+      </node>
+      <node id="20">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>TFile.h</label>
+      </node>
+      <node id="21">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="23">
+        <label>TH1F.h</label>
+      </node>
+      <node id="9">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="14">
+        <label>iostream</label>
+      </node>
+      <node id="27">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>meta/meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>TBranch.h</label>
+      </node>
+      <node id="33">
+        <label>thread</label>
+      </node>
+      <node id="17">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>TTree.h</label>
+      </node>
+      <node id="5">
+        <label>H5Cpp.h</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="io_8h" kindref="compound">io/io.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;io/cfg.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;TSystem.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thread&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6" refid="classio_1a87d6c9bb433c979e3d469090b7e4f873" refkind="member"><highlight class="normal"><ref refid="classio_1a87d6c9bb433c979e3d469090b7e4f873" kindref="member">io::io</ref>(){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classnotification_1a913d4c8a7736df782f900dd436cfeaa6" kindref="member">prefix</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;io&quot;</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="classio_1a4837676c45d56b2de96228e5fbea33ce" refkind="member"><highlight class="normal"><ref refid="classio_1a4837676c45d56b2de96228e5fbea33ce" kindref="member">io::~io</ref>(){</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classio_1a65ca69ec5f12d0f3a463396bcff84d77" kindref="member">end</ref>();</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classio_1a1c994985d2405202c19fb391cc43a5de" kindref="member">root_end</ref>();<sp/></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>TFile*&gt;::iterator<sp/>itr<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classio_1af427cf94896f4fe763a1d0a8d8cfba94" kindref="member">files_open</ref>.begin();<sp/></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itr<sp/>!=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classio_1af427cf94896f4fe763a1d0a8d8cfba94" kindref="member">files_open</ref>.end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(itr<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/>IsOpen()){itr<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/>Close();}</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>itr<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/>Delete();<sp/></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>itr<sp/>-&gt;<sp/>second;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>meta*&gt;::iterator<sp/>itm<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classio_1ab8ba9b78fd2627d93d7ddd2dd8f8627a" kindref="member">meta_data</ref>.begin();<sp/></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itm<sp/>!=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classio_1ab8ba9b78fd2627d93d7ddd2dd8f8627a" kindref="member">meta_data</ref>.end();<sp/>++itm){</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!itm<sp/>-&gt;<sp/>second){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>itm<sp/>-&gt;<sp/>second;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classio_1ab8ba9b78fd2627d93d7ddd2dd8f8627a" kindref="member">meta_data</ref>.clear();<sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="classio_1a81a70b8811ceea05c8827af288c6a341" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classio_1a81a70b8811ceea05c8827af288c6a341" kindref="member">io::import_settings</ref>(<ref refid="structsettings__t" kindref="compound">settings_t</ref>*<sp/><ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>){</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classio_1a62caa70c9bfcaef4a32e954d94e86213" kindref="member">enable_pyami</ref><sp/>=<sp/><ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref><sp/>-&gt;<sp/><ref refid="namespacemain_1a3dc21daf80e643442377875b43f3afd1" kindref="member">fetch_meta</ref>;<sp/></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classio_1af0b0e9364667b77b04d96001b372e946" kindref="member">metacache_path</ref><sp/>=<sp/><ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref><sp/>-&gt;<sp/><ref refid="classio_1af0b0e9364667b77b04d96001b372e946" kindref="member">metacache_path</ref>;<sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classio_1a22d8f26e96fe3423ca834f3a09ba0a0a" kindref="member">sow_name</ref><sp/>=<sp/><ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref><sp/>-&gt;<sp/><ref refid="classio_1a22d8f26e96fe3423ca834f3a09ba0a0a" kindref="member">sow_name</ref>;<sp/></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classio_1a22d8f26e96fe3423ca834f3a09ba0a0a" kindref="member">sow_name</ref>.size()){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>info(</highlight><highlight class="stringliteral">&quot;Checking<sp/>for<sp/>Sum<sp/>of<sp/>Weights<sp/>under<sp/>tree<sp/>name:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classio_1a22d8f26e96fe3423ca834f3a09ba0a0a" kindref="member">sow_name</ref>);<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="modules/io/cxx/io.cxx"/>
+  </compounddef>
+</doxygen>

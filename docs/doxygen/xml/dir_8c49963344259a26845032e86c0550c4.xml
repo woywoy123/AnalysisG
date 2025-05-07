@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_8c49963344259a26845032e86c0550c4" kind="dir">
+    <compoundname>events</compoundname>
+    <innerdir refid="dir_dc90814b11677d15e53f163a20ea6993">bsm_4tops</innerdir>
+    <innerdir refid="dir_a72439966e73a591dfb2ca5fd176d92a">exp_mc20</innerdir>
+    <innerdir refid="dir_5e987026ecbe824c68645fe487719a1a">gnn</innerdir>
+    <innerdir refid="dir_4e15e596ba2d6a16133ddba85fff5f5e">ssml_mc20</innerdir>
+    <innerfile refid="src_2_analysis_g_2events_2____init_____8py">src/AnalysisG/events/__init__.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="events/"/>
+  </compounddef>
+</doxygen>

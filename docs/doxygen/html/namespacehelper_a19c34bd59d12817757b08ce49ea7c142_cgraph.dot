@@ -1,0 +1,15 @@
+digraph "helper.top_mass_dist"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="helper.top_mass_dist",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="helper.make",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a54f72d5dfb09f1e84a60de20cda05dd6",tooltip=" "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="helper.template",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#aebcb7fed73d109f9654edaad65e7a72d",tooltip=" "];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="helper.default",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#ad3079e9dbe1c11867b1f0477a49352fe",tooltip=" "];
+}

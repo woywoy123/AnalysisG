@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_17c99b4aa0df6e3922f3b5b60e2ce6b6" kind="dir">
+    <compoundname>cxx</compoundname>
+    <innerfile refid="events_2gnn_2cxx_2event_8cxx">events/gnn/cxx/event.cxx</innerfile>
+    <innerfile refid="gnn_2cxx_2particles_8cxx">gnn/cxx/particles.cxx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="events/gnn/cxx/"/>
+  </compounddef>
+</doxygen>

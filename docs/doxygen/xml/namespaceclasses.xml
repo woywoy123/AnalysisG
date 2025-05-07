@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespaceclasses" kind="namespace" language="Python">
+    <compoundname>classes</compoundname>
+    <innerclass refid="classclasses_1_1atomic" prot="public">classes::atomic</innerclass>
+    <innerclass refid="classclasses_1_1_container" prot="public">classes::Container</innerclass>
+    <innerclass refid="classclasses_1_1loss" prot="public">classes::loss</innerclass>
+    <innerclass refid="classclasses_1_1nux" prot="public">classes::nux</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceclasses_1ab5786da56e3b90d8f294d5426cd58823" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def classes.bar</definition>
+        <argsstring>(p, sym)</argsstring>
+        <name>bar</name>
+        <param>
+          <type>p</type>
+          <defname>p</defname>
+        </param>
+        <param>
+          <type>sym</type>
+          <defname>sym</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="1" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="1" bodyend="1"/>
+        <referencedby refid="namespaceclasses_1a4fd9f492c9d72fc565de1e522b32f207" compoundref="classes_8py" startline="2" endline="10">pdgid</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceclasses_1a4fd9f492c9d72fc565de1e522b32f207" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def classes.pdgid</definition>
+        <argsstring>(p)</argsstring>
+        <name>pdgid</name>
+        <param>
+          <type>p</type>
+          <defname>p</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="2" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="2" bodyend="10"/>
+        <references refid="namespaceclasses_1ab5786da56e3b90d8f294d5426cd58823" compoundref="classes_8py" startline="1" endline="1">bar</references>
+        <referencedby refid="classclasses_1_1nux_1a321f3be4ecbc7a9edb10a326d74d7523" compoundref="classes_8py" startline="78" endline="112">classes.nux.add</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

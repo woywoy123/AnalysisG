@@ -1,0 +1,60 @@
+digraph "physics_truth"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="physics_truth",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="particle_template",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classparticle__template.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="tools",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtools.html",tooltip="Provides a wide range of utility functions used throughout the framework."];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" m_children\nm_parents" ,fontname="Helvetica"];
+  Node4 [label="std::map\< std::string,\l particle_template * \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node5 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" keys" ,fontname="Helvetica"];
+  Node5 [label="std::string",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip="STL class."];
+  Node6 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="std::basic_string\<\l char \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip="STL class."];
+  Node2 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" elements" ,fontname="Helvetica"];
+  Node7 -> Node4 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< std::string, particle\l_template * \>" ,fontname="Helvetica"];
+  Node7 [label="std::map\< K, T \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip="STL class."];
+  Node8 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" keys" ,fontname="Helvetica"];
+  Node8 [label="K",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node9 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" elements" ,fontname="Helvetica"];
+  Node9 [label="T",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node10 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" pdgid\nindex" ,fontname="Helvetica"];
+  Node10 [label="cproperty\< int, particle\l_template \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html",tooltip=" "];
+  Node11 -> Node10 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< int, particle_template \>" ,fontname="Helvetica"];
+  Node11 [label="cproperty\< T, G \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html",tooltip=" "];
+  Node12 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" is_lep\nis_nu\nis_add\nis_b\nlep_decay" ,fontname="Helvetica"];
+  Node12 [label="cproperty\< bool, particle\l_template \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html",tooltip=" "];
+  Node11 -> Node12 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< bool, particle_template \>" ,fontname="Helvetica"];
+  Node13 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" charge\npt\nmass\npx\npy\npz\nphi\neta\ne" ,fontname="Helvetica"];
+  Node13 [label="cproperty\< double,\l particle_template \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html",tooltip=" "];
+  Node11 -> Node13 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< double, particle\l_template \>" ,fontname="Helvetica"];
+  Node14 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" leaves" ,fontname="Helvetica"];
+  Node14 [label="std::map\< std::string,\l std::string \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node5 -> Node14 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" keys\nelements" ,fontname="Helvetica"];
+  Node7 -> Node14 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< std::string, std\l::string \>" ,fontname="Helvetica"];
+  Node15 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" symbol\ntype\nhash" ,fontname="Helvetica"];
+  Node15 [label="cproperty\< std::string,\l particle_template \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html",tooltip=" "];
+  Node11 -> Node15 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< std::string, particle\l_template \>" ,fontname="Helvetica"];
+  Node16 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data" ,fontname="Helvetica"];
+  Node16 [label="particle_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structparticle__t.html",tooltip=" "];
+  Node4 -> Node16 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data_p" ,fontname="Helvetica"];
+  Node17 -> Node16 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" parents\nchildren" ,fontname="Helvetica"];
+  Node17 [label="std::map\< std::string,\l bool \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node5 -> Node17 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" keys" ,fontname="Helvetica"];
+  Node7 -> Node17 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< std::string, bool \>" ,fontname="Helvetica"];
+  Node5 -> Node16 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" symbol\ntype\nhash" ,fontname="Helvetica"];
+  Node18 -> Node16 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" nudef\nlepdef" ,fontname="Helvetica"];
+  Node18 [label="std::vector\< int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node19 -> Node18 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< int \>" ,fontname="Helvetica"];
+  Node19 [label="std::vector\< T \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip="STL class."];
+  Node9 -> Node19 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" elements" ,fontname="Helvetica"];
+  Node20 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" parents\nchildren" ,fontname="Helvetica"];
+  Node20 [label="cproperty\< std::map\l\< std::string, particle\l_template * \>, particle\l_template \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcproperty.html",tooltip=" "];
+  Node11 -> Node20 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< std::map\< std::string,\l particle_template * \>\l, particle_template \>" ,fontname="Helvetica"];
+  Node18 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" top_index" ,fontname="Helvetica"];
+}

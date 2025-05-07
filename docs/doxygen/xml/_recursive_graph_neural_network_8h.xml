@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="_recursive_graph_neural_network_8h" kind="file" language="C++">
+    <compoundname>RecursiveGraphNeuralNetwork.h</compoundname>
+    <includes refid="model__template_8h" local="no">templates/model_template.h</includes>
+    <includedby refid="_recursive_graph_neural_network_8cxx" local="no">RecursiveGraphNeuralNetwork.cxx</includedby>
+    <incdepgraph>
+      <node id="16">
+        <label>lossfx/lossfx.h</label>
+      </node>
+      <node id="12">
+        <label>functional</label>
+      </node>
+      <node id="14">
+        <label>structs/model.h</label>
+        <link refid="model_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>cstdint</label>
+      </node>
+      <node id="13">
+        <label>structs/graph.h</label>
+      </node>
+      <node id="1">
+        <label>RecursiveGraphNeuralNetwork.h</label>
+        <link refid="_recursive_graph_neural_network_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="6">
+        <label>map</label>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+      <node id="7">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="8">
+        <label>iostream</label>
+      </node>
+      <node id="2">
+        <label>templates/model_template.h</label>
+        <link refid="model__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>RecursiveGraphNeuralNetwork.h</label>
+        <link refid="_recursive_graph_neural_network_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>RecursiveGraphNeuralNetwork.cxx</label>
+        <link refid="_recursive_graph_neural_network_8cxx"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classrecursivegraphneuralnetwork" prot="public">recursivegraphneuralnetwork</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>RECURSIVEGRAPHNEURALNETWORK_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>RECURSIVEGRAPHNEURALNETWORK_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="model__template_8h" kindref="compound">templates/model_template.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5" refid="classrecursivegraphneuralnetwork" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classrecursivegraphneuralnetwork" kindref="compound">recursivegraphneuralnetwork</ref>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classmodel__template" kindref="compound">model_template</ref></highlight></codeline>
+<codeline lineno="6"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classrecursivegraphneuralnetwork_1aa3a248bd7e709fbd082389be9a37c57c" kindref="member">recursivegraphneuralnetwork</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>rep<sp/>=<sp/>1024,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>dpt<sp/>=<sp/>0.1);<sp/></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classrecursivegraphneuralnetwork_1a67003b45c96cf24f16eece3c4f64bf8c" kindref="member">~recursivegraphneuralnetwork</ref>();</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classmodel__template" kindref="compound">model_template</ref>*<sp/><ref refid="classrecursivegraphneuralnetwork_1ab814577681dd9fcc979ebe9b8cdfe0f6" kindref="member">clone</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classrecursivegraphneuralnetwork_1a4b09bc8de8d9ecd0b4ff1ffa94deea98" kindref="member">forward</ref>(<ref refid="structgraph__t" kindref="compound">graph_t</ref>*)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="classrecursivegraphneuralnetwork_1a7c83216c5899b14dcc03ccf368209ee1" kindref="member">message</ref>(</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>trk_i,<sp/>torch::Tensor<sp/>trk_j,</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>,<sp/>torch::Tensor<sp/>pmc_i,<sp/>torch::Tensor<sp/>pmc_j,</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>hx_i,<sp/>torch::Tensor<sp/>hx_j</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);<sp/></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Neural<sp/>Network<sp/>Parameters</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="classrecursivegraphneuralnetwork_1a5f27b40970adf6dcef1772ddd96da752" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classrecursivegraphneuralnetwork_1a5f27b40970adf6dcef1772ddd96da752" kindref="member">_dx</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>26;<sp/></highlight></codeline>
+<codeline lineno="21" refid="classrecursivegraphneuralnetwork_1a88183dcab3c023f95c3ec1287d4d6ec4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classrecursivegraphneuralnetwork_1a88183dcab3c023f95c3ec1287d4d6ec4" kindref="member">_x</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>5;<sp/></highlight></codeline>
+<codeline lineno="22" refid="classrecursivegraphneuralnetwork_1acd0ee5659ba1bbe7bf3975391938ffd0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classrecursivegraphneuralnetwork_1acd0ee5659ba1bbe7bf3975391938ffd0" kindref="member">_output</ref><sp/>=<sp/>2;<sp/></highlight></codeline>
+<codeline lineno="23" refid="classrecursivegraphneuralnetwork_1a4d41e0e04f7368900dd6f347d558800c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classrecursivegraphneuralnetwork_1a4d41e0e04f7368900dd6f347d558800c" kindref="member">_rep</ref><sp/><sp/><sp/><sp/>=<sp/>256;<sp/></highlight></codeline>
+<codeline lineno="24" refid="classrecursivegraphneuralnetwork_1af54f85d661d12dbd1400a17c40bb8aa2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="classrecursivegraphneuralnetwork_1af54f85d661d12dbd1400a17c40bb8aa2" kindref="member">res_mass</ref><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="25" refid="classrecursivegraphneuralnetwork_1ad6ea1490cbac8c20afd45351608647b8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="classrecursivegraphneuralnetwork_1ad6ea1490cbac8c20afd45351608647b8" kindref="member">drop_out</ref><sp/>=<sp/>0.1;<sp/></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Misc</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="classrecursivegraphneuralnetwork_1a01ae6cbccacc805e9caf198b55fa7d4b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classrecursivegraphneuralnetwork_1a01ae6cbccacc805e9caf198b55fa7d4b" kindref="member">is_mc</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="classrecursivegraphneuralnetwork_1a4b61421d5c45c8f7625e74704ef8fded" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::Sequential*<sp/><ref refid="classrecursivegraphneuralnetwork_1a4b61421d5c45c8f7625e74704ef8fded" kindref="member">rnn_x</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="31" refid="classrecursivegraphneuralnetwork_1a6f749bd1a677763210f96ce73dd4e224" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::Sequential*<sp/><ref refid="classrecursivegraphneuralnetwork_1a6f749bd1a677763210f96ce73dd4e224" kindref="member">rnn_dx</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="32" refid="classrecursivegraphneuralnetwork_1ad108ecd448bfdd60e4411578cb0982bf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::Sequential*<sp/><ref refid="classrecursivegraphneuralnetwork_1ad108ecd448bfdd60e4411578cb0982bf" kindref="member">rnn_merge</ref><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="33" refid="classrecursivegraphneuralnetwork_1a311f8ad26dae6b80f0333c64a936b821" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::Sequential*<sp/><ref refid="classrecursivegraphneuralnetwork_1a311f8ad26dae6b80f0333c64a936b821" kindref="member">rnn_update</ref><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="34" refid="classrecursivegraphneuralnetwork_1a3612141ac16845c77bf76f7cab97e10f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::Sequential*<sp/><ref refid="classrecursivegraphneuralnetwork_1a3612141ac16845c77bf76f7cab97e10f" kindref="member">exotic_mlp</ref><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="35" refid="classrecursivegraphneuralnetwork_1a123d667e123b5ea1ef2cf290a3734cf9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::Sequential*<sp/><ref refid="classrecursivegraphneuralnetwork_1a123d667e123b5ea1ef2cf290a3734cf9" kindref="member">node_aggr_mlp</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="36" refid="classrecursivegraphneuralnetwork_1a7943bdb4028df9926c78a9a68638e7ae" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::Sequential*<sp/><ref refid="classrecursivegraphneuralnetwork_1a7943bdb4028df9926c78a9a68638e7ae" kindref="member">ntops_mlp</ref><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="37" refid="classrecursivegraphneuralnetwork_1a9f229241255c0bbafc67d2c91ca6ad7f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::Sequential*<sp/><ref refid="classrecursivegraphneuralnetwork_1a9f229241255c0bbafc67d2c91ca6ad7f" kindref="member">exo_mlp</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h"/>
+  </compounddef>
+</doxygen>

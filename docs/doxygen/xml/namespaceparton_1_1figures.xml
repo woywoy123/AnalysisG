@@ -1,0 +1,365 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespaceparton_1_1figures" kind="namespace" language="Python">
+    <compoundname>parton::figures</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceparton_1_1figures_1a3f9415b9071c183f8da65f529192f983" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list parton::figures.colors</definition>
+        <argsstring></argsstring>
+        <name>colors</name>
+        <initializer>=  [&quot;blue&quot;, &quot;red&quot;, &quot;green&quot;, &quot;orange&quot;, &quot;pink&quot;, &quot;yellow&quot;]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="6" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="6" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceparton_1_1figures_1a37561e3ff9d5bb64e81525708de0c175" prot="public" static="no" mutable="no">
+        <type>dictionary</type>
+        <definition>dictionary parton::figures.pdgid</definition>
+        <argsstring></argsstring>
+        <name>pdgid</name>
+        <initializer>=  {&quot;1&quot; : &quot;light-quarks&quot;, &quot;2&quot; : &quot;light-quarks&quot;, &quot;3&quot; : &quot;light-quarks&quot;, &quot;4&quot; : &quot;light-quarks&quot;, &quot;5&quot; : &quot;b-quark&quot;, &quot;21&quot; : &quot;gluon&quot;}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="7" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceparton_1_1figures_1ae37517e2ae1ac02c5b76caf5c8c908d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.path</definition>
+        <argsstring>(hist)</argsstring>
+        <name>path</name>
+        <param>
+          <type>hist</type>
+          <defname>hist</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="9" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="9" bodyend="13"/>
+        <referencedby refid="namespaceparton_1_1figures_1a61d4b7829003daf53f1ce7cebf8cad39" compoundref="mc16__matching_2parton_2figures_8py" startline="276" endline="299">parton.figures.frac_ntop_jet_contrib</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1a69120954a9d003c6ad81b7761e82ef84" compoundref="mc16__matching_2parton_2figures_8py" startline="252" endline="275">parton.figures.frac_ntop_tjet_contrib</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1ab3c11a27cafb324a316892fcb70df09e" compoundref="mc16__matching_2parton_2figures_8py" startline="158" endline="192">parton.figures.nparton_jets_e</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1a783b535091f9a15df4f612931c8b2a6d" compoundref="mc16__matching_2parton_2figures_8py" startline="222" endline="251">parton.figures.nparton_jets_pdgid_e</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1a5a08ee773c0da60e7f03cc91a09873e4" compoundref="mc16__matching_2parton_2figures_8py" startline="124" endline="157">parton.figures.nparton_tjets_e</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1a81c710996ff452372cc91726d84dad37" compoundref="mc16__matching_2parton_2figures_8py" startline="193" endline="221">parton.figures.nparton_tjets_pdgid_e</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1ac73a5afaa91e53bb421fd6e2c4afe0b1" compoundref="mc16__matching_2parton_2figures_8py" startline="96" endline="123">parton.figures.ntops_jets_e</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1ad77c5c3ca36a423aeef6884d5bca434a" compoundref="mc16__matching_2parton_2figures_8py" startline="70" endline="95">parton.figures.ntops_jets_pt</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1a0abd5bf3bfdd66a59a38db78ef18942c" compoundref="mc16__matching_2parton_2figures_8py" startline="43" endline="69">parton.figures.ntops_tjets_e</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1a5ff9d81cc9cc60d9c9d3a2c459728cd2" compoundref="mc16__matching_2parton_2figures_8py" startline="14" endline="42">parton.figures.ntops_tjets_pt</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1aeb2b2fff7c6e952879c05fb291b9aede" compoundref="mc16__matching_2parton_2figures_8py" startline="300" endline="345">parton.figures.top_mass_wth_cuts</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1a029f29759c6ac1396401da247fbb6bab" compoundref="mc16__matching_2parton_2figures_8py" startline="346" endline="399">parton.figures.top_mass_wth_cuts_gluons</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceparton_1_1figures_1a5ff9d81cc9cc60d9c9d3a2c459728cd2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.ntops_tjets_pt</definition>
+        <argsstring>(ana, col)</argsstring>
+        <name>ntops_tjets_pt</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>col</type>
+          <defname>col</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="14" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="14" bodyend="42"/>
+        <references refid="classparton_1ad7b28ea9db22448c4e4036dbbcd6ba7f" compoundref="parton_8h" startline="70">parton::ntops_tjets_pt</references>
+        <references refid="namespaceparton_1_1figures_1ae37517e2ae1ac02c5b76caf5c8c908d4" compoundref="mc16__matching_2parton_2figures_8py" startline="9" endline="13">parton.figures.path</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceparton_1_1figures_1a0abd5bf3bfdd66a59a38db78ef18942c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.ntops_tjets_e</definition>
+        <argsstring>(ana, col)</argsstring>
+        <name>ntops_tjets_e</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>col</type>
+          <defname>col</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="43" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="43" bodyend="69"/>
+        <references refid="classparton_1af5a85645103e9176fdecfac6d3e96d88" compoundref="parton_8h" startline="71">parton::ntops_tjets_e</references>
+        <references refid="namespaceparton_1_1figures_1ae37517e2ae1ac02c5b76caf5c8c908d4" compoundref="mc16__matching_2parton_2figures_8py" startline="9" endline="13">parton.figures.path</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceparton_1_1figures_1ad77c5c3ca36a423aeef6884d5bca434a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.ntops_jets_pt</definition>
+        <argsstring>(ana, col)</argsstring>
+        <name>ntops_jets_pt</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>col</type>
+          <defname>col</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="70" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="70" bodyend="95"/>
+        <references refid="classparton_1a23abef78dba55f41ba8ebadeac173255" compoundref="parton_8h" startline="73">parton::ntops_jets_pt</references>
+        <references refid="namespaceparton_1_1figures_1ae37517e2ae1ac02c5b76caf5c8c908d4" compoundref="mc16__matching_2parton_2figures_8py" startline="9" endline="13">parton.figures.path</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceparton_1_1figures_1ac73a5afaa91e53bb421fd6e2c4afe0b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.ntops_jets_e</definition>
+        <argsstring>(ana, col)</argsstring>
+        <name>ntops_jets_e</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>col</type>
+          <defname>col</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="96" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="96" bodyend="123"/>
+        <references refid="classparton_1a517d73a6adeabbe049d18ee9656af82e" compoundref="parton_8h" startline="74">parton::ntops_jets_e</references>
+        <references refid="namespaceparton_1_1figures_1ae37517e2ae1ac02c5b76caf5c8c908d4" compoundref="mc16__matching_2parton_2figures_8py" startline="9" endline="13">parton.figures.path</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceparton_1_1figures_1a5a08ee773c0da60e7f03cc91a09873e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.nparton_tjets_e</definition>
+        <argsstring>(ana, col)</argsstring>
+        <name>nparton_tjets_e</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>col</type>
+          <defname>col</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="124" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="124" bodyend="157"/>
+        <references refid="namespaceparton_1_1figures_1ae37517e2ae1ac02c5b76caf5c8c908d4" compoundref="mc16__matching_2parton_2figures_8py" startline="9" endline="13">parton.figures.path</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceparton_1_1figures_1ab3c11a27cafb324a316892fcb70df09e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.nparton_jets_e</definition>
+        <argsstring>(ana, col)</argsstring>
+        <name>nparton_jets_e</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>col</type>
+          <defname>col</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="158" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="158" bodyend="192"/>
+        <references refid="namespaceparton_1_1figures_1ae37517e2ae1ac02c5b76caf5c8c908d4" compoundref="mc16__matching_2parton_2figures_8py" startline="9" endline="13">parton.figures.path</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceparton_1_1figures_1a81c710996ff452372cc91726d84dad37" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.nparton_tjets_pdgid_e</definition>
+        <argsstring>(ana, col)</argsstring>
+        <name>nparton_tjets_pdgid_e</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>col</type>
+          <defname>col</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="193" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="193" bodyend="221"/>
+        <references refid="namespaceparton_1_1figures_1ae37517e2ae1ac02c5b76caf5c8c908d4" compoundref="mc16__matching_2parton_2figures_8py" startline="9" endline="13">parton.figures.path</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceparton_1_1figures_1a783b535091f9a15df4f612931c8b2a6d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.nparton_jets_pdgid_e</definition>
+        <argsstring>(ana, col)</argsstring>
+        <name>nparton_jets_pdgid_e</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>col</type>
+          <defname>col</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="222" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="222" bodyend="251"/>
+        <references refid="namespaceparton_1_1figures_1ae37517e2ae1ac02c5b76caf5c8c908d4" compoundref="mc16__matching_2parton_2figures_8py" startline="9" endline="13">parton.figures.path</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceparton_1_1figures_1a69120954a9d003c6ad81b7761e82ef84" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.frac_ntop_tjet_contrib</definition>
+        <argsstring>(ana, col)</argsstring>
+        <name>frac_ntop_tjet_contrib</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>col</type>
+          <defname>col</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="252" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="252" bodyend="275"/>
+        <references refid="namespaceparton_1_1figures_1ae37517e2ae1ac02c5b76caf5c8c908d4" compoundref="mc16__matching_2parton_2figures_8py" startline="9" endline="13">parton.figures.path</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceparton_1_1figures_1a61d4b7829003daf53f1ce7cebf8cad39" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.frac_ntop_jet_contrib</definition>
+        <argsstring>(ana, col)</argsstring>
+        <name>frac_ntop_jet_contrib</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>col</type>
+          <defname>col</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="276" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="276" bodyend="299"/>
+        <references refid="namespaceparton_1_1figures_1ae37517e2ae1ac02c5b76caf5c8c908d4" compoundref="mc16__matching_2parton_2figures_8py" startline="9" endline="13">parton.figures.path</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceparton_1_1figures_1aeb2b2fff7c6e952879c05fb291b9aede" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.top_mass_wth_cuts</definition>
+        <argsstring>(ana, col)</argsstring>
+        <name>top_mass_wth_cuts</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>col</type>
+          <defname>col</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="300" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="300" bodyend="345"/>
+        <references refid="namespaceparton_1_1figures_1ae37517e2ae1ac02c5b76caf5c8c908d4" compoundref="mc16__matching_2parton_2figures_8py" startline="9" endline="13">parton.figures.path</references>
+        <referencedby refid="namespaceparton_1_1figures_1a78f69be3ee69f972b3ff4f262602a669" compoundref="mc16__matching_2parton_2figures_8py" startline="400" endline="415">parton.figures.Parton</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceparton_1_1figures_1a029f29759c6ac1396401da247fbb6bab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.top_mass_wth_cuts_gluons</definition>
+        <argsstring>(ana, col)</argsstring>
+        <name>top_mass_wth_cuts_gluons</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>col</type>
+          <defname>col</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="346" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="346" bodyend="399"/>
+        <references refid="namespaceparton_1_1figures_1ae37517e2ae1ac02c5b76caf5c8c908d4" compoundref="mc16__matching_2parton_2figures_8py" startline="9" endline="13">parton.figures.path</references>
+        <referencedby refid="namespaceparton_1_1figures_1a78f69be3ee69f972b3ff4f262602a669" compoundref="mc16__matching_2parton_2figures_8py" startline="400" endline="415">parton.figures.Parton</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceparton_1_1figures_1a78f69be3ee69f972b3ff4f262602a669" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parton.figures.Parton</definition>
+        <argsstring>(ana)</argsstring>
+        <name>Parton</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="400" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" bodystart="400" bodyend="415"/>
+        <references refid="namespaceparton_1_1figures_1aeb2b2fff7c6e952879c05fb291b9aede" compoundref="mc16__matching_2parton_2figures_8py" startline="300" endline="345">parton.figures.top_mass_wth_cuts</references>
+        <references refid="namespaceparton_1_1figures_1a029f29759c6ac1396401da247fbb6bab" compoundref="mc16__matching_2parton_2figures_8py" startline="346" endline="399">parton.figures.top_mass_wth_cuts_gluons</references>
+        <referencedby refid="classbsm__4tops_1afcada10605cf6904f5e2d60c3791ffc3" compoundref="events_2bsm__4tops_2cxx_2event_8cxx" startline="40" endline="154">bsm_4tops::CompileEvent</referencedby>
+        <referencedby refid="namespacemain_1a7afac8f5e46c718321f188d7888c2de0" compoundref="mc16__matching_2main_8py" startline="60" endline="98">main.ExecuteStudy</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">parton::strategy</referencedby>
+        <referencedby refid="classparton_1a1f13c60a6b920f983afdb18f352c4b2d" compoundref="parton_8h" startline="22" endline="68">parton::top_mass_contribution</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/mc16_matching/parton/figures.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

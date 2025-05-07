@@ -1,0 +1,44 @@
+digraph "validation.nusol.NuSol.c"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="validation.nusol.NuSol.c",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="validation.nusol.NuSol.s",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_nu_sol.html#aa7babb51c587832c69213e55f4341742",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="validation.nusol.NuSol.Sy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_nu_sol.html#a8806d4114f46a1a9966ea2ba7bc1568b",tooltip=" "];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="validation.nusol.NuSol.x1",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_nu_sol.html#a8c8046da94c7ba45844c37b9b8294b46",tooltip=" "];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="validation.nusol.NuSol.Base\lMatrix",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_nu_sol.html#af9c5b785eac2717af7368d4957c43b39",tooltip=" "];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="validation.nusol.NuSol.H",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_nu_sol.html#aba781a514eb491bc4b3efe988c1ef1c3",tooltip=" "];
+  Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="validation.nusol.NuSol.H_perp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_nu_sol.html#af86e899b1bd0f91aade51ed4b60b6722",tooltip=" "];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="validation.nusol.NuSol.N",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_nu_sol.html#ac7ce3a7e4772ecc0dffec40f03d695d9",tooltip=" "];
+  Node6 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="validation.nusol.NuSol.X",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_nu_sol.html#a130d8ad1d19174eb9cf6c79e97fa6fae",tooltip=" "];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="validation.nusol.NuSol.M",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_nu_sol.html#a850053191c9c121bfdc3e6bfd70d89ca",tooltip=" "];
+  Node4 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="validation.nusol.NuSol.Z2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_nu_sol.html#a84020a925d3b72f2d0b4c33b71873a50",tooltip=" "];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="validation.nusol.NuSol.Z",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_nu_sol.html#a8eae38e90a6375737b089b965072a3a6",tooltip=" "];
+  Node12 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="validation.nusol.NuSol.y1",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_nu_sol.html#a9d3ea4049c774b0888571b6ea79d01b9",tooltip=" "];
+  Node13 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="validation.nusol.NuSol.w",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation_1_1nusol_1_1_nu_sol.html#a8211523206e9e79c2709fc1e2cbc13e8",tooltip=" "];
+  Node14 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

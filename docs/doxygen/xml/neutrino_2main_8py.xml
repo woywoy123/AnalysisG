@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="neutrino_2main_8py" kind="file" language="Python">
+    <compoundname>neutrino/main.py</compoundname>
+    <innernamespace refid="namespacemain">main</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>Analysis</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/><ref refid="namespace_analysis_g_1_1events_1_1bsm__4tops" kindref="compound">AnalysisG.events.bsm_4tops</ref><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>BSM4Tops</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG.selections.neutrino.validation.validation<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>Validation</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG.selections.neutrino.combinatorial.combinatorial<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>NuNuCombinatorial</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/><ref refid="namespacevalidation_1_1figures" kindref="compound">validation.figures</ref><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>validation</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/><ref refid="namespacecombinatorial_1_1figures" kindref="compound">combinatorial.figures</ref><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>combinatorial</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="namespacemain_1a01228ee6b74ae5aa3a6a13627ff0eeb2" refkind="member"><highlight class="normal">pax<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;/home/tnom6927/Downloads/mc16/ttbar/user.tnommens.40945479._000013.output.root&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal">ev<sp/>=<sp/>BSM4Tops()</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">#sl<sp/>=<sp/>Validation()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal">sl<sp/>=<sp/>NuNuCombinatorial()</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">#ana<sp/>=<sp/>Analysis()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">##ana.DebugMode<sp/>=<sp/>True</highlight></codeline>
+<codeline lineno="15"><highlight class="comment">#ana.Threads<sp/>=<sp/>1</highlight></codeline>
+<codeline lineno="16"><highlight class="comment">#ana.SaveSelectionToROOT<sp/>=<sp/>True</highlight></codeline>
+<codeline lineno="17"><highlight class="comment">#ana.AddSamples(pax,<sp/>&quot;ttbar&quot;)</highlight></codeline>
+<codeline lineno="18"><highlight class="comment">#ana.AddEvent(ev,<sp/>&quot;ttbar&quot;)</highlight></codeline>
+<codeline lineno="19"><highlight class="comment">#ana.AddSelection(sl)</highlight></codeline>
+<codeline lineno="20"><highlight class="comment">#ana.Start()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal">sl.InterpretROOT(</highlight><highlight class="stringliteral">&quot;./ProjectName/Selections/&quot;</highlight><highlight class="normal"><sp/>+<sp/>sl.__name__()<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;-&quot;</highlight><highlight class="normal"><sp/>+<sp/>ev.__name__()<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/ttbar/&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;nominal&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>sl:</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">#<sp/><sp/><sp/><sp/>print(i.TruthTops)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal">:<sp/>print(i.RecoTops[</highlight><highlight class="stringliteral">&quot;top_children&quot;</highlight><highlight class="normal">][0][0])</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">except</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">pass</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">#validation(None)</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/workspaces/AnalysisG/studies/neutrino/main.py"/>
+  </compounddef>
+</doxygen>

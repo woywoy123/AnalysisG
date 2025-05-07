@@ -1,0 +1,68 @@
+digraph "write_t"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="write_t",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" mtx" ,fontname="Helvetica"];
+  Node2 [label="meta_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structmeta__t.html",tooltip="Main structure for storing metadata about physics datasets."];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" LFN" ,fontname="Helvetica"];
+  Node3 [label="std::map\< std::string,\l int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" keys" ,fontname="Helvetica"];
+  Node4 [label="std::string",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip="STL class."];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="std::basic_string\<\l char \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip="STL class."];
+  Node6 -> Node3 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< std::string, int \>" ,fontname="Helvetica"];
+  Node6 [label="std::map\< K, T \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip="STL class."];
+  Node7 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" keys" ,fontname="Helvetica"];
+  Node7 [label="K",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node8 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" elements" ,fontname="Helvetica"];
+  Node8 [label="T",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node9 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" misc" ,fontname="Helvetica"];
+  Node9 [label="std::map\< std::string,\l weights_t \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node10 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" elements" ,fontname="Helvetica"];
+  Node10 [label="weights_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structweights__t.html",tooltip="Structure to hold weight-related information for events."];
+  Node11 -> Node10 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hist_data" ,fontname="Helvetica"];
+  Node11 [label="std::map\< std::string,\l float \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node4 -> Node11 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" keys" ,fontname="Helvetica"];
+  Node6 -> Node11 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< std::string, float \>" ,fontname="Helvetica"];
+  Node4 -> Node10 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" generator\nami_tag" ,fontname="Helvetica"];
+  Node4 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" keys" ,fontname="Helvetica"];
+  Node6 -> Node9 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< std::string, weights_t \>" ,fontname="Helvetica"];
+  Node12 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" inputrange" ,fontname="Helvetica"];
+  Node12 [label="std::map\< int, int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node6 -> Node12 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< int, int \>" ,fontname="Helvetica"];
+  Node13 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" config" ,fontname="Helvetica"];
+  Node13 [label="std::map\< std::string,\l std::string \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node4 -> Node13 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" keys\nelements" ,fontname="Helvetica"];
+  Node6 -> Node13 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< std::string, std\l::string \>" ,fontname="Helvetica"];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" principalPhysicsGroup\nDatasetName\ngeneratorName\nproductionStep\ncampaign\nprojectName\nphysicsShort\nlogicalDatasetName\nconditionsTag\nderivationFormat\n..." ,fontname="Helvetica"];
+  Node14 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" run_number\nevents" ,fontname="Helvetica"];
+  Node14 [label="std::vector\< int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node15 -> Node14 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< int \>" ,fontname="Helvetica"];
+  Node15 [label="std::vector\< T \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip="STL class."];
+  Node8 -> Node15 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" elements" ,fontname="Helvetica"];
+  Node16 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" inputfiles" ,fontname="Helvetica"];
+  Node16 [label="std::map\< int, std\l::string \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node4 -> Node16 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" elements" ,fontname="Helvetica"];
+  Node6 -> Node16 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< int, std::string \>" ,fontname="Helvetica"];
+  Node17 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" keyword\nweights\nkeywords\nfileGUID" ,fontname="Helvetica"];
+  Node17 [label="std::vector\< std::string \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node4 -> Node17 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" elements" ,fontname="Helvetica"];
+  Node15 -> Node17 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< std::string \>" ,fontname="Helvetica"];
+  Node18 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" fileSize" ,fontname="Helvetica"];
+  Node18 [label="std::vector\< double \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node15 -> Node18 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< double \>" ,fontname="Helvetica"];
+  Node19 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data" ,fontname="Helvetica"];
+  Node19 [label="std::map\< std::string,\l variable_t * \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node20 -> Node19 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" elements" ,fontname="Helvetica"];
+  Node20 [label="variable_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structvariable__t.html",tooltip=" "];
+  Node21 -> Node20 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="bsc_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbsc__t.html",tooltip="Basic structure class that provides type translation and buffer management."];
+  Node4 -> Node21 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" buffer" ,fontname="Helvetica"];
+  Node4 -> Node20 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" variable_name" ,fontname="Helvetica"];
+  Node4 -> Node19 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" keys" ,fontname="Helvetica"];
+  Node6 -> Node19 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< std::string, variable\l_t * \>" ,fontname="Helvetica"];
+}

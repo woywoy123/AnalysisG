@@ -1,0 +1,781 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="inference__build_8cxx" kind="file" language="C++">
+    <compoundname>inference_build.cxx</compoundname>
+    <includes refid="analysis_8h" local="no">AnalysisG/analysis.h</includes>
+    <includes local="no">ROOT/RDataFrame.hxx</includes>
+    <includes refid="vector__cast_8h" local="no">tools/vector_cast.h</includes>
+    <incdepgraph>
+      <node id="4">
+        <label>generators/sampletracer.h</label>
+        <link refid="sampletracer_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="55">
+        <label>lossfx/lossfx.h</label>
+      </node>
+      <node id="14">
+        <label>functional</label>
+      </node>
+      <node id="67">
+        <label>ROOT/RDataFrame.hxx</label>
+      </node>
+      <node id="62">
+        <label>structs/report.h</label>
+        <link refid="report_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>structs/model.h</label>
+        <link refid="model_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="38">
+        <label>templates/event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="18">
+        <label>cstdint</label>
+      </node>
+      <node id="53">
+        <label>structs/graph.h</label>
+      </node>
+      <node id="25">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>templates/selection_template.h</label>
+        <link refid="selection__template_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="61">
+        <label>TMultiGraph.h</label>
+      </node>
+      <node id="56">
+        <label>metrics/metrics.h</label>
+        <link refid="metrics_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>cmath</label>
+      </node>
+      <node id="63">
+        <label>templates/metric_template.h</label>
+        <link refid="metric__template_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+      <node id="44">
+        <label>torch/all.h</label>
+      </node>
+      <node id="11">
+        <label>map</label>
+      </node>
+      <node id="39">
+        <label>structs/event.h</label>
+        <link refid="modules_2structs_2include_2structs_2event_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>structs/settings.h</label>
+        <link refid="settings_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="42">
+        <label>pyc/pyc.h</label>
+        <link refid="pyc_8h"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>templates/graph_template.h</label>
+        <link refid="graph__template_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="65">
+        <label>io/io.h</label>
+        <link refid="io_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>TStyle.h</label>
+      </node>
+      <node id="1">
+        <label>inference_build.cxx</label>
+        <link refid="inference__build_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>random</label>
+      </node>
+      <node id="51">
+        <label>generators/optimizer.h</label>
+        <link refid="optimizer_2include_2generators_2optimizer_8h"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>tools/tensor_cast.h</label>
+        <link refid="tensor__cast_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>tuple</label>
+      </node>
+      <node id="10">
+        <label>vector</label>
+      </node>
+      <node id="16">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>TCanvas.h</label>
+      </node>
+      <node id="19">
+        <label>TFile.h</label>
+      </node>
+      <node id="35">
+        <label>sstream</label>
+      </node>
+      <node id="26">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>container/container.h</label>
+        <link refid="container_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>generators/dataloader.h</label>
+        <link refid="dataloader_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="64">
+        <label>plotting/plotting.h</label>
+        <link refid="plotting_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>tools/merge_cast.h</label>
+        <link refid="merge__cast_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>cstdlib</label>
+      </node>
+      <node id="34">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="23">
+        <label>TH1F.h</label>
+      </node>
+      <node id="22">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="9">
+        <label>iostream</label>
+      </node>
+      <node id="52">
+        <label>templates/model_template.h</label>
+        <link refid="model__template_8h"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>meta/meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>TLegend.h</label>
+      </node>
+      <node id="41">
+        <label>mutex</label>
+      </node>
+      <node id="21">
+        <label>TBranch.h</label>
+      </node>
+      <node id="5">
+        <label>thread</label>
+      </node>
+      <node id="13">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>TTree.h</label>
+      </node>
+      <node id="50">
+        <label>algorithm</label>
+      </node>
+      <node id="66">
+        <label>H5Cpp.h</label>
+      </node>
+      <node id="57">
+        <label>TGraph.h</label>
+      </node>
+      <node id="2">
+        <label>AnalysisG/analysis.h</label>
+        <link refid="analysis_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="analysis_8h" kindref="compound">AnalysisG/analysis.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ROOT/RDataFrame.hxx&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="vector__cast_8h" kindref="compound">tools/vector_cast.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>analysis::build_inference(){</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>threads_<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1a383cb4d94ff68571dc4cd2e8a9f4d00f" kindref="member">threads</ref>;<sp/></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>success(</highlight><highlight class="stringliteral">&quot;+=============================+&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>success(</highlight><highlight class="stringliteral">&quot;|Starting<sp/>the<sp/>model<sp/>inference.|&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>success(</highlight><highlight class="stringliteral">&quot;+=============================+&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::vector&lt;graph_t*&gt;&gt;*<sp/>dl<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="namespaceloader" kindref="compound">loader</ref><sp/>-&gt;<sp/>get_inference();<sp/></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>success(</highlight><highlight class="stringliteral">&quot;Sorted<sp/>events<sp/>by<sp/>event<sp/>index.<sp/>Preparing<sp/>for<sp/>multithreading.&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>dev_i<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1a600761eac5a0acd01311073734c89840" kindref="member">smpls</ref><sp/>=<sp/>dl<sp/>-&gt;<sp/>size();<sp/></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>modls<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>model_inference.size();<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;size_t&gt;<sp/>th_prg(<ref refid="namespacemain_1a600761eac5a0acd01311073734c89840" kindref="member">smpls</ref>*modls,<sp/>0);<sp/></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;size_t&gt;<sp/>num_data(modls<sp/>*<sp/><ref refid="namespacemain_1a600761eac5a0acd01311073734c89840" kindref="member">smpls</ref>,<sp/>0);</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::thread*&gt;<sp/>th_prc(<ref refid="namespacemain_1a600761eac5a0acd01311073734c89840" kindref="member">smpls</ref>*modls,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string*&gt;<sp/>mdl_title(<ref refid="namespacemain_1a600761eac5a0acd01311073734c89840" kindref="member">smpls</ref>*modls,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::vector&lt;graph_t*&gt;*&gt;<sp/>batched_data(<ref refid="namespacemain_1a600761eac5a0acd01311073734c89840" kindref="member">smpls</ref>*modls,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::vector&lt;graph_t*&gt;&gt;::iterator<sp/>its<sp/>=<sp/>dl<sp/>-&gt;<sp/>begin();<sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>its<sp/>!=<sp/>dl<sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a64e9fa75beda50a9e8400ee0d4e61984" kindref="member">end</ref>();<sp/>++its){</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>modls;<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>,<sp/>++dev_i){</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>num_data[dev_i]<sp/>=<sp/>its<sp/>-&gt;<sp/>second.size();</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mdl_title[dev_i]<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::string(</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>torch::TensorOptions*&gt;<sp/>ops;<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>model_template*&gt;::iterator<sp/>itm<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>model_inference.begin();<sp/></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itm<sp/>!=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>model_inference.end();<sp/>++itm){</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::TensorOptions*<sp/>opx<sp/>=<sp/>itm<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/>m_option;<sp/></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dx<sp/>=<sp/>itm<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/>device_index;<sp/></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ops.count(dx)){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ops[dx]<sp/>=<sp/>opx;<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="namespaceloader" kindref="compound">loader</ref><sp/>-&gt;<sp/>datatransfer(&amp;ops);<sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>gErrorIgnoreLevel<sp/>=<sp/>6001;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>ROOT::EnableImplicitMT(threads_);<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>para<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>its<sp/>=<sp/>dl<sp/>-&gt;<sp/>begin();<sp/></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>std::thread*<sp/>thr_<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>th_prc.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>,<sp/>++para){</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mdx<sp/>=<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>%modls;<sp/></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!mdx){itm<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>model_inference.begin();}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structmodel__settings__t" kindref="compound">model_settings_t</ref><sp/>mds;<sp/></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classmodel__template" kindref="compound">model_template</ref>*<sp/><ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>=<sp/>itm<sp/>-&gt;<sp/>second;<sp/></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>clone_settings(&amp;mds);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/><ref refid="namespacemain_1ab9bc6d691b605a742f37553e360bf09b" kindref="member">inference_mode</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&amp;&amp;<sp/>!mdx){++its;}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;graph_t*&gt;*<sp/>grx<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1a574cb98d49f69c527eed1fe1c64e22a5" kindref="member">batch_size</ref><sp/>&gt;<sp/>1){</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>grx<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="namespaceloader" kindref="compound">loader</ref><sp/>-&gt;<sp/>build_batch(&amp;its<sp/>-&gt;<sp/>second,<sp/>itm<sp/>-&gt;<sp/>second,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741" kindref="member">i</ref>(0);<sp/><ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741" kindref="member">i</ref><sp/>&lt;<sp/>its<sp/>-&gt;<sp/>second.size();<sp/>++<ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741" kindref="member">i</ref>){its<sp/>-&gt;<sp/>second[<ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741" kindref="member">i</ref>]<sp/>-&gt;<sp/>in_use<sp/>=<sp/>0;}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{grx<sp/>=<sp/>&amp;its<sp/>-&gt;<sp/>second;}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>batched_data[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]<sp/>=<sp/>grx;<sp/></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="namespacesample__consistency_1a55a51c365bbd868bf90c826e36c51ad3" kindref="member">fname</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1adfb471fcc454bdfb97309137a9c75d9e" kindref="member">output_path</ref><sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal"><sp/>+<sp/>itm<sp/>-&gt;<sp/>first<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="namespacefigures_1a1938963e3bd84f9d907e902245004675" kindref="member">fnames</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" kindref="member">split</ref>(its<sp/>-&gt;<sp/>first,<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*mdl_title[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>])<sp/>=<sp/><ref refid="namespacefigures_1a1938963e3bd84f9d907e902245004675" kindref="member">fnames</ref>[<ref refid="namespacefigures_1a1938963e3bd84f9d907e902245004675" kindref="member">fnames</ref>.size()-1]<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>|<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>std::string(<ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>);<sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacesample__consistency_1a55a51c365bbd868bf90c826e36c51ad3" kindref="member">fname</ref><sp/>+=<sp/><ref refid="namespacefigures_1a1938963e3bd84f9d907e902245004675" kindref="member">fnames</ref>[<ref refid="namespacefigures_1a1938963e3bd84f9d907e902245004675" kindref="member">fnames</ref>.size()-2]<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" kindref="member">create_path</ref>(<ref refid="namespacesample__consistency_1a55a51c365bbd868bf90c826e36c51ad3" kindref="member">fname</ref>);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacesample__consistency_1a55a51c365bbd868bf90c826e36c51ad3" kindref="member">fname</ref><sp/>+=<sp/><ref refid="namespacefigures_1a1938963e3bd84f9d907e902245004675" kindref="member">fnames</ref>[<ref refid="namespacefigures_1a1938963e3bd84f9d907e902245004675" kindref="member">fnames</ref>.size()-1];<sp/></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>perform<sp/>a<sp/>dummy<sp/>inference<sp/>with<sp/>the<sp/>GNN<sp/>on<sp/>a<sp/>single<sp/>graph<sp/>data<sp/>point</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(its<sp/>-&gt;<sp/>second[0],<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>------<sp/>Get<sp/>the<sp/>input<sp/>maximal<sp/>size<sp/>---------<sp/>//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>sx<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sx<sp/>+=<sp/><ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_i_graph.size()<sp/>+<sp/><ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_p_graph.size();<sp/></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sx<sp/>+=<sp/><ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_i_node.size()<sp/><sp/>+<sp/><ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_p_node.size();</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sx<sp/>+=<sp/><ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_i_edge.size()<sp/><sp/>+<sp/><ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_p_edge.size();<sp/></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sx<sp/>+=<sp/><ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_p_undef.size()<sp/>+<sp/>2;<sp/></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>--------<sp/>fetch<sp/>the<sp/>input<sp/>and<sp/>output<sp/>features<sp/>-------<sp/>//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;variable_t&gt;*<sp/>content<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::vector&lt;variable_t&gt;();<sp/></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>content<sp/>-&gt;<sp/>reserve(sx);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TODO</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//std::map&lt;std::string,<sp/>meta*&gt;::iterator<sp/>itt<sp/>=<sp/>this<sp/>-&gt;<sp/>meta_data.begin();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//for<sp/>(;<sp/>itt<sp/>!=<sp/>this<sp/>-&gt;<sp/>meta_data.end();<sp/>++itt){</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/>fname<sp/>&lt;&lt;<sp/>&quot;<sp/>|<sp/>&quot;<sp/>&lt;&lt;<sp/>itt<sp/>-&gt;<sp/>first<sp/>&lt;&lt;<sp/>std::endl;<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>---<sp/>Scan<sp/>the<sp/>inputs</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref><sp/>=<sp/>add_content(&amp;<ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_i_graph,<sp/>content,<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>,<sp/></highlight><highlight class="stringliteral">&quot;g_i_&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref><sp/>=<sp/>add_content(&amp;<ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_i_node,<sp/><sp/>content,<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>,<sp/></highlight><highlight class="stringliteral">&quot;n_i_&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref><sp/>=<sp/>add_content(&amp;<ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_i_edge,<sp/><sp/>content,<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>,<sp/></highlight><highlight class="stringliteral">&quot;e_i_&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>---<sp/>Scan<sp/>the<sp/>outputs</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref><sp/>=<sp/>add_content(&amp;<ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_p_graph,<sp/>content,<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>,<sp/></highlight><highlight class="stringliteral">&quot;g_o_&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref><sp/>=<sp/>add_content(&amp;<ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_p_node,<sp/><sp/>content,<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>,<sp/></highlight><highlight class="stringliteral">&quot;n_o_&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref><sp/>=<sp/>add_content(&amp;<ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_p_edge,<sp/><sp/>content,<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>,<sp/></highlight><highlight class="stringliteral">&quot;e_o_&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>---<sp/>add<sp/>additional<sp/>content</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor*&gt;<sp/>addhoc;<sp/></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>ex<sp/>=<sp/>its<sp/>-&gt;<sp/>second[0]<sp/>-&gt;<sp/>get_edge_index(<ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref>)<sp/>-&gt;<sp/>transpose(0,<sp/>1);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>addhoc[</highlight><highlight class="stringliteral">&quot;edge_index&quot;</highlight><highlight class="normal">]<sp/><sp/><sp/>=<sp/>&amp;ex;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>addhoc[mds.<ref refid="structmodel__settings__t_1a455ff09c35cf9e9580cd7a940c0a5d46" kindref="member">weight_name</ref>]<sp/>=<sp/>its<sp/>-&gt;<sp/>second[0]<sp/>-&gt;<sp/>get_event_weight(<ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref>);<sp/></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref><sp/>=<sp/>add_content(&amp;addhoc,<sp/>content,<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref><sp/>=<sp/>add_content(&amp;<ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref><sp/>-&gt;<sp/>m_p_undef,<sp/>content,<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>,<sp/></highlight><highlight class="stringliteral">&quot;extra_&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_prc[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::thread(execution,<sp/><ref refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" kindref="member">md</ref>,<sp/>mds,<sp/>batched_data[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>],<sp/>&amp;th_prg[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>],<sp/><ref refid="namespacesample__consistency_1a55a51c365bbd868bf90c826e36c51ad3" kindref="member">fname</ref>,<sp/>content,<sp/>mdl_title[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++itm;<sp/></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!thr_){thr_<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::thread(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>progressbar3,<sp/>&amp;th_prg,<sp/>&amp;num_data,<sp/>&amp;mdl_title);}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(para<sp/>&gt;=<sp/>threads_){</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>para<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>running(&amp;th_prc,<sp/>&amp;th_prg,<sp/>&amp;num_data);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>(0);<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>&lt;<sp/>th_prc.size();<sp/>++<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>th_prc[<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>]<sp/>&amp;&amp;<sp/>batched_data[<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>]){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!th_prc[<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>]<sp/>&amp;&amp;<sp/>batched_data[<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>]){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="namespaceloader" kindref="compound">loader</ref><sp/>-&gt;<sp/>safe_delete(batched_data[<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>]);}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>batched_data[<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>]<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>monitor(&amp;th_prc);<sp/></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>(0);<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>&lt;<sp/>th_prc.size();<sp/>++<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(batched_data[<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>]){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="namespaceloader" kindref="compound">loader</ref><sp/>-&gt;<sp/>safe_delete(batched_data[<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>]);}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>batched_data[<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>]<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(its<sp/>=<sp/>dl<sp/>-&gt;<sp/>begin();<sp/>its<sp/>!=<sp/>dl<sp/>-&gt;<sp/><ref refid="_3name_4_8h_1a64e9fa75beda50a9e8400ee0d4e61984" kindref="member">end</ref>();<sp/>++its){</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>its<sp/>-&gt;<sp/>second.clear();<sp/></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>its<sp/>-&gt;<sp/>second.shrink_to_fit();<sp/></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>dl<sp/>-&gt;<sp/>clear();<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>dl;<sp/>dl<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!thr_){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>failure(</highlight><highlight class="stringliteral">&quot;No<sp/>models<sp/>were<sp/>executed...&quot;</highlight><highlight class="normal">);}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>thr_<sp/>-&gt;<sp/>join();<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>thr_;<sp/>thr_<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>success(</highlight><highlight class="stringliteral">&quot;Model<sp/>inference<sp/>completed!&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="139"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="modules/analysis/inference_build.cxx"/>
+  </compounddef>
+</doxygen>

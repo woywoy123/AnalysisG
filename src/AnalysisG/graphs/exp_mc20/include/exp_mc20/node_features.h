@@ -1,7 +1,14 @@
+/** \file node_features.h
+ *  \brief Node feature definitions for exp_mc20.
+ *
+ *  This file contains functions to extract various features from particle nodes.
+ */
+
 #ifndef NODES_FEATURES_EXP_MC20_H
 #define NODES_FEATURES_EXP_MC20_H
 
 // --------------------- Node Truth --------------------- //
+/** \brief Resolves node information. */
 void static res_node(int* o, particle_template* p){
 //    std::string type = p -> type;
 //    if (type == "mu"){*o = ((muon*)p) -> from_res;}
@@ -11,6 +18,7 @@ void static res_node(int* o, particle_template* p){
     *o = 0; 
 }
 
+/** \brief Extracts top node index. */
 void static top_node(int* o, particle_template* p){
     std::string type = p -> type; 
     if (type == "jet"){
@@ -32,14 +40,25 @@ void static top_node(int* o, particle_template* p){
 }; 
 
 // --------------------- Node Observables --------------------- //
+/** \brief Extracts transverse momentum. */
 void static pt(double* o, particle_template* p){*o = p -> pt;} 
+
+/** \brief Extracts pseudorapidity. */
 void static eta(double* o, particle_template* p){*o = p -> eta;} 
+
+/** \brief Extracts azimuthal angle. */
 void static phi(double* o, particle_template* p){*o = p -> phi;} 
+
+/** \brief Extracts energy. */
 void static energy(double* o, particle_template* p){*o = p -> e;}
 
+/** \brief Checks if the particle is a lepton. */
 void static is_lepton(int* o, particle_template* p){*o = (p -> is_lep && !p -> is_nu);}
-void static is_bquark(int* o, particle_template* p){*o = p -> is_b;}
-void static is_neutrino(int* o, particle_template* p){*o = p -> is_nu;}
 
+/** \brief Checks if the particle is a b-quark. */
+void static is_bquark(int* o, particle_template* p){*o = p -> is_b;}
+
+/** \brief Checks if the particle is a neutrino. */
+void static is_neutrino(int* o, particle_template* p){*o = p -> is_nu;}
 
 #endif

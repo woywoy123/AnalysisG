@@ -1,3 +1,9 @@
+/** \file utils.h
+ *  \brief Header file for utility functions.
+ *
+ *  This file contains utility functions for tensor operations and device management.
+ */
+
 #ifndef UTILS_H
 #define UTILS_H
 

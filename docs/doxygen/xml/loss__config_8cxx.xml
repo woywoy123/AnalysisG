@@ -1,0 +1,218 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="loss__config_8cxx" kind="file" language="C++">
+    <compoundname>loss_config.cxx</compoundname>
+    <includes refid="lossfx_8h" local="no">templates/lossfx.h</includes>
+    <incdepgraph>
+      <node id="13">
+        <label>functional</label>
+      </node>
+      <node id="8">
+        <label>cstdint</label>
+      </node>
+      <node id="10">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="5">
+        <label>string</label>
+      </node>
+      <node id="3">
+        <label>map</label>
+      </node>
+      <node id="1">
+        <label>loss_config.cxx</label>
+        <link refid="loss__config_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>vector</label>
+      </node>
+      <node id="6">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="11">
+        <label>structs/optimizer.h</label>
+        <link refid="structs_2include_2structs_2optimizer_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>iostream</label>
+      </node>
+      <node id="2">
+        <label>templates/lossfx.h</label>
+        <link refid="lossfx_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="lossfx_8h" kindref="compound">templates/lossfx.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" kindref="member">lossfx::loss</ref>(torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth,<sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4" kindref="member">loss_enum</ref><sp/>lss){</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(lss){</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a8460edce9cfd317d188e4094a829d268" kindref="member">loss_enum::bce</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_bce<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a4b6eb4a6d3c80f0b45a6d2729d88bd54" kindref="member">loss_enum::bce_with_logits</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_bce_with_logits<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac0da5373194331377b9493c324577fcd" kindref="member">loss_enum::cosine_embedding</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_cosine_embedding<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a781976f30d9e46de27ab80d7d826f8cd" kindref="member">loss_enum::cross_entropy</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_cross_entropy<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a07fe9417379102199a4905bba9447d9f" kindref="member">loss_enum::ctc</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_ctc<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a287e98c92c24cbd0faa1478b05267965" kindref="member">loss_enum::hinge_embedding</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_hinge_embedding<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3291aaac20f3d603d96744c1f0890028" kindref="member">loss_enum::huber</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_huber<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ad0dca0c7cabb02ce1fb3ca60d7d33fae" kindref="member">loss_enum::kl_div</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_kl_div<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a" kindref="member">loss_enum::l1</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_l1<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a5b4962920d8fac8709b19e3bdaa7fd2b" kindref="member">loss_enum::margin_ranking</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_margin_ranking<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a7f04af006bdeba02616023b6e6c68409" kindref="member">loss_enum::mse</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_mse<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a88fce617a00079ebdc676e7b1ca7d3e6" kindref="member">loss_enum::multi_label_margin</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_multi_label_margin<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3f7b800dc458e42692727f37e71e7776" kindref="member">loss_enum::multi_label_soft_margin</ref><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_multi_label_soft_margin<sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4abec3568ca5dc8bc57bfc38ea05c5546e" kindref="member">loss_enum::multi_margin</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_multi_margin<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac48f1775934ec894d2836d18cc34025c" kindref="member">loss_enum::nll</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_nll<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4aafa5b2975d6d0d9b946a67ec56dadd82" kindref="member">loss_enum::poisson_nll</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_poisson_nll<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ab2f5e937ee27b943f474a71bef4bd68d" kindref="member">loss_enum::smooth_l1</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_smooth_l1<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a1262c7917d237a7aaf50acc1d86ca6dc" kindref="member">loss_enum::soft_margin</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_soft_margin<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a0c42fd404f3fb4389be2ca1b91be4fe1" kindref="member">loss_enum::triplet_margin</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_triplet_margin<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>pred,<sp/>truth);<sp/><sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a2aa70a3395f2f1604df452897e6d8b76" kindref="member">loss_enum::triplet_margin_with_distance</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>_fx_loss(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_triplet_margin_with_distance,<sp/>pred,<sp/>truth);<sp/></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::Tensor();<sp/></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::BCELossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));<sp/></highlight></codeline>
+<codeline lineno="31"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::BCEWithLogitsLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));<sp/></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::CosineEmbeddingLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>return<sp/>lossfx_<sp/>-&gt;<sp/>forward(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).to(torch::kInt64);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::Tensor();<sp/></highlight></codeline>
+<codeline lineno="41"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::CrossEntropyLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));<sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::CTCLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::Tensor();<sp/></highlight><highlight class="comment">//lossfx_<sp/>-&gt;<sp/>forward(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).to(torch::kInt64));<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::HingeEmbeddingLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));<sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::HuberLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));<sp/></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::KLDivLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));<sp/></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::L1LossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));<sp/></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::MarginRankingLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::Tensor();<sp/></highlight><highlight class="comment">//lossfx_<sp/>-&gt;<sp/>forward(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).to(torch::kInt64));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::MSELossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::MultiLabelMarginLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::MultiLabelSoftMarginLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::MultiMarginLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));</highlight></codeline>
+<codeline lineno="94"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::NLLLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));</highlight></codeline>
+<codeline lineno="98"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::PoissonNLLLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));</highlight></codeline>
+<codeline lineno="102"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::SmoothL1LossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));</highlight></codeline>
+<codeline lineno="106"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::SoftMarginLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lossfx_<sp/>-&gt;<sp/><ref refid="_3model-name_4_8h_1a0a0ba0f78d5bb43fb316dc5609a2b8de" kindref="member">forward</ref>(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).<ref refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" kindref="member">to</ref>(torch::kInt64));</highlight></codeline>
+<codeline lineno="110"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::TripletMarginLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::Tensor();<sp/></highlight><highlight class="comment">//lossfx_<sp/>-&gt;<sp/>forward(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).to(torch::kInt64));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal">torch::Tensor<sp/>lossfx::_fx_loss(torch::nn::TripletMarginWithDistanceLossImpl*<sp/>lossfx_,<sp/>torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth){</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::Tensor();<sp/></highlight><highlight class="comment">//lossfx_<sp/>-&gt;<sp/>forward(*pred,<sp/>truth<sp/>-&gt;<sp/>view({-1}).to(torch::kInt64));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/lossfx/cxx/loss_config.cxx"/>
+  </compounddef>
+</doxygen>

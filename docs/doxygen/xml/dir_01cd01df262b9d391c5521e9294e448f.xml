@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_01cd01df262b9d391c5521e9294e448f" kind="dir">
+    <compoundname>dataloader</compoundname>
+    <innerdir refid="dir_a1cd3e2e945f1d6a8a6bed8cd023a297">cxx</innerdir>
+    <innerdir refid="dir_fc5540f200b36ad7a1c2ade4944ee3a8">include</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/dataloader/"/>
+  </compounddef>
+</doxygen>

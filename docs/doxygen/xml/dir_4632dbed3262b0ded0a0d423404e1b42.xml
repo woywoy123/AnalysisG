@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_4632dbed3262b0ded0a0d423404e1b42" kind="dir">
+    <compoundname>plotting</compoundname>
+    <innerfile refid="plotting_8h">plotting.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/plotting/include/plotting/"/>
+  </compounddef>
+</doxygen>

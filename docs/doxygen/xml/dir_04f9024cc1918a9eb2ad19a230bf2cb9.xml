@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_04f9024cc1918a9eb2ad19a230bf2cb9" kind="dir">
+    <compoundname>cxx</compoundname>
+    <innerfile refid="events_2bsm__4tops_2cxx_2event_8cxx">events/bsm_4tops/cxx/event.cxx</innerfile>
+    <innerfile refid="bsm__4tops_2cxx_2particles_8cxx">bsm_4tops/cxx/particles.cxx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="events/bsm_4tops/cxx/"/>
+  </compounddef>
+</doxygen>

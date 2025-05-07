@@ -1,6 +1,49 @@
+/**
+ * @file transform.cu
+ * @brief Implements transformation functions for momentum calculations in CUDA.
+ */
+
 #include <transform/transform.cuh>
 #include <transform/base.cuh>
 #include <utils/utils.cuh>
+
+/**
+ * @brief CUDA kernel to calculate the x-component of momentum (Px).
+ *
+ * @tparam scalar_t The data type of the tensor elements (e.g., float, double).
+ * @param pt Input tensor of transverse momentum values.
+ * @param phi Input tensor of azimuthal angle values.
+ * @param px Output tensor for Px values.
+ */
+template <typename scalar_t>
+__global__ void Px_kernel(
+    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> pt,
+    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> phi,
+    torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> px
+) {
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; ///< Calculate unique thread index.
+    if (idx >= pt.size(0)) return; ///< Boundary check: if index is out of bounds, return.
+    px[idx] = pt[idx] * cos(phi[idx]); ///< Compute Px using pt and phi.
+}
+
+/**
+ * @brief CUDA kernel to calculate the y-component of momentum (Py).
+ *
+ * @tparam scalar_t The data type of the tensor elements.
+ * @param pt Input tensor of transverse momentum values.
+ * @param phi Input tensor of azimuthal angle values.
+ * @param py Output tensor for Py values.
+ */
+template <typename scalar_t>
+__global__ void Py_kernel(
+    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> pt,
+    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> phi,
+    torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> py
+) {
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; ///< Calculate unique thread index.
+    if (idx >= pt.size(0)) return; ///< Boundary check: if index is out of bounds, return.
+    py[idx] = pt[idx] * sin(phi[idx]); ///< Compute Py using pt and phi.
+}
 
 torch::Tensor transform_::Px(torch::Tensor* pt, torch::Tensor* phi){
     const unsigned int dx = pt -> size(0); 

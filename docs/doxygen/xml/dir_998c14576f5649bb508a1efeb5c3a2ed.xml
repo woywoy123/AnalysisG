@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_998c14576f5649bb508a1efeb5c3a2ed" kind="dir">
+    <compoundname>exp_mc20</compoundname>
+    <innerfile refid="events_2exp__mc20_2include_2exp__mc20_2event_8h">events/exp_mc20/include/exp_mc20/event.h</innerfile>
+    <innerfile refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h">events/exp_mc20/include/exp_mc20/particles.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="events/exp_mc20/include/exp_mc20/"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacezprime" kind="namespace" language="Python">
+    <compoundname>zprime</compoundname>
+    <innernamespace refid="namespacezprime_1_1figures">zprime::figures</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/mc16_matching/zprime/__init__.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

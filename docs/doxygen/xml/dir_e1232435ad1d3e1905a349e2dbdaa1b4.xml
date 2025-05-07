@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_e1232435ad1d3e1905a349e2dbdaa1b4" kind="dir">
+    <compoundname>events</compoundname>
+    <innerdir refid="dir_a2da2235856d03d69db1c1d6601e7562">cxx</innerdir>
+    <innerdir refid="dir_073d35caea2a015d9eb5d660fce1c248">include</innerdir>
+    <innerfile refid="_3event-name_4_8pyx">&lt;event-name&gt;.pyx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="templates/events/"/>
+  </compounddef>
+</doxygen>

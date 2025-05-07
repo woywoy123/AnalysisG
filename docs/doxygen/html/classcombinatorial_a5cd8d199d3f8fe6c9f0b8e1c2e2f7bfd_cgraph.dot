@@ -1,0 +1,35 @@
+digraph "combinatorial::strategy"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="combinatorial::strategy",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="merge_data",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$merge__cast_8h.html#a205af11d07be8d10770e7392817fc5c3",tooltip=" "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_3name_4_8h.html#a64e9fa75beda50a9e8400ee0d4e61984",tooltip=" "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="combinatorial::reconstruction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcombinatorial.html#a4f90aaf04154a0d1ca9d59e1ccb2c54e",tooltip=" "];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="chi2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$combinatorial_8cxx.html#acd33f38fd89cd298ef5d1ea858ee0416",tooltip=" "];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="pyc::nusol::combinatorial",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1nusol.html#a0b618f866aa33e16c704d828744335e1",tooltip=" "];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="batch",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_3name_4_8h.html#a3d94067338cad267b90428afcc647e33",tooltip=" "];
+  Node6 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="changedev",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$utils_8h.html#a123aed6d73594e07c6401a7a6c587808",tooltip=" "];
+  Node6 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="pyc::std_to_dict",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc.html#ab174cc51f6efef06bdb0ba47ec3fe3bf",tooltip=" "];
+  Node9 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="selection_template\l::make_unique",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classselection__template.html#ab760e9d895d74e62a9d4bfe436568a86",tooltip=" "];
+  Node4 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="safe_get",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$combinatorial_8cxx.html#aa964f6b775656aa0ce291de39c09500f",tooltip=" "];
+  Node1 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="combinatorial::update\l_state",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcombinatorial.html#adb51dd4e96b0c4596711f5466571e091",tooltip=" "];
+  Node1 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="selection_template\l::vectorize",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classselection__template.html#a7e1560964237cf7b4846e24b300d7b9e",tooltip=" "];
+  Node13 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

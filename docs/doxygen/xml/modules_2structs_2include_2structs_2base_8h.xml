@@ -1,0 +1,1320 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="modules_2structs_2include_2structs_2base_8h" kind="file" language="C++">
+    <compoundname>modules/structs/include/structs/base.h</compoundname>
+    <includes local="no">string</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">map</includes>
+    <includes refid="enums_8h" local="no">structs/enums.h</includes>
+    <includedby refid="structs_2cxx_2base_8cxx" local="no">base.cxx</includedby>
+    <includedby refid="element_8h" local="no">element.h</includedby>
+    <includedby refid="vector__cast_8h" local="no">vector_cast.h</includedby>
+    <incdepgraph>
+      <node id="5">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="2">
+        <label>string</label>
+      </node>
+      <node id="4">
+        <label>map</label>
+      </node>
+      <node id="3">
+        <label>vector</label>
+      </node>
+      <node id="1">
+        <label>base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>base.cxx</label>
+        <link refid="structs_2cxx_2base_8cxx"/>
+      </node>
+      <node id="61">
+        <label>optimizer_build.cxx</label>
+        <link refid="optimizer__build_8cxx"/>
+      </node>
+      <node id="66">
+        <label>sampletracer.h</label>
+        <link refid="sampletracer_8h"/>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>event_build.cxx</label>
+        <link refid="event__build_8cxx"/>
+      </node>
+      <node id="123">
+        <label>graph.cxx</label>
+        <link refid="interface_2graph_8cxx"/>
+      </node>
+      <node id="44">
+        <label>graphs.cxx</label>
+        <link refid="ssml__mc20_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="8">
+        <label>met.cxx</label>
+        <link refid="met_8cxx"/>
+      </node>
+      <node id="28">
+        <label>zprime.cxx</label>
+        <link refid="mc16_2zprime_2zprime_8cxx"/>
+      </node>
+      <node id="18">
+        <label>parton.cxx</label>
+        <link refid="parton_8cxx"/>
+      </node>
+      <node id="124">
+        <label>interface.cxx</label>
+        <link refid="interface_8cxx"/>
+      </node>
+      <node id="59">
+        <label>methods.cxx</label>
+        <link refid="methods_8cxx"/>
+      </node>
+      <node id="68">
+        <label>event_template.cxx</label>
+        <link refid="event__template_8cxx"/>
+      </node>
+      <node id="4">
+        <label>event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+      </node>
+      <node id="100">
+        <label>link.cxx</label>
+        <link refid="link_8cxx"/>
+      </node>
+      <node id="3">
+        <label>element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="129" relation="include">
+        </childnode>
+        <childnode refid="130" relation="include">
+        </childnode>
+        <childnode refid="131" relation="include">
+        </childnode>
+        <childnode refid="132" relation="include">
+        </childnode>
+      </node>
+      <node id="133">
+        <label>vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="134" relation="include">
+        </childnode>
+        <childnode refid="135" relation="include">
+        </childnode>
+        <childnode refid="124" relation="include">
+        </childnode>
+      </node>
+      <node id="107">
+        <label>particles.h</label>
+        <link refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="64">
+        <label>container.cxx</label>
+        <link refid="container_8cxx"/>
+      </node>
+      <node id="65">
+        <label>entries.cxx</label>
+        <link refid="entries_8cxx"/>
+      </node>
+      <node id="122">
+        <label>metrics.cxx</label>
+        <link refid="metrics_8cxx"/>
+      </node>
+      <node id="105">
+        <label>particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="116" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>event.cxx</label>
+        <link refid="events_2gnn_2cxx_2event_8cxx"/>
+      </node>
+      <node id="50">
+        <label>topmatching.h</label>
+        <link refid="mc20_2topmatching_2topmatching_8h"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="132">
+        <label>variable.cxx</label>
+        <link refid="variable_8cxx"/>
+      </node>
+      <node id="26">
+        <label>toptruthjets.cxx</label>
+        <link refid="toptruthjets_8cxx"/>
+      </node>
+      <node id="17">
+        <label>parton.h</label>
+        <link refid="parton_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="80">
+        <label>selection_template.h</label>
+        <link refid="selection__template_8h"/>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+      </node>
+      <node id="119">
+        <label>metrics.h</label>
+        <link refid="metrics_8h"/>
+        <childnode refid="120" relation="include">
+        </childnode>
+        <childnode refid="121" relation="include">
+        </childnode>
+        <childnode refid="122" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+      </node>
+      <node id="96">
+        <label>accuracy.cxx</label>
+        <link refid="accuracy_8cxx"/>
+      </node>
+      <node id="9">
+        <label>childrenkinematics.h</label>
+        <link refid="childrenkinematics_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>mc20_exp.cxx</label>
+        <link refid="mc20__exp_8cxx"/>
+      </node>
+      <node id="5">
+        <label>event.h</label>
+        <link refid="events_2bsm__4tops_2include_2bsm__4tops_2event_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="94">
+        <label>metric_template.h</label>
+        <link refid="metric__template_8h"/>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>toptruthjets.h</label>
+        <link refid="toptruthjets_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="93">
+        <label>types.cxx</label>
+        <link refid="types_8cxx"/>
+      </node>
+      <node id="112">
+        <label>interfaces.cxx</label>
+        <link refid="interfaces_8cxx"/>
+      </node>
+      <node id="36">
+        <label>gnn-event.h</label>
+        <link refid="gnn-event_8h"/>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>selection_build.cxx</label>
+        <link refid="selection__build_8cxx"/>
+      </node>
+      <node id="49">
+        <label>topkinematics.cxx</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8cxx"/>
+      </node>
+      <node id="82">
+        <label>selection_core.cxx</label>
+        <link refid="selection__core_8cxx"/>
+      </node>
+      <node id="43">
+        <label>graphs.cxx</label>
+        <link refid="exp__mc20_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="118">
+        <label>RecursiveGraphNeuralNetwork.cxx</label>
+        <link refid="_recursive_graph_neural_network_8cxx"/>
+      </node>
+      <node id="109">
+        <label>particles.cxx</label>
+        <link refid="gnn_2cxx_2particles_8cxx"/>
+      </node>
+      <node id="76">
+        <label>optimizer.cxx</label>
+        <link refid="optimizer_2cxx_2optimizer_8cxx"/>
+      </node>
+      <node id="73">
+        <label>dataloader.cxx</label>
+        <link refid="dataloader_8cxx"/>
+      </node>
+      <node id="116">
+        <label>pyc.h</label>
+        <link refid="pyc_8h"/>
+        <childnode refid="117" relation="include">
+        </childnode>
+        <childnode refid="118" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="119" relation="include">
+        </childnode>
+        <childnode refid="123" relation="include">
+        </childnode>
+        <childnode refid="124" relation="include">
+        </childnode>
+        <childnode refid="125" relation="include">
+        </childnode>
+        <childnode refid="126" relation="include">
+        </childnode>
+        <childnode refid="127" relation="include">
+        </childnode>
+        <childnode refid="128" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="103">
+        <label>properties.cxx</label>
+        <link refid="metric_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="106">
+        <label>particles.h</label>
+        <link refid="events_2bsm__4tops_2include_2bsm__4tops_2particles_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="90">
+        <label>hdf5.cxx</label>
+        <link refid="hdf5_8cxx"/>
+      </node>
+      <node id="47">
+        <label>mc20_ref.cxx</label>
+        <link refid="mc20__ref_8cxx"/>
+      </node>
+      <node id="21">
+        <label>topkinematics.h</label>
+        <link refid="mc16_2topkinematics_2topkinematics_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>topjets.cxx</label>
+        <link refid="topjets_8cxx"/>
+      </node>
+      <node id="121">
+        <label>mass_plots.cxx</label>
+        <link refid="mass__plots_8cxx"/>
+      </node>
+      <node id="72">
+        <label>cache.cxx</label>
+        <link refid="cache_8cxx"/>
+      </node>
+      <node id="131">
+        <label>structs.cxx</label>
+        <link refid="structs_8cxx"/>
+      </node>
+      <node id="34">
+        <label>graphs.h</label>
+        <link refid="exp__mc20_2include_2exp__mc20_2graphs_8h"/>
+      </node>
+      <node id="70">
+        <label>graph_template.h</label>
+        <link refid="graph__template_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>graphs.cxx</label>
+        <link refid="bsm__4tops_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="41">
+        <label>graphs.h</label>
+        <link refid="ssml__mc20_2include_2ssml__mc20_2graphs_8h"/>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+      </node>
+      <node id="87">
+        <label>validation.h</label>
+        <link refid="validation_8h"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="89">
+        <label>io.h</label>
+        <link refid="io_8h"/>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+      </node>
+      <node id="95">
+        <label>accuracy.h</label>
+        <link refid="accuracy_8h"/>
+        <childnode refid="96" relation="include">
+        </childnode>
+      </node>
+      <node id="128">
+        <label>transform.cxx</label>
+        <link refid="interface_2transform_8cxx"/>
+      </node>
+      <node id="58">
+        <label>inference_build.cxx</label>
+        <link refid="inference__build_8cxx"/>
+      </node>
+      <node id="88">
+        <label>&lt;selection-name&gt;.h</label>
+        <link refid="_3selection-name_4_8h"/>
+      </node>
+      <node id="75">
+        <label>optimizer.h</label>
+        <link refid="optimizer_2include_2generators_2optimizer_8h"/>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+      </node>
+      <node id="97">
+        <label>pagerank.h</label>
+        <link refid="pagerank_8h"/>
+        <childnode refid="98" relation="include">
+        </childnode>
+      </node>
+      <node id="77">
+        <label>graph_template.cxx</label>
+        <link refid="graph__template_8cxx"/>
+      </node>
+      <node id="117">
+        <label>grift.cxx</label>
+        <link refid="grift_8cxx"/>
+      </node>
+      <node id="91">
+        <label>io.cxx</label>
+        <link refid="io_2cxx_2io_8cxx"/>
+      </node>
+      <node id="12">
+        <label>decaymodes.cxx</label>
+        <link refid="decaymodes_8cxx"/>
+      </node>
+      <node id="99">
+        <label>base.cxx</label>
+        <link refid="metric_2cxx_2base_8cxx"/>
+      </node>
+      <node id="31">
+        <label>validation.cxx</label>
+        <link refid="validation_8cxx"/>
+      </node>
+      <node id="125">
+        <label>nusol.cxx</label>
+        <link refid="interface_2nusol_8cxx"/>
+      </node>
+      <node id="53">
+        <label>zprime.cxx</label>
+        <link refid="mc20_2zprime_2zprime_8cxx"/>
+      </node>
+      <node id="129">
+        <label>element.cxx</label>
+        <link refid="element_8cxx"/>
+      </node>
+      <node id="14">
+        <label>event.cxx</label>
+        <link refid="events_2bsm__4tops_2cxx_2event_8cxx"/>
+      </node>
+      <node id="19">
+        <label>topjets.h</label>
+        <link refid="topjets_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>properties.cxx</label>
+        <link refid="event_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="60">
+        <label>metric_build.cxx</label>
+        <link refid="metric__build_8cxx"/>
+      </node>
+      <node id="104">
+        <label>&lt;name&gt;.h</label>
+        <link refid="_3name_4_8h"/>
+      </node>
+      <node id="24">
+        <label>topmatching.cxx</label>
+        <link refid="mc16_2topmatching_2topmatching_8cxx"/>
+      </node>
+      <node id="127">
+        <label>physics.cxx</label>
+        <link refid="pyc_2interface_2physics_8cxx"/>
+      </node>
+      <node id="92">
+        <label>root.cxx</label>
+        <link refid="io_2cxx_2root_8cxx"/>
+      </node>
+      <node id="130">
+        <label>misc.cxx</label>
+        <link refid="misc_8cxx"/>
+      </node>
+      <node id="33">
+        <label>event.cxx</label>
+        <link refid="events_2exp__mc20_2cxx_2event_8cxx"/>
+      </node>
+      <node id="83">
+        <label>selection_template.cxx</label>
+        <link refid="selection__template_8cxx"/>
+      </node>
+      <node id="126">
+        <label>operators.cxx</label>
+        <link refid="interface_2operators_8cxx"/>
+      </node>
+      <node id="63">
+        <label>container.h</label>
+        <link refid="container_8h"/>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+      </node>
+      <node id="135">
+        <label>typecasting.cxx</label>
+        <link refid="typecasting_8cxx"/>
+      </node>
+      <node id="84">
+        <label>matching.h</label>
+        <link refid="matching_8h"/>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>dataloader.h</label>
+        <link refid="dataloader_8h"/>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>zprime.h</label>
+        <link refid="mc20_2zprime_2zprime_8h"/>
+        <childnode refid="53" relation="include">
+        </childnode>
+      </node>
+      <node id="111">
+        <label>cartesian.cxx</label>
+        <link refid="cartesian_8cxx"/>
+      </node>
+      <node id="13">
+        <label>event.h</label>
+        <link refid="selections_2mc16_2event_2event_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>topmatching.cxx</label>
+        <link refid="mc20_2topmatching_2topmatching_8cxx"/>
+      </node>
+      <node id="57">
+        <label>graph_build.cxx</label>
+        <link refid="graph__build_8cxx"/>
+      </node>
+      <node id="38">
+        <label>topefficiency.h</label>
+        <link refid="topefficiency_8h"/>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>event.cxx</label>
+        <link refid="selections_2mc16_2event_2event_8cxx"/>
+      </node>
+      <node id="67">
+        <label>sampletracer.cxx</label>
+        <link refid="sampletracer_8cxx"/>
+      </node>
+      <node id="120">
+        <label>loss_plots.cxx</label>
+        <link refid="loss__plots_8cxx"/>
+      </node>
+      <node id="78">
+        <label>properties.cxx</label>
+        <link refid="graph_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="23">
+        <label>topmatching.h</label>
+        <link refid="mc16_2topmatching_2topmatching_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="133" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>topkinematics.h</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8h"/>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="115">
+        <label>polar.cxx</label>
+        <link refid="polar_8cxx"/>
+      </node>
+      <node id="74">
+        <label>dataset.cxx</label>
+        <link refid="dataset_8cxx"/>
+      </node>
+      <node id="108">
+        <label>gnn-particles.h</label>
+        <link refid="gnn-particles_8h"/>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="86">
+        <label>combinatorial.h</label>
+        <link refid="combinatorial_8h"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="85">
+        <label>matching.cxx</label>
+        <link refid="matching_8cxx"/>
+      </node>
+      <node id="15">
+        <label>event.cxx</label>
+        <link refid="events_2ssml__mc20_2cxx_2event_8cxx"/>
+      </node>
+      <node id="101">
+        <label>metric.cxx</label>
+        <link refid="metric_8cxx"/>
+      </node>
+      <node id="45">
+        <label>regions.h</label>
+        <link refid="regions_8h"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="110">
+        <label>particles.h</label>
+        <link refid="events_2ssml__mc20_2include_2ssml__mc20_2particles_8h"/>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>analysis.cxx</label>
+        <link refid="analysis_8cxx"/>
+      </node>
+      <node id="22">
+        <label>topkinematics.cxx</label>
+        <link refid="mc16_2topkinematics_2topkinematics_8cxx"/>
+      </node>
+      <node id="6">
+        <label>graphs.h</label>
+        <link refid="bsm__4tops_2include_2bsm__4tops_2graphs_8h"/>
+      </node>
+      <node id="30">
+        <label>combinatorial.cxx</label>
+        <link refid="combinatorial_8cxx"/>
+      </node>
+      <node id="7">
+        <label>met.h</label>
+        <link refid="met_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>topefficiency.cxx</label>
+        <link refid="topefficiency_8cxx"/>
+      </node>
+      <node id="40">
+        <label>event.h</label>
+        <link refid="events_2ssml__mc20_2include_2ssml__mc20_2event_8h"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>childrenkinematics.cxx</label>
+        <link refid="childrenkinematics_8cxx"/>
+      </node>
+      <node id="29">
+        <label>mc16_ref.cxx</label>
+        <link refid="mc16__ref_8cxx"/>
+      </node>
+      <node id="32">
+        <label>event.h</label>
+        <link refid="events_2exp__mc20_2include_2exp__mc20_2event_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>regions.cxx</label>
+        <link refid="regions_8cxx"/>
+      </node>
+      <node id="81">
+        <label>properties.cxx</label>
+        <link refid="selection_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="134">
+        <label>root.cxx</label>
+        <link refid="typecasting_2cxx_2root_8cxx"/>
+      </node>
+      <node id="79">
+        <label>struct_graph.cxx</label>
+        <link refid="struct__graph_8cxx"/>
+      </node>
+      <node id="102">
+        <label>metric_template.cxx</label>
+        <link refid="metric__template_8cxx"/>
+      </node>
+      <node id="113">
+        <label>particle_template.cxx</label>
+        <link refid="particle__template_8cxx"/>
+      </node>
+      <node id="98">
+        <label>pagerank.cxx</label>
+        <link refid="pagerank_8cxx"/>
+      </node>
+      <node id="114">
+        <label>physics.cxx</label>
+        <link refid="modules_2particle_2cxx_2physics_8cxx"/>
+      </node>
+      <node id="27">
+        <label>zprime.h</label>
+        <link refid="mc16_2zprime_2zprime_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>decaymodes.h</label>
+        <link refid="decaymodes_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>analysis.h</label>
+        <link refid="analysis_8h"/>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classbsc__t" prot="public">bsc_t</innerclass>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="modules_2structs_2include_2structs_2base_8h_1a78b09a0e6367b16af8d8284e9aeb9752" prot="public" static="no">
+        <name>STRUCTS_BASE_H</name>
+        <briefdescription>
+<para>&lt; Start of include guard for STRUCTS_BASE_H. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Definition of STRUCTS_BASE_H to signify the header has been included. Include standard string library for string manipulation. Include standard vector container for sequence storage. Include standard map container for key-value associations. Include enumerations used in the framework. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="12" column="9" bodyfile="modules/structs/include/structs/base.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="modules_2structs_2include_2structs_2base_8h_1a25eaf56fcdb4b2d9583f6d55ee6bd9b7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void buildDict</definition>
+        <argsstring>(std::string _name, std::string _shrt)</argsstring>
+        <name>buildDict</name>
+        <param>
+          <type>std::string</type>
+          <declname>_name</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>_shrt</declname>
+        </param>
+        <briefdescription>
+<para>Builds a dictionary for a specific data type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Full name of the data type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>_shrt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Short alias for the data type.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This function registers a data type with the ROOT dictionary system, enabling serialization and deserialization of custom objects. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="27" column="6" bodyfile="modules/structs/cxx/base.cxx" bodystart="5" bodyend="8" declfile="modules/structs/include/structs/base.h" declline="27" declcolumn="6"/>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="modules_2structs_2include_2structs_2base_8h_1a96c2f5b7a58cb27671db52cf01b24c35" compoundref="structs_2cxx_2base_8cxx" startline="17" endline="20">buildPCM</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="modules_2structs_2include_2structs_2base_8h_1a6ab43b9a4686847e8a95fd6b630e8af0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void registerInclude</definition>
+        <argsstring>(std::string pth, bool is_abs)</argsstring>
+        <name>registerInclude</name>
+        <param>
+          <type>std::string</type>
+          <declname>pth</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>is_abs</declname>
+        </param>
+        <briefdescription>
+<para>Registers an include path with the interpreter. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to register. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>is_abs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Flag indicating if the path is absolute (true) or relative (false).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This function adds a directory to the interpreter&apos;s include path, allowing it to find header files during runtime compilation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="37" column="6" bodyfile="modules/structs/cxx/base.cxx" bodystart="10" bodyend="15" declfile="modules/structs/include/structs/base.h" declline="37" declcolumn="6"/>
+        <references refid="namespacemain_1a6f31bffcea51d8f53b5f2b21f2c975df" compoundref="benchmarks_2main_8py" startline="15">main.pth</references>
+      </memberdef>
+      <memberdef kind="function" id="modules_2structs_2include_2structs_2base_8h_1a96c2f5b7a58cb27671db52cf01b24c35" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void buildPCM</definition>
+        <argsstring>(std::string name, std::string incl, bool exl)</argsstring>
+        <name>buildPCM</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>incl</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>exl</declname>
+        </param>
+        <briefdescription>
+<para>Builds a Precompiled Module (PCM) file for a specific module. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the module. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>incl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Include path for the module. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>exl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Flag indicating if the module should be excluded from certain operations.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This function generates a PCM file which speeds up loading and interpretation of C++ code in the ROOT framework. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="48" column="6" bodyfile="modules/structs/cxx/base.cxx" bodystart="17" bodyend="20" declfile="modules/structs/include/structs/base.h" declline="48" declcolumn="6"/>
+        <references refid="structs_2cxx_2base_8cxx_1a25eaf56fcdb4b2d9583f6d55ee6bd9b7" compoundref="structs_2cxx_2base_8cxx" startline="5" endline="8">buildDict</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <referencedby refid="modules_2structs_2include_2structs_2base_8h_1aa67f17555eea254a2f080d4bfaa19262" compoundref="structs_2cxx_2base_8cxx" startline="24" endline="57">buildAll</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="modules_2structs_2include_2structs_2base_8h_1aa67f17555eea254a2f080d4bfaa19262" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void buildAll</definition>
+        <argsstring>()</argsstring>
+        <name>buildAll</name>
+        <briefdescription>
+<para>Initiates the build of all dictionaries and PCM files. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function triggers the generation of all necessary dictionaries and PCM files for the types registered in the framework. This is typically called during initialization. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="56" column="6" bodyfile="modules/structs/cxx/base.cxx" bodystart="24" bodyend="57" declfile="modules/structs/include/structs/base.h" declline="56" declcolumn="6"/>
+        <references refid="structs_2cxx_2base_8cxx_1a96c2f5b7a58cb27671db52cf01b24c35" compoundref="structs_2cxx_2base_8cxx" startline="17" endline="20">buildPCM</references>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="modules_2structs_2include_2structs_2base_8h_1a4eee7b291ed2cdcd4e3c2496c603c48c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int count</definition>
+        <argsstring>(const std::string *str, const std::string sub)</argsstring>
+        <name>count</name>
+        <param>
+          <type>const std::string *</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>const std::string</type>
+          <declname>sub</declname>
+        </param>
+        <briefdescription>
+<para>Counts occurrences of a substring within a string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string to search within. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sub</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to search for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The number of occurrences of the substring. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="64" column="5" bodyfile="modules/structs/cxx/base.cxx" bodystart="62" bodyend="67" declfile="modules/structs/include/structs/base.h" declline="64" declcolumn="5"/>
+        <references refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" compoundref="structs_2cxx_2base_8cxx" startline="62" endline="67">count</references>
+        <referencedby refid="classplotting_1a2d9afaf0eab31995f968c53801f60de2" compoundref="plotting_8cxx" startline="90" endline="122">plotting::build_ROC</referencedby>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">gnn_event::CompileEvent</referencedby>
+        <referencedby refid="modules_2structs_2include_2structs_2base_8h_1a4eee7b291ed2cdcd4e3c2496c603c48c" compoundref="structs_2cxx_2base_8cxx" startline="62" endline="67">count</referencedby>
+        <referencedby refid="classparticle__template_1a0d6f5cadd815776a58be4d47e99c750d" compoundref="interfaces_8cxx" startline="128" endline="134">particle_template::get_children</referencedby>
+        <referencedby refid="classparticle__template_1a0b63a8ae07f178fa8f30044683c615ad" compoundref="interfaces_8cxx" startline="112" endline="118">particle_template::get_parents</referencedby>
+        <referencedby refid="classparticle__template_1a2d7af9375684f6cc0b217d29a24aaff3" compoundref="particle__template_8cxx" startline="85" endline="129">particle_template::particle_template</referencedby>
+        <referencedby refid="structwrite__t_1a0904b9e3b70f290625bf18d376f65023" compoundref="variable_8cxx" startline="48" endline="54">write_t::process</referencedby>
+        <referencedby refid="classio_1a65c36380ef79524e8235f792abe9625c" compoundref="io_2cxx_2root_8cxx" startline="301" endline="351">io::root_begin</referencedby>
+        <referencedby refid="classbsc__t_1a39907da14ea4fb20f71b47d0724bf1f2" compoundref="structs_2cxx_2base_8cxx" startline="70" endline="102">bsc_t::root_type_translate</referencedby>
+        <referencedby refid="classio_1aacb050c4cb6c10038d6bf8edb7244a28" compoundref="io_2cxx_2root_8cxx" startline="181" endline="288">io::scan_keys</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Defines fundamental data structures and type handling for the <ref refid="namespace_analysis_g" kindref="compound">AnalysisG</ref> framework. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file contains declarations for basic structures and functions that handle data type identification, conversion, and management across the framework. It provides essential functionality for type safety and data management in a heterogeneous, physics data analysis environment. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>base.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Defines<sp/>fundamental<sp/>data<sp/>structures<sp/>and<sp/>type<sp/>handling<sp/>for<sp/>the<sp/>AnalysisG<sp/>framework.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>contains<sp/>declarations<sp/>for<sp/>basic<sp/>structures<sp/>and<sp/>functions<sp/>that<sp/>handle</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>data<sp/>type<sp/>identification,<sp/>conversion,<sp/>and<sp/>management<sp/>across<sp/>the<sp/>framework.</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>It<sp/>provides<sp/>essential<sp/>functionality<sp/>for<sp/>type<sp/>safety<sp/>and<sp/>data<sp/>management<sp/>in</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>a<sp/>heterogeneous,<sp/>physics<sp/>data<sp/>analysis<sp/>environment.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>STRUCTS_BASE_H<sp/></highlight><highlight class="comment">///&lt;<sp/>Start<sp/>of<sp/>include<sp/>guard<sp/>for<sp/>STRUCTS_BASE_H.</highlight></codeline>
+<codeline lineno="12" refid="modules_2structs_2include_2structs_2base_8h_1a78b09a0e6367b16af8d8284e9aeb9752" refkind="member"><highlight class="comment"></highlight><highlight class="normal">#define<sp/>STRUCTS_BASE_H<sp/></highlight><highlight class="comment">///&lt;<sp/>Definition<sp/>of<sp/>STRUCTS_BASE_H<sp/>to<sp/>signify<sp/>the<sp/>header<sp/>has<sp/>been<sp/>included.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Include<sp/>standard<sp/>string<sp/>library<sp/>for<sp/>string<sp/>manipulation.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Include<sp/>standard<sp/>vector<sp/>container<sp/>for<sp/>sequence<sp/>storage.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;map&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Include<sp/>standard<sp/>map<sp/>container<sp/>for<sp/>key-value<sp/>associations.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="enums_8h" kindref="compound">structs/enums.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Include<sp/>enumerations<sp/>used<sp/>in<sp/>the<sp/>framework.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="19"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Builds<sp/>a<sp/>dictionary<sp/>for<sp/>a<sp/>specific<sp/>data<sp/>type.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>@param<sp/>_name<sp/>Full<sp/>name<sp/>of<sp/>the<sp/>data<sp/>type.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>@param<sp/>_shrt<sp/>Short<sp/>alias<sp/>for<sp/>the<sp/>data<sp/>type.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>This<sp/>function<sp/>registers<sp/>a<sp/>data<sp/>type<sp/>with<sp/>the<sp/>ROOT<sp/>dictionary<sp/>system,</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>enabling<sp/>serialization<sp/>and<sp/>deserialization<sp/>of<sp/>custom<sp/>objects.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="modules_2structs_2include_2structs_2base_8h_1a25eaf56fcdb4b2d9583f6d55ee6bd9b7" kindref="member">buildDict</ref>(std::string<sp/>_name,<sp/>std::string<sp/>_shrt);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="29"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Registers<sp/>an<sp/>include<sp/>path<sp/>with<sp/>the<sp/>interpreter.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>@param<sp/>pth<sp/>Path<sp/>to<sp/>register.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>@param<sp/>is_abs<sp/>Flag<sp/>indicating<sp/>if<sp/>the<sp/>path<sp/>is<sp/>absolute<sp/>(true)<sp/>or<sp/>relative<sp/>(false).</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>This<sp/>function<sp/>adds<sp/>a<sp/>directory<sp/>to<sp/>the<sp/>interpreter&apos;s<sp/>include<sp/>path,</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>allowing<sp/>it<sp/>to<sp/>find<sp/>header<sp/>files<sp/>during<sp/>runtime<sp/>compilation.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="modules_2structs_2include_2structs_2base_8h_1a6ab43b9a4686847e8a95fd6b630e8af0" kindref="member">registerInclude</ref>(std::string<sp/><ref refid="namespacemain_1a6f31bffcea51d8f53b5f2b21f2c975df" kindref="member">pth</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_abs);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="39"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Builds<sp/>a<sp/>Precompiled<sp/>Module<sp/>(PCM)<sp/>file<sp/>for<sp/>a<sp/>specific<sp/>module.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>@param<sp/>name<sp/>Name<sp/>of<sp/>the<sp/>module.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>@param<sp/>incl<sp/>Include<sp/>path<sp/>for<sp/>the<sp/>module.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>@param<sp/>exl<sp/>Flag<sp/>indicating<sp/>if<sp/>the<sp/>module<sp/>should<sp/>be<sp/>excluded<sp/>from<sp/>certain<sp/>operations.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>This<sp/>function<sp/>generates<sp/>a<sp/>PCM<sp/>file<sp/>which<sp/>speeds<sp/>up<sp/>loading<sp/>and<sp/>interpretation</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>of<sp/>C++<sp/>code<sp/>in<sp/>the<sp/>ROOT<sp/>framework.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="modules_2structs_2include_2structs_2base_8h_1a96c2f5b7a58cb27671db52cf01b24c35" kindref="member">buildPCM</ref>(std::string<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>,<sp/>std::string<sp/>incl,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>exl);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="50"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Initiates<sp/>the<sp/>build<sp/>of<sp/>all<sp/>dictionaries<sp/>and<sp/>PCM<sp/>files.</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/>This<sp/>function<sp/>triggers<sp/>the<sp/>generation<sp/>of<sp/>all<sp/>necessary<sp/>dictionaries<sp/>and<sp/>PCM<sp/>files</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/>for<sp/>the<sp/>types<sp/>registered<sp/>in<sp/>the<sp/>framework.<sp/>This<sp/>is<sp/>typically<sp/>called<sp/>during<sp/>initialization.</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="modules_2structs_2include_2structs_2base_8h_1aa67f17555eea254a2f080d4bfaa19262" kindref="member">buildAll</ref>();</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="58"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Counts<sp/>occurrences<sp/>of<sp/>a<sp/>substring<sp/>within<sp/>a<sp/>string.</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*<sp/>@param<sp/>str<sp/>Pointer<sp/>to<sp/>the<sp/>string<sp/>to<sp/>search<sp/>within.</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/>@param<sp/>sub<sp/>The<sp/>substring<sp/>to<sp/>search<sp/>for.</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/>@return<sp/>The<sp/>number<sp/>of<sp/>occurrences<sp/>of<sp/>the<sp/>substring.</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="modules_2structs_2include_2structs_2base_8h_1a4eee7b291ed2cdcd4e3c2496c603c48c" kindref="member">count</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string*<sp/>str,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>sub);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="66"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/>@class<sp/>bsc_t</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Basic<sp/>structure<sp/>class<sp/>that<sp/>provides<sp/>type<sp/>translation<sp/>and<sp/>buffer<sp/>management.</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*<sp/>This<sp/>class<sp/>serves<sp/>as<sp/>a<sp/>foundation<sp/>for<sp/>data<sp/>type<sp/>handling<sp/>in<sp/>the<sp/>framework.</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*<sp/>It<sp/>provides<sp/>functionality<sp/>to<sp/>translate<sp/>ROOT<sp/>types<sp/>to<sp/>internal<sp/>enumerations,</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/>manage<sp/>string<sp/>buffers,<sp/>and<sp/>format<sp/>type<sp/>information<sp/>as<sp/>strings.</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="classbsc__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classbsc__t" kindref="compound">bsc_t</ref><sp/>{</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Constructor<sp/>for<sp/>the<sp/>bsc_t<sp/>class.</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/></highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Initializes<sp/>a<sp/>new<sp/>basic<sp/>structure<sp/>instance<sp/>with<sp/>default<sp/>settings.</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classbsc__t_1a83f5611247dc2631d5f736a363d30e56" kindref="member">bsc_t</ref>();</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Destructor<sp/>for<sp/>the<sp/>bsc_t<sp/>class.</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/></highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Cleans<sp/>up<sp/>resources<sp/>used<sp/>by<sp/>the<sp/>basic<sp/>structure<sp/>instance.</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classbsc__t_1a3fb1b96a0088b257842970eaca2e1233" kindref="member">~bsc_t</ref>();</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Translates<sp/>a<sp/>ROOT<sp/>type<sp/>string<sp/>to<sp/>an<sp/>internal<sp/>data<sp/>enumeration.</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>root_str<sp/>Pointer<sp/>to<sp/>the<sp/>string<sp/>containing<sp/>the<sp/>ROOT<sp/>type.</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>The<sp/>corresponding<sp/>data_enum<sp/>value.</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>method<sp/>parses<sp/>a<sp/>ROOT<sp/>type<sp/>string<sp/>(e.g.,<sp/>&quot;vector&lt;float&gt;&quot;)<sp/>and<sp/>returns</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>the<sp/>corresponding<sp/>internal<sp/>data_enum<sp/>value<sp/>for<sp/>type-safe<sp/>operations.</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3" kindref="member">data_enum</ref><sp/><ref refid="classbsc__t_1a39907da14ea4fb20f71b47d0724bf1f2" kindref="member">root_type_translate</ref>(std::string*<sp/>root_str);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="100"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Represents<sp/>the<sp/>object&apos;s<sp/>state<sp/>as<sp/>a<sp/>string.</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>A<sp/>string<sp/>representation<sp/>of<sp/>the<sp/>object.</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>method<sp/>returns<sp/>a<sp/>human-readable<sp/>string<sp/>representation<sp/>of<sp/>the<sp/>object&apos;s</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>current<sp/>state,<sp/>useful<sp/>for<sp/>debugging<sp/>or<sp/>logging.</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classbsc__t_1a7bf3182a49cfb5375bc556171d7e5598" kindref="member">as_string</ref>();</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="110"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Scans<sp/>and<sp/>returns<sp/>the<sp/>current<sp/>buffer<sp/>content.</highlight></codeline>
+<codeline lineno="111"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>A<sp/>string<sp/>containing<sp/>the<sp/>current<sp/>buffer<sp/>content.</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="113"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>method<sp/>returns<sp/>the<sp/>current<sp/>content<sp/>of<sp/>the<sp/>internal<sp/>buffer,</highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>which<sp/>is<sp/>used<sp/>for<sp/>accumulating<sp/>textual<sp/>data<sp/>during<sp/>operations.</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classbsc__t_1a29da8e58b1fff7d00b9535a4ba027898" kindref="member">scan_buffer</ref>();</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Clears<sp/>the<sp/>internal<sp/>buffer.</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>method<sp/>resets<sp/>the<sp/>internal<sp/>buffer<sp/>to<sp/>an<sp/>empty<sp/>state,</highlight></codeline>
+<codeline lineno="122"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>typically<sp/>called<sp/>after<sp/>processing<sp/>the<sp/>buffer<sp/>content.</highlight></codeline>
+<codeline lineno="123"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classbsc__t_1a953a8bb68bdd6acd9c97d4c0eb965319" kindref="member">flush_buffer</ref>();</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="126" refid="classbsc__t_1a69bf0e1aff0cd282e59ac3593af43360" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classbsc__t_1a69bf0e1aff0cd282e59ac3593af43360" kindref="member">buffer</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Internal<sp/>buffer<sp/>for<sp/>accumulating<sp/>textual<sp/>data.</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"></highlight><highlight class="normal">};</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>STRUCTS_BASE_H<sp/></highlight><highlight class="comment">///&lt;<sp/>End<sp/>of<sp/>include<sp/>guard<sp/>for<sp/>STRUCTS_BASE_H.</highlight></codeline>
+    </programlisting>
+    <location file="modules/structs/include/structs/base.h"/>
+  </compounddef>
+</doxygen>

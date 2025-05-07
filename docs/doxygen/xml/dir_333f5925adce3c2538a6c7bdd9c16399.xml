@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_333f5925adce3c2538a6c7bdd9c16399" kind="dir">
+    <compoundname>bsm_4tops</compoundname>
+    <innerdir refid="dir_78ff54250c20569884c69ac073d09539">cxx</innerdir>
+    <innerdir refid="dir_abb338306c0947537b29c1e70eac594a">include</innerdir>
+    <innerfile refid="src_2_analysis_g_2graphs_2bsm__4tops_2____init_____8py">src/AnalysisG/graphs/bsm_4tops/__init__.py</innerfile>
+    <innerfile refid="graph__bsm__4tops_8pyx">graph_bsm_4tops.pyx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="graphs/bsm_4tops/"/>
+  </compounddef>
+</doxygen>

@@ -1,7 +1,17 @@
+/**
+ * @file pyc.py
+ * @brief Defines the `pyc` class for managing operations and devices.
+ */
+
 import torch
 
 class pyc:
-
+    /**
+     * @brief Initializes the `pyc` class with a path and devices.
+     *
+     * @param pth Path to the library.
+     * @param devices List of devices to use (default: ["tensor", "cuda"]).
+     */
     def __init__(self, pth, devices = ["tensor", "cuda"]):
         self._pth = pth
         self._fx = ["graph", "nusol", "operators", "physics", "transform"]
@@ -28,13 +38,13 @@ class pyc:
                     "cartesian_separate_m"     , "cartesian_combined_m"     ,
                     "polar_separate_m"         , "polar_combined_m"         ,
                     "cartesian_separate_mt2"   , "cartesian_combined_mt2"   ,
-                    "polar_combined_p2"        , "polar_separate_mt2"       ,
-                    "polar_combined_mt2"       , "cartesian_separate_mt"    ,
-                    "cartesian_combined_mt"    , "polar_separate_mt"        ,
-                    "polar_combined_mt"        , "cartesian_separate_theta" ,
-                    "cartesian_combined_theta" , "polar_separate_theta"     ,
-                    "polar_combined_theta"     , "cartesian_separate_deltaR",
-                    "cartesian_combined_deltaR", "polar_separate_deltaR"
+                    "polar_separate_mt2"       , "polar_combined_mt2"       ,
+                    "cartesian_separate_mt"    , "cartesian_combined_mt"    ,
+                    "polar_separate_mt"        , "polar_combined_mt"        ,
+                    "cartesian_separate_theta" , "cartesian_combined_theta" ,
+                    "polar_separate_theta"     , "polar_combined_theta"     ,
+                    "cartesian_separate_deltaR", "cartesian_combined_deltaR",
+                    "polar_separate_deltaR"
                 ],
                 "transform" : [
                     "separate_px"       ,

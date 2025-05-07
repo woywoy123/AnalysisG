@@ -1,0 +1,366 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h" kind="file" language="C++">
+    <compoundname>bsm_4tops/include/bsm_4tops/graph_features.h</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1a50dd3e9329b3d7325cde2d4b8059cb60" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void signal_event</definition>
+        <argsstring>(bool *o, bsm_4tops *event)</argsstring>
+        <name>signal_event</name>
+        <param>
+          <type>bool *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" line="5" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" bodystart="5" bodyend="15"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1ab67addeed0cfbc8b4e8ce19cd2e98cb4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_tops</definition>
+        <argsstring>(int *o, bsm_4tops *event)</argsstring>
+        <name>num_tops</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" line="17" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" bodystart="17" bodyend="20"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1afdc7570b9acc1f33266435b5901ff15f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_neutrino</definition>
+        <argsstring>(int *o, bsm_4tops *event)</argsstring>
+        <name>num_neutrino</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" line="22" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" bodystart="22" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1aad7321ef73eeb35377f5651c773d53c3" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_lepton</definition>
+        <argsstring>(int *o, bsm_4tops *event)</argsstring>
+        <name>num_lepton</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" line="33" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" bodystart="33" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1aa3877d6a2e8b77e08262de8b557b9845" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void missing_et</definition>
+        <argsstring>(double *o, bsm_4tops *event)</argsstring>
+        <name>missing_et</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" line="46" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" bodystart="46" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1af2c4c0d6c526b044cacd4b7a03274557" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void missing_phi</definition>
+        <argsstring>(double *o, bsm_4tops *event)</argsstring>
+        <name>missing_phi</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" line="47" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" bodystart="47" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1a1252cadaaea1ae85af27e0711b7cdf3c" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_children_leps</definition>
+        <argsstring>(double *o, bsm_4tops *event)</argsstring>
+        <name>num_children_leps</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" line="49" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" bodystart="49" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1a75c0e78e1f575a8475cf9d1958c47167" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_leps</definition>
+        <argsstring>(double *o, bsm_4tops *event)</argsstring>
+        <name>num_leps</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" line="58" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" bodystart="58" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1a505e65de5d3c0b656936827d005a7e04" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_quark</definition>
+        <argsstring>(double *o, bsm_4tops *event)</argsstring>
+        <name>num_quark</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" line="62" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" bodystart="62" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1ae8e5a8c9e20c373fc6c4566c25f8a5e9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_jets</definition>
+        <argsstring>(double *o, bsm_4tops *event)</argsstring>
+        <name>num_jets</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" line="71" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" bodystart="71" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1af0949e7dccecf95a3c30978f6a4a37c3" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_truthjets</definition>
+        <argsstring>(double *o, bsm_4tops *event)</argsstring>
+        <name>num_truthjets</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" line="72" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" bodystart="72" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1a06342b1cfa1e60c002d2f1875c674ee8" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void event_number</definition>
+        <argsstring>(long *o, bsm_4tops *event)</argsstring>
+        <name>event_number</name>
+        <param>
+          <type>long *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" line="74" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" bodystart="74" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1ac4429f2ee44f3a8d00eb820c7c69481d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void event_weight</definition>
+        <argsstring>(double *o, bsm_4tops *event)</argsstring>
+        <name>event_weight</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" line="75" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/graph_features.h" bodystart="75" bodyend="75"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>GRAPH_FEATURES_BSM_4TOPS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GRAPH_FEATURES_BSM_4TOPS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/>------------------<sp/>Truth<sp/>Graph<sp/>Features<sp/>---------------------<sp/>//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>signal_event(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classevent" kindref="compound">event</ref><sp/>-&gt;<sp/>Tops.size()<sp/>!=<sp/>4){*o<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>Tops;</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtop" kindref="compound">top</ref>*<sp/>t_<sp/>=<sp/>(<ref refid="classtop" kindref="compound">top</ref>*)<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!t_<sp/>-&gt;<sp/>from_res){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*o<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="15"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>num_tops(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>Tops.size();</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(*o<sp/>&gt;<sp/>4){*o<sp/>=<sp/>4;}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>num_neutrino(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>neutrinos<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/>ch<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>Children;<sp/></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>ch.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtop__children" kindref="compound">top_children</ref>*<sp/>ch_<sp/>=<sp/>(<ref refid="classtop__children" kindref="compound">top_children</ref>*)ch[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!ch_<sp/>-&gt;<sp/>is_nu){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>neutrinos++;<sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>neutrinos;<sp/></highlight></codeline>
+<codeline lineno="31"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>num_lepton(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>leptons<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/>ch<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>Children;<sp/></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>ch.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtop__children" kindref="compound">top_children</ref>*<sp/>ch_<sp/>=<sp/>(<ref refid="classtop__children" kindref="compound">top_children</ref>*)ch[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ch_<sp/>-&gt;<sp/>is_nu){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!ch_<sp/>-&gt;<sp/>is_lep){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>leptons++;<sp/></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>leptons;<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="comment">//<sp/>---------------------<sp/>Graph<sp/>Observables<sp/>---------------------<sp/>//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>missing_et(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){*o<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmet" kindref="compound">met</ref>;};<sp/></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>missing_phi(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){*o<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="namespacetest__particles_1abb55ac0e421aeee040b7545a6d6705a3" kindref="member">phi</ref>;};<sp/></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>num_children_leps(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/>ch<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>Children;<sp/></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>ch.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ch[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]<sp/>-&gt;<sp/>is_nu<sp/>||<sp/>!ch[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]<sp/>-&gt;<sp/>is_lep){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*o)+=1;<sp/></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>num_leps(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>int(<ref refid="classevent" kindref="compound">event</ref><sp/>-&gt;<sp/>Muons.size())<sp/>+<sp/>int(<ref refid="classevent" kindref="compound">event</ref><sp/>-&gt;<sp/>Electrons.size());</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>num_quark(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/>ch<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>Children;<sp/></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>ch.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ch[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]<sp/>-&gt;<sp/>is_nu<sp/>||<sp/>ch[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>]<sp/>-&gt;<sp/>is_lep){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*o<sp/>+=<sp/>1;<sp/></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>num_jets(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){*o<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>Jets.size();}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>num_truthjets(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){*o<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>TruthJets.size();}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>event_number(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){*o<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>event_number;}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>event_weight(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){*o<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a7edabf994b76a00cbc60c95af337db8f" kindref="member">weight</ref>;}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="graphs/bsm_4tops/include/bsm_4tops/graph_features.h"/>
+  </compounddef>
+</doxygen>

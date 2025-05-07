@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_b39d24fdc54e2922b46bfac2926f3182" kind="dir">
+    <compoundname>benchmarks</compoundname>
+    <innerfile refid="benchmarks_2figures_8py">benchmarks/figures.py</innerfile>
+    <innerfile refid="loader_8py">loader.py</innerfile>
+    <innerfile refid="benchmarks_2main_8py">benchmarks/main.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/benchmarks/"/>
+  </compounddef>
+</doxygen>

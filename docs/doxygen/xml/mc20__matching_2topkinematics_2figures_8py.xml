@@ -1,0 +1,246 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="mc20__matching_2topkinematics_2figures_8py" kind="file" language="Python">
+    <compoundname>mc20_matching/topkinematics/figures.py</compoundname>
+    <innernamespace refid="namespacetopkinematics_1_1figures">topkinematics::figures</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="keyword">from</highlight><highlight class="normal"><sp/><ref refid="namespace_analysis_g_1_1core_1_1plotting" kindref="compound">AnalysisG.core.plotting</ref><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>TH1F,<sp/>TH2F</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">global</highlight><highlight class="normal"><sp/>figure_path</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keyword">global</highlight><highlight class="normal"><sp/>mass_point</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacefigures_1a1d2684578320c9dd2425ab8c2417994b" kindref="member">path</ref>(hist):</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.Style<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;ATLAS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.OutputDirectory<sp/>=<sp/>figure_path<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/top-kinematics/&quot;</highlight><highlight class="normal"><sp/>+<sp/>mass_point</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.Overflow<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>hist</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetopkinematics_1_1figures_1aaed752ebec6ae222231267a8e49430a3" kindref="member">top_pt</ref>(ana,<sp/>mp):</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>thr<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Resonance&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;red&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.xData<sp/>=<sp/>ana.res_top_kinematics[</highlight><highlight class="stringliteral">&quot;pt&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>ths<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Spectator&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;blue&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.xData<sp/>=<sp/>ana.spec_top_kinematics[</highlight><highlight class="stringliteral">&quot;pt&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>tha<sp/>=<sp/><ref refid="namespacefigures_1a1d2684578320c9dd2425ab8c2417994b" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Histograms<sp/>=<sp/>[thr,<sp/>ths]</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$p_T$<sp/>of<sp/>Tops<sp/>from<sp/>Top-Philic<sp/>Mass<sp/>Injection<sp/>at<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>mp</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$p_T$<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Density<sp/>(Arb.)<sp/>/<sp/>($10$<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xMax<sp/>=<sp/>1000</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xBins<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xStep<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.1.a&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.SaveFigure()</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetopkinematics_1_1figures_1a50741f3f4504d4933c80c3ac07392bcb" kindref="member">top_energy</ref>(ana,<sp/>mp):</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>thr<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Resonance&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;red&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.xData<sp/>=<sp/>ana.res_top_kinematics[</highlight><highlight class="stringliteral">&quot;energy&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>ths<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Spectator&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;blue&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.xData<sp/>=<sp/>ana.spec_top_kinematics[</highlight><highlight class="stringliteral">&quot;energy&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>tha<sp/>=<sp/><ref refid="namespacefigures_1a1d2684578320c9dd2425ab8c2417994b" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Histograms<sp/>=<sp/>[thr,<sp/>ths]</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Energy<sp/>of<sp/>Tops<sp/>from<sp/>Top-Philic<sp/>Mass<sp/>Injection<sp/>at<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>mp</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Energy<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Density<sp/>(Arb.)<sp/>/<sp/>($15$<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xMax<sp/>=<sp/>1500</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xBins<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xStep<sp/>=<sp/>150</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.1.b&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.SaveFigure()</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetopkinematics_1_1figures_1a0b86db90e176ea2c3ae6354753c62e58" kindref="member">top_phi</ref>(ana):</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>thr<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Resonance&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.xData<sp/>=<sp/>ana.res_top_kinematics[</highlight><highlight class="stringliteral">&quot;phi&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>ths<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Spectator&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.xData<sp/>=<sp/>ana.spec_top_kinematics[</highlight><highlight class="stringliteral">&quot;phi&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>tha<sp/>=<sp/><ref refid="namespacefigures_1a1d2684578320c9dd2425ab8c2417994b" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Histograms<sp/>=<sp/>[thr,<sp/>ths]</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Azimuthal<sp/>Angle<sp/>of<sp/>Truth<sp/>Tops&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Azimuthal<sp/>Angle<sp/>($\\phi$)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Density<sp/>(Arb.)<sp/>/<sp/>(0.1)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xMin<sp/>=<sp/>-3.5</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xMax<sp/>=<sp/>3.5</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xBins<sp/>=<sp/>70</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xStep<sp/>=<sp/>0.5</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.1.c&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.SaveFigure()</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetopkinematics_1_1figures_1a2eb245517262dd1bc23563cc5759877c" kindref="member">top_eta</ref>(ana):</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>thr<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Resonance&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.xData<sp/>=<sp/>ana.res_top_kinematics[</highlight><highlight class="stringliteral">&quot;eta&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>ths<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Spectator&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.xData<sp/>=<sp/>ana.spec_top_kinematics[</highlight><highlight class="stringliteral">&quot;eta&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>tha<sp/>=<sp/><ref refid="namespacefigures_1a1d2684578320c9dd2425ab8c2417994b" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Histograms<sp/>=<sp/>[thr,<sp/>ths]</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Pseudorapidity<sp/>of<sp/>Truth<sp/>Tops&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Pseudorapidity<sp/>($\\eta$)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Density<sp/>(Arb.)<sp/>/<sp/>0.1&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xMin<sp/>=<sp/>-6</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xMax<sp/>=<sp/>6</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xBins<sp/>=<sp/>120</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xStep<sp/>=<sp/>1</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.1.d&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.SaveFigure()</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetopkinematics_1_1figures_1a45490c0b0b0ee1737b08775146b42bb4" kindref="member">top_pt_energy</ref>(ana):</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>th<sp/>=<sp/><ref refid="namespacefigures_1a1d2684578320c9dd2425ab8c2417994b" kindref="member">path</ref>(TH2F())</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.1.e&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Energy<sp/>as<sp/>a<sp/>Function<sp/>of<sp/>$p_T$<sp/>for<sp/>Resonant<sp/>Truth-Tops&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xData<sp/>=<sp/>ana.res_top_kinematics[</highlight><highlight class="stringliteral">&quot;pt&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMax<sp/>=<sp/>800</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xBins<sp/>=<sp/>160</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xStep<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$p_T$<sp/>of<sp/>Resonant<sp/>Truth<sp/>Top<sp/>/<sp/>5<sp/>GeV&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yData<sp/>=<sp/>ana.res_top_kinematics[</highlight><highlight class="stringliteral">&quot;energy&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yMax<sp/>=<sp/>800</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yBins<sp/>=<sp/>160</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yStep<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;tab20c&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Energy<sp/>of<sp/>Resonant<sp/>Truth<sp/>Top<sp/>/<sp/>5<sp/>GeV&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>th.SaveFigure()</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>th<sp/>=<sp/><ref refid="namespacefigures_1a1d2684578320c9dd2425ab8c2417994b" kindref="member">path</ref>(TH2F())</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.1.f&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Energy<sp/>as<sp/>a<sp/>Function<sp/>of<sp/>$p_T$<sp/>for<sp/>Spectator<sp/>Truth-Tops&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xData<sp/>=<sp/>ana.spec_top_kinematics[</highlight><highlight class="stringliteral">&quot;pt&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMax<sp/>=<sp/>800</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xBins<sp/>=<sp/>160</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xStep<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$p_T$<sp/>of<sp/>Spectator<sp/>Truth<sp/>Top<sp/>/<sp/>5<sp/>GeV&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yData<sp/>=<sp/>ana.spec_top_kinematics[</highlight><highlight class="stringliteral">&quot;energy&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yMax<sp/>=<sp/>800</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yBins<sp/>=<sp/>160</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yStep<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;tab20c&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Energy<sp/>of<sp/>Spectator<sp/>Truth<sp/>Top<sp/>/<sp/>5<sp/>GeV&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>th.SaveFigure()</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetopkinematics_1_1figures_1ab6daf6308ab0d2c897c3fd5ef88e4725" kindref="member">top_delta_r</ref>(ana):</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>thr<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Resonance<sp/>Pairs&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.xData<sp/>=<sp/>ana.deltaR[</highlight><highlight class="stringliteral">&quot;RR&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>ths<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Spectator<sp/>Pairs&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.xData<sp/>=<sp/>ana.deltaR[</highlight><highlight class="stringliteral">&quot;SS&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>thx<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>thx.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Mixture<sp/>(Resonance<sp/>-<sp/>Spectator)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>thx.xData<sp/>=<sp/>ana.deltaR[</highlight><highlight class="stringliteral">&quot;RS&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/>tha<sp/>=<sp/><ref refid="namespacefigures_1a1d2684578320c9dd2425ab8c2417994b" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Histograms<sp/>=<sp/>[thx,<sp/>thr,<sp/>ths]</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>of<sp/>Truth-Top<sp/>Pairs<sp/>(All<sp/>Possible<sp/>Permutations)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>Between<sp/>Possible<sp/>Pair<sp/>Permutations&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Density<sp/>(Arb.)<sp/>/<sp/>0.05&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xMax<sp/>=<sp/>6</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xBins<sp/>=<sp/>120</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xStep<sp/>=<sp/>0.5</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.1.g&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.SaveFigure()</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetopkinematics_1_1figures_1a99c65e86a99491541bbd481b33a96fb8" kindref="member">top_pair_mass</ref>(ana):</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/>thr<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Resonance<sp/>Pairs&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/>thr.xData<sp/>=<sp/>ana.mass_combi[</highlight><highlight class="stringliteral">&quot;RR&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/>ths<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Spectator<sp/>Pairs&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/>ths.xData<sp/>=<sp/>ana.mass_combi[</highlight><highlight class="stringliteral">&quot;SS&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/>thx<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/>thx.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Mixture<sp/>(Resonance<sp/>-<sp/>Spectator)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/>thx.xData<sp/>=<sp/>ana.mass_combi[</highlight><highlight class="stringliteral">&quot;RS&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>tha<sp/>=<sp/><ref refid="namespacefigures_1a1d2684578320c9dd2425ab8c2417994b" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Histograms<sp/>=<sp/>[thx,<sp/>thr,<sp/>ths]</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>of<sp/>Truth-Top<sp/>Pairs<sp/>(All<sp/>Possible<sp/>Permutations)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>of<sp/>Possible<sp/>Pair<sp/>Permutations<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Entries<sp/>/<sp/>5<sp/>GeV&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xMin<sp/>=<sp/>200</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xMax<sp/>=<sp/>1400</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xBins<sp/>=<sp/>240</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.xStep<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.1.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/>tha.SaveFigure()</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/>th<sp/>=<sp/><ref refid="namespacefigures_1a1d2684578320c9dd2425ab8c2417994b" kindref="member">path</ref>(TH2F())</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>as<sp/>a<sp/>Function<sp/>of<sp/>$\\Delta<sp/>R$<sp/>for<sp/>Possible<sp/>Top<sp/>Pair<sp/>Permutations&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.1.i&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xData<sp/>=<sp/>sum(ana.deltaR.values(),<sp/>[])</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMax<sp/>=<sp/>4</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xBins<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xStep<sp/>=<sp/>0.25</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;$\\Delta<sp/>R$<sp/>Between<sp/>Pair<sp/>Permutations<sp/>/<sp/>0.04&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yData<sp/>=<sp/>sum(ana.mass_combi.values(),<sp/>[])</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yMin<sp/>=<sp/>200</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yMax<sp/>=<sp/>1200</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yBins<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yStep<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Color<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;tab20c&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>of<sp/>Truth-Top<sp/>Pair<sp/>Permutation<sp/>/<sp/>10<sp/>GeV&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/>th.SaveFigure()</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetopkinematics_1_1figures_1ab14fbfdf49f0f9ba47a88d48e6980153" kindref="member">TopKinematics</ref>(ana,<sp/>mp):</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetopkinematics_1_1figures_1aaed752ebec6ae222231267a8e49430a3" kindref="member">top_pt</ref>(ana,<sp/>mp)</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetopkinematics_1_1figures_1a50741f3f4504d4933c80c3ac07392bcb" kindref="member">top_energy</ref>(ana,<sp/>mp)</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetopkinematics_1_1figures_1a0b86db90e176ea2c3ae6354753c62e58" kindref="member">top_phi</ref>(ana)</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetopkinematics_1_1figures_1a2eb245517262dd1bc23563cc5759877c" kindref="member">top_eta</ref>(ana)</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetopkinematics_1_1figures_1a45490c0b0b0ee1737b08775146b42bb4" kindref="member">top_pt_energy</ref>(ana)</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetopkinematics_1_1figures_1ab6daf6308ab0d2c897c3fd5ef88e4725" kindref="member">top_delta_r</ref>(ana)</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetopkinematics_1_1figures_1a99c65e86a99491541bbd481b33a96fb8" kindref="member">top_pair_mass</ref>(ana)</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/workspaces/AnalysisG/studies/mc20_matching/topkinematics/figures.py"/>
+  </compounddef>
+</doxygen>

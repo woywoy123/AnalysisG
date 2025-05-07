@@ -1,0 +1,609 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="structsettings__t" kind="struct" language="C++" prot="public">
+    <compoundname>settings_t</compoundname>
+    <includes refid="settings_8h" local="no">settings.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structsettings__t_1adfb471fcc454bdfb97309137a9c75d9e" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string settings_t::output_path</definition>
+        <argsstring></argsstring>
+        <name>output_path</name>
+        <initializer>= &quot;./ProjectName&quot;</initializer>
+        <briefdescription>
+<para>Path where output files and directories will be created. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is &quot;./ProjectName&quot;. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="30" column="17" bodyfile="modules/structs/include/structs/settings.h" bodystart="30" bodyend="-1"/>
+        <referencedby refid="classmetrics_1a2ed5da3a9b6c0e0e9b711afafaeed7ab" compoundref="loss__plots_8cxx" startline="229" endline="287">metrics::dump_accuracy_plots</referencedby>
+        <referencedby refid="classmetrics_1a85ac60407efe672dd1ba1c067a06afb2" compoundref="loss__plots_8cxx" startline="75" endline="132">metrics::dump_loss_plots</referencedby>
+        <referencedby refid="classmetrics_1a32427b13b7d56f6243741c03ae24288f" compoundref="metrics_8cxx" startline="28" endline="50">metrics::register_model</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a48599c1af0e6a91c4ded28d191f17981" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string settings_t::run_name</definition>
+        <argsstring></argsstring>
+        <name>run_name</name>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+<para>Name for this analysis run or session, used for organizing outputs. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is empty string. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="36" column="17" bodyfile="modules/structs/include/structs/settings.h" bodystart="36" bodyend="-1"/>
+        <referencedby refid="classoptimizer_1a890de5e3b4437237abda2ae0a0bc8803" compoundref="optimizer_2cxx_2optimizer_8cxx" startline="92" endline="111">optimizer::evaluation_loop</referencedby>
+        <referencedby refid="classoptimizer_1ae34987e7b51f3b331c5ba20965ae7565" compoundref="optimizer_2cxx_2optimizer_8cxx" startline="113" endline="130">optimizer::launch_model</referencedby>
+        <referencedby refid="classmetrics_1a32427b13b7d56f6243741c03ae24288f" compoundref="metrics_8cxx" startline="28" endline="50">metrics::register_model</referencedby>
+        <referencedby refid="classoptimizer_1a64c847af5d85a8599150c7db47ef20bf" compoundref="optimizer_2cxx_2optimizer_8cxx" startline="43" endline="68">optimizer::training_loop</referencedby>
+        <referencedby refid="classoptimizer_1a6476f692c2191460dcfba3f0ff4a621a" compoundref="optimizer_2cxx_2optimizer_8cxx" startline="70" endline="90">optimizer::validation_loop</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1adad654b52cb13537d3a0052bae3c7a16" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string settings_t::sow_name</definition>
+        <argsstring></argsstring>
+        <name>sow_name</name>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+<para>Name for Sum-Of-Weights reference, used in normalization. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is empty string. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="42" column="17" bodyfile="modules/structs/include/structs/settings.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1ac5fbabdc9b3d4bec81b34f0f0906663f" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string settings_t::metacache_path</definition>
+        <argsstring></argsstring>
+        <name>metacache_path</name>
+        <initializer>= &quot;./&quot;</initializer>
+        <briefdescription>
+<para>Path for caching metadata to avoid repeated retrieval. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is current directory (&quot;./&quot;). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="48" column="17" bodyfile="modules/structs/include/structs/settings.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a96582b3e03788f3a9599b8801dc38ec2" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool settings_t::fetch_meta</definition>
+        <argsstring></argsstring>
+        <name>fetch_meta</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Whether to fetch metadata from external sources (e.g., AMI database). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is false. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="54" column="10" bodyfile="modules/structs/include/structs/settings.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a2e1b9a538a4421480ac8726699575b3e" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool settings_t::pretagevents</definition>
+        <argsstring></argsstring>
+        <name>pretagevents</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Whether to apply pre-tagging to events before full processing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is false. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="60" column="10" bodyfile="modules/structs/include/structs/settings.h" bodystart="60" bodyend="-1"/>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1ab1ea0b6cb2fcc7c77af0424e55c39e1e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int settings_t::epochs</definition>
+        <argsstring></argsstring>
+        <name>epochs</name>
+        <initializer>= 10</initializer>
+        <briefdescription>
+<para>Number of training epochs for machine learning models. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is 10. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="68" column="9" bodyfile="modules/structs/include/structs/settings.h" bodystart="68" bodyend="-1"/>
+        <referencedby refid="classoptimizer_1ae34987e7b51f3b331c5ba20965ae7565" compoundref="optimizer_2cxx_2optimizer_8cxx" startline="113" endline="130">optimizer::launch_model</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a7e4a89f57124d740aee08c1dff380320" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int settings_t::kfolds</definition>
+        <argsstring></argsstring>
+        <name>kfolds</name>
+        <initializer>= 10</initializer>
+        <briefdescription>
+<para>Number of folds for k-fold cross-validation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is 10. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="74" column="9" bodyfile="modules/structs/include/structs/settings.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a574cb98d49f69c527eed1fe1c64e22a5" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int settings_t::batch_size</definition>
+        <argsstring></argsstring>
+        <name>batch_size</name>
+        <initializer>= 1</initializer>
+        <briefdescription>
+<para>Batch size for model training. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is 1. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="80" column="9" bodyfile="modules/structs/include/structs/settings.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1ab01c824ea8fe49508bb2899b75e59bbe" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; settings_t::kfold</definition>
+        <argsstring></argsstring>
+        <name>kfold</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>Specific fold indices to use if not using all folds. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is empty (use all folds). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="86" column="17" bodyfile="modules/structs/include/structs/settings.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1adceeed92a9cc6cf8517b6b93358d1f75" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int settings_t::num_examples</definition>
+        <argsstring></argsstring>
+        <name>num_examples</name>
+        <initializer>= 3</initializer>
+        <briefdescription>
+<para>Number of example events/objects to generate or display. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is 3. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="92" column="9" bodyfile="modules/structs/include/structs/settings.h" bodystart="92" bodyend="-1"/>
+        <referencedby refid="classoptimizer_1a6075749ec6e43431b6a4294a7b2cbafb" compoundref="optimizer_2cxx_2optimizer_8cxx" startline="19" endline="41">optimizer::import_model_sessions</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1af8bf8b05ab282c3e253234cbc4fbca6a" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float settings_t::train_size</definition>
+        <argsstring></argsstring>
+        <name>train_size</name>
+        <initializer>= 50</initializer>
+        <briefdescription>
+<para>Percentage of data to use for training (vs validation/testing). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is 50%. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="98" column="11" bodyfile="modules/structs/include/structs/settings.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a0647b7d24f25513943e22f779f798a26" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool settings_t::training</definition>
+        <argsstring></argsstring>
+        <name>training</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+<para>Whether to perform model training. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is true. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="104" column="10" bodyfile="modules/structs/include/structs/settings.h" bodystart="104" bodyend="-1"/>
+        <referencedby refid="classoptimizer_1ae34987e7b51f3b331c5ba20965ae7565" compoundref="optimizer_2cxx_2optimizer_8cxx" startline="113" endline="130">optimizer::launch_model</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a5d6938cad5a0394586414f188c123302" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool settings_t::validation</definition>
+        <argsstring></argsstring>
+        <name>validation</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+<para>Whether to perform validation during training. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is true. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="110" column="10" bodyfile="modules/structs/include/structs/settings.h" bodystart="110" bodyend="-1"/>
+        <referencedby refid="classoptimizer_1ae34987e7b51f3b331c5ba20965ae7565" compoundref="optimizer_2cxx_2optimizer_8cxx" startline="113" endline="130">optimizer::launch_model</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a1eb752fc0b20923757796ef50942718e" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool settings_t::evaluation</definition>
+        <argsstring></argsstring>
+        <name>evaluation</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+<para>Whether to evaluate models after training. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is true. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="116" column="10" bodyfile="modules/structs/include/structs/settings.h" bodystart="116" bodyend="-1"/>
+        <referencedby refid="classoptimizer_1ae34987e7b51f3b331c5ba20965ae7565" compoundref="optimizer_2cxx_2optimizer_8cxx" startline="113" endline="130">optimizer::launch_model</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a6abaa304e12b300faa9e6b3159b5071c" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool settings_t::continue_training</definition>
+        <argsstring></argsstring>
+        <name>continue_training</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+<para>Whether to continue training from previous checkpoints if available. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is true. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="122" column="10" bodyfile="modules/structs/include/structs/settings.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a7d18701471e1d25160f18d8ee2442f75" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string settings_t::training_dataset</definition>
+        <argsstring></argsstring>
+        <name>training_dataset</name>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+<para>Path or identifier for the training dataset. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is empty string. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="128" column="17" bodyfile="modules/structs/include/structs/settings.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a432e549d09bb6a2e87fa37abf2468e83" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string settings_t::graph_cache</definition>
+        <argsstring></argsstring>
+        <name>graph_cache</name>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+<para>Path for caching graph structures to avoid recomputation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is empty string. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="134" column="17" bodyfile="modules/structs/include/structs/settings.h" bodystart="134" bodyend="-1"/>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a1b9f41a1149bcdf6cd95370c9180da5e" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string settings_t::var_pt</definition>
+        <argsstring></argsstring>
+        <name>var_pt</name>
+        <initializer>= &quot;pt&quot;</initializer>
+        <briefdescription>
+<para>Name of the variable representing transverse momentum for plotting. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is &quot;pt&quot;. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="142" column="17" bodyfile="modules/structs/include/structs/settings.h" bodystart="142" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a9da2e640dacd62e6bb91103979abb6c3" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string settings_t::var_eta</definition>
+        <argsstring></argsstring>
+        <name>var_eta</name>
+        <initializer>= &quot;eta&quot;</initializer>
+        <briefdescription>
+<para>Name of the variable representing pseudorapidity for plotting. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is &quot;eta&quot;. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="148" column="17" bodyfile="modules/structs/include/structs/settings.h" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1ae14143c2b463ac78fc5c12ae9065d83e" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string settings_t::var_phi</definition>
+        <argsstring></argsstring>
+        <name>var_phi</name>
+        <initializer>= &quot;phi&quot;</initializer>
+        <briefdescription>
+<para>Name of the variable representing azimuthal angle for plotting. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is &quot;phi&quot;. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="154" column="17" bodyfile="modules/structs/include/structs/settings.h" bodystart="154" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1ad37e257f133d620250214c01eef0fcda" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string settings_t::var_energy</definition>
+        <argsstring></argsstring>
+        <name>var_energy</name>
+        <initializer>= &quot;energy&quot;</initializer>
+        <briefdescription>
+<para>Name of the variable representing energy for plotting. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is &quot;energy&quot;. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="160" column="17" bodyfile="modules/structs/include/structs/settings.h" bodystart="160" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a235f1da734eb8851bd798d74d417ec7d" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt;std::string&gt; settings_t::targets</definition>
+        <argsstring></argsstring>
+        <name>targets</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>Target variables or attributes for modeling or plotting. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is empty. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="166" column="17" bodyfile="modules/structs/include/structs/settings.h" bodystart="166" bodyend="-1"/>
+        <referencedby refid="classmetrics_1a8a0b4107864ac5f548ed37a9a4a9372f" compoundref="metrics_8cxx" startline="103" endline="109">metrics::dump_plots</referencedby>
+        <referencedby refid="classmetrics_1a32427b13b7d56f6243741c03ae24288f" compoundref="metrics_8cxx" startline="28" endline="50">metrics::register_model</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a1c59290b131395e78ca09ee55829bc91" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int settings_t::nbins</definition>
+        <argsstring></argsstring>
+        <name>nbins</name>
+        <initializer>= 400</initializer>
+        <briefdescription>
+<para>Number of bins for histograms. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is 400. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="172" column="9" bodyfile="modules/structs/include/structs/settings.h" bodystart="172" bodyend="-1"/>
+        <referencedby refid="classmetrics_1a60ff488f6951bae8d98bc7a03bc6e464" compoundref="mass__plots_8cxx" startline="13" endline="115">metrics::dump_mass_plots</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a9094b04f880b6360af1245e4ab6c225e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int settings_t::refresh</definition>
+        <argsstring></argsstring>
+        <name>refresh</name>
+        <initializer>= 10</initializer>
+        <briefdescription>
+<para>Refresh rate for progress displays, in iterations. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is 10. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="178" column="9" bodyfile="modules/structs/include/structs/settings.h" bodystart="178" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a1bb7bcd7803eafb1da81844bb1c99b59" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int settings_t::max_range</definition>
+        <argsstring></argsstring>
+        <name>max_range</name>
+        <initializer>= 400</initializer>
+        <briefdescription>
+<para>Maximum range for histograms or plots. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is 400. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="184" column="9" bodyfile="modules/structs/include/structs/settings.h" bodystart="184" bodyend="-1"/>
+        <referencedby refid="classmetrics_1a60ff488f6951bae8d98bc7a03bc6e464" compoundref="mass__plots_8cxx" startline="13" endline="115">metrics::dump_mass_plots</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a383cb4d94ff68571dc4cd2e8a9f4d00f" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int settings_t::threads</definition>
+        <argsstring></argsstring>
+        <name>threads</name>
+        <initializer>= 10</initializer>
+        <briefdescription>
+<para>Number of threads for parallel processing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is 10. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="190" column="9" bodyfile="modules/structs/include/structs/settings.h" bodystart="190" bodyend="-1"/>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a5df915d5d0eb7dd35eb8ada846a7aaa4" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool settings_t::debug_mode</definition>
+        <argsstring></argsstring>
+        <name>debug_mode</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Whether to enable additional debug output. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is false. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="196" column="10" bodyfile="modules/structs/include/structs/settings.h" bodystart="196" bodyend="-1"/>
+        <referencedby refid="classoptimizer_1ae34987e7b51f3b331c5ba20965ae7565" compoundref="optimizer_2cxx_2optimizer_8cxx" startline="113" endline="130">optimizer::launch_model</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1a4eca9affb4c99a15e46c00ce9f7b7835" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool settings_t::build_cache</definition>
+        <argsstring></argsstring>
+        <name>build_cache</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Whether to build and use a cache for intermediate results. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is false. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="202" column="10" bodyfile="modules/structs/include/structs/settings.h" bodystart="202" bodyend="-1"/>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structsettings__t_1aff9924a1c481cffcc00438dc3d93194a" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool settings_t::selection_root</definition>
+        <argsstring></argsstring>
+        <name>selection_root</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Whether to store selection results in ROOT format. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is false. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/settings.h" line="208" column="10" bodyfile="modules/structs/include/structs/settings.h" bodystart="208" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Contains all configuration settings for an analysis session. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="structsettings__t" kindref="compound">settings_t</ref> structure is used throughout the <ref refid="namespace_analysis_g" kindref="compound">AnalysisG</ref> framework to configure various aspects of the analysis pipeline, including paths for input/output, machine learning parameters, visualization settings, and runtime behavior options. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="6">
+        <label>T</label>
+      </node>
+      <node id="5">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="6" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="7">
+        <label>std::vector&lt; std::string &gt;</label>
+        <childnode refid="2" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>std::vector&lt; int &gt;</label>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::string</label>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>settings_t</label>
+        <link refid="structsettings__t"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>graph_cache</edgelabel>
+          <edgelabel>output_path</edgelabel>
+          <edgelabel>metacache_path</edgelabel>
+          <edgelabel>run_name</edgelabel>
+          <edgelabel>var_eta</edgelabel>
+          <edgelabel>training_dataset</edgelabel>
+          <edgelabel>sow_name</edgelabel>
+          <edgelabel>var_phi</edgelabel>
+          <edgelabel>var_pt</edgelabel>
+          <edgelabel>var_energy</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>kfold</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>targets</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="modules/structs/include/structs/settings.h" line="25" column="17" bodyfile="modules/structs/include/structs/settings.h" bodystart="25" bodyend="209"/>
+    <listofallmembers>
+      <member refid="structsettings__t_1a574cb98d49f69c527eed1fe1c64e22a5" prot="public" virt="non-virtual"><scope>settings_t</scope><name>batch_size</name></member>
+      <member refid="structsettings__t_1a4eca9affb4c99a15e46c00ce9f7b7835" prot="public" virt="non-virtual"><scope>settings_t</scope><name>build_cache</name></member>
+      <member refid="structsettings__t_1a6abaa304e12b300faa9e6b3159b5071c" prot="public" virt="non-virtual"><scope>settings_t</scope><name>continue_training</name></member>
+      <member refid="structsettings__t_1a5df915d5d0eb7dd35eb8ada846a7aaa4" prot="public" virt="non-virtual"><scope>settings_t</scope><name>debug_mode</name></member>
+      <member refid="structsettings__t_1ab1ea0b6cb2fcc7c77af0424e55c39e1e" prot="public" virt="non-virtual"><scope>settings_t</scope><name>epochs</name></member>
+      <member refid="structsettings__t_1a1eb752fc0b20923757796ef50942718e" prot="public" virt="non-virtual"><scope>settings_t</scope><name>evaluation</name></member>
+      <member refid="structsettings__t_1a96582b3e03788f3a9599b8801dc38ec2" prot="public" virt="non-virtual"><scope>settings_t</scope><name>fetch_meta</name></member>
+      <member refid="structsettings__t_1a432e549d09bb6a2e87fa37abf2468e83" prot="public" virt="non-virtual"><scope>settings_t</scope><name>graph_cache</name></member>
+      <member refid="structsettings__t_1ab01c824ea8fe49508bb2899b75e59bbe" prot="public" virt="non-virtual"><scope>settings_t</scope><name>kfold</name></member>
+      <member refid="structsettings__t_1a7e4a89f57124d740aee08c1dff380320" prot="public" virt="non-virtual"><scope>settings_t</scope><name>kfolds</name></member>
+      <member refid="structsettings__t_1a1bb7bcd7803eafb1da81844bb1c99b59" prot="public" virt="non-virtual"><scope>settings_t</scope><name>max_range</name></member>
+      <member refid="structsettings__t_1ac5fbabdc9b3d4bec81b34f0f0906663f" prot="public" virt="non-virtual"><scope>settings_t</scope><name>metacache_path</name></member>
+      <member refid="structsettings__t_1a1c59290b131395e78ca09ee55829bc91" prot="public" virt="non-virtual"><scope>settings_t</scope><name>nbins</name></member>
+      <member refid="structsettings__t_1adceeed92a9cc6cf8517b6b93358d1f75" prot="public" virt="non-virtual"><scope>settings_t</scope><name>num_examples</name></member>
+      <member refid="structsettings__t_1adfb471fcc454bdfb97309137a9c75d9e" prot="public" virt="non-virtual"><scope>settings_t</scope><name>output_path</name></member>
+      <member refid="structsettings__t_1a2e1b9a538a4421480ac8726699575b3e" prot="public" virt="non-virtual"><scope>settings_t</scope><name>pretagevents</name></member>
+      <member refid="structsettings__t_1a9094b04f880b6360af1245e4ab6c225e" prot="public" virt="non-virtual"><scope>settings_t</scope><name>refresh</name></member>
+      <member refid="structsettings__t_1a48599c1af0e6a91c4ded28d191f17981" prot="public" virt="non-virtual"><scope>settings_t</scope><name>run_name</name></member>
+      <member refid="structsettings__t_1aff9924a1c481cffcc00438dc3d93194a" prot="public" virt="non-virtual"><scope>settings_t</scope><name>selection_root</name></member>
+      <member refid="structsettings__t_1adad654b52cb13537d3a0052bae3c7a16" prot="public" virt="non-virtual"><scope>settings_t</scope><name>sow_name</name></member>
+      <member refid="structsettings__t_1a235f1da734eb8851bd798d74d417ec7d" prot="public" virt="non-virtual"><scope>settings_t</scope><name>targets</name></member>
+      <member refid="structsettings__t_1a383cb4d94ff68571dc4cd2e8a9f4d00f" prot="public" virt="non-virtual"><scope>settings_t</scope><name>threads</name></member>
+      <member refid="structsettings__t_1af8bf8b05ab282c3e253234cbc4fbca6a" prot="public" virt="non-virtual"><scope>settings_t</scope><name>train_size</name></member>
+      <member refid="structsettings__t_1a0647b7d24f25513943e22f779f798a26" prot="public" virt="non-virtual"><scope>settings_t</scope><name>training</name></member>
+      <member refid="structsettings__t_1a7d18701471e1d25160f18d8ee2442f75" prot="public" virt="non-virtual"><scope>settings_t</scope><name>training_dataset</name></member>
+      <member refid="structsettings__t_1a5d6938cad5a0394586414f188c123302" prot="public" virt="non-virtual"><scope>settings_t</scope><name>validation</name></member>
+      <member refid="structsettings__t_1ad37e257f133d620250214c01eef0fcda" prot="public" virt="non-virtual"><scope>settings_t</scope><name>var_energy</name></member>
+      <member refid="structsettings__t_1a9da2e640dacd62e6bb91103979abb6c3" prot="public" virt="non-virtual"><scope>settings_t</scope><name>var_eta</name></member>
+      <member refid="structsettings__t_1ae14143c2b463ac78fc5c12ae9065d83e" prot="public" virt="non-virtual"><scope>settings_t</scope><name>var_phi</name></member>
+      <member refid="structsettings__t_1a1b9f41a1149bcdf6cd95370c9180da5e" prot="public" virt="non-virtual"><scope>settings_t</scope><name>var_pt</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

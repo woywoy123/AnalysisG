@@ -1,0 +1,491 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="toptruthjets_8cxx" kind="file" language="C++">
+    <compoundname>toptruthjets.cxx</compoundname>
+    <includes refid="toptruthjets_8h" local="yes">toptruthjets.h</includes>
+    <incdepgraph>
+      <node id="20">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="11">
+        <label>functional</label>
+      </node>
+      <node id="18">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="31">
+        <label>templates/event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="27">
+        <label>cstdint</label>
+      </node>
+      <node id="5">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>toptruthjets.cxx</label>
+        <link refid="toptruthjets_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>templates/selection_template.h</label>
+        <link refid="selection__template_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>cmath</label>
+      </node>
+      <node id="3">
+        <label>bsm_4tops/event.h</label>
+        <link refid="events_2bsm__4tops_2include_2bsm__4tops_2event_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>toptruthjets.h</label>
+        <link refid="toptruthjets_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="7">
+        <label>string</label>
+      </node>
+      <node id="9">
+        <label>map</label>
+      </node>
+      <node id="32">
+        <label>structs/event.h</label>
+        <link refid="modules_2structs_2include_2structs_2event_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="21">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>bsm_4tops/particles.h</label>
+        <link refid="events_2bsm__4tops_2include_2bsm__4tops_2particles_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>vector</label>
+      </node>
+      <node id="36">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>TFile.h</label>
+      </node>
+      <node id="28">
+        <label>sstream</label>
+      </node>
+      <node id="6">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>tools/merge_cast.h</label>
+        <link refid="merge__cast_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>cstdlib</label>
+      </node>
+      <node id="25">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="37">
+        <label>TH1F.h</label>
+      </node>
+      <node id="16">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="22">
+        <label>iostream</label>
+      </node>
+      <node id="23">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>meta/meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>TBranch.h</label>
+      </node>
+      <node id="10">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>TTree.h</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="toptruthjets_8h" kindref="compound">toptruthjets.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="classtoptruthjets_1a78dea88f4910189c8a9b51a80640d2a7" refkind="member"><highlight class="normal"><ref refid="classtoptruthjets_1a78dea88f4910189c8a9b51a80640d2a7" kindref="member">toptruthjets::toptruthjets</ref>(){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" kindref="member">name</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;toptruthjets&quot;</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="4" refid="classtoptruthjets_1a6abe08786f5f17abd9876136adb87874" refkind="member"><highlight class="normal"><ref refid="classtoptruthjets_1a6abe08786f5f17abd9876136adb87874" kindref="member">toptruthjets::~toptruthjets</ref>(){}</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6" refid="classtoptruthjets_1a24aec29c06fcb72f928f33e41f0136e2" refkind="member"><highlight class="normal"><ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="classtoptruthjets_1a24aec29c06fcb72f928f33e41f0136e2" kindref="member">toptruthjets::clone</ref>(){</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(<ref refid="classselection__template" kindref="compound">selection_template</ref>*)</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classtoptruthjets_1a78dea88f4910189c8a9b51a80640d2a7" kindref="member">toptruthjets</ref>();</highlight></codeline>
+<codeline lineno="8"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10" refid="classtoptruthjets_1acc1a029bbab73d3c6bc2a121ee64def2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classtoptruthjets_1acc1a029bbab73d3c6bc2a121ee64def2" kindref="member">toptruthjets::merge</ref>(<ref refid="classselection__template" kindref="compound">selection_template</ref>*<sp/><ref refid="namespacemain_1a80457db91bd1110a9e4a8515839a2a4b" kindref="member">sl</ref>){</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetoptruthjets" kindref="compound">toptruthjets</ref>*<sp/>slt<sp/>=<sp/>(<ref refid="namespacetoptruthjets" kindref="compound">toptruthjets</ref>*)<ref refid="namespacemain_1a80457db91bd1110a9e4a8515839a2a4b" kindref="member">sl</ref>;<sp/></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="merge__cast_8h_1a205af11d07be8d10770e7392817fc5c3" kindref="member">merge_data</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1a9b8a4f9ba753c9516e2abc291b8c1f07" kindref="member">top_mass</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>&amp;slt<sp/>-&gt;<sp/><ref refid="classtoptruthjets_1a9b8a4f9ba753c9516e2abc291b8c1f07" kindref="member">top_mass</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="merge__cast_8h_1a205af11d07be8d10770e7392817fc5c3" kindref="member">merge_data</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref><sp/><sp/><sp/><sp/>,<sp/>&amp;slt<sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref><sp/><sp/><sp/><sp/>);<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="merge__cast_8h_1a205af11d07be8d10770e7392817fc5c3" kindref="member">merge_data</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1ae2a5bc09f63660a85cc27befc00f732e" kindref="member">truthjets_contribute</ref>,<sp/>&amp;slt<sp/>-&gt;<sp/><ref refid="classtoptruthjets_1ae2a5bc09f63660a85cc27befc00f732e" kindref="member">truthjets_contribute</ref>);<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="merge__cast_8h_1a205af11d07be8d10770e7392817fc5c3" kindref="member">merge_data</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1acfc2425cfef3cfd128ceaa53f70a5a04" kindref="member">truthjet_top</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>&amp;slt<sp/>-&gt;<sp/><ref refid="classtoptruthjets_1acfc2425cfef3cfd128ceaa53f70a5a04" kindref="member">truthjet_top</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="merge__cast_8h_1a205af11d07be8d10770e7392817fc5c3" kindref="member">merge_data</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1a4c143b2435ecea7f8de94970d6b476bd" kindref="member">truthjet_mass</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>&amp;slt<sp/>-&gt;<sp/><ref refid="classtoptruthjets_1a4c143b2435ecea7f8de94970d6b476bd" kindref="member">truthjet_mass</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="merge__cast_8h_1a205af11d07be8d10770e7392817fc5c3" kindref="member">merge_data</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1ac9023569866423da4ff2e815e9da4ecb" kindref="member">ntops_lost</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>&amp;slt<sp/>-&gt;<sp/><ref refid="classtoptruthjets_1ac9023569866423da4ff2e815e9da4ecb" kindref="member">ntops_lost</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="18"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="classtoptruthjets_1a612537791c5d02cb80a30c80a8a8e43d" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classtoptruthjets_1a612537791c5d02cb80a30c80a8a8e43d" kindref="member">toptruthjets::selection</ref>(<ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="classtoptruthjets_1a39c1afcec2800b351fc047fbfa4f009f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classtoptruthjets_1a39c1afcec2800b351fc047fbfa4f009f" kindref="member">toptruthjets::strategy</ref>(<ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/><ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>){</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*<sp/><ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>=<sp/>(<ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref>*)<ref refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" kindref="member">ev</ref>;<sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref>;<sp/></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>basic<sp/>truth<sp/>top<sp/>matching<sp/>to<sp/>truth<sp/>jets<sp/>//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>lost<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/><ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>-&gt;<sp/>Tops.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtop" kindref="compound">top</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>=<sp/>(<ref refid="classtop" kindref="compound">top</ref>*)<ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>-&gt;<sp/>Tops[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/>frac<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1ab32b926ee893cf56dc27913271658d1e" kindref="member">downcast</ref>(&amp;<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>TruthJets,<sp/>&amp;frac);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!frac.size()){++lost;<sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1ad27d2cd85c19147b85b1e96ce73bdade" kindref="member">get_leptonics</ref>((std::map&lt;std::string,<sp/>particle_template*&gt;)<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>children,<sp/>&amp;frac);<sp/></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1ab760e9d895d74e62a9d4bfe436568a86" kindref="member">make_unique</ref>(&amp;frac);<sp/></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>get<sp/>the<sp/>top<sp/>mass<sp/>of<sp/>the<sp/>matched<sp/>truth<sp/>jets</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="classtoptruthjets_1a9b8a4f9ba753c9516e2abc291b8c1f07" kindref="member">top_mass</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" kindref="member">sum</ref>(&amp;<ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref>);<sp/></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>how<sp/>many<sp/>truth<sp/>jets<sp/>the<sp/>top<sp/>is<sp/>matched<sp/>to</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n_tru_j<sp/>=<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>TruthJets.size();<sp/></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref>.clear();<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>get<sp/>how<sp/>many<sp/>tops<sp/>are<sp/>shared<sp/>between<sp/>any<sp/>matched<sp/>truth<sp/>jets.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;top*&gt;<sp/>tops_tj<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i(0);<sp/>i<sp/>&lt;<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>TruthJets.size();<sp/>++i){</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="merge__cast_8h_1a205af11d07be8d10770e7392817fc5c3" kindref="member">merge_data</ref>(&amp;tops_tj,<sp/>&amp;<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>TruthJets[i]<sp/>-&gt;<sp/>Tops);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1ab32b926ee893cf56dc27913271658d1e" kindref="member">downcast</ref>(&amp;tops_tj,<sp/>&amp;<ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref>);<sp/></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1ab760e9d895d74e62a9d4bfe436568a86" kindref="member">make_unique</ref>(&amp;<ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref>);<sp/></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n_tops<sp/>=<sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref>.size();<sp/></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref>.clear();<sp/></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>populate<sp/>the<sp/>data<sp/>based<sp/>on<sp/>the<sp/>decay<sp/>mode</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778" kindref="member">is_lep</ref><sp/>=<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>lep_decay;<sp/></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>mode<sp/>=<sp/>(<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778" kindref="member">is_lep</ref>)<sp/>?<sp/></highlight><highlight class="stringliteral">&quot;leptonic&quot;</highlight><highlight class="normal">:</highlight><highlight class="stringliteral">&quot;hadronic&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1a9b8a4f9ba753c9516e2abc291b8c1f07" kindref="member">top_mass</ref>[mode][</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">].push_back(<ref refid="classtoptruthjets_1a9b8a4f9ba753c9516e2abc291b8c1f07" kindref="member">top_mass</ref>);<sp/></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1a9b8a4f9ba753c9516e2abc291b8c1f07" kindref="member">top_mass</ref>[</highlight><highlight class="stringliteral">&quot;ntruthjets&quot;</highlight><highlight class="normal">][mode][</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" kindref="member">to_string</ref>(n_tru_j)].push_back(<ref refid="classtoptruthjets_1a9b8a4f9ba753c9516e2abc291b8c1f07" kindref="member">top_mass</ref>);<sp/><sp/></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1a9b8a4f9ba753c9516e2abc291b8c1f07" kindref="member">top_mass</ref>[</highlight><highlight class="stringliteral">&quot;merged_tops&quot;</highlight><highlight class="normal">][mode][</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" kindref="member">to_string</ref>(n_tops)].push_back(<ref refid="classtoptruthjets_1a9b8a4f9ba753c9516e2abc291b8c1f07" kindref="member">top_mass</ref>);<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1ac9023569866423da4ff2e815e9da4ecb" kindref="member">ntops_lost</ref>.push_back(lost);<sp/></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>------<sp/>Kinematic<sp/>Studies<sp/>------<sp/>//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/><ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>-&gt;<sp/>Tops.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtop" kindref="compound">top</ref>*<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>=<sp/>(<ref refid="classtop" kindref="compound">top</ref>*)<ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>-&gt;<sp/>Tops[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>mode<sp/>=<sp/>(<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>from_res)<sp/>?<sp/></highlight><highlight class="stringliteral">&quot;resonant&quot;</highlight><highlight class="normal"><sp/>:<sp/></highlight><highlight class="stringliteral">&quot;spectator&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>decay<sp/>=<sp/>(<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>lep_decay)<sp/>?<sp/></highlight><highlight class="stringliteral">&quot;leptonic&quot;</highlight><highlight class="normal"><sp/>:<sp/></highlight><highlight class="stringliteral">&quot;hadronic&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mode<sp/>=<sp/>mode<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;-&quot;</highlight><highlight class="normal"><sp/>+<sp/>decay;<sp/></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>n_tj<sp/>=<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>TruthJets.size();<sp/></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>tj1(0);<sp/>tj1<sp/>&lt;<sp/>n_tj;<sp/>++tj1){</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtruthjet" kindref="compound">truthjet</ref>*<sp/>tj1_<sp/>=<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>TruthJets[tj1];<sp/></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>tj2(tj1+1);<sp/>tj2<sp/>&lt;<sp/>n_tj;<sp/>++tj2){</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtruthjet" kindref="compound">truthjet</ref>*<sp/>tj2_<sp/>=<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>TruthJets[tj2];<sp/></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1acfc2425cfef3cfd128ceaa53f70a5a04" kindref="member">truthjet_top</ref>[mode][</highlight><highlight class="stringliteral">&quot;dr&quot;</highlight><highlight class="normal">].push_back(tj1_<sp/>-&gt;<sp/><ref refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1adbd2ec240755f1bf46b2c157f0325669" kindref="member">DeltaR</ref>(tj2_));</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1acfc2425cfef3cfd128ceaa53f70a5a04" kindref="member">truthjet_top</ref>[mode][</highlight><highlight class="stringliteral">&quot;energy&quot;</highlight><highlight class="normal">].push_back(<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref><sp/>/<sp/>1000);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1acfc2425cfef3cfd128ceaa53f70a5a04" kindref="member">truthjet_top</ref>[mode][</highlight><highlight class="stringliteral">&quot;pt&quot;</highlight><highlight class="normal">].push_back(<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>pt<sp/>/<sp/>1000);<sp/></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>tj2(0);<sp/>tj2<sp/>&lt;<sp/><ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>-&gt;<sp/>TruthJets.size();<sp/>++tj2){</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtruthjet" kindref="compound">truthjet</ref>*<sp/>tj<sp/>=<sp/>(<ref refid="classtruthjet" kindref="compound">truthjet</ref>*)<ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>-&gt;<sp/>TruthJets[tj2];<sp/></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1a3009dc4bb45c47d96a5bdc4096bd6870" kindref="member">contains</ref>(&amp;<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>TruthJets,<sp/>tj)){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1acfc2425cfef3cfd128ceaa53f70a5a04" kindref="member">truthjet_top</ref>[</highlight><highlight class="stringliteral">&quot;background&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;dr&quot;</highlight><highlight class="normal">].push_back(tj<sp/>-&gt;<sp/><ref refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1adbd2ec240755f1bf46b2c157f0325669" kindref="member">DeltaR</ref>(<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>TruthJets[tj1]));<sp/></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>tp(0);<sp/>tp<sp/>&lt;<sp/>tj1_<sp/>-&gt;<sp/><ref refid="namespaceparton_1_1figures_1a78f69be3ee69f972b3ff4f262602a669" kindref="member">Parton</ref>.size();<sp/>++tp){</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtruthjetparton" kindref="compound">truthjetparton</ref>*<sp/>prt<sp/>=<sp/>tj1_<sp/>-&gt;<sp/><ref refid="namespaceparton_1_1figures_1a78f69be3ee69f972b3ff4f262602a669" kindref="member">Parton</ref>[tp];<sp/></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>sym<sp/>=<sp/>(std::string(prt<sp/>-&gt;<sp/>symbol).size())<sp/>?<sp/>std::string(prt<sp/>-&gt;<sp/>symbol)<sp/>:<sp/></highlight><highlight class="stringliteral">&quot;null&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref>[mode][sym][</highlight><highlight class="stringliteral">&quot;dr&quot;</highlight><highlight class="normal">].push_back(prt<sp/>-&gt;<sp/><ref refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1adbd2ec240755f1bf46b2c157f0325669" kindref="member">DeltaR</ref>(tj1_));<sp/></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref>[mode][sym][</highlight><highlight class="stringliteral">&quot;top-pt&quot;</highlight><highlight class="normal">].push_back(<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/>pt<sp/>/<sp/>1000);<sp/></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref>[mode][sym][</highlight><highlight class="stringliteral">&quot;top-energy&quot;</highlight><highlight class="normal">].push_back(<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>-&gt;<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref><sp/>/<sp/>1000);<sp/></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref>[mode][sym][</highlight><highlight class="stringliteral">&quot;parton-pt&quot;</highlight><highlight class="normal">].push_back(prt<sp/>-&gt;<sp/>pt<sp/>/<sp/>1000);<sp/></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref>[mode][sym][</highlight><highlight class="stringliteral">&quot;parton-energy&quot;</highlight><highlight class="normal">].push_back(prt<sp/>-&gt;<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref><sp/>/<sp/>1000);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref>[mode][sym][</highlight><highlight class="stringliteral">&quot;truthjet-pt&quot;</highlight><highlight class="normal">].push_back(tj1_<sp/>-&gt;<sp/>pt<sp/>/<sp/>1000);<sp/><sp/></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref>[mode][sym][</highlight><highlight class="stringliteral">&quot;truthjet-energy&quot;</highlight><highlight class="normal">].push_back(tj1_<sp/>-&gt;<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref><sp/>/<sp/>1000);<sp/><sp/></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>mode_<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;background&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref>[mode_]<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>tj_(0);<sp/>tj_<sp/>&lt;<sp/><ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>-&gt;<sp/>TruthJets.size();<sp/>++tj_){</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtruthjet" kindref="compound">truthjet</ref>*<sp/>tj<sp/>=<sp/>(<ref refid="classtruthjet" kindref="compound">truthjet</ref>*)<ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>-&gt;<sp/>TruthJets[tj_];<sp/></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(tj<sp/>-&gt;<sp/>Tops.size()){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>pr_i(0);<sp/>pr_i<sp/>&lt;<sp/>tj<sp/>-&gt;<sp/><ref refid="namespaceparton_1_1figures_1a78f69be3ee69f972b3ff4f262602a669" kindref="member">Parton</ref>.size();<sp/>++pr_i){</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtruthjetparton" kindref="compound">truthjetparton</ref>*<sp/>pr<sp/>=<sp/>tj<sp/>-&gt;<sp/><ref refid="namespaceparton_1_1figures_1a78f69be3ee69f972b3ff4f262602a669" kindref="member">Parton</ref>[pr_i];<sp/></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>sym<sp/>=<sp/>(std::string(pr<sp/>-&gt;<sp/>symbol).size())<sp/>?<sp/>std::string(pr<sp/>-&gt;<sp/>symbol)<sp/>:<sp/></highlight><highlight class="stringliteral">&quot;null&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref>[mode_][sym][</highlight><highlight class="stringliteral">&quot;dr&quot;</highlight><highlight class="normal">].push_back(pr<sp/>-&gt;<sp/><ref refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1adbd2ec240755f1bf46b2c157f0325669" kindref="member">DeltaR</ref>(tj));<sp/></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref>[mode_][sym][</highlight><highlight class="stringliteral">&quot;parton-pt&quot;</highlight><highlight class="normal">].push_back(pr<sp/>-&gt;<sp/>pt<sp/>/<sp/>1000);<sp/></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref>[mode_][sym][</highlight><highlight class="stringliteral">&quot;parton-energy&quot;</highlight><highlight class="normal">].push_back(pr<sp/>-&gt;<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref><sp/>/<sp/>1000);<sp/></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref>[mode_][sym][</highlight><highlight class="stringliteral">&quot;truthjet-pt&quot;</highlight><highlight class="normal">].push_back(tj<sp/>-&gt;<sp/>pt<sp/>/<sp/>1000);<sp/></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" kindref="member">truthjet_partons</ref>[mode_][sym][</highlight><highlight class="stringliteral">&quot;truthjet-energy&quot;</highlight><highlight class="normal">].push_back(tj<sp/>-&gt;<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref><sp/>/<sp/>1000);<sp/></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>-------<sp/>Ghost<sp/>Parton<sp/>Energy<sp/>Contribution<sp/>---------------<sp/>//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/><ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>-&gt;<sp/>TruthJets.size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtruthjet" kindref="compound">truthjet</ref>*<sp/>tj<sp/>=<sp/>(<ref refid="classtruthjet" kindref="compound">truthjet</ref>*)<ref refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" kindref="member">evn</ref><sp/>-&gt;<sp/>TruthJets[<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>];<sp/></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;truthjetparton*&gt;<sp/>prts<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1ab760e9d895d74e62a9d4bfe436568a86" kindref="member">make_unique</ref>(&amp;tj<sp/>-&gt;<sp/><ref refid="namespaceparton_1_1figures_1a78f69be3ee69f972b3ff4f262602a669" kindref="member">Parton</ref>);<sp/></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!prts.size()){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>sm<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" kindref="member">sum</ref>(&amp;prts,<sp/>&amp;sm);<sp/></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1ae2a5bc09f63660a85cc27befc00f732e" kindref="member">truthjets_contribute</ref>[</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;all&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;pt&quot;</highlight><highlight class="normal">].push_back(tj<sp/>-&gt;<sp/>pt<sp/>/<sp/>sm<sp/>-&gt;<sp/>pt);<sp/></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1ae2a5bc09f63660a85cc27befc00f732e" kindref="member">truthjets_contribute</ref>[</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;all&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;energy&quot;</highlight><highlight class="normal">].push_back(tj<sp/>-&gt;<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref><sp/>/<sp/>sm<sp/>-&gt;<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref>);<sp/></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1ae2a5bc09f63660a85cc27befc00f732e" kindref="member">truthjets_contribute</ref>[</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;all&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;n-partons&quot;</highlight><highlight class="normal">].push_back(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal">(tj<sp/>-&gt;<sp/><ref refid="namespaceparton_1_1figures_1a78f69be3ee69f972b3ff4f262602a669" kindref="member">Parton</ref>.size()));<sp/></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1a4c143b2435ecea7f8de94970d6b476bd" kindref="member">truthjet_mass</ref>[</highlight><highlight class="stringliteral">&quot;all&quot;</highlight><highlight class="normal">].push_back(tj<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ad90ccffa01275a7a7795fb6d1274e75f" kindref="member">mass</ref><sp/>/<sp/>1000);<sp/></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1a4c143b2435ecea7f8de94970d6b476bd" kindref="member">truthjet_mass</ref>[</highlight><highlight class="stringliteral">&quot;n-tops&quot;</highlight><highlight class="normal">].push_back(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal">(tj<sp/>-&gt;<sp/>Tops.size()));<sp/></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sm<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>part<sp/>checks<sp/>the<sp/>energy<sp/>contribution<sp/>of<sp/>ghost<sp/>partons<sp/>matched<sp/>to<sp/>top<sp/>children</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>and<sp/>what<sp/>happens<sp/>to<sp/>the<sp/>reconstructed<sp/>top-mass<sp/>when<sp/>some<sp/>low<sp/>energy<sp/>contributions<sp/>are<sp/>removed.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;truthjetparton*&gt;<sp/>alls<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::vector&lt;truthjetparton*&gt;&gt;<sp/>top_maps<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref>(0);<sp/><ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref><sp/>&lt;<sp/>prts.size();<sp/>++<ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref>){</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtruthjetparton" kindref="compound">truthjetparton</ref>*<sp/>prt_<sp/>=<sp/>prts[<ref refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" kindref="member">p</ref>];<sp/></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;<sp/>_parents<sp/>=<sp/>prt_<sp/>-&gt;<sp/><ref refid="namespacemain_1aa6eea602ff3979e1ff2936eeeb7c1cd7" kindref="member">parents</ref>;<sp/></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;::iterator<sp/>itr<sp/>=<sp/>_parents.begin();<sp/></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itr<sp/>!=<sp/>_parents.end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;<sp/>tops_<sp/>=<sp/>itr<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/><ref refid="namespacemain_1aa6eea602ff3979e1ff2936eeeb7c1cd7" kindref="member">parents</ref>;<sp/></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/>tops<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1a7e1560964237cf7b4846e24b300d7b9e" kindref="member">vectorize</ref>(&amp;tops_);<sp/></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>top_maps[std::string(tops[0]<sp/>-&gt;<sp/><ref refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" kindref="member">hash</ref>)].push_back(prt_);<sp/></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>alls.push_back(prt_);<sp/><sp/></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n_top<sp/>=<sp/>int(top_maps.size());<sp/></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!n_top){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!alls.size()){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>alls<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1ab760e9d895d74e62a9d4bfe436568a86" kindref="member">make_unique</ref>(&amp;alls);<sp/></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" kindref="member">sum</ref>(&amp;alls,<sp/>&amp;sm);<sp/></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::vector&lt;truthjetparton*&gt;&gt;::iterator<sp/>itx<sp/>=<sp/>top_maps.begin();<sp/></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itx<sp/>!=<sp/>top_maps.end();<sp/>++itx){</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>ps<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>itx<sp/>-&gt;<sp/>second<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1ab760e9d895d74e62a9d4bfe436568a86" kindref="member">make_unique</ref>(&amp;itx<sp/>-&gt;<sp/>second);<sp/></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" kindref="member">sum</ref>(&amp;itx<sp/>-&gt;<sp/>second,<sp/>&amp;ps);<sp/></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtoptruthjets_1ae2a5bc09f63660a85cc27befc00f732e" kindref="member">truthjets_contribute</ref>[</highlight><highlight class="stringliteral">&quot;n-tops&quot;</highlight><highlight class="normal">][std::to_string(n_top)][</highlight><highlight class="stringliteral">&quot;energy_r&quot;</highlight><highlight class="normal">].push_back(ps<sp/>-&gt;<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref><sp/>/<sp/>sm<sp/>-&gt;<sp/><ref refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" kindref="member">e</ref>);<sp/></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="163"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="selections/mc16/toptruthjets/toptruthjets.cxx"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="test__ssml__mc20_8py" kind="file" language="Python">
+    <compoundname>test_ssml_mc20.py</compoundname>
+    <innernamespace refid="namespacetest__ssml__mc20">test_ssml_mc20</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespacetest__ssml__mc20" refkind="compound"><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>Analysis</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/><ref refid="namespace_analysis_g_1_1graphs_1_1ssml__mc20" kindref="compound">AnalysisG.graphs.ssml_mc20</ref><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>GraphJets,<sp/>GraphDetector</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">#from<sp/>AnalysisG.graphs.bsm_4tops<sp/>import<sp/>GraphJets</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/><ref refid="namespace_analysis_g_1_1events" kindref="compound">AnalysisG.events</ref><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>SSML_MC20</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/><ref refid="namespace_analysis_g_1_1core_1_1lossfx" kindref="compound">AnalysisG.core.lossfx</ref><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>OptimizerConfig</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/><ref refid="namespace_analysis_g_1_1models" kindref="compound">AnalysisG.models</ref><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>Grift</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9" refid="namespacetest__ssml__mc20_1a72c050406a6a9ce70e82208b921fe9b0" refkind="member"><highlight class="normal">ttbar<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;/home/tnom6927/Downloads/mc20/user.rqian.503575.MGPy8EG.DAOD_PHYS.e8307_s3797_r13167_p6490.2024-11-23_output&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11" refid="namespacetest__ssml__mc20_1a44b4b363cf79a053e92fb6fd9a2c8fc9" refkind="member"><highlight class="normal">ev<sp/>=<sp/>SSML_MC20()</highlight></codeline>
+<codeline lineno="12" refid="namespacetest__ssml__mc20_1a0f0b8bddf80cbf1aa2facd817c94ef79" refkind="member"><highlight class="normal">gr<sp/>=<sp/>GraphDetector()</highlight></codeline>
+<codeline lineno="13" refid="namespacetest__ssml__mc20_1ad4a9e3d60bf633862d5fba7060e80633" refkind="member"><highlight class="normal">md<sp/>=<sp/>Grift()<sp/></highlight><highlight class="comment">#RecursiveGraphNeuralNetwork()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="namespacetest__ssml__mc20_1ab83447a0b2823b624d61c5780224b1d6" refkind="member"><highlight class="normal">md.o_edge<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;top_edge&quot;</highlight><highlight class="normal"><sp/>:<sp/></highlight><highlight class="stringliteral">&quot;CrossEntropyLoss&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;res_edge&quot;</highlight><highlight class="normal"><sp/>:<sp/></highlight><highlight class="stringliteral">&quot;CrossEntropyLoss&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="namespacetest__ssml__mc20_1ad1205fd08d2a788ff098658dd88d1a64" refkind="member"><highlight class="normal">md.o_graph<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;ntops&quot;</highlight><highlight class="normal"><sp/><sp/>:<sp/></highlight><highlight class="stringliteral">&quot;CrossEntropyLoss&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;signal&quot;</highlight><highlight class="normal"><sp/>:<sp/></highlight><highlight class="stringliteral">&quot;CrossEntropyLoss&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">#md.i_node<sp/><sp/>=<sp/>[&quot;pt&quot;,<sp/>&quot;eta&quot;,<sp/>&quot;phi&quot;,<sp/>&quot;energy&quot;]</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">#md.i_graph<sp/>=<sp/>[&quot;met&quot;,<sp/>&quot;phi&quot;]</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="namespacetest__ssml__mc20_1a10680bc0d18f2dbbe9e6085fecf10662" refkind="member"><highlight class="normal">md.device<sp/><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;cuda:0&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="namespacetest__ssml__mc20_1a53cfdaa2cdac0d9f4dd22f354cef79bf" refkind="member"><highlight class="normal">md.checkpoint_path<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./ProjectName/Grift/MRK-1-0/state/epoch-1/kfold-1_model.pt&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">#k<sp/>=<sp/>(&quot;MRK-1&quot;,<sp/>&quot;adam&quot;,<sp/>{&quot;lr&quot;<sp/>:<sp/>1e-4}),</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">#opti<sp/>=<sp/>OptimizerConfig()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">#opti.Optimizer<sp/>=<sp/>k[0][1]</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">#for<sp/>t<sp/>in<sp/>k[0][2]:<sp/>setattr(opti,<sp/>t,<sp/>k[0][2][t])</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="namespacetest__ssml__mc20_1abf2cdb62e0a395fa494ce3827de9402f" refkind="member"><highlight class="normal">ana<sp/>=<sp/>Analysis()</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">#ana.kFold<sp/>=<sp/>[1]</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="comment">#ana.kFolds<sp/>=<sp/>10</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">#ana.TrainingDataset<sp/>=<sp/>&quot;./ProjectName/sample.h5&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="comment">#ana.AddSamples(bsm<sp/><sp/>,<sp/>&quot;bsm&quot;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="comment">#ana.AddSamples(tttt<sp/>,<sp/>&quot;tttt&quot;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal">ana.AddSamples(ttbar,<sp/></highlight><highlight class="stringliteral">&quot;ttbar&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="comment">#ana.AddEvent(ev,<sp/>&quot;bsm&quot;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="comment">#ana.AddEvent(ev,<sp/>&quot;tttt&quot;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal">ana.AddEvent(ev,<sp/></highlight><highlight class="stringliteral">&quot;ttbar&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="comment">#ana.AddGraph(gr,<sp/>&quot;bsm&quot;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="comment">#ana.AddGraph(gr,<sp/>&quot;tttt&quot;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal">ana.AddGraph(gr,<sp/></highlight><highlight class="stringliteral">&quot;ttbar&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="comment">#ana.Threads<sp/>=<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="comment">#ana.Epochs<sp/>=<sp/>100</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="comment">#ana.TrainSize<sp/>=<sp/>80</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="namespacetest__ssml__mc20_1a69bdc1629159826fadc96111992cef27" refkind="member"><highlight class="normal">ana.BatchSize<sp/>=<sp/>10</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="comment">#ana.AddModel(md,<sp/>opti,<sp/>&quot;run-name&quot;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal">ana.AddModelInference(md,<sp/></highlight><highlight class="stringliteral">&quot;run-name&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="56" refid="namespacetest__ssml__mc20_1a9e4f9cfc769fe621300e3d321b477537" refkind="member"><highlight class="normal">ana.GraphCache<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./ProjectName/&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="comment">#ana.Targets<sp/>=<sp/>[&quot;top_edge&quot;]</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="comment">#ana.Validation<sp/>=<sp/>False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="comment">#ana.Evaluation<sp/>=<sp/>False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal">ana.Start()</highlight></codeline>
+    </programlisting>
+    <location file="/workspaces/AnalysisG/test/test_ssml_mc20.py"/>
+  </compounddef>
+</doxygen>

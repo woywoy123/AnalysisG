@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="_3model-name_4_8pyx" kind="file" language="C++">
+    <compoundname>&lt;model-name&gt;.pyx</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>distutils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level=3</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.model_template<sp/>cimport<sp/>ModelTemplate</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.models.&lt;model-name&gt;.&lt;model-name&gt;<sp/>cimport<sp/>&lt;model-name&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>&lt;py-model-name&gt;(ModelTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__cinit__(self):<sp/>self.nn_ptr<sp/>=<sp/>new<sp/>&lt;model-name&gt;()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__init__(self):<sp/>pass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__dealloc__(self):<sp/>del<sp/>self.nn_ptr</highlight></codeline>
+    </programlisting>
+    <location file="templates/model/&lt;model-name&gt;.pyx"/>
+  </compounddef>
+</doxygen>

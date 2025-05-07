@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacepyc_1_1physics_1_1polar_1_1combined" kind="namespace" language="C++">
+    <compoundname>pyc::physics::polar::combined</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1combined_1a61c93f07eede4e32cdcf303a8a508946" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::combined::P2</definition>
+        <argsstring>(torch::Tensor pmu)</argsstring>
+        <name>P2</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmu</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="110" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="29" bodyend="33" declfile="pyc/interface/include/pyc/pyc.h" declline="110" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1ae22e22a969315629a6ae7549f7344805" compoundref="pyc_2physics_2physics_8cxx" startline="12" endline="16">physics_::P2</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" compoundref="events_2exp__mc20_2include_2exp__mc20_2particles_8h" startline="7" endline="22">pmu</references>
+        <references refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" compoundref="transform_2transform_8cxx" startline="29" endline="34">transform_::PxPyPz</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1combined_1a5760f3a249756acd268a9c66fdf53b17" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::combined::P</definition>
+        <argsstring>(torch::Tensor pmu)</argsstring>
+        <name>P</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmu</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="111" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="53" bodyend="57" declfile="pyc/interface/include/pyc/pyc.h" declline="111" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1ac12a78b1943348345b940e510930f420" compoundref="pyc_2physics_2physics_8cxx" startline="22" endline="25">physics_::P</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" compoundref="events_2exp__mc20_2include_2exp__mc20_2particles_8h" startline="7" endline="22">pmu</references>
+        <references refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" compoundref="transform_2transform_8cxx" startline="29" endline="34">transform_::PxPyPz</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1combined_1a20e7dc61ab62ab57496a8fc22f68a630" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::combined::Beta2</definition>
+        <argsstring>(torch::Tensor pmu)</argsstring>
+        <name>Beta2</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmu</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="112" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="77" bodyend="81" declfile="pyc/interface/include/pyc/pyc.h" declline="112" declcolumn="31"/>
+        <references refid="namespacephysics___1aace12d6d7317cd102e5059781d724151" compoundref="pyc_2physics_2physics_8cxx" startline="32" endline="35">physics_::Beta2</references>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" compoundref="events_2exp__mc20_2include_2exp__mc20_2particles_8h" startline="7" endline="22">pmu</references>
+        <references refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" compoundref="transform_2transform_8cxx" startline="36" endline="38">transform_::PxPyPzE</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1combined_1a0150f0dac00fdc96ee3021c48c912f5a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::combined::Beta</definition>
+        <argsstring>(torch::Tensor pmu)</argsstring>
+        <name>Beta</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmu</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="113" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="101" bodyend="105" declfile="pyc/interface/include/pyc/pyc.h" declline="113" declcolumn="31"/>
+        <references refid="namespacephysics___1a3123f743b9c22850e7346d5f56a4441b" compoundref="pyc_2physics_2physics_8cxx" startline="41" endline="44">physics_::Beta</references>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" compoundref="events_2exp__mc20_2include_2exp__mc20_2particles_8h" startline="7" endline="22">pmu</references>
+        <references refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" compoundref="transform_2transform_8cxx" startline="36" endline="38">transform_::PxPyPzE</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1combined_1aa79557e9e58fc548b41444667ebb1b62" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::combined::M2</definition>
+        <argsstring>(torch::Tensor pmu)</argsstring>
+        <name>M2</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmu</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="114" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="125" bodyend="129" declfile="pyc/interface/include/pyc/pyc.h" declline="114" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1a7787594305d4a156c31be581401b0b0b" compoundref="pyc_2physics_2physics_8cxx" startline="53" endline="56">physics_::M2</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" compoundref="events_2exp__mc20_2include_2exp__mc20_2particles_8h" startline="7" endline="22">pmu</references>
+        <references refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" compoundref="transform_2transform_8cxx" startline="36" endline="38">transform_::PxPyPzE</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1combined_1a03ec955a2641ce4f53ade06bff9ebaae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::combined::M</definition>
+        <argsstring>(torch::Tensor pmu)</argsstring>
+        <name>M</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmu</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="115" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="148" bodyend="152" declfile="pyc/interface/include/pyc/pyc.h" declline="115" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1a64e8e583c57246f52851c0bff4137ebc" compoundref="pyc_2physics_2physics_8cxx" startline="63" endline="66">physics_::M</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" compoundref="events_2exp__mc20_2include_2exp__mc20_2particles_8h" startline="7" endline="22">pmu</references>
+        <references refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" compoundref="transform_2transform_8cxx" startline="36" endline="38">transform_::PxPyPzE</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1combined_1acc5e59b1f7549ce950cab57976edfd79" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::combined::Mt2</definition>
+        <argsstring>(torch::Tensor pmu)</argsstring>
+        <name>Mt2</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmu</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="116" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="172" bodyend="176" declfile="pyc/interface/include/pyc/pyc.h" declline="116" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1a3d421991e1f29e21ba3d495c6ae6c93d" compoundref="pyc_2physics_2physics_8cxx" startline="74" endline="76">physics_::Mt2</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" compoundref="events_2exp__mc20_2include_2exp__mc20_2particles_8h" startline="7" endline="22">pmu</references>
+        <references refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" compoundref="transform_2transform_8cxx" startline="36" endline="38">transform_::PxPyPzE</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1combined_1acbeb9c6012612bd77cab7fe7871f0ccf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::combined::Mt</definition>
+        <argsstring>(torch::Tensor pmu)</argsstring>
+        <name>Mt</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmu</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="117" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="194" bodyend="198" declfile="pyc/interface/include/pyc/pyc.h" declline="117" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1af5fecf9c76889e0e996dc44793e67153" compoundref="pyc_2physics_2physics_8cxx" startline="83" endline="86">physics_::Mt</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" compoundref="events_2exp__mc20_2include_2exp__mc20_2particles_8h" startline="7" endline="22">pmu</references>
+        <references refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" compoundref="transform_2transform_8cxx" startline="36" endline="38">transform_::PxPyPzE</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1combined_1a6169c98dd89c2571d2871582b3fb1279" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::combined::Theta</definition>
+        <argsstring>(torch::Tensor pmu)</argsstring>
+        <name>Theta</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmu</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="118" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="217" bodyend="221" declfile="pyc/interface/include/pyc/pyc.h" declline="118" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" compoundref="events_2exp__mc20_2include_2exp__mc20_2particles_8h" startline="7" endline="22">pmu</references>
+        <references refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" compoundref="transform_2transform_8cxx" startline="29" endline="34">transform_::PxPyPz</references>
+        <references refid="namespacephysics___1a6d323b672a05eb19edce0b4d818bdb7f" compoundref="pyc_2physics_2physics_8cxx" startline="88" endline="91">physics_::Theta</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1combined_1ae7398e6dca3f3b6fea2d769cc8d5d4de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::combined::DeltaR</definition>
+        <argsstring>(torch::Tensor pmu1, torch::Tensor pmu2)</argsstring>
+        <name>DeltaR</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmu1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmu2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="119" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="249" bodyend="252" declfile="pyc/interface/include/pyc/pyc.h" declline="119" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1a5f66fa5ca30082509e1284fbcb4b25be" compoundref="pyc_2physics_2physics_8cxx" startline="98" endline="105">physics_::DeltaR</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pyc/interface/include/pyc/pyc.h" line="109" column="30"/>
+  </compounddef>
+</doxygen>

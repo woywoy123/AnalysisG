@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="src_2_analysis_g_2____init_____8py" kind="file" language="Python">
+    <compoundname>src/AnalysisG/__init__.py</compoundname>
+    <innernamespace refid="namespace_analysis_g">AnalysisG</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespace_analysis_g" refkind="compound"><highlight class="keyword">from</highlight><highlight class="normal"><sp/>pwinput<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>pwinput</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>subprocess</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal">_getcmd(cmd):</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>subprocess.check_output(cmd,<sp/>stderr=subprocess.STDOUT,<sp/>shell=</highlight><highlight class="keyword">True</highlight><highlight class="normal">).decode(</highlight><highlight class="stringliteral">&quot;UTF-8&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="namespace_analysis_g_1a383c8e608ec845368c183d723c110e69" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespace_analysis_g_1a383c8e608ec845368c183d723c110e69" kindref="member">config_pyami</ref>():</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/>print(</highlight><highlight class="stringliteral">&quot;-------<sp/>CONFIGURING<sp/>PYAMI<sp/>-------&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>print(_getcmd(</highlight><highlight class="stringliteral">&apos;echo<sp/>&quot;y&quot;<sp/>|<sp/>ami_atlas_post_install&apos;</highlight><highlight class="normal">))</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>print(</highlight><highlight class="stringliteral">&quot;--------<sp/>FINISHED<sp/>PYAMI<sp/>---------&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12" refid="namespace_analysis_g_1abfe49e72f7c74dadbcd78ada02a14ecd" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespace_analysis_g_1abfe49e72f7c74dadbcd78ada02a14ecd" kindref="member">auth_pyami</ref>():</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>print(</highlight><highlight class="stringliteral">&quot;Please<sp/>specify<sp/>the<sp/>directory<sp/>where<sp/>your<sp/>.globus<sp/>directory<sp/>is<sp/>located.&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>globu<sp/>=<sp/>input(</highlight><highlight class="stringliteral">&quot;(default:<sp/>~/.globus):<sp/>&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>globu<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;~/.globus/&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>globu<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>globu</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>print(</highlight><highlight class="stringliteral">&quot;Provide<sp/>the<sp/>password<sp/>to<sp/>decrypt<sp/>the<sp/>PEM<sp/>files.<sp/>Leave<sp/>blank<sp/>and<sp/>press<sp/>enter<sp/>for<sp/>no<sp/>password.&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>execute<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;<sp/>&quot;</highlight><highlight class="normal">.join([</highlight><highlight class="stringliteral">&quot;voms-proxy-init&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;-certdir&quot;</highlight><highlight class="normal">,<sp/>globu,<sp/></highlight><highlight class="stringliteral">&quot;-pwstdin&quot;</highlight><highlight class="normal">])</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>code<sp/>=<sp/>pwinput(</highlight><highlight class="stringliteral">&quot;Password:<sp/>&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>execute<sp/>=<sp/></highlight><highlight class="stringliteral">&apos;echo<sp/>&quot;&apos;</highlight><highlight class="normal"><sp/>+<sp/>code<sp/>+<sp/></highlight><highlight class="stringliteral">&apos;&quot;<sp/>|<sp/>&apos;</highlight><highlight class="normal"><sp/>+<sp/>execute</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal">:<sp/>_getcmd(execute)</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">except</highlight><highlight class="normal"><sp/>Exception<sp/></highlight><highlight class="keyword">as</highlight><highlight class="normal"><sp/>error:</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print(str(error))</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print(</highlight><highlight class="stringliteral">&quot;Incorrect<sp/>permissions<sp/>on<sp/>your<sp/>.pem<sp/>files.&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print(</highlight><highlight class="stringliteral">&quot;Try<sp/>the<sp/>following:&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print(</highlight><highlight class="stringliteral">&quot;-&gt;<sp/>chmod<sp/>-R<sp/>a+rwX<sp/>&lt;your<sp/>.pem<sp/>directory&gt;<sp/>#&lt;-<sp/>this<sp/>will<sp/>give<sp/>everyone<sp/>access<sp/>to<sp/>the<sp/>.pem!&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print(</highlight><highlight class="stringliteral">&quot;The<sp/>commands<sp/>below<sp/>will<sp/>fix<sp/>the<sp/>global<sp/>access<sp/>issue.&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print(</highlight><highlight class="stringliteral">&quot;-&gt;<sp/>chmod<sp/>0600<sp/>&lt;directory&gt;/usercert.pem&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print(</highlight><highlight class="stringliteral">&quot;-&gt;<sp/>chmod<sp/>0400<sp/>&lt;directory&gt;/userkey.pem&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keywordflow">try</highlight><highlight class="normal">:<sp/></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>.core.analysis<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>Analysis</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keywordflow">except</highlight><highlight class="normal"><sp/>Exception<sp/></highlight><highlight class="keyword">as</highlight><highlight class="normal"><sp/>error:<sp/>print(</highlight><highlight class="stringliteral">&quot;failed<sp/>to<sp/>load<sp/>Analysis!:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>str(error))</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="__init__.py"/>
+  </compounddef>
+</doxygen>

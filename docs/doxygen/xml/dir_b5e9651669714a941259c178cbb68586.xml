@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_b5e9651669714a941259c178cbb68586" kind="dir">
+    <compoundname>topefficiency</compoundname>
+    <innerfile refid="studies_2performance_2topefficiency_2____init_____8py">studies/performance/topefficiency/__init__.py</innerfile>
+    <innerfile refid="algorithms_8py">algorithms.py</innerfile>
+    <innerfile refid="performance_2topefficiency_2figures_8py">performance/topefficiency/figures.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/performance/topefficiency/"/>
+  </compounddef>
+</doxygen>

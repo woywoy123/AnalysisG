@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_174fd1e58782c32851c07e06082ab340" kind="dir">
+    <compoundname>combinatorial</compoundname>
+    <innerfile refid="src_2_analysis_g_2selections_2neutrino_2combinatorial_2____init_____8py">src/AnalysisG/selections/neutrino/combinatorial/__init__.py</innerfile>
+    <innerfile refid="combinatorial_8cxx">combinatorial.cxx</innerfile>
+    <innerfile refid="combinatorial_8h">combinatorial.h</innerfile>
+    <innerfile refid="combinatorial_8pyx">combinatorial.pyx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="selections/neutrino/combinatorial/"/>
+  </compounddef>
+</doxygen>

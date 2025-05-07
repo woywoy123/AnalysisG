@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="topmatching_8pyx" kind="file" language="C++">
+    <compoundname>topmatching.pyx</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>distutils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level=3</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>*</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.selection_template<sp/>cimport<sp/>*</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>void<sp/>fx_mass(TopMatching<sp/>xl,<sp/>tuple<sp/>data):<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[float]<sp/>val<sp/>=<sp/>&lt;vector[float]&gt;(data[1])</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>data[0]<sp/>==<sp/>&quot;top_mass&quot;:<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>merge_data(&amp;xl.top_mass<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>&amp;val);<sp/>return<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>data[0]<sp/>==<sp/>&quot;topchildren_mass&quot;:<sp/><sp/><sp/><sp/><sp/><sp/>merge_data(&amp;xl.topchildren_mass<sp/><sp/><sp/><sp/><sp/>,<sp/>&amp;val);<sp/>return</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>data[0]<sp/>==<sp/>&quot;toptruthjets_mass&quot;:<sp/><sp/><sp/><sp/><sp/>merge_data(&amp;xl.toptruthjets_mass<sp/><sp/><sp/><sp/>,<sp/>&amp;val);<sp/>return</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>data[0]<sp/>==<sp/>&quot;topjets_children_mass&quot;:<sp/>merge_data(&amp;xl.topjets_children_mass,<sp/>&amp;val);<sp/>return</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>data[0]<sp/>==<sp/>&quot;topjets_leptons_mass&quot;:<sp/><sp/>merge_data(&amp;xl.topjets_leptons_mass<sp/>,<sp/>&amp;val);<sp/>return</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">def<sp/>fx_lep(TopMatching<sp/>xl,<sp/>tuple<sp/>data):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[bool]<sp/>val<sp/>=<sp/>&lt;vector[bool]&gt;(data[1])</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>data[0]<sp/>==<sp/>&quot;topchildren_islep&quot;:<sp/><sp/><sp/><sp/><sp/><sp/>merge_data(&amp;xl.topchildren_islep<sp/><sp/><sp/><sp/><sp/>,<sp/>&amp;val);<sp/>return</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>data[0]<sp/>==<sp/>&quot;toptruthjets_islep&quot;:<sp/><sp/><sp/><sp/><sp/>merge_data(&amp;xl.toptruthjets_islep<sp/><sp/><sp/><sp/>,<sp/>&amp;val);<sp/>return</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>data[0]<sp/>==<sp/>&quot;topjets_children_islep&quot;:<sp/>merge_data(&amp;xl.topjets_children_islep,<sp/>&amp;val);<sp/>return</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>data[0]<sp/>==<sp/>&quot;topjets_leptons_islep&quot;:<sp/><sp/>merge_data(&amp;xl.topjets_leptons_islep<sp/>,<sp/>&amp;val);<sp/>return</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">def<sp/>fx_njx(TopMatching<sp/>xl,<sp/>tuple<sp/>data):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[int]<sp/>val<sp/>=<sp/>&lt;vector[int]&gt;(data[1])</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>data[0]<sp/>==<sp/>&quot;toptruthjets_njets&quot;:<sp/><sp/><sp/><sp/><sp/>merge_data(&amp;xl.toptruthjets_njets<sp/><sp/><sp/><sp/>,<sp/>&amp;val);<sp/>return</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>data[0]<sp/>==<sp/>&quot;topjets_leptons_njets&quot;:<sp/><sp/>merge_data(&amp;xl.topjets_leptons_njets<sp/>,<sp/>&amp;val);<sp/>return</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>data[0]<sp/>==<sp/>&quot;topjets_leptons_pdgid&quot;:<sp/><sp/>merge_data(&amp;xl.topjets_leptons_pdgid<sp/>,<sp/>&amp;val);<sp/>return</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>TopMatching(SelectionTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__cinit__(self):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.root_leaves<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;top_mass&quot;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>fx_mass,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;topchildren_mass&quot;<sp/><sp/><sp/><sp/><sp/>:<sp/>fx_mass,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;toptruthjets_mass&quot;<sp/><sp/><sp/><sp/>:<sp/>fx_mass,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;topjets_children_mass&quot;:<sp/>fx_mass,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;topjets_leptons_mass&quot;<sp/>:<sp/>fx_mass,</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;topchildren_islep&quot;<sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>fx_lep,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;toptruthjets_islep&quot;<sp/><sp/><sp/><sp/><sp/>:<sp/>fx_lep,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;topjets_children_islep&quot;<sp/>:<sp/>fx_lep,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;topjets_leptons_islep&quot;<sp/><sp/>:<sp/>fx_lep,</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;toptruthjets_njets&quot;<sp/><sp/><sp/><sp/><sp/>:<sp/>fx_njx,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;topjets_leptons_njets&quot;<sp/><sp/>:<sp/>fx_njx,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;topjets_leptons_pdgid&quot;<sp/><sp/>:<sp/>fx_njx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.ptr<sp/>=<sp/>new<sp/>topmatching()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.tt<sp/>=<sp/>&lt;topmatching*&gt;self.ptr</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.n_truth_jets_lep<sp/>=<sp/>{}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.n_truth_jets_had<sp/>=<sp/>{}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.n_jets_lep<sp/>=<sp/>{}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.n_jets_had<sp/>=<sp/>{}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__dealloc__(self):<sp/>del<sp/>self.tt</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>Postprocessing(self):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.truth_top<sp/>=<sp/>self.top_mass</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.truth_children<sp/><sp/>=<sp/>{&quot;all&quot;<sp/>:<sp/>[],<sp/>&quot;lep&quot;<sp/>:<sp/>[],<sp/>&quot;had&quot;<sp/>:<sp/>[]}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.truth_jets<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>{&quot;all&quot;<sp/>:<sp/>[],<sp/>&quot;lep&quot;<sp/>:<sp/>[],<sp/>&quot;had&quot;<sp/>:<sp/>[]}<sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.jets_truth_leps<sp/>=<sp/>{&quot;all&quot;<sp/>:<sp/>[],<sp/>&quot;lep&quot;<sp/>:<sp/>[],<sp/>&quot;had&quot;<sp/>:<sp/>[]}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.jet_leps<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>{&quot;all&quot;<sp/>:<sp/>[],<sp/>&quot;lep&quot;<sp/>:<sp/>[],<sp/>&quot;had&quot;<sp/>:<sp/>[]}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.truth_children[&quot;all&quot;]<sp/><sp/>=<sp/>self.topchildren_mass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.truth_jets[&quot;all&quot;]<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>self.toptruthjets_mass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.jets_truth_leps[&quot;all&quot;]<sp/>=<sp/>self.topjets_children_mass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.jet_leps[&quot;all&quot;]<sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>self.topjets_leptons_mass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>str<sp/>lx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>float<sp/>mx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>dict<sp/>mode</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cdef<sp/>int<sp/>idx,<sp/>pdg,<sp/>nj</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>idx<sp/>in<sp/>range(self.topchildren_islep.size()):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lx<sp/>=<sp/>&quot;lep&quot;<sp/>if<sp/>self.topchildren_islep[idx]<sp/>else<sp/>&quot;had&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mx<sp/>=<sp/>self.topchildren_mass[idx]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.truth_children[lx]<sp/>+=<sp/>[mx]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>idx<sp/>in<sp/>range(self.toptruthjets_islep.size()):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lx<sp/>=<sp/>&quot;lep&quot;<sp/>if<sp/>self.toptruthjets_islep[idx]<sp/>else<sp/>&quot;had&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mx<sp/>=<sp/>self.toptruthjets_mass[idx]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.truth_jets[lx]<sp/>+=<sp/>[mx]</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nj<sp/>=<sp/>self.toptruthjets_njets[idx]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lx<sp/>=<sp/>str(nj)<sp/>+<sp/>&quot;<sp/>-<sp/>Truth<sp/>Jets&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mode<sp/>=<sp/>self.n_truth_jets_lep<sp/>if<sp/>self.toptruthjets_islep[idx]<sp/>else<sp/>self.n_truth_jets_had</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>lx<sp/>not<sp/>in<sp/>mode:<sp/>mode[lx]<sp/>=<sp/>[]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mode[lx]<sp/>+=<sp/>[mx]</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>idx<sp/>in<sp/>range(self.topjets_children_islep.size()):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lx<sp/>=<sp/>&quot;lep&quot;<sp/>if<sp/>self.topjets_children_islep[idx]<sp/>else<sp/>&quot;had&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mx<sp/>=<sp/>self.topjets_children_mass[idx]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.jets_truth_leps[lx]<sp/>+=<sp/>[mx]</highlight></codeline>
+<codeline><highlight class="normal"><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>idx<sp/>in<sp/>range(self.topjets_leptons_islep.size()):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lx<sp/><sp/>=<sp/>&quot;lep&quot;<sp/>if<sp/>self.topjets_leptons_islep[idx]<sp/>else<sp/>&quot;had&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mx<sp/>=<sp/>self.topjets_leptons_mass[idx]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nj<sp/>=<sp/>self.toptruthjets_njets[idx]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.jet_leps[lx]<sp/>+=<sp/>[mx]</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nj<sp/>=<sp/>self.topjets_leptons_njets[idx]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lx<sp/>=<sp/>str(nj)<sp/>+<sp/>&quot;<sp/>-<sp/>Jets&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mode<sp/>=<sp/>self.n_jets_lep<sp/>if<sp/>self.topjets_leptons_islep[idx]<sp/>else<sp/>self.n_jets_had</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>lx<sp/>not<sp/>in<sp/>mode:<sp/>mode[lx]<sp/>=<sp/>[]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mode[lx]<sp/>+=<sp/>[mx]</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>not<sp/>self.topjets_leptons_islep[idx]:<sp/>continue</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pdg<sp/>=<sp/>self.topjets_leptons_pdgid[idx]<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lx<sp/>=<sp/>&quot;lep-&quot;<sp/>+<sp/>(str(pdg)<sp/>if<sp/>pdg<sp/>else<sp/>&quot;miss&quot;)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>lx<sp/>not<sp/>in<sp/>self.jet_leps:<sp/>self.jet_leps[lx]<sp/>=<sp/>[]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.jet_leps[lx]<sp/>+=<sp/>[mx]</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>void<sp/>transform_dict_keys(self):<sp/>pass</highlight></codeline>
+    </programlisting>
+    <location file="selections/mc16/topmatching/topmatching.pyx"/>
+  </compounddef>
+</doxygen>

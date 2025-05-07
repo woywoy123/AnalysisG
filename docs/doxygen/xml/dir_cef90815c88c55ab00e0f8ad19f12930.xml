@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_cef90815c88c55ab00e0f8ad19f12930" kind="dir">
+    <compoundname>interface</compoundname>
+    <innerdir refid="dir_613630baaf59b31d614e2703358b74a2">include</innerdir>
+    <innerfile refid="interface_2graph_8cxx">interface/graph.cxx</innerfile>
+    <innerfile refid="interface_8cxx">interface.cxx</innerfile>
+    <innerfile refid="interface_2nusol_8cxx">interface/nusol.cxx</innerfile>
+    <innerfile refid="interface_2operators_8cxx">interface/operators.cxx</innerfile>
+    <innerfile refid="pyc_2interface_2physics_8cxx">pyc/interface/physics.cxx</innerfile>
+    <innerfile refid="interface_2transform_8cxx">interface/transform.cxx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pyc/interface/"/>
+  </compounddef>
+</doxygen>

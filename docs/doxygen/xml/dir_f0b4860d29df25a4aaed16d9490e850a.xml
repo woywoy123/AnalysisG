@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_f0b4860d29df25a4aaed16d9490e850a" kind="dir">
+    <compoundname>structs</compoundname>
+    <innerfile refid="modules_2structs_2include_2structs_2base_8h">modules/structs/include/structs/base.h</innerfile>
+    <innerfile refid="element_8h">element.h</innerfile>
+    <innerfile refid="enums_8h">enums.h</innerfile>
+    <innerfile refid="modules_2structs_2include_2structs_2event_8h">modules/structs/include/structs/event.h</innerfile>
+    <innerfile refid="folds_8h">folds.h</innerfile>
+    <innerfile refid="structs_2include_2structs_2meta_8h">structs/include/structs/meta.h</innerfile>
+    <innerfile refid="model_8h">model.h</innerfile>
+    <innerfile refid="structs_2include_2structs_2optimizer_8h">structs/include/structs/optimizer.h</innerfile>
+    <innerfile refid="modules_2structs_2include_2structs_2particles_8h">modules/structs/include/structs/particles.h</innerfile>
+    <innerfile refid="property_8h">property.h</innerfile>
+    <innerfile refid="report_8h">report.h</innerfile>
+    <innerfile refid="settings_8h">settings.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/structs/include/structs/"/>
+  </compounddef>
+</doxygen>

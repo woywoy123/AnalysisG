@@ -1,0 +1,20 @@
+digraph "io::root_size"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="io::root_size",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Retrieves the sizes (number of entries) of TTrees in the open ROOT files."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="io::scan_keys",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classio.html#aacb050c4cb6c10038d6bf8edb7244a28",tooltip="Scans for keys (e.g., TTree names, TBranch names) in the open ROOT files."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="count",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structs_2cxx_2base_8cxx.html#a4eee7b291ed2cdcd4e3c2496c603c48c",tooltip="Counts occurrences of a substring within a string."];
+  Node3 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="io::end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classio.html#a65ca69ec5f12d0f3a463396bcff84d77",tooltip="Ends the current I/O session, closing any open files."];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="tools::ends_with",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtools.html#a3d538da5310467c9321b27cd6a75b9af",tooltip="Checks if a string ends with a specific substring."];
+  Node2 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="tools::has_value",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtools.html#a13633d4d63c55bcf537ff141e7605f13",tooltip="Checks if a vector of strings contains a specific string."];
+}

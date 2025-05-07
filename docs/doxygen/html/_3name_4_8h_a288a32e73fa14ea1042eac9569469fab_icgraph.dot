@@ -1,0 +1,42 @@
+digraph "clone"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="clone",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="_H_perp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nusol_2tensor_2nusol_8cxx.html#a8bbfd6699dae11189c40dfc0035fd99c",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="nusol_::Hperp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacenusol__.html#a3aacd3a83799d6a470d6188008fd069a",tooltip=" "];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="nusol_::NuNu",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacenusol__.html#ac849ef3564c5ac968727dce36494fd0a",tooltip=" "];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="pyc::nusol::NuNu",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1nusol.html#a9650527ae538fa27121bedfb79a1fbe6",tooltip=" "];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="pyc::nusol::NuNu",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1nusol.html#adb902ce7bc71e3a4cf26f2f1e88e856c",tooltip=" "];
+  Node5 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="validation::reconstruction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation.html#aa436b348c281a3d676910cf7b7d575eb",tooltip=" "];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="validation::strategy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvalidation.html#af388ba0e867008a75602581fdc2ed0f3",tooltip=" "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="container::compile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classcontainer.html#a2f036c9c52b38b6fd462a2a72f553c41",tooltip=" "];
+  Node1 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="optimizer::import_model\l_sessions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classoptimizer.html#a6075749ec6e43431b6a4294a7b2cbafb",tooltip=" "];
+  Node1 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="nusol_::Intersection",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacenusol__.html#a2cdd92aeb32c05137ebc7ef96c47a3da",tooltip=" "];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="nusol_::Nu",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacenusol__.html#a6f05175e14627bd3c34ffa61686b7da4",tooltip=" "];
+  Node12 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="pyc::nusol::Nu",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1nusol.html#a991cfa801400211ccf412bd1a85b7b69",tooltip=" "];
+  Node11 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="graph_::node_aggregation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacegraph__.html#af76bc3bdcf60cb8a46bdd978e5097376",tooltip=" "];
+  Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="pyc::graph::node_aggregation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1graph.html#a122f7af31a0d3d53790f3389ffef5073",tooltip=" "];
+  Node14 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="pyc::graph::polar::\lnode_aggregation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1graph_1_1polar.html#a2214179747b4d328f815a532e6d4fdcf",tooltip=" "];
+  Node14 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="pyc::graph::cartesian\l::node_aggregation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1graph_1_1cartesian.html#a876b2614216840138fb428e66f4938b8",tooltip=" "];
+}

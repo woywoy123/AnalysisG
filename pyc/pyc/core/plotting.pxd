@@ -1,3 +1,11 @@
+/**
+ * @file plotting.pxd
+ * @brief Provides type definitions and class declarations for plotting utilities in the AnalysisG framework.
+ *
+ * This file defines the structure and behavior of plotting-related classes, including base plotting,
+ * histogram plotting, and ROC curve plotting.
+ */
+
 # distutils: language = c++
 # cython: language_level = 3
 
@@ -78,8 +86,12 @@ cdef extern from "<plotting/plotting.h>" nogil:
         float yscaling
         bool auto_scale
 
-
-
+/**
+ * @class BasePlotting
+ * @brief Base class for plotting utilities.
+ *
+ * This class provides common properties and methods for configuring and rendering plots.
+ */
 cdef class BasePlotting:
     cdef plotting* ptr
     cdef matpl
@@ -96,6 +108,19 @@ cdef class BasePlotting:
     cdef dict __compile__(self, bool raw = *)
     cdef void __resetplt__(self)
     cdef void __figure__(self, dict com = *)
+
+    cdef public float xScaling ///< Scaling factor for the x-axis.
+    cdef public float yScaling ///< Scaling factor for the y-axis.
+    cdef public bool AutoScaling ///< Flag to enable or disable automatic scaling.
+    cdef public str Title ///< Title of the plot.
+    cdef public str xTitle ///< Label for the x-axis.
+    cdef public str yTitle ///< Label for the y-axis.
+    cdef public bool xLogarithmic ///< Flag to enable or disable logarithmic scaling on the x-axis.
+    cdef public bool yLogarithmic ///< Flag to enable or disable logarithmic scaling on the y-axis.
+    cdef public list Colors ///< List of colors used in the plot.
+
+    cdef void factory(self) ///< Factory method for initializing plot components.
+    cdef dict __compile__(self, bool raw = *) ///< Compiles the plot configuration into a dictionary.
 
 cdef class TH1F(BasePlotting):
     cdef public bool ApplyScaling
@@ -123,12 +148,18 @@ cdef class TLine(BasePlotting):
     cdef void factory(self)
     cdef dict __compile__(self, bool raw = *)
 
+/**
+ * @class ROC
+ * @brief Class for generating Receiver Operating Characteristic (ROC) curves.
+ *
+ * This class extends TLine and provides methods for computing and visualizing ROC curves.
+ */
 cdef class ROC(TLine):
-    cdef bool inits
-    cdef int  num_cls
-    cdef public bool Binary
-    cdef public dict auc
+    cdef bool inits ///< Initialization flag for ROC computation.
+    cdef int num_cls ///< Number of classes for multi-class ROC.
+    cdef public bool Binary ///< Flag to indicate binary classification.
+    cdef public dict auc ///< Dictionary to store Area Under Curve (AUC) values.
 
-    cdef void factory(self)
-    cdef dict __compile__(self, bool raw = *)
+    cdef void factory(self) ///< Factory method for initializing ROC components.
+    cdef dict __compile__(self, bool raw = *) ///< Compiles the ROC configuration into a dictionary.
 

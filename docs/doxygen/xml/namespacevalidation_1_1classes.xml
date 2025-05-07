@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacevalidation_1_1classes" kind="namespace" language="Python">
+    <compoundname>validation::classes</compoundname>
+    <innerclass refid="classvalidation_1_1classes_1_1atomic" prot="public">validation::classes::atomic</innerclass>
+    <innerclass refid="classvalidation_1_1classes_1_1_container" prot="public">validation::classes::Container</innerclass>
+    <innerclass refid="classvalidation_1_1classes_1_1loss" prot="public">validation::classes::loss</innerclass>
+    <innerclass refid="classvalidation_1_1classes_1_1nux" prot="public">validation::classes::nux</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacevalidation_1_1classes_1abbda87b110c9438ef0873b3879b48307" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.classes.bar</definition>
+        <argsstring>(p, sym)</argsstring>
+        <name>bar</name>
+        <param>
+          <type>p</type>
+          <defname>p</defname>
+        </param>
+        <param>
+          <type>sym</type>
+          <defname>sym</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/classes.py" line="1" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/classes.py" bodystart="1" bodyend="1"/>
+        <referencedby refid="namespacevalidation_1_1classes_1ae9dc639746e3e8ce122f60401789fcb4" compoundref="validation_2classes_8py" startline="2" endline="10">validation.classes.pdgid</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacevalidation_1_1classes_1ae9dc639746e3e8ce122f60401789fcb4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def validation.classes.pdgid</definition>
+        <argsstring>(p)</argsstring>
+        <name>pdgid</name>
+        <param>
+          <type>p</type>
+          <defname>p</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/validation/classes.py" line="2" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/validation/classes.py" bodystart="2" bodyend="10"/>
+        <references refid="namespacevalidation_1_1classes_1abbda87b110c9438ef0873b3879b48307" compoundref="validation_2classes_8py" startline="1" endline="1">validation.classes.bar</references>
+        <referencedby refid="classvalidation_1_1classes_1_1nux_1a0dc54f21fe4b0bd8b9f04dee58365277" compoundref="validation_2classes_8py" startline="78" endline="112">validation.classes.nux.add</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/neutrino/validation/classes.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

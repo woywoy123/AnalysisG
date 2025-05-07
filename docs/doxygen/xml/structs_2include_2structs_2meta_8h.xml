@@ -1,0 +1,1112 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="structs_2include_2structs_2meta_8h" kind="file" language="C++">
+    <compoundname>structs/include/structs/meta.h</compoundname>
+    <includes local="no">iostream</includes>
+    <includes local="no">string</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">map</includes>
+    <includedby refid="meta_8cxx" local="no">meta.cxx</includedby>
+    <includedby refid="meta_2include_2meta_2meta_8h" local="no">meta.h</includedby>
+    <includedby refid="element_8cxx" local="no">element.cxx</includedby>
+    <includedby refid="element_8h" local="no">element.h</includedby>
+    <includedby refid="vector__cast_8h" local="no">vector_cast.h</includedby>
+    <incdepgraph>
+      <node id="3">
+        <label>string</label>
+      </node>
+      <node id="5">
+        <label>map</label>
+      </node>
+      <node id="1">
+        <label>meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>vector</label>
+      </node>
+      <node id="2">
+        <label>iostream</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="15">
+        <label>optimizer_build.cxx</label>
+        <link refid="optimizer__build_8cxx"/>
+      </node>
+      <node id="7">
+        <label>sampletracer.h</label>
+        <link refid="sampletracer_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>meta.cxx</label>
+        <link refid="meta_8cxx"/>
+      </node>
+      <node id="10">
+        <label>event_build.cxx</label>
+        <link refid="event__build_8cxx"/>
+      </node>
+      <node id="125">
+        <label>graph.cxx</label>
+        <link refid="interface_2graph_8cxx"/>
+      </node>
+      <node id="58">
+        <label>graphs.cxx</label>
+        <link refid="ssml__mc20_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="22">
+        <label>met.cxx</label>
+        <link refid="met_8cxx"/>
+      </node>
+      <node id="42">
+        <label>zprime.cxx</label>
+        <link refid="mc16_2zprime_2zprime_8cxx"/>
+      </node>
+      <node id="32">
+        <label>parton.cxx</label>
+        <link refid="parton_8cxx"/>
+      </node>
+      <node id="126">
+        <label>interface.cxx</label>
+        <link refid="interface_8cxx"/>
+      </node>
+      <node id="13">
+        <label>methods.cxx</label>
+        <link refid="methods_8cxx"/>
+      </node>
+      <node id="68">
+        <label>event_template.cxx</label>
+        <link refid="event__template_8cxx"/>
+      </node>
+      <node id="18">
+        <label>event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+      </node>
+      <node id="101">
+        <label>link.cxx</label>
+        <link refid="link_8cxx"/>
+      </node>
+      <node id="106">
+        <label>element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="131" relation="include">
+        </childnode>
+        <childnode refid="132" relation="include">
+        </childnode>
+        <childnode refid="133" relation="include">
+        </childnode>
+      </node>
+      <node id="134">
+        <label>vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="135" relation="include">
+        </childnode>
+        <childnode refid="136" relation="include">
+        </childnode>
+        <childnode refid="126" relation="include">
+        </childnode>
+      </node>
+      <node id="109">
+        <label>particles.h</label>
+        <link refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>container.cxx</label>
+        <link refid="container_8cxx"/>
+      </node>
+      <node id="6">
+        <label>entries.cxx</label>
+        <link refid="entries_8cxx"/>
+      </node>
+      <node id="124">
+        <label>metrics.cxx</label>
+        <link refid="metrics_8cxx"/>
+      </node>
+      <node id="107">
+        <label>particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="116" relation="include">
+        </childnode>
+        <childnode refid="117" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="118" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>event.cxx</label>
+        <link refid="events_2gnn_2cxx_2event_8cxx"/>
+      </node>
+      <node id="64">
+        <label>topmatching.h</label>
+        <link refid="mc20_2topmatching_2topmatching_8h"/>
+        <childnode refid="65" relation="include">
+        </childnode>
+      </node>
+      <node id="133">
+        <label>variable.cxx</label>
+        <link refid="variable_8cxx"/>
+      </node>
+      <node id="40">
+        <label>toptruthjets.cxx</label>
+        <link refid="toptruthjets_8cxx"/>
+      </node>
+      <node id="31">
+        <label>parton.h</label>
+        <link refid="parton_8h"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="80">
+        <label>selection_template.h</label>
+        <link refid="selection__template_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+      </node>
+      <node id="121">
+        <label>metrics.h</label>
+        <link refid="metrics_8h"/>
+        <childnode refid="122" relation="include">
+        </childnode>
+        <childnode refid="123" relation="include">
+        </childnode>
+        <childnode refid="124" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+      </node>
+      <node id="97">
+        <label>accuracy.cxx</label>
+        <link refid="accuracy_8cxx"/>
+      </node>
+      <node id="23">
+        <label>childrenkinematics.h</label>
+        <link refid="childrenkinematics_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>mc20_exp.cxx</label>
+        <link refid="mc20__exp_8cxx"/>
+      </node>
+      <node id="19">
+        <label>event.h</label>
+        <link refid="events_2bsm__4tops_2include_2bsm__4tops_2event_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="95">
+        <label>metric_template.h</label>
+        <link refid="metric__template_8h"/>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>toptruthjets.h</label>
+        <link refid="toptruthjets_8h"/>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="93">
+        <label>types.cxx</label>
+        <link refid="types_8cxx"/>
+      </node>
+      <node id="114">
+        <label>interfaces.cxx</label>
+        <link refid="interfaces_8cxx"/>
+      </node>
+      <node id="50">
+        <label>gnn-event.h</label>
+        <link refid="gnn-event_8h"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>selection_build.cxx</label>
+        <link refid="selection__build_8cxx"/>
+      </node>
+      <node id="63">
+        <label>topkinematics.cxx</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8cxx"/>
+      </node>
+      <node id="82">
+        <label>selection_core.cxx</label>
+        <link refid="selection__core_8cxx"/>
+      </node>
+      <node id="57">
+        <label>graphs.cxx</label>
+        <link refid="exp__mc20_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="120">
+        <label>RecursiveGraphNeuralNetwork.cxx</label>
+        <link refid="_recursive_graph_neural_network_8cxx"/>
+      </node>
+      <node id="111">
+        <label>particles.cxx</label>
+        <link refid="gnn_2cxx_2particles_8cxx"/>
+      </node>
+      <node id="76">
+        <label>optimizer.cxx</label>
+        <link refid="optimizer_2cxx_2optimizer_8cxx"/>
+      </node>
+      <node id="73">
+        <label>dataloader.cxx</label>
+        <link refid="dataloader_8cxx"/>
+      </node>
+      <node id="118">
+        <label>pyc.h</label>
+        <link refid="pyc_8h"/>
+        <childnode refid="119" relation="include">
+        </childnode>
+        <childnode refid="120" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="121" relation="include">
+        </childnode>
+        <childnode refid="125" relation="include">
+        </childnode>
+        <childnode refid="126" relation="include">
+        </childnode>
+        <childnode refid="127" relation="include">
+        </childnode>
+        <childnode refid="128" relation="include">
+        </childnode>
+        <childnode refid="129" relation="include">
+        </childnode>
+        <childnode refid="130" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="134" relation="include">
+        </childnode>
+      </node>
+      <node id="103">
+        <label>properties.cxx</label>
+        <link refid="metric_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="108">
+        <label>particles.h</label>
+        <link refid="events_2bsm__4tops_2include_2bsm__4tops_2particles_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="90">
+        <label>hdf5.cxx</label>
+        <link refid="hdf5_8cxx"/>
+      </node>
+      <node id="61">
+        <label>mc20_ref.cxx</label>
+        <link refid="mc20__ref_8cxx"/>
+      </node>
+      <node id="35">
+        <label>topkinematics.h</label>
+        <link refid="mc16_2topkinematics_2topkinematics_8h"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>topjets.cxx</label>
+        <link refid="topjets_8cxx"/>
+      </node>
+      <node id="123">
+        <label>mass_plots.cxx</label>
+        <link refid="mass__plots_8cxx"/>
+      </node>
+      <node id="72">
+        <label>cache.cxx</label>
+        <link refid="cache_8cxx"/>
+      </node>
+      <node id="132">
+        <label>structs.cxx</label>
+        <link refid="structs_8cxx"/>
+      </node>
+      <node id="48">
+        <label>graphs.h</label>
+        <link refid="exp__mc20_2include_2exp__mc20_2graphs_8h"/>
+      </node>
+      <node id="70">
+        <label>graph_template.h</label>
+        <link refid="graph__template_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>graphs.cxx</label>
+        <link refid="bsm__4tops_2cxx_2graphs_8cxx"/>
+      </node>
+      <node id="55">
+        <label>graphs.h</label>
+        <link refid="ssml__mc20_2include_2ssml__mc20_2graphs_8h"/>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+      </node>
+      <node id="87">
+        <label>validation.h</label>
+        <link refid="validation_8h"/>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="89">
+        <label>io.h</label>
+        <link refid="io_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+      </node>
+      <node id="96">
+        <label>accuracy.h</label>
+        <link refid="accuracy_8h"/>
+        <childnode refid="97" relation="include">
+        </childnode>
+      </node>
+      <node id="130">
+        <label>transform.cxx</label>
+        <link refid="interface_2transform_8cxx"/>
+      </node>
+      <node id="12">
+        <label>inference_build.cxx</label>
+        <link refid="inference__build_8cxx"/>
+      </node>
+      <node id="88">
+        <label>&lt;selection-name&gt;.h</label>
+        <link refid="_3selection-name_4_8h"/>
+      </node>
+      <node id="75">
+        <label>optimizer.h</label>
+        <link refid="optimizer_2include_2generators_2optimizer_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+      </node>
+      <node id="98">
+        <label>pagerank.h</label>
+        <link refid="pagerank_8h"/>
+        <childnode refid="99" relation="include">
+        </childnode>
+      </node>
+      <node id="77">
+        <label>graph_template.cxx</label>
+        <link refid="graph__template_8cxx"/>
+      </node>
+      <node id="119">
+        <label>grift.cxx</label>
+        <link refid="grift_8cxx"/>
+      </node>
+      <node id="91">
+        <label>io.cxx</label>
+        <link refid="io_2cxx_2io_8cxx"/>
+      </node>
+      <node id="26">
+        <label>decaymodes.cxx</label>
+        <link refid="decaymodes_8cxx"/>
+      </node>
+      <node id="100">
+        <label>base.cxx</label>
+        <link refid="metric_2cxx_2base_8cxx"/>
+      </node>
+      <node id="45">
+        <label>validation.cxx</label>
+        <link refid="validation_8cxx"/>
+      </node>
+      <node id="127">
+        <label>nusol.cxx</label>
+        <link refid="interface_2nusol_8cxx"/>
+      </node>
+      <node id="67">
+        <label>zprime.cxx</label>
+        <link refid="mc20_2zprime_2zprime_8cxx"/>
+      </node>
+      <node id="105">
+        <label>element.cxx</label>
+        <link refid="element_8cxx"/>
+      </node>
+      <node id="28">
+        <label>event.cxx</label>
+        <link refid="events_2bsm__4tops_2cxx_2event_8cxx"/>
+      </node>
+      <node id="33">
+        <label>topjets.h</label>
+        <link refid="topjets_8h"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>properties.cxx</label>
+        <link refid="event_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="14">
+        <label>metric_build.cxx</label>
+        <link refid="metric__build_8cxx"/>
+      </node>
+      <node id="104">
+        <label>&lt;name&gt;.h</label>
+        <link refid="_3name_4_8h"/>
+      </node>
+      <node id="38">
+        <label>topmatching.cxx</label>
+        <link refid="mc16_2topmatching_2topmatching_8cxx"/>
+      </node>
+      <node id="129">
+        <label>physics.cxx</label>
+        <link refid="pyc_2interface_2physics_8cxx"/>
+      </node>
+      <node id="92">
+        <label>root.cxx</label>
+        <link refid="io_2cxx_2root_8cxx"/>
+      </node>
+      <node id="131">
+        <label>misc.cxx</label>
+        <link refid="misc_8cxx"/>
+      </node>
+      <node id="47">
+        <label>event.cxx</label>
+        <link refid="events_2exp__mc20_2cxx_2event_8cxx"/>
+      </node>
+      <node id="83">
+        <label>selection_template.cxx</label>
+        <link refid="selection__template_8cxx"/>
+      </node>
+      <node id="128">
+        <label>operators.cxx</label>
+        <link refid="interface_2operators_8cxx"/>
+      </node>
+      <node id="4">
+        <label>container.h</label>
+        <link refid="container_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="136">
+        <label>typecasting.cxx</label>
+        <link refid="typecasting_8cxx"/>
+      </node>
+      <node id="84">
+        <label>matching.h</label>
+        <link refid="matching_8h"/>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>dataloader.h</label>
+        <link refid="dataloader_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+      </node>
+      <node id="66">
+        <label>zprime.h</label>
+        <link refid="mc20_2zprime_2zprime_8h"/>
+        <childnode refid="67" relation="include">
+        </childnode>
+      </node>
+      <node id="113">
+        <label>cartesian.cxx</label>
+        <link refid="cartesian_8cxx"/>
+      </node>
+      <node id="27">
+        <label>event.h</label>
+        <link refid="selections_2mc16_2event_2event_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="65">
+        <label>topmatching.cxx</label>
+        <link refid="mc20_2topmatching_2topmatching_8cxx"/>
+      </node>
+      <node id="11">
+        <label>graph_build.cxx</label>
+        <link refid="graph__build_8cxx"/>
+      </node>
+      <node id="52">
+        <label>topefficiency.h</label>
+        <link refid="topefficiency_8h"/>
+        <childnode refid="53" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>event.cxx</label>
+        <link refid="selections_2mc16_2event_2event_8cxx"/>
+      </node>
+      <node id="17">
+        <label>sampletracer.cxx</label>
+        <link refid="sampletracer_8cxx"/>
+      </node>
+      <node id="122">
+        <label>loss_plots.cxx</label>
+        <link refid="loss__plots_8cxx"/>
+      </node>
+      <node id="78">
+        <label>properties.cxx</label>
+        <link refid="graph_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="37">
+        <label>topmatching.h</label>
+        <link refid="mc16_2topmatching_2topmatching_8h"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>topkinematics.h</label>
+        <link refid="mc20_2topkinematics_2topkinematics_8h"/>
+        <childnode refid="63" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+      </node>
+      <node id="117">
+        <label>polar.cxx</label>
+        <link refid="polar_8cxx"/>
+      </node>
+      <node id="74">
+        <label>dataset.cxx</label>
+        <link refid="dataset_8cxx"/>
+      </node>
+      <node id="110">
+        <label>gnn-particles.h</label>
+        <link refid="gnn-particles_8h"/>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="86">
+        <label>combinatorial.h</label>
+        <link refid="combinatorial_8h"/>
+        <childnode refid="44" relation="include">
+        </childnode>
+      </node>
+      <node id="85">
+        <label>matching.cxx</label>
+        <link refid="matching_8cxx"/>
+      </node>
+      <node id="29">
+        <label>event.cxx</label>
+        <link refid="events_2ssml__mc20_2cxx_2event_8cxx"/>
+      </node>
+      <node id="102">
+        <label>metric.cxx</label>
+        <link refid="metric_8cxx"/>
+      </node>
+      <node id="59">
+        <label>regions.h</label>
+        <link refid="regions_8h"/>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="112">
+        <label>particles.h</label>
+        <link refid="events_2ssml__mc20_2include_2ssml__mc20_2particles_8h"/>
+        <childnode refid="54" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>analysis.cxx</label>
+        <link refid="analysis_8cxx"/>
+      </node>
+      <node id="36">
+        <label>topkinematics.cxx</label>
+        <link refid="mc16_2topkinematics_2topkinematics_8cxx"/>
+      </node>
+      <node id="20">
+        <label>graphs.h</label>
+        <link refid="bsm__4tops_2include_2bsm__4tops_2graphs_8h"/>
+      </node>
+      <node id="44">
+        <label>combinatorial.cxx</label>
+        <link refid="combinatorial_8cxx"/>
+      </node>
+      <node id="21">
+        <label>met.h</label>
+        <link refid="met_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>topefficiency.cxx</label>
+        <link refid="topefficiency_8cxx"/>
+      </node>
+      <node id="54">
+        <label>event.h</label>
+        <link refid="events_2ssml__mc20_2include_2ssml__mc20_2event_8h"/>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>childrenkinematics.cxx</label>
+        <link refid="childrenkinematics_8cxx"/>
+      </node>
+      <node id="43">
+        <label>mc16_ref.cxx</label>
+        <link refid="mc16__ref_8cxx"/>
+      </node>
+      <node id="46">
+        <label>event.h</label>
+        <link refid="events_2exp__mc20_2include_2exp__mc20_2event_8h"/>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>regions.cxx</label>
+        <link refid="regions_8cxx"/>
+      </node>
+      <node id="81">
+        <label>properties.cxx</label>
+        <link refid="selection_2cxx_2properties_8cxx"/>
+      </node>
+      <node id="135">
+        <label>root.cxx</label>
+        <link refid="typecasting_2cxx_2root_8cxx"/>
+      </node>
+      <node id="79">
+        <label>struct_graph.cxx</label>
+        <link refid="struct__graph_8cxx"/>
+      </node>
+      <node id="94">
+        <label>metric_template.cxx</label>
+        <link refid="metric__template_8cxx"/>
+      </node>
+      <node id="115">
+        <label>particle_template.cxx</label>
+        <link refid="particle__template_8cxx"/>
+      </node>
+      <node id="99">
+        <label>pagerank.cxx</label>
+        <link refid="pagerank_8cxx"/>
+      </node>
+      <node id="116">
+        <label>physics.cxx</label>
+        <link refid="modules_2particle_2cxx_2physics_8cxx"/>
+      </node>
+      <node id="41">
+        <label>zprime.h</label>
+        <link refid="mc16_2zprime_2zprime_8h"/>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>decaymodes.h</label>
+        <link refid="decaymodes_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>analysis.h</label>
+        <link refid="analysis_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structweights__t" prot="public">weights_t</innerclass>
+    <innerclass refid="structmeta__t" prot="public">meta_t</innerclass>
+    <briefdescription>
+<para>Defines metadata structures for physics analysis datasets. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file contains the declaration of the <computeroutput><ref refid="structmeta__t" kindref="compound">meta_t</ref></computeroutput> structure and related types that hold metadata information for physics datasets. This includes information such as dataset identifiers, Monte Carlo status, cross-sections, event counts, and other properties needed for proper normalization and identification of physics samples. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>meta.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Defines<sp/>metadata<sp/>structures<sp/>for<sp/>physics<sp/>analysis<sp/>datasets.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>contains<sp/>the<sp/>declaration<sp/>of<sp/>the<sp/>`meta_t`<sp/>structure<sp/>and<sp/>related<sp/>types</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>that<sp/>hold<sp/>metadata<sp/>information<sp/>for<sp/>physics<sp/>datasets.<sp/>This<sp/>includes<sp/>information<sp/>such<sp/>as</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>dataset<sp/>identifiers,<sp/>Monte<sp/>Carlo<sp/>status,<sp/>cross-sections,<sp/>event<sp/>counts,<sp/>and<sp/>other</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>properties<sp/>needed<sp/>for<sp/>proper<sp/>normalization<sp/>and<sp/>identification<sp/>of<sp/>physics<sp/>samples.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>META_STRUCTS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>META_STRUCTS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;map&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="19"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>@struct<sp/>weights_t</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Structure<sp/>to<sp/>hold<sp/>weight-related<sp/>information<sp/>for<sp/>events.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>Stores<sp/>data<sp/>related<sp/>to<sp/>event<sp/>weights,<sp/>which<sp/>are<sp/>crucial<sp/>for<sp/>proper<sp/>normalization</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>of<sp/>Monte<sp/>Carlo<sp/>samples.<sp/>This<sp/>includes<sp/>the<sp/>sum<sp/>of<sp/>weights<sp/>and<sp/>additional<sp/>weight<sp/>factors.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="structweights__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structweights__t" kindref="compound">weights_t</ref><sp/>{</highlight></codeline>
+<codeline lineno="27" refid="structweights__t_1a5685466e9e2b76f8ac5cf49073354ed1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structweights__t_1a5685466e9e2b76f8ac5cf49073354ed1" kindref="member">dsid</ref><sp/>=<sp/>-1;<sp/></highlight><highlight class="comment">///&lt;<sp/>Dataset<sp/>ID<sp/>(DSID),<sp/>a<sp/>unique<sp/>identifier<sp/>for<sp/>the<sp/>dataset.<sp/>Initialized<sp/>to<sp/>-1.</highlight></codeline>
+<codeline lineno="28" refid="structweights__t_1a9d87df8605ed4e3d1d588b7dffa0d147" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structweights__t_1a9d87df8605ed4e3d1d588b7dffa0d147" kindref="member">isAFII</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Flag<sp/>indicating<sp/>if<sp/>this<sp/>is<sp/>an<sp/>AFII<sp/>dataset.<sp/>Initialized<sp/>to<sp/>false.</highlight></codeline>
+<codeline lineno="29" refid="structweights__t_1abc4b8dafb7621c42ddb1e4aaa6e2c360" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structweights__t_1abc4b8dafb7621c42ddb1e4aaa6e2c360" kindref="member">generator</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Name<sp/>of<sp/>the<sp/>generator<sp/>used.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="30" refid="structweights__t_1ab451250f15d08e784ddaeb535e393ad2" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structweights__t_1ab451250f15d08e784ddaeb535e393ad2" kindref="member">ami_tag</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>AMI<sp/>tag<sp/>associated<sp/>with<sp/>the<sp/>dataset.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="31" refid="structweights__t_1ab9a7464871ac648c08967a7fe78d0ce5" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="structweights__t_1ab9a7464871ac648c08967a7fe78d0ce5" kindref="member">total_events_weighted</ref><sp/>=<sp/>-1;<sp/></highlight><highlight class="comment">///&lt;<sp/>Total<sp/>weighted<sp/>events.<sp/>Initialized<sp/>to<sp/>-1.</highlight></codeline>
+<codeline lineno="32" refid="structweights__t_1a6f80e88e485b153b4f1aca3b6fa9762b" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="structweights__t_1a6f80e88e485b153b4f1aca3b6fa9762b" kindref="member">total_events</ref><sp/>=<sp/>-1;<sp/></highlight><highlight class="comment">///&lt;<sp/>Total<sp/>number<sp/>of<sp/>events.<sp/>Initialized<sp/>to<sp/>-1.</highlight></codeline>
+<codeline lineno="33" refid="structweights__t_1af614abb0f3f25604ed4374f9df7829c5" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="structweights__t_1af614abb0f3f25604ed4374f9df7829c5" kindref="member">processed_events</ref><sp/>=<sp/>-1;<sp/></highlight><highlight class="comment">///&lt;<sp/>Number<sp/>of<sp/>processed<sp/>events.<sp/>Initialized<sp/>to<sp/>-1.</highlight></codeline>
+<codeline lineno="34" refid="structweights__t_1a1884c5da57a6866e39b4cf059830a921" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="structweights__t_1a1884c5da57a6866e39b4cf059830a921" kindref="member">processed_events_weighted</ref><sp/>=<sp/>-1;<sp/></highlight><highlight class="comment">///&lt;<sp/>Weighted<sp/>number<sp/>of<sp/>processed<sp/>events.<sp/>Initialized<sp/>to<sp/>-1.</highlight></codeline>
+<codeline lineno="35" refid="structweights__t_1acbb5a1824c78294e1d29417c17944280" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="structweights__t_1acbb5a1824c78294e1d29417c17944280" kindref="member">processed_events_weighted_squared</ref><sp/>=<sp/>-1;<sp/></highlight><highlight class="comment">///&lt;<sp/>Squared<sp/>weighted<sp/>number<sp/>of<sp/>processed<sp/>events.<sp/>Initialized<sp/>to<sp/>-1.</highlight></codeline>
+<codeline lineno="36" refid="structweights__t_1a29cc00b52c967f209479bc8b3c94dc1e" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>float&gt;<sp/><ref refid="structweights__t_1a29cc00b52c967f209479bc8b3c94dc1e" kindref="member">hist_data</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Histogram<sp/>data<sp/>as<sp/>key-value<sp/>pairs.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"></highlight><highlight class="normal">};</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="39"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>@struct<sp/>meta_t</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Main<sp/>structure<sp/>for<sp/>storing<sp/>metadata<sp/>about<sp/>physics<sp/>datasets.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>Contains<sp/>comprehensive<sp/>information<sp/>about<sp/>physics<sp/>datasets,<sp/>including<sp/>identifiers,</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>Monte<sp/>Carlo<sp/>simulation<sp/>parameters,<sp/>cross-sections,<sp/>event<sp/>counts,<sp/>and<sp/>other<sp/>properties</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>necessary<sp/>for<sp/>proper<sp/>data<sp/>handling<sp/>and<sp/>normalization<sp/>in<sp/>physics<sp/>analyses.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="structmeta__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structmeta__t" kindref="compound">meta_t</ref><sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>AnalysisTracking<sp/>values</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="structmeta__t_1a8c2ed5731d402571c8e5c4b418fdd7d2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1a8c2ed5731d402571c8e5c4b418fdd7d2" kindref="member">dsid</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">///&lt;<sp/>Dataset<sp/>ID<sp/>(DSID),<sp/>a<sp/>unique<sp/>identifier<sp/>for<sp/>the<sp/>dataset.<sp/>Initialized<sp/>to<sp/>0.</highlight></codeline>
+<codeline lineno="50" refid="structmeta__t_1a96dfd67afbba8130f8c2721c4e673dba" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1a96dfd67afbba8130f8c2721c4e673dba" kindref="member">isMC</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Flag<sp/>indicating<sp/>if<sp/>this<sp/>is<sp/>Monte<sp/>Carlo<sp/>data<sp/>(true)<sp/>or<sp/>real<sp/>data<sp/>(false).<sp/>Initialized<sp/>to<sp/>true.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="structmeta__t_1ae2e87fd710e75a8cdb3152bfefd5e5ae" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1ae2e87fd710e75a8cdb3152bfefd5e5ae" kindref="member">derivationFormat</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Format<sp/>of<sp/>the<sp/>derived<sp/>data<sp/>(e.g.,<sp/>&quot;DAOD_PHYS&quot;).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="53" refid="structmeta__t_1a71cbe9a05a93a6ddf2b51df149497384" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>std::string&gt;<sp/><ref refid="structmeta__t_1a71cbe9a05a93a6ddf2b51df149497384" kindref="member">inputfiles</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>of<sp/>input<sp/>files,<sp/>keyed<sp/>by<sp/>an<sp/>index.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="54" refid="structmeta__t_1af0f1355db6273d57fe17aefdb3d3829e" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::string&gt;<sp/><ref refid="structmeta__t_1af0f1355db6273d57fe17aefdb3d3829e" kindref="member">config</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>General<sp/>configuration<sp/>settings<sp/>as<sp/>key-value<sp/>pairs.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="structmeta__t_1a373970fba4abd3bf8004ed81ff29933e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a373970fba4abd3bf8004ed81ff29933e" kindref="member">AMITag</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>ATLAS<sp/>Metadata<sp/>Interface<sp/>tag.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="57" refid="structmeta__t_1ac74e02fb9f8b76d28237401b81c9f1fc" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1ac74e02fb9f8b76d28237401b81c9f1fc" kindref="member">generators</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Information<sp/>about<sp/>Monte<sp/>Carlo<sp/>generators<sp/>used.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="structmeta__t_1aafcfc8e633b1d31bd832e1ae8092d889" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>int&gt;<sp/><ref refid="structmeta__t_1aafcfc8e633b1d31bd832e1ae8092d889" kindref="member">inputrange</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Range<sp/>information<sp/>for<sp/>input<sp/>data,<sp/>possibly<sp/>event<sp/>ranges.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>eventnumber<sp/>is<sp/>reserved<sp/>for<sp/>a<sp/>ROOT<sp/>specific<sp/>mapping</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="structmeta__t_1aa8bd40b98fd92e932392161eb6b963e5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1aa8bd40b98fd92e932392161eb6b963e5" kindref="member">eventNumber</ref><sp/>=<sp/>-1;<sp/></highlight><highlight class="comment">///&lt;<sp/>Number<sp/>of<sp/>events,<sp/>reserved<sp/>for<sp/>ROOT<sp/>mapping.<sp/>Initialized<sp/>to<sp/>-1.</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>event_index<sp/>is<sp/>used<sp/>as<sp/>a<sp/>free<sp/>parameter</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="structmeta__t_1ab5b778e4fad5b87716ee0bde5038db72" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1ab5b778e4fad5b87716ee0bde5038db72" kindref="member">event_index</ref><sp/>=<sp/>-1;<sp/></highlight><highlight class="comment">///&lt;<sp/>Free<sp/>parameter<sp/>for<sp/>event<sp/>indexing.<sp/>Initialized<sp/>to<sp/>-1.</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>search<sp/>results</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="structmeta__t_1aac16a9a5a3382c180620d0f8103efe2d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1aac16a9a5a3382c180620d0f8103efe2d" kindref="member">found</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Flag<sp/>indicating<sp/>if<sp/>metadata<sp/>was<sp/>found.<sp/>Initialized<sp/>to<sp/>false.</highlight></codeline>
+<codeline lineno="69" refid="structmeta__t_1a343af146ec446b051d766aa3939d04e5" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a343af146ec446b051d766aa3939d04e5" kindref="member">DatasetName</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Human-readable<sp/>name<sp/>of<sp/>the<sp/>dataset.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>dataset<sp/>attributes</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72" refid="structmeta__t_1a0c8dfb2c592ebec2f6f6d6bee0131ea8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1a0c8dfb2c592ebec2f6f6d6bee0131ea8" kindref="member">totalSize</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">///&lt;<sp/>Total<sp/>size<sp/>of<sp/>the<sp/>dataset,<sp/>potentially<sp/>in<sp/>bytes.<sp/>Initialized<sp/>to<sp/>0.</highlight></codeline>
+<codeline lineno="73" refid="structmeta__t_1af1cc416317019060eb6f309e671e901f" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1af1cc416317019060eb6f309e671e901f" kindref="member">kfactor</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">///&lt;<sp/>Theoretical<sp/>correction<sp/>factor.<sp/>Initialized<sp/>to<sp/>0.</highlight></codeline>
+<codeline lineno="74" refid="structmeta__t_1a61a52dd8e3c04d10ebbfd1259ce62885" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1a61a52dd8e3c04d10ebbfd1259ce62885" kindref="member">ecmEnergy</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">///&lt;<sp/>Center-of-mass<sp/>energy<sp/>of<sp/>the<sp/>collision,<sp/>typically<sp/>in<sp/>GeV.<sp/>Initialized<sp/>to<sp/>0.</highlight></codeline>
+<codeline lineno="75" refid="structmeta__t_1adca428f497c2ee4231973daa28a9e331" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1adca428f497c2ee4231973daa28a9e331" kindref="member">genFiltEff</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">///&lt;<sp/>Generator<sp/>filter<sp/>efficiency<sp/>for<sp/>MC<sp/>simulations.<sp/>Initialized<sp/>to<sp/>0.</highlight></codeline>
+<codeline lineno="76" refid="structmeta__t_1afb11ed61ab2a69ee31b7adf624fe7d3a" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1afb11ed61ab2a69ee31b7adf624fe7d3a" kindref="member">completion</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">///&lt;<sp/>Processing<sp/>completion<sp/>percentage.<sp/>Initialized<sp/>to<sp/>0.</highlight></codeline>
+<codeline lineno="77" refid="structmeta__t_1a720944adc55e67020db02c829d426510" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1a720944adc55e67020db02c829d426510" kindref="member">beam_energy</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">///&lt;<sp/>Energy<sp/>of<sp/>the<sp/>colliding<sp/>beams.<sp/>Initialized<sp/>to<sp/>0.</highlight></codeline>
+<codeline lineno="78" refid="structmeta__t_1acdd5a32a53ce7ab1b1fa6a7d59c7af4b" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1acdd5a32a53ce7ab1b1fa6a7d59c7af4b" kindref="member">crossSection</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">///&lt;<sp/>Cross-section<sp/>of<sp/>the<sp/>physics<sp/>process.<sp/>Initialized<sp/>to<sp/>0.</highlight></codeline>
+<codeline lineno="79" refid="structmeta__t_1a0a495e6dd07f3c791bd8df6e969e808b" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1a0a495e6dd07f3c791bd8df6e969e808b" kindref="member">crossSection_mean</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">///&lt;<sp/>Mean<sp/>value<sp/>of<sp/>the<sp/>cross-section.<sp/>Initialized<sp/>to<sp/>0.</highlight></codeline>
+<codeline lineno="80" refid="structmeta__t_1a7f48f3a73357af2d5cbcd8196d8c3c39" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1a7f48f3a73357af2d5cbcd8196d8c3c39" kindref="member">campaign_luminosity</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">///&lt;<sp/>Integrated<sp/>luminosity<sp/>of<sp/>the<sp/>data-taking<sp/>campaign.<sp/>Initialized<sp/>to<sp/>0.</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="structmeta__t_1a5cf71448b01693c07a05ec68dcca7844" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1a5cf71448b01693c07a05ec68dcca7844" kindref="member">nFiles</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">///&lt;<sp/>Number<sp/>of<sp/>files<sp/>in<sp/>the<sp/>dataset.<sp/>Initialized<sp/>to<sp/>0.</highlight></codeline>
+<codeline lineno="83" refid="structmeta__t_1a5b1032e92954d61a6e365f22e345c86f" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1a5b1032e92954d61a6e365f22e345c86f" kindref="member">totalEvents</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">///&lt;<sp/>Total<sp/>number<sp/>of<sp/>events<sp/>across<sp/>all<sp/>files.<sp/>Initialized<sp/>to<sp/>0.</highlight></codeline>
+<codeline lineno="84" refid="structmeta__t_1a92f2987a7cab00513e16cd71f4712427" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structmeta__t_1a92f2987a7cab00513e16cd71f4712427" kindref="member">datasetNumber</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">///&lt;<sp/>Another<sp/>numerical<sp/>identifier<sp/>for<sp/>the<sp/>dataset.<sp/>Initialized<sp/>to<sp/>0.</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="structmeta__t_1adc655d4cd9b46059f671fedbb8be741f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1adc655d4cd9b46059f671fedbb8be741f" kindref="member">identifier</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>General<sp/>string<sp/>identifier<sp/>for<sp/>the<sp/>metadata.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="87" refid="structmeta__t_1a5a7982a0a456d719cf4643a2c23d8ccd" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a5a7982a0a456d719cf4643a2c23d8ccd" kindref="member">prodsysStatus</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Production<sp/>system<sp/>status.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="88" refid="structmeta__t_1a3db3b36c6565433e6bfbe9c04468a436" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a3db3b36c6565433e6bfbe9c04468a436" kindref="member">dataType</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Type<sp/>of<sp/>data<sp/>(e.g.,<sp/>&quot;mc&quot;,<sp/>&quot;data&quot;).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="89" refid="structmeta__t_1a84ab5ca1466f0c15690e179bbdb439b8" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a84ab5ca1466f0c15690e179bbdb439b8" kindref="member">version</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Version<sp/>string.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="90" refid="structmeta__t_1a96859c6b0c3abecc7cf486836dbe5edc" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a96859c6b0c3abecc7cf486836dbe5edc" kindref="member">PDF</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Parton<sp/>Distribution<sp/>Function<sp/>information.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="91" refid="structmeta__t_1a77dc3d80a0e297550edaab8f8b2ce491" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a77dc3d80a0e297550edaab8f8b2ce491" kindref="member">AtlasRelease</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>ATLAS<sp/>software<sp/>release<sp/>version.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="92" refid="structmeta__t_1af0a08d0dc69af0c46cbef441a517cd3f" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1af0a08d0dc69af0c46cbef441a517cd3f" kindref="member">principalPhysicsGroup</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Main<sp/>physics<sp/>group<sp/>(e.g.,<sp/>&quot;SM&quot;,<sp/>&quot;SUSY&quot;).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="93" refid="structmeta__t_1ab297ea8f0dd1ab2fb25c7ec674aa11a7" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1ab297ea8f0dd1ab2fb25c7ec674aa11a7" kindref="member">physicsShort</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Short<sp/>description<sp/>of<sp/>the<sp/>physics<sp/>process.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="94" refid="structmeta__t_1a47a6933149f9be8337bddeac079413c1" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a47a6933149f9be8337bddeac079413c1" kindref="member">generatorName</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Name<sp/>of<sp/>the<sp/>Monte<sp/>Carlo<sp/>generator.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="95" refid="structmeta__t_1aee4368bb4fcd4d329e3f1296d55d6137" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1aee4368bb4fcd4d329e3f1296d55d6137" kindref="member">geometryVersion</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Version<sp/>of<sp/>the<sp/>detector<sp/>geometry<sp/>simulation.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="96" refid="structmeta__t_1ad810653ee8348ea4958f65cdfdececda" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1ad810653ee8348ea4958f65cdfdececda" kindref="member">conditionsTag</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Tag<sp/>for<sp/>the<sp/>detector<sp/>conditions<sp/>database.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="97" refid="structmeta__t_1a1b16ee772caecec96b8760fddf6ecb8e" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a1b16ee772caecec96b8760fddf6ecb8e" kindref="member">generatorTune</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Specific<sp/>tune<sp/>(parameters)<sp/>of<sp/>the<sp/>MC<sp/>generator.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="98" refid="structmeta__t_1a77e96d6bcf05055428f5fb3c3284e790" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a77e96d6bcf05055428f5fb3c3284e790" kindref="member">amiStatus</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Status<sp/>in<sp/>the<sp/>AMI<sp/>catalog.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="99" refid="structmeta__t_1a77cd62777258f94cc164276d699760a2" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a77cd62777258f94cc164276d699760a2" kindref="member">beamType</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Type<sp/>of<sp/>colliding<sp/>beams<sp/>(e.g.,<sp/>&quot;pp&quot;,<sp/>&quot;PbPb&quot;).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="100" refid="structmeta__t_1ab782cee366ba5fa0b92c82d9a13d4de3" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1ab782cee366ba5fa0b92c82d9a13d4de3" kindref="member">productionStep</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Step<sp/>in<sp/>the<sp/>production<sp/>chain.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="101" refid="structmeta__t_1a8fc7b51baddcf2b5cd204163eb2d6907" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a8fc7b51baddcf2b5cd204163eb2d6907" kindref="member">projectName</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Project<sp/>name<sp/>(e.g.,<sp/>&quot;mc16_13TeV&quot;).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="102" refid="structmeta__t_1a8a3da911d895bafca22eac0f4f43594c" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a8a3da911d895bafca22eac0f4f43594c" kindref="member">statsAlgorithm</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Algorithm<sp/>used<sp/>for<sp/>statistics.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="103" refid="structmeta__t_1a5bce840e186d591824f066bcc7643f8b" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a5bce840e186d591824f066bcc7643f8b" kindref="member">genFilterNames</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Names<sp/>of<sp/>generator-level<sp/>filters.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="104" refid="structmeta__t_1a607a336be9a712287c7999dd3ff96df5" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a607a336be9a712287c7999dd3ff96df5" kindref="member">file_type</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Type<sp/>of<sp/>the<sp/>file<sp/>(e.g.,<sp/>&quot;ROOT&quot;,<sp/>&quot;HDF5&quot;).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="105" refid="structmeta__t_1ace0ba427d41e0d53620f030e198464c7" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1ace0ba427d41e0d53620f030e198464c7" kindref="member">sample_name</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>User-defined<sp/>name<sp/>for<sp/>the<sp/>sample.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="106" refid="structmeta__t_1a58483692a4f9c0407a9f147f7cf6bf23" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a58483692a4f9c0407a9f147f7cf6bf23" kindref="member">logicalDatasetName</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Logical<sp/>Dataset<sp/>Name<sp/>as<sp/>used<sp/>in<sp/>grid<sp/>systems.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="107" refid="structmeta__t_1a80c9ef08aed5436f0070dea48590507f" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmeta__t_1a80c9ef08aed5436f0070dea48590507f" kindref="member">campaign</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Data-taking<sp/>or<sp/>simulation<sp/>campaign<sp/>identifier.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109" refid="structmeta__t_1abc287d7dfdacea0b48681c8aa749bebf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="structmeta__t_1abc287d7dfdacea0b48681c8aa749bebf" kindref="member">keywords</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>List<sp/>of<sp/>keywords<sp/>associated<sp/>with<sp/>the<sp/>dataset.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="110" refid="structmeta__t_1a872a0fffc7ba9adc7d434e61810566f9" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="structmeta__t_1a872a0fffc7ba9adc7d434e61810566f9" kindref="member">weights</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>List<sp/>of<sp/>weight<sp/>names<sp/>or<sp/>definitions.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="111" refid="structmeta__t_1aefd5e526776f460a2b2aa2adf98729c0" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="structmeta__t_1aefd5e526776f460a2b2aa2adf98729c0" kindref="member">keyword</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Alternative<sp/>or<sp/>individual<sp/>keywords.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Local<sp/>File<sp/>Name</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114" refid="structmeta__t_1a1af84dfab30c6f55431de627114bbab2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/><ref refid="structmeta__t_1a1af84dfab30c6f55431de627114bbab2" kindref="member">events</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>List<sp/>of<sp/>event<sp/>counts,<sp/>possibly<sp/>per<sp/>file.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="115" refid="structmeta__t_1ada8c55b245cab43b72b387d766919364" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/><ref refid="structmeta__t_1ada8c55b245cab43b72b387d766919364" kindref="member">run_number</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>List<sp/>of<sp/>run<sp/>numbers.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="116" refid="structmeta__t_1a03754de8e68542da6211d614f5aaf970" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;double&gt;<sp/><ref refid="structmeta__t_1a03754de8e68542da6211d614f5aaf970" kindref="member">fileSize</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>List<sp/>of<sp/>file<sp/>sizes.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="117" refid="structmeta__t_1ac73518f39218c5415e269455bb931308" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="structmeta__t_1ac73518f39218c5415e269455bb931308" kindref="member">fileGUID</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>List<sp/>of<sp/>Globally<sp/>Unique<sp/>Identifiers<sp/>for<sp/>files.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="118" refid="structmeta__t_1accf89452b35c7b5684ef7237b8999b48" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>int&gt;<sp/><ref refid="structmeta__t_1accf89452b35c7b5684ef7237b8999b48" kindref="member">LFN</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>of<sp/>Logical<sp/>File<sp/>Names<sp/>to<sp/>integers.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="119" refid="structmeta__t_1a64b0b2ec8add3cc62a861cba100443d6" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>weights_t&gt;<sp/><ref refid="structmeta__t_1a64b0b2ec8add3cc62a861cba100443d6" kindref="member">misc</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>for<sp/>miscellaneous<sp/>weights<sp/>information.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"></highlight><highlight class="normal">};</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="modules/structs/include/structs/meta.h"/>
+  </compounddef>
+</doxygen>

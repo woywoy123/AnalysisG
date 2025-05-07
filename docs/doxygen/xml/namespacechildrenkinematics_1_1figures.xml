@@ -1,0 +1,357 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacechildrenkinematics_1_1figures" kind="namespace" language="Python">
+    <compoundname>childrenkinematics::figures</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacechildrenkinematics_1_1figures_1a1db10a00f5509607310e56bd7867affd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def childrenkinematics.figures.colors</definition>
+        <argsstring>(colx=[&quot;blue&quot;, &quot;green&quot;, &quot;orange&quot;, &quot;purple&quot;, &quot;magenta&quot;, &quot;aqua&quot;, &quot;orange&quot;, &quot;green&quot;, &quot;blue&quot;, &quot;olive&quot;, &quot;teal&quot;, &quot;gold&quot;, &quot;azure&quot;, &quot;lime&quot;, &quot;crimson&quot;, &quot;cyan&quot;, &quot;magenta&quot;, &quot;orchid&quot;, &quot;sienna&quot;, &quot;silver&quot;, &quot;salmon&quot;, &quot;darkblue&quot;])</argsstring>
+        <name>colors</name>
+        <param>
+          <type>colx</type>
+          <defname>colx</defname>
+          <defval>[&quot;blue&quot;</defval>
+        </param>
+        <param>
+          <type>&quot;green&quot;</type>
+        </param>
+        <param>
+          <type>&quot;orange&quot;</type>
+        </param>
+        <param>
+          <type>&quot;purple&quot;</type>
+        </param>
+        <param>
+          <type>&quot;magenta&quot;</type>
+        </param>
+        <param>
+          <type>&quot;aqua&quot;</type>
+        </param>
+        <param>
+          <type>&quot;orange&quot;</type>
+        </param>
+        <param>
+          <type>&quot;green&quot;</type>
+        </param>
+        <param>
+          <type>&quot;blue&quot;</type>
+        </param>
+        <param>
+          <type>&quot;olive&quot;</type>
+        </param>
+        <param>
+          <type>&quot;teal&quot;</type>
+        </param>
+        <param>
+          <type>&quot;gold&quot;</type>
+        </param>
+        <param>
+          <type>&quot;azure&quot;</type>
+        </param>
+        <param>
+          <type>&quot;lime&quot;</type>
+        </param>
+        <param>
+          <type>&quot;crimson&quot;</type>
+        </param>
+        <param>
+          <type>&quot;cyan&quot;</type>
+        </param>
+        <param>
+          <type>&quot;magenta&quot;</type>
+        </param>
+        <param>
+          <type>&quot;orchid&quot;</type>
+        </param>
+        <param>
+          <type>&quot;sienna&quot;</type>
+        </param>
+        <param>
+          <type>&quot;silver&quot;</type>
+        </param>
+        <param>
+          <type>&quot;salmon&quot;</type>
+        </param>
+        <param>
+          <type>&quot;darkblue&quot;]</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" line="6" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" bodystart="6" bodyend="8"/>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1ab80f4cf948eb988fce6030ca8bd484ea" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="22" endline="31">childrenkinematics.figures.apply</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1ab756ce1f61fcde53499162358df6856f" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="311" endline="429">childrenkinematics.figures.kinematics_decay_mode</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def childrenkinematics.figures.path</definition>
+        <argsstring>(hist)</argsstring>
+        <name>path</name>
+        <param>
+          <type>hist</type>
+          <defname>hist</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" line="9" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" bodystart="9" bodyend="14"/>
+        <referencedby refid="classtools_1a408b66ad73b7b4bb962634c14a55b619" compoundref="tools_2cxx_2io_8cxx" startline="49" endline="51">tools::absolute_path</referencedby>
+        <referencedby refid="classanalysis_1ad49ba744577bd6d17f83efa48909f767" compoundref="analysis_8cxx" startline="48" endline="50">analysis::add_samples</referencedby>
+        <referencedby refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" compoundref="plotting_8cxx" startline="22" endline="30">plotting::build_path</referencedby>
+        <referencedby refid="structwrite__t_1a6f0a4d6087670d7c1666a10d29c50551" compoundref="variable_8cxx" startline="9" endline="23">write_t::create</referencedby>
+        <referencedby refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" compoundref="tools_2cxx_2io_8cxx" startline="6" endline="16">tools::create_path</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a3d41d2df062a8e09ef34678e025529ee" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="430" endline="461">childrenkinematics.figures.dr_clustering</referencedby>
+        <referencedby refid="classdataloader_1a6a829ac2b88dd9655a52bdf3e3701259" compoundref="dataset_8cxx" startline="129" endline="173">dataloader::dump_dataset</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1ae8c01af9a1515f3df7f2d79a14b1f0c9" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="462" endline="592">childrenkinematics.figures.fractional</referencedby>
+        <referencedby refid="classtools_1a47d3d261edcb898daab56721e18d1e67" compoundref="tools_2cxx_2io_8cxx" startline="30" endline="33">tools::is_file</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1ab756ce1f61fcde53499162358df6856f" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="311" endline="429">childrenkinematics.figures.kinematics_decay_mode</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1ac3864214d8f410c31e55a44211b5b261" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="241" endline="310">childrenkinematics.figures.kinematics_energy</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a795dad9d1c25d61d9eed6128bfa85d0b" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="105" endline="172">childrenkinematics.figures.kinematics_eta</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a5cd8fe6462d084b8904163a6a4ca7624" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="173" endline="240">childrenkinematics.figures.kinematics_phi</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a05142877821df5e6a6210632a14a52ea" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="32" endline="104">childrenkinematics.figures.kinematics_pt</referencedby>
+        <referencedby refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" compoundref="tools_2cxx_2io_8cxx" startline="35" endline="47">tools::ls</referencedby>
+        <referencedby refid="classdataloader_1a5fddffa25c532953896e2d1646ca1dc4" compoundref="dataset_8cxx" startline="175" endline="221">dataloader::restore_dataset</referencedby>
+        <referencedby refid="classdataloader_1aed6ec872879a44ecfa9ae1c2188690a8" compoundref="cache_8cxx" startline="321" endline="332">dataloader::restore_graphs</referencedby>
+        <referencedby refid="classio_1a65c36380ef79524e8235f792abe9625c" compoundref="io_2cxx_2root_8cxx" startline="301" endline="351">io::root_begin</referencedby>
+        <referencedby refid="classselection__template_1acd31f17488bcf97dd8a5f1b3a7da1cdd" compoundref="selection_2cxx_2properties_8cxx" startline="11" endline="16">selection_template::set_hash</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacechildrenkinematics_1_1figures_1a63c652f6cdb548c7559b0d9acb5fa100" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def childrenkinematics.figures.pdgid_mapping</definition>
+        <argsstring>(pdgid)</argsstring>
+        <name>pdgid_mapping</name>
+        <param>
+          <type>pdgid</type>
+          <defname>pdgid</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" line="15" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" bodystart="15" bodyend="21"/>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1ae8c01af9a1515f3df7f2d79a14b1f0c9" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="462" endline="592">childrenkinematics.figures.fractional</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1ac3864214d8f410c31e55a44211b5b261" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="241" endline="310">childrenkinematics.figures.kinematics_energy</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a795dad9d1c25d61d9eed6128bfa85d0b" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="105" endline="172">childrenkinematics.figures.kinematics_eta</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a5cd8fe6462d084b8904163a6a4ca7624" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="173" endline="240">childrenkinematics.figures.kinematics_phi</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a05142877821df5e6a6210632a14a52ea" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="32" endline="104">childrenkinematics.figures.kinematics_pt</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacechildrenkinematics_1_1figures_1ab80f4cf948eb988fce6030ca8bd484ea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def childrenkinematics.figures.apply</definition>
+        <argsstring>(hist)</argsstring>
+        <name>apply</name>
+        <param>
+          <type>hist</type>
+          <defname>hist</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" line="22" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" bodystart="22" bodyend="31"/>
+        <references refid="namespacechildrenkinematics_1_1figures_1a1db10a00f5509607310e56bd7867affd" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="6" endline="8">childrenkinematics.figures.colors</references>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1ac3864214d8f410c31e55a44211b5b261" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="241" endline="310">childrenkinematics.figures.kinematics_energy</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a795dad9d1c25d61d9eed6128bfa85d0b" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="105" endline="172">childrenkinematics.figures.kinematics_eta</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a5cd8fe6462d084b8904163a6a4ca7624" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="173" endline="240">childrenkinematics.figures.kinematics_phi</referencedby>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a05142877821df5e6a6210632a14a52ea" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="32" endline="104">childrenkinematics.figures.kinematics_pt</referencedby>
+        <referencedby refid="classlossfx_1a8afc0d1aa169bcebb072b8b4278b2e88" compoundref="optimizer__config_8cxx" startline="113" endline="123">lossfx::weight_init</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacechildrenkinematics_1_1figures_1a05142877821df5e6a6210632a14a52ea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def childrenkinematics.figures.kinematics_pt</definition>
+        <argsstring>(ana, mp)</argsstring>
+        <name>kinematics_pt</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>mp</type>
+          <defname>mp</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" line="32" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" bodystart="32" bodyend="104"/>
+        <references refid="namespacechildrenkinematics_1_1figures_1ab80f4cf948eb988fce6030ca8bd484ea" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="22" endline="31">childrenkinematics.figures.apply</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="9" endline="14">childrenkinematics.figures.path</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a63c652f6cdb548c7559b0d9acb5fa100" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="15" endline="21">childrenkinematics.figures.pdgid_mapping</references>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a633a13630cc9f3a27226a45e9a1826c2" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="593" endline="601">childrenkinematics.figures.ChildrenKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacechildrenkinematics_1_1figures_1a795dad9d1c25d61d9eed6128bfa85d0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def childrenkinematics.figures.kinematics_eta</definition>
+        <argsstring>(ana)</argsstring>
+        <name>kinematics_eta</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" line="105" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" bodystart="105" bodyend="172"/>
+        <references refid="namespacechildrenkinematics_1_1figures_1ab80f4cf948eb988fce6030ca8bd484ea" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="22" endline="31">childrenkinematics.figures.apply</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="9" endline="14">childrenkinematics.figures.path</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a63c652f6cdb548c7559b0d9acb5fa100" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="15" endline="21">childrenkinematics.figures.pdgid_mapping</references>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a633a13630cc9f3a27226a45e9a1826c2" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="593" endline="601">childrenkinematics.figures.ChildrenKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacechildrenkinematics_1_1figures_1a5cd8fe6462d084b8904163a6a4ca7624" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def childrenkinematics.figures.kinematics_phi</definition>
+        <argsstring>(ana)</argsstring>
+        <name>kinematics_phi</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" line="173" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" bodystart="173" bodyend="240"/>
+        <references refid="namespacechildrenkinematics_1_1figures_1ab80f4cf948eb988fce6030ca8bd484ea" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="22" endline="31">childrenkinematics.figures.apply</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="9" endline="14">childrenkinematics.figures.path</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a63c652f6cdb548c7559b0d9acb5fa100" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="15" endline="21">childrenkinematics.figures.pdgid_mapping</references>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a633a13630cc9f3a27226a45e9a1826c2" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="593" endline="601">childrenkinematics.figures.ChildrenKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacechildrenkinematics_1_1figures_1ac3864214d8f410c31e55a44211b5b261" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def childrenkinematics.figures.kinematics_energy</definition>
+        <argsstring>(ana, mp)</argsstring>
+        <name>kinematics_energy</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>mp</type>
+          <defname>mp</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" line="241" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" bodystart="241" bodyend="310"/>
+        <references refid="namespacechildrenkinematics_1_1figures_1ab80f4cf948eb988fce6030ca8bd484ea" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="22" endline="31">childrenkinematics.figures.apply</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="9" endline="14">childrenkinematics.figures.path</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a63c652f6cdb548c7559b0d9acb5fa100" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="15" endline="21">childrenkinematics.figures.pdgid_mapping</references>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a633a13630cc9f3a27226a45e9a1826c2" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="593" endline="601">childrenkinematics.figures.ChildrenKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacechildrenkinematics_1_1figures_1ab756ce1f61fcde53499162358df6856f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def childrenkinematics.figures.kinematics_decay_mode</definition>
+        <argsstring>(ana)</argsstring>
+        <name>kinematics_decay_mode</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" line="311" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" bodystart="311" bodyend="429"/>
+        <references refid="namespacechildrenkinematics_1_1figures_1a1db10a00f5509607310e56bd7867affd" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="6" endline="8">childrenkinematics.figures.colors</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="9" endline="14">childrenkinematics.figures.path</references>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a633a13630cc9f3a27226a45e9a1826c2" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="593" endline="601">childrenkinematics.figures.ChildrenKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacechildrenkinematics_1_1figures_1a3d41d2df062a8e09ef34678e025529ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def childrenkinematics.figures.dr_clustering</definition>
+        <argsstring>(ana)</argsstring>
+        <name>dr_clustering</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" line="430" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" bodystart="430" bodyend="461"/>
+        <references refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="9" endline="14">childrenkinematics.figures.path</references>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a633a13630cc9f3a27226a45e9a1826c2" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="593" endline="601">childrenkinematics.figures.ChildrenKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacechildrenkinematics_1_1figures_1ae8c01af9a1515f3df7f2d79a14b1f0c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def childrenkinematics.figures.fractional</definition>
+        <argsstring>(ana)</argsstring>
+        <name>fractional</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" line="462" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" bodystart="462" bodyend="592"/>
+        <references refid="namespacechildrenkinematics_1_1figures_1a4b217acaa3fe7d5c60c04978cbf782dc" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="9" endline="14">childrenkinematics.figures.path</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a63c652f6cdb548c7559b0d9acb5fa100" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="15" endline="21">childrenkinematics.figures.pdgid_mapping</references>
+        <referencedby refid="namespacechildrenkinematics_1_1figures_1a633a13630cc9f3a27226a45e9a1826c2" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="593" endline="601">childrenkinematics.figures.ChildrenKinematics</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacechildrenkinematics_1_1figures_1a633a13630cc9f3a27226a45e9a1826c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def childrenkinematics.figures.ChildrenKinematics</definition>
+        <argsstring>(ana, mp)</argsstring>
+        <name>ChildrenKinematics</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <param>
+          <type>mp</type>
+          <defname>mp</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" line="593" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" bodystart="593" bodyend="601"/>
+        <references refid="namespacechildrenkinematics_1_1figures_1a3d41d2df062a8e09ef34678e025529ee" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="430" endline="461">childrenkinematics.figures.dr_clustering</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1ae8c01af9a1515f3df7f2d79a14b1f0c9" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="462" endline="592">childrenkinematics.figures.fractional</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1ab756ce1f61fcde53499162358df6856f" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="311" endline="429">childrenkinematics.figures.kinematics_decay_mode</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1ac3864214d8f410c31e55a44211b5b261" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="241" endline="310">childrenkinematics.figures.kinematics_energy</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a795dad9d1c25d61d9eed6128bfa85d0b" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="105" endline="172">childrenkinematics.figures.kinematics_eta</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a5cd8fe6462d084b8904163a6a4ca7624" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="173" endline="240">childrenkinematics.figures.kinematics_phi</references>
+        <references refid="namespacechildrenkinematics_1_1figures_1a05142877821df5e6a6210632a14a52ea" compoundref="mc16__matching_2childrenkinematics_2figures_8py" startline="32" endline="104">childrenkinematics.figures.kinematics_pt</references>
+        <referencedby refid="namespacemain_1a7afac8f5e46c718321f188d7888c2de0" compoundref="mc16__matching_2main_8py" startline="60" endline="98">main.ExecuteStudy</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/mc16_matching/childrenkinematics/figures.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

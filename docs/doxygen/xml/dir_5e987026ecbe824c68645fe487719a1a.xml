@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_5e987026ecbe824c68645fe487719a1a" kind="dir">
+    <compoundname>gnn</compoundname>
+    <innerdir refid="dir_17c99b4aa0df6e3922f3b5b60e2ce6b6">cxx</innerdir>
+    <innerdir refid="dir_c1cfe6ff3c0298bf7d2c8cf75cb3de5d">include</innerdir>
+    <innerfile refid="src_2_analysis_g_2events_2gnn_2____init_____8py">src/AnalysisG/events/gnn/__init__.py</innerfile>
+    <innerfile refid="event__gnn_8pyx">event_gnn.pyx</innerfile>
+    <innerfile refid="particle__gnn_8pyx">particle_gnn.pyx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="events/gnn/"/>
+  </compounddef>
+</doxygen>

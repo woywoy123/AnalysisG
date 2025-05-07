@@ -1,5 +1,18 @@
+/**
+ * @file transform.cxx
+ * @brief Implements transformation utilities for the AnalysisG framework.
+ *
+ * This file provides the implementation of various transformation functions
+ * used for data preprocessing and manipulation within the framework.
+ */
+
 #include <transform/transform.h>
 #include <utils/utils.h>
+
+/**
+ * @namespace Transform
+ * @brief Contains functions for data transformation and preprocessing.
+ */
 
 torch::Tensor transform_::Px(torch::Tensor* pt, torch::Tensor* phi){
         return pt -> view({-1, 1}) * torch::cos(phi -> view({-1, 1}));

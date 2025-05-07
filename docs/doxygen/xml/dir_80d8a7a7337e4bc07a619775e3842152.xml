@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_80d8a7a7337e4bc07a619775e3842152" kind="dir">
+    <compoundname>topmatching</compoundname>
+    <innerfile refid="src_2_analysis_g_2selections_2mc20_2topmatching_2____init_____8py">src/AnalysisG/selections/mc20/topmatching/__init__.py</innerfile>
+    <innerfile refid="mc20_2topmatching_2topmatching_8cxx">mc20/topmatching/topmatching.cxx</innerfile>
+    <innerfile refid="mc20_2topmatching_2topmatching_8h">mc20/topmatching/topmatching.h</innerfile>
+    <innerfile refid="topmatching__mc20_8pyx">topmatching_mc20.pyx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="selections/mc20/topmatching/"/>
+  </compounddef>
+</doxygen>

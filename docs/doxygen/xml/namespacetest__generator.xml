@@ -1,0 +1,397 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacetest__generator" kind="namespace" language="Python">
+    <compoundname>test_generator</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacetest__generator_1af9ec9b7b2bc5f590e498f44834f8594e" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string test_generator.root1</definition>
+        <argsstring></argsstring>
+        <name>root1</name>
+        <initializer>=  &quot;./samples/dilepton/*&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="8" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a8adf53dc1f9873e127d16b62957936b8" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <initializer>=  BSM4Tops()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="11" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1af021d40aa414f5e334982308d26a1e03" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.tt</definition>
+        <argsstring></argsstring>
+        <name>tt</name>
+        <initializer>=  GraphJets()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="14" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a8b987b8c9dbeb194b22227f6528e4c40" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.PreSelection</definition>
+        <argsstring></argsstring>
+        <name>PreSelection</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="15" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="15" bodyend="-1"/>
+        <referencedby refid="classcontainer_1a2f036c9c52b38b6fd462a2a72f553c41" compoundref="container_8cxx" startline="65" endline="133">container::compile</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.m</definition>
+        <argsstring></argsstring>
+        <name>m</name>
+        <initializer>=  Grift()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="19" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1aff90bcf00e767bfed8bfb1525a08b6ae" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.o_edge</definition>
+        <argsstring></argsstring>
+        <name>o_edge</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="21" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1ab60b3a79dae7e6c5238c4c63fa41b6ab" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.o_graph</definition>
+        <argsstring></argsstring>
+        <name>o_graph</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="22" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a977353b7b3e2d4ce2119f35a01476a57" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.i_node</definition>
+        <argsstring></argsstring>
+        <name>i_node</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="24" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a85b2cbfefa3629925239b85e65d3cc58" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.i_graph</definition>
+        <argsstring></argsstring>
+        <name>i_graph</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="25" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1aae7128b1191335a06cb4304a87943ce0" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.device</definition>
+        <argsstring></argsstring>
+        <name>device</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="26" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.op</definition>
+        <argsstring></argsstring>
+        <name>op</name>
+        <initializer>=  OptimizerConfig()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="28" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="28" bodyend="-1"/>
+        <referencedby refid="classanalysis_1a51e47012fc4522964dbfba5baa89090c" compoundref="analysis_8cxx" startline="70" endline="74">analysis::add_model</referencedby>
+        <referencedby refid="namespacenusol___1a526c0e4a558a1201624ea0b639bc747c" compoundref="nusol_2tensor_2nusol_8cxx" startline="198" endline="242">nusol_::BaseMatrix</referencedby>
+        <referencedby refid="classdataloader_1ad973eae80b8c958e87642459f8a81b47" compoundref="dataloader_8cxx" startline="151" endline="292">dataloader::build_batch</referencedby>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">lossfx::build_optimizer</referencedby>
+        <referencedby refid="classdataloader_1a17822e45f6b5c7d407b71a0660e45f75" compoundref="dataloader_8cxx" startline="115" endline="126">dataloader::datatransfer</referencedby>
+        <referencedby refid="namespacegraph___1a7249186f32a05a8ff1601bff5deabdef" compoundref="graph_2graph_8cxx" startline="4" endline="63">graph_::edge_aggregation</referencedby>
+        <referencedby refid="namespacenusol___1a2cdd92aeb32c05137ebc7ef96c47a3da" compoundref="nusol_2tensor_2nusol_8cxx" startline="253" endline="395">nusol_::Intersection</referencedby>
+        <referencedby refid="namespacenusol___1ac849ef3564c5ac968727dce36494fd0a" compoundref="nusol_2tensor_2nusol_8cxx" startline="473" endline="560">nusol_::NuNu</referencedby>
+        <referencedby refid="nusol_2tensor_2nusol_8cxx_1acf38ad4d8eeaff43568c7ef70cf2b815" compoundref="nusol_2tensor_2nusol_8cxx" startline="123" endline="128">Pi_2</referencedby>
+        <referencedby refid="nusol_2tensor_2nusol_8cxx_1a695a1b065a09564a65159bac242c506c" compoundref="nusol_2tensor_2nusol_8cxx" startline="155" endline="161">Shape</referencedby>
+        <referencedby refid="nusol_2tensor_2nusol_8cxx_1aef9831ef9e2e1bcce9c0ec932ae2973d" compoundref="nusol_2tensor_2nusol_8cxx" startline="164" endline="174">Sigma</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">lossfx::to</referencedby>
+        <referencedby refid="structgraph__t_1a77606e05956ba39041023a3a36f53967" compoundref="struct__graph_8cxx" startline="141" endline="173">graph_t::transfer_to_device</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1ad1a0d76edfd7252ee4feaa1afdcee486" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.Optimizer</definition>
+        <argsstring></argsstring>
+        <name>Optimizer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="29" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a9c8de72a54889d80ccaa5a85299102fc" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.lr</definition>
+        <argsstring></argsstring>
+        <name>lr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="30" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a8bdc03acf44b5ec5b68638c4cb576f90" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.ana</definition>
+        <argsstring></argsstring>
+        <name>ana</name>
+        <initializer>=  Analysis()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="32" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1adaed3e455e67102ecadec3cec6807b77" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.PreTagEvents</definition>
+        <argsstring></argsstring>
+        <name>PreTagEvents</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="33" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1afe95772da713f3cb5a91a0315f59b386" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.TrainingDataset</definition>
+        <argsstring></argsstring>
+        <name>TrainingDataset</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="36" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1aef17db8b53239195cae401d11a7cb076" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.kFolds</definition>
+        <argsstring></argsstring>
+        <name>kFolds</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="41" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a01ede71849e8f20bec6a2a2a685b2e36" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.kFold</definition>
+        <argsstring></argsstring>
+        <name>kFold</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="42" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a5b8f8184c0e3bac2b9dcf0c1543abe61" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.Targets</definition>
+        <argsstring></argsstring>
+        <name>Targets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="43" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a46d67c2c9dd48ced45a6d4c2a4a58332" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.ContinueTraining</definition>
+        <argsstring></argsstring>
+        <name>ContinueTraining</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="44" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a73011d204aa816fafe52fc345b7cfaea" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.GraphCache</definition>
+        <argsstring></argsstring>
+        <name>GraphCache</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="45" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a7131f5dce981429531b0a7b88219637c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.Evaluation</definition>
+        <argsstring></argsstring>
+        <name>Evaluation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="46" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a4bbe1c342b85c80894404a97472a37b3" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.Validation</definition>
+        <argsstring></argsstring>
+        <name>Validation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="47" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a1ed61cdc1edcd2cb731dd98b9b507d20" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.DebugMode</definition>
+        <argsstring></argsstring>
+        <name>DebugMode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="48" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1acb42f7659f8633ee8641b26754668a46" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.Epochs</definition>
+        <argsstring></argsstring>
+        <name>Epochs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="49" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a71e4f2fc7f9e3720942bb0d267310471" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.MaxRange</definition>
+        <argsstring></argsstring>
+        <name>MaxRange</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="50" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a0bba27c5aab05ecfe8dc26e35dab5e93" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.TrainSize</definition>
+        <argsstring></argsstring>
+        <name>TrainSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="51" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__generator_1a7d2502a688b01f17df7c6aeebbad8d2c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_generator.Threads</definition>
+        <argsstring></argsstring>
+        <name>Threads</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_generator.py" line="52" column="1" bodyfile="/workspaces/AnalysisG/test/test_generator.py" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/test/test_generator.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

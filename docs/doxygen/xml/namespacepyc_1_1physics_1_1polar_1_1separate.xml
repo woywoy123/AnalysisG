@@ -1,0 +1,325 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacepyc_1_1physics_1_1polar_1_1separate" kind="namespace" language="C++">
+    <compoundname>pyc::physics::polar::separate</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a164422e673f81c41b4a16f950beb8cdd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::separate::P2</definition>
+        <argsstring>(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)</argsstring>
+        <name>P2</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pt</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>phi</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="98" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="23" bodyend="27" declfile="pyc/interface/include/pyc/pyc.h" declline="98" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1ae22e22a969315629a6ae7549f7344805" compoundref="pyc_2physics_2physics_8cxx" startline="12" endline="16">physics_::P2</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" compoundref="transform_2transform_8cxx" startline="29" endline="34">transform_::PxPyPz</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a4de18b7ee3dff64515722df522605c7f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::separate::P</definition>
+        <argsstring>(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)</argsstring>
+        <name>P</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pt</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>phi</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="99" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="47" bodyend="51" declfile="pyc/interface/include/pyc/pyc.h" declline="99" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1ac12a78b1943348345b940e510930f420" compoundref="pyc_2physics_2physics_8cxx" startline="22" endline="25">physics_::P</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" compoundref="transform_2transform_8cxx" startline="29" endline="34">transform_::PxPyPz</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a49c21afa9d65d851f1cfe13e35875ea3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::separate::Beta2</definition>
+        <argsstring>(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)</argsstring>
+        <name>Beta2</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pt</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>phi</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="100" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="71" bodyend="75" declfile="pyc/interface/include/pyc/pyc.h" declline="100" declcolumn="31"/>
+        <references refid="namespacephysics___1aace12d6d7317cd102e5059781d724151" compoundref="pyc_2physics_2physics_8cxx" startline="32" endline="35">physics_::Beta2</references>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" compoundref="transform_2transform_8cxx" startline="36" endline="38">transform_::PxPyPzE</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a49811b3e193170bb3f8d0a185b4fc07d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::separate::Beta</definition>
+        <argsstring>(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)</argsstring>
+        <name>Beta</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pt</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>phi</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="101" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="95" bodyend="99" declfile="pyc/interface/include/pyc/pyc.h" declline="101" declcolumn="31"/>
+        <references refid="namespacephysics___1a3123f743b9c22850e7346d5f56a4441b" compoundref="pyc_2physics_2physics_8cxx" startline="41" endline="44">physics_::Beta</references>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" compoundref="transform_2transform_8cxx" startline="36" endline="38">transform_::PxPyPzE</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a5166df2f83d8ea10350011307d165ed2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::separate::M2</definition>
+        <argsstring>(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)</argsstring>
+        <name>M2</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pt</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>phi</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="102" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="119" bodyend="123" declfile="pyc/interface/include/pyc/pyc.h" declline="102" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="namespacephysics___1a7787594305d4a156c31be581401b0b0b" compoundref="pyc_2physics_2physics_8cxx" startline="53" endline="56">physics_::M2</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" compoundref="transform_2transform_8cxx" startline="36" endline="38">transform_::PxPyPzE</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1separate_1aaab901d4c62535312b57336a324c3461" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::separate::M</definition>
+        <argsstring>(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)</argsstring>
+        <name>M</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pt</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>phi</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="103" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="142" bodyend="146" declfile="pyc/interface/include/pyc/pyc.h" declline="103" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="namespacephysics___1a64e8e583c57246f52851c0bff4137ebc" compoundref="pyc_2physics_2physics_8cxx" startline="63" endline="66">physics_::M</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" compoundref="transform_2transform_8cxx" startline="36" endline="38">transform_::PxPyPzE</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1separate_1ae3fb2671574519706f3c764499ce3164" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::separate::Mt2</definition>
+        <argsstring>(torch::Tensor pt, torch::Tensor eta, torch::Tensor e)</argsstring>
+        <name>Mt2</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pt</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="104" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="166" bodyend="170" declfile="pyc/interface/include/pyc/pyc.h" declline="104" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="namespacephysics___1a3d421991e1f29e21ba3d495c6ae6c93d" compoundref="pyc_2physics_2physics_8cxx" startline="74" endline="76">physics_::Mt2</references>
+        <references refid="namespacetransform___1a28be39b0041a97b1667ccd1ff301f784" compoundref="transform_2transform_8cxx" startline="25" endline="27">transform_::Pz</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1separate_1ab979af5143b4e4c7ad9abacf21ef9544" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::separate::Mt</definition>
+        <argsstring>(torch::Tensor pt, torch::Tensor eta, torch::Tensor e)</argsstring>
+        <name>Mt</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pt</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="105" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="188" bodyend="192" declfile="pyc/interface/include/pyc/pyc.h" declline="105" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="namespacephysics___1af5fecf9c76889e0e996dc44793e67153" compoundref="pyc_2physics_2physics_8cxx" startline="83" endline="86">physics_::Mt</references>
+        <references refid="namespacetransform___1a28be39b0041a97b1667ccd1ff301f784" compoundref="transform_2transform_8cxx" startline="25" endline="27">transform_::Pz</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a40b284f030bc35051fe4ceb68e0b560e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::separate::Theta</definition>
+        <argsstring>(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)</argsstring>
+        <name>Theta</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pt</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>phi</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="106" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="211" bodyend="215" declfile="pyc/interface/include/pyc/pyc.h" declline="106" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56">pmc</references>
+        <references refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" compoundref="transform_2transform_8cxx" startline="29" endline="34">transform_::PxPyPz</references>
+        <references refid="namespacephysics___1a6d323b672a05eb19edce0b4d818bdb7f" compoundref="pyc_2physics_2physics_8cxx" startline="88" endline="91">physics_::Theta</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a126d69d61b586628696defeedc82f79c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::physics::polar::separate::DeltaR</definition>
+        <argsstring>(torch::Tensor eta1, torch::Tensor eta2, torch::Tensor phi1, torch::Tensor phi2)</argsstring>
+        <name>DeltaR</name>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>eta1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>eta2</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>phi1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>phi2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="107" column="31" bodyfile="pyc/interface/physics.cxx" bodystart="241" bodyend="247" declfile="pyc/interface/include/pyc/pyc.h" declline="107" declcolumn="31"/>
+        <references refid="utils_8h_1a123aed6d73594e07c6401a7a6c587808" compoundref="utils_8cxx" startline="26" endline="26">changedev</references>
+        <references refid="namespacephysics___1a5f66fa5ca30082509e1284fbcb4b25be" compoundref="pyc_2physics_2physics_8cxx" startline="98" endline="105">physics_::DeltaR</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pyc/interface/include/pyc/pyc.h" line="97" column="30"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,730 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="io_8h" kind="file" language="C++">
+    <compoundname>io.h</compoundname>
+    <includes local="no">map</includes>
+    <includes local="no">string</includes>
+    <includes local="no">H5Cpp.h</includes>
+    <includes local="no">TFile.h</includes>
+    <includes local="no">TTree.h</includes>
+    <includes local="no">TBranch.h</includes>
+    <includes local="no">TLeaf.h</includes>
+    <includes local="no">TTreeReader.h</includes>
+    <includes local="no">TTreeReaderArray.h</includes>
+    <includes refid="meta_2include_2meta_2meta_8h" local="no">meta/meta.h</includes>
+    <includes refid="tools_8h" local="no">tools/tools.h</includes>
+    <includes refid="folds_8h" local="no">structs/folds.h</includes>
+    <includes refid="element_8h" local="no">structs/element.h</includes>
+    <includes refid="settings_8h" local="no">structs/settings.h</includes>
+    <includes refid="notification_8h" local="no">notification/notification.h</includes>
+    <includedby refid="analysis_8h" local="no">analysis.h</includedby>
+    <includedby refid="cache_8cxx" local="no">cache.cxx</includedby>
+    <includedby refid="dataset_8cxx" local="no">dataset.cxx</includedby>
+    <includedby refid="hdf5_8cxx" local="yes">hdf5.cxx</includedby>
+    <includedby refid="io_2cxx_2io_8cxx" local="no">io.cxx</includedby>
+    <includedby refid="io_2cxx_2root_8cxx" local="yes">root.cxx</includedby>
+    <includedby refid="types_8cxx" local="yes">types.cxx</includedby>
+    <incdepgraph>
+      <node id="25">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="17">
+        <label>functional</label>
+      </node>
+      <node id="9">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="23">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="21">
+        <label>cstdint</label>
+      </node>
+      <node id="15">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+      <node id="2">
+        <label>map</label>
+      </node>
+      <node id="29">
+        <label>structs/settings.h</label>
+        <link refid="settings_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="12">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>io.h</label>
+        <link refid="io_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>vector</label>
+      </node>
+      <node id="19">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>TFile.h</label>
+      </node>
+      <node id="20">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="22">
+        <label>TH1F.h</label>
+      </node>
+      <node id="8">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="13">
+        <label>iostream</label>
+      </node>
+      <node id="26">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>meta/meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>TBranch.h</label>
+      </node>
+      <node id="16">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>TTree.h</label>
+      </node>
+      <node id="4">
+        <label>H5Cpp.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="9">
+        <label>optimizer_build.cxx</label>
+        <link refid="optimizer__build_8cxx"/>
+      </node>
+      <node id="4">
+        <label>event_build.cxx</label>
+        <link refid="event__build_8cxx"/>
+      </node>
+      <node id="7">
+        <label>methods.cxx</label>
+        <link refid="methods_8cxx"/>
+      </node>
+      <node id="16">
+        <label>types.cxx</label>
+        <link refid="types_8cxx"/>
+      </node>
+      <node id="10">
+        <label>selection_build.cxx</label>
+        <link refid="selection__build_8cxx"/>
+      </node>
+      <node id="13">
+        <label>hdf5.cxx</label>
+        <link refid="hdf5_8cxx"/>
+      </node>
+      <node id="11">
+        <label>cache.cxx</label>
+        <link refid="cache_8cxx"/>
+      </node>
+      <node id="1">
+        <label>io.h</label>
+        <link refid="io_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>inference_build.cxx</label>
+        <link refid="inference__build_8cxx"/>
+      </node>
+      <node id="14">
+        <label>io.cxx</label>
+        <link refid="io_2cxx_2io_8cxx"/>
+      </node>
+      <node id="8">
+        <label>metric_build.cxx</label>
+        <link refid="metric__build_8cxx"/>
+      </node>
+      <node id="15">
+        <label>root.cxx</label>
+        <link refid="io_2cxx_2root_8cxx"/>
+      </node>
+      <node id="5">
+        <label>graph_build.cxx</label>
+        <link refid="graph__build_8cxx"/>
+      </node>
+      <node id="12">
+        <label>dataset.cxx</label>
+        <link refid="dataset_8cxx"/>
+      </node>
+      <node id="3">
+        <label>analysis.cxx</label>
+        <link refid="analysis_8cxx"/>
+      </node>
+      <node id="2">
+        <label>analysis.h</label>
+        <link refid="analysis_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classio" prot="public">io</innerclass>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="io_8h_1a98b8079236b64e2c9d9456611392db94" prot="public" static="no">
+        <name>IO_IO_H</name>
+        <briefdescription>
+<para>&lt; Start of include guard for IO_IO_H to prevent multiple inclusions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Definition of IO_IO_H to signify the header has been included. Includes the standard map container. Includes the standard string library. Includes the HDF5 C++ API header. Includes ROOT&apos;s TFile class for file operations. Includes ROOT&apos;s TTree class for tree-like data structures. Includes ROOT&apos;s TBranch class for TTree branches. Includes ROOT&apos;s TLeaf class for TTree leaves. Includes ROOT&apos;s TTreeReader for efficient TTree reading. Includes ROOT&apos;s TTreeReaderArray for reading array-like branches. Includes the <computeroutput>meta</computeroutput> class, likely for metadata handling. Includes the <computeroutput>tools</computeroutput> class for utility functions. Includes <computeroutput><ref refid="structfolds__t" kindref="compound">folds_t</ref></computeroutput> structure, possibly for k-fold or data partitioning info. Includes <computeroutput><ref refid="structelement__t" kindref="compound">element_t</ref></computeroutput> structure, a base data element type. Includes <computeroutput><ref refid="structsettings__t" kindref="compound">settings_t</ref></computeroutput> structure for configuration settings. Includes the <computeroutput>notification</computeroutput> class for logging and messages. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/io/include/io/io.h" line="11" column="9" bodyfile="modules/io/include/io/io.h" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Defines the <computeroutput>io</computeroutput> class for handling input/output operations, primarily with ROOT and HDF5 files. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file declares the <computeroutput>io</computeroutput> class, which encapsulates functionalities for reading and writing data, particularly for physics analysis. It supports operations on ROOT TTrees and HDF5 datasets. The class inherits from <computeroutput>tools</computeroutput> and <computeroutput>notification</computeroutput> for utility functions and logging. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>io.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Defines<sp/>the<sp/>`io`<sp/>class<sp/>for<sp/>handling<sp/>input/output<sp/>operations,<sp/>primarily<sp/>with<sp/>ROOT<sp/>and<sp/>HDF5<sp/>files.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>declares<sp/>the<sp/>`io`<sp/>class,<sp/>which<sp/>encapsulates<sp/>functionalities<sp/>for<sp/>reading<sp/>and<sp/>writing</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>data,<sp/>particularly<sp/>for<sp/>physics<sp/>analysis.<sp/>It<sp/>supports<sp/>operations<sp/>on<sp/>ROOT<sp/>TTrees<sp/>and<sp/>HDF5<sp/>datasets.</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>The<sp/>class<sp/>inherits<sp/>from<sp/>`tools`<sp/>and<sp/>`notification`<sp/>for<sp/>utility<sp/>functions<sp/>and<sp/>logging.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>IO_IO_H<sp/></highlight><highlight class="comment">///&lt;<sp/>Start<sp/>of<sp/>include<sp/>guard<sp/>for<sp/>IO_IO_H<sp/>to<sp/>prevent<sp/>multiple<sp/>inclusions.</highlight></codeline>
+<codeline lineno="11" refid="io_8h_1a98b8079236b64e2c9d9456611392db94" refkind="member"><highlight class="comment"></highlight><highlight class="normal">#define<sp/>IO_IO_H<sp/></highlight><highlight class="comment">///&lt;<sp/>Definition<sp/>of<sp/>IO_IO_H<sp/>to<sp/>signify<sp/>the<sp/>header<sp/>has<sp/>been<sp/>included.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;map&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>standard<sp/>map<sp/>container.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>standard<sp/>string<sp/>library.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;H5Cpp.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>HDF5<sp/>C++<sp/>API<sp/>header.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;TFile.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>ROOT&apos;s<sp/>TFile<sp/>class<sp/>for<sp/>file<sp/>operations.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;TTree.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>ROOT&apos;s<sp/>TTree<sp/>class<sp/>for<sp/>tree-like<sp/>data<sp/>structures.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;TBranch.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>ROOT&apos;s<sp/>TBranch<sp/>class<sp/>for<sp/>TTree<sp/>branches.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;TLeaf.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>ROOT&apos;s<sp/>TLeaf<sp/>class<sp/>for<sp/>TTree<sp/>leaves.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;TTreeReader.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>ROOT&apos;s<sp/>TTreeReader<sp/>for<sp/>efficient<sp/>TTree<sp/>reading.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;TTreeReaderArray.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>ROOT&apos;s<sp/>TTreeReaderArray<sp/>for<sp/>reading<sp/>array-like<sp/>branches.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="meta_2include_2meta_2meta_8h" kindref="compound">meta/meta.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>`meta`<sp/>class,<sp/>likely<sp/>for<sp/>metadata<sp/>handling.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="tools_8h" kindref="compound">tools/tools.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>`tools`<sp/>class<sp/>for<sp/>utility<sp/>functions.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="folds_8h" kindref="compound">structs/folds.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>`folds_t`<sp/>structure,<sp/>possibly<sp/>for<sp/>k-fold<sp/>or<sp/>data<sp/>partitioning<sp/>info.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="element_8h" kindref="compound">structs/element.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>`element_t`<sp/>structure,<sp/>a<sp/>base<sp/>data<sp/>element<sp/>type.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="settings_8h" kindref="compound">structs/settings.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>`settings_t`<sp/>structure<sp/>for<sp/>configuration<sp/>settings.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="notification_8h" kindref="compound">notification/notification.h</ref>&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>the<sp/>`notification`<sp/>class<sp/>for<sp/>logging<sp/>and<sp/>messages.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="33"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>@class<sp/>io</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Manages<sp/>input<sp/>and<sp/>output<sp/>operations<sp/>for<sp/>analysis<sp/>data.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>The<sp/>`io`<sp/>class<sp/>provides<sp/>an<sp/>interface<sp/>for<sp/>reading<sp/>from<sp/>and<sp/>writing<sp/>to<sp/>various<sp/>data<sp/>formats,</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>with<sp/>a<sp/>focus<sp/>on<sp/>ROOT<sp/>files<sp/>(TTrees)<sp/>and<sp/>HDF5<sp/>files.<sp/>It<sp/>handles<sp/>file<sp/>opening/closing,</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>data<sp/>reading/writing<sp/>for<sp/>different<sp/>data<sp/>types<sp/>(single<sp/>objects,<sp/>vectors<sp/>of<sp/>objects),</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>and<sp/>manages<sp/>internal<sp/>data<sp/>structures<sp/>for<sp/>tracking<sp/>file<sp/>and<sp/>dataset<sp/>information.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="classio" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classio" kindref="compound">io</ref>:<sp/></highlight><highlight class="comment">//<sp/>Defines<sp/>the<sp/>class<sp/>&apos;io&apos;.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classtools" kindref="compound">tools</ref>,<sp/></highlight><highlight class="comment">///&lt;<sp/>Inherits<sp/>from<sp/>the<sp/>`tools`<sp/>class<sp/>for<sp/>utility<sp/>functions.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classnotification" kindref="compound">notification</ref><sp/></highlight><highlight class="comment">///&lt;<sp/>Inherits<sp/>from<sp/>the<sp/>`notification`<sp/>class<sp/>for<sp/>logging<sp/>capabilities.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:<sp/></highlight><highlight class="comment">///&lt;<sp/>Public<sp/>access<sp/>specifier<sp/>for<sp/>the<sp/>following<sp/>members.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"></highlight><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Constructor<sp/>for<sp/>the<sp/>`io`<sp/>class.</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Initializes<sp/>a<sp/>new<sp/>io<sp/>instance.</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classio_1a87d6c9bb433c979e3d469090b7e4f873" kindref="member">io</ref>();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Destructor<sp/>for<sp/>the<sp/>`io`<sp/>class.</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Cleans<sp/>up<sp/>resources,<sp/>such<sp/>as<sp/>closing<sp/>open<sp/>files.</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classio_1a4837676c45d56b2de96228e5fbea33ce" kindref="member">~io</ref>();<sp/></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Templated<sp/>method<sp/>to<sp/>write<sp/>a<sp/>vector<sp/>of<sp/>objects<sp/>to<sp/>a<sp/>dataset.</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@tparam<sp/>g<sp/>The<sp/>type<sp/>of<sp/>objects<sp/>in<sp/>the<sp/>vector.</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>inpt<sp/>Pointer<sp/>to<sp/>a<sp/>vector<sp/>of<sp/>objects<sp/>of<sp/>type<sp/>`g`<sp/>to<sp/>be<sp/>written.</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>set_name<sp/>The<sp/>name<sp/>of<sp/>the<sp/>dataset<sp/>to<sp/>write<sp/>to.</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="65" refid="classio_1a39a32d23eeb4ae8f422bb416256fd9cd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classio_1a39a32d23eeb4ae8f422bb416256fd9cd" kindref="member">write</ref>(std::vector&lt;g&gt;*<sp/>inpt,<sp/>std::string<sp/>set_name){</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>type<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>tools::type_name&lt;g&gt;();<sp/></highlight><highlight class="comment">///&lt;<sp/>Get<sp/>the<sp/>type<sp/>name<sp/>of<sp/>g.</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_write){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classnotification_1ab758dafbb449e142fb68e11c0470b5c9" kindref="member">Warning</ref>(</highlight><highlight class="stringliteral">&quot;NOT<sp/>IN<sp/>WRITE<sp/>MODE&quot;</highlight><highlight class="normal">);<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}<sp/></highlight><highlight class="comment">///&lt;<sp/>Check<sp/>if<sp/>in<sp/>write<sp/>mode,<sp/>issue<sp/>warning<sp/>and<sp/>return<sp/>if<sp/>not.</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_H5event){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>write_event_h5(inpt,<sp/>set_name);<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}<sp/></highlight><highlight class="comment">///&lt;<sp/>If<sp/>HDF5<sp/>event<sp/>writing<sp/>is<sp/>not<sp/>active,<sp/>call<sp/>specific<sp/>HDF5<sp/>event<sp/>write<sp/>method.</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_h5<sp/>-&gt;<sp/>findGroup(set_name)){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_h5<sp/>-&gt;<sp/>rmGroup(set_name);}<sp/></highlight><highlight class="comment">///&lt;<sp/>If<sp/>group<sp/>exists<sp/>in<sp/>HDF5,<sp/>remove<sp/>it.</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_h5<sp/>-&gt;<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>write_hdf5&lt;g&gt;(inpt,<sp/>set_name);<sp/></highlight><highlight class="comment">///&lt;<sp/>Write<sp/>data<sp/>to<sp/>HDF5.</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Templated<sp/>method<sp/>to<sp/>write<sp/>a<sp/>single<sp/>object<sp/>to<sp/>a<sp/>dataset.</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@tparam<sp/>g<sp/>The<sp/>type<sp/>of<sp/>the<sp/>object.</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>inpt<sp/>Pointer<sp/>to<sp/>an<sp/>object<sp/>of<sp/>type<sp/>`g`<sp/>to<sp/>be<sp/>written.</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>set_name<sp/>The<sp/>name<sp/>of<sp/>the<sp/>dataset<sp/>to<sp/>write<sp/>to.</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="80" refid="classio_1acbb361e3301373cce246acf6208b60ea" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classio_1acbb361e3301373cce246acf6208b60ea" kindref="member">write</ref>(g*<sp/>inpt,<sp/>std::string<sp/>set_name){</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>type<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>tools::type_name&lt;g&gt;();<sp/></highlight><highlight class="comment">///&lt;<sp/>Get<sp/>the<sp/>type<sp/>name<sp/>of<sp/>g.</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_write){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classnotification_1ab758dafbb449e142fb68e11c0470b5c9" kindref="member">Warning</ref>(</highlight><highlight class="stringliteral">&quot;NOT<sp/>IN<sp/>WRITE<sp/>MODE&quot;</highlight><highlight class="normal">);<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}<sp/></highlight><highlight class="comment">///&lt;<sp/>Check<sp/>if<sp/>in<sp/>write<sp/>mode,<sp/>issue<sp/>warning<sp/>and<sp/>return<sp/>if<sp/>not.</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_H5event){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>write_event_h5(inpt,<sp/>set_name);<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}<sp/></highlight><highlight class="comment">///&lt;<sp/>If<sp/>HDF5<sp/>event<sp/>writing<sp/>is<sp/>not<sp/>active,<sp/>call<sp/>specific<sp/>HDF5<sp/>event<sp/>write<sp/>method.</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_h5<sp/>-&gt;<sp/>findGroup(set_name)){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_h5<sp/>-&gt;<sp/>rmGroup(set_name);}<sp/></highlight><highlight class="comment">///&lt;<sp/>If<sp/>group<sp/>exists<sp/>in<sp/>HDF5,<sp/>remove<sp/>it.</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_h5<sp/>-&gt;<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>write_hdf5&lt;g&gt;(inpt,<sp/>set_name);<sp/></highlight><highlight class="comment">///&lt;<sp/>Write<sp/>data<sp/>to<sp/>HDF5.</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Templated<sp/>method<sp/>to<sp/>read<sp/>a<sp/>vector<sp/>of<sp/>objects<sp/>from<sp/>a<sp/>dataset.</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@tparam<sp/>g<sp/>The<sp/>type<sp/>of<sp/>objects<sp/>in<sp/>the<sp/>vector.</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>outpt<sp/>Pointer<sp/>to<sp/>a<sp/>vector<sp/>of<sp/>objects<sp/>of<sp/>type<sp/>`g`<sp/>where<sp/>read<sp/>data<sp/>will<sp/>be<sp/>stored.</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>set_name<sp/>The<sp/>name<sp/>of<sp/>the<sp/>dataset<sp/>to<sp/>read<sp/>from.</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="95" refid="classio_1a2a0214e493a7a2ef5e9507c0e6aa4e70" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classio_1a2a0214e493a7a2ef5e9507c0e6aa4e70" kindref="member">read</ref>(std::vector&lt;g&gt;*<sp/>outpt,<sp/>std::string<sp/>set_name){</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_write){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classnotification_1ab758dafbb449e142fb68e11c0470b5c9" kindref="member">Warning</ref>(</highlight><highlight class="stringliteral">&quot;NOT<sp/>IN<sp/>READ<sp/>MODE&quot;</highlight><highlight class="normal">);<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}<sp/></highlight><highlight class="comment">///&lt;<sp/>Check<sp/>if<sp/>in<sp/>read<sp/>mode,<sp/>issue<sp/>warning<sp/>and<sp/>return<sp/>if<sp/>not.</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_H5event){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>read_event_h5(outpt,<sp/>set_name);<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}<sp/></highlight><highlight class="comment">///&lt;<sp/>If<sp/>HDF5<sp/>event<sp/>reading<sp/>is<sp/>not<sp/>active,<sp/>call<sp/>specific<sp/>HDF5<sp/>event<sp/>read<sp/>method.</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_h5<sp/>-&gt;<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>read_hdf5&lt;g&gt;(outpt,<sp/>set_name);<sp/></highlight><highlight class="comment">///&lt;<sp/>Read<sp/>data<sp/>from<sp/>HDF5.</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Templated<sp/>method<sp/>to<sp/>read<sp/>a<sp/>single<sp/>object<sp/>from<sp/>a<sp/>dataset.</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@tparam<sp/>g<sp/>The<sp/>type<sp/>of<sp/>the<sp/>object.</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>out<sp/>Pointer<sp/>to<sp/>an<sp/>object<sp/>of<sp/>type<sp/>`g`<sp/>where<sp/>read<sp/>data<sp/>will<sp/>be<sp/>stored.</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>set_name<sp/>The<sp/>name<sp/>of<sp/>the<sp/>dataset<sp/>to<sp/>read<sp/>from.</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="108" refid="classio_1ae9363859101b007dedf420f10e437014" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classio_1ae9363859101b007dedf420f10e437014" kindref="member">read</ref>(g*<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>,<sp/>std::string<sp/>set_name){</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_write){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classnotification_1ab758dafbb449e142fb68e11c0470b5c9" kindref="member">Warning</ref>(</highlight><highlight class="stringliteral">&quot;NOT<sp/>IN<sp/>READ<sp/>MODE&quot;</highlight><highlight class="normal">);<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}<sp/></highlight><highlight class="comment">///&lt;<sp/>Check<sp/>if<sp/>in<sp/>read<sp/>mode,<sp/>issue<sp/>warning<sp/>and<sp/>return<sp/>if<sp/>not.</highlight></codeline>
+<codeline lineno="110"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_H5event){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>read_event_h5(<ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>,<sp/>set_name);<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}<sp/></highlight><highlight class="comment">///&lt;<sp/>If<sp/>HDF5<sp/>event<sp/>reading<sp/>is<sp/>not<sp/>active,<sp/>call<sp/>specific<sp/>HDF5<sp/>event<sp/>read<sp/>method.</highlight></codeline>
+<codeline lineno="111"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_h5<sp/>-&gt;<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>read_hdf5&lt;g&gt;(<ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>,<sp/>set_name);<sp/></highlight><highlight class="comment">///&lt;<sp/>Read<sp/>data<sp/>from<sp/>HDF5.</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Reads<sp/>graph<sp/>data<sp/>in<sp/>HDF5<sp/>format<sp/>specifically<sp/>for<sp/>`graph_hdf5_w`<sp/>struct.</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>out<sp/>Pointer<sp/>to<sp/>a<sp/>`graph_hdf5_w`<sp/>object<sp/>to<sp/>store<sp/>the<sp/>read<sp/>data.</highlight></codeline>
+<codeline lineno="117"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>set_name<sp/>The<sp/>name<sp/>of<sp/>the<sp/>dataset<sp/>to<sp/>read<sp/>from.</highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classio_1a2a0214e493a7a2ef5e9507c0e6aa4e70" kindref="member">read</ref>(<ref refid="structgraph__hdf5__w" kindref="compound">graph_hdf5_w</ref>*<sp/><ref refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" kindref="member">out</ref>,<sp/>std::string<sp/>set_name);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="122"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Starts<sp/>an<sp/>I/O<sp/>session,<sp/>opening<sp/>a<sp/>file<sp/>for<sp/>reading<sp/>or<sp/>writing.</highlight></codeline>
+<codeline lineno="123"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>filename<sp/>The<sp/>name<sp/>of<sp/>the<sp/>file<sp/>to<sp/>open.</highlight></codeline>
+<codeline lineno="124"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>read_write<sp/>Mode<sp/>of<sp/>operation:<sp/>&quot;read&quot;<sp/>or<sp/>&quot;write&quot;.</highlight></codeline>
+<codeline lineno="125"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>True<sp/>if<sp/>the<sp/>file<sp/>was<sp/>successfully<sp/>opened<sp/>in<sp/>the<sp/>specified<sp/>mode,<sp/>false<sp/>otherwise.</highlight></codeline>
+<codeline lineno="126"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classio_1a228b6ce6f26848a9adfc0ccf3619a53e" kindref="member">start</ref>(std::string<sp/>filename,<sp/>std::string<sp/>read_write);<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="128"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="129"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Ends<sp/>the<sp/>current<sp/>I/O<sp/>session,<sp/>closing<sp/>any<sp/>open<sp/>files.</highlight></codeline>
+<codeline lineno="130"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classio_1a65ca69ec5f12d0f3a463396bcff84d77" kindref="member">end</ref>();</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="133"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="134"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Retrieves<sp/>the<sp/>names<sp/>of<sp/>datasets<sp/>available<sp/>in<sp/>the<sp/>currently<sp/>open<sp/>HDF5<sp/>file.</highlight></codeline>
+<codeline lineno="135"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>A<sp/>vector<sp/>of<sp/>strings,<sp/>where<sp/>each<sp/>string<sp/>is<sp/>a<sp/>dataset<sp/>name.</highlight></codeline>
+<codeline lineno="136"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="classio_1ac572af35ee4e5a6dc17a35a1d8eb4561" kindref="member">dataset_names</ref>();<sp/></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="139"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="140"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Retrieves<sp/>the<sp/>sizes<sp/>(number<sp/>of<sp/>entries)<sp/>of<sp/>TTrees<sp/>in<sp/>the<sp/>open<sp/>ROOT<sp/>files.</highlight></codeline>
+<codeline lineno="141"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>where<sp/>keys<sp/>are<sp/>TTree<sp/>names<sp/>(or<sp/>unique<sp/>identifiers)<sp/>and<sp/>values<sp/>are<sp/>their<sp/>sizes<sp/>(long).</highlight></codeline>
+<codeline lineno="142"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>long&gt;<sp/><ref refid="classio_1a66a6d354d07e8aa4f9fdadc8f74a314b" kindref="member">root_size</ref>();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="144"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="145"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Checks<sp/>the<sp/>validity<sp/>or<sp/>accessibility<sp/>of<sp/>ROOT<sp/>file<sp/>paths<sp/>defined<sp/>in<sp/>settings<sp/>or<sp/>configurations.</highlight></codeline>
+<codeline lineno="146"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" kindref="member">check_root_file_paths</ref>();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="148"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="149"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Scans<sp/>for<sp/>keys<sp/>(e.g.,<sp/>TTree<sp/>names,<sp/>TBranch<sp/>names)<sp/>in<sp/>the<sp/>open<sp/>ROOT<sp/>files.</highlight></codeline>
+<codeline lineno="150"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>True<sp/>if<sp/>keys<sp/>were<sp/>successfully<sp/>scanned,<sp/>false<sp/>otherwise<sp/>(e.g.,<sp/>no<sp/>files<sp/>open).</highlight></codeline>
+<codeline lineno="151"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classio_1aacb050c4cb6c10038d6bf8edb7244a28" kindref="member">scan_keys</ref>();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="153"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="154"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Initializes<sp/>ROOT<sp/>file<sp/>processing,<sp/>potentially<sp/>opening<sp/>files<sp/>specified<sp/>in<sp/>settings.</highlight></codeline>
+<codeline lineno="155"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classio_1a65c36380ef79524e8235f792abe9625c" kindref="member">root_begin</ref>();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="157"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="158"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Finalizes<sp/>ROOT<sp/>file<sp/>processing,<sp/>closing<sp/>any<sp/>ROOT<sp/>files<sp/>opened<sp/>by<sp/>`root_begin`.</highlight></codeline>
+<codeline lineno="159"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classio_1a1c994985d2405202c19fb391cc43a5de" kindref="member">root_end</ref>();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="161"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="162"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Triggers<sp/>the<sp/>generation<sp/>of<sp/>a<sp/>ROOT<sp/>PCM<sp/>(Precompiled<sp/>Module)<sp/>if<sp/>needed<sp/>for<sp/>dictionary<sp/>generation.</highlight></codeline>
+<codeline lineno="163"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" kindref="member">trigger_pcm</ref>();<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="165"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="166"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Imports<sp/>settings<sp/>from<sp/>a<sp/>`settings_t`<sp/>object<sp/>to<sp/>configure<sp/>the<sp/>`io`<sp/>instance.</highlight></codeline>
+<codeline lineno="167"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>params<sp/>Pointer<sp/>to<sp/>a<sp/>`settings_t`<sp/>object.</highlight></codeline>
+<codeline lineno="168"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classio_1a81a70b8811ceea05c8827af288c6a341" kindref="member">import_settings</ref>(<ref refid="structsettings__t" kindref="compound">settings_t</ref>*<sp/><ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>);<sp/></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="171"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="172"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Retrieves<sp/>the<sp/>data<sp/>read<sp/>from<sp/>ROOT<sp/>files,<sp/>likely<sp/>structured<sp/>as<sp/>a<sp/>map<sp/>of<sp/>`data_t`<sp/>objects.</highlight></codeline>
+<codeline lineno="173"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>Pointer<sp/>to<sp/>a<sp/>map<sp/>where<sp/>keys<sp/>are<sp/>data<sp/>identifiers<sp/>(e.g.,<sp/>branch<sp/>names)<sp/>and<sp/>values<sp/>are<sp/>`data_t`<sp/>pointers.</highlight></codeline>
+<codeline lineno="174"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>data_t*&gt;*<sp/><ref refid="classio_1ae346e23a45d73c24f844827495912941" kindref="member">get_data</ref>();<sp/></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177" refid="classio_1a62caa70c9bfcaef4a32e954d94e86213" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classio_1a62caa70c9bfcaef4a32e954d94e86213" kindref="member">enable_pyami</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Flag<sp/>to<sp/>enable<sp/>or<sp/>disable<sp/>PyAMI<sp/>(ATLAS<sp/>Metadata<sp/>Interface)<sp/>usage.<sp/>Default<sp/>true.</highlight></codeline>
+<codeline lineno="178" refid="classio_1af0b0e9364667b77b04d96001b372e946" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classio_1af0b0e9364667b77b04d96001b372e946" kindref="member">metacache_path</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Path<sp/>to<sp/>the<sp/>directory<sp/>for<sp/>caching<sp/>metadata.<sp/>Default<sp/>current<sp/>directory.</highlight></codeline>
+<codeline lineno="179" refid="classio_1a942b4d90a023e4f5dd7259c837506067" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classio_1a942b4d90a023e4f5dd7259c837506067" kindref="member">current_working_path</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;.&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Current<sp/>working<sp/>directory<sp/>path.<sp/>Default<sp/>&quot;.&quot;.</highlight></codeline>
+<codeline lineno="180" refid="classio_1a22d8f26e96fe3423ca834f3a09ba0a0a" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classio_1a22d8f26e96fe3423ca834f3a09ba0a0a" kindref="member">sow_name</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Name<sp/>for<sp/>Sum-Of-Weights<sp/>information,<sp/>if<sp/>applicable.<sp/>Default<sp/>empty.</highlight></codeline>
+<codeline lineno="181"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="182" refid="classio_1a793e5c59d9bf747540db2570e9e40d10" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="classio_1a793e5c59d9bf747540db2570e9e40d10" kindref="member">trees</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Vector<sp/>to<sp/>store<sp/>names<sp/>of<sp/>TTrees<sp/>to<sp/>be<sp/>processed.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="183" refid="classio_1a21d6fc9f9b2e516e8b53900c507966c3" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="classio_1a21d6fc9f9b2e516e8b53900c507966c3" kindref="member">branches</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Vector<sp/>to<sp/>store<sp/>names<sp/>of<sp/>TBranches<sp/>to<sp/>be<sp/>processed.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="184" refid="classio_1a77890c20f1b193b44925763aca5b7aca" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="classio_1a77890c20f1b193b44925763aca5b7aca" kindref="member">leaves</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Vector<sp/>to<sp/>store<sp/>names<sp/>of<sp/>TLeaves<sp/>(variables)<sp/>to<sp/>be<sp/>processed.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="185"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="186" refid="classio_1af427cf94896f4fe763a1d0a8d8cfba94" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>TFile*&gt;<sp/><ref refid="classio_1af427cf94896f4fe763a1d0a8d8cfba94" kindref="member">files_open</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>storing<sp/>pointers<sp/>to<sp/>open<sp/>TFile<sp/>objects,<sp/>keyed<sp/>by<sp/>filename.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="187" refid="classio_1ab8ba9b78fd2627d93d7ddd2dd8f8627a" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>meta*&gt;<sp/><sp/><sp/><ref refid="classio_1ab8ba9b78fd2627d93d7ddd2dd8f8627a" kindref="member">meta_data</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>storing<sp/>pointers<sp/>to<sp/>`meta`<sp/>objects<sp/>(metadata),<sp/>keyed<sp/>by<sp/>an<sp/>identifier<sp/>(e.g.,<sp/>filename<sp/>or<sp/>sample<sp/>label).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="188"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>key:<sp/>Filename<sp/>;<sp/>key<sp/>tree_name<sp/>:<sp/>TTree*</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="190" refid="classio_1abcc5293fdc6bfafbe00806ed11c97cc6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>TTree*&gt;&gt;<sp/><ref refid="classio_1abcc5293fdc6bfafbe00806ed11c97cc6" kindref="member">tree_data</ref><sp/><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Nested<sp/>map<sp/>storing<sp/>TTree<sp/>pointers:<sp/>Filename<sp/>-&gt;<sp/>(Tree<sp/>Name<sp/>-&gt;<sp/>TTree*).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="191" refid="classio_1a56dde12fc0f8422180940e9239b12731" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>long&gt;&gt;<sp/><ref refid="classio_1a56dde12fc0f8422180940e9239b12731" kindref="member">tree_entries</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Nested<sp/>map<sp/>storing<sp/>TTree<sp/>entry<sp/>counts:<sp/>Filename<sp/>-&gt;<sp/>(Tree<sp/>Name<sp/>-&gt;<sp/>N_Entries).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="192"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>branch<sp/>path<sp/>:<sp/>key<sp/>branch_name<sp/>:<sp/>TBranch*</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193" refid="classio_1aeee1cb0ef3e70e8d42ac226db588274a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>TBranch*&gt;&gt;<sp/><ref refid="classio_1aeee1cb0ef3e70e8d42ac226db588274a" kindref="member">branch_data</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Nested<sp/>map<sp/>storing<sp/>TBranch<sp/>pointers:<sp/>Branch<sp/>Path<sp/>(e.g.,<sp/>File/Tree)<sp/>-&gt;<sp/>(Branch<sp/>Name<sp/>-&gt;<sp/>TBranch*).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="194"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>leaf<sp/>filename<sp/>:<sp/>key<sp/>leaf_name<sp/>:<sp/>TLeaf*</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196" refid="classio_1a824813b5a46adebe68dd83c569c90e73" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>TLeaf*&gt;&gt;<sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classio_1a824813b5a46adebe68dd83c569c90e73" kindref="member">leaf_data</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Nested<sp/>map<sp/>storing<sp/>TLeaf<sp/>pointers:<sp/>Filename<sp/>-&gt;<sp/>(Leaf<sp/>Name<sp/>-&gt;<sp/>TLeaf*).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="197" refid="classio_1aa880042a14225e1bd9d6c5453cf97a2f" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>std::string&gt;&gt;<sp/><ref refid="classio_1aa880042a14225e1bd9d6c5453cf97a2f" kindref="member">leaf_typed</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Nested<sp/>map<sp/>storing<sp/>TLeaf<sp/>type<sp/>names:<sp/>Filename<sp/>-&gt;<sp/>(Leaf<sp/>Name<sp/>-&gt;<sp/>Type<sp/>String).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="198" refid="classio_1a0837c4856145c3a8e6a85e23eb6b4e8f" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>bool&gt;<sp/><ref refid="classio_1a0837c4856145c3a8e6a85e23eb6b4e8f" kindref="member">root_files</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>indicating<sp/>if<sp/>a<sp/>given<sp/>string<sp/>(filename)<sp/>corresponds<sp/>to<sp/>a<sp/>(successfully<sp/>opened)<sp/>ROOT<sp/>file.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="199"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="200" refid="classio_1a44e4131caa287c82c98f8f0bc51782d2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>std::vector&lt;std::string&gt;&gt;&gt;&gt;<sp/><ref refid="classio_1a44e4131caa287c82c98f8f0bc51782d2" kindref="member">keys</ref>;<sp/></highlight><highlight class="comment">///&lt;<sp/>Complex<sp/>nested<sp/>map<sp/>for<sp/>storing<sp/>scanned<sp/>keys<sp/>from<sp/>ROOT<sp/>files<sp/>(e.g.,<sp/>File<sp/>-&gt;<sp/>Tree<sp/>-&gt;<sp/>Branch<sp/>-&gt;<sp/>Leaves).</highlight></codeline>
+<codeline lineno="201"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:<sp/></highlight><highlight class="comment">///&lt;<sp/>Private<sp/>access<sp/>specifier<sp/>for<sp/>the<sp/>following<sp/>members.</highlight></codeline>
+<codeline lineno="203"><highlight class="comment"></highlight><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="204"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>HDF5<sp/>member<sp/>type<sp/>creation<sp/>for<sp/>`folds_t`<sp/>struct.</highlight></codeline>
+<codeline lineno="205"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>t<sp/>An<sp/>instance<sp/>of<sp/>`folds_t`<sp/>(used<sp/>for<sp/>type<sp/>deduction,<sp/>not<sp/>value).</highlight></codeline>
+<codeline lineno="206"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>HDF5<sp/>data<sp/>type<sp/>identifier<sp/>(`hid_t`).</highlight></codeline>
+<codeline lineno="207"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/>hid_t<sp/>member(<ref refid="structfolds__t" kindref="compound">folds_t</ref><sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>);<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="209"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="210"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>HDF5<sp/>member<sp/>type<sp/>creation<sp/>for<sp/>`graph_hdf5_w`<sp/>struct.</highlight></codeline>
+<codeline lineno="211"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>t<sp/>An<sp/>instance<sp/>of<sp/>`graph_hdf5_w`<sp/>(used<sp/>for<sp/>type<sp/>deduction,<sp/>not<sp/>value).</highlight></codeline>
+<codeline lineno="212"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>HDF5<sp/>data<sp/>type<sp/>identifier<sp/>(`hid_t`).</highlight></codeline>
+<codeline lineno="213"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>hid_t<sp/>member(<ref refid="structgraph__hdf5__w" kindref="compound">graph_hdf5_w</ref><sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>);<sp/></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="216"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="217"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Static<sp/>callback<sp/>function<sp/>for<sp/>H5Literate,<sp/>used<sp/>to<sp/>iterate<sp/>over<sp/>objects<sp/>in<sp/>an<sp/>HDF5<sp/>file.</highlight></codeline>
+<codeline lineno="218"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>loc_id<sp/>Location<sp/>identifier.</highlight></codeline>
+<codeline lineno="219"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>name<sp/>Name<sp/>of<sp/>the<sp/>object.</highlight></codeline>
+<codeline lineno="220"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>linfo<sp/>Pointer<sp/>to<sp/>H5L_info_t<sp/>struct<sp/>containing<sp/>link<sp/>information.</highlight></codeline>
+<codeline lineno="221"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>opdata<sp/>Pointer<sp/>to<sp/>operator<sp/>data<sp/>(user-supplied).</highlight></codeline>
+<codeline lineno="222"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>HDF5<sp/>error<sp/>status.</highlight></codeline>
+<codeline lineno="223"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>herr_t<sp/>file_info(hid_t<sp/>loc_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>H5L_info_t*<sp/>linfo,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*opdata);<sp/></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="225"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="226"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Static<sp/>callback<sp/>function<sp/>for<sp/>H5Literate<sp/>(alternative<sp/>version<sp/>or<sp/>specific<sp/>use<sp/>case).</highlight></codeline>
+<codeline lineno="227"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>loc_id<sp/>Location<sp/>identifier.</highlight></codeline>
+<codeline lineno="228"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>name<sp/>Name<sp/>of<sp/>the<sp/>object.</highlight></codeline>
+<codeline lineno="229"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>linfo<sp/>Pointer<sp/>to<sp/>H5L_info_t<sp/>struct<sp/>containing<sp/>link<sp/>information.</highlight></codeline>
+<codeline lineno="230"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>opdata<sp/>Pointer<sp/>to<sp/>operator<sp/>data<sp/>(user-supplied).</highlight></codeline>
+<codeline lineno="231"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>HDF5<sp/>error<sp/>status.</highlight></codeline>
+<codeline lineno="232"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>herr_t<sp/>op_func<sp/>(hid_t<sp/>loc_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>H5L_info_t<sp/>*linfo,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*opdata);<sp/></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="235"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="236"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Templated<sp/>method<sp/>to<sp/>write<sp/>event<sp/>data<sp/>(vector<sp/>of<sp/>objects)<sp/>to<sp/>HDF5.</highlight></codeline>
+<codeline lineno="237"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Specific<sp/>implementation<sp/>for<sp/>event-like<sp/>data<sp/>structures.</highlight></codeline>
+<codeline lineno="238"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@tparam<sp/>g<sp/>Type<sp/>of<sp/>objects<sp/>in<sp/>the<sp/>vector.</highlight></codeline>
+<codeline lineno="239"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>evnt<sp/>Pointer<sp/>to<sp/>a<sp/>vector<sp/>of<sp/>objects<sp/>of<sp/>type<sp/>`g`.</highlight></codeline>
+<codeline lineno="240"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>name<sp/>Name<sp/>of<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="241"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>write_event_h5(std::vector&lt;g&gt;*<sp/>evnt,<sp/>std::string<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>){<sp/>H5Write(evnt,<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>);<sp/>}<sp/></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="245"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="246"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Templated<sp/>method<sp/>to<sp/>write<sp/>single<sp/>event<sp/>data<sp/>object<sp/>to<sp/>HDF5.</highlight></codeline>
+<codeline lineno="247"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Specific<sp/>implementation<sp/>for<sp/>event-like<sp/>data<sp/>structures.</highlight></codeline>
+<codeline lineno="248"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@tparam<sp/>g<sp/>Type<sp/>of<sp/>the<sp/>object.</highlight></codeline>
+<codeline lineno="249"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>evnt<sp/>Pointer<sp/>to<sp/>an<sp/>object<sp/>of<sp/>type<sp/>`g`.</highlight></codeline>
+<codeline lineno="250"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>name<sp/>Name<sp/>of<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="251"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>write_event_h5(g*<sp/>evnt,<sp/>std::string<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>){<sp/>H5Write(evnt,<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>);<sp/>}<sp/></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="255"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="256"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Templated<sp/>method<sp/>to<sp/>read<sp/>event<sp/>data<sp/>(vector<sp/>of<sp/>objects)<sp/>from<sp/>HDF5.</highlight></codeline>
+<codeline lineno="257"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Specific<sp/>implementation<sp/>for<sp/>event-like<sp/>data<sp/>structures.</highlight></codeline>
+<codeline lineno="258"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@tparam<sp/>g<sp/>Type<sp/>of<sp/>objects<sp/>in<sp/>the<sp/>vector.</highlight></codeline>
+<codeline lineno="259"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>evnt<sp/>Pointer<sp/>to<sp/>a<sp/>vector<sp/>of<sp/>objects<sp/>of<sp/>type<sp/>`g`<sp/>to<sp/>store<sp/>read<sp/>data.</highlight></codeline>
+<codeline lineno="260"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>name<sp/>Name<sp/>of<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="261"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>read_event_h5(std::vector&lt;g&gt;*<sp/>evnt,<sp/>std::string<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>){<sp/>H5Read(evnt,<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>);<sp/>}<sp/></highlight></codeline>
+<codeline lineno="264"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="265"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="266"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Templated<sp/>method<sp/>to<sp/>read<sp/>single<sp/>event<sp/>data<sp/>object<sp/>from<sp/>HDF5.</highlight></codeline>
+<codeline lineno="267"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Specific<sp/>implementation<sp/>for<sp/>event-like<sp/>data<sp/>structures.</highlight></codeline>
+<codeline lineno="268"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@tparam<sp/>g<sp/>Type<sp/>of<sp/>the<sp/>object.</highlight></codeline>
+<codeline lineno="269"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>evnt<sp/>Pointer<sp/>to<sp/>an<sp/>object<sp/>of<sp/>type<sp/>`g`<sp/>to<sp/>store<sp/>read<sp/>data.</highlight></codeline>
+<codeline lineno="270"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>name<sp/>Name<sp/>of<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="271"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>read_event_h5(g*<sp/>evnt,<sp/>std::string<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>){<sp/>H5Read(evnt,<sp/><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref>);<sp/>}<sp/></highlight></codeline>
+<codeline lineno="274"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="275"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="276"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Generic<sp/>HDF5<sp/>write<sp/>operation<sp/>for<sp/>a<sp/>vector<sp/>of<sp/>objects.</highlight></codeline>
+<codeline lineno="277"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@tparam<sp/>g<sp/>Type<sp/>of<sp/>objects<sp/>in<sp/>the<sp/>vector.</highlight></codeline>
+<codeline lineno="278"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>data<sp/>Pointer<sp/>to<sp/>a<sp/>vector<sp/>of<sp/>objects<sp/>of<sp/>type<sp/>`g`.</highlight></codeline>
+<codeline lineno="279"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>set_name<sp/>Name<sp/>of<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="280"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>H5Write(std::vector&lt;g&gt;*<sp/>data,<sp/>std::string<sp/>set_name){</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hid_t<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>member((*data)[0]);<sp/></highlight><highlight class="comment">///&lt;<sp/>Get<sp/>HDF5<sp/>member<sp/>type<sp/>for<sp/>the<sp/>first<sp/>element.</highlight></codeline>
+<codeline lineno="284"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_h5<sp/>-&gt;<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>write_hdf5&lt;g&gt;(data,<sp/>set_name,<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>);<sp/></highlight><highlight class="comment">///&lt;<sp/>Perform<sp/>HDF5<sp/>write<sp/>using<sp/>the<sp/>obtained<sp/>member<sp/>type.</highlight></codeline>
+<codeline lineno="285"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H5Tclose(<ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>);<sp/></highlight><highlight class="comment">///&lt;<sp/>Close<sp/>the<sp/>HDF5<sp/>datatype.</highlight></codeline>
+<codeline lineno="286"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="288"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="289"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Generic<sp/>HDF5<sp/>write<sp/>operation<sp/>for<sp/>a<sp/>single<sp/>object.</highlight></codeline>
+<codeline lineno="290"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@tparam<sp/>g<sp/>Type<sp/>of<sp/>the<sp/>object.</highlight></codeline>
+<codeline lineno="291"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>data<sp/>Pointer<sp/>to<sp/>an<sp/>object<sp/>of<sp/>type<sp/>`g`.</highlight></codeline>
+<codeline lineno="292"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>set_name<sp/>Name<sp/>of<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="293"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>H5Write(g*<sp/>data,<sp/>std::string<sp/>set_name){</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hid_t<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>member(*data);<sp/></highlight><highlight class="comment">///&lt;<sp/>Get<sp/>HDF5<sp/>member<sp/>type<sp/>for<sp/>the<sp/>object.</highlight></codeline>
+<codeline lineno="297"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_h5<sp/>-&gt;<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>write_hdf5&lt;g&gt;(data,<sp/>set_name,<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>);<sp/></highlight><highlight class="comment">///&lt;<sp/>Perform<sp/>HDF5<sp/>write<sp/>using<sp/>the<sp/>obtained<sp/>member<sp/>type.</highlight></codeline>
+<codeline lineno="298"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H5Tclose(<ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>);<sp/></highlight><highlight class="comment">///&lt;<sp/>Close<sp/>the<sp/>HDF5<sp/>datatype.</highlight></codeline>
+<codeline lineno="299"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="301"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="302"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Generic<sp/>HDF5<sp/>read<sp/>operation<sp/>for<sp/>a<sp/>vector<sp/>of<sp/>objects.</highlight></codeline>
+<codeline lineno="303"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@tparam<sp/>g<sp/>Type<sp/>of<sp/>objects<sp/>in<sp/>the<sp/>vector.</highlight></codeline>
+<codeline lineno="304"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>data<sp/>Pointer<sp/>to<sp/>a<sp/>vector<sp/>of<sp/>objects<sp/>of<sp/>type<sp/>`g`<sp/>to<sp/>store<sp/>read<sp/>data.</highlight></codeline>
+<codeline lineno="305"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>set_name<sp/>Name<sp/>of<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="306"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>H5Read(std::vector&lt;g&gt;*<sp/>data,<sp/>std::string<sp/>set_name){</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>g<sp/>el<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Create<sp/>a<sp/>default-initialized<sp/>element<sp/>of<sp/>type<sp/>g<sp/>to<sp/>get<sp/>member<sp/>type.</highlight></codeline>
+<codeline lineno="310"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hid_t<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>member(el);<sp/></highlight><highlight class="comment">///&lt;<sp/>Get<sp/>HDF5<sp/>member<sp/>type.</highlight></codeline>
+<codeline lineno="311"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_h5<sp/>-&gt;<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>read_hdf5&lt;g&gt;(data,<sp/>set_name,<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>);<sp/></highlight><highlight class="comment">///&lt;<sp/>Perform<sp/>HDF5<sp/>read.</highlight></codeline>
+<codeline lineno="312"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H5Tclose(<ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>);<sp/></highlight><highlight class="comment">///&lt;<sp/>Close<sp/>the<sp/>HDF5<sp/>datatype.</highlight></codeline>
+<codeline lineno="313"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="315"><highlight class="comment"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline lineno="316"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Generic<sp/>HDF5<sp/>read<sp/>operation<sp/>for<sp/>a<sp/>single<sp/>object.</highlight></codeline>
+<codeline lineno="317"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@tparam<sp/>g<sp/>Type<sp/>of<sp/>the<sp/>object.</highlight></codeline>
+<codeline lineno="318"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>data<sp/>Pointer<sp/>to<sp/>an<sp/>object<sp/>of<sp/>type<sp/>`g`<sp/>to<sp/>store<sp/>read<sp/>data.</highlight></codeline>
+<codeline lineno="319"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>set_name<sp/>Name<sp/>of<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="320"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>H5Read(g*<sp/>data,<sp/>std::string<sp/>set_name){</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hid_t<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>member(*data);<sp/></highlight><highlight class="comment">///&lt;<sp/>Get<sp/>HDF5<sp/>member<sp/>type<sp/>for<sp/>the<sp/>object.</highlight></codeline>
+<codeline lineno="324"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_h5<sp/>-&gt;<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>read_hdf5&lt;g&gt;(data,<sp/>set_name,<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>);<sp/></highlight><highlight class="comment">///&lt;<sp/>Perform<sp/>HDF5<sp/>read.</highlight></codeline>
+<codeline lineno="325"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H5Tclose(<ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>);<sp/></highlight><highlight class="comment">///&lt;<sp/>Close<sp/>the<sp/>HDF5<sp/>datatype.</highlight></codeline>
+<codeline lineno="326"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"></highlight></codeline>
+<codeline lineno="328"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>current_file<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Name<sp/>of<sp/>the<sp/>currently<sp/>open<sp/>file.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="329"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>reader_mode<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Current<sp/>reader<sp/>mode<sp/>(&quot;read&quot;<sp/>or<sp/>&quot;write&quot;).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="330"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>filename_data<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Filename<sp/>associated<sp/>with<sp/>data,<sp/>possibly<sp/>for<sp/>metadata.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="331"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>filename_meta<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Filename<sp/>associated<sp/>with<sp/>metadata.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="332"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::string&gt;<sp/>file_to_access_path<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Maps<sp/>a<sp/>file<sp/>identifier<sp/>to<sp/>its<sp/>access<sp/>path.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="334"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::vector&lt;std::string&gt;&gt;<sp/>files_in_dir<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Maps<sp/>directory<sp/>paths<sp/>to<sp/>a<sp/>list<sp/>of<sp/>files<sp/>within<sp/>them.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="335"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::string&gt;<sp/>files_in_dir_cache<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Cache<sp/>for<sp/>directory<sp/>listings.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="336"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>data_t*&gt;<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref><sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>storing<sp/>data<sp/>read<sp/>from<sp/>files,<sp/>keyed<sp/>by<sp/>an<sp/>identifier.<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="338"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>TTreeReader*&gt;<sp/>m_readers<sp/>=<sp/>{};<sp/></highlight><highlight class="comment">///&lt;<sp/>Map<sp/>storing<sp/>TTreeReader<sp/>objects,<sp/>keyed<sp/>by<sp/>an<sp/>identifier<sp/>(e.g.,<sp/>tree<sp/>name).<sp/>Initialized<sp/>empty.</highlight></codeline>
+<codeline lineno="339"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/>H5::H5File*<sp/>m_h5_file<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Pointer<sp/>to<sp/>an<sp/>HDF5<sp/>file<sp/>object.<sp/>Initialized<sp/>to<sp/>nullptr.</highlight></codeline>
+<codeline lineno="341"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>hdf5*<sp/>m_h5<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Pointer<sp/>to<sp/>a<sp/>custom<sp/>hdf5<sp/>handler<sp/>class<sp/>instance.<sp/>Initialized<sp/>to<sp/>nullptr.</highlight></codeline>
+<codeline lineno="342"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structsettings__t" kindref="compound">settings_t</ref>*<sp/>m_settings<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Pointer<sp/>to<sp/>the<sp/>settings<sp/>object.<sp/>Initialized<sp/>to<sp/>nullptr.</highlight></codeline>
+<codeline lineno="343"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>m_write<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Flag<sp/>indicating<sp/>if<sp/>in<sp/>write<sp/>mode.<sp/>Initialized<sp/>to<sp/>false.</highlight></codeline>
+<codeline lineno="345"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>m_H5event<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Flag<sp/>related<sp/>to<sp/>HDF5<sp/>event<sp/>processing<sp/>mode.<sp/>Initialized<sp/>to<sp/>true.</highlight></codeline>
+<codeline lineno="346"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>m_use_h5<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Flag<sp/>indicating<sp/>if<sp/>HDF5<sp/>is<sp/>being<sp/>used.<sp/>Initialized<sp/>to<sp/>false.</highlight></codeline>
+<codeline lineno="347"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>m_use_root<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">///&lt;<sp/>Flag<sp/>indicating<sp/>if<sp/>ROOT<sp/>is<sp/>being<sp/>used.<sp/>Initialized<sp/>to<sp/>false.</highlight></codeline>
+<codeline lineno="348"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="349"><highlight class="normal">};<sp/></highlight><highlight class="comment">//<sp/>End<sp/>of<sp/>class<sp/>&apos;io&apos;<sp/>definition.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>End<sp/>of<sp/>include<sp/>guard<sp/>for<sp/>IO_IO_H</highlight></codeline>
+    </programlisting>
+    <location file="modules/io/include/io/io.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_8b9fa21ee788361e2d616002be5747e5" kind="dir">
+    <compoundname>selections</compoundname>
+    <innerfile refid="_3selection-name_4_8cxx">&lt;selection-name&gt;.cxx</innerfile>
+    <innerfile refid="_3selection-name_4_8h">&lt;selection-name&gt;.h</innerfile>
+    <innerfile refid="_3selection-name_4_8pyx">&lt;selection-name&gt;.pyx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="templates/selections/"/>
+  </compounddef>
+</doxygen>

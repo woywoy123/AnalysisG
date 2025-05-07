@@ -1,0 +1,1155 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classssml__mc20" kind="class" language="C++" prot="public">
+    <compoundname>ssml_mc20</compoundname>
+    <basecompoundref refid="classevent__template" prot="public" virt="non-virtual">event_template</basecompoundref>
+    <includes refid="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" local="no">event.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classssml__mc20_1ae834046f05f66b8b11e8feb0026e760a" prot="public" static="no" mutable="no">
+        <type>unsigned long long</type>
+        <definition>unsigned long long ssml_mc20::eventNumber</definition>
+        <argsstring></argsstring>
+        <name>eventNumber</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="12" column="28" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="12" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a65ec6bd1062d9eccb3c9aff6d7084e02" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float ssml_mc20::event_category</definition>
+        <argsstring></argsstring>
+        <name>event_category</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="14" column="15" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="14" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1abb918cc3dfe1c0bc5aba6736ce28a2b8" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float ssml_mc20::weight_mc</definition>
+        <argsstring></argsstring>
+        <name>weight_mc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="16" column="15" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="16" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a233d656a1fb51d7da80a5708a41e0f65" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float ssml_mc20::weight_pileup</definition>
+        <argsstring></argsstring>
+        <name>weight_pileup</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="17" column="15" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="17" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a0ba497ac0068c691d872f63fda6c7f95" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float ssml_mc20::weight_beamspot</definition>
+        <argsstring></argsstring>
+        <name>weight_beamspot</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="18" column="15" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="18" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a1c02c7587791631a5fe92f290cea68aa" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float ssml_mc20::weight_jvt_effSF</definition>
+        <argsstring></argsstring>
+        <name>weight_jvt_effSF</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="19" column="15" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="19" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a36dabd5f761bcf8c229fe578d949d383" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float ssml_mc20::weight_lep_tightSF</definition>
+        <argsstring></argsstring>
+        <name>weight_lep_tightSF</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="20" column="15" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="20" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1aadb6df6886f3e1f40c3f8866891065d8" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float ssml_mc20::weight_ftag_effSF</definition>
+        <argsstring></argsstring>
+        <name>weight_ftag_effSF</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="21" column="15" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="21" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a1270bfa446a1327d4521544e4b8d41f9" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float ssml_mc20::global_trigger_SF</definition>
+        <argsstring></argsstring>
+        <name>global_trigger_SF</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="22" column="15" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="22" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1aa9378c3828e15067e5d69a001d1ffb2b" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float ssml_mc20::phi</definition>
+        <argsstring></argsstring>
+        <name>phi</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="24" column="15" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="24" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1ab39d3930d0c29d96b72862e851397028" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float ssml_mc20::met</definition>
+        <argsstring></argsstring>
+        <name>met</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="25" column="15" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a5b4bd0115e39ae1c72e8e242af7f705f" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float ssml_mc20::met_sum</definition>
+        <argsstring></argsstring>
+        <name>met_sum</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="26" column="15" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="26" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1ac6983b6da1ce79aa95fb2c1dc9ccd838" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float ssml_mc20::HT_all</definition>
+        <argsstring></argsstring>
+        <name>HT_all</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="28" column="15" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="28" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1aea2545ae34c0f920c5427cda77a9a688" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::pass_ssee</definition>
+        <argsstring></argsstring>
+        <name>pass_ssee</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="29" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="29" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1aa10d1d21ca090aa3c0ce84947e5f5209" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::pass_ssem</definition>
+        <argsstring></argsstring>
+        <name>pass_ssem</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="30" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="30" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a35f93df59bcb12241a7547a98f4321e8" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::pass_ssmm</definition>
+        <argsstring></argsstring>
+        <name>pass_ssmm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="31" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="31" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a56e3327fe6adf28f4eeb0001b7551cde" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::pass_eem_zveto</definition>
+        <argsstring></argsstring>
+        <name>pass_eem_zveto</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="33" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="33" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1af50adf84e392655df448928fb5f98dc4" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::pass_eee_zveto</definition>
+        <argsstring></argsstring>
+        <name>pass_eee_zveto</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="34" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="34" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1acc06662a3ce3be83f3d65bfbc014c029" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::pass_emm_zveto</definition>
+        <argsstring></argsstring>
+        <name>pass_emm_zveto</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="35" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="35" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1abfeeaa3c501555f036960028e2c88985" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::pass_mmm_zveto</definition>
+        <argsstring></argsstring>
+        <name>pass_mmm_zveto</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="36" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="36" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a8567c9c8e822f083f406931e8a3d3032" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::pass_llll_zveto</definition>
+        <argsstring></argsstring>
+        <name>pass_llll_zveto</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="37" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="37" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1af3483b9c05af7d25eef96a2ad047b69f" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::pass_eem</definition>
+        <argsstring></argsstring>
+        <name>pass_eem</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="39" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="39" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a9af92f89f83f2734eb8828c4ae024a1a" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::pass_eee</definition>
+        <argsstring></argsstring>
+        <name>pass_eee</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="40" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="40" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a77d17a03534df2dae5fa51b0c141b809" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::pass_emm</definition>
+        <argsstring></argsstring>
+        <name>pass_emm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="41" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="41" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1ae57527d86bb37189dc9d6d368265cb3c" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::pass_mmm</definition>
+        <argsstring></argsstring>
+        <name>pass_mmm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="42" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="42" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a5c4a1c629f9b0b9d75f135dcc94a51ec" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool ssml_mc20::broken_event</definition>
+        <argsstring></argsstring>
+        <name>broken_event</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="44" column="14" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="44" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1a0a01f1899566c4787d47ce29c2e8983e" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="119" endline="182">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a3e4ebf5e73d2b2446337587ef427635c" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::n_electrons</definition>
+        <argsstring></argsstring>
+        <name>n_electrons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="46" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="46" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1aeb049b6154b661c27d235701a88b2c26" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::n_fjets</definition>
+        <argsstring></argsstring>
+        <name>n_fjets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="47" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="47" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a1352227122854688fbc4ff996f0458df" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::n_jets</definition>
+        <argsstring></argsstring>
+        <name>n_jets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="48" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="48" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a7fe6a11403148a78142bb22e52ccf899" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::n_leptons</definition>
+        <argsstring></argsstring>
+        <name>n_leptons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="49" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="49" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a3c55c1a890d3b29a8cc1847b0daf8e57" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ssml_mc20::n_muons</definition>
+        <argsstring></argsstring>
+        <name>n_muons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="50" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="50" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="62" endline="117">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1ad9562d961021d1c06a7f52edd407d7e2" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; ssml_mc20::Tops</definition>
+        <argsstring></argsstring>
+        <name>Tops</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="52" column="21" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="52" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1a0a01f1899566c4787d47ce29c2e8983e" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="119" endline="182">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1ae2a21bc00e4f775f4124c1e4ab6f431c" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; ssml_mc20::TruthChildren</definition>
+        <argsstring></argsstring>
+        <name>TruthChildren</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="53" column="21" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a438939504678531e5569b7135c039a0b" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; ssml_mc20::Zprime</definition>
+        <argsstring></argsstring>
+        <name>Zprime</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="54" column="21" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="54" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1a0a01f1899566c4787d47ce29c2e8983e" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="119" endline="182">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a49814580c26e56783d5a6a5eacf6f629" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; ssml_mc20::Leptsn</definition>
+        <argsstring></argsstring>
+        <name>Leptsn</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="55" column="21" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="55" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1a0a01f1899566c4787d47ce29c2e8983e" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="119" endline="182">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1ac68c35e7669d76c308162e4dfb9b955c" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; ssml_mc20::Electrons</definition>
+        <argsstring></argsstring>
+        <name>Electrons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="56" column="21" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="56" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1a0a01f1899566c4787d47ce29c2e8983e" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="119" endline="182">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1acd02bf989125b9f6b58750e4a4d1506d" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; ssml_mc20::Jets</definition>
+        <argsstring></argsstring>
+        <name>Jets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="58" column="21" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1ac61ae24f3200376f8f465c922eb1ea51" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; ssml_mc20::Leptons</definition>
+        <argsstring></argsstring>
+        <name>Leptons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="59" column="21" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="59" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1a0a01f1899566c4787d47ce29c2e8983e" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="119" endline="182">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1af7893aa9d4350fb7c95b785266beb8e8" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; ssml_mc20::Detector</definition>
+        <argsstring></argsstring>
+        <name>Detector</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="60" column="21" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="60" bodyend="-1"/>
+        <referencedby refid="classssml__mc20_1a0a01f1899566c4787d47ce29c2e8983e" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="119" endline="182">CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a97cc3f945471ffd8927e93a4e3f4a74b" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt;</type>
+        <definition>std::vector&lt;particle_template*&gt; ssml_mc20::TruthJets</definition>
+        <argsstring></argsstring>
+        <name>TruthJets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="61" column="21" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classssml__mc20_1ac80600ee9b43693bce6b9e0513e0f5d4" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classjet" kindref="compound">jet</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, jet*&gt; ssml_mc20::m_jets</definition>
+        <argsstring></argsstring>
+        <name>m_jets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="68" column="23" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a5ff880a4f8955efba47a8da751c0bb82" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classmuon" kindref="compound">muon</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, muon*&gt; ssml_mc20::m_muons</definition>
+        <argsstring></argsstring>
+        <name>m_muons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="69" column="22" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a69d910eff51d71a5bb5c8d1b710f29e5" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classelectron" kindref="compound">electron</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, electron*&gt; ssml_mc20::m_electrons</definition>
+        <argsstring></argsstring>
+        <name>m_electrons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="70" column="18" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a94d78a7b2ccd3c55108f69952417d26c" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classlepton" kindref="compound">lepton</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, lepton*&gt; ssml_mc20::m_leptons</definition>
+        <argsstring></argsstring>
+        <name>m_leptons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="71" column="20" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1af0ea075b4d9e709f21126b510668457d" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classzboson" kindref="compound">zboson</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, zboson*&gt; ssml_mc20::m_zprime</definition>
+        <argsstring></argsstring>
+        <name>m_zprime</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="73" column="20" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a2f5e7d38b99ed3f732bd90cba561e5ed" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classtop" kindref="compound">top</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, top*&gt; ssml_mc20::m_tops</definition>
+        <argsstring></argsstring>
+        <name>m_tops</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="74" column="23" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a4e8596600ef95ce1fa2988a9e91b9a76" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classparton" kindref="compound">parton</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, parton*&gt; ssml_mc20::m_partons</definition>
+        <argsstring></argsstring>
+        <name>m_partons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="76" column="21" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classssml__mc20_1a0ff6f444eeca0bfcf809c69114af0e94" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classtruthjet" kindref="compound">truthjet</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, truthjet*&gt; ssml_mc20::m_truthjets</definition>
+        <argsstring></argsstring>
+        <name>m_truthjets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="77" column="19" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classssml__mc20_1a0e4485a5e50805da1a79ca645000fb10" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ssml_mc20::ssml_mc20</definition>
+        <argsstring>()</argsstring>
+        <name>ssml_mc20</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="10" column="9" bodyfile="events/ssml_mc20/cxx/event.cxx" bodystart="3" bodyend="57"/>
+        <references refid="_3event-name_4_8cxx_1a5449d540d047658d711bb2a06d8656c2">add_leaf</references>
+        <references refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e">name</references>
+        <references refid="_3event-name_4_8cxx_1a5e0f2787f92f983370938617945f3ec8" compoundref="_3event-name_4_8cxx" startline="6">trees</references>
+        <referencedby refid="classssml__mc20_1a0288589673651d09780e970bba8437d8" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="60" endline="60">clone</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classssml__mc20_1a3aa964ec7d56fa948bf22a2cf5185278" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>ssml_mc20::~ssml_mc20</definition>
+        <argsstring>()</argsstring>
+        <name>~ssml_mc20</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="11" column="17" bodyfile="events/ssml_mc20/cxx/event.cxx" bodystart="59" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="classssml__mc20_1a0288589673651d09780e970bba8437d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classevent__template" kindref="compound">event_template</ref> *</type>
+        <definition>event_template * ssml_mc20::clone</definition>
+        <argsstring>() override</argsstring>
+        <name>clone</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="63" column="24" bodyfile="events/ssml_mc20/cxx/event.cxx" bodystart="60" bodyend="60"/>
+        <references refid="classssml__mc20_1a0e4485a5e50805da1a79ca645000fb10" compoundref="events_2ssml__mc20_2cxx_2event_8cxx" startline="3" endline="57">ssml_mc20</references>
+      </memberdef>
+      <memberdef kind="function" id="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void ssml_mc20::build</definition>
+        <argsstring>(element_t *el) override</argsstring>
+        <name>build</name>
+        <param>
+          <type><ref refid="structelement__t" kindref="compound">element_t</ref> *</type>
+          <declname>el</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="64" column="14" bodyfile="events/ssml_mc20/cxx/event.cxx" bodystart="62" bodyend="117"/>
+        <references refid="classssml__mc20_1a65ec6bd1062d9eccb3c9aff6d7084e02" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="14">event_category</references>
+        <references refid="classssml__mc20_1ae834046f05f66b8b11e8feb0026e760a" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="12">eventNumber</references>
+        <references refid="classssml__mc20_1a1270bfa446a1327d4521544e4b8d41f9" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="22">global_trigger_SF</references>
+        <references refid="classssml__mc20_1ac6983b6da1ce79aa95fb2c1dc9ccd838" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="28">HT_all</references>
+        <references refid="classssml__mc20_1a5b4bd0115e39ae1c72e8e242af7f705f" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="26">met_sum</references>
+        <references refid="classssml__mc20_1a3e4ebf5e73d2b2446337587ef427635c" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="46">n_electrons</references>
+        <references refid="classssml__mc20_1aeb049b6154b661c27d235701a88b2c26" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="47">n_fjets</references>
+        <references refid="classssml__mc20_1a1352227122854688fbc4ff996f0458df" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="48">n_jets</references>
+        <references refid="classssml__mc20_1a7fe6a11403148a78142bb22e52ccf899" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="49">n_leptons</references>
+        <references refid="classssml__mc20_1a3c55c1a890d3b29a8cc1847b0daf8e57" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="50">n_muons</references>
+        <references refid="classssml__mc20_1a9af92f89f83f2734eb8828c4ae024a1a" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="40">pass_eee</references>
+        <references refid="classssml__mc20_1af50adf84e392655df448928fb5f98dc4" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="34">pass_eee_zveto</references>
+        <references refid="classssml__mc20_1af3483b9c05af7d25eef96a2ad047b69f" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="39">pass_eem</references>
+        <references refid="classssml__mc20_1a56e3327fe6adf28f4eeb0001b7551cde" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="33">pass_eem_zveto</references>
+        <references refid="classssml__mc20_1a77d17a03534df2dae5fa51b0c141b809" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="41">pass_emm</references>
+        <references refid="classssml__mc20_1acc06662a3ce3be83f3d65bfbc014c029" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="35">pass_emm_zveto</references>
+        <references refid="classssml__mc20_1a8567c9c8e822f083f406931e8a3d3032" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="37">pass_llll_zveto</references>
+        <references refid="classssml__mc20_1ae57527d86bb37189dc9d6d368265cb3c" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="42">pass_mmm</references>
+        <references refid="classssml__mc20_1abfeeaa3c501555f036960028e2c88985" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="36">pass_mmm_zveto</references>
+        <references refid="classssml__mc20_1aea2545ae34c0f920c5427cda77a9a688" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="29">pass_ssee</references>
+        <references refid="classssml__mc20_1aa10d1d21ca090aa3c0ce84947e5f5209" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="30">pass_ssem</references>
+        <references refid="classssml__mc20_1a35f93df59bcb12241a7547a98f4321e8" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="31">pass_ssmm</references>
+        <references refid="classssml__mc20_1aa9378c3828e15067e5d69a001d1ffb2b" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="24">phi</references>
+        <references refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" compoundref="mc16__matching_2main_8py" startline="108">main.tmp</references>
+        <references refid="classssml__mc20_1a0ba497ac0068c691d872f63fda6c7f95" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="18">weight_beamspot</references>
+        <references refid="classssml__mc20_1aadb6df6886f3e1f40c3f8866891065d8" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="21">weight_ftag_effSF</references>
+        <references refid="classssml__mc20_1a1c02c7587791631a5fe92f290cea68aa" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="19">weight_jvt_effSF</references>
+        <references refid="classssml__mc20_1a36dabd5f761bcf8c229fe578d949d383" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="20">weight_lep_tightSF</references>
+        <references refid="classssml__mc20_1abb918cc3dfe1c0bc5aba6736ce28a2b8" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="16">weight_mc</references>
+        <references refid="classssml__mc20_1a233d656a1fb51d7da80a5708a41e0f65" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="17">weight_pileup</references>
+      </memberdef>
+      <memberdef kind="function" id="classssml__mc20_1a0a01f1899566c4787d47ce29c2e8983e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void ssml_mc20::CompileEvent</definition>
+        <argsstring>() override</argsstring>
+        <name>CompileEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="65" column="14" bodyfile="events/ssml_mc20/cxx/event.cxx" bodystart="119" bodyend="182"/>
+        <references refid="classssml__mc20_1a5c4a1c629f9b0b9d75f135dcc94a51ec" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="44">broken_event</references>
+        <references refid="classssml__mc20_1af7893aa9d4350fb7c95b785266beb8e8" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="60">Detector</references>
+        <references refid="classssml__mc20_1ac68c35e7669d76c308162e4dfb9b955c" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="56">Electrons</references>
+        <references refid="classssml__mc20_1ac61ae24f3200376f8f465c922eb1ea51" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="59">Leptons</references>
+        <references refid="classssml__mc20_1a49814580c26e56783d5a6a5eacf6f629" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="55">Leptsn</references>
+        <references refid="namespacetest__evaluation_1a8b69c4c7eca9cf96bd54661475a5a81b" compoundref="test__evaluation_8py" startline="29">test_evaluation.mx</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9">px</references>
+        <references refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" compoundref="test__experimental__mc20_8py" startline="7">test_experimental_mc20.t</references>
+        <references refid="classssml__mc20_1ad9562d961021d1c06a7f52edd407d7e2" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="52">Tops</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+        <references refid="classssml__mc20_1a438939504678531e5569b7135c039a0b" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2event_8h" startline="54">Zprime</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classssml__mc20_1a985aa91b767fe54e1f1b63866084d2b3" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename G</type>
+          </param>
+        </templateparamlist>
+        <type>std::map&lt; int, G * &gt;</type>
+        <definition>std::map&lt;int, G*&gt; ssml_mc20::sort_by_index</definition>
+        <argsstring>(std::map&lt; std::string, G * &gt; *ipt)</argsstring>
+        <name>sort_by_index</name>
+        <param>
+          <type>std::map&lt; std::string, G * &gt; *</type>
+          <declname>ipt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="80" column="18" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="80" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="classssml__mc20_1a297986522e928a459290d982ce75d69e" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename m</type>
+          </param>
+          <param>
+            <type>typename G</type>
+          </param>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ssml_mc20::vectorize</definition>
+        <argsstring>(std::map&lt; m, G * &gt; *ipt, std::vector&lt; g * &gt; *vec)</argsstring>
+        <name>vectorize</name>
+        <param>
+          <type>std::map&lt; m, G * &gt; *</type>
+          <declname>ipt</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>vec</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="88" column="14" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="88" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="classssml__mc20_1a895929ee61eda66accfedcaf9c7fa7a7" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename lx</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool ssml_mc20::match_object</definition>
+        <argsstring>(std::map&lt; int, top * &gt; *topx, std::map&lt; std::string, lx * &gt; *objects)</argsstring>
+        <name>match_object</name>
+        <param>
+          <type>std::map&lt; int, <ref refid="classtop" kindref="compound">top</ref> * &gt; *</type>
+          <declname>topx</declname>
+        </param>
+        <param>
+          <type>std::map&lt; std::string, lx * &gt; *</type>
+          <declname>objects</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="94" column="14" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="94" bodyend="119"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>event_template</label>
+        <link refid="classevent__template"/>
+      </node>
+      <node id="1">
+        <label>ssml_mc20</label>
+        <link refid="classssml__mc20"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="12">
+        <label>cproperty&lt; int, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; int, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>K</label>
+      </node>
+      <node id="11">
+        <label>T</label>
+      </node>
+      <node id="4">
+        <label>particle_template</label>
+        <link refid="classparticle__template"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>m_children</edgelabel>
+          <edgelabel>m_parents</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>pdgid</edgelabel>
+          <edgelabel>index</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>is_lep</edgelabel>
+          <edgelabel>is_nu</edgelabel>
+          <edgelabel>is_add</edgelabel>
+          <edgelabel>is_b</edgelabel>
+          <edgelabel>lep_decay</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>charge</edgelabel>
+          <edgelabel>pt</edgelabel>
+          <edgelabel>mass</edgelabel>
+          <edgelabel>px</edgelabel>
+          <edgelabel>py</edgelabel>
+          <edgelabel>pz</edgelabel>
+          <edgelabel>phi</edgelabel>
+          <edgelabel>eta</edgelabel>
+          <edgelabel>e</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>leaves</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>symbol</edgelabel>
+          <edgelabel>type</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>data</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>parents</edgelabel>
+          <edgelabel>children</edgelabel>
+        </childnode>
+      </node>
+      <node id="21">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="11" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>std::map&lt; std::string, particle_template * &gt;</label>
+        <childnode refid="7" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="template-instance">
+          <edgelabel>&lt; std::string, particle_template * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="22">
+        <label>cproperty&lt; std::map&lt; std::string, particle_template * &gt;, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, particle_template * &gt;, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="10" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="19">
+        <label>std::map&lt; std::string, bool &gt;</label>
+        <childnode refid="7" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="template-instance">
+          <edgelabel>&lt; std::string, bool &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>cproperty&lt; T, G &gt;</label>
+        <link refid="classcproperty"/>
+      </node>
+      <node id="8">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="18">
+        <label>particle_t</label>
+        <link refid="structparticle__t"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>data_p</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>parents</edgelabel>
+          <edgelabel>children</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>symbol</edgelabel>
+          <edgelabel>type</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>nudef</edgelabel>
+          <edgelabel>lepdef</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>std::map&lt; std::string, std::string &gt;</label>
+        <childnode refid="7" relation="usage">
+          <edgelabel>keys</edgelabel>
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="template-instance">
+          <edgelabel>&lt; std::string, std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>cproperty&lt; bool, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; bool, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::vector&lt; particle_template * &gt;</label>
+        <childnode refid="4" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="template-instance">
+          <edgelabel>&lt; particle_template * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>event_template</label>
+        <link refid="classevent__template"/>
+      </node>
+      <node id="15">
+        <label>cproperty&lt; double, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; double, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>cproperty&lt; std::string, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="13" relation="template-instance">
+          <edgelabel>&lt; std::string, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>ssml_mc20</label>
+        <link refid="classssml__mc20"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>TruthJets</edgelabel>
+          <edgelabel>Electrons</edgelabel>
+          <edgelabel>Zprime</edgelabel>
+          <edgelabel>TruthChildren</edgelabel>
+          <edgelabel>Leptsn</edgelabel>
+          <edgelabel>Detector</edgelabel>
+          <edgelabel>Jets</edgelabel>
+          <edgelabel>Leptons</edgelabel>
+          <edgelabel>Tops</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>std::vector&lt; int &gt;</label>
+        <childnode refid="21" relation="template-instance">
+          <edgelabel>&lt; int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+      <node id="7">
+        <label>std::string</label>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="events/ssml_mc20/include/ssml_mc20/event.h" line="8" column="1" bodyfile="events/ssml_mc20/include/ssml_mc20/event.h" bodystart="7" bodyend="121"/>
+    <listofallmembers>
+      <member refid="classssml__mc20_1a5c4a1c629f9b0b9d75f135dcc94a51ec" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>broken_event</name></member>
+      <member refid="classssml__mc20_1af3e78fbfd1dbfcfe26a1db48c363e9fa" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>build</name></member>
+      <member refid="classssml__mc20_1a0288589673651d09780e970bba8437d8" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>clone</name></member>
+      <member refid="classssml__mc20_1a0a01f1899566c4787d47ce29c2e8983e" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>CompileEvent</name></member>
+      <member refid="classssml__mc20_1af7893aa9d4350fb7c95b785266beb8e8" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>Detector</name></member>
+      <member refid="classssml__mc20_1ac68c35e7669d76c308162e4dfb9b955c" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>Electrons</name></member>
+      <member refid="classssml__mc20_1a65ec6bd1062d9eccb3c9aff6d7084e02" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>event_category</name></member>
+      <member refid="classssml__mc20_1ae834046f05f66b8b11e8feb0026e760a" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>eventNumber</name></member>
+      <member refid="classssml__mc20_1a1270bfa446a1327d4521544e4b8d41f9" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>global_trigger_SF</name></member>
+      <member refid="classssml__mc20_1ac6983b6da1ce79aa95fb2c1dc9ccd838" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>HT_all</name></member>
+      <member refid="classssml__mc20_1acd02bf989125b9f6b58750e4a4d1506d" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>Jets</name></member>
+      <member refid="classssml__mc20_1ac61ae24f3200376f8f465c922eb1ea51" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>Leptons</name></member>
+      <member refid="classssml__mc20_1a49814580c26e56783d5a6a5eacf6f629" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>Leptsn</name></member>
+      <member refid="classssml__mc20_1a69d910eff51d71a5bb5c8d1b710f29e5" prot="private" virt="non-virtual"><scope>ssml_mc20</scope><name>m_electrons</name></member>
+      <member refid="classssml__mc20_1ac80600ee9b43693bce6b9e0513e0f5d4" prot="private" virt="non-virtual"><scope>ssml_mc20</scope><name>m_jets</name></member>
+      <member refid="classssml__mc20_1a94d78a7b2ccd3c55108f69952417d26c" prot="private" virt="non-virtual"><scope>ssml_mc20</scope><name>m_leptons</name></member>
+      <member refid="classssml__mc20_1a5ff880a4f8955efba47a8da751c0bb82" prot="private" virt="non-virtual"><scope>ssml_mc20</scope><name>m_muons</name></member>
+      <member refid="classssml__mc20_1a4e8596600ef95ce1fa2988a9e91b9a76" prot="private" virt="non-virtual"><scope>ssml_mc20</scope><name>m_partons</name></member>
+      <member refid="classssml__mc20_1a2f5e7d38b99ed3f732bd90cba561e5ed" prot="private" virt="non-virtual"><scope>ssml_mc20</scope><name>m_tops</name></member>
+      <member refid="classssml__mc20_1a0ff6f444eeca0bfcf809c69114af0e94" prot="private" virt="non-virtual"><scope>ssml_mc20</scope><name>m_truthjets</name></member>
+      <member refid="classssml__mc20_1af0ea075b4d9e709f21126b510668457d" prot="private" virt="non-virtual"><scope>ssml_mc20</scope><name>m_zprime</name></member>
+      <member refid="classssml__mc20_1a895929ee61eda66accfedcaf9c7fa7a7" prot="private" virt="non-virtual"><scope>ssml_mc20</scope><name>match_object</name></member>
+      <member refid="classssml__mc20_1ab39d3930d0c29d96b72862e851397028" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>met</name></member>
+      <member refid="classssml__mc20_1a5b4bd0115e39ae1c72e8e242af7f705f" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>met_sum</name></member>
+      <member refid="classssml__mc20_1a3e4ebf5e73d2b2446337587ef427635c" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>n_electrons</name></member>
+      <member refid="classssml__mc20_1aeb049b6154b661c27d235701a88b2c26" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>n_fjets</name></member>
+      <member refid="classssml__mc20_1a1352227122854688fbc4ff996f0458df" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>n_jets</name></member>
+      <member refid="classssml__mc20_1a7fe6a11403148a78142bb22e52ccf899" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>n_leptons</name></member>
+      <member refid="classssml__mc20_1a3c55c1a890d3b29a8cc1847b0daf8e57" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>n_muons</name></member>
+      <member refid="classssml__mc20_1a9af92f89f83f2734eb8828c4ae024a1a" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>pass_eee</name></member>
+      <member refid="classssml__mc20_1af50adf84e392655df448928fb5f98dc4" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>pass_eee_zveto</name></member>
+      <member refid="classssml__mc20_1af3483b9c05af7d25eef96a2ad047b69f" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>pass_eem</name></member>
+      <member refid="classssml__mc20_1a56e3327fe6adf28f4eeb0001b7551cde" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>pass_eem_zveto</name></member>
+      <member refid="classssml__mc20_1a77d17a03534df2dae5fa51b0c141b809" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>pass_emm</name></member>
+      <member refid="classssml__mc20_1acc06662a3ce3be83f3d65bfbc014c029" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>pass_emm_zveto</name></member>
+      <member refid="classssml__mc20_1a8567c9c8e822f083f406931e8a3d3032" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>pass_llll_zveto</name></member>
+      <member refid="classssml__mc20_1ae57527d86bb37189dc9d6d368265cb3c" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>pass_mmm</name></member>
+      <member refid="classssml__mc20_1abfeeaa3c501555f036960028e2c88985" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>pass_mmm_zveto</name></member>
+      <member refid="classssml__mc20_1aea2545ae34c0f920c5427cda77a9a688" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>pass_ssee</name></member>
+      <member refid="classssml__mc20_1aa10d1d21ca090aa3c0ce84947e5f5209" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>pass_ssem</name></member>
+      <member refid="classssml__mc20_1a35f93df59bcb12241a7547a98f4321e8" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>pass_ssmm</name></member>
+      <member refid="classssml__mc20_1aa9378c3828e15067e5d69a001d1ffb2b" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>phi</name></member>
+      <member refid="classssml__mc20_1a985aa91b767fe54e1f1b63866084d2b3" prot="private" virt="non-virtual"><scope>ssml_mc20</scope><name>sort_by_index</name></member>
+      <member refid="classssml__mc20_1a0e4485a5e50805da1a79ca645000fb10" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>ssml_mc20</name></member>
+      <member refid="classssml__mc20_1ad9562d961021d1c06a7f52edd407d7e2" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>Tops</name></member>
+      <member refid="classssml__mc20_1ae2a21bc00e4f775f4124c1e4ab6f431c" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>TruthChildren</name></member>
+      <member refid="classssml__mc20_1a97cc3f945471ffd8927e93a4e3f4a74b" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>TruthJets</name></member>
+      <member refid="classssml__mc20_1a297986522e928a459290d982ce75d69e" prot="private" virt="non-virtual"><scope>ssml_mc20</scope><name>vectorize</name></member>
+      <member refid="classssml__mc20_1a0ba497ac0068c691d872f63fda6c7f95" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>weight_beamspot</name></member>
+      <member refid="classssml__mc20_1aadb6df6886f3e1f40c3f8866891065d8" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>weight_ftag_effSF</name></member>
+      <member refid="classssml__mc20_1a1c02c7587791631a5fe92f290cea68aa" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>weight_jvt_effSF</name></member>
+      <member refid="classssml__mc20_1a36dabd5f761bcf8c229fe578d949d383" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>weight_lep_tightSF</name></member>
+      <member refid="classssml__mc20_1abb918cc3dfe1c0bc5aba6736ce28a2b8" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>weight_mc</name></member>
+      <member refid="classssml__mc20_1a233d656a1fb51d7da80a5708a41e0f65" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>weight_pileup</name></member>
+      <member refid="classssml__mc20_1a438939504678531e5569b7135c039a0b" prot="public" virt="non-virtual"><scope>ssml_mc20</scope><name>Zprime</name></member>
+      <member refid="classssml__mc20_1a3aa964ec7d56fa948bf22a2cf5185278" prot="public" virt="virtual"><scope>ssml_mc20</scope><name>~ssml_mc20</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

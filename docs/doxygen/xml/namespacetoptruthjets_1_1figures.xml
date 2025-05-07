@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacetoptruthjets_1_1figures" kind="namespace" language="Python">
+    <compoundname>toptruthjets::figures</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacetoptruthjets_1_1figures_1a8324a25bf0fe2b859179c7825273f4c6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def toptruthjets.figures.path</definition>
+        <argsstring>(hist)</argsstring>
+        <name>path</name>
+        <param>
+          <type>hist</type>
+          <defname>hist</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/toptruthjets/figures.py" line="6" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/toptruthjets/figures.py" bodystart="6" bodyend="10"/>
+        <referencedby refid="namespacetoptruthjets_1_1figures_1a7774dfbea2baf23e615b5cf11e260eeb" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="11" endline="94">toptruthjets.figures.top_mass_truthjets</referencedby>
+        <referencedby refid="namespacetoptruthjets_1_1figures_1a3051297d0bf592573da18208f3e87ca8" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="95" endline="172">toptruthjets.figures.top_truthjet_cluster</referencedby>
+        <referencedby refid="namespacetoptruthjets_1_1figures_1aca87459a368b8cd158375983b24d02ab" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="295" endline="384">toptruthjets.figures.truthjet_contribution</referencedby>
+        <referencedby refid="namespacetoptruthjets_1_1figures_1a63bcb3f2c3546d7be98f007754a16244" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="173" endline="294">toptruthjets.figures.truthjet_partons</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetoptruthjets_1_1figures_1a7774dfbea2baf23e615b5cf11e260eeb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def toptruthjets.figures.top_mass_truthjets</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_mass_truthjets</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/toptruthjets/figures.py" line="11" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/toptruthjets/figures.py" bodystart="11" bodyend="94"/>
+        <references refid="namespacetoptruthjets_1_1figures_1a8324a25bf0fe2b859179c7825273f4c6" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="6" endline="10">toptruthjets.figures.path</references>
+        <referencedby refid="namespacetoptruthjets_1_1figures_1a56869db85ffb2473f2488e8254b6ff04" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="385" endline="400">toptruthjets.figures.TopTruthJets</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetoptruthjets_1_1figures_1a3051297d0bf592573da18208f3e87ca8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def toptruthjets.figures.top_truthjet_cluster</definition>
+        <argsstring>(ana)</argsstring>
+        <name>top_truthjet_cluster</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/toptruthjets/figures.py" line="95" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/toptruthjets/figures.py" bodystart="95" bodyend="172"/>
+        <references refid="namespacetoptruthjets_1_1figures_1a8324a25bf0fe2b859179c7825273f4c6" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="6" endline="10">toptruthjets.figures.path</references>
+        <referencedby refid="namespacetoptruthjets_1_1figures_1a56869db85ffb2473f2488e8254b6ff04" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="385" endline="400">toptruthjets.figures.TopTruthJets</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetoptruthjets_1_1figures_1a63bcb3f2c3546d7be98f007754a16244" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def toptruthjets.figures.truthjet_partons</definition>
+        <argsstring>(ana)</argsstring>
+        <name>truthjet_partons</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/toptruthjets/figures.py" line="173" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/toptruthjets/figures.py" bodystart="173" bodyend="294"/>
+        <references refid="namespacetoptruthjets_1_1figures_1a8324a25bf0fe2b859179c7825273f4c6" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="6" endline="10">toptruthjets.figures.path</references>
+        <references refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" compoundref="selection__template_8h" startline="77" endline="89">selection_template::sum</references>
+        <references refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" compoundref="toptruthjets_8h" startline="19">toptruthjets::truthjet_partons</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacetoptruthjets_1_1figures_1aca87459a368b8cd158375983b24d02ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def toptruthjets.figures.truthjet_contribution</definition>
+        <argsstring>(ana)</argsstring>
+        <name>truthjet_contribution</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/toptruthjets/figures.py" line="295" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/toptruthjets/figures.py" bodystart="295" bodyend="384"/>
+        <references refid="namespacetoptruthjets_1_1figures_1a8324a25bf0fe2b859179c7825273f4c6" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="6" endline="10">toptruthjets.figures.path</references>
+        <referencedby refid="namespacetoptruthjets_1_1figures_1a56869db85ffb2473f2488e8254b6ff04" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="385" endline="400">toptruthjets.figures.TopTruthJets</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacetoptruthjets_1_1figures_1a56869db85ffb2473f2488e8254b6ff04" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def toptruthjets.figures.TopTruthJets</definition>
+        <argsstring>(ana)</argsstring>
+        <name>TopTruthJets</name>
+        <param>
+          <type>ana</type>
+          <defname>ana</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/mc16_matching/toptruthjets/figures.py" line="385" column="1" bodyfile="/workspaces/AnalysisG/studies/mc16_matching/toptruthjets/figures.py" bodystart="385" bodyend="400"/>
+        <references refid="namespacetoptruthjets_1_1figures_1a7774dfbea2baf23e615b5cf11e260eeb" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="11" endline="94">toptruthjets.figures.top_mass_truthjets</references>
+        <references refid="namespacetoptruthjets_1_1figures_1a3051297d0bf592573da18208f3e87ca8" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="95" endline="172">toptruthjets.figures.top_truthjet_cluster</references>
+        <references refid="namespacetoptruthjets_1_1figures_1aca87459a368b8cd158375983b24d02ab" compoundref="mc16__matching_2toptruthjets_2figures_8py" startline="295" endline="384">toptruthjets.figures.truthjet_contribution</references>
+        <references refid="classtoptruthjets_1af9ee9c0caef80b7b0cf3a82fca4ca8e9" compoundref="toptruthjets_8h" startline="19">toptruthjets::truthjet_partons</references>
+        <referencedby refid="namespacemain_1a7afac8f5e46c718321f188d7888c2de0" compoundref="mc16__matching_2main_8py" startline="60" endline="98">main.ExecuteStudy</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/mc16_matching/toptruthjets/figures.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

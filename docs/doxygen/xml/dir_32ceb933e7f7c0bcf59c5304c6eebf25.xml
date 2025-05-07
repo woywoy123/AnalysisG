@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_32ceb933e7f7c0bcf59c5304c6eebf25" kind="dir">
+    <compoundname>include</compoundname>
+    <innerdir refid="dir_dcf67d4b17ca583b84fe68c471f338b1">models</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="models/RecursiveGraphNeuralNetwork/include/"/>
+  </compounddef>
+</doxygen>

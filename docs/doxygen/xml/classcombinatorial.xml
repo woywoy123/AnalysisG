@@ -1,0 +1,890 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classcombinatorial" kind="class" language="C++" prot="public">
+    <compoundname>combinatorial</compoundname>
+    <basecompoundref refid="classselection__template" prot="public" virt="non-virtual">selection_template</basecompoundref>
+    <includes refid="combinatorial_8h" local="no">combinatorial.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classcombinatorial_1a52bf047e7832b4b6b2039e91c6656996" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int combinatorial::num_device</definition>
+        <argsstring></argsstring>
+        <name>num_device</name>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="59" column="13" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="59" bodyend="-1"/>
+        <referencedby refid="classcombinatorial_1a894176c4c94dab6121a61664b5c88a7e" compoundref="combinatorial_8cxx" startline="14" endline="18">clone</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classcombinatorial_1a21e10cce53e4c004af075534f8b63b9b" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double combinatorial::masstop</definition>
+        <argsstring></argsstring>
+        <name>masstop</name>
+        <initializer>= 172.62*1000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="60" column="16" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="60" bodyend="-1"/>
+        <referencedby refid="classcombinatorial_1a4f90aaf04154a0d1ca9d59e1ccb2c54e" compoundref="combinatorial_8cxx" startline="72" endline="136">reconstruction</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classcombinatorial_1a40de7503239a1be738772d29961740fa" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double combinatorial::massw</definition>
+        <argsstring></argsstring>
+        <name>massw</name>
+        <initializer>= 80.385*1000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="61" column="16" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="61" bodyend="-1"/>
+        <referencedby refid="classcombinatorial_1a4f90aaf04154a0d1ca9d59e1ccb2c54e" compoundref="combinatorial_8cxx" startline="72" endline="136">reconstruction</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classcombinatorial_1a689c5192e105d6a8dd4626c32e1da7d5" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="structpacket__t" kindref="compound">packet_t</ref> * &gt;</type>
+        <definition>std::vector&lt;packet_t*&gt; combinatorial::storage</definition>
+        <argsstring></argsstring>
+        <name>storage</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="64" column="21" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcombinatorial_1aa90a161b405993efee37207764321721" prot="private" static="no" mutable="no">
+        <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+        <definition>particle_template* combinatorial::nu_tru</definition>
+        <argsstring></argsstring>
+        <name>nu_tru</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="66" column="27" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcombinatorial_1a3cf162491e886f62bed47a5eead9cf0a" prot="private" static="no" mutable="no">
+        <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+        <definition>particle_template* combinatorial::b_qrk</definition>
+        <argsstring></argsstring>
+        <name>b_qrk</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="67" column="27" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcombinatorial_1a62591a793a6a67e6b54c7d16fb757599" prot="private" static="no" mutable="no">
+        <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+        <definition>particle_template* combinatorial::lepton</definition>
+        <argsstring></argsstring>
+        <name>lepton</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="68" column="27" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classcombinatorial_1a9d7ef868e8a8010b55c2055f7885cf41" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>combinatorial::combinatorial</definition>
+        <argsstring>()</argsstring>
+        <name>combinatorial</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="49" column="9" bodyfile="selections/neutrino/combinatorial/combinatorial.cxx" bodystart="11" bodyend="11"/>
+        <references refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" compoundref="selection__template_8h" startline="24">selection_template::name</references>
+        <referencedby refid="classcombinatorial_1a894176c4c94dab6121a61664b5c88a7e" compoundref="combinatorial_8cxx" startline="14" endline="18">clone</referencedby>
+        <referencedby refid="namespacecombinatorial_1_1figures_1a131a9bc44d18c88afd35e9929c98d6f3" compoundref="neutrino_2combinatorial_2figures_8py" startline="10" endline="12">combinatorial.figures.combinatorial</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classcombinatorial_1a14a9c71052a09dbdb30e6b84b3a0913b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>combinatorial::~combinatorial</definition>
+        <argsstring>() override</argsstring>
+        <name>~combinatorial</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="50" column="9" bodyfile="selections/neutrino/combinatorial/combinatorial.cxx" bodystart="12" bodyend="12"/>
+        <references refid="classselection__template_1a4faf71140920bc4cf0fc06072cecad07" compoundref="selection__template_8h" startline="92" endline="98">selection_template::safe_delete</references>
+      </memberdef>
+      <memberdef kind="function" id="classcombinatorial_1a894176c4c94dab6121a61664b5c88a7e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classselection__template" kindref="compound">selection_template</ref> *</type>
+        <definition>selection_template * combinatorial::clone</definition>
+        <argsstring>() override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classselection__template_1a094ce1eb2b6463f88a8ad5f7dfd8e4b6">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="51" column="28" bodyfile="selections/neutrino/combinatorial/combinatorial.cxx" bodystart="14" bodyend="18"/>
+        <references refid="classcombinatorial_1a9d7ef868e8a8010b55c2055f7885cf41" compoundref="combinatorial_8cxx" startline="11" endline="11">combinatorial</references>
+        <references refid="classcombinatorial_1a52bf047e7832b4b6b2039e91c6656996" compoundref="combinatorial_8h" startline="59">num_device</references>
+      </memberdef>
+      <memberdef kind="function" id="classcombinatorial_1a6d222547e0dce9eea6ca128cdba5a01f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool combinatorial::selection</definition>
+        <argsstring>(event_template *ev) override</argsstring>
+        <name>selection</name>
+        <reimplements refid="classselection__template_1a906e3f695a675e5a545fa4eab867cfd7">selection</reimplements>
+        <param>
+          <type><ref refid="classevent__template" kindref="compound">event_template</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="53" column="14" bodyfile="selections/neutrino/combinatorial/combinatorial.cxx" bodystart="41" bodyend="56"/>
+        <references refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" compoundref="analysis_2main_8py" startline="10">main.ev</references>
+        <references refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" compoundref="test__normalization_8py" startline="9">test_normalization.evn</references>
+      </memberdef>
+      <memberdef kind="function" id="classcombinatorial_1a5cd8d199d3f8fe6c9f0b8e1c2e2f7bfd" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool combinatorial::strategy</definition>
+        <argsstring>(event_template *ev) override</argsstring>
+        <name>strategy</name>
+        <reimplements refid="classselection__template_1a01a81c84699bb054a8c320fc5575e17b">strategy</reimplements>
+        <param>
+          <type><ref refid="classevent__template" kindref="compound">event_template</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="54" column="14" bodyfile="selections/neutrino/combinatorial/combinatorial.cxx" bodystart="154" bodyend="229"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33">c</references>
+        <references refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" compoundref="analysis_2main_8py" startline="10">main.ev</references>
+        <references refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" compoundref="test__normalization_8py" startline="9">test_normalization.evn</references>
+        <references refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" compoundref="selection__template_8h" startline="28">selection_template::hash</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28ae0da17ca8558064e75c801fadc3537a4">is_b</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778">is_lep</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d">is_nu</references>
+        <references refid="merge__cast_8h_1a205af11d07be8d10770e7392817fc5c3" compoundref="merge__cast_8h" startline="9" endline="11">merge_data</references>
+        <references refid="namespacemain_1aa6eea602ff3979e1ff2936eeeb7c1cd7" compoundref="performance_2main_8py" startline="157">main.parents</references>
+        <references refid="classcombinatorial_1a4f90aaf04154a0d1ca9d59e1ccb2c54e" compoundref="combinatorial_8cxx" startline="72" endline="136">reconstruction</references>
+        <references refid="classcombinatorial_1adb51dd4e96b0c4596711f5466571e091" compoundref="combinatorial_8cxx" startline="139" endline="150">update_state</references>
+        <references refid="classselection__template_1a7e1560964237cf7b4846e24b300d7b9e" compoundref="selection__template_8h" startline="116" endline="121">selection_template::vectorize</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="classcombinatorial_1afcb3e3c3c11238a745f3e591162a7ae0" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void combinatorial::merge</definition>
+        <argsstring>(selection_template *sl) override</argsstring>
+        <name>merge</name>
+        <reimplements refid="classselection__template_1ad04ca3679a943defbd47c05a88448aba">merge</reimplements>
+        <param>
+          <type><ref refid="classselection__template" kindref="compound">selection_template</ref> *</type>
+          <declname>sl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="55" column="14" bodyfile="selections/neutrino/combinatorial/combinatorial.cxx" bodystart="20" bodyend="39"/>
+        <references refid="merge__cast_8h_1a205af11d07be8d10770e7392817fc5c3" compoundref="merge__cast_8h" startline="9" endline="11">merge_data</references>
+        <references refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" compoundref="selection__template_8h" startline="24">selection_template::name</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a29e700fac9f9a1121be10a785cb69e3a">pdgid</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28ad949b87653e0e12c90d27f66d090f1c9">pmu</references>
+        <references refid="namespacemain_1a80457db91bd1110a9e4a8515839a2a4b" compoundref="metrics_2main_8py" startline="4">main.sl</references>
+        <references refid="classselection__template_1ae5606e994231fae57abe42e4f0ec6202" compoundref="selection__template_8cxx" startline="10" endline="55">selection_template::write</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="classcombinatorial_1adb51dd4e96b0c4596711f5466571e091" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void combinatorial::update_state</definition>
+        <argsstring>(packet_t *data)</argsstring>
+        <name>update_state</name>
+        <param>
+          <type><ref refid="structpacket__t" kindref="compound">packet_t</ref> *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="56" column="14" bodyfile="selections/neutrino/combinatorial/combinatorial.cxx" bodystart="139" bodyend="150"/>
+        <references refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" compoundref="selection__template_8h" startline="74">selection_template::data</references>
+        <referencedby refid="classcombinatorial_1a5cd8d199d3f8fe6c9f0b8e1c2e2f7bfd" compoundref="combinatorial_8cxx" startline="154" endline="229">strategy</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classcombinatorial_1a4f90aaf04154a0d1ca9d59e1ccb2c54e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void combinatorial::reconstruction</definition>
+        <argsstring>(packet_t *data)</argsstring>
+        <name>reconstruction</name>
+        <param>
+          <type><ref refid="structpacket__t" kindref="compound">packet_t</ref> *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="57" column="14" bodyfile="selections/neutrino/combinatorial/combinatorial.cxx" bodystart="72" bodyend="136"/>
+        <references refid="combinatorial_8cxx_1acd33f38fd89cd298ef5d1ea858ee0416" compoundref="combinatorial_8cxx" startline="59" endline="65">chi2</references>
+        <references refid="namespacepyc_1_1nusol_1a0b618f866aa33e16c704d828744335e1" compoundref="interface_2nusol_8cxx" startline="47" endline="55">pyc::nusol::combinatorial</references>
+        <references refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" compoundref="selection__template_8h" startline="74">selection_template::data</references>
+        <references refid="namespacemain_1aa13220b81a6693a30ef1862bd1846aa1" compoundref="performance_2main_8py" startline="149">main.device</references>
+        <references refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" compoundref="selection__template_8h" startline="28">selection_template::hash</references>
+        <references refid="classselection__template_1ab760e9d895d74e62a9d4bfe436568a86" compoundref="selection__template_8h" startline="124" endline="135">selection_template::make_unique</references>
+        <references refid="classcombinatorial_1a21e10cce53e4c004af075534f8b63b9b" compoundref="combinatorial_8h" startline="60">masstop</references>
+        <references refid="classcombinatorial_1a40de7503239a1be738772d29961740fa" compoundref="combinatorial_8h" startline="61">massw</references>
+        <references refid="combinatorial_8cxx_1aa964f6b775656aa0ce291de39c09500f" compoundref="combinatorial_8cxx" startline="68" endline="70">safe_get</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+        <referencedby refid="classcombinatorial_1a5cd8d199d3f8fe6c9f0b8e1c2e2f7bfd" compoundref="combinatorial_8cxx" startline="154" endline="229">strategy</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classcombinatorial_1aafccdcd1966f7f5f3da8ac0a93efe0c2" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="structpacket__t" kindref="compound">packet_t</ref> *</type>
+        <definition>packet_t* combinatorial::build_packet</definition>
+        <argsstring>(g *evnt, std::string name)</argsstring>
+        <name>build_packet</name>
+        <param>
+          <type>g *</type>
+          <declname>evnt</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="71" column="18" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="71" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="function" id="classcombinatorial_1afa94979bceb2acd126ca81cb64b20dd4" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; g * &gt;</type>
+        <definition>std::vector&lt;g*&gt; combinatorial::upcast</definition>
+        <argsstring>(std::vector&lt; particle_template * &gt; *inpt)</argsstring>
+        <name>upcast</name>
+        <param>
+          <type>std::vector&lt; <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="86" column="21" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="86" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="classcombinatorial_1ad03376b3c74321a4be523cf9a31486ee" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; g * &gt;</type>
+        <definition>std::vector&lt;g*&gt; combinatorial::upcast</definition>
+        <argsstring>(std::map&lt; std::string, particle_template * &gt; *inpt)</argsstring>
+        <name>upcast</name>
+        <param>
+          <type>std::map&lt; std::string, <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/neutrino/combinatorial/combinatorial.h" line="93" column="21" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="93" bodyend="96"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>selection_template</label>
+        <link refid="classselection__template"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>combinatorial</label>
+        <link refid="classcombinatorial"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="11">
+        <label>cproperty&lt; std::vector&lt; int &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::vector&lt; int &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>meta</label>
+        <link refid="classmeta"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>config</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>run_number</edgelabel>
+          <edgelabel>events</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>dsid</edgelabel>
+          <edgelabel>nFiles</edgelabel>
+          <edgelabel>datasetNumber</edgelabel>
+          <edgelabel>totalEvents</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>fileSize</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>LFN</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>inputrange</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>keyword</edgelabel>
+          <edgelabel>weights</edgelabel>
+          <edgelabel>keywords</edgelabel>
+          <edgelabel>fileGUID</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>principalPhysicsGroup</edgelabel>
+          <edgelabel>DatasetName</edgelabel>
+          <edgelabel>generatorName</edgelabel>
+          <edgelabel>productionStep</edgelabel>
+          <edgelabel>campaign</edgelabel>
+          <edgelabel>projectName</edgelabel>
+          <edgelabel>physicsShort</edgelabel>
+          <edgelabel>logicalDatasetName</edgelabel>
+          <edgelabel>conditionsTag</edgelabel>
+          <edgelabel>derivationFormat</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>cross_section_nb</edgelabel>
+          <edgelabel>completion</edgelabel>
+          <edgelabel>cross_section_fb</edgelabel>
+          <edgelabel>ecmEnergy</edgelabel>
+          <edgelabel>event_index</edgelabel>
+          <edgelabel>sum_of_weights</edgelabel>
+          <edgelabel>beam_energy</edgelabel>
+          <edgelabel>cross_section_pb</edgelabel>
+          <edgelabel>genFiltEff</edgelabel>
+          <edgelabel>eventNumber</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>misc</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>inputfiles</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>isMC</edgelabel>
+          <edgelabel>found</edgelabel>
+        </childnode>
+      </node>
+      <node id="22">
+        <label>std::map&lt; std::string, meta_t &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="23" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; std::string, meta_t &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="26">
+        <label>K</label>
+      </node>
+      <node id="27">
+        <label>T</label>
+      </node>
+      <node id="12">
+        <label>cproperty&lt; unsigned int, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; unsigned int, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="29">
+        <label>weights_t</label>
+        <link refid="structweights__t"/>
+        <childnode refid="30" relation="usage">
+          <edgelabel>hist_data</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>generator</edgelabel>
+          <edgelabel>ami_tag</edgelabel>
+        </childnode>
+      </node>
+      <node id="37">
+        <label>std::vector&lt; double &gt;</label>
+        <childnode refid="34" relation="template-instance">
+          <edgelabel>&lt; double &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="39">
+        <label>cproperty&lt; long, selection_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; long, selection_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="34">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="27" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>cproperty&lt; std::string, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::string, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="28">
+        <label>std::map&lt; std::string, weights_t &gt;</label>
+        <childnode refid="29" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; std::string, weights_t &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="25">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="26" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="27" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>cproperty&lt; double, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; double, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="35">
+        <label>std::map&lt; int, std::string &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; int, std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>cproperty&lt; std::vector&lt; double &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::vector&lt; double &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>cproperty&lt; std::map&lt; int, int &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; int, int &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="31">
+        <label>std::map&lt; int, int &gt;</label>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; int, int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>selection_template</label>
+        <link refid="classselection__template"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>data</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>meta_data</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>filename</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>matched_meta</edgelabel>
+        </childnode>
+        <childnode refid="38" relation="usage">
+          <edgelabel>passed_weights</edgelabel>
+        </childnode>
+        <childnode refid="39" relation="usage">
+          <edgelabel>index</edgelabel>
+        </childnode>
+        <childnode refid="40" relation="usage">
+          <edgelabel>name</edgelabel>
+          <edgelabel>tree</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="41" relation="usage">
+          <edgelabel>weight</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>cproperty&lt; std::map&lt; std::string, std::string &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, std::string &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>cproperty&lt; T, G &gt;</label>
+        <link refid="classcproperty"/>
+      </node>
+      <node id="40">
+        <label>cproperty&lt; std::string, selection_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::string, selection_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>cproperty&lt; std::vector&lt; std::string &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::vector&lt; std::string &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>cproperty&lt; std::map&lt; int, std::string &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; int, std::string &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="23">
+        <label>meta_t</label>
+        <link refid="structmeta__t"/>
+        <childnode refid="24" relation="usage">
+          <edgelabel>LFN</edgelabel>
+        </childnode>
+        <childnode refid="28" relation="usage">
+          <edgelabel>misc</edgelabel>
+        </childnode>
+        <childnode refid="31" relation="usage">
+          <edgelabel>inputrange</edgelabel>
+        </childnode>
+        <childnode refid="32" relation="usage">
+          <edgelabel>config</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>principalPhysicsGroup</edgelabel>
+          <edgelabel>DatasetName</edgelabel>
+          <edgelabel>generatorName</edgelabel>
+          <edgelabel>productionStep</edgelabel>
+          <edgelabel>campaign</edgelabel>
+          <edgelabel>projectName</edgelabel>
+          <edgelabel>physicsShort</edgelabel>
+          <edgelabel>logicalDatasetName</edgelabel>
+          <edgelabel>conditionsTag</edgelabel>
+          <edgelabel>derivationFormat</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="33" relation="usage">
+          <edgelabel>run_number</edgelabel>
+          <edgelabel>events</edgelabel>
+        </childnode>
+        <childnode refid="35" relation="usage">
+          <edgelabel>inputfiles</edgelabel>
+        </childnode>
+        <childnode refid="36" relation="usage">
+          <edgelabel>keyword</edgelabel>
+          <edgelabel>weights</edgelabel>
+          <edgelabel>keywords</edgelabel>
+          <edgelabel>fileGUID</edgelabel>
+        </childnode>
+        <childnode refid="37" relation="usage">
+          <edgelabel>fileSize</edgelabel>
+        </childnode>
+      </node>
+      <node id="32">
+        <label>std::map&lt; std::string, std::string &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; std::string, std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="36">
+        <label>std::vector&lt; std::string &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="34" relation="template-instance">
+          <edgelabel>&lt; std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="38">
+        <label>std::map&lt; std::string, std::map&lt; std::string, float &gt; &gt;</label>
+        <childnode refid="30" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; std::string, std::map&lt; std::string, float &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="30">
+        <label>std::map&lt; std::string, float &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; std::string, float &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="21">
+        <label>cproperty&lt; bool, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; bool, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>event_t</label>
+        <link refid="structevent__t"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>name</edgelabel>
+          <edgelabel>tree</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>combinatorial</label>
+        <link refid="classcombinatorial"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>cproperty&lt; std::map&lt; std::string, int &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, int &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="41">
+        <label>cproperty&lt; double, selection_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; double, selection_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="24">
+        <label>std::map&lt; std::string, int &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; std::string, int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>notification</label>
+        <link refid="classnotification"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>prefix</edgelabel>
+        </childnode>
+      </node>
+      <node id="33">
+        <label>std::vector&lt; int &gt;</label>
+        <childnode refid="34" relation="template-instance">
+          <edgelabel>&lt; int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+      <node id="5">
+        <label>std::string</label>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>cproperty&lt; std::map&lt; std::string, weights_t &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, weights_t &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="selections/neutrino/combinatorial/combinatorial.h" line="47" column="1" bodyfile="selections/neutrino/combinatorial/combinatorial.h" bodystart="46" bodyend="98"/>
+    <listofallmembers>
+      <member refid="classtools_1a408b66ad73b7b4bb962634c14a55b619" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>absolute_path</name></member>
+      <member refid="classcombinatorial_1a3cf162491e886f62bed47a5eead9cf0a" prot="private" virt="non-virtual"><scope>combinatorial</scope><name>b_qrk</name></member>
+      <member refid="classselection__template_1ae24cee9f302d7509a7009daea0bf0616" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>build</name></member>
+      <member refid="classcombinatorial_1aafccdcd1966f7f5f3da8ac0a93efe0c2" prot="private" virt="non-virtual"><scope>combinatorial</scope><name>build_packet</name></member>
+      <member refid="classselection__template_1a6a9f6df015c9f8e48c65cacc249c4fdf" prot="public" virt="virtual"><scope>combinatorial</scope><name>bulk_write</name></member>
+      <member refid="classcombinatorial_1a894176c4c94dab6121a61664b5c88a7e" prot="public" virt="virtual"><scope>combinatorial</scope><name>clone</name></member>
+      <member refid="classcombinatorial_1a9d7ef868e8a8010b55c2055f7885cf41" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>combinatorial</name></member>
+      <member refid="classselection__template_1a9deff703f50fdff72bd1edf3664a9d75" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>CompileEvent</name></member>
+      <member refid="classselection__template_1a3009dc4bb45c47d96a5bdc4096bd6870" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>contains</name></member>
+      <member refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>create_path</name></member>
+      <member refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>data</name></member>
+      <member refid="classtools_1a1f8f5e775e758e3d2442a9dd46daf78c" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>delete_path</name></member>
+      <member refid="classselection__template_1ab32b926ee893cf56dc27913271658d1e" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>downcast</name></member>
+      <member refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>ends_with</name></member>
+      <member refid="classtools_1a86175bf887f3e82780cb72910181961d" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>extract</name></member>
+      <member refid="classselection__template_1ad220a2da4b57303d8a5b162b6733024f" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>filename</name></member>
+      <member refid="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>flush</name></member>
+      <member refid="classselection__template_1a2f6cd45079e1fab94a163a38fbe005cd" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>get_hash</name></member>
+      <member refid="classselection__template_1ad27d2cd85c19147b85b1e96ce73bdade" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>get_leptonics</name></member>
+      <member refid="classselection__template_1ad0d6fa60bf0da8796a718532c0288d04" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>get_name</name></member>
+      <member refid="classselection__template_1a4e61c1d63afdff7a6428fbf4c6297166" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>get_tree</name></member>
+      <member refid="classselection__template_1ae04fb8767d15273f80c5343e2f73384b" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>get_weight</name></member>
+      <member refid="classtools_1ad7229c72cee65da3605c4be82f9b42d4" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>has_string</name></member>
+      <member refid="classtools_1a13633d4d63c55bcf537ff141e7605f13" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>has_value</name></member>
+      <member refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>hash</name></member>
+      <member refid="classselection__template_1a2e1c4a9239afbfea9cd510b774c9c1fe" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>index</name></member>
+      <member refid="classtools_1a47d3d261edcb898daab56721e18d1e67" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>is_file</name></member>
+      <member refid="classcombinatorial_1a62591a793a6a67e6b54c7d16fb757599" prot="private" virt="non-virtual"><scope>combinatorial</scope><name>lepton</name></member>
+      <member refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>ls</name></member>
+      <member refid="classselection__template_1ab760e9d895d74e62a9d4bfe436568a86" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>make_unique</name></member>
+      <member refid="classcombinatorial_1a21e10cce53e4c004af075534f8b63b9b" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>masstop</name></member>
+      <member refid="classcombinatorial_1a40de7503239a1be738772d29961740fa" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>massw</name></member>
+      <member refid="classselection__template_1a50e7d1939618dcb8b6386f5e7a247e12" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>matched_meta</name></member>
+      <member refid="classcombinatorial_1afcb3e3c3c11238a745f3e591162a7ae0" prot="public" virt="virtual"><scope>combinatorial</scope><name>merge</name></member>
+      <member refid="classselection__template_1a15113e43e1451e9e65b9f327fcfc7e15" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>meta_data</name></member>
+      <member refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>name</name></member>
+      <member refid="classcombinatorial_1aa90a161b405993efee37207764321721" prot="private" virt="non-virtual"><scope>combinatorial</scope><name>nu_tru</name></member>
+      <member refid="classcombinatorial_1a52bf047e7832b4b6b2039e91c6656996" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>num_device</name></member>
+      <member refid="classselection__template_1a0e423716b1439b853d39904998074ecd" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>operator==</name></member>
+      <member refid="classselection__template_1ad472a18c63b8b1d6e41fbe626b13fc40" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>passed_weights</name></member>
+      <member refid="classtools_1a4450b1e48193bef904b44f7a90aaee98" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>put</name></member>
+      <member refid="classcombinatorial_1a4f90aaf04154a0d1ca9d59e1ccb2c54e" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>reconstruction</name></member>
+      <member refid="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>rename</name></member>
+      <member refid="classtools_1aeae88ebd7116d59008600f0723716dba" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>replace</name></member>
+      <member refid="classselection__template_1a2c99ad97301a85fc7c7257930d990cfd" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>reverse_hash</name></member>
+      <member refid="classselection__template_1a4faf71140920bc4cf0fc06072cecad07" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>safe_delete</name></member>
+      <member refid="classcombinatorial_1a6d222547e0dce9eea6ca128cdba5a01f" prot="public" virt="virtual"><scope>combinatorial</scope><name>selection</name></member>
+      <member refid="classselection__template_1a4562a7ab32d93b5f2ca8a232a244041c" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>selection_template</name></member>
+      <member refid="classselection__template_1acd31f17488bcf97dd8a5f1b3a7da1cdd" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>set_hash</name></member>
+      <member refid="classselection__template_1a8951c34758d3410f9d931b6011c3cca2" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>set_index</name></member>
+      <member refid="classselection__template_1a19244d585754db14326c126a98000899" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>set_name</name></member>
+      <member refid="classselection__template_1aa95e812106c1a933f1b65e82557939d3" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>set_weight</name></member>
+      <member refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>split</name></member>
+      <member refid="classcombinatorial_1a689c5192e105d6a8dd4626c32e1da7d5" prot="private" virt="non-virtual"><scope>combinatorial</scope><name>storage</name></member>
+      <member refid="classcombinatorial_1a5cd8d199d3f8fe6c9f0b8e1c2e2f7bfd" prot="public" virt="virtual"><scope>combinatorial</scope><name>strategy</name></member>
+      <member refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>sum</name></member>
+      <member refid="classselection__template_1af639e8d3a86f1fa5cdfd2fe58e2e5dfb" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>sum</name></member>
+      <member refid="classselection__template_1aefb54851b728057af466bf7a78caeda8" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>sum</name></member>
+      <member refid="classtools_1a7b784121d8b368a64995feddc7083469" prot="public" virt="non-virtual" ambiguityscope="tools::"><scope>combinatorial</scope><name>sum</name></member>
+      <member refid="classselection__template_1a41a437aca3bb2a7f854a66ff92942d46" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>switch_board</name></member>
+      <member refid="classselection__template_1a74558331b11dd6822a975a32203286ac" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>switch_board</name></member>
+      <member refid="classselection__template_1a3bde46eb8ab3699d6f3eab6077d9716c" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>switch_board</name></member>
+      <member refid="classselection__template_1a572f52e2758979cda89605e207e57c87" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>switch_board</name></member>
+      <member refid="classselection__template_1ac565e3beb94b557fc947a6f8afebfc4d" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>threadIdx</name></member>
+      <member refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>to_string</name></member>
+      <member refid="classtools_1a882f089d855dc4b3e0b60c591e11b092" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>to_string</name></member>
+      <member refid="classtools_1af0028ec6242448428f7c548b6e7cb714" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>tools</name></member>
+      <member refid="classselection__template_1a57ff66ff6c5ff5af5e81298faf6bf521" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>tree</name></member>
+      <member refid="classtools_1a69be8c55f9fd7036080317a2ce98d4de" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>trim</name></member>
+      <member refid="classtools_1ab46f1f3892604cb366b861cb54ce30e0" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>type_name</name></member>
+      <member refid="classcombinatorial_1afa94979bceb2acd126ca81cb64b20dd4" prot="private" virt="non-virtual"><scope>combinatorial</scope><name>upcast</name></member>
+      <member refid="classcombinatorial_1ad03376b3c74321a4be523cf9a31486ee" prot="private" virt="non-virtual"><scope>combinatorial</scope><name>upcast</name></member>
+      <member refid="classselection__template_1a82f14833e404fbe0399a2a539eef75b1" prot="public" virt="non-virtual" ambiguityscope="selection_template::"><scope>combinatorial</scope><name>upcast</name></member>
+      <member refid="classselection__template_1ae5ce6c75d19fdbb2ab18ba05b3ea4c58" prot="public" virt="non-virtual" ambiguityscope="selection_template::"><scope>combinatorial</scope><name>upcast</name></member>
+      <member refid="classcombinatorial_1adb51dd4e96b0c4596711f5466571e091" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>update_state</name></member>
+      <member refid="classselection__template_1a7e1560964237cf7b4846e24b300d7b9e" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>vectorize</name></member>
+      <member refid="classselection__template_1a03816f18e6ce9351cd099525862c7c64" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>weight</name></member>
+      <member refid="classselection__template_1ae5606e994231fae57abe42e4f0ec6202" prot="public" virt="virtual"><scope>combinatorial</scope><name>write</name></member>
+      <member refid="classselection__template_1a67768227c6c6a8e69edd0dc618a70eb9" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>write</name></member>
+      <member refid="classselection__template_1a0983bf7c4582968c8c3b1a970fb3689e" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>write</name></member>
+      <member refid="classcombinatorial_1a14a9c71052a09dbdb30e6b84b3a0913b" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>~combinatorial</name></member>
+      <member refid="classselection__template_1af0b32265d850bfcd861a7f4744426856" prot="public" virt="virtual"><scope>combinatorial</scope><name>~selection_template</name></member>
+      <member refid="classtools_1a04762ddd5cc588520c89a387341f77f4" prot="public" virt="non-virtual"><scope>combinatorial</scope><name>~tools</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

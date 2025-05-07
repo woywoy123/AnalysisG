@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="test__selection_8py" kind="file" language="Python">
+    <compoundname>test_selection.py</compoundname>
+    <innernamespace refid="namespacetest__selection">test_selection</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespacetest__selection" refkind="compound"><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>Analysis</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG.selections.example.met.met<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>MET</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG.events.bsm_4tops.event_bsm_4tops<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>BSM4Tops</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5" refid="namespacetest__selection_1a9a81f732356273003f4f02eb683fb33d" refkind="member"><highlight class="normal">root1<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./samples/dilepton/*&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6" refid="namespacetest__selection_1a12f178dd429b526ba5cb00223515dab6" refkind="member"><highlight class="normal">ev<sp/>=<sp/>BSM4Tops()</highlight></codeline>
+<codeline lineno="7" refid="namespacetest__selection_1ab69f4f9ddda8be5bbc73466b8aa4e48c" refkind="member"><highlight class="normal">sl<sp/>=<sp/>MET()</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9" refid="namespacetest__selection_1a3e4740ed87c86c93ce12a2976ad3197e" refkind="member"><highlight class="normal">ana<sp/>=<sp/>Analysis()</highlight></codeline>
+<codeline lineno="10"><highlight class="normal">ana.AddSamples(root1,<sp/></highlight><highlight class="stringliteral">&quot;tmp&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="11"><highlight class="normal">ana.AddEvent(ev,<sp/></highlight><highlight class="stringliteral">&quot;tmp&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="12"><highlight class="normal">ana.AddSelection(sl)</highlight></codeline>
+<codeline lineno="13" refid="namespacetest__selection_1af078860a0e5e98f1c0805ef83d8652f2" refkind="member"><highlight class="normal">ana.DebugMode<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="namespacetest__selection_1aef37981577eec910fe18989dedeea76c" refkind="member"><highlight class="normal">ana.SaveSelectionToROOT<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal">ana.Start()</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/workspaces/AnalysisG/test/test_selection.py"/>
+  </compounddef>
+</doxygen>

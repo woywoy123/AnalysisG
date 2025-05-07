@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_37958b25c1a14bb57f645f47d15b1701" kind="dir">
+    <compoundname>operators</compoundname>
+    <innerfile refid="operators_8h">operators.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pyc/operators/include/operators/"/>
+  </compounddef>
+</doxygen>

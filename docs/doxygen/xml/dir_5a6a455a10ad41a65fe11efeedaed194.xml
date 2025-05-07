@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_5a6a455a10ad41a65fe11efeedaed194" kind="dir">
+    <compoundname>plotting</compoundname>
+    <innerdir refid="dir_6bc1de5c976cf24989ae1ea036d037df">cxx</innerdir>
+    <innerdir refid="dir_1c51b57b18488e66171e7aa9285a5d98">include</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/plotting/"/>
+  </compounddef>
+</doxygen>

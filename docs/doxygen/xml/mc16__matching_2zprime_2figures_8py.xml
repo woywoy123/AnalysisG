@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="mc16__matching_2zprime_2figures_8py" kind="file" language="Python">
+    <compoundname>mc16_matching/zprime/figures.py</compoundname>
+    <innernamespace refid="namespacezprime_1_1figures">zprime::figures</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespacezprime_1_1figures" refkind="compound"><highlight class="keyword">from</highlight><highlight class="normal"><sp/><ref refid="namespace_analysis_g_1_1core_1_1plotting" kindref="compound">AnalysisG.core.plotting</ref><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>TH1F,<sp/>TH2F</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG.core.io<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>IO</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>pickle</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">global</highlight><highlight class="normal"><sp/>figure_path</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keyword">global</highlight><highlight class="normal"><sp/>mass_point</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keyword">global</highlight><highlight class="normal"><sp/>default</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">global</highlight><highlight class="normal"><sp/>study</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10" refid="namespacezprime_1_1figures_1a61f5932b8052dc2e6c815fcba7048ebe" refkind="member"><highlight class="normal">colors<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;red&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;green&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;blue&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;orange&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;magenta&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;cyan&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;pink&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="11" refid="namespacezprime_1_1figures_1a590fd091ae3eef5ea4b5ef3d9b597fcd" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacezprime_1_1figures_1a590fd091ae3eef5ea4b5ef3d9b597fcd" kindref="member">path</ref>(hist):</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>hist.OutputDirectory<sp/>=<sp/>figure_path<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/zprime/&quot;</highlight><highlight class="normal"><sp/>+<sp/>mass_point</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacemain_1a5b4be1a6135a1aa22b30e809f67400c9" kindref="member">default</ref>(hist)</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>hist</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="namespacezprime_1_1figures_1aeba9863f597b75cc6cfc61dcd0fad85c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacezprime_1_1figures_1aeba9863f597b75cc6cfc61dcd0fad85c" kindref="member">zprime_mass_tops</ref>(ana):</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>xp<sp/>=<sp/>iter(colors)</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>hists<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>ana:</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Mass<sp/>Point<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>i</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xData<sp/>=<sp/>ana[i].zprime_truth_tops</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Color<sp/>=<sp/>next(xp)</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists.append(th_)</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>th<sp/>=<sp/><ref refid="namespacezprime_1_1figures_1a590fd091ae3eef5ea4b5ef3d9b597fcd" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Histograms<sp/>=<sp/>hists</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Title<sp/>=<sp/></highlight><highlight class="stringliteral">r&quot;Invariant<sp/>Mass<sp/>Distribution<sp/>of<sp/>Multiple<sp/>Target<sp/>Resonance<sp/>Mass-Points&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">r&quot;Invariant<sp/>Mass<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">r&quot;Density<sp/>(Arb.)<sp/>/<sp/>($4$<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Style<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;ATLAS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xStep<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xBins<sp/>=<sp/>300</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMax<sp/>=<sp/>1200</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Overflow<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.6.a&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>th.SaveFigure()</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="namespacezprime_1_1figures_1aab4bbc6a2366a64f5447e77b0d5324d8" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacezprime_1_1figures_1aab4bbc6a2366a64f5447e77b0d5324d8" kindref="member">zprime_mass_children</ref>(ana):</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>xp<sp/>=<sp/>iter(colors)</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>hists<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>ana:</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Mass<sp/>Point<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>i</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xData<sp/>=<sp/>ana[i].zprime_children</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Color<sp/>=<sp/>next(xp)</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists.append(th_)</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>th<sp/>=<sp/><ref refid="namespacezprime_1_1figures_1a590fd091ae3eef5ea4b5ef3d9b597fcd" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Histograms<sp/>=<sp/>hists</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>Distribution<sp/>of<sp/>Multiple<sp/>Target<sp/>Resonance<sp/>Mass-Points&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">r&quot;Density<sp/>(Arb.)<sp/>/<sp/>($4$<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Style<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;ATLAS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xStep<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xBins<sp/>=<sp/>300</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMax<sp/>=<sp/>1200</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Overflow<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.6.b&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>th.SaveFigure()</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="namespacezprime_1_1figures_1a1f0557387f4ed4f5e4115a4581a81de5" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacezprime_1_1figures_1a1f0557387f4ed4f5e4115a4581a81de5" kindref="member">zprime_mass_truthjets</ref>(ana):</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>xp<sp/>=<sp/>iter(colors)</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>hists<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>ana:</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Mass<sp/>Point<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>i</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xData<sp/>=<sp/>ana[i].zprime_truthjets</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Color<sp/>=<sp/>next(xp)</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists.append(th_)</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>th<sp/>=<sp/><ref refid="namespacezprime_1_1figures_1a590fd091ae3eef5ea4b5ef3d9b597fcd" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Histograms<sp/>=<sp/>hists</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Title<sp/>=<sp/></highlight><highlight class="stringliteral">r&quot;Invariant<sp/>Mass<sp/>Distribution<sp/>of<sp/>Multiple<sp/>Target<sp/>Resonance<sp/>Mass-Points&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">r&quot;Invariant<sp/>Mass<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">r&quot;Density<sp/>(Arb.)<sp/>/<sp/>($4$<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Style<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;ATLAS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xStep<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xBins<sp/>=<sp/>300</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMax<sp/>=<sp/>1200</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Overflow<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.6.c&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>th.SaveFigure()</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94" refid="namespacezprime_1_1figures_1a10489938372009dafcdc80ee0bc84dc6" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacezprime_1_1figures_1a10489938372009dafcdc80ee0bc84dc6" kindref="member">zprime_mass_jets</ref>(ana):</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>xp<sp/>=<sp/>iter(colors)</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>hists<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>ana:</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_<sp/>=<sp/>TH1F()</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Title<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Mass<sp/>Point<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>i</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.xData<sp/>=<sp/>ana[i].zprime_jets</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>th_.Color<sp/>=<sp/>next(xp)</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hists.append(th_)</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>th<sp/>=<sp/><ref refid="namespacezprime_1_1figures_1a590fd091ae3eef5ea4b5ef3d9b597fcd" kindref="member">path</ref>(TH1F())</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Histograms<sp/>=<sp/>hists</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Title<sp/><sp/>=<sp/></highlight><highlight class="stringliteral">r&quot;Invariant<sp/>Mass<sp/>Distribution<sp/>of<sp/>Multiple<sp/>Target<sp/>Resonance<sp/>Mass-Points&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xTitle<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Invariant<sp/>Mass<sp/>(GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>th.yTitle<sp/>=<sp/></highlight><highlight class="stringliteral">r&quot;Density<sp/>(Arb.)<sp/>/<sp/>($4$<sp/>GeV)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Style<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;ATLAS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xStep<sp/>=<sp/>100</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xBins<sp/>=<sp/>300</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMin<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>th.xMax<sp/>=<sp/>1200</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Density<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Overflow<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>th.Filename<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Figure.6.d&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>th.SaveFigure()</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="namespacezprime_1_1figures_1abff9842ae43efaa3520835ff1f67b874" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacezprime_1_1figures_1abff9842ae43efaa3520835ff1f67b874" kindref="member">ZPrime</ref>(ana):</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacezprime_1_1figures_1aeba9863f597b75cc6cfc61dcd0fad85c" kindref="member">zprime_mass_tops</ref>(ana)</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacezprime_1_1figures_1aab4bbc6a2366a64f5447e77b0d5324d8" kindref="member">zprime_mass_children</ref>(ana)</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacezprime_1_1figures_1a1f0557387f4ed4f5e4115a4581a81de5" kindref="member">zprime_mass_truthjets</ref>(ana)</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacezprime_1_1figures_1a10489938372009dafcdc80ee0bc84dc6" kindref="member">zprime_mass_jets</ref>(ana)</highlight></codeline>
+    </programlisting>
+    <location file="/workspaces/AnalysisG/studies/mc16_matching/zprime/figures.py"/>
+  </compounddef>
+</doxygen>

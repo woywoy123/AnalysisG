@@ -1,7 +1,23 @@
+/**
+ * @file nusol_utils.cuh
+ * @brief Provides utility functions for the nusol module in CUDA.
+ */
+
 #ifndef CU_NUSOL_UTILS_H
 #define CU_NUSOL_UTILS_H
-#include <utils/atomic.cuh>
 
+#include <utils/atomic.cuh> ///< Includes atomic utility functions for CUDA.
+
+/**
+ * @brief Counts the number of events and particle IDs in a batch.
+ *
+ * @tparam scalar_t The data type of the tensor elements.
+ * @param batch Tensor containing batch indices.
+ * @param pid Tensor containing particle IDs.
+ * @param num_events Tensor to store the number of events.
+ * @param num_pid Tensor to store the number of particle IDs.
+ * @param dx The size of the batch.
+ */
 template <typename scalar_t>
 __global__ void _count(
         const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> batch, 
@@ -34,6 +50,20 @@ __global__ void _count(
     num_pid[id][1] = num_bqk; 
 }
 
+/**
+ * @brief Generates combinations of leptons and b-quarks for events.
+ *
+ * @tparam scalar_t The data type of the tensor elements.
+ * @param pid Tensor containing particle IDs.
+ * @param batch Tensor containing batch indices.
+ * @param num_edges Tensor containing the number of edges.
+ * @param edge_idx Tensor containing edge indices.
+ * @param num_pid Tensor containing the number of particle IDs.
+ * @param llbb Tensor to store the combinations of leptons and b-quarks.
+ * @param msk Tensor to store the mask for valid combinations.
+ * @param n_edges The number of edges.
+ * @param mx The maximum number of combinations.
+ */
 template <typename scalar_t>
 __global__ void _combination(
     const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pid,
@@ -99,6 +129,16 @@ __global__ void _combination(
     msk[__idx] = lx*num_l; 
 }
 
+/**
+ * @brief Computes the mass matrix for given parameters.
+ *
+ * @param mass_ Tensor to store the mass matrix.
+ * @param mTl Top mass for leptons.
+ * @param mTs Top mass for b-quarks.
+ * @param mWl W mass for leptons.
+ * @param mWs W mass for b-quarks.
+ * @param steps The number of steps for computation.
+ */
 __global__ void _mass_matrix(
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> mass_,
         double mTl, double mTs, double mWl, double mWs, unsigned int steps
@@ -110,7 +150,19 @@ __global__ void _mass_matrix(
     mass_[_idx][threadIdx.y] = lw + mass_[_idx][threadIdx.y]*dx*_idx; 
 }
 
-
+/**
+ * @brief Applies perturbation to neutrino parameters.
+ *
+ * @tparam size_x The size of the shared memory.
+ * @param dnu_tw1 Tensor containing the first set of neutrino parameters.
+ * @param dnu_tw2 Tensor containing the second set of neutrino parameters.
+ * @param dnu_met Tensor containing the MET parameters.
+ * @param dnu_res Tensor containing the result of the perturbation.
+ * @param perturb The perturbation value.
+ * @param top_mass The top quark mass.
+ * @param w_mass The W boson mass.
+ * @param start Whether to start the perturbation.
+ */
 template <size_t size_x>
 __global__ void _perturbation(
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_tw1,
@@ -137,6 +189,14 @@ __global__ void _perturbation(
 
 }
 
+/**
+ * @brief Assigns mass values to top and W bosons.
+ *
+ * @param mass_tw Tensor to store the mass values.
+ * @param mass_t The top quark mass.
+ * @param mass_w The W boson mass.
+ * @param lenx The length of the tensor.
+ */
 __global__ void _assign_mass(
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> mass_tw,
         const double mass_t, const double mass_w, const long lenx
@@ -147,6 +207,18 @@ __global__ void _assign_mass(
     mass_tw[_idx][threadIdx.y] = mass_t * (1 - _idy) + mass_w*_idy; 
 }
 
+/**
+ * @brief Perturbs neutrino parameters for optimization.
+ *
+ * @tparam size_x The size of the shared memory.
+ * @param nu_params Tensor containing the neutrino parameters.
+ * @param dnu_met Tensor containing the MET parameters.
+ * @param dnu_tw1 Tensor containing the first set of neutrino parameters.
+ * @param dnu_tw2 Tensor containing the second set of neutrino parameters.
+ * @param lnx The length of the tensor.
+ * @param dt The perturbation step size.
+ * @param ofs The offset for the tensor.
+ */
 template <size_t size_x>
 __global__ void _perturb(
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu_params,
@@ -172,6 +244,16 @@ __global__ void _perturb(
     if (_idz < 6){dnu_tw2[_idt][_idz-4] = dx_; return;}
 }
 
+/**
+ * @brief Computes the Jacobian matrix for optimization.
+ *
+ * @tparam size_x The size of the shared memory.
+ * @param nu_params Tensor containing the neutrino parameters.
+ * @param dnu_res Tensor containing the result of the perturbation.
+ * @param lnx The length of the tensor.
+ * @param dt The perturbation step size.
+ * @param ofs The offset for the tensor.
+ */
 template <size_t size_x>
 __global__ void _jacobi(
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu_params,
@@ -203,6 +285,23 @@ __global__ void _jacobi(
     nu_params[_idp][_idy] = _param_[_idx][_idy] - dv; 
 }
 
+/**
+ * @brief Compares solutions and selects the best one.
+ *
+ * @tparam size_x The size of the shared memory.
+ * @param cmx_dx Tensor containing combination indices.
+ * @param evnt_dx Tensor containing event indices.
+ * @param o_sol Tensor to store the best solution.
+ * @param o_cmb Tensor to store the best combination.
+ * @param o_nu1 Tensor to store the first neutrino parameters.
+ * @param o_nu2 Tensor to store the second neutrino parameters.
+ * @param i_cmb Tensor containing input combinations.
+ * @param i_sol Tensor containing input solutions.
+ * @param i_nu1 Tensor containing input first neutrino parameters.
+ * @param i_nu2 Tensor containing input second neutrino parameters.
+ * @param lx The length of the tensor.
+ * @param evnts The number of events.
+ */
 template <size_t size_x>
 __global__ void _compare_solx(
         torch::PackedTensorAccessor64<long  , 1, torch::RestrictPtrTraits> cmx_dx,

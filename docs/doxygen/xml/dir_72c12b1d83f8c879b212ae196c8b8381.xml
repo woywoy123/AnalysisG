@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_72c12b1d83f8c879b212ae196c8b8381" kind="dir">
+    <compoundname>topkinematics</compoundname>
+    <innerfile refid="studies_2mc16__matching_2topkinematics_2____init_____8py">studies/mc16_matching/topkinematics/__init__.py</innerfile>
+    <innerfile refid="mc16__matching_2topkinematics_2figures_8py">mc16_matching/topkinematics/figures.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/mc16_matching/topkinematics/"/>
+  </compounddef>
+</doxygen>

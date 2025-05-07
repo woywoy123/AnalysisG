@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="report_8h" kind="file" language="C++">
+    <compoundname>report.h</compoundname>
+    <includes refid="enums_8h" local="no">structs/enums.h</includes>
+    <includes local="no">string</includes>
+    <includes local="no">map</includes>
+    <includedby refid="dataloader_8cxx" local="no">dataloader.cxx</includedby>
+    <includedby refid="metrics_8h" local="no">metrics.h</includedby>
+    <includedby refid="misc_8cxx" local="no">misc.cxx</includedby>
+    <includedby refid="structs_8cxx" local="no">structs.cxx</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>report.h</label>
+        <link refid="report_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+      <node id="2">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="4">
+        <label>map</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="15">
+        <label>optimizer_build.cxx</label>
+        <link refid="optimizer__build_8cxx"/>
+      </node>
+      <node id="10">
+        <label>event_build.cxx</label>
+        <link refid="event__build_8cxx"/>
+      </node>
+      <node id="1">
+        <label>report.h</label>
+        <link refid="report_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>methods.cxx</label>
+        <link refid="methods_8cxx"/>
+      </node>
+      <node id="6">
+        <label>metrics.cxx</label>
+        <link refid="metrics_8cxx"/>
+      </node>
+      <node id="3">
+        <label>metrics.h</label>
+        <link refid="metrics_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>selection_build.cxx</label>
+        <link refid="selection__build_8cxx"/>
+      </node>
+      <node id="17">
+        <label>optimizer.cxx</label>
+        <link refid="optimizer_2cxx_2optimizer_8cxx"/>
+      </node>
+      <node id="2">
+        <label>dataloader.cxx</label>
+        <link refid="dataloader_8cxx"/>
+      </node>
+      <node id="5">
+        <label>mass_plots.cxx</label>
+        <link refid="mass__plots_8cxx"/>
+      </node>
+      <node id="19">
+        <label>structs.cxx</label>
+        <link refid="structs_8cxx"/>
+      </node>
+      <node id="12">
+        <label>inference_build.cxx</label>
+        <link refid="inference__build_8cxx"/>
+      </node>
+      <node id="7">
+        <label>optimizer.h</label>
+        <link refid="optimizer_2include_2generators_2optimizer_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>metric_build.cxx</label>
+        <link refid="metric__build_8cxx"/>
+      </node>
+      <node id="18">
+        <label>misc.cxx</label>
+        <link refid="misc_8cxx"/>
+      </node>
+      <node id="11">
+        <label>graph_build.cxx</label>
+        <link refid="graph__build_8cxx"/>
+      </node>
+      <node id="4">
+        <label>loss_plots.cxx</label>
+        <link refid="loss__plots_8cxx"/>
+      </node>
+      <node id="9">
+        <label>analysis.cxx</label>
+        <link refid="analysis_8cxx"/>
+      </node>
+      <node id="8">
+        <label>analysis.h</label>
+        <link refid="analysis_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structmodel__report" prot="public">model_report</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>REPORT_STRUCTS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>REPORT_STRUCTS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="enums_8h" kindref="compound">structs/enums.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;map&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="namespacemetrics" kindref="compound">metrics</ref>;<sp/></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10" refid="structmodel__report" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structmodel__report" kindref="compound">model_report</ref><sp/>{</highlight></codeline>
+<codeline lineno="11" refid="structmodel__report_1adf5e1b856c6c232e58a8f4f3c7d7e43a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structmodel__report_1adf5e1b856c6c232e58a8f4f3c7d7e43a" kindref="member">k</ref>;</highlight></codeline>
+<codeline lineno="12" refid="structmodel__report_1a75abda4d9ccde149d9a3262d6ff691b8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structmodel__report_1a75abda4d9ccde149d9a3262d6ff691b8" kindref="member">epoch</ref>;<sp/></highlight></codeline>
+<codeline lineno="13" refid="structmodel__report_1a392d273faabe4f25b9eda1a60170b095" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structmodel__report_1a392d273faabe4f25b9eda1a60170b095" kindref="member">is_complete</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="14" refid="structmodel__report_1ab225665658bf818dcbc316129ad44f3d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacemetrics" kindref="compound">metrics</ref>*<sp/><ref refid="structmodel__report_1ab225665658bf818dcbc316129ad44f3d" kindref="member">waiting_plot</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="structmodel__report_1ab1c314b22dc97bcd370e2aadaf47ecc0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;mode_enum,<sp/>std::map&lt;std::string,<sp/>float&gt;&gt;<sp/><ref refid="structmodel__report_1ab1c314b22dc97bcd370e2aadaf47ecc0" kindref="member">loss_graph</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="17" refid="structmodel__report_1a816f23647dc696096ee13cb4a74a6797" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;mode_enum,<sp/>std::map&lt;std::string,<sp/>float&gt;&gt;<sp/><ref refid="structmodel__report_1a816f23647dc696096ee13cb4a74a6797" kindref="member">loss_node</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="18" refid="structmodel__report_1a3c8fb6e98b6ffb9850b8e05b0a30ff53" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;mode_enum,<sp/>std::map&lt;std::string,<sp/>float&gt;&gt;<sp/><ref refid="structmodel__report_1a3c8fb6e98b6ffb9850b8e05b0a30ff53" kindref="member">loss_edge</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="structmodel__report_1ae3c6c2b9af1b5777c93917711c522cc1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;mode_enum,<sp/>std::map&lt;std::string,<sp/>float&gt;&gt;<sp/><ref refid="structmodel__report_1ae3c6c2b9af1b5777c93917711c522cc1" kindref="member">accuracy_graph</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="21" refid="structmodel__report_1aea301af649408612af8437610051390d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;mode_enum,<sp/>std::map&lt;std::string,<sp/>float&gt;&gt;<sp/><ref refid="structmodel__report_1aea301af649408612af8437610051390d" kindref="member">accuracy_node</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="22" refid="structmodel__report_1a87b9c82269761e9627cbd4756a986d7b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;mode_enum,<sp/>std::map&lt;std::string,<sp/>float&gt;&gt;<sp/><ref refid="structmodel__report_1a87b9c82269761e9627cbd4756a986d7b" kindref="member">accuracy_edge</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="structmodel__report_1aa9701dc82b8aa458b03fddfda53ee550" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmodel__report_1aa9701dc82b8aa458b03fddfda53ee550" kindref="member">run_name</ref>;</highlight></codeline>
+<codeline lineno="25" refid="structmodel__report_1a7b6f96c37f1b658c8a4d7156f899abea" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmodel__report_1a7b6f96c37f1b658c8a4d7156f899abea" kindref="member">mode</ref>;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="27" refid="structmodel__report_1a7a8e2da83476ca787368f26494754db0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="structmodel__report_1a7a8e2da83476ca787368f26494754db0" kindref="member">iters</ref><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="28" refid="structmodel__report_1a90c7b4d0382bb96c07aa7e810e7f8dc2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="structmodel__report_1a90c7b4d0382bb96c07aa7e810e7f8dc2" kindref="member">num_evnt</ref><sp/>=<sp/>0;<sp/><sp/></highlight></codeline>
+<codeline lineno="29" refid="structmodel__report_1a00faa4e95108e6a7265d7313cb2f7c13" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="structmodel__report_1a00faa4e95108e6a7265d7313cb2f7c13" kindref="member">progress</ref>;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmodel__report_1adf608068fd8471f81fd25aef15c36ca6" kindref="member">print</ref>();<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structmodel__report_1af1c11cbca809e0dbbe7997d701fa496b" kindref="member">prx</ref>(std::map&lt;<ref refid="enums_8h_1adfa5b6ae994fc9e6e30dd3330929c03f" kindref="member">mode_enum</ref>,<sp/>std::map&lt;std::string,<sp/>float&gt;&gt;*<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>,<sp/>std::string<sp/>title);<sp/></highlight></codeline>
+<codeline lineno="33"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="modules/structs/include/structs/report.h"/>
+  </compounddef>
+</doxygen>

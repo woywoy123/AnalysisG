@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_24a060a37f703b52590f216abffbbdea" kind="dir">
+    <compoundname>cxx</compoundname>
+    <innerfile refid="loss__plots_8cxx">loss_plots.cxx</innerfile>
+    <innerfile refid="mass__plots_8cxx">mass_plots.cxx</innerfile>
+    <innerfile refid="metrics_8cxx">metrics.cxx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/metrics/cxx/"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['x_1918',['X',['../classnusol_1_1_nu_sol.html#a0c6993953c37c67c6c7126a169ed8027',1,'nusol.NuSol.X()'],['../classvalidation_1_1nusol_1_1_nu_sol.html#a130d8ad1d19174eb9cf6c79e97fa6fae',1,'validation.nusol.NuSol.X()'],['../classparticle.html#a495d29153ac393249a96503c585236bd',1,'particle::x()'],['../namespacemain.html#addad44088d98a1b128614b9004968ae0',1,'main.x()'],['../namespaceami.html#a5aac5fcfea27c03769ad0ad47678d03a',1,'ami.x()'],['../namespacernn__model.html#abbe51a062dd6352b999d29bbdff24ee7',1,'rnn_model.x()'],['../namespacesimply__plot.html#a12b7f0b104eec4bdaae1f8ffe2c6535a',1,'simply_plot.x()'],['../namespacetest__generator.html#a8adf53dc1f9873e127d16b62957936b8',1,'test_generator.x()'],['../namespacetest__normalization.html#aa863c42523f9462cd8ea76d77d973562',1,'test_normalization.x()']]],
+  ['x0_1919',['x0',['../classnusol_1_1_nu_sol.html#af1457c81033dfb45d4f5b30be1e872c4',1,'nusol.NuSol.x0()'],['../classvalidation_1_1nusol_1_1_nu_sol.html#ae83be5801fcd37dec332a6b221e10747',1,'validation.nusol.NuSol.x0()']]],
+  ['x0p_1920',['x0p',['../classnusol_1_1_nu_sol.html#a9e776929b1785262eb14818ef6ae10b4',1,'nusol.NuSol.x0p()'],['../classvalidation_1_1nusol_1_1_nu_sol.html#a1ee36838f78d893b6c51e49a60c25e16',1,'validation.nusol.NuSol.x0p()']]],
+  ['x1_1921',['x1',['../classnusol_1_1_nu_sol.html#a722d29cc6089e09e50bdd870686d2ad5',1,'nusol.NuSol.x1()'],['../classvalidation_1_1nusol_1_1_nu_sol.html#a8c8046da94c7ba45844c37b9b8294b46',1,'validation.nusol.NuSol.x1()']]],
+  ['x_5fbins_1922',['x_bins',['../classplotting.html#adbe97e0079e069818ffb8ba8772514ab',1,'plotting']]],
+  ['x_5fdata_1923',['x_data',['../classplotting.html#a82d8ab7c80e0e0f132c849deb8248f0a',1,'plotting']]],
+  ['x_5fgetter_1924',['x_getter',['../property_8h.html#adcc380d9a29f5f79ff2333b76212fcbb',1,'property.h']]],
+  ['x_5flabels_1925',['x_labels',['../classplotting.html#aaeed582f1f659ddef252aaf69d8bfc08',1,'plotting']]],
+  ['x_5flogarithmic_1926',['x_logarithmic',['../classplotting.html#a3746d7dcdabdecf1d1192711f7c205f9',1,'plotting']]],
+  ['x_5fmax_1927',['x_max',['../classplotting.html#a4b428deaf7f9ec7de3bc7aca25809bbe',1,'plotting']]],
+  ['x_5fmin_1928',['x_min',['../classplotting.html#aa59536b9ab6ba50c062621743ebf6296',1,'plotting']]],
+  ['x_5fnulls_1929',['x_nulls',['../classgrift.html#aaa7c11516d263a4836a41be837d7e1a9',1,'grift']]],
+  ['x_5fsetter_1930',['x_setter',['../property_8h.html#a597b9c9652fa225878418141614d45bd',1,'property.h']]],
+  ['x_5fstep_1931',['x_step',['../classplotting.html#a8dcedbc730e7b22dbe0ecebc52fd6832',1,'plotting']]],
+  ['xavier_1932',['xavier',['../model__template_8h.html#a04569a45296869bf184d4b79d10487ddaf93fa08fb4dd301b1e8d3ebeb32d07fe',1,'model_template.h']]],
+  ['xavier_5fnormal_1933',['xavier_normal',['../model__template_8h.html#a04569a45296869bf184d4b79d10487dda46569d558799d5521dee1b9492ae97d7',1,'xavier_normal():&#160;model_template.h'],['../enums_8h.html#a04569a45296869bf184d4b79d10487dda46569d558799d5521dee1b9492ae97d7',1,'xavier_normal():&#160;enums.h']]],
+  ['xavier_5funiform_1934',['xavier_uniform',['../model__template_8h.html#a04569a45296869bf184d4b79d10487ddaca77cd02f782fb385e2cc451f3b2918a',1,'xavier_uniform():&#160;model_template.h'],['../enums_8h.html#a04569a45296869bf184d4b79d10487ddaca77cd02f782fb385e2cc451f3b2918a',1,'xavier_uniform():&#160;enums.h']]],
+  ['xbins_1935',['xBins',['../namespacesimply__plot.html#abaf916433dbccb9605772e167209e9a0',1,'simply_plot']]],
+  ['xdata_1936',['xdata',['../namespacefigures.html#aba811d02feff3882765b0cd0bf35a9a7',1,'figures']]],
+  ['xmax_1937',['xMax',['../namespacesimply__plot.html#ad1ec2ed9bca2f9aa09011782e6bbafbe',1,'simply_plot']]],
+  ['xmin_1938',['xMin',['../namespacesimply__plot.html#a5ef30b20b99c3e05a6e4d5fa0b4769b3',1,'simply_plot']]],
+  ['xscaling_1939',['xscaling',['../classplotting.html#a1e29db482f10d59f4fa2fae03ebd77f3',1,'plotting::xscaling()'],['../namespacesimply__plot.html#a05336b5f6a0361f0a2cd3715add7a847',1,'simply_plot.xScaling()']]],
+  ['xstep_1940',['xStep',['../namespacesimply__plot.html#a677c7763cc12c48204766d6dc57ffeae',1,'simply_plot']]],
+  ['xtitle_1941',['xtitle',['../classplotting.html#a0278b7b53b5c2c695b55e9292ba3594b',1,'plotting::xtitle()'],['../namespacesimply__plot.html#ae1772d01849975890ac9ee8c4091edde',1,'simply_plot.xTitle()']]]
+];

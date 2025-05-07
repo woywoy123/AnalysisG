@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_16443852c62a98071c47f6a3819d55f3" kind="dir">
+    <compoundname>sampletracer</compoundname>
+    <innerdir refid="dir_94b1e3f507b41df74ccaf1f40dfb401c">cxx</innerdir>
+    <innerdir refid="dir_6974a5aa7eaa13e782c53feb02410122">include</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/sampletracer/"/>
+  </compounddef>
+</doxygen>

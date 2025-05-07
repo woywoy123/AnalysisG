@@ -1,0 +1,36 @@
+digraph "topefficiency.figures.TopEfficiency"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="topefficiency.figures.Top\lEfficiency",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="topefficiency.figures.ntops_reco",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacetopefficiency_1_1figures.html#a1759143049cc773286a27a94f37a2745",tooltip=" "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="topefficiency.algorithms.ntops\l_reco_compl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacetopefficiency_1_1algorithms.html#a929c237c8618a73b7cfa2f59f28ce972",tooltip=" "];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="topefficiency.figures.path",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacetopefficiency_1_1figures.html#a2779058429e493f1c7927d1eba8d7e47",tooltip=" "];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="selection_template::sum",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classselection__template.html#a84df199f6022f2a5d27979d43de51547",tooltip=" "];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="topefficiency.figures.roc_data",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacetopefficiency_1_1figures.html#a99aec3d378a84585a16094cd7ba17767",tooltip=" "];
+  Node6 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="topefficiency.algorithms.roc\l_data_get",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacetopefficiency_1_1algorithms.html#a1601482a96c96b99acd1cf00c09c6c34",tooltip=" "];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="topefficiency.figures.top\l_kinematic_region",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacetopefficiency_1_1figures.html#a84945958e13f82db53a47ad3c22e7747",tooltip=" "];
+  Node8 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="topefficiency.algorithms.mapping",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacetopefficiency_1_1algorithms.html#a6c102f7886341eb4af3d7e559584793e",tooltip=" "];
+  Node8 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="tools::replace",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtools.html#aeae88ebd7116d59008600f0723716dba",tooltip="Replaces all occurrences of a substring in a string."];
+  Node8 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="topefficiency.algorithms.top\l_pteta",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacetopefficiency_1_1algorithms.html#a63630b5bb3f8ecbc939e408c9b0a269a",tooltip=" "];
+  Node11 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="topefficiency.algorithms.kinesplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacetopefficiency_1_1algorithms.html#a1cd01db02a87861b68fb23f53c1d68c9",tooltip=" "];
+  Node12 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="tools::split",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0",tooltip="Splits a string into a vector of substrings based on a delimiter."];
+}

@@ -1,0 +1,15 @@
+digraph "tools::put"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="tools::put",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Fills a vector with pointers from another vector based on a selection index."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="dataloader::get_k_train_set",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classdataloader.html#ae243f6005ad6f4e2600b44d7ee6d40ed",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="dataloader::get_k_validation_set",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classdataloader.html#a132ebd49d79e9339c2aa96ba9cfd6bc7",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="dataloader::get_test_set",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classdataloader.html#a7a0c887638c888df9b55cbdf45c816c9",tooltip=" "];
+}

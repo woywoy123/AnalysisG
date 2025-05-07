@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="structbuffer__t" kind="struct" language="C++" prot="public">
+    <compoundname>buffer_t</compoundname>
+    <includes refid="matching_8h" local="no">matching.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structbuffer__t_1ae44465189370b0220dbaa778438d7ada" prot="public" static="no" mutable="no">
+        <type><ref refid="structobject__data__t" kindref="compound">object_data_t</ref></type>
+        <definition>object_data_t buffer_t::top_partons</definition>
+        <argsstring></argsstring>
+        <name>top_partons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="22" column="19" bodyfile="selections/mc20/matching/matching.h" bodystart="22" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structbuffer__t_1a8d4e8fe60d31953d4a146c19cce336d3" prot="public" static="no" mutable="no">
+        <type><ref refid="structobject__data__t" kindref="compound">object_data_t</ref></type>
+        <definition>object_data_t buffer_t::top_children</definition>
+        <argsstring></argsstring>
+        <name>top_children</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="23" column="19" bodyfile="selections/mc20/matching/matching.h" bodystart="23" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structbuffer__t_1aefa49823f2b6718cac7f18619439155c" prot="public" static="no" mutable="no">
+        <type><ref refid="structobject__data__t" kindref="compound">object_data_t</ref></type>
+        <definition>object_data_t buffer_t::top_truthjets</definition>
+        <argsstring></argsstring>
+        <name>top_truthjets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="24" column="19" bodyfile="selections/mc20/matching/matching.h" bodystart="24" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structbuffer__t_1a216770db15b97619f2ec908d4067439e" prot="public" static="no" mutable="no">
+        <type><ref refid="structobject__data__t" kindref="compound">object_data_t</ref></type>
+        <definition>object_data_t buffer_t::top_jets_children</definition>
+        <argsstring></argsstring>
+        <name>top_jets_children</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="25" column="19" bodyfile="selections/mc20/matching/matching.h" bodystart="25" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structbuffer__t_1a0265a0036a790d07fdf05de70602f66b" prot="public" static="no" mutable="no">
+        <type><ref refid="structobject__data__t" kindref="compound">object_data_t</ref></type>
+        <definition>object_data_t buffer_t::top_jets_leptons</definition>
+        <argsstring></argsstring>
+        <name>top_jets_leptons</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/matching/matching.h" line="26" column="19" bodyfile="selections/mc20/matching/matching.h" bodystart="26" bodyend="-1"/>
+        <referencedby refid="classmatching_1a87394c2320fa7c7fc07cd58fe7c5b8d0" compoundref="matching_8cxx" startline="11" endline="74">matching::merge</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="6">
+        <label>T</label>
+      </node>
+      <node id="7">
+        <label>std::vector&lt; double &gt;</label>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; double &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="6" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::vector&lt; std::vector&lt; int &gt; &gt;</label>
+        <childnode refid="4" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; std::vector&lt; int &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>object_data_t</label>
+        <link refid="structobject__data__t"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>pdgid</edgelabel>
+          <edgelabel>merged</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>is_leptonic</edgelabel>
+          <edgelabel>is_hadronic</edgelabel>
+          <edgelabel>num_jets</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>mass</edgelabel>
+          <edgelabel>wrong_matched</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>buffer_t</label>
+        <link refid="structbuffer__t"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>top_partons</edgelabel>
+          <edgelabel>top_truthjets</edgelabel>
+          <edgelabel>top_children</edgelabel>
+          <edgelabel>top_jets_leptons</edgelabel>
+          <edgelabel>top_jets_children</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>std::vector&lt; int &gt;</label>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; int &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="selections/mc20/matching/matching.h" line="21" column="15" bodyfile="selections/mc20/matching/matching.h" bodystart="21" bodyend="27"/>
+    <listofallmembers>
+      <member refid="structbuffer__t_1a8d4e8fe60d31953d4a146c19cce336d3" prot="public" virt="non-virtual"><scope>buffer_t</scope><name>top_children</name></member>
+      <member refid="structbuffer__t_1a216770db15b97619f2ec908d4067439e" prot="public" virt="non-virtual"><scope>buffer_t</scope><name>top_jets_children</name></member>
+      <member refid="structbuffer__t_1a0265a0036a790d07fdf05de70602f66b" prot="public" virt="non-virtual"><scope>buffer_t</scope><name>top_jets_leptons</name></member>
+      <member refid="structbuffer__t_1ae44465189370b0220dbaa778438d7ada" prot="public" virt="non-virtual"><scope>buffer_t</scope><name>top_partons</name></member>
+      <member refid="structbuffer__t_1aefa49823f2b6718cac7f18619439155c" prot="public" virt="non-virtual"><scope>buffer_t</scope><name>top_truthjets</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

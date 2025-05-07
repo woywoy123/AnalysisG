@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_13e138d54eb8818da29c3992edef070a" kind="dir">
+    <compoundname>test</compoundname>
+    <innerdir refid="dir_5af50cf1dc1343e921702e64931bd286">contraction</innerdir>
+    <innerdir refid="dir_0482159310f8a747c47f726b8ef271af">kevin-hists</innerdir>
+    <innerfile refid="ami_8py">ami.py</innerfile>
+    <innerfile refid="rnn__model_8py">rnn_model.py</innerfile>
+    <innerfile refid="simply__plot_8py">simply_plot.py</innerfile>
+    <innerfile refid="test__evaluation_8py">test_evaluation.py</innerfile>
+    <innerfile refid="test__experimental__mc20_8py">test_experimental_mc20.py</innerfile>
+    <innerfile refid="test__generator_8py">test_generator.py</innerfile>
+    <innerfile refid="test__gnn__inference_8py">test_gnn_inference.py</innerfile>
+    <innerfile refid="test__normalization_8py">test_normalization.py</innerfile>
+    <innerfile refid="test__particles_8py">test_particles.py</innerfile>
+    <innerfile refid="test__root__io_8py">test_root_io.py</innerfile>
+    <innerfile refid="test__selection_8py">test_selection.py</innerfile>
+    <innerfile refid="test__ssml__mc20_8py">test_ssml_mc20.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/test/"/>
+  </compounddef>
+</doxygen>

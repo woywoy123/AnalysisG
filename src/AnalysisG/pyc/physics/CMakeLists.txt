@@ -1,3 +1,16 @@
+/**
+ * @file CMakeLists.txt
+ * @brief Build configuration for the pyc_physics module in the AnalysisG framework.
+ */
+
+/**
+ * @brief Specifies source files and compilation options for the pyc_physics library.
+ *
+ * - If CUDA is enabled, includes CUDA-specific files and options.
+ * - Otherwise, includes standard C++ files.
+ * - Links the library to pyc_utils and pyc_transform.
+ */
+
 if(CMAKE_ANALYSISG_CUDA)
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/physics/physics.cuh

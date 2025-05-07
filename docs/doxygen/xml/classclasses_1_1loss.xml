@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classclasses_1_1loss" kind="class" language="Python" prot="public">
+    <compoundname>classes::loss</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classclasses_1_1loss_1a466b8b999c28a6701baa33ed2bc733e2" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>classes.loss::num</definition>
+        <argsstring></argsstring>
+        <name>num</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="123" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="123" bodyend="-1"/>
+        <referencedby refid="classvalidation_1_1classes_1_1nux_1afefd48f52b0277d9add891eff80b0c9c" compoundref="validation_2classes_8py" startline="113" endline="120">validation.classes.nux.__str__</referencedby>
+        <referencedby refid="classclasses_1_1loss_1a6e2efbcd8d46b53de6cfd262ad5dda05" compoundref="classes_8py" startline="139" endline="150">classes.loss.__str__</referencedby>
+        <referencedby refid="classvalidation_1_1classes_1_1loss_1af43aca3462cdb9f69c35eaf27f83dde4" compoundref="validation_2classes_8py" startline="139" endline="150">validation.classes.loss.__str__</referencedby>
+        <referencedby refid="classvalidation_1_1classes_1_1nux_1a0dc54f21fe4b0bd8b9f04dee58365277" compoundref="validation_2classes_8py" startline="78" endline="112">validation.classes.nux.add</referencedby>
+        <referencedby refid="classvalidation_1_1classes_1_1loss_1a3df8823a92a0fea1270ce180ef4104a9" compoundref="validation_2classes_8py" startline="133" endline="138">validation.classes.loss.add</referencedby>
+        <referencedby refid="classclasses_1_1loss_1ab28026b09e49f65614f164b302afe952" compoundref="classes_8py" startline="133" endline="138">classes.loss.add</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classclasses_1_1loss_1a76bed2f2a4e651e5fee908a020d154e5" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>classes.loss::loss_component</definition>
+        <argsstring></argsstring>
+        <name>loss_component</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="124" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="124" bodyend="-1"/>
+        <referencedby refid="classclasses_1_1loss_1a6e2efbcd8d46b53de6cfd262ad5dda05" compoundref="classes_8py" startline="139" endline="150">classes.loss.__str__</referencedby>
+        <referencedby refid="classvalidation_1_1classes_1_1loss_1af43aca3462cdb9f69c35eaf27f83dde4" compoundref="validation_2classes_8py" startline="139" endline="150">validation.classes.loss.__str__</referencedby>
+        <referencedby refid="classvalidation_1_1classes_1_1loss_1a3df8823a92a0fea1270ce180ef4104a9" compoundref="validation_2classes_8py" startline="133" endline="138">validation.classes.loss.add</referencedby>
+        <referencedby refid="classclasses_1_1loss_1ab28026b09e49f65614f164b302afe952" compoundref="classes_8py" startline="133" endline="138">classes.loss.add</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classclasses_1_1loss_1af72402910e2c1defa7e690542896674b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>classes.loss::eps</definition>
+        <argsstring></argsstring>
+        <name>eps</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="125" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="125" bodyend="-1"/>
+        <referencedby refid="classclasses_1_1loss_1ab28026b09e49f65614f164b302afe952" compoundref="classes_8py" startline="133" endline="138">classes.loss.add</referencedby>
+        <referencedby refid="classvalidation_1_1classes_1_1loss_1a3df8823a92a0fea1270ce180ef4104a9" compoundref="validation_2classes_8py" startline="133" endline="138">validation.classes.loss.add</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classclasses_1_1loss_1acf39fa1442c0da69740c36996b564296" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>classes.loss::truth</definition>
+        <argsstring></argsstring>
+        <name>truth</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="127" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="127" bodyend="-1"/>
+        <referencedby refid="classvalidation_1_1classes_1_1_container_1a476e93e22f9cee98dd2616ff1aec21e9" compoundref="validation_2classes_8py" startline="51" endline="58">validation.classes.Container.__str__</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classclasses_1_1loss_1aef04411be29a4c556e188657863bbbf4" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>classes.loss::cuda_dnu</definition>
+        <argsstring></argsstring>
+        <name>cuda_dnu</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="128" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="128" bodyend="-1"/>
+        <referencedby refid="classvalidation_1_1classes_1_1_container_1a476e93e22f9cee98dd2616ff1aec21e9" compoundref="validation_2classes_8py" startline="51" endline="58">validation.classes.Container.__str__</referencedby>
+        <referencedby refid="classvalidation_1_1classes_1_1loss_1af43aca3462cdb9f69c35eaf27f83dde4" compoundref="validation_2classes_8py" startline="139" endline="150">validation.classes.loss.__str__</referencedby>
+        <referencedby refid="classclasses_1_1loss_1a6e2efbcd8d46b53de6cfd262ad5dda05" compoundref="classes_8py" startline="139" endline="150">classes.loss.__str__</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classclasses_1_1loss_1a95109e4cdba694cc2a1805bb9e7d73f4" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>classes.loss::cuda_snu</definition>
+        <argsstring></argsstring>
+        <name>cuda_snu</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="129" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="129" bodyend="-1"/>
+        <referencedby refid="classvalidation_1_1classes_1_1_container_1a476e93e22f9cee98dd2616ff1aec21e9" compoundref="validation_2classes_8py" startline="51" endline="58">validation.classes.Container.__str__</referencedby>
+        <referencedby refid="classvalidation_1_1classes_1_1loss_1af43aca3462cdb9f69c35eaf27f83dde4" compoundref="validation_2classes_8py" startline="139" endline="150">validation.classes.loss.__str__</referencedby>
+        <referencedby refid="classclasses_1_1loss_1a6e2efbcd8d46b53de6cfd262ad5dda05" compoundref="classes_8py" startline="139" endline="150">classes.loss.__str__</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classclasses_1_1loss_1ad1deef56fec6cf0caf42c2561e99a469" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>classes.loss::ref_dnu</definition>
+        <argsstring></argsstring>
+        <name>ref_dnu</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="130" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="130" bodyend="-1"/>
+        <referencedby refid="classvalidation_1_1classes_1_1_container_1a476e93e22f9cee98dd2616ff1aec21e9" compoundref="validation_2classes_8py" startline="51" endline="58">validation.classes.Container.__str__</referencedby>
+        <referencedby refid="classvalidation_1_1classes_1_1loss_1af43aca3462cdb9f69c35eaf27f83dde4" compoundref="validation_2classes_8py" startline="139" endline="150">validation.classes.loss.__str__</referencedby>
+        <referencedby refid="classclasses_1_1loss_1a6e2efbcd8d46b53de6cfd262ad5dda05" compoundref="classes_8py" startline="139" endline="150">classes.loss.__str__</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classclasses_1_1loss_1aac22a3e473910e7ae9fcaaffce9817e3" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>classes.loss::ref_snu</definition>
+        <argsstring></argsstring>
+        <name>ref_snu</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="131" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="131" bodyend="-1"/>
+        <referencedby refid="classvalidation_1_1classes_1_1_container_1a476e93e22f9cee98dd2616ff1aec21e9" compoundref="validation_2classes_8py" startline="51" endline="58">validation.classes.Container.__str__</referencedby>
+        <referencedby refid="classvalidation_1_1classes_1_1loss_1af43aca3462cdb9f69c35eaf27f83dde4" compoundref="validation_2classes_8py" startline="139" endline="150">validation.classes.loss.__str__</referencedby>
+        <referencedby refid="classclasses_1_1loss_1a6e2efbcd8d46b53de6cfd262ad5dda05" compoundref="classes_8py" startline="139" endline="150">classes.loss.__str__</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classclasses_1_1loss_1a8f43522fd48a78def5ff120d0c16f683" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def classes.loss.__init__</definition>
+        <argsstring>(self, epsilon=None)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>epsilon</type>
+          <defname>epsilon</defname>
+          <defval>None</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="122" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="122" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="classclasses_1_1loss_1ab28026b09e49f65614f164b302afe952" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def classes.loss.add</definition>
+        <argsstring>(self, con)</argsstring>
+        <name>add</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>con</type>
+          <defname>con</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="133" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="133" bodyend="138"/>
+        <references refid="structoptimizer__params__t_1a819655c062cda423df4081e1c73cf306" compoundref="structs_2include_2structs_2optimizer_8h" startline="14">optimizer_params_t::eps</references>
+        <references refid="classclasses_1_1loss_1af72402910e2c1defa7e690542896674b" compoundref="classes_8py" startline="125">classes.loss.eps</references>
+        <references refid="classclasses_1_1loss_1a76bed2f2a4e651e5fee908a020d154e5" compoundref="classes_8py" startline="124">classes.loss.loss_component</references>
+        <references refid="classclasses_1_1nux_1a5a5d8389bade6fbb35192f496efe6cbb" compoundref="classes_8py" startline="76">classes.nux.num</references>
+        <references refid="classclasses_1_1loss_1a466b8b999c28a6701baa33ed2bc733e2" compoundref="classes_8py" startline="123">classes.loss.num</references>
+      </memberdef>
+      <memberdef kind="function" id="classclasses_1_1loss_1a6e2efbcd8d46b53de6cfd262ad5dda05" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def classes.loss.__str__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__str__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="139" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="139" bodyend="150"/>
+        <references refid="classclasses_1_1_container_1a0e5e4d4e7bf966394f8cfb7e152bb667" compoundref="classes_8py" startline="45">classes.Container.cuda_dnu</references>
+        <references refid="classclasses_1_1loss_1aef04411be29a4c556e188657863bbbf4" compoundref="classes_8py" startline="128">classes.loss.cuda_dnu</references>
+        <references refid="classclasses_1_1_container_1a77e2ae7ecb6102c29848c5218f4d1fee" compoundref="classes_8py" startline="46">classes.Container.cuda_snu</references>
+        <references refid="classclasses_1_1loss_1a95109e4cdba694cc2a1805bb9e7d73f4" compoundref="classes_8py" startline="129">classes.loss.cuda_snu</references>
+        <references refid="classclasses_1_1loss_1a76bed2f2a4e651e5fee908a020d154e5" compoundref="classes_8py" startline="124">classes.loss.loss_component</references>
+        <references refid="classclasses_1_1nux_1a5a5d8389bade6fbb35192f496efe6cbb" compoundref="classes_8py" startline="76">classes.nux.num</references>
+        <references refid="classclasses_1_1loss_1a466b8b999c28a6701baa33ed2bc733e2" compoundref="classes_8py" startline="123">classes.loss.num</references>
+        <references refid="classclasses_1_1_container_1a1d93de416421f7ecdc9cbdd7de8baa09" compoundref="classes_8py" startline="47">classes.Container.ref_dnu</references>
+        <references refid="classclasses_1_1loss_1ad1deef56fec6cf0caf42c2561e99a469" compoundref="classes_8py" startline="130">classes.loss.ref_dnu</references>
+        <references refid="classclasses_1_1_container_1a85f9ebef411848478cb859a1b4c857ef" compoundref="classes_8py" startline="48">classes.Container.ref_snu</references>
+        <references refid="classclasses_1_1loss_1aac22a3e473910e7ae9fcaaffce9817e3" compoundref="classes_8py" startline="131">classes.loss.ref_snu</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/neutrino/classes.py" line="121" column="1" bodyfile="/workspaces/AnalysisG/studies/neutrino/classes.py" bodystart="121" bodyend="150"/>
+    <listofallmembers>
+      <member refid="classclasses_1_1loss_1a8f43522fd48a78def5ff120d0c16f683" prot="public" virt="non-virtual"><scope>classes::loss</scope><name>__init__</name></member>
+      <member refid="classclasses_1_1loss_1a6e2efbcd8d46b53de6cfd262ad5dda05" prot="public" virt="non-virtual"><scope>classes::loss</scope><name>__str__</name></member>
+      <member refid="classclasses_1_1loss_1ab28026b09e49f65614f164b302afe952" prot="public" virt="non-virtual"><scope>classes::loss</scope><name>add</name></member>
+      <member refid="classclasses_1_1loss_1aef04411be29a4c556e188657863bbbf4" prot="public" virt="non-virtual"><scope>classes::loss</scope><name>cuda_dnu</name></member>
+      <member refid="classclasses_1_1loss_1a95109e4cdba694cc2a1805bb9e7d73f4" prot="public" virt="non-virtual"><scope>classes::loss</scope><name>cuda_snu</name></member>
+      <member refid="classclasses_1_1loss_1af72402910e2c1defa7e690542896674b" prot="public" virt="non-virtual"><scope>classes::loss</scope><name>eps</name></member>
+      <member refid="classclasses_1_1loss_1a76bed2f2a4e651e5fee908a020d154e5" prot="public" virt="non-virtual"><scope>classes::loss</scope><name>loss_component</name></member>
+      <member refid="classclasses_1_1loss_1a466b8b999c28a6701baa33ed2bc733e2" prot="public" virt="non-virtual"><scope>classes::loss</scope><name>num</name></member>
+      <member refid="classclasses_1_1loss_1ad1deef56fec6cf0caf42c2561e99a469" prot="public" virt="non-virtual"><scope>classes::loss</scope><name>ref_dnu</name></member>
+      <member refid="classclasses_1_1loss_1aac22a3e473910e7ae9fcaaffce9817e3" prot="public" virt="non-virtual"><scope>classes::loss</scope><name>ref_snu</name></member>
+      <member refid="classclasses_1_1loss_1acf39fa1442c0da69740c36996b564296" prot="public" virt="non-virtual"><scope>classes::loss</scope><name>truth</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,585 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacesimply__plot" kind="namespace" language="Python">
+    <compoundname>simply_plot</compoundname>
+    <innerclass refid="classsimply__plot_1_1_data_x" prot="public">simply_plot::DataX</innerclass>
+    <innerclass refid="classsimply__plot_1_1_meta_x" prot="public">simply_plot::MetaX</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacesimply__plot_1ad1295597c416ae1a76ee6d078705f626" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string simply_plot.root</definition>
+        <argsstring></argsstring>
+        <name>root</name>
+        <initializer>=  &quot;/home/tnom6927/Downloads/mc16-full/&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="6" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="6" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1ae55a047b86621996eeb59fbfc17cc829" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list simply_plot.sets</definition>
+        <argsstring></argsstring>
+        <name>sets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="7" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a12b7f0b104eec4bdaae1f8ffe2c6535a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <initializer>=  Analysis()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="568" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="568" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1ae6b2d2b1db104871d1383019db2999d2" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.mtx</definition>
+        <argsstring></argsstring>
+        <name>mtx</name>
+        <initializer>=  <ref refid="classsimply__plot_1_1_meta_x" kindref="compound">MetaX</ref>(x.GetMetaData)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="573" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="573" bodyend="-1"/>
+        <referencedby refid="classcontainer_1a2f036c9c52b38b6fd462a2a72f553c41" compoundref="container_8cxx" startline="65" endline="133">container::compile</referencedby>
+        <referencedby refid="classpagerank__metric_1a7ee9e25c68e9178ef983418866b97a26" compoundref="pagerank_8cxx" startline="87" endline="190">pagerank_metric::define_metric</referencedby>
+        <referencedby refid="classaccuracy__metric_1a6842a48f1db5613338dbe0d86fcf9b0b" compoundref="accuracy_8cxx" startline="53" endline="100">accuracy_metric::define_metric</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a377c7db0a87ca3bb895049778c7b4b93" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list simply_plot.gxt</definition>
+        <argsstring></argsstring>
+        <name>gxt</name>
+        <initializer>=  []</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="575" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="575" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a0d35c002f6ca676ade93d9eb4e00b857" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool simply_plot.msk</definition>
+        <argsstring></argsstring>
+        <name>msk</name>
+        <initializer>=  False</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="577" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="577" bodyend="-1"/>
+        <referencedby refid="namespacegraph___1a7249186f32a05a8ff1601bff5deabdef" compoundref="graph_2graph_8cxx" startline="4" endline="63">graph_::edge_aggregation</referencedby>
+        <referencedby refid="namespacenusol___1a2cdd92aeb32c05137ebc7ef96c47a3da" compoundref="nusol_2tensor_2nusol_8cxx" startline="253" endline="395">nusol_::Intersection</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a099be7fe549d39e6b94f28a736b59357" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.smpl</definition>
+        <argsstring></argsstring>
+        <name>smpl</name>
+        <initializer>=  IO(<ref refid="namespacesimply__plot_1a377c7db0a87ca3bb895049778c7b4b93" kindref="member">gxt</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="592" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="592" bodyend="-1"/>
+        <referencedby refid="classoptimizer_1a64c847af5d85a8599150c7db47ef20bf" compoundref="optimizer_2cxx_2optimizer_8cxx" startline="43" endline="68">optimizer::training_loop</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1ac8cef0f37c8c15521b51ff4b39e3bad3" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.Verbose</definition>
+        <argsstring></argsstring>
+        <name>Verbose</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="593" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="593" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a7e876556f0f2fa8ff84a695d64b17c87" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.Trees</definition>
+        <argsstring></argsstring>
+        <name>Trees</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="594" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="594" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1ae0d59325e7b2294849ac871d22c4312a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.Leaves</definition>
+        <argsstring></argsstring>
+        <name>Leaves</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="595" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="595" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a59d479d8da0dfcd7e0e0fbd2bd028b02" prot="public" static="no" mutable="no">
+        <type>def</type>
+        <definition>def simply_plot.opt</definition>
+        <argsstring></argsstring>
+        <name>opt</name>
+        <initializer>=  <ref refid="namespacesimply__plot_1ad90a9d68f1cad6c1caa83b913428d00e" kindref="member">compute_data</ref>(<ref refid="namespacesimply__plot_1a099be7fe549d39e6b94f28a736b59357" kindref="member">smpl</ref>, <ref refid="namespacesimply__plot_1ae6b2d2b1db104871d1383019db2999d2" kindref="member">mtx</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="596" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="596" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a4ea1746ebb337ab8bbfca8f778047197" prot="public" static="no" mutable="no">
+        <type>dictionary</type>
+        <definition>dictionary simply_plot::prc</definition>
+        <argsstring></argsstring>
+        <name>prc</name>
+        <initializer>=  {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="598" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="598" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a6da1fa0c63d9964ad4e06fa2cd29c290" prot="public" static="no" mutable="no">
+        <type>def</type>
+        <definition>def simply_plot.tlt</definition>
+        <argsstring></argsstring>
+        <name>tlt</name>
+        <initializer>=  <ref refid="namespacesimply__plot_1a59d479d8da0dfcd7e0e0fbd2bd028b02" kindref="member">opt</ref>[k].title(k)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="600" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="600" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a54a24b6bd3450d44d5dd739227e9aaf5" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list simply_plot.titles</definition>
+        <argsstring></argsstring>
+        <name>titles</name>
+        <initializer>=  [
+    &quot;Sample Processed           &quot;,
+    &quot;Exp. Yield (lumi*<ref refid="namespacesimply__plot_1a12b7f0b104eec4bdaae1f8ffe2c6535a" kindref="member">x</ref>-section)&quot;,
+    &quot;<ref refid="namespacesimply__plot_1a12b7f0b104eec4bdaae1f8ffe2c6535a" kindref="member">x</ref>-section (fb) &quot;,
+    &quot;Num. Events (unweighted)&quot;,
+    &quot;Sum of Weights (Tree)&quot;,
+    &quot;Scale factor (Exp. yield / sum of weights)&quot;,
+    &quot;Yield (Scale factor * histogram)&quot;,
+    &quot;&quot;
+]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="606" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="606" bodyend="-1"/>
+        <referencedby refid="classdataloader_1aa97ddc9ee69e9b9ecaf763ff8db775a2" compoundref="dataloader_8cxx" startline="128" endline="147">dataloader::datatransfer</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a2fb6a704e1fde5f1be02a6338ce74e28" prot="public" static="no" mutable="no">
+        <type>dictionary</type>
+        <definition>dictionary simply_plot.h</definition>
+        <argsstring></argsstring>
+        <name>h</name>
+        <initializer>=  {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="617" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="617" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" prot="public" static="no" mutable="no">
+        <type>dictionary</type>
+        <definition>dictionary simply_plot.data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <initializer>=  <ref refid="namespacesimply__plot_1a4ea1746ebb337ab8bbfca8f778047197" kindref="member">prc</ref>[prx]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="620" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="620" bodyend="-1"/>
+        <referencedby refid="structgraph__t_1a3bd07dc62caec3b38fef61bc198c16e7" compoundref="struct__graph_8cxx" startline="34" endline="38">graph_t::add_data_edge</referencedby>
+        <referencedby refid="structgraph__t_1ab96d9f7d4e64882fb6527ffb5a12a80f" compoundref="struct__graph_8cxx" startline="22" endline="26">graph_t::add_data_graph</referencedby>
+        <referencedby refid="structgraph__t_1ada25cd27a1b91c458f6994b7369f5b3c" compoundref="struct__graph_8cxx" startline="28" endline="32">graph_t::add_data_node</referencedby>
+        <referencedby refid="classcontainer_1ac41f130224d7233f6967fd27028b5206" compoundref="container_8cxx" startline="30" endline="33">container::add_meta_data</referencedby>
+        <referencedby refid="structgraph__t_1ab2957c1a4e2e35dcec6d85b9c5cd289f" compoundref="struct__graph_8cxx" startline="16" endline="20">graph_t::add_truth_edge</referencedby>
+        <referencedby refid="structgraph__t_1a240e5e6342673e9436f7e02606e051a9" compoundref="struct__graph_8cxx" startline="4" endline="8">graph_t::add_truth_graph</referencedby>
+        <referencedby refid="structgraph__t_1a8b35caee94522d24ccf73316cf42d6fa" compoundref="struct__graph_8cxx" startline="10" endline="14">graph_t::add_truth_node</referencedby>
+        <referencedby refid="main_8cxx_1ade4e54ed3f80d4077f4bb5e35c391337" compoundref="main_8cxx" startline="49" endline="51">as_primitive</referencedby>
+        <referencedby refid="classmodel__template_1afd196d00ade10419642d541a1eaaef21" compoundref="model__template_8cxx" startline="118" endline="130">model_template::assign_features</referencedby>
+        <referencedby refid="classdataloader_1ad973eae80b8c958e87642459f8a81b47" compoundref="dataloader_8cxx" startline="151" endline="292">dataloader::build_batch</referencedby>
+        <referencedby refid="classsampletracer_1a30d25d5a298b3c5698aee99ede11ce79" compoundref="sampletracer_8cxx" startline="95" endline="146">sampletracer::compile_objects</referencedby>
+        <referencedby refid="classdataloader_1a17822e45f6b5c7d407b71a0660e45f75" compoundref="dataloader_8cxx" startline="115" endline="126">dataloader::datatransfer</referencedby>
+        <referencedby refid="structanalytics__t_1a8cf1056f201348aecae5b87ab3363a18" compoundref="metrics_8h" startline="59" endline="66">analytics_t::destroy</referencedby>
+        <referencedby refid="classdataloader_1a6a829ac2b88dd9655a52bdf3e3701259" compoundref="dataset_8cxx" startline="129" endline="173">dataloader::dump_dataset</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dataloader::dump_graphs</referencedby>
+        <referencedby refid="classmodel__template_1ac393d52139a06ce55e9b7872954ef17f" compoundref="model__template_8cxx" startline="248" endline="284">model_template::flush_outputs</referencedby>
+        <referencedby refid="classrecursivegraphneuralnetwork_1a4b09bc8de8d9ecd0b4ff1ffa94deea98" compoundref="_recursive_graph_neural_network_8cxx" startline="143" endline="300">recursivegraphneuralnetwork::forward</referencedby>
+        <referencedby refid="classgrift_1a72f7575fbd1d744d4f9053e5b8b7ee38" compoundref="grift_8cxx" startline="112" endline="296">grift::forward</referencedby>
+        <referencedby refid="classmodel__template_1a6b9c9f24d7800179c2d8f1f7eff59acc" compoundref="model__template_8cxx" startline="182" endline="197">model_template::forward</referencedby>
+        <referencedby refid="classtools_1a13633d4d63c55bcf537ff141e7605f13" compoundref="strings_8cxx" startline="77" endline="83">tools::has_value</referencedby>
+        <referencedby refid="classplotting_1a8d26e0eb29163870ddbdecbfc2332b1b" compoundref="plotting_8cxx" startline="53" endline="63">plotting::mean_stdev</referencedby>
+        <referencedby refid="classcontainer_1a000f2ac1538e3b0beb8470d47ae0086d" compoundref="container_8cxx" startline="149" endline="157">container::populate_dataloader</referencedby>
+        <referencedby refid="structvariable__t_1a57abdd7685174f3175f8b975686953ee" compoundref="typecasting_2cxx_2root_8cxx" startline="3" endline="5">variable_t::process</referencedby>
+        <referencedby refid="structmodel__report_1af1c11cbca809e0dbbe7997d701fa496b" compoundref="misc_8cxx" startline="64" endline="83">model_report::prx</referencedby>
+        <referencedby refid="classmodel__template_1a456e96f75278fed9c8d6f4dbff885e39" compoundref="model__template_8cxx" startline="69" endline="72">model_template::register_module</referencedby>
+        <referencedby refid="classdataloader_1a5fddffa25c532953896e2d1646ca1dc4" compoundref="dataset_8cxx" startline="175" endline="221">dataloader::restore_dataset</referencedby>
+        <referencedby refid="classdataloader_1af9b0d37897d8e37873b660469d3d82ff" compoundref="dataloader_8cxx" startline="294" endline="307">dataloader::safe_delete</referencedby>
+        <referencedby refid="combinatorial_8cxx_1aa964f6b775656aa0ce291de39c09500f" compoundref="combinatorial_8cxx" startline="68" endline="70">safe_get</referencedby>
+        <referencedby refid="classmeta_1a24d8657dbb9d0d8903725ee01fe22c14" compoundref="meta_8cxx" startline="226" endline="272">meta::scan_sow</referencedby>
+        <referencedby refid="vector__cast_8h_1a9888ed684385b240692f6cb6e4c6b82e" compoundref="vector__cast_8h" startline="40" endline="51">tensor_to_vector</referencedby>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">dataloader::~dataloader</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a0bf6f892181cb5717d74445b1f88ec32" prot="public" static="no" mutable="no">
+        <type>dictionary</type>
+        <definition>dictionary simply_plot.hx</definition>
+        <argsstring></argsstring>
+        <name>hx</name>
+        <initializer>=  data.hist(prx)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="621" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="621" bodyend="-1"/>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">gnn_event::CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a2a9aad90600481cfec891fbdd8f31856" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>def simply_plot::tmp</definition>
+        <argsstring></argsstring>
+        <name>tmp</name>
+        <initializer>=  &quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="623" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="623" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a5abfe093d76b182e2da86a6486e63c41" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.comb</definition>
+        <argsstring></argsstring>
+        <name>comb</name>
+        <initializer>=  TH1F()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="634" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="634" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a6fb0d70b06389dce0e68b01123e0674b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.Stacked</definition>
+        <argsstring></argsstring>
+        <name>Stacked</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="635" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="635" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a9bd8945848e09a6901ecfb9a243cccad" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.yScaling</definition>
+        <argsstring></argsstring>
+        <name>yScaling</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="636" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="636" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a05336b5f6a0361f0a2cd3715add7a847" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.xScaling</definition>
+        <argsstring></argsstring>
+        <name>xScaling</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="637" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="637" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a14438627d68afdc32be14696e8f50c77" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.Histograms</definition>
+        <argsstring></argsstring>
+        <name>Histograms</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="638" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="638" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a4f7f965f835d59d400d9c86f855cb482" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.LegendSize</definition>
+        <argsstring></argsstring>
+        <name>LegendSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="639" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="639" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a5f65a63e160e5f31bc5543c7554cc02c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.Title</definition>
+        <argsstring></argsstring>
+        <name>Title</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="640" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="640" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1ae1772d01849975890ac9ee8c4091edde" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.xTitle</definition>
+        <argsstring></argsstring>
+        <name>xTitle</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="641" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="641" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a66e928f1ace52f33791995daf3a20794" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.yTitle</definition>
+        <argsstring></argsstring>
+        <name>yTitle</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="642" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="642" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1abaf916433dbccb9605772e167209e9a0" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.xBins</definition>
+        <argsstring></argsstring>
+        <name>xBins</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="643" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="643" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a5ef30b20b99c3e05a6e4d5fa0b4769b3" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.xMin</definition>
+        <argsstring></argsstring>
+        <name>xMin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="644" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="644" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1ad1ec2ed9bca2f9aa09011782e6bbafbe" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.xMax</definition>
+        <argsstring></argsstring>
+        <name>xMax</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="645" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="645" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1ac22c46dd265931c6244830c059c1be06" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.yMin</definition>
+        <argsstring></argsstring>
+        <name>yMin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="646" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="646" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a677c7763cc12c48204766d6dc57ffeae" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.xStep</definition>
+        <argsstring></argsstring>
+        <name>xStep</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="647" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="647" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a750809bcf2bb1141afe5e848e61a705c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.yLogarithmic</definition>
+        <argsstring></argsstring>
+        <name>yLogarithmic</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="648" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="648" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacesimply__plot_1a4e3647f333653a9356ebb2b24b28679f" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>simply_plot.Filename</definition>
+        <argsstring></argsstring>
+        <name>Filename</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="649" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="649" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacesimply__plot_1abb1affa5c9cd1172edcfbe2efff41830" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def simply_plot.mapping</definition>
+        <argsstring>(name)</argsstring>
+        <name>mapping</name>
+        <param>
+          <type><ref refid="_3name_4_8h_1a13693d172ed8717c27f198afdd212a7e" kindref="member">name</ref></type>
+          <defname>name</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="473" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="473" bodyend="516"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacesimply__plot_1ad90a9d68f1cad6c1caa83b913428d00e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def simply_plot.compute_data</definition>
+        <argsstring>(io_handle, meta)</argsstring>
+        <name>compute_data</name>
+        <param>
+          <type>io_handle</type>
+          <defname>io_handle</defname>
+        </param>
+        <param>
+          <type><ref refid="classmeta" kindref="compound">meta</ref></type>
+          <defname>meta</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="545" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="545" bodyend="560"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacesimply__plot_1aa2cf8fa65a2ce74f132feb23cf3b8890" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def simply_plot.buffs</definition>
+        <argsstring>(tl, val, tm)</argsstring>
+        <name>buffs</name>
+        <param>
+          <type>tl</type>
+          <defname>tl</defname>
+        </param>
+        <param>
+          <type>val</type>
+          <defname>val</defname>
+        </param>
+        <param>
+          <type>tm</type>
+          <defname>tm</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="561" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="561" bodyend="567"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/test/simply_plot.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classmain_1_1_data_x" kind="class" language="Python" prot="public">
+    <compoundname>main::DataX</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">Data</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classmain_1_1_data_x_1ada7ac4c639d5b6041ca38aa877000c7e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def main.DataX.title</definition>
+        <argsstring>(self, val)</argsstring>
+        <name>title</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>val</type>
+          <defname>val</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/studies/performance/main.py" line="9" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/main.py" bodystart="9" bodyend="10"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Data</label>
+      </node>
+      <node id="1">
+        <label>main.DataX</label>
+        <link refid="classmain_1_1_data_x"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Data</label>
+      </node>
+      <node id="1">
+        <label>main.DataX</label>
+        <link refid="classmain_1_1_data_x"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/workspaces/AnalysisG/studies/performance/main.py" line="8" column="1" bodyfile="/workspaces/AnalysisG/studies/performance/main.py" bodystart="8" bodyend="11"/>
+    <listofallmembers>
+      <member refid="classmain_1_1_data_x_1ada7ac4c639d5b6041ca38aa877000c7e" prot="public" virt="non-virtual"><scope>main::DataX</scope><name>title</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

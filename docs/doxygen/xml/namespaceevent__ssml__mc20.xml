@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespaceevent__ssml__mc20" kind="namespace" language="Python">
+    <compoundname>event_ssml_mc20</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="events/ssml_mc20/__init__.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

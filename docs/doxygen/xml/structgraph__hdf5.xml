@@ -1,0 +1,298 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="structgraph__hdf5" kind="struct" language="C++" prot="public">
+    <compoundname>graph_hdf5</compoundname>
+    <includes refid="folds_8h" local="no">folds.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structgraph__hdf5_1a4c32f497b548f06050b4e16fadb2c840" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int graph_hdf5::num_nodes</definition>
+        <argsstring></argsstring>
+        <name>num_nodes</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="21" column="12" bodyfile="modules/structs/include/structs/folds.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1a114dc2b2be3fed1f839b7e8e80134cce" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double graph_hdf5::event_weight</definition>
+        <argsstring></argsstring>
+        <name>event_weight</name>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="22" column="12" bodyfile="modules/structs/include/structs/folds.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1ae22276649690dcace347ba9c2fab8240" prot="public" static="no" mutable="no">
+        <type>long</type>
+        <definition>long graph_hdf5::event_index</definition>
+        <argsstring></argsstring>
+        <name>event_index</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="23" column="12" bodyfile="modules/structs/include/structs/folds.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1ab975032fd062ca1a569a12634c3ee11d" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::hash</definition>
+        <argsstring></argsstring>
+        <name>hash</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="25" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1a9f8e7f0c8466132ada000a9e17bf4b74" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::filename</definition>
+        <argsstring></argsstring>
+        <name>filename</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="26" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1a16de66ca84f82d2bccfea05f6061b37a" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::edge_index</definition>
+        <argsstring></argsstring>
+        <name>edge_index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="27" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1ad75bec95c60ef18060d2c0c241179594" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::data_map_graph</definition>
+        <argsstring></argsstring>
+        <name>data_map_graph</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="29" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1ae79538fb49675ac88aeaa8b778c98b7b" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::data_map_node</definition>
+        <argsstring></argsstring>
+        <name>data_map_node</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="30" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1a7d3a7826a9f750c279d82061a1c37ada" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::data_map_edge</definition>
+        <argsstring></argsstring>
+        <name>data_map_edge</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="31" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1a41e49ecbf8c4efd0e1a0356b7522de04" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::truth_map_graph</definition>
+        <argsstring></argsstring>
+        <name>truth_map_graph</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="33" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1a7bc6f3ce6c3222f914dc097d1b328cbe" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::truth_map_node</definition>
+        <argsstring></argsstring>
+        <name>truth_map_node</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="34" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1a8429c19c930daad950d6cb2174db2d59" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::truth_map_edge</definition>
+        <argsstring></argsstring>
+        <name>truth_map_edge</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="35" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1a92ceec70c0a5f21ed825c5c70e4f8ce5" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::data_graph</definition>
+        <argsstring></argsstring>
+        <name>data_graph</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="37" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1a73845121c65b5b862ee126750d852622" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::data_node</definition>
+        <argsstring></argsstring>
+        <name>data_node</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="38" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1ac4861c215beded575738e21c5fa59106" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::data_edge</definition>
+        <argsstring></argsstring>
+        <name>data_edge</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="39" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1a6fe1f16ce2ae22186701645722003ca5" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::truth_graph</definition>
+        <argsstring></argsstring>
+        <name>truth_graph</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="41" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1a1e27c30eda39ae231a8f71b6fe2d5b52" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::truth_node</definition>
+        <argsstring></argsstring>
+        <name>truth_node</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="42" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5_1a70a4c5392483e6992bfaa8ef2dbcb4c1" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string graph_hdf5::truth_edge</definition>
+        <argsstring></argsstring>
+        <name>truth_edge</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="43" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="3">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="1">
+        <label>graph_hdf5</label>
+        <link refid="structgraph__hdf5"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>data_map_edge</edgelabel>
+          <edgelabel>truth_map_graph</edgelabel>
+          <edgelabel>data_graph</edgelabel>
+          <edgelabel>truth_edge</edgelabel>
+          <edgelabel>truth_map_node</edgelabel>
+          <edgelabel>data_node</edgelabel>
+          <edgelabel>edge_index</edgelabel>
+          <edgelabel>truth_map_edge</edgelabel>
+          <edgelabel>data_map_node</edgelabel>
+          <edgelabel>truth_node</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::string</label>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="modules/structs/include/structs/folds.h" line="20" column="17" bodyfile="modules/structs/include/structs/folds.h" bodystart="20" bodyend="44"/>
+    <listofallmembers>
+      <member refid="structgraph__hdf5_1ac4861c215beded575738e21c5fa59106" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>data_edge</name></member>
+      <member refid="structgraph__hdf5_1a92ceec70c0a5f21ed825c5c70e4f8ce5" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>data_graph</name></member>
+      <member refid="structgraph__hdf5_1a7d3a7826a9f750c279d82061a1c37ada" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>data_map_edge</name></member>
+      <member refid="structgraph__hdf5_1ad75bec95c60ef18060d2c0c241179594" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>data_map_graph</name></member>
+      <member refid="structgraph__hdf5_1ae79538fb49675ac88aeaa8b778c98b7b" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>data_map_node</name></member>
+      <member refid="structgraph__hdf5_1a73845121c65b5b862ee126750d852622" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>data_node</name></member>
+      <member refid="structgraph__hdf5_1a16de66ca84f82d2bccfea05f6061b37a" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>edge_index</name></member>
+      <member refid="structgraph__hdf5_1ae22276649690dcace347ba9c2fab8240" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>event_index</name></member>
+      <member refid="structgraph__hdf5_1a114dc2b2be3fed1f839b7e8e80134cce" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>event_weight</name></member>
+      <member refid="structgraph__hdf5_1a9f8e7f0c8466132ada000a9e17bf4b74" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>filename</name></member>
+      <member refid="structgraph__hdf5_1ab975032fd062ca1a569a12634c3ee11d" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>hash</name></member>
+      <member refid="structgraph__hdf5_1a4c32f497b548f06050b4e16fadb2c840" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>num_nodes</name></member>
+      <member refid="structgraph__hdf5_1a70a4c5392483e6992bfaa8ef2dbcb4c1" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>truth_edge</name></member>
+      <member refid="structgraph__hdf5_1a6fe1f16ce2ae22186701645722003ca5" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>truth_graph</name></member>
+      <member refid="structgraph__hdf5_1a8429c19c930daad950d6cb2174db2d59" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>truth_map_edge</name></member>
+      <member refid="structgraph__hdf5_1a41e49ecbf8c4efd0e1a0356b7522de04" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>truth_map_graph</name></member>
+      <member refid="structgraph__hdf5_1a7bc6f3ce6c3222f914dc097d1b328cbe" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>truth_map_node</name></member>
+      <member refid="structgraph__hdf5_1a1e27c30eda39ae231a8f71b6fe2d5b52" prot="public" virt="non-virtual"><scope>graph_hdf5</scope><name>truth_node</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

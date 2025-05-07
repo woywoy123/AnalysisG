@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_78ff54250c20569884c69ac073d09539" kind="dir">
+    <compoundname>cxx</compoundname>
+    <innerfile refid="bsm__4tops_2cxx_2graphs_8cxx">bsm_4tops/cxx/graphs.cxx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="graphs/bsm_4tops/cxx/"/>
+  </compounddef>
+</doxygen>

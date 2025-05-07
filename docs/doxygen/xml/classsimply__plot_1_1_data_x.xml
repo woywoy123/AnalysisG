@@ -1,0 +1,255 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classsimply__plot_1_1_data_x" kind="class" language="Python" prot="public">
+    <compoundname>simply_plot::DataX</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">Data</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classsimply__plot_1_1_data_x_1aaacf4239206d59867e979e047388effe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def simply_plot.DataX.num_events</definition>
+        <argsstring>(self)</argsstring>
+        <name>num_events</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="531" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="531" bodyend="532"/>
+        <references refid="classmatching_1a0b791a7fc0483ec0cf7320b3bcb9e89f" compoundref="matching_8h" startline="54">matching::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; std::string, particle_template * &gt; particle_template::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">tuple&lt; float, float &gt; optimizer_params_t::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; std::string, std::string &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">tuple&lt; O *, O * &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, particle_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, model_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; T, G &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, jet &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; std::string, particle_template * &gt;, particle_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, muon &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; unsigned int, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; int, model_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; double, particle_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; std::string, std::string &gt;, metric_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; int, int &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, graph_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, top_children &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::tuple&lt; float, float &gt;, optimizer_params_t &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::vector&lt; double &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::vector&lt; std::string &gt;, metric_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; long, graph_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, event_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, truthjet &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; std::string, weights_t &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; std::string, int &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">vector&lt; double &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; double, optimizer_params_t &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, particle_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, optimizer_params_t &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; long, selection_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; std::string, torch::Tensor * &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; G, O &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; int, std::string &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, electron &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; double, selection_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, selection_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::vector&lt; std::string &gt;, std::map&lt; std::string, torch::Tensor * &gt; &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, graph_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; double, graph_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; std::string, std::string &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::vector&lt; std::string &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; double, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; int, optimizer_params_t &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; int, particle_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::vector&lt; float &gt;, optimizer_params_t &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; double, event_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; std::string, weights_t &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">vector&lt; std::string &gt; event_template::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; long, event_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, metric_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">vector&lt; std::string &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">vector&lt; int &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::vector&lt; int &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; int, int &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; std::string, int &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; int, std::string &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">vector&lt; float &gt; optimizer_params_t::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">vector&lt; std::string &gt; metric_template::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; std::string, std::string &gt; metric_template::data</references>
+        <references refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" compoundref="selection__template_8h" startline="74">selection_template::data</references>
+        <references refid="structwrite__t_1a8a5d50a333ac2413d8cace459c43a312" compoundref="element_8h" startline="93">write_t::data</references>
+        <references refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" compoundref="particle__template_8h" startline="145">particle_template::data</references>
+        <references refid="classio_1ab62fdc2e4d8ea9a3492ac3ea35294f46" compoundref="io_8h" startline="337">io::data</references>
+        <references refid="classgraph__template_1ac6a986b3095026298a035e57ca08433e" compoundref="graph__template_8h" startline="400">graph_template::data</references>
+      </memberdef>
+      <memberdef kind="function" id="classsimply__plot_1_1_data_x_1a90099e1bceec26997657762ffa1c7f11" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def simply_plot.DataX.sow_weights</definition>
+        <argsstring>(self)</argsstring>
+        <name>sow_weights</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="534" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="534" bodyend="535"/>
+      </memberdef>
+      <memberdef kind="function" id="classsimply__plot_1_1_data_x_1a0e121bfe8d385d6d35d71a6f5b5a0d98" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def simply_plot.DataX.title</definition>
+        <argsstring>(self, fname)</argsstring>
+        <name>title</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>fname</type>
+          <defname>fname</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="536" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="536" bodyend="537"/>
+      </memberdef>
+      <memberdef kind="function" id="classsimply__plot_1_1_data_x_1a41f0e58c621248ecb74fbe1deb30cc7e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def simply_plot.DataX.hist</definition>
+        <argsstring>(self, tlt)</argsstring>
+        <name>hist</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacesimply__plot_1a6da1fa0c63d9964ad4e06fa2cd29c290" kindref="member">tlt</ref></type>
+          <defname>tlt</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/simply_plot.py" line="538" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="538" bodyend="544"/>
+        <references refid="classmatching_1a0b791a7fc0483ec0cf7320b3bcb9e89f" compoundref="matching_8h" startline="54">matching::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; std::string, particle_template * &gt; particle_template::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; T, G &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, particle_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; double, optimizer_params_t &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, graph_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; G, O &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, optimizer_params_t &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, jet &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::vector&lt; double &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; std::string, std::string &gt;, metric_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; long, graph_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, truthjet &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, model_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::vector&lt; int &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; int, int &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, electron &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, metric_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, top_children &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, graph_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; std::string, particle_template * &gt;, particle_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; double, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::vector&lt; std::string &gt;, metric_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; double, event_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; bool, muon &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">tuple&lt; O *, O * &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; std::string, weights_t &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; std::string, int &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; int, model_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::vector&lt; float &gt;, optimizer_params_t &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; int, std::string &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; double, particle_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::vector&lt; std::string &gt;, std::map&lt; std::string, torch::Tensor * &gt; &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; long, selection_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; std::string, weights_t &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">vector&lt; std::string &gt; event_template::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">tuple&lt; float, float &gt; optimizer_params_t::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; long, event_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; double, selection_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, selection_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::tuple&lt; float, float &gt;, optimizer_params_t &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, particle_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; double, graph_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::map&lt; std::string, std::string &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::vector&lt; std::string &gt;, meta &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; std::string, std::string &gt; metric_template::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; int, optimizer_params_t &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; int, particle_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; std::string, event_template &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; std::string, torch::Tensor * &gt;::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; std::string, int &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; std::string, std::string &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; int, std::string &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">vector&lt; float &gt; optimizer_params_t::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">vector&lt; std::string &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">vector&lt; int &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">vector&lt; double &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">vector&lt; std::string &gt; metric_template::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">map&lt; int, int &gt; meta::data</references>
+        <references refid="classcproperty_1a264f2038b8ccabd2adb2fe640e576153" compoundref="property_8h" startline="64">cproperty&lt; unsigned int, meta &gt;::data</references>
+        <references refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" compoundref="selection__template_8h" startline="74">selection_template::data</references>
+        <references refid="structwrite__t_1a8a5d50a333ac2413d8cace459c43a312" compoundref="element_8h" startline="93">write_t::data</references>
+        <references refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" compoundref="particle__template_8h" startline="145">particle_template::data</references>
+        <references refid="classio_1ab62fdc2e4d8ea9a3492ac3ea35294f46" compoundref="io_8h" startline="337">io::data</references>
+        <references refid="classgraph__template_1ac6a986b3095026298a035e57ca08433e" compoundref="graph__template_8h" startline="400">graph_template::data</references>
+        <references refid="structmeta__t_1a872a0fffc7ba9adc7d434e61810566f9" compoundref="structs_2include_2structs_2meta_8h" startline="110">meta_t::weights</references>
+        <references refid="classmeta_1a25f9eca600500121ca02bc09eb6db3c1" compoundref="meta_2include_2meta_2meta_8h" startline="137">meta::weights</references>
+        <references refid="classplotting_1a3242285ecbd4cd026d47b2d62b293f85" compoundref="plotting_8h" startline="182">plotting::weights</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>simply_plot.DataX</label>
+        <link refid="classsimply__plot_1_1_data_x"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Data</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>simply_plot.DataX</label>
+        <link refid="classsimply__plot_1_1_data_x"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Data</label>
+      </node>
+    </collaborationgraph>
+    <location file="/workspaces/AnalysisG/test/simply_plot.py" line="528" column="1" bodyfile="/workspaces/AnalysisG/test/simply_plot.py" bodystart="528" bodyend="545"/>
+    <listofallmembers>
+      <member refid="classsimply__plot_1_1_data_x_1a41f0e58c621248ecb74fbe1deb30cc7e" prot="public" virt="non-virtual"><scope>simply_plot::DataX</scope><name>hist</name></member>
+      <member refid="classsimply__plot_1_1_data_x_1aaacf4239206d59867e979e047388effe" prot="public" virt="non-virtual"><scope>simply_plot::DataX</scope><name>num_events</name></member>
+      <member refid="classsimply__plot_1_1_data_x_1a90099e1bceec26997657762ffa1c7f11" prot="public" virt="non-virtual"><scope>simply_plot::DataX</scope><name>sow_weights</name></member>
+      <member refid="classsimply__plot_1_1_data_x_1a0e121bfe8d385d6d35d71a6f5b5a0d98" prot="public" virt="non-virtual"><scope>simply_plot::DataX</scope><name>title</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

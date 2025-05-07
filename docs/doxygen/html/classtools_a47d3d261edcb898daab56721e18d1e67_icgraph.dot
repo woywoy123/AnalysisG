@@ -1,0 +1,11 @@
+digraph "tools::is_file"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="tools::is_file",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Checks if a path refers to an existing file."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="io::check_root_file\l_paths",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classio.html#ad9ed4dbed35a168511c44b38f8e8269b",tooltip="Checks the validity or accessibility of ROOT file paths defined in settings or configurations."];
+}

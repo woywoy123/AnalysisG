@@ -1,0 +1,845 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classtopkinematics" kind="class" language="C++" prot="public">
+    <compoundname>topkinematics</compoundname>
+    <basecompoundref refid="classselection__template" prot="public" virt="non-virtual">selection_template</basecompoundref>
+    <includes refid="mc16_2topkinematics_2topkinematics_8h" local="no">topkinematics.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classtopkinematics_1ae932e43cd009403e4d59ddf1950a9850" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt; std::string, std::vector&lt; float &gt; &gt; topkinematics::res_top_kinematics</definition>
+        <argsstring></argsstring>
+        <name>res_top_kinematics</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/topkinematics/topkinematics.h" line="18" column="18" bodyfile="selections/mc16/topkinematics/topkinematics.h" bodystart="18" bodyend="-1"/>
+        <referencedby refid="classtopkinematics_1a5e34069a535a6ea4914bc0a22792582b" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="10" endline="21">merge</referencedby>
+        <referencedby refid="classtopkinematics_1acf450e4907cff9104f1fc70fa04de276" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="31" endline="105">strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classtopkinematics_1aa0f8cc90e03612d9cc4015904b513f1c" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt; std::string, std::vector&lt; float &gt; &gt; topkinematics::spec_top_kinematics</definition>
+        <argsstring></argsstring>
+        <name>spec_top_kinematics</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/topkinematics/topkinematics.h" line="19" column="18" bodyfile="selections/mc16/topkinematics/topkinematics.h" bodystart="19" bodyend="-1"/>
+        <referencedby refid="classtopkinematics_1a5e34069a535a6ea4914bc0a22792582b" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="10" endline="21">merge</referencedby>
+        <referencedby refid="classtopkinematics_1acf450e4907cff9104f1fc70fa04de276" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="31" endline="105">strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classtopkinematics_1acff80f6be304f62767b6b34ae5083264" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt; std::string, std::vector&lt; float &gt; &gt; topkinematics::mass_combi</definition>
+        <argsstring></argsstring>
+        <name>mass_combi</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/topkinematics/topkinematics.h" line="20" column="18" bodyfile="selections/mc16/topkinematics/topkinematics.h" bodystart="20" bodyend="-1"/>
+        <referencedby refid="classtopkinematics_1a5e34069a535a6ea4914bc0a22792582b" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="10" endline="21">merge</referencedby>
+        <referencedby refid="classtopkinematics_1acf450e4907cff9104f1fc70fa04de276" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="31" endline="105">strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classtopkinematics_1a0aad619311ddc8f34a27c04cd11f0d9d" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt; std::string, std::vector&lt; float &gt; &gt; topkinematics::deltaR</definition>
+        <argsstring></argsstring>
+        <name>deltaR</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/topkinematics/topkinematics.h" line="21" column="18" bodyfile="selections/mc16/topkinematics/topkinematics.h" bodystart="21" bodyend="-1"/>
+        <referencedby refid="classtopkinematics_1a5e34069a535a6ea4914bc0a22792582b" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="10" endline="21">merge</referencedby>
+        <referencedby refid="classtopkinematics_1acf450e4907cff9104f1fc70fa04de276" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="31" endline="105">strategy</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classtopkinematics_1a3320ec959eaaa6be147852edf1778d6a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>topkinematics::topkinematics</definition>
+        <argsstring>()</argsstring>
+        <name>topkinematics</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/topkinematics/topkinematics.h" line="10" column="9" bodyfile="selections/mc16/topkinematics/topkinematics.cxx" bodystart="3" bodyend="3"/>
+        <references refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" compoundref="selection__template_8h" startline="24">selection_template::name</references>
+        <referencedby refid="classtopkinematics_1a21c7435acb2d4f32ead1ebd750bf0954" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="6" endline="8">clone</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtopkinematics_1a9898df703675228caebd4af115b22365" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>topkinematics::~topkinematics</definition>
+        <argsstring>() override</argsstring>
+        <name>~topkinematics</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/topkinematics/topkinematics.h" line="11" column="9" bodyfile="selections/mc16/topkinematics/topkinematics.cxx" bodystart="4" bodyend="4"/>
+      </memberdef>
+      <memberdef kind="function" id="classtopkinematics_1a21c7435acb2d4f32ead1ebd750bf0954" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classselection__template" kindref="compound">selection_template</ref> *</type>
+        <definition>selection_template * topkinematics::clone</definition>
+        <argsstring>() override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classselection__template_1a094ce1eb2b6463f88a8ad5f7dfd8e4b6">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/topkinematics/topkinematics.h" line="12" column="28" bodyfile="selections/mc16/topkinematics/topkinematics.cxx" bodystart="6" bodyend="8"/>
+        <references refid="classtopkinematics_1a3320ec959eaaa6be147852edf1778d6a" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="3" endline="3">topkinematics</references>
+      </memberdef>
+      <memberdef kind="function" id="classtopkinematics_1a887006b5f0787ab23dcf394c10b2e28e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool topkinematics::selection</definition>
+        <argsstring>(event_template *ev) override</argsstring>
+        <name>selection</name>
+        <reimplements refid="classselection__template_1a906e3f695a675e5a545fa4eab867cfd7">selection</reimplements>
+        <param>
+          <type><ref refid="classevent__template" kindref="compound">event_template</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/topkinematics/topkinematics.h" line="14" column="14" bodyfile="selections/mc16/topkinematics/topkinematics.cxx" bodystart="23" bodyend="29"/>
+        <references refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" compoundref="analysis_2main_8py" startline="10">main.ev</references>
+        <references refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" compoundref="test__normalization_8py" startline="9">test_normalization.evn</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="classtopkinematics_1acf450e4907cff9104f1fc70fa04de276" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool topkinematics::strategy</definition>
+        <argsstring>(event_template *ev) override</argsstring>
+        <name>strategy</name>
+        <reimplements refid="classselection__template_1a01a81c84699bb054a8c320fc5575e17b">strategy</reimplements>
+        <param>
+          <type><ref refid="classevent__template" kindref="compound">event_template</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/topkinematics/topkinematics.h" line="15" column="14" bodyfile="selections/mc16/topkinematics/topkinematics.cxx" bodystart="31" bodyend="105"/>
+        <references refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" compoundref="selection__template_8h" startline="74">selection_template::data</references>
+        <references refid="classtopkinematics_1a0aad619311ddc8f34a27c04cd11f0d9d" compoundref="mc16_2topkinematics_2topkinematics_8h" startline="21">deltaR</references>
+        <references refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1adbd2ec240755f1bf46b2c157f0325669" compoundref="pyc_2interface_2physics_8cxx" startline="223" endline="232">pyc::physics::cartesian::separate::DeltaR</references>
+        <references refid="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" compoundref="test__particles_8py" startline="166">test_particles.e</references>
+        <references refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" compoundref="analysis_2main_8py" startline="10">main.ev</references>
+        <references refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" compoundref="test__normalization_8py" startline="9">test_normalization.evn</references>
+        <references refid="classparticle__template_1a566197d07c6aba326fdad5f781ede40c" compoundref="particle__template_8h" startline="36">particle_template::mass</references>
+        <references refid="classtopkinematics_1acff80f6be304f62767b6b34ae5083264" compoundref="mc16_2topkinematics_2topkinematics_8h" startline="20">mass_combi</references>
+        <references refid="classtopkinematics_1ae932e43cd009403e4d59ddf1950a9850" compoundref="mc16_2topkinematics_2topkinematics_8h" startline="18">res_top_kinematics</references>
+        <references refid="classtopkinematics_1aa0f8cc90e03612d9cc4015904b513f1c" compoundref="mc16_2topkinematics_2topkinematics_8h" startline="19">spec_top_kinematics</references>
+        <references refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" compoundref="test__experimental__mc20_8py" startline="7">test_experimental_mc20.t</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="classtopkinematics_1a5e34069a535a6ea4914bc0a22792582b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void topkinematics::merge</definition>
+        <argsstring>(selection_template *sl) override</argsstring>
+        <name>merge</name>
+        <reimplements refid="classselection__template_1ad04ca3679a943defbd47c05a88448aba">merge</reimplements>
+        <param>
+          <type><ref refid="classselection__template" kindref="compound">selection_template</ref> *</type>
+          <declname>sl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/topkinematics/topkinematics.h" line="16" column="14" bodyfile="selections/mc16/topkinematics/topkinematics.cxx" bodystart="10" bodyend="21"/>
+        <references refid="classtopkinematics_1a0aad619311ddc8f34a27c04cd11f0d9d" compoundref="mc16_2topkinematics_2topkinematics_8h" startline="21">deltaR</references>
+        <references refid="_3name_4_8h_1a64e9fa75beda50a9e8400ee0d4e61984">end</references>
+        <references refid="classtopkinematics_1acff80f6be304f62767b6b34ae5083264" compoundref="mc16_2topkinematics_2topkinematics_8h" startline="20">mass_combi</references>
+        <references refid="classtopkinematics_1ae932e43cd009403e4d59ddf1950a9850" compoundref="mc16_2topkinematics_2topkinematics_8h" startline="18">res_top_kinematics</references>
+        <references refid="namespacemain_1a80457db91bd1110a9e4a8515839a2a4b" compoundref="metrics_2main_8py" startline="4">main.sl</references>
+        <references refid="classtopkinematics_1aa0f8cc90e03612d9cc4015904b513f1c" compoundref="mc16_2topkinematics_2topkinematics_8h" startline="19">spec_top_kinematics</references>
+        <references refid="classselection__template_1ae5606e994231fae57abe42e4f0ec6202" compoundref="selection__template_8cxx" startline="10" endline="55">selection_template::write</references>
+      </memberdef>
+      <memberdef kind="function" id="classtopkinematics_1a3320ec959eaaa6be147852edf1778d6a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>topkinematics::topkinematics</definition>
+        <argsstring>()</argsstring>
+        <name>topkinematics</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/topkinematics/topkinematics.h" line="10" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classtopkinematics_1a9898df703675228caebd4af115b22365" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>topkinematics::~topkinematics</definition>
+        <argsstring>() override</argsstring>
+        <name>~topkinematics</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/topkinematics/topkinematics.h" line="11" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classtopkinematics_1a2faf492910ac4ef4b7db784a74dbc976" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classselection__template" kindref="compound">selection_template</ref> *</type>
+        <definition>selection_template* topkinematics::clone</definition>
+        <argsstring>() override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classselection__template_1a094ce1eb2b6463f88a8ad5f7dfd8e4b6">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/topkinematics/topkinematics.h" line="12" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classtopkinematics_1a887006b5f0787ab23dcf394c10b2e28e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool topkinematics::selection</definition>
+        <argsstring>(event_template *ev) override</argsstring>
+        <name>selection</name>
+        <reimplements refid="classselection__template_1a906e3f695a675e5a545fa4eab867cfd7">selection</reimplements>
+        <param>
+          <type><ref refid="classevent__template" kindref="compound">event_template</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/topkinematics/topkinematics.h" line="14" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classtopkinematics_1acf450e4907cff9104f1fc70fa04de276" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool topkinematics::strategy</definition>
+        <argsstring>(event_template *ev) override</argsstring>
+        <name>strategy</name>
+        <reimplements refid="classselection__template_1a01a81c84699bb054a8c320fc5575e17b">strategy</reimplements>
+        <param>
+          <type><ref refid="classevent__template" kindref="compound">event_template</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/topkinematics/topkinematics.h" line="15" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classtopkinematics_1a5e34069a535a6ea4914bc0a22792582b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void topkinematics::merge</definition>
+        <argsstring>(selection_template *sl) override</argsstring>
+        <name>merge</name>
+        <reimplements refid="classselection__template_1ad04ca3679a943defbd47c05a88448aba">merge</reimplements>
+        <param>
+          <type><ref refid="classselection__template" kindref="compound">selection_template</ref> *</type>
+          <declname>sl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc20/topkinematics/topkinematics.h" line="16" column="14"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>topkinematics</label>
+        <link refid="classtopkinematics"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>selection_template</label>
+        <link refid="classselection__template"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="11">
+        <label>cproperty&lt; std::vector&lt; int &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::vector&lt; int &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>meta</label>
+        <link refid="classmeta"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>config</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>run_number</edgelabel>
+          <edgelabel>events</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>dsid</edgelabel>
+          <edgelabel>nFiles</edgelabel>
+          <edgelabel>datasetNumber</edgelabel>
+          <edgelabel>totalEvents</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>fileSize</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>LFN</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>inputrange</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>keyword</edgelabel>
+          <edgelabel>weights</edgelabel>
+          <edgelabel>keywords</edgelabel>
+          <edgelabel>fileGUID</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>principalPhysicsGroup</edgelabel>
+          <edgelabel>DatasetName</edgelabel>
+          <edgelabel>generatorName</edgelabel>
+          <edgelabel>productionStep</edgelabel>
+          <edgelabel>campaign</edgelabel>
+          <edgelabel>projectName</edgelabel>
+          <edgelabel>physicsShort</edgelabel>
+          <edgelabel>logicalDatasetName</edgelabel>
+          <edgelabel>conditionsTag</edgelabel>
+          <edgelabel>derivationFormat</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>cross_section_nb</edgelabel>
+          <edgelabel>completion</edgelabel>
+          <edgelabel>cross_section_fb</edgelabel>
+          <edgelabel>ecmEnergy</edgelabel>
+          <edgelabel>event_index</edgelabel>
+          <edgelabel>sum_of_weights</edgelabel>
+          <edgelabel>beam_energy</edgelabel>
+          <edgelabel>cross_section_pb</edgelabel>
+          <edgelabel>genFiltEff</edgelabel>
+          <edgelabel>eventNumber</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>misc</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>inputfiles</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>isMC</edgelabel>
+          <edgelabel>found</edgelabel>
+        </childnode>
+      </node>
+      <node id="22">
+        <label>std::map&lt; std::string, meta_t &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="23" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; std::string, meta_t &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="26">
+        <label>K</label>
+      </node>
+      <node id="27">
+        <label>T</label>
+      </node>
+      <node id="12">
+        <label>cproperty&lt; unsigned int, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; unsigned int, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="29">
+        <label>weights_t</label>
+        <link refid="structweights__t"/>
+        <childnode refid="30" relation="usage">
+          <edgelabel>hist_data</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>generator</edgelabel>
+          <edgelabel>ami_tag</edgelabel>
+        </childnode>
+      </node>
+      <node id="37">
+        <label>std::vector&lt; double &gt;</label>
+        <childnode refid="34" relation="template-instance">
+          <edgelabel>&lt; double &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="39">
+        <label>cproperty&lt; long, selection_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; long, selection_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="34">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="27" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="43">
+        <label>std::vector&lt; float &gt;</label>
+        <childnode refid="34" relation="template-instance">
+          <edgelabel>&lt; float &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>cproperty&lt; std::string, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::string, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="28">
+        <label>std::map&lt; std::string, weights_t &gt;</label>
+        <childnode refid="29" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; std::string, weights_t &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="25">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="26" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="27" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>cproperty&lt; double, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; double, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="35">
+        <label>std::map&lt; int, std::string &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; int, std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>cproperty&lt; std::vector&lt; double &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::vector&lt; double &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>topkinematics</label>
+        <link refid="classtopkinematics"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="42" relation="usage">
+          <edgelabel>res_top_kinematics</edgelabel>
+          <edgelabel>deltaR</edgelabel>
+          <edgelabel>mass_combi</edgelabel>
+          <edgelabel>spec_top_kinematics</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>cproperty&lt; std::map&lt; int, int &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; int, int &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="31">
+        <label>std::map&lt; int, int &gt;</label>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; int, int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>selection_template</label>
+        <link refid="classselection__template"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>data</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>meta_data</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>filename</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>matched_meta</edgelabel>
+        </childnode>
+        <childnode refid="38" relation="usage">
+          <edgelabel>passed_weights</edgelabel>
+        </childnode>
+        <childnode refid="39" relation="usage">
+          <edgelabel>index</edgelabel>
+        </childnode>
+        <childnode refid="40" relation="usage">
+          <edgelabel>name</edgelabel>
+          <edgelabel>tree</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="41" relation="usage">
+          <edgelabel>weight</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>cproperty&lt; std::map&lt; std::string, std::string &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, std::string &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>cproperty&lt; T, G &gt;</label>
+        <link refid="classcproperty"/>
+      </node>
+      <node id="40">
+        <label>cproperty&lt; std::string, selection_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::string, selection_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>cproperty&lt; std::vector&lt; std::string &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::vector&lt; std::string &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>cproperty&lt; std::map&lt; int, std::string &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; int, std::string &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="23">
+        <label>meta_t</label>
+        <link refid="structmeta__t"/>
+        <childnode refid="24" relation="usage">
+          <edgelabel>LFN</edgelabel>
+        </childnode>
+        <childnode refid="28" relation="usage">
+          <edgelabel>misc</edgelabel>
+        </childnode>
+        <childnode refid="31" relation="usage">
+          <edgelabel>inputrange</edgelabel>
+        </childnode>
+        <childnode refid="32" relation="usage">
+          <edgelabel>config</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>principalPhysicsGroup</edgelabel>
+          <edgelabel>DatasetName</edgelabel>
+          <edgelabel>generatorName</edgelabel>
+          <edgelabel>productionStep</edgelabel>
+          <edgelabel>campaign</edgelabel>
+          <edgelabel>projectName</edgelabel>
+          <edgelabel>physicsShort</edgelabel>
+          <edgelabel>logicalDatasetName</edgelabel>
+          <edgelabel>conditionsTag</edgelabel>
+          <edgelabel>derivationFormat</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="33" relation="usage">
+          <edgelabel>run_number</edgelabel>
+          <edgelabel>events</edgelabel>
+        </childnode>
+        <childnode refid="35" relation="usage">
+          <edgelabel>inputfiles</edgelabel>
+        </childnode>
+        <childnode refid="36" relation="usage">
+          <edgelabel>keyword</edgelabel>
+          <edgelabel>weights</edgelabel>
+          <edgelabel>keywords</edgelabel>
+          <edgelabel>fileGUID</edgelabel>
+        </childnode>
+        <childnode refid="37" relation="usage">
+          <edgelabel>fileSize</edgelabel>
+        </childnode>
+      </node>
+      <node id="32">
+        <label>std::map&lt; std::string, std::string &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; std::string, std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="42">
+        <label>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="43" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; std::string, std::vector&lt; float &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="36">
+        <label>std::vector&lt; std::string &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="34" relation="template-instance">
+          <edgelabel>&lt; std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="38">
+        <label>std::map&lt; std::string, std::map&lt; std::string, float &gt; &gt;</label>
+        <childnode refid="30" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; std::string, std::map&lt; std::string, float &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="30">
+        <label>std::map&lt; std::string, float &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; std::string, float &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="21">
+        <label>cproperty&lt; bool, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; bool, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>event_t</label>
+        <link refid="structevent__t"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>name</edgelabel>
+          <edgelabel>tree</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>cproperty&lt; std::map&lt; std::string, int &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, int &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="41">
+        <label>cproperty&lt; double, selection_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; double, selection_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="24">
+        <label>std::map&lt; std::string, int &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="template-instance">
+          <edgelabel>&lt; std::string, int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>notification</label>
+        <link refid="classnotification"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>prefix</edgelabel>
+        </childnode>
+      </node>
+      <node id="33">
+        <label>std::vector&lt; int &gt;</label>
+        <childnode refid="34" relation="template-instance">
+          <edgelabel>&lt; int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+      <node id="5">
+        <label>std::string</label>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>cproperty&lt; std::map&lt; std::string, weights_t &gt;, meta &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, weights_t &gt;, meta &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="selections/mc16/topkinematics/topkinematics.h" line="8" column="1" bodyfile="selections/mc16/topkinematics/topkinematics.h" bodystart="7" bodyend="23"/>
+    <listofallmembers>
+      <member refid="classtools_1a408b66ad73b7b4bb962634c14a55b619" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>absolute_path</name></member>
+      <member refid="classselection__template_1ae24cee9f302d7509a7009daea0bf0616" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>build</name></member>
+      <member refid="classselection__template_1a6a9f6df015c9f8e48c65cacc249c4fdf" prot="public" virt="virtual"><scope>topkinematics</scope><name>bulk_write</name></member>
+      <member refid="classtopkinematics_1a21c7435acb2d4f32ead1ebd750bf0954" prot="public" virt="virtual"><scope>topkinematics</scope><name>clone</name></member>
+      <member refid="classtopkinematics_1a2faf492910ac4ef4b7db784a74dbc976" prot="public" virt="virtual"><scope>topkinematics</scope><name>clone</name></member>
+      <member refid="classselection__template_1a9deff703f50fdff72bd1edf3664a9d75" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>CompileEvent</name></member>
+      <member refid="classselection__template_1a3009dc4bb45c47d96a5bdc4096bd6870" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>contains</name></member>
+      <member refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>create_path</name></member>
+      <member refid="classselection__template_1ae25df218deb859171db9ba802c17eb0b" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>data</name></member>
+      <member refid="classtools_1a1f8f5e775e758e3d2442a9dd46daf78c" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>delete_path</name></member>
+      <member refid="classtopkinematics_1a0aad619311ddc8f34a27c04cd11f0d9d" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>deltaR</name></member>
+      <member refid="classselection__template_1ab32b926ee893cf56dc27913271658d1e" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>downcast</name></member>
+      <member refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>ends_with</name></member>
+      <member refid="classtools_1a86175bf887f3e82780cb72910181961d" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>extract</name></member>
+      <member refid="classselection__template_1ad220a2da4b57303d8a5b162b6733024f" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>filename</name></member>
+      <member refid="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>flush</name></member>
+      <member refid="classselection__template_1a2f6cd45079e1fab94a163a38fbe005cd" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>get_hash</name></member>
+      <member refid="classselection__template_1ad27d2cd85c19147b85b1e96ce73bdade" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>get_leptonics</name></member>
+      <member refid="classselection__template_1ad0d6fa60bf0da8796a718532c0288d04" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>get_name</name></member>
+      <member refid="classselection__template_1a4e61c1d63afdff7a6428fbf4c6297166" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>get_tree</name></member>
+      <member refid="classselection__template_1ae04fb8767d15273f80c5343e2f73384b" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>get_weight</name></member>
+      <member refid="classtools_1ad7229c72cee65da3605c4be82f9b42d4" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>has_string</name></member>
+      <member refid="classtools_1a13633d4d63c55bcf537ff141e7605f13" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>has_value</name></member>
+      <member refid="classselection__template_1a67a39632bebd074e7feb638aaedee872" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>hash</name></member>
+      <member refid="classselection__template_1a2e1c4a9239afbfea9cd510b774c9c1fe" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>index</name></member>
+      <member refid="classtools_1a47d3d261edcb898daab56721e18d1e67" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>is_file</name></member>
+      <member refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>ls</name></member>
+      <member refid="classselection__template_1ab760e9d895d74e62a9d4bfe436568a86" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>make_unique</name></member>
+      <member refid="classtopkinematics_1acff80f6be304f62767b6b34ae5083264" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>mass_combi</name></member>
+      <member refid="classselection__template_1a50e7d1939618dcb8b6386f5e7a247e12" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>matched_meta</name></member>
+      <member refid="classtopkinematics_1a5e34069a535a6ea4914bc0a22792582b" prot="public" virt="virtual"><scope>topkinematics</scope><name>merge</name></member>
+      <member refid="classtopkinematics_1a5e34069a535a6ea4914bc0a22792582b" prot="public" virt="virtual"><scope>topkinematics</scope><name>merge</name></member>
+      <member refid="classselection__template_1a15113e43e1451e9e65b9f327fcfc7e15" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>meta_data</name></member>
+      <member refid="classselection__template_1a57db7d2460788ed52623482bef7a50e5" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>name</name></member>
+      <member refid="classselection__template_1a0e423716b1439b853d39904998074ecd" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>operator==</name></member>
+      <member refid="classselection__template_1ad472a18c63b8b1d6e41fbe626b13fc40" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>passed_weights</name></member>
+      <member refid="classtools_1a4450b1e48193bef904b44f7a90aaee98" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>put</name></member>
+      <member refid="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>rename</name></member>
+      <member refid="classtools_1aeae88ebd7116d59008600f0723716dba" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>replace</name></member>
+      <member refid="classtopkinematics_1ae932e43cd009403e4d59ddf1950a9850" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>res_top_kinematics</name></member>
+      <member refid="classselection__template_1a2c99ad97301a85fc7c7257930d990cfd" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>reverse_hash</name></member>
+      <member refid="classselection__template_1a4faf71140920bc4cf0fc06072cecad07" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>safe_delete</name></member>
+      <member refid="classtopkinematics_1a887006b5f0787ab23dcf394c10b2e28e" prot="public" virt="virtual"><scope>topkinematics</scope><name>selection</name></member>
+      <member refid="classtopkinematics_1a887006b5f0787ab23dcf394c10b2e28e" prot="public" virt="virtual"><scope>topkinematics</scope><name>selection</name></member>
+      <member refid="classselection__template_1a4562a7ab32d93b5f2ca8a232a244041c" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>selection_template</name></member>
+      <member refid="classselection__template_1acd31f17488bcf97dd8a5f1b3a7da1cdd" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>set_hash</name></member>
+      <member refid="classselection__template_1a8951c34758d3410f9d931b6011c3cca2" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>set_index</name></member>
+      <member refid="classselection__template_1a19244d585754db14326c126a98000899" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>set_name</name></member>
+      <member refid="classselection__template_1aa95e812106c1a933f1b65e82557939d3" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>set_weight</name></member>
+      <member refid="classtopkinematics_1aa0f8cc90e03612d9cc4015904b513f1c" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>spec_top_kinematics</name></member>
+      <member refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>split</name></member>
+      <member refid="classtopkinematics_1acf450e4907cff9104f1fc70fa04de276" prot="public" virt="virtual"><scope>topkinematics</scope><name>strategy</name></member>
+      <member refid="classtopkinematics_1acf450e4907cff9104f1fc70fa04de276" prot="public" virt="virtual"><scope>topkinematics</scope><name>strategy</name></member>
+      <member refid="classselection__template_1a84df199f6022f2a5d27979d43de51547" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>sum</name></member>
+      <member refid="classselection__template_1af639e8d3a86f1fa5cdfd2fe58e2e5dfb" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>sum</name></member>
+      <member refid="classselection__template_1aefb54851b728057af466bf7a78caeda8" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>sum</name></member>
+      <member refid="classtools_1a7b784121d8b368a64995feddc7083469" prot="public" virt="non-virtual" ambiguityscope="tools::"><scope>topkinematics</scope><name>sum</name></member>
+      <member refid="classselection__template_1a41a437aca3bb2a7f854a66ff92942d46" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>switch_board</name></member>
+      <member refid="classselection__template_1a74558331b11dd6822a975a32203286ac" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>switch_board</name></member>
+      <member refid="classselection__template_1a3bde46eb8ab3699d6f3eab6077d9716c" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>switch_board</name></member>
+      <member refid="classselection__template_1a572f52e2758979cda89605e207e57c87" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>switch_board</name></member>
+      <member refid="classselection__template_1ac565e3beb94b557fc947a6f8afebfc4d" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>threadIdx</name></member>
+      <member refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>to_string</name></member>
+      <member refid="classtools_1a882f089d855dc4b3e0b60c591e11b092" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>to_string</name></member>
+      <member refid="classtools_1af0028ec6242448428f7c548b6e7cb714" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>tools</name></member>
+      <member refid="classtopkinematics_1a3320ec959eaaa6be147852edf1778d6a" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>topkinematics</name></member>
+      <member refid="classtopkinematics_1a3320ec959eaaa6be147852edf1778d6a" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>topkinematics</name></member>
+      <member refid="classselection__template_1a57ff66ff6c5ff5af5e81298faf6bf521" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>tree</name></member>
+      <member refid="classtools_1a69be8c55f9fd7036080317a2ce98d4de" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>trim</name></member>
+      <member refid="classtools_1ab46f1f3892604cb366b861cb54ce30e0" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>type_name</name></member>
+      <member refid="classselection__template_1a82f14833e404fbe0399a2a539eef75b1" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>upcast</name></member>
+      <member refid="classselection__template_1ae5ce6c75d19fdbb2ab18ba05b3ea4c58" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>upcast</name></member>
+      <member refid="classselection__template_1a7e1560964237cf7b4846e24b300d7b9e" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>vectorize</name></member>
+      <member refid="classselection__template_1a03816f18e6ce9351cd099525862c7c64" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>weight</name></member>
+      <member refid="classselection__template_1ae5606e994231fae57abe42e4f0ec6202" prot="public" virt="virtual"><scope>topkinematics</scope><name>write</name></member>
+      <member refid="classselection__template_1a67768227c6c6a8e69edd0dc618a70eb9" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>write</name></member>
+      <member refid="classselection__template_1a0983bf7c4582968c8c3b1a970fb3689e" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>write</name></member>
+      <member refid="classselection__template_1af0b32265d850bfcd861a7f4744426856" prot="public" virt="virtual"><scope>topkinematics</scope><name>~selection_template</name></member>
+      <member refid="classtools_1a04762ddd5cc588520c89a387341f77f4" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>~tools</name></member>
+      <member refid="classtopkinematics_1a9898df703675228caebd4af115b22365" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>~topkinematics</name></member>
+      <member refid="classtopkinematics_1a9898df703675228caebd4af115b22365" prot="public" virt="non-virtual"><scope>topkinematics</scope><name>~topkinematics</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

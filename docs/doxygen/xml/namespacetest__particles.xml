@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacetest__particles" kind="namespace" language="Python">
+    <compoundname>test_particles</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacetest__particles_1a52ad96e276e4660fc762de54c3aedd1d" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.index</definition>
+        <argsstring></argsstring>
+        <name>index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="159" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="159" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__particles_1add2b6d43b4ec2ac5038daded178be9b8" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.px</definition>
+        <argsstring></argsstring>
+        <name>px</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="160" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="160" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__particles_1a7f776c8c5d39144bfc7584404548459a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.py</definition>
+        <argsstring></argsstring>
+        <name>py</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="161" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="161" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__particles_1aaaa474db85672dad057ef666afd81b74" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.pz</definition>
+        <argsstring></argsstring>
+        <name>pz</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="162" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="162" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__particles_1ae334386283ec557a6b2b6a30058de708" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.pt</definition>
+        <argsstring></argsstring>
+        <name>pt</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="163" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="163" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__particles_1a648556978e44bc1b1da27c1270951db5" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.eta</definition>
+        <argsstring></argsstring>
+        <name>eta</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="164" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="164" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__particles_1abb55ac0e421aeee040b7545a6d6705a3" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.phi</definition>
+        <argsstring></argsstring>
+        <name>phi</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="165" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="165" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__particles_1aad178dcf6e7313adddddce0674c990d0" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.e</definition>
+        <argsstring></argsstring>
+        <name>e</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="166" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="166" bodyend="-1"/>
+        <referencedby refid="nusol_2tensor_2nusol_8cxx_1ac73ce1484f270adbb1791bd876e80dfa" compoundref="nusol_2tensor_2nusol_8cxx" startline="20" endline="23">_x0</referencedby>
+        <referencedby refid="namespacepyc_1ab7196e93df1b00235cd13aee5b3d8835" compoundref="pyc_8h" startline="31" endline="31">pyc::as_pmc</referencedby>
+        <referencedby refid="events_2bsm__4tops_2include_2bsm__4tops_2particles_8h_1abc8e469e00ba416b858c38af76a2553e" compoundref="events_2bsm__4tops_2include_2bsm__4tops_2particles_8h" startline="12" endline="34">assign_vector</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1ab7fc9bc713e9578278cf535b7d296d99" compoundref="pyc_2interface_2physics_8cxx" startline="84" endline="87">pyc::physics::cartesian::separate::Beta</referencedby>
+        <referencedby refid="namespacephysics___1a3123f743b9c22850e7346d5f56a4441b" compoundref="pyc_2physics_2physics_8cxx" startline="41" endline="44">physics_::Beta</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1a49811b3e193170bb3f8d0a185b4fc07d" compoundref="pyc_2interface_2physics_8cxx" startline="95" endline="99">pyc::physics::polar::separate::Beta</referencedby>
+        <referencedby refid="namespacephysics___1a5b55715f9b9c607241139bf3541b03ab" compoundref="pyc_2physics_2physics_8cxx" startline="27" endline="30">physics_::Beta2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1ac9464974b2e24ae9825795f48234e067" compoundref="pyc_2interface_2physics_8cxx" startline="60" endline="63">pyc::physics::cartesian::separate::Beta2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1a49c21afa9d65d851f1cfe13e35875ea3" compoundref="pyc_2interface_2physics_8cxx" startline="71" endline="75">pyc::physics::polar::separate::Beta2</referencedby>
+        <referencedby refid="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad" compoundref="events_2gnn_2cxx_2event_8cxx" startline="58" endline="291">gnn_event::CompileEvent</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1polar_1a4892c3989bd8b62a5f02688d030e92d5" compoundref="interface_2graph_8cxx" startline="122" endline="131">pyc::graph::polar::edge_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1cartesian_1a84c64361a1b6ab23b56915ab7f7290a0" compoundref="interface_2graph_8cxx" startline="162" endline="171">pyc::graph::cartesian::edge_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1adb6b95ef1d9eb19796bda77aa1d5caf6" compoundref="pyc_2interface_2physics_8cxx" startline="132" endline="135">pyc::physics::cartesian::separate::M</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1aaab901d4c62535312b57336a324c3461" compoundref="pyc_2interface_2physics_8cxx" startline="142" endline="146">pyc::physics::polar::separate::M</referencedby>
+        <referencedby refid="namespacephysics___1a64e8e583c57246f52851c0bff4137ebc" compoundref="pyc_2physics_2physics_8cxx" startline="63" endline="66">physics_::M</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a822811be563d9cfe703ffc1c1688d343" compoundref="pyc_2interface_2physics_8cxx" startline="108" endline="111">pyc::physics::cartesian::separate::M2</referencedby>
+        <referencedby refid="namespacephysics___1a7787594305d4a156c31be581401b0b0b" compoundref="pyc_2physics_2physics_8cxx" startline="53" endline="56">physics_::M2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1a5166df2f83d8ea10350011307d165ed2" compoundref="pyc_2interface_2physics_8cxx" startline="119" endline="123">pyc::physics::polar::separate::M2</referencedby>
+        <referencedby refid="eigen_8cxx_1ae66f6b31b5ad750f1fe042a706a4e3d4" compoundref="eigen_8cxx" startline="47" endline="71">main</referencedby>
+        <referencedby refid="classchildrenkinematics_1ac92b71da90a3ea4f996cb7a578efcb9b" compoundref="childrenkinematics_8cxx" startline="10" endline="104">childrenkinematics::merge</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a28a5bc1982da9a36e87ce2e3e979a464" compoundref="pyc_2interface_2physics_8cxx" startline="178" endline="181">pyc::physics::cartesian::separate::Mt</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1ab979af5143b4e4c7ad9abacf21ef9544" compoundref="pyc_2interface_2physics_8cxx" startline="188" endline="192">pyc::physics::polar::separate::Mt</referencedby>
+        <referencedby refid="namespacephysics___1af5fecf9c76889e0e996dc44793e67153" compoundref="pyc_2physics_2physics_8cxx" startline="83" endline="86">physics_::Mt</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a732d6bb76e4a60ee810b312e27235974" compoundref="pyc_2interface_2physics_8cxx" startline="155" endline="158">pyc::physics::cartesian::separate::Mt2</referencedby>
+        <referencedby refid="namespacepyc_1_1physics_1_1polar_1_1separate_1ae3fb2671574519706f3c764499ce3164" compoundref="pyc_2interface_2physics_8cxx" startline="166" endline="170">pyc::physics::polar::separate::Mt2</referencedby>
+        <referencedby refid="namespacephysics___1aa8aaa93322dec33a8159a197da3e8e62" compoundref="pyc_2physics_2physics_8cxx" startline="68" endline="72">physics_::Mt2</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1polar_1a2214179747b4d328f815a532e6d4fdcf" compoundref="interface_2graph_8cxx" startline="133" endline="142">pyc::graph::polar::node_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1cartesian_1a6a2ffe369ee9d484a004f40351db4215" compoundref="interface_2graph_8cxx" startline="173" endline="182">pyc::graph::cartesian::node_aggregation</referencedby>
+        <referencedby refid="classpagerank__metric_1a0acd2c2b019d2b4b8d91afefd20596fa" compoundref="pagerank_8cxx" startline="28" endline="84">pagerank_metric::pagerank</referencedby>
+        <referencedby refid="events_2exp__mc20_2include_2exp__mc20_2particles_8h_1a2cc03530ee1fa07a8d1a500ed869c93f" compoundref="events_2exp__mc20_2include_2exp__mc20_2particles_8h" startline="7" endline="22">pmu</referencedby>
+        <referencedby refid="namespacepyc_1_1transform_1_1separate_1aa89702a61f7eecf64504a32f99b2f9af" compoundref="interface_2transform_8cxx" startline="55" endline="58">pyc::transform::separate::PtEtaPhiE</referencedby>
+        <referencedby refid="namespacetransform___1a0564930def9a67318624f21aa822860e" compoundref="transform_2transform_8cxx" startline="108" endline="110">transform_::PtEtaPhiE</referencedby>
+        <referencedby refid="namespacepyc_1_1transform_1_1separate_1a720f165f6c3acc7c6ed1b33dd2c369bb" compoundref="interface_2transform_8cxx" startline="111" endline="114">pyc::transform::separate::PxPyPzE</referencedby>
+        <referencedby refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" compoundref="transform_2transform_8cxx" startline="36" endline="38">transform_::PxPyPzE</referencedby>
+        <referencedby refid="classtopkinematics_1acf450e4907cff9104f1fc70fa04de276" compoundref="mc16_2topkinematics_2topkinematics_8cxx" startline="31" endline="105">topkinematics::strategy</referencedby>
+        <referencedby refid="classchildrenkinematics_1a9dfe1425443601d0af03eab580722b76" compoundref="childrenkinematics_8cxx" startline="121" endline="243">childrenkinematics::strategy</referencedby>
+        <referencedby refid="classselection__template_1a3bde46eb8ab3699d6f3eab6077d9716c" compoundref="selection__core_8cxx" startline="107" endline="120">selection_template::switch_board</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__particles_1acc25810154d7c3c71a614554f77cf204" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.Mass</definition>
+        <argsstring></argsstring>
+        <name>Mass</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="167" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="167" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__particles_1ab60a1a7753671ab79583d8c2c2263595" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.pdgid</definition>
+        <argsstring></argsstring>
+        <name>pdgid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="168" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="168" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__particles_1a2057b8a45679362ebd6a8c556054d3c0" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.charge</definition>
+        <argsstring></argsstring>
+        <name>charge</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="169" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="169" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__particles_1a6e81dc8afef016cee388d76f3c3468d4" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.somevar</definition>
+        <argsstring></argsstring>
+        <name>somevar</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="170" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="170" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__particles_1a77de87358f192a41ce3f7566268e117c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.somevar2</definition>
+        <argsstring></argsstring>
+        <name>somevar2</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="175" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="175" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__particles_1afc5b665b4bf31792983fec0c9c28d758" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_particles.Another</definition>
+        <argsstring></argsstring>
+        <name>Another</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="176" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="176" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacetest__particles_1afbd061a2834cba23469525caf2012fe4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def test_particles.test_particle_template_assign_var</definition>
+        <argsstring>()</argsstring>
+        <name>test_particle_template_assign_var</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="4" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="4" bodyend="9"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacetest__particles_1a02957e33f9b832955ce66825de068d89" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def test_particles.test_particle_template</definition>
+        <argsstring>()</argsstring>
+        <name>test_particle_template</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="10" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="10" bodyend="154"/>
+        <references refid="namespacepyc_1_1transform_1_1separate_1a8707538e9073094f20ba7f80bf98757b" compoundref="interface_2transform_8cxx" startline="65" endline="68">pyc::transform::separate::Px</references>
+        <references refid="namespacepyc_1_1transform_1_1separate_1a213b45f87684e873b719a628675b3382" compoundref="interface_2transform_8cxx" startline="77" endline="80">pyc::transform::separate::Py</references>
+        <references refid="namespacepyc_1_1transform_1_1separate_1a68e5b823f0323730d546fca22e35760f" compoundref="interface_2transform_8cxx" startline="89" endline="92">pyc::transform::separate::Pz</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacetest__particles_1accda472f29a799d51fbc96f872e57d8a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def test_particles.test_particle_template_assign</definition>
+        <argsstring>()</argsstring>
+        <name>test_particle_template_assign</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_particles.py" line="155" column="1" bodyfile="/workspaces/AnalysisG/test/test_particles.py" bodystart="155" bodyend="208"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/test/test_particles.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

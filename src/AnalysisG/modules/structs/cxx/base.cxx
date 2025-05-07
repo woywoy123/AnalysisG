@@ -1,12 +1,31 @@
+/**
+ * @file base.cxx
+ * @brief Implementation of the bsc_t class and related utilities.
+ *
+ * This file contains methods for type translation, buffer management, and dictionary building.
+ */
+
 #include <structs/base.h>
 #include <TInterpreter.h>
 #include <iostream>
 
+/**
+ * @brief Builds a dictionary for the given type name.
+ *
+ * @param _name The type name.
+ * @param _shrt The include directive.
+ */
 void buildDict(std::string _name, std::string _shrt){
     std::string name = std::string(_name);
     gInterpreter -> GenerateDictionary(name.c_str(), _shrt.c_str()); 
 }
 
+/**
+ * @brief Registers an include path with the interpreter.
+ *
+ * @param pth The path to include.
+ * @param is_abs Whether the path is absolute.
+ */
 void registerInclude(std::string pth, bool is_abs){
     std::string shrt = "#include ";
     if (is_abs){shrt += " \"" + pth + "\"";}
@@ -14,6 +33,13 @@ void registerInclude(std::string pth, bool is_abs){
     gInterpreter -> ProcessLine(shrt.c_str());
 }
 
+/**
+ * @brief Builds a PCM file for the given type.
+ *
+ * @param name The type name.
+ * @param incl The include directive.
+ * @param exl Whether to exclude from build.
+ */
 void buildPCM(std::string name, std::string incl, bool exl){
     if (exl){return;}
     buildDict(name, incl); 
@@ -21,6 +47,9 @@ void buildPCM(std::string name, std::string incl, bool exl){
 
 // ============================= Add your type (2) =================================== //
 
+/**
+ * @brief Builds all required dictionaries.
+ */
 void buildAll(){
     buildPCM("vector<vector<vector<unsigned long long>>>", "vector", false); 
     buildPCM("vector<vector<vector<unsigned int>>>"      , "vector", false); 
@@ -59,6 +88,13 @@ void buildAll(){
 bsc_t::bsc_t(){}
 bsc_t::~bsc_t(){}
 
+/**
+ * @brief Counts occurrences of a substring in a string.
+ *
+ * @param str The string to search in.
+ * @param sub The substring to search for.
+ * @return Number of occurrences.
+ */
 int count(const std::string* str, const std::string sub){
     int count = 0;
     std::string::size_type pos = 0;
@@ -66,7 +102,16 @@ int count(const std::string* str, const std::string sub){
     return count;
 }
 
-// -------------------- (3). add the routing -------------- //
+/**
+ * @brief Translates a ROOT type string to a data_enum value.
+ *
+ * This function analyzes a ROOT type string and determines the corresponding
+ * data_enum value based on the type (float, double, int, etc.) and dimensionality
+ * (scalar, vector, vector of vectors).
+ *
+ * @param root_str Pointer to the ROOT type string.
+ * @return Corresponding data_enum value.
+ */
 data_enum bsc_t::root_type_translate(std::string* root_str){
     int vec = count(root_str, "vector"); 
     if (vec == 0 && (*root_str) ==   "Float_t"){return data_enum::v_f  ;}
@@ -101,6 +146,11 @@ data_enum bsc_t::root_type_translate(std::string* root_str){
     return data_enum::undef; 
 }
 
+/**
+ * @brief Converts the current data type to a string representation.
+ *
+ * @return String representation of the data type.
+ */
 std::string bsc_t::as_string(){
     switch (this -> type){
         case data_enum::vvv_ull: return "vector<vector<vector<unsigned long long>>>";  
@@ -140,6 +190,11 @@ std::string bsc_t::as_string(){
     }
 }
 
+/**
+ * @brief Scans the buffer and returns a string representation of all set types.
+ *
+ * @return String representation of the buffer contents.
+ */
 std::string bsc_t::scan_buffer(){
     std::string x = ""; 
     if (this -> vvv_ull){x += " | vector<vector<vector<unsigned long long>>>";}
@@ -177,7 +232,9 @@ std::string bsc_t::scan_buffer(){
     return (x.size()) ? x : "undefined/unset"; 
 }                                                         
  
-// ------------ (4.) Add the buffer flush -------------------- //
+/**
+ * @brief Flushes the buffer based on the current type.
+ */
 void bsc_t::flush_buffer(){
     switch (this -> type){
         case data_enum::vvv_ull:  this -> flush_buffer(&this -> vvv_ull); return;  

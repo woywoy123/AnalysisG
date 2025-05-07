@@ -1,0 +1,223 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="structweights__t" kind="struct" language="C++" prot="public">
+    <compoundname>weights_t</compoundname>
+    <includes refid="structs_2include_2structs_2meta_8h" local="no">meta.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structweights__t_1a5685466e9e2b76f8ac5cf49073354ed1" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int weights_t::dsid</definition>
+        <argsstring></argsstring>
+        <name>dsid</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+<para>Dataset ID (DSID), a unique identifier for the dataset. Initialized to -1. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/meta.h" line="27" column="9" bodyfile="modules/structs/include/structs/meta.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structweights__t_1a9d87df8605ed4e3d1d588b7dffa0d147" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool weights_t::isAFII</definition>
+        <argsstring></argsstring>
+        <name>isAFII</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Flag indicating if this is an AFII dataset. Initialized to false. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/meta.h" line="28" column="10" bodyfile="modules/structs/include/structs/meta.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structweights__t_1abc4b8dafb7621c42ddb1e4aaa6e2c360" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string weights_t::generator</definition>
+        <argsstring></argsstring>
+        <name>generator</name>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+<para>Name of the generator used. Initialized empty. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/meta.h" line="29" column="17" bodyfile="modules/structs/include/structs/meta.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structweights__t_1ab451250f15d08e784ddaeb535e393ad2" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string weights_t::ami_tag</definition>
+        <argsstring></argsstring>
+        <name>ami_tag</name>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+<para>AMI tag associated with the dataset. Initialized empty. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/meta.h" line="30" column="17" bodyfile="modules/structs/include/structs/meta.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structweights__t_1ab9a7464871ac648c08967a7fe78d0ce5" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float weights_t::total_events_weighted</definition>
+        <argsstring></argsstring>
+        <name>total_events_weighted</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+<para>Total weighted events. Initialized to -1. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/meta.h" line="31" column="11" bodyfile="modules/structs/include/structs/meta.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structweights__t_1a6f80e88e485b153b4f1aca3b6fa9762b" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float weights_t::total_events</definition>
+        <argsstring></argsstring>
+        <name>total_events</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+<para>Total number of events. Initialized to -1. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/meta.h" line="32" column="11" bodyfile="modules/structs/include/structs/meta.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structweights__t_1af614abb0f3f25604ed4374f9df7829c5" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float weights_t::processed_events</definition>
+        <argsstring></argsstring>
+        <name>processed_events</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+<para>Number of processed events. Initialized to -1. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/meta.h" line="33" column="11" bodyfile="modules/structs/include/structs/meta.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structweights__t_1a1884c5da57a6866e39b4cf059830a921" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float weights_t::processed_events_weighted</definition>
+        <argsstring></argsstring>
+        <name>processed_events_weighted</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+<para>Weighted number of processed events. Initialized to -1. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/meta.h" line="34" column="11" bodyfile="modules/structs/include/structs/meta.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structweights__t_1acbb5a1824c78294e1d29417c17944280" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float weights_t::processed_events_weighted_squared</definition>
+        <argsstring></argsstring>
+        <name>processed_events_weighted_squared</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+<para>Squared weighted number of processed events. Initialized to -1. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/meta.h" line="35" column="11" bodyfile="modules/structs/include/structs/meta.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structweights__t_1a29cc00b52c967f209479bc8b3c94dc1e" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, float &gt;</type>
+        <definition>std::map&lt;std::string, float&gt; weights_t::hist_data</definition>
+        <argsstring></argsstring>
+        <name>hist_data</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>Histogram data as key-value pairs. Initialized empty. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/meta.h" line="36" column="14" bodyfile="modules/structs/include/structs/meta.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Structure to hold weight-related information for events. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Stores data related to event weights, which are crucial for proper normalization of Monte Carlo samples. This includes the sum of weights and additional weight factors. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="6">
+        <label>K</label>
+      </node>
+      <node id="7">
+        <label>T</label>
+      </node>
+      <node id="1">
+        <label>weights_t</label>
+        <link refid="structweights__t"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>hist_data</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>generator</edgelabel>
+          <edgelabel>ami_tag</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="6" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="2">
+        <label>std::map&lt; std::string, float &gt;</label>
+        <childnode refid="3" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; std::string, float &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::string</label>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="modules/structs/include/structs/meta.h" line="26" column="16" bodyfile="modules/structs/include/structs/meta.h" bodystart="26" bodyend="37"/>
+    <listofallmembers>
+      <member refid="structweights__t_1ab451250f15d08e784ddaeb535e393ad2" prot="public" virt="non-virtual"><scope>weights_t</scope><name>ami_tag</name></member>
+      <member refid="structweights__t_1a5685466e9e2b76f8ac5cf49073354ed1" prot="public" virt="non-virtual"><scope>weights_t</scope><name>dsid</name></member>
+      <member refid="structweights__t_1abc4b8dafb7621c42ddb1e4aaa6e2c360" prot="public" virt="non-virtual"><scope>weights_t</scope><name>generator</name></member>
+      <member refid="structweights__t_1a29cc00b52c967f209479bc8b3c94dc1e" prot="public" virt="non-virtual"><scope>weights_t</scope><name>hist_data</name></member>
+      <member refid="structweights__t_1a9d87df8605ed4e3d1d588b7dffa0d147" prot="public" virt="non-virtual"><scope>weights_t</scope><name>isAFII</name></member>
+      <member refid="structweights__t_1af614abb0f3f25604ed4374f9df7829c5" prot="public" virt="non-virtual"><scope>weights_t</scope><name>processed_events</name></member>
+      <member refid="structweights__t_1a1884c5da57a6866e39b4cf059830a921" prot="public" virt="non-virtual"><scope>weights_t</scope><name>processed_events_weighted</name></member>
+      <member refid="structweights__t_1acbb5a1824c78294e1d29417c17944280" prot="public" virt="non-virtual"><scope>weights_t</scope><name>processed_events_weighted_squared</name></member>
+      <member refid="structweights__t_1a6f80e88e485b153b4f1aca3b6fa9762b" prot="public" virt="non-virtual"><scope>weights_t</scope><name>total_events</name></member>
+      <member refid="structweights__t_1ab9a7464871ac648c08967a7fe78d0ce5" prot="public" virt="non-virtual"><scope>weights_t</scope><name>total_events_weighted</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

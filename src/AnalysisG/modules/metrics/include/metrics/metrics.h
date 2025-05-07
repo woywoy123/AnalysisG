@@ -1,3 +1,9 @@
+/** \file metrics.h
+ *  \brief Header file for the metrics class.
+ *
+ *  This file contains the declaration of the metrics class, which provides functionalities for performance evaluation and metrics computation.
+ */
+
 #ifndef METRICS_H
 #define METRICS_H
 

@@ -1,3 +1,9 @@
+/** \file graph_features.h
+ *  \brief Graph feature definitions for ssml_mc20 graphs.
+ *
+ *  This file contains static functions to compute various graph features for the ssml_mc20 graphs.
+ */
+
 #ifndef GRAPH_FEATURES_SSML_MC20_H
 #define GRAPH_FEATURES_SSML_MC20_H
 

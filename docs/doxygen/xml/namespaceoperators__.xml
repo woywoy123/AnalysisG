@@ -1,0 +1,387 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespaceoperators__" kind="namespace" language="C++">
+    <compoundname>operators_</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceoperators___1a9c06ae4b1ec4e5f50d3db14bc1da2ef6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor operators_::Dot</definition>
+        <argsstring>(torch::Tensor *v1, torch::Tensor *v2)</argsstring>
+        <name>Dot</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>v2</declname>
+        </param>
+        <briefdescription>
+<para>Computes the dot product of two vectors. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>v1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the first vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the second vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the dot product result. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/operators/include/operators/operators.h" line="23" column="15" bodyfile="pyc/operators/operators.cxx" bodystart="4" bodyend="7" declfile="pyc/operators/include/operators/operators.h" declline="23" declcolumn="15"/>
+        <referencedby refid="namespacepyc_1_1operators_1ab614cf3043e983f0327b698e8c80af06" compoundref="interface_2operators_8cxx" startline="13" endline="16">pyc::operators::Dot</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceoperators___1adbe7fd5192c2b058280996ad9529f6ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor operators_::Cross</definition>
+        <argsstring>(torch::Tensor *v1, torch::Tensor *v2)</argsstring>
+        <name>Cross</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>v2</declname>
+        </param>
+        <briefdescription>
+<para>Computes the cross product of two vectors. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>v1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the first vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the second vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the cross product result. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/operators/include/operators/operators.h" line="32" column="15" declfile="pyc/operators/include/operators/operators.h" declline="32" declcolumn="15"/>
+        <referencedby refid="namespacepyc_1_1operators_1a2eb6f48cfeb67f943bcbdf1f861d2903" compoundref="interface_2operators_8cxx" startline="66" endline="69">pyc::operators::Cross</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceoperators___1af012532b8e034b7d6cb733360e14f8d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor operators_::CosTheta</definition>
+        <argsstring>(torch::Tensor *v1, torch::Tensor *v2)</argsstring>
+        <name>CosTheta</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>v2</declname>
+        </param>
+        <briefdescription>
+<para>Computes the cosine of the angle between two vectors. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>v1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the first vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the second vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the cosine of the angle. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/operators/include/operators/operators.h" line="41" column="15" bodyfile="pyc/operators/operators.cxx" bodystart="9" bodyend="14" declfile="pyc/operators/include/operators/operators.h" declline="41" declcolumn="15"/>
+        <referencedby refid="namespacenusol___1a526c0e4a558a1201624ea0b639bc747c" compoundref="nusol_2tensor_2nusol_8cxx" startline="198" endline="242">nusol_::BaseMatrix</referencedby>
+        <referencedby refid="namespacepyc_1_1operators_1af098f14372678c7e79bdd095305d90ff" compoundref="interface_2operators_8cxx" startline="18" endline="21">pyc::operators::CosTheta</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceoperators___1a0335a4a853f7cff5faa4bc7bc68e3a8a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor operators_::SinTheta</definition>
+        <argsstring>(torch::Tensor *v1, torch::Tensor *v2)</argsstring>
+        <name>SinTheta</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>v2</declname>
+        </param>
+        <briefdescription>
+<para>Computes the sine of the angle between two vectors. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>v1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the first vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the second vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the sine of the angle. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/operators/include/operators/operators.h" line="50" column="15" bodyfile="pyc/operators/operators.cxx" bodystart="16" bodyend="21" declfile="pyc/operators/include/operators/operators.h" declline="50" declcolumn="15"/>
+        <referencedby refid="namespacenusol___1a526c0e4a558a1201624ea0b639bc747c" compoundref="nusol_2tensor_2nusol_8cxx" startline="198" endline="242">nusol_::BaseMatrix</referencedby>
+        <referencedby refid="namespacepyc_1_1operators_1a08ce9a10632751c377c359f2c8b2e889" compoundref="interface_2operators_8cxx" startline="23" endline="26">pyc::operators::SinTheta</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceoperators___1a7ce1f1b4f84306a157386ac5fd54ea1a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor operators_::Rx</definition>
+        <argsstring>(torch::Tensor *angle)</argsstring>
+        <name>Rx</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>angle</declname>
+        </param>
+        <briefdescription>
+<para>Computes the rotation matrix around the X-axis. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>angle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the rotation angle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the rotation matrix. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/operators/include/operators/operators.h" line="58" column="15" bodyfile="pyc/operators/operators.cxx" bodystart="23" bodyend="35" declfile="pyc/operators/include/operators/operators.h" declline="58" declcolumn="15"/>
+        <referencedby refid="nusol_2tensor_2nusol_8cxx_1a28531a30b80ecbd780392279d8a8adf3" compoundref="nusol_2tensor_2nusol_8cxx" startline="130" endline="153">Rotation</referencedby>
+        <referencedby refid="namespacepyc_1_1operators_1a99b031f4c597d8075f46fdf850a8bd41" compoundref="interface_2operators_8cxx" startline="28" endline="31">pyc::operators::Rx</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceoperators___1a7f4dbc7ab056202b3b43d621f6c8df50" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor operators_::Ry</definition>
+        <argsstring>(torch::Tensor *angle)</argsstring>
+        <name>Ry</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>angle</declname>
+        </param>
+        <briefdescription>
+<para>Computes the rotation matrix around the Y-axis. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>angle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the rotation angle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the rotation matrix. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/operators/include/operators/operators.h" line="66" column="15" bodyfile="pyc/operators/operators.cxx" bodystart="37" bodyend="49" declfile="pyc/operators/include/operators/operators.h" declline="66" declcolumn="15"/>
+        <referencedby refid="nusol_2tensor_2nusol_8cxx_1a28531a30b80ecbd780392279d8a8adf3" compoundref="nusol_2tensor_2nusol_8cxx" startline="130" endline="153">Rotation</referencedby>
+        <referencedby refid="namespacepyc_1_1operators_1abcfa7b9cf2af875ac48807e57dafffdc" compoundref="interface_2operators_8cxx" startline="33" endline="36">pyc::operators::Ry</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceoperators___1a38a28124e97111d3a1f2809ce2039769" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor operators_::Rz</definition>
+        <argsstring>(torch::Tensor *angle)</argsstring>
+        <name>Rz</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>angle</declname>
+        </param>
+        <briefdescription>
+<para>Computes the rotation matrix around the Z-axis. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>angle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the rotation angle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the rotation matrix. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/operators/include/operators/operators.h" line="74" column="15" bodyfile="pyc/operators/operators.cxx" bodystart="51" bodyend="63" declfile="pyc/operators/include/operators/operators.h" declline="74" declcolumn="15"/>
+        <referencedby refid="nusol_2tensor_2nusol_8cxx_1a790e49074636379226f3084e553998f3" compoundref="nusol_2tensor_2nusol_8cxx" startline="397" endline="428">_xNu</referencedby>
+        <referencedby refid="nusol_2tensor_2nusol_8cxx_1a28531a30b80ecbd780392279d8a8adf3" compoundref="nusol_2tensor_2nusol_8cxx" startline="130" endline="153">Rotation</referencedby>
+        <referencedby refid="namespacepyc_1_1operators_1a0a4de4024b67c144c057a812aa618c4b" compoundref="interface_2operators_8cxx" startline="38" endline="41">pyc::operators::Rz</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceoperators___1a3d017da3c5169dfb4e1ca5da7cae0703" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor operators_::CoFactors</definition>
+        <argsstring>(torch::Tensor *matrix)</argsstring>
+        <name>CoFactors</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>matrix</declname>
+        </param>
+        <briefdescription>
+<para>Computes the cofactor matrix of a given matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>matrix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the cofactor matrix. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/operators/include/operators/operators.h" line="82" column="15" bodyfile="pyc/operators/operators.cxx" bodystart="65" bodyend="84" declfile="pyc/operators/include/operators/operators.h" declline="82" declcolumn="15"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a92eb5ffee6ae2fec3ad71c777531578f">b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33">c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad">d</references>
+        <references refid="namespacemain_1a0cfc6c3cbcca8f2703f7ceb7991f196c" compoundref="performance_2main_8py" startline="69">main.out</references>
+        <referencedby refid="namespacepyc_1_1operators_1a5b271f36f06d0f527f2c92a9d96041d7" compoundref="interface_2operators_8cxx" startline="51" endline="54">pyc::operators::CoFactors</referencedby>
+        <referencedby refid="namespacenusol___1a2cdd92aeb32c05137ebc7ef96c47a3da" compoundref="nusol_2tensor_2nusol_8cxx" startline="253" endline="395">nusol_::Intersection</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceoperators___1a123a2d44cfea06825875800ebf21ae0d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor operators_::Determinant</definition>
+        <argsstring>(torch::Tensor *matrix)</argsstring>
+        <name>Determinant</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>matrix</declname>
+        </param>
+        <briefdescription>
+<para>Computes the determinant of a matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>matrix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the determinant value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/operators/include/operators/operators.h" line="90" column="15" bodyfile="pyc/operators/operators.cxx" bodystart="86" bodyend="86" declfile="pyc/operators/include/operators/operators.h" declline="90" declcolumn="15"/>
+        <referencedby refid="namespacepyc_1_1operators_1a0aa896a26a1d7a623ce9c8f09473add9" compoundref="interface_2operators_8cxx" startline="56" endline="59">pyc::operators::Determinant</referencedby>
+        <referencedby refid="namespacenusol___1a2cdd92aeb32c05137ebc7ef96c47a3da" compoundref="nusol_2tensor_2nusol_8cxx" startline="253" endline="395">nusol_::Intersection</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceoperators___1aaf20282e41ff4961e01d222feb86bc47" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor operators_::Inverse</definition>
+        <argsstring>(torch::Tensor *matrix)</argsstring>
+        <name>Inverse</name>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>matrix</declname>
+        </param>
+        <briefdescription>
+<para>Computes the inverse of a matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>matrix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor representing the matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the inverse matrix. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/operators/include/operators/operators.h" line="98" column="15" bodyfile="pyc/operators/operators.cxx" bodystart="87" bodyend="87" declfile="pyc/operators/include/operators/operators.h" declline="98" declcolumn="15"/>
+        <referencedby refid="nusol_2tensor_2nusol_8cxx_1a154959ee15ff2420eef7a772682767b7" compoundref="nusol_2tensor_2nusol_8cxx" startline="190" endline="195">_N</referencedby>
+        <referencedby refid="namespacenusol___1a2cdd92aeb32c05137ebc7ef96c47a3da" compoundref="nusol_2tensor_2nusol_8cxx" startline="253" endline="395">nusol_::Intersection</referencedby>
+        <referencedby refid="namespacepyc_1_1operators_1a35e565272bd6223991498cb4965db10a" compoundref="interface_2operators_8cxx" startline="61" endline="64">pyc::operators::Inverse</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>&lt; Includes PyTorch C++ headers for tensor operations. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Namespace for operator functions. </para>
+    </detaileddescription>
+    <location file="pyc/operators/include/operators/operators.h" line="14" column="20"/>
+  </compounddef>
+</doxygen>

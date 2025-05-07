@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_1a9554541fbc6e429c241ac7d5c16f0d" kind="dir">
+    <compoundname>mc20</compoundname>
+    <innerdir refid="dir_2fd2ca7f263f4e343bb0eefa771eebfe">matching</innerdir>
+    <innerdir refid="dir_346616408dbfc2550fb46e2bff27386c">topkinematics</innerdir>
+    <innerdir refid="dir_80d8a7a7337e4bc07a619775e3842152">topmatching</innerdir>
+    <innerdir refid="dir_88be5364f73539203ca89dbdb7c5f756">zprime</innerdir>
+    <innerfile refid="src_2_analysis_g_2selections_2mc20_2____init_____8py">src/AnalysisG/selections/mc20/__init__.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="selections/mc20/"/>
+  </compounddef>
+</doxygen>

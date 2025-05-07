@@ -1,0 +1,1081 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classparton" kind="class" language="C++" prot="public">
+    <compoundname>parton</compoundname>
+    <basecompoundref refid="classparticle__template" prot="public" virt="non-virtual">particle_template</basecompoundref>
+    <includes refid="events_2ssml__mc20_2include_2ssml__mc20_2particles_8h" local="no">particles.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classparton_1a8a793b0ae4c3a3c43b1791d67493f5b4" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int parton::top_index</definition>
+        <argsstring></argsstring>
+        <name>top_index</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/particles.h" line="143" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/particles.h" bodystart="143" bodyend="-1"/>
+        <referencedby refid="classparton_1ab5267a5b57180a97dbc7608ba8dec22c" compoundref="ssml__mc20_2cxx_2particles_8cxx" startline="96" endline="173">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1a3259033fdeada02a20b8b0c296e9ae09" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int parton::jet_index</definition>
+        <argsstring></argsstring>
+        <name>jet_index</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/particles.h" line="144" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/particles.h" bodystart="144" bodyend="-1"/>
+        <referencedby refid="classparton_1ab5267a5b57180a97dbc7608ba8dec22c" compoundref="ssml__mc20_2cxx_2particles_8cxx" startline="96" endline="173">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1aed5c10775fddb4304f687557610c89fa" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int parton::truthjet_index</definition>
+        <argsstring></argsstring>
+        <name>truthjet_index</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/particles.h" line="145" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/particles.h" bodystart="145" bodyend="-1"/>
+        <referencedby refid="classparton_1ab5267a5b57180a97dbc7608ba8dec22c" compoundref="ssml__mc20_2cxx_2particles_8cxx" startline="96" endline="173">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1abf6201076149861d717e7029ebc4ae81" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int parton::muon_index</definition>
+        <argsstring></argsstring>
+        <name>muon_index</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/particles.h" line="147" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/particles.h" bodystart="147" bodyend="-1"/>
+        <referencedby refid="classparton_1ab5267a5b57180a97dbc7608ba8dec22c" compoundref="ssml__mc20_2cxx_2particles_8cxx" startline="96" endline="173">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1a676695d0c0f2c1d083ac16e066a6f1a1" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int parton::electron_index</definition>
+        <argsstring></argsstring>
+        <name>electron_index</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/particles.h" line="148" column="13" bodyfile="events/ssml_mc20/include/ssml_mc20/particles.h" bodystart="148" bodyend="-1"/>
+        <referencedby refid="classparton_1ab5267a5b57180a97dbc7608ba8dec22c" compoundref="ssml__mc20_2cxx_2particles_8cxx" startline="96" endline="173">build</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1ae82660a6424444cc8ec10a216e20cbda" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classjet" kindref="compound">jet</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, jet*&gt; parton::jets</definition>
+        <argsstring></argsstring>
+        <name>jets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/particles.h" line="150" column="18" bodyfile="events/ssml_mc20/include/ssml_mc20/particles.h" bodystart="150" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1af3c3c7330f1657aedaf8b172aa582f8b" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="classtruthjet" kindref="compound">truthjet</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, truthjet*&gt; parton::truthjets</definition>
+        <argsstring></argsstring>
+        <name>truthjets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/particles.h" line="151" column="18" bodyfile="events/ssml_mc20/include/ssml_mc20/particles.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1ad7b28ea9db22448c4e4036dbbcd6ba7f" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt;std::string, std::vector&lt;float&gt; &gt; parton::ntops_tjets_pt</definition>
+        <argsstring></argsstring>
+        <name>ntops_tjets_pt</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="70" column="18" bodyfile="selections/mc16/parton/parton.h" bodystart="70" bodyend="-1"/>
+        <referencedby refid="classparton_1ad1c47645aa3bfaf68c1bd33e6bf069d9" compoundref="parton_8cxx" startline="10" endline="26">merge</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1a5ff9d81cc9cc60d9c9d3a2c459728cd2" compoundref="mc16__matching_2parton_2figures_8py" startline="14" endline="42">parton.figures.ntops_tjets_pt</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1af5a85645103e9176fdecfac6d3e96d88" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt;std::string, std::vector&lt;float&gt; &gt; parton::ntops_tjets_e</definition>
+        <argsstring></argsstring>
+        <name>ntops_tjets_e</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="71" column="18" bodyfile="selections/mc16/parton/parton.h" bodystart="71" bodyend="-1"/>
+        <referencedby refid="classparton_1ad1c47645aa3bfaf68c1bd33e6bf069d9" compoundref="parton_8cxx" startline="10" endline="26">merge</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1a0abd5bf3bfdd66a59a38db78ef18942c" compoundref="mc16__matching_2parton_2figures_8py" startline="43" endline="69">parton.figures.ntops_tjets_e</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1a23abef78dba55f41ba8ebadeac173255" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt;std::string, std::vector&lt;float&gt; &gt; parton::ntops_jets_pt</definition>
+        <argsstring></argsstring>
+        <name>ntops_jets_pt</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="73" column="18" bodyfile="selections/mc16/parton/parton.h" bodystart="73" bodyend="-1"/>
+        <referencedby refid="classparton_1ad1c47645aa3bfaf68c1bd33e6bf069d9" compoundref="parton_8cxx" startline="10" endline="26">merge</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1ad77c5c3ca36a423aeef6884d5bca434a" compoundref="mc16__matching_2parton_2figures_8py" startline="70" endline="95">parton.figures.ntops_jets_pt</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1a517d73a6adeabbe049d18ee9656af82e" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt;std::string, std::vector&lt;float&gt; &gt; parton::ntops_jets_e</definition>
+        <argsstring></argsstring>
+        <name>ntops_jets_e</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="74" column="18" bodyfile="selections/mc16/parton/parton.h" bodystart="74" bodyend="-1"/>
+        <referencedby refid="classparton_1ad1c47645aa3bfaf68c1bd33e6bf069d9" compoundref="parton_8cxx" startline="10" endline="26">merge</referencedby>
+        <referencedby refid="namespaceparton_1_1figures_1ac73a5afaa91e53bb421fd6e2c4afe0b1" compoundref="mc16__matching_2parton_2figures_8py" startline="96" endline="123">parton.figures.ntops_jets_e</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1a722db5e914d40b0e88f82ea6784ebe7b" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt;std::string, std::vector&lt;float&gt; &gt; parton::nparton_tjet_e</definition>
+        <argsstring></argsstring>
+        <name>nparton_tjet_e</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="76" column="18" bodyfile="selections/mc16/parton/parton.h" bodystart="76" bodyend="-1"/>
+        <referencedby refid="classparton_1ad1c47645aa3bfaf68c1bd33e6bf069d9" compoundref="parton_8cxx" startline="10" endline="26">merge</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1a50c373c183b825b2df8f41fc581737e6" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt;std::string, std::vector&lt;float&gt; &gt; parton::nparton_jet_e</definition>
+        <argsstring></argsstring>
+        <name>nparton_jet_e</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="77" column="18" bodyfile="selections/mc16/parton/parton.h" bodystart="77" bodyend="-1"/>
+        <referencedby refid="classparton_1ad1c47645aa3bfaf68c1bd33e6bf069d9" compoundref="parton_8cxx" startline="10" endline="26">merge</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1aad109b49b0dd1d16da5fe7a0bd39d188" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt;std::string, std::vector&lt;float&gt; &gt; parton::frac_parton_tjet_e</definition>
+        <argsstring></argsstring>
+        <name>frac_parton_tjet_e</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="79" column="18" bodyfile="selections/mc16/parton/parton.h" bodystart="79" bodyend="-1"/>
+        <referencedby refid="classparton_1ad1c47645aa3bfaf68c1bd33e6bf069d9" compoundref="parton_8cxx" startline="10" endline="26">merge</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1a02504c1888fce9fd36235c494777ac65" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt;std::string, std::vector&lt;float&gt; &gt; parton::frac_parton_jet_e</definition>
+        <argsstring></argsstring>
+        <name>frac_parton_jet_e</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="80" column="18" bodyfile="selections/mc16/parton/parton.h" bodystart="80" bodyend="-1"/>
+        <referencedby refid="classparton_1ad1c47645aa3bfaf68c1bd33e6bf069d9" compoundref="parton_8cxx" startline="10" endline="26">merge</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1aba713512943c835eeedd805a3ad490be" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt;std::string, std::vector&lt;float&gt; &gt; parton::frac_ntop_tjet_contribution</definition>
+        <argsstring></argsstring>
+        <name>frac_ntop_tjet_contribution</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="82" column="18" bodyfile="selections/mc16/parton/parton.h" bodystart="82" bodyend="-1"/>
+        <referencedby refid="classparton_1ad1c47645aa3bfaf68c1bd33e6bf069d9" compoundref="parton_8cxx" startline="10" endline="26">merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1a2e806422e563520ae78d58b4cfe33076" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt;std::string, std::vector&lt;float&gt; &gt; parton::frac_ntop_jet_contribution</definition>
+        <argsstring></argsstring>
+        <name>frac_ntop_jet_contribution</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="83" column="18" bodyfile="selections/mc16/parton/parton.h" bodystart="83" bodyend="-1"/>
+        <referencedby refid="classparton_1ad1c47645aa3bfaf68c1bd33e6bf069d9" compoundref="parton_8cxx" startline="10" endline="26">merge</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classparton_1a6bfcb036a665720858bb851d41a7e9d9" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</type>
+        <definition>std::map&lt;std::string, std::vector&lt;float&gt; &gt; parton::frac_mass_top</definition>
+        <argsstring></argsstring>
+        <name>frac_mass_top</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="84" column="18" bodyfile="selections/mc16/parton/parton.h" bodystart="84" bodyend="-1"/>
+        <referencedby refid="classparton_1ad1c47645aa3bfaf68c1bd33e6bf069d9" compoundref="parton_8cxx" startline="10" endline="26">merge</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classparton_1ac50bb27fb65bb2548631d695f0f6b98a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>parton::parton</definition>
+        <argsstring>()</argsstring>
+        <name>parton</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/particles.h" line="141" column="9" bodyfile="events/ssml_mc20/cxx/particles.cxx" bodystart="63" bodyend="91"/>
+        <references refid="classparticle__template_1a7fda73e06360bffd1bce45e7ba7370a5" compoundref="interfaces_8cxx" startline="99" endline="102">particle_template::add_leaf</references>
+        <references refid="classparticle__template_1ae16f821dc4be9c0ab0811873fcc18bf5" compoundref="particle__template_8h" startline="104">particle_template::type</references>
+        <referencedby refid="classparton_1ab5267a5b57180a97dbc7608ba8dec22c" compoundref="ssml__mc20_2cxx_2particles_8cxx" startline="96" endline="173">build</referencedby>
+        <referencedby refid="classparton_1a960f9f2386b34406addeb735cc87c079" compoundref="ssml__mc20_2cxx_2particles_8cxx" startline="94" endline="94">clone</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classparton_1a2fa85ffa87e2481cbc13756463580ccf" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>parton::~parton</definition>
+        <argsstring>()</argsstring>
+        <name>~parton</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/particles.h" line="142" column="17" bodyfile="events/ssml_mc20/cxx/particles.cxx" bodystart="93" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="classparton_1a960f9f2386b34406addeb735cc87c079" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+        <definition>selection_template * parton::clone</definition>
+        <argsstring>() override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classparticle__template_1a6c492ed991c27a61acad61064fa89b3c">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/particles.h" line="153" column="27" bodyfile="events/ssml_mc20/cxx/particles.cxx" bodystart="94" bodyend="94"/>
+        <references refid="classparton_1ac50bb27fb65bb2548631d695f0f6b98a" compoundref="ssml__mc20_2cxx_2particles_8cxx" startline="63" endline="91">parton</references>
+      </memberdef>
+      <memberdef kind="function" id="classparton_1ab5267a5b57180a97dbc7608ba8dec22c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void parton::build</definition>
+        <argsstring>(std::map&lt; std::string, particle_template * &gt; *prt, element_t *el) override</argsstring>
+        <name>build</name>
+        <reimplements refid="classparticle__template_1aaebc8afe75d578f169364239eb8c1e16">build</reimplements>
+        <param>
+          <type>std::map&lt; std::string, <ref refid="classparticle__template" kindref="compound">particle_template</ref> * &gt; *</type>
+          <declname>prt</declname>
+        </param>
+        <param>
+          <type><ref refid="structelement__t" kindref="compound">element_t</ref> *</type>
+          <declname>el</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="events/ssml_mc20/include/ssml_mc20/particles.h" line="154" column="14" bodyfile="events/ssml_mc20/cxx/particles.cxx" bodystart="96" bodyend="173"/>
+        <references refid="classparton_1a676695d0c0f2c1d083ac16e066a6f1a1" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2particles_8h" startline="148">electron_index</references>
+        <references refid="classparticle__template_1a6ccf90765599baffd591653a70d87d7c" compoundref="particle__template_8h" startline="44">particle_template::eta</references>
+        <references refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" compoundref="particle__template_8h" startline="77">particle_template::hash</references>
+        <references refid="classparticle__template_1afeb1e4081e0276b2ad14cf46fb773353" compoundref="particle__template_8h" startline="108">particle_template::index</references>
+        <references refid="classparton_1a3259033fdeada02a20b8b0c296e9ae09" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2particles_8h" startline="144">jet_index</references>
+        <references refid="classparticle__template_1a566197d07c6aba326fdad5f781ede40c" compoundref="particle__template_8h" startline="36">particle_template::mass</references>
+        <references refid="classparton_1abf6201076149861d717e7029ebc4ae81" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2particles_8h" startline="147">muon_index</references>
+        <references refid="classparton_1ac50bb27fb65bb2548631d695f0f6b98a" compoundref="ssml__mc20_2cxx_2particles_8cxx" startline="63" endline="91">parton</references>
+        <references refid="classparticle__template_1a3cc090c7528020fba8849e0850a5b2fc" compoundref="particle__template_8h" startline="65">particle_template::pdgid</references>
+        <references refid="classparticle__template_1abfac6830f134139d5d052bc5241d3ffc" compoundref="particle__template_8h" startline="48">particle_template::phi</references>
+        <references refid="classparticle__template_1a046b180dc2cad51955de4622bc66336e" compoundref="particle__template_8h" startline="40">particle_template::pt</references>
+        <references refid="classparticle__template_1aaea285da722e05111a27bc6496fc3fc5" compoundref="particle__template_8h" startline="53">particle_template::px</references>
+        <references refid="classparton_1a8a793b0ae4c3a3c43b1791d67493f5b4" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2particles_8h" startline="143">top_index</references>
+        <references refid="classparton_1aed5c10775fddb4304f687557610c89fa" compoundref="events_2ssml__mc20_2include_2ssml__mc20_2particles_8h" startline="145">truthjet_index</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="classparton_1ac50bb27fb65bb2548631d695f0f6b98a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>parton::parton</definition>
+        <argsstring>()</argsstring>
+        <name>parton</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="13" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classparton_1a0bbd86ba8e00b372de58793fe0399ff1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>parton::~parton</definition>
+        <argsstring>() override</argsstring>
+        <name>~parton</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="14" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classparton_1ae01e56ca605deb57e387f5adbe99739b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classselection__template" kindref="compound">selection_template</ref> *</type>
+        <definition>selection_template* parton::clone</definition>
+        <argsstring>() override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classparticle__template_1a6c492ed991c27a61acad61064fa89b3c">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="15" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classparton_1a04efe8d70593006300b80bf48a5f2f9f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool parton::selection</definition>
+        <argsstring>(event_template *ev) override</argsstring>
+        <name>selection</name>
+        <param>
+          <type><ref refid="classevent__template" kindref="compound">event_template</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="17" column="14" bodyfile="selections/mc16/parton/parton.cxx" bodystart="28" bodyend="31"/>
+        <references refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" compoundref="analysis_2main_8py" startline="10">main.ev</references>
+      </memberdef>
+      <memberdef kind="function" id="classparton_1abf09df1e5e6008e9af478a2f540947f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool parton::strategy</definition>
+        <argsstring>(event_template *ev) override</argsstring>
+        <name>strategy</name>
+        <param>
+          <type><ref refid="classevent__template" kindref="compound">event_template</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="18" column="14" bodyfile="selections/mc16/parton/parton.cxx" bodystart="33" bodyend="122"/>
+        <references refid="classparticle__template_1ade7a7410e1e467fdc4d01c618c379c4e" compoundref="particle__template_8h" startline="100">particle_template::children</references>
+        <references refid="classparticle__template_1a662321de0323372654542f6cd60464b7" compoundref="particle__template_8h" startline="32">particle_template::e</references>
+        <references refid="namespacemain_1ac94cb3d1fd16b3b124a4bbdd7fec754d" compoundref="analysis_2main_8py" startline="10">main.ev</references>
+        <references refid="namespacetest__normalization_1aecbcdd1778c32c7066b6264d4a03e71c" compoundref="test__normalization_8py" startline="9">test_normalization.evn</references>
+        <references refid="classparton_1a02504c1888fce9fd36235c494777ac65" compoundref="parton_8h" startline="80">frac_parton_jet_e</references>
+        <references refid="classparton_1aad109b49b0dd1d16da5fe7a0bd39d188" compoundref="parton_8h" startline="79">frac_parton_tjet_e</references>
+        <references refid="classparton_1a50c373c183b825b2df8f41fc581737e6" compoundref="parton_8h" startline="77">nparton_jet_e</references>
+        <references refid="classparton_1a722db5e914d40b0e88f82ea6784ebe7b" compoundref="parton_8h" startline="76">nparton_tjet_e</references>
+        <references refid="classparton_1a517d73a6adeabbe049d18ee9656af82e" compoundref="parton_8h" startline="74">ntops_jets_e</references>
+        <references refid="classparton_1a23abef78dba55f41ba8ebadeac173255" compoundref="parton_8h" startline="73">ntops_jets_pt</references>
+        <references refid="classparton_1af5a85645103e9176fdecfac6d3e96d88" compoundref="parton_8h" startline="71">ntops_tjets_e</references>
+        <references refid="classparton_1ad7b28ea9db22448c4e4036dbbcd6ba7f" compoundref="parton_8h" startline="70">ntops_tjets_pt</references>
+        <references refid="namespacernn__model_1a19e60fd57ec76804d163e73cb83e2e7d" compoundref="rnn__model_8py" startline="35">rnn_model.p</references>
+        <references refid="namespaceparton_1_1figures_1a78f69be3ee69f972b3ff4f262602a669" compoundref="mc16__matching_2parton_2figures_8py" startline="400" endline="415">parton.figures.Parton</references>
+        <references refid="classparticle__template_1a3cc090c7528020fba8849e0850a5b2fc" compoundref="particle__template_8h" startline="65">particle_template::pdgid</references>
+        <references refid="classparticle__template_1a046b180dc2cad51955de4622bc66336e" compoundref="particle__template_8h" startline="40">particle_template::pt</references>
+        <references refid="classtools_1a7b784121d8b368a64995feddc7083469" compoundref="tools_8h" startline="183" endline="187">tools::sum</references>
+        <references refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" compoundref="test__experimental__mc20_8py" startline="7">test_experimental_mc20.t</references>
+        <references refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" compoundref="strings_8cxx" startline="59" endline="63">tools::to_string</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="classparton_1ad1c47645aa3bfaf68c1bd33e6bf069d9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void parton::merge</definition>
+        <argsstring>(selection_template *sl) override</argsstring>
+        <name>merge</name>
+        <param>
+          <type><ref refid="classselection__template" kindref="compound">selection_template</ref> *</type>
+          <declname>sl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="19" column="14" bodyfile="selections/mc16/parton/parton.cxx" bodystart="10" bodyend="26"/>
+        <references refid="classparton_1a6bfcb036a665720858bb851d41a7e9d9" compoundref="parton_8h" startline="84">frac_mass_top</references>
+        <references refid="classparton_1a2e806422e563520ae78d58b4cfe33076" compoundref="parton_8h" startline="83">frac_ntop_jet_contribution</references>
+        <references refid="classparton_1aba713512943c835eeedd805a3ad490be" compoundref="parton_8h" startline="82">frac_ntop_tjet_contribution</references>
+        <references refid="classparton_1a02504c1888fce9fd36235c494777ac65" compoundref="parton_8h" startline="80">frac_parton_jet_e</references>
+        <references refid="classparton_1aad109b49b0dd1d16da5fe7a0bd39d188" compoundref="parton_8h" startline="79">frac_parton_tjet_e</references>
+        <references refid="merge__cast_8h_1a205af11d07be8d10770e7392817fc5c3" compoundref="merge__cast_8h" startline="9" endline="11">merge_data</references>
+        <references refid="classparton_1a50c373c183b825b2df8f41fc581737e6" compoundref="parton_8h" startline="77">nparton_jet_e</references>
+        <references refid="classparton_1a722db5e914d40b0e88f82ea6784ebe7b" compoundref="parton_8h" startline="76">nparton_tjet_e</references>
+        <references refid="classparton_1a517d73a6adeabbe049d18ee9656af82e" compoundref="parton_8h" startline="74">ntops_jets_e</references>
+        <references refid="classparton_1a23abef78dba55f41ba8ebadeac173255" compoundref="parton_8h" startline="73">ntops_jets_pt</references>
+        <references refid="classparton_1af5a85645103e9176fdecfac6d3e96d88" compoundref="parton_8h" startline="71">ntops_tjets_e</references>
+        <references refid="classparton_1ad7b28ea9db22448c4e4036dbbcd6ba7f" compoundref="parton_8h" startline="70">ntops_tjets_pt</references>
+        <references refid="namespacemain_1a80457db91bd1110a9e4a8515839a2a4b" compoundref="metrics_2main_8py" startline="4">main.sl</references>
+      </memberdef>
+      <memberdef kind="function" id="classparton_1a1f13c60a6b920f983afdb18f352c4b2d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+          <param>
+            <type>typename gx</type>
+          </param>
+        </templateparamlist>
+        <type>float</type>
+        <definition>float parton::top_mass_contribution</definition>
+        <argsstring>(std::vector&lt; g * &gt; jts, std::map&lt; std::string, std::vector&lt; float &gt;&gt; *fracx, gx *p, top *ti, float cut, bool cut_gluon)</argsstring>
+        <name>top_mass_contribution</name>
+        <param>
+          <type>std::vector&lt; g * &gt;</type>
+          <declname>jts</declname>
+        </param>
+        <param>
+          <type>std::map&lt; std::string, std::vector&lt; float &gt;&gt; *</type>
+          <declname>fracx</declname>
+        </param>
+        <param>
+          <type>gx *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type><ref refid="classtop" kindref="compound">top</ref> *</type>
+          <declname>ti</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>cut</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>cut_gluon</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/parton/parton.h" line="22" column="15" bodyfile="selections/mc16/parton/parton.h" bodystart="22" bodyend="68"/>
+        <references refid="classparticle__template_1a662321de0323372654542f6cd60464b7" compoundref="particle__template_8h" startline="32">particle_template::e</references>
+        <references refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" compoundref="particle__template_8h" startline="77">particle_template::hash</references>
+        <references refid="classparticle__template_1acded67bf4e6d29d5cd06159ff2e21730" compoundref="particle__template_8h" startline="96">particle_template::parents</references>
+        <references refid="namespaceparton_1_1figures_1a78f69be3ee69f972b3ff4f262602a669" compoundref="mc16__matching_2parton_2figures_8py" startline="400" endline="415">parton.figures.Parton</references>
+        <references refid="namespacesample__consistency_1abbc834de0dcfdeb31411d76395e4dc46" compoundref="sample__consistency_8py" startline="99">sample_consistency.passed</references>
+        <references refid="classparticle__template_1a3cc090c7528020fba8849e0850a5b2fc" compoundref="particle__template_8h" startline="65">particle_template::pdgid</references>
+        <references refid="classtools_1a7b784121d8b368a64995feddc7083469" compoundref="tools_8h" startline="183" endline="187">tools::sum</references>
+        <references refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" compoundref="strings_8cxx" startline="59" endline="63">tools::to_string</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>particle_template</label>
+        <link refid="classparticle__template"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>parton</label>
+        <link refid="classparton"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="33">
+        <label>std::vector&lt; truthjet * &gt;</label>
+        <childnode refid="24" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="template-instance">
+          <edgelabel>&lt; truthjet * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>cproperty&lt; int, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; int, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>K</label>
+      </node>
+      <node id="9">
+        <label>T</label>
+      </node>
+      <node id="24">
+        <label>truthjet</label>
+        <link refid="classtruthjet"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="25" relation="usage">
+          <edgelabel>Tops</edgelabel>
+        </childnode>
+        <childnode refid="34" relation="usage">
+          <edgelabel>from_res</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>top_index</edgelabel>
+        </childnode>
+        <childnode refid="35" relation="usage">
+          <edgelabel>Parton</edgelabel>
+        </childnode>
+      </node>
+      <node id="35">
+        <label>std::vector&lt; truthjetparton * &gt;</label>
+        <childnode refid="36" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="template-instance">
+          <edgelabel>&lt; truthjetparton * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="37">
+        <label>std::map&lt; std::string, jet * &gt;</label>
+        <childnode refid="29" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="template-instance">
+          <edgelabel>&lt; std::string, jet * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>particle_template</label>
+        <link refid="classparticle__template"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>m_children</edgelabel>
+          <edgelabel>m_parents</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>pdgid</edgelabel>
+          <edgelabel>index</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>is_lep</edgelabel>
+          <edgelabel>is_nu</edgelabel>
+          <edgelabel>is_add</edgelabel>
+          <edgelabel>is_b</edgelabel>
+          <edgelabel>lep_decay</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>charge</edgelabel>
+          <edgelabel>pt</edgelabel>
+          <edgelabel>mass</edgelabel>
+          <edgelabel>px</edgelabel>
+          <edgelabel>py</edgelabel>
+          <edgelabel>pz</edgelabel>
+          <edgelabel>phi</edgelabel>
+          <edgelabel>eta</edgelabel>
+          <edgelabel>e</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>leaves</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>symbol</edgelabel>
+          <edgelabel>type</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>data</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>parents</edgelabel>
+          <edgelabel>children</edgelabel>
+        </childnode>
+      </node>
+      <node id="19">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="9" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="30">
+        <label>std::vector&lt; jetparton * &gt;</label>
+        <childnode refid="31" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="template-instance">
+          <edgelabel>&lt; jetparton * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="22">
+        <label>std::vector&lt; float &gt;</label>
+        <childnode refid="19" relation="template-instance">
+          <edgelabel>&lt; float &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="36">
+        <label>truthjetparton</label>
+        <link refid="classtruthjetparton"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>topchild_index</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>std::map&lt; std::string, particle_template * &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="template-instance">
+          <edgelabel>&lt; std::string, particle_template * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>cproperty&lt; std::map&lt; std::string, particle_template * &gt;, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, particle_template * &gt;, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="25">
+        <label>std::vector&lt; top * &gt;</label>
+        <childnode refid="26" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="template-instance">
+          <edgelabel>&lt; top * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="26">
+        <label>top</label>
+        <link refid="classtop"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="27" relation="usage">
+          <edgelabel>truthjets</edgelabel>
+          <edgelabel>leptons</edgelabel>
+          <edgelabel>jets</edgelabel>
+        </childnode>
+        <childnode refid="28" relation="usage">
+          <edgelabel>Jets</edgelabel>
+        </childnode>
+        <childnode refid="33" relation="usage">
+          <edgelabel>TruthJets</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>std::map&lt; std::string, bool &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="template-instance">
+          <edgelabel>&lt; std::string, bool &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>parton</label>
+        <link refid="classparton"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>ntops_jets_e</edgelabel>
+          <edgelabel>ntops_tjets_e</edgelabel>
+          <edgelabel>nparton_jet_e</edgelabel>
+          <edgelabel>frac_ntop_jet_contribution</edgelabel>
+          <edgelabel>ntops_jets_pt</edgelabel>
+          <edgelabel>ntops_tjets_pt</edgelabel>
+          <edgelabel>frac_parton_tjet_e</edgelabel>
+          <edgelabel>nparton_tjet_e</edgelabel>
+          <edgelabel>frac_mass_top</edgelabel>
+          <edgelabel>frac_parton_jet_e</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="23" relation="usage">
+          <edgelabel>truthjets</edgelabel>
+        </childnode>
+        <childnode refid="37" relation="usage">
+          <edgelabel>jets</edgelabel>
+        </childnode>
+      </node>
+      <node id="32">
+        <label>cproperty&lt; bool, jet &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; bool, jet &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>cproperty&lt; T, G &gt;</label>
+        <link refid="classcproperty"/>
+      </node>
+      <node id="6">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="16">
+        <label>particle_t</label>
+        <link refid="structparticle__t"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>data_p</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>parents</edgelabel>
+          <edgelabel>children</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>symbol</edgelabel>
+          <edgelabel>type</edgelabel>
+          <edgelabel>hash</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>nudef</edgelabel>
+          <edgelabel>lepdef</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>std::map&lt; std::string, std::string &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="template-instance">
+          <edgelabel>&lt; std::string, std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="21">
+        <label>std::map&lt; std::string, std::vector&lt; float &gt; &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="template-instance">
+          <edgelabel>&lt; std::string, std::vector&lt; float &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="12">
+        <label>cproperty&lt; bool, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; bool, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="28">
+        <label>std::vector&lt; jet * &gt;</label>
+        <childnode refid="29" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="template-instance">
+          <edgelabel>&lt; jet * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="29">
+        <label>jet</label>
+        <link refid="classjet"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="30" relation="usage">
+          <edgelabel>Parton</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="usage">
+          <edgelabel>Tops</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>top_index</edgelabel>
+        </childnode>
+        <childnode refid="32" relation="usage">
+          <edgelabel>from_res</edgelabel>
+        </childnode>
+      </node>
+      <node id="34">
+        <label>cproperty&lt; bool, truthjet &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; bool, truthjet &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="27">
+        <label>std::vector&lt; particle_template * &gt;</label>
+        <childnode refid="2" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="template-instance">
+          <edgelabel>&lt; particle_template * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="23">
+        <label>std::map&lt; std::string, truthjet * &gt;</label>
+        <childnode refid="5" relation="usage">
+          <edgelabel>keys</edgelabel>
+        </childnode>
+        <childnode refid="24" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="template-instance">
+          <edgelabel>&lt; std::string, truthjet * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>cproperty&lt; double, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; double, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>cproperty&lt; std::string, particle_template &gt;</label>
+        <link refid="classcproperty"/>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; std::string, particle_template &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>std::vector&lt; int &gt;</label>
+        <childnode refid="19" relation="template-instance">
+          <edgelabel>&lt; int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+      <node id="31">
+        <label>jetparton</label>
+        <link refid="classjetparton"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>topchild_index</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>std::string</label>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="events/ssml_mc20/include/ssml_mc20/particles.h" line="139" column="1" bodyfile="events/ssml_mc20/include/ssml_mc20/particles.h" bodystart="138" bodyend="155"/>
+    <listofallmembers>
+      <member refid="classparticle__template_1adf7b55df06b7621b0a6bc509f74d22ff" prot="public" virt="non-virtual"><scope>parton</scope><name>__reduce__</name></member>
+      <member refid="classparticle__template_1ac8056c1757115e8ef59ec68afea98273" prot="public" virt="non-virtual"><scope>parton</scope><name>_is_marked</name></member>
+      <member refid="classparticle__template_1abdfd31b1136327f230ffecb5da9216fc" prot="public" virt="non-virtual"><scope>parton</scope><name>_is_serial</name></member>
+      <member refid="classtools_1a408b66ad73b7b4bb962634c14a55b619" prot="public" virt="non-virtual"><scope>parton</scope><name>absolute_path</name></member>
+      <member refid="classparticle__template_1a7fda73e06360bffd1bce45e7ba7370a5" prot="public" virt="non-virtual"><scope>parton</scope><name>add_leaf</name></member>
+      <member refid="classparticle__template_1a83757e8eb32e382a8c0444ede5dda548" prot="public" virt="non-virtual"><scope>parton</scope><name>apply_type_prefix</name></member>
+      <member refid="classparton_1ab5267a5b57180a97dbc7608ba8dec22c" prot="public" virt="virtual"><scope>parton</scope><name>build</name></member>
+      <member refid="classparticle__template_1a64c21cf6770a584aa086442fe8ae3db5" prot="public" virt="non-virtual"><scope>parton</scope><name>charge</name></member>
+      <member refid="classparticle__template_1ade7a7410e1e467fdc4d01c618c379c4e" prot="public" virt="non-virtual"><scope>parton</scope><name>children</name></member>
+      <member refid="classparton_1a960f9f2386b34406addeb735cc87c079" prot="public" virt="virtual"><scope>parton</scope><name>clone</name></member>
+      <member refid="classparton_1ae01e56ca605deb57e387f5adbe99739b" prot="public" virt="virtual"><scope>parton</scope><name>clone</name></member>
+      <member refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" prot="public" virt="non-virtual"><scope>parton</scope><name>create_path</name></member>
+      <member refid="classparticle__template_1a90d0427adec2bbdc76f61a0fe725c6e0" prot="public" virt="non-virtual"><scope>parton</scope><name>data</name></member>
+      <member refid="classtools_1a1f8f5e775e758e3d2442a9dd46daf78c" prot="public" virt="non-virtual"><scope>parton</scope><name>delete_path</name></member>
+      <member refid="classparticle__template_1a575d99bd23ac34125328e4d23518ff52" prot="public" virt="non-virtual"><scope>parton</scope><name>DeltaR</name></member>
+      <member refid="classparticle__template_1a662321de0323372654542f6cd60464b7" prot="public" virt="non-virtual"><scope>parton</scope><name>e</name></member>
+      <member refid="classparton_1a676695d0c0f2c1d083ac16e066a6f1a1" prot="public" virt="non-virtual"><scope>parton</scope><name>electron_index</name></member>
+      <member refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" prot="public" virt="non-virtual"><scope>parton</scope><name>ends_with</name></member>
+      <member refid="classparticle__template_1a6ccf90765599baffd591653a70d87d7c" prot="public" virt="non-virtual"><scope>parton</scope><name>eta</name></member>
+      <member refid="classtools_1a86175bf887f3e82780cb72910181961d" prot="public" virt="non-virtual"><scope>parton</scope><name>extract</name></member>
+      <member refid="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" prot="public" virt="non-virtual"><scope>parton</scope><name>flush</name></member>
+      <member refid="classparton_1a6bfcb036a665720858bb851d41a7e9d9" prot="public" virt="non-virtual"><scope>parton</scope><name>frac_mass_top</name></member>
+      <member refid="classparton_1a2e806422e563520ae78d58b4cfe33076" prot="public" virt="non-virtual"><scope>parton</scope><name>frac_ntop_jet_contribution</name></member>
+      <member refid="classparton_1aba713512943c835eeedd805a3ad490be" prot="public" virt="non-virtual"><scope>parton</scope><name>frac_ntop_tjet_contribution</name></member>
+      <member refid="classparton_1a02504c1888fce9fd36235c494777ac65" prot="public" virt="non-virtual"><scope>parton</scope><name>frac_parton_jet_e</name></member>
+      <member refid="classparton_1aad109b49b0dd1d16da5fe7a0bd39d188" prot="public" virt="non-virtual"><scope>parton</scope><name>frac_parton_tjet_e</name></member>
+      <member refid="classparticle__template_1a92866b3a31350f8d7ae5e15c8a551b33" prot="public" virt="non-virtual"><scope>parton</scope><name>get_charge</name></member>
+      <member refid="classparticle__template_1a0d6f5cadd815776a58be4d47e99c750d" prot="public" virt="non-virtual"><scope>parton</scope><name>get_children</name></member>
+      <member refid="classparticle__template_1ab0927b6be583340a0b8c4d12a5ff3ebf" prot="public" virt="non-virtual"><scope>parton</scope><name>get_e</name></member>
+      <member refid="classparticle__template_1a51448fc89f42a176decd7047e503cfd4" prot="public" virt="non-virtual"><scope>parton</scope><name>get_eta</name></member>
+      <member refid="classparticle__template_1a9c586cc0ac38cad5ccacf1bb4985e25b" prot="public" virt="non-virtual"><scope>parton</scope><name>get_hash</name></member>
+      <member refid="classparticle__template_1abb9421346892401cfc1d75142b46baf7" prot="public" virt="non-virtual"><scope>parton</scope><name>get_index</name></member>
+      <member refid="classparticle__template_1a58373d0f47618e85ab649a28ebe2b79a" prot="public" virt="non-virtual"><scope>parton</scope><name>get_isadd</name></member>
+      <member refid="classparticle__template_1a2a3735ec76637317bb78cafb8759b258" prot="public" virt="non-virtual"><scope>parton</scope><name>get_isb</name></member>
+      <member refid="classparticle__template_1a2d99515f664dbf8dab14061682e5bc6b" prot="public" virt="non-virtual"><scope>parton</scope><name>get_islep</name></member>
+      <member refid="classparticle__template_1a418dff4e2ee3f17d7a85a1e37c76b29f" prot="public" virt="non-virtual"><scope>parton</scope><name>get_isnu</name></member>
+      <member refid="classparticle__template_1ad101584e82d80dc3c560c2309867b8a7" prot="public" virt="non-virtual"><scope>parton</scope><name>get_lepdecay</name></member>
+      <member refid="classparticle__template_1af5837057bd00b72689117beb704839bb" prot="public" virt="non-virtual"><scope>parton</scope><name>get_mass</name></member>
+      <member refid="classparticle__template_1a0b63a8ae07f178fa8f30044683c615ad" prot="public" virt="non-virtual"><scope>parton</scope><name>get_parents</name></member>
+      <member refid="classparticle__template_1a1dd91fb218aee680bd4920044133828d" prot="public" virt="non-virtual"><scope>parton</scope><name>get_pdgid</name></member>
+      <member refid="classparticle__template_1a79d8204190d8215481f6db43a69c8ab0" prot="public" virt="non-virtual"><scope>parton</scope><name>get_phi</name></member>
+      <member refid="classparticle__template_1a53f247991911f661cddf7372776d4967" prot="public" virt="non-virtual"><scope>parton</scope><name>get_pt</name></member>
+      <member refid="classparticle__template_1a2c580f15b494fcbdc17c2339c1ae91e1" prot="public" virt="non-virtual"><scope>parton</scope><name>get_px</name></member>
+      <member refid="classparticle__template_1a4825c3c7d011c6c5fbc5b3c734799a7f" prot="public" virt="non-virtual"><scope>parton</scope><name>get_py</name></member>
+      <member refid="classparticle__template_1ab78f0f9f18d3d13c26fdd549e1027e44" prot="public" virt="non-virtual"><scope>parton</scope><name>get_pz</name></member>
+      <member refid="classparticle__template_1afa3165c6eb75d44985e3a679c05f2f35" prot="public" virt="non-virtual"><scope>parton</scope><name>get_symbol</name></member>
+      <member refid="classparticle__template_1ab021726ef6c07bffdccecb7bda38ca86" prot="public" virt="non-virtual"><scope>parton</scope><name>get_type</name></member>
+      <member refid="classtools_1ad7229c72cee65da3605c4be82f9b42d4" prot="public" virt="non-virtual"><scope>parton</scope><name>has_string</name></member>
+      <member refid="classtools_1a13633d4d63c55bcf537ff141e7605f13" prot="public" virt="non-virtual"><scope>parton</scope><name>has_value</name></member>
+      <member refid="classparticle__template_1a4dbc1530bdd20ffa97b0bc5bd726f17d" prot="public" virt="non-virtual"><scope>parton</scope><name>hash</name></member>
+      <member refid="classparticle__template_1a072876b3a2d9815cbbee1c1517ad93af" prot="public" virt="non-virtual"><scope>parton</scope><name>iadd</name></member>
+      <member refid="classparticle__template_1afeb1e4081e0276b2ad14cf46fb773353" prot="public" virt="non-virtual"><scope>parton</scope><name>index</name></member>
+      <member refid="classparticle__template_1a0f07f2b1587b5b72e50f9da36f079a24" prot="public" virt="non-virtual"><scope>parton</scope><name>is</name></member>
+      <member refid="classparticle__template_1ad032a51eed2058500d8bbbf7bd691354" prot="public" virt="non-virtual"><scope>parton</scope><name>is_add</name></member>
+      <member refid="classparticle__template_1a92698f3a11d2100d72fd159a11e6606f" prot="public" virt="non-virtual"><scope>parton</scope><name>is_b</name></member>
+      <member refid="classtools_1a47d3d261edcb898daab56721e18d1e67" prot="public" virt="non-virtual"><scope>parton</scope><name>is_file</name></member>
+      <member refid="classparticle__template_1a464c54ca63c5acc39b4176d682b6d522" prot="public" virt="non-virtual"><scope>parton</scope><name>is_lep</name></member>
+      <member refid="classparticle__template_1a14634a76d7d004a68cea9b960b6fd7cc" prot="public" virt="non-virtual"><scope>parton</scope><name>is_nu</name></member>
+      <member refid="classparton_1a3259033fdeada02a20b8b0c296e9ae09" prot="public" virt="non-virtual"><scope>parton</scope><name>jet_index</name></member>
+      <member refid="classparton_1ae82660a6424444cc8ec10a216e20cbda" prot="public" virt="non-virtual"><scope>parton</scope><name>jets</name></member>
+      <member refid="classparticle__template_1abc6e99b77acd945b6b3b7cbdd12f32b3" prot="public" virt="non-virtual"><scope>parton</scope><name>leaves</name></member>
+      <member refid="classparticle__template_1a744a9148479e62db6c466cf8c90f7929" prot="public" virt="non-virtual"><scope>parton</scope><name>lep_decay</name></member>
+      <member refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" prot="public" virt="non-virtual"><scope>parton</scope><name>ls</name></member>
+      <member refid="classparticle__template_1aca9b414112368a9e513705dc368f9e5b" prot="public" virt="non-virtual"><scope>parton</scope><name>m_children</name></member>
+      <member refid="classparticle__template_1a3e4a34711699672f1c4e1e1d57e95929" prot="public" virt="non-virtual"><scope>parton</scope><name>m_parents</name></member>
+      <member refid="classparticle__template_1a566197d07c6aba326fdad5f781ede40c" prot="public" virt="non-virtual"><scope>parton</scope><name>mass</name></member>
+      <member refid="classparton_1ad1c47645aa3bfaf68c1bd33e6bf069d9" prot="public" virt="non-virtual"><scope>parton</scope><name>merge</name></member>
+      <member refid="classparton_1abf6201076149861d717e7029ebc4ae81" prot="public" virt="non-virtual"><scope>parton</scope><name>muon_index</name></member>
+      <member refid="classparton_1a50c373c183b825b2df8f41fc581737e6" prot="public" virt="non-virtual"><scope>parton</scope><name>nparton_jet_e</name></member>
+      <member refid="classparton_1a722db5e914d40b0e88f82ea6784ebe7b" prot="public" virt="non-virtual"><scope>parton</scope><name>nparton_tjet_e</name></member>
+      <member refid="classparton_1a517d73a6adeabbe049d18ee9656af82e" prot="public" virt="non-virtual"><scope>parton</scope><name>ntops_jets_e</name></member>
+      <member refid="classparton_1a23abef78dba55f41ba8ebadeac173255" prot="public" virt="non-virtual"><scope>parton</scope><name>ntops_jets_pt</name></member>
+      <member refid="classparton_1af5a85645103e9176fdecfac6d3e96d88" prot="public" virt="non-virtual"><scope>parton</scope><name>ntops_tjets_e</name></member>
+      <member refid="classparton_1ad7b28ea9db22448c4e4036dbbcd6ba7f" prot="public" virt="non-virtual"><scope>parton</scope><name>ntops_tjets_pt</name></member>
+      <member refid="classparticle__template_1a31caa03d0ea42d3026c35863e71a5fe2" prot="public" virt="non-virtual"><scope>parton</scope><name>operator+</name></member>
+      <member refid="classparticle__template_1ad4f1535f5eb70d16c576129eef0ff73c" prot="public" virt="non-virtual"><scope>parton</scope><name>operator+=</name></member>
+      <member refid="classparticle__template_1aeaf738a487c3fdad94746bbc2d5f0bf6" prot="public" virt="non-virtual"><scope>parton</scope><name>operator==</name></member>
+      <member refid="classparticle__template_1acded67bf4e6d29d5cd06159ff2e21730" prot="public" virt="non-virtual"><scope>parton</scope><name>parents</name></member>
+      <member refid="classparticle__template_1ab527ed22f6d67969247a0be9dda0165f" prot="public" virt="non-virtual"><scope>parton</scope><name>particle_template</name></member>
+      <member refid="classparticle__template_1aafe6bd459e2cc2a1cc98f205976e08fc" prot="public" virt="non-virtual"><scope>parton</scope><name>particle_template</name></member>
+      <member refid="classparticle__template_1a2d7af9375684f6cc0b217d29a24aaff3" prot="public" virt="non-virtual"><scope>parton</scope><name>particle_template</name></member>
+      <member refid="classparticle__template_1a2da03c904732999de60d57e86c983cb8" prot="public" virt="non-virtual"><scope>parton</scope><name>particle_template</name></member>
+      <member refid="classparticle__template_1aa90999894587963b3c89823e8852792d" prot="public" virt="non-virtual"><scope>parton</scope><name>particle_template</name></member>
+      <member refid="classparton_1ac50bb27fb65bb2548631d695f0f6b98a" prot="public" virt="non-virtual"><scope>parton</scope><name>parton</name></member>
+      <member refid="classparton_1ac50bb27fb65bb2548631d695f0f6b98a" prot="public" virt="non-virtual"><scope>parton</scope><name>parton</name></member>
+      <member refid="classparticle__template_1a3cc090c7528020fba8849e0850a5b2fc" prot="public" virt="non-virtual"><scope>parton</scope><name>pdgid</name></member>
+      <member refid="classparticle__template_1abfac6830f134139d5d052bc5241d3ffc" prot="public" virt="non-virtual"><scope>parton</scope><name>phi</name></member>
+      <member refid="classparticle__template_1a046b180dc2cad51955de4622bc66336e" prot="public" virt="non-virtual"><scope>parton</scope><name>pt</name></member>
+      <member refid="classtools_1a4450b1e48193bef904b44f7a90aaee98" prot="public" virt="non-virtual"><scope>parton</scope><name>put</name></member>
+      <member refid="classparticle__template_1aaea285da722e05111a27bc6496fc3fc5" prot="public" virt="non-virtual"><scope>parton</scope><name>px</name></member>
+      <member refid="classparticle__template_1a1f9bfad685427e7c6ef5d16163eb6ea4" prot="public" virt="non-virtual"><scope>parton</scope><name>py</name></member>
+      <member refid="classparticle__template_1a8d8e132523d5d11fab02bd3814c3c682" prot="public" virt="non-virtual"><scope>parton</scope><name>pz</name></member>
+      <member refid="classparticle__template_1aa8af18b783e4bd8647620ffa62a321d7" prot="public" virt="non-virtual"><scope>parton</scope><name>register_child</name></member>
+      <member refid="classparticle__template_1a1136fb07def4cd0385bd6d37b9ad68ff" prot="public" virt="non-virtual"><scope>parton</scope><name>register_parent</name></member>
+      <member refid="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" prot="public" virt="non-virtual"><scope>parton</scope><name>rename</name></member>
+      <member refid="classtools_1aeae88ebd7116d59008600f0723716dba" prot="public" virt="non-virtual"><scope>parton</scope><name>replace</name></member>
+      <member refid="classparton_1a04efe8d70593006300b80bf48a5f2f9f" prot="public" virt="non-virtual"><scope>parton</scope><name>selection</name></member>
+      <member refid="classparticle__template_1af21be977ccd925410e90221d8fadef32" prot="public" virt="non-virtual"><scope>parton</scope><name>set_charge</name></member>
+      <member refid="classparticle__template_1af4814257c6e584f51eaefee09d5d9300" prot="public" virt="non-virtual"><scope>parton</scope><name>set_children</name></member>
+      <member refid="classparticle__template_1afd797e25024bf1203b7524dc6aae703f" prot="public" virt="non-virtual"><scope>parton</scope><name>set_e</name></member>
+      <member refid="classparticle__template_1a7f3069ef3b9d7f2f4b9bccd7cf87d955" prot="public" virt="non-virtual"><scope>parton</scope><name>set_eta</name></member>
+      <member refid="classparticle__template_1a3ba07b65a181071a7c8c11e8ccdf3e91" prot="public" virt="non-virtual"><scope>parton</scope><name>set_index</name></member>
+      <member refid="classparticle__template_1a0900578e2e9c96bddada2963b4a1b141" prot="public" virt="non-virtual"><scope>parton</scope><name>set_mass</name></member>
+      <member refid="classparticle__template_1a9550be5b7d6267872dfce8d92e9b09f2" prot="public" virt="non-virtual"><scope>parton</scope><name>set_parents</name></member>
+      <member refid="classparticle__template_1ad9cf4aed3240fa987b364230a9929787" prot="public" virt="non-virtual"><scope>parton</scope><name>set_pdgid</name></member>
+      <member refid="classparticle__template_1a2ca47638ce890b9aa5d16c1184034fee" prot="public" virt="non-virtual"><scope>parton</scope><name>set_phi</name></member>
+      <member refid="classparticle__template_1a9176a4d5e1117cd5cabf048b8c595649" prot="public" virt="non-virtual"><scope>parton</scope><name>set_pt</name></member>
+      <member refid="classparticle__template_1a2dbc599127cbb7252c4edbb440b5bd71" prot="public" virt="non-virtual"><scope>parton</scope><name>set_px</name></member>
+      <member refid="classparticle__template_1a0b2715c3ababedf9fb023578db3fb9e1" prot="public" virt="non-virtual"><scope>parton</scope><name>set_py</name></member>
+      <member refid="classparticle__template_1af5770e8c231b36d403b3f155d0a63c96" prot="public" virt="non-virtual"><scope>parton</scope><name>set_pz</name></member>
+      <member refid="classparticle__template_1a3341f187b6b2699bfc65aa7b272d2424" prot="public" virt="non-virtual"><scope>parton</scope><name>set_symbol</name></member>
+      <member refid="classparticle__template_1af7ffbf0f94819ca168cbb33e65e1c29e" prot="public" virt="non-virtual"><scope>parton</scope><name>set_type</name></member>
+      <member refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" prot="public" virt="non-virtual"><scope>parton</scope><name>split</name></member>
+      <member refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" prot="public" virt="non-virtual"><scope>parton</scope><name>strategy</name></member>
+      <member refid="classtools_1a7b784121d8b368a64995feddc7083469" prot="public" virt="non-virtual"><scope>parton</scope><name>sum</name></member>
+      <member refid="classparticle__template_1a7406ffe413d0668d76e8fc02fce5fcd5" prot="public" virt="non-virtual"><scope>parton</scope><name>symbol</name></member>
+      <member refid="classparticle__template_1a9d76454c51212c82aaa61b6328bb6545" prot="public" virt="non-virtual"><scope>parton</scope><name>to_cartesian</name></member>
+      <member refid="classparticle__template_1a79ef4e926f54b39c0648b9e7aedd57db" prot="public" virt="non-virtual"><scope>parton</scope><name>to_polar</name></member>
+      <member refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" prot="public" virt="non-virtual"><scope>parton</scope><name>to_string</name></member>
+      <member refid="classtools_1a882f089d855dc4b3e0b60c591e11b092" prot="public" virt="non-virtual"><scope>parton</scope><name>to_string</name></member>
+      <member refid="classtools_1af0028ec6242448428f7c548b6e7cb714" prot="public" virt="non-virtual"><scope>parton</scope><name>tools</name></member>
+      <member refid="classparton_1a8a793b0ae4c3a3c43b1791d67493f5b4" prot="public" virt="non-virtual"><scope>parton</scope><name>top_index</name></member>
+      <member refid="classparton_1a1f13c60a6b920f983afdb18f352c4b2d" prot="public" virt="non-virtual"><scope>parton</scope><name>top_mass_contribution</name></member>
+      <member refid="classtools_1a69be8c55f9fd7036080317a2ce98d4de" prot="public" virt="non-virtual"><scope>parton</scope><name>trim</name></member>
+      <member refid="classparton_1aed5c10775fddb4304f687557610c89fa" prot="public" virt="non-virtual"><scope>parton</scope><name>truthjet_index</name></member>
+      <member refid="classparton_1af3c3c7330f1657aedaf8b172aa582f8b" prot="public" virt="non-virtual"><scope>parton</scope><name>truthjets</name></member>
+      <member refid="classparticle__template_1ae16f821dc4be9c0ab0811873fcc18bf5" prot="public" virt="non-virtual"><scope>parton</scope><name>type</name></member>
+      <member refid="classtools_1ab46f1f3892604cb366b861cb54ce30e0" prot="public" virt="non-virtual"><scope>parton</scope><name>type_name</name></member>
+      <member refid="classparticle__template_1a27da6f0c64f2f26f8626ac8f4b8c114f" prot="public" virt="virtual"><scope>parton</scope><name>~particle_template</name></member>
+      <member refid="classparton_1a2fa85ffa87e2481cbc13756463580ccf" prot="public" virt="virtual"><scope>parton</scope><name>~parton</name></member>
+      <member refid="classparton_1a0bbd86ba8e00b372de58793fe0399ff1" prot="public" virt="non-virtual"><scope>parton</scope><name>~parton</name></member>
+      <member refid="classtools_1a04762ddd5cc588520c89a387341f77f4" prot="public" virt="non-virtual"><scope>parton</scope><name>~tools</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

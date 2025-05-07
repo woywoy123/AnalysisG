@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="operators_8h" kind="file" language="C++">
+    <compoundname>operators.h</compoundname>
+    <includes local="no">torch/torch.h</includes>
+    <includedby refid="interface_2operators_8cxx" local="no">operators.cxx</includedby>
+    <includedby refid="nusol_2tensor_2nusol_8cxx" local="no">nusol.cxx</includedby>
+    <includedby refid="operators_2operators_8cxx" local="no">operators.cxx</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>operators.h</label>
+        <link refid="operators_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>torch/torch.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>operators.h</label>
+        <link refid="operators_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>nusol.cxx</label>
+        <link refid="nusol_2tensor_2nusol_8cxx"/>
+      </node>
+      <node id="4">
+        <label>operators.cxx</label>
+        <link refid="operators_2operators_8cxx"/>
+      </node>
+      <node id="2">
+        <label>operators.cxx</label>
+        <link refid="interface_2operators_8cxx"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespaceoperators__">operators_</innernamespace>
+    <briefdescription>
+<para>Provides operator functions for mathematical operations in C++. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>operators.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Provides<sp/>operator<sp/>functions<sp/>for<sp/>mathematical<sp/>operations<sp/>in<sp/>C++.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>OPERATORS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>OPERATORS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;torch/torch.h&gt;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">///&lt;<sp/>Includes<sp/>PyTorch<sp/>C++<sp/>headers<sp/>for<sp/>tensor<sp/>operations.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="11"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Namespace<sp/>for<sp/>operator<sp/>functions.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="namespaceoperators__" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceoperators__" kindref="compound">operators_</ref><sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="16"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>dot<sp/>product<sp/>of<sp/>two<sp/>vectors.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>@param<sp/>v1<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>first<sp/>vector.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>@param<sp/>v2<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>second<sp/>vector.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>tensor<sp/>containing<sp/>the<sp/>dot<sp/>product<sp/>result.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal">torch::Tensor<sp/><ref refid="namespaceoperators___1a9c06ae4b1ec4e5f50d3db14bc1da2ef6" kindref="member">Dot</ref>(torch::Tensor*<sp/>v1,<sp/>torch::Tensor*<sp/>v2);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="25"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>cross<sp/>product<sp/>of<sp/>two<sp/>vectors.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>@param<sp/>v1<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>first<sp/>vector.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>@param<sp/>v2<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>second<sp/>vector.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>tensor<sp/>containing<sp/>the<sp/>cross<sp/>product<sp/>result.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal">torch::Tensor<sp/><ref refid="namespaceoperators___1adbe7fd5192c2b058280996ad9529f6ed" kindref="member">Cross</ref>(torch::Tensor*<sp/>v1,<sp/>torch::Tensor*<sp/>v2);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="34"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>cosine<sp/>of<sp/>the<sp/>angle<sp/>between<sp/>two<sp/>vectors.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>@param<sp/>v1<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>first<sp/>vector.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>@param<sp/>v2<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>second<sp/>vector.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>tensor<sp/>containing<sp/>the<sp/>cosine<sp/>of<sp/>the<sp/>angle.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal">torch::Tensor<sp/><ref refid="namespaceoperators___1af012532b8e034b7d6cb733360e14f8d7" kindref="member">CosTheta</ref>(torch::Tensor*<sp/>v1,<sp/>torch::Tensor*<sp/>v2);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="43"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>sine<sp/>of<sp/>the<sp/>angle<sp/>between<sp/>two<sp/>vectors.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>@param<sp/>v1<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>first<sp/>vector.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>@param<sp/>v2<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>second<sp/>vector.</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>tensor<sp/>containing<sp/>the<sp/>sine<sp/>of<sp/>the<sp/>angle.</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal">torch::Tensor<sp/><ref refid="namespaceoperators___1a0335a4a853f7cff5faa4bc7bc68e3a8a" kindref="member">SinTheta</ref>(torch::Tensor*<sp/>v1,<sp/>torch::Tensor*<sp/>v2);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="52"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>rotation<sp/>matrix<sp/>around<sp/>the<sp/>X-axis.</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/>@param<sp/>angle<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>rotation<sp/>angle.</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>tensor<sp/>containing<sp/>the<sp/>rotation<sp/>matrix.</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal">torch::Tensor<sp/><ref refid="namespaceoperators___1a7ce1f1b4f84306a157386ac5fd54ea1a" kindref="member">Rx</ref>(torch::Tensor*<sp/>angle);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="60"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>rotation<sp/>matrix<sp/>around<sp/>the<sp/>Y-axis.</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/>@param<sp/>angle<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>rotation<sp/>angle.</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>tensor<sp/>containing<sp/>the<sp/>rotation<sp/>matrix.</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal">torch::Tensor<sp/><ref refid="namespaceoperators___1a7f4dbc7ab056202b3b43d621f6c8df50" kindref="member">Ry</ref>(torch::Tensor*<sp/>angle);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="68"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>rotation<sp/>matrix<sp/>around<sp/>the<sp/>Z-axis.</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*<sp/>@param<sp/>angle<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>rotation<sp/>angle.</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>tensor<sp/>containing<sp/>the<sp/>rotation<sp/>matrix.</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal">torch::Tensor<sp/><ref refid="namespaceoperators___1a38a28124e97111d3a1f2809ce2039769" kindref="member">Rz</ref>(torch::Tensor*<sp/>angle);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="76"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>cofactor<sp/>matrix<sp/>of<sp/>a<sp/>given<sp/>matrix.</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*<sp/>@param<sp/>matrix<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>matrix.</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>tensor<sp/>containing<sp/>the<sp/>cofactor<sp/>matrix.</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal">torch::Tensor<sp/><ref refid="namespaceoperators___1a3d017da3c5169dfb4e1ca5da7cae0703" kindref="member">CoFactors</ref>(torch::Tensor*<sp/>matrix);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="84"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>determinant<sp/>of<sp/>a<sp/>matrix.</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/>*<sp/>@param<sp/>matrix<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>matrix.</highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>tensor<sp/>containing<sp/>the<sp/>determinant<sp/>value.</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal">torch::Tensor<sp/><ref refid="namespaceoperators___1a123a2d44cfea06825875800ebf21ae0d" kindref="member">Determinant</ref>(torch::Tensor*<sp/>matrix);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="92"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>inverse<sp/>of<sp/>a<sp/>matrix.</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/>*<sp/>@param<sp/>matrix<sp/>Input<sp/>tensor<sp/>representing<sp/>the<sp/>matrix.</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>tensor<sp/>containing<sp/>the<sp/>inverse<sp/>matrix.</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal">torch::Tensor<sp/><ref refid="namespaceoperators___1aaf20282e41ff4961e01d222feb86bc47" kindref="member">Inverse</ref>(torch::Tensor*<sp/>matrix);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>operators_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>OPERATORS_H</highlight></codeline>
+    </programlisting>
+    <location file="pyc/operators/include/operators/operators.h"/>
+  </compounddef>
+</doxygen>

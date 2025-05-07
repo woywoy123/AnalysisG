@@ -1,0 +1,30 @@
+digraph "helper.mrg"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="helper.mrg",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="helper.loss",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#acd08cad8fe84f3859f4d0a8d8e329980",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="helper.pc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacehelper.html#a3fd1d534ecf2a857026ff37351ada130",tooltip=" "];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="figures.Tabular",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#a24abefb0dd409355a4c92f5f5c574616",tooltip=" "];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="figures.entry_point",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#a0f675134a908de3a789c674dd3cc17d4",tooltip=" "];
+  Node3 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="figures.TabularFlow",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#a3abe481f6f64afcd8cc17a8f6fd8719c",tooltip=" "];
+  Node6 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="pyc::tensorize",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc.html#aed2996264099d57c7d42ac156c54981d",tooltip=" "];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="pyc::nusol::combinatorial",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1nusol.html#ae7700849ae562ae11fd360bf94fe154d",tooltip=" "];
+  Node7 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="pyc::nusol::NuNu",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc_1_1nusol.html#adb902ce7bc71e3a4cf26f2f1e88e856c",tooltip=" "];
+  Node7 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="pyc::tensorize",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacepyc.html#a62843610f791246167e83e780cda22d8",tooltip=" "];
+}

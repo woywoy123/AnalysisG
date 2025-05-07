@@ -1,0 +1,13 @@
+digraph "Graphical Class Hierarchy"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node155 [label="MetaLookup",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node155 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 [label="main.MetaX",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmain_1_1_meta_x.html",tooltip=" "];
+  Node155 -> Node157 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node157 [label="simply_plot.MetaX",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classsimply__plot_1_1_meta_x.html",tooltip=" "];
+}

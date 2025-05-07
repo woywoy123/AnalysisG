@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_e39af18f31539c4d8903cb45ace62373" kind="dir">
+    <compoundname>pagerank</compoundname>
+    <innerdir refid="dir_a155634e44ec5ccaaa74e7c8577e2c00">cxx</innerdir>
+    <innerdir refid="dir_fbc6c7b2579ab3fcdbbfee61fece4466">include</innerdir>
+    <innerfile refid="src_2_analysis_g_2metrics_2pagerank_2____init_____8py">src/AnalysisG/metrics/pagerank/__init__.py</innerfile>
+    <innerfile refid="metric__pagerank_8pyx">metric_pagerank.pyx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="metrics/pagerank/"/>
+  </compounddef>
+</doxygen>

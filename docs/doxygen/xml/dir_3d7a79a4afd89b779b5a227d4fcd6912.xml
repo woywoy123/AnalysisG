@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_3d7a79a4afd89b779b5a227d4fcd6912" kind="dir">
+    <compoundname>studies</compoundname>
+    <innerdir refid="dir_e096b336a794e18616365191cd47c149">analysis</innerdir>
+    <innerdir refid="dir_b39d24fdc54e2922b46bfac2926f3182">benchmarks</innerdir>
+    <innerdir refid="dir_c636bf5b7d6cad00d88713c6cb6ab50a">mc16_matching</innerdir>
+    <innerdir refid="dir_12d706d25d37970ce32581b2d4a362be">mc20_experimental</innerdir>
+    <innerdir refid="dir_2dfc58753da5a81651b2c6a1abc6be5f">mc20_matching</innerdir>
+    <innerdir refid="dir_a4e8db2c6c459025cd43c6a51e52737e">metrics</innerdir>
+    <innerdir refid="dir_4902af8ceedb7dac0d70de5c1bff174c">neutrino</innerdir>
+    <innerdir refid="dir_ca8f03c216f177bacde8df1b4d4135f1">performance</innerdir>
+    <innerdir refid="dir_d347f3e4ac2f7b981b96ded4cf8f0227">topreconstruction</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/studies/"/>
+  </compounddef>
+</doxygen>

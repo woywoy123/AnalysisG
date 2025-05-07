@@ -1,0 +1,331 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="optimizer__config_8cxx" kind="file" language="C++">
+    <compoundname>optimizer_config.cxx</compoundname>
+    <includes refid="lossfx_8h" local="no">templates/lossfx.h</includes>
+    <incdepgraph>
+      <node id="13">
+        <label>functional</label>
+      </node>
+      <node id="8">
+        <label>cstdint</label>
+      </node>
+      <node id="10">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="5">
+        <label>string</label>
+      </node>
+      <node id="3">
+        <label>map</label>
+      </node>
+      <node id="1">
+        <label>optimizer_config.cxx</label>
+        <link refid="optimizer__config_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>vector</label>
+      </node>
+      <node id="6">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="11">
+        <label>structs/optimizer.h</label>
+        <link refid="structs_2include_2structs_2optimizer_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>iostream</label>
+      </node>
+      <node id="2">
+        <label>templates/lossfx.h</label>
+        <link refid="lossfx_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="optimizer__config_8cxx_1a8172f201c23694e958293582aaec3694" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void m_xavier_normal</definition>
+        <argsstring>(torch::nn::Module &amp;m)</argsstring>
+        <name>m_xavier_normal</name>
+        <param>
+          <type>torch::nn::Module &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/cxx/optimizer_config.cxx" line="70" column="13" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="70" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="optimizer__config_8cxx_1ab57c9a33f48e0ba646534904feca4d4a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void m_xavier_uniform</definition>
+        <argsstring>(torch::nn::Module &amp;m)</argsstring>
+        <name>m_xavier_uniform</name>
+        <param>
+          <type>torch::nn::Module &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/cxx/optimizer_config.cxx" line="77" column="13" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="77" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="function" id="optimizer__config_8cxx_1aa1218ff1d6ef4abd2077b40874aae4b8" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void m_normal</definition>
+        <argsstring>(torch::nn::Module &amp;m)</argsstring>
+        <name>m_normal</name>
+        <param>
+          <type>torch::nn::Module &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/cxx/optimizer_config.cxx" line="84" column="13" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="84" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="function" id="optimizer__config_8cxx_1a43ccffce9ce22dfa1c982d01a58c8353" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void m_uniform</definition>
+        <argsstring>(torch::nn::Module &amp;m)</argsstring>
+        <name>m_uniform</name>
+        <param>
+          <type>torch::nn::Module &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/cxx/optimizer_config.cxx" line="91" column="13" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="91" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="optimizer__config_8cxx_1a04ec0ccc2e5dd28ea3d164fa76f82b23" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void m_kaiming_normal</definition>
+        <argsstring>(torch::nn::Module &amp;m)</argsstring>
+        <name>m_kaiming_normal</name>
+        <param>
+          <type>torch::nn::Module &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/cxx/optimizer_config.cxx" line="99" column="13" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="99" bodyend="104"/>
+      </memberdef>
+      <memberdef kind="function" id="optimizer__config_8cxx_1a7f53951aa8610af52f05dcc4082fa07d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void m_kaiming_uniform</definition>
+        <argsstring>(torch::nn::Module &amp;m)</argsstring>
+        <name>m_kaiming_uniform</name>
+        <param>
+          <type>torch::nn::Module &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/cxx/optimizer_config.cxx" line="106" column="13" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="106" bodyend="111"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="lossfx_8h" kindref="compound">templates/lossfx.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>lossfx::build_adam(<ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref>*<sp/><ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref>,<sp/>std::vector&lt;torch::Tensor&gt;*<sp/><ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>){</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_adam){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::optim::AdamOptions<sp/>optim_(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/><ref refid="namespacetest__evaluation_1a2d277fe69716773dde8e426144d4e4e6" kindref="member">lr</ref>);<sp/></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_betas)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>{optim_.betas(std::tuple&lt;float,<sp/>float&gt;(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>betas));}</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_eps)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{optim_.eps(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>eps);}</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_weight_decay){optim_.weight_decay(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>weight_decay);}</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_amsgrad)<sp/><sp/><sp/><sp/><sp/>{optim_.amsgrad(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>amsgrad);}</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_adam<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>torch::optim::Adam(*<ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>,<sp/>optim_);<sp/></highlight></codeline>
+<codeline lineno="11"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>lossfx::build_adagrad(<ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref>*<sp/><ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref>,<sp/>std::vector&lt;torch::Tensor&gt;*<sp/><ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>){</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_adagrad){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::optim::AdagradOptions<sp/>optim_(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/><ref refid="namespacetest__evaluation_1a2d277fe69716773dde8e426144d4e4e6" kindref="member">lr</ref>);<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_lr_decay)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{optim_.lr_decay(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>lr_decay);}</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_weight_decay)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{optim_.weight_decay(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>weight_decay);}</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_initial_accumulator_value){optim_.initial_accumulator_value(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>initial_accumulator_value);}</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_eps)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{optim_.eps(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>eps);}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_adagrad<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>torch::optim::Adagrad(*<ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>,<sp/>optim_);<sp/></highlight></codeline>
+<codeline lineno="21"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>lossfx::build_adamw(<ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref>*<sp/><ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref>,<sp/>std::vector&lt;torch::Tensor&gt;*<sp/><ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>){</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_adamw){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::optim::AdamWOptions<sp/>optim_(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/><ref refid="namespacetest__evaluation_1a2d277fe69716773dde8e426144d4e4e6" kindref="member">lr</ref>);<sp/></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_betas)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>{optim_.betas(std::tuple&lt;float,<sp/>float&gt;(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>betas));}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_eps)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{optim_.eps(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>eps);}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_weight_decay){optim_.weight_decay(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>weight_decay);}</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_amsgrad)<sp/><sp/><sp/><sp/><sp/>{optim_.amsgrad(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>amsgrad);}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_adamw<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>torch::optim::AdamW(*<ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>,<sp/>optim_);<sp/></highlight></codeline>
+<codeline lineno="31"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>lossfx::build_lbfgs(<ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref>*<sp/><ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref>,<sp/>std::vector&lt;torch::Tensor&gt;*<sp/><ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>){</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_lbfgs){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::optim::LBFGSOptions<sp/>optim_(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/><ref refid="namespacetest__evaluation_1a2d277fe69716773dde8e426144d4e4e6" kindref="member">lr</ref>);<sp/></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_max_iter)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{optim_.max_iter(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>max_iter);}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_tolerance_grad)<sp/><sp/>{optim_.tolerance_grad(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>tolerance_grad);}<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_tolerance_change){optim_.tolerance_change(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>tolerance_change);}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_max_iter)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{optim_.max_iter(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>max_iter);}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_max_eval)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{optim_.max_eval(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>max_eval);}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_history_size)<sp/><sp/><sp/><sp/>{optim_.history_size(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>history_size);}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_lbfgs<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>torch::optim::LBFGS(*<ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>,<sp/>optim_);<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>lossfx::build_rmsprop(<ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref>*<sp/><ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref>,<sp/>std::vector&lt;torch::Tensor&gt;*<sp/><ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>){</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_rmsprop){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::optim::RMSpropOptions<sp/>optim_(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/><ref refid="namespacetest__evaluation_1a2d277fe69716773dde8e426144d4e4e6" kindref="member">lr</ref>);<sp/></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_alpha)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>{optim_.alpha(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>alpha);}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_eps)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{optim_.eps(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>eps);}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_weight_decay){optim_.weight_decay(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>weight_decay);}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_momentum)<sp/><sp/><sp/><sp/>{optim_.momentum(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>momentum);}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_centered)<sp/><sp/><sp/><sp/>{optim_.centered(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>centered);}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_rmsprop<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>torch::optim::RMSprop(*<ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>,<sp/>optim_);<sp/></highlight></codeline>
+<codeline lineno="55"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>lossfx::build_sgd(<ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref>*<sp/><ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref>,<sp/>std::vector&lt;torch::Tensor&gt;*<sp/><ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>){</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_sgd){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::optim::SGDOptions<sp/>optim_(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/><ref refid="namespacetest__evaluation_1a2d277fe69716773dde8e426144d4e4e6" kindref="member">lr</ref>);<sp/></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_momentum)<sp/><sp/><sp/><sp/>{optim_.momentum(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>momentum);}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_dampening)<sp/><sp/><sp/>{optim_.dampening(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>dampening);}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_weight_decay){optim_.weight_decay(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>weight_decay);}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>m_nesterov)<sp/><sp/><sp/><sp/>{optim_.nesterov(<ref refid="namespacetest__generator_1adac66e982d9a2a89699bf61856f98823" kindref="member">op</ref><sp/>-&gt;<sp/>nesterov);}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>m_sgd<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>torch::optim::SGD(*<ref refid="namespacernn__model_1a9f4e388fbf8accc0434484d8989dca0d" kindref="member">params</ref>,<sp/>optim_);<sp/></highlight></codeline>
+<codeline lineno="65"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="comment">//<sp/>------------------------<sp/>weight<sp/>init<sp/>------------------------<sp/>//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>m_xavier_normal(torch::nn::Module&amp;<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>){</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>torch::NoGradGuard<sp/>nograd;<sp/></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>linear<sp/>=<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>.as&lt;torch::nn::Linear&gt;()){</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::init::xavier_normal_(linear<sp/>-&gt;<sp/>weight);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>m_xavier_uniform(torch::nn::Module&amp;<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>){</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>torch::NoGradGuard<sp/>nograd;<sp/></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>linear<sp/>=<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>.as&lt;torch::nn::Linear&gt;()){</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::init::xavier_uniform_(linear<sp/>-&gt;<sp/>weight);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>m_normal(torch::nn::Module&amp;<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>){</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>torch::NoGradGuard<sp/>nograd;<sp/></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>linear<sp/>=<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>.as&lt;torch::nn::Linear&gt;()){</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::init::normal_(linear<sp/>-&gt;<sp/>weight);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>m_uniform(torch::nn::Module&amp;<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>){</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>torch::NoGradGuard<sp/>nograd;<sp/></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>linear<sp/>=<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>.as&lt;torch::nn::Linear&gt;()){</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::init::uniform_(linear<sp/>-&gt;<sp/>weight);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="96"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>m_kaiming_normal(torch::nn::Module&amp;<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>){</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>torch::NoGradGuard<sp/>nograd;<sp/></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>linear<sp/>=<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>.as&lt;torch::nn::Linear&gt;()){</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::init::kaiming_normal_(linear<sp/>-&gt;<sp/>weight);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>m_kaiming_uniform(torch::nn::Module&amp;<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>){</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>torch::NoGradGuard<sp/>nograd;<sp/></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>linear<sp/>=<sp/><ref refid="namespacetest__generator_1a95a1c3c19131b44b64f91e11570dde16" kindref="member">m</ref>.as&lt;torch::nn::Linear&gt;()){</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::nn::init::kaiming_uniform_(linear<sp/>-&gt;<sp/>weight);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113" refid="classlossfx_1a8afc0d1aa169bcebb072b8b4278b2e88" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classlossfx_1a8afc0d1aa169bcebb072b8b4278b2e88" kindref="member">lossfx::weight_init</ref>(torch::nn::Sequential*<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>,<sp/><ref refid="model__template_8h_1a04569a45296869bf184d4b79d10487dd" kindref="member">mlp_init</ref><sp/><ref refid="namespacemain_1aa7f7a57dd94ac214b133aba964145812" kindref="member">method</ref>){</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(<ref refid="namespacemain_1aa7f7a57dd94ac214b133aba964145812" kindref="member">method</ref>){</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="model__template_8h_1a04569a45296869bf184d4b79d10487ddaebc81705969b8c5ae986b0b2ec08d1d5" kindref="member">mlp_init::normal</ref>:<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*data)<sp/>-&gt;<sp/><ref refid="namespacechildrenkinematics_1_1figures_1ab80f4cf948eb988fce6030ca8bd484ea" kindref="member">apply</ref>(m_normal);<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="model__template_8h_1a04569a45296869bf184d4b79d10487dda56013d9ac59a24fb94d9acb932a04b2f" kindref="member">mlp_init::uniform</ref>:<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*data)<sp/>-&gt;<sp/><ref refid="namespacechildrenkinematics_1_1figures_1ab80f4cf948eb988fce6030ca8bd484ea" kindref="member">apply</ref>(m_uniform);<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a04569a45296869bf184d4b79d10487dda46569d558799d5521dee1b9492ae97d7" kindref="member">mlp_init::xavier_normal</ref>:<sp/><sp/><sp/>(*data)<sp/>-&gt;<sp/><ref refid="namespacechildrenkinematics_1_1figures_1ab80f4cf948eb988fce6030ca8bd484ea" kindref="member">apply</ref>(m_xavier_normal);<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a04569a45296869bf184d4b79d10487ddaca77cd02f782fb385e2cc451f3b2918a" kindref="member">mlp_init::xavier_uniform</ref>:<sp/><sp/>(*data)<sp/>-&gt;<sp/><ref refid="namespacechildrenkinematics_1_1figures_1ab80f4cf948eb988fce6030ca8bd484ea" kindref="member">apply</ref>(m_xavier_uniform);<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a04569a45296869bf184d4b79d10487ddab341df97cd35fa754dcf86e9bfec7158" kindref="member">mlp_init::kaiming_normal</ref>:<sp/><sp/>(*data)<sp/>-&gt;<sp/><ref refid="namespacechildrenkinematics_1_1figures_1ab80f4cf948eb988fce6030ca8bd484ea" kindref="member">apply</ref>(m_kaiming_normal);<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a04569a45296869bf184d4b79d10487ddaa3168d42f87e37f681a0319b5f2cff8a" kindref="member">mlp_init::kaiming_uniform</ref>:<sp/>(*data)<sp/>-&gt;<sp/><ref refid="namespacechildrenkinematics_1_1figures_1ab80f4cf948eb988fce6030ca8bd484ea" kindref="member">apply</ref>(m_kaiming_uniform);<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/lossfx/cxx/optimizer_config.cxx"/>
+  </compounddef>
+</doxygen>

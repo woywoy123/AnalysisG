@@ -1,3 +1,11 @@
+/**
+ * @file metrics.cxx
+ * @brief Implementation of the metrics class methods.
+ *
+ * This file contains the implementation of methods for registering models, building histograms,
+ * and computing metrics for machine learning models.
+ */
+
 #include <metrics/metrics.h>
 #include <TError.h>
 
@@ -10,6 +18,16 @@ metrics::~metrics(){
     this -> registry.clear(); 
 }
 
+/**
+ * @brief Registers a model and initializes its metrics.
+ *
+ * This function creates a new model report for the given model template and k-fold index.
+ * It initializes the metrics structures and prepares histograms for loss and accuracy tracking.
+ *
+ * @param mod Pointer to the model template.
+ * @param kfold The k-fold index for cross-validation.
+ * @return Pointer to the model report.
+ */
 model_report* metrics::register_model(model_template* mod, int kfold){
     this -> registry[kfold].model = mod; 
     this -> registry[kfold].report = new model_report(); 
@@ -34,6 +52,14 @@ model_report* metrics::register_model(model_template* mod, int kfold){
     return mr;
 }
 
+/**
+ * @brief Captures metrics from the current epoch.
+ *
+ * @param mode The current mode (training or validation).
+ * @param kfold The k-fold index.
+ * @param epoch The current epoch number.
+ * @param smpl_len The sample length.
+ */
 void metrics::capture(mode_enum mode, int kfold, int epoch, int smpl_len){
     analytics_t* an = &this -> registry[kfold];  
     an -> this_epoch = epoch; 
@@ -85,6 +111,11 @@ void metrics::capture(mode_enum mode, int kfold, int epoch, int smpl_len){
     }
 }
 
+/**
+ * @brief Dumps all metric plots for a specific k-fold.
+ *
+ * @param k The k-fold index.
+ */
 void metrics::dump_plots(int k){
     this -> dump_loss_plots(k);
     this -> dump_accuracy_plots(k); 

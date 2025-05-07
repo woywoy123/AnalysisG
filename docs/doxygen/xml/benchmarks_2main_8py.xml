@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="benchmarks_2main_8py" kind="file" language="Python">
+    <compoundname>benchmarks/main.py</compoundname>
+    <innernamespace refid="namespacemain">main</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="keyword">import</highlight><highlight class="normal"><sp/>figures</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>loader<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>construct,<sp/>assignment</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4" refid="namespacemain_1a6627b21343d322fe7530e31f47373576" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacemain_1a5b4be1a6135a1aa22b30e809f67400c9" kindref="member">default</ref>(tl):</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"><sp/><sp/><sp/><sp/>tl.Style<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;ATLAS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/>tl.DPI<sp/>=<sp/>250</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/>tl.TitleSize<sp/>=<sp/>25</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">#<sp/><sp/><sp/><sp/>tl.AutoScaling<sp/>=<sp/>True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>tl.yScaling<sp/>=<sp/>10*0.75</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>tl.xScaling<sp/>=<sp/>15*0.6</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/>tl.FontSize<sp/>=<sp/>20</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>tl.AxisSize<sp/>=<sp/>20</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>tl.LegendSize<sp/>=<sp/>14</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15" refid="namespacemain_1a6f31bffcea51d8f53b5f2b21f2c975df" refkind="member"><highlight class="normal">pth<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;/CERN/thesis-data/benchmark/&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="namespacemain_1af9035006d72840f1a0b9e710181aaa87" refkind="member"><highlight class="normal">devices<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;a100&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;h100&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;v100&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;a30&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18" refid="namespacemain_1a3c570738cc1f6613c7de3072d963dee7" refkind="member"><highlight class="normal">pkt<sp/>=<sp/><ref refid="namespaceloader_1a0b911cf7bb73654dc6e78991bc059d2b" kindref="member">construct</ref>(pth,<sp/>devices)</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">pkt<sp/>=<sp/><ref refid="namespaceloader_1a156716082f9fff1abf9344f8a6fd4a2f" kindref="member">assignment</ref>(pkt)</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21" refid="namespacemain_1a1eba0669b3d0fd1cef430ae99c82cc59" refkind="member"><highlight class="normal">fx<sp/>=<sp/>figures</highlight></codeline>
+<codeline lineno="22" refid="namespacemain_1afb1c72e4dc711507a45f671246a1cf7b" refkind="member"><highlight class="normal">fx.defaults<sp/>=<sp/>default</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">fx.entry(pkt,<sp/>devices)</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/workspaces/AnalysisG/studies/benchmarks/main.py"/>
+  </compounddef>
+</doxygen>

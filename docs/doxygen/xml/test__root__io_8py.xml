@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="test__root__io_8py" kind="file" language="Python">
+    <compoundname>test_root_io.py</compoundname>
+    <innernamespace refid="namespacetest__root__io">test_root_io</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespacetest__root__io" refkind="compound"><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG.core.io<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>IO</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="namespacetest__root__io_1a3bc4ff624e2f4c3456d0d1da41a22323" refkind="member"><highlight class="normal">root1<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./samples/sample1/smpl1.root&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4" refid="namespacetest__root__io_1a438f6b3f90c58e970eac462d812901da" refkind="member"><highlight class="normal">root2<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./samples/sample1/smpl2.root&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6" refid="namespacetest__root__io_1ade5c7345073f822af7da32a1a099b8b7" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetest__root__io_1ade5c7345073f822af7da32a1a099b8b7" kindref="member">test_reading_root</ref>():</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/>io<sp/>=<sp/>IO()</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/>io.Files<sp/>=<sp/>[root1,<sp/>root2]</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>io.Trees<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;nominal&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;nominal-1&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>io.Branches<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;children_index&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;hello&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/>io.Leaves<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;children_phi&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;nothing&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>root1_,<sp/>root2_<sp/>=<sp/>list(io.Keys)</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;nominal-1&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>io.Keys[root1_][</highlight><highlight class="stringliteral">&quot;missed&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;Trees&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;nominal-1&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>io.Keys[root2_][</highlight><highlight class="stringliteral">&quot;missed&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;Trees&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;hello&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>io.Keys[root1_][</highlight><highlight class="stringliteral">&quot;missed&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;Branches&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;hello&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>io.Keys[root2_][</highlight><highlight class="stringliteral">&quot;missed&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;Branches&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;nothing&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>io.Keys[root1_][</highlight><highlight class="stringliteral">&quot;missed&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;Leaves&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;nothing&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>io.Keys[root2_][</highlight><highlight class="stringliteral">&quot;missed&quot;</highlight><highlight class="normal">][</highlight><highlight class="stringliteral">&quot;Leaves&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>del<sp/>io</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>io<sp/>=<sp/>IO([root1,<sp/>root2])</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>io.Trees<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;nominal&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>io.Branches<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;children_index&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>io.Leaves<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;met_met&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/>len(io)<sp/>==<sp/>165</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>del<sp/>io</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>k<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>range(10):</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>io<sp/>=<sp/>IO([root1,<sp/>root2])</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>io.Trees<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;nominal&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;truth&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>io.Leaves<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;weight_pileup&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;weight_mc&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;met_phi&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;children_pt&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>io.ScanKeys()</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>len_nom,<sp/>len_truth<sp/>=<sp/>0,<sp/>0</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pt_x<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>io:</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>b</highlight><highlight class="stringliteral">&quot;truth.weight_mc.weight_mc&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>i:</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/>b</highlight><highlight class="stringliteral">&quot;truth.weight_mc.weight_mc&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>i</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/>b</highlight><highlight class="stringliteral">&quot;truth.weight_pileup.weight_pileup&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>i</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>len_truth<sp/>+=<sp/>1</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>b</highlight><highlight class="stringliteral">&quot;nominal.weight_mc.weight_mc&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>i:</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pt_x.append(i[b</highlight><highlight class="stringliteral">&quot;nominal.children_pt.children_pt.children_pt&quot;</highlight><highlight class="normal">][0][0])</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/>b</highlight><highlight class="stringliteral">&quot;nominal.weight_mc.weight_mc&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>i</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/>b</highlight><highlight class="stringliteral">&quot;nominal.weight_pileup.weight_pileup&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>i</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/>b</highlight><highlight class="stringliteral">&quot;nominal.met_phi.met_phi&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>i</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>len_nom<sp/>+=<sp/>1</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/>len(set(pt_x))<sp/>==<sp/>165<sp/></highlight><highlight class="comment">#<sp/>covers<sp/>indexing<sp/>problems</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/>len_truth<sp/>==<sp/>2000</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">assert</highlight><highlight class="normal"><sp/>len_nom<sp/>==<sp/>165</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>del<sp/>io</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit()</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="namespacetest__root__io_1a00582e12531e66dd72be39e55a401031" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetest__root__io_1a00582e12531e66dd72be39e55a401031" kindref="member">test_random</ref>():</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>time<sp/></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>spl<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./big-dr0.4.root&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>io<sp/>=<sp/>IO()</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>io.Verbose<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>io.Files<sp/>=<sp/>[spl]</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>io.Trees<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;nominal_Loose&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>io.Leaves<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;phystru_partontruthlabel&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;phystru_top_index&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;phystru_index&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;phystru_type&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;physdet_partontruthlabel&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;physdet_top_index&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>i<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>io:</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>del<sp/>i[</highlight><highlight class="stringliteral">&quot;filename&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>l<sp/></highlight><highlight class="keywordflow">in</highlight><highlight class="normal"><sp/>i:</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print(l.decode(</highlight><highlight class="stringliteral">&quot;utf-8&quot;</highlight><highlight class="normal">).split(</highlight><highlight class="stringliteral">&quot;.&quot;</highlight><highlight class="normal">)[-1],<sp/>i[l])</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print(</highlight><highlight class="stringliteral">&quot;___&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>time.sleep(0.1)</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="namespacetest__root__io_1a8bf7eaa186370a81e08ee21d5389fa36" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="namespacetest__root__io_1a8bf7eaa186370a81e08ee21d5389fa36" kindref="member">test_pyami</ref>():</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>smpl<sp/>=<sp/>IO(root1)</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>smpl.MetaCachePath<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;./meta_cache&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>smpl.Trees<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;nominal&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>smpl.Leaves<sp/>=<sp/>[</highlight><highlight class="stringliteral">&quot;weight_mc&quot;</highlight><highlight class="normal">]</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>smpl.EnablePyAMI<sp/>=<sp/></highlight><highlight class="keyword">True</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>smpl.Keys</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>meta<sp/>=<sp/>smpl.MetaData()</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>meta<sp/>=<sp/>list(meta.values())[0]</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.dsid)</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.amitag)</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.logicalDatasetName)</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.nFiles)</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.totalEvents)</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.totalSize)</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.dataType)</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.prodsysStatus)</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.completion)</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.ecmEnergy)</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.generators)</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.isMC)</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.derivationFormat)</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.eventNumber)</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.genFiltEff)</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.beam_energy)</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.crossSection)</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.crossSection_mean)</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.run_number)</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.datasetNumber)</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.identifier)</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.version)</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.PDF)</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.AtlasRelease)</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.principalPhysicsGroup)</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.physicsShort)</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.generatorName)</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.geometryVersion)</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.conditionsTag)</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.generatorTune)</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.amiStatus)</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.beamType)</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.productionStep)</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.projectName)</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.statsAlgorithm)</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.genFilterNames)</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.file_type)</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.DatasetName)</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.event_index)</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.keywords)</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.weights)</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.keyword)</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.found)</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.Files)</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.fileGUID)</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.events)</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta)</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.fileSize)</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>print(meta.sample_name)</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>__name__<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;__main__&quot;</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacetest__root__io_1ade5c7345073f822af7da32a1a099b8b7" kindref="member">test_reading_root</ref>()</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight><highlight class="comment">#<sp/><sp/><sp/><sp/>test_pyami()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight><highlight class="comment">#<sp/><sp/><sp/><sp/>test_random()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/workspaces/AnalysisG/test/test_root_io.py"/>
+  </compounddef>
+</doxygen>

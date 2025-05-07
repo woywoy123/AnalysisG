@@ -1,0 +1,413 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="main_8cxx" kind="file" language="C++">
+    <compoundname>main.cxx</compoundname>
+    <includes local="no">iostream</includes>
+    <includes local="no">stdio.h</includes>
+    <includes local="no">vector</includes>
+    <incdepgraph>
+      <node id="4">
+        <label>vector</label>
+      </node>
+      <node id="1">
+        <label>main.cxx</label>
+        <link refid="main_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>iostream</label>
+      </node>
+      <node id="3">
+        <label>stdio.h</label>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="main_8cxx_1aa8dca046b9bfa518257c2d03624d55c8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void scout_dim</definition>
+        <argsstring>(g *data, int *mx_dim)</argsstring>
+        <name>scout_dim</name>
+        <param>
+          <type>g *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>mx_dim</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/main.cxx" line="6" column="6" bodyfile="/workspaces/AnalysisG/test/contraction/main.cxx" bodystart="6" bodyend="6"/>
+        <referencedby refid="main_8cxx_1a5b991bfcda9429502c6ac17834d9f543" compoundref="main_8cxx" startline="9" endline="17">scout_dim</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="main_8cxx_1a5b991bfcda9429502c6ac17834d9f543" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename G</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void scout_dim</definition>
+        <argsstring>(std::vector&lt; G &gt; *vec, int *mx_dim)</argsstring>
+        <name>scout_dim</name>
+        <param>
+          <type>std::vector&lt; G &gt; *</type>
+          <declname>vec</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>mx_dim</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/main.cxx" line="9" column="6" bodyfile="/workspaces/AnalysisG/test/contraction/main.cxx" bodystart="9" bodyend="17"/>
+        <references refid="main_8cxx_1aa8dca046b9bfa518257c2d03624d55c8" compoundref="main_8cxx" startline="6" endline="6">scout_dim</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="main_8cxx_1a1eb870ce83f6fb92a4bc20174e2d8c28" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nulls</definition>
+        <argsstring>(g *d, int *mx_dim)</argsstring>
+        <name>nulls</name>
+        <param>
+          <type>g *</type>
+          <declname>d</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>mx_dim</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/main.cxx" line="21" column="6" bodyfile="/workspaces/AnalysisG/test/contraction/main.cxx" bodystart="21" bodyend="21"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad">d</references>
+        <referencedby refid="main_8cxx_1aca6025a19098a322f59ba63413be94cc" compoundref="main_8cxx" startline="24" endline="29">nulls</referencedby>
+        <referencedby refid="main_8cxx_1afc14a7465d03c939bbf4647a117ae3f7" compoundref="main_8cxx" startline="35" endline="44">standard</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="main_8cxx_1aca6025a19098a322f59ba63413be94cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nulls</definition>
+        <argsstring>(std::vector&lt; g &gt; *d, int *mx_dim)</argsstring>
+        <name>nulls</name>
+        <param>
+          <type>std::vector&lt; g &gt; *</type>
+          <declname>d</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>mx_dim</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/main.cxx" line="24" column="6" bodyfile="/workspaces/AnalysisG/test/contraction/main.cxx" bodystart="24" bodyend="29"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad">d</references>
+        <references refid="main_8cxx_1a1eb870ce83f6fb92a4bc20174e2d8c28" compoundref="main_8cxx" startline="21" endline="21">nulls</references>
+        <references refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" compoundref="test__experimental__mc20_8py" startline="7">test_experimental_mc20.t</references>
+      </memberdef>
+      <memberdef kind="function" id="main_8cxx_1a2adf3a885fd3aef43e30d96edb8456c8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool standard</definition>
+        <argsstring>(g *data, int *mx_dim)</argsstring>
+        <name>standard</name>
+        <param>
+          <type>g *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>mx_dim</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/main.cxx" line="32" column="6" bodyfile="/workspaces/AnalysisG/test/contraction/main.cxx" bodystart="32" bodyend="32"/>
+        <referencedby refid="main_8cxx_1afc14a7465d03c939bbf4647a117ae3f7" compoundref="main_8cxx" startline="35" endline="44">standard</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="main_8cxx_1afc14a7465d03c939bbf4647a117ae3f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool standard</definition>
+        <argsstring>(std::vector&lt; g &gt; *vec, int *mx_dim)</argsstring>
+        <name>standard</name>
+        <param>
+          <type>std::vector&lt; g &gt; *</type>
+          <declname>vec</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>mx_dim</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/main.cxx" line="35" column="6" bodyfile="/workspaces/AnalysisG/test/contraction/main.cxx" bodystart="35" bodyend="44"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33">l</references>
+        <references refid="main_8cxx_1a1eb870ce83f6fb92a4bc20174e2d8c28" compoundref="main_8cxx" startline="21" endline="21">nulls</references>
+        <references refid="main_8cxx_1a2adf3a885fd3aef43e30d96edb8456c8" compoundref="main_8cxx" startline="32" endline="32">standard</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="main_8cxx_1ade4e54ed3f80d4077f4bb5e35c391337" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename G</type>
+          </param>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void as_primitive</definition>
+        <argsstring>(G *data, std::vector&lt; g &gt; *lin, std::vector&lt; int &gt; *dims, int depth)</argsstring>
+        <name>as_primitive</name>
+        <param>
+          <type>G *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; g &gt; *</type>
+          <declname>lin</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; *</type>
+          <declname>dims</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>depth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/main.cxx" line="49" column="6" bodyfile="/workspaces/AnalysisG/test/contraction/main.cxx" bodystart="49" bodyend="51"/>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <referencedby refid="main_8cxx_1a93260fd9e8558dbeccdfef8d3cf887fa" compoundref="main_8cxx" startline="54" endline="59">as_primitive</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="main_8cxx_1a93260fd9e8558dbeccdfef8d3cf887fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename G</type>
+          </param>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void as_primitive</definition>
+        <argsstring>(std::vector&lt; G &gt; *data, std::vector&lt; g &gt; *linear, std::vector&lt; int &gt; *dims, int depth=0)</argsstring>
+        <name>as_primitive</name>
+        <param>
+          <type>std::vector&lt; G &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; g &gt; *</type>
+          <declname>linear</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; *</type>
+          <declname>dims</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>depth</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/main.cxx" line="54" column="6" bodyfile="/workspaces/AnalysisG/test/contraction/main.cxx" bodystart="54" bodyend="59"/>
+        <references refid="main_8cxx_1ade4e54ed3f80d4077f4bb5e35c391337" compoundref="main_8cxx" startline="49" endline="51">as_primitive</references>
+        <references refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" compoundref="simply__plot_8py" startline="620">simply_plot.data</references>
+        <references refid="namespacemain_1addad44088d98a1b128614b9004968ae0" compoundref="performance_2main_8py" startline="92">main.x</references>
+      </memberdef>
+      <memberdef kind="function" id="main_8cxx_1ae66f6b31b5ad750f1fe042a706a4e3d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int main</definition>
+        <argsstring>()</argsstring>
+        <name>main</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/contraction/main.cxx" line="65" column="5" bodyfile="/workspaces/AnalysisG/test/contraction/main.cxx" bodystart="65" bodyend="110"/>
+        <references refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" compoundref="mc16__matching_2main_8py" startline="108">main.tmp</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdio.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="6" refid="main_8cxx_1aa8dca046b9bfa518257c2d03624d55c8" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="main_8cxx_1aa8dca046b9bfa518257c2d03624d55c8" kindref="member">scout_dim</ref>(g*<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>mx_dim){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>G&gt;</highlight></codeline>
+<codeline lineno="9" refid="main_8cxx_1a5b991bfcda9429502c6ac17834d9f543" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="main_8cxx_1aa8dca046b9bfa518257c2d03624d55c8" kindref="member">scout_dim</ref>(std::vector&lt;G&gt;*<sp/>vec,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>mx_dim){</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dim_<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/>vec<sp/>-&gt;<sp/>size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="main_8cxx_1aa8dca046b9bfa518257c2d03624d55c8" kindref="member">scout_dim</ref>(&amp;vec<sp/>-&gt;<sp/>at(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>),<sp/>&amp;dim_);</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!dim_){dim_<sp/>=<sp/>vec<sp/>-&gt;<sp/>size();}</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(dim_<sp/>&lt;<sp/>*mx_dim){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>*mx_dim<sp/>=<sp/>dim_;<sp/></highlight></codeline>
+<codeline lineno="17"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">//<sp/>sink</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="21" refid="main_8cxx_1a1eb870ce83f6fb92a4bc20174e2d8c28" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="main_8cxx_1a1eb870ce83f6fb92a4bc20174e2d8c28" kindref="member">nulls</ref>(g*<sp/>d,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>mx_dim){*<ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad" kindref="member">d</ref><sp/>=<sp/>-1;}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="24" refid="main_8cxx_1aca6025a19098a322f59ba63413be94cc" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="main_8cxx_1a1eb870ce83f6fb92a4bc20174e2d8c28" kindref="member">nulls</ref>(std::vector&lt;g&gt;*<sp/>d,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>mx_dim){</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>(<ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad" kindref="member">d</ref><sp/>-&gt;<sp/>size());<sp/><ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref><sp/>&lt;<sp/>*mx_dim;<sp/>++<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>){</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad" kindref="member">d</ref><sp/>-&gt;<sp/>push_back({});</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="main_8cxx_1a1eb870ce83f6fb92a4bc20174e2d8c28" kindref="member">nulls</ref>(&amp;<ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad" kindref="member">d</ref><sp/>-&gt;<sp/>at(<ref refid="namespacetest__experimental__mc20_1a7f7159e9d580b1c745290260dc63e0c3" kindref="member">t</ref>),<sp/>mx_dim);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="29"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="32" refid="main_8cxx_1a2adf3a885fd3aef43e30d96edb8456c8" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="main_8cxx_1a2adf3a885fd3aef43e30d96edb8456c8" kindref="member">standard</ref>(g*<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>mx_dim){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="35" refid="main_8cxx_1afc14a7465d03c939bbf4647a117ae3f7" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="main_8cxx_1a2adf3a885fd3aef43e30d96edb8456c8" kindref="member">standard</ref>(std::vector&lt;g&gt;*<sp/>vec,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>mx_dim){</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33" kindref="member">l</ref><sp/>=<sp/>vec<sp/>-&gt;<sp/>size();</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33" kindref="member">l</ref>){<ref refid="main_8cxx_1a1eb870ce83f6fb92a4bc20174e2d8c28" kindref="member">nulls</ref>(vec,<sp/>mx_dim);}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/><ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33" kindref="member">l</ref>;<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="main_8cxx_1a2adf3a885fd3aef43e30d96edb8456c8" kindref="member">standard</ref>(&amp;vec<sp/>-&gt;<sp/>at(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>),<sp/>mx_dim)){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="main_8cxx_1a1eb870ce83f6fb92a4bc20174e2d8c28" kindref="member">nulls</ref>(vec,<sp/>mx_dim);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="44"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>G,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="49" refid="main_8cxx_1ade4e54ed3f80d4077f4bb5e35c391337" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="main_8cxx_1ade4e54ed3f80d4077f4bb5e35c391337" kindref="member">as_primitive</ref>(G*<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>,<sp/>std::vector&lt;g&gt;*<sp/>lin,<sp/>std::vector&lt;int&gt;*<sp/>dims,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>depth){</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>lin<sp/>-&gt;<sp/>push_back(*<ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>G,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>g&gt;</highlight></codeline>
+<codeline lineno="54" refid="main_8cxx_1a93260fd9e8558dbeccdfef8d3cf887fa" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="main_8cxx_1ade4e54ed3f80d4077f4bb5e35c391337" kindref="member">as_primitive</ref>(std::vector&lt;G&gt;*<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref>,<sp/>std::vector&lt;g&gt;*<sp/>linear,<sp/>std::vector&lt;int&gt;*<sp/>dims,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>depth<sp/>=<sp/>0){</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(depth<sp/>==<sp/>dims<sp/>-&gt;<sp/>size()){dims<sp/>-&gt;<sp/>push_back(<ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref><sp/>-&gt;<sp/>size());}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>(0);<sp/><ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref><sp/>&lt;<sp/><ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref><sp/>-&gt;<sp/>size();<sp/>++<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>){</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="main_8cxx_1ade4e54ed3f80d4077f4bb5e35c391337" kindref="member">as_primitive</ref>(&amp;<ref refid="namespacesimply__plot_1a73c4671efaa427b5621fe9d0d563decd" kindref="member">data</ref><sp/>-&gt;<sp/>at(<ref refid="namespacemain_1addad44088d98a1b128614b9004968ae0" kindref="member">x</ref>),<sp/>linear,<sp/>dims,<sp/>depth+1);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="main_8cxx_1ae66f6b31b5ad750f1fe042a706a4e3d4" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="main_8cxx_1ae66f6b31b5ad750f1fe042a706a4e3d4" kindref="member">main</ref>(){</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;float&gt;<sp/><ref refid="namespacemain_1ae3ad17ae2d2668bd3b0e760a13fcc567" kindref="member">tmp</ref><sp/>=<sp/>{0,<sp/>1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10,<sp/>11,<sp/>12,<sp/>13,<sp/>14,<sp/>15};<sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>std::vector&lt;std::vector&lt;std::vector&lt;int&gt;&gt;&gt;<sp/>truth_res<sp/>=<sp/>{</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{{-1,<sp/>-1,<sp/>-1,<sp/>-1,<sp/>-1,<sp/>-1},<sp/>{10,<sp/>11,<sp/>12,<sp/>-1,<sp/>-1,<sp/>-1},<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6}},<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{{1,<sp/>2,<sp/>3,<sp/><sp/>4,<sp/><sp/>5,<sp/><sp/>6<sp/><sp/><sp/>},<sp/>{10,<sp/>11,<sp/>12,<sp/>-1,<sp/>-1,<sp/>-1},<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6}},<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{{1,<sp/>2,<sp/>3,<sp/>-1,<sp/>-1,<sp/>-1<sp/><sp/><sp/>},<sp/>{10,<sp/>11,<sp/>12,<sp/>-1,<sp/>-1,<sp/>-1},<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6}},<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{{1,<sp/>2,<sp/>3,<sp/><sp/>4,<sp/><sp/>5,<sp/><sp/>6<sp/><sp/><sp/>},<sp/>{10,<sp/>11,<sp/>12,<sp/>-1,<sp/>-1,<sp/>-1},<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6}}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>};<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>data<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6};<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>jagg<sp/>=<sp/>{10,<sp/>11,<sp/>12};<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>djad<sp/>=<sp/>{1,<sp/>2,<sp/>3};<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>std::vector&lt;std::vector&lt;std::vector&lt;int&gt;&gt;&gt;<sp/>exmpl<sp/>=<sp/>{</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{{}<sp/><sp/>,<sp/>jagg,<sp/>data},</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{data,<sp/>jagg,<sp/>data},<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{djad,<sp/>jagg,<sp/>data},<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{data,<sp/>jagg,<sp/>data}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>};<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>int<sp/>mx_dim<sp/>=<sp/>0;<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>scout_dim(&amp;exmpl,<sp/>&amp;mx_dim);<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>standard(&amp;exmpl,<sp/>&amp;mx_dim);<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>dims<sp/>=<sp/>{};<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>linear<sp/>=<sp/>{};<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>as_primitive(&amp;exmpl,<sp/>&amp;linear,<sp/>&amp;dims);<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>x(0);<sp/>x<sp/>&lt;<sp/>dims.size();<sp/>++x){std::cout<sp/>&lt;&lt;<sp/>dims[x]<sp/>&lt;&lt;<sp/>std::endl;}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>x(0);<sp/>x<sp/>&lt;<sp/>truth_res.size();<sp/>++x){</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>y(0);<sp/>y<sp/>&lt;<sp/>truth_res[x].size();<sp/>++y){</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>z(0);<sp/>z<sp/>&lt;<sp/>truth_res[x][y].size();<sp/>++z){</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(exmpl[x][y][z]<sp/>==<sp/>linear[x+y+z]){continue;}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(exmpl[x][y][z]<sp/>==<sp/>truth_res[x][y][z]){continue;}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/>&quot;(false)-&gt;<sp/>&quot;<sp/>&lt;&lt;<sp/>exmpl[x][y][z]<sp/>&lt;&lt;<sp/>&quot;<sp/>&quot;<sp/>&lt;&lt;<sp/>truth_res[x][y][z]<sp/>&lt;&lt;<sp/>std::endl;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;<sp/></highlight></codeline>
+<codeline lineno="110"><highlight class="normal">};<sp/></highlight></codeline>
+    </programlisting>
+    <location file="/workspaces/AnalysisG/test/contraction/main.cxx"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,23 @@
+digraph "figures.Fancy"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="figures.Fancy",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="figures.Chi2Distribution",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#a3dd94963602c9cc00334c7254dd18550",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="figures.METError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#ad368148d68f494d607deac54588bdc02",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="figures.Chi2Symbolic",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#a57a2564ead1905fb340ac1f51669848e",tooltip=" "];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="figures.EllipseDistance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#ac5c60d7ebce6520ce5287e377d210fdd",tooltip=" "];
+  Node5 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="figures.KSTestingDynamic",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacefigures.html#aa38e86204ba8539b9aadf0ccb555867e",tooltip=" "];
+  Node6 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

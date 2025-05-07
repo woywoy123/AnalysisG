@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_f7258c3c715b4ae51f5a1c777d38de1e" kind="dir">
+    <compoundname>nusol</compoundname>
+    <innerdir refid="dir_63738a22e623757be49d3e3e9294f9bd">include</innerdir>
+    <innerdir refid="dir_b11440b950523317e989f38fc4380f8a">tensor</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pyc/nusol/"/>
+  </compounddef>
+</doxygen>

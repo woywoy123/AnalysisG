@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="structmisc__t" kind="struct" language="C++" prot="public">
+    <compoundname>misc_t</compoundname>
+    <includes refid="childrenkinematics_8h" local="no">childrenkinematics.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structmisc__t_1aa2e474fce45705fa883d106686ff5fca" prot="public" static="no" mutable="no">
+        <type><ref refid="structkinematic__t" kindref="compound">kinematic_t</ref></type>
+        <definition>kinematic_t misc_t::kin</definition>
+        <argsstring></argsstring>
+        <name>kin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/childrenkinematics/childrenkinematics.h" line="16" column="17" bodyfile="selections/mc16/childrenkinematics/childrenkinematics.h" bodystart="16" bodyend="-1"/>
+        <referencedby refid="classchildrenkinematics_1a9dfe1425443601d0af03eab580722b76" compoundref="childrenkinematics_8cxx" startline="121" endline="243">childrenkinematics::strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structmisc__t_1aa00fcd3bd6fe5d23e68c0c6456b79f4c" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool misc_t::is_lep</definition>
+        <argsstring></argsstring>
+        <name>is_lep</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/childrenkinematics/childrenkinematics.h" line="17" column="10" bodyfile="selections/mc16/childrenkinematics/childrenkinematics.h" bodystart="17" bodyend="-1"/>
+        <referencedby refid="classchildrenkinematics_1a9dfe1425443601d0af03eab580722b76" compoundref="childrenkinematics_8cxx" startline="121" endline="243">childrenkinematics::strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structmisc__t_1a23233610e995054fb2bf8359ea3e7149" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float misc_t::mass_clust</definition>
+        <argsstring></argsstring>
+        <name>mass_clust</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/childrenkinematics/childrenkinematics.h" line="18" column="11" bodyfile="selections/mc16/childrenkinematics/childrenkinematics.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmisc__t_1ae4c8987de29af61569a92efb8692b8a5" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float misc_t::delta_R</definition>
+        <argsstring></argsstring>
+        <name>delta_R</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/childrenkinematics/childrenkinematics.h" line="19" column="11" bodyfile="selections/mc16/childrenkinematics/childrenkinematics.h" bodystart="19" bodyend="-1"/>
+        <referencedby refid="classchildrenkinematics_1a9dfe1425443601d0af03eab580722b76" compoundref="childrenkinematics_8cxx" startline="121" endline="243">childrenkinematics::strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structmisc__t_1a47c016081f3db6ba61f6061613bd5573" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float misc_t::frc_energy</definition>
+        <argsstring></argsstring>
+        <name>frc_energy</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/childrenkinematics/childrenkinematics.h" line="20" column="11" bodyfile="selections/mc16/childrenkinematics/childrenkinematics.h" bodystart="20" bodyend="-1"/>
+        <referencedby refid="classchildrenkinematics_1a9dfe1425443601d0af03eab580722b76" compoundref="childrenkinematics_8cxx" startline="121" endline="243">childrenkinematics::strategy</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structmisc__t_1af9036077b1fc90c93909ab8bc68d6805" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float misc_t::frc_pt</definition>
+        <argsstring></argsstring>
+        <name>frc_pt</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="selections/mc16/childrenkinematics/childrenkinematics.h" line="21" column="11" bodyfile="selections/mc16/childrenkinematics/childrenkinematics.h" bodystart="21" bodyend="-1"/>
+        <referencedby refid="classchildrenkinematics_1a9dfe1425443601d0af03eab580722b76" compoundref="childrenkinematics_8cxx" startline="121" endline="243">childrenkinematics::strategy</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>kinematic_t</label>
+        <link refid="structkinematic__t"/>
+      </node>
+      <node id="1">
+        <label>misc_t</label>
+        <link refid="structmisc__t"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>kin</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="selections/mc16/childrenkinematics/childrenkinematics.h" line="15" column="13" bodyfile="selections/mc16/childrenkinematics/childrenkinematics.h" bodystart="15" bodyend="22"/>
+    <listofallmembers>
+      <member refid="structmisc__t_1ae4c8987de29af61569a92efb8692b8a5" prot="public" virt="non-virtual"><scope>misc_t</scope><name>delta_R</name></member>
+      <member refid="structmisc__t_1a47c016081f3db6ba61f6061613bd5573" prot="public" virt="non-virtual"><scope>misc_t</scope><name>frc_energy</name></member>
+      <member refid="structmisc__t_1af9036077b1fc90c93909ab8bc68d6805" prot="public" virt="non-virtual"><scope>misc_t</scope><name>frc_pt</name></member>
+      <member refid="structmisc__t_1aa00fcd3bd6fe5d23e68c0c6456b79f4c" prot="public" virt="non-virtual"><scope>misc_t</scope><name>is_lep</name></member>
+      <member refid="structmisc__t_1aa2e474fce45705fa883d106686ff5fca" prot="public" virt="non-virtual"><scope>misc_t</scope><name>kin</name></member>
+      <member refid="structmisc__t_1a23233610e995054fb2bf8359ea3e7149" prot="public" virt="non-virtual"><scope>misc_t</scope><name>mass_clust</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

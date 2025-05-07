@@ -1,0 +1,41 @@
+digraph "count"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="count",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Counts occurrences of a substring within a string."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="plotting::build_ROC",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classplotting.html#a2d9afaf0eab31995f968c53801f60de2",tooltip="Builds a Receiver Operating Characteristic (ROC) curve from classification results."];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="gnn_event::CompileEvent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classgnn__event.html#ab87f90ab398273aeaa604b56b86274ad",tooltip=" "];
+  Node1 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="particle_template::\lget_children",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classparticle__template.html#a0d6f5cadd815776a58be4d47e99c750d",tooltip=" "];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="particle_template::\lparticle_template",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classparticle__template.html#ab527ed22f6d67969247a0be9dda0165f",tooltip=" "];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="particle_template::\l__reduce__",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classparticle__template.html#adf7b55df06b7621b0a6bc509f74d22ff",tooltip=" "];
+  Node5 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="particle_template::\lclone",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classparticle__template.html#a6c492ed991c27a61acad61064fa89b3c",tooltip=" "];
+  Node5 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="particle_template::\lparticle_template",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classparticle__template.html#a2d7af9375684f6cc0b217d29a24aaff3",tooltip=" "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="particle_template::\lget_parents",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classparticle__template.html#a0b63a8ae07f178fa8f30044683c615ad",tooltip=" "];
+  Node9 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="write_t::process",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structwrite__t.html#a0904b9e3b70f290625bf18d376f65023",tooltip=" "];
+  Node1 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="io::root_begin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classio.html#a65c36380ef79524e8235f792abe9625c",tooltip="Initializes ROOT file processing, potentially opening files specified in settings."];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="io::get_data",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classio.html#ae346e23a45d73c24f844827495912941",tooltip="Retrieves the data read from ROOT files, likely structured as a map of data_t objects."];
+  Node1 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="bsc_t::root_type_translate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbsc__t.html#a39907da14ea4fb20f71b47d0724bf1f2",tooltip="Translates a ROOT type string to an internal data enumeration."];
+  Node1 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="io::scan_keys",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classio.html#aacb050c4cb6c10038d6bf8edb7244a28",tooltip="Scans for keys (e.g., TTree names, TBranch names) in the open ROOT files."];
+  Node14 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="io::root_size",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classio.html#a66a6d354d07e8aa4f9fdadc8f74a314b",tooltip="Retrieves the sizes (number of entries) of TTrees in the open ROOT files."];
+}

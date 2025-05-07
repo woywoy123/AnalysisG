@@ -1,3 +1,9 @@
+/** \file plotting.cxx
+ *  \brief Implementation of plotting utilities.
+ *
+ *  This file contains the implementation of various plotting utilities used in the AnalysisG project.
+ */
+
 #include <plotting/plotting.h>
 #include <cmath>
 

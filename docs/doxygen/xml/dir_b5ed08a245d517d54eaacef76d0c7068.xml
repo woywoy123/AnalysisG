@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_b5ed08a245d517d54eaacef76d0c7068" kind="dir">
+    <compoundname>include</compoundname>
+    <innerdir refid="dir_977fe02c0e96836f57ad5c0b8c8bc285">meta</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/meta/include/"/>
+  </compounddef>
+</doxygen>

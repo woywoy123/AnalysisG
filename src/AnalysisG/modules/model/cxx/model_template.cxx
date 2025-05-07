@@ -1,7 +1,22 @@
+/**
+ * @file model_template.cxx
+ * @brief Implementation of the model_template class methods.
+ *
+ * This file contains the implementation of methods declared in model_template.h,
+ * providing functionality for model initialization, module management, feature assignment,
+ * and forward propagation in the AnalysisG framework's machine learning component.
+ */
+
 #include <templates/model_template.h>
 
+/**
+ * @brief Constructor for the `model_template` class.
+ * 
+ * Sets up property bindings for input and output features, device settings, and initializes
+ * the loss function manager. Each property is bound to its appropriate setter and getter methods.
+ */
 model_template::model_template(){
-    // input features
+    // Configure input feature properties
     this -> i_graph.set_setter(this -> set_input_features);
     this -> i_graph.set_object(&this -> m_i_graph); 
 
@@ -11,7 +26,7 @@ model_template::model_template(){
     this -> i_edge.set_setter(this -> set_input_features);
     this -> i_edge.set_object(&this -> m_i_edge);
    
-    // output features 
+    // Configure output feature properties
     this -> o_graph.set_setter(this -> set_output_features); 
     this -> o_graph.set_object(&this -> m_o_graph); 
 
@@ -21,35 +36,69 @@ model_template::model_template(){
     this -> o_edge.set_setter(this -> set_output_features); 
     this -> o_edge.set_object(&this -> m_o_edge); 
 
+    // Configure device property
     this -> device.set_setter(this -> set_device); 
     this -> device.set_object(this); 
-
+    
+    // Configure name property
     this -> name.set_setter(this -> set_name);
     this -> name.set_getter(this -> get_name);
     this -> name.set_object(this); 
 
+    // Configure device index property
     this -> device_index.set_setter(this -> set_dev_index);
     this -> device_index.set_getter(this -> get_dev_index);
     this -> device_index.set_object(this); 
 
+    // Initialize loss function manager
     this -> m_loss = new lossfx(); 
 }
 
+/**
+ * @brief Creates and returns a clone of this model template.
+ * @return A new model_template instance.
+ */
 model_template* model_template::clone(){return new model_template();}
 
+/**
+ * @brief Registers a PyTorch sequential module with the model.
+ * @param data Pointer to the sequential module to register.
+ * 
+ * If a device option is set, the module is transferred to that device before registration.
+ */
 void model_template::register_module(torch::nn::Sequential* data){
     if (this -> m_option){(*data) -> to(this -> m_option -> device());}
     this -> m_data.push_back(data);
 }
 
+/**
+ * @brief Registers a PyTorch sequential module with the model and initializes its weights.
+ * @param data Pointer to the sequential module to register.
+ * @param method The initialization method to use for the module's weights.
+ * 
+ * If a device option is set, the module is transferred to that device before registration.
+ * The module's weights are initialized according to the specified method.
+ */
 void model_template::register_module(torch::nn::Sequential* data, mlp_init method){
     if (this -> m_option){(*data) -> to(this -> m_option -> device());}
     this -> m_loss -> weight_init(data, method); 
     this -> m_data.push_back(data);
 }
 
+/**
+ * @brief Default implementation of the forward pass for a single graph.
+ * @param data Pointer to the graph_t structure containing input data.
+ * 
+ * This is a placeholder that derived classes should override with their specific implementation.
+ */
 void model_template::forward(graph_t*){}
 
+/**
+ * @brief Destructor for the model_template class.
+ * 
+ * Cleans up all resources used by the model, including registered modules,
+ * output tensors, and the loss function manager.
+ */
 model_template::~model_template(){
     for (size_t x(0); x < this -> m_data.size(); ++x){delete this -> m_data[x];}
     this -> flush_outputs(); 
@@ -57,6 +106,15 @@ model_template::~model_template(){
     delete this -> m_loss; 
 }
 
+/**
+ * @brief Assigns features from a graph to tensors based on feature name and type.
+ * @param inpt Feature name to assign.
+ * @param type Type of graph component (node, edge, or graph).
+ * @param data Pointer to the graph_t structure containing the features.
+ * @return Pointer to the resulting tensor containing the assigned features.
+ * 
+ * Extracts specified features from the graph and converts them to PyTorch tensors.
+ */
 torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type, graph_t* data){
     torch::Tensor* tn = nullptr; 
     switch (type){
@@ -71,6 +129,15 @@ torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type
     return tn; 
 }
 
+/**
+ * @brief Assigns features from multiple graphs to tensors based on feature name and type.
+ * @param inpt Feature name to assign.
+ * @param type Type of graph component (node, edge, or graph).
+ * @param data Pointer to a vector of graph_t structures containing the features.
+ * @return Pointer to the resulting tensor containing the assigned features.
+ * 
+ * Extracts specified features from multiple graphs and converts them to batched PyTorch tensors.
+ */
 torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type, std::vector<graph_t*>* data){
     auto g_data  = [this](graph_t* d, std::string key) -> torch::Tensor* {return d -> get_data_graph(key, this);}; 
     auto n_data  = [this](graph_t* d, std::string key) -> torch::Tensor* {return d -> get_data_node(key, this);}; 
@@ -105,7 +172,13 @@ torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type
     return tn; 
 }
 
-
+/**
+ * @brief Performs forward pass on a single graph, with optional training mode.
+ * @param data Pointer to the graph_t structure containing input data.
+ * @param train Flag indicating if the model is in training mode (true) or evaluation mode (false).
+ * 
+ * Sets the model's modules to training or evaluation mode as specified, then performs the forward pass.
+ */
 void model_template::forward(graph_t* data, bool train){
     this -> flush_outputs(); 
     this -> m_batched = false; 
@@ -123,6 +196,14 @@ void model_template::forward(graph_t* data, bool train){
     this -> train_sequence(train);
 }
 
+/**
+ * @brief Performs forward pass on multiple graphs, with optional training mode.
+ * @param data Vector of pointers to graph_t structures containing input data.
+ * @param train Flag indicating if the model is in training mode (true) or evaluation mode (false).
+ * 
+ * Sets the model's modules to training or evaluation mode as specified, then performs the forward pass
+ * on each graph in the input vector.
+ */
 void model_template::forward(std::vector<graph_t*> data, bool train){
     this -> flush_outputs(); 
     this -> m_batched = true; 
@@ -148,47 +229,22 @@ void model_template::forward(std::vector<graph_t*> data, bool train){
     this -> train_sequence(train);
 }
 
-
+/**
+ * @brief Sets input features for a specific feature map.
+ * @param inpt Pointer to a vector of strings containing feature names.
+ * @param in_fx Pointer to the feature map to set.
+ * 
+ * Initializes map entries for each feature name in the input vector.
+ */
 void model_template::set_input_features(std::vector<std::string>* inpt, std::map<std::string, torch::Tensor*>* in_fx){
     for (size_t x(0); x < inpt -> size(); ++x){(*in_fx)[inpt -> at(x)] = nullptr;}
 }
 
-void model_template::evaluation_mode(bool mode){
-    for (size_t x(0); x < this -> m_data.size(); ++x){
-        if (mode){(*this -> m_data[x]) -> eval();}
-        else {(*this -> m_data[x]) -> train(true);}
-    }
-}
-
-void model_template::prediction_graph_feature(std::string key, torch::Tensor pred){
-    if (!this -> m_o_graph.count(key)){return this -> warning("Graph Output Feature: " + key + " not found.");}
-    if (!this -> m_p_graph[key]){this -> m_p_graph[key] = new torch::Tensor(pred); return;}
-    torch::Tensor* tn = this -> m_p_graph[key]; 
-    this -> m_p_graph[key] = new torch::Tensor(torch::cat({*tn, pred}, {0})); 
-    delete tn; 
-}
-
-void model_template::prediction_node_feature(std::string key, torch::Tensor pred){
-    if (!this -> m_o_node.count(key)){return this -> warning("Node Output Feature: " + key + " not found.");}
-    if (!this -> m_p_node[key]){this -> m_p_node[key] = new torch::Tensor(pred); return;}
-    torch::Tensor* tn = this -> m_p_node[key]; 
-    this -> m_p_node[key] = new torch::Tensor(torch::cat({*tn, pred}, {0})); 
-    delete tn; 
-}
-
-void model_template::prediction_edge_feature(std::string key, torch::Tensor pred){
-    if (!this -> m_o_edge.count(key)){return this -> warning("Edge Output Feature: " + key + " not found.");}
-    if (!this -> m_p_edge[key]){this -> m_p_edge[key] = new torch::Tensor(pred); return;}
-    torch::Tensor* tn = this -> m_p_edge[key]; 
-    this -> m_p_edge[key] = new torch::Tensor(torch::cat({*tn, pred}, {0})); 
-    delete tn; 
-}
-
-void model_template::prediction_extra(std::string key, torch::Tensor pred){
-    if (this -> m_p_undef[key]){return;}
-    this -> m_p_undef[key] = new torch::Tensor(pred); 
-}
-
+/**
+ * @brief Clears all output tensors, freeing memory.
+ * 
+ * Iterates through all output feature maps and deletes their tensor contents.
+ */
 void model_template::flush_outputs(){
     auto lambda = [](std::map<std::string, torch::Tensor*>* data){
         std::map<std::string, torch::Tensor*>::iterator itr = data -> begin(); 

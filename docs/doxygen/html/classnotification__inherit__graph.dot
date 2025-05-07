@@ -1,0 +1,37 @@
+digraph "notification"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="notification",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Provides logging and messaging functionality with various severity levels."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="analysis",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classanalysis.html",tooltip="< Inherits from the tools class for utility functions."];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="dataloader",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classdataloader.html",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="io",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classio.html",tooltip="< Inherits from the notification class for logging capabilities."];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="meta",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmeta.html",tooltip="Provides properties and methods for metadata management."];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="metric_template",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmetric__template.html",tooltip=" "];
+  Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="accuracy_metric",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classaccuracy__metric.html",tooltip=" "];
+  Node6 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="pagerank_metric",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classpagerank__metric.html",tooltip=" "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="metrics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmetrics.html",tooltip=" "];
+  Node1 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="model_template",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmodel__template.html",tooltip="Base template class for machine learning models."];
+  Node10 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="grift",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classgrift.html",tooltip=" "];
+  Node10 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="recursivegraphneuralnetwork",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classrecursivegraphneuralnetwork.html",tooltip=" "];
+  Node1 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="optimizer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classoptimizer.html",tooltip=" "];
+  Node1 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="plotting",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classplotting.html",tooltip="Provides functionality for creating and managing visualizations."];
+  Node1 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="sampletracer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classsampletracer.html",tooltip=" "];
+}

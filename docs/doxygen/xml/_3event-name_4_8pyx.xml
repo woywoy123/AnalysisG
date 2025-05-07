@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="_3event-name_4_8pyx" kind="file" language="C++">
+    <compoundname>&lt;event-name&gt;.pyx</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@file<sp/>&lt;event-name&gt;.pyx</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Template<sp/>for<sp/>defining<sp/>event<sp/>classes<sp/>in<sp/>the<sp/>AnalysisG<sp/>framework.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#<sp/>distutils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level=3</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.events.&lt;event-module&gt;.&lt;event-name&gt;<sp/>cimport<sp/>&lt;event-name&gt;<sp/>///&lt;<sp/>Import<sp/>the<sp/>C++<sp/>event<sp/>class.</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.event_template<sp/>cimport<sp/>EventTemplate<sp/>///&lt;<sp/>Import<sp/>the<sp/>base<sp/>event<sp/>template<sp/>class.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@class<sp/>&lt;Python-Event&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Python<sp/>wrapper<sp/>for<sp/>the<sp/>C++<sp/>event<sp/>class<sp/>`&lt;event-name&gt;`.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>&lt;Python-Event&gt;(EventTemplate):</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Constructor<sp/>for<sp/>the<sp/>Python<sp/>event<sp/>class.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__cinit__(self):<sp/>self.ptr<sp/>=<sp/>new<sp/>&lt;event-name&gt;()</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Initializes<sp/>the<sp/>Python<sp/>event<sp/>class.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__init__(self):<sp/>pass</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Deallocates<sp/>the<sp/>Python<sp/>event<sp/>class.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>def<sp/>__dealloc__(self):<sp/>del<sp/>self.ptr</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>#<sp/>Additional<sp/>methods<sp/>and<sp/>attributes<sp/>can<sp/>be<sp/>defined<sp/>here.</highlight></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="templates/events/&lt;event-name&gt;.pyx"/>
+  </compounddef>
+</doxygen>

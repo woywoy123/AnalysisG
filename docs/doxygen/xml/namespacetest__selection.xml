@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="namespacetest__selection" kind="namespace" language="Python">
+    <compoundname>test_selection</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacetest__selection_1a9a81f732356273003f4f02eb683fb33d" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string test_selection.root1</definition>
+        <argsstring></argsstring>
+        <name>root1</name>
+        <initializer>=  &quot;./samples/dilepton/*&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_selection.py" line="5" column="1" bodyfile="/workspaces/AnalysisG/test/test_selection.py" bodystart="5" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__selection_1a12f178dd429b526ba5cb00223515dab6" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_selection.ev</definition>
+        <argsstring></argsstring>
+        <name>ev</name>
+        <initializer>=  BSM4Tops()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_selection.py" line="6" column="1" bodyfile="/workspaces/AnalysisG/test/test_selection.py" bodystart="6" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__selection_1ab69f4f9ddda8be5bbc73466b8aa4e48c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_selection.sl</definition>
+        <argsstring></argsstring>
+        <name>sl</name>
+        <initializer>=  MET()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_selection.py" line="7" column="1" bodyfile="/workspaces/AnalysisG/test/test_selection.py" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__selection_1a3e4740ed87c86c93ce12a2976ad3197e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_selection.ana</definition>
+        <argsstring></argsstring>
+        <name>ana</name>
+        <initializer>=  Analysis()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_selection.py" line="9" column="1" bodyfile="/workspaces/AnalysisG/test/test_selection.py" bodystart="9" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__selection_1af078860a0e5e98f1c0805ef83d8652f2" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_selection.DebugMode</definition>
+        <argsstring></argsstring>
+        <name>DebugMode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_selection.py" line="13" column="1" bodyfile="/workspaces/AnalysisG/test/test_selection.py" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest__selection_1aef37981577eec910fe18989dedeea76c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>test_selection.SaveSelectionToROOT</definition>
+        <argsstring></argsstring>
+        <name>SaveSelectionToROOT</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/workspaces/AnalysisG/test/test_selection.py" line="14" column="1" bodyfile="/workspaces/AnalysisG/test/test_selection.py" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/workspaces/AnalysisG/test/test_selection.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

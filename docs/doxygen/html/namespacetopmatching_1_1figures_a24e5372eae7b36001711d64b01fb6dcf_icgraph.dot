@@ -1,0 +1,13 @@
+digraph "topmatching.figures.top_decay_channel_truth_jets"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="topmatching.figures.top\l_decay_channel_truth_jets",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="topmatching.figures.TopMatching",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacetopmatching_1_1figures.html#a445dbf4de7f7038eaf549bea421a2db7",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="main.ExecuteStudy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacemain.html#a7afac8f5e46c718321f188d7888c2de0",tooltip=" "];
+}

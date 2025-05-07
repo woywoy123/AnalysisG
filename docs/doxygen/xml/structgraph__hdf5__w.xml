@@ -1,0 +1,332 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="structgraph__hdf5__w" kind="struct" language="C++" prot="public">
+    <compoundname>graph_hdf5_w</compoundname>
+    <includes refid="folds_8h" local="no">folds.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structgraph__hdf5__w_1a79a4a8986816200b3f5bc756f228221e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int graph_hdf5_w::num_nodes</definition>
+        <argsstring></argsstring>
+        <name>num_nodes</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="47" column="12" bodyfile="modules/structs/include/structs/folds.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1acb0cfcc862fda7dc61e30f5171ab00c3" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double graph_hdf5_w::event_weight</definition>
+        <argsstring></argsstring>
+        <name>event_weight</name>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="48" column="12" bodyfile="modules/structs/include/structs/folds.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1aa3d47b676e5d1619850191d760d4a33d" prot="public" static="no" mutable="no">
+        <type>long</type>
+        <definition>long graph_hdf5_w::event_index</definition>
+        <argsstring></argsstring>
+        <name>event_index</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="49" column="12" bodyfile="modules/structs/include/structs/folds.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1a5c9d2dfaa6338db369b4abdcf0e75abe" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::hash</definition>
+        <argsstring></argsstring>
+        <name>hash</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="51" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="51" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1a9198a9bacbcf26fe8693857850f6b50b" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::filename</definition>
+        <argsstring></argsstring>
+        <name>filename</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="52" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="52" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1ae120fd519de71f933306d31f1be72c1b" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::edge_index</definition>
+        <argsstring></argsstring>
+        <name>edge_index</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="53" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="53" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1a915653a3ebb476c45d3fd46ef6db5371" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::data_map_graph</definition>
+        <argsstring></argsstring>
+        <name>data_map_graph</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="55" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="55" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1a444b192a91dda61cc95f62aa59728eed" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::data_map_node</definition>
+        <argsstring></argsstring>
+        <name>data_map_node</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="56" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="56" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1a7f882e2f5e98b9534d48c09b74a6a7ac" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::data_map_edge</definition>
+        <argsstring></argsstring>
+        <name>data_map_edge</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="57" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="57" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1ad0834c14e3c38389299edfed4c7c9988" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::truth_map_graph</definition>
+        <argsstring></argsstring>
+        <name>truth_map_graph</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="59" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="59" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1ae392c93b6d8c3f577b371d32d7726e6d" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::truth_map_node</definition>
+        <argsstring></argsstring>
+        <name>truth_map_node</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="60" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="60" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1a7b722999eb122127a74d54fdefceb751" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::truth_map_edge</definition>
+        <argsstring></argsstring>
+        <name>truth_map_edge</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="61" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="61" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1afb699fddb7b93b341247d5d60a1968f8" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::data_graph</definition>
+        <argsstring></argsstring>
+        <name>data_graph</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="63" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="63" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1a67222f2f757174b05384203c0cb92090" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::data_node</definition>
+        <argsstring></argsstring>
+        <name>data_node</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="64" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="64" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1a4785757cb603488c4259ee6271620576" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::data_edge</definition>
+        <argsstring></argsstring>
+        <name>data_edge</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="65" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="65" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1a65bcbe253b22f26a422fc6030db7517a" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::truth_graph</definition>
+        <argsstring></argsstring>
+        <name>truth_graph</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="67" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="67" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1ad3328e9888f860e9045cc38bc208bc9c" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::truth_node</definition>
+        <argsstring></argsstring>
+        <name>truth_node</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="68" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="68" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structgraph__hdf5__w_1a4d1172eb1d81617686cddd309153d738" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* graph_hdf5_w::truth_edge</definition>
+        <argsstring></argsstring>
+        <name>truth_edge</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="69" column="10" bodyfile="modules/structs/include/structs/folds.h" bodystart="69" bodyend="-1"/>
+        <referencedby refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">flush_data</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void graph_hdf5_w::flush_data</definition>
+        <argsstring>()</argsstring>
+        <name>flush_data</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/folds.h" line="70" column="10" bodyfile="modules/structs/cxx/misc.cxx" bodystart="5" bodyend="45"/>
+        <references refid="structgraph__hdf5__w_1a4785757cb603488c4259ee6271620576" compoundref="folds_8h" startline="65">data_edge</references>
+        <references refid="structgraph__hdf5__w_1afb699fddb7b93b341247d5d60a1968f8" compoundref="folds_8h" startline="63">data_graph</references>
+        <references refid="structgraph__hdf5__w_1a7f882e2f5e98b9534d48c09b74a6a7ac" compoundref="folds_8h" startline="57">data_map_edge</references>
+        <references refid="structgraph__hdf5__w_1a915653a3ebb476c45d3fd46ef6db5371" compoundref="folds_8h" startline="55">data_map_graph</references>
+        <references refid="structgraph__hdf5__w_1a444b192a91dda61cc95f62aa59728eed" compoundref="folds_8h" startline="56">data_map_node</references>
+        <references refid="structgraph__hdf5__w_1a67222f2f757174b05384203c0cb92090" compoundref="folds_8h" startline="64">data_node</references>
+        <references refid="structgraph__hdf5__w_1ae120fd519de71f933306d31f1be72c1b" compoundref="folds_8h" startline="53">edge_index</references>
+        <references refid="structgraph__hdf5__w_1a9198a9bacbcf26fe8693857850f6b50b" compoundref="folds_8h" startline="52">filename</references>
+        <references refid="structgraph__hdf5__w_1a5c9d2dfaa6338db369b4abdcf0e75abe" compoundref="folds_8h" startline="51">hash</references>
+        <references refid="structgraph__hdf5__w_1a4d1172eb1d81617686cddd309153d738" compoundref="folds_8h" startline="69">truth_edge</references>
+        <references refid="structgraph__hdf5__w_1a65bcbe253b22f26a422fc6030db7517a" compoundref="folds_8h" startline="67">truth_graph</references>
+        <references refid="structgraph__hdf5__w_1a7b722999eb122127a74d54fdefceb751" compoundref="folds_8h" startline="61">truth_map_edge</references>
+        <references refid="structgraph__hdf5__w_1ad0834c14e3c38389299edfed4c7c9988" compoundref="folds_8h" startline="59">truth_map_graph</references>
+        <references refid="structgraph__hdf5__w_1ae392c93b6d8c3f577b371d32d7726e6d" compoundref="folds_8h" startline="60">truth_map_node</references>
+        <references refid="structgraph__hdf5__w_1ad3328e9888f860e9045cc38bc208bc9c" compoundref="folds_8h" startline="68">truth_node</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/structs/include/structs/folds.h" line="46" column="19" bodyfile="modules/structs/include/structs/folds.h" bodystart="46" bodyend="71"/>
+    <listofallmembers>
+      <member refid="structgraph__hdf5__w_1a4785757cb603488c4259ee6271620576" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>data_edge</name></member>
+      <member refid="structgraph__hdf5__w_1afb699fddb7b93b341247d5d60a1968f8" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>data_graph</name></member>
+      <member refid="structgraph__hdf5__w_1a7f882e2f5e98b9534d48c09b74a6a7ac" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>data_map_edge</name></member>
+      <member refid="structgraph__hdf5__w_1a915653a3ebb476c45d3fd46ef6db5371" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>data_map_graph</name></member>
+      <member refid="structgraph__hdf5__w_1a444b192a91dda61cc95f62aa59728eed" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>data_map_node</name></member>
+      <member refid="structgraph__hdf5__w_1a67222f2f757174b05384203c0cb92090" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>data_node</name></member>
+      <member refid="structgraph__hdf5__w_1ae120fd519de71f933306d31f1be72c1b" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>edge_index</name></member>
+      <member refid="structgraph__hdf5__w_1aa3d47b676e5d1619850191d760d4a33d" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>event_index</name></member>
+      <member refid="structgraph__hdf5__w_1acb0cfcc862fda7dc61e30f5171ab00c3" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>event_weight</name></member>
+      <member refid="structgraph__hdf5__w_1a9198a9bacbcf26fe8693857850f6b50b" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>filename</name></member>
+      <member refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>flush_data</name></member>
+      <member refid="structgraph__hdf5__w_1a5c9d2dfaa6338db369b4abdcf0e75abe" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>hash</name></member>
+      <member refid="structgraph__hdf5__w_1a79a4a8986816200b3f5bc756f228221e" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>num_nodes</name></member>
+      <member refid="structgraph__hdf5__w_1a4d1172eb1d81617686cddd309153d738" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>truth_edge</name></member>
+      <member refid="structgraph__hdf5__w_1a65bcbe253b22f26a422fc6030db7517a" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>truth_graph</name></member>
+      <member refid="structgraph__hdf5__w_1a7b722999eb122127a74d54fdefceb751" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>truth_map_edge</name></member>
+      <member refid="structgraph__hdf5__w_1ad0834c14e3c38389299edfed4c7c9988" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>truth_map_graph</name></member>
+      <member refid="structgraph__hdf5__w_1ae392c93b6d8c3f577b371d32d7726e6d" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>truth_map_node</name></member>
+      <member refid="structgraph__hdf5__w_1ad3328e9888f860e9045cc38bc208bc9c" prot="public" virt="non-virtual"><scope>graph_hdf5_w</scope><name>truth_node</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

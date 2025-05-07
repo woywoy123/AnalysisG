@@ -1,3 +1,9 @@
+/** \file topefficiency.h
+ *  \brief Top efficiency selection class.
+ *
+ *  This file defines the topefficiency class, which is used for top efficiency selection in the AnalysisG project.
+ */
+
 #ifndef TOPEFFICIENCY_H
 #define TOPEFFICIENCY_H
 
