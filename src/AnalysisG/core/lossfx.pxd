@@ -10,7 +10,7 @@ cdef extern from "<structs/optimizer.h>" nogil:
 
     cdef cppclass optimizer_params_t:
 
-        void operator() except+ nogil
+        optimizer_params_t() except+ nogil
         string optimizer
         string scheduler
 
