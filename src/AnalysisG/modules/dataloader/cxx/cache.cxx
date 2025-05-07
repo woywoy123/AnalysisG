@@ -307,7 +307,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         if (!datax){continue;}
         for (size_t p(0); p < datax -> size(); ++p){
             graph_t* gr = (*datax)[p];
-            if (!gr -> preselection){delete gr; continue;}
+            if (gr -> preselection){delete gr; continue;}
             (*restored)[(*gr -> hash)] = gr;  
         }
         cache_rebuild[x] = nullptr; 
