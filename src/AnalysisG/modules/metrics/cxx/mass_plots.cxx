@@ -84,7 +84,7 @@ void metrics::dump_mass_plots(int k){
         rp -> GetUpperPad() -> cd(); 
         legend -> Draw();
 
-        gPad -> SetLogy(); 
+        if (this -> m_settings.logy){gPad -> SetLogy();}
         gPad -> Modified(); 
         can -> Modified();
         can -> Update();

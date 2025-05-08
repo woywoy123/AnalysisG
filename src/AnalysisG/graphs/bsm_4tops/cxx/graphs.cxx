@@ -380,12 +380,14 @@ void graph_detector::CompileEvent(){
   
     for (size_t x(0); x < event -> Muons.size(); ++x){
         muon* mx = (muon*)event -> Muons.at(x); 
+        mx -> parents.clear(); mx -> children.clear(); 
         hash_map_top[mx -> top_index][std::string(mx -> hash)] = mx; 
         hash_map_res[mx -> from_res][std::string(mx -> hash)] = mx; 
     }
 
     for (size_t x(0); x < event -> Electrons.size(); ++x){
         electron* mx = (electron*)event -> Electrons.at(x); 
+        mx -> parents.clear(); mx -> children.clear(); 
         hash_map_top[mx -> top_index][std::string(mx -> hash)] = mx; 
         hash_map_res[mx -> from_res][std::string(mx -> hash)] = mx; 
     }
@@ -395,6 +397,7 @@ void graph_detector::CompileEvent(){
         for (size_t y(0); y < mx -> top_index.size(); ++y){
             hash_map_top[mx -> top_index.at(y)][std::string(mx -> hash)] = mx; 
         }
+        mx -> parents.clear(); mx -> children.clear(); 
         hash_map_res[bool(mx -> from_res)][std::string(mx -> hash)] = mx; 
     }
 

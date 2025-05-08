@@ -44,3 +44,45 @@ scheduler_enum lossfx::scheduler_string(std::string name){
     return scheduler_enum::invalid_scheduler;
 }
 
+void lossfx::loss_opt_string(std::string vars){
+    auto lambb = [this](std::string* v) -> bool   {return this -> has_string(v, "true");};
+    auto lambi = [this](std::string* v) -> int    {return std::stoi(*v);}; 
+    auto lambd = [this](std::string* v) -> double {return std::stod(*v);}; 
+    auto lambv = [this](std::string* v) -> std::vector<double> {
+        this -> replace(v, "{", ""); this -> replace(v, "}", ""); 
+        std::vector<std::string> vcx = this -> split(*v, ",");
+        std::vector<double> vo = {};
+        for (size_t x(0); x < vcx.size(); ++x){this -> replace(&vcx[x], " ", "");}
+        for (size_t x(0); x < vcx.size(); ++x){vo.push_back(std::stod(vcx[x]));}
+        return vo; 
+    }; 
+
+
+
+    std::string _vars = this -> lower(&vars); 
+    std::vector<std::string> vx = this -> split(_vars, "->"); 
+    if (vx.size() != 2){
+        this -> warning("Invalid parameter: " + vars + "\nExpected Syntax: ::(var -> val | var -> {list}");
+        return;
+    }
+    this -> replace(&vx[0], " ", ""); 
+    std::string name = vx[0]; 
+    std::string val  = vx[1]; 
+    if (name == "mean"      ){this -> lss_cfg.mean       = lambb(&val); return;}
+    if (name == "sum"       ){this -> lss_cfg.sum        = lambb(&val); return;}
+    if (name == "none"      ){this -> lss_cfg.sum        = lambb(&val); return;}
+    if (name == "swap"      ){this -> lss_cfg.swap       = lambb(&val); return;}
+    if (name == "full"      ){this -> lss_cfg.full       = lambb(&val); return;}
+    if (name == "batch_mean"){this -> lss_cfg.batch_mean = lambb(&val); return;}
+    if (name == "target"    ){this -> lss_cfg.target     = lambb(&val); return;} 
+    if (name == "zero_inf"  ){this -> lss_cfg.zero_inf   = lambb(&val); return;}
+    if (name == "ignore"    ){this -> lss_cfg.ignore     = lambi(&val); return;}
+    if (name == "blank"     ){this -> lss_cfg.blank      = lambi(&val); return;}
+    if (name == "margin"    ){this -> lss_cfg.margin     = lambd(&val); return;} 
+    if (name == "beta"      ){this -> lss_cfg.beta       = lambd(&val); return;}
+    if (name == "eps"       ){this -> lss_cfg.eps        = lambd(&val); return;}
+    if (name == "smoothing" ){this -> lss_cfg.smoothing  = lambd(&val); return;}
+    if (name == "weight"    ){this -> lss_cfg.weight     = lambv(&val); return;}
+    this -> warning("Found invalid parameter: " + vars + " skipping"); 
+}
+

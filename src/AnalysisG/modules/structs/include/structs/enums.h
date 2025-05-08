@@ -39,6 +39,7 @@ enum class mlp_init {
     kaiming_normal
 };
 
+
 // loss functions
 enum class loss_enum {
     bce, 

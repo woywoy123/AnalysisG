@@ -144,11 +144,11 @@ void metrics::add_th1f_loss(
 }
 
 void metrics::build_th1f_loss(
-        std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>* type, 
+        std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* type, 
         graph_enum g_num, int kfold
 ){
     analytics_t* an = &this -> registry[kfold]; 
-    std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>::iterator itx; 
+    std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>::iterator itx; 
     for (itx = type -> begin(); itx != type -> end(); ++itx){
         std::string var_name = itx -> first; 
 
@@ -179,11 +179,11 @@ void metrics::build_th1f_loss(
 
 
 void metrics::build_th1f_accuracy(
-        std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>* type, 
+        std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* type, 
         graph_enum g_num, int kfold
 ){
     analytics_t* an = &this -> registry[kfold]; 
-    std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>::iterator itx; 
+    std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>::iterator itx; 
     for (itx = type -> begin(); itx != type -> end(); ++itx){
         std::string var_name = itx -> first; 
 

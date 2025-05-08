@@ -87,7 +87,7 @@ class metrics:
 
     private: 
         void build_th1f_loss(
-                std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>* type, 
+                std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* type, 
                 graph_enum g_num, int kfold
         ); 
 
@@ -98,7 +98,7 @@ class metrics:
         ); 
 
         void build_th1f_accuracy(
-                std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>* type, 
+                std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* type, 
                 graph_enum g_num, int kfold
         ); 
         

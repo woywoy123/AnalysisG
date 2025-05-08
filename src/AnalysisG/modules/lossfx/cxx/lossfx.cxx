@@ -1,6 +1,12 @@
 #include <templates/lossfx.h>
 
 lossfx::lossfx(){this -> prefix = "optimizer";}
+lossfx::lossfx(std::string var, std::string val){
+    this -> prefix = "optimizer";
+    this -> variable = var; 
+    this -> interpret(&val); 
+}
+
 lossfx::~lossfx(){
     if (this -> m_adam                        ){delete this -> m_adam                        ;}
     if (this -> m_adagrad                     ){delete this -> m_adagrad                     ;}
@@ -64,31 +70,53 @@ void lossfx::step(){
 //    if (this -> m_rlp   ){this -> m_rlp -> step();}
 }
 
+bool lossfx::build_loss_function(){return this -> build_loss_function(this -> lss_cfg.fx);}
+
 bool lossfx::build_loss_function(loss_enum lss){
     switch (lss){
-        case loss_enum::bce                    : this -> m_bce                     = (this -> m_bce                    ) ? this -> m_bce                    : new torch::nn::BCELossImpl();                  return true;
-        case loss_enum::bce_with_logits        : this -> m_bce_with_logits         = (this -> m_bce_with_logits        ) ? this -> m_bce_with_logits        : new torch::nn::BCEWithLogitsLossImpl();        return true;
-        case loss_enum::cosine_embedding       : this -> m_cosine_embedding        = (this -> m_cosine_embedding       ) ? this -> m_cosine_embedding       : new torch::nn::CosineEmbeddingLossImpl();      return true;
-        case loss_enum::cross_entropy          : this -> m_cross_entropy           = (this -> m_cross_entropy          ) ? this -> m_cross_entropy          : new torch::nn::CrossEntropyLossImpl();         return true;
-        case loss_enum::ctc                    : this -> m_ctc                     = (this -> m_ctc                    ) ? this -> m_ctc                    : new torch::nn::CTCLossImpl();                  return true;
-        case loss_enum::hinge_embedding        : this -> m_hinge_embedding         = (this -> m_hinge_embedding        ) ? this -> m_hinge_embedding        : new torch::nn::HingeEmbeddingLossImpl();       return true;
-        case loss_enum::huber                  : this -> m_huber                   = (this -> m_huber                  ) ? this -> m_huber                  : new torch::nn::HuberLossImpl();                return true;
-        case loss_enum::kl_div                 : this -> m_kl_div                  = (this -> m_kl_div                 ) ? this -> m_kl_div                 : new torch::nn::KLDivLossImpl();                return true;
-        case loss_enum::l1                     : this -> m_l1                      = (this -> m_l1                     ) ? this -> m_l1                     : new torch::nn::L1LossImpl();                   return true;
-        case loss_enum::margin_ranking         : this -> m_margin_ranking          = (this -> m_margin_ranking         ) ? this -> m_margin_ranking         : new torch::nn::MarginRankingLossImpl();        return true;
-        case loss_enum::mse                    : this -> m_mse                     = (this -> m_mse                    ) ? this -> m_mse                    : new torch::nn::MSELossImpl();                  return true;
-        case loss_enum::multi_label_margin     : this -> m_multi_label_margin      = (this -> m_multi_label_margin     ) ? this -> m_multi_label_margin     : new torch::nn::MultiLabelMarginLossImpl();     return true;
-        case loss_enum::multi_label_soft_margin: this -> m_multi_label_soft_margin = (this -> m_multi_label_soft_margin) ? this -> m_multi_label_soft_margin: new torch::nn::MultiLabelSoftMarginLossImpl(); return true;
-        case loss_enum::multi_margin           : this -> m_multi_margin            = (this -> m_multi_margin           ) ? this -> m_multi_margin           : new torch::nn::MultiMarginLossImpl();          return true;
-        case loss_enum::nll                    : this -> m_nll                     = (this -> m_nll                    ) ? this -> m_nll                    : new torch::nn::NLLLossImpl();                  return true;
-        case loss_enum::poisson_nll            : this -> m_poisson_nll             = (this -> m_poisson_nll            ) ? this -> m_poisson_nll            : new torch::nn::PoissonNLLLossImpl();           return true;
-        case loss_enum::smooth_l1              : this -> m_smooth_l1               = (this -> m_smooth_l1              ) ? this -> m_smooth_l1              : new torch::nn::SmoothL1LossImpl();             return true;
-        case loss_enum::soft_margin            : this -> m_soft_margin             = (this -> m_soft_margin            ) ? this -> m_soft_margin            : new torch::nn::SoftMarginLossImpl();           return true;
-        case loss_enum::triplet_margin         : this -> m_triplet_margin          = (this -> m_triplet_margin         ) ? this -> m_triplet_margin         : new torch::nn::TripletMarginLossImpl();        return true;
-        case loss_enum::triplet_margin_with_distance: 
-            this -> m_triplet_margin_with_distance = (this -> m_triplet_margin_with_distance) ? this -> m_triplet_margin_with_distance: new torch::nn::TripletMarginWithDistanceLossImpl(); return true;
+        case loss_enum::bce                         : this -> build_fx_loss(this -> m_bce                         ); return true; 
+        case loss_enum::bce_with_logits             : this -> build_fx_loss(this -> m_bce_with_logits             ); return true; 
+        case loss_enum::cosine_embedding            : this -> build_fx_loss(this -> m_cosine_embedding            ); return true; 
+        case loss_enum::cross_entropy               : this -> build_fx_loss(this -> m_cross_entropy               ); return true; 
+        case loss_enum::ctc                         : this -> build_fx_loss(this -> m_ctc                         ); return true; 
+        case loss_enum::hinge_embedding             : this -> build_fx_loss(this -> m_hinge_embedding             ); return true; 
+        case loss_enum::huber                       : this -> build_fx_loss(this -> m_huber                       ); return true; 
+        case loss_enum::kl_div                      : this -> build_fx_loss(this -> m_kl_div                      ); return true; 
+        case loss_enum::l1                          : this -> build_fx_loss(this -> m_l1                          ); return true; 
+        case loss_enum::margin_ranking              : this -> build_fx_loss(this -> m_margin_ranking              ); return true; 
+        case loss_enum::mse                         : this -> build_fx_loss(this -> m_mse                         ); return true; 
+        case loss_enum::multi_label_margin          : this -> build_fx_loss(this -> m_multi_label_margin          ); return true; 
+        case loss_enum::multi_label_soft_margin     : this -> build_fx_loss(this -> m_multi_label_soft_margin     ); return true; 
+        case loss_enum::multi_margin                : this -> build_fx_loss(this -> m_multi_margin                ); return true; 
+        case loss_enum::nll                         : this -> build_fx_loss(this -> m_nll                         ); return true; 
+        case loss_enum::poisson_nll                 : this -> build_fx_loss(this -> m_poisson_nll                 ); return true; 
+        case loss_enum::smooth_l1                   : this -> build_fx_loss(this -> m_smooth_l1                   ); return true; 
+        case loss_enum::soft_margin                 : this -> build_fx_loss(this -> m_soft_margin                 ); return true; 
+        case loss_enum::triplet_margin              : this -> build_fx_loss(this -> m_triplet_margin              ); return true; 
+        case loss_enum::triplet_margin_with_distance: this -> build_fx_loss(this -> m_triplet_margin_with_distance); return true; 
         default: break; 
     }
+    this -> warning("Invalid Loss Function! \nOptions Are:"); 
+    this -> warning(" -> bceloss"                      ); 
+    this -> warning(" -> bcewithlogitsloss"            ); 
+    this -> warning(" -> cosineembeddingloss"          ); 
+    this -> warning(" -> crossentropyloss"             ); 
+    this -> warning(" -> ctcloss"                      ); 
+    this -> warning(" -> hingeembeddingloss"           ); 
+    this -> warning(" -> huberloss"                    ); 
+    this -> warning(" -> kldivloss"                    ); 
+    this -> warning(" -> l1loss"                       ); 
+    this -> warning(" -> marginrankingloss"            ); 
+    this -> warning(" -> mseloss"                      ); 
+    this -> warning(" -> multilabelmarginloss"         ); 
+    this -> warning(" -> multilabelsoftmarginloss"     ); 
+    this -> warning(" -> multimarginloss"              ); 
+    this -> warning(" -> nllloss"                      ); 
+    this -> warning(" -> poissonnllloss"               ); 
+    this -> warning(" -> smoothl1loss"                 ); 
+    this -> warning(" -> softmarginloss"               ); 
+    this -> warning(" -> tripletmarginloss"            ); 
+    this -> warning(" -> tripletmarginwithdistanceloss");
     return false;
 }
 

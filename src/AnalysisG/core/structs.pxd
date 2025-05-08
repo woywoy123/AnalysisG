@@ -147,8 +147,8 @@ cdef extern from "<structs/settings.h>":
         vector[string] targets
 
         int nbins
-        int refresh
         int max_range
+        bool logy
 
         bool build_cache
         bool debug_mode

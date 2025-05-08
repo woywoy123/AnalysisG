@@ -26,11 +26,11 @@ void model_template::check_features(graph_t* data){
         else {this -> success(key + " found in graph");}
     }
 
-    std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>::iterator itx; 
+    std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>::iterator itx; 
     for (itx = this -> m_o_graph.begin(); itx != this -> m_o_graph.end(); ++itx){
         std::string key = "Truth Graph Feature: " + itx -> first;
         torch::Tensor* ten = this -> assign_features(itx -> first, graph_enum::truth_graph, data); 
-        this -> m_loss -> build_loss_function(std::get<1>(itx -> second)); 
+        std::get<1>(itx -> second) -> build_loss_function(); 
         if (!ten){this -> warning(key + " not found in graph.");}
         else {this -> success(key + " found in graph");}
     }
@@ -38,7 +38,7 @@ void model_template::check_features(graph_t* data){
     for (itx = this -> m_o_node.begin(); itx != this -> m_o_node.end(); ++itx){
         std::string key = "Truth Node Feature: " + itx -> first; 
         torch::Tensor* ten = this -> assign_features(itx -> first, graph_enum::truth_node, data); 
-        this -> m_loss -> build_loss_function(std::get<1>(itx -> second)); 
+        std::get<1>(itx -> second) -> build_loss_function(); 
         if (!ten){this -> warning(key + " not found in graph.");}
         else {this -> success(key + " found in graph.");}
     }
@@ -46,7 +46,7 @@ void model_template::check_features(graph_t* data){
     for (itx = this -> m_o_edge.begin(); itx != this -> m_o_edge.end(); ++itx){
         std::string key = "Truth Edge Feature: " + itx -> first; 
         torch::Tensor* ten = this -> assign_features(itx -> first, graph_enum::truth_edge, data);  
-        this -> m_loss -> build_loss_function(std::get<1>(itx -> second)); 
+        std::get<1>(itx -> second) -> build_loss_function(); 
         if (!ten){this -> warning(key + " not found in graph");}
         else {this -> success(key + " found in graph");}
     }

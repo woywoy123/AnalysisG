@@ -51,17 +51,17 @@ class model_template:
         // target properties for each graph object: name - loss
         cproperty<
             std::map<std::string, std::string>, 
-            std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>
+            std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>
         > o_graph;
         
         cproperty<
             std::map<std::string, std::string>, 
-            std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>
+            std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>
         > o_node; 
 
         cproperty<
             std::map<std::string, std::string>, 
-            std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>
+            std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>
         > o_edge; 
 
         // requested input features
@@ -127,7 +127,7 @@ class model_template:
 
         static void set_output_features(
                 std::map<std::string, std::string>*, 
-                std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>*
+                std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>*
         ); 
 
 
@@ -173,9 +173,9 @@ class model_template:
         std::map<std::string, torch::Tensor*> m_p_edge = {}; 
         std::map<std::string, torch::Tensor*> m_p_undef = {}; 
 
-        std::map<std::string, std::tuple<torch::Tensor*, loss_enum>> m_o_graph = {}; 
-        std::map<std::string, std::tuple<torch::Tensor*, loss_enum>> m_o_node = {}; 
-        std::map<std::string, std::tuple<torch::Tensor*, loss_enum>> m_o_edge = {}; 
+        std::map<std::string, std::tuple<torch::Tensor*, lossfx*>> m_o_graph = {}; 
+        std::map<std::string, std::tuple<torch::Tensor*, lossfx*>> m_o_node = {}; 
+        std::map<std::string, std::tuple<torch::Tensor*, lossfx*>> m_o_edge = {}; 
 
         std::map<graph_enum, std::map<std::string, torch::Tensor>> m_p_loss = {}; 
 }; 

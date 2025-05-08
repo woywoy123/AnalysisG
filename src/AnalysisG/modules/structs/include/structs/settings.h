@@ -37,8 +37,8 @@ struct settings_t {
     std::vector<std::string> targets = {}; 
     
     int nbins = 400;
-    int refresh = 10;
     int max_range = 400; 
+    bool logy = false; 
 
     int threads = 10; 
     bool debug_mode = false;

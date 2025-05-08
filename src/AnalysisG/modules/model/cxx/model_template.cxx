@@ -35,6 +35,25 @@ model_template::model_template(){
     this -> m_loss = new lossfx(); 
 }
 
+model_template::~model_template(){
+    auto lamb = [](std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* inpx){
+        std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>::iterator itx = inpx -> begin(); 
+        for (; itx != inpx -> end(); ++itx){
+            if (!std::get<1>(itx -> second)){continue;}
+            delete std::get<1>(itx -> second);
+            std::get<1>(itx -> second) = nullptr;
+        }
+    };
+
+    for (size_t x(0); x < this -> m_data.size(); ++x){delete this -> m_data[x];}
+    this -> flush_outputs(); 
+    this -> m_data.clear(); 
+    delete this -> m_loss; 
+    lamb(&this -> m_o_graph); 
+    lamb(&this -> m_o_node); 
+    lamb(&this -> m_o_edge); 
+}
+
 model_template* model_template::clone(){return new model_template();}
 
 void model_template::register_module(torch::nn::Sequential* data){
@@ -49,13 +68,6 @@ void model_template::register_module(torch::nn::Sequential* data, mlp_init metho
 }
 
 void model_template::forward(graph_t*){}
-
-model_template::~model_template(){
-    for (size_t x(0); x < this -> m_data.size(); ++x){delete this -> m_data[x];}
-    this -> flush_outputs(); 
-    this -> m_data.clear(); 
-    delete this -> m_loss; 
-}
 
 torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type, graph_t* data){
     torch::Tensor* tn = nullptr; 
@@ -194,19 +206,18 @@ void model_template::flush_outputs(){
         std::map<std::string, torch::Tensor*>::iterator itr = data -> begin(); 
         for (; itr != data -> end(); ++itr){
             if (!itr -> second){continue;}
-            delete itr -> second; 
-            itr -> second = nullptr; 
+            delete itr -> second; itr -> second = nullptr; 
         }
     }; 
 
-    auto lamb = [](std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>* inpx){
-        std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>::iterator itx = inpx -> begin(); 
+    auto lamb = [](std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* inpx){
+        std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>::iterator itx = inpx -> begin(); 
         for (; itx != inpx -> end(); ++itx){
-            delete std::get<0>(itx -> second); 
+            if (!std::get<0>(itx -> second)){continue;}
+            delete std::get<0>(itx -> second);
             std::get<0>(itx -> second) = nullptr;
         }
     };
-
 
     lambda(&this -> m_p_graph); 
     lambda(&this -> m_p_node); 
@@ -215,9 +226,8 @@ void model_template::flush_outputs(){
 
     this -> m_p_loss.clear(); 
     if (!this -> m_batched){return;}
+    delete this -> edge_index; this -> edge_index = nullptr; 
 
-    delete this -> edge_index; 
-    this -> edge_index = nullptr; 
     lambda(&this -> m_i_graph); 
     lambda(&this -> m_i_node); 
     lambda(&this -> m_i_edge); 

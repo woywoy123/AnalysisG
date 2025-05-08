@@ -257,16 +257,16 @@ cdef class Analysis:
     def nBins(self, int val): self.ana.m_settings.nbins = val
 
     @property
-    def Refresh(self): return self.ana.m_settings.refresh
-
-    @Refresh.setter
-    def Refresh(self, int val): self.ana.m_settings.refresh = val
-
-    @property
     def MaxRange(self): return self.ana.m_settings.max_range
 
     @MaxRange.setter
     def MaxRange(self, int val): self.ana.m_settings.max_range = val
+
+    @property
+    def SetLogY(self): return self.ana.m_settings.logy
+
+    @SetLogY.setter
+    def SetLogY(self, int val): self.ana.m_settings.logy = val
 
     @property
     def VarPt(self): return self.ana.m_settings.var_pt

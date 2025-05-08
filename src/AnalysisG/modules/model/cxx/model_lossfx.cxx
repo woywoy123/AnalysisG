@@ -2,19 +2,19 @@
 
 void model_template::set_output_features(
         std::map<std::string, std::string>* inpt, 
-        std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>* out_fx
+        std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* out_fx
 ){
     std::map<std::string, std::string>::iterator itx = inpt -> begin();
     for (; itx != inpt -> end(); ++itx){
         std::string o_fx = itx -> first; 
         std::string l_fx = itx -> second;
-        loss_enum loss_type = lossfx().loss_string(l_fx);
-        (*out_fx)[o_fx] = {nullptr, loss_type}; 
+        if (out_fx -> count(o_fx)){continue;}
+        (*out_fx)[o_fx] = {nullptr, new lossfx(o_fx, l_fx)}; 
     }
 }
 
 torch::Tensor* model_template::compute_loss(std::string pred, graph_enum feat){
-    std::tuple<torch::Tensor*, loss_enum>* truth = nullptr; 
+    std::tuple<torch::Tensor*, lossfx*>* truth = nullptr; 
     torch::Tensor* prediction = nullptr; 
     switch(feat){
         case graph_enum::truth_graph: prediction = this -> m_p_graph[pred]; truth = &this -> m_o_graph[pred]; break;
@@ -23,7 +23,7 @@ torch::Tensor* model_template::compute_loss(std::string pred, graph_enum feat){
         default: break;
     }
     if (!prediction){return nullptr;}
-    this -> m_p_loss[feat][pred] = this -> m_loss -> loss(prediction,  std::get<0>(*truth), std::get<1>(*truth)); 
+    this -> m_p_loss[feat][pred] = std::get<1>(*truth) -> loss(prediction,  std::get<0>(*truth)); 
     return &this -> m_p_loss[feat][pred]; 
 }
 

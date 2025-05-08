@@ -2,7 +2,33 @@
 #define MODEL_ENUM_FUNCTIONS_H
 
 #include <string>
+#include <vector>
 #include <structs/property.h>
+#include <structs/enums.h>
+
+struct loss_opt {
+    loss_enum fx = loss_enum::invalid_loss;
+    bool mean = false;
+    bool sum  = false;
+    bool none = false;
+
+    bool swap = false; 
+    bool full = false; 
+    bool batch_mean = false;
+    bool target     = false;  
+    bool zero_inf   = false; 
+    bool defaults   = true;
+
+    int ignore = 1000;
+    int blank  = 0;
+
+    double margin    = 0; 
+    double beta      = 0;
+    double eps       = 0;
+    double smoothing = 0; 
+    double delta     = 0; 
+    std::vector<double> weight = {}; 
+}; 
 
 class optimizer_params_t {
 
