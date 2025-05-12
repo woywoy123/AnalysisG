@@ -1,5 +1,4 @@
 from .utils import *
-from numba import jit
 import tqdm
 
 class sets:

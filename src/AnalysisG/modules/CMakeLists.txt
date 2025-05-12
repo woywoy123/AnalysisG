@@ -16,6 +16,7 @@ add_subdirectory(metric)
 add_subdirectory(meta)
 add_subdirectory(io)
 add_subdirectory(plotting)
+add_subdirectory(roc)
 add_subdirectory(lossfx)
 
 add_subdirectory(container)

@@ -48,7 +48,9 @@ def compiler(lx, name, build = False):
     mT = 172.62*1000
 
     try: return pickle.load(open(name + ".pkl", "rb"))
-    except: conx = [None for i in range(len(lx))]
+    except: print("error!"); exit()
+
+    conx = [None for i in range(len(lx))]
     th = 120
 
     b = 0
