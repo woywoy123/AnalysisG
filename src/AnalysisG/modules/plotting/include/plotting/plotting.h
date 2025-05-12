@@ -6,14 +6,6 @@
 #include <tools/tools.h>
 #include <map>
 
-struct roc_t {
-    int cls = 0; 
-    int kfold = 0; 
-    std::string model = ""; 
-    std::vector<std::vector<int>>*     truth = nullptr;
-    std::vector<std::vector<double>>* scores = nullptr; 
-};
-
 class plotting: 
     public tools, 
     public notification
@@ -27,9 +19,6 @@ class plotting:
         float sum_of_weights(); 
         void build_error(); 
         std::tuple<float, float> mean_stdev(std::vector<float>* data);
-
-        void build_ROC(std::string name, int kfold, std::vector<int>* labels, std::vector<std::vector<double>>* scores); 
-        std::vector<roc_t> get_ROC();  
 
         // io
         std::string extension = ".pdf"; 
@@ -91,9 +80,6 @@ class plotting:
         std::vector<float> x_data = {};
         std::vector<float> y_data = {}; 
 
-        std::map<std::string, std::map<int, std::vector<std::vector<double>>*>> roc_data = {}; 
-        std::map<std::string, std::map<int, std::vector<std::vector<int>>*>>      labels = {};  
-
         std::vector<float> y_error_up   = {}; 
         std::vector<float> y_error_down = {}; 
 
@@ -107,12 +93,6 @@ class plotting:
         float cross_section = -1; 
         float integrated_luminosity = 140.1; //fb-1
     
-    private: 
-        template <typename g>
-        std::vector<std::vector<g>>* generate(size_t x, size_t y){
-            typename std::vector<g> v(y, 0); 
-            return new std::vector<std::vector<g>>(x, v);
-        }
 }; 
 
 #endif 

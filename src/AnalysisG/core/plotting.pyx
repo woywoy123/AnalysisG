@@ -11,7 +11,7 @@ from scipy.stats import ks_2samp
 import matplotlib.pyplot as plt
 import boost_histogram as bh
 import mplhep as hep
-import numpy as np
+import numpy
 import random
 import pathlib
 import pickle
@@ -416,6 +416,7 @@ cdef class TH1F(BasePlotting):
         if inpt is None: return
         cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
         for i in keys:
+            if i == "yMax" or i == "yMin": continue
             try: setattr(self, i, inpt["data"][i])
             except KeyError: continue
             except AttributeError: continue
@@ -923,7 +924,9 @@ cdef class TH2F(BasePlotting):
         return {}
 
 cdef class TLine(BasePlotting):
-    def __cinit__(self): self.ptr.prefix = b"TLine"
+    def __cinit__(self): 
+        self.ErrorShade = False
+        self.ptr.prefix = b"TLine"
 
     def __init__(self, inpt = None, **kwargs):
         self.Lines = []
@@ -972,6 +975,22 @@ cdef class TLine(BasePlotting):
     @LineWidth.setter
     def LineWidth(self, float val): self.ptr.line_width = val
 
+    @property
+    def Alpha(self): return self.ptr.alpha
+
+    @Alpha.setter
+    def Alpha(self, float v): self.ptr.alpha = v
+
+    cdef __error__(self, vector[float] xarr, vector[float] up, vector[float] low, str label = "Uncertainty", str color = "k"):
+        cdef dict apl = {"step" : "post", "hatch" : "///", "alpha" : 0.15, "linewidth" : 0.0}
+        if len(label): apl["label"] = label
+        apl["facecolor"] = color if len(color) else None
+        apl["edgecolor"] = ("k", 1.0)
+        self.matpl.fill_between(xarr, low, up, **apl)
+
+        apl = {"hatch" : "///", "step": "post", "alpha" : 0.00}
+        return self.matpl.fill_between(xarr, low, up, **apl)
+
     cdef void factory(self):
         cdef dict coms = {}
         coms["linestyle"] = self.LineStyle
@@ -979,8 +998,12 @@ cdef class TLine(BasePlotting):
         coms["marker"] = self.Marker
         coms["linewidth"] = self.LineWidth
         coms["label"] = self.Title
+        coms["alpha"] = self.Alpha
 
         if not len(self.xData): return
+        elif self.ErrorBars and self.ErrorShade:
+            self.__error__(self.ptr.x_data, self.ptr.y_error_up, self.ptr.y_error_down, self.Title + " (unc.)", self.Color)
+            self.matpl.plot(self.xData, self.yData, **coms)
         elif self.ErrorBars:
             self.ptr.build_error()
             coms["yerr"] = [self.yDataDown, self.yDataUp]
@@ -1035,151 +1058,4 @@ cdef class TLine(BasePlotting):
         if y_max > y_min: self.matpl.ylim(y_min, y_max)
         self.matpl.title(self.Title)
         return {}
-
-
-cdef class ROC(TLine):
-    def __cinit__(self):
-        self.num_cls = 0
-        self.inits = True
-        self.Binary = False
-        self.verbose = False
-        self.ptr.prefix = b"ROC Curve"
-        try: from sklearn import metrics; return
-        except: self.inits = False
-        self.ptr.warning(b"Failed to import sklearn.")
-
-    def __init__(self, inpt = None, **kwargs):
-        self.Lines = []
-        self.Marker = ""
-        self.auc = {}
-        if len(kwargs): inpt = {"data" : dict(kwargs)}
-        if inpt is None: return
-        cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
-        for i in keys:
-            try: setattr(self, i, inpt["data"][i])
-            except KeyError: continue
-            except AttributeError: continue
-        self.xTitle = "False Positive Rate"
-        self.yTitle = "True Positive Rate"
-        self.xMax = 1
-        self.yMax = 1
-        self.xMin = 0
-        self.yMin = 0
-    cdef void factory(self): return
-
-    cdef dict __compile__(self, bool raw = False):
-        if not self.inits: return {}
-        if not self.ptr.roc_data.size(): return {}
-        from sklearn.metrics import roc_curve, auc
-
-        cdef int i
-        cdef TLine pl
-        cdef string model_mode 
-        cdef map[string, vector[double]] auc_ntops
-        cdef map[string, vector[vector[double]]] fpr_
-        cdef map[string, vector[vector[double]]] tpr_
-        cdef vector[roc_t] points = self.ptr.get_ROC()
-
-        for i in range(points.size()):
-            model_mode = points[i].model
-            self.num_cls = points[i].cls
-            data  = np.array(dref(points[i].scores))
-            truth = np.array(dref(points[i].truth))
-            for i in range(self.num_cls):
-                fpr, tpr, _ = roc_curve(truth[:, i], data[:, i])
-                auc_ntops[model_mode] = <vector[double]>(auc(fpr, tpr))
-                fpr_[model_mode].push_back(<vector[double]>(fpr))
-                fpr_[model_mode].push_back(<vector[double]>(tpr))
-            print(auc_ntops)
-
-        #cdef list lines = [TLine() for i in range(self.num_cls)]
-        #if not len(self.Lines): self.Lines = ["label-" + str(i) for i in range(self.num_cls)]
-        #for i in range(self.Binary, self.num_cls):
-        #    pl = lines[i]
-        #    pl.matpl = self.matpl
-        #    pl.Title = self.Lines[i] + " AUC: " + str(auc_ntops[i])
-#       #     pl.xData = fpr[i].tolist()
-#       #     pl.yData = tpr[i].tolist()
-        #    pl.factory()
-        #    self.auc[i] = auc_ntops[i]
-
-        #self.matpl.title(self.Title)
-        #self._ax.tick_params(axis = "x", which = "minor", bottom = False)
-        #self.matpl.legend(loc = "best")
-        return {}
-
-    @property
-    def Scores(self): return None
-    @property
-    def Truth(self): return None
-
-    @Scores.setter
-    def Scores(self, val):
-        cdef vector[vector[double]] data
-        cdef vector[int]* vc = NULL
-
-        if not self.inits: return
-        if isinstance(val, list):
-            data = <vector[vector[double]]>(val) 
-            self.ptr.build_ROC(b"name", -1, vc, &data)
-        elif isinstance(val, dict):
-            for k in val:
-                if isinstance(k, str) and isinstance(val[k], list): 
-                    data = <vector[vector[double]]>(val[k]) 
-                    self.ptr.build_ROC(enc(k), -1, vc, &data)
-                elif isinstance(k, int) and isinstance(val[k], list):
-                    data = <vector[vector[double]]>(val[k]) 
-                    self.ptr.build_ROC(enc(k), -1, vc, &data)
-                elif isinstance(k, str) and isinstance(val[k], tuple):
-                    data = <vector[vector[double]]>(val[k][1]) 
-                    self.ptr.build_ROC(enc(k), int(val[k][0]), vc, &data)
-                else: return
-        elif isinstance(val, tuple):
-            data = <vector[vector[double]]>(val[2])
-            self.ptr.build_ROC(enc(val[0]), int(val[1]), <vector[int]*>(NULL), &data)
-        else: self.failure(b"Expected: dict(str, tuple(int, list[list[float]]")
-
-    @Truth.setter
-    def Truth(self, val): 
-        cdef vector[int] data
-        cdef vector[vector[double]]* vc = NULL
-
-        if not self.inits: return
-        if isinstance(val, list):
-            data = <vector[int]>(val)
-            self.ptr.build_ROC(b"name", -1, &data, vc)
-        elif isinstance(val, dict):
-            for k in val:
-                if isinstance(k, str) and isinstance(val[k], list): 
-                    data = <vector[int]>(val[k])
-                    self.ptr.build_ROC(enc(k), -1, &data, vc)
-                elif isinstance(k, int) and isinstance(val[k], list):
-                    data = <vector[int]>(val[k])
-                    self.ptr.build_ROC(enc(k), -1, &data, vc)
-                elif isinstance(k, str) and isinstance(val[k], tuple):
-                    data = <vector[int]>(val[k][1])
-                    self.ptr.build_ROC(enc(k), int(val[k][0]), &data, vc)
-        elif isinstance(val, tuple):
-            data = <vector[int]>(val[2])
-            self.ptr.build_ROC(enc(val[0]), int(val[1]), &data, vc)
-        else: self.failure(b"Expected: dict(str, tuple(int, list[list[float]]")
-
-    @property
-    def Titles(self): return self.Lines
-    @Titles.setter
-    def Titles(self, list val): self.Lines = val
-
-    @property
-    def AUC(self): return self.auc
-
-    @property
-    def xData(self): return None
-    @xData.setter
-    def xData(self, val): self.ptr.warning(b"Wrong Input. Use Scores")
-
-    @property
-    def yData(self): return None
-    @yData.setter
-    def yData(self, val): self.ptr.warning(b"Wrong Input. Use Truth")
-
 

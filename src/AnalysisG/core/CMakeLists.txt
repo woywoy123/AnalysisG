@@ -4,6 +4,7 @@ cmake_language(CALL cybuild core core tools ctypecasting;structs)
 cmake_language(CALL cybuild core core meta cnotification)
 cmake_language(CALL cybuild core core io cmeta;cnotification)
 cmake_language(CALL cybuild core core plotting ctools;cnotification)
+cmake_language(CALL cybuild core core roc cplotting)
 
 cmake_language(CALL cybuild core core particle_template cstructs)
 cmake_language(CALL cybuild core core event_template cparticle_template)

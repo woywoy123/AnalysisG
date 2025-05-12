@@ -6,33 +6,37 @@ from libcpp cimport int, float
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 from AnalysisG.core.metric_template cimport *
-from AnalysisG.core.plotting cimport *
+from AnalysisG.core.tools cimport *
+from AnalysisG.core.roc cimport *
 
 cdef extern from "<metrics/accuracy.h>":
     cdef cppclass accuracy_metric(metric_template):
         accuracy_metric() except+
-  
-cdef struct modelx_t:
-    # - name - k - scores 
-    map[string, map[int, vector[int   ]]] ntops_truth
-    map[string, map[int, vector[double]]] edge_scores
-    map[string, map[int, vector[vector[double]]]] ntop_score
-    map[string, map[int, map[int, vector[double]]]] ntru_npred_ntop
+   
+    cdef struct cdata_t:
+        int kfold
+        vector[int] ntops_truth
+        vector[vector[double]] ntop_score
+        map[int, vector[double]] ntop_edge_accuracy
+        map[int, map[int, vector[double]]] ntru_npred_matrix
 
-cdef cppclass plt_roc_t:
-    plt_roc_t() except+ nogil
-    string model 
-    string variable
+    cdef cppclass collector(tools):
+        collector() except+
+        cdata_t* get_mode(string model, string mode, int epoch, int kfolds) except+ 
 
-    int kfold 
-    int epoch
-    double auc
+        void add_ntop_truth(string mode, string model, int epoch, int kfold, int data) except+
+        void add_ntop_edge_accuracy(string mode, string model, int epoch, int kfold, int ntops, double data) except+
+        void add_ntop_scores(string mode, string model, int epoch, int kfold, vector[double]* data) except+
+        void add_ntru_ntop_scores(string mode, string model, int epoch, int kfold, int ntru, int ntop, double data) except+
+        map[string, vector[cdata_t*]] get_plts() except+
 
-    vector[int] truth
-    vector[vector[double]] scores
+        vector[string] model_names
+        vector[string] modes
+        vector[int] epochs
+        vector[int] kfolds
 
 cdef class AccuracyMetric(MetricTemplate):
     cdef accuracy_metric* mtr
-
-    # mode - epoch
-    cdef map[string, map[int, modelx_t]] event_level
+    cdef collector* cl
+    cdef public default_plt
+    cdef public dict auc
