@@ -27,7 +27,7 @@ void metric_template::set_run_name(std::map<std::string, std::string>* rn_name, 
         std::string kpc = ev -> split(names[2], "k-")[1]; 
         ev -> success("Adding: " + mdl + " @ Epoch " + epc + " using K-" + kpc); 
         ev -> _run_names[itx -> first] = itx -> second;
-        ev -> _epoch_kfold[mdl][std::stoi(epc)][std::stoi(kpc)-1] = itx -> second;
+        ev -> _epoch_kfold[mdl][std::stoi(epc)][std::stoi(kpc)] = itx -> second;
     }
 }
 
