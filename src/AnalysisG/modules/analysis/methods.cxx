@@ -23,20 +23,21 @@ void analysis::initialize_loop(
     mk -> set_optimizer(config -> optimizer); 
     mk -> initialize(config); 
 
+    int last_ep = 0; 
     mk -> epoch = 0; 
     mk -> kfold = k+1; 
     for (int ep(0); ep < op -> m_settings.epochs; ++ep){
-
          // check if the next epoch has a file i+2;
         std::string pth_ = pth + "state/epoch-" + std::to_string(ep+1) + "/";  
         pth_ += "kfold-" + std::to_string(k+1) + "_model.pt"; 
-
-        if (op -> m_settings.continue_training && op -> is_file(pth_)){continue;}
+        if (op -> m_settings.continue_training && op -> is_file(pth_)){++last_ep; continue;}
         if (!op -> m_settings.continue_training){break;} 
         mk -> epoch = ep;
         mk -> restore_state(); 
+        last_ep = -1; 
         break; 
     }
+    if (last_ep > 0){mk -> epoch = last_ep; mk -> restore_state();}
 
     std::vector<graph_t*> rnd = op -> loader -> get_random(1); 
     mk -> shush = true; 
