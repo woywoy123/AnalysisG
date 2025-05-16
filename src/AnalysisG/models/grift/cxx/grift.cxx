@@ -109,7 +109,7 @@ torch::Tensor grift::message(
     torch::Tensor m_j   = pyc::physics::cartesian::combined::M(pmc_j);
     torch::Tensor nds_j = (aggr.at(key_idx) > -1).sum({-1}, true); 
     torch::Tensor fx_j  = torch::cat({m_j, pmc_j, nds_j, hx_j}, {-1}); 
-    return (*this -> rnn_dx) -> forward(torch::cat({fx_ij, fx_i, fx_j - fx_i}, {-1}).to(torch::kFloat32)); 
+    return (*this -> rnn_dx) -> forward(torch::cat({fx_ij, fx_i, fx_j - fx_i}, {-1}).to(torch::kFloat32)) * (hx_i + hx_j).softmax(-1); 
 }
 
 void grift::forward(graph_t* data){
@@ -197,12 +197,11 @@ void grift::forward(graph_t* data){
 
         // ----- update the top_edge prediction weights by index ------- //
         torch::Tensor idx = idx_mat.index({src_, dst_}); 
-        top_edge.index_put_({idx}, top_edge_); 
+        torch::Tensor top_edge_i = top_edge.index({idx}).softmax(-1); 
+        top_edge.index_put_({idx}, top_edge_*top_edge_i); 
         torch::Tensor sel = std::get<1>((top_edge_).max({-1})); 
 
         // ---- check if the new prediction is simply null ---- /
-        sel = sel < 1; 
-        if (!sel.index({sel == false}).size({0})){break;}
         node_s  = node_rnn.clone(); 
         node_i_ = node_i; 
 
@@ -213,10 +212,12 @@ void grift::forward(graph_t* data){
         node_state = torch::cat({pyc::physics::cartesian::combined::M(pmx), pmx, num_node, node_rnn}, {-1}); 
 
         // ------ protection against depleted event graphs ---------- //
-        //if (!skp.index({skp}).size({0})){break;}
         torch::Tensor skp = (norm.sum({-1}, true) > 0).view({-1}); 
-        node_state = (*this -> rnn_x) -> forward(node_state.to(torch::kFloat32)) / num_node;
-        node_rnn.index_put_({skp}, node_state.index({skp})); 
+        node_state = (*this -> rnn_x) -> forward(node_state.to(torch::kFloat32));
+        node_rnn.index_put_({skp}, node_state.index({skp})*node_rnn.index({skp}).softmax(-1)); 
+
+        sel = sel < 1; 
+        if (!sel.index({sel == false}).size({0})){break;}
         norm.index_put_({src_, dst_}, sel*1); 
 
         // ------ walk to the next node (nxt) ------- //
@@ -236,7 +237,7 @@ void grift::forward(graph_t* data){
     torch::Tensor pmx_     = gr_.at(key_smx); 
     torch::Tensor top_mass = pyc::physics::cartesian::combined::M(pmx_);
     torch::Tensor enc_tops = torch::cat({top_mass, pmx_, num_node, node_rnn}, {-1});
-    torch::Tensor ntops    = (*this -> rnn_x) -> forward(enc_tops.to(torch::kFloat32)) / num_node;
+    torch::Tensor ntops    = (*this -> rnn_x) -> forward(enc_tops.to(torch::kFloat32)); // / num_node;
     torch::Tensor tmlp     = torch::zeros({event_index.size({0}), ntops.size({1})}, ntops.device()).to(ntops.dtype()); 
     tmlp.index_add_({0}, batch_index, ntops); 
     tmlp = torch::cat({tmlp, pid}, {-1}); 
