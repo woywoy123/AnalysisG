@@ -41,4 +41,34 @@ void metric_template::link(std::string hsx, std::vector<graph_t*>* data, mode_en
     this -> hash_bta[hsx][mx] = data;
 }
 
+void metric_template::flush_garbage(){
+    std::map<std::string, std::vector<particle_template*>>::iterator itr;
+    for (itr = this -> garbage.begin(); itr != this -> garbage.end(); ++itr){
+        for (size_t x(0); x < itr -> second.size(); ++x){
+            if (!itr -> second[x] -> _is_marked){continue;}
+            delete itr -> second[x];
+        }
+        itr -> second.clear(); 
+    }
+    this -> garbage.clear();
+}
+
+std::vector<particle_template*> metric_template::make_particle(
+        std::vector<std::vector<double>>* pt , std::vector<std::vector<double>>* eta, 
+        std::vector<std::vector<double>>* phi, std::vector<std::vector<double>>* energy
+){
+    std::vector<particle_template*> ptx(pt -> size(), nullptr); 
+    for (size_t x(0); x < pt -> size(); ++x){
+        particle_template* px = new particle_template(); 
+        px -> index = x; 
+        px -> pt    = pt  -> at(x)[0]; 
+        px -> eta   = eta -> at(x)[0]; 
+        px -> phi   = phi -> at(x)[0]; 
+        px -> e     = energy -> at(x)[0]; 
+        px -> _is_marked = true; 
+        ptx[x] = px; 
+    }    
+    return ptx; 
+}
+
 

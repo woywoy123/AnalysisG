@@ -116,7 +116,7 @@ void metric_template::construct(
             v -> process(tnx, &va_, nullptr); 
             if (!stx){continue;}
             (*mtx) = "\033[1;32m (Found " + enums_to_string(vit -> first) + va_ + ") Typed: " + v -> as_string() + "\033[0m"; 
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
             (*varx)[vit -> first][t] = v; 
         }
     }
@@ -136,7 +136,7 @@ void metric_template::execute(metric_t* mtx, metric_template* obj, size_t* prg, 
     bool init = false; 
     obj -> _outdir += "/epoch-" + std::to_string(mtx -> epoch) + "/" + name_ + "/"; 
     obj -> create_path(obj -> _outdir); 
-    obj -> _outdir += "kfold-" + std::to_string(mtx -> kfold+1) + ".root"; 
+    obj -> _outdir += "kfold-" + std::to_string(mtx -> kfold) + ".root"; 
 
     obj -> define_variables(); 
     std::string hx = std::string(this -> hash(std::to_string(mtx -> device) + "+" + std::to_string(mtx -> kfold)));
@@ -147,6 +147,7 @@ void metric_template::execute(metric_t* mtx, metric_template* obj, size_t* prg, 
         for (size_t x(0); x < smpl -> size(); ++x, ++(*prg)){
             graph_t* gr = smpl -> at(x); 
             mdl -> forward(gr, false); 
+            mtx -> batch_files = &gr -> batched_filenames; 
             this -> construct(&vou, var, mdl, gr, msg);
             if (!init){
                 (*msg) = mf; 
@@ -155,6 +156,8 @@ void metric_template::execute(metric_t* mtx, metric_template* obj, size_t* prg, 
                 (*prg) = 0; 
             }
             obj -> define_metric(mtx); 
+            obj -> flush_garbage(); 
+            mtx -> batch_files = nullptr; 
         }
     }
     obj -> end(); 
@@ -191,7 +194,7 @@ void metric_template::define(std::vector<metric_t*>* vr, std::vector<size_t>* nu
                 (*vr)[*offset] = mx; 
                 (*num)[*offset] = xt; 
                 std::string til = "Epoch::" + std::to_string(ite -> first); 
-                til += "-> K(" + std::to_string(itk -> first+1) + ")"; 
+                til += "-> K(" + std::to_string(itk -> first) + ")"; 
                 (*title)[*offset] = new std::string(til);  
                 (*offset)++; 
             }

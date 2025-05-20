@@ -13,11 +13,16 @@ from cython.operator cimport dereference as deref
 
 cdef class MetricTemplate:
     def __cinit__(self): 
-        self.mtx = new metric_template()
+        self.mtx = NULL 
+        #new metric_template()
         self.root_leaves = {}
         self.root_fx = {}
 
-    def __init__(self): pass
+    def __init__(self): 
+        if self.mtx != NULL: return
+        print("Forgot to override self.mtx in cython?")
+        exit()
+
     def __dealloc__(self): del self.mtx
     def __name__(self): return env(self.mtx.name)
 

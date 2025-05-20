@@ -1,7 +1,7 @@
 # distutils: language=c++
 # cython: language_level=3
 
-from libcpp cimport bool, long
+from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 

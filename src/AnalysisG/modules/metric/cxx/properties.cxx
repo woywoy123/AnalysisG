@@ -80,4 +80,4 @@ void metric_template::get_variables(std::vector<std::string>* rn_name, metric_te
     for (; itx != ev -> _variables.end(); ++itx){rn_name -> push_back(itx -> first);}
 }
 
-
+void metric_template::get_output(std::string* out, metric_template* ev){*out = ev -> _outdir;}

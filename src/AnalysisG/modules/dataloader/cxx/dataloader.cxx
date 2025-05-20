@@ -238,6 +238,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
             gr -> in_use = 0; 
             if (cached){continue;}
             gr -> batched_events.push_back(x);
+            gr -> batched_filenames.push_back(grx -> filename);
         }
 
         if (!cached){

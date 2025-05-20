@@ -32,4 +32,8 @@ std::string metric_t::mode(){
     }
 }
 
-
+std::string* metric_t::get_filename(long unsigned int idx){
+    if (!this -> batch_files){return nullptr;}
+    if (this -> batch_files -> size() < idx){return nullptr;}
+    return this -> batch_files -> at(idx); 
+}

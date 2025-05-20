@@ -1,4 +1,8 @@
-set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/pagerank.cxx)
+set(SOURCE_FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/pagerank.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/collector.cxx
+)
+
 add_library(cmetric_pagerank STATIC ${SOURCE_FILES})
 target_include_directories(cmetric_pagerank PRIVATE include/metrics)
 target_include_directories(cmetric_pagerank PUBLIC include)

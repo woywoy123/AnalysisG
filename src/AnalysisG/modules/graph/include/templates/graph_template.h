@@ -99,7 +99,9 @@ struct graph_t {
         long    event_index = 0; 
         double event_weight = 1; 
         bool   preselection = false;
+
         std::vector<long> batched_events = {}; 
+        std::vector<std::string*> batched_filenames = {}; 
 
         std::string* hash       = nullptr; 
         std::string* filename   = nullptr; 

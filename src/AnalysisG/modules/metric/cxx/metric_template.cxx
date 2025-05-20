@@ -14,6 +14,9 @@ metric_template::metric_template(){
     this -> variables.set_object(this); 
     this -> variables.set_setter(this -> set_variables); 
     this -> variables.set_getter(this -> get_variables); 
+
+    this -> output_path.set_object(this);
+    this -> output_path.set_getter(this -> get_output); 
 }
 
 metric_template::~metric_template(){
