@@ -19,11 +19,11 @@ grift::grift(){
     this -> rnn_dx = new torch::nn::Sequential({
             {"rnn_dx_l1", torch::nn::Linear(dxx_1, this -> _hidden)}, 
             {"rnn_dx_r1", torch::nn::ReLU()},
-//            {"rnn_dx_d1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"rnn_dx_d1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_dx_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"rnn_dx_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
             {"rnn_dx_s2", torch::nn::Sigmoid()},
-//            {"rnn_dx_d2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"rnn_dx_d2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_dx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"rnn_dx_l3", torch::nn::Linear(this -> _hidden, this -> _xrec)}
     }); 
@@ -37,11 +37,11 @@ grift::grift(){
     this -> rnn_top_edge = new torch::nn::Sequential({
             {"rnn_top_l1", torch::nn::Linear(this -> _xrec*4, this -> _hidden)}, 
             {"rnn_top_r1", torch::nn::ReLU()},
-//            {"rnn_top_d1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"rnn_top_d1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_top_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"rnn_top_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
             {"rnn_top_t2", torch::nn::Sigmoid()},
-//            {"rnn_top_d2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"rnn_top_d2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_top_l3", torch::nn::Linear(this -> _hidden, this -> _xout)}
     }); 
 
@@ -49,33 +49,33 @@ grift::grift(){
     this -> rnn_res_edge = new torch::nn::Sequential({
             {"rnn_res_l1", torch::nn::Linear(dxx_r, this -> _hidden)}, 
             {"rnn_res_r1", torch::nn::ReLU()},
-//            {"rnn_res_d1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"rnn_res_d1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_res_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"rnn_res_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
             {"rnn_res_t2", torch::nn::Sigmoid()},
-//            {"rnn_res_d2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"rnn_res_d2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_res_l3", torch::nn::Linear(this -> _hidden, this -> _xout)}
     }); 
 
     this -> mlp_ntop = new torch::nn::Sequential({
             {"ntop_l1", torch::nn::Linear(this -> _xtop + this -> _xrec, this -> _xrec)}, 
             {"ntop_r1", torch::nn::ReLU()},
-//            {"ntop_d1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"ntop_d1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"ntop_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
             {"ntop_l2", torch::nn::Linear(this -> _xrec, this -> _xrec)}, 
             {"ntop_t2", torch::nn::Sigmoid()},
-//            {"ntop_d2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"ntop_d2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"ntop_l3", torch::nn::Linear(this -> _xrec, this -> _xtop)}
     }); 
 
     this -> mlp_sig = new torch::nn::Sequential({
             {"res_l1", torch::nn::Linear(this -> _xout*2 + dxx_r + this -> _xtop*2, this -> _xrec*2)}, 
             {"res_r1", torch::nn::ReLU()},
-//            {"res_d1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"res_d1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"res_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec*2}))}, 
             {"res_l2", torch::nn::Linear(this -> _xrec*2, this -> _xrec)}, 
             {"res_t2", torch::nn::Sigmoid()},
-//            {"res_d2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"res_d2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"res_l3", torch::nn::Linear(this -> _xrec, this -> _xout)}
     }); 
 
@@ -227,7 +227,7 @@ void grift::forward(graph_t* data){
         hx_i = node_rnn.index({src_.index({msk})}); 
         hx_j = node_rnn.index({dst_.index({msk})}); 
         edge_index_ = edge_index_.index({torch::indexing::Slice(), msk});  
-        edge_rnn = (*this -> rnn_hxx) -> forward(hx_ij.index({msk})); //.softmax(-1)*edge_rnn.index({msk}); 
+        edge_rnn = (*this -> rnn_hxx) -> forward(hx_ij.index({msk})).softmax(-1); //*edge_rnn.index({msk}); 
     }
 
     // ----------- compress the top data ----------- //
@@ -264,10 +264,10 @@ void grift::forward(graph_t* data){
     isres_ = torch::cat({tmp, pid, tmlp}, {-1}); 
     isres_ = (*this -> mlp_sig) -> forward(isres_.to(torch::kFloat32));
    
-    this -> prediction_edge_feature("top_edge", top_edge.softmax(-1)); 
-    this -> prediction_edge_feature("res_edge", res_edge.softmax(-1)); 
-    this -> prediction_graph_feature("ntops" , tmlp.softmax(-1));
-    this -> prediction_graph_feature("signal", isres_.softmax(-1));
+    this -> prediction_edge_feature("top_edge", top_edge); 
+    this -> prediction_edge_feature("res_edge", res_edge); 
+    this -> prediction_graph_feature("ntops" , tmlp);
+    this -> prediction_graph_feature("signal", isres_);
 
     if (!this -> inference_mode){return;}
     if (this -> pagerank){
