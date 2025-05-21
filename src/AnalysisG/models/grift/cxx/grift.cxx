@@ -227,7 +227,7 @@ void grift::forward(graph_t* data){
         hx_i = node_rnn.index({src_.index({msk})}); 
         hx_j = node_rnn.index({dst_.index({msk})}); 
         edge_index_ = edge_index_.index({torch::indexing::Slice(), msk});  
-        edge_rnn = (*this -> rnn_hxx) -> forward(hx_ij.index({msk})).softmax(-1)*edge_rnn.index({msk}); 
+        edge_rnn = (*this -> rnn_hxx) -> forward(hx_ij.index({msk})); //.softmax(-1)*edge_rnn.index({msk}); 
     }
 
     // ----------- compress the top data ----------- //
@@ -264,10 +264,10 @@ void grift::forward(graph_t* data){
     isres_ = torch::cat({tmp, pid, tmlp}, {-1}); 
     isres_ = (*this -> mlp_sig) -> forward(isres_.to(torch::kFloat32));
    
-    this -> prediction_edge_feature("top_edge", top_edge); 
-    this -> prediction_edge_feature("res_edge", res_edge); 
-    this -> prediction_graph_feature("ntops" , tmlp);
-    this -> prediction_graph_feature("signal", isres_);
+    this -> prediction_edge_feature("top_edge", top_edge.softmax(-1)); 
+    this -> prediction_edge_feature("res_edge", res_edge.softmax(-1)); 
+    this -> prediction_graph_feature("ntops" , tmlp.softmax(-1));
+    this -> prediction_graph_feature("signal", isres_.softmax(-1));
 
     if (!this -> inference_mode){return;}
     if (this -> pagerank){
