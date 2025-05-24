@@ -125,7 +125,6 @@ void det_top_edge(int* o, std::tuple<particle_template*, particle_template*>* pi
     std::map<std::string, particle_template*> p2x = std::get<1>(*pij) -> children; 
 
     *o = 0; 
-    if (p1x.size() < 3 || p2x.size() < 3 || p1x.size() >= 4 || p2x.size() >= 4){return;}
     std::map<std::string, particle_template*>::iterator itp; 
     for (itp = p1x.begin(); itp != p1x.end(); ++itp){
         if (!p2x.count(itp -> first)){continue;}

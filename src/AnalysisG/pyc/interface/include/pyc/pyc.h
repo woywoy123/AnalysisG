@@ -18,6 +18,7 @@ class neutrino: public particle_template
 
         particle_template* bquark = nullptr; 
         particle_template* lepton = nullptr; 
+        std::vector<neutrino*> alternatives = {}; 
 }; 
 
 namespace pyc {

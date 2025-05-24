@@ -30,14 +30,14 @@ class grift: public model_template
         bool init     = false; 
         bool pagerank = false; 
 
-        torch::nn::Sequential* rnn_x        = nullptr; 
-        torch::nn::Sequential* rnn_dx       = nullptr; 
-        torch::nn::Sequential* rnn_top_edge = nullptr;
-        torch::nn::Sequential* rnn_res_edge = nullptr; 
-        torch::nn::Sequential* rnn_hxx      = nullptr; 
+        torch::nn::Sequential* rnn_x   = nullptr; 
+        torch::nn::Sequential* rnn_dx  = nullptr; 
+        torch::nn::Sequential* rnn_txx = nullptr;
+        torch::nn::Sequential* rnn_rxx = nullptr; 
+        torch::nn::Sequential* rnn_hxx = nullptr; 
 
-        torch::nn::Sequential* mlp_ntop     = nullptr; 
-        torch::nn::Sequential* mlp_sig      = nullptr; 
+        torch::nn::Sequential* mlp_ntop = nullptr; 
+        torch::nn::Sequential* mlp_sig  = nullptr; 
         torch::Tensor  x_nulls; 
         torch::Tensor dx_nulls; 
         torch::Tensor te_nulls; 

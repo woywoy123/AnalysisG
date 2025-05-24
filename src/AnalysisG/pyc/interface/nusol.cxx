@@ -99,15 +99,35 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::combinatorial(
     out = pyc::nusol::combinatorial(&met_, &phi_, &pmc, &bth, &isb_, &isl_, dev, mT, mW, null, perturb, steps); 
     if (!out.size()){return out;}
     for (size_t x(0); x < out.size(); ++x){
+        size_t i = bth[x]; 
         neutrino* nu1 = std::get<0>(out[x]); 
         neutrino* nu2 = std::get<1>(out[x]); 
 
-        size_t i = bth[x]; 
         nu1 -> bquark = new particle_template(quarks[i][index[nu1 -> b_idx]]); 
         nu1 -> lepton = new particle_template(leptons[i][index[nu1 -> l_idx]]); 
 
         nu2 -> bquark = new particle_template(quarks[i][index[nu2 -> b_idx]]); 
         nu2 -> lepton = new particle_template(leptons[i][index[nu2 -> l_idx]]); 
+
+        std::vector<neutrino*> alt1 = {}; 
+        for (size_t a(0); a < nu1 -> alternatives.size(); ++a){
+            neutrino* nx = nu1 -> alternatives[a]; 
+            if (!nx){continue;}
+            nx -> bquark = new particle_template(quarks[i][index[nx -> b_idx]]); 
+            nx -> lepton = new particle_template(leptons[i][index[nx -> l_idx]]); 
+            alt1.push_back(nx); 
+        }
+        nu1 -> alternatives = alt1;
+
+        std::vector<neutrino*> alt2 = {}; 
+        for (size_t a(0); a < nu2 -> alternatives.size(); ++a){
+            neutrino* nx = nu2 -> alternatives[a]; 
+            if (!nx){continue;}
+            nx -> bquark = new particle_template(quarks[i][index[nx -> b_idx]]); 
+            nx -> lepton = new particle_template(leptons[i][index[nx -> l_idx]]); 
+            alt2.push_back(nx); 
+        }
+        nu2 -> alternatives = alt2;
     }
     return out; 
 }

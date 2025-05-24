@@ -145,8 +145,7 @@ __global__ void _nunu_vp_(
     int pos = 0; 
     for (size_t y(0); y < 6; ++y){
         if (!_K0[idx][y][idz]){continue;}
-        bool kl = (dq > _K0[idx][y][idz]); 
-        pos += kl;
+        pos += (dq > _K0[idx][y][idz]); 
     }
     if (!dq){return;}
     v [_idx][pos][idz] = _v0[idx][idy][idz]; 

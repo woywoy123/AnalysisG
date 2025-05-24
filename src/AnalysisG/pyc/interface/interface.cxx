@@ -22,6 +22,10 @@ neutrino::~neutrino(){
     if (this -> lepton){delete this -> lepton;}
     this -> bquark = nullptr;
     this -> lepton = nullptr; 
+    for (size_t x(0); x < this -> alternatives.size(); ++x){
+        if (!this -> alternatives[x]){continue;}
+        delete this -> alternatives[x];
+    }
 }
 
 
@@ -80,8 +84,9 @@ std::vector<neutrino*> construct_particle(torch::Tensor* inpt, torch::Tensor* ln
         if (!(*dst)[x]){continue;}
         neutrino* nx = new neutrino(pmc[x][0], pmc[x][1], pmc[x][2]); 
         nx -> min   = (*dst)[x];
-        nx -> b_idx = (bn) ? _b[x][0] : x / 6;
-        nx -> l_idx = (ln) ? _l[x][0] : x / 6;
+        nx -> index = x / 6; 
+        nx -> b_idx = (bn) ? _b[x / 6][0] : x / 6;
+        nx -> l_idx = (ln) ? _l[x / 6][0] : x / 6;
         out[o] = nx; ++o; 
     }
     return out; 
@@ -175,12 +180,33 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::combinatorial(
     torch::Tensor b2  = nus.at("b2");
     torch::Tensor dis = nus.at("distances");
 
+    torch::Tensor alt_dist = nus.at("alt.distances").reshape({-1}); 
+    torch::Tensor alt_nu1  = nus.at("alt.nu1").reshape({-1, 3}); 
+    torch::Tensor alt_nu2  = nus.at("alt.nu2").reshape({-1, 3}); 
+    torch::Tensor alt_l1   = nus.at("alt.l1"); 
+    torch::Tensor alt_b1   = nus.at("alt.b1"); 
+    torch::Tensor alt_l2   = nus.at("alt.l2"); 
+    torch::Tensor alt_b2   = nus.at("alt.b2"); 
+
     std::vector<double> dist; 
     tensor_to_vector(&dis, &dist); 
     std::vector<neutrino*> nu1_ = construct_particle(&nu1, &l1, &b1, &dist);  
     std::vector<neutrino*> nu2_ = construct_particle(&nu2, &l2, &b2, &dist); 
+
+    std::vector<double> dist_; 
+    tensor_to_vector(&alt_dist, &dist_); 
+    std::vector<neutrino*> nu1alt = construct_particle(&alt_nu1, &alt_l1, &alt_b1, &dist_);
+    std::vector<neutrino*> nu2alt = construct_particle(&alt_nu2, &alt_l2, &alt_b2, &dist_);
+
     std::vector<std::pair<neutrino*, neutrino*>> out = {}; 
-    for (size_t x(0); x < nu1_.size(); ++x){out.push_back({nu1_[x], nu2_[x]});}
+    for (size_t x(0); x < nu1_.size(); ++x){
+        out.push_back({nu1_[x], nu2_[x]});
+        for (size_t y(0); y < nu1alt.size(); ++y){
+            if (size_t(nu1_[x] -> index) != x){continue;} 
+            nu1_[x] -> alternatives.push_back(nu1alt[y]); 
+            nu2_[x] -> alternatives.push_back(nu2alt[y]); 
+        }
+    } 
     return out; 
 }
 

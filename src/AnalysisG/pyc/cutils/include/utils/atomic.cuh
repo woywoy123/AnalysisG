@@ -67,7 +67,7 @@ template <typename scalar_t>
 __device__ scalar_t py_(scalar_t* _pt, scalar_t* _phi){return (*_pt) * sin(*_phi);}
 
 template <typename scalar_t>
-__device__ scalar_t pz_(scalar_t* _pt, scalar_t* _eta){return (*_pt) * sinh(*_eta);}
+__device__ scalar_t pz_(scalar_t* _pt, scalar_t* _eta){return (*_pt) * ((*_eta) ? sinh(*_eta) : 0);}
 
 template <typename scalar_t>
 __device__ scalar_t pt_(scalar_t* _px, scalar_t* _py){return _sqrt((*_px) * (*_px) + (*_py) * (*_py));}
