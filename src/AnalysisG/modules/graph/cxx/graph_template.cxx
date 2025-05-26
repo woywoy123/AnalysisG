@@ -103,12 +103,6 @@ std::pair<particle_template*, particle_template*> graph_template::double_neutrin
     #endif
 
     if (!nux.size()){return {nullptr, nullptr};}
-
-    double px = metv[0]*std::cos(phiv[0]); 
-    double py = metv[0]*std::sin(phiv[0]);
-    double pz = 0; 
-    for (size_t x(0); x < particles.size(); ++x){pz += particles.at(x) -> pz;}
-
     std::map<double, std::vector<std::pair<particle_template*, particle_template*>>> optimx = {};
     for (size_t x(0); x < nux.size(); ++x){
         neutrino* nu1 = std::get<0>(nux[x]);
@@ -116,27 +110,12 @@ std::pair<particle_template*, particle_template*> graph_template::double_neutrin
         this -> garbage.push_back(nu1); 
         this -> garbage.push_back(nu2); 
 
-//        for (size_t i(0); i < nu1 -> alternatives.size(); ++i){
-//            neutrino* nut1 = nu1 -> alternatives[i]; 
-//            neutrino* nut2 = nu2 -> alternatives[i]; 
-//
-        double dx = std::abs(px - (nu1 -> px + nu2 -> px)); 
-        double dy = std::abs(py - (nu1 -> py + nu2 -> py)); 
-        double dz = std::abs(pz - (nu1 -> pz + nu2 -> pz)); 
-        optimx[dx + dy + dz].push_back({nu1, nu2});
-
-            // -------- force matching --------- //
-//            particle_template* b1_ = nu1 -> bquark;
-//            particle_template* b2_ = nu2 -> bquark; 
-//    
-//            particle_template* l1_ = nu1 -> lepton;
-//            particle_template* l2_ = nu2 -> lepton; 
-    
-//            bool swp_b = nu1 -> DeltaR(b1_) > nu1 -> DeltaR(b2_); 
-//            bool swp_l = nu1 -> DeltaR(l1_) > nu1 -> DeltaR(l2_); 
-//            if (swp_b){nu1 -> bquark = b2_; nu2 -> bquark = b1_;}
-//            if (swp_l){nu1 -> lepton = l2_; nu2 -> lepton = l1_;}
-//        }
+        for (size_t i(0); i < nu1 -> alternatives.size(); ++i){
+            neutrino* nut1 = nu1 -> alternatives[i]; 
+            neutrino* nut2 = nu2 -> alternatives[i]; 
+            if (nu1 -> min > distance){continue;}
+            optimx[nut1 -> min].push_back({nut1, nut2});
+        }
     }
     if (!optimx.size()){return {nullptr, nullptr};}
     return optimx.begin() -> second.at(0);

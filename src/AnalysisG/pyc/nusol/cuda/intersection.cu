@@ -158,8 +158,8 @@ __global__ void _intersections(
     _ptsx[idx][idy][idz] = _real[idx][idt][idv][idz]*(1 - 2*(vt < 0))*msk; 
     __syncthreads(); 
 
-    double vx = _div(_ptsx[idx][idy][0])*1000; 
-    double vy = _div(_ptsx[idx][idy][1])*1000; 
+    double vx = _div(_ptsx[idx][idy][0])*1000.0; 
+    double vy = _div(_ptsx[idx][idy][1])*1000.0; 
 
     for (unsigned int y(0); y < 27; ++y){
         int vx_ = _ptsx[idx][y][0] * vx; 

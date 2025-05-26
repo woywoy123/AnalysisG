@@ -181,8 +181,8 @@ __global__ void _jacobi(
     __shared__ double _param_[size_x][6]; 
     __shared__ double   _Jxt_[size_x][6]; 
 
+    const int _idy = threadIdx.y; 
     const unsigned int _idx = threadIdx.x; 
-    const unsigned int _idy = threadIdx.y; 
     const unsigned int _idp = blockIdx.x * blockDim.x + _idx; 
     const unsigned int idx  = _idp*ofs + _idy; // compute the offset (0 -> 5)
     const unsigned int _udp = (_idp + 1)*ofs-1; // unperturbed index ((n+1)*6)
@@ -194,7 +194,7 @@ __global__ void _jacobi(
     _param_[_idx][_idy] = nu_params[_idp][_idy]; 
 
     // ----- (compute derivative) ----- //
-    dv = (dv - v) / dt; 
+    dv = (_idy < 2) ? 0 : (dv - v) / dt; 
     _Jxt_[_idx][_idy] = dv*dv; 
     __syncthreads(); 
 
@@ -202,6 +202,88 @@ __global__ void _jacobi(
     dv = _div(_sum(_Jxt_[_idx], 6)) * dv * v; 
     nu_params[_idp][_idy] = _param_[_idx][_idy] - dv; 
 }
+
+template <size_t size_x, size_t size_y>
+__global__ void _best_sols(
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dtw,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> ptw,
+
+        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> mtw,
+        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> nu1,
+        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> nu2,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dst,
+
+        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> pn1,
+        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> pn2,
+
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> chi, 
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> res,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> par,
+
+        const long lx, const long ofs
+){
+    __shared__ double _rnk[size_x*size_y];  
+    __shared__ double _mtw[size_x*size_y][4]; 
+    __shared__ double _mnu[size_x*size_y][6]; 
+
+    const unsigned int kdx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idl = threadIdx.x * size_y + threadIdx.y; 
+    const unsigned int lxe = size_x*size_y; 
+
+    const unsigned int idy = threadIdx.y; 
+    const unsigned int idz = threadIdx.z; 
+
+    _rnk[idl] = 0; 
+    _mtw[idl][idz] = 0; 
+    if (kdx >= lx){return;}
+
+    // ------ sols ------
+    double chx_ = chi[kdx][0]; 
+    double dsx_ = dst[kdx][idy]; 
+    double mtw_ = mtw[kdx][idy][idz]; 
+    double dtw_ = dtw[kdx*size_y + idy][idz]; 
+
+    _mtw[idl][idz] = pow(1 - abs(dtw_ - mtw_)/dtw_, 2); 
+    __syncthreads(); 
+
+    _rnk[idl] = _sum(_mtw[idl], 4) + dsx_; 
+    __syncthreads(); 
+    dsx_ = _rnk[idl]; 
+
+    int pos = 0;
+    for (size_t x(0); x < lxe; ++x){pos += (dsx_ > _rnk[x] && _rnk[x]);} 
+    _mtw[pos][idz] = mtw_; 
+
+    if (idz < 3){
+        _mnu[pos][idz  ] = nu1[kdx][idy][idz]; 
+        _mnu[pos][idz+3] = nu2[kdx][idy][idz]; 
+    }
+    __syncthreads(); 
+
+    _rnk[pos] = dsx_; 
+    __syncthreads(); 
+
+    if (chx_ && chx_ <= _rnk[0]){
+        if (idy){return;}
+        res[kdx][0]     = chx_; 
+        par[kdx][idz+2] = ptw[kdx][idz];
+        return;
+    }
+
+    if (idz < 3){
+        pn1[kdx][idy][idz] = _mnu[idl][idz  ]; 
+        pn2[kdx][idy][idz] = _mnu[idl][idz+3]; 
+    }
+
+    if (idy){return;}
+    res[kdx][0]     = _rnk[0]; 
+    chi[kdx][0]     = _rnk[0]; 
+    ptw[kdx][idz]   = _mtw[0][idz]; 
+    par[kdx][idz+2] = _mtw[0][idz]; 
+
+}
+
+
 
 template <size_t size_x>
 __global__ void _compare_solx(
@@ -238,7 +320,7 @@ __global__ void _compare_solx(
         if (evn_id != _idx){continue;}
         for (size_t y(0); y < 6; ++y){
             double sol = i_sol[x][y]; 
-            if (_score[threadIdx.x][threadIdx.y] < sol){continue;}
+            if (_score[threadIdx.x][threadIdx.y] < sol && !sol){continue;}
             _score[threadIdx.x][threadIdx.y] = sol; 
             _cmx[threadIdx.x][threadIdx.y] = i_cmb[cmx_id][threadIdx.y]; 
             _nu1[threadIdx.x][threadIdx.y] = (threadIdx.y < 3) ? i_nu1[x][y][threadIdx.y] : 0; 
@@ -252,5 +334,6 @@ __global__ void _compare_solx(
     o_nu1[_idx][threadIdx.y] = (threadIdx.y < 3) ? _nu1[threadIdx.x][threadIdx.y] : _sqrt(_dot(_nu1[threadIdx.x], _nu1[threadIdx.x], 3)); 
     o_nu2[_idx][threadIdx.y] = (threadIdx.y < 3) ? _nu2[threadIdx.x][threadIdx.y] : _sqrt(_dot(_nu2[threadIdx.x], _nu2[threadIdx.x], 3)); 
 }
+
 
 #endif

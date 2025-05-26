@@ -11,11 +11,11 @@ struct nusol {
     double z, o2, eps2; 
 
     // index: 0 -> lepton, 1 -> b-quark
-    double pmass[2]  = {0x0};
-    double betas[2]  = {0x0};
-    double pmu_b[4]  = {0x0};
-    double pmu_l[4]  = {0x0};
-    double masses[3] = {0x0}; 
+    double pmass[2]  = {0, 0};
+    double betas[2]  = {0, 0};
+    double pmu_b[4]  = {0, 0, 0, 0};
+    double pmu_l[4]  = {0, 0, 0, 0};
+    double masses[3] = {0, 0, 0}; 
     bool passed = true; 
     nusol() = default; 
 }; 

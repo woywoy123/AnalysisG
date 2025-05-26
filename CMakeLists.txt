@@ -52,9 +52,14 @@ execute_process(
 COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['platlib'])" 
 OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-set(CAFFE2_USE_CUDNN TRUE)
+#set(CAFFE2_USE_CUDNN TRUE)
 list(APPEND CMAKE_PREFIX_PATH ${torch_SOURCE_DIR})
-find_package(Torch REQUIRED)
+
+#add_library(CUDA::nvToolsExt INTERFACE IMPORTED)
+#target_compile_definitions(CUDA::nvToolsExt INTERFACE TORCH_CUDA_USE_NVTX3)
+#target_link_libraries(CUDA::nvToolsExt INTERFACE CUDA::nvtx3)
+
+find_package(Torch REQUIRED CONFIG)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 message(STATUS "CAFFE2_USE_CUDNN is: ${CAFFE2_USE_CUDNN}")
 
@@ -74,7 +79,7 @@ message(STATUS "CAFFE2_USE_CUDNN is: ${CAFFE2_USE_CUDNN}")
 #list(APPEND CMAKE_PREFIX_PATH ${HDF5_SOURCE_DIR})
 
 #find_package(HDF5   NAMES hdf5 COMPONENTS cpp-shared REQUIRED)
-find_package(CUDAToolkit 12.4 REQUIRED)
+find_package(CUDAToolkit 12.6 REQUIRED)
 find_package(HDF5   REQUIRED COMPONENTS CXX)
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 find_package(ROOT   COMPONENTS RIO Tree Core REQUIRED)

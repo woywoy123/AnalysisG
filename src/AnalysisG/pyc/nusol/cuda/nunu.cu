@@ -238,6 +238,71 @@ __global__ void _residual_(
     }
 }
 
+
+template <typename scalar_t, size_t size_x, size_t solx>
+__global__ void _masses_(
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> b1, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> b2, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> l1,
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> l2,
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu1, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu2, 
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> mtw 
+){    
+    __shared__ double _b1_[size_x][solx][4]; 
+    __shared__ double _b2_[size_x][solx][4]; 
+
+    __shared__ double _l1_[size_x][solx][4]; 
+    __shared__ double _l2_[size_x][solx][4]; 
+
+    __shared__ double _nu1_[size_x][solx][4]; 
+    __shared__ double _nu2_[size_x][solx][4]; 
+
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idx = threadIdx.x; 
+    const unsigned int idy = threadIdx.y;
+    const unsigned int idz = threadIdx.z;
+    if (_idx >= b1.size({0})){return;}
+
+    _b1_[idx][idy][idz]  = b1[_idx][idz]; 
+    _b2_[idx][idy][idz]  = b2[_idx][idz]; 
+    _l1_[idx][idy][idz]  = l1[_idx][idz]; 
+    _l2_[idx][idy][idz]  = l2[_idx][idz]; 
+
+    _nu1_[idx][idy][idz] = (idz < 3) ? nu1[_idx][idy][idz] : 0; 
+    _nu2_[idx][idy][idz] = (idz < 3) ? nu1[_idx][idy][idz] : 0; 
+    __syncthreads(); 
+
+    if (idz == 3){
+        for (size_t x(0); x < 3; ++x){_nu1_[idx][idy][idz] += pow(_nu1_[idx][idy][x], 2);}
+        for (size_t x(0); x < 3; ++x){_nu2_[idx][idy][idz] += pow(_nu2_[idx][idy][x], 2);}
+        _nu1_[idx][idy][idz] = _sqrt(_nu1_[idx][idy][idz]); 
+        _nu2_[idx][idy][idz] = _sqrt(_nu2_[idx][idy][idz]); 
+    }
+    __syncthreads();  
+    bool sol = (_nu1_[idx][idy][3] + _nu2_[idx][idy][3]) != 0; 
+
+    _l1_[idx][idy][idz] = _nu1_[idx][idy][idz] + _l1_[idx][idy][idz]; 
+    _l2_[idx][idy][idz] = _nu2_[idx][idy][idz] + _l2_[idx][idy][idz]; 
+
+    _b1_[idx][idy][idz] =  _b1_[idx][idy][idz] + _l1_[idx][idy][idz]; 
+    _b2_[idx][idy][idz] =  _b2_[idx][idy][idz] + _l2_[idx][idy][idz]; 
+
+    _l1_[idx][idy][idz] = pow(_l1_[idx][idy][idz], 2) * (1 - 2*(idz < 3)); 
+    _l2_[idx][idy][idz] = pow(_l2_[idx][idy][idz], 2) * (1 - 2*(idz < 3)); 
+
+    _b1_[idx][idy][idz] = pow(_b1_[idx][idy][idz], 2) * (1 - 2*(idz < 3)); 
+    _b2_[idx][idy][idz] = pow(_b2_[idx][idy][idz], 2) * (1 - 2*(idz < 3)); 
+    __syncthreads(); 
+
+    double mw = 0; 
+    if      (idz == 0){mw = _sqrt(_sum(_b1_[idx][idy], 4))*sol;}
+    else if (idz == 1){mw = _sqrt(_sum(_l1_[idx][idy], 4))*sol;}
+    else if (idz == 2){mw = _sqrt(_sum(_b2_[idx][idy], 4))*sol;}
+    else if (idz == 3){mw = _sqrt(_sum(_l2_[idx][idy], 4))*sol;}
+    mtw[_idx][idy][idz] = mw; 
+}
+
 std::map<std::string, torch::Tensor> nusol_::NuNu(
         torch::Tensor* H1_, torch::Tensor* H1_perp, torch::Tensor* H2_, torch::Tensor* H2_perp, torch::Tensor* met_xy,
         double null, const double step, const double tolerance, const unsigned int timeout
@@ -283,6 +348,7 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
     std::map<std::string, torch::Tensor> out = nusol_::Intersection(&N, &n_, null); 
     torch::Tensor nu1 = torch::zeros_like(out["solutions"]); 
     torch::Tensor nu2 = torch::zeros_like(out["solutions"]); 
+
     torch::Tensor v_  = torch::zeros_like(out["solutions"]); 
     torch::Tensor v   = out["solutions"]; 
     torch::Tensor ds  = out["distances"]; 
@@ -344,6 +410,28 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
 
     std::map<std::string, torch::Tensor> out; 
     out = nusol_::NuNu(&H1_, &H1p, &H2_, &H2p, met_xy, null, step, tolerance, timeout); 
+
+    const unsigned int solx = 6; 
+    const unsigned int limx = 42; 
+    const unsigned int thx = (dx >= limx) ? limx : dx; 
+
+    const dim3 thr = dim3(thx, solx, 4);
+    const dim3 blr = blk_(dx, thx, solx, solx, 4, 4); 
+
+    torch::Tensor mtw = torch::zeros({dx, solx, 4}, MakeOp(pmc_b1)); 
+    AT_DISPATCH_ALL_TYPES(pmc_mu1 -> scalar_type(), "masses", [&]{
+        _masses_<scalar_t, limx, solx><<<blr, thr>>>(
+                 pmc_b1 -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                 pmc_b2 -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                pmc_mu1 -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                pmc_mu2 -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                out["nu1"].packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                out["nu2"].packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                       mtw.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>()
+        ); 
+    }); 
+    
+    out["mtw"] = mtw; 
     out["nu1"] = out["nu1"].view({dx, -1, 3});  
     out["nu2"] = out["nu2"].view({dx, -1, 3}); 
     out["distances"] = out["distances"].view({dx, -1}); 
