@@ -79,7 +79,7 @@ message(STATUS "CAFFE2_USE_CUDNN is: ${CAFFE2_USE_CUDNN}")
 #list(APPEND CMAKE_PREFIX_PATH ${HDF5_SOURCE_DIR})
 
 #find_package(HDF5   NAMES hdf5 COMPONENTS cpp-shared REQUIRED)
-find_package(CUDAToolkit 12.6 REQUIRED)
+#find_package(CUDAToolkit 12.6 REQUIRED)
 find_package(HDF5   REQUIRED COMPONENTS CXX)
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 find_package(ROOT   COMPONENTS RIO Tree Core REQUIRED)
