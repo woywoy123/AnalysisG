@@ -103,7 +103,9 @@ std::pair<particle_template*, particle_template*> graph_template::double_neutrin
     #endif
 
     if (!nux.size()){return {nullptr, nullptr};}
-    std::map<double, std::vector<std::pair<particle_template*, particle_template*>>> optimx = {};
+    double val1(0), val2(0); 
+    particle_template* n1 = nullptr; 
+    particle_template* n2 = nullptr; 
     for (size_t x(0); x < nux.size(); ++x){
         neutrino* nu1 = std::get<0>(nux[x]);
         neutrino* nu2 = std::get<1>(nux[x]); 
@@ -113,12 +115,33 @@ std::pair<particle_template*, particle_template*> graph_template::double_neutrin
         for (size_t i(0); i < nu1 -> alternatives.size(); ++i){
             neutrino* nut1 = nu1 -> alternatives[i]; 
             neutrino* nut2 = nu2 -> alternatives[i]; 
-            if (nu1 -> min > distance){continue;}
-            optimx[nut1 -> min].push_back({nut1, nut2});
+
+            particle_template* p1 = new particle_template();
+            p1 -> iadd(nut1);
+            p1 -> iadd(nut1 -> lepton); 
+            double w1 = p1 -> mass; 
+            p1 -> iadd(nut1 -> bquark); 
+            double t1 = p1 -> mass; 
+
+            particle_template* p2 = new particle_template();
+            p2 -> iadd(nut2);
+            p2 -> iadd(nut2 -> lepton); 
+            double w2 = p2 -> mass; 
+            p2 -> iadd(nut2 -> bquark); 
+            double t2 = p1 -> mass; 
+            delete p1; delete p2; 
+
+            double mx1 = std::pow((t1 - top_mass) / top_mass, 2) + std::pow((w1 - wboson_mass) / wboson_mass, 2);
+            double mx2 = std::pow((t2 - top_mass) / top_mass, 2) + std::pow((w2 - wboson_mass) / wboson_mass, 2); 
+            if (!n1){n1 = nut1; val1 = mx1;}
+            if (!n2){n2 = nut2; val2 = mx2;}
+            if (mx1 < val1){val1 = mx1; n1 = nut1;}
+            if (mx2 < val2){val2 = mx2; n2 = nut2;}
         }
     }
-    if (!optimx.size()){return {nullptr, nullptr};}
-    return optimx.begin() -> second.at(0);
+    if (val1 > distance){n1 = nullptr;}
+    if (val2 > distance){n2 = nullptr;}
+    return {n1, n2};
 }
 
 graph_t* graph_template::data_export(){

@@ -63,7 +63,7 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::combinatorial(
     for (size_t x(0); x < particles.size(); ++x){
         quarks.push_back({}); leptons.push_back({}); 
         for (size_t y(0); y < particles[x].size(); ++y){
-            bool is_b = particles[x][y] -> is_b;
+            bool is_b = !(particles[x][y] -> is_lep || particles[x][y] -> is_nu);
             if (is_b){quarks[x].push_back(particles[x][y]); continue;}
 
             bool is_l = particles[x][y] -> is_lep; 
@@ -76,10 +76,10 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::combinatorial(
         long bl = x; 
         for (size_t y(0); y < quarks[x].size(); ++y){
             particle_template* bq = quarks[x][y]; 
-            if (!bq -> is_b){continue;}
+            if (bq -> is_nu || bq -> is_lep){continue;}
             index.push_back(long(y)); 
             isl_.push_back(long(0)); 
-            isb_.push_back(long(bq -> is_b)); 
+            isb_.push_back(long(1)); 
             pmc.push_back(pyc::as_pmc(bq)); 
             bth.push_back(bl); 
         } 

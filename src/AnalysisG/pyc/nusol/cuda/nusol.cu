@@ -115,10 +115,10 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         torch::Tensor idp = (torch::ones({lx, sqp*6}, MakeOp(batch)).cumsum({0})-1).reshape({-1});
         const long lxb = idx.size({0}); 
 
-        torch::Tensor _pmcl1  = (pmc -> index({l1})*scale).index({n2}).index({idx}); 
-        torch::Tensor _pmcl2  = (pmc -> index({l2})*scale).index({n2}).index({idx}); 
-        torch::Tensor _pmcb1  = (pmc -> index({b1})*scale).index({n2}).index({idx}); 
-        torch::Tensor _pmcb2  = (pmc -> index({b2})*scale).index({n2}).index({idx}); 
+        torch::Tensor _pmcl1  = (pmc -> index({l1})*scale).index({n2}).index({idx}).clone(); 
+        torch::Tensor _pmcl2  = (pmc -> index({l2})*scale).index({n2}).index({idx}).clone(); 
+        torch::Tensor _pmcb1  = (pmc -> index({b1})*scale).index({n2}).index({idx}).clone(); 
+        torch::Tensor _pmcb2  = (pmc -> index({b2})*scale).index({n2}).index({idx}).clone(); 
 
         // paras: met_x, met_y, mt1, mt2, mw1, mw2 = 6 -> 6 x 6
         torch::Tensor dnu_met =   metxy.index({_msk}).index({idx}).clone(); 
@@ -126,14 +126,13 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         torch::Tensor dnu_tw2 = mass_tw.index({_msk}).index({idx}).clone(); 
         torch::Tensor params  = torch::cat({metxy, mass_tw, mass_tw}, {-1}).index({_msk}).clone(); 
 
-        torch::Tensor dnu_tw = dnu_tw1.clone(); 
         torch::Tensor metsx  = dnu_met.clone(); 
         torch::Tensor ones   = torch::ones_like(dnu_tw1); 
 
-        torch::Tensor _nu1 = torch::zeros({lxb, sqp-1, 3}, MakeOp(pmc)); 
-        torch::Tensor _nu2 = torch::zeros({lxb, sqp-1, 3}, MakeOp(pmc)); 
-        torch::Tensor _chi = torch::zeros({lxb, 1}, MakeOp(pmc)); 
-        torch::Tensor _mtw = torch::cat({dnu_tw1, dnu_tw2}, {-1});
+        //torch::Tensor _nu1 = torch::zeros({lxb, sqp-1, 3}, MakeOp(pmc)); 
+        //torch::Tensor _nu2 = torch::zeros({lxb, sqp-1, 3}, MakeOp(pmc)); 
+        //torch::Tensor _chi = torch::zeros({lxb, 1}, MakeOp(pmc)); 
+        //torch::Tensor _mtw = torch::cat({dnu_tw1, dnu_tw2}, {-1});
 
         const unsigned long thx = (lx > 24) ? 24 : lx; 
 
@@ -143,8 +142,8 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         const dim3 thdJx = dim3(thx    , sqp-1       ); 
         const dim3 blkJx = blk_(lx, thx, sqp-1, sqp-1);
 
-        const dim3 thsx = dim3(7     , sqp-1       , 4   ); 
-        const dim3 bksx = blk_(lxb, 7, sqp-1, sqp-1, 4, 4);
+        //const dim3 thsx = dim3(7     , sqp-1       , 4   ); 
+        //const dim3 bksx = blk_(lxb, 7, sqp-1, sqp-1, 4, 4);
 
 
         long tmp_s = 0; 
@@ -161,16 +160,16 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
                 ); 
             });
 
-            nus = nusol_::NuNu(&_pmcb1, &_pmcb2, &_pmcl1, &_pmcl2, &metsx, 1e12, &dnu_tw1, &dnu_tw2, 1e-6, 1e-4, tmp_s);
-
-
+            nus = nusol_::NuNu(&_pmcb1, &_pmcb2, &_pmcl1, &_pmcl2, &metsx, 1e8, &dnu_tw1, &dnu_tw2, 1e-6, 1e-4, tmp_s);
             torch::Tensor dnu_res = nus["distances"];
-            torch::Tensor solx = ((dnu_res != 0).sum({-1})*nus["passed"] != 0);
-            bool nox = (solx.index({solx}).size({0})) == 0; 
+            torch::Tensor solx = (dnu_res != 0).sum({-1});
 
             torch::Tensor dnu_mass = torch::cat({dnu_tw1, dnu_tw2}, {-1}).index({idp}); 
             torch::Tensor dnu_avg  = torch::pow(1 - torch::abs(nus["mtw"].view({-1, 4}) - dnu_mass) / dnu_mass, 2).sum({-1}).view({-1, 6}); 
-            dnu_res = (dnu_avg + dnu_res).sum({-1}, true); 
+            dnu_res = (dnu_avg + dnu_res).sum({-1}, true) / (solx+1);
+
+            solx = (solx*nus["passed"] != 0);
+            bool nox = (solx.index({solx}).size({0})) == 0; 
 
             AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "minimize", [&]{
 //                _best_sols<7, 6><<<bksx, thsx>>>(
@@ -200,8 +199,8 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
 
             nus["distances"] += dnu_avg; 
             perturb = (nox) ? (0.5 - x%2)*(1 + rand() % 100)*tmp_p : perturb; 
-            if (!nox){continue;}
-            params = torch::cat({metsx, dnu_tw + ones*perturb, dnu_tw + ones*perturb}, {-1});
+            if (!nox){tmp_s = 0; continue;}
+            params = torch::cat({metsx, dnu_tw1 + ones*perturb, dnu_tw2 + ones*perturb}, {-1});
             if (tmp_s){break;}
             tmp_s = 100; 
         }
