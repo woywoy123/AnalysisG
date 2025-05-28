@@ -8,7 +8,6 @@ void analysis::initialize_loop(
         optimizer* op, int k, model_template* model, 
         optimizer_params_t* config, model_report** rep
 ){
-    ROOT::EnableImplicitMT(); 
     model_settings_t settings; 
     model -> clone_settings(&settings); 
 
@@ -26,7 +25,7 @@ void analysis::initialize_loop(
     int last_ep = 0; 
     mk -> epoch = 0; 
     mk -> kfold = k+1; 
-    for (int ep(0); ep < op -> m_settings.epochs; ++ep){
+    for (int ep(0); ep < op -> m_settings.epochs+1; ++ep){
          // check if the next epoch has a file i+2;
         std::string pth_ = pth + "state/epoch-" + std::to_string(ep+1) + "/";  
         pth_ += "kfold-" + std::to_string(k+1) + "_model.pt"; 

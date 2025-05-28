@@ -66,9 +66,7 @@ void optimizer::training_loop(int k, int epoch){
 
     mr -> current_lr = {}; 
     std::vector<torch::optim::OptimizerParamGroup> para = model -> m_optim -> param_groups(); 
-    for (size_t x(0); x < para.size(); ++x){
-        mr -> current_lr.push_back(para.at(x).options().get_lr()); 
-    }
+    for (size_t x(0); x < para.size(); ++x){mr -> current_lr.push_back(para.at(x).options().get_lr());}
     if (!batched){return;}
     this -> loader -> safe_delete(smpl);
 }
@@ -117,7 +115,7 @@ void optimizer::evaluation_loop(int k, int epoch){
 }
 
 void optimizer::launch_model(int k){
-    for (int ep(0); ep < this -> m_settings.epochs; ++ep){
+    for (int ep(0); ep < this -> m_settings.epochs+1; ++ep){
         model_template* model = this -> kfold_sessions[k]; 
         if (model -> epoch > ep){continue;}
         if (this -> m_settings.training){this -> training_loop(k, ep);}

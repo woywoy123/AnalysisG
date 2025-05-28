@@ -275,6 +275,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
 
     if (rep && (rep -> mode == "validation" || rep -> mode == "evaluation") && this -> batched_cache.count(k)){
         out = this -> batched_cache[k];
+        if (!out -> size()){return out;}
         if ((*out)[0] -> device_index[dev]){return out;}
     }
     else {out = new std::vector<graph_t*>(batched.size(), nullptr);}
@@ -387,8 +388,8 @@ void dataloader::cuda_memory_server(){
 }
 
 void dataloader::start_cuda_server(){
-    if (!_server){return;}
     if (this -> cuda_mem){return;}
+    if (!_server){return;}
     auto monitor = [this](){
         this -> info("Starting CUDA server!");
         while (this -> data_set){this -> cuda_memory_server();}

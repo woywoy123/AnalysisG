@@ -31,10 +31,9 @@ void analysis::build_graphs(){
 
 void analysis::build_dataloader(bool training){
     if (!this -> loader -> data_set -> size()){
-        this -> tracer -> populate_dataloader(this -> loader); 
+        this -> tracer -> populate_dataloader(this -> loader);
     }
     if (!training){return;}
-
     std::string path_data = this -> m_settings.training_dataset; 
     if (path_data.size() && !this -> loader -> restore_dataset(path_data)){
         this -> loader -> generate_test_set(this -> m_settings.train_size);

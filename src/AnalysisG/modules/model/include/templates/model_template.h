@@ -48,6 +48,9 @@ class model_template:
         std::string weight_name = "event_weight";
         std::string tree_name  = "nominal"; 
 
+        std::vector<torch::Tensor*> _losses = {};  
+        torch::optim::Optimizer* m_optim  = nullptr; 
+
         // target properties for each graph object: name - loss
         cproperty<
             std::map<std::string, std::string>, 
@@ -152,17 +155,15 @@ class model_template:
 
         lossfx*                  m_loss   = nullptr; 
         torch::TensorOptions*    m_option = nullptr; 
-        torch::optim::Optimizer* m_optim  = nullptr; 
         torch::Tensor*         edge_index = nullptr; 
         bool                    m_batched = false; 
         int                  m_device_idx = -2; 
 
-        opt_enum         e_optim = opt_enum::invalid_optimizer;  
         std::string      s_optim = ""; 
         std::string      m_name  = "model-template"; 
+        opt_enum         e_optim = opt_enum::invalid_optimizer;  
 
         std::vector<torch::nn::Sequential*> m_data = {};
-        std::vector<torch::Tensor*> _losses = {};  
 
         std::map<std::string, torch::Tensor*> m_i_graph = {}; 
         std::map<std::string, torch::Tensor*> m_i_node = {}; 

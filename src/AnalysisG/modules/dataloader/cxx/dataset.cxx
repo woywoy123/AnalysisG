@@ -11,7 +11,7 @@ std::vector<graph_t*> dataloader::get_random(int num){
 
 void dataloader::generate_kfold_set(int k){
     if (this -> k_fold_validation.size()){return;}
-    if (!this -> test_set -> size()){return;}
+    if (!this -> test_set -> size() && !this -> train_set -> size()){return;}
 
     bool all = false;
     for (int x(0); x < k; ++x){
@@ -39,7 +39,7 @@ void dataloader::generate_kfold_set(int k){
 }
 
 void dataloader::generate_test_set(float percentage){
-    if (this -> test_set -> size()){return;}
+    if (this -> test_set -> size() || this -> train_set -> size()){return;}
     this -> data_set    -> shrink_to_fit(); 
     this -> data_index  -> shrink_to_fit();   
 
@@ -138,7 +138,7 @@ void dataloader::dump_dataset(std::string path){
             folds_t kf = folds_t(); 
             kf.k = itr -> first;
             kf.is_train = true; 
-            graph_t* gr = (*this -> data_set)[(*itr -> second)[x]]; 
+            graph_t* gr = (*this -> data_set)[itr -> second -> at(x)]; 
             kf.hash = const_cast<char*>(gr -> hash -> data()); 
             data.push_back(kf); 
         }
@@ -151,7 +151,7 @@ void dataloader::dump_dataset(std::string path){
             folds_t kf = folds_t(); 
             kf.k = itr -> first;
             kf.is_valid = true; 
-            graph_t* gr = (*this -> data_set)[(*itr -> second)[x]]; 
+            graph_t* gr = (*this -> data_set)[itr -> second -> at(x)]; 
             kf.hash = const_cast<char*>(gr -> hash -> data()); 
             data.push_back(kf); 
         }
@@ -160,7 +160,7 @@ void dataloader::dump_dataset(std::string path){
     for (size_t x(0); x < this -> test_set -> size(); ++x){
         folds_t kf = folds_t(); 
         kf.is_eval = true; 
-        graph_t* gr = (*this -> data_set)[(*this -> test_set)[x]]; 
+        graph_t* gr = (*this -> data_set)[this -> test_set -> at(x)]; 
         kf.hash = const_cast<char*>(gr -> hash -> data()); 
         data.push_back(kf); 
     }
