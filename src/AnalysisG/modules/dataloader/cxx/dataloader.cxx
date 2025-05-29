@@ -357,11 +357,9 @@ void dataloader::cuda_memory_server(){
             ix = in_memory -> erase(++ix); 
         }
     }; 
-    
+
+    bool trig = false;     
     std::vector<graph_t*>* ptr = this -> data_set; 
-    #if _server
-    c10::cuda::CUDACachingAllocator::emptyCache();
-    #endif
     for (size_t x(0); x < ptr -> size(); ++x){
         graph_t* gr = (*ptr)[x];
         std::this_thread::sleep_for(std::chrono::microseconds(1));
@@ -371,6 +369,7 @@ void dataloader::cuda_memory_server(){
         for (; itx != gr -> device_index.end(); ++itx){
             int dev = itx -> first; 
             if (!cuda_memory(dev)){continue;}
+            trig = true; 
             if (gr -> in_use == 1){break;}
             check_m(&gr -> dev_data_graph  , true, dev); 
             check_m(&gr -> dev_data_node   , true, dev); 
@@ -385,6 +384,13 @@ void dataloader::cuda_memory_server(){
         }
         gr -> in_use = 1; 
     }
+
+    if (!trig){return;}
+    #if _server
+    c10::cuda::CUDACachingAllocator::emptyCache();
+    #endif
+
+
 }
 
 void dataloader::start_cuda_server(){
