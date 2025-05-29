@@ -30,7 +30,7 @@ grift::grift(){
             {"hxx_l1", torch::nn::Linear(this -> _xrec*4 + this -> _xout, this -> _hidden)}, 
             {"hxx_r1", torch::nn::SELU()},
             {"hxx_l2", torch::nn::Linear(this -> _hidden, this -> _xrec)}, 
-            {"hxx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"hxx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
             {"hxx_l3", torch::nn::Linear(this -> _xrec, this -> _xrec)}
     }); 
 
