@@ -12,7 +12,6 @@ grift::grift(){
             {"x_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"x_l2", torch::nn::Linear(this -> _hidden, this -> _xrec)}, 
             {"x_r2", torch::nn::SELU()},
-            {"x_d2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"x_l3", torch::nn::Linear(this -> _xrec, this -> _xrec)}
     }); 
 
@@ -21,7 +20,6 @@ grift::grift(){
             {"dx_l1", torch::nn::Linear(dxx_1, this -> _hidden)}, 
             {"dx_r1", torch::nn::ReLU()},
             {"dx_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
-            {"dx_d1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"dx_l2", torch::nn::Linear(this -> _hidden, this -> _xrec)}, 
             {"dx_r2", torch::nn::Sigmoid()},
             {"dx_l3", torch::nn::Linear(this -> _xrec, this -> _xrec)}
@@ -32,6 +30,7 @@ grift::grift(){
             {"hxx_r1", torch::nn::SELU()},
             {"hxx_l2", torch::nn::Linear(this -> _hidden, this -> _xrec)}, 
             {"hxx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
+            {"hxx_d2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"hxx_l3", torch::nn::Linear(this -> _xrec, this -> _xrec)}
     }); 
 
