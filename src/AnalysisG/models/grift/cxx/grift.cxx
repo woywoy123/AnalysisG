@@ -9,55 +9,55 @@ grift::grift(){
 
     this -> rnn_x = new torch::nn::Sequential({
             {"x_l1", torch::nn::Linear(this -> _xin + this -> _xrec, this -> _hidden)},
-            {"x_s2", torch::nn::SELU()},
-            {"x_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"x_s1", torch::nn::Tanh()},
             {"x_l2", torch::nn::Linear(this -> _hidden, this -> _xrec)}, 
-            {"x_t2", torch::nn::Tanh()},
+            {"x_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
             {"x_l3", torch::nn::Linear(this -> _xrec, this -> _xrec)}
     }); 
 
     int dxx_1 = (this -> _xin + this -> _xrec)*3; 
     this -> rnn_dx = new torch::nn::Sequential({
             {"dx_l1", torch::nn::Linear(dxx_1, this -> _hidden)}, 
-            {"dx_r1", torch::nn::ReLU()},
+            {"dx_s1", torch::nn::LeakyReLU()},
             {"dx_l2", torch::nn::Linear(this -> _hidden, this -> _xrec)}, 
-            {"dx_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
+            {"dx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
             {"dx_l3", torch::nn::Linear(this -> _xrec, this -> _xrec)}
     }); 
 
     this -> rnn_hxx = new torch::nn::Sequential({
             {"hxx_l1", torch::nn::Linear(this -> _xrec*4, this -> _hidden)}, 
-            {"hxx_r1", torch::nn::Tanh()},
+            {"hxx_r1", torch::nn::LeakyReLU()},
+            {"hxx_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"hxx_s1", torch::nn::Sigmoid()},
             {"hxx_l2", torch::nn::Linear(this -> _hidden, this -> _xrec)}, 
             {"hxx_r2", torch::nn::ReLU()},
-            {"hxx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
             {"hxx_l3", torch::nn::Linear(this -> _xrec, this -> _xrec)}
     }); 
 
     this -> rnn_txx = new torch::nn::Sequential({
             {"top_l1", torch::nn::Linear(this -> _xrec*4, this -> _xrec)}, 
-            {"top_s1", torch::nn::ReLU()},
-//            {"top_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
+            {"top_s1", torch::nn::LeakyReLU()},
+            {"top_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
             {"top_l2", torch::nn::Linear(this -> _xrec, this -> _xrec)}, 
-            {"top_t2", torch::nn::Sigmoid()},
+            {"top_t2", torch::nn::Tanh()},
             {"top_l3", torch::nn::Linear(this -> _xrec, this -> _xout)}
     }); 
 
     this -> rnn_rxx = new torch::nn::Sequential({
             {"res_l1", torch::nn::Linear(this -> _xrec*4, this -> _hidden)}, 
-            {"res_r1", torch::nn::ReLU()},
-//            {"res_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"res_r1", torch::nn::LeakyReLU()},
+            {"res_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"res_l2", torch::nn::Linear(this -> _hidden, this -> _xrec)}, 
-            {"res_s2", torch::nn::Sigmoid()},
+            {"res_t2", torch::nn::Tanh()},
             {"res_l3", torch::nn::Linear(this -> _xrec, this -> _xout)}
     }); 
 
     this -> mlp_ntop = new torch::nn::Sequential({
             {"ntop_l1", torch::nn::Linear(this -> _xtop + this -> _xrec, this -> _xrec)}, 
-            {"ntop_s1", torch::nn::ReLU()},
+            {"ntop_s1", torch::nn::LeakyReLU()},
             {"ntop_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
             {"ntop_l2", torch::nn::Linear(this -> _xrec, this -> _xtop)}, 
-            {"ntop_s2", torch::nn::Sigmoid()},
+            {"ntop_t2", torch::nn::Sigmoid()},
             {"ntop_l3", torch::nn::Linear(this -> _xtop, this -> _xtop)}
     }); 
 
