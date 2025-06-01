@@ -9,18 +9,6 @@ void m_res_edge(int* o, jet* t         ){*o *= t -> from_res;}
 void m_res_edge(int* o, electron* t    ){*o *= t -> from_res;}
 void m_res_edge(int* o, muon* t        ){*o *= t -> from_res;}
 
-void m_res_edge(int* o, neutrino* t, particle_template* ox){
-    std::map<std::string, particle_template*> mx1 = t  -> parents; 
-    if (mx1.count(std::string(ox -> hash))){return;}
-    std::map<std::string, particle_template*> mx2 = ox -> parents; 
-    std::map<std::string, particle_template*>::iterator itx = mx1.begin(); 
-    for (; itx != mx1.end(); ++itx){
-        if (!mx2.count(itx -> first)){continue;}
-        return;
-    }
-    *o = 0; 
-}
-
 void res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     particle_template* p1 = std::get<0>(*pij); 
     particle_template* p2 = std::get<1>(*pij); 
@@ -46,9 +34,6 @@ void res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
 
     if (type1 == "mu"){m_res_edge(o, (muon*)p1);}
     if (type2 == "mu"){m_res_edge(o, (muon*)p2);}
-
-    if (type1 == "nunu"){m_res_edge(o, (neutrino*)p1, p2);}
-    if (type2 == "nunu"){m_res_edge(o, (neutrino*)p2, p1);}
 }
 
 int m_top_edge(top* t){return t -> index;}
@@ -58,18 +43,6 @@ std::vector<int> m_top_edge(jet* t){return t -> top_index;}
 std::vector<int> m_top_edge(muon* t){return {t -> top_index};}
 std::vector<int> m_top_edge(electron* t){return {t -> top_index};}
 std::vector<int> m_top_edge(truthjet* t){return t -> top_index;}
-
-void m_top_edge(neutrino* nx, particle_template* otr, int* o){
-    std::map<std::string, particle_template*> mx1 = nx  -> parents; 
-    if (mx1.count(std::string(otr -> hash))){*o = 1; return;}
-    std::map<std::string, particle_template*> mx2 = otr -> parents; 
-    std::map<std::string, particle_template*>::iterator itx = mx1.begin(); 
-    for (; itx != mx1.end(); ++itx){
-        if (!mx2.count(itx -> first)){continue;}
-        *o = 1; return;
-    }
-    *o = 0; 
-}
 
 void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     particle_template* p1 = std::get<0>(*pij); 
@@ -85,7 +58,6 @@ void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     else if (type1 == "jet"      ){o1_ = m_top_edge((jet*)p1);}
     else if (type1 == "mu"       ){o1_ = m_top_edge((muon*)p1);}
     else if (type1 == "el"       ){o1_ = m_top_edge((electron*)p1);}
-    else if (type1 == "nunu"     ){m_top_edge((neutrino*)p1, p2, o); return;}
 
     std::vector<int> o2_ = {};
     if      (type2 == "top"      ){o2_.push_back(m_top_edge((top*)p2));}
@@ -94,7 +66,6 @@ void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     else if (type2 == "jet"      ){o2_ = m_top_edge((jet*)p2);}
     else if (type2 == "mu"       ){o2_ = m_top_edge((muon*)p2);}
     else if (type2 == "el"       ){o2_ = m_top_edge((electron*)p2);}
-    else if (type2 == "nunu"     ){m_top_edge((neutrino*)p2, p1, o); return;}
 
     *o = 0;  
     for (size_t x(0); x < o1_.size(); ++x){
@@ -125,9 +96,15 @@ void det_top_edge(int* o, std::tuple<particle_template*, particle_template*>* pi
     std::map<std::string, particle_template*> p2x = std::get<1>(*pij) -> children; 
 
     *o = 0; 
+    if (!p1x.size() || !p2x.size()){return;}
+//    std::cout << "-> (" << std::string(std::get<0>(*pij) -> type) << ") " << "-> (" << std::string(std::get<1>(*pij) -> type) << ") " << std::endl;
+//    std::cout << "+> (" << std::string(std::get<0>(*pij) -> hash) << ") " << "-> (" << std::string(std::get<1>(*pij) -> hash) << ") " << std::endl;
+//    std::cout << "=> (" << p1x.size() << ") " << "-> (" << p2x.size() << ") " << std::endl;
+//
     std::map<std::string, particle_template*>::iterator itp; 
     for (itp = p1x.begin(); itp != p1x.end(); ++itp){
         if (!p2x.count(itp -> first)){continue;}
+//        std::cout << itp -> first << " " << std::string(itp -> second -> type) << std::endl;
         *o = 1; return;
     }
 }

@@ -139,7 +139,7 @@ void metrics::add_th1f_loss(
     analytics_t* an = &this -> registry[kfold];  
     std::map<std::string, torch::Tensor>::iterator itx = type -> begin();
     for (; itx != type -> end(); ++itx){
-        (*lss_type)[itx -> first] -> Fill(an -> this_epoch, itx -> second.item<float>()/float(len));
+        (*lss_type)[itx -> first] -> Fill(an -> this_epoch, itx -> second.item<float>() / float(len));
     }
 }
 
@@ -221,8 +221,8 @@ void metrics::add_th1f_accuracy(torch::Tensor* pred, torch::Tensor* truth, TH1F*
     analytics_t* an = &this -> registry[kfold]; 
     torch::Tensor pred_  = std::get<1>(pred -> max({-1})).view({-1}); 
     torch::Tensor truth_ = truth -> view({-1});
-    torch::Tensor acc = (truth_ == pred_).sum({-1}).to(torch::kFloat)/float(pred_.size({-1})); 
-    hist -> Fill(an -> this_epoch, 100*acc.item<float>()/float(len));
+    torch::Tensor acc = 100*(truth_ == pred_).sum({-1}).to(torch::kDouble)/double(truth_.size(-1)); 
+    hist -> Fill(an -> this_epoch, acc.item<double>() / double(len));
 }
 
 

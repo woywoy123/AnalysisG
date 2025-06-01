@@ -1,5 +1,15 @@
 #include <vector_cast.h>
 
+bool _transfer(torch::Tensor* data, torch::Tensor* cpux){
+//    c10::cuda::CUDAStream strx = at::cuda::getStreamFromPool(false, data -> device().index()); 
+//    at::cuda::setCurrentCUDAStream(strx); 
+//    AT_CUDA_CHECK(cudaStreamSynchronize(strx)); 
+    cpux -> copy_(*data, true);
+    torch::cuda::synchronize(data -> device().index()); 
+    if (!cpux -> is_pinned()){return false;}
+    return true; 
+}
+
 std::vector<signed long> tensor_size(torch::Tensor* inpt){
     c10::IntArrayRef dims = inpt -> sizes();
     std::vector<signed long> out; 

@@ -18,7 +18,7 @@ target_link_libraries(cpyc PUBLIC
 
 if (CMAKE_ANALYSISG_CUDA)
 set_property(TARGET cpyc PROPERTY CUDA_SEPARATE_COMPILATION ON)
-target_compile_options(cpyc PUBLIC $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>)
+target_compile_options(cpyc PUBLIC $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr --default-stream-per-thread>)
 target_compile_definitions(cpyc PUBLIC PYC_CUDA ON)
 target_link_libraries(cpyc PUBLIC CUDA::cuda_driver)
 endif()

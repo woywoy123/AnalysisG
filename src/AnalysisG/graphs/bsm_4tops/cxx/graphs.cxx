@@ -337,103 +337,29 @@ graph_template* graph_detector::clone(){
 }
 
 bool graph_detector::PreSelection(){
-    auto vec = [](std::map<std::string, particle_template*>* p) -> std::vector<particle_template*>{
-        std::vector<particle_template*> out; 
-        std::map<std::string, particle_template*>::iterator it = p -> begin();
-        for (; it != p -> end(); ++it){out.push_back(it -> second);}
-        return out; 
-    }; 
-    auto merge_data = [](std::vector<particle_template*>* out, std::vector<particle_template*>* in){
-        for (size_t x(0); x < in -> size(); ++x){out -> push_back(in -> at(x));}
-    };
-
-    this -> nut.clear(); 
-    this -> tps.clear(); 
-    this -> nux.clear(); 
-
-    bsm_4tops* evn = this -> get_event<bsm_4tops>();
-    std::vector<particle_template*> dleps = {}; 
-    merge_data(&dleps, &evn -> Electrons); 
-    merge_data(&dleps, &evn -> Muons); 
-    for (size_t x(0); x < evn -> Tops.size(); ++x){
-        top* tpx = (top*)evn -> Tops[x]; 
-        std::map<std::string, particle_template*> chx = tpx -> children; 
-        std::vector<particle_template*> ch = vec(&chx); 
-
-        bool is_l = false;
-        particle_template* nx = nullptr; 
-        std::vector<particle_template*> jets_lepton = {}; 
-        for (size_t y(0); y < ch.size(); ++y){
-            if (!ch[y] -> is_nu){continue;}
-            jets_lepton.push_back(ch[y]);
-            is_l = true; nx = ch[y]; 
-        }
-        if (!is_l){continue;}
-        is_l = false; 
-        for (size_t y(0); y < tpx -> Jets.size(); ++y){jets_lepton.push_back(tpx -> Jets[y]);}
-        for (size_t c(0); c < dleps.size(); ++c){
-            std::map<std::string, particle_template*> pr = dleps[c] -> parents; 
-            bool lep_match = false; 
-            for (size_t j(0); j < ch.size(); ++j){
-                if (!pr.count(ch[j] -> hash)){continue;}
-                if (!ch[j] -> is_lep){continue;}
-                lep_match = true;
-                break; 
-            }
-            if (!lep_match || dleps[c] -> mass < 0){continue;}
-            jets_lepton.push_back(dleps[c]); 
-            is_l = true; 
-            break;
-        }
-
-        if (!is_l){continue;}
-        this -> nut[int(x)] = jets_lepton; 
-        particle_template* tmp = new particle_template(); 
-        for (size_t y(0); y < jets_lepton.size(); ++y){tmp -> iadd(jets_lepton[y]);}
-        this -> tps.push_back(tmp); 
-        this -> nux.push_back(nx); 
-    }
-
     std::vector<particle_template*> leptons; 
+    bsm_4tops* evn = this -> get_event<bsm_4tops>();
     for (size_t x(0); x < evn -> Electrons.size(); ++x){leptons.push_back(evn -> Electrons[x]);} 
     for (size_t x(0); x < evn -> Muons.size(); ++x){leptons.push_back(evn -> Muons[x]);} 
-    return this -> nux.size() == 2; 
+    if (leptons.size() != 2){return false;}
+    return true; 
 }
 
 void graph_detector::CompileEvent(){
     auto mutual =[this](neutrino* n1, neutrino* n2, std::map<std::string, particle_template*>* hash_mx) -> void {
-        if (!n1 && !n2){
-            if (hash_mx -> size() > 2 && hash_mx -> size() < 5){return;}
-            hash_mx -> clear(); 
-            return;
-        }
-
-        if (n1){
-            particle_template* b1 = n1 -> bquark; 
-            particle_template* l1 = n1 -> lepton; 
-            std::string hb1 = b1 -> hash; 
-            std::string hl1 = l1 -> hash; 
-            std::string hn1 = n1 -> hash;
-            if (hash_mx -> count(hb1) || hash_mx -> count(hl1)){(*hash_mx)[hn1] = n1;}
-        }
-
-        if (n2){
-            particle_template* b2 = n2 -> bquark; 
-            particle_template* l2 = n2 -> lepton; 
-            std::string hb2 = b2 -> hash; 
-            std::string hl2 = l2 -> hash; 
-            std::string hn2 = n2 -> hash;
-            if (hash_mx -> count(hb2) || hash_mx -> count(hl2)){(*hash_mx)[hn2] = n2;}
-        }
-
+        bool trig = false; 
+        if (n1 && hash_mx -> count(n1 -> lepton -> hash)){(*hash_mx)[n1 -> hash] = n1; trig = true;}
+        if (n2 && hash_mx -> count(n2 -> lepton -> hash)){(*hash_mx)[n2 -> hash] = n2; trig = true;}
+        if (hash_mx -> size() > 2 || trig){return;}
+        hash_mx -> clear(); 
     };
 
     auto assign =[this](std::map<std::string, particle_template*>* hash_mx, bool is_res, bool has_no_lnk) -> void {
+        if (has_no_lnk){return;}
         std::map<std::string, particle_template*>::iterator itx_ = hash_mx -> begin(); 
         for (; itx_ != hash_mx -> end(); ++itx_){
             std::map<std::string, particle_template*>::iterator _itx = hash_mx -> begin(); 
             for (; _itx != hash_mx -> end(); ++_itx){
-                if (has_no_lnk){return;}
                 if (is_res){_itx -> second -> register_parent(itx_ -> second);}
                 else {_itx -> second -> register_child(itx_ -> second);}
             }
@@ -441,40 +367,42 @@ void graph_detector::CompileEvent(){
     }; 
 
     std::string cu = "cuda:" + std::to_string(this -> threadIdx % this -> num_cuda);  
+
     bsm_4tops* event = this -> get_event<bsm_4tops>(); 
+    neutrino* nu1 = nullptr; neutrino* nu2 = nullptr;
+    std::vector<particle_template*> _nodes = event -> DetectorObjects; 
+    if ((event -> Muons.size() + event -> Electrons.size()) == 2){
+        std::pair<particle_template*, particle_template*> nux;
+        nux = this -> double_neutrino(_nodes, event -> met, event -> phi, cu, 172.62*1000.0, 80.385*1000.0, 5e-1, 1e-1, 100);
+        nu1 = (neutrino*)std::get<0>(nux); nu2 = (neutrino*)std::get<1>(nux); 
+    }
+
+    if (nu1){_nodes.push_back(nu1);}
+    if (nu2){_nodes.push_back(nu2);}
+
     std::map<int , std::map<std::string, particle_template*>> hash_map_top; 
     std::map<bool, std::map<std::string, particle_template*>> hash_map_res; 
-
     for (size_t x(0); x < event -> Muons.size(); ++x){
         muon* mx = (muon*)event -> Muons.at(x); 
+        hash_map_top[mx -> top_index][mx -> hash] = mx; 
+        hash_map_res[mx -> from_res][mx -> hash] = mx; 
         mx -> parents.clear(); mx -> children.clear(); 
-        hash_map_top[mx -> top_index][std::string(mx -> hash)] = mx; 
-        hash_map_res[mx -> from_res][std::string(mx -> hash)] = mx; 
     }
 
     for (size_t x(0); x < event -> Electrons.size(); ++x){
         electron* mx = (electron*)event -> Electrons.at(x); 
+        hash_map_top[mx -> top_index][mx -> hash] = mx; 
+        hash_map_res[mx -> from_res][mx -> hash] = mx; 
         mx -> parents.clear(); mx -> children.clear(); 
-        hash_map_top[mx -> top_index][std::string(mx -> hash)] = mx; 
-        hash_map_res[mx -> from_res][std::string(mx -> hash)] = mx; 
     }
 
     for (size_t x(0); x < event -> Jets.size(); ++x){
         jet* mx = (jet*)event -> Jets.at(x); 
-        for (size_t y(0); y < mx -> top_index.size(); ++y){
-            hash_map_top[mx -> top_index.at(y)][std::string(mx -> hash)] = mx; 
-        }
+        //if (mx -> top_index.size() > 1){continue;}
+        for (size_t y(0); y < mx -> top_index.size(); ++y){hash_map_top[mx -> top_index.at(y)][mx -> hash] = mx;}
+        hash_map_res[mx -> from_res][mx -> hash] = mx; 
         mx -> parents.clear(); mx -> children.clear(); 
-        hash_map_res[bool(mx -> from_res)][std::string(mx -> hash)] = mx; 
     }
-
-    std::vector<particle_template*> _nodes = event -> DetectorObjects; 
-    std::pair<particle_template*, particle_template*> nux;
-    nux = this -> double_neutrino(event -> DetectorObjects, event -> met, event -> phi, cu, 172.62*1000.0, 80.385*1000.0, 1e-1, 5e-1, 100);
-    neutrino* nu1 = (neutrino*)std::get<0>(nux); 
-    neutrino* nu2 = (neutrino*)std::get<1>(nux); 
-    if (nu1){_nodes.push_back(nu1);}
-    if (nu2){_nodes.push_back(nu2);}
 
     std::map<int, std::map<std::string, particle_template*>>::iterator itt = hash_map_top.begin();
     for (; itt != hash_map_top.end(); ++itt){mutual(nu1, nu2, &itt -> second);} 

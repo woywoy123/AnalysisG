@@ -1,6 +1,8 @@
 #include <metrics/metrics.h>
 #include <TRatioPlot.h>
 #include <THStack.h>
+#include <c10/cuda/CUDAStream.h>
+#include <c10/cuda/CUDAGuard.h>
 
 void metrics::dump_mass_plots(int k){
     std::string out_pth = this -> m_settings.output_path + "masses/"; 
@@ -64,6 +66,8 @@ void metrics::dump_mass_plots(int k){
         // truth histogram 
         TH1F* truth_ = ith -> second; 
         truth_ -> SetLineColor(kBlack); 
+        truth_ -> SetFillColor(kGray); 
+        truth_ -> SetFillColorAlpha(kGray, 0.8); 
         legend -> AddEntry(truth_); 
 
         TCanvas* can = new TCanvas();
@@ -73,8 +77,12 @@ void metrics::dump_mass_plots(int k){
         gStyle -> SetTitleOffset(1.25);
         gStyle -> SetTitleSize(0.025); 
         gStyle -> SetLabelSize(0.025, "XY"); 
-    
+
+        double dx = truth_ -> GetMaximum();
+        double di = h_sum -> GetMaximum(); 
+        h_sum -> SetMaximum(((dx > di) ? dx : di)*1.1); 
         TRatioPlot* rp = new TRatioPlot(h_sum, truth_, "diffsig");   
+
         rp -> Draw();
         h_sum -> GetXaxis() -> SetTitle("Invariant Mass (GeV)"); 
         h_sum -> GetXaxis() -> CenterTitle("Invariant Mass (GeV)"); 
@@ -143,39 +151,35 @@ void metrics::add_th1f_mass(
     analytics_t* an = &this -> registry[kfold]; 
     std::map<mode_enum, std::map<std::string, TH1F*>>* type_ = nullptr;
     torch::Tensor edge_index_ = edge_index -> to(torch::kLong); 
+    torch::Tensor pred_ = pred -> clone();
+    torch::Tensor pmc_  = pmc -> clone();  
 
-    torch::Dict<std::string, torch::Tensor> pred_mass = pyc::graph::edge_aggregation(edge_index_, *pred, *pmc); 
-    torch::Tensor pred_mass_cu = pyc::physics::cartesian::combined::M(pred_mass.at("cls::1::node-sum")); 
-
-    torch::Tensor truth_t = truth -> view({-1}); 
-    torch::Tensor truth_ = torch::zeros_like(*pred); 
-    for (signed int x(0); x < pred -> size({-1}); ++x){truth_.index_put_({truth_t == x, x}, 1);}
-    torch::Dict<std::string, torch::Tensor> truth_mass = pyc::graph::edge_aggregation(edge_index_, truth_, *pmc); 
-    torch::Tensor truth_mass_cu = pyc::physics::cartesian::combined::M(truth_mass.at("cls::1::node-sum")); 
-    truth_mass_cu.index_put_({((truth_mass.at("cls::1::node-indices") > -1).sum({-1}) == 1), 0}, 0); 
-
-    #ifdef PYC_CUDA
-    int dev_x = pred_mass_cu.device().index(); 
-    #endif 
-
-    pred_mass_cu  = pred_mass_cu.index({(pred_mass_cu > 0).view({-1})}); 
-    truth_mass_cu = truth_mass_cu.index({(truth_mass_cu > 0).view({-1})}); 
-
-    pred_mass_cu  = pred_mass_cu.view({-1}).to(torch::kCPU, true); 
-    truth_mass_cu = truth_mass_cu.view({-1}).to(torch::kCPU, true); 
-
-    #ifdef PYC_CUDA
-    torch::cuda::synchronize(dev_x); 
-    #endif
-
-    std::vector<double> v(pred_mass_cu.data_ptr<double>(), pred_mass_cu.data_ptr<double>() + pred_mass_cu.numel());
-    std::vector<double> t(truth_mass_cu.data_ptr<double>(), truth_mass_cu.data_ptr<double>() + truth_mass_cu.numel());
-
+    std::vector<double> v; 
+    torch::Dict<std::string, torch::Tensor> pred_mass = pyc::graph::edge_aggregation(edge_index_, pred_, pmc_); 
+    pred_mass = pyc::graph::unique_aggregation(pred_mass.at("cls::1::node-indices"), pmc_); 
+    torch::Tensor pred_mass_cu = pred_mass.at("node-sum").index({(pred_mass.at("unique") > -1).sum({-1}) > 1}); 
+    if (pred_mass_cu.size({0})){
+        pred_mass_cu = pyc::physics::cartesian::combined::M(pred_mass_cu); 
+        tensor_to_vector(&pred_mass_cu, &v); 
+    }
     type_ = &an -> pred_mass_edge; 
     for (size_t x(0); x < v.size(); ++x){(*type_)[mode][var_name] -> Fill(v[x]);} 
 
+
+    torch::Tensor truth_t = truth -> view({-1}); 
+    torch::Tensor truth_ = torch::zeros_like(pred_); 
+    for (signed int x(0); x < pred_.size({-1}); ++x){truth_.index_put_({truth_t == x, x}, 1);}
+
+    v.clear(); 
+    torch::Dict<std::string, torch::Tensor> truth_mass = pyc::graph::edge_aggregation(edge_index_, truth_, pmc_); 
+    truth_mass = pyc::graph::unique_aggregation(truth_mass.at("cls::1::node-indices"), pmc_); 
+    torch::Tensor truth_mass_cu = truth_mass.at("node-sum").index({(truth_mass.at("unique") > -1).sum({-1}) > 1}); 
+    if (truth_mass_cu.size({0})){
+        truth_mass_cu = pyc::physics::cartesian::combined::M(truth_mass_cu);
+        tensor_to_vector(&truth_mass_cu, &v); 
+    }
     type_ = &an -> truth_mass_edge; 
-    for (size_t x(0); x < t.size(); ++x){(*type_)[mode][var_name] -> Fill(t[x]);} 
+    for (size_t x(0); x < v.size(); ++x){(*type_)[mode][var_name] -> Fill(v[x]);} 
 } 
 
 

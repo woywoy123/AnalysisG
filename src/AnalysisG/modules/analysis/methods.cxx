@@ -4,6 +4,7 @@
 #include <TFile.h>
 #include <TTree.h>
 
+
 void analysis::initialize_loop(
         optimizer* op, int k, model_template* model, 
         optimizer_params_t* config, model_report** rep
@@ -12,7 +13,7 @@ void analysis::initialize_loop(
     model -> clone_settings(&settings); 
 
     #ifdef PYC_CUDA
-    c10::cuda::set_device(model -> m_option -> device().index()); 
+    c10::cuda::SetDevice(model -> m_option -> device().index()); 
     #endif 
     
     model_template* mk = model -> clone(); 

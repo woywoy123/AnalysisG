@@ -76,7 +76,7 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::combinatorial(
         long bl = x; 
         for (size_t y(0); y < quarks[x].size(); ++y){
             particle_template* bq = quarks[x][y]; 
-            if (bq -> is_nu || bq -> is_lep){continue;}
+            if (!bq -> is_b){continue;}
             index.push_back(long(y)); 
             isl_.push_back(long(0)); 
             isb_.push_back(long(1)); 

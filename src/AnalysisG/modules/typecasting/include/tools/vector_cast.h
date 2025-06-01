@@ -2,11 +2,15 @@
 #define TYPECASTING_VECTOR_CAST_H
 
 #include <c10/core/DeviceType.h>
+#include <c10/cuda/CUDAStream.h>
+#include <ATen/cuda/CUDAContext.h>
 #include <structs/meta.h>
 #include <structs/base.h>
 #include <torch/torch.h>
 #include <TTree.h>
 #include <vector>
+
+bool _transfer(torch::Tensor* data, torch::Tensor* cpux); 
 
 template <typename G>
 std::vector<std::vector<G>> chunking(std::vector<G>* v, int N){
@@ -36,18 +40,15 @@ void tensor_vector(std::vector<G>* trgt, std::vector<g>* chnks, std::vector<sign
     }
 }
 
+
 template <typename G, typename g>
-void tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<signed long>* dims, g){
+bool tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<signed long>* dims, g){
     torch::Tensor cpux = torch::empty(data -> sizes(), torch::device(torch::kCPU).pinned_memory(true).dtype(data -> dtype())); 
-    if (!cpux.is_pinned()){
-        abort(); 
-        std::cout << *data << std::endl;
-    }
-    cpux.copy_(*data, true);
-    torch::cuda::synchronize(data -> device().index()); 
+    if (!_transfer(data, &cpux)){return false;}
     cpux = cpux.reshape({-1}); 
     typename std::vector<g> linear(static_cast<g*>(cpux.data_ptr()), static_cast<g*>(cpux.data_ptr()) + cpux.numel()); 
     tensor_vector(out, &linear, dims, dims -> size()-1); 
+    return true; 
 }
 
 std::vector<signed long> tensor_size(torch::Tensor* inpt);

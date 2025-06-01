@@ -92,6 +92,15 @@ std::pair<particle_template*, particle_template*> graph_template::double_neutrin
         std::vector<particle_template*> particles, double met, double phi, std::string device, 
         double top_mass, double wboson_mass, double distance, double perturb, long steps
 ){
+
+    auto lamb = [this](std::vector<particle_template*> pbx) -> double {
+        particle_template* p1 = new particle_template();
+        for (size_t x(0); x < pbx.size(); ++x){p1 -> iadd(pbx[x]);}
+        double mx = p1 -> mass; 
+        delete p1; 
+        return mx;  
+    };
+
     if (!particles.size()){return {nullptr, nullptr};}
     std::vector<std::pair<neutrino*, neutrino*>> nux; 
     std::vector<double> metv = std::vector<double>({met}); 
@@ -103,7 +112,7 @@ std::pair<particle_template*, particle_template*> graph_template::double_neutrin
     #endif
 
     if (!nux.size()){return {nullptr, nullptr};}
-    double val1(0), val2(0); 
+    double val1(0), val2(0), vcm(0); 
     particle_template* n1 = nullptr; 
     particle_template* n2 = nullptr; 
     for (size_t x(0); x < nux.size(); ++x){
@@ -112,31 +121,29 @@ std::pair<particle_template*, particle_template*> graph_template::double_neutrin
         this -> garbage.push_back(nu1); 
         this -> garbage.push_back(nu2); 
 
-        for (size_t i(0); i < nu1 -> alternatives.size(); ++i){
-            neutrino* nut1 = nu1 -> alternatives[i]; 
-            neutrino* nut2 = nu2 -> alternatives[i]; 
+        std::vector<neutrino*> v1 = nu1 -> alternatives; 
+        std::vector<neutrino*> v2 = nu2 -> alternatives; 
 
-            particle_template* p1 = new particle_template();
-            p1 -> iadd(nut1);
-            p1 -> iadd(nut1 -> lepton); 
-            double w1 = p1 -> mass; 
-            p1 -> iadd(nut1 -> bquark); 
-            double t1 = p1 -> mass; 
+        v1.push_back(nu1); 
+        v2.push_back(nu2); 
 
-            particle_template* p2 = new particle_template();
-            p2 -> iadd(nut2);
-            p2 -> iadd(nut2 -> lepton); 
-            double w2 = p2 -> mass; 
-            p2 -> iadd(nut2 -> bquark); 
-            double t2 = p1 -> mass; 
-            delete p1; delete p2; 
+        for (size_t i(0); i < v1.size(); ++i){
+            neutrino* nut1 = v1[i]; 
+            neutrino* nut2 = v2[i]; 
 
-            double mx1 = std::pow((t1 - top_mass) / top_mass, 2) + std::pow((w1 - wboson_mass) / wboson_mass, 2);
-            double mx2 = std::pow((t2 - top_mass) / top_mass, 2) + std::pow((w2 - wboson_mass) / wboson_mass, 2); 
-            if (!n1){n1 = nut1; val1 = mx1;}
-            if (!n2){n2 = nut2; val2 = mx2;}
-            if (mx1 < val1){val1 = mx1; n1 = nut1;}
-            if (mx2 < val2){val2 = mx2; n2 = nut2;}
+            double w1  = lamb({nut1, nut1 -> lepton}); 
+            double t1  = lamb({nut1, nut1 -> lepton, nut1 -> bquark}); 
+            double mx1 = std::pow(std::pow((t1 - top_mass) / top_mass, 2) + std::pow((w1 - wboson_mass) / wboson_mass, 2), 0.5);
+
+            double w2  = lamb({nut2, nut2 -> lepton}); 
+            double t2  = lamb({nut2, nut2 -> lepton, nut2 -> bquark}); 
+            double mx2 = std::pow(std::pow((t2 - top_mass) / top_mass, 2) + std::pow((w2 - wboson_mass) / wboson_mass, 2), 0.5); 
+
+            if (!n1){n1 = nut1; val1 = mx1; vcm = mx1 + mx2;}
+            if (!n2){n2 = nut2; val2 = mx2; vcm = mx1 + mx2;}
+            if (vcm < (mx1 + mx2)){continue;}
+            val1 = mx1; n1 = nut1;
+            val2 = mx2; n2 = nut2;
         }
     }
     if (val1 > distance){n1 = nullptr;}
