@@ -66,6 +66,7 @@ std::vector<particle_template*> metric_template::make_particle(
         px -> phi   = phi -> at(x)[0]; 
         px -> e     = energy -> at(x)[0]; 
         px -> _is_marked = true; 
+        this -> garbage[px -> hash].push_back(px); 
         ptx[x] = px; 
     }    
     return ptx; 
