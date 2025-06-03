@@ -43,6 +43,8 @@ class model_template:
         bool is_mc = false; 
         bool use_pkl = false; 
         bool inference_mode = false; 
+        bool enable_anomaly = false; 
+        bool retain_graph   = false; 
 
         std::string model_checkpoint_path = ""; 
         std::string weight_name = "event_weight";

@@ -29,6 +29,7 @@ torch::Tensor* model_template::compute_loss(std::string pred, graph_enum feat){
 
 void model_template::train_sequence(bool train){
     if (this -> inference_mode){return;}
+    if (this -> enable_anomaly){torch::autograd::AnomalyMode::set_enabled(true);}
 
     std::map<std::string, std::string> gr = this -> o_graph; 
     std::map<std::string, std::string> nd = this -> o_node; 
@@ -45,14 +46,22 @@ void model_template::train_sequence(bool train){
 
     inx = -1; 
     torch::Tensor lss;
-    for (size_t x(0); x < this -> _losses.size(); ++x){
+    size_t lx = this -> _losses.size();
+    for (size_t x(0); x < lx; ++x){
         if (!this -> _losses[x]){continue;}
+        if (this -> retain_graph){
+            if (x < lx-1){this -> _losses[x] -> backward({}, c10::optional<bool>(true), true);}
+            else {this -> _losses[x] -> backward();}
+        }
         if (inx == -1){lss = *this -> _losses[x]; inx = x;}
         else {lss += *this -> _losses[x];} 
         this -> _losses[x] = nullptr; 
     }
-    lss.backward(); 
+    if (!this -> retain_graph){lss.backward();}
     this -> m_optim -> step();
+    if (lss.index({torch::isnan(lss) == false}).size({0})){return;}
+    this -> failure("Found NAN in loss. Aborting");
+    abort(); 
 }
 
 
