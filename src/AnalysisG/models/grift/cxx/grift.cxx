@@ -203,7 +203,7 @@ void grift::forward(graph_t* data){
         // ------ walk to the next node (nxt) ------- //
         const int ix = edge_index_.size({1}); 
         edge_index_ = edge_index_.index({torch::indexing::Slice(), msk});  
-        if (ix != edge_index_.size({1})){continue;}
+        if (ix > edge_index_.size({1})){continue;}
         break;
     }
 
