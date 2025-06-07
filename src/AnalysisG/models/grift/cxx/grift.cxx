@@ -78,13 +78,13 @@ grift::grift(){
 
     }); 
 
-    this -> register_module(this -> rnn_x   ); //, mlp_init::xavier_uniform);
-    this -> register_module(this -> rnn_dx  ); //, mlp_init::xavier_uniform);
-    this -> register_module(this -> rnn_hxx ); //, mlp_init::xavier_uniform); 
-    this -> register_module(this -> rnn_txx ); //, mlp_init::xavier_uniform);
-    this -> register_module(this -> rnn_rxx ); //, mlp_init::xavier_uniform);
-    this -> register_module(this -> mlp_ntop); //, mlp_init::xavier_uniform);
-    this -> register_module(this -> mlp_sig ); //, mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_x   , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_dx  , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_hxx , mlp_init::xavier_uniform); 
+    this -> register_module(this -> rnn_txx , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_rxx , mlp_init::xavier_uniform);
+    this -> register_module(this -> mlp_ntop, mlp_init::xavier_uniform);
+    this -> register_module(this -> mlp_sig , mlp_init::xavier_uniform);
 }
 
 torch::Tensor grift::node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn){
@@ -181,10 +181,10 @@ void grift::forward(graph_t* data){
         // ------------------ loop states ------------------------ //
         // ------------------ create a new message --------------------- //
         torch::Tensor dx_ij = this -> message(node_i_.index({src_}), node_j_.index({idx}), pmc, &hx_i, &hx_j); 
-//        torch::Tensor hp_ij = (*this -> rnn_hxx) -> forward(torch::cat({dx_ij, rnn_i.index({idx}) - edge_rnn.index({idx}), hx_j - hx_i}, {-1})); 
+        torch::Tensor hp_ij = (*this -> rnn_hxx) -> forward(torch::cat({dx_ij, rnn_i.index({idx}) - edge_rnn.index({idx}), hx_j - hx_i}, {-1})); 
 
         // ----- update the top_edge prediction weights by index ------- //
-        edge_rnn.index_put_({idx}, dx_ij); 
+        edge_rnn.index_put_({idx}, hp_ij); 
         top_edge = (*this -> rnn_txx) -> forward(edge_rnn);
 
         // ---- check if the new prediction is simply null ---- /
@@ -220,9 +220,6 @@ void grift::forward(graph_t* data){
         node_j_ = -torch::ones_like(node_j_).view({-1}); 
         node_j_.index_put_({msk == false}, dst.index({msk == false})); 
         node_j_ = node_j_.view({-1, 1}); 
-
-
-
     }
     top_edge = (*this -> rnn_txx) -> forward(edge_rnn);
 
