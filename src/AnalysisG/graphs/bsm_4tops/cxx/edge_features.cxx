@@ -43,6 +43,7 @@ std::vector<int> m_top_edge(jet* t){return t -> top_index;}
 std::vector<int> m_top_edge(muon* t){return {t -> top_index};}
 std::vector<int> m_top_edge(electron* t){return {t -> top_index};}
 std::vector<int> m_top_edge(truthjet* t){return t -> top_index;}
+std::vector<int> m_top_edge(neutrino* t){return {t -> index};}
 
 void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     particle_template* p1 = std::get<0>(*pij); 
@@ -58,6 +59,7 @@ void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     else if (type1 == "jet"      ){o1_ = m_top_edge((jet*)p1);}
     else if (type1 == "mu"       ){o1_ = m_top_edge((muon*)p1);}
     else if (type1 == "el"       ){o1_ = m_top_edge((electron*)p1);}
+    else if (type1 == "nunu"     ){o1_ = m_top_edge((neutrino*)p1);}
 
     std::vector<int> o2_ = {};
     if      (type2 == "top"      ){o2_.push_back(m_top_edge((top*)p2));}
@@ -66,6 +68,7 @@ void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     else if (type2 == "jet"      ){o2_ = m_top_edge((jet*)p2);}
     else if (type2 == "mu"       ){o2_ = m_top_edge((muon*)p2);}
     else if (type2 == "el"       ){o2_ = m_top_edge((electron*)p2);}
+    else if (type1 == "nunu"     ){o2_ = m_top_edge((neutrino*)p2);}
 
     *o = 0;  
     for (size_t x(0); x < o1_.size(); ++x){
@@ -97,14 +100,9 @@ void det_top_edge(int* o, std::tuple<particle_template*, particle_template*>* pi
 
     *o = 0; 
     if (!p1x.size() || !p2x.size()){return;}
-//    std::cout << "-> (" << std::string(std::get<0>(*pij) -> type) << ") " << "-> (" << std::string(std::get<1>(*pij) -> type) << ") " << std::endl;
-//    std::cout << "+> (" << std::string(std::get<0>(*pij) -> hash) << ") " << "-> (" << std::string(std::get<1>(*pij) -> hash) << ") " << std::endl;
-//    std::cout << "=> (" << p1x.size() << ") " << "-> (" << p2x.size() << ") " << std::endl;
-//
     std::map<std::string, particle_template*>::iterator itp; 
     for (itp = p1x.begin(); itp != p1x.end(); ++itp){
         if (!p2x.count(itp -> first)){continue;}
-//        std::cout << itp -> first << " " << std::string(itp -> second -> type) << std::endl;
         *o = 1; return;
     }
 }

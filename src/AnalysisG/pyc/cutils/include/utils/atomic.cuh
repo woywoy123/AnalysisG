@@ -34,12 +34,12 @@ __device__ scalar_t _clp(scalar_t p){
 
 template <typename scalar_t>
 __device__ scalar_t _sqrt(scalar_t* p){
-    return (signbit(*p) || _clp(*p) < 0.0) ? sqrt(abs(*p)) : sqrt(*p);
+    return (signbit(*p) || _clp(*p) < 0.0) ? -sqrt(abs(*p)) : sqrt(*p);
 }
 
 template <typename scalar_t>
 __device__ scalar_t _sqrt(scalar_t p){
-    return (signbit(p) || _clp(p) < 0.0) ? sqrt(abs(p)) : sqrt(p);
+    return (signbit(p) || _clp(p) < 0.0) ? -sqrt(abs(p)) : sqrt(p);
 }
 
 template <typename scalar_t>

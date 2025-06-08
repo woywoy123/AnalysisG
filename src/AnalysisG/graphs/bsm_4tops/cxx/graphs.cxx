@@ -346,12 +346,23 @@ bool graph_detector::PreSelection(){
 }
 
 void graph_detector::CompileEvent(){
-    auto mutual =[this](neutrino* n1, neutrino* n2, std::map<std::string, particle_template*>* hash_mx) -> void {
+    auto mutual =[this](neutrino* n1, neutrino* n2, std::map<std::string, particle_template*>* hash_mx, int top_index) -> void {
         bool trig = false; 
-        if (n1 && hash_mx -> count(n1 -> lepton -> hash)){(*hash_mx)[n1 -> hash] = n1; trig = true;}
-        if (n2 && hash_mx -> count(n2 -> lepton -> hash)){(*hash_mx)[n2 -> hash] = n2; trig = true;}
-        if (hash_mx -> size() > 2 || trig){return;}
-        hash_mx -> clear(); 
+        if (n1 && (hash_mx -> count(n1 -> lepton -> hash) || hash_mx -> count(n1 -> bquark -> hash))){(*hash_mx)[n1 -> hash] = n1; trig = true;}
+        if (n2 && (hash_mx -> count(n2 -> lepton -> hash) || hash_mx -> count(n2 -> bquark -> hash))){(*hash_mx)[n2 -> hash] = n2; trig = true;}
+        if (hash_mx -> size() > 2){return;}
+        if (!trig){
+            std::map<std::string, particle_template*>::iterator itr = hash_mx -> begin();
+            for (; itr != hash_mx -> end(); ++itr){
+                std::string type = itr -> second -> type; 
+                if      (type == "jet"){     ((jet*)itr -> second) -> top_index = {-1};}
+                else if (type == "mu" ){    ((muon*)itr -> second) -> top_index = -1;  }
+                else if (type == "el" ){((electron*)itr -> second) -> top_index = -1;  }
+            }
+            hash_mx -> clear(); return;
+        }
+        if (n1 && hash_mx -> count(n1 -> hash)){n1 -> index = top_index;}
+        if (n2 && hash_mx -> count(n2 -> hash)){n2 -> index = top_index;}
     };
 
     auto assign =[this](std::map<std::string, particle_template*>* hash_mx, bool is_res, bool has_no_lnk) -> void {
@@ -377,8 +388,8 @@ void graph_detector::CompileEvent(){
         nu1 = (neutrino*)std::get<0>(nux); nu2 = (neutrino*)std::get<1>(nux); 
     }
 
-    if (nu1){_nodes.push_back(nu1);}
-    if (nu2){_nodes.push_back(nu2);}
+    if (nu1){_nodes.push_back(nu1); nu1 -> index = -1;}
+    if (nu2){_nodes.push_back(nu2); nu2 -> index = -1;}
 
     std::map<int , std::map<std::string, particle_template*>> hash_map_top; 
     std::map<bool, std::map<std::string, particle_template*>> hash_map_res; 
@@ -398,18 +409,17 @@ void graph_detector::CompileEvent(){
 
     for (size_t x(0); x < event -> Jets.size(); ++x){
         jet* mx = (jet*)event -> Jets.at(x); 
-        //if (mx -> top_index.size() > 1){continue;}
         for (size_t y(0); y < mx -> top_index.size(); ++y){hash_map_top[mx -> top_index.at(y)][mx -> hash] = mx;}
         hash_map_res[mx -> from_res][mx -> hash] = mx; 
         mx -> parents.clear(); mx -> children.clear(); 
     }
 
     std::map<int, std::map<std::string, particle_template*>>::iterator itt = hash_map_top.begin();
-    for (; itt != hash_map_top.end(); ++itt){mutual(nu1, nu2, &itt -> second);} 
-    for (itt = hash_map_top.begin(); itt != hash_map_top.end(); ++itt){assign(&itt -> second, false, itt -> first < 0);} 
+    for (; itt != hash_map_top.end(); ++itt){mutual(nu1, nu2, &itt -> second, itt -> first);} 
+    //for (itt = hash_map_top.begin(); itt != hash_map_top.end(); ++itt){assign(&itt -> second, false, itt -> first < 0);} 
 
     std::map<bool, std::map<std::string, particle_template*>>::iterator itr = hash_map_res.begin();
-    for (; itr != hash_map_res.end(); ++itr){mutual(nu1, nu2, &itr -> second);} 
+    for (; itr != hash_map_res.end(); ++itr){mutual(nu1, nu2, &itr -> second, itt -> first);} 
     for (itr = hash_map_res.begin(); itr != hash_map_res.end(); ++itr){assign(&itr -> second, true, !itr -> first);} 
 
     this -> define_particle_nodes(&_nodes); 
@@ -421,7 +431,7 @@ void graph_detector::CompileEvent(){
     this -> add_graph_truth_feature<int , bsm_4tops>(event, num_tops    , "ntops"); 
 
     this -> add_edge_truth_feature<int, particle_template>(det_res_edge, "res_edge"); 
-    this -> add_edge_truth_feature<int, particle_template>(det_top_edge, "top_edge"); 
+    this -> add_edge_truth_feature<int, particle_template>(top_edge, "top_edge"); 
 
     // ---------------- data -------------------- //
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et  , "met"); 
