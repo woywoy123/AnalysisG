@@ -150,7 +150,7 @@ __global__ void _intersections(
     double dist = v2*v2 + v1*v1; 
     msk *= dist != 0; 
     dist = log10(dist*msk + !msk) - 16.0; 
-    msk *= dist < log10(nulls); 
+    //msk *= dist < log10(nulls); 
     dist = msk*dist;
 
     double vt = _div(_real[idx][idt][idv][2]); 
@@ -164,7 +164,7 @@ __global__ void _intersections(
     for (unsigned int y(0); y < 27; ++y){
         int vx_ = _ptsx[idx][y][0] * vx; 
         int vy_ = _ptsx[idx][y][1] * vy;
-        if ((vx_ == 0 || vy_ == 0) || !(abs(vx_ - vy_) < 5)){continue;}
+        if ((vx_ == 0 || vy_ == 0)){continue;} // || !(abs(vx_ - vy_) < 5)){continue;}
         msk *= (_ptsx[idx][y][3] >= dist);
     }
     _line[idx][idy][idz] = _ptsx[idx][idy][idz]*msk*abs(vt);

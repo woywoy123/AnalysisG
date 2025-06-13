@@ -45,11 +45,11 @@ __global__ void _hmatrix_debug(
 
     nusol sl = nusol(); 
     sl.cos = cosine[_idx][0]; 
-    sl.betas[0] = b2l[_idx][0]; 
-    sl.pmass[0] = m2l[_idx][0]; 
+    sl.betas[0] = abs(b2l[_idx][0]); 
+    sl.pmass[0] = abs(m2l[_idx][0]); 
 
-    sl.betas[1] = b2b[_idx][0]; 
-    sl.pmass[1] = m2b[_idx][0]; 
+    sl.betas[1] = abs(b2b[_idx][0]); 
+    sl.pmass[1] = abs(m2b[_idx][0]); 
     for (size_t x(0); x < 4; ++x){
         sl.pmu_b[x] = pmc_b[_idx][x];
         sl.pmu_l[x] = pmc_l[_idx][x];
@@ -196,11 +196,11 @@ __global__ void _hmatrix(
 
     nusol sl = nusol(); 
     sl.cos = cosine[_ikx][0]; 
-    sl.betas[0] = b2l[_ikx][0]; 
-    sl.pmass[0] = m2l[_ikx][0]; 
+    sl.betas[0] = abs(b2l[_ikx][0]); 
+    sl.pmass[0] = abs(m2l[_ikx][0]); 
 
-    sl.betas[1] = b2b[_ikx][0]; 
-    sl.pmass[1] = m2b[_ikx][0]; 
+    sl.betas[1] = abs(b2b[_ikx][0]); 
+    sl.pmass[1] = abs(m2b[_ikx][0]); 
     for (size_t x(0); x < 4; ++x){
         sl.pmu_b[x] = pmc_b[_ikx][x];
         sl.pmu_l[x] = pmc_l[_ikx][x];
@@ -301,11 +301,11 @@ __global__ void _hmatrix(
 
     nusol sl = nusol(); 
     sl.cos = cosine[_idx][0]; 
-    sl.betas[0] = b2l[_idx][0]; 
-    sl.pmass[0] = m2l[_idx][0]; 
+    sl.betas[0] = abs(b2l[_idx][0]); 
+    sl.pmass[0] = abs(m2l[_idx][0]); 
 
-    sl.betas[1] = b2b[_idx][0]; 
-    sl.pmass[1] = m2b[_idx][0]; 
+    sl.betas[1] = abs(b2b[_idx][0]); 
+    sl.pmass[1] = abs(m2b[_idx][0]); 
     sl.masses[0] = mass_T; 
     sl.masses[1] = mass_W; 
     sl.masses[2] = mass_nu; 

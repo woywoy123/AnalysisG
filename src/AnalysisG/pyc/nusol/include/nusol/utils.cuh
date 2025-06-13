@@ -1,6 +1,9 @@
 #ifndef CU_NUSOL_UTILS_H
 #define CU_NUSOL_UTILS_H
 #include <utils/atomic.cuh>
+#include <curand_kernel.h>
+#include <curand.h>
+#include <math.h>
 
 template <typename scalar_t>
 __global__ void _count(
@@ -99,44 +102,6 @@ __global__ void _combination(
     msk[__idx] = lx*num_l; 
 }
 
-__global__ void _mass_matrix(
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> mass_,
-        double mTl, double mTs, double mWl, double mWs, unsigned int steps
-){
-    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    if (steps <= _idx){return;}
-    double lw = mWl*threadIdx.y + mTl*(1 - threadIdx.y); 
-    double dx = mWs*threadIdx.y + mTs*(1 - threadIdx.y);
-    mass_[_idx][threadIdx.y] = lw + mass_[_idx][threadIdx.y]*dx*_idx; 
-}
-
-
-template <size_t size_x>
-__global__ void _perturbation(
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_tw1,
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_tw2,
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_met,
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_res,
-        const double perturb, const double top_mass, 
-        const double w_mass, const bool start
-){
-    __shared__ double _dnu_res[size_x][36][6]; 
-    __shared__ double _dnu_par[size_x][36][6]; 
-
-    const unsigned int idx  = threadIdx.x;
-    const unsigned int idy  = threadIdx.y; 
-    const unsigned int idz  = threadIdx.z;  
-    const unsigned int _idx = (blockIdx.x * blockDim.x + threadIdx.x)*36 + idy; 
-    if (_idx >= dnu_res.size({0})){return;}
-
-    if (idz < 2){     _dnu_par[idx][idy][idz] = dnu_tw1[_idx][idz] * top_mass;}
-    else if (idz < 4){_dnu_par[idx][idy][idz] = dnu_tw2[_idx][idz] * w_mass;}
-    else if (idz < 6){_dnu_par[idx][idy][idz] = dnu_met[_idx][idz];}
-    _dnu_res[idx][idy][idz] = dnu_res[_idx][idz]; 
-    __syncthreads();
-
-}
-
 __global__ void _assign_mass(
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> mass_tw,
         const double mass_t, const double mass_w, const long lenx
@@ -147,7 +112,7 @@ __global__ void _assign_mass(
     mass_tw[_idx][threadIdx.y] = mass_t * (1 - _idy) + mass_w*_idy; 
 }
 
-template <size_t size_x>
+template <size_t size_x, size_t size_y>
 __global__ void _perturb(
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu_params,
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_met,
@@ -155,7 +120,7 @@ __global__ void _perturb(
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_tw2,
         const unsigned long lnx, const double dt, const unsigned int ofs
 ){
-    __shared__ double _params_[size_x][6]; 
+    __shared__ double _params_[size_x][size_y]; 
 
     const unsigned int _idx = threadIdx.x; 
     const unsigned int _idy = threadIdx.y; 
@@ -166,41 +131,47 @@ __global__ void _perturb(
     if (!_idy){_params_[_idx][_idz] = nu_params[idx][_idz];}
     __syncthreads(); 
 
-    double dx_ = _params_[_idx][_idz] + (_idy == _idz) * dt; 
-    if (_idz < 2){dnu_met[_idt][_idz  ] = dx_; return;}
-    if (_idz < 4){dnu_tw1[_idt][_idz-2] = dx_; return;}
-    if (_idz < 6){dnu_tw2[_idt][_idz-4] = dx_; return;}
+    double dx_ = _params_[_idx][_idz] + (_idy == _idz+1) * dt; 
+    if (_idz < 3){dnu_met[_idt][_idz  ] = dx_; return;}
+    if (_idz < 5){dnu_tw1[_idt][_idz-3] = dx_; return;}
+    if (_idz < 7){dnu_tw2[_idt][_idz-5] = dx_; return;}
 }
 
-template <size_t size_x>
+template <size_t size_x, size_t size_y>
 __global__ void _jacobi(
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu_params,
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_res,
-        const unsigned long lnx, const double dt, unsigned int ofs
+        const unsigned long lnx, const double dt, unsigned int ofs, const unsigned long _x
 ){
-    __shared__ double _param_[size_x][6]; 
-    __shared__ double   _Jxt_[size_x][6]; 
+    __shared__ double _Jxt_[size_x][size_y]; 
+    __shared__ curandState rnax[size_x*size_y]; 
 
-    const int _idy = threadIdx.y; 
     const unsigned int _idx = threadIdx.x; 
-    const unsigned int _idp = blockIdx.x * blockDim.x + _idx; 
-    const unsigned int idx  = _idp*ofs + _idy; // compute the offset (0 -> 5)
-    const unsigned int _udp = (_idp + 1)*ofs-1; // unperturbed index ((n+1)*6)
-    if (idx >= lnx*ofs){return;}
+    const unsigned int _idy = threadIdx.y; 
+    const unsigned int  idx = blockIdx.x * blockDim.x + _idx;
+    if (idx >= lnx){return;}
 
     // ----- Get the (un)perturbed values ----- //
-    double v  = dnu_res[_udp][0]; 
-    double dv = dnu_res[idx][0]; 
-    _param_[_idx][_idy] = nu_params[_idp][_idy]; 
-
-    // ----- (compute derivative) ----- //
-    dv = (_idy < 2) ? 0 : (dv - v) / dt; 
+    double v  = dnu_res[idx*ofs       ][0]; 
+    double dv = dnu_res[idx*ofs+_idy+1][0]; 
+    double rv = nu_params[idx][_idy]; 
+    dv = ((dv - v) / dt);
     _Jxt_[_idx][_idy] = dv*dv; 
     __syncthreads(); 
 
     // ----- update state ------- //
-    dv = _div(_sum(_Jxt_[_idx], 6)) * dv * v; 
-    nu_params[_idp][_idy] = _param_[_idx][_idy] - dv; 
+    dv = _div(_sum(_Jxt_[_idx], size_y)) * dv * v; 
+    if (dv){nu_params[idx][_idy] = rv - dv; return;}
+
+    curand_init(1234, _idx*size_y + _idy, 0, &rnax[_idx*size_y + _idy]); 
+    __syncthreads(); 
+
+    // ----- fallback state ------- //
+    dv = curand_normal_double(&rnax[_idx*size_y + _idy]); 
+    _Jxt_[_idx][_idy] = pow(rv, 2); 
+    __syncthreads(); 
+
+    nu_params[idx][_idy] = rv - dv*_div(_sum(_Jxt_[_idx], size_y)); 
 }
 
 template <size_t size_x, size_t size_y>
@@ -310,7 +281,7 @@ __global__ void _compare_solx(
     _nu1[threadIdx.x][threadIdx.y]   = 0; 
     _nu2[threadIdx.x][threadIdx.y]   = 0; 
     _cmx[threadIdx.x][threadIdx.y]   = 0; 
-    _score[threadIdx.x][threadIdx.y] = 0; 
+    _score[threadIdx.x][threadIdx.y] = 1e8; 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
     if (_idx >= evnts){return;}
 
@@ -320,13 +291,14 @@ __global__ void _compare_solx(
         if (evn_id != _idx){continue;}
         for (size_t y(0); y < 6; ++y){
             double sol = i_sol[x][y]; 
-            if (_score[threadIdx.x][threadIdx.y] < sol && !sol){continue;}
+            if (_score[threadIdx.x][threadIdx.y] < sol || !sol){continue;}
             _score[threadIdx.x][threadIdx.y] = sol; 
             _cmx[threadIdx.x][threadIdx.y] = i_cmb[cmx_id][threadIdx.y]; 
             _nu1[threadIdx.x][threadIdx.y] = (threadIdx.y < 3) ? i_nu1[x][y][threadIdx.y] : 0; 
             _nu2[threadIdx.x][threadIdx.y] = (threadIdx.y < 3) ? i_nu2[x][y][threadIdx.y] : 0; 
         }
     }
+    if (_score[threadIdx.x][threadIdx.y] == 1e8){_score[threadIdx.x][threadIdx.y] = 0;}
 
     __syncthreads(); 
     o_sol[_idx] = _score[threadIdx.x][threadIdx.y]; 

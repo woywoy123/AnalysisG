@@ -76,9 +76,6 @@ class graph_detector: public graph_template
         graph_template* clone() override; 
         void CompileEvent() override; 
         bool PreSelection() override; 
-
-        std::map<int, std::vector<particle_template*>> nut = {}; 
-        std::vector<particle_template*> tps = {}; 
         std::vector<particle_template*> nux = {}; 
 
         bool force_match = false; 

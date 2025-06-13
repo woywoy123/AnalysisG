@@ -12,12 +12,10 @@ class grift: public model_template
 
         torch::Tensor message(
             torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc,
-            torch::Tensor* hx_i, torch::Tensor* hx_j
+            torch::Tensor hx_i, torch::Tensor hx_j
         ); 
 
-        torch::Tensor node_encode(
-            torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn
-        ); 
+        torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn); 
 
 
 

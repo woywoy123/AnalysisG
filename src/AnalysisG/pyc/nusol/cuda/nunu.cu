@@ -17,7 +17,8 @@ __global__ void _nunu_init_(
               torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> N ,
               torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> K ,
               torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> K_,
-              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> S
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> S, 
+        const unsigned int metlx
 ){
 
     __shared__ double _H1[size_x][3][3];
@@ -45,7 +46,7 @@ __global__ void _nunu_init_(
     double h2_i  = H2_inv[_idx][idy][idz]; 
 
     double circ = (idy == idz)*(2*(idy < 2) - 1); 
-    double dmet = met_xy[_idx][idy] * (idz == 2 && idy < 2) - circ; 
+    double dmet = met_xy[_idx][idy] * (idz == 2 && idy < metlx) - circ; 
 
     S[_idx][idy][idz]  = dmet; 
 
@@ -123,28 +124,32 @@ __global__ void _nunu_vp_(
 
     _K1[idx][jdz  ][idz] = K_[_idx][jdz][idz]; 
     _K1[idx][jdz+3][idz] = n_[_idx][jdz][idz]; 
-    __syncthreads(); 
 
-    ds[_idx][idy] = 0; 
+    __syncthreads(); 
     v[_idx][idy][idz] = 0; 
 
     _v1[idx][idy][idz] = _dot(_S_[idx][idz], _v0[idx][idy], 3); 
     __syncthreads();
+
     double nu0_ = _dot(_K0[idx][idz], _v0[idx][idy], 3); 
     double nu1_ = _dot(_K1[idx][idz], _v1[idx][idy], 3); 
 
     _S_[idx][idy  ][idz] = _dot(_K1[idx][idz+3], _v0[idx][idy], 3); 
     _S_[idx][idy+6][idz] = _dot(_K0[idx][idz+3], _v1[idx][idy], 3); 
+    double dq = ds[_idx][idy];
     __syncthreads(); 
-
-    double dq = _dot(_S_[idx][idy], _v0[idx][idy], 3) - _dot(_S_[idx][idy+6], _v1[idx][idy], 3);  
-    dq = log10(dq*dq + (dq == 0)); 
+    
+    ds[_idx][idy] = 0; 
+    //double dx = _dot(_S_[idx][idy], _v0[idx][idy], 3) - _dot(_S_[idx][idy+6], _v1[idx][idy], 3);  
+    //dq = log10(dx*dx + (dx == 0)) + dq; 
+    
     _K0[idx][idy][idz] = dq;  
     __syncthreads(); 
 
     int pos = 0; 
     for (size_t y(0); y < 6; ++y){
-        if (!_K0[idx][y][idz]){continue;}
+        if (dq == 174+y){return;}
+        if (!_K0[idx][y][idz] || _K0[idx][y][idz] == 174+y){continue;}
         pos += (dq > _K0[idx][y][idz]); 
     }
     if (!dq){return;}
@@ -164,7 +169,7 @@ __global__ void _residual_(
               torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu1, 
               torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu2, 
               torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> dst, 
-              const double tol, const double step, const unsigned int timeout
+              const double tol, const double step, const unsigned int timeout, unsigned int mxl
 ){
 
     __shared__ double _metxy_[size_x][3]; 
@@ -182,7 +187,7 @@ __global__ void _residual_(
     if (_idx >= metxy.size({0})){return;}
 
     if (idy < 6){_H_perp[idx][idy][idz] = (idy <= 2)*H_perp [_idx][idy%3][idz] + (idy <= 5 && idy >= 3)*H_perp_[_idx][(idy-3)%3][idz];}
-    _metxy_[idx][idz] = metxy[_idx][idz*(idz < 2)]*(idz < 2) + 1*(idz == 2); 
+    _metxy_[idx][idz] = metxy[_idx][idz*(idz < mxl)]*(idz < mxl) + 1*(idz == 2); 
     
     int ix = idy % 8; 
     int iy = idy / 8;
@@ -270,29 +275,30 @@ __global__ void _masses_(
     _l2_[idx][idy][idz]  = l2[_idx][idz]; 
 
     _nu1_[idx][idy][idz] = (idz < 3) ? nu1[_idx][idy][idz] : 0; 
-    _nu2_[idx][idy][idz] = (idz < 3) ? nu1[_idx][idy][idz] : 0; 
+    _nu2_[idx][idy][idz] = (idz < 3) ? nu2[_idx][idy][idz] : 0; 
     __syncthreads(); 
 
     if (idz == 3){
-        for (size_t x(0); x < 3; ++x){_nu1_[idx][idy][idz] += pow(_nu1_[idx][idy][x], 2);}
-        for (size_t x(0); x < 3; ++x){_nu2_[idx][idy][idz] += pow(_nu2_[idx][idy][x], 2);}
-        _nu1_[idx][idy][idz] = _sqrt(_nu1_[idx][idy][idz]); 
-        _nu2_[idx][idy][idz] = _sqrt(_nu2_[idx][idy][idz]); 
+        double v1(0), v2(0); 
+        for (size_t x(0); x < 3; ++x){v1 += pow(_nu1_[idx][idy][x], 2);}
+        for (size_t x(0); x < 3; ++x){v2 += pow(_nu2_[idx][idy][x], 2);}
+        _nu1_[idx][idy][idz] = _sqrt(v1); 
+        _nu2_[idx][idy][idz] = _sqrt(v2); 
     }
     __syncthreads();  
-    bool sol = (_nu1_[idx][idy][3] + _nu2_[idx][idy][3]) != 0; 
+    bool sol = (_nu1_[idx][idy][1] + _nu2_[idx][idy][1]) != 0; 
 
-    _l1_[idx][idy][idz] = _nu1_[idx][idy][idz] + _l1_[idx][idy][idz]; 
-    _l2_[idx][idy][idz] = _nu2_[idx][idy][idz] + _l2_[idx][idy][idz]; 
+    double w1 = _nu1_[idx][idy][idz] + _l1_[idx][idy][idz]; 
+    double w2 = _nu2_[idx][idy][idz] + _l2_[idx][idy][idz]; 
 
-    _b1_[idx][idy][idz] =  _b1_[idx][idy][idz] + _l1_[idx][idy][idz]; 
-    _b2_[idx][idy][idz] =  _b2_[idx][idy][idz] + _l2_[idx][idy][idz]; 
+    double t1 =  _b1_[idx][idy][idz] + w1; 
+    double t2 =  _b2_[idx][idy][idz] + w2; 
 
-    _l1_[idx][idy][idz] = pow(_l1_[idx][idy][idz], 2) * (1 - 2*(idz < 3)); 
-    _l2_[idx][idy][idz] = pow(_l2_[idx][idy][idz], 2) * (1 - 2*(idz < 3)); 
+    _l1_[idx][idy][idz] = pow(w1, 2) * (1 - 2*(idz < 3)); 
+    _b1_[idx][idy][idz] = pow(t1, 2) * (1 - 2*(idz < 3)); 
 
-    _b1_[idx][idy][idz] = pow(_b1_[idx][idy][idz], 2) * (1 - 2*(idz < 3)); 
-    _b2_[idx][idy][idz] = pow(_b2_[idx][idy][idz], 2) * (1 - 2*(idz < 3)); 
+    _l2_[idx][idy][idz] = pow(w2, 2) * (1 - 2*(idz < 3)); 
+    _b2_[idx][idy][idz] = pow(t2, 2) * (1 - 2*(idz < 3)); 
     __syncthreads(); 
 
     double mw = 0; 
@@ -309,6 +315,7 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
 ){
     const unsigned int dx = H1_ -> size({0}); 
     const unsigned int thx = (dx >= 48) ? 48 : dx; 
+    const unsigned int metlx = met_xy -> size({-1}); 
 
     const dim3 thr = dim3(4, 64, 3);
     const dim3 thd = dim3(thx, 3, 3);
@@ -341,9 +348,11 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
                         N.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                         K.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                        K_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                        S.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>()
+                        S.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                        metlx
         );
     }); 
+
 
     std::map<std::string, torch::Tensor> out = nusol_::Intersection(&N, &n_, null); 
     torch::Tensor nu1 = torch::zeros_like(out["solutions"]); 
@@ -362,7 +371,7 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
                             v.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                            v_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                            ds.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-                            tolerance, step, timeout
+                            tolerance, step, timeout, metlx
             ); 
         }
 
@@ -398,7 +407,6 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
 ){
     if (!m2){m2 = m1;}
     unsigned int dx = met_xy -> size(0); 
-
     std::map<std::string, torch::Tensor> H1_m = nusol_::BaseMatrix(pmc_b1, pmc_mu1, m1);
     std::map<std::string, torch::Tensor> H2_m = nusol_::BaseMatrix(pmc_b2, pmc_mu2, m2);
 
@@ -430,7 +438,8 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
                        mtw.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>()
         ); 
     }); 
-    
+   
+
     out["mtw"] = mtw; 
     out["nu1"] = out["nu1"].view({dx, -1, 3});  
     out["nu2"] = out["nu2"].view({dx, -1, 3}); 

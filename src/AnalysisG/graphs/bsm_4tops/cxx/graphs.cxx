@@ -341,88 +341,137 @@ bool graph_detector::PreSelection(){
     bsm_4tops* evn = this -> get_event<bsm_4tops>();
     for (size_t x(0); x < evn -> Electrons.size(); ++x){leptons.push_back(evn -> Electrons[x]);} 
     for (size_t x(0); x < evn -> Muons.size(); ++x){leptons.push_back(evn -> Muons[x]);} 
-    if (leptons.size() != 2){return false;}
-    return true; 
+    return leptons.size() == 2; 
 }
 
 void graph_detector::CompileEvent(){
-    auto mutual =[this](neutrino* n1, neutrino* n2, std::map<std::string, particle_template*>* hash_mx, int top_index) -> void {
-        bool trig = false; 
-        if (n1 && (hash_mx -> count(n1 -> lepton -> hash) || hash_mx -> count(n1 -> bquark -> hash))){(*hash_mx)[n1 -> hash] = n1; trig = true;}
-        if (n2 && (hash_mx -> count(n2 -> lepton -> hash) || hash_mx -> count(n2 -> bquark -> hash))){(*hash_mx)[n2 -> hash] = n2; trig = true;}
-        if (hash_mx -> size() > 2){return;}
-        if (!trig){
-            std::map<std::string, particle_template*>::iterator itr = hash_mx -> begin();
-            for (; itr != hash_mx -> end(); ++itr){
-                std::string type = itr -> second -> type; 
-                if      (type == "jet"){     ((jet*)itr -> second) -> top_index = {-1};}
-                else if (type == "mu" ){    ((muon*)itr -> second) -> top_index = -1;  }
-                else if (type == "el" ){((electron*)itr -> second) -> top_index = -1;  }
-            }
-            hash_mx -> clear(); return;
-        }
-        if (n1 && hash_mx -> count(n1 -> hash)){n1 -> index = top_index;}
-        if (n2 && hash_mx -> count(n2 -> hash)){n2 -> index = top_index;}
-    };
+    auto assign = [this](particle_template* prt, neutrino* nu, std::vector<int>* idx, bool* res) -> bool{
+        std::string hash_ = prt -> hash; 
+        bool is_res = false;
+        std::vector<int> top_idx = {}; 
+        std::string type_ = prt -> type; 
+        if (type_ == "jet"){top_idx = ((jet*)prt) -> top_index;              is_res = ((jet*)prt) -> from_res;     }
+        if (type_ == "el"){top_idx.push_back(((electron*)prt) -> top_index); is_res = ((electron*)prt) -> from_res;}
+        if (type_ == "mu"){top_idx.push_back(((muon*)prt) -> top_index);     is_res = ((muon*)prt) -> from_res;    }
+        idx -> insert(idx -> end(), top_idx.begin(), top_idx.end()); 
+        *res = is_res;
 
-    auto assign =[this](std::map<std::string, particle_template*>* hash_mx, bool is_res, bool has_no_lnk) -> void {
-        if (has_no_lnk){return;}
-        std::map<std::string, particle_template*>::iterator itx_ = hash_mx -> begin(); 
-        for (; itx_ != hash_mx -> end(); ++itx_){
-            std::map<std::string, particle_template*>::iterator _itx = hash_mx -> begin(); 
-            for (; _itx != hash_mx -> end(); ++_itx){
-                if (is_res){_itx -> second -> register_parent(itx_ -> second);}
-                else {_itx -> second -> register_child(itx_ -> second);}
+        if (!nu){return false;}
+        bool found = false;
+        found += (hash_ == std::string(nu -> bquark -> hash)); 
+        found += (hash_ == std::string(nu -> lepton -> hash)); 
+        if (!found){return false;}
+        if (is_res){nu -> from_res = is_res;}
+        for (size_t x(0); x < top_idx.size(); ++x){nu -> top_index.push_back(top_idx[x]);}
+        top_idx.clear(); 
+        this -> unique_key(&nu -> top_index, &top_idx); 
+        nu -> top_index = top_idx; 
+        return found; 
+    }; 
+
+    auto deassign = [this](std::map<std::string, particle_template*> hprt, int topx){
+        std::map<std::string, particle_template*>::iterator itr = hprt.begin();
+        for (; itr != hprt.end(); ++itr){
+            particle_template* prt = itr -> second;
+            std::string type_ = prt -> type; 
+            std::vector<int>* v = nullptr; 
+            if (type_ == "jet" ){v =      &((jet*)prt) -> top_index;}
+            if (type_ == "el"  ){     ((electron*)prt) -> top_index = -1;}
+            if (type_ == "mu"  ){         ((muon*)prt) -> top_index = -1;}
+            if (type_ == "nunu"){v = &((neutrino*)prt) -> top_index;}
+            if (!v){continue;}
+            std::vector<int> w = {}; 
+            for (size_t x(0); x < v -> size(); ++x){
+                if (v -> at(x) == topx){continue;}
+                w.push_back(v -> at(x)); 
             }
+            v -> clear(); *v = w; 
         }
     }; 
 
-    std::string cu = "cuda:" + std::to_string(this -> threadIdx % this -> num_cuda);  
+    bsm_4tops* event = this -> get_event<bsm_4tops>();
+    std::vector<particle_template*> nodes = {}; 
+    nodes.insert(nodes.end(), event -> Muons.begin()    , event -> Muons.end()); 
+    nodes.insert(nodes.end(), event -> Electrons.begin(), event -> Electrons.end()); 
+    nodes.insert(nodes.end(), event -> Jets.begin()     , event -> Jets.end()); 
 
-    bsm_4tops* event = this -> get_event<bsm_4tops>(); 
+
+    std::map<int, particle_template*> nus = {}; 
+    std::vector<particle_template*> ch = event -> Children;
+    for (size_t x(0); x < ch.size(); ++x){
+        if (!ch[x] -> is_nu){continue;}
+        top_children* chx = (top_children*)ch[x]; 
+        nus[chx -> top_index] = ch[x]; 
+    }
+
+    std::cout << "-----" << std::endl;
     neutrino* nu1 = nullptr; neutrino* nu2 = nullptr;
-    std::vector<particle_template*> _nodes = event -> DetectorObjects; 
     if ((event -> Muons.size() + event -> Electrons.size()) == 2){
         std::pair<particle_template*, particle_template*> nux;
-        nux = this -> double_neutrino(_nodes, event -> met, event -> phi, cu, 172.62*1000.0, 80.385*1000.0, 5e-1, 1e-1, 100);
+        std::string cu = "cuda:" + std::to_string(this -> threadIdx % this -> num_cuda);  
+        nux = this -> double_neutrino(nodes, event -> met, event -> phi, cu, 172.62*1000.0, 80.385*1000.0, 5e-1, 1e-1, 100);
         nu1 = (neutrino*)std::get<0>(nux); nu2 = (neutrino*)std::get<1>(nux); 
     }
 
-    if (nu1){_nodes.push_back(nu1); nu1 -> index = -1;}
-    if (nu2){_nodes.push_back(nu2); nu2 -> index = -1;}
+    std::map<std::string, particle_template*> hash_map_res; 
+    std::map<int, std::map<std::string, particle_template*>> hash_map_top; 
+    for (size_t x(0); x < nodes.size(); ++x){
+        std::vector<int> top_i = {}; 
+        bool is_res = false; 
+        particle_template* prt = nodes[x]; 
+        bool f = assign(prt, nu1, &top_i, &is_res); 
+        for (size_t k(0); k < top_i.size(); ++k){
+            int ti = top_i[k]; 
+            hash_map_top[ti][prt -> hash] = prt;
+            if (is_res){hash_map_res[prt -> hash] = prt;}
+            if (!f){continue;}
+            //hash_map_top[ti][nu1 -> hash] = nu1;
+            if (is_res){hash_map_res[nu1 -> hash] = nu1;}
+        }
 
-    std::map<int , std::map<std::string, particle_template*>> hash_map_top; 
-    std::map<bool, std::map<std::string, particle_template*>> hash_map_res; 
-    for (size_t x(0); x < event -> Muons.size(); ++x){
-        muon* mx = (muon*)event -> Muons.at(x); 
-        hash_map_top[mx -> top_index][mx -> hash] = mx; 
-        hash_map_res[mx -> from_res][mx -> hash] = mx; 
-        mx -> parents.clear(); mx -> children.clear(); 
+        top_i = {}; 
+        is_res = false; 
+        f = assign(prt, nu2, &top_i, &is_res);
+        for (size_t k(0); k < top_i.size(); ++k){
+            int ti = top_i[k]; 
+            hash_map_top[ti][prt -> hash] = prt;
+            if (is_res){hash_map_res[prt -> hash] = prt;}
+            if (!f){continue;}
+            //hash_map_top[ti][nu2 -> hash] = nu2;
+            if (is_res){hash_map_res[nu2 -> hash] = nu2;}
+        }
     }
 
-    for (size_t x(0); x < event -> Electrons.size(); ++x){
-        electron* mx = (electron*)event -> Electrons.at(x); 
-        hash_map_top[mx -> top_index][mx -> hash] = mx; 
-        hash_map_res[mx -> from_res][mx -> hash] = mx; 
-        mx -> parents.clear(); mx -> children.clear(); 
+
+    auto lamb = [this](std::map<std::string, particle_template*> pbx, particle_template* nx) -> double {
+        particle_template* p1 = new particle_template();
+        std::map<std::string, particle_template*>::iterator itx = pbx.begin(); 
+        for (; itx != pbx.end(); ++itx){p1 -> iadd(itx -> second);}
+        p1 -> iadd(nx); 
+        double mx = p1 -> mass; 
+        delete p1; return mx;  
+    };
+
+
+    std::string hb, hl, hn; 
+    std::map<int, std::map<std::string, particle_template*>>::iterator itx; 
+    for (itx = hash_map_top.begin(); itx != hash_map_top.end(); ++itx){
+        if (nus.count(itx -> first)){
+            std::cout << lamb(itx -> second, nus[itx -> first]) << std::endl;
+            continue; 
+        }
+
+        if (!nu1 || !nu2 || itx -> first < 0){deassign(itx -> second, itx -> first); continue;}
+        hb = nu1 -> bquark -> hash; hl = nu1 -> lepton -> hash; hn = nu1 -> hash; 
+        if (itx -> second.count(hb) && itx -> second.count(hl) && itx -> second.count(hn)){continue;}
+        hb = nu2 -> bquark -> hash; hl = nu2 -> lepton -> hash; hn = nu2 -> hash; 
+        if (itx -> second.count(hb) && itx -> second.count(hl) && itx -> second.count(hn)){continue;}
+        deassign(itx -> second, itx -> first);
     }
+    if (nu1){nodes.push_back(nu1);}
+    if (nu2){nodes.push_back(nu2);}
 
-    for (size_t x(0); x < event -> Jets.size(); ++x){
-        jet* mx = (jet*)event -> Jets.at(x); 
-        for (size_t y(0); y < mx -> top_index.size(); ++y){hash_map_top[mx -> top_index.at(y)][mx -> hash] = mx;}
-        hash_map_res[mx -> from_res][mx -> hash] = mx; 
-        mx -> parents.clear(); mx -> children.clear(); 
-    }
-
-    std::map<int, std::map<std::string, particle_template*>>::iterator itt = hash_map_top.begin();
-    for (; itt != hash_map_top.end(); ++itt){mutual(nu1, nu2, &itt -> second, itt -> first);} 
-    //for (itt = hash_map_top.begin(); itt != hash_map_top.end(); ++itt){assign(&itt -> second, false, itt -> first < 0);} 
-
-    std::map<bool, std::map<std::string, particle_template*>>::iterator itr = hash_map_res.begin();
-    for (; itr != hash_map_res.end(); ++itr){mutual(nu1, nu2, &itr -> second, itt -> first);} 
-    for (itr = hash_map_res.begin(); itr != hash_map_res.end(); ++itr){assign(&itr -> second, true, !itr -> first);} 
-
-    this -> define_particle_nodes(&_nodes); 
+    this -> define_particle_nodes(&nodes); 
     this -> define_topology(fulltopo); 
 
     // ---------------- truth ------------------- //
@@ -430,7 +479,7 @@ void graph_detector::CompileEvent(){
     this -> add_graph_truth_feature<int , bsm_4tops>(event, num_lepton  , "n_lep"); 
     this -> add_graph_truth_feature<int , bsm_4tops>(event, num_tops    , "ntops"); 
 
-    this -> add_edge_truth_feature<int, particle_template>(det_res_edge, "res_edge"); 
+    this -> add_edge_truth_feature<int, particle_template>(res_edge, "res_edge"); 
     this -> add_edge_truth_feature<int, particle_template>(top_edge, "top_edge"); 
 
     // ---------------- data -------------------- //

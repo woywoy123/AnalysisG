@@ -97,9 +97,59 @@ std::pair<particle_template*, particle_template*> graph_template::double_neutrin
         particle_template* p1 = new particle_template();
         for (size_t x(0); x < pbx.size(); ++x){p1 -> iadd(pbx[x]);}
         double mx = p1 -> mass; 
-        delete p1; 
-        return mx;  
+        delete p1; return mx;  
     };
+
+    auto pmc = [this](particle_template* pf, std::string dim) -> double{
+        if (dim == "x"){return pf -> px*0.001;}
+        if (dim == "y"){return pf -> py*0.001;}
+        if (dim == "z"){return pf -> pz*0.001;}
+        return 0; 
+    }; 
+
+    auto cross = [this](double x1, double y1, double z1, double x2, double y2, double z2) -> std::vector<double> {
+        double xi = x1 * z2 - z1 * y2; 
+        double yi = z1 * x2 - x1 * z2; 
+        double zi = x1 * y2 - y1 * x2; 
+        double di = std::pow(xi*xi + yi*yi + zi*zi, 0.5); 
+        xi = xi / di; yi = yi / di; zi = zi / di; 
+        return {xi, yi, zi, di}; 
+    }; 
+
+    auto angle = [this, pmc, cross](
+            neutrino* nu1, neutrino* nu2, double met_, double phi_, std::vector<particle_template*>* nodes_
+    ) -> std::vector<double> {
+        // define the plane of neutrino 1 and 2 - W boson plane
+        std::vector<double> nx1 = cross(pmc(nu1, "x"), pmc(nu1, "y"), pmc(nu1, "z"), pmc(nu1 -> lepton, "x"), pmc(nu1 -> lepton, "y"), pmc(nu1 -> lepton, "z")); 
+        std::vector<double> nx2 = cross(pmc(nu2, "x"), pmc(nu2, "y"), pmc(nu2, "z"), pmc(nu2 -> lepton, "x"), pmc(nu2 -> lepton, "y"), pmc(nu2 -> lepton, "z")); 
+
+        // define the plane of the bb projectile 
+        std::vector<double> bxn = cross(pmc(nu1 -> bquark, "x"), pmc(nu1 -> bquark, "y"), pmc(nu1 -> bquark, "z"), pmc(nu2 -> bquark, "x"), pmc(nu2 -> bquark, "y"), pmc(nu2 -> bquark, "z")); 
+
+        // define the met circle plane
+        double mx_ = met_ * std::cos(phi_)*0.001;
+        double my_ = met_ * std::sin(phi_)*0.001;
+        double mz_ = 0; 
+
+        // define the particle plane
+        double x_(0), y_(0), z_(0);
+        for (size_t x(0); x < nodes_ -> size(); ++x){z_ += pmc(nodes_ -> at(x),"z");}
+        x_ += met_ * std::cos(phi_)*0.001; 
+        y_ += met_ * std::sin(phi_)*0.001;  
+        z_ -= pmc(nu1 -> bquark, "z") + pmc(nu1 -> lepton, "z") + pmc(nu1, "z"); 
+        z_ -= pmc(nu2 -> bquark, "z") + pmc(nu2 -> lepton, "z") + pmc(nu2, "z"); 
+
+        // plane of nunu
+        std::vector<double> n1xn2 = cross(nx1[0], nx1[1], nx1[2], nx2[0], nx2[1], nx2[2]); 
+
+//        // plane of met X particles cross bb system 
+//        std::vector<double> nu_bb = cross(bxn[0], bxn[1], bxn[2], n1xn2[0], n1xn2[1], n1xn2[2]); 
+
+        std::vector<double> vxp = cross(x_, y_, z_, n1xn2[0], n1xn2[1], n1xn2[2]); 
+
+        double dg = (180.0/3.141592653589793238463); 
+        return {std::acos(vxp[2])*dg, std::atan2(vxp[1], vxp[0])*dg, vxp[2], std::abs(vxp[3])}; 
+    }; 
 
     if (!particles.size()){return {nullptr, nullptr};}
     std::vector<std::pair<neutrino*, neutrino*>> nux; 
@@ -107,15 +157,19 @@ std::pair<particle_template*, particle_template*> graph_template::double_neutrin
     std::vector<double> phiv = std::vector<double>({phi});
     std::vector<std::vector<particle_template*>> prt = {particles}; 
 
+    //distance = 0; 
+    //for (size_t x(0); x < particles.size(); ++x){
+    //    distance += pmc(particles.at(x), "z");  
+    //}
+
     #ifdef PYC_CUDA
     nux = pyc::nusol::combinatorial(metv, phiv, prt, device, top_mass, wboson_mass, distance, perturb, steps); 
     #endif
 
-    if (!nux.size()){return {nullptr, nullptr};}
-    double val1(0), val2(0), vcm(0); 
-    particle_template* n1 = nullptr; 
-    particle_template* n2 = nullptr; 
+    neutrino* n1 = nullptr; 
+    neutrino* n2 = nullptr; 
     for (size_t x(0); x < nux.size(); ++x){
+        double mx(0); 
         neutrino* nu1 = std::get<0>(nux[x]);
         neutrino* nu2 = std::get<1>(nux[x]); 
         this -> garbage.push_back(nu1); 
@@ -127,27 +181,39 @@ std::pair<particle_template*, particle_template*> graph_template::double_neutrin
         v1.push_back(nu1); 
         v2.push_back(nu2); 
 
+        double xnt = 0; 
+        double agl = 0; 
+        double mxi = 0; 
         for (size_t i(0); i < v1.size(); ++i){
-            neutrino* nut1 = v1[i]; 
-            neutrino* nut2 = v2[i]; 
-
-            double w1  = lamb({nut1, nut1 -> lepton}); 
-            double t1  = lamb({nut1, nut1 -> lepton, nut1 -> bquark}); 
-            double mx1 = std::pow(std::pow((t1 - top_mass) / top_mass, 2) + std::pow((w1 - wboson_mass) / wboson_mass, 2), 0.5);
-
-            double w2  = lamb({nut2, nut2 -> lepton}); 
-            double t2  = lamb({nut2, nut2 -> lepton, nut2 -> bquark}); 
-            double mx2 = std::pow(std::pow((t2 - top_mass) / top_mass, 2) + std::pow((w2 - wboson_mass) / wboson_mass, 2), 0.5); 
-
-            if (!n1){n1 = nut1; val1 = mx1; vcm = mx1 + mx2;}
-            if (!n2){n2 = nut2; val2 = mx2; vcm = mx1 + mx2;}
-            if (vcm < (mx1 + mx2)){continue;}
-            val1 = mx1; n1 = nut1;
-            val2 = mx2; n2 = nut2;
+            std::vector<double> vx = angle(v1[i], v2[i], met, phi, &particles);
+            agl += vx[0]; xnt += 1.0; mxi += v1[i] -> min; 
+            double t1 = lamb({v1[i], v1[i] -> lepton, v1[i] -> bquark}); 
+            double t2 = lamb({v2[i], v2[i] -> lepton, v2[i] -> bquark}); 
+            double w1 = lamb({v1[i], v1[i] -> lepton}); 
+            double w2 = lamb({v2[i], v2[i] -> lepton}); 
+            std::cout << "-> " << t1 << " " << t2 << " " << vx[0] << " " << vx[1] << " " << vx[2] << " " << vx[3] << " " << v1[i] -> min << std::endl;
+            n1 = v1[i]; n2 = v2[i]; 
         }
+        
+        agl = agl / (xnt + (!xnt)); 
+        mxi = mxi / (xnt + (!xnt)); 
+        for (size_t i(0); i < v1.size(); ++i){
+            //if (v1[i] -> min > mxi){continue;}
+            std::vector<double> vx = angle(v1[i], v2[i], met, phi, &particles);
+            double mv = abs(vx[0] - agl); 
+            if (mx > mv){continue;}
+            double t1 = lamb({v1[i], v1[i] -> lepton, v1[i] -> bquark}); 
+            double t2 = lamb({v2[i], v2[i] -> lepton, v2[i] -> bquark}); 
+            double w1 = lamb({v1[i], v1[i] -> lepton}); 
+            double w2 = lamb({v2[i], v2[i] -> lepton}); 
+            if (std::pow((t1 - top_mass)/top_mass, 2) > distance){continue;} 
+            if (std::pow((t2 - top_mass)/top_mass, 2) > distance){continue;} 
+            if (std::pow((w1 - wboson_mass)/wboson_mass, 2) > distance){continue;} 
+            if (std::pow((w2 - wboson_mass)/wboson_mass, 2) > distance){continue;} 
+            mx = mv; n1 = v1[i]; n2 = v2[i]; 
+        }
+
     }
-    if (val1 > distance){n1 = nullptr;}
-    if (val2 > distance){n2 = nullptr;}
     return {n1, n2};
 }
 

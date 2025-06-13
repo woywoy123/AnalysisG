@@ -8,6 +8,7 @@ void m_res_edge(int* o, truthjet* t    ){*o *= t -> from_res;}
 void m_res_edge(int* o, jet* t         ){*o *= t -> from_res;}
 void m_res_edge(int* o, electron* t    ){*o *= t -> from_res;}
 void m_res_edge(int* o, muon* t        ){*o *= t -> from_res;}
+void m_res_edge(int* o, neutrino* t    ){*o *= t -> from_res;}
 
 void res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     particle_template* p1 = std::get<0>(*pij); 
@@ -34,6 +35,9 @@ void res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
 
     if (type1 == "mu"){m_res_edge(o, (muon*)p1);}
     if (type2 == "mu"){m_res_edge(o, (muon*)p2);}
+
+    if (type1 == "nunu"){m_res_edge(o, (neutrino*)p1);}
+    if (type2 == "nunu"){m_res_edge(o, (neutrino*)p2);}
 }
 
 int m_top_edge(top* t){return t -> index;}
@@ -43,7 +47,7 @@ std::vector<int> m_top_edge(jet* t){return t -> top_index;}
 std::vector<int> m_top_edge(muon* t){return {t -> top_index};}
 std::vector<int> m_top_edge(electron* t){return {t -> top_index};}
 std::vector<int> m_top_edge(truthjet* t){return t -> top_index;}
-std::vector<int> m_top_edge(neutrino* t){return {t -> index};}
+std::vector<int> m_top_edge(neutrino* t){return t -> top_index;}
 
 void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     particle_template* p1 = std::get<0>(*pij); 
