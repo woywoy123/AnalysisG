@@ -88,7 +88,7 @@ cdef class SelectionTemplate:
     def Postprocessing(self): pass
 
     def InterpretROOT(self, str path, str tree):
-        if not len(self.root_leaves):
+        if self.root_leaves is None or not len(self.root_leaves):
             print("Failed to interpret!")
             print("Please set the attribute ( dictionary {<leaves> : <fx(class, data)>} ): 'root_leaves'")
             return self

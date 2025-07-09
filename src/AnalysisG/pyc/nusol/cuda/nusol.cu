@@ -168,7 +168,7 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         torch::Tensor _msk = n2.index({ev_id}); 
         double tmp_p = perturb * 1000.0 * scale; 
 
-        long tmp_s = 1000;  
+        long tmp_s = 0;  
         const unsigned int mxi = 12; 
         const unsigned int sqp = 8; 
         const unsigned int sqx = sqp-1; 
@@ -178,7 +178,7 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         torch::Tensor idx = (torch::ones({lx, sqp  }, MakeOp(batch)).cumsum({0})-1).reshape({-1});
         torch::Tensor idp = (torch::ones({lx, sqp*6}, MakeOp(batch)).cumsum({0})-1).reshape({-1});
         torch::Tensor oxn = metxy.index({torch::indexing::Slice(), torch::indexing::Slice(0, 1)}); 
-        metxy = torch::cat({metxy, torch::zeros_like(oxn)}, {-1});
+        metxy = torch::cat({metxy, null*scale*torch::ones_like(oxn)}, {-1});
 
         torch::Tensor _pmcl1  = (pmc -> index({l1})*scale).index({n2}).index({idx}).clone(); 
         torch::Tensor _pmcb1  = (pmc -> index({b1})*scale).index({n2}).index({idx}).clone(); 
@@ -197,9 +197,7 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         const dim3 thdJx = dim3(thx    , sqx     ); 
         const dim3 blkJx = blk_(lx, thx, sqx, sqx);
 
-        torch::Tensor tx = torch::cat({dnu_met, oxn.index({_msk}).index({idx})}, {-1}); 
-        torch::Tensor pmx  = (_pmcb1 + _pmcl1 + _pmcb2 + _pmcl2).index({idp, torch::indexing::Slice(0, 3)});
-        
+        oxn = (dnu_met + (_pmcl1 + _pmcb1 + _pmcl2 + _pmcb2).index({torch::indexing::Slice(), torch::indexing::Slice(0, 3)})).index({idp}).clone(); 
         idx = (torch::ones({lx*sqp}, MakeOp(batch)).cumsum({0})-1).view({-1, 1});
         for (size_t x(0); x < steps; ++x){
             AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "perturb", [&]{
@@ -212,17 +210,13 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
                 ); 
             });
 
-
             nus = nusol_::NuNu(&_pmcb1, &_pmcb2, &_pmcl1, &_pmcl2, &dnu_met, 1e8, &dnu_tw1, &dnu_tw2, 1e-6, 1e-4, tmp_s);
             torch::Tensor dnu_res = nus["distances"];
             torch::Tensor solx = (dnu_res != 0).sum({-1});
             bool nox = (solx.index({solx}).size({0})) == 0; 
-
-            torch::Tensor mtw = torch::pow(nus["mtw"].view({-1, 4}) - torch::cat({dnu_tw1, dnu_tw2}, {-1}).index({idp}), 2).sum({-1}, true).view({-1, 6});
-            nus["distances"] = (dnu_res + mtw) * (nus["distances"] != 0); 
-
-            torch::Tensor ntx = (nus["nu1"] + nus["nu2"]).view({-1, 3}); 
-            dnu_res = pow((pmx + dnu_met.index({idp}) + ntx), 2).sum({-1}, true).view({-1, 6}) + mtw;
+            torch::Tensor mtw = torch::pow(torch::pow((nus["nu1"] + nus["nu2"]).view({-1, 3}) + oxn, 2).sum({-1}, true).view({-1, 6}), 0.5);
+            dnu_res = mtw + dnu_res; 
+            nus["distances"] = dnu_res * (nus["distances"] != 0); 
 
             AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "minimize", [&]{
                 _jacobi<mxi, sqx><<<blkJx, thdJx>>>(
@@ -231,8 +225,8 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
                               lx, tmp_p, sqp, x
                 ); 
             });
-
-            if (!nus_.size()){nus_ = nus;}
+           
+            if (!nus_.size()){nus_ = nus; tmp_s = nox*1000;}
             if (nox){tmp_s = 100; continue;}
             nus_["distances"] = torch::cat({nus_["distances"], nus["distances"]}, {-1}); 
             nus_["distances"] += (nus_["distances"] == 0)*1e8;
@@ -247,11 +241,18 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
             nus_["mtw"] = nus_["mtw"].index({idx, std::get<1>(mx)}).index({torch::indexing::Slice(), torch::indexing::Slice(0, 6)});
             nus_["distances"] *= (nus_["distances"] != 1e8); 
             tmp_s = 0; 
+            break; 
         }
         idx = (torch::ones({lx, sqp}, MakeOp(batch)).cumsum({1}) - sqp).reshape({-1}) == 0;
         dst_.index_put_({_msk}, nus_["distances"].index({idx})); 
         nu1_.index_put_({_msk}, nus_["nu1"].index({idx})); 
         nu2_.index_put_({_msk}, nus_["nu2"].index({idx})); 
+        std::cout << nus_["H1"] << std::endl;
+        std::cout << nus_["H2"] << std::endl;
+        std::cout << nu1_ << std::endl;
+        std::cout << nu2_ << std::endl; 
+        abort(); 
+        std::cout << "_____" << std::endl;
     }
 
     const unsigned long thx = (lenx > 32) ? 32 : lenx; 

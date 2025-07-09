@@ -46,6 +46,14 @@ analysis::~analysis(){
 }
 
 void analysis::add_samples(std::string path, std::string label){
+    if (this -> ends_with(&path, ".root")){path = this -> absolute_path(path);}
+    else if (this -> ends_with(&path, "*")){
+        std::vector<std::string> vx = this -> ls(path);
+        for (size_t x(0); x < vx.size(); ++x){this -> add_samples(vx[x], label);}
+        return; 
+    }
+    else {return;}
+    if (!this -> ends_with(&path, ".root")){return;}
     this -> file_labels[path] = label;   
 }
 
@@ -101,17 +109,19 @@ void analysis::check_cache(){
     std::map<std::string, std::string> relabel = {}; 
     std::map<std::string, std::string>::iterator tx = this -> file_labels.begin(); 
     for (; tx != this -> file_labels.end(); ++tx){
+        std::string base = tx -> first; 
+        std::string lbl  = tx -> second; 
         std::vector<std::string> graph_cache = {}; 
-        if (this -> graph_labels.count(tx -> second)){
+        if (this -> graph_labels.count(lbl)){
             std::map<std::string, graph_template*>::iterator itg; 
-            itg = this -> graph_labels[tx -> second].begin();
-            for (; itg != this -> graph_labels[tx -> second].end(); ++itg){
+            itg = this -> graph_labels[lbl].begin();
+            for (; itg != this -> graph_labels[lbl].end(); ++itg){
                 graph_cache.push_back(itg -> first);
                 this -> graph_types[itg -> first]; 
             }
         }
-        std::vector<std::string> files = this -> ls(tx -> first, ".root"); 
-        if (!files.size()){files = {tx -> first};}
+        std::vector<std::string> files = this -> ls(lbl, ".root"); 
+        if (this -> ends_with(&base, ".root")){files.push_back(tx -> first);}
         for (size_t x(0); x < files.size(); ++x){
             std::string file_n = files[x]; 
             std::vector<std::string> spl = this -> split(file_n, "/"); 

@@ -46,6 +46,13 @@ class selection_template: public tools
         virtual void bulk_write(const long* idx, std::string* hx); 
         virtual void write(std::vector<particle_template*>* particles, std::string _name, particle_enum attrs); 
 
+        template <typename g>
+        void write(std::vector<g*>* particles, std::string _name, particle_enum attrs){
+            std::vector<particle_template*> ox; 
+            this -> downcast(particles, &ox); 
+            this -> write(&ox, _name, attrs); 
+        }
+
         void switch_board(particle_enum attrs, particle_template* ptr, std::vector<std::vector<double>>* data); 
         void switch_board(particle_enum attrs, particle_template* ptr, std::vector<int>*    data); 
         void switch_board(particle_enum attrs, particle_template* ptr, std::vector<double>* data); 

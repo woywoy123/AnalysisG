@@ -222,7 +222,7 @@ __global__ void _residual_(
         double dotx  = gr_t0*gr_t0 + gr_t1*gr_t1; 
         dotx = dotx - _cmp(abs(dt0), abs(dt1), (r2_dx - r2_t)*(r2_dy - r2_t));
 
-        _buffer[idx][idy][0][idz] = trigger(idz < 2, _params[idx][idy][idz], r2_t); 
+        _buffer[idx][idy][0][idz] = trigger(idz < mxl, _params[idx][idy][idz], r2_t); 
         _buffer[idx][idy][1][idz] = trigger(idz, r2_dx, r2_dy, r2_t); 
         _Jxb_[idx][idy][idz] = trigger(idz, gr_t0, gr_t1, dotx);
 
@@ -232,7 +232,7 @@ __global__ void _residual_(
             for (unsigned int z(0); z < 3; ++z){pz = trigger(_buffer[idx][py][1][pz] < _buffer[idx][y][1][z], pz, z);}
             py = trigger(_buffer[idx][py][1][pz] < _buffer[idx][y][1][pz], py, y);
         }
-        _params[idx][idy][idz] = _buffer[idx][idy][0][idz] - _div(_Jxb_[idx][py][2]) * _Jxb_[idx][py][idz] * r2_t * (idz < 2);
+        _params[idx][idy][idz] = _buffer[idx][idy][0][idz] - _div(_Jxb_[idx][py][2]) * _Jxb_[idx][py][idz] * r2_t * (idz < mxl);
         __syncthreads(); 
     }
 
@@ -441,6 +441,8 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
    
 
     out["mtw"] = mtw; 
+    out["H1"] = H1_; 
+    out["H2"] = H2_; 
     out["nu1"] = out["nu1"].view({dx, -1, 3});  
     out["nu2"] = out["nu2"].view({dx, -1, 3}); 
     out["distances"] = out["distances"].view({dx, -1}); 

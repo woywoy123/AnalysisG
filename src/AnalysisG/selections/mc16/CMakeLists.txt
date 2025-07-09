@@ -6,7 +6,7 @@ add_subdirectory(toptruthjets)
 add_subdirectory(topjets)
 add_subdirectory(zprime)
 add_subdirectory(parton)
-add_subdirectory(event)
+add_subdirectory(met)
 
 file(INSTALL __init__.py  DESTINATION . )
 file(INSTALL __init__.pxd DESTINATION . )

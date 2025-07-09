@@ -11,7 +11,7 @@ cdef class Neutrino(ParticleTemplate):
     cdef neutrino* ptx
     cdef public double chi2
     def __cinit__(self): self.ptx = NULL
-    def __dealloc__(self): del self.ptx
+#    def __dealloc__(self): del self.ptx
     
     @property
     def distance(self): 
@@ -31,7 +31,7 @@ cdef class Neutrino(ParticleTemplate):
     def vec(self): return vxc.obj(**{"px" : self.px, "py" : self.py, "pz" : self.pz, "energy" : self.e})
 
 cdef class Particle(ParticleTemplate):
-    def __dealloc__(self): del self.ptr
+#    def __dealloc__(self): del self.ptr
 
     @property
     def vec(self): return vxc.obj(**{"px" : self.px, "py" : self.py, "pz" : self.pz, "energy" : self.e})

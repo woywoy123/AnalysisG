@@ -82,6 +82,7 @@ std::vector<neutrino*> construct_particle(torch::Tensor* inpt, torch::Tensor* ln
     std::vector<neutrino*> out(o, nullptr); o = 0; 
     for (size_t x(0); x < pmc.size(); ++x){
         if (!(*dst)[x]){continue;}
+        if (!(pmc[x][0]*pmc[x][1]*pmc[x][2])){continue;}
         neutrino* nx = new neutrino(pmc[x][0], pmc[x][1], pmc[x][2]); 
         nx -> min   = (*dst)[x];
         nx -> index = x / 6; 
@@ -200,9 +201,17 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::combinatorial(
 
     std::vector<std::pair<neutrino*, neutrino*>> out = {}; 
     for (size_t x(0); x < nu1_.size(); ++x){
-        out.push_back({nu1_[x], nu2_[x]});
+        bool inb = (!nu1_[x] || !nu2_[x]); 
+        if (inb && nu1_[x]){delete nu1_[x]; nu1_[x] = nullptr;}
+        if (inb && nu2_[x]){delete nu2_[x]; nu2_[x] = nullptr;}
+        if (!inb){out.push_back({nu1_[x], nu2_[x]});}
+
         for (size_t y(0); y < nu1alt.size(); ++y){
-            if (size_t(nu1_[x] -> index) != x){continue;} 
+            bool inx = (!nu1alt[y] || !nu2alt[y] || inb);  
+            if (!inx && size_t(nu1_[x] -> index) != x){continue;} 
+            if (inx && nu1alt[y]){delete nu1alt[y]; nu1alt[y] = nullptr;}
+            if (inx && nu2alt[y]){delete nu2alt[y]; nu2alt[y] = nullptr;}
+            if (inx){continue;}
             nu1_[x] -> alternatives.push_back(nu1alt[y]); 
             nu2_[x] -> alternatives.push_back(nu2alt[y]); 
         }
