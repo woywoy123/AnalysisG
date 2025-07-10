@@ -36,6 +36,12 @@ def compute_z2_coeffs(b, mu, m_T):
     C = Q**2 * Om2 - D1**2 + (m_mu2)
     return A, B, C
 
+
+
+
+
+
+
 def compute_z2_coeffs_and_derivatives(b, mu, m_W, m_T):
     px_b, py_b, pz_b, E_b = b
     px_mu, py_mu, pz_mu, E_mu = mu
@@ -263,9 +269,21 @@ class NeutrinoSolution:
     def _compute_Z(self):
         A, B, C = compute_z2_coeffs(self.b, self.mu, self.m_T)
         Z2 = A*self.Sx**2 + B*self.Sx + C
+        self.Z2 = Z2
         self.Z = np.sqrt(Z2) if Z2 > 0 else np.sqrt(abs(Z2))
-#        if self.Z == 0: self.Z = 1.0
-        
+
+    def dSx_dmW(self): return -self.m_W / (self.mu[-1] * self.beta_mu)
+    def dSy_dmW(self): return (self.m_W/(self.b[-1]*self.beta_b) - self.cos_theta*self.dSx_dmW()) / self.sin_theta
+    def dSy_dmT(self): return (-self.m_T/(self.b[-1]*self.beta_b)) / self.sin_theta
+    def dx1_dmW(self): return self.dSx_dmW()*(1 - 1/self.Om2) - (self.w/self.Om2)*self.dSy_dmW()
+    def dy1_dmW(self): return self.dSy_dmW()*(1 - self.w**2/self.Om2) - (self.w/self.Om2)*self.dSx_dmW()
+    def dx1_dmT(self): return -(self.w/self.Om2) * self.dSy_dmT()
+    def dy1_dmT(self): return self.dSy_dmT() * (1 - self.w**2/self.Om2)
+       
+
+
+
+
     def _compute_rotation(self):
         def rotation_z(phi):
             c, s = np.cos(phi), np.sin(phi)
@@ -305,20 +323,8 @@ class NeutrinoSolution:
             [self.w*self.Z/self.Om, 0     ,             self.y1],
             [0                    , self.Z,                   0]
         ])
-
-        print(self.R_T.dot(self.H_tilde))
-        exit()
-
         
-    def p_nu(self):    return self.R_T.dot(self.H_tilde).dot(np.array([np.cos(self.t), np.sin(self.t), 1]))
-    def dSx_dmW(self): return -self.m_W / (self.mu[-1] * self.beta_mu)
-    def dSy_dmW(self): return (self.m_W/(self.b[-1]*self.beta_b) - self.cos_theta*self.dSx_dmW()) / self.sin_theta
-    def dSy_dmT(self): return (-self.m_T/(self.b[-1]*self.beta_b)) / self.sin_theta
-    def dx1_dmW(self): return self.dSx_dmW()*(1 - 1/self.Om2) - (self.w/self.Om2)*self.dSy_dmW()
-    def dy1_dmW(self): return self.dSy_dmW()*(1 - self.w**2/self.Om2) - (self.w/self.Om2)*self.dSx_dmW()
-    def dx1_dmT(self): return -(self.w/self.Om2) * self.dSy_dmT()
-    def dy1_dmT(self): return self.dSy_dmT() * (1 - self.w**2/self.Om2)
-        
+
     def dH_tilde_dmW(self):
         dZ_dmW_ = dZ_dmW(self.b, self.mu, self.m_W, self.m_T)
         return np.array([
@@ -335,9 +341,10 @@ class NeutrinoSolution:
             [0                     , dZ_dmT_,              0]
         ])
         
+    def p_nu(self):      return self.R_T.dot(self.H_tilde).dot(np.array([np.cos(self.t), np.sin(self.t), 1]))
+    def dp_nu_dt(self):  return self.R_T.dot(self.H_tilde).dot(np.array([-np.sin(self.t), np.cos(self.t), 0]))
     def dp_nu_dmW(self): return self.R_T.dot(self.dH_tilde_dmW()).dot(np.array([np.cos(self.t), np.sin(self.t), 1]))
     def dp_nu_dmT(self): return self.R_T.dot(self.dH_tilde_dmT()).dot(np.array([np.cos(self.t), np.sin(self.t), 1]))
-    def dp_nu_dt(self):  return self.R_T.dot(self.H_tilde).dot(np.array([-np.sin(self.t), np.cos(self.t), 0]))
 
 
 class LevenbergMarquardt:

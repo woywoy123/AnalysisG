@@ -34,6 +34,8 @@ def Derivative():
 def intersections_ellipse_line(ellipse, line, zero=1e-10):
     """Points of intersection between ellipse and line"""
     _, V = np.linalg.eig(np.cross(line, ellipse).T)
+    print(V)
+    print("___")
     sols = sorted([(
         v.real / v[2].real, np.dot(line, v.real)**2 + np.dot(v.real, ellipse).dot(v.real)**2
         ) for v in V.T if v[2].real != 0 and not sum(v.imag)], key = lambda k : k[1])[:2]
@@ -72,6 +74,7 @@ def intersections_ellipses(A, B, zero = 1e-10):
     e = next(iter([e.real for e in LA.eigvals(t) if not e.imag]))
     lines, q22 = factor_degenerate(B - e * A, zero)
     points = sum([intersections_ellipse_line(A, L, zero) for L in lines], [])
+    exit()
     return points, lines, q22
 
 
@@ -139,6 +142,9 @@ def get_mt2(sl, timeout = None):
     eps2_ = mw2**2 * (1 - bm**2)
     cons  = mw2**2 - x0_**2 - eps2_
 
+
+
+
     a_sy = -1 / (2 * eb * bb * sin_th)
     b_sy = ((mw2**2 + mb) / (2 * eb * bb) - cos_th * sx_) / sin_th
 
@@ -185,10 +191,13 @@ def solve_quartic(a, b, c, d, e):
     disc2 = m * m - 4.0 * ((p + z0 + q / m) * 0.5)
     sqrt_disc1 = disc1**0.5
     sqrt_disc2 = disc2**0.5
-    return [i.real for i in [
+
+    d = [i.real for i in [
             (-m + sqrt_disc1) / 2.0 - s, (-m - sqrt_disc1) / 2.0 - s, 
             ( m + sqrt_disc2) / 2.0 - s, ( m - sqrt_disc2) / 2.0 - s
     ] if not i.imag]
+    return d
+
 
 
 def _solve_cubic(a0, a1, a2, tol=1e-12):
@@ -243,7 +252,7 @@ class NuSol:
         self.Z    = math.sqrt(max(1e-31, self.Z2)) if self.Z2 >= 0 else -math.sqrt(abs(self.Z2))
         self.H    = self.R_T.dot(self._BaseMatrix)
         self.H_perp = np.vstack([self.H[:2], [0, 0, 1]])
-        self.N    = self._N
+        self.N      = self._N
     
     @property
     def _Z2(self):
@@ -272,7 +281,7 @@ class NuSol:
 
     @property
     def _N(self):
-        try: hinv = np.linalg.inv(self.H)
+        try: hinv = np.linalg.inv(self.H_perp)
         except np.linalg.LinAlgError: return UnitCircle()
         return hinv.T.dot(UnitCircle()).dot(hinv)
 
@@ -440,6 +449,7 @@ class NuSol:
     def angle_y(self): return np.acos(np.dot(self.ellipse_property["normal"], [0, 1, 0]))
     @property
     def angle_x(self): return np.acos(np.dot(self.ellipse_property["normal"], [1, 0, 0]))
+
     @property
     def OptimizeMW(self): 
         mw2 = max(get_mw(self))

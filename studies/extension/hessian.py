@@ -68,15 +68,19 @@ def objective(masses):
 
   #  S = R.dot(
     S = np.outer([met[0], met[1], met[2]], [0, 0, 1]) - UnitCircle() #)
+    #sol1 = analytic_neutrino_momentum(b1, mu1, mt1, mw1)#.OptimizeMT
+    #sol2 = analytic_neutrino_momentum(b2, mu2, mt2, mw2)#.OptimizeMT
 
-    sol1 = analytic_neutrino_momentum(b1, mu1, mt1, mw1).OptimizeMT
-    sol2 = analytic_neutrino_momentum(b2, mu2, mt2, mw2).OptimizeMT
 
-    dist = (sol1.ellipse_property["centroid"] - sol2.ellipse_property["centroid"])
-    nr1, nr2 = sol1.ellipse_property["normal"], sol2.ellipse_property["normal"]
 
-    #_sol1 = analytic_neutrino_momentum(b1, mu1, ms[0], ms[1])
-    #_sol2 = analytic_neutrino_momentum(b2, mu2, ms[2], ms[3])
+
+    #dist = (sol1.ellipse_property["centroid"] - sol2.ellipse_property["centroid"])
+    #nr1, nr2 = sol1.ellipse_property["normal"], sol2.ellipse_property["normal"]
+
+    sol1 = analytic_neutrino_momentum(b1, mu1, ms[0], ms[1])
+    sol2 = analytic_neutrino_momentum(b2, mu2, ms[2], ms[3])
+    fv, l, q22 = intersections_ellipses(sol1.N, S.T.dot(sol2.N).dot(S))
+    exit()
 
     #ax = figs()
     #plot_ellipse(sol1.H , ax, "Ellipse 1", "red" , "-.")
