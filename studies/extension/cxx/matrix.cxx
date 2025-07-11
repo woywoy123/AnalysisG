@@ -1,11 +1,37 @@
 #include "matrix.h"
 #include <complex.h>
 
+
+
+// Fast square root approximation using inverse square root method
+static inline double f_sqrt(double x) {
+    if (x <= 0.0){return 0.0;}
+    union {double d; int64_t i;} u;
+
+    u.d = x;
+    const int64_t magic = 0x5fe6eb50c7b537a9;
+    u.i = magic - (u.i >> 1); 
+    double y = u.d;
+    return y * (1.5 - 0.5 * x * y * y); 
+}
+
+// Fast cube root approximation using integer division and Newton-Raphson
+static inline double f_crt(double x) {
+    if (x == 0.0){return 0.0;}
+    int sign = 1;
+    if (x < 0) {sign = -1; x = -x;}
+    union {double d; int64_t i;} u;
+
+    u.d = x;
+    const int64_t magic = 0x2a9f84fe36e9aa00;
+    u.i = u.i / 3 + magic; // Initial guess
+    double y = u.d;
+    return sign * (2.0 * y + x / (y * y)) * (1.0/3.0);
+}
+
 double costheta(particle* p1, particle* p2){
-    double p2_1 = p1 -> p2();
-    double p2_2 = p2 -> p2();  
     double pxx  = p1 -> px * p2 -> px + p1 -> py * p2 -> py + p1 -> pz * p2 -> pz; 
-    return pxx / pow(p2_1 * p2_2, 0.5); 
+    return pxx / pow(p1 -> p2() * p2 -> p2(), 0.5); 
 }
 double sintheta(particle* p1, particle* p2){return pow(1 - pow(costheta(p1, p2), 2), 0.5);}
 
@@ -49,55 +75,44 @@ double** arith(double** v1, double** v2, double s){
 }
 
 
-
-
-
-
-
-
-
-
 double abcd(double a, double b, double c, double d){return a*d - b*c;}
+double m_00(double** M){return M[1][1] * M[2][2] - M[1][2] * M[2][1];}
+double m_01(double** M){return M[1][0] * M[2][2] - M[1][2] * M[2][0];}
+double m_02(double** M){return M[1][0] * M[2][1] - M[1][1] * M[2][0];}
+double m_10(double** M){return M[0][1] * M[2][2] - M[0][2] * M[2][1];}
+double m_11(double** M){return M[0][0] * M[2][2] - M[0][2] * M[2][0];}
+double m_12(double** M){return M[0][0] * M[2][1] - M[0][1] * M[2][0];}
+double m_20(double** M){return M[0][1] * M[1][2] - M[0][2] * M[1][1];}
+double m_21(double** M){return M[0][0] * M[1][2] - M[0][2] * M[1][0];}
+double m_22(double** M){return M[0][0] * M[1][1] - M[0][1] * M[1][0];}
 
 double** cof(double** v){
     double** ov = matrix(3, 3); 
-    ov[0][0] =  abcd(v[1][1], v[1][2], v[2][1], v[2][2]); 
-    ov[0][1] = -abcd(v[1][0], v[1][2], v[2][0], v[2][2]); 
-    ov[0][2] =  abcd(v[1][0], v[1][1], v[2][0], v[2][1]);
-
-    ov[1][0] = -abcd(v[0][1], v[0][2], v[2][1], v[2][2]); 
-    ov[1][1] =  abcd(v[0][0], v[0][2], v[2][0], v[2][2]); 
-    ov[1][2] = -abcd(v[0][0], v[0][1], v[2][0], v[2][1]); 
-
-    ov[2][0] =  abcd(v[0][1], v[0][2], v[1][1], v[1][2]); 
-    ov[2][1] = -abcd(v[0][0], v[0][2], v[1][0], v[1][2]); 
-    ov[2][2] =  abcd(v[0][0], v[0][1], v[1][0], v[1][1]); 
+    ov[0][0] =  m_00(v); ov[1][0] = -m_10(v); ov[2][0] =  m_20(v);
+    ov[0][1] = -m_01(v); ov[1][1] =  m_11(v); ov[2][1] = -m_21(v);
+    ov[0][2] =  m_02(v); ov[1][2] = -m_12(v); ov[2][2] =  m_22(v);
     return ov; 
 }
 
 double det(double** v){
-    double a =  v[0][0] * abcd(v[1][1], v[1][2], v[2][1], v[2][2]); 
-    double b = -v[0][1] * abcd(v[1][0], v[1][2], v[2][0], v[2][2]); 
-    double c =  v[0][2] * abcd(v[1][0], v[1][1], v[2][0], v[2][1]); 
-    return a + b + c; 
+    return v[0][0] * m_00(v) -v[0][1] * m_01(v) + v[0][2] * m_02(v); 
 }
 
 double** inv(double** v){
     double a =  v[0][0] * abcd(v[1][1], v[1][2], v[2][1], v[2][2]); 
     double b = -v[0][1] * abcd(v[1][0], v[1][2], v[2][0], v[2][2]); 
     double c =  v[0][2] * abcd(v[1][0], v[1][1], v[2][0], v[2][1]); 
-    double det = a + b + c; 
+    double det_ = det(v); //a + b + c; 
     double** o = matrix(3, 3); 
-    if (det == 0){return o;}
-    det = 1.0/det; 
+    if (det_ == 0){return o;}
+    det_ = 1.0/det_; 
 
     double** co = cof(v); 
     double** ct = T(co, 3, 3); 
     for (int x(0); x < 3; ++x){
-        for (int y(0); y < 3; ++y){o[x][y] = ct[x][y]*det;}
+        for (int y(0); y < 3; ++y){o[x][y] = ct[x][y]*det_;}
     }
-    clear(co, 3, 3); 
-    clear(ct, 3, 3); 
+    clear(co, 3, 3); clear(ct, 3, 3); 
     return o; 
 }
 
@@ -140,17 +155,48 @@ void print_(double** mx, int row, int col, int prec, int w){
 }
 
 
+double** solve_cubic(double a, double b, double c, double d){
+    double p     = (3.0 * a * c - b * b) / (3.0 * a * a);
+    double q     = (2.0 * b * b * b - 9.0 * a * b * c + 27.0 * a * a * d) / (27.0 * a * a * a);
+    double delt  = (q * q / 4.0) + (p * p * p / 27.0);
+    const double shift = b / (3.0 * a);
+    const double cb    = 1.0 / 3.0; 
 
+    std::complex<double> root1, root2, root3;
+    std::complex<double> ui = std::complex<double>(0.0, 1.0); 
 
+    if (delt >= 0) {
+        delt = (delt > 0) ? pow(delt, 0.5) : 0.0; 
+        std::complex<double> u = pow(std::complex<double>(-q / 2.0 + delt), cb);
+        std::complex<double> v = pow(std::complex<double>(-q / 2.0 - delt), cb);
+        root1 = u + v;
+        u = u - v; 
 
+        const double rt3   = pow(3.0, 0.5) / 2.0; 
+        root2 = -0.5 * root1 + std::complex<double>(ui * rt3) * u;
+        root3 = -0.5 * root1 - std::complex<double>(ui * rt3) * u;
+    } else { 
+        std::complex<double> r   = pow(-(p * p * p) / 27.0, 0.5);
+        std::complex<double> phi = acos(-q / (2.0 * r));
+        r = 2.0*pow(r, cb); 
+        root1 = r * cos( phi * cb);
+        root2 = r * cos((phi + 2.0 * M_PI) * cb);
+        root3 = r * cos((phi + 4.0 * M_PI) * cb);
+    }
+    root1 = root1 - shift; root2 = root2 - shift; root3 = root3 - shift; 
+    double** eg = matrix(2, 3); 
+    eg[0][0] = root1.real(); eg[0][1] = root2.real(); eg[0][2] = root3.real();
+    eg[1][0] = root1.imag(); eg[1][1] = root2.imag(); eg[1][2] = root3.imag();
+    return eg; 
+}
 
 
 double** find_roots(double a, double b, double c){
-    double s = a/3.0; 
+    double s = a / 3.0; 
     double p = b - a*a / 3.0; 
     double q = c - a*b / 3.0 + (2 * a * a * a) / 27.0; 
     double** sol = matrix(2, 3);
-    if (fabs(p) < 1e-12 &&  fabs(q) < 1e-12){
+    if (fabs(p) < 1e-12 && fabs(q) < 1e-12){
         sol[0][0] = -s; sol[0][1] = -s; sol[0][2] = -s; 
         return sol; 
     }
@@ -168,10 +214,12 @@ double** find_roots(double a, double b, double c){
         sol[1][0] = s1.imag(); sol[1][1] = s2.imag(); sol[1][2] = s3.imag(); 
         return sol; 
     }
-    
-    double u = -q / 2.0 + pow(q*q / 4.0 + p*p*p / 27.0, 0.5); 
-    double f = (fabs(u) < 1e-12) ? 0.0 : pow(u, 1.0/3.0); 
-    std::complex<double> w = (fabs(f) < 1e-12) ? 0.0 : f - p / (3.0*f); 
+   
+
+    std::complex<double> ls = q*q / 4.0 + p*p*p / 27.0; 
+    std::complex<double> u = -q / 2.0 + pow(ls, 0.5); 
+    std::complex<double> f = pow(u, 1.0/3.0); 
+    std::complex<double> w = f - p / (3.0*f); 
     std::complex<double> ds = w*w - 4.0*(w*w + p); 
     std::complex<double> w1 = (-w + pow(ds, 0.5))/2.0 - s; 
     std::complex<double> w2 = (-w - pow(ds, 0.5))/2.0 - s;
@@ -319,9 +367,6 @@ double find_real_eigenvalue(double** M, double* rx){
 }
 
 
-
-
-// Factor degenerate conic
 void multisqrt(double y, double roots[2], int *count) {
     *count = 0;
     if (y < 0) return;
@@ -386,60 +431,74 @@ void factor_degenerate(double** G, double** lines, int* lc, double* q0) {
 }
 
 
+double trace(double** A){return A[0][0] + A[1][1] + A[2][2];}
 
 
-int intersections_ellipse_line(double** ellipse, double* line, double** points, double zero){
+double** get_eigen(double** A){
+    double tr  = -trace(A); 
+    double m11 = A[1][1] * A[2][2] - A[1][2] * A[2][1];
+    double m22 = A[0][0] * A[2][2] - A[0][2] * A[2][0];
+    double m33 = A[0][0] * A[1][1] - A[0][1] * A[1][0];
+    double q   = m11 + m22 + m33; 
+    double delta = -A[0][0] * m11 + A[0][1] * (A[1][0] * A[2][2] - A[1][2] * A[2][0]) - A[0][2] * (A[1][0] * A[2][1] - A[1][1] * A[2][0]);
+
+    double** eig = solve_cubic(1.0, tr, q, delta); 
+    double** eiv = matrix(3, 4); 
+    for (int i(0); i < 3; ++i){
+        if (fabs(eig[1][i]) >= 1e-9){continue;}
+        eiv[i][3] = 1; 
+
+        double B[3][3] = {{0}}; 
+        for (int j(0); j < 3; ++j){ for (int k(0); k < 3; ++k){B[j][k] = A[j][k];}}
+        for (int j(0); j < 3; ++j){ B[j][j] -= eig[0][i];}
+        double r1[3] = {B[0][0], B[0][1], B[0][2]};
+        double r2[3] = {B[1][0], B[1][1], B[1][2]};
+
+        eiv[i][0] = r1[1] * r2[2] - r1[2] * r2[1];
+        eiv[i][1] = r1[2] * r2[0] - r1[0] * r2[2];
+        eiv[i][2] = r1[0] * r2[1] - r1[1] * r2[0];
+
+        double mag = pow(eiv[i][0]*eiv[i][0] + eiv[i][1]*eiv[i][1] + eiv[i][2]*eiv[i][2], 0.5);
+        if (mag < 1e-9){
+            double r3[3] = {B[2][0], B[2][1], B[2][2]};
+            eiv[i][0] = r1[1] * r3[2] - r1[2] * r3[1];
+            eiv[i][1] = r1[2] * r3[0] - r1[0] * r3[2];
+            eiv[i][2] = r1[0] * r3[1] - r1[1] * r3[0];
+        }
+        mag = pow(eiv[i][0]*eiv[i][0] + eiv[i][1]*eiv[i][1] + eiv[i][2]*eiv[i][2], 0.5);
+        if (mag > 1e-9){eiv[i][0] = eiv[i][0]/mag; eiv[i][1] = eiv[i][1]/mag; eiv[i][2] = eiv[i][2]/mag;}
+    }
+    clear(eig, 2, 3); 
+    return eiv; 
+}
+
+int intersections_ellipse_line(double** ellipse, double* line, double** pts){
     double** C = matrix(3, 3);
     for (int i(0); i < 3; ++i){
         C[0][i] = line[1] * ellipse[2][i] - line[2] * ellipse[1][i];
         C[1][i] = line[2] * ellipse[0][i] - line[0] * ellipse[2][i];
         C[2][i] = line[0] * ellipse[1][i] - line[1] * ellipse[0][i];
     }
+    double** eign = get_eigen(C);
 
-
-    double a = -(C[0][0] + C[1][1] + C[2][2]);
-    double b =   C[0][0] * C[1][1] + C[0][0] * C[2][2] + C[1][1] * C[2][2] 
-               - C[0][1] * C[1][0] - C[0][2] * C[2][0] - C[1][2] * C[2][1];
-
-    double** cf = cof(C); 
-
-    print(cf); 
-
-
-    double** eigenvals = find_roots(a, b, -det(C));
-    print_(eigenvals, 2, 3); 
-
-    int point_count = 0;
-    for (int i(0); i < 3; ++i) {
-        if (fabs(eigenvals[1][i]) > 0){continue;}
-        double vec[3] = {
-            cf[0][0] * eigenvals[0][i] + cf[0][1] + cf[0][2],
-            cf[1][0] + cf[1][1] * eigenvals[0][i] + cf[1][2],
-            cf[2][0] + cf[2][1] + cf[2][2] * eigenvals[0][i]
-        };
-        
-        if (!fabs(vec[2])){continue;}
-        double v[3] = {vec[0]/vec[2], vec[1]/vec[2], 1.0};
-        //double line_val    = dot_product(line, v);
-        //double ellipse_val = dot_product(v, (Vector3){
-        //    ellipse.data[0][0]*v.x + ellipse.data[0][1]*v.y + ellipse.data[0][2]*v.z,
-        //    ellipse.data[1][0]*v.x + ellipse.data[1][1]*v.y + ellipse.data[1][2]*v.z,
-        //    ellipse.data[2][0]*v.x + ellipse.data[2][1]*v.y + ellipse.data[2][2]*v.z
-        //});
-        //double error = line_val*line_val + ellipse_val*ellipse_val;
-        //if (error < zero) {
-        //    points[point_count++] = v;
-        //    if (point_count >= 2) break;
-        //}
+    int pt = 0;
+    clear(C, 3, 3);
+    for (int i(0); i < 3; ++i){
+        if (!eign[i][3] || !eign[i][2]){continue;}
+        double** v = matrix(3, 1); 
+        for (int j(0); j < 3; ++j){v[j][0] = eign[i][j];}
+        double** l1 = dot(&line, v, 1, 3, 3, 1); 
+        double** l2 = dot(ellipse, v, 3, 3, 3, 1);
+        double** lt = T(l2, 3, 1);
+        double** l3 = dot(lt, v, 1, 3, 3, 1); 
+        for (int j(0); j < 3; ++j){pts[pt][j] = eign[i][j]/eign[i][2];}
+        pts[pt][3] = (std::log10(pow(l3[0][0], 2) + pow(l1[0][0], 2)));  
+        clear(l1, 1, 1); clear(l2, 3, 1); clear(lt, 1, 3); clear(l3, 1, 1);
+        pts[pt][4] = 1.0; ++pt; 
     }
-    return point_count;
+    clear(eign, 2, 4); 
+    return pt;
 }
-
-
-
-
-
-
 
 
 void intersection_ellipses(double** A, double** B, double eps){
@@ -454,26 +513,28 @@ void intersection_ellipses(double** A, double** B, double eps){
     double e = 0; 
     if (!find_real_eigenvalue(t, &e)){return;}
     clear(t, 3, 3);   
-  
+ 
     int lc = 0; double q0;  
     double** line = matrix(2, 3); 
     double** G = arith(B_, A_, -e); 
     factor_degenerate(G, line, &lc, &q0); 
     clear(G, 3, 3); 
-  
-    std::cout << "+> " << lc << std::endl;
-    int pc = 0;
+
+    eps = std::log10(eps);  
     double** all_points = matrix(4, 3); 
-    for (int i(0); i < lc; ++i) {
-        double** pts = matrix(2, 3);
-        int count = intersections_ellipse_line(A_, line[i], pts, eps);
-//        for (int j(0); j < count; ++j, ++pc){all_points[pc] = pts[j];}
+    for (int i(0); i < lc; ++i){
+        int lx = 0; 
+        double   sml = 0; 
+        double** pts = matrix(3, 5);
+        std::cout << "+++++++++++++" << std::endl;
+        for (int j(0); j < intersections_ellipse_line(A_, line[i], pts); ++j){
+            if (!pts[j][4] || pts[j][3] > eps){continue;}
+            //bool lf = (!sml || pts[j][3] < sml); 
+            //for (int k(0); k < 3*lf; ++k){all_points[lx][k] = pts[k][k];}
+            //sml = (lf) ? pts[j][3] : sml; lx += lf; 
+        }
+        print_(pts, 3, 5); 
     }
-
-
-
-
-
 }
 
 

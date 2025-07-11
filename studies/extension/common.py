@@ -34,11 +34,9 @@ def Derivative():
 def intersections_ellipse_line(ellipse, line, zero=1e-10):
     """Points of intersection between ellipse and line"""
     _, V = np.linalg.eig(np.cross(line, ellipse).T)
-    print(V)
-    print("___")
     sols = sorted([(
         v.real / v[2].real, np.dot(line, v.real)**2 + np.dot(v.real, ellipse).dot(v.real)**2
-        ) for v in V.T if v[2].real != 0 and not sum(v.imag)], key = lambda k : k[1])[:2]
+        ) for v in V.T if v[2].real != 0 and not sum(v.imag)], key = lambda k : k[1]) #[:2]
     return [s for s, k in sols if k < zero]
 
 def cofactor(A, i, j):
@@ -74,7 +72,6 @@ def intersections_ellipses(A, B, zero = 1e-10):
     e = next(iter([e.real for e in LA.eigvals(t) if not e.imag]))
     lines, q22 = factor_degenerate(B - e * A, zero)
     points = sum([intersections_ellipse_line(A, L, zero) for L in lines], [])
-    exit()
     return points, lines, q22
 
 
