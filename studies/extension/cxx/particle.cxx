@@ -4,6 +4,15 @@ particle::particle(double px, double py, double pz, double e){
     this -> px = px; this -> py = py;
     this -> pz = pz; this -> e  = e; 
 }
+
+particle::particle(double* p_){
+    this -> px = p_[0]; 
+    this -> py = p_[1]; 
+    this -> pz = p_[2]; 
+    this -> e  = this -> p(); 
+}
+
+
 double particle::p(){return pow(this -> p2(), 0.5);}
 double particle::p2(){return pow(this -> px, 2) + pow(this -> py, 2) + pow(this -> pz, 2);}
 double particle::m2(){return pow(this -> e, 2) - this -> p2();}

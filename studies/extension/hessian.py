@@ -6,6 +6,40 @@ from common import NuSol, UnitCircle, intersections_ellipses, figs, plot_ellipse
 
 def analytic_neutrino_momentum(b, mu, mT, mW): return NuSol(b, mu, mW**2, mT**2)
 
+
+
+import math
+
+def cross(a, b):
+    """Compute the cross product of two 3D vectors."""
+    return [
+        a[1] * b[2] - a[2] * b[1],
+        a[2] * b[0] - a[0] * b[2],
+        a[0] * b[1] - a[1] * b[0]
+    ]
+
+def dot(a, b):
+    """Compute the dot product of two vectors."""
+    return sum(ai * bi for ai, bi in zip(a, b))
+
+def norm_sq(a):
+    """Compute the squared norm of a vector."""
+    return dot(a, a)
+
+def solve_2d_system(A, b, tol=1e-8):
+    """
+    Solve the 2D system: A[0][0]*x + A[0][1]*y = b[0]
+                         A[1][0]*x + A[1][1]*y = b[1]
+    Returns (x, y) if successful, None otherwise.
+    """
+    det = A[0][0] * A[1][1] - A[0][1] * A[1][0]
+    if abs(det) < tol:
+        return None
+    x = (A[1][1] * b[0] - A[0][1] * b[1]) / det
+    y = (A[0][0] * b[1] - A[1][0] * b[0]) / det
+    return x, y
+
+
 class LorentzVector:
     def __init__(self, px, py, pz, E = None):
         self.px = px
@@ -51,27 +85,26 @@ def objective(masses):
     #met = (nu1T+nu2T)
     ms = [142.703747, 76.765395, 164.548815, 93.568769]
 
+    _alpha = np.radians(0)
+    _gamma = np.radians(0)
+    _beta  = np.radians(0)
 
-    #_alpha = np.radians(0)
-    #_gamma = np.radians(0)
-    #_beta  = np.radians(0)
-
-    #ca, sa = np.cos(_alpha), np.sin(_alpha)
-    #cg, sg = np.cos(_gamma), np.sin(_gamma)
-    #cb, sb = np.cos(_beta) , np.sin(_beta)
+    ca, sa = np.cos(_alpha), np.sin(_alpha)
+    cg, sg = np.cos(_gamma), np.sin(_gamma)
+    cb, sb = np.cos(_beta) , np.sin(_beta)
     
-    #R = np.array([
-    #    [cb*cg, sa*sb*cg - ca*sg, ca*sb*cg + sa*sg], 
-    #    [cb*sg, sa*sb*sg + ca*cg, ca*sb*sg - sa*cg], 
-    #    [-sb  , sa*cb           , ca*cb           ]
-    #])
+    R = np.array([
+        [cb*cg, sa*sb*cg - ca*sg, ca*sb*cg + sa*sg], 
+        [cb*sg, sa*sb*sg + ca*cg, ca*sb*sg - sa*cg], 
+        [-sb  , sa*cb           , ca*cb           ]
+    ])
+    S = np.outer([met[0], met[1], met[2]], [0, 0, 1]) - UnitCircle()
+    S = R.T.dot(S).dot(R)
+    print(S)
+    exit()
 
-  #  S = R.dot(
-    S = np.outer([met[0], met[1], met[2]], [0, 0, 1]) - UnitCircle() #)
     #sol1 = analytic_neutrino_momentum(b1, mu1, mt1, mw1)#.OptimizeMT
     #sol2 = analytic_neutrino_momentum(b2, mu2, mt2, mw2)#.OptimizeMT
-
-
 
 
     #dist = (sol1.ellipse_property["centroid"] - sol2.ellipse_property["centroid"])
@@ -80,7 +113,7 @@ def objective(masses):
     sol1 = analytic_neutrino_momentum(b1, mu1, ms[0], ms[1])
     sol2 = analytic_neutrino_momentum(b2, mu2, ms[2], ms[3])
     fv, l, q22 = intersections_ellipses(sol1.N, S.T.dot(sol2.N).dot(S))
-    exit()
+    fv_ = [S.dot(sol) for sol in fv]
 
     #ax = figs()
     #plot_ellipse(sol1.H , ax, "Ellipse 1", "red" , "-.")
@@ -92,23 +125,64 @@ def objective(masses):
 
     f1, n1, p1 = sol1.H, sol1.N, sol1.H_perp
     f2, n2, p2 = sol2.H, sol2.N, sol2.H_perp
-    dtx1 = np.array([np.cos(sol1.angle_x), np.sin(sol1.angle_y), 1])*np.cos(sol1.angle_z)
-    dtx2 = np.array([np.cos(sol2.angle_x), np.sin(sol2.angle_y), 1])*np.cos(sol2.angle_z)
+   # dtx1 = np.array([np.cos(sol1.angle_x), np.sin(sol1.angle_y), 1])*np.cos(sol1.angle_z)
+   # dtx2 = np.array([np.cos(sol2.angle_x), np.sin(sol2.angle_y), 1])*np.cos(sol2.angle_z)
 
 
+    #nu1T = np.array([51.19149113841701,  -8.428439462306061, -7.283688512367609])
+    #nu2T = np.array([78.7694069553391 , -55.373725298361485, -57.24324147281612])
 
-    th1, th2 = None, None
-    v, v_, d = [], [], []
-    angles = sol1.get_intersection_angle(p1, p2)
-    for sol in angles:
-        #v.append( np.array(_make_ellipse(f1, sol[0])))
-        #v_.append(np.array(_make_ellipse(f2, sol[1])))
-        d.append(sol1.dist2(sol2, sol[0], sol[1]))
+    #angles = sol1.get_intersection_angle(p1, p2)
+    #print(angles)
+
+    es = [p1, p2]
+    from scipy.optimize import leastsq
+    def nus(ts): return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts))
+    def residuals(params): return sum(nus(params), met)[:2]
+    ts, _ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
+    v, v_ = [[i] for i in nus(ts)]
+    fv += v; fv_ += v_; 
+
+    data = []
+    for i,j in zip(fv, fv_):
+        h1, h2 = np.linalg.inv(f1).dot(i), np.linalg.inv(f2).dot(j)
+        t1, t2 = np.arctan2(h1[1], h1[0]), np.atan2(h2[1], h2[0])
+        h1, h2 = _make_ellipse(f1, t1)   , _make_ellipse(f2, t2)
+        data += [sum((h1 - h2)**2)**0.5]
+
+    K, K_ = [ss.H.dot(np.linalg.inv(ss.H_perp)) for ss in [sol1, sol2]]
+    idx = data.index(min(data))
+    print(np.array(data))
+    nu1   = [K.dot(s)   for s  in fv ][idx]
+    nu2   = [K_.dot(s_) for s_ in fv_][idx]
+
+    print(np.array(nu1))
+    print(np.array(nu2))
+    exit()
+
+    #th1, th2 = None, None
+    #v, v_, d = [], [], []
+    #angles = sol1.get_intersection_angle(p1, p2)
+    #for sol in angles:
+    #    v.append( np.array(_make_ellipse(p1, sol[0])))
+    #    v_.append(np.array(_make_ellipse(p2, sol[1])))
+    #    d.append(sol1.dist2(sol2, sol[0], sol[1]))
+
+    #print(angles)
+    #print("----")
+    #print(np.array(v ))
+    #print("----")
+    #print(np.array(v_))
+    #print("----")
+    exit()
+
+    print(d)
 
     th1, th2 = angles[d.index(min(d))] if len(angles) else (0, 0)
     dist = np.array([sol1.dist2(sol2, th1, th2)])
     dz = np.array(list(sol1.dD_dM(sol2, th1, th2)))
     print(dz, th1, th2)
+    exit()
 
     fv, l, q22 = intersections_ellipses(n1, S.T.dot(n2).dot(S))
     fv_ = [S.dot(sol) for sol in fv]

@@ -36,8 +36,8 @@ def intersections_ellipse_line(ellipse, line, zero=1e-10):
     _, V = np.linalg.eig(np.cross(line, ellipse).T)
     sols = sorted([(
         v.real / v[2].real, np.dot(line, v.real)**2 + np.dot(v.real, ellipse).dot(v.real)**2
-        ) for v in V.T if v[2].real != 0 and not sum(v.imag)], key = lambda k : k[1]) #[:2]
-    return [s for s, k in sols if k < zero]
+        ) for v in V.T if v[2].real != 0 and not sum(v.imag)], key = lambda k : k[1])
+    return [s for s, k in sols if k < zero] #[:2]
 
 def cofactor(A, i, j):
     """Cofactor[i,j] of 3x3 matrix A"""
@@ -71,7 +71,7 @@ def intersections_ellipses(A, B, zero = 1e-10):
     t = LA.inv(A).dot(B)
     e = next(iter([e.real for e in LA.eigvals(t) if not e.imag]))
     lines, q22 = factor_degenerate(B - e * A, zero)
-    points = sum([intersections_ellipse_line(A, L, zero) for L in lines], [])
+    points = sum([intersections_ellipse_line(A, L, zero*1e12) for L in lines], [])
     return points, lines, q22
 
 

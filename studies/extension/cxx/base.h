@@ -5,7 +5,7 @@
 
 class nusol {
     public:
-        nusol(particle* b, particle* l, double mW, double mT); 
+        nusol(particle* b, particle* l, double mW, double mT, bool delP); 
         double Sx(); 
         double dSx_dmW();
 
@@ -30,8 +30,11 @@ class nusol {
         double dy1_dmW(); 
         double dy1_dmT(); 
 
+        void r_mW(double* mw1, double* mw2); 
         void get_mw(double* v_crit, double* v_infl); 
         void get_mt(double* v_crit, double* v_infl); 
+        void update(double mt, double mw);
+        void flush(); 
 
         double** N(); 
         double** H(); 
@@ -39,6 +42,7 @@ class nusol {
         double** H_tilde();
         double** dH_dmW();
         double** dH_dmT(); 
+        double** K(); 
 
         double** R_T();
         void Z2_coeff(double* A, double* B, double* C); 
@@ -47,10 +51,12 @@ class nusol {
     private:
         particle* b = nullptr;
         particle* l = nullptr; 
+
         double mw = 0;
         double mt = 0; 
         double _s = 0; 
         double _c = 0; 
+        bool delp = true; 
 
         double** h = nullptr; 
         double** r_t = nullptr;  
@@ -59,6 +65,7 @@ class nusol {
         double** h_tilde = nullptr;
         double** h_perp  = nullptr; 
         double** n_matrx = nullptr; 
+        double** k = nullptr; 
 
 }; 
 

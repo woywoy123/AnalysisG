@@ -8,6 +8,8 @@
 class particle {
     public:
         particle(double px, double py, double pz, double e); 
+        particle(double* p); 
+
         ~particle();
         double p(); 
         double p2(); 
@@ -22,6 +24,7 @@ class particle {
         double py = 0;
         double pz = 0;
         double e  = 0; 
+        double d  = -1; 
         particle* clone(); 
 }; 
 
