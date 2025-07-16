@@ -2,6 +2,7 @@
 #define H_BASE
 #include "particle.h"
 #include "matrix.h"
+#include "mtx.h"
 
 class nusol {
     public:
@@ -36,16 +37,18 @@ class nusol {
         void update(double mt, double mw);
         void flush(); 
 
-        double** N(); 
-        double** H(); 
-        double** H_perp(); 
-        double** H_tilde();
-        double** dH_dmW();
-        double** dH_dmT(); 
-        double** K(); 
+        mtx* N(); 
+        mtx* H(); 
+        mtx* H_perp(); 
+        mtx* H_tilde();
+        mtx* dH_dmW();
+        mtx* dH_dmT(); 
+        mtx* K(); 
+        mtx* R_T();
 
-        double** R_T();
         void Z2_coeff(double* A, double* B, double* C); 
+
+        void misc(); 
         ~nusol();  
 
     private:
@@ -58,15 +61,14 @@ class nusol {
         double _c = 0; 
         bool delp = true; 
 
-        double** h = nullptr; 
-        double** r_t = nullptr;  
-        double** dw_H = nullptr;
-        double** dt_H = nullptr;
-        double** h_tilde = nullptr;
-        double** h_perp  = nullptr; 
-        double** n_matrx = nullptr; 
-        double** k = nullptr; 
-
+        mtx* h_tilde = nullptr; 
+        mtx* h       = nullptr; 
+        mtx* r_t     = nullptr; 
+        mtx* dw_H    = nullptr; 
+        mtx* dt_H    = nullptr; 
+        mtx* h_perp  = nullptr; 
+        mtx* n_matrx = nullptr; 
+        mtx* k       = nullptr; 
 }; 
 
 #endif

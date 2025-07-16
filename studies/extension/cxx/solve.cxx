@@ -1,17 +1,9 @@
 #include <stdio.h>
 #include <math.h>
 #include <iostream>
-#include "tools.h"
-#include "matrix.h"
 
 #define MAX_SOLUTIONS 4
 #define TOLERANCE 1e-8
-
-
-
-
-
-
 
 #include <stdio.h>
 #include <math.h>
@@ -98,7 +90,7 @@ int solve_quartic(double a, double b, double c, double d, double e, double roots
         }
         return n;
     }
-    
+   
     double cubic_roots[3];
     int nc = solve_cubic(1.0, 2*p, p*p - 4*r, -q*q, cubic_roots);
     int n = 0;
@@ -122,7 +114,6 @@ int solve_quartic(double a, double b, double c, double d, double e, double roots
         for (int j = 0; j < n1; j++) y_roots[n++] = quad1_roots[j];
         for (int j = 0; j < n2; j++) y_roots[n++] = quad2_roots[j];
     }
-    
     int valid_roots = 0;
     for (int i = 0; i < n; i++) {
         roots[valid_roots++] = y_roots[i] - b3 / 4;
@@ -173,13 +164,14 @@ void solve_t1_t2(
     double a2 = 2 * A * C + B * B + E * E - D * D;
     double a1 = 2 * (B * C - D * E);
     double a0 = C * C - E * E;
-    
+   
     double U_roots[4];
     int nU = solve_quartic(a4, a3, a2, a1, a0, U_roots);
     int sol_count = 0;
     
     for (int i = 0; i < nU; i++) {
         double U = U_roots[i];
+        std::cout << U << std::endl;
         if (U < -1 - TOLERANCE || U > 1 + TOLERANCE) continue;
         if (U < -1) U = -1;
         if (U > 1) U = 1;
@@ -246,48 +238,41 @@ void test_case(double py, int expected) {
     double t1_sol[4], t2_sol[4];
     int num_sol;
 
+    double MET[2][2] = {{0}};
+    MET[0][0] =  106.435841000000; 
+    MET[0][1] = -141.293331000000; 
 
-    double** MET = matrix(1, 3);
-    MET[0][0] = 0.0;
-    MET[0][1] = py; 
+    double H1[3][3] = {{0}};
+    H1[0][0] = -127.937382333990; H1[0][1] = -186.876109104662; H1[0][2] = -122.897649651631; 
+    H1[1][0] = -347.113584765497; H1[1][1] =  55.131753793220 ; H1[1][2] = -355.655876974117; 
 
-    double** H1 = matrix(3, 3);
-    H1[0][0] = 1.0; H1[0][1] = 0.0; H1[0][2] = 0.0; 
-    H1[1][0] = 0.0; H1[1][1] = 1.0; H1[1][2] = 0.0; 
-
-    double** H2 = matrix(3, 3); 
-    H2[0][0] = 2.0; H2[0][1] = 0.0; H2[0][2] = 0.0; 
-    H2[1][0] = 0.0; H2[1][1] = 0.5; H2[1][2] = 0.0;
+    double H2[3][3] = {{0}}; 
+    H2[0][0] =  63.165309472213 ; H2[0][1] = -45.299561107755; H2[0][2] =  59.021273671266 ; 
+    H2[1][0] = -185.929103473096; H2[1][1] = -40.467983180422; H2[1][2] = -176.446029370150;
     std::cout << "-----------------------------" << std::endl; 
 
+
     solve_t1_t2(
-            0, py, 
+            MET[0][0], MET[0][1], 
             H1[0][0], H1[0][1], H1[0][2], H1[1][0], H1[1][1], H1[1][2], 
             H2[0][0], H2[0][1], H2[0][2], H2[1][0], H2[1][1], H2[1][2],
             t1_sol, t2_sol, &num_sol
     );
     printf("Orignal: %d \n", num_sol);
     for (int i = 0; i < num_sol; i++) {printf("Solution %d: t1 = %.6f rad, t2 = %.6f rad\n", i+1, t1_sol[i], t2_sol[i]);}
-
-    std::cout << "-----------------------------" << std::endl; 
-    double** solx = get_intersection_angle(H1, H2, MET, &num_sol);
-    printf("Reimplement: %d \n", num_sol);
-
-   for (int i = 0; i < num_sol; i++) {
-       double cos_t1 = cos(solx[i][0]);
-       double sin_t1 = sin(solx[i][0]);
-       double cos_t2 = cos(solx[i][1]);
-       double sin_t2 = sin(solx[i][1]);
-       
-       // Verify original equations
-       double eq1 = -0  + 1*cos_t1 + 0*sin_t1 + 0 + 2*cos_t2 +   0*sin_t2 + 0;
-       double eq2 = -py + 0*cos_t1 + 1*sin_t1 + 0 + 0*cos_t2 + 0.5*sin_t2 + 0;
-       printf("  Solution %d: t1 = %7.4f, t2 = %7.4f, Residues: (%.2e, %.2e)\n", i+1, solx[i][0], solx[i][1], fabs(eq1), fabs(eq2));
-   }
     std::cout << "===============" << std::endl;
+    abort(); 
 }
 
 int main() {
+    double cubic_roots[3];
+    int nc = solve_cubic(1, 8.67362e-19, 5.81954e-05, -2.11758e-22, cubic_roots);
+    std::cout << cubic_roots[0] << " | " << cubic_roots[1] << " | " << cubic_roots[2] << std::endl;    
+    abort(); 
+
+
+
+
     test_case(2.0, 0);   // 0 solutions
     test_case(1.5, 1);   // 1 solution
     test_case(1.0, 2);   // 2 solutions

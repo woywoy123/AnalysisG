@@ -34,8 +34,9 @@ class nunu
 
 
     private:
-        int intersection(double*** v, double*** v_, double metx, double mety, double metz); 
-        int angle_cross( double*** v, double*** v_, double metx, double mety, double metz);  
+        int intersection(mtx** v, mtx** v_, double metx, double mety, double metz); 
+        int angle_cross( mtx** v, mtx** v_, double metx, double mety, double metz);  
+
         void make_neutrinos(double** v, double** v_, double* d_, double* agl); 
         particle** make_particle(double** v, double** d, int lx);
 

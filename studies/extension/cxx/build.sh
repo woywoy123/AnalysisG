@@ -4,6 +4,7 @@ rm -r *.gch
 rm a.out
 
 g++ -Wall -g \
+    mtx.h mtx.cxx \
     nunu.h nunu.cxx   \
     base.h base.cxx   \
     particle.h particle.cxx   \
@@ -12,7 +13,8 @@ g++ -Wall -g \
     lm.h lm.cxx \
     main.cxx 
 
-./a.out 
+./a.out
+#valgrind --leak-check=yes --track-origins=yes --show-leak-kinds=all ./a.out 
 
 #rm -r CMakeFiles
 #rm CMakeCache.txt

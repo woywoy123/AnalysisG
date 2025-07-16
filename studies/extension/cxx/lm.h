@@ -6,7 +6,7 @@ class LevenbergMarquardt
 {
     public:
         LevenbergMarquardt(nunu* nux, double** mx, double l0, double lMx, double lMn, long mxiter); 
-        double loss(double* param, int lx);
+        double loss(double** param, int lx);
         double** jacobian(double** param); 
 
         void optimize(); 

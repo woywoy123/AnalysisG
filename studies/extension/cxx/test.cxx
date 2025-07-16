@@ -62,9 +62,9 @@ void print_vector(const Vector3* v, const char* title) {
 
 int main() {
     Matrix3x3 A = {{
-            {-0.010541079294, -0.003615126832, -0.218163369825},
-            { 0.017106635688,  0.005761417855,  0.337718979587},
-            {-0.000158093376, -0.000002242528,  0.004779661439}
+            { 1.01957185e-02,  6.97381504e-03, -8.87101492e-01},
+            {-3.00361005e-02, -7.25096319e-03,  2.67903963e+00},
+            { 3.46070529e-05,  3.70918000e-05, -2.94475530e-03}
     }};
 
     printf("Original Matrix A:\n");
@@ -79,19 +79,25 @@ int main() {
                                        - A.data[0][2] * (A.data[1][0] * A.data[2][1] - A.data[1][1] * A.data[2][0]);
 
 
-    printf("Characteristic Equation:\nλ³ + (%.6f)λ² + (%.6f)λ + (%.6f) = 0\n\n", p, q, r);
+    printf("Characteristic Equation:\nλ³ + (%.18f)λ² + (%.18f)λ + (%.18f) = 0\n\n", p, q, r);
     CVector3 eigenvalues;
-    solve_cubic(1.0, p, q, r, &eigenvalues);
+    solve_cubic(1, 8.67362e-19, 5.81954e-05, -2.11758e-22, &eigenvalues); 
+
+
+
+    //solve_cubic(1.0, p, q, r, &eigenvalues);
     print_cvector(&eigenvalues, "Eigenvalues (λ)");
 
     for (int i = 0; i < 3; ++i) {
+        std::cout << eigenvalues.data[i] << std::endl;
+        continue;
         if (fabs(eigenvalues.data[i].imag()) < 1e-9) {
             Vector3 eigenvector;
             find_eigenvector(&A, eigenvalues.data[i].real(), &eigenvector);
             normalize_vector(&eigenvector);
 
             char title[50];
-            sprintf(title, "Eigenvector for λ = %.6f", eigenvalues.data[i].real());
+            sprintf(title, "Eigenvector for λ = %.18f", eigenvalues.data[i].real());
             print_vector(&eigenvector, title);
         }
     }
@@ -140,6 +146,10 @@ void find_eigenvector(const Matrix3x3* A, std::complex<double> eigenvalue, Vecto
     Matrix3x3 B; // B = A - λI
     for(int i = 0; i < 3; i++) {for(int j = 0; j < 3; j++) {B.data[i][j] = A->data[i][j];}}
     for(int i = 0; i < 3; i++) {B.data[i][i] -= eigenvalue.real();}
+
+    std::cout << eigenvalue << std::endl; 
+
+
 
     Vector3 row1 = {B.data[0][0], B.data[0][1], B.data[0][2]};
     Vector3 row2 = {B.data[1][0], B.data[1][1], B.data[1][2]};

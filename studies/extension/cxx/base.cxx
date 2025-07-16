@@ -12,24 +12,24 @@ nusol::nusol(particle* b, particle* l, double mW, double mT, bool delP){
 
 nusol::~nusol(){
     if (this -> delp){delete this -> b; delete this -> l;}
-    if (this -> h      ){clear(this -> h      , 3, 3);}
-    if (this -> r_t    ){clear(this -> r_t    , 3, 3);}
-    if (this -> dw_H   ){clear(this -> dw_H   , 3, 3);}
-    if (this -> dt_H   ){clear(this -> dt_H   , 3, 3);}
-    if (this -> h_perp ){clear(this -> h_perp , 3, 3);}
-    if (this -> h_tilde){clear(this -> h_tilde, 3, 3);}
-    if (this -> n_matrx){clear(this -> n_matrx, 3, 3);}
-    if (this -> k      ){clear(this -> k      , 3, 3);}
+    if (this -> h      ){delete this -> h;}
+    if (this -> r_t    ){delete this -> r_t;}
+    if (this -> dw_H   ){delete this -> dw_H;}
+    if (this -> dt_H   ){delete this -> dt_H;}
+    if (this -> h_perp ){delete this -> h_perp;}
+    if (this -> h_tilde){delete this -> h_tilde;}
+    if (this -> n_matrx){delete this -> n_matrx;}
+    if (this -> k      ){delete this -> k;}
 }
 
 void nusol::flush(){
-    if (this -> h      ){clear(this -> h      , 3, 3);}
-    if (this -> dw_H   ){clear(this -> dw_H   , 3, 3);}
-    if (this -> dt_H   ){clear(this -> dt_H   , 3, 3);}
-    if (this -> h_perp ){clear(this -> h_perp , 3, 3);}
-    if (this -> h_tilde){clear(this -> h_tilde, 3, 3);}
-    if (this -> n_matrx){clear(this -> n_matrx, 3, 3);}
-    if (this -> k      ){clear(this -> k      , 3, 3);}
+    if (this -> h      ){delete this -> h;}
+    if (this -> dw_H   ){delete this -> dw_H;}
+    if (this -> dt_H   ){delete this -> dt_H;}
+    if (this -> h_perp ){delete this -> h_perp;}
+    if (this -> h_tilde){delete this -> h_tilde;}
+    if (this -> n_matrx){delete this -> n_matrx;}
+    if (this -> k      ){delete this -> k;}
     this -> h       = nullptr; 
     this -> dw_H    = nullptr; 
     this -> dt_H    = nullptr; 
@@ -39,42 +39,95 @@ void nusol::flush(){
     this -> k       = nullptr; 
 }
 
-void nusol::update(double mt, double mw){
-    this -> mw = mw; 
-    this -> mt = mt; 
+void nusol::update(double mt_, double mw_){
+    if (mw_){this -> mw = mw_;} 
+    if (mt_){this -> mt = mt_;}
+    this -> flush(); 
 }
 
-double** nusol::R_T(){  
+
+void nusol::misc(){
+    std::cout << "--------- Neutrino ------------" << std::endl;
+//    std::cout << "Sx:      " << this -> Sx() << std::endl;
+//    std::cout << "dSx_dmW: " << this -> dSx_dmW() << std::endl;
+//    std::cout << "Sy:      " << this -> Sy() << std::endl;         
+//    std::cout << "dSy_dmW: " << this -> dSy_dmW() << std::endl;  
+//    std::cout << "dSy_dmT: " << this -> dSy_dmT() << std::endl;  
+//    std::cout << "w:       " << this -> w() << std::endl;        
+//    std::cout << "w2:      " << this -> w2() << std::endl;       
+//    std::cout << "om2:     " << this -> om2() << std::endl;      
+//    std::cout << "Z:       " << this -> Z() << std::endl;        
+//    std::cout << "Z2:      " << this -> Z2() << std::endl;       
+//    std::cout << "dZ_dmT:  " << this -> dZ_dmT() << std::endl;   
+//    std::cout << "dZ_dmW:  " << this -> dZ_dmW() << std::endl;   
+//    std::cout << "x1:      " << this -> x1() << std::endl;       
+//    std::cout << "dx1_dmW: " << this -> dx1_dmW() << std::endl;  
+//    std::cout << "dx1_dmT: " << this -> dx1_dmT() << std::endl;  
+//    std::cout << "y1:      " << this -> y1() << std::endl;       
+//    std::cout << "dy1_dmW: " << this -> dy1_dmW() << std::endl;  
+//    std::cout << "dy1_dmT: " << this -> dy1_dmT() << std::endl;  
+//
+    double mw1, mw2; 
+    this -> r_mW(&mw1, &mw2); 
+    std::cout << "mW root: " << mw1 << " " << mw2 << std::endl; 
+
+    this -> get_mw(&mw1, &mw2); 
+    std::cout << "mW derivative = 0: " << mw1 << " " << mw2 << std::endl; 
+
+    this -> get_mt(&mw1, &mw2); 
+    std::cout << "mT derivative = 0: " << mw1 << " " << mw2 << std::endl; 
+
+    double A, B, C; 
+    this -> Z2_coeff(&A, &B, &C); 
+    std::cout << "Z2 A: " << A << " B: " << B << " C: " << C << std::endl; 
+
+    std::cout << "N" << std::endl;
+    this -> N() -> print(); 
+
+    std::cout << "H" << std::endl; 
+    this -> H() -> print(); 
+
+    std::cout << "H_perp" << std::endl; 
+    this -> H_perp() -> print();    
+
+    std::cout << "H_tilde" << std::endl; 
+    this -> H_tilde() -> print(); 
+
+    std::cout << "dH_dmW" << std::endl; 
+    this -> dH_dmW() -> print();
+
+    std::cout << "dH_dmT" << std::endl; 
+    this -> dH_dmT() -> print(); 
+
+    std::cout << "K" << std::endl; 
+    this -> K() -> print(); 
+
+    std::cout << "RT" << std::endl; 
+    this -> R_T() -> print();
+}
+
+mtx* nusol::R_T(){  
     if (this -> r_t){return this -> r_t;}
     double phi_mu   = this -> l -> phi(); 
     double theta_mu = this -> l -> theta();
+    mtx rz  = mtx(3, 3).Rz(-phi_mu); 
+    mtx rzt = rz.T(); 
+    mtx ry  = mtx(3, 3).Ry(0.5*M_PI - theta_mu); 
+    mtx ryt = ry.T(); 
 
-    double** rz  = Rz(-phi_mu); 
-    double** rzt = T(rz); 
+    mtx bv = mtx(3, 1); 
+    bv._m[0][0] = this -> b -> px;
+    bv._m[1][0] = this -> b -> py;
+    bv._m[2][0] = this -> b -> pz; 
 
-    double** ry  = Ry(0.5*M_PI - theta_mu); 
-    double** ryt = T(ry); 
+    mtx vz = rz.dot(bv); 
+    mtx vy = ry.dot(vz); 
+    double  psi = -atan2(vy._m[2][0], vy._m[1][0]); 
 
-    double** bv = matrix(3, 1); 
-    bv[0][0] = this -> b -> px;
-    bv[1][0] = this -> b -> py;
-    bv[2][0] = this -> b -> pz; 
-
-    double** vz = dot(rz, bv, true, 3, 3, 3, 1); 
-    double** vy = dot(ry, vz, true, 3, 3, 3, 1);
-    double  psi = -atan2(vy[2][0], vy[1][0]); 
-    clear(vy, 3, 1); clear(bv, 3, 1); clear(vz, 3, 1); 
-
-    double** rx  = Rx(psi); 
-    double** rxt = T(rx); 
-    clear(rx, 3, 3); 
-
-    double** rxy = dot(ryt, rxt, true); 
-    double** ryz = dot(rzt, rxy, true);  
-    clear(rxt, 3, 3); 
-    clear(rxy, 3, 3);
-    this -> r_t = ryz; 
-    return ryz; 
+    mtx rx  = mtx(3, 3).Rx(psi); 
+    mtx rxt = rzt.dot(ryt.dot(rx.T()));
+    this -> r_t = new mtx(rxt); 
+    return this -> r_t; 
 }
 
 double nusol::Sx(){
@@ -115,7 +168,7 @@ double nusol::w2(){
 }
 
 double nusol::om2(){
-    return pow(this -> w(), 2) + 1 - pow(this -> l -> beta(), 2);
+    return this -> w2() + 1 - this -> l -> beta2();
 }
 
 double nusol::x1(){
@@ -149,8 +202,6 @@ double nusol::dy1_dmT(){
 }
 
 
-
-
 void nusol::Z2_coeff(double* A, double* B, double* C){
     double m2_m   = this -> l -> m2(); 
     double beta_m = this -> l -> beta();
@@ -174,7 +225,9 @@ double nusol::Z2(){
 
 double nusol::Z(){
     double z  = this -> Z2(); 
-    return (z > 0) ? pow(z, 0.5) : -pow(fabs(z), 0.5); 
+    z = (z > 0) ? pow(z, 0.5) : -pow(fabs(z), 0.5); 
+    z = (z) ? z : 1;
+    return z; 
 }
 
 
@@ -197,9 +250,13 @@ void nusol::r_mW(double* mw1, double* mw2){
     double A, B, C; 
     this -> Z2_coeff(&A, &B, &C); 
     double dsc = B*B - 4*A*C;  
+
     if (dsc < 0){return;}
-    *mw1 = sx_w(-B + pow(dsc, 0.5)); 
-    *mw2 = sx_w(-B - pow(dsc, 0.5)); 
+    double _mw1 = sx_w((-B + pow(dsc, 0.5))/(2*A)); 
+    double _mw2 = sx_w((-B - pow(dsc, 0.5))/(2*A)); 
+    *mw1 = (_mw1 < 0) ? 0 : pow(_mw1, 0.5); 
+    *mw2 = (_mw2 < 0) ? 0 : pow(_mw2, 0.5); 
+
 }
 
 double nusol::dZ_dmT(){
@@ -219,79 +276,82 @@ double nusol::dZ_dmT(){
     return (dB*sx + dC)/(2 * (z + (z == 0))); 
 }
 
-double** nusol::H(){
+mtx* nusol::H(){
     if (this -> h){return this -> h;}
-    this -> h = dot(this -> R_T(), this -> H_tilde(), 3, 3, 3, 3); 
+    mtx h = this -> H_tilde() -> copy(); 
+    mtx m = this -> R_T() -> dot(h); 
+    this -> h = new mtx(&m); 
     return this -> h; 
 }
 
-double** nusol::H_tilde(){
+mtx* nusol::H_tilde(){
     if (this -> h_tilde){return this -> h_tilde;}
     double z = this -> Z(); 
-    double** _matrix = matrix(3, 3);     
-    _matrix[0][0] = z / pow(this -> om2(), 0.5); 
-    _matrix[1][0] = this -> w() * z / pow(this -> om2(), 0.5); 
-    _matrix[2][1] = z; 
-    _matrix[0][2] = this -> x1() - this -> l -> p(); 
-    _matrix[1][2] = this -> y1(); 
-    this -> h_tilde = _matrix; 
+    this -> h_tilde = new mtx(3, 3); 
+    this -> h_tilde -> _m[0][0] = z / pow(this -> om2(), 0.5); 
+    this -> h_tilde -> _m[1][0] = this -> w() * z / pow(this -> om2(), 0.5); 
+    this -> h_tilde -> _m[2][1] = z; 
+    this -> h_tilde -> _m[0][2] = this -> x1() - this -> l -> p(); 
+    this -> h_tilde -> _m[1][2] = this -> y1(); 
     return this -> h_tilde; 
 }
 
-double** nusol::H_perp(){
+mtx* nusol::H_perp(){
     if (this -> h_perp){return this -> h_perp;}
-    double** h = this -> H();
-    double** m = matrix(3, 3); 
-    _copy(m[0], h[0], 3); 
-    _copy(m[1], h[1], 3); 
-    m[2][2] = 1.0;  
-    this -> h_perp = m;
+    mtx* h = this -> H(); 
+    this -> h_perp = new mtx(3, 3);
+    this -> h_perp -> copy(h, 0, 3); 
+    this -> h_perp -> copy(h, 1, 3); 
+    this -> h_perp -> _m[2][2] = 1.0; 
     return this -> h_perp; 
 }
 
-double** nusol::N(){
+mtx* nusol::N(){
     if (this -> n_matrx){return this -> n_matrx;}
-    double** inv_n = inv(this -> H_perp()); 
-    double** inv_T = T(inv_n); 
-    double** circl = unit(); 
-
-    double** tmp    = dot(inv_T, circl, true); 
-    this -> n_matrx = dot(tmp, inv_n, true); 
-    clear(inv_n, 3, 3);
-    clear(circl, 3, 3); 
+    mtx inv_n = this -> H_perp() -> inv();
+    mtx inv_t = inv_n.T(); 
+    mtx* circl = unit(); 
+    this -> n_matrx = new mtx(inv_t.dot(*circl).dot(inv_n)); 
+    delete circl;
     return this -> n_matrx; 
 }
 
 
-double** nusol::dH_dmW(){
+mtx* nusol::dH_dmW(){
     if (this -> dw_H){return this -> dw_H;}
     double dmW = this -> dZ_dmW(); 
     double omg = pow(this -> om2(), 0.5); 
-    double** _matrix = matrix(3, 3);
-    _matrix[0][0] = dmW/omg; 
-    _matrix[0][2] = this -> dx1_dmW(); 
-    _matrix[1][0] = this -> w()*dmW/omg; 
-    _matrix[1][2] = this -> dy1_dmW();
-    _matrix[2][1] = dmW; 
-    this -> dw_H = dot(this -> R_T(), _matrix); 
-    clear(_matrix, 3, 3); 
+    mtx dw_H = mtx(3, 3); 
+    dw_H._m[0][0] = dmW/omg; 
+    dw_H._m[0][2] = this -> dx1_dmW(); 
+    dw_H._m[1][0] = this -> w()*dmW/omg; 
+    dw_H._m[1][2] = this -> dy1_dmW();
+    dw_H._m[2][1] = dmW; 
+    this -> dw_H = new mtx(this -> R_T() -> dot(dw_H)); 
     return this -> dw_H; 
 }
 
-double** nusol::dH_dmT(){
+mtx* nusol::dH_dmT(){
     if (this -> dt_H){return this -> dt_H;}
     double dmT = this -> dZ_dmT(); 
     double omg = pow(this -> om2(), 0.5); 
-    double** _matrix = matrix(3, 3);
-    _matrix[0][0] = dmT/omg; 
-    _matrix[0][2] = this -> dx1_dmT(); 
-    _matrix[1][0] = this -> w()*dmT/omg; 
-    _matrix[1][2] = this -> dy1_dmT();
-    _matrix[2][1] = dmT; 
-    this -> dt_H = dot(this -> R_T(), _matrix); 
-    clear(_matrix, 3, 3); 
+    mtx mx = mtx(3, 3); 
+    mx._m[0][0] = dmT/omg; 
+    mx._m[0][2] = this -> dx1_dmT(); 
+    mx._m[1][0] = this -> w()*dmT/omg; 
+    mx._m[1][2] = this -> dy1_dmT();
+    mx._m[2][1] = dmT; 
+    this -> dt_H = new mtx(this -> R_T() -> dot(mx));
     return this -> dt_H; 
 }
+
+mtx* nusol::K(){
+    if (this -> k){return this -> k;}
+    mtx kx = this -> H_perp() -> inv(); 
+    this -> k = new mtx(this -> H() -> dot(this -> H_perp() -> inv())); 
+    return this -> k; 
+}
+
 
 void nusol::get_mw(double* v_crit, double* v_infl){
     double w_ = this -> w(); 
@@ -299,11 +359,12 @@ void nusol::get_mw(double* v_crit, double* v_infl){
 
     double e0 = this -> l -> m2()/(2.0 * this -> l -> e); 
     double e1 = -1.0 / (2.0 * this -> l -> e); 
+    double p0 = (this -> b -> m2() - pow(this -> mt, 2)) / (2.0 * this -> b -> e); 
     double p1 =  1.0 / (2.0 * this -> b -> e * this -> b -> beta()); 
-    double p0 = (this -> b -> m2() - pow(this -> mt, 2)) * p1; 
 
     double sx  =  e0 - this -> l -> m2()/this -> l -> e; 
-    double sy0 = (p0 - this -> _c * sx)/this -> _s; 
+    double sy0 = (p0/this -> b -> beta() - this -> _c * sx)/this -> _s; 
+
     double sy1 = (p1 - this -> _c * e1)/this -> _s; 
     double x0  = sx * (1.0 - 1.0/o2) - (w_ * sy0)/o2;
     double x1  = e1 * (1.0 - 1.0/o2) - (w_ * sy1)/o2;
@@ -321,25 +382,28 @@ void nusol::get_mw(double* v_crit, double* v_infl){
 void nusol::get_mt(double* mt1, double* mt2){
     double sx = this -> Sx(); 
     double w_ = this -> w(); 
+    double s  = this -> _s; 
+    double c  = this -> _c; 
     double o2 = this -> om2(); 
-    double pb = this -> b -> e * this -> b -> beta(); 
-    double a = -1.0 / (2.0 * pb * this -> _s); 
-    double b = ((pow(this -> mw, 2) + this -> b -> m2())/(2.0 * pb) - this -> _c*sx)/this -> _s; 
+    double mw2 = this -> mw * this -> mw; 
+    double pb  = this -> b -> e * this -> b -> beta(); 
+
+    double ms = mw2 + this -> b -> m2();
+    double mk = - 2*this -> b -> p() * sx * (c + (1.0/(1 - this -> l -> beta2())) * w_ * s); 
+    double mT2 = (1.0/3.0)*(ms + mk); 
+
+
+    double a = -1.0 / (2.0 * pb * s); 
+    double b = ((mw2 + this -> b -> m2())/(2.0 * pb) - c*sx)/s; 
     double a1 = -(w_ * a)/o2;
     double b1 = (sx * (o2 - 1) - w_ * b)/o2;
     double b2 = b - w_*sx;
     double A = o2 * pow(a1, 2) - pow(a, 2);
     double B = 2 * o2 * a1 * b1 - 2.0*a*b2; 
     double dzdt = -B / (2.0*A); 
-    double d2zd2t = -B / (6.0*A); 
-    *mt1 =   (dzdt > 0) ?   pow(dzdt, 0.5) : -pow(fabs(dzdt  ), 0.5);
-    *mt2 = (d2zd2t > 0) ? pow(d2zd2t, 0.5) : -pow(fabs(d2zd2t), 0.5);
+    
+    *mt1 = (dzdt > 0) ? pow(dzdt, 0.5) : -pow(fabs(dzdt), 0.5);
+    *mt2 = (mT2 > 0) ?  pow(mT2, 0.5)  : -pow(fabs(mT2), 0.5);
 }
 
-double** nusol::K(){
-    if (this -> k){return this -> k;}
-    double** invx = inv(this -> H_perp()); 
-    this -> k = dot(this -> H(), invx);
-    clear(invx, 3, 3);  
-    return this -> k; 
-}
+

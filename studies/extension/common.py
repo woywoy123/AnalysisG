@@ -33,7 +33,13 @@ def Derivative():
 
 def intersections_ellipse_line(ellipse, line, zero=1e-10):
     """Points of intersection between ellipse and line"""
-    _, V = np.linalg.eig(np.cross(line, ellipse).T)
+    ev, V = np.linalg.eig(np.cross(line, ellipse).T)
+    print(np.cross(line, ellipse).T)
+    print("_____________")
+    print(np.linalg.eigvals(np.cross(line, ellipse).T))
+    print(V) 
+    print(ev)
+    exit()
     sols = sorted([(
         v.real / v[2].real, np.dot(line, v.real)**2 + np.dot(v.real, ellipse).dot(v.real)**2
         ) for v in V.T if v[2].real != 0 and not sum(v.imag)], key = lambda k : k[1])

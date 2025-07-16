@@ -1,7 +1,5 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.optimize import minimize
-from mpl_toolkits.mplot3d import Axes3D
+import math
 
 def compute_z2_coeffs(b, mu, m_T):
     px_b, py_b, pz_b, E_b = b
@@ -126,6 +124,85 @@ def compute_mW2_roots(b, mu, m_W, m_T):
     w1, w2 = compute_mW2(Sx1, b, mu), compute_mW2(Sx2, b, mu)
     return w1**0.5, w2**0.5
 
+
+
+def get_mt2(sl, timeout = None):
+    eb, em, bb, bm   = sl.b[-1], sl.mu[-1], sl.beta_b, sl.beta_mu
+    mb, mm, mt1, mw1 = sl.m_b2**0.5, sl.m_mu2**0.5, sl.m_T, sl.m_W
+    sin_th = sl.s
+    cos_th = sl.c
+
+    x0   = -(mw1**2 - mm) / (2 * em)
+    sx   = x0 - em * (1 - bm**2) 
+    x0p  = -(mt1**2 - mw1**2 - mb) / (2 * eb)
+    sy   = (x0p / bb - cos_th * sx) / sin_th
+    x1   = sx - (sx + w * sy) / omega
+    z2y  = (x1**2 * omega) - (sy - w * sx)**2 - (mw1**2 - x0**2 - mw1**2 * (1 - bm**2))
+
+    x0_   = -(mw2**2 - mm) / (2 * em)
+    sx_   = x0_ - em * (1 - bm**2)
+    eps2_ = mw2**2 * (1 - bm**2)
+    cons  = mw2**2 - x0_**2 - eps2_
+
+
+
+    w = (bm / bb - cos_th) / sin_th
+    omega = w**2 + 1 - bm**2
+
+    a_sy = -1 / (2 * eb * bb * sin_th)
+    b_sy = ((mw1**2 + mb) / (2 * eb * bb) - cos_th * sx_) / sin_th
+
+    a_x1 = - (w * a_sy) / omega
+    b_x1 = ((omega - 1) * sx_ - w * b_sy) / omega
+    a    = omega * a_x1**2 - a_sy**2
+    b    = 2 * omega * a_x1 * b_x1 - 2 * a_sy * (b_sy - w * sx_)
+    c    = omega * b_x1**2 - (b_sy - w * sx_)**2 - cons- sl.Z2
+    discriminant = b**2 - 4 * a * c
+
+    root1 = (-b + math.sqrt(discriminant)) / (2 * a)
+    root2 = (-b - math.sqrt(discriminant)) / (2 * a)
+   
+    root1 = math.sqrt(root1) if root1 >= 0 else mt1
+    root2 = math.sqrt(root2) if root2 >= 0 else mt1
+    mot = min(root1, root2)
+
+
+def get_mW(sl): #):
+    sin_theta = sl.sin_theta #math.sin(theta)
+    cos_theta = sl.cos_theta #math.cos(theta)
+    Eb, Em = sl.b[-1], sl.mu[-1]
+    Bb, Bm, mb, mm, mT = sl.beta_b, sl.beta_mu, sl.m_b2**0.5, sl.m_mu2**0.5, sl.m_T
+
+    w = (Bm / Bb - cos_theta) / sin_theta
+    om2 = w**2 + 1 - Bm**2
+    
+    E0 = mm**2 / (2 * Em)
+    E1 = -1 / (2 * Em)
+    
+    P1 = 1 / (2 * Eb)
+    P0 = (mb**2 - mT**2) / (2 * Eb)
+    Sx = E0 - mm**2 / Em 
+    
+    Sy0 = (P0 / Bb - cos_theta * Sx) / sin_theta
+    Sy1 = (P1 / Bb - cos_theta * E1) / sin_theta
+    
+    X0 = Sx * (1 - 1/om2) - (w * Sy0) / om2
+    X1 = E1 * (1 - 1/om2) - (w * Sy1) / om2
+    
+    D0 = Sy0 - w * Sx
+    D1 = Sy1 - w * E1
+   
+    # Quadratic coefficients for Z2 = A*v² + B*v + C
+    A_val = om2 * X1**2 - D1**2 + E1**2
+    B_val = 2 * (om2 * X0 * X1 - D0 * D1) + 2 * E0 * E1 - Bm**2
+   
+    v_crit, v_infl = 0, 0
+    v_crit = -B_val / (2 * (A_val if A_val != 0 else 1))
+    v_infl = -B_val / (6 * (A_val if A_val != 0 else 1))
+    if v_crit >= 0: v_crit = math.sqrt(v_crit)
+    if v_infl >= 0: v_infl = math.sqrt(v_infl)
+    return v_crit, v_infl
+
 def compute_mT2_roots(b, mu, Sx):
     px_b, py_b, pz_b, E_b = b
     px_mu, py_mu, pz_mu, E_mu = mu
@@ -224,6 +301,8 @@ class NeutrinoSolution:
         self.Om2 = self.w**2 + 1 - self.beta_mu**2
         self.Om = np.sqrt(self.Om2)
 
+    def get_mW(self): return get_mW(self)
+
     @property
     def ellipse_property(self):
         H = self.R_T.dot(self.H_tilde)
@@ -274,10 +353,6 @@ class NeutrinoSolution:
     def dx1_dmT(self): return -(self.w/self.Om2) * self.dSy_dmT()
     def dy1_dmT(self): return self.dSy_dmT() * (1 - self.w**2/self.Om2)
        
-
-
-
-
     def _compute_rotation(self):
         def rotation_z(phi):
             c, s = np.cos(phi), np.sin(phi)
@@ -334,174 +409,86 @@ class NeutrinoSolution:
             [self.w*dZ_dmT_/self.Om, 0      , self.dy1_dmT()],
             [0                     , dZ_dmT_,              0]
         ])
-        
+       
+    def H(self): return self.R_T.dot(self.H_tilde)
     def p_nu(self):      return self.R_T.dot(self.H_tilde).dot(np.array([np.cos(self.t), np.sin(self.t), 1]))
     def dp_nu_dt(self):  return self.R_T.dot(self.H_tilde).dot(np.array([-np.sin(self.t), np.cos(self.t), 0]))
     def dp_nu_dmW(self): return self.R_T.dot(self.dH_tilde_dmW()).dot(np.array([np.cos(self.t), np.sin(self.t), 1]))
     def dp_nu_dmT(self): return self.R_T.dot(self.dH_tilde_dmT()).dot(np.array([np.cos(self.t), np.sin(self.t), 1]))
+    def H_perp(self):    return np.vstack([self.H()[:2], [0, 0, 1]])
+    def K(self):         return self.H().dot(np.linalg.inv(self.H_perp()))
 
 
-class LevenbergMarquardt:
-    """Levenberg-Marquardt optimization for neutrino distance minimization"""
-    def __init__(self, b1, mu1, b2, mu2, params0, lambda0=1e-2, max_iter=10000, tol=1e-6):
-        self.b1 = b1
-        self.mu1 = mu1
-        self.b2 = b2
-        self.mu2 = mu2
-        self.params = np.array(params0)
-        self.lambda_val = lambda0
-        self.max_iter = max_iter
-        self.tol = tol
-        self.cost_history = []
-        
-    def residual(self, params):
-        """Compute residual vector: p_nu2 - p_nu1"""
-        m_W1, m_T1, t1, m_W2, m_T2, t2 = params
-        nu1 = NeutrinoSolution(self.b1, self.mu1, m_W1, m_T1, t1)
-        nu2 = NeutrinoSolution(self.b2, self.mu2, m_W2, m_T2, t2)
-        return nu2.p_nu() - nu1.p_nu()
-    
-    def jacobian(self, params):
-        """Compute Jacobian of residual vector (3x6 matrix)"""
-        m_W1, m_T1, t1, m_W2, m_T2, t2 = params
-        nu1 = NeutrinoSolution(self.b1, self.mu1, m_W1, m_T1, t1)
-        nu2 = NeutrinoSolution(self.b2, self.mu2, m_W2, m_T2, t2)
-        
-        J = np.zeros((3, 6))
-        
-        # Derivatives for first neutrino (negative sign)
-        J[:, 0] = -2*nu1.dp_nu_dmW()  # dm_W1
-        J[:, 1] = -2*nu1.dp_nu_dmT()  # dm_T1
-        J[:, 2] = -2*nu1.dp_nu_dt()   # dt1
-        
-        # Derivatives for second neutrino (positive sign)
-        J[:, 3] = 2*nu2.dp_nu_dmW()   # dm_W2
-        J[:, 4] = 2*nu2.dp_nu_dmT()   # dm_T2
-        J[:, 5] = 2*nu2.dp_nu_dt()    # dt2
-        
-        return J
-    
-    def cost(self, r):
-        return 0.5 * np.sum(r**2)
-    
-    def step(self):
-        """Perform single LM iteration"""
-        r = self.residual(self.params)
-        current_cost = self.cost(r)
-        
-        J = self.jacobian(self.params)
-        JtJ = J.T.dot(J)
-        Jtr = J.T.dot(r)
-       
-        diag = np.diag(np.diag(JtJ))
-        delta = np.linalg.solve(JtJ + self.lambda_val * diag, -Jtr)
-        #v = JtJ + self.lambda_val*diag
-        #v = np.linalg.inv(v).dot(-Jtr)
-        new_params = self.params + delta
-        new_cost = self.cost(self.residual(new_params))
-        
-        # Gain ratio: actual vs predicted reduction
-        predicted_reduction = -delta.dot(Jtr) - 0.5 * delta.dot(JtJ).dot(delta)
-        actual_reduction = current_cost - new_cost
-        rho = actual_reduction / (predicted_reduction + 1e-16) if predicted_reduction > 0 else 0
-       
-        # Update parameters and lambda
-        if rho > 0:
-            self.params = new_params
-            self.lambda_val *= max(1/3, 1 - (2*rho - 1)**3)
-            return new_cost, True
-        else:
-            self.lambda_val *= 2
-            return current_cost, False
-    
-    def optimize(self):
-        """Run full optimization"""
-        for i in range(self.max_iter):
-            cost_val, success = self.step()
-            self.cost_history.append(cost_val)
-            if cost_val < self.tol: break
-        return self.params, np.array(self.cost_history)
 
-def plot_optimization(cost_history):
-    """Plot convergence of cost function"""
-    plt.figure(figsize=(10, 6))
-    plt.semilogy(cost_history, 'b-o', linewidth=2)
-    plt.xlabel('Iteration')
-    plt.ylabel('Cost (0.5 * ||r||²)')
-    plt.title('Levenberg-Marquardt Convergence')
-    plt.grid(True)
-    plt.savefig('lm_convergence.png', dpi=150)
-    plt.show()
+    def misc(self):
+        print("--------- Neutrino ------------");
+        #print("Sx:      ", compute_Sx(self.b, self.mu, self.m_W))
+        #print("dSx_dmW: ", self.dSx_dmW())
+        #print("Sy:      ", self.Sy)         
+        #print("dSy_dmW: ", self.dSy_dmW())   
+        #print("dSy_dmT: ", self.dSy_dmT())   
+        #print("w:       ", self.w        )   
+        #print("w2:      ", self.w**2     )   
+        #print("om2:     ", self.Om2      )   
+        print("Z:       ", self.Z      )   
+        #print("Z2:      ", self.Z2     )   
+        #print("dZ_dmT:  ", dZ_dmT(self.b, self.mu, self.m_W, self.m_T))   
+        #print("dZ_dmW:  ", dZ_dmW(self.b, self.mu, self.m_W, self.m_T))   
+        #print("x1:      ", self.x1     )   
+        #print("dx1_dmW: ", self.dx1_dmW())   
+        #print("dx1_dmT: ", self.dx1_dmT())   
+        #print("y1:      ", self.y1     )   
+        #print("dy1_dmW: ", self.dy1_dmW())   
+        #print("dy1_dmT: ", self.dy1_dmT())   
+        #print("mW root: ", compute_mW2_roots(self.b, self.mu, self.m_W, self.m_T))
+        #print("mW derivative = 0: ", self.get_mW())
+        #print("H                : \n", self.R_T.dot(self.H_tilde))
+        print("Om:", self.Om)
+        print("RT               : \n", self.R_T)
+        print("H_Tilde          : \n", self.H_tilde)
+        print("H_perp           : \n", self.H_perp)
+        print("K                : \n", self.K())
+        print("dH_dmW           : \n", self.R_T.dot(self.dH_tilde_dmW()))
+        print("dH_dmT           : \n", self.R_T.dot(self.dH_tilde_dmT()))
 
-def plot_neutrino_ellipses(b1, mu1, b2, mu2, params, n_points=100):
-    """3D visualization of neutrino solution ellipses"""
-    m_W1, m_T1, t1, m_W2, m_T2, t2 = params
-    
-    # Create solution objects
-    nu1 = NeutrinoSolution(b1, mu1, m_W1, m_T1, 0)
-    nu2 = NeutrinoSolution(b2, mu2, m_W2, m_T2, 0)
-    
-    # Generate ellipse points
-    angles = np.linspace(0, 2*np.pi, n_points)
-    points1 = np.array([nu1.R_T.dot(nu1.H_tilde).dot([np.cos(a), np.sin(a), 1]) for a in angles])
-    points2 = np.array([nu2.R_T.dot(nu2.H_tilde).dot([np.cos(a), np.sin(a), 1]) for a in angles])
-    
-    # Optimized points
-    opt_nu1 = NeutrinoSolution(b1, mu1, m_W1, m_T1, t1)
-    opt_nu2 = NeutrinoSolution(b2, mu2, m_W2, m_T2, t2)
-    p1_opt = opt_nu1.p_nu()
-    p2_opt = opt_nu2.p_nu()
-    
-    # Create plot
-    fig = plt.figure(figsize=(12, 10))
-    ax = fig.add_subplot(111, projection='3d')
-    
-    # Plot ellipses
-    ax.plot(points1[:,0], points1[:,1], points1[:,2], 'b-', label='Neutrino 1 Solution Ellipse')
-    ax.plot(points2[:,0], points2[:,1], points2[:,2], 'r-', label='Neutrino 2 Solution Ellipse')
-    
-    # Plot optimized points
-    ax.scatter(*p1_opt, s=100, c='blue', marker='o', label=f'ν1: t={t1:.2f} rad')
-    ax.scatter(*p2_opt, s=100, c='red', marker='o', label=f'ν2: t={t2:.2f} rad')
-    
-    # Plot distance vector
-    dist = np.linalg.norm(p2_opt - p1_opt)
-    ax.plot([p1_opt[0], p2_opt[0]], 
-            [p1_opt[1], p2_opt[1]], 
-            [p1_opt[2], p2_opt[2]], 
-            'k--', linewidth=2, label=f'Distance: {dist:.2f} GeV')
-    
-    # Formatting
-    ax.set_xlabel('Px [GeV]')
-    ax.set_ylabel('Py [GeV]')
-    ax.set_zlabel('Pz [GeV]')
-    ax.set_title(f'Optimized Solution: m_W1={m_W1:.1f}, m_T1={m_T1:.1f}, m_W2={m_W2:.1f}, m_T2={m_T2:.1f}')
-    ax.legend()
-    plt.tight_layout()
-    #plt.savefig('neutrino_ellipses_lm.png', dpi=150)
-    return fig, ax
+        exit()
 
 
-# Example usage
-#if __name__ == "__main__":
-#    b1  = np.array([-19.766428, -40.022249,   69.855886, 83.191328])
-#    mu1 = np.array([-14.306453, -47.019613,    3.816470, 49.295996])
-#    b2  = np.array([107.795878, -185.326183,  -67.989162, 225.794953])
-#    mu2 = np.array([4.941336  , -104.097506, -103.640669, 146.976547])
-#    params = np.array([80.385, 172.62, 0.0, 80.385, 172.62, 0.0]) 
-#    
-#    lm = LevenbergMarquardt(b1, mu1, b2, mu2, params)
-#    opt_params, cost_history = lm.optimize()
-#    
-#    m_W1, m_T1, t1, m_W2, m_T2, t2 = opt_params
-#    print(f"Optimized parameters:")
-#    print(f"  m_W1 = {m_W1:.4f} GeV, m_T1 = {m_T1:.4f} GeV, t1 = {t1:.4f} rad")
-#    print(f"  m_W2 = {m_W2:.4f} GeV, m_T2 = {m_T2:.4f} GeV, t2 = {t2:.4f} rad")
-#    print(f"Final cost: {cost_history[-1]:.6f}")
-#    
-#    plot_optimization(cost_history)
-#    plot_neutrino_ellipses(b1, mu1, b2, mu2, opt_params)
-#    plt.show()
+
+        #double A, B, C; 
+        #this -> Z2_coeff(&A, &B, &C); 
+        #std::cout << "Z2 A: " << A << " B: " << B << " C: " << C << std::endl; 
+
+        #std::cout << "N" << std::endl;
+        #print(this -> N()); 
+
+        #std::cout << "H" << std::endl; 
+        #print(this -> H()); 
+
+        #std::cout << "H_perp" << std::endl; 
+        #print(this -> H_perp());    
+
+        #std::cout << "H_tilde" << std::endl; 
+        #print(this -> H_tilde());
+
+        #std::cout << "dH_dmW" << std::endl; 
+        #print(this -> dH_dmW());
+
+        #std::cout << "dH_dmT" << std::endl; 
+        #print(this -> dH_dmT()); 
+
+        #std::cout << "K" << std::endl; 
+        #print(this -> K()); 
+
+        #std::cout << "RT" << std::endl; 
+        #print(this -> R_T());
+
+
+
+
+
+
+
 
 
 
@@ -511,35 +498,34 @@ def plot_neutrino_ellipses(b1, mu1, b2, mu2, params, n_points=100):
 if __name__ == "__main__":
     # Define input parameters (example values)
     b1 = np.array([-19.766428, -40.022249,   69.855886, 83.191328])
-    mu1 = np.array([-14.306453, -47.019613,    3.816470, 49.295996])
     b2 = np.array([107.795878, -185.326183,  -67.989162, 225.794953])
+    mu1 = np.array([-14.306453, -47.019613,    3.816470, 49.295996])
     mu2 = np.array([4.941336  , -104.097506, -103.640669, 146.976547])
     params = np.array([80.385, 172.62, 80.385, 172.62, 0.0, 0.0]) 
     
     # Create neutrino solutions
     nu1 = NeutrinoSolution(b1, mu1, params[0], params[1], params[4])
     nu2 = NeutrinoSolution(b2, mu2, params[2], params[3], params[5])
-    jac = jacobian_d2(nu1, nu2)
-    print("Jacobian:", jac)
 
-    A1, B1, C1 = compute_z2_coeffs(b1, mu1, params[1])
-    A2, B2, C2 = compute_z2_coeffs(b2, mu2, params[3])
-    Sx1 = compute_Sx(b1, mu1, params[0])
-    Sx2 = compute_Sx(b2, mu2, params[2])
-    Z2_1 = A1*Sx1**2 + B1*Sx1 + C1
-    Z2_2 = A2*Sx2**2 + B2*Sx2 + C2
+    nu1.misc()
+    nu2.misc()
 
-    dZ_dmT1 = dZ_dmT(b1, mu1, params[0], params[1])
-    dZ_dmT2 = dZ_dmT(b2, mu2, params[2], params[3])
-    dZ_dmW1 = dZ_dmW(b1, mu1, params[0], params[1]) 
-    dZ_dmW2 = dZ_dmW(b2, mu2, params[2], params[3]) 
-    r1_W1, r2_W1 = compute_mW2_roots(b1, mu1, params[0], params[1])
-    r1_W2, r2_W2 = compute_mW2_roots(b2, mu2, params[0], params[1])
-    r1_T1, r2_T1 = compute_mT2_roots(b1, mu1, Sx1)
-    r1_T2, r2_T2 = compute_mT2_roots(b2, mu2, Sx2)
 
-    print(f"Z^2: {Z2_1:.6f}, {Z2_2:.6f}")
-    print(f"dZ/dmT: {dZ_dmT1:.6f}, {dZ_dmT2:.6f}")
-    print(f"dZ/dmW: {dZ_dmW1:.6f}, {dZ_dmW2:.6f}")
-    print(f"root W: {r1_W1:.6f}, {r2_W1:.6f}, {r1_W2:.6f}, {r2_W2:.6f}")
-    print(f"root T: {r1_T1:.6f}, {r2_T1:.6f}, {r1_T2:.6f}, {r2_T2:.6f}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
