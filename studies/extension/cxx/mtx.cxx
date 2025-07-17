@@ -1,6 +1,7 @@
 #include "mtx.h"
 #include <iostream>
 #include <iomanip>
+#include <complex>
 
 double mtx::trace(double** A){return A[0][0] + A[1][1] + A[2][2];}
 double mtx::m_00(double**  M){return M[1][1] * M[2][2] - M[1][2] * M[2][1];}
@@ -22,8 +23,6 @@ double mtx::m_20(){return m_20(this -> _m);}
 double mtx::m_21(){return m_21(this -> _m);}
 double mtx::m_22(){return m_22(this -> _m);}
 double mtx::det(double**   v){return v[0][0] * this -> m_00(v) - v[0][1] * this -> m_01(v) + v[0][2] * this -> m_02(v);}
-
-
 
 double** mtx::_matrix(int row, int col){
     double** mx = (double**)malloc(row*sizeof(double*));
@@ -115,7 +114,7 @@ mtx* find_roots(double a, double b, double c){
         sol -> assign(0, 0, -b / (2 * a));
         return sol;
     }
-    disc = pow(disc, 0.5);
+    disc = std::pow(disc, 0.5);
     sol -> assign(0, 0, (-b + disc) / (2 * a));
     sol -> assign(0, 1, (-b - disc) / (2 * a));
     return sol; 
@@ -137,15 +136,15 @@ mtx* find_roots(double a, double b, double c, double d){
     double disc = q * q / 4 + p3 / 27;
     
     if (disc > sol -> tol) {
-        disc = pow(disc, 0.5);
+        disc = std::pow(disc, 0.5);
         double u = std::cbrt(-q / 2 + disc);
         double v = std::cbrt(-q / 2 - disc);
         sol -> assign(0, 0, u + v - b / (3 * a));
         return sol; 
     } 
     if (disc < -sol -> tol) {
-        double om = std::acos(3 * q * pow(-3 / p3, 0.5) / (2 * p));
-        double r = 2 * pow(-p / 3, 0.5);
+        double om = std::acos(3 * q * std::pow(-3 / p3, 0.5) / (2 * p));
+        double r = 2 * std::pow(-p / 3, 0.5);
         sol -> assign(0, 0, r * std::cos(om / 3) - b / (3 * a)); 
         sol -> assign(0, 1, r * std::cos((om + 2 * M_PI) / 3) - b / (3 * a)); 
         sol -> assign(0, 2, r * std::cos((om + 4 * M_PI) / 3) - b / (3 * a)); 
@@ -209,6 +208,38 @@ mtx* find_roots(double a, double b, double c, double d, double e){
     return sol; 
 }
 
+
+mtx* solve_cubic(double a, double b, double c, double d) {
+    std::complex<double> p = (3.0 * a * c - b * b) / (3.0 * a * a);
+    std::complex<double> q = (2.0 * b * b * b - 9.0 * a * b * c + 27.0 * a * a * d) / (27.0 * a * a * a);
+    std::complex<double> root1, root2, root3;
+    std::complex<double> delt = (q * q / 4.0) + (p * p * p / 27.0);
+    double rt3 = std::pow(3.0, 0.5) / 2.0; 
+    std::complex<double> ui = std::complex<double>(0.0, 1.0); 
+    const double cb = 1.0/3.0; 
+
+    if (delt.real() >= 0) {
+        std::complex<double> u_val = std::pow(-q / 2.0 + pow(delt, 0.5), cb);
+        std::complex<double> v_val = std::pow(-q / 2.0 - pow(delt, 0.5), cb);
+        root1 = u_val + v_val;
+        root2 = -0.5 * (u_val + v_val) + std::complex<double>(ui * rt3) * (u_val - v_val);
+        root3 = -0.5 * (u_val + v_val) - std::complex<double>(ui * rt3) * (u_val - v_val);
+    } else { 
+        std::complex<double> r   = std::pow(-(p * p * p) / 27.0, 0.5);
+        std::complex<double> phi = std::acos(-q / (2.0 * r));
+        root1 = 2.0 * std::pow(r, cb) * std::cos( phi / 3.0);
+        root2 = 2.0 * std::pow(r, cb) * std::cos((phi + 2.0 * M_PI) * cb);
+        root3 = 2.0 * std::pow(r, cb) * std::cos((phi + 4.0 * M_PI) * cb);
+    }
+
+    double shift = b / (3.0 * a);
+    root1 = root1 - shift; root2 = root2 - shift; root3 = root3 - shift; 
+    mtx* rx_ = new mtx(2, 3); 
+    rx_ -> unique(0, 1, root1.real(), root1.imag()); 
+    rx_ -> unique(0, 1, root2.real(), root2.imag()); 
+    rx_ -> unique(0, 1, root3.real(), root3.imag()); 
+    return rx_; 
+}
 
 mtx::mtx(){}
 mtx::mtx(int idx, int idy){
@@ -348,6 +379,7 @@ mtx& mtx::operator=(const mtx& o){
         this -> dim_i = o.dim_i; 
         this -> dim_j = o.dim_j; 
         this -> _copy(o._m, o.dim_i, o.dim_j); 
+        this -> _copy(o._b, o.dim_i, o.dim_j); 
     }
     return *this; 
 }
@@ -412,11 +444,43 @@ bool mtx::assign(int idx, int idy, double val, bool valid){
     return true;
 }
 
+bool mtx::unique(int id1, int id2, double v1, double v2){
+    int idx = 0;  
+    for (int x(0); x < this -> dim_j; ++x){
+        bool sm = fabs(this -> _m[id1][x] - v1) < this -> tol;
+        sm *= fabs(this -> _m[id2][x] - v2) < this -> tol; 
+        sm *= this -> _b[id1][x]; 
+        if (sm){return true;}
+        idx += _b[id1][x]; 
+        if (this -> _b[id1][x]){continue;}
+        break; 
+    }
+    this -> _m[id1][idx] = v1; this -> _b[id1][idx] = true;
+    this -> _m[id2][idx] = v2; this -> _b[id2][idx] = true; 
+    return false;
+}
+
 mtx* mtx::slice(int idx){
     mtx* ox = new mtx(1, this -> dim_j); 
     this -> _copy(ox -> _m[0], this -> _m[idx], this -> dim_j); 
     return ox; 
 }
+
+mtx* mtx::cat(const mtx* v2){
+    int lx = this -> dim_i + v2 -> dim_i; 
+
+    int i(0); 
+    mtx* vo = new mtx(lx, this -> dim_j); 
+    for (int x(0); x < lx; ++x, ++i){
+        const mtx* vx = (x < this -> dim_i) ? this : v2; 
+        i = (i < this -> dim_i) ? i : 0; 
+        vo -> copy(vx, x, i , this -> dim_j); 
+    }
+    return vo; 
+}
+
+
+
 
 mtx mtx::diag(){
     mtx o(this -> dim_i, this -> dim_i); 
@@ -429,9 +493,8 @@ mtx* mtx::eigenvalues(){
     double a = - this -> trace(); 
     double b =   this -> m_00(this -> _m) + this -> m_11(this -> _m) + this -> m_22(this -> _m); 
     double c = - this -> det(); 
-    return find_roots(1.0, a, b, c);  
+    return solve_cubic(1.0, a, b, c);  
 }
-
 
 mtx mtx::cross(mtx* r1){
     mtx vXc(3, 3); 
@@ -455,14 +518,13 @@ mtx* mtx::eigenvector(){
     auto mag =[this](mtx* r) -> double{
         double m = 0; 
         for (int i(0); i < 3; ++i){m += r -> _m[0][i]*r -> _m[0][i];}
-        return pow(m, 0.5);
+        return std::pow(m, 0.5);
     }; 
     double q = this -> m_00(this -> _m) + this -> m_11(this -> _m) + this -> m_22(this -> _m); 
-    std::cout << 1.0 << " " << -this -> trace() << " " << q << " " << -this -> det() << std::endl;
-    mtx* eig = find_roots(1.0, -this -> trace(), q, -this -> det()); 
+    mtx* eig = solve_cubic(1.0, -this -> trace(), q, -this -> det()); 
     mtx* eiv = new mtx(3, 3); 
     for (int i(0); i < 3; ++i){
-        if (!eig -> valid(0, i)){continue;}
+        if (fabs(eig -> _m[1][i]) >= eig -> tol){continue;}
         double e = eig -> _m[0][i]; 
         mtx B = this -> copy() - this -> diag()*e; 
 
@@ -476,7 +538,7 @@ mtx* mtx::eigenvector(){
         r2.assign(0, 1, B._m[1][1]); 
         r2.assign(0, 2, B._m[1][2]); 
         mtx cx = this -> cross(&r1, &r2); 
-        if (mag(&cx) < 1e-9){
+        if (mag(&cx) < eig -> tol){
             mtx r3(1, 3);
             r3.assign(0, 0, B._m[2][0]); 
             r3.assign(0, 1, B._m[2][1]); 
@@ -484,14 +546,18 @@ mtx* mtx::eigenvector(){
             cx = this -> cross(&r1, &r3); 
         }
         double mag_ = mag(&cx);
-        if (mag_ > 1e-9){cx = cx * (1.0/mag_);}
+        if (mag_ > eig -> tol){cx = cx * (1.0/mag_);}
         eiv -> assign(i, 0, cx._m[0][0]); 
         eiv -> assign(i, 1, cx._m[0][1]); 
         eiv -> assign(i, 2, cx._m[0][2]); 
     }
-    eig -> print(24, 26); 
-    eiv -> print(24, 26); 
-    abort(); 
     delete eig; 
     return eiv; 
 }
+
+
+
+
+
+
+

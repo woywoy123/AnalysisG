@@ -32,17 +32,13 @@ int nunu::intersection(mtx** v, mtx** v_, double metx, double mety, double metz)
     mtx* lin = nullptr; 
 
     int n_pts = intersection_ellipses(this -> nu1 -> N(), &n_, &lin, v, &sol); 
-    if (!sol){
-        delete sol;
-        delete lin;
-        delete S;
-        return 0; 
-    }
-
+    if (!sol){delete S;return 0;}
     mtx vn = (*v) -> T(); 
     mtx vl = S -> dot(vn).T();
     *v_ = new mtx(vl); 
     delete S; 
+    delete sol; 
+    delete lin; 
     return n_pts; 
 }
 
@@ -60,33 +56,37 @@ int nunu::angle_cross(mtx** v, mtx** v_, double metx, double mety, double metz){
     for (int i(0); i < n_rts; ++i){
         mtx v1 = make_ellipse(p1, agl -> _m[i][0]); 
         mtx v2 = make_ellipse(p2, agl -> _m[i][1]); 
-        (*v ) -> copy(&v1, i, 3); 
-        (*v_) -> copy(&v2, i, 3); 
+        (*v ) -> copy(&v1, i, 0, 3); 
+        (*v_) -> copy(&v2, i, 0, 3); 
     }
     delete agl; 
     return n_rts; 
 }
 
-void nunu::make_neutrinos(double** v, double** v_, double* d_, double* agl){
-    //double** lT1 = T(v , 1, 3); 
-    //double** lT2 = T(v_, 1, 3);
-    //double** invH1 = dot(inv(this -> nu1 -> H()), lT1, true, 3, 3, 3, 1); 
-    //double** invH2 = dot(inv(this -> nu2 -> H()), lT2, true, 3, 3, 3, 1); 
+void nunu::make_neutrinos(mtx* v, mtx* v_){
+    if (!v || !v_){return;}
 
-    //double a1 = std::atan2(invH1[1][0], invH1[0][0]); 
-    //double a2 = std::atan2(invH2[1][0], invH2[0][0]); 
-    //clear(invH1, 3, 1); clear(invH2, 3, 1); 
+    mtx invH1 = this -> nu1 -> H_perp() -> inv().dot(v  -> T()); 
+    mtx invH2 = this -> nu2 -> H_perp() -> inv().dot(v_ -> T()); 
+    mtx nux1  = this -> nu1 -> K() -> dot(v  -> T()).T(); 
+    mtx nux2  = this -> nu2 -> K() -> dot(v_ -> T()).T(); 
 
-    //*d_ = distance(this -> nu1 -> H(), a1, this -> nu2 -> H(), a2); 
-    //agl[0] = a1; agl[1] = a2;
+    this -> m_nu1 = new mtx(invH1.dim_j, 3); 
+    this -> m_nu2 = new mtx(invH2.dim_j, 3); 
 
-    //double** l1 = dot(this -> nu1 -> K(), lT1, false, 3, 3, 3, 1); 
-    //double** l2 = dot(this -> nu2 -> K(), lT2, false, 3, 3, 3, 1);  
-    //clear(lT1, 3, 1); clear(lT2, 3, 1); 
-    //lT1 = T(l1, 3, 1); lT2 = T(l2, 3, 1); 
-    //_copy( v, lT1, 1, 3); _copy(v_, lT2, 1, 3); 
-    //clear(lT1, 1, 3); clear(lT2, 1, 3); 
-    //clear( l1, 3, 1); clear( l2, 3, 1);
+    double xd = -1; 
+    for (int x(0); x < invH1.dim_j; ++x){
+        double a1 = std::atan2(invH1._m[1][x], invH1._m[0][x]); 
+        double a2 = std::atan2(invH2._m[1][x], invH2._m[0][x]); 
+        if (this -> m_agl -> unique(0, 1, a1, a2)){continue;}
+        double dx = distance(this -> nu1 -> H(), a1, this -> nu2 -> H(), a2); 
+        this -> m_agl -> assign(2, this -> m_lx, dx); 
+
+        this -> m_nu1 -> copy(&nux1, this -> m_lx, x, 3); 
+        this -> m_nu2 -> copy(&nux2, this -> m_lx, x, 3); 
+        if (xd < 0 || xd > dx){this -> m_bst = this -> m_lx; xd = dx;}
+        this -> m_lx++;  
+    }
 }
 
 
@@ -99,82 +99,60 @@ particle** nunu::make_particle(double** v, double** d, int lx){
     return pxt;  
 }
 
-
 void nunu::get_misc(){
+    if (!this -> verbose){return;}
     this -> nu1 -> misc(); 
-//    this -> nu2 -> misc(); 
+    this -> nu2 -> misc(); 
     std::cout << "============" << std::endl; 
 }
 
 int nunu::generate(double metx, double mety, double metz){
     mtx* vi = nullptr; mtx* vi_ = nullptr;
     int n_pts = this -> intersection(&vi, &vi_, metx, mety, metz); 
-
-    mtx* vr = nullptr; mtx* vr_ = nullptr; 
+    
+    mtx* vr = nullptr; mtx* vr_ = nullptr;
     int n_rts = this -> angle_cross(&vr, &vr_, metx, mety, metz); 
-    vi -> print(14, 16); 
-    vi_ -> print(14, 16);  
-
-
-    //di = matrix(n_pts, 1);
     // print(Rxyz(S, 0, 0, 0)); 
 
-    //double** vr = nullptr; double** vr_ = nullptr; double** dr = nullptr; 
-    //int n_rts = this -> angle_cross(&vr, &vr_, metx, mety, metz); 
-    //dr = matrix(n_rts, 1); 
+    int lx = n_pts + n_rts; 
+    this -> m_agl = new mtx(3, lx); 
 
-    //int lx = n_pts + n_rts; 
-    //this -> m_agl_ = matrix(lx, 2);
-    //for (int i(0); i < n_pts; ++i){
-    //    this -> make_neutrinos(&vi[i], &vi_[i], di[i], this -> m_agl_[i]);
-    //}
-    //for (int i(0); i < n_rts; ++i){
-    //    this -> make_neutrinos(&vr[i], &vr_[i], dr[i], this -> m_agl_[n_pts + i]);
-    //}
+    mtx* v1 = (vi  && vr ) ? vi  -> cat(vr ) : nullptr;
+    mtx* v2 = (vi_ && vr_) ? vi_ -> cat(vr_) : nullptr; 
+    
+    if (vi && vr){
+        delete  vi; delete vr; 
+        delete vi_; delete vr_; 
+        this -> make_neutrinos(v1, v2);
+        delete v1; delete v2; 
+        return this -> m_lx; 
+    } 
 
-    //double** v  = matrix(lx, 3); 
-    //double** v_ = matrix(lx, 3); 
-    //double** d_ = matrix(lx, 1); 
-    //for (int x(0); x < n_pts; ++x){
-    //    _copy( v[x],  vi[x], 3); 
-    //    _copy(v_[x], vi_[x], 3); 
-    //    d_[x][0] = di[x][0]; 
-    //}
+    v1 = (!vi  && vr ) ? vr  : v1; 
+    v2 = (!vi_ && vr_) ? vr_ : v2; 
 
-    //for (int x(0); x < n_rts; ++x){
-    //    _copy( v[n_pts + x],  vr[x], 3); 
-    //    _copy(v_[n_pts + x], vr_[x], 3); 
-    //    d_[n_pts + x][0] = dr[x][0]; 
-    //}
-
-    //clear(vi , n_pts, 3); clear(vr , n_rts, 3); 
-    //clear(vi_, n_pts, 3); clear(vr_, n_rts, 3); 
-    //clear(di , n_pts, 1); clear(dr , n_rts, 1); 
-
-    //if (!this -> m_nu1_){this -> m_nu1_ = v;}
-    //if (!this -> m_nu2_){this -> m_nu2_ = v_;} 
-    //if (!this -> m_d1_ ){this -> m_d1_  = d_;} 
-    //if (!this -> m_lx  ){this -> m_lx   = lx;} 
-
-    ////this -> m_v1 = this -> make_particle(v , d_, lx);  
-    ////this -> m_v2 = this -> make_particle(v_, d_, lx);  
-    ////clear(v_, lx, 3); clear(v, lx, 3); clear(d_, lx, 1); 
-    return 0; //lx; 
+    v1 = (vi  && !vr ) ? vi  : v1; 
+    v2 = (vi_ && !vr_) ? vi_ : v2; 
+    this -> make_neutrinos(v1, v2);
+    delete v1; 
+    delete v2; 
+    return this -> m_lx; 
 }
 
 double** nunu::loss(int* lx){
-    this -> flush(); 
-    this -> generate(this -> metx, this -> mety, 0); 
-    double** mx = matrix(1, 1); 
-    for (int x(0); x < 1; ++x){mx[x][0] = 1.0;}
-    for (int x(0); x < this -> m_lx; ++x){
-        double dx = this -> m_d1_[x][0]; 
-        if (!x){mx[0][0] = dx;}
-        if (mx[0][0] < dx){continue;}
-        mx[0][0] = dx; 
-    }
-    *lx = 1; 
-    return mx; 
+    return nullptr; 
+    //this -> flush(); 
+    //this -> generate(this -> metx, this -> mety, 0); 
+    //double** mx = matrix(1, 1); 
+    //for (int x(0); x < 1; ++x){mx[x][0] = 1.0;}
+    //for (int x(0); x < this -> m_lx; ++x){
+    //    double dx = this -> m_d1_[x][0]; 
+    //    if (!x){mx[0][0] = dx;}
+    //    if (mx[0][0] < dx){continue;}
+    //    mx[0][0] = dx; 
+    //}
+    //*lx = 1; 
+    //return mx; 
 }
 
 double** nunu::jacobian(int* ix, int* jx){
@@ -232,20 +210,19 @@ void nunu::_clear(){
 }
 
 nunu::~nunu(){
+    this -> flush(); 
     delete this -> nu1; 
     delete this -> nu2; 
 }
 
 
 void nunu::flush(){
-    if (this -> m_nu1_){clear(this -> m_nu1_, this -> m_lx, 3);}
-    if (this -> m_nu2_){clear(this -> m_nu2_, this -> m_lx, 3);} 
-    if (this -> m_d1_ ){clear(this -> m_d1_ , this -> m_lx, 1);} 
-    if (this -> m_agl_){clear(this -> m_agl_, this -> m_lx, 2);}
-    this -> m_nu1_ = nullptr; 
-    this -> m_nu2_ = nullptr; 
-    this -> m_d1_  = nullptr; 
-    this -> m_agl_ = nullptr; 
+    if (this -> m_nu1){delete this -> m_nu1;}
+    if (this -> m_nu2){delete this -> m_nu2;} 
+    if (this -> m_agl){delete this -> m_agl;}
+    this -> m_nu1 = nullptr; 
+    this -> m_nu2 = nullptr; 
+    this -> m_agl = nullptr; 
     this -> m_lx   = 0; 
 }
 

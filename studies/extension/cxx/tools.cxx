@@ -143,10 +143,10 @@ mtx* get_intersection_angle(mtx* H1, mtx* H2, mtx* MET, int* n_sols){
 
 mtx make_ellipse(mtx* H, double angle){
     mtx vt(3, 1); 
-    vt._m[0][0] = std::cos(angle);
-    vt._m[1][0] = std::sin(angle);
-    vt._m[2][0] = 1.0; 
-    return H -> dot(vt); 
+    vt.assign(0, 0, std::cos(angle)); 
+    vt.assign(1, 0, std::sin(angle)); 
+    vt.assign(2, 0, 1.0); 
+    return H -> dot(vt).T(); 
 }
 
 double distance(mtx* H1, double a1, mtx* H2, double a2){

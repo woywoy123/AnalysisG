@@ -13,8 +13,8 @@ g++ -Wall -g \
     lm.h lm.cxx \
     main.cxx 
 
-./a.out
-#valgrind --leak-check=yes --track-origins=yes --show-leak-kinds=all ./a.out 
+#./a.out
+valgrind --leak-check=yes --track-origins=yes --show-leak-kinds=all ./a.out 
 
 #rm -r CMakeFiles
 #rm CMakeCache.txt

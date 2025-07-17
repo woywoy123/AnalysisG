@@ -31,23 +31,24 @@ class nunu
 
         double metx = 0; 
         double mety = 0; 
+        bool verbose = false; 
 
 
     private:
         int intersection(mtx** v, mtx** v_, double metx, double mety, double metz); 
         int angle_cross( mtx** v, mtx** v_, double metx, double mety, double metz);  
 
-        void make_neutrinos(double** v, double** v_, double* d_, double* agl); 
+        void make_neutrinos(mtx* v, mtx* v_); 
         particle** make_particle(double** v, double** d, int lx);
 
         particle** m_v1 = nullptr; 
         particle** m_v2 = nullptr;
 
-        double** m_nu1_ = nullptr;
-        double** m_nu2_ = nullptr; 
-        double** m_d1_  = nullptr; 
-        double** m_agl_ = nullptr; 
-        int m_lx = 0; 
+        mtx* m_nu1 = nullptr;
+        mtx* m_nu2 = nullptr; 
+        mtx* m_agl = nullptr; 
+        int m_lx  =  0; 
+        int m_bst = -1; 
 
         nusol* nu1 = nullptr;
         nusol* nu2 = nullptr; 

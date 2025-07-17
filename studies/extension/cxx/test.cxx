@@ -78,19 +78,12 @@ int main() {
     double r     = -A.data[0][0] * m11 + A.data[0][1] * (A.data[1][0] * A.data[2][2] - A.data[1][2] * A.data[2][0]) 
                                        - A.data[0][2] * (A.data[1][0] * A.data[2][1] - A.data[1][1] * A.data[2][0]);
 
-
     printf("Characteristic Equation:\nλ³ + (%.18f)λ² + (%.18f)λ + (%.18f) = 0\n\n", p, q, r);
     CVector3 eigenvalues;
-    solve_cubic(1, 8.67362e-19, 5.81954e-05, -2.11758e-22, &eigenvalues); 
-
-
-
-    //solve_cubic(1.0, p, q, r, &eigenvalues);
+    solve_cubic(1.0, p, q, r, &eigenvalues);
     print_cvector(&eigenvalues, "Eigenvalues (λ)");
 
     for (int i = 0; i < 3; ++i) {
-        std::cout << eigenvalues.data[i] << std::endl;
-        continue;
         if (fabs(eigenvalues.data[i].imag()) < 1e-9) {
             Vector3 eigenvector;
             find_eigenvector(&A, eigenvalues.data[i].real(), &eigenvector);

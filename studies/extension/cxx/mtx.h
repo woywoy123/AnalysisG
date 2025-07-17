@@ -34,6 +34,9 @@ class mtx {
         void copy(const mtx* ipt, int idx, int idy = -1); 
         void copy(const mtx* ipt, int idx, int jdy, int idy); 
         bool assign(int idx, int idy, double val, bool valid = true); 
+        bool unique(int id1, int id2, double v1, double v2); 
+
+        mtx* cat(const mtx* v2); 
         mtx* slice(int idx); 
         mtx* eigenvalues(); 
         mtx* eigenvector(); 

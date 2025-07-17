@@ -235,8 +235,6 @@ void factor_degenerate(mtx G, mtx* lines, int* lc, double* q0) {
 
 int intersections_ellipse_line(mtx* ellipse, mtx* line, mtx* pts){
     mtx* eign = ellipse -> cross(line).eigenvector(); 
-    eign -> print(12, 15); 
-    abort(); 
     int pt = 0;
     for (int i(0); i < 3; ++i){
         if (!eign -> valid(i, 1) || !eign -> _m[i][2]){continue;}
@@ -245,7 +243,6 @@ int intersections_ellipse_line(mtx* ellipse, mtx* line, mtx* pts){
         pts -> assign(pt, 0, sl -> _m[0][0]*z); 
         pts -> assign(pt, 1, sl -> _m[0][1]*z);
         pts -> assign(pt, 2, sl -> _m[0][2]*z); 
-        pts -> print(12, 15); 
 
         mtx v  = sl -> T(); 
         mtx l1 = line -> dot(v);
