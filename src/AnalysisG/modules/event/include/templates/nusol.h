@@ -1,12 +1,35 @@
-#ifndef H_BASE
-#define H_BASE
-#include "particle.h"
-#include "matrix.h"
-#include "mtx.h"
+#ifndef HXX_NUSOL
+#define HXX_NUSOL
 
-class nusol {
+class mtx; 
+class particle_template;
+
+struct wrapper 
+{
+    wrapper(particle_template* p_);
+    double p  = 0; 
+    double m  = 0;
+    double b  = 0; 
+    double p2 = 0; 
+    double m2 = 0; 
+    double b2 = 0; 
+    double phi = 0;
+    double theta = 0;
+    double px = 0;
+    double py = 0;
+    double pz = 0;
+    double e  = 0;
+    particle_template* lnk = nullptr; 
+}; 
+
+
+class nusol 
+{
     public:
-        nusol(particle* b, particle* l, double mW, double mT, bool delP); 
+        nusol(); 
+        nusol(particle_template* b, particle_template* l, double mW, double mT); 
+        ~nusol(); 
+
         double Sx(); 
         double dSx_dmW();
 
@@ -23,7 +46,8 @@ class nusol {
         double dZ_dmT(); 
         double dZ_dmW(); 
 
-        double  x1();
+        double x0(); 
+        double x1();
         double dx1_dmW(); 
         double dx1_dmT(); 
 
@@ -31,9 +55,11 @@ class nusol {
         double dy1_dmW(); 
         double dy1_dmT(); 
 
-        void r_mW(double* mw1, double* mw2); 
-        void get_mw(double* v_crit, double* v_infl); 
-        void get_mt(double* v_crit, double* v_infl); 
+        void r_mT(double* mt1_, double* mt2_); 
+        void r_mW(double* mw1_, double* mw2_); 
+        void Z_mW(double* mw1_, double* mw2_); 
+        void Z_mT(double* mt1_, double* mt2_, double mw_); 
+
         void update(double mt, double mw);
         void flush(); 
 
@@ -46,20 +72,20 @@ class nusol {
         mtx* K(); 
         mtx* R_T();
 
-        void Z2_coeff(double* A, double* B, double* C); 
-
+        void Z2(double* A, double* B, double* C); 
         void misc(); 
-        ~nusol();  
 
+        wrapper* b = nullptr;
+        wrapper* l = nullptr; 
     private:
-        particle* b = nullptr;
-        particle* l = nullptr; 
 
         double mw = 0;
         double mt = 0; 
+        double mw2 = 0; 
+        double mt2 = 0; 
+
         double _s = 0; 
         double _c = 0; 
-        bool delp = true; 
 
         mtx* h_tilde = nullptr; 
         mtx* h       = nullptr; 
@@ -69,6 +95,7 @@ class nusol {
         mtx* h_perp  = nullptr; 
         mtx* n_matrx = nullptr; 
         mtx* k       = nullptr; 
+
 }; 
 
 #endif

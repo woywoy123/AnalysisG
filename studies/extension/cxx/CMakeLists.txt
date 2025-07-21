@@ -1,37 +1,17 @@
-cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
-
-set(SKBUILD_PROJECT_NAME AnalysisG)
-project(${SKBUILD_PROJECT_NAME}  VERSION 5.0 LANGUAGES CXX)
-find_package(Python COMPONENTS Interpreter Development REQUIRED)
-
 set(SOURCE_FILES 
-    nunu.h 
-    base.h 
-    particle.h 
-    matrix.h
-    tools.h 
-    nunu.cxx 
-    base.cxx 
-    particle.cxx 
-    matrix.cxx
-    tools.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/solvers.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/nusol.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/nunu.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/mtx.cxx
 )
 
-add_library(cnunu STATIC ${SOURCE_FILES})
-target_compile_options(cnunu PRIVATE -Wall -fPIC)
+add_library(cnunu ${SOURCE_FILES})
+target_include_directories(cnunu PRIVATE include/templates)
+target_include_directories(cnunu PUBLIC include)
+target_compile_options(cnunu PRIVATE -fPIC)
+target_compile_options(cnunu PRIVATE -Wall -pedantic -Wextra -Wshadow)
 
-add_custom_command(
-    OUTPUT cnunu.cpp DEPENDS nunu.pyx nunu.pxd        
-    VERBATIM COMMAND Python::Interpreter -m cython 
-    --capi-reexport-cincludes 
-    --no-docstrings
-    --verbose 
-    --output-file cnunu.cpp
-    --cplus nunu.pyx
-)
 
-python_add_library(nunu MODULE cnunu.cpp WITH_SOABI)
+add_executable(nunu main.cxx)
 target_link_libraries(nunu PUBLIC cnunu)
-target_compile_options(nunu PRIVATE -fPIC)
-install(TARGETS nunu DESTINATION .. )
-
+install(TARGETS nunu DESTINATION .)

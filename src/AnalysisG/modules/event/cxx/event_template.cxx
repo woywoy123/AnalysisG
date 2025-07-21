@@ -1,4 +1,5 @@
 #include <templates/event_template.h>
+#include <templates/nunu.h>
 
 event_template::event_template(){
     this -> trees.set_setter(this -> set_trees); 
@@ -131,5 +132,23 @@ void event_template::CompileEvent(){
 
 event_template* event_template::clone(){
     return new event_template(); 
+}
+
+
+std::vector<particle_template*> event_template::double_neutrino(
+        std::vector<particle_template*>* targets, double phi, double met, double limit
+){
+    nunu_solver* sol = new nunu_solver(targets, met, phi); 
+    sol -> prepare(172.68*1000, 80.384*1000);
+    sol -> solve(); 
+    particle_template* nu1 = nullptr; 
+    particle_template* nu2 = nullptr; 
+    sol -> nunu_make(&nu1, &nu2, limit); 
+    delete sol;
+
+    if (!nu1 && !nu2){return {};}
+    (*this -> particle_link["nunu"])[nu1 -> hash] = nu1;
+    (*this -> particle_link["nunu"])[nu2 -> hash] = nu2; 
+    return {nu1, nu2}; 
 }
 

@@ -1,4 +1,4 @@
-#include "event.h"
+#include <bsm_4tops/event.h>
 
 bsm_4tops::bsm_4tops(){
     this -> name = "bsm_4tops"; 
@@ -117,7 +117,7 @@ void bsm_4tops::CompileEvent(){
     std::map<double, std::vector<particle_template*>>::iterator id;
     for (id = dist.begin(); id != dist.end(); ++id){
         particle_template* l = id -> second[1]; 
-        std::string    hash_ = l -> hash; 
+        std::string hash_ = l -> hash; 
         if (accept[hash_]){continue;}
 
         top_children* c = (top_children*)id -> second[0]; 
@@ -151,4 +151,6 @@ void bsm_4tops::CompileEvent(){
     this -> vectorize(&this -> m_Jets     , &this -> DetectorObjects); 
     this -> vectorize(&this -> m_Muons    , &this -> DetectorObjects); 
     this -> vectorize(&this -> m_Electrons, &this -> DetectorObjects); 
+    std::vector<particle_template*> nux = this -> double_neutrino(&this -> DetectorObjects, this -> phi, this -> met); 
+    for (int x(0); x < nux.size(); ++x){this -> DetectorObjects.push_back(nux[x]);}
 }

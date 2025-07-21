@@ -1,45 +1,23 @@
-#include "nunu.h"
-#include "lm.h"
+#include <templates/nunu.h>
 
 int main(){
 
-    particle* b1  = new particle(-19.766428,  -40.022249,   69.855886,  83.191328);
-    particle* b2  = new particle(107.795878, -185.326183,  -67.989162, 225.794953);
-    particle* mu1 = new particle(-14.306453,  -47.019613,    3.816470,  49.295996);
-    particle* mu2 = new particle(  4.941336, -104.097506, -103.640669, 146.976547);
-    double metx = 106.435841; 
-    double mety = -141.293331;
+    wrapper* b1  = new wrapper(-19.766428,  -40.022249,   69.855886,  83.191328);
+    wrapper* b2  = new wrapper(107.795878, -185.326183,  -67.989162, 225.794953);
+    wrapper* mu1 = new wrapper(-14.306453,  -47.019613,    3.816470,  49.295996);
+    wrapper* mu2 = new wrapper(  4.941336, -104.097506, -103.640669, 146.976547);
 
-    double mt1 = 172.62;
-    double mt2 = 172.62; 
-    double mw1 = 80.385; 
-    double mw2 = 80.385; 
+    mu1 -> is_lep = true; b1 -> is_b = true;
+    mu2 -> is_lep = true; b2 -> is_b = true;
 
-    for (int x(0); x < 10; ++x){
-        nunu* nx = new nunu(b1, b2, mu1, mu2, mt1-0.001, mt2 + 0.001, mw1, mw2, false); 
-        nx -> metx = metx; 
-        nx -> mety = mety; 
-        nx -> generate(metx, mety, 0);
-        nx -> get_misc();
-        delete nx; 
-    }
-
-    //double** params = matrix(1, 4); 
-    //params[0][0] = mt1; params[0][2] = mt2;
-    //params[0][1] = mw1; params[0][3] = mw2;
-
-
-    //LevenbergMarquardt* lm = new LevenbergMarquardt(nx, params, 1e-5, 1e10, 1e-10, 1000000);
-    //lm -> optimize(); 
-
-    delete b1; 
-    delete b2;
-    delete mu1; 
-    delete mu2; 
-    //delete lm; 
-    //delete nx; 
-    return 0;
-}
-
-
+    std::vector<wrapper*> targets = {b1, b2, mu1, mu2}; 
+    double met = 106.435841; 
+    double phi = -141.293331;
+    
+    nunu_solver* sol = new nunu_solver(&targets, met, phi); 
+    sol -> prepare(172.68, 80.384);
+    sol -> solve(); 
+    delete sol;
+    return 0; 
+}; 
 

@@ -1,7 +1,18 @@
-set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/templates/event_template.h)
+set(HEADER_FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/templates/event_template.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/templates/solvers.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/templates/nusol.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/templates/nunu.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/templates/mtx.h
+)
+
 set(SOURCE_FILES 
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/event_template.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/properties.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/solvers.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/nusol.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/nunu.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/mtx.cxx
 )
 
 add_library(cevent_template ${SOURCE_FILES})

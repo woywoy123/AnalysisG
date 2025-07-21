@@ -1,25 +1,10 @@
 #ifndef H_MTX
-#define H_MTX 
+#define H_MTX
+
 #include <cmath>
 
-class mtx; 
-mtx operator*(double scale , const mtx& o2); 
-mtx operator*(const mtx& o1, double scale); 
-mtx operator*(const mtx& o1, const mtx& o2); 
-mtx operator+(const mtx& o1, const mtx& o2); 
-mtx operator-(const mtx& o1, const mtx& o2);
-
-mtx* find_roots(double a, double b, double c); 
-mtx* find_roots(double a, double b, double c, double d); 
-mtx* find_roots(double a, double b, double c, double d, double e); 
-
-
-
-
-
-
-
-class mtx {
+class mtx 
+{
     public: 
         mtx(); 
         mtx(int idx, int idy); 
@@ -52,10 +37,6 @@ class mtx {
         mtx cross(mtx* r1); 
         mtx cross(mtx* r1, mtx* r2); 
 
-        mtx Rz(double angle);
-        mtx Ry(double angle);
-        mtx Rx(double angle); 
-
         bool valid(int idx, int idy); 
         void print(int prec = 6, int width = 12); 
 
@@ -83,33 +64,7 @@ class mtx {
         friend mtx operator+(const mtx& o1, const mtx& o2); 
         friend mtx operator-(const mtx& o1, const mtx& o2);
         friend mtx operator*(const mtx& o1, const mtx& o2); 
-
-        void scale(double** v, int idx, int idy, double s); 
-
-        double trace(double** A);
-        double m_00(double**  M);
-        double m_01(double**  M);
-        double m_02(double**  M);
-        double m_10(double**  M);
-        double m_11(double**  M);
-        double m_12(double**  M);
-        double m_20(double**  M);
-        double m_21(double**  M);
-        double m_22(double**  M);
-        double det(double**   v);
-        void   _copy(double*  dst, double* src, int lx); 
-        void   _copy(bool*    dst,   bool* src, int lx); 
-        void   _copy(double** src, int lx, int ly); 
-        void   _copy(bool**   src, int lx, int ly); 
-
-        double** _matrix(int row, int col); 
-        bool**   _mask(int row, int col); 
-
 }; 
-
-
-
-
 
 
 #endif
