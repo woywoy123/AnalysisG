@@ -7,7 +7,16 @@ from AnalysisG.metrics import *
 from AnalysisG.models import *
 
 ev = BSM4Tops()
-gr = GraphJets()
+gr = GraphTruthJets()
+
+root1 = "./samples/dilepton/*"
+
+base_dir = "./ProjectName/Grift/"
+#mx = AccuracyMetric()
+mx = PageRankMetric()
+
+mx.InterpretROOT("./ProjectName/metrics/pagerank/epoch-1/Grift-MRK-1/kfold-1.root")
+exit()
 
 gn = Grift()
 gn.name = "Grift-MRK-1"
@@ -21,28 +30,18 @@ opti = OptimizerConfig()
 opti.Optimizer = "adam"
 opti.lr = 1e-4
 
-#root1 = "/home/tnom6927/Downloads/mc16_small/*"
-root1 = "./samples/dilepton/*"
-
-
-base_dir = "./ProjectName/Grift/"
-mx = AccuracyMetric()
 mx.RunNames = {
         "Grift-MRK-1::epoch-1::k-1" : base_dir + "MRK-1/state/epoch-1/kfold-1_model.pt", 
-        "Grift-MRK-1::epoch-1::k-2" : base_dir + "MRK-1/state/epoch-1/kfold-2_model.pt", 
-        "Grift-MRK-1::epoch-2::k-1" : base_dir + "MRK-1/state/epoch-2/kfold-1_model.pt",
-        "Grift-MRK-1::epoch-3::k-1" : base_dir + "MRK-1/state/epoch-1/kfold-1_model.pt", 
-        "Grift-MRK-1::epoch-4::k-2" : base_dir + "MRK-1/state/epoch-1/kfold-2_model.pt", 
-        "Grift-MRK-1::epoch-5::k-1" : base_dir + "MRK-1/state/epoch-2/kfold-1_model.pt",
-        "Grift-MRK-1::epoch-6::k-1" : base_dir + "MRK-1/state/epoch-1/kfold-1_model.pt", 
-        "Grift-MRK-1::epoch-7::k-2" : base_dir + "MRK-1/state/epoch-1/kfold-2_model.pt", 
-        "Grift-MRK-1::epoch-8::k-1" : base_dir + "MRK-1/state/epoch-2/kfold-1_model.pt",
-        "Grift-MRK-1::epoch-9::k-1" : base_dir + "MRK-1/state/epoch-1/kfold-1_model.pt", 
-        "Grift-MRK-1::epoch-10::k-2" : base_dir + "MRK-1/state/epoch-1/kfold-2_model.pt", 
-        "Grift-MRK-1::epoch-11::k-1" : base_dir + "MRK-1/state/epoch-2/kfold-1_model.pt"
+        #        "Grift-MRK-1::epoch-2::k-1" : base_dir + "MRK-1/state/epoch-2/kfold-1_model.pt", 
+        #        "Grift-MRK-1::epoch-3::k-1" : base_dir + "MRK-1/state/epoch-3/kfold-1_model.pt", 
 }
 
 mx.Variables = [
+        "Grift-MRK-1::data::node::pt",
+        "Grift-MRK-1::data::node::eta",
+        "Grift-MRK-1::data::node::phi",
+        "Grift-MRK-1::data::node::energy",
+
         "Grift-MRK-1::truth::graph::ntops", 
         "Grift-MRK-1::prediction::extra::ntops_score", 
 
@@ -55,18 +54,21 @@ mx.Variables = [
 
 ana = Analysis()
 ana.TrainingDataset = "./ProjectName/sample.h5"
+ana.TrainSize = 50
 ana.Threads = 2
 ana.BatchSize = 2
-ana.AddMetric(mx, gn)
+#ana.kFold = 1
 #ana.AddModel(gn, opti, "MRK-1")
+ana.AddMetric(mx, gn)
 ana.GraphCache = "./ProjectName/"
+
 #ana.AddSamples(root1, "tmp")
 #ana.AddEvent(ev, "tmp")
-#ana.AddGraph(gr, "tmp")
-#ana.DebugMode = True
+ana.AddGraph(gr, "tmp")
 ana.Validation = True
 ana.Evaluation = True
 ana.Training   = True
+#ana.DebugMode = True
 ana.Start()
 
 
