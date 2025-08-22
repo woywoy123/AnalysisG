@@ -18,7 +18,7 @@ add_subdirectory(io)
 add_subdirectory(plotting)
 add_subdirectory(roc)
 add_subdirectory(lossfx)
-
+add_subdirectory(nusol)
 add_subdirectory(container)
 add_subdirectory(sampletracer)
 add_subdirectory(analysis)

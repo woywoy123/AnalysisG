@@ -299,13 +299,6 @@ class graph_template: public tools
             this -> add_edge_feature(edge_data, "D-" + _name); 
         }
 
-
-        std::pair<particle_template*, particle_template*> double_neutrino(
-            std::vector<particle_template*> particles, double met, double phi, std::string device, 
-            double top_mass = 172.62*1000.0, double wboson_mass = 80.385*1000.0, 
-            double distance = 1e-6, double perturb = 1e-1, long steps = 50 
-        ); 
-
     private:
         friend container; 
         friend analysis; 

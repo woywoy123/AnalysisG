@@ -1,8 +1,8 @@
 #include <templates/particle_template.h>
-#include <templates/solvers.h>
-#include <templates/nusol.h>
-#include <templates/mtx.h>
 
+#include <ellipse/solvers.h>
+#include <ellipse/nusol.h>
+#include <ellipse/mtx.h>
 
 double costheta(wrapper* p1, wrapper* p2){
     double pxx  = p1 -> px * p2 -> px + p1 -> py * p2 -> py + p1 -> pz * p2 -> pz; 
@@ -32,8 +32,8 @@ wrapper::wrapper(particle_template* p_){
 }
 
 
-nusol::nusol(){}
-nusol::nusol(particle_template* b_, particle_template* l_, double mW, double mT){
+nuelx::nuelx(){}
+nuelx::nuelx(particle_template* b_, particle_template* l_, double mW, double mT){
     this -> b = new wrapper(b_); 
     this -> l = new wrapper(l_);
     this -> mw = mW; 
@@ -44,14 +44,14 @@ nusol::nusol(particle_template* b_, particle_template* l_, double mW, double mT)
     this -> _c = costheta(this -> b, this -> l); 
 }
 
-nusol::~nusol(){
+nuelx::~nuelx(){
     this -> flush();
     if (this -> b){delete this -> b;}
     if (this -> l){delete this -> l;}
     if (this -> r_t){delete this -> r_t;}
 }
 
-void nusol::flush(){
+void nuelx::flush(){
     if (this -> h      ){delete this -> h;}
     if (this -> dw_H   ){delete this -> dw_H;}
     if (this -> dt_H   ){delete this -> dt_H;}
@@ -68,7 +68,7 @@ void nusol::flush(){
     this -> k       = nullptr; 
 }
 
-mtx* nusol::R_T(){  
+mtx* nuelx::R_T(){  
     if (this -> r_t){return this -> r_t;}
     double phi_mu   = this -> l -> phi; 
     double theta_mu = this -> l -> theta;
@@ -91,44 +91,44 @@ mtx* nusol::R_T(){
     return this -> r_t; 
 }
 
-double nusol::x0(){
+double nuelx::x0(){
     return (this -> l -> m2 - this -> mw2)/(2*this -> l -> e); 
 }
 
-double nusol::Sx(){
+double nuelx::Sx(){
     return (this -> x0() * this -> l -> b - this -> l -> p * (1 - this -> l -> b2)) / this -> l -> b2; 
 }
 
-double nusol::Sy(){
+double nuelx::Sy(){
     double x0p = -(this -> mt2 - this -> mw2 - this -> b -> m2)/ (2 * this -> b -> p); 
     return (x0p - this -> _c * this -> Sx()) / this -> _s; 
 }
 
-double nusol::w(){
+double nuelx::w(){
     return (this -> l -> b / this -> b -> b - this -> _c)/ this -> _s;
 }
 
-double nusol::w2(){
+double nuelx::w2(){
     return pow(this -> w(), 2);
 }
 
-double nusol::om2(){
+double nuelx::om2(){
     return this -> w2() + 1 - this -> l -> b2;
 }
 
-double nusol::x1(){
+double nuelx::x1(){
     double sx = this -> Sx();
     double sy = this -> Sy(); 
     return sx - (sx + this -> w() * sy)/this -> om2();
 }
 
-double nusol::y1(){
+double nuelx::y1(){
     double sy = this -> Sy(); 
     double w_ = this -> w(); 
     return sy - (this -> Sx() + w_ * sy)*w_/this -> om2();
 }
 
-void nusol::Z2(double* A, double* B, double* C){
+void nuelx::Z2(double* A, double* B, double* C){
     double D1 = -(this -> l -> m2 + this -> mt2 - this -> b -> m2)/(2 * this -> b -> p * this -> _s); 
     double D2 = -(this -> l -> p / this -> b -> p + this -> _c)/ this -> _s;  
     double w_ = this -> w();
@@ -139,28 +139,28 @@ void nusol::Z2(double* A, double* B, double* C){
     *C = pow((-w_ * D1 / o2), 2)*o2 - pow(D1, 2) + this -> l -> m2; 
 }
 
-double nusol::Z2(){
+double nuelx::Z2(){
     double A, B, C; 
     double sx = this -> Sx(); 
     this -> Z2(&A, &B, &C);
     return A * sx * sx + B*sx + C; 
 }
 
-double nusol::Z(){
+double nuelx::Z(){
     double z  = this -> Z2(); 
     z = (z > 0) ? pow(z, 0.5) : -pow(fabs(z), 0.5); 
     z = (z) ? z : 1;
     return z; 
 }
 
-mtx* nusol::H(){
+mtx* nuelx::H(){
     if (this -> h){return this -> h;}
     mtx m = this -> R_T() -> dot(this -> H_tilde()); 
     this -> h = new mtx(&m); 
     return this -> h; 
 }
 
-mtx* nusol::H_tilde(){
+mtx* nuelx::H_tilde(){
     if (this -> h_tilde){return this -> h_tilde;}
     double z = this -> Z(); 
     this -> h_tilde = new mtx(3, 3); 
@@ -172,7 +172,7 @@ mtx* nusol::H_tilde(){
     return this -> h_tilde; 
 }
 
-mtx* nusol::H_perp(){
+mtx* nuelx::H_perp(){
     if (this -> h_perp){return this -> h_perp;}
     mtx* h_ = this -> H(); 
     this -> h_perp = new mtx(3, 3);
@@ -182,9 +182,9 @@ mtx* nusol::H_perp(){
     return this -> h_perp; 
 }
 
-mtx* nusol::N(){
+mtx* nuelx::N(){
     if (this -> n_matrx){return this -> n_matrx;}
-    mtx inv_n = this -> H_perp() -> inv();
+    mtx inv_n = this -> H() -> inv();
     mtx inv_t = inv_n.T(); 
     mtx* circl = unit(); 
     this -> n_matrx = new mtx(inv_t.dot(circl).dot(inv_n)); 
@@ -192,51 +192,51 @@ mtx* nusol::N(){
     return this -> n_matrx; 
 }
 
-mtx* nusol::K(){
+mtx* nuelx::K(){
     if (this -> k){return this -> k;}
     mtx kx = this -> H_perp() -> inv(); 
     this -> k = new mtx(this -> H() -> dot(this -> H_perp() -> inv())); 
     return this -> k; 
 }
 
-double nusol::dSx_dmW(){
+double nuelx::dSx_dmW(){
     return -this -> mw / this -> l -> p; 
 }
 
-double nusol::dSy_dmW(){
+double nuelx::dSy_dmW(){
     return ( this -> mw / this -> b -> p - this -> _c * this -> dSx_dmW() )/this -> _s; 
 }
 
-double nusol::dSy_dmT(){
+double nuelx::dSy_dmT(){
     return -this -> mt / (this -> b -> p * this -> _s); 
 }
 
-double nusol::dx1_dmW(){
+double nuelx::dx1_dmW(){
     double sx = this -> dSx_dmW(); 
     return sx - (1 / this -> om2()) * (sx + this -> w() * this -> dSy_dmW()); 
 }
 
-double nusol::dx1_dmT(){
+double nuelx::dx1_dmT(){
     return -(this -> w()/this -> om2()) * this -> dSy_dmT();
 }
 
-double nusol::dy1_dmW(){
+double nuelx::dy1_dmW(){
     double o2 = 1.0/this -> om2(); 
     return this -> dSy_dmW()*(1 - this -> w2() * o2) - ( this -> w() * o2 )*this -> dSx_dmW();
 }
 
-double nusol::dy1_dmT(){
+double nuelx::dy1_dmT(){
     return this -> dSy_dmT() * (1 - this -> w2()/this -> om2());
 }
 
-double nusol::dZ_dmW(){
+double nuelx::dZ_dmW(){
     double A, B, C; 
     double z = this -> Z(); 
     this -> Z2(&A, &B, &C); 
     return (2 * A * this -> Sx() + B) * this -> dSx_dmW() /(2 * (z + (z == 0))); 
 }
 
-double nusol::dZ_dmT(){
+double nuelx::dZ_dmT(){
     double D1 = -(this -> l -> m2 + this -> mt2 - this -> b -> m2); 
     double D2 = this -> l -> p / this -> b -> p;
     D2 = -(D2 + this -> _c)/this -> _s; 
@@ -250,7 +250,7 @@ double nusol::dZ_dmT(){
     return -(dB * this -> Sx() + dC)/(z + (z == 0)); 
 }
 
-mtx* nusol::dH_dmW(){
+mtx* nuelx::dH_dmW(){
     if (this -> dw_H){return this -> dw_H;}
     double dmW = this -> dZ_dmW(); 
     double omg = pow(this -> om2(), 0.5); 
@@ -264,7 +264,7 @@ mtx* nusol::dH_dmW(){
     return this -> dw_H; 
 }
 
-mtx* nusol::dH_dmT(){
+mtx* nuelx::dH_dmT(){
     if (this -> dt_H){return this -> dt_H;}
     double dmT = this -> dZ_dmT(); 
     double omg = pow(this -> om2(), 0.5); 
@@ -278,7 +278,7 @@ mtx* nusol::dH_dmT(){
     return this -> dt_H; 
 }
 
-void nusol::r_mW(double* mw1_, double* mw2_){
+void nuelx::r_mW(double* mw1_, double* mw2_){
     double p_l  = this -> l -> p;
     double p_b  = this -> b -> p; 
     double e_l  = this -> l -> e; 
@@ -311,7 +311,7 @@ void nusol::r_mW(double* mw1_, double* mw2_){
     *mw2_ = (_mw2 < 0) ? -1 : pow(_mw2, 0.5); 
 }
 
-void nusol::r_mT(double* mt1_, double* mt2_){
+void nuelx::r_mT(double* mt1_, double* mt2_){
    *mt1_ = -1; *mt2_ = -1; 
    double c = this -> _c; 
    double s = this -> _s; 
@@ -342,7 +342,7 @@ void nusol::r_mT(double* mt1_, double* mt2_){
    *mt2_ = (mt2_s2 < 0) ? -1 : sqrt(mt2_s2); 
 }
 
-void nusol::Z_mW(double* mw1_, double* mw2_){
+void nuelx::Z_mW(double* mw1_, double* mw2_){
     double w_ = this -> w();
     double o2 = this -> om2();
 
@@ -369,7 +369,7 @@ void nusol::Z_mW(double* mw1_, double* mw2_){
     *mw2_ = (v_i < 0) ? -1 : sqrt(v_i); 
 }
 
-void nusol::Z_mT(double* mt1_, double* mt2_, double _mw){
+void nuelx::Z_mT(double* mt1_, double* mt2_, double _mw){
     double w_ = (this -> l -> b / this -> b -> b - this -> _c) / this -> _s;
     double o2 = this -> om2();
     double mW2 = _mw*_mw; 
@@ -394,7 +394,7 @@ void nusol::Z_mT(double* mt1_, double* mt2_, double _mw){
     *mt2_ = (root2 < 0 || disc < 0) ? -1 : sqrt(root2); 
 }
 
-void nusol::update(double mt_, double mw_){
+void nuelx::update(double mt_, double mw_){
     this -> mt = (mt_ > 0) ? mt_ : this -> mt; 
     this -> mt2 = this -> mt * this -> mt; 
 
@@ -403,7 +403,7 @@ void nusol::update(double mt_, double mw_){
     this -> flush(); 
 }
 
-void nusol::misc(){
+void nuelx::misc(){
     std::cout << "--------- Neutrino ------------" << std::endl;
     std::cout << "Sx:      " << this -> Sx()       << std::endl;
     std::cout << "dSx_dmW: " << this -> dSx_dmW()  << std::endl;

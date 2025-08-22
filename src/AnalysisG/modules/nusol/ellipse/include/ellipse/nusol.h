@@ -23,12 +23,12 @@ struct wrapper
 }; 
 
 
-class nusol 
+class nuelx 
 {
     public:
-        nusol(); 
-        nusol(particle_template* b, particle_template* l, double mW, double mT); 
-        ~nusol(); 
+        nuelx(); 
+        nuelx(particle_template* b, particle_template* l, double mW, double mT); 
+        ~nuelx(); 
 
         double Sx(); 
         double dSx_dmW();

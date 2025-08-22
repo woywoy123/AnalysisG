@@ -88,6 +88,7 @@ class event_template: public tools
 
     private:
         void build_mapping(std::map<std::string, data_t*>* evnt); 
+        std::map<std::string, particle_template*> garbage = {}; 
         void flush_leaf_string(); 
 
         std::map<std::string, bool> next_ = {}; 

@@ -1,5 +1,5 @@
-#include <templates/solvers.h>
-#include <templates/mtx.h>
+#include <ellipse/solvers.h>
+#include <ellipse/mtx.h>
 #include <iostream>
 #include <iomanip>
 
@@ -184,9 +184,9 @@ bool mtx::unique(int id1, int id2, double v1, double v2){
     int idx = 0;  
     for (int x(0); x < this -> dim_j; ++x){
         bool sm = true; 
-        sm *= pow(this -> _m[id1][x] - v1, 2) < this -> tol;
-        sm *= pow(this -> _m[id2][x] - v2, 2) < this -> tol;
-        sm *= this -> _b[id1][x]; 
+        sm = sm * (pow(this -> _m[id1][x] - v1, 2) < this -> tol);
+        sm = sm * (pow(this -> _m[id2][x] - v2, 2) < this -> tol);
+        sm = sm * this -> _b[id1][x]; 
         if (sm){return true;}
         idx += _b[id1][x]; 
         if (this -> _b[id1][x]){continue;}

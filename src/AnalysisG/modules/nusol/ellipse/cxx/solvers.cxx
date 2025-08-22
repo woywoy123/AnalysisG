@@ -1,5 +1,5 @@
-#include <templates/solvers.h>
-#include <templates/mtx.h>
+#include <ellipse/solvers.h>
+#include <ellipse/mtx.h>
 #include <iostream>
 #include <complex>
 #include <cmath>

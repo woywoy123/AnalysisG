@@ -1,5 +1,5 @@
 #include <templates/event_template.h>
-#include <templates/nunu.h>
+#include <reconstruction/nusol.h>
 
 event_template::event_template(){
     this -> trees.set_setter(this -> set_trees); 
@@ -32,6 +32,7 @@ event_template::event_template(){
 event_template::~event_template(){
     if (this -> filename.size()){this -> flush_particles();}
     this -> deregister_particle(&this -> particle_generators); 
+    this -> deregister_particle(&this -> garbage); 
 }
 
 bool event_template::operator == (event_template& p){
@@ -138,17 +139,22 @@ event_template* event_template::clone(){
 std::vector<particle_template*> event_template::double_neutrino(
         std::vector<particle_template*>* targets, double phi, double met, double limit
 ){
-    nunu_solver* sol = new nunu_solver(targets, met, phi); 
-    sol -> prepare(172.68*1000, 80.384*1000);
-    sol -> solve(); 
+
+    nusol_t para; 
+    para.met = met; 
+    para.phi = phi;
+    para.limit = limit; 
+    para.targets = targets; 
+    para.mode = nusol_enum::conics; 
+
+    nusol* nx = new nusol(&para); 
+
+    delete nx; 
     particle_template* nu1 = nullptr; 
     particle_template* nu2 = nullptr; 
-    sol -> nunu_make(&nu1, &nu2, limit); 
-    delete sol;
-
     if (!nu1 && !nu2){return {};}
-    (*this -> particle_link["nunu"])[nu1 -> hash] = nu1;
-    (*this -> particle_link["nunu"])[nu2 -> hash] = nu2; 
+    //this -> garbage[nu1 -> hash] = nu1;
+    //this -> garbage[nu2 -> hash] = nu2; 
     return {nu1, nu2}; 
 }
 

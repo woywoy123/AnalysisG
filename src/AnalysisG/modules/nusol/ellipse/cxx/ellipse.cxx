@@ -1,7 +1,5 @@
-#include <templates/solvers.h>
-#include <templates/nusol.h>
-#include <templates/nunu.h>
-#include <templates/mtx.h>
+#include <reconstruction/nusol.h>
+#include <ellipse/ellipse.h>
 
 nunu_t::nunu_t(){}
 nunu_t::~nunu_t(){
@@ -10,45 +8,55 @@ nunu_t::~nunu_t(){
     if (this -> agl){delete this -> agl;}
 }
 
-nunu_solver::nunu_solver(std::vector<particle_template*>* targets, double met, double phi){
-    this -> _metx = std::cos(phi) * met;  
-    this -> _mety = std::sin(phi) * met; 
-    
-    for (size_t x(0); x < targets -> size(); ++x){
-        if (!targets -> at(x) -> is_lep){continue;}
-        this -> leptons.push_back(targets -> at(x));
+ellipse::ellipse(nusol_t* parameters){
+    this -> _metx = parameters -> met_x;  
+    this -> _mety = parameters -> met_y;
+    this -> _metz = parameters -> met_z;  
+  
+    for (size_t x(0); x < parameters -> targets -> size(); ++x){
+        if (!parameters -> targets -> at(x) -> is_lep){continue;}
+        this -> leptons.push_back(parameters -> targets -> at(x));
     }
 
-    for (size_t x(0); x < targets -> size(); ++x){
-        if (!targets -> at(x) -> is_b){continue;}
-        this -> bquarks.push_back(targets -> at(x));
+    for (size_t x(0); x < parameters -> targets -> size(); ++x){
+        if (!parameters -> targets -> at(x) -> is_b){continue;}
+        this -> bquarks.push_back(parameters -> targets -> at(x));
     }
+
     this -> n_lp = this -> leptons.size();
     this -> n_bs = this -> bquarks.size();
     this -> engines.reserve(this -> n_lp*this -> n_bs); 
+    this -> params = parameters; 
 }
 
-void nunu_solver::prepare(double mt, double mw){
+ellipse::~ellipse(){
+    for (size_t x(0); x < this -> engines.size(); ++x){
+        delete this -> engines[x];
+    }
+    this -> solvs.clear(); 
+}
+
+
+void ellipse::prepare(double mt, double mw){
     for (int l(0); l < this -> n_lp; ++l){
         for (int b(0); b < this -> n_bs; ++b){
-            nusol* nl = new nusol(this -> bquarks[b], this -> leptons[l], mw, mt); 
+            nuelx* nl = new nuelx(this -> bquarks[b], this -> leptons[l], mw, mt); 
             this -> engines.push_back(nl); 
         }
     }
+  
     int lx = -1; 
     size_t le = this -> engines.size();   
     for (size_t x(0); x < le; ++x){
         for (size_t y(0); y < le; ++y){
             if (y == x){continue;}
-            std::tuple<nusol*, nusol*> px;
-            px = std::tuple<nusol*, nusol*>(this -> engines[x], this -> engines[y]); 
-            this -> pairings[++lx] = px; 
+            this -> pairings[++lx] = std::tuple<nuelx*, nuelx*>(this -> engines[x], this -> engines[y]);  
         }
     } 
 }
 
-void nunu_solver::solve(){
-    auto lamb1 =[this](nusol* nux1, nusol* nux2, double mt_, double mw_, double* dz) -> bool{
+void ellipse::solve(){
+    auto lamb1 =[this](nuelx* nux1, nuelx* nux2, double mt_, double mw_, double* dz) -> bool{
         if (mt_ < 0 || mw_ < 0){return false;}
         double z = nux1 -> Z2(); 
         nux1 -> update(mt_, mw_); 
@@ -58,7 +66,7 @@ void nunu_solver::solve(){
         return r; 
     }; 
 
-    auto lamb2 =[this](nusol* nux1, nusol* nux2, double mt_, double mw_, double* dz) -> bool{
+    auto lamb2 =[this](nuelx* nux1, nuelx* nux2, double mt_, double mw_, double* dz) -> bool{
         if (mt_ < 0 || mw_ < 0){return false;}
         double z = nux2 -> Z2(); 
         nux2 -> update(mt_, mw_); 
@@ -68,11 +76,11 @@ void nunu_solver::solve(){
         return r;
     }; 
 
-    std::map<int, std::tuple<nusol*, nusol*>>::iterator itr = this -> pairings.begin(); 
+    std::map<int, std::tuple<nuelx*, nuelx*>>::iterator itr = this -> pairings.begin(); 
     for (; itr != this -> pairings.end(); ++itr){
-        std::tuple<nusol*, nusol*> px = itr -> second;
-        nusol* nx1 = std::get<0>(px); 
-        nusol* nx2 = std::get<1>(px);
+        std::tuple<nuelx*, nuelx*> px = itr -> second;
+        nuelx* nx1 = std::get<0>(px); 
+        nuelx* nx2 = std::get<1>(px);
 
         int x = 0; 
         double z1 = -1; 
@@ -99,7 +107,6 @@ void nunu_solver::solve(){
             if (lamb1(nx1, nx2, mw1_2, mt1_3, &z1)){mt1 = mt1_3; mw1 = mw1_2;} 
             if (lamb1(nx1, nx2, mw1_1, mt1_4, &z1)){mt1 = mt1_4; mw1 = mw1_1;} 
             if (lamb1(nx1, nx2, mw1_2, mt1_4, &z1)){mt1 = mt1_4; mw1 = mw1_2;} 
-            nx1 -> update(mt1, mw1);   
 
             if (lamb2(nx1, nx2, mw2_1, mt2_1, &z2)){mt2 = mt2_1; mw2 = mw2_1;}
             if (lamb2(nx1, nx2, mw2_2, mt2_1, &z2)){mt2 = mt2_1; mw2 = mw2_2;}
@@ -109,43 +116,23 @@ void nunu_solver::solve(){
             if (lamb2(nx1, nx2, mw2_2, mt2_3, &z2)){mt2 = mt2_3; mw2 = mw2_2;}
             if (lamb2(nx1, nx2, mw2_1, mt2_4, &z2)){mt2 = mt2_4; mw2 = mw2_1;}
             if (lamb2(nx1, nx2, mw2_2, mt2_4, &z2)){mt2 = mt2_4; mw2 = mw2_2;}
-            nx2 -> update(mt2, mw2);   
 
+            nx1 -> update(mt1, mw1);   
+            nx2 -> update(mt2, mw2);   
             ++x; 
             if (si != this -> solvs.size() || x < 10){continue;}
             break;
         }
     }
+
 }
 
-void nunu_solver::nunu_make(particle_template** nu1, particle_template** nu2, double limit){
-    if (this -> solvs.size()){return;}
-    std::map<double, nunu_t>::iterator itr = this -> solvs.begin(); 
-    double ds = itr -> first; 
-    if (ds > limit){return;}
-    nunu_t* nx = &itr -> second; 
-    *nu1 = new particle_template(nx -> nu1 -> _m[0][0], nx -> nu1 -> _m[0][1], nx -> nu1 -> _m[0][2]); 
-    *nu2 = new particle_template(nx -> nu2 -> _m[0][0], nx -> nu2 -> _m[0][1], nx -> nu2 -> _m[0][2]); 
-    (*nu1) -> type = "nunu"; 
-    (*nu2) -> type = "nunu"; 
-    
-    (*nu1) -> register_parent(nx -> nux1 -> b -> lnk); 
-    (*nu1) -> register_parent(nx -> nux1 -> l -> lnk); 
-    (*nu2) -> register_parent(nx -> nux2 -> b -> lnk); 
-    (*nu2) -> register_parent(nx -> nux2 -> l -> lnk); 
-}
-
-
-nunu_solver::~nunu_solver(){
-    for (size_t x(0); x < this -> engines.size(); ++x){delete this -> engines[x];}
-    this -> solvs.clear(); 
-}
-
-int nunu_solver::generate(nusol* nu1, nusol* nu2){
+int ellipse::generate(nuelx* nu1, nuelx* nu2){
     this -> flush(); 
     this -> p_nu1 = nu1; this -> p_nu2 = nu2; 
     mtx* vi = nullptr; mtx* vi_ = nullptr;
     mtx* vr = nullptr; mtx* vr_ = nullptr;
+
     int n_pts = this -> intersection(&vi, &vi_); 
     int n_rts = this -> angle_cross( &vr, &vr_); 
     this -> m_agl = new mtx(3, n_pts + n_rts); 
@@ -172,8 +159,7 @@ int nunu_solver::generate(nusol* nu1, nusol* nu2){
     return this -> m_lx; 
 }
 
-
-void nunu_solver::flush(){
+void ellipse::flush(){
     if (this -> m_nu1){delete this -> m_nu1;}
     if (this -> m_nu2){delete this -> m_nu2;} 
     if (this -> m_agl){delete this -> m_agl;}
@@ -184,31 +170,60 @@ void nunu_solver::flush(){
     this -> m_bst  = 0; 
 }
 
-int nunu_solver::intersection(mtx** v, mtx** v_){
+int ellipse::intersection(mtx** v, mtx** v_){
+    auto safe_del = [this](mtx** val) -> void{
+        if (!(*val)){return;}
+        delete (*val); (*val) = nullptr; 
+    }; 
+
+    auto make_nu = [this](mtx* S_, mtx* vx) -> mtx*{
+        mtx vxt = S_ -> dot(vx -> T()).T();
+        return new mtx(vxt);  
+    };
+
     mtx* S  = smatx(this -> _metx, this -> _mety, this -> _metz);
     mtx  n_ = S -> T().dot(this -> p_nu2 -> N()).dot(S); 
-    mtx* sol = nullptr; 
-    mtx* lin = nullptr; 
+    mtx  n  = S -> T().dot(this -> p_nu1 -> N()).dot(S); 
 
-    int n_pts = intersection_ellipses(this -> p_nu1 -> N(), &n_, &lin, v, &sol); 
-    if (!sol){delete S;return 0;}
-    mtx vn = (*v) -> T(); 
-    mtx vl = S -> dot(vn).T();
-    *v_ = new mtx(vl); 
-    delete S; 
-    delete sol; 
-    delete lin; 
+    mtx* sol1 = nullptr; 
+    mtx* sol2 = nullptr; 
+    mtx* lin1 = nullptr; 
+    mtx* lin2 = nullptr; 
+    mtx* vx   = nullptr; 
+    mtx* vx_  = nullptr; 
+    int n_pts = intersection_ellipses(this -> p_nu1 -> N(), &n_, &lin1, &vx , &sol1); 
+    n_pts    += intersection_ellipses(this -> p_nu2 -> N(), &n , &lin2, &vx_, &sol2); 
+
+    if (!vx && !vx_){safe_del(&S); return 0;}
+    safe_del(&sol1); 
+    safe_del(&sol2); 
+    safe_del(&lin1);
+    safe_del(&lin2);
+
+    if (vx && vx_){
+        mtx* _vn = make_nu(S, vx ); 
+        mtx*  vn = make_nu(S, vx_); 
+        (*v_) = vx_ -> cat(_vn); 
+        (*v ) = vx  -> cat( vn); 
+        safe_del(&_vn); safe_del(&vn); 
+        safe_del(&vx_); safe_del(&vx); 
+        
+    }
+    
+    if (vx ){(*v_) = make_nu(S, vx ); (*v ) = vx ;}
+    if (vx_){(*v ) = make_nu(S, vx_); (*v_) = vx_;}
+    safe_del(&S);
     return n_pts; 
 }
 
-int nunu_solver::angle_cross(mtx** v, mtx** v_){
+int ellipse::angle_cross(mtx** v, mtx** v_){
     mtx* p1 = this -> p_nu1 -> H_perp(); 
     mtx* p2 = this -> p_nu2 -> H_perp(); 
     mtx met(1, 3); 
     met._m[0][0] = this -> _metx; 
     met._m[0][1] = this -> _mety; 
     met._m[0][2] = this -> _metz; 
-   
+     
     int n_rts = 0;  
     mtx* agl = intersection_angle(p1, p2, &met, &n_rts);
     if (!n_rts){delete agl; return n_rts;}
@@ -224,7 +239,7 @@ int nunu_solver::angle_cross(mtx** v, mtx** v_){
     return n_rts; 
 }
 
-void nunu_solver::make_neutrinos(mtx* v, mtx* v_){
+void ellipse::make_neutrinos(mtx* v, mtx* v_){
     if (!v || !v_){return;}
 
     mtx invH1 = this -> p_nu1 -> H_perp() -> inv().dot(v  -> T()); 
@@ -239,7 +254,7 @@ void nunu_solver::make_neutrinos(mtx* v, mtx* v_){
     for (int x(0); x < invH1.dim_j; ++x){
         double a1 = std::atan2(invH1._m[1][x], invH1._m[0][x]); 
         double a2 = std::atan2(invH2._m[1][x], invH2._m[0][x]); 
-        double dx = distance(this -> p_nu1 -> H_perp(), a1, this -> p_nu2 -> H_perp(), a2); 
+        double dx = distance(this -> p_nu1 -> H(), a1, this -> p_nu2 -> H(), a2); 
         if (std::isnan(dx)){continue;}
         if (this -> m_agl -> unique(0, 2, a1, dx)){continue;}
         this -> m_agl -> assign(1, this -> m_lx, a2); 
@@ -264,3 +279,26 @@ void nunu_solver::make_neutrinos(mtx* v, mtx* v_){
     nx -> nux2 = this -> p_nu2; 
 }
 
+std::vector<particle_template*> ellipse::nunu_make(){
+    std::vector<particle_template*> nus = {}; 
+
+    if (!this -> solvs.size()){return nus;}
+    std::map<double, nunu_t>::iterator itr = this -> solvs.begin(); 
+    if (itr -> first > this -> params -> limit){return nus;}
+
+    nunu_t* nx = &itr -> second; 
+
+    particle_template* nu1 = new particle_template(nx -> nu1 -> _m[0][0], nx -> nu1 -> _m[0][1], nx -> nu1 -> _m[0][2]); 
+    particle_template* nu2 = new particle_template(nx -> nu2 -> _m[0][0], nx -> nu2 -> _m[0][1], nx -> nu2 -> _m[0][2]); 
+    nu1 -> type = "nunu"; 
+    nu2 -> type = "nunu"; 
+    
+    nu1 -> register_parent(nx -> nux1 -> l -> lnk); 
+    nu2 -> register_parent(nx -> nux2 -> l -> lnk); 
+    nu1 -> register_parent(nx -> nux1 -> b -> lnk); 
+    nu2 -> register_parent(nx -> nux2 -> b -> lnk); 
+
+    nus.push_back(nu1); 
+    nus.push_back(nu2); 
+    return nus; 
+}
