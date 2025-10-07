@@ -30,7 +30,7 @@ void bsm_4tops::build(element_t* el){
     el -> get("event_number", &this -> event_number); 
     el -> get("mu" , &this -> mu);
     el -> get("met", &this -> met); 
-    el -> get("phi", &this -> phi); 
+    el -> get("phi", &this -> phi);
 
     float w = 0; 
     el -> get("weight", &w); 
@@ -45,6 +45,7 @@ void bsm_4tops::CompileEvent(){
     std::map<int, truthjetparton*> _TruthJetPartons = this -> sort_by_index(&this -> m_TruthJetParton); 
     std::map<int, jetparton*>           _JetPartons = this -> sort_by_index(&this -> m_JetParton); 
 
+    int n_nu = 0; 
     std::map<int, top_children*>::iterator itc; 
     for (itc = _TopChildren.begin(); itc != _TopChildren.end(); ++itc){
         int index = itc -> second -> top_index; 
@@ -52,6 +53,8 @@ void bsm_4tops::CompileEvent(){
         _Tops[index] -> register_child(itc -> second); 
         itc -> second -> register_parent(_Tops[index]); 
         itc -> second -> index = index; 
+        if (!itc -> second -> is_nu){continue;}
+        n_nu++; 
     }
  
     std::map<int, truthjet*>::iterator itj; 
@@ -147,10 +150,47 @@ void bsm_4tops::CompileEvent(){
     this -> vectorize(&this -> m_Jets     , &this -> Jets); 
     this -> vectorize(&this -> m_Electrons, &this -> Electrons); 
     this -> vectorize(&this -> m_Muons    , &this -> Muons); 
-
     this -> vectorize(&this -> m_Jets     , &this -> DetectorObjects); 
     this -> vectorize(&this -> m_Muons    , &this -> DetectorObjects); 
     this -> vectorize(&this -> m_Electrons, &this -> DetectorObjects); 
+
+    if (n_nu != (this -> Electrons.size() + this -> Muons.size()) || n_nu < 1){return;}
+    std::cout << "-------------- new event ---------------- " << std::endl;
+
+    std::cout << " met: " << double(this -> met) << " phi: " << double(this -> phi) << std::endl;
+
+    std::cout << "---------- Truth ------------------- " << std::endl;
+    std::cout << " neutrinos::::: " << std::endl;
+    for (size_t x(0); x < this -> Children.size(); ++x){
+        if (!this -> Children[x] -> is_nu){continue;}
+        particle_template* p = this -> Children[x]; 
+        std::cout << "px: " << double(p -> px) << " py: " << double(p -> py) << " pz: " << double(p  -> pz) << " e: " << double(p -> e) << " top-index: " << ((top_children*)this -> Children[x]) -> top_index << std::endl;
+    }
+
+    std::cout << "------------ leptons ------------- " << std::endl;
+    for (size_t x(0); x < this -> DetectorObjects.size(); ++x){
+        if (!this -> DetectorObjects[x] -> is_lep){continue;}    
+        particle_template* l = this -> DetectorObjects[x]; 
+
+        int t = -1; 
+        if (l -> type == "mu"){t = ((muon*)l) -> top_index;}
+        if (l -> type == "el"){t = ((electron*)l) -> top_index;}
+        std::cout << "hash of lepton: " << std::string(l -> hash) << " top-index: " << t << std::endl;
+    }
+    
+    std::cout << "------------- b jets ------------- " << std::endl;
+    for (size_t x(0); x < this -> Tops.size(); ++x){
+        top* tx = (top*)this -> Tops[x]; 
+        for (size_t z(0); z < tx -> Jets.size(); ++z){
+            std::cout << "hash of b-jet: " << std::string(tx -> Jets[z] -> hash) << " top-index:" << tx -> index << std::endl;
+        }
+    }
+
+    std::cout << "-------- Detector Objects -------- " << std::endl;
+    for (size_t x(0); x < this -> DetectorObjects.size(); ++x){
+        particle_template* p = this -> DetectorObjects[x]; 
+        std::cout << "px: " << double(p -> px) << " py: " << double(p -> py) << " pz: " << double(p  -> pz) << " e: " << double(p -> e) << " h: " << std::string(p -> hash) << std::endl;
+    }
     std::vector<particle_template*> nux = this -> double_neutrino(&this -> DetectorObjects, this -> phi, this -> met); 
     for (int x(0); x < nux.size(); ++x){this -> DetectorObjects.push_back(nux[x]);}
 }

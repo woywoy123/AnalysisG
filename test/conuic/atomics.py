@@ -1,7 +1,6 @@
 import math
 import numpy as np
 
-
 def get_numbers(arr):
     data = []
     for i in arr:
@@ -11,13 +10,20 @@ def get_numbers(arr):
         data.append(f)
     return data
 
-def string(obj, tl, mrg = 15): 
+def string(obj, tl, mrg = 8): 
     d = str(getattr(obj, tl))
     l = "".join([" " for i in range(mrg - len(d))])
     return tl + ": " + l + d
 
-def string_(tl, val, mrg = 15): 
-    d = str(val)
+def string_clx(val):
+    if not isinstance(val, complex): return str(val)
+    d = str(val.real)
+    if val.imag == 0: return d
+    sign = " + " if val.imag > 0 else " - "
+    return d + sign + str(abs(val.imag)) + "i"
+
+def string_(tl, val, mrg = 8): 
+    d = string_clx(val)
     l = "".join([" " for i in range(mrg - len(d))])
     return tl + ": " + l + d
 
@@ -48,11 +54,10 @@ def nulls(dim_x, dim_y):
 
 def cosh(tau): return math.cosh(tau)
 def sinh(tau): return math.sinh(tau)
+def tanh(tau): return math.tanh(tau)
 
 def M_nu(idx, idy, m_nu):
     nl = nulls(4, 4)
     for i in range(len(idx)): nl[idy[i]][idx[i]] = m_nu[i]
     return np.array(nl)
-
-
 

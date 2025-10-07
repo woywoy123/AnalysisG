@@ -2,6 +2,7 @@ from visualize import *
 from atomics import *
 from shapes import *
 from poly import *
+import numpy as np
 
 def _print(tlt, val = None, obj = None):
     if val is None: return print("====== " + tlt + " ======")
@@ -13,16 +14,13 @@ def _print(tlt, val = None, obj = None):
         o = ""
         for i in val: o += string_(i, val[i]) + " "
         val = o
+
     print("-------- " + tlt + " ------")
     print(val)
 
 class debug:
     def __init__(self):
         self.debug_mode = False
-
-        self.tau = 0.01
-        self.z = 0
-        self.L = 0
 
     def base_debug(self, idx):
         cx = self.engine[idx]
@@ -46,23 +44,49 @@ class debug:
 
     def eigen_debug(self, idx):
         cx = self.engine[idx]
+        _l, _z, _t = cx.l, cx.z, cx.tau
 
         # -------- P(L, Z, tau) ------- #
-        _print("P(lambda, Z, tau)"   , cx.P(     self.L, self.z, self.tau))
-        _print("dPdL(lambda, Z, tau)", cx.dPdL(  self.L, self.z, self.tau))
-        _print("dPdZ(lambda, Z, tau)", cx.dPdZ(  self.L, self.z, self.tau))
-        _print("dPdt(lambda, Z, tau)", cx.dPdtau(self.L, self.z, self.tau))
+        P = cx.P(_l, _z, _t)
+        #_print("P(lambda, Z, tau)"   , cx.P(   _l, _z, _t))
+        #_print("dPdL(lambda, Z, tau)", cx.dPdl(_l, _z, _t))
+        #_print("dPdZ(lambda, Z, tau)", cx.dPdz(_l, _z, _t))
+        #_print("dPdt(lambda, Z, tau)", cx.dPdt(_l, _z, _t))
+
+        #test = {"pred" : cx._transfer(_l, _z, _t), "truth" : P}
+        #_print("transfer function P(lambda) = 1 / 3 (lambda dP/dL + Z dP/dZ)", test)
+        print(">_________<")
+        if len(cx.truth_pair): print(">>> TRUTH PAIR <<<")
+        x = cx._roots_tau(_t)
+        x = {
+                "real"   : round(x["real"],3), "imag" : round(x["imag"], 3), 
+                "P" : round(x["P"], 2), "dPdTau" : x["dPdtau"],  "tau" : x["tau"]
+        }
+        #_print("special root", x)
+        cx._mobius()
+
+
+
+        # -------- dP/dZ = 0 ------ #
+        #r = cx.dPdz_l(_z, _t)
+        #v = {i : cx.dPdz(l, _z, _t) for i, l in r.items()}
+        #_print("dPdZ = 0", r)
+        #_print("test dPdZ = 0 @ l0, l1", v)
+
+        #print(cx._test(_l, _z, _t)) 
+
+
+
+        #print(cx._dPdZ_D(_z, _t))
+
+
+
+
 
 
     def debug(self, idx):
         #self.base_debug(idx)
         self.eigen_debug(idx)
-
-
-
-
-
-
 
 
 

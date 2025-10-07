@@ -53,12 +53,39 @@ nuclx_t::nuclx_t(particle_template* b, particle_template* mu){
     // finds the center of the surface and shifts
     this -> shifts(); 
 
+    // pre-define H_bar and H matrices
+    this -> H_bar(); this -> H(); 
+
     // --------- derive the reverse mapping ------- //
     // this is used for computing the reverse mass parameterization
     this -> sx(); this -> sy(); 
 
     // --------- mass reverse mapping polynomial -------- //
     this -> mw(); this -> mt();  
+
+    // --------- polnomial --------- //
+    this -> polynomial(); 
+
+
+}
+
+void nuclx_t::polynomial(){
+    // characteristic polynomial coefficients
+    // a_l: - 1.0 / o 
+    // b_l: beta_lep * w / (o * sqrt(1 + w*w))
+    // c_l: - 1.0 / sqrt(1 + w*w)
+    // d_l: sqrt(1 + w*w)/o;  
+    this -> a_l = - 1.0 / this -> o; 
+    this -> b_l = this -> beta_lep * this -> w * this -> wr / this -> o; 
+    this -> c_l = - this -> wr; 
+    this -> d_l = std::pow(1 + this -> w2, 0.5) / this -> o; 
+}
+
+void nuclx_t::critical_t0(){
+    double r = std::pow(1 - this -> beta_lep * this -> beta_lep, 0.5); 
+    double a = this -> beta_lep * this -> w * this -> wr * 1.0 / r; 
+    double b = std::pow(1 + this -> w2, 0.5) / (3 * this -> o * r); 
+    this -> t_0 = std::asinh(a) - std::asinh(b); 
 }
 
 void nuclx_t::rotation(){
@@ -86,6 +113,29 @@ void nuclx_t::rotation(){
     Rx.at(2, 1) =  std::sin(alpha); 
     Rx.at(2, 2) =  std::cos(alpha);
     this -> R_T  =  matrix_t(Rz.T().dot(Ry.T().dot(Rx.T()))); 
+}
+
+void nuclx_t::H_bar(){
+    // H_bar = 1.0/O * [ HC + (beta_mu / sqrt(1 + w^2)) * H1 * cosh(t) + (O / sqrt(1 + w^2)) * H2 * sinh(t) ];
+    // HC = [ [1, 0,  0], [w, 0,  0], [0, O, 0] ]
+    // H1 = [ [0, 0, -1], [0, 0, -w], [0, 0, 0] ]
+    // H2 = [ [0, 0, -w], [0, 0,  1], [0, 0, 0] ]
+    this -> HBc.at(0, 0) = 1.0 / this -> o;
+    this -> HBc.at(1, 0) = this -> w / this -> o; 
+    this -> HBc.at(2, 1) = 1.0; 
+    
+    this -> HB1.at(0, 2) = - this -> beta_lep * this -> wr / this -> o; 
+    this -> HB1.at(1, 2) = - this -> beta_lep * this -> wr * this -> w / this -> o; 
+    
+    this -> HB2.at(0, 2) = - this -> w * this -> wr; 
+    this -> HB2.at(1, 2) =   this -> wr; 
+}
+
+void nuclx_t::H(){
+    // same as H_Bar but with rotation: R_T
+    this -> Hc = this -> R_T.dot(this -> HBc);
+    this -> H1 = this -> R_T.dot(this -> HB1); 
+    this -> H2 = this -> R_T.dot(this -> HB2); 
 }
 
 void nuclx_t::surface(){

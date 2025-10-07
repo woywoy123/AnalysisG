@@ -47,21 +47,18 @@ void res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
 int m_top_edge(top* t){return t -> index;}
 int m_top_edge(top_children* t){return t -> top_index;}
 
-std::vector<int> m_top_edge(jet* t){return t -> top_index;}
-std::vector<int> m_top_edge(muon* t){return {t -> top_index};}
+std::vector<int> m_top_edge(jet*      t){return t -> top_index;  }
+std::vector<int> m_top_edge(muon*     t){return {t -> top_index};}
 std::vector<int> m_top_edge(electron* t){return {t -> top_index};}
-std::vector<int> m_top_edge(truthjet* t){return t -> top_index;}
+std::vector<int> m_top_edge(truthjet* t){return t -> top_index;  }
 std::vector<int> m_top_edge(particle_template* pn, particle_template* nu){
     std::map<std::string, particle_template*> pnx = nu -> parents;
     if (!pnx.count(pn -> hash)){return {};} 
     std::string type1 = pn -> type; 
-    std::vector<int> out; 
-    if      (type1 == "top"      ){out.push_back(m_top_edge((top*)pn));}
-    else if (type1 == "children" ){out.push_back(m_top_edge((top_children*)pn));}
-    else if (type1 == "truthjets"){out = m_top_edge((truthjet*)pn);}
-    else if (type1 == "jet"      ){out = m_top_edge((jet*)pn);}
-    else if (type1 == "mu"       ){out = m_top_edge((muon*)pn);}
-    else if (type1 == "el"       ){out = m_top_edge((electron*)pn);}
+    std::vector<int> out = {}; 
+    if      (type1 == "jet"){out = m_top_edge((jet*)pn);}
+    else if (type1 == "mu" ){out = m_top_edge((muon*)pn);}
+    else if (type1 == "el" ){out = m_top_edge((electron*)pn);}
     return out; 
 }
 
@@ -88,7 +85,7 @@ void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     else if (type2 == "jet"      ){o2_ = m_top_edge((jet*)p2);}
     else if (type2 == "mu"       ){o2_ = m_top_edge((muon*)p2);}
     else if (type2 == "el"       ){o2_ = m_top_edge((electron*)p2);}
-    else if (type1 == "nunu"     ){o2_ = m_top_edge(p1, p2);}
+    else if (type2 == "nunu"     ){o2_ = m_top_edge(p1, p2);}
 
     *o = 0;  
     for (size_t x(0); x < o1_.size(); ++x){

@@ -15,8 +15,9 @@ class conuic(matrix, traject, eigen):
         matrix.__init__(self)
         eigen.__init__(self)
 
-        self.z    = 1
-        self.tau  = 0
+        self.l    = 2 # lambda 
+        self.z    = 1 # scaling factor Z
+        self.tau  = 1 # hyperbolic variable
         self.m_nu = 0 #1e-12
 
         self.lep = lep
@@ -39,14 +40,19 @@ class conuic(matrix, traject, eigen):
     def Z2(self, Sx, Sy):     return p_Z2(self, Sx, Sy)
 
 
+    # NOTE: all of the below are defined in eigen
+    # This space is not designed for computational performance
+    # Here we only care about keeping the code readable.
+    def P(self, l, z, tau):     return self._P(     l, z, tau)
 
+    # NOTE: derivatives of characteristic polynomial
+    def dPdl(self, l, z, tau): return self._dPdL(  l, z, tau)
+    def dPdz(self, l, z, tau): return self._dPdZ(  l, z, tau)
+    def dPdt(self, l, z, tau): return self._dPdtau(l, z, tau)
 
-
-
-
-
-
-
+    # NOTE: Special lambda values 
+    def dPdz_l(self, z, tau): return self._dPdZ_L(z, tau)
+    
 
 class Conuic(debug):
 
@@ -62,7 +68,6 @@ class Conuic(debug):
 #        self.fig.min_x = -1
 #        self.fig.min_y = -1
 #        self.fig.min_z = -1
-#
 
         self.fig.plot_title(f'Event Ellipses {event.idx}', 12)
         self.fig.axis_label("x", "Sx")
@@ -79,8 +84,11 @@ class Conuic(debug):
             i.gev
 
         self.engine = [conuic(i, j, event, self.fig) for i in self.lep for j in self.jet]
-        for i in range(len(self.engine)*self.debug_mode): self.debug(i); exit()
-        
-        self.fig.add_object("ellipse-1", self.engine[0])
+        for i in range(len(self.engine)*self.debug_mode): self.debug(i)
+#        self.debug(0)
+#        self.debug(1)
+#        self.debug(2)
+
+        #self.fig.add_object("ellipse-1", self.engine[0])
         #self.fig.add_object("ellipse-2", self.engine[1])
-        self.fig.show()
+        #self.fig.show()

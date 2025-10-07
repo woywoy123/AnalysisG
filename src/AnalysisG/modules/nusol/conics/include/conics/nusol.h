@@ -4,6 +4,12 @@
 #include <templates/particle_template.h>
 #include <conics/matrix.h>
 
+struct eig_t {
+    double r1 = 0, r2 = 0; 
+    double i1 = 0, i2 = 0; 
+}; 
+
+
 struct nuclx_t {
 
     // use this to initialize all the constants.
@@ -67,6 +73,27 @@ struct nuclx_t {
     void mt();
     double a_t = 0, b_t = 0, c_t = 0;  // mT
 
+    // ******** eigenvalue analysis ******* //
+    // characteristic polynomial
+    // P(lambda, t, z) = 
+    // lambda^3 + 
+    // z * a_l lambda^2 + 
+    // z^2 * b_l * cosh(t) * lambda  + z^2 * c_l * sinh(t) * lambda + 
+    // z^3 * d_l * sinh(t)
+    void polynomial(); 
+    double a_l = 0, b_l = 0, c_l = 0, d_l = 0; 
+
+    // computes the lower bound of t where dP_dL can be physically 0.
+    void critical_t0();
+    double t_0 = 0; 
+
+    // ---------- matrix definitions -------- //
+    void H_bar(); 
+    matrix_t HBc, HB1, HB2; // pre-rotation
+
+    void H(); 
+    matrix_t Hc, H1, H2;  // post-rotation
+
     // decay frame to lab frame rotation.
     void rotation(); 
     matrix_t vec_jet, R_T; 
@@ -94,9 +121,23 @@ struct nuclx_t {
 class nuclx {
     public: 
         nuclx(particle_template* bjet, particle_template* lep); 
+        matrix_t H(double z, double t);
+        matrix_t H_tilde(double z, double t); 
+
+        // ---- characteristic polynomial
+        double P(double lambda, double t, double z); 
+        double dP_dL(double lambda, double t, double z); 
+
+        // ---- lambda values where dP_dL = 0 ---- //
+        // !!! warning: this does not imply l0 is an eigenvalue of H_tilde.
+        eig_t dPl0(double t, double z); 
         ~nuclx(); 
 
     private: 
+        double G(double t); 
+
+        matrix_t hyperbolic(matrix_t* cx, matrix_t* sx, double t); 
+        
         nuclx_t* data = nullptr; 
         particle_template* jet    = nullptr; 
         particle_template* lepton = nullptr; 
