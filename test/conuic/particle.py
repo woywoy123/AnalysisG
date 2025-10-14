@@ -13,6 +13,15 @@ class Particle:
         o += " " + string(self, "hash") + " " + string(self, "top_index")
         return o
 
+    def __add__(self, o):
+        return Particle(
+                o.px + self.px, 
+                o.py + self.py, 
+                o.pz + self.pz, 
+                o.e  + self.e
+        )
+
+
     @property
     def mass2(self): return abs(self.e**2 - (self.px**2 + self.py**2 + self.pz**2))
 

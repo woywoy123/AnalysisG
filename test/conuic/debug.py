@@ -1,3 +1,4 @@
+from reference import *
 from visualize import *
 from atomics import *
 from shapes import *
@@ -8,24 +9,51 @@ def _print(tlt, val = None, obj = None):
     if val is None: return print("====== " + tlt + " ======")
     if isinstance(val, list) and obj is not None: 
         o = ""
-        for i in val: o += string(obj, i) + " "
+        for i in val: o += string(obj, i) + " \n"
         val = o
     if isinstance(val, dict):
         o = ""
-        for i in val: o += string_(i, val[i]) + " "
+        for i in val: o += string_(i, val[i]) + " \n"
         val = o
 
     print("-------- " + tlt + " ------")
     print(val)
 
+def _assertions(tlt, trgt, val, limit =  0.01):
+    try: assert (abs(trgt - val) / abs(trgt))*100 < limit
+    except AssertionError: print(tlt + "->: ", trgt, val, "diff:", abs(trgt - val))
+
 class debug:
     def __init__(self):
         self.debug_mode = False
 
-    def base_debug(self, idx):
-        cx = self.engine[idx]
-        _print("--------- pair: " + str(idx) + " ---------")
-        if len(cx.truth_pair): print(">>> TRUTH PAIR <<<")
+    def reference_debug(self, cx):
+        if not cx.is_truth: return 
+        l, b = cx.lep.mass, cx.jet.mass
+
+        p = Particle(0, 0, 0, 0)
+        for i in cx.truth_pair:
+            if cx.lep.hash == i.hash: continue
+            if cx.jet.hash == i.hash: continue
+            p = p + i
+        nu = p
+        t = p + cx.lep + cx.jet
+        w = p + cx.lep
+        ref = NuSol(cx.jet, cx.lep, w.mass, t.mass, cx.m_nu)
+        rsx, rsy, rz2 = ref.Sx, ref.Sy, ref.Z2
+        _assertions("Z2", rz2, cx.Z2(rsx, rsy)) 
+        _assertions("mW", w.mass, cx.mW2(rsx)**0.5)
+        _assertions("mT", t.mass, cx.mT2(rsx, rsy)**0.5)
+ 
+        tau = cx.get_tau(rsx, rsy)
+        csx, csy = cx.Sx(rz2**0.5, tau), cx.Sy(rz2**0.5, tau)
+        _assertions("Sx", rsx, csx, 0.1)
+        _assertions("Sy", csy, rsy, 0.1)
+
+        _assertions("mW", cx.mW2(csx)**0.5     , w.mass)
+        _assertions("mT", cx.mT2(csx, csy)**0.5, t.mass)
+
+    def base_debug(self, cx):
         _print("RT", cx.RT)
         _print("Z^2 Polynomial", ["A", "B", "C", "D", "E"], cx)
         _print("psi-angles", ["cpsi", "spsi", "tpsi"], cx)
@@ -42,55 +70,52 @@ class debug:
         _print("H1", cx.h1)
         _print("H2", cx.h2)
 
-    def eigen_debug(self, idx):
-        cx = self.engine[idx]
+    def eigen_debug(self, cx):
         _l, _z, _t = cx.l, cx.z, cx.tau
 
         # -------- P(L, Z, tau) ------- #
         P = cx.P(_l, _z, _t)
-        #_print("P(lambda, Z, tau)"   , cx.P(   _l, _z, _t))
-        #_print("dPdL(lambda, Z, tau)", cx.dPdl(_l, _z, _t))
-        #_print("dPdZ(lambda, Z, tau)", cx.dPdz(_l, _z, _t))
-        #_print("dPdt(lambda, Z, tau)", cx.dPdt(_l, _z, _t))
+        _print("P(lambda, Z, tau)"   , cx.P(   _l, _z, _t))
+        _print("dPdL(lambda, Z, tau)", cx.dPdl(_l, _z, _t))
+        _print("dPdZ(lambda, Z, tau)", cx.dPdz(_l, _z, _t))
+        _print("dPdt(lambda, Z, tau)", cx.dPdt(_l, _z, _t))
 
-        #test = {"pred" : cx._transfer(_l, _z, _t), "truth" : P}
-        #_print("transfer function P(lambda) = 1 / 3 (lambda dP/dL + Z dP/dZ)", test)
-        print(">_________<")
-        if len(cx.truth_pair): print(">>> TRUTH PAIR <<<")
-        x = cx._roots_tau(_t)
-        x = {
-                "real"   : round(x["real"],3), "imag" : round(x["imag"], 3), 
-                "P" : round(x["P"], 2), "dPdTau" : x["dPdtau"],  "tau" : x["tau"]
-        }
-        #_print("special root", x)
-        cx._mobius()
+        # -------- dP/dZ = 0 ------------ #
+        _print("dP/dZ degeneracy")
+        dg = cx._lambda_dPdZ_degenerate()
+        for i in dg: _print("dPdZ - Degenerate roots", dg[i])
 
+        # -------- dP/dL = 0 ------------ #
+        _print("dP/dLambda degeneracy")
+        dg = cx._lambda_dPdL_degenerate()
+        for i in dg: _print("dPdL - Degenerate roots", dg[i])
 
+        # ------- dP/dtau = 0 and P = 0 --------- #
+        dg = cx._M_coef()
+        _print("Mobius coefficients", dg)
+        
+        dg = cx._lambda_roots_dPdtau(_z)
+        _print("dP/dtau = 0, P = 0", dg)
 
-        # -------- dP/dZ = 0 ------ #
-        #r = cx.dPdz_l(_z, _t)
-        #v = {i : cx.dPdz(l, _z, _t) for i, l in r.items()}
-        #_print("dPdZ = 0", r)
-        #_print("test dPdZ = 0 @ l0, l1", v)
-
-        #print(cx._test(_l, _z, _t)) 
-
-
-
-        #print(cx._dPdZ_D(_z, _t))
-
-
-
-
-
+    def infer_debug(self, cx):
+        p = Particle(0, 0, 0, 0)
+        for i in cx.truth_pair:
+            if cx.lep.hash == i.hash: continue
+            if cx.jet.hash == i.hash: continue
+            p = p + i
+        nu = p
+        t = p + cx.lep + cx.jet
+        w = p + cx.lep
+        print("==>", t.mass / 1000, w.mass / 1000)
 
     def debug(self, idx):
-        #self.base_debug(idx)
-        self.eigen_debug(idx)
-
-
-
-
+        cx = self.engine[idx]
+        _print("--------- pair: " + str(idx) + " ---------")
+        if len(cx.truth_pair): print(">>> TRUTH PAIR <<<")
+        self.reference_debug(cx)
+        #self.infer_debug(cx)
+        #self.base_debug(cx)
+        #self.eigen_debug(cx)
 
 
 class traject:
@@ -99,10 +124,18 @@ class traject:
         self.plots = []
 
     def shapes(self):
-        htilde = self.figures(Ellipse, "b-", 1, True)
-        self.ellipse(self.H_tilde, self.z, self.tau, htilde)
-        htilde.alpha = 1.0
-
+        l = 3 if len(self.parameters) > 3 else len(self.parameters)
+        for i in range(l):
+            self.z   = self.parameters[i].z
+            self.tau = self.parameters[i].t
+            if abs(self.tau) > 1: continue
+            htilde = self.figures(Ellipse, "b-", 1, True)
+            self.ellipse(self.H_matrix, self.z, self.tau, htilde)
+            htilde.alpha = 1.0
+            if not self.is_truth: continue
+            htilde.linewidth = 2
+            htilde.color = "r"
+        
         pl_tilde = self.figures(Plane, "b", 1, False)
         self.plane(self.H_tilde, self.z, self.tau, pl_tilde)
         pl_tilde.alpha = 0.01
@@ -116,9 +149,6 @@ class traject:
         amu.alpha = 0.1
 
         if not self.is_truth: return 
-        htilde.linewidth = 2
-        htilde.color = "r"
-
         pl_tilde.color = "r"
         pl_tilde.alpha = 0.01
 
@@ -142,7 +172,11 @@ class traject:
 
     # ----- plane of ellipse
     def plane(self, mtx, z, t, pl = None):   return p_plane(mtx(z, t), pl)
-    def ellipse(self, mtx, z, t, pl = None): return p_ellipse(mtx(z, t), pl)
+    def ellipse(self, mtx, z = None, t = None, pl = None): 
+        if z is not None and t is not None: return p_ellipse(mtx(z, t), pl)
+        return p_ellipse(mtx, pl)
+
+
 
 
 

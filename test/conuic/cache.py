@@ -66,16 +66,44 @@ def A_b(obj):
     at3[3][3] = - obj.jet.b2
     return np.array(atc), np.array(at1), np.array(at2), np.array(at3)
 
+class parameters:
+    def __init__(self, l, t, z):
+        self.l = l
+        self.z = z
+        self.t = t
+        self.htilde = None
+        self.hmatrix = None
+        self.mobius = None
+        self.tag_truth = False
+    
+    def __str__(self):
+        o = "lambda: " + str(self.l) + " Z: " + str(self.z) + " tau: " + str(self.t)
+        return o
+
+    def get_plane(self):
+        A = self.hmatrix.dot([1, 0, 0])
+        B = self.hmatrix.dot([0, 1, 0])
+        C = self.hmatrix.dot([0, 0, 1])
+        normal = np.cross(A, B)
+        print(normal)
+        return normal
+
+
+
+
+
+
 class matrix:
     def __init__(self):
         self.RT = None
         self.m_nu = 0
+        self.parameters = []
 
     @property 
     def R_T(self):
         if self.RT is not None: return self.RT
         px, py, pz = self.lep.px, self.lep.py, self.lep.pz
-        phi   = np.arctan2(py, px)
+        phi = np.arctan2(py, px)
         theta = np.arctan2(np.sqrt(px**2 + py**2), pz)
         
         R_z = rotation_z(-phi)
@@ -87,13 +115,28 @@ class matrix:
         self.RT = R_z.T @ R_y.T @ R_x.T
         return self.RT
 
+    def mW2(self, Sx):
+        a = self.lep.mass ** 2
+        b = - 2 * (self.lep.e/self.lep.b)
+        c = self.lep.p * (1 - self.lep.b**2) + self.lep.b**2 * Sx
+        return a + b * c
+    
+    def mT2(self, Sx, Sy):
+        a = self.mW2(Sx) + self.jet.mass ** 2 
+        b = - 2 * self.jet.b * self.jet.e * (Sx * self.cos + Sy * self.sin)
+        return a + b
+
+    def get_tau(self, Sx, Sy):
+        a = self.o * (Sy - self.w * Sx + self.w * self.lep.e)
+        b = self.lep.b * (Sx + self.w * Sy) + self.o ** 2 * self.lep.e
+        return atanh(a / b)
+
     def cache(self):
         self.cos = costheta(self.lep, self.jet)
-        self.sin = math.sqrt(1 - self.cos**2)
+        self.sin = (1 - self.cos**2) ** 0.5
         self.w   = (self.lep.b/self.jet.b - self.cos)/self.sin
-        self.o2  = self.w**2 + 1 - self.lep.b2
+        self.o2  = self.w**2 + 1 - self.lep.b ** 2
         self.o   = self.o2 ** 0.5
-        self.q   = 1.0/math.sqrt(1 + self.w**2)
 
         # ------- mapping from psi to theta ------- #
         r = self.lep.b / self.jet.b
@@ -112,18 +155,18 @@ class matrix:
         self.E = self.lep.mass**2 - self.m_nu**2
 
         # ------- angular -------- #
-        self.cpsi = 1 / math.sqrt(1 + self.w**2)
-        self.spsi = self.w / math.sqrt(1 + self.w**2)
+        self.cpsi = 1 / (1 + self.w**2)**0.5
+        self.spsi = self.w / (1 + self.w**2)**0.5
         self.tpsi = self.w
 
         # ------- Sx, Sy ------- #
-        self.a_x =  self.cpsi * self.o / self.lep.b
-        self.b_x = -self.spsi 
-        self.c_x = -self.lep.mass2 / self.lep.p
+        self.a_x = self.cpsi * self.o / self.lep.b
+        self.b_x = - self.spsi 
+        self.c_x = - (self.lep.mass ** 2) / self.lep.p
 
-        self.a_y = self.o * self.spsi / self.lep.b
-        self.b_y = self.cpsi
-        self.c_y = -self.tpsi * self.lep.e / self.lep.b
+        self.a_y =  self.o * self.spsi / self.lep.b
+        self.b_y =  self.cpsi
+        self.c_y = -self.w * (self.lep.e**2) / (self.lep.p)
 
         self.htc, self.ht1, self.ht2 = h_tilde(self)
         self.hc = self.R_T.dot(self.htc)
@@ -137,4 +180,48 @@ class matrix:
         #NOTE: ROTATED IN A_MU FRAME!
         self.bmc, self.bm1, self.bm2, self.bm3 = A_b(self)
 
+    def scan_regions(self, limit = 0.01, get_all = False):
+        dg = self.P0_dPdtau0(True)
+        for i in sorted(dg):
+            t = dg[i]["tau"]
+            l = dg[i]["lambda"]
+            self.parameters += [parameters(l, t, k) for k in self.PolyZ(l, t)]
+       
+        dg = self.degenerate_dPdZ()
+        for i in dg:
+            if abs(dg[i]["discriminant"].imag): continue
+            t = dg[i]["tau"].real
+            try: 
+                l1 = dg[i]["l1"].real
+                self.parameters += [parameters(l1, t, k) for k in self.PolyZ(t, l1)]
+            except KeyError: pass
+            try: 
+                l2 = dg[i]["l2"].real
+                self.parameters += [parameters(l2, t, k) for k in self.PolyZ(t, l2)]
+            except KeyError: pass
 
+        dg = self.degenerate_dPdL()
+        for i in dg:
+            if abs(dg[i]["discriminant"].imag): continue
+            t = dg[i]["tau"].real
+            try: 
+                l1 = dg[i]["l1"].real
+                self.parameters += [parameters(l1, t, k) for k in self.PolyZ(t, l1)]
+            except KeyError: pass
+            try: 
+                l2 = dg[i]["l2"].real
+                self.parameters += [parameters(l2, t, k) for k in self.PolyZ(t, l2)]
+            except KeyError: pass
+       
+        dx = {}
+        for i in self.parameters:
+            sl = self.MobiusTransform(i.t)
+            i.tag_truth = self.is_truth
+            i.mobius = sl["RHS"] - sl["LHS"]
+            i.htilde = self.H_tilde(i.z, i.t)
+            i.hmatrix = self.H_matrix(i.z, i.t)
+            dx[abs(i.mobius)] = i
+        
+        if min(dx) > limit: self.reject = True
+        else: self.reject = False
+        return dx[next(iter(sorted(dx)))] if not get_all else self.parameters * (not self.reject)

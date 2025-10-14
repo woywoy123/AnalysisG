@@ -3,12 +3,25 @@ from atomics import *
 class eigen:
     def __init__(self): pass
 
+    # NOTE: GXX (normal): beta_mu * cosh(tau) * sin(psi) - Omega * sinh(tau) * cos(psi)
+    def GXX(self, tau): return self.lep.b * cosh(tau) * self.spsi - self.o * self.cpsi * sinh(tau) 
+
+    # NOTE: G__ (deriv ): beta_mu * cosh(tau) * cos(psi) - Omega * sinh(tau) * sin(psi)
+    def G__(self, tau): return self.lep.b * sinh(tau) * self.spsi - self.o * self.cpsi * cosh(tau)
+
+    # NOTE: Gtx (tanh): Omega * tanh(tau) * cos(psi)  - beta_mu * sin(psi)
+    def Gtx(self, tau): return self.o * self.cpsi * tanh(tau) - self.lep.b * self.spsi
+
+    # NOTE: Gt (deriv): Omega * cos(psi) - beta_mu * tanh(tau) * sin(psi)
+    def Gt(self, tau):  return self.o * self.cpsi - self.lep.b * tanh(tau) * self.spsi
+
+    # ------------ derivatives --------------- #
     # characteristic polynomial of H_tilde
     def _P(self, l = None, z = None, tau = None): 
-        a =  1
-        b = -z / self.o
-        c =  (z ** 2) / self.o * self.GXX(tau)
-        d =  (z ** 3) * sinh(tau) / (self.o * self.cpsi)
+        a = -1
+        b =  z / self.o
+        c = -(z ** 2) / self.o * self.GXX(tau)
+        d = -(z ** 3) * sinh(tau) / (self.o * self.cpsi)
         if l is None: return [a, b, c, d]
 
         o  = a * (l**3)
@@ -18,191 +31,167 @@ class eigen:
         return o
 
     def _dPdL(self, l, z, tau):
-        a =  3
-        b = -2 / self.o
-        c =  1 / self.o
+        a = -3
+        b =  2 / self.o
+        c = -1 / self.o
         return a * (l ** 2) + b * (z * l) + c * (z ** 2) * self.GXX(tau)
 
 
     def _dPdZ(self, l, z, tau):
-        a = - 1 / self.o
-        b =   2 / self.o
-        c =   3 / (self.o * self.cpsi)
+        a =  1 / self.o
+        b = -2 / self.o
+        c = -3 / (self.o * self.cpsi)
         return a * (l ** 2) + b * self.GXX(tau) * z * l + c * (z ** 2) * sinh(tau)
 
     def _dPdtau(self, l, z, tau):
-        a = 1 /  self.o
-        b = 1 / (self.o * self.cpsi)
+        a = - 1 /  self.o
+        b = - 1 / (self.o * self.cpsi)
         return a * (z ** 2)* l * self.G__(tau) + b * (z**3) * cosh(tau)
 
-    # NOTE: --------- check for special roots ---------- 
-
+    # --------- Special Functions ----------- 
     # NOTE: transfer function -> P(lambda) = 1 / 3 * (lambda * d(P)/d(lambda) + z d(P)/d(z))
     # This is computed when dP/dZ = dP/dLambda = 0.
     def _transfer(self, l, z, t): return 1 / 3 * ( l * self._dPdL(l, z, t) + z * self._dPdZ(l, z, t) )
 
-    # NOTE: This is the value of lambda when dP/dtau = 0.
-    def _lambda_dPdtau(self, z, t): return z/(self.Gt(t) * self.cpsi)
-
-    # NOTE: ------- G factors ---- consequence of dP/dtau = lambda -> P(..) = 0
-    # This was used to generate the _roots_tau function:
-    # Much simpler definition. 
-    # cos(psi)^2 alpha^2 sqrt( (G^- + alpha) (G^+ - alpha) ) - (alpha - Omega) =  0
-    def _lambda_tau_P(self, t):
-        alpha = self.Gt(t) * self.cpsi
-        a = self.lep.b * self.spsi * self.cpsi
-        b = self.o * self.cpsi - alpha
-        gamma = (a - b) * (a + b)
-        return self.cpsi * ( self.o - alpha ) * gamma ** 0.5 + alpha ** 2 * gamma
-
-    # NOTE: --------- a numerically easier way to test if real ----------- #
-    # ----> if this returns a real number close to zero then 
-    # ----> dP/dt = 0 and P = 0 @ t . 
-    # ----> ALSO HAS NO Z DEPENDENCY!!!
-    def _roots_tau(self, t):
-        alpha = self.Gt(t) * self.cpsi
-        b1 = complex(self.o / self.spsi) ** 0.5 - alpha * self.spsi * complex(self.lep.b * cosh(t)) ** 0.5
-        b2 = complex(self.o / self.spsi) ** 0.5 + alpha * self.spsi * complex(self.lep.b * cosh(t)) ** 0.5
-
-        b3  = complex(alpha * ( self.cpsi - alpha * self.lep.b * self.spsi * cosh(t) )) ** 0.5
-        b3 -= alpha * self.cpsi * complex(sinh(t) * ( alpha  - self.o * self.cpsi    )) ** 0.5
-
-        b4  = complex(alpha * ( self.cpsi - alpha * self.lep.b * cosh(t) * self.spsi )) ** 0.5
-        b4 += alpha * self.cpsi * complex(sinh(t) * ( alpha  - self.o * self.cpsi    )) ** 0.5
-
-        # NOTE: this is a root only if sin(psi) B1 B2 - B3 B4 = 0
-        disc = self.spsi * (b1 * b2) / (b3 * b4) - 1 
-        l = self._lambda_dPdtau(1, t)
+    # --------- Functions relating to cases where the derivatives are 0.
+    # NOTE: This is the value of lambda when dP/dZ = 0.
+    def _lambda_dPdZ(self, z, t):
+        # dP/dZ = a lambda^2 + 2 b Z lambda - 3 c Z^2
+        alpha = self.GXX(t)
+        disc = complex(alpha ** 2 + 3 * sinh(t)/self.cpsi)**0.5
+        l1, l2 = z * (alpha + disc), z * (alpha - disc)
         return {
-                "real"   : disc.real, "imag" : disc.imag, 
-                "lambda" : self._lambda_dPdtau(1, t), "tau" : t,
-                "dPdtau" : self._dPdtau(l, 1, t), 
-                "dPdZ"   : self._dPdZ(l, 1, t), 
-                "dPdL"   : self._dPdL(l, 1, t),
-                "P"      : self._P(l, 1, t),
-                "b1" : b1, "b2" : b2, "b3" : b3, "b4" : b4
+                "l1" : l1, "l2" : l2, "discriminant": disc,
+                "P(l1)" : self.P(l1, z, t), "P(l2)" : self.P(l2, z, t)
         }
 
+    # NOTE: This is the value of lambda when dP/dlambda = 0.
+    def _lambda_dPdL(self, z, t):
+        u = tanh(t)
+        alpha = 1 / complex(1 - u**2)**0.5
+        dx = complex( 1 + 3 * self.o * (self.o * u * self.cpsi - self.lep.b * self.spsi ) * alpha)**0.5
+        l1, l2 = (1 + dx) * z/(3 * self.o), (1 - dx) * z/(3 * self.o)
+        return {
+                "l1" : l1, "l2" : l2, "discriminant" : dx, 
+                "P(l1)" : self.P(l1, z, t), "P(l2)" : self.P(l2, z, t)
+        }
 
-    def _mobius(self):
-        r = (1 + self.w ** 2) ** 0.5
-        s = (1 - self.lep.b ** 2)
+    # NOTE: This is the value of lambda when dP/dtau = 0.
+    def _lambda_dPdtau(self, z, t): return z/(self.Gt(t) * self.cpsi)
+ 
+
+    # NOTE: This is computes the degenerate roots of dP/dZ = 0
+    # This is the case where the discriminant is 0.
+    # It does not imply that dP/dZ = 0 and P(lambda) = 0.
+    def _lambda_dPdZ_degenerate(self):
+        a =  self.o**4 * self.cpsi ** 6 + 9 
+        b = -4 * self.o**3 * self.lep.b * self.cpsi ** 5 * self.spsi 
+        c =  6 * self.o**2 * self.lep.b ** 2 * self.cpsi ** 4 * self.spsi ** 2 - 9
+        d = -4 * self.o * self.lep.b ** 3 * self.spsi ** 3 
+        e =  self.lep.b ** 4 * self.spsi ** 4 * self.cpsi ** 2 
+        r = np.roots([a, b, c, d, e])
+        roots = {}
+        for i in r: 
+            if abs(i) > 1: continue
+            tau = math.atanh(i.real)
+            v = self._lambda_dPdZ(1, tau)
+            roots[v["discriminant"]] = {"tau" : tau, "roots" : i} | v
+        return roots
+
+    # NOTE: This is computes the degenerate roots of dP/dL = 0
+    # This is the case where the discriminant is 0.
+    # It does not imply that dP/dL = 0 and P(lambda) = 0.
+    def _lambda_dPdL_degenerate(self):
+        a = 9 * self.o ** 3 * self.lep.b * self.spsi * self.cpsi 
+        b = 9 * self.o ** 4 * self.cpsi ** 2 + 1 
+        dc = complex(9 * self.o ** 2 * (1 - self.lep.b**2) + 1)**0.5
+        u1, u2 = (a + dc)/b, (a - dc)/b
+
+        roots = {}
+        for i in [u1, u2]: 
+            if abs(i) >= 1: continue
+            tau = math.atanh(i.real)
+            v = self._lambda_dPdL(1, tau)
+            roots[v["discriminant"]] = {"tau" : tau, "roots" : i} | v
+        return roots
+
+    # NOTE: Mobius transformation obtained from solving for lambda in dP/dtau = 0
+    # then substituting back into P(lambda) and letting P(lambda) = 0
+    # The transform is defined:
+    # M(tau) = (Omega sin(psi) + beta_mu tanh(tau) cos(psi)) / (Omega cos(psi) - beta_mu u sin(psi))
+    # The resulting equation has the form:
+    # M(tau)^2 = -(beta_mu cos(psi)^2) (Omega sin(psi) + beta_mu tanh(tau) cos(psi)) sqrt(1 - tanh(tau)^2)
+    def _M_transform(self, t):
+        u = tanh(t)
+        mob  = (self.o * self.spsi + self.lep.b * self.cpsi * u)
+        mob /= (self.o * self.cpsi - self.lep.b * self.spsi * u)
+        rhs  = -(self.lep.b * self.cpsi**2) * (self.o * self.spsi + self.lep.b * u * self.cpsi) * (1 - u**2)**0.5
+        return {"LHS": mob**2, "RHS": rhs}
+
+    def _M_inverse(self, M):
+        return atanh(self.o * ( 1 - M * self.w ) / ( self.lep.b * (M + self.w) )) 
+
+    def _M_coef(self):
+        a =   self.o     * self.spsi
+        b =   self.lep.b * self.cpsi
+        c = - self.lep.b * self.spsi
+        d =   self.o     * self.cpsi
+        tr = self.o * (self.cpsi + self.spsi)
+        pole_max = -(self.o * self.w)/self.lep.b
+        pole_min = (self.o / (self.lep.b * self.w))
         
-        a = 1
-        b = - 2 * self.o 
-        c = - r ** 2 * s
-        d =   self.lep.b * self.w * r ** 3 
-        e = - self.lep.b * self.w * self.o * r ** 5
+        dx = complex( (self.o - self.lep.b)**2 * self.w ** 2 - 4 * self.lep.b * self.o ) ** 0.5
+        b = (self.o - self.lep.b) * self.w 
+        t1, t2 = (b + dx) / (2 * self.lep.b), (b - dx) / (2 * self.lep.b)
+        t1, t2 = atanh(t1), atanh(t2)
+        
+        M_min = (self.o - self.lep.b * self.w) / (self.o * self.w + self.lep.b)
+        M_max = (self.o + self.lep.b * self.w) / (self.o * self.w - self.lep.b)
 
-        x = np.roots([a, b, c, d, e])
-        x = [np.atanh((self.o - i.real)/(self.lep.b * self.w)) for i in x if not abs(i.imag)]
-        x = [(t, self._lambda_dPdtau(1, t)) for t in x]
-        x = [(t.item(), l, self._dPdtau(l, 1, t), self._P(l, 1, t)) for (t, l) in x if not math.isnan(t)]
-        print(x)
+        if   tr  < 2 * self.w ** 0.5: surf = "elliptic - Riemann rotation"
+        elif tr == 2 * self.w ** 0.5: surf = "parabolic - one fixed point"
+        elif tr  > 2 * self.w ** 0.5: surf = "hyperbolic - two fixed points"
 
-
-        #g = self.o - self.lep.b * self.w * tanh(t)
-
-
-
-
-
-
-
-
-
-    def _test(self, l, z, t):
-        truth = self.P(l, z, t)
-        G, Gt, bmu, cpsi, spsi, o = self.GXX(t), self.Gtx(t), self.lep.b, self.cpsi, self.spsi, self.o
-
-        x = l/z
-        tx = (1 / 3) * (1/z) * (x * self._dPdL(l, z, t) + self._dPdZ(l, z, t))
-        #print(self._transfer(l, z, t), truth)
-      
-        # ----- roots 
-        x = (1 + (1 - 3 * o * G) ** 0.5)/(3 * o)
-        dl = 3 * o * x ** 2 - 2 * x + G 
-
-        x = G + ( G**2 + 3 * sinh(t)/cpsi) ** 0.5
-        dz = (- x ** 2 + 2 * G * x + 3 * sinh(t) / cpsi)
-        #print(dz, dl)
-        #print(o, cpsi, bmu)
-
+        return {
+                "M-matrix" : [[a, b], [c, d]], 
+                "determinant" : self.w, 
+                "trace": tr, 
+                "M-max" : M_max, "M-min" : M_min,
+                "surface" : surf, 
+                "pole_max" : pole_max, "pole_min" : pole_min,
+                "tau1" : t1, "tau2" : t2
+        }
+ 
+    # NOTE: Here we compute the roots of tau where 
+    # P = 0 and dPdtau = 0 simultaneously
+    def _lambda_roots_dPdtau(self, z, get_all):
+        mu2 = (self.lep.mass / self.lep.e)**2
+        a = (1 + self.w**2)**3 * self.w ** 2 
+        b = 2 * ( 1 + self.w ** 2) ** 3 * self.w 
+        c = (1 + self.w**2) ** 3 + self.o ** 2 - self.lep.b ** 2 * self.w ** 2
+        d = - 2 * self.w * (self.lep.b ** 2 + self.o ** 2)
+        e = self.o**2 * self.w - self.lep.b**2
+        mr = np.roots([a, b, c, d, e])
+        sols = {}
+        for i in mr: 
+            tau = self._M_inverse(i)
+            if tau is None: continue
+            l_ = self._lambda_dPdtau(z, tau)
+            p = self._P(l_, z, tau)
+            dpdt = self._dPdtau(l_, z, tau)
+            null = (abs(dpdt.real)**2 + abs(p.real)**2)**0.5
+            sols[null] = {"null": null, "lambda": l_, "tau" : tau, "P": p, "dpdt": dpdt}
+        if not len(sols): return sols
+        return sols[min(sols)] if get_all is False else sols
     
-        # ----------- degenerate root ------- # 
-        deg = math.asinh(- cpsi / (27 * o ** 2))
-        x = 1 / (3 * o)
-        G = 1 / (3 * o)
-        sx = -cpsi / (27 * o ** 2)
 
-        dl = 3 * o * x ** 2 - 2 * x + G 
-        dz = (- x ** 2 + 2 * G * x + 3 * sx / cpsi)
-        #print(dz, dl)
-
-        l = z / (3 * o)
-
-        x = (1 + (1 - 3 * o * self.GXX(deg)) ** 0.5)/(3 * o)
-        dl = 3 * o * x ** 2 - 2 * x + G 
-
-        x = self.GXX(deg) + complex( self.GXX(deg)**2 + 3 * sinh(deg) / cpsi )**0.5
-        dz = (- x ** 2 + 2 * self.GXX(deg) * x + 3 * sinh(deg) / cpsi)
-
-        if dz.imag == 0: return
-        print(deg)
-        print("->", dl, dz.real, ">" if dz.imag == 0 else "<-------------")
-        print("+> ", self._P(l, z , deg), self._dPdL(l, z, deg), self._dPdZ(l, z, deg))
-        
-
-
-    # NOTE: GXX (normal): beta_mu * cosh(tau) * sin(psi) - Omega * sinh(tau) * cos(psi)
-    def GXX(self, tau): 
-        return self.lep.b * cosh(tau) * self.spsi - self.o * self.cpsi * sinh(tau) 
-
-    # NOTE: G__ (deriv ): beta_mu * cosh(tau) * cos(psi) - Omega * sinh(tau) * sin(psi)
-    def G__(self, tau): 
-        return self.lep.b * sinh(tau) * self.spsi - self.o * self.cpsi * cosh(tau)
-
-    # NOTE: Gtx (tanh): Omega * tanh(tau) * cos(psi)  - beta_mu * sin(psi)
-    def Gtx(self, tau):
-        return self.o * self.cpsi * tanh(tau) - self.lep.b * self.spsi
-
-    # NOTE: Gt (deriv): Omega * cos(psi) - beta_mu * tanh(tau) * sin(psi)
-    def Gt(self, tau):
-        return self.o * self.cpsi - self.lep.b * tanh(tau) * self.spsi
-
-
-
-    # --------- check for special roots ---------- #
-    # NOTE: Check for dPdZ = 0 -> solve for Lambda
-    def _dPdZ_L(self, z, tau):
-        G    = complex(self.GXX(tau), 0)
-        disc = complex( G ** 2 + 3 * sinh(tau) / self.cpsi ) ** 0.5
-        return { "l0" : z * (-G + disc), "l1" : z * (-G - disc) }
-
-
-    # NOTE: Check for dPdZ = 0 -> find where Lambda is degenerate
-    def _dPdZ_D(self, z = None, tau = None):
-        # dP/dZ = a lambda^2 + 2 b Z lambda - 3 c Z^2
-        # ->  lambda = Z(-G + sqrt( G^2 + 3 sinh(tau) / cos(psi) ) ) 
-        # -> Degenerate if sqrt(G^2 + 3 sinh(t) / cos(psi)) = 0.
-        # -> Lambda @ Degenerate: Lamba = -Z ( G ) 
-        # -> But we need to find tau where sqrt(..) = 0.
-
-        # --- After rewriting sqrt(...) in terms of t = tanh(tau) we get:
-        # Omega^2 cos^2(psi) ( t cos(psi) - beta_mu/Omega sin(psi) )^4 - 9 t^2 ( 1 - t^2 ) = 0.
-        f = 2 * self.o * self.lep.b * self.tpsi - 3 / ( self.cpsi ** 3 ) 
-        s = 3 / ( self.cpsi ** 3 ) * ( 3 / ( self.cpsi ** 3 ) - 4 * self.o * self.lep.b * self.tpsi)
-
-        t1 = (complex(f) + complex(s) ** 0.5) / (2 * self.o2)
-
-        tx = (self.o * t1 - self.lep.b * ( self.o2 + self.lep.b**2 - 1 ) ** 0.5 ) ** 4 
-        ty = - 9 * (self.o ** 2 + self.lep.b ** 2) ** 3 
-        ty *= t1 ** 2 
-        ty *= (1 - t1 ** 2)
-        return tx + ty
-
-
-
-
-
-
+    # NOTE: Post Analysis for finding Z
+    # Here we compute the Z roots from the characteristic polynomial
+    def _Z_roots_P(self, l, tau):
+        a = - sinh(tau) / (self.o * self.cpsi)
+        b = - (l / self.o) * self.GXX(tau) 
+        c = l ** 2 / self.o
+        d = -l ** 3
+        r = np.roots([a, b, c, d])
+        r = [k.real.item() for k in r if not abs(k.imag)]
+        return [k for k in r if k > 0]

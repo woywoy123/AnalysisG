@@ -1,4 +1,5 @@
 import math
+import cmath
 import numpy as np
 
 def get_numbers(arr):
@@ -30,10 +31,8 @@ def string_(tl, val, mrg = 8):
 def costheta(v1, v2):
     v1_sq = v1.px**2 + v1.py**2 + v1.pz**2
     if v1_sq == 0: return 0
-
     v2_sq = v2.px**2 + v2.py**2 + v2.pz**2
     if v2_sq == 0: return 0
-
     v1v2 = v1.px*v2.px + v1.py*v2.py + v1.pz*v2.pz
     return v1v2/math.sqrt(v1_sq * v2_sq)
 
@@ -55,9 +54,18 @@ def nulls(dim_x, dim_y):
 def cosh(tau): return math.cosh(tau)
 def sinh(tau): return math.sinh(tau)
 def tanh(tau): return math.tanh(tau)
+def atanh(tau): return math.atanh(tau) if abs(tau) < 1 else None
 
 def M_nu(idx, idy, m_nu):
     nl = nulls(4, 4)
     for i in range(len(idx)): nl[idy[i]][idx[i]] = m_nu[i]
     return np.array(nl)
+
+
+def circle():
+    return np.array([
+        [1, 0,  0], 
+        [0, 1,  0],
+        [0, 0, -1]
+    ])
 

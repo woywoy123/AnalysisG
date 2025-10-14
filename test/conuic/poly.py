@@ -1,8 +1,8 @@
 from atomics import *
 
 # --- surface parameterization: m_nu = 0.
-def p_Sx1(obj, z, tau): return z * (obj.a_x * cosh(tau) + obj.b_x * sinh(tau)) + obj.c_x
-def p_Sy1(obj, z, tau): return z * (obj.a_y * cosh(tau) + obj.b_y * sinh(tau)) + obj.c_y
+def p_Sx1(obj, z, tau): return -z * (obj.a_x * cosh(tau) + obj.b_x * sinh(tau)) + obj.c_x
+def p_Sy1(obj, z, tau): return -z * (obj.a_y * cosh(tau) + obj.b_y * sinh(tau)) + obj.c_y
 def p_Z2(obj, Sx, Sy):  return obj.A * Sx ** 2 + obj.B * Sy ** 2 + obj.C * Sy*Sx  + obj.D * Sx + obj.E
 
 # --- H_tilde

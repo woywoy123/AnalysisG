@@ -9,8 +9,6 @@ class data:
         self.center = None
         self.r0     = None
 
-
-
 class Ellipsoid(cosmetic):
     def __init__(self, obj, ax):
         cosmetic.__init__(self, ax)
@@ -72,13 +70,16 @@ class Ellipse(cosmetic):
         idx = vl.argsort()[::-1]
         vl, vx = vl[idx], vx[:,idx]
 
+        if vl[0] < 0 or vl[1] < 0: return None, None, None
         r = np.sqrt(vl)
         v1, v2 = vx[:,0], vx[:,1]
         a, b   = v1 * r[0], v2 * r[1]
+        
         return self.equation(a, b, self._lin(0, 2*np.pi, n_points))
 
     def plot(self):
         x, y, z = self.make(self.data.npts)
+        if x is None: return 
         self.max_x, self.min_x = np.max(x), np.min(x)
         self.max_y, self.min_y = np.max(y), np.min(y)
         self.max_z, self.min_z = np.max(z), np.min(z)
