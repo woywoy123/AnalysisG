@@ -81,16 +81,11 @@ class parameters:
         return o
 
     def get_plane(self):
-        A = self.hmatrix.dot([1, 0, 0])
-        B = self.hmatrix.dot([0, 1, 0])
-        C = self.hmatrix.dot([0, 0, 1])
-        normal = np.cross(A, B)
-        print(normal)
-        return normal
-
-
-
-
+        self.A = self.hmatrix.dot([1, 0, 0])
+        self.B = self.hmatrix.dot([0, 1, 0])
+        self.C = self.hmatrix.dot([0, 0, 1])
+        self.normal = np.cross(self.A, self.B)
+        return self.normal, np.dot(self.normal, self.C), self.C
 
 
 class matrix:
@@ -221,7 +216,8 @@ class matrix:
             i.htilde = self.H_tilde(i.z, i.t)
             i.hmatrix = self.H_matrix(i.z, i.t)
             dx[abs(i.mobius)] = i
-        
+       
+        if not len(dx): return None
         if min(dx) > limit: self.reject = True
         else: self.reject = False
         return dx[next(iter(sorted(dx)))] if not get_all else self.parameters * (not self.reject)

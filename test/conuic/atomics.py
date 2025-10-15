@@ -14,7 +14,7 @@ def get_numbers(arr):
 def string(obj, tl, mrg = 8): 
     d = str(getattr(obj, tl))
     l = "".join([" " for i in range(mrg - len(d))])
-    return tl + ": " + l + d
+    return str(tl) + ": " + l + d
 
 def string_clx(val):
     if not isinstance(val, complex): return str(val)
@@ -26,7 +26,7 @@ def string_clx(val):
 def string_(tl, val, mrg = 8): 
     d = string_clx(val)
     l = "".join([" " for i in range(mrg - len(d))])
-    return tl + ": " + l + d
+    return str(tl) + ": " + l + d
 
 def costheta(v1, v2):
     v1_sq = v1.px**2 + v1.py**2 + v1.pz**2
@@ -51,10 +51,10 @@ def rotation_x(psi):
 def nulls(dim_x, dim_y):
     return [[0 for i in range(dim_x)] for j in range(dim_y)]
 
-def cosh(tau): return math.cosh(tau)
-def sinh(tau): return math.sinh(tau)
-def tanh(tau): return math.tanh(tau)
-def atanh(tau): return math.atanh(tau) if abs(tau) < 1 else None
+def cosh(tau): return math.cosh(tau.real)
+def sinh(tau): return math.sinh(tau.real)
+def tanh(tau): return math.tanh(tau.real)
+def atanh(tau): return math.atanh(tau.real) if abs(tau) < 1 else None
 
 def M_nu(idx, idy, m_nu):
     nl = nulls(4, 4)

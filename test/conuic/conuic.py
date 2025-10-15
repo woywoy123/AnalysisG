@@ -85,7 +85,7 @@ class Conuic(debug):
 
         self.debug_mode = True
         self.fig = figure()
-        #self.fig.auto_lims = True
+        self.fig.auto_lims = True
 
         #self.fig.max_x = 4000000
         #self.fig.max_y = 4000000
@@ -110,7 +110,12 @@ class Conuic(debug):
             l.append(i)
 
         self.engine = [conuic(i, j, event, self.fig) for i in self.lep for j in self.jet]
-#        for i in range(len(self.engine)*self.debug_mode): self.debug(i)
+        for i in range(len(self.engine)*self.debug_mode): 
+            self.debug(i)
+            self.engine[i].scan_regions(0.1)
+            self.engine[i].shapes()
+            self.fig.add_object("ellip" + str(i), self.engine[i])
+
         self.candidates = []
         for i in range(len(self.engine)): 
             eg = self.engine[i]
@@ -123,11 +128,73 @@ class Conuic(debug):
         
         #for i in range(len(self.candidates)):
         #    for j in range(len(self.candidates)):
-        #        if i == j: continue
+        #        if i >= j: continue
         #        self.intersections(self.candidates[i], self.candidates[j])
-        #self.fig.show()
+        self.fig.show()
 
     def intersections(self, i, j):
+        def line_intersection(trgt, r0, d):
+            # Projection Coefficients
+            beta  = np.dot(d, trgt.A) / np.linalg.norm(trgt.A)**2
+            delta = np.dot(d, trgt.B) / np.linalg.norm(trgt.B)**2 
+            alpha = np.dot(r0 - trgt.C, trgt.A) / np.linalg.norm(trgt.A)**2
+            gamma = np.dot(r0 - trgt.C, trgt.B) / np.linalg.norm(trgt.B)**2 
+       
+            if len([i for i in [beta, delta, alpha, gamma] if np.isnan(i)]): return [], [], []
+
+            a = beta ** 2 + delta ** 2
+            if round(a, 8) == 0: return [],[],[]
+
+            b = 2 * (alpha * beta + gamma * delta)
+            c = alpha ** 2 + gamma ** 2 -1
+            disc = b**2 - 4 * a * c
+            if disc < 0: return [], [], []
+            s1 = (-b + np.sqrt(disc))/ (2 * a)
+            s2 = (-b - np.sqrt(disc))/ (2 * a)
+
+            phi_v, pts = [], []
+            for s in [s1, s2]:
+                x = alpha +  beta * s
+                y = gamma + delta * s
+                px = np.arctan2(y, x)
+                if px > 2 * np.pi: px = np.pi + abs(px - np.pi)
+                if px < 0: px = 2 * np.pi + px
+                phi_v.append(px) 
+                pts.append(r0 + s * d)
+            return phi_v, pts, [s1, s2]
+
+
+        def plane_intersection(el1, el2):
+            n1, d1, c1 = el1.get_plane()
+            n2, d2, c2 = el2.get_plane()
+
+            d11 = np.dot(n1, n1)
+            d22 = np.dot(n2, n2)
+            d12 = np.dot(n1, n2)
+
+            if round((d11 * d22 - d12**2), 8) == 0: return 
+
+            r0 = (( d1 * d22 - d2 * d12) * n1 + (d2 * d11 - d1 * d12) * n2)
+            r0 /= (d11 * d22 - d12**2)
+            d = np.cross(n1, n2)
+            d = d / np.linalg.norm(d)
+
+            phi1, pts1, s1 = line_intersection(el1, r0, d)
+            phi2, pts2, s2 = line_intersection(el2, r0, d)
+
+            if not len(pts1) or not len(pts2): return 
+            nu1_1 = el1.hmatrix.dot([np.cos(phi1[0]), np.sin(phi1[0]), 1])
+            nu1_2 = el1.hmatrix.dot([np.cos(phi1[1]), np.sin(phi1[1]), 1])
+
+            nu2_1 = el2.hmatrix.dot([np.cos(phi2[0]), np.sin(phi2[0]), 1])
+            nu2_2 = el2.hmatrix.dot([np.cos(phi2[1]), np.sin(phi2[1]), 1])
+        
+            return {
+                    "n1" : {"phi" : phi1, "pts" : pts1, "s" : s1, "r0" : r0, "d" : d, "sols" : [nu1_1, nu1_2]}, 
+                    "n2" : {"phi" : phi2, "pts" : pts2, "s" : s2, "r0" : r0, "d" : d, "sols" : [nu2_1, nu2_2]}
+            }
+
+
         # NOTE: work in progress..... 
         # Idea is to find the plane equation of the ellipse
         # then find the line which intersects a pair of ellipses
@@ -137,32 +204,58 @@ class Conuic(debug):
         # Since H_tilde can be represented as Morbius transformations, 
         # It becomes a polynomial could be solved analytically. 
         # To be seen.
-        v0 = np.array([[0, 0, self.px],[0, 0, self.py], [0, 0, self.pz]])
+        v0 = np.array([[0, 0, self.px],[0, 0, self.py], [0, 0, self.pz]]) * 0
 
         traj = traject(self.fig)
         can_i = {abs(k.mobius) : k for k in i.parameters}
         can_j = {abs(t.mobius) : t for t in j.parameters}
+
         l = 0
-        for k in can_i:
+        for k in sorted(can_i):
             ox = can_i[k]
             H  = can_i[k].hmatrix
-            K_ = np.linalg.inv(H).T.dot(circle()).dot(np.linalg.inv(H))
+            try: K_ = np.linalg.inv(H).T.dot(circle()).dot(np.linalg.inv(H))
+            except: continue
             cX = (v0 - circle()).T.dot(K_).dot(v0 - circle())
             
             E_ = traj.figures(Ellipse, "r" if ox.tag_truth else "b", 1, True)
-            traj.ellipse(cX, None, None, E_)
-            E_.data.matrix = cX
+            traj.ellipse(K_, None, None, E_)
+            E_.data.matrix = H
             E_.alpha = 1.0
-
-            print(can_i[k].get_plane())
-            l += 1
-            if l < 3: continue
-            break
             
+            ox1 = ox
+            ox1.hmatrix = H
+            break
 
-        self.fig.add_object("event123", traj)
-        self.fig.show()
-        exit()
+
+        for k in sorted(can_j):
+            ox = can_j[k]
+            H  = can_j[k].hmatrix
+            try: K_ = np.linalg.inv(H).T.dot(circle()).dot(np.linalg.inv(H))
+            except: continue
+            cX = (v0 - circle()).T.dot(K_).dot(v0 - circle())
+            
+            E_ = traj.figures(Ellipse, "r" if ox.tag_truth else "b", 1, True)
+            traj.ellipse(K_, None, None, E_)
+            E_.data.matrix = H
+            E_.alpha = 1.0
+            
+            ox2 = ox
+            ox2.hmatrix = H
+            break
+
+        #sols = plane_intersection(ox1, ox2)
+        #if sols is None: return
+
+        #l1 = traj.figures(Line, "g-", 1, True)
+        #l2 = traj.figures(Line, "k-", 1, True)
+        #l1.data.intersect = sols["n1"]["sols"]
+        #l2.data.intersect = sols["n2"]["sols"]
+        #traj.line(sols["n1"]["r0"], sols["n1"]["d"], l1)
+        #traj.line(sols["n2"]["r0"], sols["n2"]["d"], l2)
+
+        self.fig.add_object("event" + str(ox.mobius) + str(ox.mobius), traj)
+        #self.fig.show()
 
 
     def solver(self, ellip, i):

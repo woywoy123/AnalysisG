@@ -8,6 +8,8 @@ class data:
         self.normal = None
         self.center = None
         self.r0     = None
+        self.d      = None
+        self.intersect = None
 
 class Ellipsoid(cosmetic):
     def __init__(self, obj, ax):
@@ -148,15 +150,23 @@ class Line(cosmetic):
         self.xmax, self.ymax =  1,  1
         self.pl = obj 
 
-    def equation(self, x, y):
-        pass
+    def equation(self, sval):
+        return np.array([self.data.r0 + self.data.d * s for s in sval])
 
     def make(self, n_points = 100):
-        pass
+        return self.equation(self._lin(self.xmin, self.xmax, n_points))
 
     def plot(self):
-        pass
-
-
-
-
+        arx = self.make(self.data.npts)
+        self._plot3(arx[:,0], arx[:,1], arx[:,2])
+        if self.data.intersect is None: return
+        s1 = self.data.intersect[0]
+        s2 = self.data.intersect[1]
+        l = self.label 
+        self.marker_sym = "x"
+        self.marker_size = 10
+        self.label = l + "x1"
+        self.color = "k"
+        self._scatter3(s1[0], s1[1], s1[2])
+        self.label = "x2"
+        self._scatter3(s2[0], s2[1], s2[2])

@@ -94,7 +94,7 @@ class debug:
         dg = cx._M_coef()
         _print("Mobius coefficients", dg)
         
-        dg = cx._lambda_roots_dPdtau(_z)
+        dg = cx._lambda_roots_dPdtau(_z, True)
         _print("dP/dtau = 0, P = 0", dg)
 
     def infer_debug(self, cx):
@@ -113,9 +113,9 @@ class debug:
         _print("--------- pair: " + str(idx) + " ---------")
         if len(cx.truth_pair): print(">>> TRUTH PAIR <<<")
         self.reference_debug(cx)
-        #self.infer_debug(cx)
+        self.infer_debug(cx)
         #self.base_debug(cx)
-        #self.eigen_debug(cx)
+        self.eigen_debug(cx)
 
 
 class traject:
@@ -124,7 +124,7 @@ class traject:
         self.plots = []
 
     def shapes(self):
-        l = 3 if len(self.parameters) > 3 else len(self.parameters)
+        l = 3 if len(self.parameters) > 2 else len(self.parameters)*0
         for i in range(l):
             self.z   = self.parameters[i].z
             self.tau = self.parameters[i].t
@@ -175,11 +175,7 @@ class traject:
     def ellipse(self, mtx, z = None, t = None, pl = None): 
         if z is not None and t is not None: return p_ellipse(mtx(z, t), pl)
         return p_ellipse(mtx, pl)
-
-
-
-
-
-
-
+    def line(self, r0, d, pl): 
+        pl.data.r0 = r0
+        pl.data.d  = d
 

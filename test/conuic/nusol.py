@@ -9,7 +9,7 @@ truth = {}
 junk  = {}
 njunk = {}
 for i in DataLoader():
-    if i.idx != idx: continue
+#    if i.idx != idx: continue
     print("EVENT: ", i.idx)
     nu = Conuic(i.met, i.phi, list(i.DetectorObjects.values()), i)
     print("\n\n")
