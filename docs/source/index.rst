@@ -7,12 +7,11 @@ Welcome to AnalysisG's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   ../modules
-   api/index
-   changelog
-   contributing
-   examples
    installation
+   api_reference
+   examples
+   contributing
+   changelog
 
 Indices and tables
 ==================

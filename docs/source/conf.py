@@ -52,7 +52,8 @@ breathe_default_members = ('members', 'undoc-members')
 def generate_doxygen_xml(app):
     cwd = os.getcwd()
     try:
-        os.chdir(os.path.join(cwd, ".."))
+        # Navigate to project root
+        os.chdir(os.path.join(cwd, "../.."))
         subprocess.call('doxygen Doxyfile', shell=True)
     finally:
         os.chdir(cwd)

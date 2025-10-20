@@ -35,4 +35,7 @@ local/**/*.png
 
 # Sphinx documentation
 docs/_build/
+docs/source/_build/
+docs/doxygen/html/
+docs/doxygen/xml/
 

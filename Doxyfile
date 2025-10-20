@@ -12,8 +12,9 @@ REPEAT_BRIEF           = YES
 ABBREVIATE_BRIEF       = 
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
-FULL_PATH_NAMES        = NO
-STRIP_FROM_PATH        = "src/AnalysisG"
+FULL_PATH_NAMES        = YES
+STRIP_FROM_PATH        = src/AnalysisG
+STRIP_FROM_INC_PATH    = src/AnalysisG
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = YES
 QT_AUTOBRIEF           = NO
@@ -84,9 +85,9 @@ WARN_AS_ERROR          = NO
 WARN_FORMAT            = "$file:$line: $text"
 WARN_LOGFILE           = 
 
-INPUT                  = src studies test
+INPUT                  = src/AnalysisG
 INPUT_ENCODING         = UTF-8
-FILE_PATTERNS          = *.h *.cxx *.py *.pyx *.ipynb
+FILE_PATTERNS          = *.h *.cxx *.py *.pyx *.pxd
 RECURSIVE              = YES
 EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO
@@ -97,7 +98,10 @@ EXCLUDE_PATTERNS       = */build/* \
                          */doc/* \
                          */docs/* \
                          */examples/* \
-                         "*/.ipynb_checkpoints/*"
+                         "*/.ipynb_checkpoints/*" \
+                         */__pycache__/* \
+                         */templates/* \
+                         */<*>*
 EXCLUDE_SYMBOLS        = 
 EXAMPLE_PATH           = 
 EXAMPLE_PATTERNS       = *
