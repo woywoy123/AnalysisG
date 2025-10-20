@@ -56,7 +56,9 @@ This section documents the {module_name} module.
         content += "Header Files\n"
         content += "-" * 12 + "\n\n"
         for header in sorted(files['headers']):
-            content += f".. doxygenfile:: {header}\n"
+            # Strip 'src/' prefix as Doxygen does this with STRIP_FROM_PATH
+            clean_path = header.replace('src/AnalysisG/', '')
+            content += f".. doxygenfile:: {clean_path}\n"
             content += f"   :project: AnalysisG\n\n"
     
     # Add source files section
@@ -64,7 +66,9 @@ This section documents the {module_name} module.
         content += "Source Files\n"
         content += "-" * 12 + "\n\n"
         for source in sorted(files['sources']):
-            content += f".. doxygenfile:: {source}\n"
+            # Strip 'src/' prefix as Doxygen does this with STRIP_FROM_PATH
+            clean_path = source.replace('src/AnalysisG/', '')
+            content += f".. doxygenfile:: {clean_path}\n"
             content += f"   :project: AnalysisG\n\n"
     
     # Add Python files section (note: Doxygen can parse Python)
@@ -72,7 +76,9 @@ This section documents the {module_name} module.
         content += "Python Files\n"
         content += "-" * 12 + "\n\n"
         for pyfile in sorted(files['python']):
-            content += f".. doxygenfile:: {pyfile}\n"
+            # Strip 'src/' prefix as Doxygen does this with STRIP_FROM_PATH
+            clean_path = pyfile.replace('src/AnalysisG/', '')
+            content += f".. doxygenfile:: {clean_path}\n"
             content += f"   :project: AnalysisG\n\n"
     
     with open(output_path, 'w') as f:
