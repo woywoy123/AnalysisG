@@ -12,7 +12,7 @@ build:
     python: "3.10"
   jobs:
     pre_build:
-      # Generiere Doxygen-Dokumentation vor dem Sphinx-Build
+      # Generate Doxygen documentation before Sphinx build
       - doxygen Doxyfile
 
 # Build documentation in the docs/ directory with Sphinx

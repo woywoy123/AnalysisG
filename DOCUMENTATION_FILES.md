@@ -52,7 +52,7 @@ This document lists all files created for the comprehensive Doxygen documentatio
 
 ### Module Documentation Files (docs/source/api/)
 
-3. **docs/source/api/core.rst** (UPDATED - 50 lines)
+3. **docs/source/api/core.rst** (UPDATED - 110 lines)
    - Documents core C++ and Cython files
    - Includes: edge.cxx, graph.cxx, node.cxx
    - Includes all .pyx files: analysis, event_template, graph_template, io, lossfx, meta, metric_template, model_template, notification, particle_template, plotting, selection_template, structs, tools
@@ -64,7 +64,7 @@ This document lists all files created for the comprehensive Doxygen documentatio
      - io.h, lossfx.h, meta.h, metric_template.h, metrics.h, model_template.h
      - notification.h, optimizer.h, particle_template.h, plotting.h
      - sampletracer.h, selection_template.h, base.h, element.h, enums.h
-     - event.h, folds.h, meta.h, model.h, optimizer.h, particles.h
+     - event.h, folds.h, model.h, particles.h
      - property.h, report.h, settings.h, tools.h, merge_cast.h
      - tensor_cast.h, vector_cast.h
    - **Source files** (70+ files):
@@ -91,23 +91,23 @@ This document lists all files created for the comprehensive Doxygen documentatio
      - Variable: variable.cxx
      - XML: xml_parser.cxx
 
-5. **docs/source/api/events.rst** (NEW - 35 lines)
+5. **docs/source/api/events.rst** (NEW - 146 lines)
    - Documents events directory
    - Python modules: bsm_4tops, exp_mc20, gnn, ssml_mc20
 
-6. **docs/source/api/graphs.rst** (NEW - 35 lines)
+6. **docs/source/api/graphs.rst** (NEW - 101 lines)
    - Documents graphs directory
    - Python modules: bsm_4tops, exp_mc20, ssml_mc20
 
-7. **docs/source/api/metrics.rst** (NEW - 35 lines)
+7. **docs/source/api/metrics.rst** (NEW - 56 lines)
    - Documents metrics directory
    - Python modules: accuracy, pagerank
 
-8. **docs/source/api/models.rst** (NEW - 35 lines)
+8. **docs/source/api/models.rst** (NEW - 56 lines)
    - Documents models directory
    - Python modules: Grift, RecursiveGraphNeuralNetwork
 
-9. **docs/source/api/selections.rst** (NEW - 370+ lines)
+9. **docs/source/api/selections.rst** (NEW - 365 lines)
    - Comprehensive documentation for selections directory
    - Includes all selection modules and subdirectories:
      - analysis, example, mc16 (childrenkinematics, decaymodes, topjets, topkinematics, topmatching, toptruthjets)
@@ -116,19 +116,19 @@ This document lists all files created for the comprehensive Doxygen documentatio
      - performance (topefficiency)
    - Documents both .pyx and .py files for all selections
 
-10. **docs/source/api/pyc.rst** (NEW - 95 lines)
+10. **docs/source/api/pyc.rst** (NEW - 71 lines)
     - Documents pyc (Python C extensions) directory
     - Modules: cutils, graph, interface, nusol, operators, physics, transform
 
-11. **docs/source/api/templates.rst** (NEW - 50 lines)
+11. **docs/source/api/templates.rst** (NEW - 95 lines)
     - Documents templates directory structure
     - Note: Individual template files excluded due to filename issues
 
-12. **docs/source/api/utils.rst** (NEW - 20 lines)
+12. **docs/source/api/utils.rst** (NEW - 11 lines)
     - Documents utils directory
     - Includes naming.cxx
 
-13. **docs/source/api/root.rst** (NEW - 30 lines)
+13. **docs/source/api/root.rst** (NEW - 20 lines)
     - Documents root-level files
     - Includes __init__.py, check_filenames.cxx
 
