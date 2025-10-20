@@ -1,0 +1,151 @@
+/**
+ * @defgroup graph_module Graph Module
+ * @brief Graph representations for Graph Neural Networks
+ *
+ * The Graph module provides infrastructure for representing physics events as graphs
+ * suitable for Graph Neural Network (GNN) processing. It handles graph construction,
+ * feature management, and PyTorch tensor integration.
+ *
+ * @section graph_overview Overview
+ *
+ * The module provides two main components:
+ * - **graph_t**: Low-level graph data structure with PyTorch tensor storage
+ * - **graph_template**: High-level graph template for graph construction
+ *
+ * @section graph_structure Graph Structure
+ *
+ * A graph in AnalysisG consists of:
+ * - **Nodes**: Representing particles or physics objects
+ * - **Edges**: Representing relationships between nodes
+ * - **Features**: Node, edge, and graph-level features
+ * - **Labels**: Truth labels for supervised learning
+ * - **Metadata**: Event information (weight, index)
+ *
+ * @section graph_features Graph Features
+ *
+ * The framework supports multiple feature types:
+ *
+ * **Data Features (Input):**
+ * - graph_level: Global event features
+ * - node_level: Per-node features (e.g., particle kinematics)
+ * - edge_level: Per-edge features (e.g., angular distances)
+ *
+ * **Truth Labels (Targets):**
+ * - truth_graph: Graph-level truth labels
+ * - truth_node: Node-level truth labels
+ * - truth_edge: Edge-level truth labels
+ *
+ * **Structural:**
+ * - edge_index: Graph connectivity (COO format)
+ * - batch_index: Batch assignment for nodes
+ *
+ * @section graph_pytorch PyTorch Integration
+ *
+ * All graph features are stored as PyTorch tensors:
+ * - Automatic device management (CPU/GPU)
+ * - Batch aggregation support
+ * - Efficient tensor operations
+ * - Direct integration with PyTorch models
+ *
+ * @section graph_building Graph Building
+ *
+ * Users create custom graph builders by inheriting from graph_template:
+ *
+ * @code{.cpp}
+ * class my_graph : public graph_template
+ * {
+ * public:
+ *     void build_graph(event_template* ev) override
+ *     {
+ *         // Define nodes (e.g., particles)
+ *         for (auto& p : ev->particles) {
+ *             this->add_node(p);
+ *         }
+ *         
+ *         // Define edges (e.g., all-to-all)
+ *         for (size_t i = 0; i < nodes.size(); ++i) {
+ *             for (size_t j = 0; j < nodes.size(); ++j) {
+ *                 if (i != j) { this->add_edge(i, j); }
+ *             }
+ *         }
+ *         
+ *         // Add features
+ *         this->add_node_feature("pt", pt_values);
+ *         this->add_edge_feature("dR", dR_values);
+ *     }
+ * };
+ * @endcode
+ *
+ * @section graph_classes Main Classes
+ *
+ * - graph_t: Low-level graph data structure
+ * - graph_template: High-level graph building template
+ *
+ * @section graph_dependencies Dependencies
+ *
+ * - Event Module (@ref event_module): For event data
+ * - Particle Module (@ref particle_module): For particle data
+ * - Structs Module (@ref structs_module): For graph_t structure
+ * - Tools Module (@ref tools_module): For tensor utilities
+ * - PyTorch (LibTorch): For tensor operations
+ *
+ * @section graph_example Example Usage
+ *
+ * @code{.cpp}
+ * #include <templates/graph_template.h>
+ *
+ * // Create graph from event
+ * my_graph* g = new my_graph();
+ * g->build_graph(event_ptr);
+ *
+ * // Access graph data
+ * graph_t* graph_data = g->get_graph_data();
+ *
+ * // Get features in model
+ * torch::Tensor* node_features = graph_data->get_data_node("pt", model);
+ * torch::Tensor* edge_index = graph_data->get_edge_index(model);
+ * torch::Tensor* truth = graph_data->get_truth_graph("label", model);
+ * @endcode
+ *
+ * @see graph_t
+ * @see graph_template
+ */
+
+/**
+ * @struct graph_t
+ * @ingroup graph_module
+ * @brief Low-level graph data structure with PyTorch tensor storage
+ *
+ * The graph_t structure stores all graph-related tensors and provides
+ * methods for accessing features by type and name. It handles device
+ * transfers and tensor lifecycle management.
+ *
+ * @details
+ * Features are organized by type:
+ * - Data features: Input to models
+ * - Truth labels: Targets for supervised learning
+ * - Structural: Edge connectivity and batching
+ *
+ * All tensors are managed internally and automatically transferred
+ * to the appropriate device (CPU/GPU) as needed.
+ */
+
+/**
+ * @class graph_template
+ * @ingroup graph_module
+ * @brief High-level template for graph construction
+ *
+ * The graph_template class provides a template for building graphs from
+ * physics events. Users inherit from this class and implement the
+ * build_graph method to define custom graph structures.
+ *
+ * @details
+ * The class handles:
+ * - Node and edge management
+ * - Feature registration
+ * - Tensor creation and storage
+ * - Integration with graph_t
+ *
+ * @note Virtual methods allow complete customization of graph building
+ * @note Integrates seamlessly with the event and dataloader systems
+ */

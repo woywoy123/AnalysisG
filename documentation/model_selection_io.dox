@@ -1,0 +1,174 @@
+/**
+ * @defgroup model_module Model Module
+ * @brief Machine learning model templates and integration
+ *
+ * The Model module provides base templates for integrating machine learning models
+ * with the AnalysisG framework. It supports PyTorch-based models for graph neural
+ * networks and other architectures.
+ *
+ * @section model_overview Overview
+ *
+ * The model_template class serves as a base for creating custom ML models:
+ * - PyTorch C++ API integration
+ * - Model training and inference
+ * - Device management (CPU/GPU)
+ * - Model state persistence
+ * - Integration with dataloader and optimizer
+ *
+ * @section model_structure Model Structure
+ *
+ * Users create custom models by inheriting from model_template:
+ *
+ * @code{.cpp}
+ * class my_model : public model_template
+ * {
+ * public:
+ *     torch::Tensor forward(graph_t* g) override
+ *     {
+ *         // Define forward pass
+ *         auto node_features = g->get_data_node("features", this);
+ *         auto edge_index = g->get_edge_index(this);
+ *         
+ *         // Model computation
+ *         auto h = conv1->forward(node_features, edge_index);
+ *         return output_layer->forward(h);
+ *     }
+ *     
+ *     // Define model layers
+ *     torch::nn::Linear conv1{nullptr};
+ *     torch::nn::Linear output_layer{nullptr};
+ * };
+ * @endcode
+ *
+ * @section model_lifecycle Model Lifecycle
+ *
+ * 1. **Initialization**: Model is created and parameters initialized
+ * 2. **Registration**: Model added to analysis with optimizer
+ * 3. **Training**: Model trained via optimizer
+ * 4. **Evaluation**: Model evaluated on validation/test sets
+ * 5. **Inference**: Model used for predictions
+ * 6. **Persistence**: Model weights saved/loaded
+ *
+ * @section model_classes Main Classes
+ *
+ * - model_template: Base template for ML models
+ *
+ * @section model_dependencies Dependencies
+ *
+ * - Graph Module (@ref graph_module): For graph inputs
+ * - Loss Functions Module (@ref lossfx_module): For loss computation
+ * - Tools Module (@ref tools_module): For utilities
+ * - PyTorch (LibTorch): For neural network operations
+ *
+ * @section model_example Example Usage
+ *
+ * @code{.cpp}
+ * #include <templates/model_template.h>
+ *
+ * // Create model
+ * my_model* model = new my_model();
+ *
+ * // Set device
+ * model->set_device(0);  // GPU 0
+ *
+ * // Add to analysis with optimizer
+ * optimizer_params_t* opt = new optimizer_params_t();
+ * opt->optimizer = "adam";
+ * opt->learning_rate = 0.001;
+ * 
+ * analysis.add_model(model, opt, "my_model");
+ * @endcode
+ *
+ * @see model_template
+ */
+
+/**
+ * @defgroup selection_module Selection Module
+ * @brief Event and object selection framework
+ *
+ * The Selection module provides a flexible framework for applying selection
+ * criteria to events and physics objects. It supports complex selection logic
+ * and cascading selections.
+ *
+ * @section selection_overview Overview
+ *
+ * The selection_template class allows users to define custom selection criteria:
+ * - Event-level selections
+ * - Object-level selections
+ * - Cutflow tracking
+ * - Selection efficiency calculation
+ *
+ * @section selection_usage Selection Usage
+ *
+ * Users create custom selections by inheriting from selection_template:
+ *
+ * @code{.cpp}
+ * class my_selection : public selection_template
+ * {
+ * public:
+ *     bool selection(event_template* ev) override
+ *     {
+ *         // Apply event selection
+ *         if (ev->particles.size() < 4) return false;
+ *         
+ *         // Apply object selections
+ *         int n_leptons = 0;
+ *         for (auto& p : ev->particles) {
+ *             if (p->is_lep && p->pt > 25.0) n_leptons++;
+ *         }
+ *         
+ *         return n_leptons >= 2;
+ *     }
+ * };
+ * @endcode
+ *
+ * @section selection_classes Main Classes
+ *
+ * - selection_template: Base template for selections
+ *
+ * @see selection_template
+ */
+
+/**
+ * @defgroup io_module I/O Module
+ * @brief Input/output operations for ROOT and HDF5 files
+ *
+ * The I/O module provides comprehensive file I/O capabilities:
+ * - ROOT file reading/writing (TTree support)
+ * - HDF5 file reading/writing
+ * - Event data serialization
+ * - Metadata management
+ *
+ * @section io_overview Overview
+ *
+ * The io class handles all file operations:
+ * - Opening/closing files
+ * - Reading event data
+ * - Writing analysis results
+ * - Managing file structures
+ *
+ * @section io_example Example Usage
+ *
+ * @code{.cpp}
+ * #include <io/io.h>
+ *
+ * // Open file for reading
+ * io* reader = new io();
+ * reader->open("data.root", "READ");
+ *
+ * // Read data
+ * std::vector<event_t> events;
+ * reader->read(&events, "events");
+ *
+ * // Write results
+ * io* writer = new io();
+ * writer->open("output.h5", "WRITE");
+ * writer->write(&results, "analysis_results");
+ * @endcode
+ *
+ * @section io_classes Main Classes
+ *
+ * - io: Main I/O handler class
+ *
+ * @see io
+ */

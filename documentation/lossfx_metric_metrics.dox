@@ -1,0 +1,166 @@
+/**
+ * @defgroup lossfx_module Loss Functions Module
+ * @brief Loss functions and optimizer management
+ *
+ * The Loss Functions module provides comprehensive loss function implementations
+ * and optimizer configurations for machine learning model training.
+ *
+ * @section lossfx_overview Overview
+ *
+ * The lossfx class manages:
+ * - Multiple loss function implementations
+ * - Optimizer creation and configuration
+ * - Weight initialization methods
+ * - Device management for loss computation
+ *
+ * @section lossfx_losses Supported Loss Functions
+ *
+ * The module supports a wide range of PyTorch loss functions:
+ * - **BCE**: Binary Cross Entropy
+ * - **BCEWithLogits**: BCE with logits
+ * - **CrossEntropy**: Cross Entropy Loss
+ * - **MSE**: Mean Squared Error
+ * - **L1**: L1 Loss (MAE)
+ * - **Huber**: Huber Loss
+ * - **KLDiv**: Kullback-Leibler Divergence
+ * - **NLL**: Negative Log Likelihood
+ * - **Poisson NLL**: Poisson Negative Log Likelihood
+ * - **CosineEmbedding**: Cosine Embedding Loss
+ * - **Hinge**: Hinge Embedding Loss
+ * - **MarginRanking**: Margin Ranking Loss
+ * - **MultiMargin**: Multi-class Margin Loss
+ * - **MultiLabelMargin**: Multi-label Margin Loss
+ * - **MultiLabelSoftMargin**: Multi-label Soft Margin Loss
+ * - **SmoothL1**: Smooth L1 Loss
+ * - **SoftMargin**: Soft Margin Loss
+ * - **TripletMargin**: Triplet Margin Loss
+ * - **TripletMarginWithDistance**: Triplet Margin Loss with custom distance
+ * - **CTC**: Connectionist Temporal Classification
+ *
+ * @section lossfx_optimizers Supported Optimizers
+ *
+ * The module supports standard PyTorch optimizers:
+ * - **Adam**: Adaptive Moment Estimation
+ * - **AdamW**: Adam with Weight Decay
+ * - **Adagrad**: Adaptive Gradient
+ * - **SGD**: Stochastic Gradient Descent
+ * - **RMSprop**: Root Mean Square Propagation
+ * - **LBFGS**: Limited-memory BFGS
+ *
+ * @section lossfx_init Weight Initialization
+ *
+ * Supported initialization methods:
+ * - Xavier/Glorot initialization
+ * - He initialization
+ * - Uniform initialization
+ * - Normal initialization
+ * - Constant initialization
+ *
+ * @section lossfx_classes Main Classes
+ *
+ * - lossfx: Loss function and optimizer manager
+ *
+ * @section lossfx_dependencies Dependencies
+ *
+ * - Structs Module (@ref structs_module): For optimizer_params_t
+ * - Tools Module (@ref tools_module): For utilities
+ * - PyTorch (LibTorch): For loss and optimizer implementations
+ *
+ * @section lossfx_example Example Usage
+ *
+ * @code{.cpp}
+ * #include <templates/lossfx.h>
+ *
+ * // Create loss function manager
+ * lossfx* loss_mgr = new lossfx();
+ *
+ * // Build loss function
+ * loss_enum loss_type = loss_mgr->loss_string("mse");
+ * loss_mgr->build_loss_function(loss_type);
+ *
+ * // Compute loss
+ * torch::Tensor loss = loss_mgr->loss(&predictions, &targets, loss_type);
+ *
+ * // Create optimizer
+ * optimizer_params_t* params = new optimizer_params_t();
+ * params->optimizer = "adam";
+ * params->learning_rate = 0.001;
+ * params->weight_decay = 1e-5;
+ *
+ * auto* optimizer = loss_mgr->build_optimizer(params, model_parameters);
+ *
+ * // Initialize weights
+ * torch::nn::Sequential network;
+ * loss_mgr->weight_init(&network, mlp_init::XAVIER);
+ * @endcode
+ *
+ * @see lossfx
+ */
+
+/**
+ * @defgroup metric_module Metric Module
+ * @brief Performance metrics and evaluation
+ *
+ * The Metric module provides templates for defining custom performance metrics
+ * to evaluate model performance during training and inference.
+ *
+ * @section metric_overview Overview
+ *
+ * The metric_template class allows users to define custom metrics:
+ * - Training metrics
+ * - Validation metrics
+ * - Test metrics
+ * - Custom evaluation criteria
+ *
+ * @section metric_usage Metric Usage
+ *
+ * Users create custom metrics by inheriting from metric_template:
+ *
+ * @code{.cpp}
+ * class accuracy_metric : public metric_template
+ * {
+ * public:
+ *     double compute(graph_t* graph, torch::Tensor* prediction) override
+ *     {
+ *         auto* truth = graph->get_truth_graph("label", model);
+ *         auto pred_labels = prediction->argmax(1);
+ *         auto correct = pred_labels.eq(*truth).sum();
+ *         return correct.item<double>() / truth->size(0);
+ *     }
+ * };
+ * @endcode
+ *
+ * @section metric_classes Main Classes
+ *
+ * - metric_template: Base template for metrics
+ *
+ * @see metric_template
+ */
+
+/**
+ * @defgroup metrics_module Metrics Module
+ * @brief Built-in metrics for physics analysis
+ *
+ * The Metrics module provides built-in metrics specifically designed for
+ * physics analysis tasks.
+ *
+ * @section metrics_overview Overview
+ *
+ * The metrics class provides:
+ * - Mass reconstruction metrics
+ * - Loss visualization
+ * - Training progress tracking
+ * - Physics-specific evaluations
+ *
+ * @section metrics_features Features
+ *
+ * - **Mass Plots**: Mass reconstruction quality metrics
+ * - **Loss Plots**: Training/validation loss tracking
+ * - **Custom Physics Metrics**: Domain-specific evaluations
+ *
+ * @section metrics_classes Main Classes
+ *
+ * - metrics: Built-in metrics implementation
+ *
+ * @see metrics
+ */

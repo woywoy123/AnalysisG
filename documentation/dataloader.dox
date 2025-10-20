@@ -1,0 +1,161 @@
+/**
+ * @defgroup dataloader_module DataLoader Module
+ * @brief Data management, batching, and k-fold cross-validation
+ *
+ * The DataLoader module provides comprehensive data management functionality,
+ * including dataset splitting, k-fold cross-validation, batching, caching,
+ * and device memory management.
+ *
+ * @section dataloader_overview Overview
+ *
+ * The dataloader class manages the entire data pipeline:
+ * - Dataset organization and splitting
+ * - K-fold cross-validation
+ * - Batch generation for training
+ * - GPU/CPU memory management
+ * - Graph caching and persistence
+ * - Random sampling
+ *
+ * @section dataloader_splitting Dataset Splitting
+ *
+ * The module supports multiple splitting strategies:
+ *
+ * **Train/Test Split:**
+ * - Simple percentage-based splitting
+ * - Default: 50% test, 50% train
+ * - Configurable via generate_test_set()
+ *
+ * **K-Fold Cross-Validation:**
+ * - Split data into k folds
+ * - Each fold serves as validation once
+ * - Remaining folds used for training
+ * - Configurable via generate_kfold_set(k)
+ *
+ * @section dataloader_batching Batching
+ *
+ * The dataloader creates batches suitable for GNN training:
+ * - Variable-size batches based on model requirements
+ * - Automatic graph aggregation
+ * - Batch indexing for node-to-graph mapping
+ * - Edge index adjustment for batched graphs
+ *
+ * @section dataloader_caching Caching and Persistence
+ *
+ * The module provides caching mechanisms:
+ * - **Memory Cache**: In-memory graph storage
+ * - **Disk Cache**: Persistent graph storage
+ * - **Dataset Dump**: Save complete dataset configuration
+ * - **Dataset Restore**: Load saved dataset configuration
+ *
+ * @section dataloader_device Device Management
+ *
+ * For GPU acceleration:
+ * - Automatic tensor device transfer
+ * - CUDA memory server for efficient allocation
+ * - Device-specific tensor options
+ * - Memory cleanup utilities
+ *
+ * @section dataloader_classes Main Classes
+ *
+ * - dataloader: Main data management class
+ *
+ * @section dataloader_dependencies Dependencies
+ *
+ * - Graph Module (@ref graph_module): For graph data structures
+ * - Model Module (@ref model_module): For model integration
+ * - Structs Module (@ref structs_module): For settings and configurations
+ * - Notification Module (@ref notification_module): For logging
+ * - Tools Module (@ref tools_module): For utilities
+ * - PyTorch (LibTorch): For tensor operations
+ *
+ * @section dataloader_example Example Usage
+ *
+ * @code{.cpp}
+ * #include <generators/dataloader.h>
+ *
+ * // Create dataloader
+ * dataloader* dl = new dataloader();
+ *
+ * // Add graphs from container
+ * container->populate_dataloader(dl);
+ *
+ * // Split into train/test
+ * dl->generate_test_set(20.0);  // 20% test set
+ *
+ * // Or use k-fold cross-validation
+ * dl->generate_kfold_set(5);  // 5-fold CV
+ *
+ * // Get training data for fold k
+ * auto* train_data = dl->get_k_train_set(0);
+ *
+ * // Create batch
+ * auto* batch = dl->build_batch(train_data, model_ptr, report_ptr);
+ *
+ * // Save dataset
+ * dl->dump_dataset("./dataset_config.h5");
+ *
+ * // Restore dataset
+ * dl->restore_dataset("./dataset_config.h5");
+ *
+ * // Dump graphs to disk
+ * dl->dump_graphs("./graphs/", 10);  // Use 10 threads
+ *
+ * // Restore graphs from disk
+ * dl->restore_graphs("./graphs/", 10);
+ * @endcode
+ *
+ * @section dataloader_inference Inference Mode
+ *
+ * The dataloader also supports inference mode:
+ * - Separate inference dataset management
+ * - No train/test splitting
+ * - Direct graph access by label
+ *
+ * @code{.cpp}
+ * // Get inference data
+ * auto* inference_map = dl->get_inference();
+ * for (auto& [label, graphs] : *inference_map) {
+ *     // Process graphs for each sample label
+ * }
+ * @endcode
+ *
+ * @see dataloader
+ */
+
+/**
+ * @file dataloader.h
+ * @ingroup dataloader_module
+ * @brief Header file for the dataloader class
+ *
+ * This file contains the declaration of the dataloader class which manages
+ * the complete data pipeline for training and inference.
+ */
+
+/**
+ * @class dataloader
+ * @ingroup dataloader_module
+ * @brief Data management and batching for GNN training
+ *
+ * The dataloader class provides comprehensive data management functionality
+ * for machine learning workflows. It handles dataset organization, splitting,
+ * batching, and device memory management.
+ *
+ * @details
+ * Key features:
+ * - Train/test/validation splitting
+ * - K-fold cross-validation support
+ * - Efficient batch generation
+ * - GPU memory management via CUDA server
+ * - Graph caching and persistence
+ * - Random sampling for debugging
+ * - Thread-safe operations
+ *
+ * The class maintains internal indices for dataset organization and
+ * creates batches dynamically based on model requirements. It also
+ * manages feature mappings to ensure consistent encoding across
+ * training and inference.
+ *
+ * @note Inherits from notification for logging
+ * @note Inherits from tools for utility functions
+ * @note Thread-safe for certain operations
+ */

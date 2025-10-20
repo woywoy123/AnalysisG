@@ -36,3 +36,8 @@ local/**/*.png
 # Sphinx documentation
 docs/_build/
 
+# Documentation build outputs (but keep source files)
+documentation/output/
+documentation/_build/
+documentation/doxygen_warnings.log
+

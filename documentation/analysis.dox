@@ -1,0 +1,112 @@
+/**
+ * @defgroup analysis_module Analysis Module
+ * @brief Main orchestrator for physics analysis workflow
+ *
+ * The Analysis module provides the central `analysis` class that coordinates the entire
+ * analysis workflow. It manages event processing, graph construction, model training/inference,
+ * and result collection.
+ *
+ * @section analysis_overview Overview
+ *
+ * The analysis class serves as the main entry point for users. It provides methods to:
+ * - Add data samples from various sources
+ * - Register event, graph, selection, and model templates
+ * - Configure analysis settings
+ * - Execute the analysis workflow
+ * - Collect and aggregate results
+ *
+ * @section analysis_workflow Workflow
+ *
+ * A typical analysis workflow consists of:
+ * 1. Create an analysis instance
+ * 2. Add data samples with labels
+ * 3. Register event templates for different data types
+ * 4. Add selection criteria
+ * 5. Configure graph templates for GNN
+ * 6. Add ML models and optimizers (optional)
+ * 7. Start the analysis
+ * 8. Retrieve results
+ *
+ * @section analysis_features Key Features
+ *
+ * - **Sample Management**: Add and organize multiple data samples
+ * - **Template System**: Support for multiple event and graph types
+ * - **Model Integration**: Seamless integration with ML models
+ * - **Parallel Processing**: Thread support for efficient processing
+ * - **Metrics Collection**: Automatic collection of analysis metrics
+ *
+ * @section analysis_classes Main Classes
+ *
+ * - analysis: Main analysis orchestrator class
+ *
+ * @section analysis_dependencies Dependencies
+ *
+ * - Event Module (@ref event_module)
+ * - Graph Module (@ref graph_module)
+ * - DataLoader Module (@ref dataloader_module)
+ * - Selection Module (@ref selection_module)
+ * - Model Module (@ref model_module)
+ * - I/O Module (@ref io_module)
+ * - Notification Module (@ref notification_module)
+ * - Tools Module (@ref tools_module)
+ *
+ * @section analysis_example Example Usage
+ *
+ * @code{.cpp}
+ * #include <AnalysisG/analysis.h>
+ *
+ * // Create analysis instance
+ * analysis my_analysis;
+ *
+ * // Add data samples
+ * my_analysis.add_samples("/path/to/data", "signal");
+ * my_analysis.add_samples("/path/to/background", "background");
+ *
+ * // Add event template
+ * my_event* evt = new my_event();
+ * my_analysis.add_event_template(evt, "default");
+ *
+ * // Add selection
+ * my_selection* sel = new my_selection();
+ * my_analysis.add_selection_template(sel);
+ *
+ * // Run analysis
+ * my_analysis.start();
+ * @endcode
+ *
+ * @see analysis
+ */
+
+/**
+ * @file analysis.h
+ * @ingroup analysis_module
+ * @brief Header file for the analysis class
+ *
+ * This file contains the declaration of the analysis class which orchestrates
+ * the entire physics analysis workflow.
+ */
+
+/**
+ * @class analysis
+ * @ingroup analysis_module
+ * @brief Main orchestrator for physics analysis workflow
+ *
+ * The analysis class is the central component that manages the complete analysis pipeline.
+ * It coordinates data loading, event processing, selection application, graph construction,
+ * model training/inference, and result collection.
+ *
+ * @details
+ * Key responsibilities:
+ * - Managing data samples and their labels
+ * - Coordinating event and graph template processing
+ * - Applying selection criteria
+ * - Training and running ML models
+ * - Collecting metrics and results
+ * - Managing parallel processing threads
+ *
+ * The class inherits from:
+ * - notification: For logging and user messaging
+ * - tools: For utility functions
+ *
+ * @note This class is thread-safe for certain operations
+ */

@@ -1,0 +1,32 @@
+# Read the Docs configuration for AnalysisG
+# Version: 2
+
+# Build documentation in the documentation/ directory
+version: 2
+
+# Build settings
+build:
+  os: ubuntu-22.04
+  tools:
+    python: "3.11"
+  apt_packages:
+    - doxygen
+    - graphviz
+    - cmake
+    - g++
+
+# Sphinx configuration
+sphinx:
+  builder: html
+  configuration: documentation/conf.py
+  fail_on_warning: false
+
+# Python environment
+python:
+  install:
+    - requirements: documentation/requirements.txt
+
+# Formats to build
+formats:
+  - pdf
+  - epub

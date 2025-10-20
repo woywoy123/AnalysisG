@@ -1,0 +1,6 @@
+sphinx>=7.2.0
+sphinx-rtd-theme>=2.0.0
+breathe>=4.35.0
+exhale>=0.3.6
+sphinx-tabs>=3.4.0
+myst-parser>=2.0.0

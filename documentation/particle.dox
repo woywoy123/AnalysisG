@@ -1,0 +1,123 @@
+/**
+ * @defgroup particle_module Particle Module
+ * @brief Particle representation and physics operations
+ *
+ * The Particle module provides comprehensive particle representation with support for
+ * both Cartesian (px, py, pz, E) and polar (pt, eta, phi, mass) coordinate systems.
+ * It includes physics calculations and particle property management.
+ *
+ * @section particle_overview Overview
+ *
+ * The particle_template class represents a particle in high-energy physics, providing:
+ * - 4-vector representation (momentum and energy)
+ * - Coordinate system conversions (Cartesian ↔ Polar)
+ * - Physics properties (mass, charge, PDG ID)
+ * - Particle relationships (parents, children)
+ * - Particle type classification (b-quark, lepton, neutrino)
+ *
+ * @section particle_coordinates Coordinate Systems
+ *
+ * The module supports two coordinate systems:
+ *
+ * **Cartesian Coordinates:**
+ * - px: x-component of momentum
+ * - py: y-component of momentum
+ * - pz: z-component of momentum
+ * - E: Energy
+ *
+ * **Polar Coordinates:**
+ * - pt: Transverse momentum
+ * - eta: Pseudorapidity
+ * - phi: Azimuthal angle
+ * - mass: Invariant mass
+ *
+ * Conversions between systems are handled automatically via property setters.
+ *
+ * @section particle_properties Particle Properties
+ *
+ * Each particle can have the following properties:
+ * - **Kinematics**: px, py, pz, E, pt, eta, phi, mass
+ * - **Identity**: PDG ID, symbol, charge
+ * - **Relationships**: Parents, children
+ * - **Classifications**: is_b, is_lep, is_nu, is_add, lep_decay
+ * - **Identification**: Unique hash
+ *
+ * @section particle_physics Physics Operations
+ *
+ * The module provides physics-related operations:
+ * - Coordinate transformations
+ * - Mass calculations
+ * - Particle identification
+ * - Family tree navigation (parent/child relationships)
+ *
+ * @section particle_classes Main Classes
+ *
+ * - particle_template: Main particle representation class
+ *
+ * @section particle_dependencies Dependencies
+ *
+ * - Structs Module (@ref structs_module): For particle_t, property templates
+ * - Tools Module (@ref tools_module): For utility functions
+ *
+ * @section particle_example Example Usage
+ *
+ * @code{.cpp}
+ * #include <templates/particle_template.h>
+ *
+ * // Create particle with Cartesian coordinates
+ * particle_template* p = new particle_template(px, py, pz, E);
+ *
+ * // Access properties
+ * double pt_val = p->pt;        // Transverse momentum
+ * double eta_val = p->eta;      // Pseudorapidity
+ * int pdg = p->pdgid;           // PDG ID
+ *
+ * // Convert to polar coordinates
+ * p->to_polar();
+ *
+ * // Check particle type
+ * bool is_lepton = p->is_lep;
+ * bool is_b_quark = p->is_b;
+ *
+ * // Set properties
+ * p->pdgid = 11;                // Set as electron
+ * p->charge = -1.0;             // Set charge
+ * @endcode
+ *
+ * @see particle_template
+ */
+
+/**
+ * @file particle_template.h
+ * @ingroup particle_module
+ * @brief Header file for the particle_template class
+ *
+ * This file contains the declaration of the particle_template class which represents
+ * a particle in high-energy physics with full 4-vector support and property management.
+ */
+
+/**
+ * @class particle_template
+ * @ingroup particle_module
+ * @brief Template class for particle representation
+ *
+ * The particle_template class provides a comprehensive representation of a particle
+ * in high-energy physics. It supports both Cartesian and polar coordinate systems,
+ * automatic conversions between them, and management of particle properties.
+ *
+ * @details
+ * The class uses custom property templates (cproperty) that provide:
+ * - Automatic coordinate system synchronization
+ * - Lazy evaluation of derived quantities
+ * - Type-safe property access
+ *
+ * Coordinate systems:
+ * - Cartesian: (px, py, pz, E)
+ * - Polar: (pt, eta, phi, mass)
+ *
+ * The class maintains internal state to track which coordinate system is active
+ * and performs conversions as needed when properties are accessed or modified.
+ *
+ * @note The class inherits from tools for utility functions
+ * @note Properties use setter/getter methods for automatic conversions
+ */

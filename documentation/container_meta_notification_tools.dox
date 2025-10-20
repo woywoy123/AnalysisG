@@ -1,0 +1,194 @@
+/**
+ * @defgroup container_module Container Module
+ * @brief Data container management for events and graphs
+ *
+ * The Container module provides data organization and management capabilities
+ * for events, graphs, and selections during analysis.
+ *
+ * @section container_overview Overview
+ *
+ * The container class manages:
+ * - Event storage and retrieval
+ * - Graph organization by hash
+ * - Selection template management
+ * - Metadata association
+ * - Thread-safe data access
+ *
+ * @section container_structure Container Structure
+ *
+ * A container organizes data as:
+ * - **Entries**: Keyed by event hash
+ * - **Events**: Multiple event representations per entry
+ * - **Graphs**: Multiple graph representations per entry
+ * - **Selections**: Applied selections per entry
+ * - **Metadata**: Associated sample metadata
+ *
+ * @section container_entry Entry Structure
+ *
+ * Each entry (entry_t) contains:
+ * - hash: Unique identifier
+ * - m_data: Raw graph data (graph_t*)
+ * - m_graph: Graph templates
+ * - m_event: Event templates
+ * - m_selection: Selection results
+ *
+ * @section container_classes Main Classes
+ *
+ * - container: Main container class
+ * - entry_t: Entry structure
+ *
+ * @section container_dependencies Dependencies
+ *
+ * - Event Module (@ref event_module): For event templates
+ * - Graph Module (@ref graph_module): For graph templates
+ * - Selection Module (@ref selection_module): For selections
+ * - Meta Module (@ref meta_module): For metadata
+ * - DataLoader Module (@ref dataloader_module): For data population
+ * - Tools Module (@ref tools_module): For utilities
+ *
+ * @section container_example Example Usage
+ *
+ * @code{.cpp}
+ * #include <container/container.h>
+ *
+ * // Create container
+ * container* cont = new container();
+ *
+ * // Add metadata
+ * meta* metadata = new meta();
+ * cont->add_meta_data(metadata, "signal_sample");
+ *
+ * // Add templates
+ * cont->add_event_template(my_event, "default");
+ * cont->add_graph_template(my_graph, "gnn_graph");
+ * cont->add_selection_template(my_selection);
+ *
+ * // Add entry
+ * entry_t* entry = cont->add_entry("event_hash_123");
+ *
+ * // Populate dataloader
+ * cont->populate_dataloader(dataloader_ptr);
+ * @endcode
+ *
+ * @see container
+ * @see entry_t
+ */
+
+/**
+ * @defgroup meta_module Meta Module
+ * @brief Metadata handling and sample information
+ *
+ * The Meta module provides metadata management for data samples, including
+ * file information, sample properties, and cross-sections.
+ *
+ * @section meta_overview Overview
+ *
+ * The meta class manages:
+ * - Sample metadata (cross-section, luminosity, etc.)
+ * - File information
+ * - Tree/branch/leaf metadata
+ * - Sample normalization factors
+ *
+ * @section meta_properties Metadata Properties
+ *
+ * Typical metadata includes:
+ * - Cross-section (pb)
+ * - Luminosity (fb^-1)
+ * - Number of events
+ * - Sample type (signal/background)
+ * - Generator information
+ * - File paths
+ *
+ * @section meta_classes Main Classes
+ *
+ * - meta: Metadata management class
+ *
+ * @section meta_example Example Usage
+ *
+ * @code{.cpp}
+ * #include <meta/meta.h>
+ *
+ * // Create metadata
+ * meta* sample_meta = new meta();
+ *
+ * // Set properties
+ * sample_meta->cross_section = 123.4;  // pb
+ * sample_meta->luminosity = 140.0;     // fb^-1
+ * sample_meta->sample_type = "signal";
+ *
+ * // Add to container
+ * container->add_meta_data(sample_meta, "ttbar_signal");
+ * @endcode
+ *
+ * @see meta
+ */
+
+/**
+ * @defgroup notification_module Notification Module
+ * @brief Logging and user messaging system
+ *
+ * The Notification module provides a comprehensive logging system for
+ * messages, warnings, errors, and debugging information.
+ *
+ * @section notification_overview Overview
+ *
+ * The notification class provides:
+ * - Multi-level logging (debug, info, warning, error)
+ * - Colored console output
+ * - Log file support
+ * - Timestamp tracking
+ * - Caller identification
+ *
+ * @section notification_levels Log Levels
+ *
+ * - **Debug**: Detailed debugging information
+ * - **Info**: General informational messages
+ * - **Warning**: Warning messages for potential issues
+ * - **Error**: Error messages for failures
+ *
+ * @section notification_classes Main Classes
+ *
+ * - notification: Logging and messaging class
+ *
+ * @section notification_example Example Usage
+ *
+ * @code{.cpp}
+ * #include <notification/notification.h>
+ *
+ * class my_class : public notification
+ * {
+ * public:
+ *     void process()
+ *     {
+ *         this->Info("Starting processing");
+ *         this->Warning("Low statistics detected");
+ *         this->Error("Failed to open file");
+ *     }
+ * };
+ * @endcode
+ *
+ * @see notification
+ */
+
+/**
+ * @defgroup tools_module Tools Module
+ * @brief Utility functions and helper classes
+ *
+ * The Tools module provides a collection of utility functions used
+ * throughout the framework.
+ *
+ * @section tools_overview Overview
+ *
+ * The tools class provides:
+ * - Type name extraction
+ * - String manipulation
+ * - Tensor utilities
+ * - File path handling
+ * - Common helper functions
+ *
+ * @section tools_classes Main Classes
+ *
+ * - tools: Utility functions class
+ *
+ * @see tools
+ */

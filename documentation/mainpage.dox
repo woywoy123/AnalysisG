@@ -1,0 +1,79 @@
+/**
+ * @mainpage AnalysisG - Graph Neural Network Framework for HEP Analysis
+ *
+ * @section intro_sec Introduction
+ *
+ * AnalysisG is a comprehensive C++ framework designed for High Energy Physics (HEP) analysis,
+ * specifically focusing on Graph Neural Network (GNN) applications for particle physics data.
+ * The framework provides a complete workflow for data processing, event selection, graph
+ * representation, machine learning model training, and analysis metrics.
+ *
+ * @section features_sec Key Features
+ *
+ * - **Event Processing**: Flexible event template system for handling physics events
+ * - **Particle Management**: Comprehensive particle template with 4-vector operations
+ * - **Graph Representation**: Advanced graph templates for GNN applications
+ * - **Data Loading**: Efficient data loader with k-fold cross-validation support
+ * - **Model Training**: Integration with PyTorch for machine learning
+ * - **Loss Functions**: Extensive collection of loss functions and optimizers
+ * - **Metrics**: Built-in metrics for model evaluation
+ * - **I/O Operations**: Support for ROOT and HDF5 file formats
+ * - **Selection Framework**: Event and object selection tools
+ * - **Plotting**: Visualization tools for physics analysis
+ *
+ * @section modules_sec Framework Modules
+ *
+ * The framework is organized into the following modules:
+ *
+ * - @ref analysis_module "Analysis Module" - Main orchestrator for analysis workflow
+ * - @ref particle_module "Particle Module" - Particle representation and physics operations
+ * - @ref event_module "Event Module" - Event data structures and processing
+ * - @ref graph_module "Graph Module" - Graph representations for GNN
+ * - @ref dataloader_module "DataLoader Module" - Data management and batching
+ * - @ref model_module "Model Module" - Machine learning model templates
+ * - @ref selection_module "Selection Module" - Event and object selection
+ * - @ref io_module "I/O Module" - File input/output operations
+ * - @ref lossfx_module "Loss Functions Module" - Loss functions and optimizers
+ * - @ref metric_module "Metric Module" - Performance metrics
+ * - @ref container_module "Container Module" - Data container management
+ * - @ref meta_module "Meta Module" - Metadata handling
+ * - @ref notification_module "Notification Module" - Logging and notifications
+ * - @ref tools_module "Tools Module" - Utility functions and helpers
+ * - @ref structs_module "Structs Module" - Core data structures
+ *
+ * @section architecture_sec Architecture Overview
+ *
+ * The framework follows a modular architecture with clear separation of concerns:
+ *
+ * 1. **Data Layer**: I/O operations, metadata, and data structures
+ * 2. **Processing Layer**: Event and particle processing, selections
+ * 3. **Graph Layer**: Graph construction and representation
+ * 4. **ML Layer**: Model templates, loss functions, optimizers
+ * 5. **Analysis Layer**: High-level analysis orchestration
+ *
+ * @section dependencies_sec Dependencies
+ *
+ * - ROOT (CERN Data Analysis Framework)
+ * - HDF5 (Hierarchical Data Format)
+ * - PyTorch C++ API (LibTorch)
+ * - CUDA (optional, for GPU acceleration)
+ *
+ * @section getting_started Getting Started
+ *
+ * To use the framework:
+ *
+ * 1. Include the main analysis header: `#include <AnalysisG/analysis.h>`
+ * 2. Create an analysis instance: `analysis my_analysis;`
+ * 3. Add data samples: `my_analysis.add_samples(path, label);`
+ * 4. Add event template: `my_analysis.add_event_template(event_ptr, label);`
+ * 5. Add selection: `my_analysis.add_selection_template(selection_ptr);`
+ * 6. Run the analysis: `my_analysis.start();`
+ *
+ * @section authors_sec Authors
+ *
+ * AnalysisG Team
+ *
+ * @section license_sec License
+ *
+ * See LICENSE file for details.
+ */

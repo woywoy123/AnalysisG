@@ -1,0 +1,144 @@
+/**
+ * @defgroup event_module Event Module
+ * @brief Event data structures and processing
+ *
+ * The Event module provides the foundational event_template class for representing
+ * and processing physics events. Events are collections of particles with associated
+ * metadata and properties.
+ *
+ * @section event_overview Overview
+ *
+ * The event_template class serves as a base template for event data representation.
+ * It provides:
+ * - Event data structure management (trees, branches, leaves)
+ * - Particle registration and collection
+ * - Event properties (weight, index, hash)
+ * - Event building from raw data
+ * - Cloning and resetting mechanisms
+ *
+ * @section event_structure Event Structure
+ *
+ * An event in AnalysisG consists of:
+ * - **Particles**: Collection of particle_template objects
+ * - **Metadata**: Event weight, index, hash
+ * - **Trees**: Hierarchical data organization
+ * - **Branches**: Data branches from input files
+ * - **Leaves**: Individual data elements
+ *
+ * @section event_lifecycle Event Lifecycle
+ *
+ * 1. **Initialization**: Event template is created and configured
+ * 2. **Building**: Event is built from raw input data
+ * 3. **Population**: Particles are registered and added
+ * 4. **Processing**: Event is processed by selections and analyses
+ * 5. **Reset**: Event is cleared for next iteration
+ *
+ * @section event_properties Event Properties
+ *
+ * Events have the following key properties:
+ * - **weight**: Event weight for normalization
+ * - **index**: Unique event identifier
+ * - **hash**: Event hash for tracking
+ * - **Trees**: Map of tree names to tree structures
+ * - **Branches**: Map of branch names to branch data
+ * - **Leaves**: Map of leaf names to leaf data
+ *
+ * @section event_customization Customization
+ *
+ * Users can create custom event classes by inheriting from event_template:
+ *
+ * @code{.cpp}
+ * class my_event : public event_template
+ * {
+ * public:
+ *     my_event() : event_template() {}
+ *     ~my_event() {}
+ *     
+ *     // Override virtual methods
+ *     event_template* clone() override;
+ *     void reset() override;
+ *     
+ *     // Add custom event-building logic
+ *     void build_event() override;
+ *     
+ *     // Add custom particle types
+ *     std::vector<my_particle*> leptons;
+ *     std::vector<my_particle*> jets;
+ * };
+ * @endcode
+ *
+ * @section event_classes Main Classes
+ *
+ * - event_template: Base template for event representation
+ *
+ * @section event_dependencies Dependencies
+ *
+ * - Particle Module (@ref particle_module): For particle representation
+ * - Structs Module (@ref structs_module): For event_t, property templates
+ * - Meta Module (@ref meta_module): For metadata handling
+ * - Tools Module (@ref tools_module): For utility functions
+ *
+ * @section event_example Example Usage
+ *
+ * @code{.cpp}
+ * #include <templates/event_template.h>
+ *
+ * // Create custom event class
+ * class my_analysis_event : public event_template
+ * {
+ * public:
+ *     void build_event() override
+ *     {
+ *         // Custom event building logic
+ *         for (auto& p : this->particles) {
+ *             if (p->is_lep) { leptons.push_back(p); }
+ *             if (p->is_b) { b_jets.push_back(p); }
+ *         }
+ *     }
+ *     
+ *     std::vector<particle_template*> leptons;
+ *     std::vector<particle_template*> b_jets;
+ * };
+ *
+ * // Use in analysis
+ * my_analysis_event* evt = new my_analysis_event();
+ * evt->weight = 1.5;
+ * evt->index = 42;
+ * @endcode
+ *
+ * @see event_template
+ */
+
+/**
+ * @file event_template.h
+ * @ingroup event_module
+ * @brief Header file for the event_template class
+ *
+ * This file contains the declaration of the event_template class which serves
+ * as the base template for event data representation and manipulation in the framework.
+ */
+
+/**
+ * @class event_template
+ * @ingroup event_module
+ * @brief Base template class for event data representation
+ *
+ * The event_template class provides a flexible and extensible template for representing
+ * physics events. It manages collections of particles and event metadata, and provides
+ * interfaces for event building, particle registration, and data access.
+ *
+ * @details
+ * The class provides:
+ * - Virtual methods for customization (clone, reset, build_event)
+ * - Automatic particle management
+ * - Tree/branch/leaf data structure support
+ * - Property-based access to event attributes
+ * - Integration with the meta system for metadata
+ *
+ * Users should inherit from this class to create custom event types specific
+ * to their analysis needs. The virtual methods allow for complete customization
+ * of event building and processing logic.
+ *
+ * @note Inherits from tools for utility functions
+ * @note Uses cproperty template for type-safe property access
+ */

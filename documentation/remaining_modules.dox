@@ -1,0 +1,244 @@
+/**
+ * @defgroup structs_module Structs Module
+ * @brief Core data structures and type definitions
+ *
+ * The Structs module provides fundamental data structures used throughout
+ * the AnalysisG framework.
+ *
+ * @section structs_overview Overview
+ *
+ * The module includes:
+ * - Property templates (cproperty)
+ * - Data structures (particle_t, event_t, graph_t)
+ * - Enumerations (loss_enum, opt_enum, graph_enum)
+ * - Configuration structures (settings_t, optimizer_params_t)
+ * - Fold management (folds_t)
+ *
+ * @section structs_property Property Templates
+ *
+ * The cproperty template provides type-safe property access with
+ * automatic getter/setter invocation:
+ *
+ * @code{.cpp}
+ * template <typename T, typename C>
+ * class cproperty
+ * {
+ * public:
+ *     // Implicit conversion to T
+ *     operator T() const;
+ *     
+ *     // Assignment from T
+ *     cproperty& operator=(const T& value);
+ *     
+ * private:
+ *     void (*setter)(T*, C*);
+ *     void (*getter)(T*, C*);
+ *     C* parent;
+ *     T value;
+ * };
+ * @endcode
+ *
+ * @section structs_data Data Structures
+ *
+ * **particle_t**: Raw particle data
+ * - Kinematic properties
+ * - Identification
+ * - Relationships
+ *
+ * **event_t**: Raw event data
+ * - Event properties
+ * - Particle collections
+ * - Metadata
+ *
+ * **graph_t**: Graph data structure
+ * - Node features
+ * - Edge features
+ * - Graph-level features
+ * - Truth labels
+ *
+ * @section structs_enums Enumerations
+ *
+ * **loss_enum**: Loss function types
+ * - MSE, L1, Huber
+ * - CrossEntropy, NLL
+ * - BCE, BCEWithLogits
+ * - Custom loss types
+ *
+ * **opt_enum**: Optimizer types
+ * - ADAM, ADAMW
+ * - SGD, RMSPROP
+ * - ADAGRAD, LBFGS
+ *
+ * **graph_enum**: Graph feature types
+ * - data_graph, data_node, data_edge
+ * - truth_graph, truth_node, truth_edge
+ * - edge_index, batch_index, weight
+ *
+ * @section structs_config Configuration Structures
+ *
+ * **settings_t**: Framework settings
+ * - Debug mode
+ * - Thread count
+ * - Device settings
+ * - Cache settings
+ *
+ * **optimizer_params_t**: Optimizer configuration
+ * - Optimizer type
+ * - Learning rate
+ * - Weight decay
+ * - Momentum
+ * - Other hyperparameters
+ *
+ * **folds_t**: K-fold configuration
+ * - Number of folds
+ * - Current fold
+ * - Training indices
+ * - Validation indices
+ *
+ * @section structs_files Module Files
+ *
+ * - settings.h: Framework settings
+ * - folds.h: K-fold structures
+ * - property.h: Property templates
+ * - particles.h: Particle structures
+ * - event.h: Event structures
+ * - enums.h: Enumeration types
+ * - optimizer.h: Optimizer structures
+ * - element.h: Base element types
+ *
+ * @see cproperty
+ * @see particle_t
+ * @see event_t
+ * @see graph_t
+ */
+
+/**
+ * @defgroup optimizer_module Optimizer Module
+ * @brief Model optimizer and training management
+ *
+ * The Optimizer module manages the training loop for machine learning models,
+ * including batch processing, loss computation, and parameter updates.
+ *
+ * @section optimizer_overview Overview
+ *
+ * The optimizer class coordinates:
+ * - Training loop execution
+ * - Batch feeding
+ * - Loss computation
+ * - Gradient updates
+ * - Validation evaluation
+ * - Model checkpointing
+ *
+ * @section optimizer_classes Main Classes
+ *
+ * - optimizer: Training loop manager
+ *
+ * @see optimizer
+ */
+
+/**
+ * @defgroup plotting_module Plotting Module
+ * @brief Visualization and plotting utilities
+ *
+ * The Plotting module provides tools for creating physics analysis plots
+ * and visualizations.
+ *
+ * @section plotting_overview Overview
+ *
+ * The plotting class provides:
+ * - Histogram creation
+ * - Distribution plots
+ * - Training curves
+ * - Physics-specific visualizations
+ *
+ * @section plotting_classes Main Classes
+ *
+ * - plotting: Plotting utilities class
+ *
+ * @see plotting
+ */
+
+/**
+ * @defgroup sampletracer_module SampleTracer Module
+ * @brief Sample tracking and processing coordination
+ *
+ * The SampleTracer module manages the processing of multiple data samples,
+ * tracking progress and coordinating file I/O.
+ *
+ * @section sampletracer_overview Overview
+ *
+ * The sampletracer class manages:
+ * - Multi-sample processing
+ * - File discovery and organization
+ * - Progress tracking
+ * - Thread coordination
+ * - Sample-level metadata
+ *
+ * @section sampletracer_classes Main Classes
+ *
+ * - sampletracer: Sample tracking class
+ *
+ * @see sampletracer
+ */
+
+/**
+ * @defgroup typecasting_module TypeCasting Module
+ * @brief Type conversion utilities for tensor operations
+ *
+ * The TypeCasting module provides utilities for converting between C++ types
+ * and PyTorch tensor types.
+ *
+ * @section typecasting_overview Overview
+ *
+ * The module provides:
+ * - C++ to PyTorch type mapping
+ * - Tensor type conversions
+ * - Device-aware casting
+ * - Batch type handling
+ *
+ * @section typecasting_classes Main Classes
+ *
+ * - Type casting utilities
+ *
+ * @see tensor_cast.h
+ */
+
+/**
+ * @defgroup variable_module Variable Module
+ * @brief Variable management and storage
+ *
+ * The Variable module provides dynamic variable storage and management
+ * for analysis-specific variables.
+ *
+ * @section variable_overview Overview
+ *
+ * The module manages:
+ * - Dynamic variable registration
+ * - Type-safe variable access
+ * - Variable serialization
+ * - Analysis-specific variables
+ *
+ * @see variable
+ */
+
+/**
+ * @defgroup xml_module XML Module
+ * @brief XML parsing and configuration
+ *
+ * The XML module provides XML parsing capabilities for configuration
+ * files and metadata.
+ *
+ * @section xml_overview Overview
+ *
+ * The module provides:
+ * - XML file parsing
+ * - Configuration reading
+ * - Metadata extraction
+ * - XML generation
+ *
+ * @section xml_classes Main Classes
+ *
+ * - xml_parser: XML parsing utilities
+ *
+ * @see xml_parser
+ */
