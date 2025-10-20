@@ -1,6 +1,6 @@
 #include <reconstruction/nusol.h>
 #include <ellipse/ellipse.h>
-#include <conics/conics.h>
+#include <conuix/conuix.h>
 
 nusol::nusol(nusol_t* parameters){
     this -> params = parameters; 
@@ -18,8 +18,10 @@ nusol::~nusol(){
 void nusol::solve(){
     switch (this -> params -> mode){
         case nusol_enum::ellipse: this -> D_nunu = new ellipse(this -> params); break;
-        case nusol_enum::conics:  this -> M_nunu = new conics( this -> params); break; 
+        case nusol_enum::conuix:  this -> M_nunu = new conuix( this -> params); break; 
         default: break;  
-    }    
+    }   
+    if (this -> M_nunu){this -> M_nunu -> solve();}
+
 }
 

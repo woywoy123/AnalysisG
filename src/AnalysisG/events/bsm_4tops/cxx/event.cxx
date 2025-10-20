@@ -164,7 +164,8 @@ void bsm_4tops::CompileEvent(){
     for (size_t x(0); x < this -> Children.size(); ++x){
         if (!this -> Children[x] -> is_nu){continue;}
         particle_template* p = this -> Children[x]; 
-        std::cout << "px: " << double(p -> px) << " py: " << double(p -> py) << " pz: " << double(p  -> pz) << " e: " << double(p -> e) << " top-index: " << ((top_children*)this -> Children[x]) -> top_index << std::endl;
+        std::cout << "px: " << double(p -> px) << " py: " << double(p -> py) << " pz: " << double(p  -> pz) << " e: "
+                  << double(p -> e) << " top-index: " << ((top_children*)this -> Children[x]) -> top_index << std::endl;
     }
 
     std::cout << "------------ leptons ------------- " << std::endl;

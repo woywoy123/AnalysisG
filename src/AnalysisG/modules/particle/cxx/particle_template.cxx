@@ -33,6 +33,12 @@ particle_template::particle_template(){
     this -> pz.set_getter(this -> get_pz); 
     this -> pz.set_object(this); 
 
+    this -> P.set_getter(this -> get_P); 
+    this -> P.set_object(this); 
+
+    this -> beta.set_getter(this -> get_beta); 
+    this -> beta.set_object(this); 
+
     this -> pdgid.set_setter(this -> set_pdgid); 
     this -> pdgid.set_getter(this -> get_pdgid); 
     this -> pdgid.set_object(this); 

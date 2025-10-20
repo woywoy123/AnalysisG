@@ -145,9 +145,10 @@ std::vector<particle_template*> event_template::double_neutrino(
     para.phi = phi;
     para.limit = limit; 
     para.targets = targets; 
-    para.mode = nusol_enum::conics; 
+    para.mode = nusol_enum::conuix; 
 
     nusol* nx = new nusol(&para); 
+    nx -> solve();
 
     delete nx; 
     particle_template* nu1 = nullptr; 

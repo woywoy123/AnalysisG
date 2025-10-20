@@ -26,16 +26,10 @@ class particle_template : public tools
         explicit particle_template(double px, double py, double pz, double e); 
         explicit particle_template(double px, double py, double pz);
 
-        void to_cartesian(); 
-        void to_polar(); 
-
+        // -------------- Kinematics ------------------ //
         cproperty<double, particle_template> e; 
         void static set_e(double*, particle_template*); 
         void static get_e(double*, particle_template*); 
-
-        cproperty<double, particle_template> mass; 
-        void static set_mass(double*, particle_template*); 
-        void static get_mass(double*, particle_template*); 
 
         cproperty<double, particle_template> pt; 
         void static set_pt(double*, particle_template*); 
@@ -49,7 +43,6 @@ class particle_template : public tools
         void static set_phi(double*, particle_template*); 
         void static get_phi(double*, particle_template*); 
 
-
         cproperty<double, particle_template> px; 
         void static set_px(double*, particle_template*); 
         void static get_px(double*, particle_template*); 
@@ -62,6 +55,25 @@ class particle_template : public tools
         void static set_pz(double*, particle_template*); 
         void static get_pz(double*, particle_template*); 
 
+        // implicitly called
+        void to_cartesian(); 
+        void to_polar(); 
+
+
+
+        cproperty<double, particle_template> mass; 
+        void static set_mass(double*, particle_template*); 
+        void static get_mass(double*, particle_template*); 
+
+        // ----- momentum ----- //
+        cproperty<double, particle_template> P; 
+        void static get_P(double*, particle_template*); 
+
+        cproperty<double, particle_template> beta; 
+        void static get_beta(double*, particle_template*); 
+        // -------------------------------------------- //
+
+        // ----------- Meta Data -------------- //
         cproperty<int, particle_template> pdgid; 
         void static set_pdgid(int*, particle_template*); 
         void static get_pdgid(int*, particle_template*); 
@@ -92,6 +104,8 @@ class particle_template : public tools
 
         cproperty<bool, particle_template> lep_decay; 
         void static get_lepdecay(bool*, particle_template*); 
+        // ------------------------------------- //
+
 
         cproperty<std::map<std::string, particle_template*>, particle_template> parents; 
         void static set_parents(std::map<std::string, particle_template*>*, particle_template*); 
