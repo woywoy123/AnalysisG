@@ -6,105 +6,105 @@ This section documents the core module.
 Source Files
 ------------
 
-.. doxygenfile:: AnalysisG/core/cxx/edge.cxx
+.. doxygenfile:: core/cxx/edge.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/cxx/graph.cxx
+.. doxygenfile:: core/cxx/graph.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/cxx/node.cxx
+.. doxygenfile:: core/cxx/node.cxx
    :project: AnalysisG
 
 Python Files
 ------------
 
-.. doxygenfile:: AnalysisG/core/__init__.pxd
+.. doxygenfile:: core/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/__init__.py
+.. doxygenfile:: core/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/analysis.pxd
+.. doxygenfile:: core/analysis.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/analysis.pyx
+.. doxygenfile:: core/analysis.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/event_template.pxd
+.. doxygenfile:: core/event_template.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/event_template.pyx
+.. doxygenfile:: core/event_template.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/graph_template.pxd
+.. doxygenfile:: core/graph_template.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/graph_template.pyx
+.. doxygenfile:: core/graph_template.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/io.pxd
+.. doxygenfile:: core/io.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/io.pyx
+.. doxygenfile:: core/io.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/lossfx.pxd
+.. doxygenfile:: core/lossfx.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/lossfx.pyx
+.. doxygenfile:: core/lossfx.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/meta.pxd
+.. doxygenfile:: core/meta.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/meta.pyx
+.. doxygenfile:: core/meta.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/metric_template.pxd
+.. doxygenfile:: core/metric_template.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/metric_template.pyx
+.. doxygenfile:: core/metric_template.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/model_template.pxd
+.. doxygenfile:: core/model_template.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/model_template.pyx
+.. doxygenfile:: core/model_template.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/notification.pxd
+.. doxygenfile:: core/notification.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/notification.pyx
+.. doxygenfile:: core/notification.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/particle_template.pxd
+.. doxygenfile:: core/particle_template.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/particle_template.pyx
+.. doxygenfile:: core/particle_template.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/plotting.pxd
+.. doxygenfile:: core/plotting.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/plotting.pyx
+.. doxygenfile:: core/plotting.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/selection_template.pxd
+.. doxygenfile:: core/selection_template.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/selection_template.pyx
+.. doxygenfile:: core/selection_template.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/structs.pxd
+.. doxygenfile:: core/structs.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/structs.pyx
+.. doxygenfile:: core/structs.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/tools.pxd
+.. doxygenfile:: core/tools.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/core/tools.pyx
+.. doxygenfile:: core/tools.pyx
    :project: AnalysisG
 

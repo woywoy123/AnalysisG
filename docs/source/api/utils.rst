@@ -6,6 +6,6 @@ This section documents the utils module.
 Source Files
 ------------
 
-.. doxygenfile:: AnalysisG/utils/naming.cxx
+.. doxygenfile:: utils/naming.cxx
    :project: AnalysisG
 

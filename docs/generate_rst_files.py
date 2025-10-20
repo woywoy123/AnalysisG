@@ -21,17 +21,20 @@ def get_all_source_files():
             continue
             
         for file in files:
+            # Get path relative to AnalysisG directory (what Doxygen sees after STRIP_FROM_PATH)
+            rel_to_analysisg = Path(root).relative_to(src_dir) / file
+            
             if file.endswith('.h'):
                 modules[str(rel_path.parts[0] if len(rel_path.parts) > 0 else 'root')]['headers'].append(
-                    str(Path(root).relative_to(src_dir.parent) / file)
+                    str(rel_to_analysisg)
                 )
             elif file.endswith('.cxx'):
                 modules[str(rel_path.parts[0] if len(rel_path.parts) > 0 else 'root')]['sources'].append(
-                    str(Path(root).relative_to(src_dir.parent) / file)
+                    str(rel_to_analysisg)
                 )
             elif file.endswith(('.py', '.pyx', '.pxd')):
                 modules[str(rel_path.parts[0] if len(rel_path.parts) > 0 else 'root')]['python'].append(
-                    str(Path(root).relative_to(src_dir.parent) / file)
+                    str(rel_to_analysisg)
                 )
     
     return modules
@@ -56,9 +59,8 @@ This section documents the {module_name} module.
         content += "Header Files\n"
         content += "-" * 12 + "\n\n"
         for header in sorted(files['headers']):
-            # Strip 'src/' prefix as Doxygen does this with STRIP_FROM_PATH
-            clean_path = header.replace('src/AnalysisG/', '')
-            content += f".. doxygenfile:: {clean_path}\n"
+            # Path is already relative to AnalysisG directory
+            content += f".. doxygenfile:: {header}\n"
             content += f"   :project: AnalysisG\n\n"
     
     # Add source files section
@@ -66,9 +68,8 @@ This section documents the {module_name} module.
         content += "Source Files\n"
         content += "-" * 12 + "\n\n"
         for source in sorted(files['sources']):
-            # Strip 'src/' prefix as Doxygen does this with STRIP_FROM_PATH
-            clean_path = source.replace('src/AnalysisG/', '')
-            content += f".. doxygenfile:: {clean_path}\n"
+            # Path is already relative to AnalysisG directory
+            content += f".. doxygenfile:: {source}\n"
             content += f"   :project: AnalysisG\n\n"
     
     # Add Python files section (note: Doxygen can parse Python)
@@ -76,9 +77,8 @@ This section documents the {module_name} module.
         content += "Python Files\n"
         content += "-" * 12 + "\n\n"
         for pyfile in sorted(files['python']):
-            # Strip 'src/' prefix as Doxygen does this with STRIP_FROM_PATH
-            clean_path = pyfile.replace('src/AnalysisG/', '')
-            content += f".. doxygenfile:: {clean_path}\n"
+            # Path is already relative to AnalysisG directory
+            content += f".. doxygenfile:: {pyfile}\n"
             content += f"   :project: AnalysisG\n\n"
     
     with open(output_path, 'w') as f:

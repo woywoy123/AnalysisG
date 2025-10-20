@@ -6,360 +6,360 @@ This section documents the selections module.
 Header Files
 ------------
 
-.. doxygenfile:: AnalysisG/selections/analysis/regions/regions.h
+.. doxygenfile:: selections/analysis/regions/regions.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/example/met/met.h
+.. doxygenfile:: selections/example/met/met.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/childrenkinematics/childrenkinematics.h
+.. doxygenfile:: selections/mc16/childrenkinematics/childrenkinematics.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/decaymodes/decaymodes.h
+.. doxygenfile:: selections/mc16/decaymodes/decaymodes.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/event/event.h
+.. doxygenfile:: selections/mc16/event/event.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/parton/parton.h
+.. doxygenfile:: selections/mc16/parton/parton.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topjets/topjets.h
+.. doxygenfile:: selections/mc16/topjets/topjets.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topkinematics/topkinematics.h
+.. doxygenfile:: selections/mc16/topkinematics/topkinematics.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topmatching/topmatching.h
+.. doxygenfile:: selections/mc16/topmatching/topmatching.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/toptruthjets/toptruthjets.h
+.. doxygenfile:: selections/mc16/toptruthjets/toptruthjets.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/zprime/zprime.h
+.. doxygenfile:: selections/mc16/zprime/zprime.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/matching/matching.h
+.. doxygenfile:: selections/mc20/matching/matching.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/topkinematics/topkinematics.h
+.. doxygenfile:: selections/mc20/topkinematics/topkinematics.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/topmatching/topmatching.h
+.. doxygenfile:: selections/mc20/topmatching/topmatching.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/zprime/zprime.h
+.. doxygenfile:: selections/mc20/zprime/zprime.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/neutrino/combinatorial/combinatorial.h
+.. doxygenfile:: selections/neutrino/combinatorial/combinatorial.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/neutrino/validation/validation.h
+.. doxygenfile:: selections/neutrino/validation/validation.h
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/performance/topefficiency/topefficiency.h
+.. doxygenfile:: selections/performance/topefficiency/topefficiency.h
    :project: AnalysisG
 
 Source Files
 ------------
 
-.. doxygenfile:: AnalysisG/selections/analysis/regions/regions.cxx
+.. doxygenfile:: selections/analysis/regions/regions.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/example/met/met.cxx
+.. doxygenfile:: selections/example/met/met.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/childrenkinematics/childrenkinematics.cxx
+.. doxygenfile:: selections/mc16/childrenkinematics/childrenkinematics.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/decaymodes/decaymodes.cxx
+.. doxygenfile:: selections/mc16/decaymodes/decaymodes.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/event/event.cxx
+.. doxygenfile:: selections/mc16/event/event.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/parton/parton.cxx
+.. doxygenfile:: selections/mc16/parton/parton.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topjets/topjets.cxx
+.. doxygenfile:: selections/mc16/topjets/topjets.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topkinematics/topkinematics.cxx
+.. doxygenfile:: selections/mc16/topkinematics/topkinematics.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topmatching/topmatching.cxx
+.. doxygenfile:: selections/mc16/topmatching/topmatching.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/toptruthjets/toptruthjets.cxx
+.. doxygenfile:: selections/mc16/toptruthjets/toptruthjets.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/zprime/zprime.cxx
+.. doxygenfile:: selections/mc16/zprime/zprime.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/matching/matching.cxx
+.. doxygenfile:: selections/mc20/matching/matching.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/matching/mc16_ref.cxx
+.. doxygenfile:: selections/mc20/matching/mc16_ref.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/matching/mc20_exp.cxx
+.. doxygenfile:: selections/mc20/matching/mc20_exp.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/matching/mc20_ref.cxx
+.. doxygenfile:: selections/mc20/matching/mc20_ref.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/topkinematics/topkinematics.cxx
+.. doxygenfile:: selections/mc20/topkinematics/topkinematics.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/topmatching/topmatching.cxx
+.. doxygenfile:: selections/mc20/topmatching/topmatching.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/zprime/zprime.cxx
+.. doxygenfile:: selections/mc20/zprime/zprime.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/neutrino/combinatorial/combinatorial.cxx
+.. doxygenfile:: selections/neutrino/combinatorial/combinatorial.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/neutrino/validation/validation.cxx
+.. doxygenfile:: selections/neutrino/validation/validation.cxx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/performance/topefficiency/topefficiency.cxx
+.. doxygenfile:: selections/performance/topefficiency/topefficiency.cxx
    :project: AnalysisG
 
 Python Files
 ------------
 
-.. doxygenfile:: AnalysisG/selections/__init__.pxd
+.. doxygenfile:: selections/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/__init__.py
+.. doxygenfile:: selections/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/analysis/__init__.pxd
+.. doxygenfile:: selections/analysis/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/analysis/__init__.py
+.. doxygenfile:: selections/analysis/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/analysis/regions/__init__.pxd
+.. doxygenfile:: selections/analysis/regions/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/analysis/regions/regions.pxd
+.. doxygenfile:: selections/analysis/regions/regions.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/analysis/regions/regions.pyx
+.. doxygenfile:: selections/analysis/regions/regions.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/example/__init__.pxd
+.. doxygenfile:: selections/example/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/example/__init__.py
+.. doxygenfile:: selections/example/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/example/met/__init__.pxd
+.. doxygenfile:: selections/example/met/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/example/met/met.pxd
+.. doxygenfile:: selections/example/met/met.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/example/met/met.pyx
+.. doxygenfile:: selections/example/met/met.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/__init__.pxd
+.. doxygenfile:: selections/mc16/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/__init__.py
+.. doxygenfile:: selections/mc16/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/childrenkinematics/__init__.pxd
+.. doxygenfile:: selections/mc16/childrenkinematics/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/childrenkinematics/__init__.py
+.. doxygenfile:: selections/mc16/childrenkinematics/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/childrenkinematics/childrenkinematics.pxd
+.. doxygenfile:: selections/mc16/childrenkinematics/childrenkinematics.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/childrenkinematics/childrenkinematics.pyx
+.. doxygenfile:: selections/mc16/childrenkinematics/childrenkinematics.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/decaymodes/__init__.pxd
+.. doxygenfile:: selections/mc16/decaymodes/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/decaymodes/__init__.py
+.. doxygenfile:: selections/mc16/decaymodes/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/decaymodes/decaymodes.pxd
+.. doxygenfile:: selections/mc16/decaymodes/decaymodes.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/decaymodes/decaymodes.pyx
+.. doxygenfile:: selections/mc16/decaymodes/decaymodes.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/event/__init__.pxd
+.. doxygenfile:: selections/mc16/event/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/event/event.pxd
+.. doxygenfile:: selections/mc16/event/event.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/event/event.pyx
+.. doxygenfile:: selections/mc16/event/event.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/parton/__init__.pxd
+.. doxygenfile:: selections/mc16/parton/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/parton/parton.pxd
+.. doxygenfile:: selections/mc16/parton/parton.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/parton/parton.pyx
+.. doxygenfile:: selections/mc16/parton/parton.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topjets/__init__.pxd
+.. doxygenfile:: selections/mc16/topjets/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topjets/__init__.py
+.. doxygenfile:: selections/mc16/topjets/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topjets/topjets.pxd
+.. doxygenfile:: selections/mc16/topjets/topjets.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topjets/topjets.pyx
+.. doxygenfile:: selections/mc16/topjets/topjets.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topkinematics/__init__.pxd
+.. doxygenfile:: selections/mc16/topkinematics/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topkinematics/__init__.py
+.. doxygenfile:: selections/mc16/topkinematics/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topkinematics/topkinematics.pxd
+.. doxygenfile:: selections/mc16/topkinematics/topkinematics.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topkinematics/topkinematics.pyx
+.. doxygenfile:: selections/mc16/topkinematics/topkinematics.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topmatching/__init__.pxd
+.. doxygenfile:: selections/mc16/topmatching/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topmatching/__init__.py
+.. doxygenfile:: selections/mc16/topmatching/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topmatching/topmatching.pxd
+.. doxygenfile:: selections/mc16/topmatching/topmatching.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/topmatching/topmatching.pyx
+.. doxygenfile:: selections/mc16/topmatching/topmatching.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/toptruthjets/__init__.pxd
+.. doxygenfile:: selections/mc16/toptruthjets/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/toptruthjets/__init__.py
+.. doxygenfile:: selections/mc16/toptruthjets/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/toptruthjets/toptruthjets.pxd
+.. doxygenfile:: selections/mc16/toptruthjets/toptruthjets.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/toptruthjets/toptruthjets.pyx
+.. doxygenfile:: selections/mc16/toptruthjets/toptruthjets.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/zprime/__init__.pxd
+.. doxygenfile:: selections/mc16/zprime/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/zprime/zprime.pxd
+.. doxygenfile:: selections/mc16/zprime/zprime.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc16/zprime/zprime.pyx
+.. doxygenfile:: selections/mc16/zprime/zprime.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/__init__.pxd
+.. doxygenfile:: selections/mc20/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/__init__.py
+.. doxygenfile:: selections/mc20/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/matching/__init__.pxd
+.. doxygenfile:: selections/mc20/matching/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/matching/__init__.py
+.. doxygenfile:: selections/mc20/matching/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/matching/matching.pxd
+.. doxygenfile:: selections/mc20/matching/matching.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/matching/matching.pyx
+.. doxygenfile:: selections/mc20/matching/matching.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/topkinematics/__init__.pxd
+.. doxygenfile:: selections/mc20/topkinematics/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/topkinematics/topkinematics_mc20.pxd
+.. doxygenfile:: selections/mc20/topkinematics/topkinematics_mc20.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/topkinematics/topkinematics_mc20.pyx
+.. doxygenfile:: selections/mc20/topkinematics/topkinematics_mc20.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/topmatching/__init__.pxd
+.. doxygenfile:: selections/mc20/topmatching/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/topmatching/__init__.py
+.. doxygenfile:: selections/mc20/topmatching/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/topmatching/topmatching_mc20.pxd
+.. doxygenfile:: selections/mc20/topmatching/topmatching_mc20.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/topmatching/topmatching_mc20.pyx
+.. doxygenfile:: selections/mc20/topmatching/topmatching_mc20.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/zprime/__init__.pxd
+.. doxygenfile:: selections/mc20/zprime/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/zprime/zprime_mc20.pxd
+.. doxygenfile:: selections/mc20/zprime/zprime_mc20.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/mc20/zprime/zprime_mc20.pyx
+.. doxygenfile:: selections/mc20/zprime/zprime_mc20.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/neutrino/__init__.pxd
+.. doxygenfile:: selections/neutrino/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/neutrino/__init__.py
+.. doxygenfile:: selections/neutrino/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/neutrino/combinatorial/__init__.pxd
+.. doxygenfile:: selections/neutrino/combinatorial/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/neutrino/combinatorial/__init__.py
+.. doxygenfile:: selections/neutrino/combinatorial/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/neutrino/combinatorial/combinatorial.pxd
+.. doxygenfile:: selections/neutrino/combinatorial/combinatorial.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/neutrino/combinatorial/combinatorial.pyx
+.. doxygenfile:: selections/neutrino/combinatorial/combinatorial.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/neutrino/validation/__init__.pxd
+.. doxygenfile:: selections/neutrino/validation/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/neutrino/validation/validation.pxd
+.. doxygenfile:: selections/neutrino/validation/validation.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/neutrino/validation/validation.pyx
+.. doxygenfile:: selections/neutrino/validation/validation.pyx
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/performance/__init__.pxd
+.. doxygenfile:: selections/performance/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/performance/__init__.py
+.. doxygenfile:: selections/performance/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/performance/topefficiency/__init__.pxd
+.. doxygenfile:: selections/performance/topefficiency/__init__.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/performance/topefficiency/__init__.py
+.. doxygenfile:: selections/performance/topefficiency/__init__.py
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/performance/topefficiency/topefficiency.pxd
+.. doxygenfile:: selections/performance/topefficiency/topefficiency.pxd
    :project: AnalysisG
 
-.. doxygenfile:: AnalysisG/selections/performance/topefficiency/topefficiency.pyx
+.. doxygenfile:: selections/performance/topefficiency/topefficiency.pyx
    :project: AnalysisG
 
