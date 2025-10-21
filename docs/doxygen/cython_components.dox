@@ -1,0 +1,182 @@
+/**
+ * @page cython_components Cython Components
+ *
+ * @section cython_overview Overview
+ *
+ * AnalysisG uses Cython extensively to provide Python interfaces to C++ and CUDA implementations.
+ * The Cython layer allows seamless integration between high-performance C++/CUDA code and
+ * user-friendly Python APIs.
+ *
+ * @section cython_architecture Architecture
+ *
+ * The Cython components are organized into several categories:
+ *
+ * - **Event Interfaces**: Python wrappers for C++ event classes
+ * - **Particle Interfaces**: Python wrappers for C++ particle classes
+ * - **Metric Interfaces**: Python wrappers for metric calculation classes
+ * - **Model Interfaces**: Python wrappers for ML model classes
+ * - **Template Interfaces**: Python wrappers for template base classes
+ * - **PyC Interfaces**: Python wrappers for CUDA/C++ computation kernels
+ *
+ * @section cython_files Cython Files
+ *
+ * AnalysisG includes 153 Cython files (.pyx and .pxd) that provide:
+ *
+ * - Type definitions for C++ classes
+ * - Python-accessible wrapper classes
+ * - Memory management between Python and C++
+ * - Type conversions (Python ↔ C++)
+ * - Exception handling across language boundaries
+ *
+ * @subsection cython_pyx Implementation Files (.pyx)
+ *
+ * Cython implementation files contain the actual Python-visible code:
+ *
+ * - Class definitions with `cdef` (C-level) and `def` (Python-level) methods
+ * - Property accessors for C++ member variables
+ * - Type conversion functions
+ * - Memory management (allocation, deallocation)
+ *
+ * @subsection cython_pxd Declaration Files (.pxd)
+ *
+ * Cython declaration files contain:
+ *
+ * - External C++ class declarations (`cdef extern from`)
+ * - C-level type definitions
+ * - Function signatures for C++ methods
+ * - Import declarations for other Cython modules
+ *
+ * @section cython_categories Major Categories
+ *
+ * @subsection cython_events Event Interfaces
+ *
+ * Location: `src/AnalysisG/events/`
+ *
+ * Event interfaces provide Python access to C++ event classes:
+ *
+ * - **exp_mc20**: MC20 experimental data events and particles
+ *   - `event_exp_mc20.pyx` - Event wrapper
+ *   - `particle_exp_mc20.pyx` - Particle wrapper
+ *
+ * - **bsm_4tops**: BSM 4-tops analysis events and particles
+ *   - `event_bsm_4tops.pyx` - Event wrapper
+ *   - `particle_bsm_4tops.pyx` - Particle wrapper
+ *
+ * - **ssml_mc20**: SSML MC20 events and particles
+ *   - `event_ssml_mc20.pyx` - Event wrapper
+ *   - `particle_ssml_mc20.pyx` - Particle wrapper
+ *   - `jet_ssml_mc20.pyx` - Jet wrapper
+ *   - `lepton_ssml_mc20.pyx` - Lepton wrapper
+ *
+ * - **gnn**: Graph neural network events and particles
+ *   - `event_gnn.pyx` - Event wrapper
+ *   - `particle_gnn.pyx` - Particle wrapper
+ *
+ * @subsection cython_metrics Metric Interfaces
+ *
+ * Location: `src/AnalysisG/metrics/`
+ *
+ * Metric interfaces provide Python access to evaluation metrics:
+ *
+ * - **accuracy**: Classification accuracy metric
+ *   - `metric_accuracy.pyx` - Accuracy metric implementation
+ *   - `metric_accuracy.pxd` - C++ metric declarations
+ *
+ * - **pagerank**: Graph ranking metric
+ *   - `metric_pagerank.pyx` - PageRank metric implementation
+ *   - `metric_pagerank.pxd` - C++ metric declarations
+ *
+ * @subsection cython_templates Template Interfaces
+ *
+ * Location: `src/AnalysisG/modules/`
+ *
+ * Template interfaces provide Python access to base classes:
+ *
+ * - `EventTemplate` - Base class for event implementations
+ * - `ParticleTemplate` - Base class for particle implementations
+ * - `GraphTemplate` - Base class for graph structures
+ * - `SelectionTemplate` - Base class for event selections
+ * - `ModelTemplate` - Base class for ML models
+ *
+ * @subsection cython_pyc PyC Interfaces
+ *
+ * Location: `src/AnalysisG/pyc/`
+ *
+ * PyC (Python CUDA) interfaces provide Python access to CUDA kernels:
+ *
+ * - **Physics calculations**: Momentum, mass, energy computations
+ * - **Coordinate transforms**: Cartesian ↔ Polar conversions
+ * - **Graph operations**: KNN, radius graphs, adjacency
+ * - **Neutrino solutions**: Single and double neutrino reconstruction
+ * - **Tensor operations**: Aggregation, reduction, atomic operations
+ *
+ * @section cython_usage Usage Patterns
+ *
+ * @subsection cython_wrapping Class Wrapping Pattern
+ *
+ * Cython classes typically wrap C++ classes with this pattern:
+ *
+ * @code{.pyx}
+ * # In .pxd file: Declare C++ class
+ * cdef extern from "path/to/header.h":
+ *     cdef cppclass CppClassName:
+ *         void method()
+ *         int member
+ *
+ * # In .pyx file: Create Python wrapper
+ * cdef class PyClassName:
+ *     cdef CppClassName* _cpp_obj
+ *     
+ *     def __cinit__(self):
+ *         self._cpp_obj = new CppClassName()
+ *     
+ *     def __dealloc__(self):
+ *         del self._cpp_obj
+ *     
+ *     def method(self):
+ *         self._cpp_obj.method()
+ * @endcode
+ *
+ * @subsection cython_memory Memory Management
+ *
+ * Cython components handle memory management automatically:
+ *
+ * - `__cinit__`: Allocates C++ objects (called during Python object creation)
+ * - `__dealloc__`: Deallocates C++ objects (called during Python garbage collection)
+ * - Smart pointer support for automatic cleanup
+ * - Reference counting integration with Python
+ *
+ * @subsection cython_types Type Conversion
+ *
+ * Cython provides automatic conversion for many types:
+ *
+ * - Python list ↔ C++ vector
+ * - Python dict ↔ C++ map
+ * - Python str ↔ C++ string
+ * - NumPy arrays ↔ C++ pointers
+ * - PyTorch tensors ↔ C++ tensor objects
+ *
+ * @section cython_benefits Benefits
+ *
+ * The Cython layer provides several advantages:
+ *
+ * 1. **Performance**: Minimal overhead compared to pure Python
+ * 2. **Ease of use**: Pythonic API for C++/CUDA functionality
+ * 3. **Type safety**: Static typing where needed, dynamic where convenient
+ * 4. **Integration**: Seamless use with NumPy, PyTorch, and other Python libraries
+ * 5. **Memory efficiency**: Direct memory access without copying
+ * 6. **GIL release**: Can release Python GIL for parallel C++ execution
+ *
+ * @section cython_documentation Documentation Sources
+ *
+ * - Cython implementation files (.pyx) - Python-visible classes and functions
+ * - Cython declaration files (.pxd) - C++ interface definitions
+ * - C++ source files (.h, .cxx) - Underlying implementation
+ * - Python docstrings - User-facing documentation
+ *
+ * For complete details on individual classes and functions, see:
+ * - @ref module_events
+ * - @ref module_metrics
+ * - @ref module_templates
+ * - @ref module_pyc
+ */

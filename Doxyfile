@@ -139,13 +139,20 @@ INPUT                  = src/AnalysisG \
                          docs/doxygen
 
 # FILE_PATTERNS: File extensions to process
-# Covers all C++ and CUDA source files in the project:
+# Covers all C++ and CUDA source files, plus Cython interface files in the project:
 #   *.h   - C++ header files (class/function declarations)
 #   *.cxx - C++ implementation files (AnalysisG convention)
 #   *.cu  - CUDA kernel source files
 #   *.cuh - CUDA header files
+#   *.pyx - Cython implementation files (Python-C++ interface)
+#   *.pxd - Cython declaration files (Cython headers)
 #   *.dox - Doxygen documentation files (module and page definitions)
-FILE_PATTERNS          = *.h *.cxx *.cu *.cuh *.dox
+FILE_PATTERNS          = *.h *.cxx *.cu *.cuh *.pyx *.pxd *.dox
+
+# EXTENSION_MAPPING: Map file extensions to languages
+# Treat Cython files (.pyx, .pxd) as C++ for parsing
+# This allows Doxygen to extract classes and functions from Cython code
+EXTENSION_MAPPING      = pyx=C++ pxd=C++
 
 # RECURSIVE: Scan subdirectories (repeated for clarity with INPUT)
 # Essential for documenting the complete modular structure

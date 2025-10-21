@@ -116,7 +116,31 @@ python3 -m http.server 8000
 
 ### Source Files
 
-The documentation covers **284 source files** in `src/AnalysisG/`:
+The documentation covers **437 source files** in `src/AnalysisG/`:
+
+#### C++ and CUDA Files (284 files)
+
+- **14 CUDA source files** (.cu) - GPU kernel implementations
+- **15 CUDA header files** (.cuh) - CUDA kernel declarations
+- **147 C++ implementation files** (.cxx) - Core algorithm implementations
+- **108 C++ header files** (.h) - Class and function declarations
+
+#### Cython Files (153 files)
+
+- **Cython implementation files** (.pyx) - Python-C++ interface implementations
+  - Event and particle wrappers
+  - Metric interfaces
+  - Model interfaces
+  - Template base class wrappers
+  - PyC computation kernel wrappers
+
+- **Cython declaration files** (.pxd) - Cython header equivalents
+  - C++ class declarations for Cython
+  - Type definitions
+  - External function signatures
+  - Import declarations
+
+**Total Source Lines:** Over 100,000 lines of documented code
 
 | File Type | Extension | Count | Description |
 |-----------|-----------|-------|-------------|
@@ -124,31 +148,46 @@ The documentation covers **284 source files** in `src/AnalysisG/`:
 | C++ Implementation | `.cxx` | 147 | Function implementations |
 | CUDA Source | `.cu` | 14 | CUDA kernel implementations |
 | CUDA Headers | `.cuh` | 15 | CUDA kernel declarations |
+| Cython Implementation | `.pyx` | ~76 | Python-C++ interface implementations |
+| Cython Headers | `.pxd` | ~77 | Cython declarations and type definitions |
+| **Total** | - | **437** | **All source files** |
 
 ### Modules Documented
 
 The following major modules are included:
 
 #### 1. **Metrics** (`src/AnalysisG/metrics/`)
-- `accuracy/` - Accuracy calculation metrics
-- `pagerank/` - PageRank algorithm implementation
+- `accuracy/` - Accuracy calculation metrics (C++ + Cython)
+- `pagerank/` - PageRank algorithm implementation (C++ + Cython)
 
 #### 2. **Events** (`src/AnalysisG/events/`)
-- `exp_mc20/` - MC20 experimental event definitions
-- `bsm_4tops/` - Beyond Standard Model 4-tops events
-- `gnn/` - Graph Neural Network event structures
-- `ssml_mc20/` - SSML MC20 event definitions
+- `exp_mc20/` - MC20 experimental event definitions (C++ + Cython)
+- `bsm_4tops/` - Beyond Standard Model 4-tops events (C++ + Cython)
+- `gnn/` - Graph Neural Network event structures (C++ + Cython)
+- `ssml_mc20/` - SSML MC20 event definitions (C++ + Cython)
 
 #### 3. **Models** (`src/AnalysisG/models/`)
-- `grift/` - GRIFT model implementation
-- `RecursiveGraphNeuralNetwork/` - Recursive GNN architecture
+- `grift/` - GRIFT model implementation (C++ + Cython)
+- `RecursiveGraphNeuralNetwork/` - Recursive GNN architecture (C++ + Cython)
 
 #### 4. **Selections** (`src/AnalysisG/selections/`)
-- Event selection algorithms for various analyses
+- Event selection algorithms for various analyses (C++ + Cython)
 - Truth matching and kinematic selections
 - Region definitions
 
-#### 5. **PyC (Python-CUDA Interface)** (`src/AnalysisG/pyc/`)
+#### 5. **Templates** (`src/AnalysisG/modules/`)
+- `EventTemplate` - Base class for events (C++ + Cython)
+- `ParticleTemplate` - Base class for particles (C++ + Cython)
+- `GraphTemplate` - Base class for graphs (C++ + Cython)
+- `SelectionTemplate` - Base class for selections (C++ + Cython)
+- `ModelTemplate` - Base class for models (C++ + Cython)
+
+#### 6. **PyC (Python-CUDA Interface)** (`src/AnalysisG/pyc/`)
+- `operators/` - Tensor operations (C++/CUDA + Cython)
+- `nusol/` - Neutrino solution algorithms (C++/CUDA + Cython)
+- `physics/` - Physics calculations (ΔR, invariant mass, etc.) (C++/CUDA + Cython)
+- `transform/` - Coordinate transformations (C++/CUDA + Cython)
+- `graph/` - Graph operations (C++/CUDA + Cython)
 - `operators/` - Tensor operations
 - `nusol/` - Neutrino solution algorithms
 - `physics/` - Physics calculations (ΔR, invariant mass, etc.)

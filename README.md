@@ -77,7 +77,7 @@ Although the documentation is rather incomplete, a lot of information can be fou
 API Documentation
 -----------------
 
-In addition to the user documentation, comprehensive API documentation for all C++ and CUDA source files can be generated using Doxygen:
+In addition to the user documentation, comprehensive API documentation for all C++, CUDA, and Cython source files can be generated using Doxygen:
 
 ```bash
 # Install doxygen (if not already installed)
@@ -95,4 +95,5 @@ The generated documentation includes:
 - File and directory structure
 - Source code browser with syntax highlighting
 - Include dependency graphs
-- All .h, .cxx, .cu, and .cuh files in src/AnalysisG
+- All .h, .cxx, .cu, .cuh, .pyx, and .pxd files in src/AnalysisG
+- Cython interface documentation showing Python-C++ bindings
