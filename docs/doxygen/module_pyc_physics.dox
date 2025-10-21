@@ -1,0 +1,211 @@
+/**
+ * @defgroup module_pyc PyC - Python-CUDA Interface
+ * @brief High-performance C++ and CUDA kernels for physics computations
+ *
+ * The PyC module provides a collection of highly optimized C++ and CUDA implementations
+ * for computationally intensive operations in high energy physics. This module can be
+ * used independently of the main AnalysisG framework.
+ *
+ * @section pyc_overview Overview
+ *
+ * PyC (Python-CUDA) accelerates critical physics calculations by implementing them in
+ * native C++ and CUDA, interfacing seamlessly with PyTorch tensors through LibTorch.
+ *
+ * Key features:
+ * - GPU acceleration via CUDA kernels
+ * - CPU optimization with vectorization
+ * - Zero-copy tensor operations
+ * - Thread-safe implementations
+ *
+ * @section pyc_modules Submodules
+ *
+ * - @ref module_pyc_physics "Physics" - Physics calculations (ΔR, masses, momenta)
+ * - @ref module_pyc_operators "Operators" - Tensor aggregation and reduction
+ * - @ref module_pyc_transform "Transform" - Coordinate system transformations
+ * - @ref module_pyc_graph "Graph" - Graph manipulation operations
+ * - @ref module_pyc_nusol "NuSol" - Neutrino solution algorithms
+ * - @ref module_pyc_utils "Utils" - Utility functions and helpers
+ */
+
+/**
+ * @defgroup module_pyc_physics Physics Calculations
+ * @ingroup module_pyc
+ * @brief Physics calculation functions for 4-momenta and kinematics
+ *
+ * @section physics_overview Overview
+ *
+ * This module provides optimized implementations of common high energy physics
+ * calculations operating on 4-vectors and kinematic quantities.
+ *
+ * @section physics_functions Main Functions
+ *
+ * @subsection physics_momentum Momentum Calculations
+ * - P2() - Momentum squared (p²)
+ * - P() - Momentum magnitude (|p|)
+ * - Beta2() - Beta squared (β²)
+ * - Beta() - Velocity (β = v/c)
+ *
+ * @subsection physics_mass Mass Calculations
+ * - M2() - Invariant mass squared (m²)
+ * - M() - Invariant mass (m)
+ * - Mt2() - Transverse mass squared (m_T²)
+ * - Mt() - Transverse mass (m_T)
+ *
+ * @subsection physics_angles Angular Calculations
+ * - Theta() - Polar angle (θ)
+ * - DeltaR() - Angular separation in η-φ space
+ *
+ * @section physics_usage Usage Example
+ *
+ * @code{.cpp}
+ * #include <physics/physics.h>
+ *
+ * // Calculate invariant mass from momentum components
+ * torch::Tensor mass = physics_::M(px, py, pz, energy);
+ *
+ * // Calculate Delta R between two particles
+ * torch::Tensor dr = physics_::DeltaR(eta1, eta2, phi1, phi2);
+ * @endcode
+ *
+ * @section physics_namespace Namespace
+ *
+ * All physics functions are in the `physics_` namespace.
+ *
+ * @section physics_impl Implementation
+ *
+ * Functions accept either:
+ * - Individual momentum component tensors (px, py, pz, e)
+ * - Combined 4-momentum tensor (pmc)
+ *
+ * Both CPU and CUDA implementations are provided, automatically selected based on
+ * input tensor device.
+ */
+
+/**
+ * @namespace physics_
+ * @brief Namespace for physics calculation functions
+ *
+ * @var torch::Tensor physics_::P2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * @brief Calculate momentum squared from components
+ * @param px X-component of momentum
+ * @param py Y-component of momentum
+ * @param pz Z-component of momentum
+ * @return Momentum squared (p² = px² + py² + pz²)
+ *
+ * @var torch::Tensor physics_::P2(torch::Tensor* pmc)
+ * @brief Calculate momentum squared from 4-momentum tensor
+ * @param pmc 4-momentum tensor [px, py, pz, E]
+ * @return Momentum squared (p² = px² + py² + pz²)
+ *
+ * @var torch::Tensor physics_::P(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * @brief Calculate momentum magnitude
+ * @param px X-component of momentum
+ * @param py Y-component of momentum
+ * @param pz Z-component of momentum
+ * @return Momentum magnitude (|p| = √(px² + py² + pz²))
+ *
+ * @var torch::Tensor physics_::P(torch::Tensor* pmc)
+ * @brief Calculate momentum magnitude from 4-momentum
+ * @param pmc 4-momentum tensor [px, py, pz, E]
+ * @return Momentum magnitude
+ *
+ * @var torch::Tensor physics_::Beta2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * @brief Calculate velocity squared (β² = v²/c²)
+ * @param px X-component of momentum
+ * @param py Y-component of momentum
+ * @param pz Z-component of momentum
+ * @param e Energy
+ * @return Beta squared (β² = p²/E²)
+ *
+ * @var torch::Tensor physics_::Beta2(torch::Tensor* pmc)
+ * @brief Calculate velocity squared from 4-momentum
+ * @param pmc 4-momentum tensor [px, py, pz, E]
+ * @return Beta squared
+ *
+ * @var torch::Tensor physics_::Beta(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * @brief Calculate velocity (β = v/c)
+ * @param px X-component of momentum
+ * @param py Y-component of momentum
+ * @param pz Z-component of momentum
+ * @param e Energy
+ * @return Beta (β = |p|/E)
+ *
+ * @var torch::Tensor physics_::Beta(torch::Tensor* pmc)
+ * @brief Calculate velocity from 4-momentum
+ * @param pmc 4-momentum tensor [px, py, pz, E]
+ * @return Beta
+ *
+ * @var torch::Tensor physics_::M2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * @brief Calculate invariant mass squared
+ * @param px X-component of momentum
+ * @param py Y-component of momentum
+ * @param pz Z-component of momentum
+ * @param e Energy
+ * @return Invariant mass squared (m² = E² - p²)
+ *
+ * @var torch::Tensor physics_::M2(torch::Tensor* pmc)
+ * @brief Calculate invariant mass squared from 4-momentum
+ * @param pmc 4-momentum tensor [px, py, pz, E]
+ * @return Invariant mass squared
+ *
+ * @var torch::Tensor physics_::M(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * @brief Calculate invariant mass
+ * @param px X-component of momentum
+ * @param py Y-component of momentum
+ * @param pz Z-component of momentum
+ * @param e Energy
+ * @return Invariant mass (m = √(E² - p²))
+ *
+ * @var torch::Tensor physics_::M(torch::Tensor* pmc)
+ * @brief Calculate invariant mass from 4-momentum
+ * @param pmc 4-momentum tensor [px, py, pz, E]
+ * @return Invariant mass
+ *
+ * @var torch::Tensor physics_::Mt2(torch::Tensor* pz, torch::Tensor* e)
+ * @brief Calculate transverse mass squared
+ * @param pz Z-component of momentum
+ * @param e Energy
+ * @return Transverse mass squared (m_T² = E² - pz²)
+ *
+ * @var torch::Tensor physics_::Mt2(torch::Tensor* pmc)
+ * @brief Calculate transverse mass squared from 4-momentum
+ * @param pmc 4-momentum tensor [px, py, pz, E]
+ * @return Transverse mass squared
+ *
+ * @var torch::Tensor physics_::Mt(torch::Tensor* pz, torch::Tensor* e)
+ * @brief Calculate transverse mass
+ * @param pz Z-component of momentum
+ * @param e Energy
+ * @return Transverse mass (m_T = √(E² - pz²))
+ *
+ * @var torch::Tensor physics_::Mt(torch::Tensor* pmc)
+ * @brief Calculate transverse mass from 4-momentum
+ * @param pmc 4-momentum tensor [px, py, pz, E]
+ * @return Transverse mass
+ *
+ * @var torch::Tensor physics_::Theta(torch::Tensor* pmc)
+ * @brief Calculate polar angle from 4-momentum
+ * @param pmc 4-momentum tensor [px, py, pz, E]
+ * @return Polar angle θ = arctan(p_T/pz)
+ *
+ * @var torch::Tensor physics_::Theta(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * @brief Calculate polar angle from momentum components
+ * @param px X-component of momentum
+ * @param py Y-component of momentum
+ * @param pz Z-component of momentum
+ * @return Polar angle
+ *
+ * @var torch::Tensor physics_::DeltaR(torch::Tensor* pmu1, torch::Tensor* pmu2)
+ * @brief Calculate ΔR between two 4-momenta
+ * @param pmu1 First 4-momentum tensor
+ * @param pmu2 Second 4-momentum tensor
+ * @return Angular separation ΔR = √(Δη² + Δφ²)
+ *
+ * @var torch::Tensor physics_::DeltaR(torch::Tensor* eta1, torch::Tensor* eta2, torch::Tensor* phi1, torch::Tensor* phi2)
+ * @brief Calculate ΔR from η and φ coordinates
+ * @param eta1 Pseudorapidity of first object
+ * @param eta2 Pseudorapidity of second object
+ * @param phi1 Azimuthal angle of first object
+ * @param phi2 Azimuthal angle of second object
+ * @return Angular separation ΔR = √(Δη² + Δφ²)
+ */

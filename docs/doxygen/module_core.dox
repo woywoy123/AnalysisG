@@ -1,0 +1,340 @@
+/**
+ * @defgroup module_events Events
+ * @brief Event and particle template classes for physics analyses
+ *
+ * @section events_overview Overview
+ *
+ * The Events module provides polymorphic event and particle classes following
+ * the AnalysisTop philosophy. Events contain collections of particles and
+ * provide methods for truth matching, decay chain reconstruction, and feature
+ * extraction.
+ *
+ * @section events_structure Structure
+ *
+ * @subsection events_base Base Classes
+ *
+ * - EventTemplate - Abstract base class for event objects
+ * - ParticleTemplate - Abstract base class for particle objects
+ *
+ * @subsection events_impl Implementations
+ *
+ * Several pre-built event definitions are provided:
+ *
+ * - **exp_mc20** - MC20 experimental events
+ * - **bsm_4tops** - Beyond Standard Model 4-tops events
+ * - **ssml_mc20** - SSML MC20 events
+ * - **gnn** - Graph Neural Network optimized events
+ *
+ * @section events_usage Usage
+ *
+ * @subsection events_custom Custom Events
+ *
+ * @code{.cpp}
+ * class MyEvent : public EventTemplate {
+ * public:
+ *     // Define particle collections
+ *     std::vector<Particle*> electrons;
+ *     std::vector<Particle*> muons;
+ *     std::vector<Particle*> jets;
+ *     
+ *     void CompileEvent() override {
+ *         // Implement event compilation
+ *         // - Load particles from ROOT branches
+ *         // - Apply object selection
+ *         // - Build decay chains
+ *     }
+ * };
+ * @endcode
+ *
+ * @subsection events_particles Custom Particles
+ *
+ * @code{.cpp}
+ * class MyParticle : public ParticleTemplate {
+ * public:
+ *     // Kinematic properties
+ *     double pt, eta, phi, e;
+ *     
+ *     // Custom properties
+ *     int charge;
+ *     bool is_isolated;
+ *     
+ *     // Truth matching
+ *     MyParticle* truth_match = nullptr;
+ * };
+ * @endcode
+ *
+ * @section events_features Key Features
+ *
+ * - **Polymorphic Design**: Flexible event/particle hierarchies
+ * - **Truth Matching**: Automated truth-to-reco matching
+ * - **Decay Chains**: Parent-child relationship tracking
+ * - **Feature Extraction**: Automatic feature tensor generation
+ * - **ROOT Integration**: Direct mapping from ROOT branches
+ */
+
+/**
+ * @defgroup module_graphs Graphs
+ * @brief Graph construction and feature extraction for GNNs
+ *
+ * @section graphs_overview Overview
+ *
+ * The Graphs module provides templates for converting physics events into
+ * graph structures suitable for Graph Neural Networks. It handles edge
+ * construction, feature extraction, and graph-level properties.
+ *
+ * @section graphs_structure Structure
+ *
+ * @subsection graphs_template GraphTemplate
+ *
+ * Abstract base class defining the graph interface:
+ *
+ * - Node features (particles)
+ * - Edge features (relationships)
+ * - Global features (event-level)
+ * - Edge indices (connectivity)
+ *
+ * @subsection graphs_impl Graph Implementations
+ *
+ * - **exp_mc20** - MC20 experimental graphs
+ * - **bsm_4tops** - 4-tops analysis graphs
+ * - **ssml_mc20** - SSML graphs
+ *
+ * @section graphs_usage Usage
+ *
+ * @code{.cpp}
+ * class MyGraph : public GraphTemplate {
+ * public:
+ *     void CompileGraph() override {
+ *         // Define nodes (usually particles)
+ *         for (auto& particle : event->particles) {
+ *             AddNode(particle);
+ *         }
+ *         
+ *         // Define edges (relationships)
+ *         for (size_t i = 0; i < nodes.size(); ++i) {
+ *             for (size_t j = i+1; j < nodes.size(); ++j) {
+ *                 if (ShouldConnect(nodes[i], nodes[j])) {
+ *                     AddEdge(i, j);
+ *                 }
+ *             }
+ *         }
+ *         
+ *         // Extract features
+ *         ExtractNodeFeatures();
+ *         ExtractEdgeFeatures();
+ *         ExtractGlobalFeatures();
+ *     }
+ * };
+ * @endcode
+ *
+ * @section graphs_features Features
+ *
+ * - **Flexible Topology**: Fully connected, k-NN, radius graphs
+ * - **Feature Engineering**: Automated feature extraction
+ * - **Batching**: Efficient multi-graph batching
+ * - **Edge Attributes**: Distance, angular separation, etc.
+ */
+
+/**
+ * @defgroup module_selections Selections
+ * @brief Event selection and filtering algorithms
+ *
+ * @section selections_overview Overview
+ *
+ * The Selections module provides a framework for defining event selection
+ * criteria and applying kinematic cuts. Selections can be chained and
+ * combined for complex analysis strategies.
+ *
+ * @section selections_template SelectionTemplate
+ *
+ * Base class for selection algorithms:
+ *
+ * @code{.cpp}
+ * class MySelection : public SelectionTemplate {
+ * public:
+ *     bool Strategy() override {
+ *         // Return true if event passes selection
+ *         
+ *         // Example: Require 2 leptons
+ *         if (event->leptons.size() < 2) return false;
+ *         
+ *         // Example: pT cuts
+ *         if (event->leptons[0]->pt < 25.0) return false;
+ *         
+ *         // Example: Missing ET
+ *         if (event->met < 20.0) return false;
+ *         
+ *         return true;
+ *     }
+ * };
+ * @endcode
+ *
+ * @section selections_impl Provided Selections
+ *
+ * Several analysis-specific selections are included:
+ *
+ * @subsection selections_mc16 MC16 Selections
+ * - childrenkinematics - Children particle kinematics
+ * - decaymodes - Decay mode studies
+ * - topmatching - Top quark matching
+ * - topkinematics - Top quark kinematics
+ * - zprime - Z' searches
+ *
+ * @subsection selections_mc20 MC20 Selections
+ * - matching - Truth matching studies
+ * - topmatching - Top matching for MC20
+ * - topkinematics - Top kinematics for MC20
+ *
+ * @subsection selections_neutrino Neutrino Selections
+ * - combinatorial - Combinatorial neutrino solutions
+ * - validation - Neutrino reconstruction validation
+ *
+ * @section selections_features Features
+ *
+ * - **Modular Design**: Compose complex selections from simple ones
+ * - **Cut Flow**: Track events at each selection stage
+ * - **Histogram Filling**: Integrated plotting support
+ * - **Truth Studies**: Access to truth information
+ */
+
+/**
+ * @defgroup module_metrics Metrics
+ * @brief Evaluation metrics for machine learning models
+ *
+ * @section metrics_overview Overview
+ *
+ * The Metrics module provides classes for evaluating machine learning model
+ * performance, particularly for classification and ranking tasks in physics.
+ *
+ * @section metrics_impl Implemented Metrics
+ *
+ * @subsection metrics_accuracy Accuracy
+ *
+ * Classification accuracy and related metrics:
+ * - Overall accuracy
+ * - Per-class accuracy
+ * - Confusion matrices
+ *
+ * @subsection metrics_pagerank PageRank
+ *
+ * Graph-based ranking metric for evaluating node importance:
+ * - Iterative PageRank algorithm
+ * - Custom damping factors
+ * - Convergence criteria
+ *
+ * @section metrics_usage Usage
+ *
+ * @code{.cpp}
+ * // Create accuracy metric
+ * AccuracyMetric metric;
+ *
+ * // Update with predictions and labels
+ * metric.Update(predictions, labels);
+ *
+ * // Compute final score
+ * double acc = metric.Compute();
+ * @endcode
+ *
+ * @section metrics_template MetricTemplate
+ *
+ * Base class for custom metrics:
+ *
+ * @code{.cpp}
+ * class MyMetric : public MetricTemplate {
+ * public:
+ *     void Update(torch::Tensor pred, torch::Tensor label) override {
+ *         // Update internal state
+ *     }
+ *     
+ *     double Compute() override {
+ *         // Compute final metric value
+ *         return score;
+ *     }
+ *     
+ *     void Reset() override {
+ *         // Reset for new epoch
+ *     }
+ * };
+ * @endcode
+ */
+
+/**
+ * @defgroup module_models Models
+ * @brief Machine learning model implementations
+ *
+ * @section models_overview Overview
+ *
+ * Pre-built machine learning models optimized for physics analyses,
+ * particularly graph neural networks for particle physics.
+ *
+ * @section models_impl Implemented Models
+ *
+ * @subsection models_grift GRIFT
+ *
+ * Graph Recurrent Iterative Feature Transform:
+ * - Message passing on particle graphs
+ * - Iterative refinement
+ * - Edge and node updates
+ *
+ * @subsection models_rgnn Recursive GNN
+ *
+ * Recursive Graph Neural Network:
+ * - Hierarchical graph structure
+ * - Recursive message passing
+ * - Multi-scale feature extraction
+ *
+ * @section models_usage Usage
+ *
+ * @code{.cpp}
+ * // Create model
+ * auto model = std::make_shared<GRIFT>(input_dim, hidden_dim, output_dim);
+ *
+ * // Forward pass
+ * auto output = model->forward(node_features, edge_index, edge_features);
+ * @endcode
+ *
+ * @section models_template ModelTemplate
+ *
+ * Base class for custom models integrating with the framework:
+ *
+ * @code{.cpp}
+ * class MyModel : public ModelTemplate {
+ * public:
+ *     torch::Tensor forward(torch::Tensor x) override {
+ *         // Model forward pass
+ *         return output;
+ *     }
+ *     
+ *     void Configure(const Config& cfg) override {
+ *         // Load configuration
+ *     }
+ * };
+ * @endcode
+ */
+
+/**
+ * @defgroup module_templates Templates
+ * @brief Base template classes for framework extensibility
+ *
+ * @section templates_overview Overview
+ *
+ * Abstract base classes defining interfaces for major framework components.
+ * User code extends these templates to implement custom behavior.
+ *
+ * @section templates_classes Template Classes
+ *
+ * - EventTemplate - Event container interface
+ * - ParticleTemplate - Particle object interface
+ * - GraphTemplate - Graph structure interface
+ * - SelectionTemplate - Selection algorithm interface
+ * - MetricTemplate - Evaluation metric interface
+ * - ModelTemplate - ML model interface
+ *
+ * @section templates_philosophy Design Philosophy
+ *
+ * Templates follow these principles:
+ * - **Polymorphism**: Virtual interfaces for customization
+ * - **Minimal Coupling**: Independent, composable components
+ * - **Type Safety**: Strong typing with compile-time checks
+ * - **Performance**: Virtual calls only where needed
+ */

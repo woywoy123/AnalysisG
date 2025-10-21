@@ -1,0 +1,430 @@
+/**
+ * @page classes_reference Classes and Structures Reference
+ *
+ * @section classes_overview Overview
+ *
+ * This page provides a comprehensive reference of all major classes and
+ * structures in the AnalysisG framework, organized by module.
+ *
+ * @tableofcontents
+ *
+ * @section classes_events Event Classes
+ *
+ * @subsection classes_events_exp_mc20 MC20 Experimental Events
+ *
+ * **Class**: `exp_mc20_event`
+ * - **Purpose**: Event container for MC20 experimental data
+ * - **Base Class**: EventTemplate
+ * - **Key Members**:
+ *   - Particle collections (leptons, jets, etc.)
+ *   - Truth particle collections
+ *   - Event-level properties (MET, event number, etc.)
+ * - **Methods**:
+ *   - `CompileEvent()` - Load and organize event data
+ *   - `GetParticles()` - Access particle collections
+ *
+ * **Class**: `exp_mc20_particles`
+ * - **Purpose**: Particle objects for MC20 data
+ * - **Base Class**: ParticleTemplate
+ * - **Key Members**:
+ *   - Kinematic properties (pt, eta, phi, e)
+ *   - Particle identification (PDG ID, charge)
+ *   - Truth matching information
+ *   - Parent/child relationships
+ *
+ * @subsection classes_events_bsm_4tops BSM 4-Tops Events
+ *
+ * **Class**: `bsm_4tops_event`
+ * - **Purpose**: Event container for 4-tops BSM analysis
+ * - **Specialized Features**:
+ *   - Top quark candidate identification
+ *   - Decay chain reconstruction
+ *   - Multi-top topology handling
+ *
+ * **Class**: `bsm_4tops_particles`
+ * - **Purpose**: Particles optimized for 4-tops analysis
+ * - **Features**:
+ *   - Enhanced truth matching for top quarks
+ *   - W boson and b-jet associations
+ *
+ * @subsection classes_events_ssml SSML MC20 Events
+ *
+ * **Class**: `ssml_mc20_event`
+ * - **Purpose**: SSML-specific MC20 events
+ *
+ * **Class**: `ssml_mc20_particles`
+ * - **Purpose**: SSML particle definitions
+ *
+ * @subsection classes_events_gnn GNN Events
+ *
+ * **Class**: `gnn_event`
+ * - **Purpose**: Graph-optimized event representation
+ * - **Features**:
+ *   - Efficient graph construction
+ *   - Pre-computed features
+ *   - Batching support
+ *
+ * **Class**: `gnn_particles`
+ * - **Purpose**: Particle representation for GNNs
+ * - **Features**:
+ *   - Feature vector extraction
+ *   - Node embedding preparation
+ *
+ * @section classes_metrics Metric Classes
+ *
+ * @subsection classes_metrics_accuracy Accuracy Metric
+ *
+ * **Class**: `accuracy_metric`
+ * - **Purpose**: Classification accuracy evaluation
+ * - **Base Class**: metric_template
+ * - **Methods**:
+ *   - `define_metric()` - Initialize metric computation
+ *   - `define_variables()` - Set up tracking variables
+ *   - `event()` - Update per-event
+ *   - `batch()` - Aggregate batch results
+ *   - `end()` - Finalize computation
+ *   - `clone()` - Create independent copy
+ * - **Private Members**:
+ *   - `edge_accuracy` - Per-batch edge accuracy
+ *   - `global_edge_accuracy` - Overall edge accuracy
+ *   - `ntop_scores` - Top-N accuracy scores
+ *   - `ntop_accuracy` - Top-N accuracy tracking
+ *
+ * **Struct**: `cdata_t`
+ * - **Purpose**: Data container for cross-validation folds
+ * - **Members**:
+ *   - `kfold` - K-fold index
+ *   - `ntops_truth` - Ground truth top counts
+ *   - `ntop_score` - Prediction scores
+ *   - `ntop_edge_accuracy` - Edge accuracy per top count
+ *   - `ntru_npred_matrix` - Confusion matrix data
+ *
+ * **Struct**: `cmodel_t`
+ * - **Purpose**: Model evaluation data across folds
+ * - **Members**:
+ *   - `evaluation_kfold_data` - Evaluation fold results
+ *   - `validation_kfold_data` - Validation fold results
+ *   - `training_kfold_data` - Training fold results
+ *
+ * **Class**: `collector`
+ * - **Purpose**: Collect and organize metric data
+ * - **Base Class**: tools
+ * - **Methods**:
+ *   - `get_mode()` - Retrieve data for specific mode
+ *   - `add_ntop_truth()` - Add truth data
+ *   - `add_ntop_edge_accuracy()` - Add accuracy data
+ *   - `add_ntop_scores()` - Add score data
+ *   - `add_ntru_ntop_scores()` - Add confusion matrix data
+ *   - `get_plts()` - Get plotting data
+ * - **Public Members**:
+ *   - `model_names` - List of model names
+ *   - `modes` - Training/validation/evaluation modes
+ *   - `epochs` - Epoch numbers
+ *   - `kfolds` - K-fold indices
+ *   - `model_data` - Collected data per model
+ *
+ * @subsection classes_metrics_pagerank PageRank Metric
+ *
+ * **Class**: `pagerank_metric`
+ * - **Purpose**: Graph-based ranking metric
+ * - **Base Class**: metric_template
+ * - **Algorithm**: Iterative PageRank computation
+ * - **Features**:
+ *   - Damping factor configuration
+ *   - Convergence criteria
+ *   - Sparse matrix optimization
+ *
+ * @section classes_models Model Classes
+ *
+ * @subsection classes_models_grift GRIFT Model
+ *
+ * **Class**: `GRIFT`
+ * - **Full Name**: Graph Recurrent Iterative Feature Transform
+ * - **Base Class**: ModelTemplate
+ * - **Purpose**: Message-passing GNN for particle physics
+ * - **Architecture**:
+ *   - Edge network for relationship modeling
+ *   - Node network for particle updates
+ *   - Global network for graph-level predictions
+ * - **Methods**:
+ *   - `forward()` - Forward pass through network
+ *   - `message_passing()` - Iterative message updates
+ * - **Hyperparameters**:
+ *   - Input dimension
+ *   - Hidden dimension
+ *   - Output dimension
+ *   - Number of iterations
+ *
+ * @subsection classes_models_rgnn Recursive GNN
+ *
+ * **Class**: `RecursiveGraphNeuralNetwork`
+ * - **Base Class**: ModelTemplate
+ * - **Purpose**: Hierarchical graph processing
+ * - **Architecture**:
+ *   - Multi-scale feature extraction
+ *   - Recursive pooling operations
+ *   - Skip connections for gradient flow
+ * - **Features**:
+ *   - Adaptive pooling
+ *   - Hierarchy preservation
+ *   - Multi-resolution analysis
+ *
+ * @section classes_selections Selection Classes
+ *
+ * @subsection classes_selections_mc16 MC16 Selections
+ *
+ * **Class**: `childrenkinematics`
+ * - **Purpose**: Children particle kinematic studies
+ * - **Cuts**: Kinematic requirements on daughter particles
+ *
+ * **Class**: `decaymodes`
+ * - **Purpose**: Decay mode classification
+ * - **Features**: Identify and categorize decay topologies
+ *
+ * **Class**: `topmatching`
+ * - **Purpose**: Top quark truth matching
+ * - **Algorithm**: Match reconstructed to truth tops
+ *
+ * **Class**: `topkinematics`
+ * - **Purpose**: Top quark kinematic selections
+ * - **Cuts**: pT, mass, isolation requirements
+ *
+ * **Class**: `zprime`
+ * - **Purpose**: Z' boson search selections
+ * - **Features**: High-mass resonance cuts
+ *
+ * @subsection classes_selections_mc20 MC20 Selections
+ *
+ * **Class**: `matching` (MC20)
+ * - **Purpose**: General truth matching for MC20
+ *
+ * **Class**: `topmatching` (MC20)
+ * - **Purpose**: Top matching for MC20 samples
+ *
+ * **Class**: `topkinematics` (MC20)
+ * - **Purpose**: Top kinematics for MC20
+ *
+ * @subsection classes_selections_neutrino Neutrino Selections
+ *
+ * **Class**: `combinatorial`
+ * - **Purpose**: Combinatorial neutrino reconstruction
+ * - **Algorithm**: Try all possible neutrino pairings
+ *
+ * **Class**: `validation`
+ * - **Purpose**: Validate neutrino reconstruction
+ * - **Checks**: Compare reconstructed to truth
+ *
+ * @subsection classes_selections_performance Performance Selections
+ *
+ * **Class**: `topefficiency`
+ * - **Purpose**: Measure top reconstruction efficiency
+ * - **Metrics**: Efficiency vs pT, η, etc.
+ *
+ * @section classes_pyc PyC Classes
+ *
+ * @subsection classes_pyc_operators Operator Classes
+ *
+ * **Namespace**: `operators`
+ * - **Purpose**: Tensor aggregation operations
+ * - **Key Functions**:
+ *   - Aggregation with single/double counting
+ *   - Edge feature reduction
+ *   - Node feature gathering
+ *
+ * @subsection classes_pyc_transform Transform Classes
+ *
+ * **Namespace**: `transform`
+ * - **Purpose**: Coordinate transformations
+ * - **Implementations**:
+ *   - CPU: Vectorized C++ code
+ *   - GPU: CUDA kernels
+ *
+ * @subsection classes_pyc_graph Graph Classes
+ *
+ * **Namespace**: `graph`
+ * - **Purpose**: Graph construction utilities
+ * - **Features**:
+ *   - Edge index building
+ *   - Adjacency operations
+ *
+ * @subsection classes_pyc_nusol NuSol Classes
+ *
+ * **Namespace**: `nusol`
+ * - **Purpose**: Neutrino solutions
+ * - **Algorithms**:
+ *   - Single neutrino (W → lν)
+ *   - Double neutrino (tt → WWbb → llνν bb)
+ * - **Implementation**:
+ *   - Analytical matrix solutions
+ *   - GPU-accelerated for batches
+ *
+ * @subsection classes_pyc_utils Utility Classes
+ *
+ * **Namespace**: `utils`
+ * - **Purpose**: Common utilities
+ * - **Features**:
+ *   - Atomic operations for CUDA
+ *   - Tensor helpers
+ *   - Device management
+ *
+ * @section classes_templates Template Base Classes
+ *
+ * @subsection classes_template_event EventTemplate
+ *
+ * **Class**: `EventTemplate`
+ * - **Purpose**: Abstract base for event classes
+ * - **Virtual Methods**:
+ *   - `CompileEvent()` - Load and organize event
+ *   - `GetHash()` - Unique event identifier
+ * - **Protected Members**:
+ *   - Particle containers
+ *   - Truth containers
+ *   - Event metadata
+ *
+ * @subsection classes_template_particle ParticleTemplate
+ *
+ * **Class**: `ParticleTemplate`
+ * - **Purpose**: Abstract base for particles
+ * - **Virtual Methods**:
+ *   - `GetFourMomentum()` - Return 4-vector
+ *   - `GetParents()` - Get parent particles
+ *   - `GetChildren()` - Get daughter particles
+ * - **Protected Members**:
+ *   - Kinematic properties
+ *   - Identification info
+ *   - Relationships
+ *
+ * @subsection classes_template_graph GraphTemplate
+ *
+ * **Class**: `GraphTemplate`
+ * - **Purpose**: Abstract base for graphs
+ * - **Virtual Methods**:
+ *   - `CompileGraph()` - Build graph structure
+ *   - `GetNodeFeatures()` - Extract node features
+ *   - `GetEdgeFeatures()` - Extract edge features
+ *   - `GetGlobalFeatures()` - Extract global features
+ * - **Protected Members**:
+ *   - Node list
+ *   - Edge list
+ *   - Feature tensors
+ *
+ * @subsection classes_template_selection SelectionTemplate
+ *
+ * **Class**: `SelectionTemplate`
+ * - **Purpose**: Abstract base for selections
+ * - **Virtual Methods**:
+ *   - `Strategy()` - Selection decision (return bool)
+ *   - `Apply()` - Apply selection and record
+ * - **Protected Members**:
+ *   - Event pointer
+ *   - Cut flow counters
+ *   - Histograms
+ *
+ * @subsection classes_template_metric MetricTemplate
+ *
+ * **Class**: `metric_template`
+ * - **Purpose**: Abstract base for metrics
+ * - **Virtual Methods**:
+ *   - `define_metric()` - Initialize metric
+ *   - `event()` - Update per-event
+ *   - `batch()` - Aggregate batch
+ *   - `end()` - Finalize computation
+ *   - `clone()` - Create copy
+ * - **Protected Members**:
+ *   - Accumulated statistics
+ *   - Configuration parameters
+ *
+ * @subsection classes_template_model ModelTemplate
+ *
+ * **Class**: `ModelTemplate`
+ * - **Purpose**: Abstract base for ML models
+ * - **Virtual Methods**:
+ *   - `forward()` - Forward pass
+ *   - `Configure()` - Load configuration
+ *   - `Save()` - Save model state
+ *   - `Load()` - Load model state
+ * - **Protected Members**:
+ *   - Network layers
+ *   - Hyperparameters
+ *   - Optimizer state
+ *
+ * @section classes_usage Usage Patterns
+ *
+ * @subsection classes_usage_inheritance Inheritance Pattern
+ *
+ * Most user code extends template base classes:
+ *
+ * @code{.cpp}
+ * // Inherit from base template
+ * class MyEvent : public EventTemplate {
+ * public:
+ *     // Implement required virtual methods
+ *     void CompileEvent() override {
+ *         // Custom implementation
+ *     }
+ *     
+ *     // Add custom members
+ *     std::vector<MyParticle*> custom_jets;
+ * };
+ * @endcode
+ *
+ * @subsection classes_usage_composition Composition Pattern
+ *
+ * Classes can be composed for complex behavior:
+ *
+ * @code{.cpp}
+ * // Event contains particles and graphs
+ * class MyEvent : public EventTemplate {
+ *     std::vector<MyParticle*> particles;
+ *     MyGraph* graph;
+ *     
+ *     void BuildGraph() {
+ *         graph = new MyGraph(particles);
+ *         graph->CompileGraph();
+ *     }
+ * };
+ * @endcode
+ *
+ * @subsection classes_usage_factory Factory Pattern
+ *
+ * Some modules use factories for object creation:
+ *
+ * @code{.cpp}
+ * // Create objects from configuration
+ * auto event = EventFactory::Create("MC20Event");
+ * auto model = ModelFactory::Create("GRIFT", config);
+ * @endcode
+ *
+ * @section classes_conventions Naming Conventions
+ *
+ * @subsection classes_conv_classes Class Names
+ *
+ * - **PascalCase** for classes: `EventTemplate`, `MyModel`
+ * - **snake_case** for some legacy classes: `accuracy_metric`
+ * - **Suffix** indicates purpose: `*Template`, `*Metric`, `*_t` (struct)
+ *
+ * @subsection classes_conv_members Member Names
+ *
+ * - **snake_case** for most members: `edge_accuracy`
+ * - **Public members** documented in header
+ * - **Private members** prefixed with `_` sometimes: `_global_edge_accuracy`
+ *
+ * @subsection classes_conv_methods Method Names
+ *
+ * - **PascalCase** or **snake_case** depending on module
+ * - **Virtual methods** clearly marked with `override`
+ * - **Pure virtual** marked with `= 0`
+ *
+ * @section classes_summary Summary
+ *
+ * The class hierarchy in AnalysisG follows these principles:
+ *
+ * 1. **Template Pattern**: Base classes define interfaces
+ * 2. **Polymorphism**: Virtual methods for customization
+ * 3. **Modularity**: Independent, composable components
+ * 4. **Type Safety**: Strong typing throughout
+ * 5. **Performance**: Virtual calls only where needed
+ *
+ * For specific class details, navigate to the class pages using the
+ * navigation menu or search functionality.
+ */

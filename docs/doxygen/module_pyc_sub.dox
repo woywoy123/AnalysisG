@@ -1,0 +1,162 @@
+/**
+ * @defgroup module_pyc_operators Tensor Operators
+ * @ingroup module_pyc
+ * @brief Optimized tensor aggregation and reduction operations
+ *
+ * @section operators_overview Overview
+ *
+ * The Operators module provides GPU-accelerated tensor operations for aggregating
+ * features in graph neural networks and other machine learning tasks.
+ *
+ * @section operators_features Key Features
+ *
+ * - **Single/Double Counting**: Control over duplicate edge handling
+ * - **GPU Acceleration**: CUDA kernels for massive parallelism
+ * - **Flexible Aggregation**: Sum, mean, max, min operations
+ * - **Edge/Node Operations**: Graph-specific tensor manipulations
+ *
+ * @section operators_usage Usage
+ *
+ * Operators work with edge indices and node features to perform aggregations:
+ *
+ * @code{.cpp}
+ * // Aggregate edge features to nodes
+ * torch::Tensor node_features = operators::aggregate(
+ *     edge_index, edge_features, num_nodes
+ * );
+ * @endcode
+ */
+
+/**
+ * @defgroup module_pyc_transform Coordinate Transformations
+ * @ingroup module_pyc
+ * @brief Coordinate system transformation utilities
+ *
+ * @section transform_overview Overview
+ *
+ * Provides conversions between different coordinate systems commonly used in
+ * high energy physics:
+ *
+ * - Cartesian (x, y, z)
+ * - Cylindrical (ρ, φ, z)
+ * - Spherical (r, θ, φ)
+ * - Detector coordinates (η, φ, p_T)
+ *
+ * @section transform_functions Main Functions
+ *
+ * - CartesianToPolar() - (x, y, z) → (r, θ, φ)
+ * - PolarToCartesian() - (r, θ, φ) → (x, y, z)
+ * - PxPyPzToEtaPhi() - Momentum → Pseudorapidity/Azimuth
+ * - EtaPhiToPxPyPz() - Pseudorapidity/Azimuth → Momentum
+ *
+ * @section transform_usage Example
+ *
+ * @code{.cpp}
+ * #include <transform/transform.h>
+ *
+ * // Convert momentum to detector coordinates
+ * auto [eta, phi, pt] = transform::PxPyPzToEtaPhi(px, py, pz);
+ * @endcode
+ */
+
+/**
+ * @defgroup module_pyc_graph Graph Operations
+ * @ingroup module_pyc
+ * @brief Graph manipulation and construction utilities
+ *
+ * @section graph_overview Overview
+ *
+ * Optimized operations for constructing and manipulating graph structures,
+ * particularly for graph neural networks in physics analyses.
+ *
+ * @section graph_features Features
+ *
+ * - Edge construction from node pairs
+ * - Adjacency matrix operations
+ * - Nearest neighbor searches
+ * - Graph connectivity algorithms
+ *
+ * @section graph_ops Operations
+ *
+ * - **Edge Building**: Create edges based on criteria
+ * - **Adjacency**: Convert between edge lists and adjacency matrices
+ * - **Filtering**: Remove edges based on properties
+ * - **Batching**: Handle multiple graphs efficiently
+ */
+
+/**
+ * @defgroup module_pyc_nusol Neutrino Solutions
+ * @ingroup module_pyc
+ * @brief Analytical neutrino momentum reconstruction algorithms
+ *
+ * @section nusol_overview Overview
+ *
+ * Implements analytical solutions for neutrino momentum reconstruction in
+ * events with missing transverse energy, critical for top quark and W boson
+ * analyses.
+ *
+ * @section nusol_algorithms Algorithms
+ *
+ * @subsection nusol_single Single Neutrino
+ *
+ * Solves for one neutrino momentum given:
+ * - Charged lepton 4-momentum
+ * - Missing transverse momentum
+ * - W boson mass constraint
+ *
+ * Returns up to 2 solutions (quadratic equation).
+ *
+ * @subsection nusol_double Double Neutrino
+ *
+ * Solves for two neutrino momenta given:
+ * - Two charged lepton 4-momenta
+ * - Missing transverse momentum
+ * - Two W boson mass constraints
+ * - Optional top quark mass constraints
+ *
+ * More complex system with multiple solutions.
+ *
+ * @section nusol_usage Example
+ *
+ * @code{.cpp}
+ * #include <nusol/nusol.h>
+ *
+ * // Reconstruct single neutrino
+ * auto solutions = nusol::nu_reco(lepton_px, lepton_py, lepton_pz, 
+ *                                  lepton_e, met_x, met_y);
+ * @endcode
+ *
+ * @section nusol_cuda CUDA Acceleration
+ *
+ * All algorithms have GPU-accelerated implementations for batch processing
+ * of many events simultaneously.
+ */
+
+/**
+ * @defgroup module_pyc_utils Utilities
+ * @ingroup module_pyc
+ * @brief Utility functions and helpers
+ *
+ * @section utils_overview Overview
+ *
+ * Common utility functions used across PyC modules:
+ *
+ * - Atomic operations for CUDA
+ * - Tensor utilities
+ * - Device management
+ * - Error handling
+ *
+ * @section utils_atomic Atomic Operations
+ *
+ * Thread-safe atomic operations for CUDA kernels:
+ * - atomicAdd() - Atomic addition
+ * - atomicMax() - Atomic maximum
+ * - atomicMin() - Atomic minimum
+ *
+ * @section utils_device Device Management
+ *
+ * Functions for managing CUDA devices and memory:
+ * - GetDeviceCount()
+ * - SetDevice()
+ * - Synchronize()
+ */

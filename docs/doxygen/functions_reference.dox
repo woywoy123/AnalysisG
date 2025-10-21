@@ -1,0 +1,402 @@
+/**
+ * @page functions_reference Functions Reference
+ *
+ * @section functions_overview Overview
+ *
+ * This page provides a comprehensive reference of all major functions in the
+ * AnalysisG framework, organized by module and purpose.
+ *
+ * @tableofcontents
+ *
+ * @section functions_physics Physics Calculation Functions
+ *
+ * All physics functions are in the `physics_` namespace and operate on
+ * PyTorch tensors for seamless CPU/GPU execution.
+ *
+ * @subsection functions_physics_momentum Momentum Functions
+ *
+ * **Function**: `torch::Tensor P2(torch::Tensor* px, py, pz)`
+ * - **Purpose**: Calculate momentum squared
+ * - **Formula**: p² = px² + py² + pz²
+ * - **Parameters**:
+ *   - `px` - X-component of momentum (GeV)
+ *   - `py` - Y-component of momentum (GeV)
+ *   - `pz` - Z-component of momentum (GeV)
+ * - **Returns**: Momentum squared (GeV²)
+ * - **Device**: CPU and CUDA implementations
+ *
+ * **Function**: `torch::Tensor P2(torch::Tensor* pmc)`
+ * - **Purpose**: Calculate momentum squared from 4-momentum
+ * - **Parameters**:
+ *   - `pmc` - 4-momentum tensor [px, py, pz, E]
+ * - **Returns**: Momentum squared (GeV²)
+ *
+ * **Function**: `torch::Tensor P(torch::Tensor* px, py, pz)`
+ * - **Purpose**: Calculate momentum magnitude
+ * - **Formula**: |p| = √(px² + py² + pz²)
+ * - **Returns**: Momentum magnitude (GeV)
+ *
+ * **Function**: `torch::Tensor P(torch::Tensor* pmc)`
+ * - **Purpose**: Calculate momentum magnitude from 4-momentum
+ * - **Returns**: Momentum magnitude (GeV)
+ *
+ * @subsection functions_physics_velocity Velocity Functions
+ *
+ * **Function**: `torch::Tensor Beta2(torch::Tensor* px, py, pz, e)`
+ * - **Purpose**: Calculate velocity squared
+ * - **Formula**: β² = p²/E² (in natural units where c=1)
+ * - **Parameters**:
+ *   - `px, py, pz` - Momentum components (GeV)
+ *   - `e` - Energy (GeV)
+ * - **Returns**: Beta squared (dimensionless)
+ *
+ * **Function**: `torch::Tensor Beta(torch::Tensor* px, py, pz, e)`
+ * - **Purpose**: Calculate particle velocity
+ * - **Formula**: β = |p|/E
+ * - **Returns**: Beta (dimensionless, 0 to 1)
+ *
+ * @subsection functions_physics_mass Invariant Mass Functions
+ *
+ * **Function**: `torch::Tensor M2(torch::Tensor* px, py, pz, e)`
+ * - **Purpose**: Calculate invariant mass squared
+ * - **Formula**: m² = E² - p² = E² - (px² + py² + pz²)
+ * - **Returns**: Invariant mass squared (GeV²)
+ * - **Note**: May be negative for timelike separations
+ *
+ * **Function**: `torch::Tensor M(torch::Tensor* px, py, pz, e)`
+ * - **Purpose**: Calculate invariant mass
+ * - **Formula**: m = √(E² - p²)
+ * - **Returns**: Invariant mass (GeV)
+ * - **Note**: Returns NaN if m² < 0
+ *
+ * **Function**: `torch::Tensor Mt2(torch::Tensor* pz, e)`
+ * - **Purpose**: Calculate transverse mass squared
+ * - **Formula**: m_T² = E² - pz²
+ * - **Returns**: Transverse mass squared (GeV²)
+ * - **Usage**: Common for W boson mass constraints
+ *
+ * **Function**: `torch::Tensor Mt(torch::Tensor* pz, e)`
+ * - **Purpose**: Calculate transverse mass
+ * - **Formula**: m_T = √(E² - pz²)
+ * - **Returns**: Transverse mass (GeV)
+ *
+ * @subsection functions_physics_angles Angular Functions
+ *
+ * **Function**: `torch::Tensor Theta(torch::Tensor* px, py, pz)`
+ * - **Purpose**: Calculate polar angle
+ * - **Formula**: θ = arctan(√(px² + py²) / pz)
+ * - **Returns**: Polar angle (radians)
+ * - **Range**: [0, π]
+ *
+ * **Function**: `torch::Tensor DeltaR(torch::Tensor* eta1, eta2, phi1, phi2)`
+ * - **Purpose**: Calculate angular separation
+ * - **Formula**: ΔR = √(Δη² + Δφ²)
+ * - **Parameters**:
+ *   - `eta1, eta2` - Pseudorapidities
+ *   - `phi1, phi2` - Azimuthal angles (radians)
+ * - **Returns**: Angular separation ΔR
+ * - **Usage**: Jet clustering, overlap removal
+ *
+ * **Function**: `torch::Tensor DeltaR(torch::Tensor* pmu1, pmu2)`
+ * - **Purpose**: Calculate ΔR between 4-momenta
+ * - **Parameters**:
+ *   - `pmu1, pmu2` - 4-momentum tensors
+ * - **Returns**: Angular separation ΔR
+ * - **Note**: Automatically converts to η-φ coordinates
+ *
+ * @section functions_transform Coordinate Transformation Functions
+ *
+ * Functions in the `transform` namespace for coordinate system conversions.
+ *
+ * @subsection functions_transform_cartesian Cartesian Transformations
+ *
+ * **Function**: `CartesianToPolar(x, y, z)`
+ * - **Purpose**: Convert Cartesian to spherical
+ * - **Parameters**: (x, y, z) coordinates
+ * - **Returns**: Tuple (r, θ, φ)
+ *   - r = √(x² + y² + z²)
+ *   - θ = arctan(√(x² + y²) / z)
+ *   - φ = arctan(y / x)
+ *
+ * **Function**: `PolarToCartesian(r, theta, phi)`
+ * - **Purpose**: Convert spherical to Cartesian
+ * - **Parameters**: (r, θ, φ) coordinates
+ * - **Returns**: Tuple (x, y, z)
+ *   - x = r sin(θ) cos(φ)
+ *   - y = r sin(θ) sin(φ)
+ *   - z = r cos(θ)
+ *
+ * @subsection functions_transform_detector Detector Coordinate Transformations
+ *
+ * **Function**: `PxPyPzToEtaPhi(px, py, pz)`
+ * - **Purpose**: Convert momentum to detector coordinates
+ * - **Parameters**: Momentum components (px, py, pz)
+ * - **Returns**: Tuple (η, φ, pT)
+ *   - η = pseudorapidity = -ln(tan(θ/2))
+ *   - φ = azimuthal angle
+ *   - pT = transverse momentum = √(px² + py²)
+ *
+ * **Function**: `EtaPhiToPxPyPz(eta, phi, pt, mass)`
+ * - **Purpose**: Convert detector to momentum coordinates
+ * - **Parameters**:
+ *   - `eta` - Pseudorapidity
+ *   - `phi` - Azimuthal angle
+ *   - `pt` - Transverse momentum
+ *   - `mass` - Particle mass (for pz, E calculation)
+ * - **Returns**: Tuple (px, py, pz, E)
+ *
+ * @section functions_operators Tensor Operator Functions
+ *
+ * Functions in the `operators` namespace for graph operations.
+ *
+ * @subsection functions_operators_aggregation Aggregation Functions
+ *
+ * **Function**: `aggregate_sum(edge_index, edge_attr, num_nodes)`
+ * - **Purpose**: Sum edge features to nodes
+ * - **Parameters**:
+ *   - `edge_index` - Edge connectivity [2, num_edges]
+ *   - `edge_attr` - Edge features [num_edges, feature_dim]
+ *   - `num_nodes` - Number of nodes
+ * - **Returns**: Node features [num_nodes, feature_dim]
+ * - **Method**: Scatter-add operation
+ *
+ * **Function**: `aggregate_mean(edge_index, edge_attr, num_nodes)`
+ * - **Purpose**: Average edge features to nodes
+ * - **Returns**: Mean node features [num_nodes, feature_dim]
+ * - **Method**: Scatter-add followed by normalization
+ *
+ * **Function**: `aggregate_max(edge_index, edge_attr, num_nodes)`
+ * - **Purpose**: Max-pool edge features to nodes
+ * - **Returns**: Max node features [num_nodes, feature_dim]
+ * - **Method**: Scatter-max operation
+ *
+ * @subsection functions_operators_counting Counting Control
+ *
+ * **Function**: `set_single_counting(bool enabled)`
+ * - **Purpose**: Enable/disable single counting for edges
+ * - **Details**: When enabled, each edge counted once (not twice)
+ * - **Use Case**: Undirected graphs
+ *
+ * **Function**: `set_double_counting(bool enabled)`
+ * - **Purpose**: Enable/disable double counting
+ * - **Details**: When enabled, edges counted in both directions
+ * - **Use Case**: Directed graphs or message passing
+ *
+ * @section functions_graph Graph Construction Functions
+ *
+ * Functions in the `graph` namespace for building graph structures.
+ *
+ * @subsection functions_graph_edges Edge Construction
+ *
+ * **Function**: `build_knn_graph(positions, k)`
+ * - **Purpose**: Build k-nearest neighbors graph
+ * - **Parameters**:
+ *   - `positions` - Node positions [num_nodes, dim]
+ *   - `k` - Number of neighbors
+ * - **Returns**: Edge index [2, num_edges]
+ * - **Algorithm**: KD-tree or brute force
+ *
+ * **Function**: `build_radius_graph(positions, radius)`
+ * - **Purpose**: Connect nodes within radius
+ * - **Parameters**:
+ *   - `positions` - Node positions
+ *   - `radius` - Connection radius
+ * - **Returns**: Edge index [2, num_edges]
+ *
+ * **Function**: `build_fully_connected(num_nodes)`
+ * - **Purpose**: Create complete graph
+ * - **Parameters**: Number of nodes
+ * - **Returns**: Edge index for fully connected graph
+ * - **Complexity**: O(n²) edges
+ *
+ * @subsection functions_graph_adjacency Adjacency Operations
+ *
+ * **Function**: `edge_index_to_adj(edge_index, num_nodes)`
+ * - **Purpose**: Convert edge list to adjacency matrix
+ * - **Returns**: Sparse adjacency matrix [num_nodes, num_nodes]
+ *
+ * **Function**: `adj_to_edge_index(adj_matrix)`
+ * - **Purpose**: Convert adjacency matrix to edge list
+ * - **Returns**: Edge index [2, num_edges]
+ *
+ * @section functions_nusol Neutrino Reconstruction Functions
+ *
+ * Functions in the `nusol` namespace for analytical neutrino solutions.
+ *
+ * @subsection functions_nusol_single Single Neutrino
+ *
+ * **Function**: `nu_reco(lepton_px, py, pz, e, met_x, met_y, mW)`
+ * - **Purpose**: Reconstruct single neutrino momentum
+ * - **Parameters**:
+ *   - `lepton_*` - Charged lepton 4-momentum
+ *   - `met_x, met_y` - Missing transverse momentum
+ *   - `mW` - W boson mass constraint (default 80.4 GeV)
+ * - **Returns**: Vector of solutions (0, 1, or 2)
+ * - **Algorithm**: Quadratic equation for neutrino pz
+ * - **Note**: Two solutions from pz² equation
+ *
+ * @subsection functions_nusol_double Double Neutrino
+ *
+ * **Function**: `double_nu_reco(l1_pmc, l2_pmc, met_x, met_y, mW1, mW2)`
+ * - **Purpose**: Reconstruct two neutrino momenta
+ * - **Parameters**:
+ *   - `l1_pmc, l2_pmc` - Two lepton 4-momenta
+ *   - `met_x, met_y` - Missing transverse momentum
+ *   - `mW1, mW2` - W boson mass constraints
+ * - **Returns**: Vector of solution pairs
+ * - **Algorithm**: System of equations with matrix inversion
+ * - **Note**: Multiple solutions possible
+ *
+ * **Function**: `double_nu_top_reco(..., mtop1, mtop2)`
+ * - **Purpose**: Reconstruct neutrinos with top mass constraints
+ * - **Additional Parameters**:
+ *   - `mtop1, mtop2` - Top quark mass constraints
+ *   - b-jet 4-momenta
+ * - **Returns**: Solutions satisfying all constraints
+ * - **Usage**: tt̄ → WWbb → llννbb events
+ *
+ * @section functions_utils Utility Functions
+ *
+ * @subsection functions_utils_atomic Atomic Operations (CUDA)
+ *
+ * **Function**: `atomicAdd(address, val)`
+ * - **Purpose**: Thread-safe addition
+ * - **Device**: CUDA only
+ * - **Types**: float, double, int
+ *
+ * **Function**: `atomicMax(address, val)`
+ * - **Purpose**: Thread-safe maximum
+ * - **Returns**: Old value at address
+ *
+ * **Function**: `atomicMin(address, val)`
+ * - **Purpose**: Thread-safe minimum
+ * - **Returns**: Old value at address
+ *
+ * @subsection functions_utils_device Device Management
+ *
+ * **Function**: `GetDeviceCount()`
+ * - **Purpose**: Get number of CUDA devices
+ * - **Returns**: Integer count
+ *
+ * **Function**: `SetDevice(device_id)`
+ * - **Purpose**: Set active CUDA device
+ * - **Parameters**: Device ID (0-indexed)
+ *
+ * **Function**: `Synchronize()`
+ * - **Purpose**: Wait for all CUDA operations to complete
+ * - **Usage**: Before timing or data transfer
+ *
+ * @section functions_best_practices Best Practices
+ *
+ * @subsection functions_bp_tensors Tensor Operations
+ *
+ * 1. **Check Device**: Ensure tensors on same device
+ * 2. **Avoid Copies**: Use in-place operations when possible
+ * 3. **Batch Operations**: Process multiple items simultaneously
+ * 4. **Type Matching**: Match tensor dtypes in operations
+ *
+ * @subsection functions_bp_memory Memory Management
+ *
+ * 1. **Allocate Once**: Reuse tensor buffers
+ * 2. **Clear Gradients**: Use `zero_grad()` appropriately
+ * 3. **Synchronize Carefully**: Only when necessary
+ * 4. **Profile**: Use CUDA profiler for optimization
+ *
+ * @subsection functions_bp_physics Physics Calculations
+ *
+ * 1. **Units**: All quantities in GeV, radians, etc.
+ * 2. **Range Checks**: Validate input ranges
+ * 3. **NaN Handling**: Check for invalid results
+ * 4. **Precision**: Use double for critical calculations
+ *
+ * @section functions_examples Usage Examples
+ *
+ * @subsection functions_ex_physics Physics Example
+ *
+ * @code{.cpp}
+ * #include <physics/physics.h>
+ *
+ * // Calculate invariant mass of two particles
+ * torch::Tensor p1_pmc = ...; // [px, py, pz, E]
+ * torch::Tensor p2_pmc = ...;
+ *
+ * // Combine 4-momenta
+ * torch::Tensor p_sum = p1_pmc + p2_pmc;
+ *
+ * // Calculate invariant mass
+ * torch::Tensor m_inv = physics_::M(&p_sum);
+ *
+ * // Calculate angular separation
+ * torch::Tensor dr = physics_::DeltaR(&p1_pmc, &p2_pmc);
+ * @endcode
+ *
+ * @subsection functions_ex_graph Graph Example
+ *
+ * @code{.cpp}
+ * #include <graph/graph.h>
+ * #include <operators/operators.h>
+ *
+ * // Build k-NN graph from particle positions
+ * torch::Tensor positions = ...; // [num_particles, 3]
+ * torch::Tensor edge_index = graph::build_knn_graph(positions, k=5);
+ *
+ * // Aggregate features
+ * torch::Tensor edge_features = ...;
+ * torch::Tensor node_features = operators::aggregate_mean(
+ *     edge_index, edge_features, positions.size(0)
+ * );
+ * @endcode
+ *
+ * @subsection functions_ex_nusol Neutrino Example
+ *
+ * @code{.cpp}
+ * #include <nusol/nusol.h>
+ *
+ * // Reconstruct single neutrino
+ * auto solutions = nusol::nu_reco(
+ *     lepton_px, lepton_py, lepton_pz, lepton_e,
+ *     met_x, met_y, 80.4 // W mass
+ * );
+ *
+ * // Check number of solutions
+ * if (solutions.size() == 2) {
+ *     // Two real solutions
+ *     auto nu1 = solutions[0];
+ *     auto nu2 = solutions[1];
+ *     // Choose based on physics criteria
+ * }
+ * @endcode
+ *
+ * @section functions_performance Performance Notes
+ *
+ * @subsection functions_perf_gpu GPU Acceleration
+ *
+ * - Physics functions automatically use CUDA if available
+ * - Batch operations are significantly faster on GPU
+ * - For small batches (<100), CPU may be faster due to transfer overhead
+ *
+ * @subsection functions_perf_vectorization Vectorization
+ *
+ * - CPU implementations use SIMD when possible
+ * - Operate on entire tensors rather than loops
+ * - LibTorch provides automatic vectorization
+ *
+ * @subsection functions_perf_memory Memory Access
+ *
+ * - Contiguous tensors are faster
+ * - Use `tensor.contiguous()` if needed
+ * - Avoid unnecessary copies with `.clone()`
+ *
+ * @section functions_summary Summary
+ *
+ * The function library provides:
+ *
+ * - **Physics Calculations**: Standard HEP formulas
+ * - **Coordinate Transforms**: Between reference frames
+ * - **Graph Operations**: Build and manipulate graphs
+ * - **Neutrino Solutions**: Analytical reconstruction
+ * - **Utilities**: Device management and helpers
+ *
+ * All functions support both CPU and CUDA execution with automatic
+ * device selection based on input tensor locations.
+ */
