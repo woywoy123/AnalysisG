@@ -33,3 +33,5 @@ local/**/*.png
 **/.tox
 **/.coverage*
 
+# Doxygen documentation
+doxygen-docs/
