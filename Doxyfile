@@ -265,9 +265,18 @@ GENERATE_RTF           = NO
 GENERATE_MAN           = NO
 
 # GENERATE_XML: Generate XML output for external processing
-# NO - XML is only needed for custom documentation processors
-# Enable if you're building custom tools on top of Doxygen
-GENERATE_XML           = NO
+# YES - Required for Breathe/Sphinx integration and Read the Docs hosting
+# XML output enables parsing Doxygen documentation in Sphinx via Breathe extension
+# Output location: doxygen-docs/xml/
+GENERATE_XML           = YES
+
+# XML_OUTPUT: Directory for XML output
+# Set to xml/ subdirectory for Breathe integration
+XML_OUTPUT             = xml
+
+# XML_PROGRAMLISTING: Include program listings in XML
+# YES provides complete source code in XML for better Sphinx integration
+XML_PROGRAMLISTING     = YES
 
 #---------------------------------------------------------------------------
 # C++ Preprocessor Configuration
