@@ -73,3 +73,26 @@ DOCUMENTATION IS STILL UNDER CONSTRUCTION
 Although the documentation is rather incomplete, a lot of information can be found under the docs: https://analysisg.readthedocs.io/?badge=master
 
 [![Documentation Status](https://readthedocs.org/projects/analysisg/badge/?version=master)](https://analysisg.readthedocs.io/?badge=master)
+
+API Documentation
+-----------------
+
+In addition to the user documentation, comprehensive API documentation for all C++ and CUDA source files can be generated using Doxygen:
+
+```bash
+# Install doxygen (if not already installed)
+sudo apt-get install doxygen graphviz
+
+# Generate documentation
+doxygen Doxyfile
+
+# View documentation
+firefox doxygen-docs/html/index.html
+```
+
+The generated documentation includes:
+- Class hierarchies and relationships
+- File and directory structure
+- Source code browser with syntax highlighting
+- Include dependency graphs
+- All .h, .cxx, .cu, and .cuh files in src/AnalysisG
