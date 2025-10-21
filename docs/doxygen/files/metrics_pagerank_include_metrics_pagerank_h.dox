@@ -1,0 +1,29 @@
+/**
+ * @file pagerank.h
+ * @brief Documentation for metrics/pagerank/include/metrics/pagerank.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/metrics/pagerank/include/metrics/pagerank.h
+ *
+ * @section file_classes Classes and Structures
+ * This file defines 5 class(es)/structure(s):
+ * - pagerank_metric
+ * - kinematic_t
+ * - meta_event_t
+ * - sample_t
+ * - collector
+ *
+ * For detailed class documentation, see the Classes section.
+ *
+ * @section file_functions Functions
+ * This file contains approximately 12 function(s).
+ * 
+ * For detailed function documentation with signatures and parameters,
+ * see the source file in the Files section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

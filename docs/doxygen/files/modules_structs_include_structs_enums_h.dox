@@ -1,0 +1,13 @@
+/**
+ * @file enums.h
+ * @brief Documentation for modules/structs/include/structs/enums.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/structs/include/structs/enums.h
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

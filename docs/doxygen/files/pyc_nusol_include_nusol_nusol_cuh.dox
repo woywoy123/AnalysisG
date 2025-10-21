@@ -1,0 +1,16 @@
+/**
+ * @file nusol.cuh
+ * @brief Documentation for pyc/nusol/include/nusol/nusol.cuh
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/pyc/nusol/include/nusol/nusol.cuh
+ *
+ * @section file_namespaces Namespaces
+ * - nusol_
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

@@ -1,0 +1,37 @@
+/**
+ * @file pyc.h
+ * @brief Documentation for pyc/interface/include/pyc/pyc.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/pyc/interface/include/pyc/pyc.h
+ *
+ * @section file_namespaces Namespaces
+ * - nusol
+ * - polar
+ * - transform
+ * - graph
+ * - combined
+ * - operators
+ * - cartesian
+ * - pyc
+ * - physics
+ * - separate
+ *
+ * @section file_classes Classes and Structures
+ * This file defines 1 class(es)/structure(s):
+ * - neutrino
+ *
+ * For detailed class documentation, see the Classes section.
+ *
+ * @section file_functions Functions
+ * This file contains approximately 74 function(s).
+ * 
+ * For detailed function documentation with signatures and parameters,
+ * see the source file in the Files section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

@@ -1,0 +1,13 @@
+/**
+ * @file met.cxx
+ * @brief Documentation for selections/example/met/met.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/selections/example/met/met.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

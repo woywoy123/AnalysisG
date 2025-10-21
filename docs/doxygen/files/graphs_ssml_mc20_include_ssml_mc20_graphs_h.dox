@@ -1,0 +1,28 @@
+/**
+ * @file graphs.h
+ * @brief Documentation for graphs/ssml_mc20/include/ssml_mc20/graphs.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/graphs/ssml_mc20/include/ssml_mc20/graphs.h
+ *
+ * @section file_classes Classes and Structures
+ * This file defines 4 class(es)/structure(s):
+ * - graph_jets
+ * - graph_jets_nonu
+ * - graph_jets_detector_lep
+ * - graph_detector
+ *
+ * For detailed class documentation, see the Classes section.
+ *
+ * @section file_functions Functions
+ * This file contains approximately 4 function(s).
+ * 
+ * For detailed function documentation with signatures and parameters,
+ * see the source file in the Files section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

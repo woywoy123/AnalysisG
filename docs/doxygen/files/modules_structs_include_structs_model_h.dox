@@ -1,0 +1,19 @@
+/**
+ * @file model.h
+ * @brief Documentation for modules/structs/include/structs/model.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/structs/include/structs/model.h
+ *
+ * @section file_classes Classes and Structures
+ * This file defines 1 class(es)/structure(s):
+ * - model_settings_t
+ *
+ * For detailed class documentation, see the Classes section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

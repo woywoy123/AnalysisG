@@ -1,0 +1,13 @@
+/**
+ * @file loss_config.cxx
+ * @brief Documentation for modules/lossfx/cxx/loss_config.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/lossfx/cxx/loss_config.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

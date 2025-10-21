@@ -1,0 +1,13 @@
+/**
+ * @file <selection-name>.cxx
+ * @brief Documentation for templates/selections/<selection-name>.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/templates/selections/<selection-name>.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

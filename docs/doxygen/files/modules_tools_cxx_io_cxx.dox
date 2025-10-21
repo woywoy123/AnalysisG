@@ -1,0 +1,20 @@
+/**
+ * @file io.cxx
+ * @brief Documentation for modules/tools/cxx/io.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/tools/cxx/io.cxx
+ *
+ * @section file_classes Classes and Structures
+ * This file defines 2 class(es)/structure(s):
+ * - stat
+ * - stat
+ *
+ * For detailed class documentation, see the Classes section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

@@ -1,0 +1,13 @@
+/**
+ * @file collector.cxx
+ * @brief Documentation for metrics/accuracy/cxx/collector.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/metrics/accuracy/cxx/collector.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

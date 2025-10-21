@@ -1,0 +1,19 @@
+/**
+ * @file matrix.cxx
+ * @brief Documentation for modules/nusol/tmp/multisol/cxx/matrix.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/nusol/tmp/multisol/cxx/matrix.cxx
+ *
+ * @section file_functions Functions
+ * This file contains approximately 12 function(s).
+ * 
+ * For detailed function documentation with signatures and parameters,
+ * see the source file in the Files section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

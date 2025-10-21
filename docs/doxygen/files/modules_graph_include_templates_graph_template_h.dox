@@ -1,0 +1,31 @@
+/**
+ * @file graph_template.h
+ * @brief Documentation for modules/graph/include/templates/graph_template.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/graph/include/templates/graph_template.h
+ *
+ * @section file_classes Classes and Structures
+ * This file defines 7 class(es)/structure(s):
+ * - graph_template
+ * - dataloader
+ * - container
+ * - analysis
+ * - meta
+ * - graph_t
+ * - graph_template
+ *
+ * For detailed class documentation, see the Classes section.
+ *
+ * @section file_functions Functions
+ * This file contains approximately 63 function(s).
+ * 
+ * For detailed function documentation with signatures and parameters,
+ * see the source file in the Files section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

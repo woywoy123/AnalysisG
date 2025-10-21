@@ -1,0 +1,13 @@
+/**
+ * @file RecursiveGraphNeuralNetwork.cxx
+ * @brief Documentation for models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */
