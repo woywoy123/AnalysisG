@@ -1,0 +1,20 @@
+/**
+ * @file optimizer.h
+ * @brief Documentation for modules/structs/include/structs/optimizer.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/structs/include/structs/optimizer.h
+ *
+ * @section file_classes Classes and Structures
+ * This file defines 2 class(es)/structure(s):
+ * - loss_opt
+ * - optimizer_params_t
+ *
+ * For detailed class documentation, see the Classes section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

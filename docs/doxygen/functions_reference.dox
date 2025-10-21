@@ -1,0 +1,118 @@
+/**
+ * @page functions_reference Functions Reference
+ *
+ * @section functions_overview Overview
+ *
+ * This page provides an overview of the major function categories in the
+ * AnalysisG framework. The complete function documentation with signatures,
+ * parameters, and return values is automatically extracted from the source
+ * code by Doxygen.
+ *
+ * For detailed function information, navigate to the **Files** tab or use
+ * the **Search** functionality.
+ *
+ * @tableofcontents
+ *
+ * @section functions_categories Function Categories
+ *
+ * AnalysisG functions are organized into several major categories:
+ *
+ * @subsection functions_physics Physics Calculations
+ *
+ * Located in the `physics_` namespace, these functions perform common
+ * high energy physics calculations:
+ *
+ * - **Momentum**: P2(), P() - Calculate momentum and momentum squared
+ * - **Velocity**: Beta2(), Beta() - Calculate particle velocity
+ * - **Mass**: M2(), M(), Mt2(), Mt() - Invariant and transverse mass
+ * - **Angles**: Theta(), DeltaR() - Polar angle and angular separation
+ *
+ * All physics functions operate on PyTorch tensors and support both CPU
+ * and CUDA execution.
+ *
+ * @subsection functions_transform Coordinate Transformations
+ *
+ * Functions for converting between coordinate systems:
+ *
+ * - **Cartesian/Polar**: CartesianToPolar(), PolarToCartesian()
+ * - **Detector Coordinates**: PxPyPzToEtaPhi(), EtaPhiToPxPyPz()
+ *
+ * @subsection functions_operators Tensor Operations
+ *
+ * Graph-specific tensor aggregation and reduction operations:
+ *
+ * - **Aggregation**: aggregate_sum(), aggregate_mean(), aggregate_max()
+ * - **Counting Control**: set_single_counting(), set_double_counting()
+ *
+ * @subsection functions_graph Graph Construction
+ *
+ * Utilities for building and manipulating graph structures:
+ *
+ * - **Edge Building**: build_knn_graph(), build_radius_graph()
+ * - **Adjacency**: edge_index_to_adj(), adj_to_edge_index()
+ *
+ * @subsection functions_nusol Neutrino Reconstruction
+ *
+ * Analytical neutrino momentum reconstruction algorithms:
+ *
+ * - **Single Neutrino**: nu_reco()
+ * - **Double Neutrino**: double_nu_reco(), double_nu_top_reco()
+ *
+ * @subsection functions_utils Utilities
+ *
+ * Helper functions for CUDA and device management:
+ *
+ * - **Atomic Operations**: atomicAdd(), atomicMax(), atomicMin() (CUDA)
+ * - **Device Management**: GetDeviceCount(), SetDevice(), Synchronize()
+ *
+ * @section functions_usage Usage Examples
+ *
+ * @subsection functions_ex_physics Physics Example
+ *
+ * @code{.cpp}
+ * #include <physics/physics.h>
+ *
+ * // Calculate invariant mass
+ * torch::Tensor p1 = ...; // [px, py, pz, E]
+ * torch::Tensor p2 = ...;
+ * torch::Tensor p_sum = p1 + p2;
+ * torch::Tensor m_inv = physics_::M(&p_sum);
+ *
+ * // Calculate Delta R
+ * torch::Tensor dr = physics_::DeltaR(&p1, &p2);
+ * @endcode
+ *
+ * @subsection functions_ex_graph Graph Example
+ *
+ * @code{.cpp}
+ * #include <graph/graph.h>
+ * #include <operators/operators.h>
+ *
+ * // Build k-NN graph
+ * torch::Tensor positions = ...; // [num_particles, 3]
+ * torch::Tensor edge_index = graph::build_knn_graph(positions, k=5);
+ *
+ * // Aggregate features
+ * torch::Tensor edge_features = ...;
+ * torch::Tensor node_features = operators::aggregate_mean(
+ *     edge_index, edge_features, positions.size(0)
+ * );
+ * @endcode
+ *
+ * @section functions_navigation Navigation
+ *
+ * To view detailed function documentation:
+ * 1. Use the **Files** tab to browse by source file
+ * 2. Use **Search** to find specific functions
+ * 3. Browse by **Namespace** for logical grouping
+ *
+ * All function signatures, parameters, return values, and implementation
+ * details are automatically extracted from the source code.
+ *
+ * @section functions_performance Performance Notes
+ *
+ * - Physics functions automatically use CUDA if tensors are on GPU
+ * - Batch operations are significantly faster on GPU
+ * - For small batches, CPU may be faster due to transfer overhead
+ * - Use contiguous tensors for best performance
+ */

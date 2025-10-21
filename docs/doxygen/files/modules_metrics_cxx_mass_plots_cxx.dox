@@ -1,0 +1,13 @@
+/**
+ * @file mass_plots.cxx
+ * @brief Documentation for modules/metrics/cxx/mass_plots.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/metrics/cxx/mass_plots.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

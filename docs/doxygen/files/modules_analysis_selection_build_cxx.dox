@@ -1,0 +1,13 @@
+/**
+ * @file selection_build.cxx
+ * @brief Documentation for modules/analysis/selection_build.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/analysis/selection_build.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

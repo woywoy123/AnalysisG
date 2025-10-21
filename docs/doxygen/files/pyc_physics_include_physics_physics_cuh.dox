@@ -1,0 +1,22 @@
+/**
+ * @file physics.cuh
+ * @brief Documentation for pyc/physics/include/physics/physics.cuh
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/pyc/physics/include/physics/physics.cuh
+ *
+ * @section file_namespaces Namespaces
+ * - physics_
+ *
+ * @section file_functions Functions
+ * This file contains approximately 20 function(s).
+ * 
+ * For detailed function documentation with signatures and parameters,
+ * see the source file in the Files section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

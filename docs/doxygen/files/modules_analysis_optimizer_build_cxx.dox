@@ -1,0 +1,13 @@
+/**
+ * @file optimizer_build.cxx
+ * @brief Documentation for modules/analysis/optimizer_build.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/analysis/optimizer_build.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

@@ -1,0 +1,26 @@
+/**
+ * @file validation.h
+ * @brief Documentation for selections/neutrino/validation/validation.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/selections/neutrino/validation/validation.h
+ *
+ * @section file_classes Classes and Structures
+ * This file defines 2 class(es)/structure(s):
+ * - packet_t
+ * - validation
+ *
+ * For detailed class documentation, see the Classes section.
+ *
+ * @section file_functions Functions
+ * This file contains approximately 5 function(s).
+ * 
+ * For detailed function documentation with signatures and parameters,
+ * see the source file in the Files section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

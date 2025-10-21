@@ -1,0 +1,27 @@
+/**
+ * @file conuix.h
+ * @brief Documentation for modules/nusol/conuix/include/conuix/conuix.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/nusol/conuix/include/conuix/conuix.h
+ *
+ * @section file_classes Classes and Structures
+ * This file defines 3 class(es)/structure(s):
+ * - nusol_t
+ * - conuic
+ * - conuix
+ *
+ * For detailed class documentation, see the Classes section.
+ *
+ * @section file_functions Functions
+ * This file contains approximately 1 function(s).
+ * 
+ * For detailed function documentation with signatures and parameters,
+ * see the source file in the Files section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

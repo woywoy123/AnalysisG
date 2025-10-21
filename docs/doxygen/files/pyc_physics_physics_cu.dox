@@ -1,0 +1,13 @@
+/**
+ * @file physics.cu
+ * @brief Documentation for pyc/physics/physics.cu
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/pyc/physics/physics.cu
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

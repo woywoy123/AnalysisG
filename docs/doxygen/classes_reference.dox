@@ -1,0 +1,80 @@
+/**
+ * @page classes_reference Classes and Structures Reference
+ *
+ * @section classes_overview Overview
+ *
+ * This page provides an overview of the major classes and structures in the
+ * AnalysisG framework, organized by module. The complete class documentation
+ * with all members, methods, and detailed information is automatically
+ * extracted from the source code by Doxygen.
+ *
+ * For detailed class information, navigate to the **Classes** tab in the
+ * navigation menu or use the search functionality.
+ *
+ * @tableofcontents
+ *
+ * @section classes_organization Class Organization
+ *
+ * AnalysisG classes are organized into several major categories:
+ *
+ * @subsection classes_templates Template Base Classes
+ *
+ * These abstract base classes define interfaces for framework extensibility:
+ * - **EventTemplate** - Base for event containers
+ * - **ParticleTemplate** - Base for particle objects  
+ * - **GraphTemplate** - Base for graph structures
+ * - **SelectionTemplate** - Base for event selection algorithms
+ * - **metric_template** - Base for evaluation metrics
+ * - **ModelTemplate** - Base for ML models
+ *
+ * @subsection classes_implementations Concrete Implementations
+ *
+ * **Event Classes**
+ * - exp_mc20_event, exp_mc20_particles
+ * - bsm_4tops_event, bsm_4tops_particles  
+ * - ssml_mc20_event, ssml_mc20_particles
+ * - gnn_event, gnn_particles
+ *
+ * **Metric Classes**
+ * - accuracy_metric
+ * - pagerank_metric
+ * - collector (data collection utility)
+ *
+ * **Model Classes**
+ * - GRIFT (Graph Recurrent Iterative Feature Transform)
+ * - RecursiveGraphNeuralNetwork
+ *
+ * **Selection Classes**
+ * - Multiple selections for MC16, MC20, neutrino reconstruction, and performance studies
+ *
+ * @section classes_usage Usage Patterns
+ *
+ * @subsection classes_inheritance Inheritance
+ *
+ * Most user code extends template base classes:
+ * @code{.cpp}
+ * class MyEvent : public EventTemplate {
+ * public:
+ *     void CompileEvent() override {
+ *         // Custom implementation
+ *     }
+ * };
+ * @endcode
+ *
+ * @subsection classes_conventions Naming Conventions
+ *
+ * - **Classes**: PascalCase or snake_case (varies by module)
+ * - **Members**: snake_case
+ * - **Private members**: Sometimes prefixed with underscore
+ *
+ * @section classes_navigation Navigation
+ *
+ * To view detailed class documentation:
+ * 1. Use the **Classes** tab in the navigation menu
+ * 2. Use the **Search** function (top-right)
+ * 3. Browse by **Modules** for logical grouping
+ * 4. View **Class Hierarchy** for inheritance relationships
+ *
+ * All class members, methods, and detailed documentation are automatically
+ * extracted from the source code and available in the class pages.
+ */

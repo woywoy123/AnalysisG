@@ -1,0 +1,28 @@
+/**
+ * @file dataloader.h
+ * @brief Documentation for modules/dataloader/include/generators/dataloader.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/dataloader/include/generators/dataloader.h
+ *
+ * @section file_classes Classes and Structures
+ * This file defines 4 class(es)/structure(s):
+ * - analysis
+ * - model_template
+ * - model_report
+ * - dataloader
+ *
+ * For detailed class documentation, see the Classes section.
+ *
+ * @section file_functions Functions
+ * This file contains approximately 15 function(s).
+ * 
+ * For detailed function documentation with signatures and parameters,
+ * see the source file in the Files section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

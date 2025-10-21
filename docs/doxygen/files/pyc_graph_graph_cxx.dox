@@ -1,0 +1,13 @@
+/**
+ * @file graph.cxx
+ * @brief Documentation for pyc/graph/graph.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/pyc/graph/graph.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

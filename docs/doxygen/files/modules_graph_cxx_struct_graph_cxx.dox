@@ -1,0 +1,13 @@
+/**
+ * @file struct_graph.cxx
+ * @brief Documentation for modules/graph/cxx/struct_graph.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/graph/cxx/struct_graph.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

@@ -1,0 +1,13 @@
+/**
+ * @file operators.cu
+ * @brief Documentation for pyc/operators/operators.cu
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/pyc/operators/operators.cu
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

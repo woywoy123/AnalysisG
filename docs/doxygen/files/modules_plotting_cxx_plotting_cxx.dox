@@ -1,0 +1,13 @@
+/**
+ * @file plotting.cxx
+ * @brief Documentation for modules/plotting/cxx/plotting.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/plotting/cxx/plotting.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

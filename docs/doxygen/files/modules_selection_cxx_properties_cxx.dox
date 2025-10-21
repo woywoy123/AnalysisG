@@ -1,0 +1,13 @@
+/**
+ * @file properties.cxx
+ * @brief Documentation for modules/selection/cxx/properties.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/selection/cxx/properties.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

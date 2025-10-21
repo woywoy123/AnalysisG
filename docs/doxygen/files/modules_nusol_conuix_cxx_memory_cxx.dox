@@ -1,0 +1,13 @@
+/**
+ * @file memory.cxx
+ * @brief Documentation for modules/nusol/conuix/cxx/memory.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/nusol/conuix/cxx/memory.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

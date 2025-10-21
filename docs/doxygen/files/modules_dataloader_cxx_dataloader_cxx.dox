@@ -1,0 +1,19 @@
+/**
+ * @file dataloader.cxx
+ * @brief Documentation for modules/dataloader/cxx/dataloader.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/dataloader/cxx/dataloader.cxx
+ *
+ * @section file_functions Functions
+ * This file contains approximately 2 function(s).
+ * 
+ * For detailed function documentation with signatures and parameters,
+ * see the source file in the Files section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

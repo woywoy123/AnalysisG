@@ -1,0 +1,148 @@
+/**
+ * @mainpage AnalysisG - A Graph Neural Network Analysis Framework for High Energy Physics
+ *
+ * @section intro_sec Introduction
+ *
+ * AnalysisG is a comprehensive framework designed for High Energy Particle Physics (HEPP) 
+ * analyses using Graph Neural Networks (GNNs). The framework addresses the complexity of 
+ * converting ROOT-based data into graph structures suitable for machine learning while 
+ * maintaining a clean, object-oriented architecture.
+ *
+ * @section philosophy Design Philosophy
+ *
+ * Following the philosophy of AnalysisTop, AnalysisG treats events and particles as 
+ * polymorphic objects, allowing for flexible and reusable analysis code. The framework 
+ * provides:
+ *
+ * - **Polymorphic Event/Particle Objects**: Type-safe, extensible representations
+ * - **Template-Based Architecture**: Flexible graph, selection, and model templates
+ * - **Performance Optimization**: Native C++ and CUDA implementations for critical operations
+ * - **Analysis Agnostic**: Designed to support diverse physics analyses
+ *
+ * @section modules Main Modules
+ *
+ * The framework is organized into several key modules:
+ *
+ * @subsection mod_core Core Modules
+ * - @ref module_events "Events" - Event and particle template classes
+ * - @ref module_graphs "Graphs" - Graph construction and feature extraction
+ * - @ref module_templates "Templates" - Base template classes for extensibility
+ *
+ * @subsection mod_analysis Analysis Modules
+ * - @ref module_selections "Selections" - Event selection and filtering
+ * - @ref module_metrics "Metrics" - Evaluation metrics for ML models
+ * - @ref module_models "Models" - Machine learning model implementations
+ *
+ * @subsection mod_computation Computation Modules
+ * - @ref module_pyc "PyC (Python-CUDA)" - High-performance C++ and CUDA kernels
+ *   - @ref module_pyc_physics "Physics Calculations" - ΔR, invariant mass, etc.
+ *   - @ref module_pyc_operators "Tensor Operations" - Aggregation and reduction
+ *   - @ref module_pyc_transform "Coordinate Transforms" - Cartesian/polar conversions
+ *   - @ref module_pyc_graph "Graph Operations" - Edge/node manipulations
+ *   - @ref module_pyc_nusol "Neutrino Solutions" - Analytical neutrino reconstruction
+ *
+ * @subsection mod_io IO and Utilities
+ * - @ref module_io "I/O" - ROOT file reading with simplified interface
+ * - @ref module_plotting "Plotting" - Histogram and visualization tools
+ * - @ref module_tools "Tools" - Utility functions and helpers
+ *
+ * @section getting_started Getting Started
+ *
+ * @subsection install Installation
+ *
+ * @code{.bash}
+ * git clone https://github.com/woywoy123/AnalysisG.git
+ * cd AnalysisG
+ * mkdir build && cd build
+ * cmake ..
+ * make -jN
+ * cmake ..
+ * @endcode
+ *
+ * @subsection prereq Prerequisites
+ *
+ * - C++ Compiler with C++20 support
+ * - CMake 3.15+
+ * - Python 3.8+
+ * - Cython
+ * - ROOT (https://root.cern/)
+ * - LibTorch (automatically installed)
+ * - HDF5
+ *
+ * @section examples Usage Examples
+ *
+ * @subsection ex_event Event Definition
+ *
+ * @code{.cpp}
+ * // Define custom event class
+ * class MyEvent : public EventTemplate {
+ * public:
+ *     void CompileEvent() override {
+ *         // Custom event compilation logic
+ *     }
+ * };
+ * @endcode
+ *
+ * @subsection ex_graph Graph Construction
+ *
+ * @code{.cpp}
+ * // Define graph template
+ * class MyGraph : public GraphTemplate {
+ * public:
+ *     void CompileGraph() override {
+ *         // Define graph structure
+ *         // Add nodes, edges, features
+ *     }
+ * };
+ * @endcode
+ *
+ * @subsection ex_selection Event Selection
+ *
+ * @code{.cpp}
+ * // Define selection criteria
+ * class MySelection : public SelectionTemplate {
+ * public:
+ *     bool Strategy() override {
+ *         // Return true if event passes selection
+ *         return event->leptons.size() >= 2;
+ *     }
+ * };
+ * @endcode
+ *
+ * @section performance Performance Features
+ *
+ * AnalysisG includes optimized implementations for computationally intensive operations:
+ *
+ * - **CUDA Kernels**: GPU-accelerated physics calculations
+ * - **C++ Native**: Zero-overhead abstractions for critical paths
+ * - **LibTorch Integration**: Efficient tensor operations
+ * - **Vectorized Operations**: SIMD-optimized code paths
+ *
+ * @section documentation Documentation
+ *
+ * - **User Guide**: See DOXYGEN_DOCUMENTATION.md
+ * - **API Reference**: Browse modules and classes using navigation
+ * - **Source Code**: Full source code browsing available
+ * - **Examples**: See test/ directory for usage examples
+ *
+ * @section contributing Contributing
+ *
+ * Contributions are welcome! Please:
+ * 1. Follow existing code style
+ * 2. Add Doxygen comments for new classes/functions
+ * 3. Include tests for new functionality
+ * 4. Update documentation as needed
+ *
+ * @section license License
+ *
+ * See LICENSE file in the repository root.
+ *
+ * @section contact Contact
+ *
+ * - GitHub: https://github.com/woywoy123/AnalysisG
+ * - Documentation: https://analysisg.readthedocs.io/
+ *
+ * @author AnalysisG Development Team
+ * @version 1.0
+ * @date 2024
+ */

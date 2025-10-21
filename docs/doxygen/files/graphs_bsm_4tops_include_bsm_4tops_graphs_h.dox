@@ -1,0 +1,32 @@
+/**
+ * @file graphs.h
+ * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/graphs.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h
+ *
+ * @section file_classes Classes and Structures
+ * This file defines 8 class(es)/structure(s):
+ * - graph_tops
+ * - graph_children
+ * - graph_truthjets
+ * - graph_truthjets_nonu
+ * - graph_jets
+ * - graph_jets_nonu
+ * - graph_jets_detector_lep
+ * - graph_detector
+ *
+ * For detailed class documentation, see the Classes section.
+ *
+ * @section file_functions Functions
+ * This file contains approximately 10 function(s).
+ * 
+ * For detailed function documentation with signatures and parameters,
+ * see the source file in the Files section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

@@ -1,0 +1,13 @@
+/**
+ * @file event.cxx
+ * @brief Documentation for events/gnn/cxx/event.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/events/gnn/cxx/event.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

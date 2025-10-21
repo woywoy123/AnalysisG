@@ -1,0 +1,306 @@
+/**
+ * @defgroup module_io I/O Operations
+ * @brief ROOT file reading and data loading utilities
+ *
+ * @section io_overview Overview
+ *
+ * The I/O module provides a simplified Cython interface for reading ROOT files,
+ * designed to be intuitive and require minimal code for common operations.
+ *
+ * @section io_features Key Features
+ *
+ * - **Simplified Interface**: Read ROOT files in ~3 lines of code
+ * - **Automatic Type Handling**: Automatic conversion of ROOT types
+ * - **Branch Mapping**: Direct mapping to Python/C++ objects
+ * - **Lazy Loading**: Efficient memory usage with on-demand loading
+ * - **Batch Processing**: Handle multiple files efficiently
+ *
+ * @section io_usage Usage Example
+ *
+ * @code{.python}
+ * from AnalysisG import IO
+ *
+ * # Open ROOT file
+ * reader = IO("data.root")
+ *
+ * # Read tree
+ * events = reader.GetTree("nominal")
+ *
+ * # Access branches
+ * for event in events:
+ *     leptons = event.leptons_pt
+ *     jets = event.jets_pt
+ * @endcode
+ *
+ * @section io_root ROOT Integration
+ *
+ * Seamless integration with ROOT:
+ * - TTree reading
+ * - TBranch access
+ * - Type conversion (ROOT → NumPy/Torch)
+ * - Friend tree support
+ *
+ * @section io_performance Performance
+ *
+ * Optimizations for large datasets:
+ * - Vectorized reads
+ * - Minimal copying
+ * - Parallel file processing
+ * - Cache management
+ */
+
+/**
+ * @defgroup module_plotting Plotting
+ * @brief Histogram and visualization utilities
+ *
+ * @section plotting_overview Overview
+ *
+ * Wrapper around boost_histograms and mpl-hepp providing object-oriented
+ * syntax for creating publication-quality plots.
+ *
+ * @section plotting_features Features
+ *
+ * - **1D/2D Histograms**: Standard histogram types
+ * - **Error Bars**: Automatic statistical error calculation
+ * - **Styling**: HEP-appropriate plot styling
+ * - **Stacking**: Stacked histograms for backgrounds
+ * - **Ratio Plots**: Data/MC ratio panels
+ *
+ * @section plotting_usage Example
+ *
+ * @code{.python}
+ * from AnalysisG import Plotting
+ *
+ * # Create histogram
+ * h = Plotting.Histogram("Jet pT", bins=50, range=(0, 500))
+ *
+ * # Fill histogram
+ * h.Fill(jet_pt, weights)
+ *
+ * # Draw
+ * h.Draw()
+ * h.SaveAs("jet_pt.pdf")
+ * @endcode
+ *
+ * @section plotting_hep HEP Styling
+ *
+ * Built-in support for common HEP plot elements:
+ * - ATLAS/CMS style
+ * - Luminosity labels
+ * - Preliminary/Internal markers
+ * - Legend positioning
+ */
+
+/**
+ * @defgroup module_tools Tools
+ * @brief General utility functions and helpers
+ *
+ * @section tools_overview Overview
+ *
+ * Collection of utility functions used throughout the framework:
+ *
+ * @subsection tools_math Mathematical Utilities
+ * - Vector operations
+ * - Statistical functions
+ * - Numerical algorithms
+ *
+ * @subsection tools_string String Utilities
+ * - Parsing
+ * - Formatting
+ * - Conversion
+ *
+ * @subsection tools_container Container Utilities
+ * - Sorting
+ * - Filtering
+ * - Merging
+ *
+ * @subsection tools_system System Utilities
+ * - File operations
+ * - Path handling
+ * - Environment variables
+ */
+
+/**
+ * @defgroup module_metadata MetaData
+ * @brief Dataset metadata and DSID information
+ *
+ * @section metadata_overview Overview
+ *
+ * Interface to PyAMI for retrieving dataset metadata and performing
+ * DSID (Dataset ID) searches.
+ *
+ * @section metadata_features Features
+ *
+ * - DSID lookup
+ * - Cross-section retrieval
+ * - Filter efficiency
+ * - Generator information
+ * - Dataset provenance
+ *
+ * @section metadata_usage Example
+ *
+ * @code{.python}
+ * from AnalysisG import MetaData
+ *
+ * # Get dataset info
+ * meta = MetaData(dsid=410470)
+ * cross_section = meta.GetCrossSection()
+ * filter_eff = meta.GetFilterEfficiency()
+ * @endcode
+ */
+
+/**
+ * @defgroup module_analysis Analysis
+ * @brief Main analysis compilation and execution framework
+ *
+ * @section analysis_overview Overview
+ *
+ * The Analysis module is the central orchestrator that chains together
+ * events, selections, graphs, and models into complete analysis workflows.
+ *
+ * @section analysis_structure Structure
+ *
+ * @subsection analysis_compiler Analysis Compiler
+ *
+ * Main class coordinating the analysis:
+ * - Load input files
+ * - Apply selections
+ * - Build graphs
+ * - Run models
+ * - Save outputs
+ *
+ * @section analysis_usage Usage
+ *
+ * @code{.python}
+ * from AnalysisG import Analysis
+ *
+ * # Create analysis
+ * ana = Analysis()
+ *
+ * # Configure
+ * ana.SetEvent(MyEvent)
+ * ana.SetSelection(MySelection)
+ * ana.SetGraph(MyGraph)
+ * ana.SetModel(MyModel)
+ *
+ * # Run
+ * ana.InputFiles = ["data.root"]
+ * ana.Run()
+ * @endcode
+ *
+ * @section analysis_features Features
+ *
+ * - **Template System**: Plug-and-play components
+ * - **Parallel Processing**: Multi-threaded event processing
+ * - **Progress Tracking**: Real-time progress monitoring
+ * - **Output Management**: HDF5/ROOT output
+ * - **Error Handling**: Robust error recovery
+ */
+
+/**
+ * @defgroup module_dataloader DataLoader
+ * @brief Data loading for machine learning training
+ *
+ * @section dataloader_overview Overview
+ *
+ * PyTorch-compatible data loaders for physics data, handling:
+ * - Event batching
+ * - Graph collation
+ * - Data augmentation
+ * - Shuffling
+ *
+ * @section dataloader_usage Example
+ *
+ * @code{.python}
+ * from AnalysisG import DataLoader
+ *
+ * # Create loader
+ * loader = DataLoader(
+ *     dataset,
+ *     batch_size=32,
+ *     shuffle=True,
+ *     num_workers=4
+ * )
+ *
+ * # Training loop
+ * for batch in loader:
+ *     graphs, labels = batch
+ *     # Training step
+ * @endcode
+ */
+
+/**
+ * @defgroup module_optimizer Optimizer
+ * @brief Optimization algorithms for model training
+ *
+ * @section optimizer_overview Overview
+ *
+ * Wrappers and extensions for PyTorch optimizers with physics-specific
+ * enhancements.
+ *
+ * @section optimizer_features Features
+ *
+ * - Learning rate scheduling
+ * - Gradient clipping
+ * - Weight decay
+ * - Custom optimizers for physics tasks
+ */
+
+/**
+ * @defgroup module_lossfx Loss Functions
+ * @brief Loss functions for physics-aware training
+ *
+ * @section lossfx_overview Overview
+ *
+ * Custom loss functions designed for physics analyses:
+ *
+ * @section lossfx_types Loss Types
+ *
+ * - **Classification**: Cross-entropy, focal loss
+ * - **Regression**: MSE with physics constraints
+ * - **Ranking**: Pairwise ranking losses
+ * - **Physics-Informed**: Losses respecting conservation laws
+ */
+
+/**
+ * @defgroup module_notification Notifications
+ * @brief Progress monitoring and notification system
+ *
+ * @section notification_overview Overview
+ *
+ * Real-time progress tracking and notifications during long-running
+ * analyses:
+ *
+ * - Progress bars
+ * - Email notifications
+ * - Logging
+ * - Performance metrics
+ */
+
+/**
+ * @defgroup module_roc ROC Curves
+ * @brief Receiver Operating Characteristic curve utilities
+ *
+ * @section roc_overview Overview
+ *
+ * Tools for generating and analyzing ROC curves:
+ *
+ * - ROC curve calculation
+ * - AUC computation
+ * - Operating point selection
+ * - Significance optimization
+ */
+
+/**
+ * @defgroup module_sampletracer Sample Tracer
+ * @brief Track sample provenance and processing history
+ *
+ * @section tracer_overview Overview
+ *
+ * Maintain detailed records of data processing:
+ *
+ * - Sample origin tracking
+ * - Processing history
+ * - Cut flow recording
+ * - Reproducibility information
+ */

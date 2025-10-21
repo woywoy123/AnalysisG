@@ -1,0 +1,35 @@
+/**
+ * @file model_template.h
+ * @brief Documentation for modules/model/include/templates/model_template.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/model/include/templates/model_template.h
+ *
+ * @section file_classes Classes and Structures
+ * This file defines 11 class(es)/structure(s):
+ * - metrics
+ * - analysis
+ * - model_template
+ * - metric_template
+ * - optimizer
+ * - dataloader
+ * - graph_t
+ * - variable_t
+ * - optimizer_params_t
+ * - model_report
+ * - model_template
+ *
+ * For detailed class documentation, see the Classes section.
+ *
+ * @section file_functions Functions
+ * This file contains approximately 25 function(s).
+ * 
+ * For detailed function documentation with signatures and parameters,
+ * see the source file in the Files section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

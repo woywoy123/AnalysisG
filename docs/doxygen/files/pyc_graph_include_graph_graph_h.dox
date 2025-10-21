@@ -1,0 +1,16 @@
+/**
+ * @file graph.h
+ * @brief Documentation for pyc/graph/include/graph/graph.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/pyc/graph/include/graph/graph.h
+ *
+ * @section file_namespaces Namespaces
+ * - graph_
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

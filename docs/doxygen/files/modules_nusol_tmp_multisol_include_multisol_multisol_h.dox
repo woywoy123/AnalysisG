@@ -1,0 +1,29 @@
+/**
+ * @file multisol.h
+ * @brief Documentation for modules/nusol/tmp/multisol/include/multisol/multisol.h
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/nusol/tmp/multisol/include/multisol/multisol.h
+ *
+ * @section file_classes Classes and Structures
+ * This file defines 5 class(es)/structure(s):
+ * - multisol_t
+ * - rev_t
+ * - mass_t
+ * - geo_t
+ * - multisol
+ *
+ * For detailed class documentation, see the Classes section.
+ *
+ * @section file_functions Functions
+ * This file contains approximately 26 function(s).
+ * 
+ * For detailed function documentation with signatures and parameters,
+ * see the source file in the Files section.
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

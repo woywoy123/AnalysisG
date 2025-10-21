@@ -1,0 +1,13 @@
+/**
+ * @file analysis.cxx
+ * @brief Documentation for modules/analysis/analysis.cxx
+ *
+ * @section file_overview Overview
+ *
+ * This file is part of the AnalysisG framework.
+ * Location: src/AnalysisG/modules/analysis/analysis.cxx
+ *
+ * @note All detailed documentation including function signatures, parameters,
+ * return values, and member variables are extracted automatically by Doxygen
+ * from the source code.
+ */

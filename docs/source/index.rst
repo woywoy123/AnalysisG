@@ -78,6 +78,16 @@ CUDA, C++ and pyc via LibTorch
    pyc/main.rst
    pyc/interface.rst
 
+API Reference (C++/CUDA)
+------------------------
+
+Complete API documentation generated from source code via Doxygen and Breathe.
+
+.. toctree::
+   :titlesonly:
+
+   api/index.rst
+
 Event and Particle Implementations
 ----------------------------------
 

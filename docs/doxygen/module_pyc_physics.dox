@@ -1,0 +1,93 @@
+/**
+ * @defgroup module_pyc PyC - Python-CUDA Interface
+ * @brief High-performance C++ and CUDA kernels for physics computations
+ *
+ * The PyC module provides a collection of highly optimized C++ and CUDA implementations
+ * for computationally intensive operations in high energy physics. This module can be
+ * used independently of the main AnalysisG framework.
+ *
+ * @section pyc_overview Overview
+ *
+ * PyC (Python-CUDA) accelerates critical physics calculations by implementing them in
+ * native C++ and CUDA, interfacing seamlessly with PyTorch tensors through LibTorch.
+ *
+ * Key features:
+ * - GPU acceleration via CUDA kernels
+ * - CPU optimization with vectorization
+ * - Zero-copy tensor operations
+ * - Thread-safe implementations
+ *
+ * @section pyc_modules Submodules
+ *
+ * - @ref module_pyc_physics "Physics" - Physics calculations (ΔR, masses, momenta)
+ * - @ref module_pyc_operators "Operators" - Tensor aggregation and reduction
+ * - @ref module_pyc_transform "Transform" - Coordinate system transformations
+ * - @ref module_pyc_graph "Graph" - Graph manipulation operations
+ * - @ref module_pyc_nusol "NuSol" - Neutrino solution algorithms
+ * - @ref module_pyc_utils "Utils" - Utility functions and helpers
+ */
+
+/**
+ * @defgroup module_pyc_physics Physics Calculations
+ * @ingroup module_pyc
+ * @brief Physics calculation functions for 4-momenta and kinematics
+ *
+ * @section physics_overview Overview
+ *
+ * This module provides optimized implementations of common high energy physics
+ * calculations operating on 4-vectors and kinematic quantities.
+ *
+ * @section physics_functions Main Functions
+ *
+ * @subsection physics_momentum Momentum Calculations
+ * - P2() - Momentum squared (p²)
+ * - P() - Momentum magnitude (|p|)
+ * - Beta2() - Beta squared (β²)
+ * - Beta() - Velocity (β = v/c)
+ *
+ * @subsection physics_mass Mass Calculations
+ * - M2() - Invariant mass squared (m²)
+ * - M() - Invariant mass (m)
+ * - Mt2() - Transverse mass squared (m_T²)
+ * - Mt() - Transverse mass (m_T)
+ *
+ * @subsection physics_angles Angular Calculations
+ * - Theta() - Polar angle (θ)
+ * - DeltaR() - Angular separation in η-φ space
+ *
+ * @section physics_usage Usage Example
+ *
+ * @code{.cpp}
+ * #include <physics/physics.h>
+ *
+ * // Calculate invariant mass from momentum components
+ * torch::Tensor mass = physics_::M(px, py, pz, energy);
+ *
+ * // Calculate Delta R between two particles
+ * torch::Tensor dr = physics_::DeltaR(eta1, eta2, phi1, phi2);
+ * @endcode
+ *
+ * @section physics_namespace Namespace
+ *
+ * All physics functions are in the `physics_` namespace.
+ *
+ * @section physics_impl Implementation
+ *
+ * Functions accept either:
+ * - Individual momentum component tensors (px, py, pz, e)
+ * - Combined 4-momentum tensor (pmc)
+ *
+ * Both CPU and CUDA implementations are provided, automatically selected based on
+ * input tensor device.
+ */
+
+/**
+ * @namespace physics_
+ * @brief Namespace for physics calculation functions
+ *
+ * This namespace contains functions for common high energy physics calculations.
+ * All functions operate on PyTorch tensors and support both CPU and CUDA execution.
+ *
+ * Functions are automatically extracted and documented by Doxygen from the source files.
+ * See the Files section for complete function signatures and documentation.
+ */
