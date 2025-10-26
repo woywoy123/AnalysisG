@@ -1,3 +1,5 @@
-sphinx>=8.0.0
-sphinx-rtd-theme
-breathe
+sphinx>=4.0.0
+sphinx_rtd_theme>=1.0.0
+breathe>=4.33.0
+sphinx-tabs>=3.4.0
+sphinx-copybutton
