@@ -1,0 +1,448 @@
+/**
+ * @file selections_implementations.dox
+ * @brief Documentation for specific selection implementation classes
+ * @defgroup selections_impl Selection Implementations
+ * @ingroup module_selections
+ * @{
+ *
+ * ## Overview
+ *
+ * Selection implementations define physics analysis strategies for event reconstruction and categorization.
+ * Each implementation extends SelectionTemplate and implements specific algorithms for identifying physics
+ * processes, matching detector objects to truth particles, and extracting observables.
+ *
+ * ## Selection Philosophy
+ *
+ * Selections in AnalysisG serve multiple purposes:
+ * - **Event filtering**: Apply cuts to select interesting events
+ * - **Reconstruction**: Build physics objects (tops, W bosons, etc.)
+ * - **Truth matching**: Associate detector objects with truth particles
+ * - **Observable extraction**: Calculate physics quantities for analysis
+ *
+ * ## Available Selection Implementations
+ *
+ * ### Top Quark Truth Matching (topmatching)
+ *
+ * Implements truth-matching algorithms for top quarks in BSM 4-top analysis.
+ *
+ * **Physics Goal:**
+ * - Match reconstructed jets to truth top quarks
+ * - Evaluate reconstruction efficiency
+ * - Study decay mode dependencies
+ *
+ * **Matching Strategies:**
+ * ```cpp
+ * class topmatching : public selection_template {
+ * public:
+ *     // Selection method - filters events
+ *     bool selection(event_template* ev) override {
+ *         bsm_4tops* event = dynamic_cast<bsm_4tops*>(ev);
+ *         
+ *         // Require at least 4 tops and 4 jets
+ *         if (event->Tops.size() < 4) return false;
+ *         if (event->Jets.size() < 4) return false;
+ *         
+ *         return true;
+ *     }
+ *
+ *     // Strategy method - performs reconstruction
+ *     bool strategy(event_template* ev) override {
+ *         bsm_4tops* event = dynamic_cast<bsm_4tops*>(ev);
+ *         
+ *         // Match tops to truth jets
+ *         for (auto* top : event->Tops) {
+ *             particle_template* matched_jet = FindClosestJet(top, event->TruthJets);
+ *             
+ *             if (matched_jet && DeltaR(top, matched_jet) < 0.4) {
+ *                 truth_top.push_back(top->Mass());
+ *                 toptruthjets_mass.push_back(matched_jet->Mass());
+ *             }
+ *         }
+ *         
+ *         return truth_top.size() > 0;
+ *     }
+ * };
+ * ```
+ *
+ * **Extracted Observables:**
+ * ```cpp
+ * std::vector<float> truth_top;            // Truth top masses (GeV)
+ * std::vector<int> no_children;            // Number of decay products
+ * 
+ * std::vector<float> topchildren_mass;     // Reconstructed mass from children
+ * std::vector<int> topchildren_leptonic;   // Decay mode (0=hadronic, 1=leptonic)
+ * 
+ * std::vector<float> toptruthjets_mass;    // Mass from truth jets
+ * std::vector<int> toptruthjets_njets;     // Number of jets matched
+ * 
+ * std::vector<float> topjets_leptons_mass; // Mass from jets + leptons
+ * std::vector<int> topjets_leptons_pdgid;  // Lepton PDG ID
+ * ```
+ *
+ * **Usage Example:**
+ * ```cpp
+ * // Create selection
+ * topmatching* sel = new topmatching();
+ * AG->SetSelection(sel);
+ *
+ * // Run selection
+ * Container* container = new Container();
+ * container->EventTemplate = new bsm_4tops();
+ * container->CompileSelection(AG);
+ *
+ * // Access results
+ * topmatching* results = dynamic_cast<topmatching*>(container->Selection);
+ * for (size_t i = 0; i < results->truth_top.size(); ++i) {
+ *     float mass_resolution = results->toptruthjets_mass[i] - results->truth_top[i];
+ *     std::cout << "Mass resolution: " << mass_resolution << " GeV" << std::endl;
+ * }
+ * ```
+ *
+ * ### Neutrino Combinatorial Reconstruction (combinatorial)
+ *
+ * Implements combinatorial algorithms for neutrino reconstruction in top decays.
+ *
+ * **Physics Goal:**
+ * - Reconstruct neutrino four-momentum from MET
+ * - Solve quadratic constraint equations
+ * - Handle combinatorial ambiguities
+ *
+ * **Reconstruction Algorithm:**
+ * ```cpp
+ * class combinatorial : public selection_template {
+ * public:
+ *     bool strategy(event_template* ev) override {
+ *         // For each lepton + b-jet combination
+ *         for (auto* lepton : event->Leptons) {
+ *             for (auto* bjet : event->BJets) {
+ *                 // Use NuSol for neutrino reconstruction
+ *                 NeutrinoSolutions sols = SolveNeutrino(
+ *                     lepton->Px(), lepton->Py(), lepton->Pz(), lepton->E(),
+ *                     bjet->Px(), bjet->Py(), bjet->Pz(), bjet->E(),
+ *                     event->met, event->phi,
+ *                     173.0  // Top mass constraint (GeV)
+ *                 );
+ *
+ *                 // Store best solution
+ *                 if (sols.nsol > 0) {
+ *                     float best_chi2 = 1e10;
+ *                     int best_idx = 0;
+ *                     
+ *                     for (int i = 0; i < sols.nsol; ++i) {
+ *                         float chi2 = CalculateChi2(sols.nu[i], lepton, bjet);
+ *                         if (chi2 < best_chi2) {
+ *                             best_chi2 = chi2;
+ *                             best_idx = i;
+ *                         }
+ *                     }
+ *                     
+ *                     neutrino_px.push_back(sols.nu[best_idx].Px());
+ *                     neutrino_py.push_back(sols.nu[best_idx].Py());
+ *                     neutrino_pz.push_back(sols.nu[best_idx].Pz());
+ *                     reconstruction_chi2.push_back(best_chi2);
+ *                 }
+ *             }
+ *         }
+ *         
+ *         return neutrino_px.size() > 0;
+ *     }
+ * };
+ * ```
+ *
+ * **Observables:**
+ * ```cpp
+ * std::vector<float> neutrino_px;          // Reconstructed neutrino px (GeV)
+ * std::vector<float> neutrino_py;          // Reconstructed neutrino py (GeV)
+ * std::vector<float> neutrino_pz;          // Reconstructed neutrino pz (GeV)
+ * std::vector<float> reconstruction_chi2;   // Goodness-of-fit
+ * std::vector<int> solution_type;          // 0=real, 1=complex
+ * ```
+ *
+ * ### Z' → tt̄ Resonance Search (zprime)
+ *
+ * Implements reconstruction strategies for Z' boson searches in tt̄ final states.
+ *
+ * **Physics Goal:**
+ * - Reconstruct Z' → tt̄ candidates
+ * - Calculate invariant mass of tt̄ system
+ * - Apply kinematic selection criteria
+ *
+ * **Reconstruction Strategy:**
+ * ```cpp
+ * class zprime : public selection_template {
+ * public:
+ *     bool selection(event_template* ev) override {
+ *         // Basic event selection
+ *         if (event->Jets.size() < 6) return false;  // At least 6 jets for ttbar
+ *         if (event->Leptons.size() < 1) return false;  // At least 1 lepton
+ *         if (event->met < 20.0) return false;  // MET > 20 GeV
+ *         
+ *         return true;
+ *     }
+ *
+ *     bool strategy(event_template* ev) override {
+ *         // Reconstruct hadronic top
+ *         for (size_t i = 0; i < jets.size(); ++i) {
+ *             for (size_t j = i+1; j < jets.size(); ++j) {
+ *                 for (size_t k = j+1; k < jets.size(); ++k) {
+ *                     particle_template* top_had = jets[i] + jets[j] + jets[k];
+ *                     
+ *                     // Top mass window
+ *                     if (fabs(top_had->Mass() - 173.0) > 25.0) continue;
+ *                     
+ *                     // Reconstruct leptonic top
+ *                     for (auto* lep : leptons) {
+ *                         for (auto* bjet : bjets) {
+ *                             NeutrinoSolutions nu_sols = SolveNeutrino(lep, bjet, met);
+ *                             
+ *                             if (nu_sols.nsol > 0) {
+ *                                 particle_template* top_lep = lep + bjet + nu_sols.nu[0];
+ *                                 
+ *                                 // Calculate Z' mass
+ *                                 particle_template* zprime_cand = top_had + top_lep;
+ *                                 zprime_mass.push_back(zprime_cand->Mass());
+ *                                 zprime_pt.push_back(zprime_cand->Pt());
+ *                             }
+ *                         }
+ *                     }
+ *                 }
+ *             }
+ *         }
+ *         
+ *         return zprime_mass.size() > 0;
+ *     }
+ * };
+ * ```
+ *
+ * **Observables:**
+ * ```cpp
+ * std::vector<float> zprime_mass;     // Z' candidate mass (GeV)
+ * std::vector<float> zprime_pt;       // Z' transverse momentum (GeV)
+ * std::vector<float> top_had_mass;    // Hadronic top mass (GeV)
+ * std::vector<float> top_lep_mass;    // Leptonic top mass (GeV)
+ * std::vector<float> delta_r_tops;    // ΔR between top quarks
+ * ```
+ *
+ * ### Top Kinematic Studies (topkinematics)
+ *
+ * Extracts kinematic observables from top quarks for performance studies.
+ *
+ * **Physics Goal:**
+ * - Study top quark kinematics
+ * - Compare truth vs. reconstructed quantities
+ * - Evaluate reconstruction performance
+ *
+ * **Observable Extraction:**
+ * ```cpp
+ * class topkinematics : public selection_template {
+ * public:
+ *     bool strategy(event_template* ev) override {
+ *         bsm_4tops* event = dynamic_cast<bsm_4tops*>(ev);
+ *         
+ *         for (auto* top : event->Tops) {
+ *             // Kinematic variables
+ *             top_pt.push_back(top->Pt());
+ *             top_eta.push_back(top->Eta());
+ *             top_phi.push_back(top->Phi());
+ *             top_mass.push_back(top->Mass());
+ *             top_rapidity.push_back(top->Rapidity());
+ *             
+ *             // Decay information
+ *             bool is_leptonic = HasLeptonicDecay(top);
+ *             decay_mode.push_back(is_leptonic ? 1 : 0);
+ *             
+ *             // Angular correlations
+ *             for (auto* other_top : event->Tops) {
+ *                 if (other_top != top) {
+ *                     float dr = DeltaR(top, other_top);
+ *                     delta_r_tops.push_back(dr);
+ *                     
+ *                     float dphi = DeltaPhi(top, other_top);
+ *                     delta_phi_tops.push_back(dphi);
+ *                 }
+ *             }
+ *         }
+ *         
+ *         return top_pt.size() > 0;
+ *     }
+ * };
+ * ```
+ *
+ * ### Analysis Region Definition (regions)
+ *
+ * Defines signal and control regions for physics analyses.
+ *
+ * **Physics Goal:**
+ * - Categorize events into analysis regions
+ * - Define signal region (SR), control regions (CR), validation regions (VR)
+ * - Enable data-driven background estimation
+ *
+ * **Region Definition:**
+ * ```cpp
+ * class regions : public selection_template {
+ * public:
+ *     enum Region {
+ *         SIGNAL,          // Signal region
+ *         CR_TTBAR,        // ttbar control region
+ *         CR_WJETS,        // W+jets control region
+ *         VR_LOW_MET,      // Validation region (low MET)
+ *         VR_HIGH_MET      // Validation region (high MET)
+ *     };
+ *
+ *     bool strategy(event_template* ev) override {
+ *         int n_jets = event->Jets.size();
+ *         int n_bjets = CountBJets(event->Jets);
+ *         int n_leptons = event->Leptons.size();
+ *         float met = event->met;
+ *
+ *         Region region;
+ *
+ *         // Signal region: >= 6 jets, >= 2 b-jets, >= 1 lepton, MET > 50 GeV
+ *         if (n_jets >= 6 && n_bjets >= 2 && n_leptons >= 1 && met > 50.0) {
+ *             region = SIGNAL;
+ *         }
+ *         // ttbar CR: 4-5 jets, >= 1 b-jet, 1 lepton, MET 20-50 GeV
+ *         else if (n_jets >= 4 && n_jets <= 5 && n_bjets >= 1 && 
+ *                  n_leptons == 1 && met > 20.0 && met < 50.0) {
+ *             region = CR_TTBAR;
+ *         }
+ *         // W+jets CR: >= 4 jets, 0 b-jets, 1 lepton, MET > 30 GeV
+ *         else if (n_jets >= 4 && n_bjets == 0 && n_leptons == 1 && met > 30.0) {
+ *             region = CR_WJETS;
+ *         }
+ *         else {
+ *             return false;  // Event doesn't pass any region
+ *         }
+ *
+ *         region_code.push_back(static_cast<int>(region));
+ *         return true;
+ *     }
+ * };
+ * ```
+ *
+ * ## Implementing Custom Selections
+ *
+ * ### Step 1: Define Selection Class
+ *
+ * ```cpp
+ * #include <templates/selection_template.h>
+ *
+ * class my_selection : public selection_template {
+ * public:
+ *     my_selection();
+ *     ~my_selection() override;
+ *
+ *     // Required overrides
+ *     selection_template* clone() override;
+ *     bool selection(event_template* ev) override;
+ *     bool strategy(event_template* ev) override;
+ *     void merge(selection_template* other) override;
+ *
+ *     // Observables
+ *     std::vector<float> observable1;
+ *     std::vector<int> observable2;
+ * };
+ * ```
+ *
+ * ### Step 2: Implement Selection Method
+ *
+ * ```cpp
+ * bool my_selection::selection(event_template* ev) {
+ *     my_event* event = dynamic_cast<my_event*>(ev);
+ *     
+ *     // Apply event-level cuts
+ *     if (event->Jets.size() < 4) return false;
+ *     if (event->met < 30.0) return false;
+ *     
+ *     // Object quality cuts
+ *     for (auto* jet : event->Jets) {
+ *         if (jet->pt() < 25.0) return false;
+ *     }
+ *     
+ *     return true;
+ * }
+ * ```
+ *
+ * ### Step 3: Implement Strategy Method
+ *
+ * ```cpp
+ * bool my_selection::strategy(event_template* ev) {
+ *     my_event* event = dynamic_cast<my_event*>(ev);
+ *     
+ *     // Perform reconstruction
+ *     for (size_t i = 0; i < event->Jets.size(); ++i) {
+ *         for (size_t j = i+1; j < event->Jets.size(); ++j) {
+ *             particle_template* dijet = event->Jets[i] + event->Jets[j];
+ *             
+ *             observable1.push_back(dijet->Mass());
+ *             observable2.push_back(event->Jets[i]->btag());
+ *         }
+ *     }
+ *     
+ *     return observable1.size() > 0;
+ * }
+ * ```
+ *
+ * ### Step 4: Implement Merge Method
+ *
+ * ```cpp
+ * void my_selection::merge(selection_template* other) {
+ *     my_selection* sel = dynamic_cast<my_selection*>(other);
+ *     
+ *     // Combine observables from multiple threads
+ *     observable1.insert(observable1.end(),
+ *         sel->observable1.begin(), sel->observable1.end());
+ *     observable2.insert(observable2.end(),
+ *         sel->observable2.begin(), sel->observable2.end());
+ * }
+ * ```
+ *
+ * ### Step 5: Register and Run
+ *
+ * ```cpp
+ * // Create and register selection
+ * my_selection* sel = new my_selection();
+ * AG->SetSelection(sel);
+ *
+ * // Run analysis
+ * Container* container = new Container();
+ * container->EventTemplate = new my_event();
+ * container->CompileSelection(AG);
+ *
+ * // Access results
+ * my_selection* results = dynamic_cast<my_selection*>(container->Selection);
+ * for (float mass : results->observable1) {
+ *     histogram->Fill(mass);
+ * }
+ * ```
+ *
+ * ## Best Practices
+ *
+ * ### Separation of Concerns
+ * - `selection()`: Fast event filtering (lightweight cuts)
+ * - `strategy()`: Detailed reconstruction and observable extraction
+ * - `merge()`: Thread-safe combination of results
+ *
+ * ### Performance Optimization
+ * - Apply cheapest cuts first in `selection()`
+ * - Use `reserve()` for vectors if size is predictable
+ * - Avoid redundant calculations (cache intermediate results)
+ *
+ * ### Code Organization
+ * - Group related observables together
+ * - Use meaningful variable names with units in comments
+ * - Document physics conventions and assumptions
+ *
+ * ### Truth Matching
+ * - Use ΔR < 0.4 for jet-parton matching
+ * - Apply momentum matching for ambiguity resolution
+ * - Handle unmatched objects gracefully
+ *
+ * ## See Also
+ * - @ref SelectionTemplate - Base class documentation
+ * - @ref module_pyc_nusol - Neutrino reconstruction algorithms
+ * - @ref module_pyc_physics - Physics calculations
+ * - @ref Container - Selection orchestration
+ *
+ * @}
+ */
