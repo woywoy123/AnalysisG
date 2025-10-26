@@ -1,0 +1,238 @@
+/**
+ * @file structs_particles.dox
+ * @brief Documentation for particle_t structure
+ * @defgroup modules_structs_particle Particle Structure Documentation
+ * @ingroup modules_structs
+ * @{
+ *
+ * ## Overview
+ *
+ * The particle_t structure represents a single particle (or physics object) in the
+ * AnalysisG framework. It stores complete 4-momentum information in both Cartesian
+ * (px, py, pz, E) and polar (pt, eta, phi, E) coordinates, along with particle
+ * identification and relationship data.
+ *
+ * ## Coordinate Systems
+ *
+ * The structure supports **dual representation**:
+ * - **Cartesian**: (px, py, pz, E) - Standard 4-momentum components
+ * - **Polar**: (pt, eta, phi, E) - ATLAS/CMS detector coordinates
+ *
+ * Flags `cartesian` and `polar` indicate which representation is currently valid.
+ *
+ * ## Structure Definition
+ *
+ * @code{.cpp}
+ * struct particle_t {
+ *     // Energy and Mass
+ *     double e;
+ *     double mass;
+ *
+ *     // Cartesian 3-Momentum
+ *     double px, py, pz;
+ *
+ *     // Polar Coordinates
+ *     double pt, eta, phi;
+ *
+ *     // Coordinate System Flags
+ *     bool cartesian, polar;
+ *
+ *     // Particle Identity
+ *     double charge;
+ *     int pdgid;
+ *     int index;
+ *
+ *     // Classification
+ *     std::string type, hash, symbol;
+ *
+ *     // Particle Type Definitions
+ *     std::vector<int> lepdef, nudef;
+ *
+ *     // Decay Relationships
+ *     std::map<std::string, bool> children, parents;
+ *     std::map<std::string, particle_template*>* data_p;
+ * };
+ * @endcode
+ *
+ * ## Member Documentation
+ *
+ * ### Energy and Mass
+ *
+ * #### e (Energy)
+ * **Type**: `double`  
+ * **Default**: `-0.000000000000001` (sentinel for uninitialized)  
+ * **Unit**: GeV
+ *
+ * Total energy E = √(p² + m²) where p is the 3-momentum magnitude.
+ *
+ * #### mass (Invariant Mass)
+ * **Type**: `double`  
+ * **Default**: `-1.0` (uninitialized)  
+ * **Unit**: GeV
+ *
+ * Rest mass m where E² = p² + m². For massless particles (photons, gluons),
+ * this should be 0.
+ *
+ * ### Cartesian 3-Momentum
+ *
+ * #### px, py, pz
+ * **Type**: `double`  
+ * **Default**: `0.0`  
+ * **Unit**: GeV
+ *
+ * X, Y, and Z components of momentum respectively.
+ *
+ * ### Polar Coordinates
+ *
+ * #### pt (Transverse Momentum)
+ * **Type**: `double`  
+ * **Default**: `0.0`  
+ * **Unit**: GeV
+ *
+ * pt = √(px² + py²). The momentum component perpendicular to the beam axis.
+ *
+ * #### eta (Pseudorapidity)
+ * **Type**: `double`  
+ * **Default**: `0.0`  
+ * **Unit**: dimensionless
+ *
+ * η = -ln(tan(θ/2)) where θ is the polar angle from the beam axis.
+ * Approximates rapidity for highly relativistic particles.
+ *
+ * **Note**: η = 0 at 90° from beam, ±∞ along beam axis.
+ *
+ * #### phi (Azimuthal Angle)
+ * **Type**: `double`  
+ * **Default**: `0.0`  
+ * **Unit**: radians
+ *
+ * Angle around the beam axis, typically in range [-π, π].
+ *
+ * ### Coordinate System Flags
+ *
+ * #### cartesian, polar
+ * **Type**: `bool`  
+ * **Default**: `false`
+ *
+ * Flags indicating if Cartesian (px, py, pz) or polar (pt, eta, phi) coordinates
+ * are valid.
+ *
+ * ### Particle Identity
+ *
+ * #### charge
+ * **Type**: `double`  
+ * **Default**: `0.0`  
+ * **Unit**: e (elementary charge)
+ *
+ * Electric charge. Examples: electron = -1, proton = +1, neutron = 0.
+ *
+ * #### pdgid
+ * **Type**: `int`  
+ * **Default**: `0`
+ *
+ * PDG particle identification code (standard Monte Carlo numbering scheme).
+ * Examples: 11 = e⁻, -11 = e⁺, 13 = μ⁻, 22 = γ, 2212 = p
+ *
+ * **See**: http://pdg.lbl.gov/
+ *
+ * #### index
+ * **Type**: `int`  
+ * **Default**: `-1`
+ *
+ * Index of particle in the event's particle collection. Used for array indexing
+ * and relationship tracking.
+ *
+ * ### Classification
+ *
+ * #### type
+ * **Type**: `std::string`  
+ * **Default**: `""` (empty string)
+ *
+ * Human-readable particle type/classification.
+ * Examples: "Electron", "Muon", "Jet", "MET", "TruthTop"
+ *
+ * #### hash
+ * **Type**: `std::string`  
+ * **Default**: `""` (empty string)
+ *
+ * Unique hash identifier for this particle. Used for particle tracking across
+ * different event representations and for efficient deduplication.
+ *
+ * #### symbol
+ * **Type**: `std::string`  
+ * **Default**: `""` (empty string)
+ *
+ * Short symbol representation. Examples: "e⁻", "μ⁺", "j", "ν"
+ *
+ * ### Particle Type Definitions
+ *
+ * #### lepdef
+ * **Type**: `std::vector<int>`  
+ * **Default**: `{11, 13, 15}` (e, μ, τ)
+ *
+ * PDG codes for charged leptons. Used for lepton identification in analysis code.
+ *
+ * #### nudef
+ * **Type**: `std::vector<int>`  
+ * **Default**: `{12, 14, 16}` (νₑ, νᵤ, ντ)
+ *
+ * PDG codes for neutrinos. Used for neutrino identification in analysis code.
+ *
+ * ### Decay Relationships
+ *
+ * #### children
+ * **Type**: `std::map<std::string, bool>`  
+ * **Default**: `{}` (empty map)
+ *
+ * Map of child particle hashes. Keys are hash identifiers of decay products,
+ * values indicate relationship validity. Used to reconstruct decay chains and
+ * hierarchies.
+ *
+ * **Note**: For truth particles, represents Monte Carlo truth decay tree. For
+ * detector objects, may represent jet constituents or composite objects.
+ *
+ * #### parents
+ * **Type**: `std::map<std::string, bool>`  
+ * **Default**: `{}` (empty map)
+ *
+ * Map of parent particle hashes. Keys are hash identifiers of parent particles,
+ * values indicate relationship validity. Allows traversing decay chains upward.
+ *
+ * #### data_p
+ * **Type**: `std::map<std::string, particle_template*>*`  
+ * **Default**: `nullptr`
+ *
+ * Pointer to the global particle data container. Provides access to all particles
+ * in the event for relationship queries. When non-null, hash values in children/parents
+ * maps can be dereferenced to actual particle_template objects.
+ *
+ * **Warning**: Raw pointer - does not manage lifetime. User must ensure validity.
+ *
+ * ## Usage Example
+ *
+ * @code{.cpp}
+ * #include <structs/particles.h>
+ *
+ * particle_t electron;
+ * electron.pt = 50.0;   // GeV
+ * electron.eta = 0.5;
+ * electron.phi = 1.2;
+ * electron.e = 50.1;    // GeV
+ * electron.polar = true;
+ *
+ * electron.pdgid = 11;  // PDG code for electron
+ * electron.charge = -1.0;
+ * electron.type = "Electron";
+ * @endcode
+ *
+ * ## Notes
+ *
+ * - Memory layout is optimized for common access patterns in HEP analysis
+ * - POD structure for efficient memory layout
+ * - Compatible with both C and C++ code
+ *
+ * @see EventTemplate for container of particles
+ * @see particle_template for the complete particle interface
+ *
+ * @}
+ */

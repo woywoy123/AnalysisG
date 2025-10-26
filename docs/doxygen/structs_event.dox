@@ -1,0 +1,96 @@
+/**
+ * @file structs_event.dox
+ * @brief Documentation for event_t structure
+ * @defgroup modules_structs_event Event Structure Documentation
+ * @ingroup modules_structs
+ * @{
+ *
+ * ## Overview
+ *
+ * The event_t structure represents a single physics event in the AnalysisG framework.
+ * It stores essential event-level information including identification, weighting,
+ * and provenance tracking.
+ *
+ * ## Structure Definition
+ *
+ * @code{.cpp}
+ * struct event_t {
+ *     std::string name;
+ *     double weight;
+ *     long index;
+ *     std::string hash;
+ *     std::string tree;
+ * };
+ * @endcode
+ *
+ * ## Member Documentation
+ *
+ * ### name
+ * **Type**: `std::string`  
+ * **Default**: `""` (empty string)
+ *
+ * Human-readable event name/identifier. Typically set by the analysis framework
+ * or user code to identify the event type or classification.
+ *
+ * ### weight
+ * **Type**: `double`  
+ * **Default**: `1.0`  
+ * **Unit**: dimensionless
+ *
+ * Monte Carlo event weight. Represents the statistical weight of this event in
+ * Monte Carlo simulations. For data events, this is typically 1.0. For MC, it
+ * combines generator weights, cross-section normalization, and any analysis-specific
+ * corrections.
+ *
+ * **Note**: Must be positive for physically meaningful events.
+ *
+ * ### index
+ * **Type**: `long`  
+ * **Default**: `-1`
+ *
+ * Event index/number within the dataset. Sequential identifier for the event in
+ * the input file or dataset. Used for event tracking and reproducibility.
+ *
+ * **Note**: A value of -1 indicates an uninitialized or invalid event.
+ *
+ * ### hash
+ * **Type**: `std::string`  
+ * **Default**: `""` (empty string)
+ *
+ * Unique hash identifier for the event. Cryptographic or deterministic hash used for:
+ * - Event deduplication across datasets
+ * - Reproducibility tracking
+ * - Cache key generation
+ *
+ * ### tree
+ * **Type**: `std::string`  
+ * **Default**: `""` (empty string)
+ *
+ * Name of the ROOT TTree from which this event was read. Records the source tree
+ * name (e.g., "nominal", "systematic_up", "systematic_down") for systematic
+ * variation tracking.
+ *
+ * ## Usage Example
+ *
+ * @code{.cpp}
+ * #include <structs/event.h>
+ *
+ * event_t event;
+ * event.name = "ttbar_event_001";
+ * event.weight = 1.25;  // Monte Carlo weight
+ * event.index = 42;     // Event number
+ * event.hash = "unique_event_id";
+ * event.tree = "nominal";
+ * @endcode
+ *
+ * ## Notes
+ *
+ * - This is a POD (Plain Old Data) structure for efficient memory layout
+ * - Fast access patterns in event processing loops
+ * - Compatible with both C and C++ code
+ *
+ * @see EventTemplate for the complete event interface
+ * @see particle_t for associated particle data structure
+ *
+ * @}
+ */

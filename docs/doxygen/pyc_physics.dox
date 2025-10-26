@@ -1,0 +1,262 @@
+/**
+ * @file pyc_physics.dox
+ * @brief Documentation for PyC Physics Calculations Module
+ * @defgroup pyc_physics Physics Calculations
+ * @ingroup module_pyc
+ * @{
+ *
+ * ## Overview
+ *
+ * This module provides optimized implementations of common high energy physics
+ * calculations, including:
+ * - Invariant mass and transverse mass
+ * - 3-momentum magnitude and Lorentz factor β
+ * - Angular separation (ΔR) between particles
+ * - Polar angle θ
+ *
+ * ## Features
+ *
+ * - **CUDA Accelerated**: GPU implementations for large-scale processing
+ * - **Vectorized**: Batch operations on tensor inputs
+ * - **Coordinate Agnostic**: Works with both Cartesian (px,py,pz,E) and combined 4-vectors
+ * - **Zero-Copy**: Direct LibTorch tensor operations
+ *
+ * ## Coordinate Conventions
+ *
+ * Functions accept two input formats:
+ * 1. **Separated**: Individual tensors for px, py, pz, E
+ * 2. **Combined**: Single tensor [N x 4] with columns [px, py, pz, E] or [pt, eta, phi, E]
+ *
+ * **Note**: All calculations use natural units where c = 1. Input tensors must have
+ * compatible shapes for broadcasting.
+ *
+ * ## Namespace: physics_
+ *
+ * All functions are in the `physics_` namespace.
+ *
+ * ## Functions
+ *
+ * ### 3-Momentum Calculations
+ *
+ * #### P2 (Squared 3-Momentum)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor P2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz);
+ * torch::Tensor P2(torch::Tensor* pmc);  // Combined 4-vector
+ * @endcode
+ *
+ * **Formula**: p² = px² + py² + pz²
+ *
+ * **Returns**: Tensor containing p² values in GeV²
+ *
+ * #### P (3-Momentum Magnitude)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor P(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz);
+ * torch::Tensor P(torch::Tensor* pmc);  // Combined 4-vector
+ * @endcode
+ *
+ * **Formula**: p = √(px² + py² + pz²)
+ *
+ * **Returns**: Tensor containing p values in GeV
+ *
+ * ---
+ *
+ * ### Lorentz Factor Calculations
+ *
+ * #### Beta2 (Squared Lorentz Velocity)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor Beta2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e);
+ * torch::Tensor Beta2(torch::Tensor* pmc);  // Combined 4-vector
+ * @endcode
+ *
+ * **Formula**: β² = p²/E²
+ *
+ * **Description**:  
+ * Used in boost calculations and rapidity computations.
+ *
+ * **Returns**: Tensor containing β² values (dimensionless, range [0,1))
+ *
+ * **Note**:
+ * - β² → 1 for highly relativistic particles
+ * - β² = 0 for particles at rest
+ *
+ * #### Beta (Lorentz Velocity)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor Beta(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e);
+ * torch::Tensor Beta(torch::Tensor* pmc);  // Combined 4-vector
+ * @endcode
+ *
+ * **Formula**: β = p/E = √(β²)
+ *
+ * **Returns**: Tensor containing β values (dimensionless, range [0,1))
+ *
+ * ---
+ *
+ * ### Invariant Mass Calculations
+ *
+ * #### M2 (Squared Invariant Mass)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor M2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e);
+ * torch::Tensor M2(torch::Tensor* pmc);  // Combined 4-vector
+ * @endcode
+ *
+ * **Formula**: m² = E² - p²
+ *
+ * **Description**:  
+ * Fundamental Lorentz-invariant quantity in special relativity. For composite
+ * systems, use 4-momentum sum before calling this function.
+ *
+ * **Returns**: Tensor containing m² values in GeV²
+ *
+ * **Note**:
+ * - m² can be negative for space-like 4-vectors (indicates error in physics)
+ * - m² = 0 for massless particles (photons, gluons)
+ *
+ * #### M (Invariant Mass)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor M(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e);
+ * torch::Tensor M(torch::Tensor* pmc);  // Combined 4-vector
+ * @endcode
+ *
+ * **Formula**: m = √(E² - p²) = √(m²)
+ *
+ * **Description**:  
+ * Standard particle mass calculation. For composite particles (e.g., di-lepton
+ * systems, jets), first sum the 4-momenta then apply this function.
+ *
+ * **Returns**: Tensor containing m values in GeV
+ *
+ * **Note**:
+ * - Returns NaN for negative m² (space-like 4-vectors)
+ * - For composite systems: M(p₁+p₂) ≠ M(p₁) + M(p₂)
+ *
+ * **Example**:
+ * @code{.cpp}
+ * // Separated components
+ * torch::Tensor px = torch::tensor({50.0, 30.0});
+ * torch::Tensor py = torch::tensor({20.0, 40.0});
+ * torch::Tensor pz = torch::tensor({10.0, -15.0});
+ * torch::Tensor e = torch::tensor({56.0, 53.0});
+ *
+ * // Calculate invariant mass
+ * torch::Tensor mass = physics_::M(&px, &py, &pz, &e);
+ *
+ * // Or use combined 4-vector
+ * torch::Tensor pmc = torch::stack({px, py, pz, e}, 1);
+ * torch::Tensor mass2 = physics_::M(&pmc);
+ * @endcode
+ *
+ * ---
+ *
+ * ### Transverse Mass Calculations
+ *
+ * #### Mt2 (Squared Transverse Mass)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor Mt2(torch::Tensor* pz, torch::Tensor* e);
+ * torch::Tensor Mt2(torch::Tensor* pmc);  // Combined 4-vector
+ * @endcode
+ *
+ * **Formula**: mₜ² = E² - pz²
+ *
+ * **Description**:  
+ * Transverse mass is invariant under boosts along the z-axis (beam direction).
+ * Commonly used in analyses with missing transverse energy.
+ *
+ * **Returns**: Tensor containing mₜ² values in GeV²
+ *
+ * **Note**: mₜ² = pt² + m² for single particles
+ *
+ * #### Mt (Transverse Mass)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor Mt(torch::Tensor* pz, torch::Tensor* e);
+ * torch::Tensor Mt(torch::Tensor* pmc);  // Combined 4-vector
+ * @endcode
+ *
+ * **Formula**: mₜ = √(E² - pz²)
+ *
+ * **Returns**: Tensor containing mₜ values in GeV
+ *
+ * ---
+ *
+ * ### Angular Calculations
+ *
+ * #### Theta (Polar Angle)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor Theta(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz);
+ * torch::Tensor Theta(torch::Tensor* pmc);  // Combined vector
+ * @endcode
+ *
+ * **Formula**: θ = arctan(pₜ/pz) where pₜ = √(px² + py²)
+ *
+ * **Description**:  
+ * Polar angle from z-axis (beam direction).
+ *
+ * **Returns**: Tensor containing θ values in radians [0, π]
+ *
+ * **Note**:
+ * - θ = π/2 for particles perpendicular to beam
+ * - Related to pseudorapidity: η = -ln(tan(θ/2))
+ *
+ * #### DeltaR (Angular Separation)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor DeltaR(torch::Tensor* pmu1, torch::Tensor* pmu2);
+ * torch::Tensor DeltaR(torch::Tensor* eta1, torch::Tensor* eta2, 
+ *                      torch::Tensor* phi1, torch::Tensor* phi2);
+ * @endcode
+ *
+ * **Formula**: ΔR = √(Δη² + Δφ²)
+ *
+ * **Description**:  
+ * Standard ATLAS/CMS metric for particle separation in η-φ space.
+ *
+ * **Use Cases**:
+ * - Jet clustering
+ * - Isolation criteria
+ * - Object matching
+ *
+ * **Parameters** (separated version):
+ * - `eta1`, `eta2`: Pseudorapidity of first and second particle
+ * - `phi1`, `phi2`: Azimuthal angle in radians
+ *
+ * **Parameters** (combined version):
+ * - `pmu1`, `pmu2`: Combined 4-momentum [N x 4] with [pt, eta, phi, E]
+ *
+ * **Returns**: Tensor containing ΔR values (dimensionless, ≥ 0)
+ *
+ * **Note**:
+ * - φ differences are automatically wrapped to [-π, π]
+ * - ΔR < 0.4 is a typical isolation criterion
+ *
+ * **Example**:
+ * @code{.cpp}
+ * // Check if two particles are isolated (ΔR > 0.4)
+ * torch::Tensor dr = physics_::DeltaR(&eta1, &eta2, &phi1, &phi2);
+ * torch::Tensor isolated = dr > 0.4;
+ * @endcode
+ *
+ * ## See Also
+ *
+ * - @ref pyc_transform for coordinate transformations
+ * - @ref pyc_graph for graph operations
+ *
+ * @}
+ */

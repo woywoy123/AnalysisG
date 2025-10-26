@@ -1,0 +1,307 @@
+/**
+ * @file pyc_transform.dox
+ * @brief Documentation for PyC Coordinate Transformation Module
+ * @defgroup pyc_transform Coordinate Transformations
+ * @ingroup module_pyc
+ * @{
+ *
+ * ## Overview
+ *
+ * This module provides high-performance transformations between Cartesian (px, py, pz, E)
+ * and cylindrical polar (pt, η, φ, E) coordinate systems used in collider physics.
+ *
+ * ## Coordinate Systems
+ *
+ * ### Cartesian Coordinates (px, py, pz, E)
+ * - Standard 3-momentum components + energy
+ * - Natural for calculations in arbitrary reference frames
+ * - Used in Monte Carlo truth records
+ *
+ * ### Polar Coordinates (pt, η, φ, E)
+ * - **pt**: Transverse momentum = √(px² + py²)
+ * - **η** (eta): Pseudorapidity = -ln(tan(θ/2))
+ * - **φ** (phi): Azimuthal angle = atan2(py, px)
+ * - **E**: Energy (same in both systems)
+ *
+ * ### Why Polar Coordinates?
+ *
+ * Collider detectors (ATLAS, CMS, etc.) are cylindrical around the beam axis:
+ * - Constant η corresponds to constant polar angle θ
+ * - Uniform in η-φ space → uniform detector coverage
+ * - ΔR = √(Δη² + Δφ²) is the natural distance metric
+ * - Transverse quantities independent of longitudinal boosts
+ *
+ * ## Features
+ *
+ * - **CUDA Accelerated**: GPU implementations for batch processing
+ * - **Vectorized**: Efficient tensor operations
+ * - **Bidirectional**: Convert freely between coordinate systems
+ * - **Zero-Copy**: Direct LibTorch integration
+ *
+ * ## Namespace: transform_
+ *
+ * All functions are in the `transform_` namespace.
+ *
+ * ## Functions
+ *
+ * ### Polar → Cartesian Transformations
+ *
+ * #### Px (X-component from polar)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor Px(torch::Tensor* pt, torch::Tensor* phi);
+ * @endcode
+ *
+ * **Formula**: px = pt × cos(φ)
+ *
+ * **Parameters**:
+ * - `pt`: Transverse momentum in GeV
+ * - `phi`: Azimuthal angle in radians
+ *
+ * **Returns**: Tensor containing px values in GeV
+ *
+ * #### Py (Y-component from polar)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor Py(torch::Tensor* pt, torch::Tensor* phi);
+ * @endcode
+ *
+ * **Formula**: py = pt × sin(φ)
+ *
+ * **Parameters**:
+ * - `pt`: Transverse momentum in GeV
+ * - `phi`: Azimuthal angle in radians
+ *
+ * **Returns**: Tensor containing py values in GeV
+ *
+ * #### Pz (Z-component from polar)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor Pz(torch::Tensor* pt, torch::Tensor* eta);
+ * @endcode
+ *
+ * **Formula**: pz = pt × sinh(η)
+ *
+ * **Parameters**:
+ * - `pt`: Transverse momentum in GeV
+ * - `eta`: Pseudorapidity (dimensionless)
+ *
+ * **Returns**: Tensor containing pz values in GeV
+ *
+ * **Note**:
+ * - η → ±∞ corresponds to pz → ±∞ (along beam)
+ * - η = 0 corresponds to pz = 0 (perpendicular to beam)
+ *
+ * #### PxPyPz (Full 3-momentum from polar)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor PxPyPz(torch::Tensor* pt, torch::Tensor* eta, torch::Tensor* phi);
+ * torch::Tensor PxPyPz(torch::Tensor* pmu);  // Combined polar 4-vector
+ * @endcode
+ *
+ * **Description**:  
+ * Convenience function combining Px, Py, Pz transformations.
+ *
+ * **Parameters** (separated):
+ * - `pt`: Transverse momentum in GeV
+ * - `eta`: Pseudorapidity
+ * - `phi`: Azimuthal angle in radians
+ *
+ * **Parameters** (combined):
+ * - `pmu`: Combined tensor [N x 4] with columns [pt, eta, phi, E]
+ *
+ * **Returns**: Tensor [N x 3] with columns [px, py, pz] in GeV
+ *
+ * **Example**:
+ * @code{.cpp}
+ * torch::Tensor pxpypz = transform_::PxPyPz(&pt, &eta, &phi);
+ * torch::Tensor px = pxpypz.select(1, 0);
+ * torch::Tensor py = pxpypz.select(1, 1);
+ * torch::Tensor pz = pxpypz.select(1, 2);
+ * @endcode
+ *
+ * #### PxPyPzE (Full 4-momentum from polar)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor PxPyPzE(torch::Tensor* pt, torch::Tensor* eta, 
+ *                        torch::Tensor* phi, torch::Tensor* energy);
+ * torch::Tensor PxPyPzE(torch::Tensor* pmu);  // Combined polar 4-vector
+ * @endcode
+ *
+ * **Parameters** (separated):
+ * - `pt`: Transverse momentum in GeV
+ * - `eta`: Pseudorapidity
+ * - `phi`: Azimuthal angle in radians
+ * - `energy`: Energy in GeV
+ *
+ * **Parameters** (combined):
+ * - `pmu`: Combined tensor [N x 4] with [pt, eta, phi, E]
+ *
+ * **Returns**: Tensor [N x 4] with columns [px, py, pz, E] in GeV
+ *
+ * ---
+ *
+ * ### Cartesian → Polar Transformations
+ *
+ * #### Pt (Transverse momentum from Cartesian)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor Pt(torch::Tensor* px, torch::Tensor* py);
+ * @endcode
+ *
+ * **Formula**: pt = √(px² + py²)
+ *
+ * **Parameters**:
+ * - `px`: X-component of momentum in GeV
+ * - `py`: Y-component of momentum in GeV
+ *
+ * **Returns**: Tensor containing pt values in GeV
+ *
+ * **Note**: Always positive by definition.
+ *
+ * #### Eta (Pseudorapidity from Cartesian)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor Eta(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz);
+ * torch::Tensor Eta(torch::Tensor* pmc);  // Combined Cartesian 4-vector
+ * @endcode
+ *
+ * **Formula**: η = -ln(tan(θ/2)) where θ = atan2(pt, pz)  
+ * Equivalent to: η = ½ ln((|p| + pz)/(|p| - pz))
+ *
+ * **Parameters** (separated):
+ * - `px`, `py`, `pz`: Components of momentum in GeV
+ *
+ * **Parameters** (combined):
+ * - `pmc`: Combined momentum [N x 4] with [px, py, pz, E]
+ *
+ * **Returns**: Tensor containing η values (dimensionless)
+ *
+ * **Note**:
+ * - η → +∞ for forward direction (pz → +∞)
+ * - η → -∞ for backward direction (pz → -∞)
+ * - η = 0 at 90° from beam axis
+ *
+ * **Warning**: Division by zero for |p| = pz (numerical protection applied).
+ *
+ * **Example** - Detector acceptance cuts:
+ * @code{.cpp}
+ * torch::Tensor eta = transform_::Eta(&px, &py, &pz);
+ * torch::Tensor central = (eta.abs() < 2.5);  // ATLAS central region
+ * torch::Tensor forward = (eta.abs() > 2.5) & (eta.abs() < 4.9);  // Forward
+ * @endcode
+ *
+ * #### PtEta (Combined pt and η calculation)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor PtEta(torch::Tensor* pt, torch::Tensor* pz);
+ * @endcode
+ *
+ * **Description**:  
+ * Calculate pseudorapidity from transverse and longitudinal momentum.
+ *
+ * **Parameters**:
+ * - `pt`: Transverse momentum (used with pz overload)
+ * - `pz`: Longitudinal momentum in GeV
+ *
+ * **Returns**: Tensor containing η values (dimensionless)
+ *
+ * #### Phi (Azimuthal angle from Cartesian)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor Phi(torch::Tensor* px, torch::Tensor* py);
+ * torch::Tensor Phi(torch::Tensor* pmc);  // Combined Cartesian 4-vector
+ * @endcode
+ *
+ * **Formula**: φ = atan2(py, px)
+ *
+ * **Parameters** (separated):
+ * - `px`: X-component of momentum
+ * - `py`: Y-component of momentum
+ *
+ * **Parameters** (combined):
+ * - `pmc`: Combined momentum [N x 4] with [px, py, pz, E]
+ *
+ * **Returns**: Tensor containing φ values in radians, range [-π, π]
+ *
+ * **Note**:
+ * - φ = 0 along +x axis
+ * - φ = π/2 along +y axis
+ *
+ * #### PtEtaPhi (Full polar 3-vector from Cartesian)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor PtEtaPhi(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz);
+ * torch::Tensor PtEtaPhi(torch::Tensor* pmc);  // Combined Cartesian 4-vector
+ * @endcode
+ *
+ * **Parameters** (separated):
+ * - `px`, `py`, `pz`: Components of momentum
+ *
+ * **Parameters** (combined):
+ * - `pmc`: Combined momentum [N x 4] with [px, py, pz, E]
+ *
+ * **Returns**: Tensor [N x 3] with columns [pt, eta, phi]
+ *
+ * #### PtEtaPhiE (Full polar 4-vector from Cartesian)
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * torch::Tensor PtEtaPhiE(torch::Tensor* px, torch::Tensor* py, 
+ *                          torch::Tensor* pz, torch::Tensor* e);
+ * torch::Tensor PtEtaPhiE(torch::Tensor* pmc);  // Combined Cartesian 4-vector
+ * @endcode
+ *
+ * **Parameters** (separated):
+ * - `px`, `py`, `pz`: Components of momentum
+ * - `e`: Energy
+ *
+ * **Parameters** (combined):
+ * - `pmc`: Combined momentum [N x 4] with [px, py, pz, E]
+ *
+ * **Returns**: Tensor [N x 4] with columns [pt, eta, phi, E]
+ *
+ * **Performance Note**:  
+ * This is the most efficient way to convert full 4-vectors, as it computes all
+ * intermediate values only once.
+ *
+ * ## Usage Example
+ *
+ * @code{.cpp}
+ * #include <transform/transform.h>
+ * #include <torch/torch.h>
+ *
+ * // Convert polar to Cartesian
+ * torch::Tensor pt = torch::tensor({50.0, 30.0});
+ * torch::Tensor eta = torch::tensor({0.5, -1.2});
+ * torch::Tensor phi = torch::tensor({1.5, -0.8});
+ *
+ * torch::Tensor momentum = transform_::PxPyPz(&pt, &eta, &phi);
+ * // momentum.shape = [2, 3] with columns [px, py, pz]
+ *
+ * // Convert back to polar
+ * torch::Tensor px = momentum.select(1, 0);
+ * torch::Tensor py = momentum.select(1, 1);
+ * torch::Tensor pz = momentum.select(1, 2);
+ *
+ * torch::Tensor pt_back = transform_::Pt(&px, &py);
+ * torch::Tensor eta_back = transform_::Eta(&px, &py, &pz);
+ * @endcode
+ *
+ * ## See Also
+ *
+ * - @ref pyc_physics for calculations using these coordinates
+ * - @ref pyc_graph for graph operations
+ *
+ * @}
+ */

@@ -1,0 +1,185 @@
+/**
+ * @file pyc_graph.dox
+ * @brief Documentation for PyC Graph Operations Module
+ * @defgroup pyc_graph Graph Operations
+ * @ingroup module_pyc
+ * @{
+ *
+ * ## Overview
+ *
+ * This module provides high-performance graph aggregation operations optimized for
+ * Graph Neural Network (GNN) workflows in particle physics analysis.
+ *
+ * Graph aggregation is a fundamental operation in GNNs where node or edge features
+ * are combined based on network topology and classification predictions.
+ *
+ * ## Use Cases
+ *
+ * - **Particle clustering**: Grouping constituents into jets, top quarks, etc.
+ * - **Decay chain reconstruction**: Building particle decay hierarchies
+ * - **Object counting**: Multiplicity calculations
+ *
+ * ## Performance Features
+ *
+ * - **CUDA Accelerated**: GPU implementations for large-scale processing
+ * - **Batched Operations**: Process multiple graphs simultaneously
+ * - **Zero-Copy**: Direct integration with PyTorch tensors via LibTorch
+ *
+ * ## Namespace: graph_
+ *
+ * All functions are in the `graph_` namespace.
+ *
+ * ## Functions
+ *
+ * ### edge_aggregation
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * std::map<std::string, torch::Tensor> edge_aggregation(
+ *     torch::Tensor* edge_index,
+ *     torch::Tensor* prediction,
+ *     torch::Tensor* node_feature
+ * );
+ * @endcode
+ *
+ * **Description**:  
+ * Aggregates node features based on edge topology and predictions. Performs
+ * edge-based aggregation, combining node features along edges that are classified
+ * as "active" by neural network predictions.
+ *
+ * **Parameters**:
+ * - `edge_index`: Edge topology tensor [2 x E] where E is number of edges.
+ *   Row 0 contains source nodes, row 1 contains target nodes.
+ *   Shape: [2, num_edges], dtype: int64
+ *
+ * - `prediction`: Edge classification predictions [E].
+ *   Values typically in [0, 1] from sigmoid/softmax output.
+ *   Edges with prediction > threshold are considered active.
+ *   Shape: [num_edges], dtype: float32
+ *
+ * - `node_feature`: Node feature tensor [N x F] where N is number of nodes
+ *   and F is feature dimension (typically 4 for 4-momentum).
+ *   Shape: [num_nodes, num_features], dtype: float32
+ *
+ * **Returns**:  
+ * `std::map<std::string, torch::Tensor>` with keys:
+ * - "clusters": Node→cluster mapping
+ * - "unique_sum": Aggregated cluster features
+ * - "reverse_sum": Cluster→node reverse mapping
+ * - "node_sum": Per-node aggregated features
+ *
+ * **Algorithm**:  
+ * For each edge (i→j) where prediction > threshold:
+ * 1. Aggregate features from nodes i and j
+ * 2. Sum 4-momenta to form composite particles
+ * 3. Track unique clusters and handle overlaps
+ *
+ * **Example**:
+ * @code{.cpp}
+ * #include <graph/graph.h>
+ * #include <torch/torch.h>
+ *
+ * // Graph topology (edge list)
+ * torch::Tensor edge_index = torch::tensor({{0, 1, 2}, {1, 2, 3}});
+ *
+ * // Neural network predictions (which edges are "active")
+ * torch::Tensor prediction = torch::tensor({1, 1, 0});
+ *
+ * // Node features (particle 4-momenta)
+ * torch::Tensor node_features = torch::rand({4, 4});
+ *
+ * // Perform edge-based aggregation
+ * auto result = graph_::edge_aggregation(&edge_index, &prediction, &node_features);
+ *
+ * // Access aggregated clusters
+ * torch::Tensor clusters = result["clusters"];
+ * torch::Tensor unique_sum = result["unique_sum"];
+ *
+ * // Number of reconstructed particles
+ * int num_particles = unique_sum.size(0);
+ * @endcode
+ *
+ * **Performance Tip**:  
+ * For best performance, batch multiple graphs together and process simultaneously.
+ *
+ * **Throws**:
+ * - `std::runtime_error` if tensor shapes are incompatible
+ * - `std::runtime_error` if CUDA is required but unavailable
+ *
+ * **Note**: This function requires CUDA tensors for GPU acceleration. All input
+ * tensors must reside on the same device.
+ *
+ * ---
+ *
+ * ### node_aggregation
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * std::map<std::string, torch::Tensor> node_aggregation(
+ *     torch::Tensor* edge_index,
+ *     torch::Tensor* prediction,
+ *     torch::Tensor* node_feature
+ * );
+ * @endcode
+ *
+ * **Description**:  
+ * Aggregates node features based on node classifications. Performs node-based
+ * aggregation where nodes are directly classified (rather than edges) and features
+ * are aggregated within clusters of nodes sharing the same classification.
+ *
+ * **Parameters**:
+ * - `edge_index`: Edge topology tensor [2 x E] defining graph structure.
+ *   Used to propagate features along graph edges.
+ *   Shape: [2, num_edges], dtype: int64
+ *
+ * - `prediction`: Node classification predictions [N x C] where N is number
+ *   of nodes and C is number of classes. Typically output of softmax over node types.
+ *   Shape: [num_nodes, num_classes] or [num_nodes], dtype: float32
+ *
+ * - `node_feature`: Node feature tensor [N x F].
+ *   Contains features to aggregate (e.g., 4-momentum components).
+ *   Shape: [num_nodes, num_features], dtype: float32
+ *
+ * **Returns**:  
+ * `std::map<std::string, torch::Tensor>` with aggregation results:
+ * - "clusters": Node→cluster mapping
+ * - "unique_sum": Aggregated cluster features
+ * - "reverse_sum": Cluster→node reverse mapping
+ * - "node_sum": Per-node aggregated features
+ *
+ * **Algorithm**:  
+ * For each node i where prediction indicates cluster assignment:
+ * 1. Group nodes by predicted cluster ID
+ * 2. Aggregate features within each cluster
+ * 3. Return cluster-level and node-level aggregations
+ *
+ * **Example**:
+ * @code{.cpp}
+ * // Node predictions: class probabilities for each node
+ * torch::Tensor node_pred = model->forward(node_features);
+ *
+ * auto result = graph_::node_aggregation(&edges, &node_pred, &features);
+ *
+ * // Get reconstructed particles (one per predicted class)
+ * torch::Tensor particles = result["unique_sum"];
+ * @endcode
+ *
+ * **Use Cases**:
+ * - Node-level particle classification
+ * - Direct particle type prediction
+ * - ROI (Region of Interest) aggregation
+ *
+ * **Throws**:
+ * - `std::runtime_error` if tensor dimensions are incompatible
+ * - `std::runtime_error` if device types don't match
+ *
+ * **Note**: Supports both CPU and CUDA tensors. CUDA implementation provides
+ * significant speedup for large graphs.
+ *
+ * ## See Also
+ *
+ * - @ref pyc_transform for coordinate transformations
+ * - @ref pyc_physics for physics calculations
+ *
+ * @}
+ */
