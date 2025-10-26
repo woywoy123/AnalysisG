@@ -1,0 +1,525 @@
+/**
+ * @file templates_particle.dox
+ * @brief Documentation for ParticleTemplate Base Class
+ * @defgroup templates_particle ParticleTemplate
+ * @ingroup templates
+ * @{
+ *
+ * ## Overview
+ *
+ * The ParticleTemplate class provides the base interface for defining custom particle types
+ * in AnalysisG. It represents physics objects (leptons, jets, photons, missing energy) with
+ * full four-momentum and supports both Cartesian (px, py, pz, E) and detector polar 
+ * coordinates (pt, eta, phi, E).
+ *
+ * ## Purpose
+ *
+ * ParticleTemplate enables users to:
+ * - Work with physics objects in natural coordinate systems
+ * - Build composite particles (e.g., Z → ll, W → jj)
+ * - Establish parent-child decay relationships
+ * - Compute physics observables (mass, angular separation)
+ * - Integrate seamlessly with ROOT TTree data
+ *
+ * ## C++ Interface
+ *
+ * ### Class: particle_template
+ *
+ * @code{.cpp}
+ * class particle_template {
+ * public:
+ *     // Constructors
+ *     particle_template();
+ *     particle_template(particle_t* p);
+ *     particle_template(particle_template* p, bool dump);
+ *     particle_template(double px, double py, double pz, double e);
+ *     particle_template(double px, double py, double pz);
+ *
+ *     // Kinematics (Cartesian)
+ *     double px, py, pz;   // Momentum components (GeV)
+ *     double e;            // Energy (GeV)
+ *     double mass;         // Invariant mass (GeV)
+ *
+ *     // Kinematics (Polar)
+ *     double pt;           // Transverse momentum (GeV)
+ *     double eta;          // Pseudorapidity
+ *     double phi;          // Azimuthal angle (radians)
+ *
+ *     // Particle identification
+ *     int pdgid;           // PDG particle ID
+ *     std::string type;    // Human-readable type ("electron", "jet", etc.)
+ *     std::string symbol;  // Physics symbol ("e", "μ", "j", etc.)
+ *     double charge;       // Electric charge
+ *
+ *     // Classification flags
+ *     bool is_lep;         // Is lepton
+ *     bool is_nu;          // Is neutrino
+ *     bool is_b;           // Is b-tagged jet
+ *     bool is_add;         // Is additional object
+ *     bool lep_decay;      // From leptonic decay
+ *
+ *     // Object tracking
+ *     std::string hash;    // Unique identifier
+ *     particle_t data;     // Underlying data structure
+ *
+ *     // Relationships
+ *     std::map<std::string, particle_template*> parents;
+ *     std::map<std::string, particle_template*> children;
+ *     std::map<std::string, std::string> leaves;
+ *
+ *     // Methods
+ *     void add_leaf(std::string key, std::string leaf);
+ *     double DeltaR(particle_template* p);
+ *     particle_template* operator+(particle_template* p);
+ *     void iadd(particle_template* p);
+ *     bool operator==(particle_template& p);
+ *     bool register_parent(particle_template* p);
+ *     bool register_child(particle_template* p);
+ *     void to_polar();
+ *     void to_cartesian();
+ * };
+ * @endcode
+ *
+ * ## Constructors
+ *
+ * ### particle_template()
+ * **Description**: Default constructor creating an empty particle.
+ *
+ * ### particle_template(particle_t* p)
+ * **Description**: Construct from particle_t data structure (from ROOT TTree).
+ * **Parameters**:
+ * - `p`: Pointer to particle_t with kinematics and metadata
+ *
+ * ### particle_template(particle_template* p, bool dump)
+ * **Description**: Copy constructor with optional deep copy.
+ * **Parameters**:
+ * - `p`: Source particle to copy
+ * - `dump`: If true, deep copy all data; if false, reference parent data
+ *
+ * ### particle_template(double px, double py, double pz, double e)
+ * **Description**: Construct from four-momentum components.
+ * **Parameters**:
+ * - `px, py, pz`: Momentum components (GeV)
+ * - `e`: Energy (GeV)
+ *
+ * **Example**:
+ * @code{.cpp}
+ * // Create electron with known four-momentum
+ * auto electron = new particle_template(25.3, -10.5, 42.1, 50.0);
+ * @endcode
+ *
+ * ### particle_template(double px, double py, double pz)
+ * **Description**: Construct from three-momentum (assumes massless particle).
+ * **Parameters**:
+ * - `px, py, pz`: Momentum components (GeV)
+ *
+ * Energy is computed as E = sqrt(px² + py² + pz²).
+ *
+ * ## Kinematic Members
+ *
+ * ### Cartesian Coordinates
+ *
+ * #### px, py, pz
+ * **Type**: `double`  
+ * **Unit**: GeV
+ *
+ * Three-momentum components in Cartesian coordinates:
+ * - `px`: x-component (along beam axis)
+ * - `py`: y-component (transverse)
+ * - `pz`: z-component (longitudinal)
+ *
+ * #### e (Energy)
+ * **Type**: `double`  
+ * **Unit**: GeV
+ *
+ * Total energy. For massive particles: E² = p² + m²
+ *
+ * #### mass
+ * **Type**: `double`  
+ * **Unit**: GeV
+ *
+ * Invariant mass computed from four-momentum:
+ * m² = E² - px² - py² - pz²
+ *
+ * **Note**: For composite particles (e.g., Z → ll), this is the reconstructed mass.
+ *
+ * ### Polar/Detector Coordinates
+ *
+ * #### pt (Transverse Momentum)
+ * **Type**: `double`  
+ * **Unit**: GeV
+ *
+ * Momentum perpendicular to beam axis:
+ * pt = sqrt(px² + py²)
+ *
+ * **Physics Context**: Primary observable in hadron colliders where longitudinal
+ * boost is unknown.
+ *
+ * #### eta (Pseudorapidity)
+ * **Type**: `double`  
+ * **Unit**: dimensionless
+ *
+ * Longitudinal coordinate in detector:
+ * η = -ln(tan(θ/2))
+ *
+ * where θ is the polar angle from beam axis.
+ *
+ * **Typical Ranges**:
+ * - Central detector: |η| < 2.5
+ * - Forward detector: 2.5 < |η| < 5.0
+ *
+ * #### phi (Azimuthal Angle)
+ * **Type**: `double`  
+ * **Unit**: radians  
+ * **Range**: [-π, π]
+ *
+ * Angle around the beam axis in the transverse plane.
+ *
+ * ## Particle Identification
+ *
+ * ### pdgid
+ * **Type**: `int`
+ *
+ * PDG (Particle Data Group) particle identification code.
+ *
+ * **Common Values**:
+ * - Electrons: ±11
+ * - Muons: ±13
+ * - Taus: ±15
+ * - Neutrinos: ±12, ±14, ±16
+ * - Photons: 22
+ * - W bosons: ±24
+ * - Z boson: 23
+ * - Quarks: ±1..6
+ * - Gluons: 21
+ *
+ * ### type
+ * **Type**: `std::string`
+ *
+ * Human-readable particle type name.
+ *
+ * **Examples**: `"electron"`, `"muon"`, `"jet"`, `"photon"`, `"met"`
+ *
+ * ### symbol
+ * **Type**: `std::string`
+ *
+ * Physics notation symbol.
+ *
+ * **Examples**: `"e"`, `"μ"`, `"τ"`, `"ν"`, `"γ"`, `"j"`, `"b"`
+ *
+ * ### charge
+ * **Type**: `double`  
+ * **Unit**: elementary charge (e)
+ *
+ * Electric charge in units of electron charge.
+ *
+ * **Values**: Typically ±1, ±2, or 0
+ *
+ * ## Classification Flags
+ *
+ * ### is_lep
+ * **Type**: `bool`
+ *
+ * True if particle is a charged lepton (electron, muon, tau).
+ *
+ * ### is_nu
+ * **Type**: `bool`
+ *
+ * True if particle is a neutrino. Neutrinos require special reconstruction
+ * (see NuSol module).
+ *
+ * ### is_b
+ * **Type**: `bool`
+ *
+ * True if jet is b-tagged (contains b-quark hadron).
+ *
+ * **Use Cases**:
+ * - Top quark reconstruction (t → Wb)
+ * - Higgs identification (H → bb)
+ * - Heavy flavor tagging
+ *
+ * ### is_add
+ * **Type**: `bool`
+ *
+ * True if particle is an "additional" object not part of primary analysis objects.
+ * User-defined for flexible event categorization.
+ *
+ * ### lep_decay
+ * **Type**: `bool`
+ *
+ * True if particle originates from leptonic decay.
+ *
+ * ## Relationships
+ *
+ * ### parents
+ * **Type**: `std::map<std::string, particle_template*>`
+ *
+ * Map of parent particles in decay chain, indexed by particle hash.
+ *
+ * **Example**: For lepton from W decay, parents contains the W boson.
+ *
+ * ### children
+ * **Type**: `std::map<std::string, particle_template*>`
+ *
+ * Map of child particles in decay chain.
+ *
+ * **Example**: For W boson, children contains decay products (lepton + neutrino).
+ *
+ * ### register_parent / register_child
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * bool register_parent(particle_template* p);
+ * bool register_child(particle_template* p);
+ * @endcode
+ *
+ * **Description**: Establish parent-child relationships in decay chains.
+ *
+ * **Returns**: `true` if relationship registered successfully
+ *
+ * **Example**:
+ * @code{.cpp}
+ * // Build W → eν decay
+ * auto W = new particle_template();
+ * auto electron = new particle_template();
+ * auto neutrino = new particle_template();
+ *
+ * electron->register_parent(W);
+ * neutrino->register_parent(W);
+ * W->register_child(electron);
+ * W->register_child(neutrino);
+ * @endcode
+ *
+ * ## Core Methods
+ *
+ * ### add_leaf
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * void add_leaf(std::string key, std::string leaf);
+ * @endcode
+ *
+ * **Description**: Associate ROOT TTree leaf names with this particle for data extraction.
+ *
+ * **Parameters**:
+ * - `key`: Logical name (e.g., "pt", "eta", "pdgid")
+ * - `leaf`: ROOT TTree leaf name (e.g., "lep_pt", "jet_eta")
+ *
+ * ### DeltaR
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * double DeltaR(particle_template* p);
+ * @endcode
+ *
+ * **Description**: Compute angular separation ΔR in η-φ space.
+ *
+ * **Formula**:
+ * ΔR = sqrt(Δη² + Δφ²)
+ *
+ * **Parameters**:
+ * - `p`: Other particle
+ *
+ * **Returns**: Angular separation (dimensionless, typically 0-7)
+ *
+ * **Use Cases**:
+ * - Lepton isolation (ΔR > 0.4 from jets)
+ * - Jet matching (ΔR < 0.3)
+ * - Overlap removal
+ *
+ * **Example**:
+ * @code{.cpp}
+ * double separation = electron->DeltaR(jet);
+ * bool isolated = (separation > 0.4);
+ * @endcode
+ *
+ * ### operator+
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * particle_template* operator+(particle_template* p);
+ * @endcode
+ *
+ * **Description**: Four-momentum addition to create composite particle.
+ *
+ * **Returns**: New particle with combined four-momentum
+ *
+ * **Example**:
+ * @code{.cpp}
+ * // Reconstruct Z → ll
+ * auto Z = (*electron) + muon;
+ * Z->type = "Z_boson";
+ * std::cout << "Z mass: " << Z->mass << " GeV" << std::endl;
+ * // Expected output: "Z mass: 91.2 GeV"
+ * @endcode
+ *
+ * ### iadd (In-Place Addition)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * void iadd(particle_template* p);
+ * @endcode
+ *
+ * **Description**: Add four-momentum of p to this particle (modifies in place).
+ *
+ * **Example**:
+ * @code{.cpp}
+ * // Build composite W from all children
+ * W_reconstructed->iadd(lepton);
+ * W_reconstructed->iadd(neutrino);
+ * @endcode
+ *
+ * ### to_polar / to_cartesian
+ *
+ * **Signatures**:
+ * @code{.cpp}
+ * void to_polar();
+ * void to_cartesian();
+ * @endcode
+ *
+ * **Description**: Convert between Cartesian and polar coordinate representations.
+ *
+ * **Note**: Both representations are always kept synchronized internally.
+ * These methods are primarily for explicit conversion requests.
+ *
+ * ## Python Interface
+ *
+ * ### Class: ParticleTemplate
+ *
+ * @code{.python}
+ * class ParticleTemplate:
+ *     # Constructors (auto-mapped from C++)
+ *     def __init__(self):
+ *         pass
+ *
+ *     def clone(self) -> ParticleTemplate:
+ *         \"\"\"Create deep copy\"\"\"
+ *         pass
+ *
+ *     def DeltaR(self, other: ParticleTemplate) -> float:
+ *         \"\"\"Compute angular separation\"\"\"
+ *         pass
+ *
+ *     # Properties (auto-mapped from C++)
+ *     px: float
+ *     py: float
+ *     pz: float
+ *     e: float
+ *     mass: float
+ *     pt: float
+ *     eta: float
+ *     phi: float
+ *     pdgid: int
+ *     type: str
+ *     symbol: str
+ *     charge: float
+ *     is_lep: bool
+ *     is_nu: bool
+ *     is_b: bool
+ *     hash: str
+ *     parents: Dict[str, ParticleTemplate]
+ *     children: Dict[str, ParticleTemplate]
+ *
+ *     # Operators
+ *     def __add__(self, other: ParticleTemplate) -> ParticleTemplate:
+ *         \"\"\"Four-momentum addition\"\"\"
+ *         pass
+ * @endcode
+ *
+ * ## Usage Examples
+ *
+ * ### Creating Particles
+ *
+ * @code{.python}
+ * from AnalysisG.core import ParticleTemplate
+ *
+ * # From existing data (in EventTemplate.build_event)
+ * electron = ParticleTemplate()
+ * electron.pt = data["el_pt"][0]
+ * electron.eta = data["el_eta"][0]
+ * electron.phi = data["el_phi"][0]
+ * electron.e = data["el_e"][0]
+ * electron.pdgid = 11
+ * electron.type = "electron"
+ * electron.is_lep = True
+ * @endcode
+ *
+ * ### Composite Particles
+ *
+ * @code{.python}
+ * # Reconstruct Z boson from dilepton pair
+ * Z = electron + muon
+ * Z.type = "Z_boson"
+ * Z.pdgid = 23
+ *
+ * print(f"Z mass: {Z.mass:.2f} GeV")
+ * print(f"Z pt: {Z.pt:.2f} GeV")
+ *
+ * # Check if within Z mass window
+ * if 80 < Z.mass < 100:
+ *     print("On-shell Z boson candidate")
+ * @endcode
+ *
+ * ### Isolation
+ *
+ * @code{.python}
+ * # Check lepton isolation from jets
+ * def is_isolated(lepton, jets, min_dr=0.4):
+ *     for jet in jets:
+ *         if lepton.DeltaR(jet) < min_dr:
+ *             return False
+ *     return True
+ *
+ * isolated_electrons = [e for e in electrons if is_isolated(e, jets)]
+ * @endcode
+ *
+ * ### Decay Chains
+ *
+ * @code{.python}
+ * # Build top quark decay: t → Wb → l𝜈b
+ * top = b_jet + lepton + neutrino
+ * top.type = "top_quark"
+ * top.register_child(b_jet)
+ * top.register_child(lepton)
+ * top.register_child(neutrino)
+ *
+ * # Access decay products
+ * for child_hash, child in top.children.items():
+ *     print(f"Decay product: {child.type}, pt = {child.pt:.1f} GeV")
+ * @endcode
+ *
+ * ### Custom Particle Types
+ *
+ * @code{.python}
+ * class Electron(ParticleTemplate):
+ *     def __init__(self):
+ *         ParticleTemplate.__init__(self)
+ *         self.type = "electron"
+ *         self.pdgid = 11
+ *         self.is_lep = True
+ *         self.isolation = 0.0
+ *         self.pass_tight_id = False
+ *
+ *     def apply_calibration(self, energy_scale=1.0):
+ *         \"\"\"Apply energy scale calibration\"\"\"
+ *         self.e *= energy_scale
+ *         self.pt *= energy_scale
+ * @endcode
+ *
+ * ## Performance Notes
+ *
+ * - Particle objects are lightweight (~200 bytes each)
+ * - Four-momentum addition is optimized for composite particle building
+ * - Coordinate conversions (Cartesian ↔ Polar) use cached values
+ * - Parent-child relationships use hash-based maps for O(1) lookup
+ * - DeltaR computation is optimized for inner-loop usage
+ *
+ * ## See Also
+ *
+ * - @ref templates_event for event-level interface
+ * - @ref pyc_physics for physics calculations (mass, DeltaR)
+ * - @ref pyc_transform for coordinate transformations
+ * - @ref structs_particles for underlying data structure
+ *
+ * @}
+ */

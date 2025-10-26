@@ -1,0 +1,438 @@
+/**
+ * @file templates_graph.dox
+ * @brief Documentation for GraphTemplate Base Class
+ * @defgroup templates_graph GraphTemplate
+ * @ingroup templates
+ * @{
+ *
+ * ## Overview
+ *
+ * The GraphTemplate class provides the base interface for constructing graph representations
+ * of physics events for Graph Neural Network (GNN) analysis. It converts event-level data
+ * into node-edge graph structures suitable for deep learning.
+ *
+ * ## Purpose
+ *
+ * GraphTemplate enables users to:
+ * - Define custom graph topologies from physics events
+ * - Build node features (particle kinematics, identity)
+ * - Define edge connectivity (spatial, kinematic, physics-based)
+ * - Apply event-level preselection
+ * - Prepare data for GNN training and inference
+ *
+ * ## Graph Neural Networks in HEP
+ *
+ * GNNs are particularly effective for:
+ * - **Jet classification**: b-tagging, top-tagging
+ * - **Event reconstruction**: top quark reconstruction, neutrino inference
+ * - **Object identification**: distinguishing signal from background
+ * - **Relationship learning**: identifying which jets came from which parent
+ *
+ * Graph structure naturally represents:
+ * - **Nodes**: Particles (electrons, muons, jets, photons)
+ * - **Edges**: Physical relationships (angular separation, shared parent)
+ * - **Global features**: Event-level quantities (MET, HT)
+ *
+ * ## C++ Interface
+ *
+ * ### Class: graph_template
+ *
+ * @code{.cpp}
+ * class graph_template {
+ * public:
+ *     graph_template();
+ *
+ *     // Metadata
+ *     std::string tree;        // TTree name (for systematics)
+ *     std::string name;        // Graph identifier
+ *     std::string hash;        // Unique hash
+ *     double weight;           // Event weight
+ *     long index;              // Event index
+ *     bool preselection;       // Passes preselection
+ *
+ *     // Core methods
+ *     graph_template* build(event_template* event);
+ *     void CompileEvent();
+ *     void PreSelection();
+ *     bool operator==(graph_template& p);
+ * };
+ * @endcode
+ *
+ * ## Member Documentation
+ *
+ * ### Metadata
+ *
+ * #### tree
+ * **Type**: `std::string`
+ *
+ * Name of the TTree being processed. Useful for tracking systematic variations.
+ *
+ * **Example**: `"nominal"`, `"JES__1up"`, `"MET_SoftTrk_ScaleDown"`
+ *
+ * #### name
+ * **Type**: `std::string`
+ *
+ * Human-readable graph identifier or classification.
+ *
+ * **Example**: `"ttbar_allhad"`, `"zprime_4top_graph"`
+ *
+ * #### hash
+ * **Type**: `std::string`
+ *
+ * Unique identifier for this graph instance. Typically inherited from the
+ * parent event or constructed from event identifiers.
+ *
+ * #### weight
+ * **Type**: `double`
+ *
+ * Monte Carlo event weight (inherited from EventTemplate).
+ *
+ * #### index
+ * **Type**: `long`
+ *
+ * Event index (inherited from EventTemplate).
+ *
+ * #### preselection
+ * **Type**: `bool`
+ *
+ * Flag indicating whether the event passes preselection cuts. Set by PreSelection().
+ *
+ * ## Core Methods
+ *
+ * ### build
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * graph_template* build(event_template* event);
+ * @endcode
+ *
+ * **Description**:  
+ * Construct graph representation from an event. This is the main entry point
+ * for graph building.
+ *
+ * **Parameters**:
+ * - `event`: Source event containing particles and event-level data
+ *
+ * **Returns**: Pointer to constructed graph (typically `this`)
+ *
+ * **Implementation Pattern**:
+ * @code{.cpp}
+ * graph_template* build(event_template* ev) {
+ *     // 1. Copy event metadata
+ *     this->hash = ev->hash;
+ *     this->weight = ev->weight;
+ *     this->index = ev->index;
+ *     
+ *     // 2. Select particles to include as nodes
+ *     // (e.g., all jets, leptons, and MET)
+ *     std::vector<particle_template*> nodes;
+ *     nodes.insert(nodes.end(), ev->jets.begin(), ev->jets.end());
+ *     nodes.insert(nodes.end(), ev->leptons.begin(), ev->leptons.end());
+ *     nodes.push_back(ev->met);
+ *     
+ *     // 3. Build node features (kinematics, identity)
+ *     for (auto* node : nodes) {
+ *         this->add_node(node);
+ *     }
+ *     
+ *     // 4. Define edge connectivity
+ *     // (e.g., connect all nodes with ΔR < 3.0)
+ *     for (size_t i = 0; i < nodes.size(); ++i) {
+ *         for (size_t j = i+1; j < nodes.size(); ++j) {
+ *             double dr = nodes[i]->DeltaR(nodes[j]);
+ *             if (dr < 3.0) {
+ *                 this->add_edge(i, j, dr);
+ *             }
+ *         }
+ *     }
+ *     
+ *     return this;
+ * }
+ * @endcode
+ *
+ * ### PreSelection
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * void PreSelection();
+ * @endcode
+ *
+ * **Description**:  
+ * Apply event-level preselection cuts to determine if graph should be kept.
+ * Sets the `preselection` flag.
+ *
+ * **Use Cases**:
+ * - Require minimum number of nodes (particles)
+ * - Apply basic kinematic cuts (HT, MET)
+ * - Filter events before expensive GNN inference
+ * - Training dataset filtering
+ *
+ * **Implementation Pattern**:
+ * @code{.cpp}
+ * void PreSelection() {
+ *     // Example: Require >= 4 jets, >= 1 lepton
+ *     bool pass_jets = (this->n_jets >= 4);
+ *     bool pass_leptons = (this->n_leptons >= 1);
+ *     bool pass_met = (this->met_pt > 20.0);
+ *     
+ *     this->preselection = (pass_jets && pass_leptons && pass_met);
+ * }
+ * @endcode
+ *
+ * ### CompileEvent
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * void CompileEvent();
+ * @endcode
+ *
+ * **Description**:  
+ * Finalize graph construction with post-processing computations.
+ * Called automatically after build().
+ *
+ * **Use Cases**:
+ * - Normalize features
+ * - Compute derived edge attributes
+ * - Apply truth-level labels (for training)
+ * - Cache frequently-used values
+ *
+ * ### operator==
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * bool operator==(graph_template& p);
+ * @endcode
+ *
+ * **Description**: Compare graphs by hash identifier.
+ *
+ * **Returns**: `true` if graphs have identical hashes
+ *
+ * ## Python Interface
+ *
+ * ### Class: GraphTemplate
+ *
+ * @code{.python}
+ * class GraphTemplate:
+ *     def __init__(self):
+ *         \"\"\"Initialize graph template\"\"\"
+ *         pass
+ *
+ *     def build(self, event: EventTemplate) -> GraphTemplate:
+ *         \"\"\"Build graph from event\"\"\"
+ *         pass
+ *
+ *     def PreSelection(self):
+ *         \"\"\"Apply preselection cuts\"\"\"
+ *         pass
+ *
+ *     def CompileEvent(self):
+ *         \"\"\"Finalize graph construction\"\"\"
+ *         pass
+ *
+ *     # Properties (auto-mapped from C++)
+ *     tree: str
+ *     name: str
+ *     hash: str
+ *     weight: float
+ *     index: int
+ *     preselection: bool
+ * @endcode
+ *
+ * ## Usage Examples
+ *
+ * ### Basic Graph Definition
+ *
+ * @code{.python}
+ * from AnalysisG.core import GraphTemplate, EventTemplate
+ *
+ * class TopReconstructionGraph(GraphTemplate):
+ *     def __init__(self):
+ *         GraphTemplate.__init__(self)
+ *         self.nodes = []
+ *         self.edges = []
+ *         self.node_features = []
+ *         self.edge_features = []
+ *
+ *     def build(self, event):
+ *         \"\"\"Build graph for top quark reconstruction\"\"\"
+ *         # Use all jets, leptons, and MET as nodes
+ *         self.nodes = event.jets + event.leptons + [event.met]
+ *         
+ *         # Build node features: [pt, eta, phi, mass, pdgid]
+ *         for particle in self.nodes:
+ *             features = [
+ *                 particle.pt,
+ *                 particle.eta,
+ *                 particle.phi,
+ *                 particle.mass,
+ *                 particle.pdgid
+ *             ]
+ *             self.node_features.append(features)
+ *         
+ *         # Build edges: connect all pairs with ΔR < 3.0
+ *         for i, node_i in enumerate(self.nodes):
+ *             for j, node_j in enumerate(self.nodes[i+1:], i+1):
+ *                 dr = node_i.DeltaR(node_j)
+ *                 if dr < 3.0:
+ *                     self.edges.append((i, j))
+ *                     self.edge_features.append([dr])
+ *         
+ *         return self
+ *
+ *     def PreSelection(self):
+ *         \"\"\"Require minimum objects for top reconstruction\"\"\"
+ *         n_jets = sum(1 for n in self.nodes if n.type == "jet")
+ *         n_leptons = sum(1 for n in self.nodes if n.is_lep)
+ *         
+ *         self.preselection = (n_jets >= 4 and n_leptons >= 1)
+ * @endcode
+ *
+ * ### Advanced: Physics-Motivated Edges
+ *
+ * @code{.python}
+ * class PhysicsGraph(GraphTemplate):
+ *     def build(self, event):
+ *         self.nodes = event.jets + event.leptons
+ *         
+ *         # Define edges based on physics relationships
+ *         for i, node_i in enumerate(self.nodes):
+ *             for j, node_j in enumerate(self.nodes[i+1:], i+1):
+ *                 # Connect based on multiple criteria
+ *                 dr = node_i.DeltaR(node_j)
+ *                 mass = (node_i + node_j).mass
+ *                 
+ *                 # Edge if spatially close OR form W/Z-like system
+ *                 if dr < 2.0 or (60 < mass < 100):
+ *                     self.edges.append((i, j))
+ *                     self.edge_features.append([
+ *                         dr,           # Angular separation
+ *                         mass,         # Invariant mass
+ *                         node_i.pt + node_j.pt  # Combined pt
+ *                     ])
+ *         
+ *         return self
+ * @endcode
+ *
+ * ### Truth Labeling (for Training)
+ *
+ * @code{.python}
+ * class LabeledGraph(GraphTemplate):
+ *     def build(self, event):
+ *         self.nodes = event.jets
+ *         self.build_edges()
+ *         
+ *         # Add truth labels for supervised learning
+ *         self.node_labels = []
+ *         for jet in self.nodes:
+ *             # Label: 0=light, 1=b-jet, 2=from-top
+ *             if jet.is_b and jet.from_top:
+ *                 label = 2
+ *             elif jet.is_b:
+ *                 label = 1
+ *             else:
+ *                 label = 0
+ *             self.node_labels.append(label)
+ *         
+ *         return self
+ *
+ *     def CompileEvent(self):
+ *         \"\"\"Normalize features for training\"\"\"
+ *         # Normalize pt to [0, 1]
+ *         max_pt = max(n.pt for n in self.nodes)
+ *         for features in self.node_features:
+ *             features[0] /= max_pt  # pt normalization
+ * @endcode
+ *
+ * ### Integration with GNN Training
+ *
+ * @code{.python}
+ * from AnalysisG import Analysis
+ * import torch
+ * from torch_geometric.data import Data, DataLoader
+ *
+ * # Define analysis with custom graph
+ * ana = Analysis()
+ * ana.EventCache = "path/to/ttbar.root"
+ * ana.Event = MyEvent
+ * ana.Graph = TopReconstructionGraph
+ * ana.Run()
+ *
+ * # Convert to PyTorch Geometric format
+ * dataset = []
+ * for event in ana:
+ *     for graph_hash, graph in event.graphs.items():
+ *         if not graph.preselection:
+ *             continue
+ *         
+ *         # Convert to PyTorch Geometric Data object
+ *         x = torch.tensor(graph.node_features, dtype=torch.float)
+ *         edge_index = torch.tensor(graph.edges, dtype=torch.long).t()
+ *         edge_attr = torch.tensor(graph.edge_features, dtype=torch.float)
+ *         y = torch.tensor(graph.node_labels, dtype=torch.long)
+ *         
+ *         data = Data(x=x, edge_index=edge_index, 
+ *                    edge_attr=edge_attr, y=y)
+ *         dataset.append(data)
+ *
+ * # Create DataLoader for training
+ * loader = DataLoader(dataset, batch_size=32, shuffle=True)
+ *
+ * # Train GNN
+ * for batch in loader:
+ *     # ... GNN training loop
+ *     pass
+ * @endcode
+ *
+ * ## Design Patterns
+ *
+ * ### Fully Connected Graph
+ *
+ * @code{.python}
+ * def build(self, event):
+ *     self.nodes = event.jets + event.leptons
+ *     
+ *     # Connect every node to every other node
+ *     for i in range(len(self.nodes)):
+ *         for j in range(i+1, len(self.nodes)):
+ *             self.edges.append((i, j))
+ * @endcode
+ *
+ * ### k-Nearest Neighbors Graph
+ *
+ * @code{.python}
+ * def build(self, event):
+ *     self.nodes = event.jets
+ *     k = 5  # Connect to 5 nearest neighbors
+ *     
+ *     for i, node_i in enumerate(self.nodes):
+ *         # Find k nearest neighbors by ΔR
+ *         neighbors = []
+ *         for j, node_j in enumerate(self.nodes):
+ *             if i != j:
+ *                 dr = node_i.DeltaR(node_j)
+ *                 neighbors.append((dr, j))
+ *         
+ *         # Connect to k nearest
+ *         neighbors.sort()
+ *         for dr, j in neighbors[:k]:
+ *             self.edges.append((i, j))
+ *             self.edge_features.append([dr])
+ * @endcode
+ *
+ * ## Performance Notes
+ *
+ * - Graph building is optimized for vectorized operations
+ * - Edge construction can be expensive for O(n²) connectivity - use spatial cuts
+ * - Preselection filters events early to avoid unnecessary graph building
+ * - Graph objects are lightweight until features are populated
+ * - Integration with PyTorch Geometric is zero-copy when possible
+ *
+ * ## See Also
+ *
+ * - @ref templates_event for event-level interface
+ * - @ref templates_particle for particle-level interface
+ * - @ref pyc_graph for graph operations and aggregations
+ * - @ref templates_model for GNN model integration
+ *
+ * @}
+ */

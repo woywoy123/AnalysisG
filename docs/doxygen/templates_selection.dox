@@ -1,0 +1,509 @@
+/**
+ * @file templates_selection.dox
+ * @brief Documentation for SelectionTemplate Base Class
+ * @defgroup templates_selection SelectionTemplate
+ * @ingroup templates
+ * @{
+ *
+ * ## Overview
+ *
+ * The SelectionTemplate class provides the base interface for defining physics event
+ * selection algorithms and reconstruction strategies in AnalysisG. It implements the
+ * strategy pattern for applying physics-motivated selection cuts and building composite
+ * objects.
+ *
+ * ## Purpose
+ *
+ * SelectionTemplate enables users to:
+ * - Define custom event selection criteria
+ * - Implement reconstruction strategies (top quarks, W/Z bosons)
+ * - Build composite particles from daughter particles
+ * - Track selection efficiency and matched truth information
+ * - Merge selection results across events
+ *
+ * ## C++ Interface
+ *
+ * ### Class: selection_template
+ *
+ * @code{.cpp}
+ * class selection_template {
+ * public:
+ *     selection_template();
+ *
+ *     // Metadata
+ *     std::string name;        // Selection algorithm name
+ *     std::string hash;        // Unique identifier
+ *     std::string tree;        // TTree name
+ *     double index;            // Event index
+ *
+ *     // Results tracking
+ *     std::map<std::string, std::map<std::string, float>> passed_weights;
+ *     std::map<std::string, meta_t> matched_meta;
+ *
+ *     // Core methods
+ *     selection_template* build(event_template* event);
+ *     bool selection(event_template* event);
+ *     bool strategy(event_template* event);
+ *     void merge(selection_template* other);
+ *     bool CompileEvent();
+ *
+ *     // Particle combination utilities
+ *     void sum(std::vector<particle_template*>* children, 
+ *              particle_template** output);
+ *     particle_template* sum(
+ *         std::map<std::string, particle_template*>* children
+ *     );
+ *
+ *     // Truth matching
+ *     std::vector<std::map<std::string, float>> reverse_hash(
+ *         std::vector<std::string>* hashes
+ *     );
+ *
+ *     // Comparison
+ *     bool operator==(selection_template& p);
+ * };
+ * @endcode
+ *
+ * ## Member Documentation
+ *
+ * ### Metadata
+ *
+ * #### name
+ * **Type**: `std::string`
+ *
+ * Name of the selection algorithm.
+ *
+ * **Example**: `"TopReconstruction"`, `"ZbosonSelection"`, `"BjetSelection"`
+ *
+ * #### hash
+ * **Type**: `std::string`
+ *
+ * Unique identifier for this selection instance. Typically inherited from the event.
+ *
+ * #### tree
+ * **Type**: `std::string`
+ *
+ * TTree name being processed (for systematic variations).
+ *
+ * #### index
+ * **Type**: `double`
+ *
+ * Event index.
+ *
+ * ### Results Tracking
+ *
+ * #### passed_weights
+ * **Type**: `std::map<std::string, std::map<std::string, float>>`
+ *
+ * Stores event weights for objects that passed selection, organized by:
+ * - Outer key: Object hash identifier
+ * - Inner key: Selection cut name or stage
+ * - Value: Event weight at that stage
+ *
+ * **Use Cases**:
+ * - Cutflow tracking
+ * - Efficiency calculations
+ * - Weight bookkeeping for systematic variations
+ *
+ * #### matched_meta
+ * **Type**: `std::map<std::string, meta_t>`
+ *
+ * Stores truth-level metadata for matched reconstructed objects.
+ * Key is the reconstructed object hash.
+ *
+ * **Use Cases**:
+ * - Truth matching validation
+ * - Resolution studies
+ * - Reconstruction efficiency
+ *
+ * ## Core Methods
+ *
+ * ### build
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * selection_template* build(event_template* event);
+ * @endcode
+ *
+ * **Description**:  
+ * Construct selection instance from an event. Main entry point for selection processing.
+ *
+ * **Parameters**:
+ * - `event`: Source event to apply selection to
+ *
+ * **Returns**: Pointer to selection object (typically `this`)
+ *
+ * ### selection
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * bool selection(event_template* event);
+ * @endcode
+ *
+ * **Description**:  
+ * Apply event-level selection criteria (cuts). This is where you define which
+ * events pass your analysis requirements.
+ *
+ * **Parameters**:
+ * - `event`: Event to evaluate
+ *
+ * **Returns**: `true` if event passes selection, `false` otherwise
+ *
+ * **Implementation Pattern**:
+ * @code{.cpp}
+ * bool selection(event_template* ev) {
+ *     // Require exactly 1 lepton
+ *     if (ev->leptons.size() != 1) return false;
+ *     
+ *     // Require at least 4 jets
+ *     if (ev->jets.size() < 4) return false;
+ *     
+ *     // Require at least 1 b-tagged jet
+ *     int n_bjets = 0;
+ *     for (auto* jet : ev->jets) {
+ *         if (jet->is_b) n_bjets++;
+ *     }
+ *     if (n_bjets < 1) return false;
+ *     
+ *     // Require MET > 20 GeV
+ *     if (ev->met->pt < 20.0) return false;
+ *     
+ *     return true;
+ * }
+ * @endcode
+ *
+ * ### strategy
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * bool strategy(event_template* event);
+ * @endcode
+ *
+ * **Description**:  
+ * Implement reconstruction strategy - build composite objects and apply
+ * physics-motivated algorithms.
+ *
+ * **Parameters**:
+ * - `event`: Event containing particles to reconstruct from
+ *
+ * **Returns**: `true` if reconstruction successful, `false` otherwise
+ *
+ * **Implementation Pattern**:
+ * @code{.cpp}
+ * bool strategy(event_template* ev) {
+ *     // Reconstruct leptonic top: t → Wb → lνb
+ *     for (auto* bjet : ev->jets) {
+ *         if (!bjet->is_b) continue;
+ *         
+ *         for (auto* lepton : ev->leptons) {
+ *             // Build leptonic top
+ *             auto* top = this->sum({bjet, lepton, ev->met});
+ *             top->name = "top_leptonic";
+ *             top->type = "top_quark";
+ *             
+ *             // Apply mass window cut
+ *             if (150 < top->mass && top->mass < 200) {
+ *                 ev->reconstructed_tops.push_back(top);
+ *             }
+ *         }
+ *     }
+ *     
+ *     return !ev->reconstructed_tops.empty();
+ * }
+ * @endcode
+ *
+ * ### merge
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * void merge(selection_template* other);
+ * @endcode
+ *
+ * **Description**:  
+ * Merge selection results from another selection instance. Useful for combining
+ * results across systematic variations or parallel processing.
+ *
+ * **Parameters**:
+ * - `other`: Selection instance to merge from
+ *
+ * ### CompileEvent
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * bool CompileEvent();
+ * @endcode
+ *
+ * **Description**:  
+ * Finalize selection processing. Called automatically after strategy().
+ *
+ * **Returns**: `true` if compilation successful
+ *
+ * ## Particle Combination Utilities
+ *
+ * ### sum (vector version)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * void sum(std::vector<particle_template*>* children,
+ *          particle_template** output);
+ * @endcode
+ *
+ * **Description**:  
+ * Combine multiple particles via four-momentum addition, storing result in output.
+ *
+ * **Parameters**:
+ * - `children`: Vector of input particles
+ * - `output`: Pointer to output particle (allocated by caller)
+ *
+ * **Example**:
+ * @code{.cpp}
+ * std::vector<particle_template*> constituents = {jet1, jet2, jet3};
+ * particle_template* top = new particle_template();
+ * this->sum(&constituents, &top);
+ * @endcode
+ *
+ * ### sum (map version)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * particle_template* sum(
+ *     std::map<std::string, particle_template*>* children
+ * );
+ * @endcode
+ *
+ * **Description**:  
+ * Combine particles from a map, returning a new particle.
+ *
+ * **Parameters**:
+ * - `children`: Map of particles (hash -> particle)
+ *
+ * **Returns**: New particle with combined four-momentum
+ *
+ * **Example**:
+ * @code{.cpp}
+ * std::map<std::string, particle_template*> w_daughters;
+ * w_daughters["lepton"] = lepton;
+ * w_daughters["neutrino"] = neutrino;
+ * auto* W = this->sum(&w_daughters);
+ * @endcode
+ *
+ * ### reverse_hash
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * std::vector<std::map<std::string, float>> reverse_hash(
+ *     std::vector<std::string>* hashes
+ * );
+ * @endcode
+ *
+ * **Description**:  
+ * Lookup truth-level information for reconstructed objects by hash.
+ *
+ * **Parameters**:
+ * - `hashes`: Vector of object hash identifiers
+ *
+ * **Returns**: Vector of maps containing truth-level properties
+ *
+ * ## Python Interface
+ *
+ * ### Class: SelectionTemplate
+ *
+ * @code{.python}
+ * class SelectionTemplate:
+ *     def __init__(self):
+ *         \"\"\"Initialize selection template\"\"\"
+ *         pass
+ *
+ *     def build(self, event: EventTemplate) -> SelectionTemplate:
+ *         \"\"\"Build selection from event\"\"\"
+ *         pass
+ *
+ *     def selection(self, event: EventTemplate) -> bool:
+ *         \"\"\"Override to implement selection cuts\"\"\"
+ *         return True
+ *
+ *     def strategy(self, event: EventTemplate) -> bool:
+ *         \"\"\"Override to implement reconstruction strategy\"\"\"
+ *         return True
+ *
+ *     # Properties
+ *     name: str
+ *     hash: str
+ *     tree: str
+ *     index: float
+ *     passed_weights: Dict[str, Dict[str, float]]
+ *     matched_meta: Dict[str, Any]
+ * @endcode
+ *
+ * ## Usage Examples
+ *
+ * ### Basic Selection
+ *
+ * @code{.python}
+ * from AnalysisG.core import SelectionTemplate
+ *
+ * class SingleLeptonSelection(SelectionTemplate):
+ *     def __init__(self):
+ *         SelectionTemplate.__init__(self)
+ *         self.name = "SingleLepton"
+ *
+ *     def selection(self, event):
+ *         \"\"\"Single-lepton + jets event selection\"\"\"
+ *         # Exactly 1 lepton
+ *         if len(event.leptons) != 1:
+ *             return False
+ *         
+ *         # Lepton pt > 25 GeV
+ *         if event.leptons[0].pt < 25.0:
+ *             return False
+ *         
+ *         # At least 4 jets
+ *         if len(event.jets) < 4:
+ *             return False
+ *         
+ *         # Leading jet pt > 30 GeV
+ *         if event.jets[0].pt < 30.0:
+ *             return False
+ *         
+ *         # At least 1 b-jet
+ *         n_bjets = sum(1 for j in event.jets if j.is_b)
+ *         if n_bjets < 1:
+ *             return False
+ *         
+ *         # MET > 20 GeV
+ *         if event.met.pt < 20.0:
+ *             return False
+ *         
+ *         return True
+ *
+ *     def strategy(self, event):
+ *         \"\"\"No reconstruction needed for this selection\"\"\"
+ *         return True
+ * @endcode
+ *
+ * ### Top Quark Reconstruction
+ *
+ * @code{.python}
+ * class TopReconstruction(SelectionTemplate):
+ *     def __init__(self):
+ *         SelectionTemplate.__init__(self)
+ *         self.name = "TopReco"
+ *         self.reconstructed_tops = []
+ *
+ *     def selection(self, event):
+ *         \"\"\"Require objects needed for top reconstruction\"\"\"
+ *         return (len(event.jets) >= 4 and 
+ *                len(event.leptons) >= 1 and
+ *                event.met.pt > 20.0)
+ *
+ *     def strategy(self, event):
+ *         \"\"\"Reconstruct top quarks using chi2 minimization\"\"\"
+ *         self.reconstructed_tops = []
+ *         
+ *         # Find best b-jet + lepton + MET combination
+ *         best_chi2 = float('inf')
+ *         best_top = None
+ *         
+ *         for bjet in [j for j in event.jets if j.is_b]:
+ *             for lepton in event.leptons:
+ *                 # Combine into top candidate
+ *                 top = bjet + lepton + event.met
+ *                 
+ *                 # Chi2 for top mass (173.0 GeV)
+ *                 chi2_top = ((top.mass - 173.0) / 20.0) ** 2
+ *                 
+ *                 # W mass from lepton + MET
+ *                 W = lepton + event.met
+ *                 chi2_W = ((W.mass - 80.4) / 10.0) ** 2
+ *                 
+ *                 chi2 = chi2_top + chi2_W
+ *                 
+ *                 if chi2 < best_chi2:
+ *                     best_chi2 = chi2
+ *                     best_top = top
+ *         
+ *         if best_top and best_chi2 < 10.0:
+ *             best_top.type = "top_quark"
+ *             self.reconstructed_tops.append(best_top)
+ *             return True
+ *         
+ *         return False
+ * @endcode
+ *
+ * ### Cutflow Tracking
+ *
+ * @code{.python}
+ * class CutflowSelection(SelectionTemplate):
+ *     def __init__(self):
+ *         SelectionTemplate.__init__(self)
+ *         self.cutflow = {}
+ *
+ *     def selection(self, event):
+ *         weight = event.weight
+ *         
+ *         # Initial
+ *         self.cutflow["initial"] = weight
+ *         
+ *         # Trigger
+ *         if not event.pass_trigger:
+ *             return False
+ *         self.cutflow["trigger"] = weight
+ *         
+ *         # Leptons
+ *         if len(event.leptons) < 1:
+ *             return False
+ *         self.cutflow["lepton"] = weight
+ *         
+ *         # Jets
+ *         if len(event.jets) < 4:
+ *             return False
+ *         self.cutflow["jets"] = weight
+ *         
+ *         # b-jets
+ *         if sum(1 for j in event.jets if j.is_b) < 1:
+ *             return False
+ *         self.cutflow["bjets"] = weight
+ *         
+ *         return True
+ * @endcode
+ *
+ * ## Design Patterns
+ *
+ * ### Separation of Concerns
+ * - **selection()**: Event-level cuts (what events to keep)
+ * - **strategy()**: Object reconstruction (how to build composite objects)
+ * - **CompileEvent()**: Post-processing (normalization, truth matching)
+ *
+ * ### Chi-Square Minimization
+ *
+ * Common for ambiguous reconstructions:
+ * @code{.python}
+ * chi2 = ((m_reconstructed - m_expected) / sigma) ** 2
+ * @endcode
+ *
+ * ### Combinatorial Reconstruction
+ *
+ * Try all combinations, keep best:
+ * @code{.python}
+ * for all possible combinations:
+ *     reconstruct object
+ *     compute quality metric (chi2, likelihood, etc.)
+ *     keep best
+ * @endcode
+ *
+ * ## Performance Notes
+ *
+ * - Selection is called once per event before strategy
+ * - Failed selection() avoids expensive strategy() computation
+ * - Combinatorial strategies can be O(n!) - use cuts to reduce space
+ * - passed_weights and matched_meta are lightweight until populated
+ * - merge() enables parallel processing with later combination
+ *
+ * ## See Also
+ *
+ * - @ref templates_event for event-level interface
+ * - @ref templates_particle for particle operations
+ * - @ref templates_model for ML-based selection
+ *
+ * @}
+ */
