@@ -1,0 +1,352 @@
+/**
+ * @file templates_event.dox
+ * @brief Documentation for EventTemplate Base Class
+ * @defgroup templates_event EventTemplate
+ * @ingroup templates
+ * @{
+ *
+ * ## Overview
+ *
+ * The EventTemplate class provides the base interface for defining custom event types
+ * in AnalysisG. It serves as the foundation for all event-level analysis objects,
+ * handling event metadata, tree navigation, and event building from ROOT TTree data.
+ *
+ * ## Purpose
+ *
+ * EventTemplate enables users to:
+ * - Define custom event structures for specific analyses
+ * - Extract and organize data from ROOT TTrees
+ * - Apply event-level selections and computations
+ * - Build particle collections and relationships
+ *
+ * ## Inheritance
+ *
+ * Users create analysis-specific event classes by inheriting from EventTemplate:
+ * @code{.python}
+ * from AnalysisG.core import EventTemplate
+ *
+ * class MyAnalysisEvent(EventTemplate):
+ *     def __init__(self):
+ *         EventTemplate.__init__(self)
+ *         # Custom initialization
+ *  
+ *     def CompileEvent(self):
+ *         # Custom event building logic
+ *         pass
+ * @endcode
+ *
+ * ## C++ Interface
+ *
+ * ### Class: event_template
+ *
+ * @code{.cpp}
+ * class event_template {
+ * public:
+ *     event_template();
+ *
+ *     // Tree navigation
+ *     std::vector<std::string> trees;      // Available TTrees
+ *     std::vector<std::string> branches;   // Available branches
+ *     std::vector<std::string> leaves;     // Available leaves
+ *
+ *     // Event metadata
+ *     std::string tree;                    // Current TTree name
+ *     std::string name;                    // Event identifier
+ *     std::string hash;                    // Unique event hash
+ *     double weight;                       // MC event weight
+ *     double index;                        // Event index
+ *
+ *     // Core methods
+ *     std::map<std::string, event_template*> build_event(
+ *         std::map<std::string, data_t*>* evnt
+ *     );
+ *     void CompileEvent();
+ *
+ *     // Comparison
+ *     bool operator==(event_template& p);
+ * };
+ * @endcode
+ *
+ * ## Member Documentation
+ *
+ * ### Tree Navigation Members
+ *
+ * #### trees
+ * **Type**: `std::vector<std::string>`
+ *
+ * List of available TTree names in the input ROOT file. Populated during
+ * initialization from the ROOT file structure.
+ *
+ * **Use Cases**:
+ * - Systematic variation handling (nominal, up, down trees)
+ * - Multi-tree analysis workflows
+ * - Tree validation
+ *
+ * #### branches
+ * **Type**: `std::vector<std::string>`
+ *
+ * List of branch names available in the current TTree.
+ *
+ * #### leaves
+ * **Type**: `std::vector<std::string>`
+ *
+ * List of leaf names available in the current TTree. Leaves are the actual
+ * data containers within branches.
+ *
+ * ### Event Metadata
+ *
+ * #### tree
+ * **Type**: `std::string`
+ *
+ * Name of the TTree currently being processed. Set automatically by the
+ * framework during event iteration.
+ *
+ * **Example**: `"nominal"`, `"JET_JER__1up"`, `"MET_SoftTrk_ScaleDown"`
+ *
+ * #### name
+ * **Type**: `std::string`
+ *
+ * Human-readable event identifier or classification. User-defined during
+ * event building.
+ *
+ * **Example**: `"ttbar_1lep"`, `"Zprime_semilep"`, `"signal_event"`
+ *
+ * #### hash
+ * **Type**: `std::string`
+ *
+ * Unique hash identifier for this event. Used for:
+ * - Event deduplication
+ * - Cross-referencing between datasets
+ * - Caching and reproducibility
+ *
+ * Typically constructed from run number, event number, and other unique identifiers.
+ *
+ * #### weight
+ * **Type**: `double`  
+ * **Default**: `1.0`  
+ * **Unit**: dimensionless
+ *
+ * Monte Carlo event weight combining:
+ * - Generator weights
+ * - Cross-section normalization
+ * - Luminosity scaling
+ * - Pile-up reweighting
+ * - Analysis-specific corrections
+ *
+ * For data events, typically `1.0`.
+ *
+ * #### index
+ * **Type**: `double`  
+ * **Default**: `-1`
+ *
+ * Event index within the input dataset. Sequential counter for event tracking.
+ *
+ * ## Core Methods
+ *
+ * ### build_event
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * std::map<std::string, event_template*> build_event(
+ *     std::map<std::string, data_t*>* evnt
+ * );
+ * @endcode
+ *
+ * **Description**:  
+ * Builds event object(s) from raw ROOT TTree data. This is the main entry point
+ * for constructing events from input files.
+ *
+ * **Parameters**:
+ * - `evnt`: Map of data containers indexed by branch/leaf names
+ *
+ * **Returns**:  
+ * Map of constructed event objects, typically a single event but can return
+ * multiple events for special cases (e.g., splitting events by jet multiplicity).
+ *
+ * **Implementation Pattern**:
+ * @code{.cpp}
+ * std::map<std::string, event_template*> build_event(
+ *     std::map<std::string, data_t*>* evnt
+ * ) {
+ *     // 1. Extract basic event info
+ *     this->weight = (*evnt)["mc_weight"]->get<double>();
+ *     this->index = (*evnt)["eventNumber"]->get<long>();
+ *     
+ *     // 2. Build hash from unique identifiers
+ *     this->hash = std::to_string(runNumber) + "_" +  
+ *                  std::to_string(eventNumber);
+ *     
+ *     // 3. Build particle collections
+ *     // ... (see ParticleTemplate documentation)
+ *     
+ *     // 4. Return event(s)
+ *     std::map<std::string, event_template*> output;
+ *     output[this->hash] = this;
+ *     return output;
+ * }
+ * @endcode
+ *
+ * ### CompileEvent
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * void CompileEvent();
+ * @endcode
+ *
+ * **Description**:  
+ * Performs event-level computations after all particles have been built.
+ * Called automatically after build_event completes.
+ *
+ * **Use Cases**:
+ * - Computing event-level observables (HT, MET significance, etc.)
+ * - Applying event selections
+ * - Building composite objects (e.g., reconstructed top quarks)
+ * - Establishing particle relationships
+ *
+ * **Implementation Pattern**:
+ * @code{.cpp}
+ * void CompileEvent() {
+ *     // 1. Compute event-level quantities
+ *     double HT = 0;
+ *     for (auto& jet : this->jets) {
+ *         HT += jet->pt;
+ *     }
+ *     
+ *     // 2. Apply selection flags
+ *     this->pass_trigger = check_triggers();
+ *     this->pass_jets = (this->jets.size() >= 4);
+ *     
+ *     // 3. Reconstruct composite objects
+ *     this->reconstruct_tops();
+ * }
+ * @endcode
+ *
+ * ### operator==
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * bool operator==(event_template& p);
+ * @endcode
+ *
+ * **Description**:  
+ * Compares two events for equality based on their hash identifiers.
+ *
+ * **Returns**: `true` if events have identical hashes, `false` otherwise
+ *
+ * ## Python Interface
+ *
+ * ### Class: EventTemplate
+ *
+ * @code{.python}
+ * class EventTemplate:
+ *     def __init__(self):
+ *         \"\"\"Initialize event template\"\"\"
+ *         pass
+ *
+ *     def CompileEvent(self):
+ *         \"\"\"Override to implement custom event building logic\"\"\"
+ *         pass
+ *
+ *     # Properties (auto-mapped from C++)
+ *     trees: List[str]
+ *     branches: List[str]
+ *     leaves: List[str]
+ *     tree: str
+ *     name: str
+ *     hash: str
+ *     weight: float
+ *     index: float
+ * @endcode
+ *
+ * ## Usage Example
+ *
+ * ### Python
+ *
+ * @code{.python}
+ * from AnalysisG.core import EventTemplate, ParticleTemplate
+ *
+ * class TopAnalysisEvent(EventTemplate):
+ *     def __init__(self):
+ *         EventTemplate.__init__(self)
+ *         self.jets = []
+ *         self.leptons = []
+ *         self.met = None
+ *         self.tops = []
+ *
+ *     def CompileEvent(self):
+ *         \"\"\"Build top quark candidates\"\"\"
+ *         # Require at least 4 jets, 1 lepton
+ *         if len(self.jets) < 4 or len(self.leptons) < 1:
+ *             return
+ *
+ *         # Reconstruct top quarks (simplified)
+ *         for b_jet in [j for j in self.jets if j.is_b]:
+ *             for lepton in self.leptons:
+ *                 # Build leptonic top: t → Wb → lνb
+ *                 lep_top = b_jet + lepton + self.met
+ *                 lep_top.name = "top_leptonic"
+ *                 self.tops.append(lep_top)
+ *
+ * # Usage in analysis
+ * from AnalysisG import Analysis
+ *
+ * ana = Analysis()
+ * ana.EventCache = "path/to/data.root"
+ * ana.Event = TopAnalysisEvent
+ * ana.Run()
+ *
+ * for event in ana:
+ *     print(f"Event {event.index}: {len(event.tops)} top candidates")
+ *     for top in event.tops:
+ *         print(f"  Top mass: {top.mass:.1f} GeV")
+ * @endcode
+ *
+ * ## Design Patterns
+ *
+ * ### Event Selection
+ *
+ * @code{.python}
+ * def CompileEvent(self):
+ *     # Define selection flags
+ *     self.pass_trigger = self.HLT_e24 or self.HLT_mu20
+ *     self.pass_leptons = len(self.leptons) == 1
+ *     self.pass_jets = len(self.jets) >= 4
+ *     self.pass_bjets = sum(1 for j in self.jets if j.is_b) >= 1
+ *     
+ *     # Combined selection
+ *     self.pass_selection = (self.pass_trigger and 
+ *                           self.pass_leptons and
+ *                           self.pass_jets and
+ *                           self.pass_bjets)
+ * @endcode
+ *
+ * ### Systematic Variations
+ *
+ * @code{.python}
+ * def build_event(self, data):
+ *     # Tree name indicates systematic variation
+ *     if "JES__1up" in self.tree:
+ *         # Apply jet energy scale +1σ variation
+ *         self.apply_jes_variation(+1.0)
+ *     elif "JES__1down" in self.tree:
+ *         self.apply_jes_variation(-1.0)
+ *     
+ *     return {self.hash: self}
+ * @endcode
+ *
+ * ## Performance Notes
+ *
+ * - EventTemplate is lightweight - designed for millions of events
+ * - Event building is parallelizable across files/trees
+ * - Hash-based storage enables efficient caching and deduplication
+ * - CompileEvent is called once per event after particle building
+ *
+ * ## See Also
+ *
+ * - @ref templates_particle for particle-level interface
+ * - @ref templates_graph for graph-level interface
+ * - @ref templates_selection for selection algorithms
+ * - @ref structs_event for the underlying data structure
+ *
+ * @}
+ */
