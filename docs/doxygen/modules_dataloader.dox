@@ -1,0 +1,316 @@
+/**
+ * @file modules_dataloader.dox
+ * @brief Documentation for the dataloader class
+ * @defgroup modules_dataloader Dataloader Module
+ * @ingroup modules
+ *
+ * @{
+ */
+
+/**
+ * @class dataloader
+ * @brief Graph batching and k-fold data splitting for ML training
+ *
+ * The dataloader class manages graph datasets for machine learning training, providing:
+ * - K-fold cross-validation data splitting
+ * - Train/validation/test set management
+ * - Graph batching for efficient GPU processing
+ * - Dataset persistence (save/load)
+ * - CUDA memory management
+ * - Random sampling and shuffling
+ *
+ * ## Overview
+ *
+ * The dataloader provides:
+ * - K-fold cross-validation splits
+ * - Train/validation/test set generation
+ * - Dynamic batching of graphs
+ * - GPU memory optimization
+ * - Dataset caching and restoration
+ * - Thread-safe data access
+ *
+ * ## Core Members
+ *
+ * ### K-Fold Data Structures
+ * @code
+ * std::map<int, std::vector<graph_t*>*> gr_k_fold_training;
+ * std::map<int, std::vector<graph_t*>*> gr_k_fold_validation;
+ * @endcode
+ * Training and validation graphs for each k-fold index.
+ *
+ * ### Test Set
+ * @code
+ * std::vector<graph_t*>* gr_test;
+ * @endcode
+ * Held-out test set for final evaluation.
+ *
+ * ### Dataset
+ * @code
+ * std::vector<graph_t*>* data_set;
+ * @endcode
+ * Complete graph dataset.
+ *
+ * ### Index Management
+ * @code
+ * std::map<int, std::vector<int>*> k_fold_training;
+ * std::map<int, std::vector<int>*> k_fold_validation;
+ * std::vector<int>* test_set;
+ * @endcode
+ * Integer indices for each split (lightweight references).
+ *
+ * ## Key Methods
+ *
+ * ### Data Splitting
+ * @code
+ * void generate_test_set(float percentage = 50);
+ * @endcode
+ * Split dataset into train and test sets. Percentage specifies test set size (e.g., 50 = 50% test).
+ *
+ * @code
+ * void generate_kfold_set(int k);
+ * @endcode
+ * Generate k-fold cross-validation splits from training set. Creates k non-overlapping
+ * validation folds.
+ *
+ * ### Data Access
+ * @code
+ * std::vector<graph_t*>* get_k_train_set(int k);
+ * std::vector<graph_t*>* get_k_validation_set(int k);
+ * std::vector<graph_t*>* get_test_set();
+ * @endcode
+ * Retrieve training, validation, or test graphs for specified k-fold index.
+ *
+ * ### Batching
+ * @code
+ * std::vector<graph_t*>* build_batch(
+ *     std::vector<graph_t*>* data,
+ *     model_template* mdl,
+ *     model_report* rep
+ * );
+ * @endcode
+ * Create a batch of graphs for model training:
+ * - Samples graphs according to batch size
+ * - Extracts features requested by model
+ * - Transfers data to GPU if using CUDA
+ * - Returns batched graph_t objects
+ *
+ * ### Persistence
+ * @code
+ * void dump_dataset(std::string path);
+ * bool restore_dataset(std::string path);
+ * @endcode
+ * Save and load dataset to/from disk for reusability.
+ *
+ * @code
+ * bool dump_graphs(std::string path = "./", int threads = 10);
+ * void restore_graphs(std::string paths, int threads);
+ * @endcode
+ * Serialize/deserialize individual graphs (more granular than dump_dataset).
+ *
+ * ### Sampling
+ * @code
+ * std::vector<graph_t*> get_random(int num = 5);
+ * @endcode
+ * Get random sample of graphs for inspection or debugging.
+ *
+ * ### Data Transfer
+ * @code
+ * void datatransfer(torch::TensorOptions* op, size_t* num_events, size_t* prg_events);
+ * @endcode
+ * Transfer graphs from CPU to GPU memory with progress tracking.
+ *
+ * ### CUDA Management
+ * @code
+ * void start_cuda_server();
+ * @endcode
+ * Start background thread for CUDA memory management and caching.
+ *
+ * ## Usage Examples
+ *
+ * ### Basic Train/Test Split
+ * @code{.cpp}
+ * dataloader loader;
+ * 
+ * // Populate with graphs
+ * for (auto& graph : all_graphs) {
+ *     loader.data_set->push_back(graph);
+ * }
+ * 
+ * // 80% train, 20% test
+ * loader.generate_test_set(20.0);
+ * 
+ * std::vector<graph_t*>* train_graphs = loader.get_k_train_set(0);
+ * std::vector<graph_t*>* test_graphs = loader.get_test_set();
+ * 
+ * std::cout << "Train: " << train_graphs->size() << " graphs" << std::endl;
+ * std::cout << "Test: " << test_graphs->size() << " graphs" << std::endl;
+ * @endcode
+ *
+ * ### K-Fold Cross-Validation
+ * @code{.cpp}
+ * dataloader loader;
+ * 
+ * // Populate dataset
+ * for (auto& graph : all_graphs) {
+ *     loader.data_set->push_back(graph);
+ * }
+ * 
+ * // Hold out 20% for final test
+ * loader.generate_test_set(20.0);
+ * 
+ * // 5-fold CV on remaining 80%
+ * int k_folds = 5;
+ * loader.generate_kfold_set(k_folds);
+ * 
+ * // Train on each fold
+ * for (int k = 0; k < k_folds; ++k) {
+ *     std::vector<graph_t*>* train = loader.get_k_train_set(k);
+ *     std::vector<graph_t*>* val = loader.get_k_validation_set(k);
+ *     
+ *     std::cout << "Fold " << k << ":" << std::endl;
+ *     std::cout << "  Train: " << train->size() << std::endl;
+ *     std::cout << "  Val: " << val->size() << std::endl;
+ *     
+ *     // Train model on this fold
+ *     model.train(train, val);
+ * }
+ * 
+ * // Final evaluation on test set
+ * std::vector<graph_t*>* test = loader.get_test_set();
+ * model.evaluate(test);
+ * @endcode
+ *
+ * ### Batched Training
+ * @code{.cpp}
+ * dataloader loader;
+ * TopReconstructionModel model;
+ * model_report report;
+ * 
+ * // Get training data for fold 0
+ * std::vector<graph_t*>* train_data = loader.get_k_train_set(0);
+ * 
+ * // Training loop
+ * for (int epoch = 0; epoch < 100; ++epoch) {
+ *     // Shuffle data each epoch
+ *     loader.shuffle(train_data);
+ *     
+ *     // Iterate through batches
+ *     int num_batches = train_data->size() / batch_size;
+ *     for (int batch_idx = 0; batch_idx < num_batches; ++batch_idx) {
+ *         // Create batch
+ *         std::vector<graph_t*>* batch = loader.build_batch(
+ *             train_data, &model, &report
+ *         );
+ *         
+ *         // Forward pass
+ *         torch::Tensor loss = model.forward(batch);
+ *         
+ *         // Backward pass
+ *         loss.backward();
+ *         optimizer.step();
+ *         
+ *         // Clean up batch
+ *         loader.safe_delete(batch);
+ *     }
+ * }
+ * @endcode
+ *
+ * ### Dataset Persistence
+ * @code{.cpp}
+ * dataloader loader;
+ * 
+ * // Build dataset (expensive operation)
+ * for (auto& event : events) {
+ *     graph_t* graph = build_graph(event);
+ *     loader.data_set->push_back(graph);
+ * }
+ * 
+ * // Save to disk
+ * loader.dump_dataset("./cache/dataset.pkl");
+ * 
+ * // Later, restore from disk
+ * dataloader loader2;
+ * loader2.restore_dataset("./cache/dataset.pkl");
+ * 
+ * // Dataset ready to use
+ * loader2.generate_test_set(20.0);
+ * loader2.generate_kfold_set(5);
+ * @endcode
+ *
+ * ### CUDA Data Transfer
+ * @code{.cpp}
+ * dataloader loader;
+ * 
+ * // Start CUDA memory server
+ * loader.start_cuda_server();
+ * 
+ * // Transfer data to GPU
+ * torch::TensorOptions gpu_options = torch::TensorOptions()
+ *     .device(torch::kCUDA, 0)
+ *     .dtype(torch::kFloat32);
+ * 
+ * size_t num_events = loader.data_set->size();
+ * size_t progress = 0;
+ * 
+ * loader.datatransfer(&gpu_options, &num_events, &progress);
+ * 
+ * // Monitor progress
+ * while (progress < num_events) {
+ *     std::cout << "Transfer: " << (100.0 * progress / num_events) << "%" << std::endl;
+ *     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+ * }
+ * @endcode
+ *
+ * ## Data Flow
+ *
+ * The typical data flow:
+ *
+ * 1. **Population**: Add graphs to `data_set`
+ * 2. **Test Split**: Call `generate_test_set()` to create train/test split
+ * 3. **K-Fold Split**: Call `generate_kfold_set()` to create CV folds
+ * 4. **Iteration**: Use `get_k_train_set()` and `get_k_validation_set()` for training
+ * 5. **Batching**: Use `build_batch()` to create mini-batches
+ * 6. **Evaluation**: Use `get_test_set()` for final evaluation
+ *
+ * ## Memory Management
+ *
+ * - **Caching**: Batches are cached to avoid repeated allocations
+ * - **CUDA Server**: Background thread manages GPU memory
+ * - **Safe Delete**: Use `safe_delete()` to properly free graph memory
+ * - **Shuffling**: In-place shuffling avoids memory copies
+ *
+ * ## Integration with AnalysisG
+ *
+ * The dataloader integrates with:
+ * - **analysis**: Receives graphs from event/graph pipeline
+ * - **model_template**: Provides batched data for training
+ * - **optimizer**: Coordinates data iteration during training loops
+ * - **graph_t**: Operates on graph structures
+ * - **settings_t**: Configuration for batch size, device, etc.
+ *
+ * ## Performance Considerations
+ *
+ * - **Batch Size**: Larger batches improve GPU utilization but require more memory
+ * - **Shuffling**: Shuffle training data each epoch to prevent overfitting
+ * - **Caching**: Cache batches to reduce overhead
+ * - **Threading**: Use multi-threading for data loading and transfer
+ * - **CUDA Pinning**: Pin memory for faster CPU-GPU transfers
+ *
+ * ## Best Practices
+ *
+ * 1. **Test Set**: Always hold out test set (10-20% of data)
+ * 2. **K-Fold CV**: Use 5-fold or 10-fold for robust validation
+ * 3. **Shuffling**: Shuffle training data each epoch
+ * 4. **Batch Size**: Start with 32-64, tune based on GPU memory
+ * 5. **Caching**: Enable dataset caching for large datasets
+ * 6. **Memory**: Monitor GPU memory usage to avoid OOM errors
+ * 7. **Random Seed**: Set seed for reproducible splits
+ *
+ * @see graph_t
+ * @see model_template
+ * @see optimizer
+ * @see analysis
+ * @see settings_t
+ */
+
+/** @} */ // end of modules_dataloader group

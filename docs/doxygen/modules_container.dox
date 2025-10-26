@@ -1,0 +1,342 @@
+/**
+ * @file modules_container.dox
+ * @brief Documentation for the container class
+ * @defgroup modules_container Container Module
+ * @ingroup modules
+ *
+ * @{
+ */
+
+/**
+ * @class container
+ * @brief Event and graph storage container with template management
+ *
+ * The container class manages storage and organization of events, graphs, and selections,
+ * serving as an intermediate layer between the analysis pipeline and the dataloader. It
+ * handles template registration, event building, selection application, and graph construction.
+ *
+ * ## Overview
+ *
+ * The container provides:
+ * - Event storage and retrieval
+ * - Graph storage and organization
+ * - Template registration (event, graph, selection)
+ * - Hash-based indexing for efficient access
+ * - Multi-threading support for parallel compilation
+ * - Integration with dataloader for model training
+ *
+ * ## Core Members
+ *
+ * ### Metadata
+ * @code
+ * meta* meta_data;
+ * @endcode
+ * Sample metadata (cross-section, luminosity, number of events).
+ *
+ * ### File Information
+ * @code
+ * std::string* filename;
+ * std::string* output_path;
+ * std::string label;
+ * @endcode
+ * Input file path, output directory, and sample label.
+ *
+ * ### Storage
+ * @code
+ * std::map<std::string, entry_t> random_access;
+ * @endcode
+ * Hash-indexed storage of entries (event + graphs + selections).
+ *
+ * ### Template Registry
+ * @code
+ * std::map<std::string, selection_template*>* merged;
+ * @endcode
+ * Registered selection templates applied to all events.
+ *
+ * ## Key Methods
+ *
+ * ### Metadata Management
+ * @code
+ * void add_meta_data(meta* m, std::string label);
+ * meta* get_meta_data();
+ * @endcode
+ * Set and retrieve sample metadata.
+ *
+ * ### Template Registration
+ * @code
+ * bool add_event_template(event_template* ev, std::string label);
+ * @endcode
+ * Register event template for building events from ROOT files.
+ *
+ * @code
+ * bool add_graph_template(graph_template* gr, std::string label);
+ * @endcode
+ * Register graph template for constructing graph representations.
+ *
+ * @code
+ * bool add_selection_template(selection_template* sel);
+ * @endcode
+ * Register selection template for event filtering and reconstruction.
+ *
+ * ### Selection Management
+ * @code
+ * void fill_selections(std::map<std::string, selection_template*>* inpt);
+ * @endcode
+ * Populate all entries with selection templates.
+ *
+ * ### Event Retrieval
+ * @code
+ * void get_events(std::vector<event_template*>* output, std::string label);
+ * @endcode
+ * Retrieve all events matching the specified label.
+ *
+ * ### Compilation
+ * @code
+ * void compile(size_t* len, int threadIdx);
+ * @endcode
+ * Compile entries (build events, apply selections, construct graphs) in parallel.
+ *
+ * @code
+ * size_t len();
+ * @endcode
+ * Get total number of entries in container.
+ *
+ * ### Dataloader Integration
+ * @code
+ * void populate_dataloader(dataloader* dl);
+ * @endcode
+ * Transfer all graphs to dataloader for model training.
+ *
+ * ### Entry Management
+ * @code
+ * entry_t* add_entry(std::string hash);
+ * @endcode
+ * Create new entry with specified hash key.
+ *
+ * ## entry_t Structure
+ *
+ * The entry_t structure stores data for a single event:
+ *
+ * @code{.cpp}
+ * struct entry_t {
+ *     std::string hash;  // Unique identifier
+ *     
+ *     // Built objects
+ *     std::vector<event_template*> m_event;
+ *     std::vector<selection_template*> m_selection;
+ *     std::vector<graph_template*> m_graph;
+ *     std::vector<graph_t*> m_data;  // Constructed graphs
+ *     
+ *     // Methods
+ *     void init();
+ *     void destroy();
+ *     bool has_event(event_template* ev);
+ *     bool has_graph(graph_template* gr);
+ *     bool has_selection(selection_template* sel);
+ * };
+ * @endcode
+ *
+ * - **hash**: Unique identifier for this entry (e.g., event number)
+ * - **m_event**: Built event objects
+ * - **m_selection**: Applied selection objects
+ * - **m_graph**: Built graph objects
+ * - **m_data**: Final graph_t structures ready for training
+ *
+ * ## Usage Examples
+ *
+ * ### Basic Container Setup
+ * @code{.cpp}
+ * container cont;
+ * 
+ * // Set metadata
+ * meta* sample_meta = new meta();
+ * sample_meta->cross_section = 831.76;  // ttbar cross-section
+ * sample_meta->luminosity = 140.0;      // fb^-1
+ * cont.add_meta_data(sample_meta, "ttbar");
+ * 
+ * // Set file info
+ * std::string filename = "/data/ttbar.root";
+ * std::string output = "./Results";
+ * cont.filename = &filename;
+ * cont.output_path = &output;
+ * cont.label = "ttbar";
+ * 
+ * // Register templates
+ * TopEvent* event_tmpl = new TopEvent();
+ * cont.add_event_template(event_tmpl, "ttbar");
+ * 
+ * TopSelection* sel_tmpl = new TopSelection();
+ * cont.add_selection_template(sel_tmpl);
+ * 
+ * TopGraph* graph_tmpl = new TopGraph();
+ * cont.add_graph_template(graph_tmpl, "ttbar");
+ * @endcode
+ *
+ * ### Event Processing
+ * @code{.cpp}
+ * container cont;
+ * 
+ * // ... setup templates ...
+ * 
+ * // Add entries for each event in ROOT file
+ * TFile* file = TFile::Open("/data/ttbar.root");
+ * TTree* tree = (TTree*)file->Get("nominal");
+ * 
+ * for (int i = 0; i < tree->GetEntries(); ++i) {
+ *     std::string hash = "event_" + std::to_string(i);
+ *     entry_t* entry = cont.add_entry(hash);
+ *     
+ *     // Entry will be compiled later
+ * }
+ * 
+ * // Compile all entries (multi-threaded)
+ * size_t progress = 0;
+ * int num_threads = 8;
+ * 
+ * std::vector<std::thread> threads;
+ * for (int t = 0; t < num_threads; ++t) {
+ *     threads.push_back(std::thread([&cont, &progress, t]() {
+ *         cont.compile(&progress, t);
+ *     }));
+ * }
+ * 
+ * for (auto& thread : threads) {
+ *     thread.join();
+ * }
+ * 
+ * std::cout << "Compiled " << cont.len() << " events" << std::endl;
+ * @endcode
+ *
+ * ### Selection Application
+ * @code{.cpp}
+ * container cont;
+ * 
+ * // Register multiple selections
+ * TopSelection* top_sel = new TopSelection();
+ * cont.add_selection_template(top_sel);
+ * 
+ * LeptonSelection* lep_sel = new LeptonSelection();
+ * cont.add_selection_template(lep_sel);
+ * 
+ * JetSelection* jet_sel = new JetSelection();
+ * cont.add_selection_template(jet_sel);
+ * 
+ * // Apply selections to all entries
+ * std::map<std::string, selection_template*> selections;
+ * selections["top"] = top_sel;
+ * selections["lepton"] = lep_sel;
+ * selections["jet"] = jet_sel;
+ * 
+ * cont.fill_selections(&selections);
+ * 
+ * // Compile entries with selections
+ * size_t progress = 0;
+ * cont.compile(&progress, threadIdx=0);
+ * @endcode
+ *
+ * ### Dataloader Population
+ * @code{.cpp}
+ * container cont;
+ * 
+ * // ... build and compile events ...
+ * 
+ * // Transfer to dataloader
+ * dataloader loader;
+ * cont.populate_dataloader(&loader);
+ * 
+ * std::cout << "Loaded " << loader.data_set->size() << " graphs" << std::endl;
+ * 
+ * // Ready for training
+ * loader.generate_test_set(20.0);
+ * loader.generate_kfold_set(5);
+ * @endcode
+ *
+ * ### Multi-Sample Analysis
+ * @code{.cpp}
+ * // Container for ttbar
+ * container ttbar_cont;
+ * ttbar_cont.label = "ttbar";
+ * ttbar_cont.add_event_template(new TopEvent(), "ttbar");
+ * ttbar_cont.add_selection_template(new TopSelection());
+ * ttbar_cont.add_graph_template(new TopGraph(), "ttbar");
+ * 
+ * // Container for signal
+ * container signal_cont;
+ * signal_cont.label = "signal";
+ * signal_cont.add_event_template(new SignalEvent(), "signal");
+ * signal_cont.add_selection_template(new TopSelection());
+ * signal_cont.add_graph_template(new TopGraph(), "signal");
+ * 
+ * // Compile both
+ * size_t ttbar_progress = 0;
+ * size_t signal_progress = 0;
+ * ttbar_cont.compile(&ttbar_progress, 0);
+ * signal_cont.compile(&signal_progress, 1);
+ * 
+ * // Merge into dataloader
+ * dataloader loader;
+ * ttbar_cont.populate_dataloader(&loader);
+ * signal_cont.populate_dataloader(&loader);
+ * 
+ * std::cout << "Total graphs: " << loader.data_set->size() << std::endl;
+ * @endcode
+ *
+ * ## Compilation Workflow
+ *
+ * The compilation process:
+ *
+ * 1. **Event Building**: Create event_template objects from ROOT data
+ * 2. **Selection Application**: Apply selection_template to filter and reconstruct
+ * 3. **Graph Construction**: Build graph_template from selected events
+ * 4. **Data Extraction**: Extract graph_t structures ready for ML
+ *
+ * ## Hash-Based Indexing
+ *
+ * The container uses hash-based indexing for efficient access:
+ * - Hash typically encodes event number or unique identifier
+ * - Allows O(1) lookup of specific events
+ * - Enables parallel processing without race conditions
+ *
+ * ## Memory Management
+ *
+ * - **Entry Ownership**: Container owns all entry_t objects
+ * - **Template Ownership**: Container does not own templates (shared across entries)
+ * - **Graph Ownership**: Graphs transferred to dataloader (ownership moves)
+ * - **Cleanup**: Call `entry_t::destroy()` to free memory
+ *
+ * ## Integration with AnalysisG
+ *
+ * The container integrates with:
+ * - **analysis**: Receives file paths and templates
+ * - **event_template**: Builds events from ROOT files
+ * - **selection_template**: Applies event selection
+ * - **graph_template**: Constructs graphs
+ * - **dataloader**: Receives final graphs for training
+ * - **meta**: Stores sample metadata
+ *
+ * ## Performance Considerations
+ *
+ * - **Threading**: Compile entries in parallel for faster processing
+ * - **Hashing**: Use efficient hash keys for fast lookup
+ * - **Memory**: Monitor memory usage when processing large files
+ * - **Caching**: Container can cache intermediate results
+ *
+ * ## Best Practices
+ *
+ * 1. **Templates**: Register templates before adding entries
+ * 2. **Threading**: Use multiple threads for compilation
+ * 3. **Labels**: Use descriptive labels for samples
+ * 4. **Metadata**: Always set metadata for proper normalization
+ * 5. **Cleanup**: Call destroy() on entries when done
+ * 6. **Progress**: Monitor progress during compilation
+ *
+ * @see entry_t
+ * @see event_template
+ * @see selection_template
+ * @see graph_template
+ * @see dataloader
+ * @see analysis
+ * @see meta
+ */
+
+/** @} */ // end of modules_container group
