@@ -10,13 +10,13 @@ build:
     - graphviz
   jobs:
     pre_build:
-      - cd .. && doxygen Doxyfile
+      - doxygen Doxyfile
 
 sphinx:
-  configuration: ./docs/source/conf.py
+  configuration: docs/source/conf.py
 
 python:
   install:
     - method: pip
-      path: ./docs/
-    - requirements: ./docs/requirements.txt
+      path: docs/
+    - requirements: docs/requirements.txt

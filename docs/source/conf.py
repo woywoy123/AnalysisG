@@ -19,7 +19,7 @@ extensions = ["sphinx.ext.imgmath", "breathe"]
 
 # Breathe Configuration for Doxygen integration
 breathe_projects = {
-    "AnalysisG": "../doxygen-docs/xml/"
+    "AnalysisG": "../../doxygen-docs/xml/"
 }
 breathe_default_project = "AnalysisG"
 breathe_default_members = ('members', 'undoc-members')
