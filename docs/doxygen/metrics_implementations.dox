@@ -1,0 +1,387 @@
+/**
+ * @file metrics_implementations.dox
+ * @brief Documentation for specific metric implementation classes
+ * @defgroup metrics_impl Metric Implementations
+ * @ingroup module_metrics
+ * @{
+ *
+ * ## Overview
+ *
+ * Metric implementations define evaluation criteria for model performance and physics analysis quality.
+ * Each implementation extends the base metrics interface and calculates specific quantities for
+ * assessing reconstruction accuracy, classification performance, or physics observables.
+ *
+ * ## Available Metric Implementations
+ *
+ * ### Accuracy Metrics (accuracy)
+ *
+ * Standard classification accuracy with support for multi-class problems.
+ *
+ * **Key Features:**
+ * - Overall accuracy calculation
+ * - Per-class precision and recall
+ * - Confusion matrix generation
+ * - F1 score and balanced accuracy
+ *
+ * **Implementation:**
+ * ```cpp
+ * class accuracy {
+ * public:
+ *     float Calculate(
+ *         std::vector<int> predictions,
+ *         std::vector<int> truth
+ *     ) {
+ *         int correct = 0;
+ *         for (size_t i = 0; i < predictions.size(); ++i) {
+ *             if (predictions[i] == truth[i]) correct++;
+ *         }
+ *         return static_cast<float>(correct) / predictions.size();
+ *     }
+ *
+ *     std::map<int, float> PerClassAccuracy(
+ *         std::vector<int> predictions,
+ *         std::vector<int> truth,
+ *         int num_classes
+ *     ) {
+ *         std::map<int, int> correct_per_class;
+ *         std::map<int, int> total_per_class;
+ *
+ *         for (size_t i = 0; i < predictions.size(); ++i) {
+ *             int true_class = truth[i];
+ *             total_per_class[true_class]++;
+ *             if (predictions[i] == true_class) {
+ *                 correct_per_class[true_class]++;
+ *             }
+ *         }
+ *
+ *         std::map<int, float> accuracies;
+ *         for (int c = 0; c < num_classes; ++c) {
+ *             accuracies[c] = static_cast<float>(correct_per_class[c]) / 
+ *                            total_per_class[c];
+ *         }
+ *         return accuracies;
+ *     }
+ *
+ *     std::vector<std::vector<int>> ConfusionMatrix(
+ *         std::vector<int> predictions,
+ *         std::vector<int> truth,
+ *         int num_classes
+ *     ) {
+ *         std::vector<std::vector<int>> matrix(
+ *             num_classes, std::vector<int>(num_classes, 0)
+ *         );
+ *
+ *         for (size_t i = 0; i < predictions.size(); ++i) {
+ *             matrix[truth[i]][predictions[i]]++;
+ *         }
+ *         return matrix;
+ *     }
+ * };
+ * ```
+ *
+ * **Usage Example:**
+ * ```cpp
+ * accuracy* acc_metric = new accuracy();
+ *
+ * // After model inference
+ * std::vector<int> predictions, ground_truth;
+ * for (graph_t* g : test_graphs) {
+ *     model->forward(g);
+ *     
+ *     for (int i = 0; i < g->num_nodes; ++i) {
+ *         int pred = torch::argmax(g->pred[i]).item<int>();
+ *         predictions.push_back(pred);
+ *         ground_truth.push_back(g->truth[i]);
+ *     }
+ * }
+ *
+ * float overall_acc = acc_metric->Calculate(predictions, ground_truth);
+ * std::cout << "Accuracy: " << overall_acc * 100 << "%" << std::endl;
+ *
+ * auto per_class = acc_metric->PerClassAccuracy(predictions, ground_truth, 2);
+ * std::cout << "Background accuracy: " << per_class[0] * 100 << "%" << std::endl;
+ * std::cout << "Signal accuracy: " << per_class[1] * 100 << "%" << std::endl;
+ * ```
+ *
+ * ### PageRank Metrics (pagerank)
+ *
+ * Graph centrality metrics using PageRank algorithm for importance scoring.
+ *
+ * **Physics Motivation:**
+ * - Identify central particles in decay chains
+ * - Weight nodes by connectivity and physics relationships
+ * - Enhance GNN features with structural information
+ *
+ * **Implementation:**
+ * ```cpp
+ * class pagerank {
+ * public:
+ *     float damping_factor = 0.85;
+ *     int max_iterations = 100;
+ *     float tolerance = 1e-6;
+ *
+ *     std::vector<float> Calculate(
+ *         graph_t* g
+ *     ) {
+ *         int N = g->num_nodes;
+ *         std::vector<float> ranks(N, 1.0 / N);
+ *         std::vector<float> new_ranks(N);
+ *
+ *         // Build adjacency information
+ *         std::vector<std::vector<int>> outgoing(N);
+ *         for (auto& edge : g->edge_index) {
+ *             outgoing[edge[0]].push_back(edge[1]);
+ *         }
+ *
+ *         // Power iteration
+ *         for (int iter = 0; iter < max_iterations; ++iter) {
+ *             std::fill(new_ranks.begin(), new_ranks.end(), 
+ *                      (1.0 - damping_factor) / N);
+ *
+ *             for (int i = 0; i < N; ++i) {
+ *                 float contribution = damping_factor * ranks[i] / 
+ *                                    outgoing[i].size();
+ *                 for (int j : outgoing[i]) {
+ *                     new_ranks[j] += contribution;
+ *                 }
+ *             }
+ *
+ *             // Check convergence
+ *             float delta = 0.0;
+ *             for (int i = 0; i < N; ++i) {
+ *                 delta += fabs(new_ranks[i] - ranks[i]);
+ *             }
+ *             if (delta < tolerance) break;
+ *
+ *             ranks = new_ranks;
+ *         }
+ *
+ *         return ranks;
+ *     }
+ * };
+ * ```
+ *
+ * **Usage Example:**
+ * ```cpp
+ * pagerank* pr_metric = new pagerank();
+ * pr_metric->damping_factor = 0.85;
+ *
+ * // Calculate importance scores
+ * std::vector<float> scores = pr_metric->Calculate(graph);
+ *
+ * // Use as additional node features
+ * for (int i = 0; i < graph->num_nodes; ++i) {
+ *     graph->node_features[i].push_back(scores[i]);
+ * }
+ *
+ * // Or identify most important particles
+ * std::vector<int> sorted_indices(scores.size());
+ * std::iota(sorted_indices.begin(), sorted_indices.end(), 0);
+ * std::sort(sorted_indices.begin(), sorted_indices.end(),
+ *     [&scores](int i, int j) { return scores[i] > scores[j]; });
+ *
+ * std::cout << "Top 5 most important particles:" << std::endl;
+ * for (int i = 0; i < 5; ++i) {
+ *     int idx = sorted_indices[i];
+ *     std::cout << "  Node " << idx << ": score = " << scores[idx] << std::endl;
+ * }
+ * ```
+ *
+ * ### Physics-Specific Metrics
+ *
+ * #### Top Reconstruction Efficiency
+ *
+ * ```cpp
+ * class TopReconstructionEfficiency {
+ * public:
+ *     struct Result {
+ *         float efficiency;
+ *         float purity;
+ *         float mass_resolution;
+ *     };
+ *
+ *     Result Calculate(
+ *         std::vector<particle_template*> truth_tops,
+ *         std::vector<particle_template*> reco_tops
+ *     ) {
+ *         int matched = 0;
+ *         float total_mass_diff = 0.0;
+ *
+ *         for (auto* truth : truth_tops) {
+ *             // Find closest reconstructed top
+ *             particle_template* best_match = nullptr;
+ *             float min_dr = 0.4;
+ *
+ *             for (auto* reco : reco_tops) {
+ *                 float dr = DeltaR(truth, reco);
+ *                 if (dr < min_dr) {
+ *                     min_dr = dr;
+ *                     best_match = reco;
+ *                 }
+ *             }
+ *
+ *             if (best_match) {
+ *                 matched++;
+ *                 total_mass_diff += fabs(best_match->Mass() - truth->Mass());
+ *             }
+ *         }
+ *
+ *         Result res;
+ *         res.efficiency = static_cast<float>(matched) / truth_tops.size();
+ *         res.purity = static_cast<float>(matched) / reco_tops.size();
+ *         res.mass_resolution = total_mass_diff / matched;
+ *         return res;
+ *     }
+ * };
+ * ```
+ *
+ * #### Jet Energy Resolution
+ *
+ * ```cpp
+ * class JetEnergyResolution {
+ * public:
+ *     float Calculate(
+ *         std::vector<float> reco_energies,
+ *         std::vector<float> truth_energies
+ *     ) {
+ *         float sum_squared_diff = 0.0;
+ *         
+ *         for (size_t i = 0; i < reco_energies.size(); ++i) {
+ *             float diff = (reco_energies[i] - truth_energies[i]) / truth_energies[i];
+ *             sum_squared_diff += diff * diff;
+ *         }
+ *
+ *         return sqrt(sum_squared_diff / reco_energies.size());
+ *     }
+ * };
+ * ```
+ *
+ * ## Implementing Custom Metrics
+ *
+ * ### Step 1: Define Metric Class
+ *
+ * ```cpp
+ * class my_metric {
+ * public:
+ *     // Configuration
+ *     float threshold = 0.5;
+ *
+ *     // Calculate metric
+ *     float Calculate(
+ *         std::vector<float> predictions,
+ *         std::vector<float> truth
+ *     );
+ *
+ *     // Additional analysis
+ *     std::map<std::string, float> DetailedMetrics(
+ *         std::vector<float> predictions,
+ *         std::vector<float> truth
+ *     );
+ * };
+ * ```
+ *
+ * ### Step 2: Implement Calculation
+ *
+ * ```cpp
+ * float my_metric::Calculate(
+ *     std::vector<float> predictions,
+ *     std::vector<float> truth
+ * ) {
+ *     float metric_value = 0.0;
+ *     
+ *     for (size_t i = 0; i < predictions.size(); ++i) {
+ *         // Compute metric for each sample
+ *         float sample_metric = ComputeSampleMetric(predictions[i], truth[i]);
+ *         metric_value += sample_metric;
+ *     }
+ *     
+ *     return metric_value / predictions.size();
+ * }
+ * ```
+ *
+ * ### Step 3: Integration with Training
+ *
+ * ```cpp
+ * // Setup training with custom metric
+ * Optimizer* opt = new Optimizer();
+ * opt->Model = model;
+ *
+ * // Add metric for evaluation
+ * my_metric* metric = new my_metric();
+ * metric->threshold = 0.7;
+ *
+ * // Training loop with metric tracking
+ * for (int epoch = 0; epoch < 100; ++epoch) {
+ *     // Training
+ *     model->train();
+ *     for (auto* batch : train_loader) {
+ *         model->forward(batch);
+ *         loss->backward();
+ *         optimizer.step();
+ *     }
+ *
+ *     // Evaluation
+ *     model->eval();
+ *     std::vector<float> all_preds, all_truth;
+ *     for (auto* batch : val_loader) {
+ *         model->forward(batch);
+ *         // Collect predictions and truth
+ *         all_preds.insert(all_preds.end(), ...);
+ *         all_truth.insert(all_truth.end(), ...);
+ *     }
+ *
+ *     float metric_val = metric->Calculate(all_preds, all_truth);
+ *     std::cout << "Epoch " << epoch << " metric: " << metric_val << std::endl;
+ * }
+ * ```
+ *
+ * ## Best Practices
+ *
+ * ### Metric Selection
+ * - Use accuracy for balanced datasets
+ * - Use F1/precision/recall for imbalanced data
+ * - Use physics-motivated metrics (mass resolution, efficiency)
+ * - Track multiple metrics simultaneously
+ *
+ * ### Statistical Significance
+ * - Report confidence intervals (bootstrap)
+ * - Use cross-validation for robust estimates
+ * - Compare against baselines
+ *
+ * ### Visualization
+ * - Plot confusion matrices
+ * - ROC curves for binary classification
+ * - Precision-recall curves for imbalanced data
+ * - Physics distribution comparisons
+ *
+ * ## Integration with Plotting Module
+ *
+ * ```cpp
+ * // Create metric plots
+ * Plotting* plotter = new Plotting();
+ *
+ * // Confusion matrix
+ * auto conf_matrix = acc_metric->ConfusionMatrix(preds, truth, 2);
+ * plotter->PlotConfusionMatrix(conf_matrix, {"Background", "Signal"});
+ * plotter->Save("confusion_matrix.pdf");
+ *
+ * // ROC curve
+ * std::vector<float> thresholds, tpr, fpr;
+ * for (float t = 0.0; t <= 1.0; t += 0.01) {
+ *     auto metrics = BinaryMetrics(preds, truth, t);
+ *     thresholds.push_back(t);
+ *     tpr.push_back(metrics.true_positive_rate);
+ *     fpr.push_back(metrics.false_positive_rate);
+ * }
+ * plotter->PlotROC(fpr, tpr);
+ * plotter->Save("roc_curve.pdf");
+ * ```
+ *
+ * ## See Also
+ * - @ref Metrics - Base metrics documentation
+ * - @ref Optimizer - Training with metrics
+ * - @ref Plotting - Visualization tools
+ * - @ref module_analysis - Complete workflow
+ *
+ * @}
+ */
