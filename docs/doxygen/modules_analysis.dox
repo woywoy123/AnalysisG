@@ -1,0 +1,308 @@
+/**
+ * @file modules_analysis.dox
+ * @brief Documentation for the analysis class
+ * @defgroup modules_analysis Analysis Module
+ * @ingroup modules
+ *
+ * @{
+ */
+
+/**
+ * @class analysis
+ * @brief Main orchestration class for AnalysisG workflows
+ *
+ * The analysis class is the top-level interface for AnalysisG, coordinating the entire
+ * analysis workflow from ROOT file input to ML model training and physics results. It
+ * manages data flow between samples, events, selections, graphs, models, and metrics.
+ *
+ * ## Overview
+ *
+ * The analysis class provides:
+ * - Sample management (input ROOT files with labels)
+ * - Template registration (events, particles, graphs, selections, models)
+ * - Workflow orchestration (event building → selection → graph construction → training)
+ * - Multi-threading support for parallel processing
+ * - Progress tracking and reporting
+ * - Caching for incremental analysis
+ *
+ * ## Workflow Pipeline
+ *
+ * The analysis pipeline consists of:
+ *
+ * 1. **Sample Addition**: Load ROOT files and assign labels (signal/background)
+ * 2. **Template Registration**: Define event, particle, graph, selection, and model templates
+ * 3. **Event Building**: Parse ROOT TTrees into event objects
+ * 4. **Selection**: Apply physics cuts and reconstruction
+ * 5. **Graph Construction**: Build graph representations for GNN analysis
+ * 6. **Model Training**: Train ML models on graph data
+ * 7. **Evaluation**: Compute metrics and generate results
+ *
+ * ## Core Members
+ *
+ * ### Configuration
+ * @code
+ * settings_t m_settings;
+ * @endcode
+ * Global analysis settings including:
+ * - Number of threads
+ * - Cache directory
+ * - Output paths
+ * - Training parameters
+ *
+ * ### Metadata
+ * @code
+ * std::map<std::string, meta*> meta_data;
+ * @endcode
+ * Metadata for each input sample (cross-section, luminosity, number of events).
+ *
+ * ## Key Methods
+ *
+ * ### Sample Management
+ * @code
+ * void add_samples(std::string path, std::string label);
+ * @endcode
+ * Add ROOT files from directory with sample label (e.g., "ttbar", "signal").
+ *
+ * ### Template Registration
+ * @code
+ * void add_event_template(event_template* ev, std::string label);
+ * @endcode
+ * Register event template for specified sample label.
+ *
+ * @code
+ * void add_selection_template(selection_template* sel);
+ * @endcode
+ * Register selection template (applies to all events).
+ *
+ * @code
+ * void add_graph_template(graph_template* gr, std::string label);
+ * @endcode
+ * Register graph template for specified sample label.
+ *
+ * @code
+ * void add_model(model_template* model, optimizer_params_t* op, std::string run_name);
+ * void add_model(model_template* model, std::string run_name);
+ * @endcode
+ * Register ML model with optimizer parameters and run identifier.
+ *
+ * @code
+ * void add_metric_template(metric_template* mx, model_template* mdl);
+ * @endcode
+ * Register custom metric template for model evaluation.
+ *
+ * ### Execution Control
+ * @code
+ * void attach_threads();
+ * @endcode
+ * Initialize thread pool for parallel processing.
+ *
+ * @code
+ * void start();
+ * @endcode
+ * Execute the analysis workflow:
+ * - Build events from ROOT files
+ * - Apply selections
+ * - Construct graphs
+ * - Train models
+ * - Compute metrics
+ *
+ * ### Progress Tracking
+ * @code
+ * std::map<std::string, std::vector<float>> progress();
+ * @endcode
+ * Get progress percentage for each stage (event building, selection, graph construction, training).
+ *
+ * @code
+ * std::map<std::string, std::string> progress_mode();
+ * @endcode
+ * Get current mode for each workflow stage (e.g., "training", "validation", "evaluation").
+ *
+ * @code
+ * std::map<std::string, std::string> progress_report();
+ * @endcode
+ * Get human-readable progress reports.
+ *
+ * @code
+ * std::map<std::string, bool> is_complete();
+ * @endcode
+ * Check completion status for each workflow stage.
+ *
+ * ## Usage Examples
+ *
+ * ### Basic Analysis Workflow
+ * @code{.cpp}
+ * // Create analysis
+ * analysis ana;
+ * ana.m_settings.threads = 8;
+ * ana.m_settings.output_path = "./Results";
+ *
+ * // Add samples
+ * ana.add_samples("/data/ttbar/*.root", "ttbar");
+ * ana.add_samples("/data/signal/*.root", "signal");
+ *
+ * // Register templates
+ * TopEvent* top_event = new TopEvent();
+ * ana.add_event_template(top_event, "ttbar");
+ * ana.add_event_template(top_event, "signal");
+ *
+ * TopSelection* top_sel = new TopSelection();
+ * ana.add_selection_template(top_sel);
+ *
+ * TopGraph* top_graph = new TopGraph();
+ * ana.add_graph_template(top_graph, "ttbar");
+ * ana.add_graph_template(top_graph, "signal");
+ *
+ * // Register model
+ * TopReconstructionModel* model = new TopReconstructionModel();
+ * optimizer_params_t params;
+ * params.learning_rate = 0.001;
+ * ana.add_model(model, &params, "top_reco");
+ *
+ * // Run analysis
+ * ana.attach_threads();
+ * ana.start();
+ *
+ * // Monitor progress
+ * while (!ana.is_complete()["training"]) {
+ *     auto progress = ana.progress();
+ *     std::cout << "Training: " << progress["training"][0] << "%" << std::endl;
+ *     std::this_thread::sleep_for(std::chrono::seconds(10));
+ * }
+ * @endcode
+ *
+ * ### Multi-Sample Analysis
+ * @code{.cpp}
+ * analysis ana;
+ *
+ * // Add multiple backgrounds
+ * ana.add_samples("/data/ttbar/*.root", "ttbar");
+ * ana.add_samples("/data/single_top/*.root", "single_top");
+ * ana.add_samples("/data/wjets/*.root", "wjets");
+ * ana.add_samples("/data/signal/*.root", "signal");
+ *
+ * // Register event templates for each sample
+ * TopEvent* top_evt = new TopEvent();
+ * ana.add_event_template(top_evt, "ttbar");
+ * ana.add_event_template(top_evt, "single_top");
+ * ana.add_event_template(top_evt, "signal");
+ *
+ * WJetsEvent* wjets_evt = new WJetsEvent();
+ * ana.add_event_template(wjets_evt, "wjets");
+ *
+ * // Common selection
+ * TopSelection* sel = new TopSelection();
+ * ana.add_selection_template(sel);
+ *
+ * // Common graph template
+ * TopGraph* graph = new TopGraph();
+ * ana.add_graph_template(graph, "ttbar");
+ * ana.add_graph_template(graph, "single_top");
+ * ana.add_graph_template(graph, "wjets");
+ * ana.add_graph_template(graph, "signal");
+ *
+ * // Train classifier
+ * SignalClassifier* classifier = new SignalClassifier();
+ * ana.add_model(classifier, "signal_vs_background");
+ *
+ * ana.start();
+ * @endcode
+ *
+ * ### Inference Mode
+ * @code{.cpp}
+ * analysis ana;
+ * ana.m_settings.inference_mode = true;
+ *
+ * // Add test data
+ * ana.add_samples("/data/test/*.root", "test");
+ *
+ * // Load trained model
+ * SignalClassifier* classifier = new SignalClassifier();
+ * classifier->load_checkpoint("trained_model.pt");
+ * ana.add_model(classifier, "inference");
+ *
+ * // Register templates
+ * ana.add_event_template(new TopEvent(), "test");
+ * ana.add_selection_template(new TopSelection());
+ * ana.add_graph_template(new TopGraph(), "test");
+ *
+ * // Run inference
+ * ana.start();
+ * @endcode
+ *
+ * ## Workflow Stages
+ *
+ * ### 1. Event Building
+ * - Parse ROOT TTree branches
+ * - Create event_template objects
+ * - Build particle hierarchies
+ * - Extract four-vectors and metadata
+ *
+ * ### 2. Selection
+ * - Apply trigger requirements
+ * - Enforce object quality cuts
+ * - Perform reconstruction
+ * - Calculate derived quantities
+ *
+ * ### 3. Graph Construction
+ * - Define graph nodes (particles)
+ * - Define graph edges (relationships)
+ * - Extract node/edge features
+ * - Batch graphs for training
+ *
+ * ### 4. Model Training
+ * - Initialize model and optimizer
+ * - Train on graph batches
+ * - Validate on held-out data
+ * - Compute metrics
+ *
+ * ## Caching and Optimization
+ *
+ * The analysis class caches intermediate results:
+ * - **Events**: Cached after event building
+ * - **Selections**: Cached after selection application
+ * - **Graphs**: Cached before training
+ *
+ * This enables:
+ * - Incremental analysis (skip completed stages)
+ * - Fast model iteration (reuse cached graphs)
+ * - Checkpoint recovery (resume from failures)
+ *
+ * ## Multi-Threading
+ *
+ * The analysis supports parallel processing:
+ * - Event building parallelized across files
+ * - Selection parallelized across events
+ * - Graph construction parallelized
+ * - Model training uses GPU acceleration
+ *
+ * ## Integration with AnalysisG
+ *
+ * The analysis integrates with all AnalysisG components:
+ * - **event_template**: Event building
+ * - **selection_template**: Event selection
+ * - **graph_template**: Graph construction
+ * - **model_template**: ML training
+ * - **metrics**: Performance evaluation
+ * - **dataloader**: Data batching
+ * - **optimizer**: Training orchestration
+ *
+ * ## Best Practices
+ *
+ * 1. **Sample Labels**: Use descriptive labels ("ttbar_allhad", not "sample1")
+ * 2. **Template Reuse**: Share templates across similar samples
+ * 3. **Caching**: Enable caching for large datasets
+ * 4. **Progress Monitoring**: Check progress regularly
+ * 5. **Thread Count**: Use threads ≈ number of CPU cores
+ * 6. **Validation**: Always validate on independent data
+ *
+ * @see event_template
+ * @see selection_template
+ * @see graph_template
+ * @see model_template
+ * @see optimizer
+ * @see metrics
+ * @see dataloader
+ * @see settings_t
+ */
+
+/** @} */ // end of modules_analysis group

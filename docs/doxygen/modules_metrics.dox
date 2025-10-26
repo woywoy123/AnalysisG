@@ -1,0 +1,211 @@
+/**
+ * @file modules_metrics.dox
+ * @brief Documentation for the metrics module
+ * @defgroup modules_metrics Metrics Module
+ * @ingroup modules
+ *
+ * @{
+ */
+
+/**
+ * @class metrics
+ * @brief Evaluation metrics and performance tracking for ML models
+ *
+ * The metrics class computes and tracks evaluation metrics for machine learning models,
+ * including loss curves, accuracy, precision, recall, AUC, and physics-specific metrics.
+ * It generates ROOT-style plots and reports for model performance analysis.
+ *
+ * ## Overview
+ *
+ * The metrics module provides:
+ * - Loss tracking (training, validation, evaluation)
+ * - Classification metrics (accuracy, precision, recall, F1, AUC)
+ * - Regression metrics (MSE, MAE, R²)
+ * - Physics-specific metrics (invariant mass resolution, efficiency)
+ * - Visualization with ROOT plotting
+ * - Model performance reports
+ *
+ * ## Core Members
+ *
+ * ### Configuration
+ * @code
+ * std::string output_path;
+ * @endcode
+ * Directory for saving metric plots and reports.
+ *
+ * @code
+ * settings_t m_settings;
+ * @endcode
+ * Configuration settings for metric computation.
+ *
+ * ### Visualization
+ * @code
+ * const std::vector<Color_t> colors_h = {kRed, kGreen, kBlue, ...};
+ * @endcode
+ * ROOT color palette for multi-curve plots.
+ *
+ * ## Key Methods
+ *
+ * ### Plotting
+ * @code
+ * void dump_plots(int k);
+ * @endcode
+ * Generate and save all metric plots for k-fold index k:
+ * - Loss curves (training vs. validation)
+ * - Accuracy curves
+ * - Confusion matrices
+ * - ROC curves
+ *
+ * ## Usage Examples
+ *
+ * ### Basic Metric Tracking
+ * @code{.cpp}
+ * metrics metric_tracker;
+ * metric_tracker.output_path = "./Results/metrics";
+ * 
+ * // Track during training
+ * for (int epoch = 0; epoch < 100; ++epoch) {
+ *     // Training
+ *     float train_loss = model.train_epoch();
+ *     metric_tracker.record_loss(train_loss, mode_enum::TRAINING, epoch);
+ *     
+ *     // Validation
+ *     float val_loss = model.validate_epoch();
+ *     metric_tracker.record_loss(val_loss, mode_enum::VALIDATION, epoch);
+ *     
+ *     // Compute accuracy
+ *     float val_accuracy = metric_tracker.compute_accuracy(
+ *         predictions, ground_truth, mode_enum::VALIDATION
+ *     );
+ * }
+ * 
+ * // Generate plots
+ * metric_tracker.dump_plots(kfold=0);
+ * @endcode
+ *
+ * ### Classification Metrics
+ * @code{.cpp}
+ * metrics metric_tracker;
+ * 
+ * // Binary classification
+ * torch::Tensor predictions = model.forward(test_data);
+ * torch::Tensor labels = test_data.labels;
+ * 
+ * // Compute metrics
+ * float accuracy = metric_tracker.compute_accuracy(predictions, labels);
+ * float precision = metric_tracker.compute_precision(predictions, labels);
+ * float recall = metric_tracker.compute_recall(predictions, labels);
+ * float f1 = metric_tracker.compute_f1(predictions, labels);
+ * float auc = metric_tracker.compute_auc(predictions, labels);
+ * 
+ * std::cout << "Accuracy: " << accuracy << std::endl;
+ * std::cout << "AUC: " << auc << std::endl;
+ * @endcode
+ *
+ * ### Physics-Specific Metrics
+ * @code{.cpp}
+ * metrics metric_tracker;
+ * 
+ * // Mass resolution
+ * torch::Tensor pred_mass = model.predict_mass(events);
+ * torch::Tensor true_mass = events.true_top_mass;
+ * 
+ * float mass_resolution = metric_tracker.compute_mass_resolution(
+ *     pred_mass, true_mass
+ * );
+ * 
+ * // Reconstruction efficiency
+ * float efficiency = metric_tracker.compute_efficiency(
+ *     num_correctly_reconstructed,
+ *     num_total_events
+ * );
+ * @endcode
+ *
+ * ## analytics_t Structure
+ *
+ * The analytics_t structure stores per-model metric data:
+ *
+ * @code{.cpp}
+ * struct analytics_t {
+ *     model_template* model;
+ *     model_report* report;
+ *     int this_epoch;
+ *     
+ *     // Loss histograms
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> loss_graph;
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> loss_node;
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> loss_edge;
+ *     
+ *     // Accuracy histograms
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_graph;
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_node;
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_edge;
+ *     
+ *     // Physics metrics
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> pred_mass_edge;
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> truth_mass_edge;
+ * };
+ * @endcode
+ *
+ * - **loss_graph/node/edge**: Loss values at graph, node, and edge levels
+ * - **accuracy_graph/node/edge**: Accuracy values at each level
+ * - **pred_mass_edge/truth_mass_edge**: Predicted vs. true invariant masses
+ *
+ * ## Metric Types
+ *
+ * ### Classification Metrics
+ * - **Accuracy**: (TP + TN) / (TP + TN + FP + FN)
+ * - **Precision**: TP / (TP + FP)
+ * - **Recall**: TP / (TP + FN)
+ * - **F1 Score**: 2 * (Precision * Recall) / (Precision + Recall)
+ * - **AUC**: Area under ROC curve
+ *
+ * ### Regression Metrics
+ * - **MSE**: Mean squared error
+ * - **MAE**: Mean absolute error
+ * - **R²**: Coefficient of determination
+ *
+ * ### Physics Metrics
+ * - **Mass Resolution**: σ(m_pred - m_true) / m_true
+ * - **Efficiency**: Fraction of events passing selection
+ * - **Purity**: Fraction of selected events that are signal
+ *
+ * ## Visualization
+ *
+ * The metrics module generates:
+ * - **Loss Curves**: Training vs. validation loss over epochs
+ * - **Accuracy Curves**: Training vs. validation accuracy
+ * - **ROC Curves**: True positive rate vs. false positive rate
+ * - **Confusion Matrices**: Classification performance breakdown
+ * - **Residual Plots**: (Predicted - True) distributions
+ *
+ * ## Integration with AnalysisG
+ *
+ * The metrics integrates with:
+ * - **model_template**: Receives predictions and losses
+ * - **optimizer**: Called during training/validation loops
+ * - **analytics_t**: Stores per-model metric data
+ * - **model_report**: Generates final performance reports
+ *
+ * ## Performance Considerations
+ *
+ * - **Memory**: Histograms stored in memory during training
+ * - **IO**: Plots saved at end of training or on-demand
+ * - **Computation**: Metrics computed on GPU when possible
+ *
+ * ## Best Practices
+ *
+ * 1. **Multiple Metrics**: Track multiple metrics (not just loss)
+ * 2. **Validation**: Always validate on held-out data
+ * 3. **Visualization**: Regularly inspect loss/accuracy curves
+ * 4. **Early Stopping**: Use validation metrics for early stopping
+ * 5. **Physics Metrics**: Include domain-specific metrics
+ * 6. **Reporting**: Generate comprehensive reports for publications
+ *
+ * @see model_template
+ * @see optimizer
+ * @see analytics_t
+ * @see model_report
+ */
+
+/** @} */ // end of modules_metrics group
