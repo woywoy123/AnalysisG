@@ -1,0 +1,356 @@
+/**
+ * @file pyc_operators.dox
+ * @brief Documentation for PyC Operators Module
+ * @defgroup pyc_operators Tensor and Matrix Operations
+ * @ingroup module_pyc
+ * @{
+ *
+ * ## Overview
+ *
+ * This module provides high-performance tensor and matrix operations optimized
+ * for particle physics calculations. Operations include vector algebra, rotation
+ * matrices, and linear algebra primitives.
+ *
+ * ## Features
+ *
+ * - **CUDA Accelerated**: GPU implementations for batch processing
+ * - **Vectorized**: Efficient tensor operations on large datasets
+ * - **Zero-Copy**: Direct LibTorch tensor integration
+ * - **Physics-Oriented**: Operations designed for 4-momentum and Lorentz transformations
+ *
+ * ## Namespace: operators_
+ *
+ * All functions are in the `operators_` namespace.
+ *
+ * ## Functions
+ *
+ * ### Vector Operations
+ *
+ * #### Dot (Dot Product)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor Dot(torch::Tensor* v1, torch::Tensor* v2);
+ * @endcode
+ *
+ * **Formula**: v1 · v2 = Σ(v1ᵢ × v2ᵢ)
+ *
+ * **Description**:  
+ * Computes the dot product (inner product) between two vectors. For 3-vectors
+ * in particle physics, this gives the scalar product of spatial momentum components.
+ *
+ * **Parameters**:
+ * - `v1`: First vector tensor [N x D]
+ * - `v2`: Second vector tensor [N x D]
+ *
+ * **Returns**: Tensor containing dot product values [N]
+ *
+ * **Use Cases**:
+ * - Computing momentum projections
+ * - Calculating angular relationships
+ * - Vector magnitude squared (when v1 = v2)
+ *
+ * **Example**:
+ * @code{.cpp}
+ * torch::Tensor p1 = torch::tensor({{1.0, 2.0, 3.0}});
+ * torch::Tensor p2 = torch::tensor({{4.0, 5.0, 6.0}});
+ * torch::Tensor dot = operators_::Dot(&p1, &p2);
+ * // Result: 1*4 + 2*5 + 3*6 = 32
+ * @endcode
+ *
+ * ---
+ *
+ * #### Cross (Cross Product)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor Cross(torch::Tensor* v1, torch::Tensor* v2);
+ * @endcode
+ *
+ * **Formula**: v1 × v2 = (v1ᵧv2ᵣ - v1ᵣv2ᵧ, v1ᵣv2ₓ - v1ₓv2ᵣ, v1ₓv2ᵧ - v1ᵧv2ₓ)
+ *
+ * **Description**:  
+ * Computes the cross product between two 3-vectors. Results in a vector
+ * perpendicular to both input vectors.
+ *
+ * **Parameters**:
+ * - `v1`: First 3-vector tensor [N x 3]
+ * - `v2`: Second 3-vector tensor [N x 3]
+ *
+ * **Returns**: Tensor containing cross product vectors [N x 3]
+ *
+ * **Use Cases**:
+ * - Computing normal vectors to planes
+ * - Angular momentum calculations
+ * - Finding perpendicular directions
+ *
+ * **Note**: Only defined for 3-dimensional vectors.
+ *
+ * **Example**:
+ * @code{.cpp}
+ * torch::Tensor v1 = torch::tensor({{1.0, 0.0, 0.0}});  // x-axis
+ * torch::Tensor v2 = torch::tensor({{0.0, 1.0, 0.0}});  // y-axis
+ * torch::Tensor cross = operators_::Cross(&v1, &v2);
+ * // Result: (0, 0, 1) - z-axis
+ * @endcode
+ *
+ * ---
+ *
+ * ### Angular Functions
+ *
+ * #### CosTheta (Cosine of Angle)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor CosTheta(torch::Tensor* v1, torch::Tensor* v2);
+ * @endcode
+ *
+ * **Formula**: cos(θ) = (v1 · v2) / (|v1| × |v2|)
+ *
+ * **Description**:  
+ * Computes the cosine of the angle between two vectors. Range: [-1, 1].
+ *
+ * **Parameters**:
+ * - `v1`: First vector tensor [N x D]
+ * - `v2`: Second vector tensor [N x D]
+ *
+ * **Returns**: Tensor containing cos(θ) values [N]
+ *
+ * **Use Cases**:
+ * - Computing opening angles between particles
+ * - Helicity calculations
+ * - Alignment checks
+ *
+ * **Note**:
+ * - cos(θ) = 1 for parallel vectors
+ * - cos(θ) = 0 for perpendicular vectors
+ * - cos(θ) = -1 for anti-parallel vectors
+ *
+ * **Example**:
+ * @code{.cpp}
+ * torch::Tensor jet1 = torch::tensor({{50.0, 30.0, 10.0}});
+ * torch::Tensor jet2 = torch::tensor({{40.0, 20.0, 15.0}});
+ * torch::Tensor cos_angle = operators_::CosTheta(&jet1, &jet2);
+ * torch::Tensor angle_rad = torch::acos(cos_angle);
+ * @endcode
+ *
+ * #### SinTheta (Sine of Angle)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor SinTheta(torch::Tensor* v1, torch::Tensor* v2);
+ * @endcode
+ *
+ * **Formula**: sin(θ) = |v1 × v2| / (|v1| × |v2|)
+ *
+ * **Description**:  
+ * Computes the sine of the angle between two vectors. Range: [0, 1] for vectors
+ * in the same hemisphere.
+ *
+ * **Parameters**:
+ * - `v1`: First vector tensor [N x 3]
+ * - `v2`: Second vector tensor [N x 3]
+ *
+ * **Returns**: Tensor containing sin(θ) values [N]
+ *
+ * **Use Cases**:
+ * - Computing transverse components
+ * - Angular separation magnitude
+ * - Perpendicularity measures
+ *
+ * ---
+ *
+ * ### Rotation Matrices
+ *
+ * #### Rx (Rotation around X-axis)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor Rx(torch::Tensor* angle);
+ * @endcode
+ *
+ * **Formula**:
+ * ```
+ * Rx(θ) = | 1    0        0     |
+ *         | 0  cos(θ)  -sin(θ) |
+ *         | 0  sin(θ)   cos(θ) |
+ * ```
+ *
+ * **Description**:  
+ * Generates a 3x3 rotation matrix for rotation around the x-axis.
+ *
+ * **Parameters**:
+ * - `angle`: Rotation angle in radians [N]
+ *
+ * **Returns**: Tensor containing rotation matrices [N x 3 x 3]
+ *
+ * **Use Cases**:
+ * - Coordinate frame transformations
+ * - Boosting to different reference frames
+ * - Particle trajectory rotations
+ *
+ * **Example**:
+ * @code{.cpp}
+ * torch::Tensor angle = torch::tensor({M_PI / 2});  // 90 degrees
+ * torch::Tensor R = operators_::Rx(&angle);
+ * torch::Tensor v = torch::tensor({{0.0, 1.0, 0.0}});  // y-axis
+ * torch::Tensor v_rot = torch::matmul(v, R.transpose(1, 2));
+ * // Result: (0, 0, 1) - rotated to z-axis
+ * @endcode
+ *
+ * #### Ry (Rotation around Y-axis)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor Ry(torch::Tensor* angle);
+ * @endcode
+ *
+ * **Formula**:
+ * ```
+ * Ry(θ) = |  cos(θ)  0  sin(θ) |
+ *         |    0     1    0    |
+ *         | -sin(θ)  0  cos(θ) |
+ * ```
+ *
+ * **Description**:  
+ * Generates a 3x3 rotation matrix for rotation around the y-axis.
+ *
+ * **Parameters**:
+ * - `angle`: Rotation angle in radians [N]
+ *
+ * **Returns**: Tensor containing rotation matrices [N x 3 x 3]
+ *
+ * #### Rz (Rotation around Z-axis)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor Rz(torch::Tensor* angle);
+ * @endcode
+ *
+ * **Formula**:
+ * ```
+ * Rz(θ) = | cos(θ)  -sin(θ)  0 |
+ *         | sin(θ)   cos(θ)  0 |
+ *         |   0        0     1 |
+ * ```
+ *
+ * **Description**:  
+ * Generates a 3x3 rotation matrix for rotation around the z-axis (beam direction
+ * in collider physics).
+ *
+ * **Parameters**:
+ * - `angle`: Rotation angle in radians [N]
+ *
+ * **Returns**: Tensor containing rotation matrices [N x 3 x 3]
+ *
+ * **Use Cases**:
+ * - Azimuthal rotations
+ * - Aligning to detector coordinates
+ * - φ-angle transformations
+ *
+ * ---
+ *
+ * ### Matrix Operations
+ *
+ * #### CoFactors (Matrix of Cofactors)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor CoFactors(torch::Tensor* matrix);
+ * @endcode
+ *
+ * **Description**:  
+ * Computes the matrix of cofactors for a square matrix. Cofactors are used in
+ * calculating the matrix inverse and determinant.
+ *
+ * **Parameters**:
+ * - `matrix`: Square matrix tensor [N x M x M]
+ *
+ * **Returns**: Tensor containing cofactor matrices [N x M x M]
+ *
+ * **Mathematical Definition**:  
+ * The cofactor C_ij of element a_ij is (-1)^(i+j) times the determinant of the
+ * submatrix obtained by removing row i and column j.
+ *
+ * **Use Cases**:
+ * - Matrix inversion
+ * - Determinant calculation
+ * - Linear algebra operations
+ *
+ * #### Determinant (Matrix Determinant)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor Determinant(torch::Tensor* matrix);
+ * @endcode
+ *
+ * **Description**:  
+ * Computes the determinant of a square matrix.
+ *
+ * **Parameters**:
+ * - `matrix`: Square matrix tensor [N x M x M]
+ *
+ * **Returns**: Tensor containing determinant values [N]
+ *
+ * **Use Cases**:
+ * - Testing matrix invertibility (det ≠ 0)
+ * - Computing volumes in phase space
+ * - Checking linear independence
+ *
+ * **Example**:
+ * @code{.cpp}
+ * torch::Tensor A = torch::tensor({{{1.0, 2.0}, {3.0, 4.0}}});
+ * torch::Tensor det = operators_::Determinant(&A);
+ * // Result: 1*4 - 2*3 = -2
+ * @endcode
+ *
+ * #### Inverse (Matrix Inverse)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor Inverse(torch::Tensor* matrix);
+ * @endcode
+ *
+ * **Formula**: A⁻¹ = (1/det(A)) × adj(A)  
+ * where adj(A) is the adjugate (transpose of cofactor matrix)
+ *
+ * **Description**:  
+ * Computes the inverse of a square matrix. The inverse satisfies A × A⁻¹ = I.
+ *
+ * **Parameters**:
+ * - `matrix`: Invertible square matrix tensor [N x M x M]
+ *
+ * **Returns**: Tensor containing inverse matrices [N x M x M]
+ *
+ * **Use Cases**:
+ * - Solving linear systems
+ * - Coordinate transformations
+ * - Covariance matrix operations
+ *
+ * **Throws**:
+ * - `std::runtime_error` if matrix is singular (det = 0)
+ *
+ * **Example**:
+ * @code{.cpp}
+ * torch::Tensor A = torch::tensor({{{2.0, 0.0}, {0.0, 3.0}}});
+ * torch::Tensor A_inv = operators_::Inverse(&A);
+ * // Result: {{0.5, 0.0}, {0.0, 0.333...}}
+ * 
+ * torch::Tensor identity = torch::matmul(A, A_inv);
+ * // Verify: {{1.0, 0.0}, {0.0, 1.0}}
+ * @endcode
+ *
+ * ## Performance Notes
+ *
+ * - All operations are batched: process multiple matrices/vectors simultaneously
+ * - CUDA implementations provide significant speedup for large batch sizes
+ * - For best performance, keep data on GPU throughout computation pipeline
+ *
+ * ## See Also
+ *
+ * - @ref pyc_physics for physics-specific calculations
+ * - @ref pyc_transform for coordinate transformations
+ * - @ref pyc_graph for graph operations
+ *
+ * @}
+ */

@@ -1,0 +1,360 @@
+/**
+ * @file pyc_nusol.dox
+ * @brief Documentation for PyC NuSol Module - Analytical Neutrino Reconstruction
+ * @defgroup pyc_nusol Neutrino Solutions (NuSol)
+ * @ingroup module_pyc
+ * @{
+ *
+ * ## Overview
+ *
+ * The NuSol module provides analytical solutions for neutrino 4-momentum reconstruction
+ * in particle physics events. It implements sophisticated algorithms for both single and
+ * double neutrino scenarios common in top quark and other heavy particle decays.
+ *
+ * ## Physical Context
+ *
+ * In collider physics, neutrinos escape detection, leaving only missing transverse energy
+ * (MET). Reconstructing neutrino 4-momenta is crucial for:
+ * - Top quark mass reconstruction (t → Wb → lνb)
+ * - Di-top events with semi-leptonic decays
+ * - W boson mass measurements
+ * - Beyond Standard Model searches
+ *
+ * ## Features
+ *
+ * - **Analytical Solutions**: Exact mathematical solutions (no iterative fitting)
+ * - **CUDA Accelerated**: GPU implementations for batch processing
+ * - **Single & Double Neutrino**: Handles both 1ν and 2ν topologies
+ * - **Constraint Equations**: Uses mass constraints (W, top) and MET
+ * - **Multiple Solutions**: Returns all mathematically valid solutions
+ *
+ * ## Namespace: nusol_
+ *
+ * All functions are in the `nusol_` namespace.
+ *
+ * ## Mathematical Approach
+ *
+ * The reconstruction uses constraint equations:
+ * - W boson mass: m²_W = (p_l + p_ν)²
+ * - Top quark mass: m²_t = (p_b + p_l + p_ν)²
+ * - Missing ET: MET_x = Σ p_ν,x; MET_y = Σ p_ν,y
+ *
+ * These form a system of quadratic equations solvable analytically, yielding 0, 2, or 4
+ * solutions depending on the kinematic configuration.
+ *
+ * ## Functions
+ *
+ * ### Base Matrix Operations
+ *
+ * #### BaseMatrix
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor BaseMatrix(
+ *     torch::Tensor* pmc_b,
+ *     torch::Tensor* pmc_mu,
+ *     torch::Tensor* masses
+ * );
+ * @endcode
+ *
+ * **Description**:  
+ * Constructs the fundamental matrix used in neutrino reconstruction. This matrix
+ * encodes the kinematic relationships between the b-quark, lepton, and mass constraints.
+ *
+ * **Parameters**:
+ * - `pmc_b`: B-quark 4-momentum [N x 4] with [px, py, pz, E]
+ * - `pmc_mu`: Lepton (μ/e) 4-momentum [N x 4]
+ * - `masses`: Mass constraints [N x 2] with [m_W, m_top]
+ *
+ * **Returns**: Base matrix [N x 3 x 3]
+ *
+ * **Use Cases**:
+ * - Internal calculation for neutrino solutions
+ * - Diagnostic of kinematic configuration
+ *
+ * #### Hperp (Transverse H-matrix)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * torch::Tensor Hperp(
+ *     torch::Tensor* pmc_b,
+ *     torch::Tensor* pmc_mu,
+ *     torch::Tensor* masses
+ * );
+ * @endcode
+ *
+ * **Description**:  
+ * Computes the H-perpendicular matrix representing the transverse components
+ * of the neutrino momentum in the constraint equation system.
+ *
+ * **Parameters**:
+ * - `pmc_b`: B-quark 4-momentum [N x 4]
+ * - `pmc_mu`: Lepton 4-momentum [N x 4]
+ * - `masses`: Mass constraints [N x 2]
+ *
+ * **Returns**: H-perpendicular matrix [N x 2 x 2]
+ *
+ * ---
+ *
+ * ### Geometric Intersection
+ *
+ * #### Intersection
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * std::tuple<torch::Tensor, torch::Tensor> Intersection(
+ *     torch::Tensor* A,
+ *     torch::Tensor* B,
+ *     double nulls
+ * );
+ * @endcode
+ *
+ * **Description**:  
+ * Finds the intersection points of two geometric objects (typically ellipses or
+ * circles) in 2D space. Used internally for solving the constraint equations.
+ *
+ * **Parameters**:
+ * - `A`: First geometric object parameters [N x M]
+ * - `B`: Second geometric object parameters [N x M]
+ * - `nulls`: Value to use for null/undefined solutions
+ *
+ * **Returns**:  
+ * `std::tuple` containing:
+ * - Tensor 1: First intersection solutions [N x D]
+ * - Tensor 2: Second intersection solutions [N x D]
+ *
+ * **Mathematical Context**:  
+ * The constraint equations geometrically represent intersections of conic sections
+ * in momentum space. This function solves for those intersections analytically.
+ *
+ * **Note**: May return 0, 1, or 2 intersection points per event depending on kinematics.
+ *
+ * ---
+ *
+ * ### Single Neutrino Reconstruction
+ *
+ * #### Nu (Single Neutrino Solution)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * std::map<std::string, torch::Tensor> Nu(
+ *     torch::Tensor* pmc_b,
+ *     torch::Tensor* pmc_mu,
+ *     torch::Tensor* met_xy,
+ *     torch::Tensor* masses,
+ *     torch::Tensor* sigma,
+ *     double null
+ * );
+ * @endcode
+ *
+ * **Description**:  
+ * Reconstructs neutrino 4-momentum in single-neutrino topologies (e.g., W → lν decay).
+ * Returns all analytical solutions satisfying mass constraints and MET.
+ *
+ * **Parameters**:
+ * - `pmc_b`: B-quark 4-momentum [N x 4] in GeV
+ * - `pmc_mu`: Lepton 4-momentum [N x 4] in GeV
+ * - `met_xy`: Missing transverse energy [N x 2] with [MET_x, MET_y] in GeV
+ * - `masses`: Mass constraints [N x 2] with [m_W, m_top] in GeV
+ * - `sigma`: Uncertainty/resolution on measurements [N x M]
+ * - `null`: Sentinel value for null/invalid solutions
+ *
+ * **Returns**:  
+ * `std::map<std::string, torch::Tensor>` with keys:
+ * - **"nu"**: Neutrino 4-momentum solutions [N x K x 4] where K is number of solutions
+ * - **"nsol"**: Number of valid solutions per event [N]
+ * - **"chi2"**: χ² goodness-of-fit for each solution [N x K]
+ * - **"weight"**: Statistical weight for each solution [N x K]
+ *
+ * **Physical Constraints**:
+ * - W boson mass: m_W ≈ 80.4 GeV
+ * - Top quark mass: m_top ≈ 172.5 GeV
+ * - Neutrino is massless: m_ν = 0
+ *
+ * **Solution Count**:
+ * - 0 solutions: Kinematically forbidden configuration
+ * - 2 solutions: Typical case (quadratic equation)
+ * - Complex solutions indicate measurement errors
+ *
+ * **Example**:
+ * @code{.cpp}
+ * // Reconstruct neutrino in t → Wb → lνb decay
+ * torch::Tensor b_jet = torch::tensor({{50.0, 30.0, 20.0, 65.0}});
+ * torch::Tensor lepton = torch::tensor({{40.0, 25.0, 15.0, 50.0}});
+ * torch::Tensor met = torch::tensor({{35.0, -20.0}});
+ * torch::Tensor masses = torch::tensor({{80.4, 172.5}});  // W, top mass
+ * torch::Tensor sigma = torch::ones({1, 4}) * 5.0;  // 5 GeV resolution
+ *
+ * auto result = nusol_::Nu(&b_jet, &lepton, &met, &masses, &sigma, -999.0);
+ *
+ * torch::Tensor neutrinos = result["nu"];  // [1 x K x 4]
+ * torch::Tensor nsol = result["nsol"];     // Number of solutions
+ * torch::Tensor chi2 = result["chi2"];     // Quality metric
+ *
+ * // Select best solution
+ * auto best_idx = torch::argmin(chi2, 1);
+ * torch::Tensor best_nu = neutrinos.index({torch::indexing::Slice(), best_idx});
+ * @endcode
+ *
+ * **Use Cases**:
+ * - Semi-leptonic top decay reconstruction
+ * - W boson reconstruction
+ * - Single-lepton ttbar events
+ * - Tau decay analysis
+ *
+ * ---
+ *
+ * ### Double Neutrino Reconstruction
+ *
+ * #### NuNu (Double Neutrino Solution)
+ *
+ * **Signature**:
+ * @code{.cpp}
+ * std::map<std::string, torch::Tensor> NuNu(
+ *     torch::Tensor* pmc_b1,
+ *     torch::Tensor* pmc_b2,
+ *     torch::Tensor* pmc_mu1,
+ *     torch::Tensor* pmc_mu2,
+ *     torch::Tensor* met_xy,
+ *     double null,
+ *     torch::Tensor* m1,
+ *     torch::Tensor* m2 = nullptr
+ * );
+ * @endcode
+ *
+ * **Description**:  
+ * Reconstructs two neutrino 4-momenta simultaneously in di-leptonic topologies
+ * (e.g., ttbar → WWbb → lνlνbb). Solves the coupled constraint system analytically.
+ *
+ * **Parameters**:
+ * - `pmc_b1`: First b-quark 4-momentum [N x 4]
+ * - `pmc_b2`: Second b-quark 4-momentum [N x 4]
+ * - `pmc_mu1`: First lepton 4-momentum [N x 4]
+ * - `pmc_mu2`: Second lepton 4-momentum [N x 4]
+ * - `met_xy`: Total missing ET [N x 2]
+ * - `null`: Sentinel value for null solutions
+ * - `m1`: Mass constraint for first system [N] (e.g., W mass)
+ * - `m2`: Mass constraint for second system [N] (optional, defaults to m1)
+ *
+ * **Returns**:  
+ * `std::map<std::string, torch::Tensor>` with keys:
+ * - **"nu1"**: First neutrino solutions [N x K x 4]
+ * - **"nu2"**: Second neutrino solutions [N x K x 4]
+ * - **"nsol"**: Number of solution pairs [N]
+ * - **"m_ll"**: Invariant mass of di-lepton system [N]
+ * - **"chi2"**: Combined χ² for solution quality [N x K]
+ *
+ * **Physical Constraints**:
+ * - W mass for both decays: (p_l1 + p_ν1)² = m²_W, (p_l2 + p_ν2)² = m²_W
+ * - Top mass constraints (optional)
+ * - Total MET: p_ν1,T + p_ν2,T = MET
+ *
+ * **Solution Count**:
+ * - 0 solutions: Kinematically impossible
+ * - 2-4 solutions: Typical (from coupled quadratics)
+ * - Up to 16 solutions possible in pathological cases
+ *
+ * **Example**:
+ * @code{.cpp}
+ * // Reconstruct di-leptonic ttbar: ttbar → WWbb → eμνν bb
+ * torch::Tensor b1 = torch::tensor({{60.0, 40.0, 30.0, 80.0}});
+ * torch::Tensor b2 = torch::tensor({{55.0, 35.0, 25.0, 75.0}});
+ * torch::Tensor e = torch::tensor({{45.0, 30.0, 20.0, 60.0}});
+ * torch::Tensor mu = torch::tensor({{50.0, 35.0, 25.0, 65.0}});
+ * torch::Tensor met = torch::tensor({{40.0, -30.0}});
+ * torch::Tensor mW = torch::tensor({80.4});
+ *
+ * auto result = nusol_::NuNu(&b1, &b2, &e, &mu, &met, -999.0, &mW);
+ *
+ * torch::Tensor nu1 = result["nu1"];  // First neutrino candidates
+ * torch::Tensor nu2 = result["nu2"];  // Second neutrino candidates
+ * torch::Tensor nsol = result["nsol"];
+ *
+ * // Reconstruct top masses for each solution
+ * for (int i = 0; i < nsol.item<int>(); ++i) {
+ *     auto top1 = b1 + e + nu1[i];
+ *     auto top2 = b2 + mu + nu2[i];
+ *     // Compute invariant masses and select best solution
+ * }
+ * @endcode
+ *
+ * **Use Cases**:
+ * - Di-leptonic ttbar reconstruction
+ * - WW production analysis
+ * - Di-top mass measurement
+ * - Higgs → WW → lνlν analysis
+ *
+ * **Challenges**:
+ * - Combinatorial ambiguity: which b-jet pairs with which lepton?
+ * - Multiple mathematical solutions
+ * - Requires additional discriminants (χ², kinematics, ML) for solution selection
+ *
+ * ## Algorithm Details
+ *
+ * ### Constraint Equation System
+ *
+ * For single neutrino reconstruction:
+ * ```
+ * (p_l + p_ν)² = m²_W                    (W mass constraint)
+ * (p_b + p_l + p_ν)² = m²_t              (top mass constraint)
+ * p_ν,x = MET_x, p_ν,y = MET_y          (missing ET constraint)
+ * ```
+ *
+ * These reduce to a quadratic in p_ν,z:
+ * ```
+ * A × (p_ν,z)² + B × p_ν,z + C = 0
+ * ```
+ *
+ * Solutions:
+ * ```
+ * p_ν,z = (-B ± √(B² - 4AC)) / (2A)
+ * ```
+ *
+ * ### Double Neutrino System
+ *
+ * For two neutrinos, the system becomes:
+ * ```
+ * (p_l1 + p_ν1)² = m²_W1
+ * (p_l2 + p_ν2)² = m²_W2
+ * p_ν1,x + p_ν2,x = MET_x
+ * p_ν1,y + p_ν2,y = MET_y
+ * ```
+ *
+ * This forms a system of 4 equations in 6 unknowns (2 × 3D neutrino momenta).
+ * The transverse constraints reduce it to 2 unknowns in the z-components.
+ *
+ * ## Performance Tips
+ *
+ * - **Batch Processing**: Process many events simultaneously for GPU efficiency
+ * - **Solution Selection**: Use χ² or additional physics constraints to choose among solutions
+ * - **Resolution Tuning**: Adjust sigma parameters based on detector performance
+ * - **Null Handling**: Check for null values (-999 by default) in solutions
+ *
+ * ## Physical Interpretation
+ *
+ * **Why Multiple Solutions?**  
+ * The quadratic nature of mass constraints yields 2 solutions per constraint.
+ * Physical meaning:
+ * - Two possible longitudinal momentum values for given transverse momentum
+ * - Correspond to different boost frames or decay topologies
+ * - Both are mathematically valid; physics/statistics must discriminate
+ *
+ * **Null Solutions**:  
+ * - Indicate kinematic impossibility (e.g., measured MET inconsistent with masses)
+ * - Often due to measurement errors or mis-reconstruction
+ * - Can indicate wrong jet-lepton pairing
+ *
+ * ## See Also
+ *
+ * - @ref pyc_physics for mass calculations
+ * - @ref pyc_transform for coordinate transformations
+ * - @ref pyc_operators for matrix operations used internally
+ *
+ * ## References
+ *
+ * - Sonnenschein, J. (2006). "Analytical solution to the top reconstruction problem"
+ * - Dalitz & Goldstein (1992). "Analysis of top production and decay"
+ * - CMS/ATLAS top mass analyses
+ *
+ * @}
+ */
