@@ -1,0 +1,291 @@
+/**
+ * @file modules_plotting.dox
+ * @brief Documentation for the plotting module
+ * @defgroup modules_plotting Plotting Module
+ * @ingroup modules
+ *
+ * @{
+ */
+
+/**
+ * @class plotting
+ * @brief HEP-style plotting and histogram generation
+ *
+ * The plotting class provides high-level plotting capabilities for physics analysis,
+ * with support for ROOT-style histograms, matplotlib-compatible styling, and common
+ * HEP visualization patterns. It handles 1D/2D histograms, error bars, stacking, and
+ * various cosmetic options.
+ *
+ * ## Overview
+ *
+ * The plotting module provides:
+ * - 1D and 2D histogram generation
+ * - ROOT-style and matplotlib styling
+ * - Automatic binning and range detection
+ * - Error bar calculation and display
+ * - Histogram stacking for background estimation
+ * - Logarithmic axes for wide dynamic ranges
+ * - Publication-quality figure export
+ *
+ * ## Core Members
+ *
+ * ### IO Configuration
+ * @code
+ * std::string extension = ".pdf";
+ * @endcode
+ * Output file format: ".pdf", ".png", ".svg", ".eps".
+ *
+ * @code
+ * std::string filename = "untitled";
+ * @endcode
+ * Base filename for saved figures.
+ *
+ * @code
+ * std::string output_path = "./Figures";
+ * @endcode
+ * Directory path for saved figures.
+ *
+ * ### Histogram Configuration
+ * @code
+ * float x_min = 0;
+ * float x_max = 0;
+ * @endcode
+ * X-axis range. If both are 0, auto-detect from data.
+ *
+ * @code
+ * float y_min = 0;
+ * float y_max = 0;
+ * @endcode
+ * Y-axis range. If both are 0, auto-detect from data.
+ *
+ * @code
+ * int x_bins = 100;
+ * int y_bins = 100;
+ * @endcode
+ * Number of bins for histogramming.
+ *
+ * @code
+ * bool errors = false;
+ * @endcode
+ * Display error bars (Poisson or user-defined).
+ *
+ * @code
+ * bool counts = false;
+ * @endcode
+ * Display bin counts vs. normalized density.
+ *
+ * ### Cosmetic Options
+ * @code
+ * std::string style = "ROOT";
+ * @endcode
+ * Plot style: "ROOT" (CERN ROOT-like) or "matplotlib".
+ *
+ * @code
+ * std::string title = "untitled";
+ * @endcode
+ * Plot title displayed at top.
+ *
+ * @code
+ * std::string xtitle = "x-axis";
+ * std::string ytitle = "y-axis";
+ * @endcode
+ * Axis labels with units.
+ *
+ * @code
+ * std::string histfill = "fill";
+ * @endcode
+ * Histogram fill style: "fill", "step", "stepfilled".
+ *
+ * @code
+ * std::string overflow = "sum";
+ * @endcode
+ * Overflow bin handling: "sum" (add to last bin), "show" (separate bin), "ignore".
+ *
+ * @code
+ * std::string color = "";
+ * std::vector<std::string> colors = {};
+ * @endcode
+ * Color specification for single or multiple histograms.
+ *
+ * @code
+ * bool stack = false;
+ * @endcode
+ * Enable histogram stacking (for background composition).
+ *
+ * @code
+ * bool density = false;
+ * @endcode
+ * Normalize to probability density instead of counts.
+ *
+ * @code
+ * bool x_logarithmic = false;
+ * bool y_logarithmic = false;
+ * @endcode
+ * Logarithmic axis scaling.
+ *
+ * ## Key Methods
+ *
+ * ### Path Management
+ * @code
+ * std::string build_path();
+ * @endcode
+ * Constructs full output path: `output_path/filename.extension`.
+ *
+ * ### Statistics
+ * @code
+ * float get_max(std::string dim);
+ * float get_min(std::string dim);
+ * @endcode
+ * Get maximum/minimum value in specified dimension ("x" or "y").
+ *
+ * @code
+ * float sum_of_weights();
+ * @endcode
+ * Calculate total weight/integral of histogram.
+ *
+ * @code
+ * std::tuple<float, float> mean_stdev(std::vector<float>* data);
+ * @endcode
+ * Compute mean and standard deviation of dataset.
+ *
+ * ### Error Handling
+ * @code
+ * void build_error();
+ * @endcode
+ * Calculate and display error bars (Poisson or user-defined).
+ *
+ * ## Usage Examples
+ *
+ * ### Basic 1D Histogram
+ * @code{.cpp}
+ * plotting plotter;
+ * 
+ * // Configure histogram
+ * plotter.filename = "top_mass";
+ * plotter.title = "Reconstructed Top Mass";
+ * plotter.xtitle = "m_{top} [GeV]";
+ * plotter.ytitle = "Events / 5 GeV";
+ * plotter.x_min = 100;
+ * plotter.x_max = 300;
+ * plotter.x_bins = 40;
+ * plotter.style = "ROOT";
+ * 
+ * // Plot data
+ * std::vector<float> top_masses = {/* ... */};
+ * plotter.plot_1d(top_masses);
+ * 
+ * // Save
+ * plotter.extension = ".pdf";
+ * plotter.save();  // Saves to ./Figures/top_mass.pdf
+ * @endcode
+ *
+ * ### Stacked Histograms (Signal + Backgrounds)
+ * @code{.cpp}
+ * plotting plotter;
+ * 
+ * plotter.filename = "mll_stack";
+ * plotter.title = "Dilepton Invariant Mass";
+ * plotter.xtitle = "m_{ll} [GeV]";
+ * plotter.ytitle = "Events / 2 GeV";
+ * plotter.stack = true;
+ * plotter.colors = {"blue", "green", "red", "yellow"};
+ * 
+ * std::vector<std::vector<float>> samples = {
+ *     ttbar_mll,    // Background 1
+ *     single_top,   // Background 2
+ *     diboson_mll,  // Background 3
+ *     signal_mll    // Signal
+ * };
+ * 
+ * plotter.plot_stacked(samples, {"ttbar", "single-top", "VV", "Signal"});
+ * plotter.save();
+ * @endcode
+ *
+ * ### Logarithmic Y-Axis
+ * @code{.cpp}
+ * plotting plotter;
+ * 
+ * plotter.filename = "jet_pt_log";
+ * plotter.title = "Jet p_{T} Distribution";
+ * plotter.xtitle = "p_{T} [GeV]";
+ * plotter.ytitle = "Jets";
+ * plotter.y_logarithmic = true;
+ * plotter.x_min = 0;
+ * plotter.x_max = 1000;
+ * 
+ * std::vector<float> jet_pts = {/* ... */};
+ * plotter.plot_1d(jet_pts);
+ * plotter.save();
+ * @endcode
+ *
+ * ### 2D Histogram
+ * @code{.cpp}
+ * plotting plotter;
+ * 
+ * plotter.filename = "eta_phi_map";
+ * plotter.title = "η-φ Distribution";
+ * plotter.xtitle = "η";
+ * plotter.ytitle = "φ [rad]";
+ * plotter.x_bins = 50;
+ * plotter.y_bins = 50;
+ * 
+ * std::vector<float> eta_values = {/* ... */};
+ * std::vector<float> phi_values = {/* ... */};
+ * plotter.plot_2d(eta_values, phi_values);
+ * plotter.save();
+ * @endcode
+ *
+ * ### Error Bars
+ * @code{.cpp}
+ * plotting plotter;
+ * 
+ * plotter.filename = "data_with_errors";
+ * plotter.errors = true;  // Show Poisson errors
+ * plotter.marker = "o";   // Marker style
+ * plotter.linestyle = "";  // No connecting line
+ * 
+ * std::vector<float> data = {/* ... */};
+ * plotter.plot_1d(data);
+ * plotter.save();
+ * @endcode
+ *
+ * ## Common Physics Applications
+ *
+ * ### Mass Distributions
+ * Plot invariant masses with appropriate binning:
+ * - Z boson: m_ll ∈ [60, 120] GeV
+ * - Top quark: m_top ∈ [100, 300] GeV
+ * - W boson: m_T ∈ [0, 150] GeV
+ *
+ * ### Kinematic Distributions
+ * - p_T: Often use logarithmic y-axis
+ * - η, φ: Full detector coverage [-5, 5] × [-π, π]
+ * - ΔR: Jet/lepton separation [0, 6]
+ *
+ * ### Background Estimation
+ * Use stacked histograms showing:
+ * - Data points with errors
+ * - Stacked backgrounds (color-coded)
+ * - Signal overlay (if present)
+ *
+ * ## Performance Considerations
+ *
+ * - **Binning**: Choose bins to balance resolution and statistics
+ * - **Overflow**: Always handle overflow bins appropriately
+ * - **File Format**: Use PDF/SVG for publications, PNG for web
+ * - **Color Schemes**: Use colorblind-friendly palettes
+ *
+ * ## Best Practices
+ *
+ * 1. **Units**: Always include units in axis labels
+ * 2. **Bin Width**: Specify bin width in y-axis label
+ * 3. **Legends**: Add legends for multiple histograms
+ * 4. **Range**: Set sensible axis ranges (avoid empty regions)
+ * 5. **Style**: Maintain consistent style across all plots
+ * 6. **Resolution**: Use high DPI for publication figures
+ *
+ * @see tools
+ * @see notification
+ */
+
+/** @} */ // end of modules_plotting group

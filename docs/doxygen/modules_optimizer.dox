@@ -1,0 +1,227 @@
+/**
+ * @file modules_optimizer.dox
+ * @brief Documentation for the optimizer class
+ * @defgroup modules_optimizer Optimizer Module
+ * @ingroup modules
+ *
+ * @{
+ */
+
+/**
+ * @class optimizer
+ * @brief Training orchestration and k-fold cross-validation manager
+ *
+ * The optimizer class manages the complete machine learning training workflow in AnalysisG,
+ * including k-fold cross-validation, training/validation/evaluation loops, model checkpointing,
+ * and metric tracking. It coordinates between the dataloader, model, and metrics modules.
+ *
+ * ## Overview
+ *
+ * The optimizer provides:
+ * - K-fold cross-validation setup and execution
+ * - Training, validation, and evaluation loop management
+ * - Model checkpointing and persistence
+ * - Metric computation and reporting
+ * - Integration with model_template and dataloader
+ *
+ * ## Core Members
+ *
+ * ### Configuration
+ * @code
+ * settings_t m_settings;
+ * @endcode
+ * Training configuration including:
+ * - Number of epochs
+ * - Batch size
+ * - Learning rate
+ * - K-fold splits
+ * - Early stopping criteria
+ *
+ * ### Components
+ * @code
+ * metrics* metric;
+ * @endcode
+ * Metrics calculator for evaluation (accuracy, precision, recall, AUC, etc.).
+ *
+ * @code
+ * dataloader* loader;
+ * @endcode
+ * Data loader providing batched graph data for training.
+ *
+ * @code
+ * std::map<int, model_template*> kfold_sessions;
+ * @endcode
+ * Map of k-fold index to model instance for cross-validation.
+ *
+ * @code
+ * std::map<std::string, model_report*> reports;
+ * @endcode
+ * Training reports and metrics for each model/fold.
+ *
+ * ## Key Methods
+ *
+ * ### Setup
+ * @code
+ * void import_dataloader(dataloader* dl);
+ * @endcode
+ * Imports the data loader for batch iteration.
+ *
+ * @code
+ * void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models);
+ * @endcode
+ * Imports model instances and their optimizer parameters for k-fold training.
+ *
+ * ### Training Loops
+ * @code
+ * void training_loop(int k, int epoch);
+ * @endcode
+ * Executes one training epoch for k-fold index k:
+ * - Iterates through training batches
+ * - Computes forward pass
+ * - Calculates losses
+ * - Performs backward pass
+ * - Updates model weights
+ *
+ * @code
+ * void validation_loop(int k, int epoch);
+ * @endcode
+ * Executes one validation epoch for k-fold index k:
+ * - Iterates through validation batches
+ * - Computes forward pass (no gradients)
+ * - Calculates validation losses
+ * - Updates validation metrics
+ *
+ * @code
+ * void evaluation_loop(int k, int epoch);
+ * @endcode
+ * Executes evaluation on test set for k-fold index k:
+ * - Iterates through test batches
+ * - Computes predictions
+ * - Calculates final metrics
+ *
+ * ### Model Management
+ * @code
+ * void launch_model(int k);
+ * @endcode
+ * Initializes and launches model for k-fold index k:
+ * - Loads model architecture
+ * - Initializes optimizer
+ * - Sets device (GPU/CPU)
+ * - Loads checkpoint if available
+ *
+ * ## Usage Example
+ *
+ * ### Basic Training
+ * @code{.cpp}
+ * // Create model
+ * TopReconstructionModel model;
+ * model.name = "TopReco";
+ * model.device = "cuda:0";
+ * 
+ * // Create dataloader
+ * dataloader loader;
+ * loader.batch_size = 32;
+ * loader.num_workers = 4;
+ * 
+ * // Create optimizer
+ * optimizer opt;
+ * opt.import_dataloader(&loader);
+ * 
+ * // Set up model session
+ * optimizer_params_t params;
+ * params.learning_rate = 0.001;
+ * params.weight_decay = 1e-5;
+ * std::tuple<model_template*, optimizer_params_t*> session(&model, &params);
+ * opt.import_model_sessions(&session);
+ * 
+ * // Training loop
+ * for (int epoch = 0; epoch < 100; ++epoch) {
+ *     opt.training_loop(kfold=0, epoch);
+ *     opt.validation_loop(kfold=0, epoch);
+ *     
+ *     // Early stopping check
+ *     if (opt.reports["TopReco"]->early_stop) break;
+ * }
+ * 
+ * // Final evaluation
+ * opt.evaluation_loop(kfold=0, epoch=100);
+ * @endcode
+ *
+ * ### K-Fold Cross-Validation
+ * @code{.cpp}
+ * optimizer opt;
+ * opt.import_dataloader(&loader);
+ * 
+ * // Create 5 model instances for 5-fold CV
+ * std::vector<std::tuple<model_template*, optimizer_params_t*>> sessions;
+ * for (int k = 0; k < 5; ++k) {
+ *     TopReconstructionModel* model = new TopReconstructionModel();
+ *     optimizer_params_t* params = new optimizer_params_t();
+ *     sessions.push_back(std::make_tuple(model, params));
+ * }
+ * opt.import_model_sessions(&sessions);
+ * 
+ * // Train each fold
+ * for (int k = 0; k < 5; ++k) {
+ *     opt.launch_model(k);
+ *     
+ *     for (int epoch = 0; epoch < 100; ++epoch) {
+ *         opt.training_loop(k, epoch);
+ *         opt.validation_loop(k, epoch);
+ *     }
+ *     
+ *     opt.evaluation_loop(k, epoch=100);
+ * }
+ * 
+ * // Aggregate results across folds
+ * float mean_auc = 0.0;
+ * for (int k = 0; k < 5; ++k) {
+ *     mean_auc += opt.reports[std::to_string(k)]->auc;
+ * }
+ * mean_auc /= 5.0;
+ * std::cout << "Mean AUC across folds: " << mean_auc << std::endl;
+ * @endcode
+ *
+ * ## Training Workflow
+ *
+ * The typical training workflow with optimizer:
+ *
+ * 1. **Setup**: Import dataloader and model sessions
+ * 2. **Launch**: Initialize models for each k-fold
+ * 3. **Train**: Run training_loop for each epoch
+ * 4. **Validate**: Run validation_loop after each training epoch
+ * 5. **Monitor**: Check metrics and early stopping criteria
+ * 6. **Evaluate**: Run evaluation_loop on final test set
+ * 7. **Report**: Extract final metrics from model_report
+ *
+ * ## Integration with AnalysisG
+ *
+ * The optimizer integrates with:
+ * - **model_template**: Manages model instances and training
+ * - **dataloader**: Provides batched graph data
+ * - **metrics**: Computes evaluation metrics
+ * - **settings_t**: Configuration management
+ *
+ * ## Performance Considerations
+ *
+ * - **Batch Size**: Larger batches improve GPU utilization but require more memory
+ * - **Learning Rate**: Use learning rate schedulers for better convergence
+ * - **Gradient Accumulation**: Simulate larger batches on limited memory
+ * - **Checkpointing**: Save models regularly to prevent data loss
+ *
+ * ## Best Practices
+ *
+ * 1. **Validation**: Always validate on held-out data
+ * 2. **Early Stopping**: Monitor validation loss to prevent overfitting
+ * 3. **Learning Rate Scheduling**: Reduce LR when validation loss plateaus
+ * 4. **K-Fold CV**: Use for robust model evaluation
+ * 5. **Metric Tracking**: Monitor multiple metrics (loss, accuracy, AUC)
+ * 6. **Checkpointing**: Save best model based on validation metric
+ *
+ * @see model_template
+ * @see dataloader
+ * @see metrics
+ * @see settings_t
+ */
+
+/** @} */ // end of modules_optimizer group

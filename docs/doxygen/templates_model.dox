@@ -1,0 +1,239 @@
+/**
+ * @file templates_model.dox
+ * @brief Documentation for the ModelTemplate base class
+ * @defgroup templates_model Model Template
+ * @ingroup templates
+ *
+ * @{
+ */
+
+/**
+ * @class model_template
+ * @brief Base template class for machine learning models in AnalysisG
+ *
+ * The ModelTemplate class provides a foundation for implementing machine learning models
+ * that operate on graph-structured HEP data. It integrates with PyTorch for model definition,
+ * training, and inference, with support for GPU acceleration, k-fold cross-validation, and
+ * custom loss functions.
+ *
+ * ## Overview
+ *
+ * ModelTemplate serves as the base class for all ML models in AnalysisG, providing:
+ * - Integration with PyTorch and PyTorch Geometric
+ * - Graph Neural Network (GNN) support with node, edge, and graph-level predictions
+ * - K-fold cross-validation workflow
+ * - GPU/CPU device management
+ * - Model checkpointing and persistence
+ * - Custom loss function integration
+ * - Training/validation/inference modes
+ *
+ * ## Key Features
+ *
+ * ### Device Management
+ * - Automatic GPU detection and allocation
+ * - CPU fallback for non-CUDA environments
+ * - Multi-GPU support for distributed training
+ *
+ * ### Graph-Level Architecture
+ * Models can make predictions at three levels:
+ * - **Node-level**: Predictions for each particle/node in the graph
+ * - **Edge-level**: Predictions for relationships between particles
+ * - **Graph-level**: Event-level predictions (classification, regression)
+ *
+ * ### Loss Functions
+ * Flexible loss function assignment for each prediction target:
+ * - Binary cross-entropy for classification
+ * - Mean squared error for regression
+ * - Custom user-defined loss functions
+ * - Multi-task learning with weighted losses
+ *
+ * ## Core Members
+ *
+ * ### Device Configuration
+ * @code
+ * cproperty<int, model_template> device_index;
+ * @endcode
+ * GPU device index (0, 1, 2, ...) or -1 for CPU.
+ *
+ * @code
+ * cproperty<std::string, model_template> device;
+ * @endcode
+ * Device string: "cuda:0", "cuda:1", or "cpu".
+ *
+ * @code
+ * cproperty<std::string, model_template> name;
+ * @endcode
+ * Model identifier used for checkpointing and logging.
+ *
+ * ### Training State
+ * @code
+ * int kfold;
+ * @endcode
+ * Current k-fold cross-validation fold index.
+ *
+ * @code
+ * int epoch;
+ * @endcode
+ * Current training epoch.
+ *
+ * @code
+ * bool inference_mode;
+ * @endcode
+ * When true, disables gradient computation for faster inference.
+ *
+ * @code
+ * bool enable_anomaly;
+ * @endcode
+ * Enables PyTorch anomaly detection for debugging NaN/Inf gradients.
+ *
+ * @code
+ * std::string model_checkpoint_path;
+ * @endcode
+ * Path to save/load model weights.
+ *
+ * ### Input Features
+ * @code
+ * cproperty<std::vector<std::string>, std::map<std::string, torch::Tensor*>> i_graph;
+ * @endcode
+ * Requested graph-level input features. Maps feature names to tensors.
+ *
+ * @code
+ * cproperty<std::vector<std::string>, std::map<std::string, torch::Tensor*>> i_node;
+ * @endcode
+ * Requested node-level input features. Maps feature names to tensors.
+ *
+ * @code
+ * cproperty<std::vector<std::string>, std::map<std::string, torch::Tensor*>> i_edge;
+ * @endcode
+ * Requested edge-level input features. Maps feature names to tensors.
+ *
+ * ### Output Targets and Loss Functions
+ * @code
+ * cproperty<
+ *     std::map<std::string, std::string>,
+ *     std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>
+ * > o_graph;
+ * @endcode
+ * Graph-level output targets. Maps target names to (ground truth tensor, loss function) pairs.
+ *
+ * @code
+ * cproperty<
+ *     std::map<std::string, std::string>,
+ *     std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>
+ * > o_node;
+ * @endcode
+ * Node-level output targets. Maps target names to (ground truth tensor, loss function) pairs.
+ *
+ * @code
+ * cproperty<
+ *     std::map<std::string, std::string>,
+ *     std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>
+ * > o_edge;
+ * @endcode
+ * Edge-level output targets. Maps target names to (ground truth tensor, loss function) pairs.
+ *
+ * ### Optimizer
+ * @code
+ * torch::optim::Optimizer* m_optim;
+ * @endcode
+ * PyTorch optimizer (Adam, SGD, AdamW, etc.) for model training.
+ *
+ * ## Usage Example
+ *
+ * ### Defining a Custom Model
+ * @code{.cpp}
+ * class TopReconstructionModel : public model_template {
+ * public:
+ *     TopReconstructionModel() {
+ *         // Set model name
+ *         name = "TopReco";
+ *         
+ *         // Request input features
+ *         i_node = {"pt", "eta", "phi", "mass", "pdgid"};
+ *         i_edge = {"deltaR", "deltaPhi"};
+ *         
+ *         // Define output targets
+ *         o_node = {
+ *             {"is_from_top", "binary_cross_entropy"},
+ *             {"top_index", "categorical_cross_entropy"}
+ *         };
+ *         
+ *         // Set device
+ *         device = "cuda:0";
+ *     }
+ *     
+ *     torch::Tensor forward(graph_t* graph) override {
+ *         // Implement forward pass
+ *         torch::Tensor node_features = *i_node["pt"];
+ *         // ... GNN layers ...
+ *         return predictions;
+ *     }
+ * };
+ * @endcode
+ *
+ * ### Training the Model
+ * @code{.cpp}
+ * TopReconstructionModel model;
+ * optimizer opt;
+ * dataloader loader;
+ * 
+ * // Configure training
+ * opt.import_model_sessions(&model);
+ * opt.import_dataloader(&loader);
+ * 
+ * // Run training loop
+ * for (int epoch = 0; epoch < 100; ++epoch) {
+ *     opt.training_loop(kfold=0, epoch);
+ *     opt.validation_loop(kfold=0, epoch);
+ * }
+ * 
+ * // Save model
+ * model.save_checkpoint("top_reco_final.pt");
+ * @endcode
+ *
+ * ### Inference
+ * @code{.cpp}
+ * TopReconstructionModel model;
+ * model.load_checkpoint("top_reco_final.pt");
+ * model.inference_mode = true;
+ *
+ * graph_t* event_graph = /* load event */;
+ * torch::Tensor predictions = model.forward(event_graph);
+ * 
+ * // Extract predictions
+ * auto node_classifications = predictions.slice(1, 0, num_nodes);
+ * @endcode
+ *
+ * ## Integration with AnalysisG
+ *
+ * ModelTemplate integrates with:
+ * - **GraphTemplate**: Constructs input graphs from physics events
+ * - **SelectionTemplate**: Provides event selection and reconstruction
+ * - **optimizer**: Manages training loops and k-fold cross-validation
+ * - **metrics**: Computes evaluation metrics (accuracy, AUC, precision, recall)
+ * - **dataloader**: Batches graphs and manages data flow
+ *
+ * ## Performance Considerations
+ *
+ * - **GPU Acceleration**: Automatically utilizes CUDA when available
+ * - **Batching**: Use dataloader for efficient batch processing
+ * - **Mixed Precision**: Can be enabled for faster training on modern GPUs
+ * - **Model Complexity**: Balance between expressiveness and overfitting
+ *
+ * ## Best Practices
+ *
+ * 1. **Feature Engineering**: Select physics-motivated input features
+ * 2. **Loss Functions**: Choose appropriate losses for each prediction task
+ * 3. **Regularization**: Use dropout, weight decay to prevent overfitting
+ * 4. **Validation**: Always validate on held-out data (k-fold or split)
+ * 5. **Checkpointing**: Save models regularly during training
+ * 6. **Monitoring**: Track training/validation losses and metrics
+ *
+ * @see graph_template
+ * @see optimizer
+ * @see dataloader
+ * @see metrics
+ * @see lossfx
+ */
+
+/** @} */ // end of templates_model group
