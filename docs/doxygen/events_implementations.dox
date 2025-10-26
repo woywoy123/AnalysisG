@@ -1,0 +1,284 @@
+/**
+ * @file events_implementations.dox
+ * @brief Documentation for specific event implementation classes
+ * @defgroup events_impl Event Implementations
+ * @ingroup module_events
+ * @{
+ *
+ * ## Overview
+ *
+ * AnalysisG provides several concrete event implementations for different physics analyses and data formats.
+ * Each implementation extends the EventTemplate base class and defines specific particle collections and
+ * metadata relevant to the analysis.
+ *
+ * ## Available Event Implementations
+ *
+ * ### BSM 4-Top Analysis (bsm_4tops)
+ *
+ * Event class for Beyond Standard Model (BSM) four-top-quark analysis.
+ *
+ * **Key Features:**
+ * - Top quark truth information
+ * - Decay product tracking (children)
+ * - Truth jet collections
+ * - Detector-level objects (jets, leptons)
+ * - Event-level observables (MET, pileup)
+ *
+ * **Particle Collections:**
+ * ```cpp
+ * std::vector<particle_template*> Tops;           // Truth top quarks
+ * std::vector<particle_template*> Children;       // Top decay products
+ * std::vector<particle_template*> TruthJets;      // Particle-level jets
+ * std::vector<particle_template*> Jets;           // Detector jets
+ * std::vector<particle_template*> Electrons;      // Reconstructed electrons
+ * std::vector<particle_template*> Muons;          // Reconstructed muons
+ * std::vector<particle_template*> DetectorObjects; // All detector objects
+ * ```
+ *
+ * **Event Metadata:**
+ * ```cpp
+ * unsigned long long event_number;  // Unique event identifier
+ * float mu;                          // Average interactions per crossing (pileup)
+ * float met;                         // Missing transverse energy (GeV)
+ * float phi;                         // MET azimuthal angle (radians)
+ * ```
+ *
+ * **Usage Example:**
+ * ```cpp
+ * // Register event implementation
+ * AnalysisG* AG = new AnalysisG();
+ * AG->Event = new bsm_4tops();
+ *
+ * // Access after event building
+ * bsm_4tops* ev = dynamic_cast<bsm_4tops*>(AG->GetEvent(index));
+ * for (particle_template* top : ev->Tops) {
+ *     float top_mass = top->Mass();
+ *     // Analyze top quarks
+ * }
+ * ```
+ *
+ * **Physics Context:**
+ * - Designed for four-top-quark searches in BSM scenarios
+ * - Includes both truth and detector-level information for performance studies
+ * - Supports truth-matching between detector objects and particle-level objects
+ *
+ * ### Experimental MC20 Analysis (exp_mc20)
+ *
+ * Event class for ATLAS MC20 simulation samples (experimental format).
+ *
+ * **Key Features:**
+ * - Full ATLAS detector simulation
+ * - Truth and reconstructed particle collections
+ * - Extended metadata for systematics
+ * - Physics object quality flags
+ *
+ * **Particle Collections:**
+ * ```cpp
+ * std::vector<particle_template*> Jets;
+ * std::vector<particle_template*> Electrons;
+ * std::vector<particle_template*> Muons;
+ * std::vector<particle_template*> TruthParticles;
+ * std::vector<particle_template*> Partons;       // Hard-scatter partons
+ * ```
+ *
+ * **Extended Metadata:**
+ * ```cpp
+ * float weight;           // Event weight (cross-section × efficiency)
+ * int run_number;         // Run identifier
+ * int mc_channel_number;  // Monte Carlo sample ID
+ * bool passTrigger;       // Event passed trigger requirements
+ * ```
+ *
+ * **Usage Example:**
+ * ```cpp
+ * exp_mc20* ev = new exp_mc20();
+ * ev->SetTreeName("nominal");  // Physics tree name
+ * AG->Event = ev;
+ *
+ * // Analysis loop
+ * for (size_t i = 0; i < AG->size(); ++i) {
+ *     exp_mc20* event = dynamic_cast<exp_mc20*>(AG->GetEvent(i));
+ *     if (!event->passTrigger) continue;
+ *     
+ *     float event_weight = event->weight;
+ *     // Apply event selection
+ * }
+ * ```
+ *
+ * ### SSML MC20 Analysis (ssml_mc20)
+ *
+ * Event class for Same-Sign Multi-Lepton (SSML) analysis with MC20 samples.
+ *
+ * **Key Features:**
+ * - Optimized for rare multi-lepton final states
+ * - Enhanced lepton collections
+ * - Charge-flip probability tracking
+ * - Extended truth information for rare processes
+ *
+ * **Lepton Handling:**
+ * ```cpp
+ * std::vector<particle_template*> SignalLeptons;    // Leptons passing signal criteria
+ * std::vector<particle_template*> BaselineLeptons;  // Leptons passing baseline selection
+ * std::vector<particle_template*> TruthLeptons;     // Truth-level leptons
+ * ```
+ *
+ * **Same-Sign Selection:**
+ * ```cpp
+ * // Identify same-sign lepton pairs
+ * ssml_mc20* ev = dynamic_cast<ssml_mc20*>(AG->GetEvent(idx));
+ * std::vector<std::pair<particle_template*, particle_template*>> ss_pairs;
+ *
+ * for (size_t i = 0; i < ev->SignalLeptons.size(); ++i) {
+ *     for (size_t j = i+1; j < ev->SignalLeptons.size(); ++j) {
+ *         particle_template* lep1 = ev->SignalLeptons[i];
+ *         particle_template* lep2 = ev->SignalLeptons[j];
+ *         
+ *         if (lep1->charge() * lep2->charge() > 0) {
+ *             ss_pairs.push_back({lep1, lep2});
+ *         }
+ *     }
+ * }
+ * ```
+ *
+ * ### GNN Inference Event (gnn-event)
+ *
+ * Event class specifically designed for Graph Neural Network inference.
+ *
+ * **Key Features:**
+ * - Lightweight structure for inference
+ * - Pre-processed feature vectors
+ * - Graph connectivity information
+ * - Batch-friendly design
+ *
+ * **Inference Workflow:**
+ * ```cpp
+ * gnn_event* ev = new gnn_event();
+ * AG->Event = ev;
+ *
+ * // Load pre-trained model
+ * ModelTemplate* model = new RecursiveGraphNeuralNetwork();
+ * model->Load("trained_model.pth");
+ *
+ * // Run inference
+ * for (size_t i = 0; i < AG->size(); ++i) {
+ *     gnn_event* event = dynamic_cast<gnn_event*>(AG->GetEvent(i));
+ *     
+ *     graph_t* g = event->BuildGraph();
+ *     model->forward(g);
+ *     
+ *     // Access predictions
+ *     torch::Tensor predictions = g->pred;
+ * }
+ * ```
+ *
+ * ## Implementing Custom Events
+ *
+ * ### Step 1: Define Event Class
+ *
+ * ```cpp
+ * #include <templates/event_template.h>
+ * #include <my_analysis/particles.h>
+ *
+ * class my_event : public event_template {
+ * public:
+ *     my_event();
+ *     ~my_event() override;
+ *
+ *     // Particle collections
+ *     std::vector<particle_template*> SignalJets;
+ *     std::vector<particle_template*> Leptons;
+ *
+ *     // Event metadata
+ *     float my_variable;
+ *
+ *     // Required overrides
+ *     event_template* clone() override;
+ *     void build(element_t* el) override;
+ *     void CompileEvent() override;
+ *
+ * private:
+ *     std::map<std::string, my_jet*> m_Jets;
+ *     std::map<std::string, my_lepton*> m_Leptons;
+ * };
+ * ```
+ *
+ * ### Step 2: Implement Build Method
+ *
+ * ```cpp
+ * void my_event::build(element_t* el) {
+ *     // Build jets
+ *     if (el->type == Type::jet) {
+ *         my_jet* jet = new my_jet();
+ *         jet->build(el);
+ *         m_Jets[el->hash] = jet;
+ *     }
+ *
+ *     // Build leptons
+ *     else if (el->type == Type::electron || el->type == Type::muon) {
+ *         my_lepton* lep = new my_lepton();
+ *         lep->build(el);
+ *         m_Leptons[el->hash] = lep;
+ *     }
+ *
+ *     // Store event-level variables
+ *     if (el->type == Type::event) {
+ *         my_variable = el->variable["my_variable"];
+ *     }
+ * }
+ * ```
+ *
+ * ### Step 3: Implement CompileEvent
+ *
+ * ```cpp
+ * void my_event::CompileEvent() {
+ *     // Convert maps to vectors
+ *     for (auto& [hash, jet] : m_Jets) {
+ *         SignalJets.push_back(jet);
+ *     }
+ *     for (auto& [hash, lep] : m_Leptons) {
+ *         Leptons.push_back(lep);
+ *     }
+ *
+ *     // Apply sorting (e.g., by pT)
+ *     std::sort(SignalJets.begin(), SignalJets.end(),
+ *         [](particle_template* a, particle_template* b) {
+ *             return a->pt() > b->pt();
+ *         }
+ *     );
+ * }
+ * ```
+ *
+ * ### Step 4: Register with AnalysisG
+ *
+ * ```cpp
+ * AnalysisG* AG = new AnalysisG();
+ * AG->Event = new my_event();
+ * AG->SetInputs({"/path/to/samples/*.root"});
+ * AG->ReadInputs();
+ * ```
+ *
+ * ## Best Practices
+ *
+ * ### Memory Management
+ * - Use std::map during building to avoid duplicates
+ * - Convert to std::vector in CompileEvent() for iteration efficiency
+ * - Let AnalysisG manage particle memory (automatic cleanup)
+ *
+ * ### Performance Optimization
+ * - Pre-allocate vector capacities if size is known
+ * - Use hash-based lookups during building
+ * - Sort collections by physics criteria (pT, η, etc.)
+ *
+ * ### Code Organization
+ * - Keep particle definitions in separate header/implementation files
+ * - Group related metadata fields together
+ * - Document physics conventions (units, coordinate systems)
+ *
+ * ## See Also
+ * - @ref EventTemplate - Base class documentation
+ * - @ref ParticleTemplate - Particle interface
+ * - @ref module_pyc - High-performance C++/CUDA modules
+ * - @ref SelectionTemplate - Event selection framework
+ *
+ * @}
+ */

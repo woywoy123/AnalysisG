@@ -1,0 +1,376 @@
+/**
+ * @file graphs_implementations.dox
+ * @brief Documentation for specific graph implementation classes
+ * @defgroup graphs_impl Graph Implementations
+ * @ingroup module_graphs
+ * @{
+ *
+ * ## Overview
+ *
+ * Graph implementations define physics-motivated graph topologies for Graph Neural Network (GNN) analysis.
+ * Each implementation extends GraphTemplate and specifies how particles are connected based on physics
+ * principles (decay relationships, kinematics, detector geometry).
+ *
+ * ## Graph Construction Philosophy
+ *
+ * Graphs in AnalysisG represent physics relationships:
+ * - **Nodes**: Individual particles or physics objects
+ * - **Edges**: Physical relationships (decay, proximity, kinematics)
+ * - **Node Features**: Kinematics (pₜ, η, φ), PID, quality flags
+ * - **Edge Features**: ΔR, Δpₜ, angular correlations, mass constraints
+ *
+ * ## Available Graph Implementations
+ *
+ * ### BSM 4-Top Graph (bsm_4tops_graph)
+ *
+ * Graph topology for four-top-quark reconstruction using GNNs.
+ *
+ * **Physics Motivation:**
+ * - Top quarks decay to W + b
+ * - W bosons decay to leptons or quarks
+ * - Graph captures decay tree structure
+ *
+ * **Node Types:**
+ * ```cpp
+ * enum NodeType {
+ *     JET,           // Detector jet (could be b-jet or light jet)
+ *     LEPTON,        // Electron or muon
+ *     MET,           // Missing energy (neutrino proxy)
+ *     TRUTHTOP,      // Truth top quark (for training)
+ *     TRUTHCHILD     // Truth decay product (for training)
+ * };
+ * ```
+ *
+ * **Edge Construction:**
+ * ```cpp
+ * // Connect all jets to leptons (W → ℓν or W → qq̄ combinations)
+ * for (particle_template* jet : event->Jets) {
+ *     for (particle_template* lep : event->Leptons) {
+ *         if (DeltaR(jet, lep) < 4.0) {
+ *             AddEdge(jet, lep, EdgeType::KINEMATIC);
+ *         }
+ *     }
+ * }
+ *
+ * // Connect jets to MET (potential b + W → ℓν pairings)
+ * for (particle_template* jet : event->Jets) {
+ *     AddEdge(jet, met_node, EdgeType::KINEMATIC);
+ * }
+ *
+ * // Connect jets pairwise (di-jet W → qq̄ candidates)
+ * for (size_t i = 0; i < jets.size(); ++i) {
+ *     for (size_t j = i+1; j < jets.size(); ++j) {
+ *         if (DeltaR(jets[i], jets[j]) < 3.0) {
+ *             AddEdge(jets[i], jets[j], EdgeType::DIJET);
+ *         }
+ *     }
+ * }
+ * ```
+ *
+ * **Node Features:**
+ * ```cpp
+ * // Kinematic features (6D)
+ * features[0] = log(particle->pt());      // Log pₜ (GeV)
+ * features[1] = particle->eta();          // Pseudorapidity
+ * features[2] = particle->phi();          // Azimuthal angle
+ * features[3] = log(particle->e());       // Log energy (GeV)
+ * features[4] = particle->charge();       // Electric charge
+ * features[5] = particle->btag_weight();  // B-tagging discriminant
+ * ```
+ *
+ * **Edge Features:**
+ * ```cpp
+ * // Geometric and kinematic features (4D)
+ * edge_features[0] = DeltaR(node_i, node_j);        // ΔR separation
+ * edge_features[1] = log(InvariantMass(i, j));      // Log m_inv (GeV)
+ * edge_features[2] = DeltaPhi(node_i, node_j);      // Δφ
+ * edge_features[3] = fabs(node_i->eta() - node_j->eta());  // |Δη|
+ * ```
+ *
+ * **Training Usage:**
+ * ```cpp
+ * bsm_4tops_graph* graph_def = new bsm_4tops_graph();
+ * GraphTemplate::SetGraphBuilder(graph_def);
+ *
+ * // Build graphs from events
+ * Container* container = new Container();
+ * container->CompileGraphs(AG);
+ *
+ * // Create dataloader for training
+ * DataLoader* loader = new DataLoader();
+ * loader->SetGraphs(container->Graphs);
+ * loader->MakeKFolds(5);  // 5-fold cross-validation
+ *
+ * // Training loop
+ * for (int fold = 0; fold < 5; ++fold) {
+ *     loader->SetFold(fold);
+ *     ModelTemplate* model = new RecursiveGraphNeuralNetwork();
+ *     
+ *     for (int epoch = 0; epoch < 100; ++epoch) {
+ *         for (graph_t* batch : loader->TrainBatches(batch_size=32)) {
+ *             model->forward(batch);
+ *             torch::Tensor loss = criterion(batch->pred, batch->truth);
+ *             loss.backward();
+ *             optimizer.step();
+ *         }
+ *     }
+ * }
+ * ```
+ *
+ * ### Experimental MC20 Graph (exp_mc20_graph)
+ *
+ * Flexible graph topology for general ATLAS analyses.
+ *
+ * **Key Features:**
+ * - Configurable node/edge selection
+ * - Support for multiple physics topologies
+ * - Truth-level graph construction for supervised learning
+ *
+ * **Dynamic Edge Construction:**
+ * ```cpp
+ * class exp_mc20_graph : public GraphTemplate {
+ * public:
+ *     // Configuration parameters
+ *     float max_delta_r = 5.0;        // Maximum ΔR for edges
+ *     bool include_met = true;        // Include MET node
+ *     bool truth_matching = false;    // Add truth edges for training
+ *
+ *     void BuildGraph(event_template* ev) override {
+ *         exp_mc20* event = dynamic_cast<exp_mc20*>(ev);
+ *
+ *         // Add all physics objects as nodes
+ *         for (auto* jet : event->Jets) AddNode(jet);
+ *         for (auto* lep : event->Leptons) AddNode(lep);
+ *         
+ *         if (include_met) {
+ *             AddMETNode(event->met, event->phi);
+ *         }
+ *
+ *         // Fully connected within ΔR constraint
+ *         for (size_t i = 0; i < nodes.size(); ++i) {
+ *             for (size_t j = i+1; j < nodes.size(); ++j) {
+ *                 float dr = DeltaR(nodes[i], nodes[j]);
+ *                 if (dr < max_delta_r) {
+ *                     AddEdge(i, j, {dr});
+ *                 }
+ *             }
+ *         }
+ *
+ *         // Add truth edges if training
+ *         if (truth_matching) {
+ *             AddTruthEdges(event->TruthParticles);
+ *         }
+ *     }
+ * };
+ * ```
+ *
+ * ### SSML Graph (ssml_graph)
+ *
+ * Graph for Same-Sign Multi-Lepton analysis.
+ *
+ * **Physics Goal:**
+ * - Identify rare processes with same-sign lepton pairs
+ * - Reject background from charge-flips and fakes
+ *
+ * **Specialized Node Features:**
+ * ```cpp
+ * // Extended lepton features (10D)
+ * features[0] = log(lepton->pt());
+ * features[1] = lepton->eta();
+ * features[2] = lepton->phi();
+ * features[3] = lepton->charge();
+ * features[4] = lepton->isolation();        // Calorimeter isolation
+ * features[5] = lepton->d0_significance();  // Impact parameter significance
+ * features[6] = lepton->z0_significance();
+ * features[7] = lepton->charge_flip_prob(); // Charge mis-ID probability
+ * features[8] = lepton->is_tight();         // Quality flag
+ * features[9] = lepton->pdg_id();           // 11 (e) or 13 (μ)
+ * ```
+ *
+ * **Same-Sign Edge Emphasis:**
+ * ```cpp
+ * void BuildGraph(event_template* ev) override {
+ *     ssml_mc20* event = dynamic_cast<ssml_mc20*>(ev);
+ *
+ *     // Add signal leptons
+ *     for (auto* lep : event->SignalLeptons) {
+ *         AddNode(lep);
+ *     }
+ *
+ *     // Stronger edges between same-sign pairs
+ *     for (size_t i = 0; i < nodes.size(); ++i) {
+ *         for (size_t j = i+1; j < nodes.size(); ++j) {
+ *             particle_template* lep_i = nodes[i];
+ *             particle_template* lep_j = nodes[j];
+ *
+ *             float edge_weight = 1.0;
+ *             if (lep_i->charge() * lep_j->charge() > 0) {
+ *                 edge_weight = 2.0;  // Emphasize same-sign pairs
+ *             }
+ *
+ *             AddEdge(i, j, {DeltaR(lep_i, lep_j), edge_weight});
+ *         }
+ *     }
+ * }
+ * ```
+ *
+ * ## Implementing Custom Graphs
+ *
+ * ### Step 1: Define Graph Class
+ *
+ * ```cpp
+ * #include <templates/graph_template.h>
+ *
+ * class my_graph : public GraphTemplate {
+ * public:
+ *     my_graph();
+ *     ~my_graph() override;
+ *
+ *     // Configuration
+ *     int min_nodes = 4;
+ *     float edge_threshold = 0.5;
+ *
+ *     // Override methods
+ *     GraphTemplate* clone() override;
+ *     void BuildGraph(event_template* ev) override;
+ * };
+ * ```
+ *
+ * ### Step 2: Implement BuildGraph
+ *
+ * ```cpp
+ * void my_graph::BuildGraph(event_template* ev) {
+ *     my_event* event = dynamic_cast<my_event*>(ev);
+ *
+ *     // Add nodes
+ *     std::vector<particle_template*> particles;
+ *     particles.insert(particles.end(), 
+ *         event->Jets.begin(), event->Jets.end());
+ *     particles.insert(particles.end(),
+ *         event->Leptons.begin(), event->Leptons.end());
+ *
+ *     for (auto* p : particles) {
+ *         AddNode(p);
+ *     }
+ *
+ *     // Skip events with too few nodes
+ *     if (nodes.size() < min_nodes) {
+ *         this->valid = false;
+ *         return;
+ *     }
+ *
+ *     // Add edges based on physics criteria
+ *     for (size_t i = 0; i < nodes.size(); ++i) {
+ *         for (size_t j = i+1; j < nodes.size(); ++j) {
+ *             float score = PhysicsScore(nodes[i], nodes[j]);
+ *             if (score > edge_threshold) {
+ *                 AddEdge(i, j, {score});
+ *             }
+ *         }
+ *     }
+ * }
+ * ```
+ *
+ * ### Step 3: Define Node Features
+ *
+ * ```cpp
+ * std::vector<float> my_graph::GetNodeFeatures(particle_template* p) {
+ *     std::vector<float> features;
+ *     
+ *     // Kinematic features
+ *     features.push_back(log(p->pt()));
+ *     features.push_back(p->eta());
+ *     features.push_back(p->phi());
+ *     features.push_back(p->e());
+ *     
+ *     // Physics-specific features
+ *     features.push_back(p->isolation());
+ *     features.push_back(p->quality_score());
+ *     
+ *     return features;
+ * }
+ * ```
+ *
+ * ### Step 4: Register and Use
+ *
+ * ```cpp
+ * // Set graph builder
+ * my_graph* graph_def = new my_graph();
+ * graph_def->min_nodes = 5;
+ * graph_def->edge_threshold = 0.7;
+ * GraphTemplate::SetGraphBuilder(graph_def);
+ *
+ * // Build graphs
+ * Container* container = new Container();
+ * container->EventTemplate = new my_event();
+ * container->CompileGraphs(AG);
+ *
+ * // Access graphs
+ * std::vector<graph_t*> graphs = container->Graphs;
+ * for (graph_t* g : graphs) {
+ *     std::cout << "Nodes: " << g->nodes.size()
+ *               << ", Edges: " << g->edge_index.size() << std::endl;
+ * }
+ * ```
+ *
+ * ## Best Practices
+ *
+ * ### Physics-Motivated Design
+ * - Base edge connections on physics relationships
+ * - Use ΔR, invariant mass, or other physical quantities
+ * - Consider computational cost (fully connected vs. sparse)
+ *
+ * ### Feature Engineering
+ * - Log-transform quantities with large dynamic range (pₜ, E)
+ * - Normalize angular variables to [-π, π]
+ * - Include quality/tagging scores when available
+ * - Consider standardization (mean=0, std=1) for training
+ *
+ * ### Graph Validation
+ * - Set `valid = false` for events that don't meet criteria
+ * - Check for minimum number of nodes/edges
+ * - Verify no isolated nodes (affects GNN message passing)
+ * - Handle edge cases (e.g., events with only one jet)
+ *
+ * ### Memory Efficiency
+ * - Use sparse representations for large graphs
+ * - Share graph definitions across events (clone pattern)
+ * - Clean up temporary structures after graph building
+ *
+ * ## Integration with PyTorch Geometric
+ *
+ * AnalysisG graphs are compatible with PyTorch Geometric:
+ *
+ * ```python
+ * import torch
+ * from torch_geometric.data import Data, DataLoader
+ *
+ * def convert_to_pyg(graph):
+ *     \"\"\"Convert AnalysisG graph to PyTorch Geometric Data\"\"\"
+ *     x = torch.tensor(graph.node_features, dtype=torch.float)
+ *     edge_index = torch.tensor(graph.edge_index, dtype=torch.long)
+ *     edge_attr = torch.tensor(graph.edge_features, dtype=torch.float)
+ *     y = torch.tensor(graph.truth, dtype=torch.long)
+ *     
+ *     return Data(x=x, edge_index=edge_index, edge_attr=edge_attr, y=y)
+ *
+ * # Load graphs from AnalysisG
+ * graphs = [convert_to_pyg(g) for g in analysisg_graphs]
+ * loader = DataLoader(graphs, batch_size=32, shuffle=True)
+ *
+ * # Train model
+ * for batch in loader:
+ *     out = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch)
+ *     loss = criterion(out, batch.y)
+ *     loss.backward()
+ *     optimizer.step()
+ * ```
+ *
+ * ## See Also
+ * - @ref GraphTemplate - Base class documentation
+ * - @ref module_pyc_graph - Graph aggregation operations
+ * - @ref DataLoader - Graph batching for training
+ * - @ref ModelTemplate - GNN model interface
+ *
+ * @}
+ */
