@@ -36,7 +36,7 @@ void particle_template::get_mass(double* val, particle_template* prt){
     p -> mass -= std::pow(prt -> py, 2); 
     p -> mass -= std::pow(prt -> pz, 2); 
     p -> mass += std::pow(prt -> e , 2); 
-    p -> mass = (p -> mass >= 0) ? std::pow(p -> mass, 0.5) : -1; 
+    p -> mass = (p -> mass >= 0) ? std::pow(p -> mass, 0.5) : -std::pow(std::abs(p -> mass), 0.5); 
     *val = p -> mass; 
 }
 

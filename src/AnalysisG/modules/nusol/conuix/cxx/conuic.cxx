@@ -42,7 +42,8 @@ conuic::~conuic(){
 }
 
 void conuic::solve(){
-    this -> lambda_root_dPdtau(0, 0, nullptr, nullptr); 
+    this -> cache -> dPdtau -> PL0(this -> cache); 
+    //this -> lambda_root_dPdtau(0, 0, nullptr, nullptr); 
 }
 
 

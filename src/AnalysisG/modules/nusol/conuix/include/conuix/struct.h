@@ -1,152 +1,173 @@
 #ifndef H_CONUIX_STRUCT
 #define H_CONUIX_STRUCT
-#include <conuix/solvers.h>
 #include <conuix/matrix.h>
-class particle_template; 
+#include <conuix/htilde.h>
+#include <iostream>
+#include <string>
+#include <iomanip>
 
-struct coefficients {
-    int  len = 0; 
-    long double a = 0; 
-    long double b = 0; 
-    long double c = 0;
-    long double d = 0;
-    long double e = 0; 
-}; 
+class particle_template; 
+struct atomics_t; 
+
+namespace Conuix {
+    struct debug {
+        virtual void print(int p = 16);
+        void variable(std::string name, long double val); 
+        int prec = 16; 
+    }; 
+
+    struct kinematic_t : public debug {
+        void print(int p) override; 
+        long double beta = 0;
+        long double mass = 0;
+        long double energy = 0; 
+    }; 
+
+    struct rotation_t : public debug {
+        void print(int p) override; 
+        long double phi   = 0;
+        long double theta = 0;
+        matrix_t vec;
+        matrix_t R_T; 
+    }; 
+    
+    struct base_t : public debug {
+        void print(int p) override; 
+
+        long double rbl = 0;
+
+        long double cos = 0;
+        long double sin = 0;
+
+        long double w   = 0;
+        long double o   = 0;
+
+        long double w2  = 0;
+        long double o2  = 0; 
+
+        long double beta = 0; 
+        long double mass = 0;
+        long double E    = 0;
+
+        long double tpsi = 0;
+        long double cpsi = 0;
+        long double spsi = 0; 
+    };
+
+    struct thetapsi_t {
+        long double p_sin = 0; 
+        long double m_sin = 0;
+        long double p_cos = 0;
+        long double m_cos = 0; 
+    }; 
+
+    struct pencil_t : debug {
+        long double Z2(long double Sx, long double Sy);
+        void print(int p) override; 
+
+        long double a = 0;
+        long double b = 0;
+        long double c = 0;
+        long double d = 0;
+        long double e = 0;
+    }; 
+
+    struct Sx_t : debug {
+        long double Sx(long double tau, long double Z);
+        void print(int p) override; 
+
+        long double a = 0;
+        long double b = 0;
+        long double c = 0; 
+    };
+
+    struct Sy_t : debug {
+        long double Sy(long double tau, long double Z);
+        void print(int p) override; 
+
+        long double a = 0;
+        long double b = 0;
+        long double c = 0; 
+    };
+
+    struct H_matrix_t : debug {
+        matrix_t H_Matrix(long double tau, long double Z);
+        matrix_t H_Tilde(long double tau, long double Z); 
+        void print(int p) override; 
+
+        // ------ H-bar -----
+        matrix_t HBX;
+        matrix_t HBS;
+        matrix_t HBC; 
+
+        // ------ H_matrix ----- //
+        matrix_t HTX;
+        matrix_t HTS;
+        matrix_t HTC;
+    };
+
+    long double cos_theta(particle_template* jet, particle_template* lep); 
+
+    namespace characteristic{
+        struct poly_t : debug {
+            long double a, b, c, d = 0; 
+            long double x_a, x_b, y_a, y_b = 0;
+
+            virtual long double xlinear(long double tau); 
+            virtual long double ylinear(long double tau);
+            virtual long double xyratio(long double tau);
+            virtual long double P(long double lambda, long double Z, long double tau); 
+        };
+
+        struct P_t : public poly_t {
+            P_t(base_t* base);
+            long double P(long double lambda, long double Z, long double tau) override; 
+            void print(int p) override; 
+        };
+
+        struct dPdtau_t : public poly_t {
+            dPdtau_t(base_t* base);
+            long double P(long double lambda, long double Z, long double tau) override; 
+            long double L0(long double Z, long double tau); 
+            long double PL0(long double tau); 
+            long double PL0(atomics_t* tx);
+
+            void test(atomics_t* tx); 
+            long double cf     = 0; //coefficient
+        };
+    }
+}
+
 
 struct atomics_t {
     atomics_t(particle_template* jet, particle_template* lep, double m_nu = 0); 
+    void debug_mode(particle_template* jet, particle_template* lep); 
 
     // ---- Kinematics of the jet and lepton pairs ---- // 
-    // === Lepton
-    long double beta_l = 0; 
-    long double mass_l = 0; 
-    long double e_l    = 0; 
+    Conuix::kinematic_t lp; // === Lepton
+    Conuix::kinematic_t jt; // === jet
+    Conuix::kinematic_t nu; // === neutrino
 
-    // === jet
-    long double beta_j = 0;  
-    long double mass_j = 0;
-    long double e_j    = 0;  
-
-    // ---- angle between bjet and lepton ---- //
-    long double cos = 0; 
-    long double sin = 0; 
-
-    // ---- Kinematic variables ---- // 
-    long double w = 0;  
-    long double o = 0;  
-
-    // ---- rotation matrix ------- //
-    long double phi_mu    = 0;
-    long double theta_mu  = 0; 
-    matrix_t vec_jet; 
-    matrix_t R_T; 
-
-
-    // ---- Reverse Mapping from theta to psi
-    long double p_psi_sin = 0;
-    long double m_psi_sin = 0;
-    long double p_psi_cos = 0;
-    long double m_psi_cos = 0; 
-
-    // ---- Z^2 surface polynomial ---- //
-    coefficients Z2; 
+    // ---- Get base kinematic variables ---- //
+    Conuix::base_t     base;
+    Conuix::rotation_t rotation;
     
-    // ----- Hyperbolic rotation ------ //
-    long double cpsi = 0;
-    long double spsi = 0;
-    long double tpsi = 0;
+    // ----------- mapping from psi to theta -------- //
+    Conuix::thetapsi_t psi_theta;
+    
+    // -------- Pencil function coefficients ------ //
+    Conuix::pencil_t pencil;      
 
-    // ----- Sx and Sy ----- //
-    // Sx(t, Z) = |Z| * (a_x * cosh(t) + b_x * sinh(t)) + c_x;
-    // a_x: (o / b_mu) * cos(psi)
-    // b_x: - sin(psi)
-    // c_x: - m^2_mu / p_mu
-    coefficients Sx;
+    // ---------- Shift parameters -------------- //
+    Conuix::Sx_t Sx; 
+    Conuix::Sy_t Sy;
 
+    // ---------- H and H_tilde matrices -------- //
+    Conuix::H_matrix_t H_Matrix; 
 
-    // Sy(t, Z) = |Z| * (a_y * cosh(t) + b_y * sinh(t)) + c_y;
-    // a_y: (o / b_mu) * sin(psi)
-    // b_y:  cos(psi)
-    // c_y: - w * E^2_mu / p_mu
-    coefficients Sy; 
-
-    // ----- Define HBAR -> is effectively H_tilde ----- //
-    // H_bar = 1.0/O * [ 
-    //      HBX + (beta_mu / sqrt(1 + w^2)) * HBC * cosh(t) + (O / sqrt(1 + w^2)) * HBS * sinh(t) 
-    // ];
-    //
-    // HBX = [ 
-    //  [1, 0,  0], 
-    //  [w, 0,  0], 
-    //  [0, O,  0] 
-    // ]
-    matrix_t HBX;
-
-    // HBS = [ 
-    //  [0, 0, -1], 
-    //  [0, 0, -w], 
-    //  [0, 0,  0] 
-    // ]
-    matrix_t HBS; 
-
-    // HBC = [ 
-    //  [0, 0, -w], 
-    //  [0, 0,  1], 
-    //  [0, 0, 0] 
-    // ]
-    matrix_t HBC;
-
-    // ----- Define HMatrix --------- //
-    matrix_t HMX;
-    matrix_t HMS;
-    matrix_t HMC; 
-
-
-    // ....... other stuff ............ //
-    // gxx: beta_mu * sin(psi) * cosh(tau) + Omega * cos(psi) * sinh(tau)
-    long double gxx_a = 0;
-    long double gxx_b = 0; 
-
-    // gtx: Omega * cos(psi) * tanh(tau) - beta_mu * sin(psi)
-    long double gtx_a = 0;
-    long double gtx_b = 0; 
-
-    // characteristic polynomial coefficients of H_tilde
-    long double p_a = 0;
-    long double p_b = 0;
-    long double p_c = 0;
-    long double p_d = 0; 
-
-    // derivative of polynomial w.r.t lambda.
-    long double dpdl_a = 0; 
-    long double dpdl_b = 0;
-    long double dpdl_c = 0;
-
-    // derivative of polynomial w.r.t scale.
-    long double dpdz_a = 0; 
-    long double dpdz_b = 0;
-    long double dpdz_c = 0;
-
-    // derivative of polynomial w.r.t tau.
-    long double dpdt_a = 0; 
-    long double dpdt_b = 0;
-
-    // ------------- Mobius Transformation ------------- //
-    // These expressions are derived from the sextic polynomial 
-    // that emerges when we solve for tanh(tau) under the condition 
-    // dP/dtau = 0 and P = 0.
-    // !!!!!! This is an incredibly dense section !!!!!! //
-    //  
-    //          Omega * cos(psi) - beta_mu * sin(psi) * tanh(tau)
-    // M(tau) = -------------------------------------------------
-    //          Omega * sin(psi) + beta_mu * cos(psi) * tanh(tau)
-    //
-    long double M_pm = 0;
-    long double M_pp = 0;
-    long double M_km = 0;
-    long double M_kp = 0;
-
-    coefficients M_qrt;
+    // ----------------- Inspect at own risk ........ --------- //
+    Conuix::characteristic::P_t*       P     = nullptr; 
+    Conuix::characteristic::dPdtau_t* dPdtau = nullptr; 
 }; 
 
 #endif

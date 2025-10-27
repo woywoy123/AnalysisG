@@ -16,7 +16,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 option(BUILD_DOC "Build documentation" OFF)
 find_package(Doxygen)
 
-set(CMAKE_ANALYSISG_CUDA ON)
+set(CMAKE_ANALYSISG_CUDA OFF)
 include(FetchContent)
 include(CheckLanguage)
 set(USE_SABI 1)
@@ -51,18 +51,11 @@ FetchContent_MakeAvailable(torch)
 execute_process(
 COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['platlib'])" 
 OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-#set(CAFFE2_USE_CUDNN TRUE)
 list(APPEND CMAKE_PREFIX_PATH ${torch_SOURCE_DIR})
-
-#add_library(CUDA::nvToolsExt INTERFACE IMPORTED)
-#target_compile_definitions(CUDA::nvToolsExt INTERFACE TORCH_CUDA_USE_NVTX3)
-#target_link_libraries(CUDA::nvToolsExt INTERFACE CUDA::nvtx3)
 
 find_package(Torch REQUIRED CONFIG)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 message(STATUS "CAFFE2_USE_CUDNN is: ${CAFFE2_USE_CUDNN}")
-
 
 #FetchContent_Declare(HDF5
 #GIT_REPOSITORY "https://github.com/HDFGroup/hdf5.git"
@@ -95,16 +88,15 @@ message(STATUS     "TORCH: ${TORCH_LIBRARIES}")
 add_subdirectory(src/AnalysisG)
 file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})
 
-if (DOXYGEN_FOUND AND BUILD_DOC)
-set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/src/Doxyfile.in)
-set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-message("Doxygen build started")
-add_custom_target( doc_doxygen ALL
-COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-COMMENT "Generating documentation with Doxygen" VERBATIM)
-else (DOXYGEN_FOUND)
-message("Doxygen need to be installed to generate the doxygen documentation")
-endif()
+#if (DOXYGEN_FOUND AND BUILD_DOC)
+#set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/src/Doxyfile.in)
+#set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+#configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+#message("Doxygen build started")
+#add_custom_target( doc_doxygen ALL
+#COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+#WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#COMMENT "Generating documentation with Doxygen" VERBATIM)
+#else (DOXYGEN_FOUND)
+#message("Doxygen need to be installed to generate the doxygen documentation")
 

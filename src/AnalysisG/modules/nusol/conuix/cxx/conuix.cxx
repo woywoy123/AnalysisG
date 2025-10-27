@@ -36,7 +36,7 @@ conuix::~conuix(){
 }
 
 void conuix::solve(){
-    for (size_t x(0); x < this -> cnx -> size(); ++x){
+    for (size_t x(4); x < this -> cnx -> size(); ++x){
         this -> cnx -> at(x) -> solve(); 
     }
     abort(); 

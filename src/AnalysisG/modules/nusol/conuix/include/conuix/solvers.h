@@ -77,8 +77,6 @@ int cubic(
 }
 
 
-
-
 #endif
 
 

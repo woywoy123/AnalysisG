@@ -4,6 +4,7 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/conuix/matrix.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/conuix/memory.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/conuix/conuic.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuix/htilde.h
 )
 
 set(SOURCE_FILES 
@@ -12,6 +13,7 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/memory.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/conuic.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/eigen.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/htilde.cxx
 )
 
 add_library(sconuix ${SOURCE_FILES})

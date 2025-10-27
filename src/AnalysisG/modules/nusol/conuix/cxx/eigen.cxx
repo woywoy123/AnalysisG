@@ -1,186 +1,56 @@
 #include <conuix/solvers.h>
 #include <conuix/conuic.h>
 #include <iostream>
-
-// NOTE: beta_mu * cosh(tau) * sin(psi) - Omega * sinh(tau) * cos(psi)
-long double conuic::gxx(){
-    return this -> cache -> gxx_a * this -> ctau + this -> cache -> gxx_b * stau;
-}
-
-// NOTE: beta_mu * cosh(tau) * sin(psi) - Omega * sinh(tau) * cos(psi)
-long double conuic::gxx(long double _t){
-    return this -> cache -> gxx_a * std::cosh(_t) + this -> cache -> gxx_b * std::sinh(_t);
-}
-
-// NOTE: Omega * cos(psi) * tanh(tau) - beta_mu * sin(psi)
-long double conuic::gtx(){
-    return this -> cache -> gtx_a * this -> ctau + this -> cache -> gtx_b;
-}
-
-// NOTE: Omega * cos(psi) * tanh(tau) - beta_mu * sin(psi)
-long double conuic::gtx(long double _t){
-    return this -> cache -> gtx_a * std::tanh(_t) + this -> cache -> gtx_b;
-}
-
-// NOTE: Omega * cos(psi) - beta_mu * sin(psi) * tanh(tau)
-long double conuic::dtx(){
-    return this -> cache -> gtx_a + this -> cache -> gtx_b *  this -> ctau;
-}
-
-// NOTE: 
-// Omega * cos(psi) - beta_mu * sin(psi) * tanh(tau)
-long double conuic::dtx(long double _t){
-    return this -> cache -> gtx_a + this -> cache -> gtx_b * std::tanh(_t);
-}
-
-// -------------------------- base functions ------------------------ //
-long double conuic::P(){
-    // P = - l^3 
-    //     + Z/O * l^2 
-    //     - l * Z^2/O * [beta_mu * sin(psi) * cosh(tau) - O * cos(psi) * sinh(tau)]
-    //     - Z^3 / (O * cos(psi)) * sinh(tau) 
-
-    long double _z = this -> scale;
-    long double lm = this -> lamb;
-
-    long double a = this -> cache -> p_a;
-    long double b = this -> cache -> p_b * _z; 
-    long double c = this -> cache -> p_c * _z * _z * this -> gxx();
-    long double d = this -> cache -> p_d * _z * _z * _z * this -> stau; 
-    return a * lm * lm * lm + b * lm * lm + c * lm + d; 
-}
-
-std::complex<long double> conuic::P(std::complex<long double> _l, long double _z, long double _t){
-    // P = - l^3 
-    //     + Z/O * l^2 
-    //     - l * Z^2/O * [beta_mu * sin(psi) * cosh(tau) - O * cos(psi) * sinh(tau)]
-    //     - Z^3 / (O * cos(psi)) * sinh(tau) 
-
-    long double a = this -> cache -> p_a;
-    long double b = this -> cache -> p_b * _z; 
-    long double c = this -> cache -> p_c * _z * _z * this -> gxx(_t);
-    long double d = this -> cache -> p_d * _z * _z * _z * this -> stau; 
-    return a * _l * _l * _l + b * _l * _l + c * _l + d; 
-}
-
-
-long double conuic::dPdL(){
-    long double _z  = this -> scale;
-    long double lm = this -> lamb;
-
-    long double a = this -> cache -> dpdl_a * lm * lm;
-    long double b = this -> cache -> dpdl_b * lm * _z; 
-    long double c = this -> cache -> dpdl_c * _z  * _z * this -> gxx(); 
-    return a + b + c;  
-}
-
-long double conuic::dPdZ(){
-    long double _z  = this -> scale;
-    long double lm = this -> lamb;
-
-    long double a = this -> cache -> dpdz_a * lm * lm; 
-    long double b = this -> cache -> dpdz_b * lm * _z; 
-    long double c = this -> cache -> dpdz_c * _z  * _z * this -> gxx(); 
-    return a + b + c;
-}
-
-long double conuic::dPdtau(){
-    long double _z  = this -> scale;
-    long double lm = this -> lamb;
-    
-    long double a = this -> cache -> dpdt_a * this -> ctau * _z * _z; 
-    return a * (lm * this -> gtx() + _z * this -> cache -> dpdt_b); 
-}
-// -------------------------- base functions ------------------------ //
-
-
-
-// -------------------------- special functions ------------------------ //
-// NOTE: This is the value of lambda when dP/dZ = 0.
-// dP/dZ = a lambda^2 + 2 b Z lambda - 3 c Z^2
-// lambda = Z ( alpha +- sqrt( alpha**2 + 3 * sinh(tau) * 1/cos(psi) )
-std::complex<long double> conuic::lambda_dPdZ(
-        long double _z, long double _t, 
-        std::complex<long double>* lp, std::complex<long double>* Pp, 
-        std::complex<long double>* lm, std::complex<long double>* Pm
-){
-    long double alpha = this -> gxx(_t); 
-    std::complex<long double> dsc = std::sqrt(alpha * alpha + 3.0 * std::sinh(_t) * (1.0 / this -> cache -> cpsi)); 
-    *lp = _z * (alpha + dsc);     *lm = _z * (alpha - dsc); 
-    *Pp = this -> P(*lp, _z, _t); *Pm = this -> P(*lm, _z, _t); 
-    return dsc;  
-}
-
-// NOTE: This is the value of lambda when dP/dL = 0.
-// dP/dL = lambda^2 - 2 Z alpha lambda - 3 Z^2 sinh(tau) / cos(psi)
-// lambda = (Z/(3 O)) ( 1 +- sqrt( 1 - 3 O alpha )
-std::complex<long double> conuic::lambda_dPdL(
-        long double _z, long double _t,
-        std::complex<long double>* lp, std::complex<long double>* Pp, 
-        std::complex<long double>* lm, std::complex<long double>* Pm
-){
-    std::complex<long double> x = std::complex<long double>(1.0);
-
-    long double sx = _z / (3.0 * this -> cache -> o); 
-    std::complex<long double> dsc = std::sqrt(x - 3.0 * this -> cache -> o * this -> gxx(_t)); 
-    *lp = sx * (x + dsc);       *lm = sx * (x - dsc); 
-    *Pp = this -> P(*lp, _z, _t); *Pm = this -> P(*lm, _z, _t); 
-    return dsc;  
-}
-
-// NOTE: This is the value of lambda when dP/dtau = 0.
-// lambda = Z / (cos(psi) * kappa)
-void conuic::lambda_dPdtau(
-        long double _z, long double _t,
-        std::complex<long double>* lt, std::complex<long double>* Pt
-){
-    *lt = _z / (this -> cache -> cpsi * this -> dtx(_t)); 
-    *Pt = this -> P(*lt, _z, _t); 
-}
-
-// -------------------------- special functions ------------------------ //
 #include <iomanip>
+#include <string>
+#include <cmath>
 
-// NOTE: Omega * sin(psi) + beta_mu * cos(psi) * tanh(tau)
-long double conuic::kappa(long double _t, bool use_u){
-    long double u = (!use_u) ? std::tanh(_t) : _t;
-    return this -> cache -> M_km + this -> cache -> M_kp * u;
+long double Conuix::characteristic::poly_t::xlinear(long double tau){
+    return this -> x_a * std::sinh(tau) + this -> x_b * std::cosh(tau);
 }
 
-// NOTE: M(tau) = 
-// Omega * cos(psi) - beta_mu * sin(psi) * tanh(tau)
-// -------------------------------------------------
-// Omega * sin(psi) + beta_mu * cos(psi) * tanh(tau)
-long double conuic::Mobius(long double _t, bool use_u, bool check_u){
-    long double u = (!use_u) ? std::tanh(_t) : _t;
-    long double up = this -> cache -> M_pm - this -> cache -> M_pp * u; 
-    long double um = this -> cache -> M_km + this -> cache -> M_kp * u; 
-    long double rhs = up/um; 
-    if (!check_u){return rhs;}
-    rhs = this -> cache -> M_r * rhs * rhs;
-    lhs = std::sqrt(1 - u*u) * this -> kappa(_t, use_u); 
-    return rhs + 1.0 / lhs; 
+long double Conuix::characteristic::poly_t::ylinear(long double tau){
+    return this -> y_a * std::sinh(tau) + this -> y_b * std::cosh(tau) ;
 }
 
-long double conuic::lambda_dPdtau_qrt(long double _t, bool use_u){
-    long double u = (!use_u) ? std::tanh(_t) : _t;
-    long double u2 = u * u;
-    long double a = this -> cache -> M_qrt.a * u2 * u2; 
-    long double a = this -> cache -> M_qrt.a * u2 * u2; 
-    long double a = this -> cache -> M_qrt.a * u2 * u2; 
-    long double a = this -> cache -> M_qrt.a * u2 * u2; 
+long double Conuix::characteristic::poly_t::xyratio(long double tau){
+    return this -> xlinear(tau) / this -> ylinear(tau);
+}
+
+long double Conuix::characteristic::poly_t::P(long double lambda, long double Z, long double tau){return 0.0L;}
 
 
+Conuix::characteristic::P_t::P_t(Conuix::base_t* base){
+    this -> a = - 1;
+    this -> b =   1.0 / base -> o;
+    this -> c = - 1.0 / base -> o;
+    this -> d = - 1.0 / (base -> cpsi * base -> o);  
 
+    // using factor: [beta_mu sin(psi) cosh(tau) - Omega cos(psi) sinh(tau)]
+    this -> y_b =   base -> beta * base -> spsi;
+    this -> y_a = - base -> o    * base -> cpsi; 
+}
+
+long double Conuix::characteristic::P_t::P(long double lambda, long double Z, long double tau){
+    // P = - l^3 
+    //     + Z/O * l^2 
+    //     - l * Z^2/O * [beta_mu * sin(psi) * cosh(tau) - O * cos(psi) * sinh(tau)]
+    //     - Z^3 / (O * cos(psi)) * sinh(tau) 
+    long double x1 = lambda * lambda * lambda;
+    long double x2 = lambda * lambda * Z; 
+    long double x3 = lambda * Z * Z * this -> ylinear(tau);
+    long double x4 = Z * Z * Z * std::sinh(tau);
+
+    return x1 * this -> a + x2 * this -> b + x3 * this -> c + x4 * this -> d;  
+}
+
+void Conuix::characteristic::P_t::print(int p){
+    this -> prec = p; 
+    this -> variable("P(lambda)", this -> P(1, 1, 0)); 
 }
 
 
 
-void conuic::lambda_root_dPdtau(
-        long double _z, long double tx,
-        std::complex<long double>* lt, std::complex<long double>* Pt,
-        bool use_numerical
-){
 
 
 
@@ -189,112 +59,169 @@ void conuic::lambda_root_dPdtau(
 
 
 
+Conuix::characteristic::dPdtau_t::dPdtau_t(Conuix::base_t* base){
+    this -> a = - 1.0 / base -> o;
+    this -> b = - 1.0 / (base -> cpsi * base -> o);
+    this -> c = - 1.0 / base -> cpsi; 
+    this -> cf = (base -> cpsi * base -> cpsi) * base -> beta; 
+
+    // using factor: [beta_mu sin(psi) sinh(tau) - Omega cos(psi) cosh(tau)]
+    this -> x_a =   base -> beta * base -> spsi;
+    this -> x_b = - base -> o    * base -> cpsi; 
+
+    // using factor: [beta_mu cos(psi) sinh(tau) + Omega sin(psi) cosh(tau)]
+    this -> y_a = base -> beta * base -> cpsi;
+    this -> y_b = base -> o    * base -> spsi; 
+}
+
+long double Conuix::characteristic::dPdtau_t::P(long double lambda, long double Z, long double tau){
+    // dP/dtau = - Z^2 lambda/Omega [beta_mu sin(psi) sinh(tau) - Omega cos(psi) cosh(tau)] 
+    //           - (Z^3 / Omega)(cosh(tau)/cos(psi))
+    long double x1 = Z * Z * lambda * this -> xlinear(tau);
+    long double x2 = Z * Z * Z * std::cosh(tau); 
+    return x1 * this -> a + x2 * this -> b;
+}
+
+long double Conuix::characteristic::dPdtau_t::L0(long double Z, long double tau){
+    // lambda* = - Z cosh(tau)/(cos(psi) * [beta_mu sin(psi) sinh(tau) - Omega cos(psi) cosh(tau)])    
+    return Z * this -> c * std::cosh(tau) / this -> xlinear(tau);
+}
+
+long double Conuix::characteristic::dPdtau_t::PL0(long double tau){
+    // 0 = cosh(tau)^2/[Omega sin(psi) cosh(tau) + beta_mu cos(psi) sinh(tau)] 
+    //   + beta_mu cos(psi)^2 (
+    //          [beta_mu sin(psi) sinh(tau) - Omega cos(psi) cosh(tau)]
+    //          =======================================================
+    //          [beta_mu cos(psi) sinh(tau) + Omega sin(psi) cosh(tau)]
+    //  )^2
+    long double lhs = std::cosh(tau);
+    long double rhs = this -> xyratio(tau);
+    return (lhs * lhs)/this -> ylinear(tau)  + rhs * rhs * this -> cf;
+}
+
+long double Conuix::characteristic::dPdtau_t::PL0(atomics_t* tx){
+    auto branch =[](
+            long double sign, std::complex<long double> kf,
+            std::complex<long double>   u_p, std::complex<long double> u_m, 
+            std::complex<long double> alp_m, std::complex<long double> alp_p, 
+            std::complex<long double> bta_m, std::complex<long double> bta_p,
+            std::complex<long double> out[4]
+    ) ->  void {
+        const long double k2 = sign*sign;
+
+        std::complex<long double> p4 =         k2 * std::pow(alp_m, 4); 
+        std::complex<long double> p3 = -4.0L * k2 * std::pow(alp_m, 3) * alp_p; 
+        std::complex<long double> p2 =  6.0L * k2 * std::pow(alp_m * alp_p, 2) - 2.0L * bta_m * bta_m; 
+        
+        // palindromic divide by z^2
+        // w = z + lambda/z
+        // w^2 - (p3/p4) w + (p2 / p4 - 2lambda) = 0
+        std::complex<long double> aw = 1.0L; 
+        std::complex<long double> bw = - (p3/p4);
+        std::complex<long double> cw = (p2/p4) - 2.0L * kf; 
+        std::complex<long double> sx = std::sqrt(bw * bw - 4.0L * aw * cw); 
+
+        // solve: z^2 - w z + lambda = 0
+        std::complex<long double>   w1 = (-bw + sx) / (2.0L * aw); 
+        std::complex<long double>  _w1 = std::sqrt(w1 * w1 - 4.0L * kf); 
+        std::complex<long double> z1w1 = (w1 + _w1) * 0.5L; 
+        std::complex<long double> z2w1 = (w1 - _w1) * 0.5L; 
+        out[0] = (u_p - u_m * z1w1) / (1.0L - z1w1); 
+        out[1] = (u_p - u_m * z2w1) / (1.0L - z2w1); 
+
+        std::complex<long double>   w2 = (-bw - sx) / (2.0L * aw); 
+        std::complex<long double>  _w2 = std::sqrt(w2 * w2 - 4.0L * kf); 
+        std::complex<long double> z1w2 = (w2 + _w2) * 0.5L; 
+        std::complex<long double> z2w2 = (w2 - _w2) * 0.5L; 
+        out[2] = (u_p - u_m * z1w2) / (1.0L - z1w2); 
+        out[3] = (u_p - u_m * z2w2) / (1.0L - z2w2); 
+    }; 
 
 
-
-
-
-    //long double o    = this -> cache -> o; 
-    //long double beta = this -> cache -> beta_l; 
-    //long double tpsi = this -> cache -> tpsi; 
-    //long double spsi = this -> cache -> spsi;
-    //long double cpsi = this -> cache -> cpsi;
-
-    //long double mmu  = this -> cache -> mass_l;
-    //long double emu  = this -> cache -> e_l; 
-
-
-    //long double q2 = std::pow(mmu / emu, 2); 
-    //long double t2 = tpsi * tpsi; 
-
-    //long double a =  1;  
-    //long double b = -2 * o / (tpsi * beta);
-    //long double c = -1 + std::pow(o / (beta * tpsi), 2);  
-    //long double d =  2 * o / (tpsi * beta);
-    //long double e = std::pow((1 + t2) / (beta * beta * t2), 2) - std::pow( o / (beta * tpsi), 2); 
-
-
-    //// -------------- get fixed points -------- //
-    //std::complex<long double> l1, l2;  
-
-    //long double a_u = beta * cpsi;
-    //long double b_u = (beta + o) * spsi; 
-    //long double c_u = - o * cpsi; 
-    //quadratic(a_u, b_u, c_u, &l1, &l2); 
-    //std::complex<long double> u1 = l1;
-    //std::complex<long double> u2 = l2; 
-
-    //long double a_m = o * cpsi;
-    //long double b_m = beta * spsi;
-    //long double c_m = o * spsi;
-    //long double d_m = beta * cpsi; 
-
-    //std::complex<long double> fn = (a_m + d_m) * 0.5; 
-    //std::complex<long double> ds = std::pow( (a_m - d_m) * 0.5, 2) + b_m * c_m;
-    //std::complex<long double> lambda_1 = fn + std::sqrt(ds); 
-    //std::complex<long double> lambda_2 = fn - std::sqrt(ds); 
-    //std::complex<long double> kf = lambda_1 / lambda_2; 
-
-    //std::complex<long double> one = 1;
-    //std::complex<long double> two = 2;
-    //std::complex<long double> a_w =         std::pow(beta * cpsi * kf, 2) - one; 
-    //std::complex<long double> b_w = two * ( std::pow(beta * cpsi * kf, 2) * u1 * u2 + one);
-    //std::complex<long double> c_w =         std::pow(beta * cpsi * kf * u1 * u2, 2) - one; 
-    //quadratic(a_w.real(), b_w.real(), c_w.real(), &l1, &l2); 
-    //std::complex<long double> zp = l1;
-    //std::complex<long double> zm = l2;  
-
-    //long double spx = o * cpsi / ( beta * spsi); //(o * cpsi - beta * spsi * u); 
-
-    //std::cout << "u: " << u1 << " " << u2 << std::endl;
-    //std::cout << "l: " << lambda_1 << " " << lambda_2 << std::endl;
-    //std::cout << "kf: " << kf << std::endl;
-    //std::cout << "a: " << a_w << " b: " << b_w << " c: " << c_w << std::endl; 
-    //std::cout << "z+: " << l1 << " z-: " << l2  << std::endl;
-
+    // ------- constants ---------- //
+    long double spsi = tx -> base.spsi; 
+    long double cpsi = tx -> base.cpsi; 
+    long double bmu  = tx -> base.beta; 
+    long double o    = tx -> base.o;
+    
+    // ------- Mobius local variables ------ //
+    // M(u) = 
+    //      [a   b] [u+]
+    //      [c   d] [u-]
     //
-    //std::complex<long double> wpp =  std::sqrt(zp); 
-    //std::complex<long double> wpm = -std::sqrt(zp); 
+    //long double _a =   bmu * cpsi; // beta_mu cos(psi)
+    //long double _b =   o   * spsi; // Omega   sin(psi)
+    //long double _c = - bmu * spsi; //-beta_mu sin(psi)
+    //long double _d =   o   * cpsi; // Omega   cos(psi)
 
-    //std::complex<long double> wmp =  one / std::sqrt(zm); 
-    //std::complex<long double> wmm = -one / std::sqrt(zm); 
-    //std::cout << "w: " << wpp << " " << wpm << " " << wmp << " " << wmm << std::endl; 
+    // ------- Eigenvalues -------- //
+    // (beta_mu + Omega +- sqrt[ (beta_mu + Omega)^2 - 4 beta_mu Omega (Omega^2 + beta^2_mu) ])
+    // ---------------------------------------------------------------------------------------
+    //                          2 sqrt(Omega^2 + beta_mu^2)
+    // -- simplify -> l+- = [cos(psi) (beta_mu + Omega) +- sqrt(1 - 2 beta_mu Omega (1 + sin^2(psi)))]/2
+    std::complex<long double> dsx = std::sqrt(1.0L - 2.0L * bmu * o * (1.0L + spsi*spsi));  
+    std::complex<long double> lp = (cpsi * (bmu + o) + dsx) * 0.5L; 
+    std::complex<long double> lm = (cpsi * (bmu + o) - dsx) * 0.5L; 
+    std::complex<long double> kf = lp / lm; 
 
-    //std::complex<long double> spp = (u1 - wpp * u2)/(one - wpp);    
-    //std::complex<long double> spm = (u1 - wpm * u2)/(one - wpm);    
-    //std::complex<long double> smp = (u1 - wmp * u2)/(one - wmp);    
-    //std::complex<long double> smm = (u1 - wmm * u2)/(one - wmm);    
-    //std::cout << "u: " << spp << " " << spm << " " << smp << " " << smm << std::endl; 
-    //
-    ////std::complex<long double> sxl = (std::pow(beta * cpsi * kf, 2) - one) * zp * zp;
-    ////sxl += two * (std::pow(beta * cpsi * kf, 2) * u1 * u2 + one) * zp; 
-    ////sxl += (std::pow(beta * cpsi * kf * u1 * u2, 2) - one); 
-    ////std::cout << sxl << std::endl;
+    // --------- Mobius fixed points ----------- //
+    // u+, u-: c u^2 + (d-a) u - b = 0
+    // ---> solve quadratc 
+    // simplify solutions: 
+    // u+: [(Omega - beta_mu) cos(psi) - sqrt([ 1 - 2 Omega beta_mu (1 + sin^2(psi)) ])]/[2 beta_mu sin(psi)]
+    // u-: [(Omega - beta_mu) cos(psi) + sqrt([ 1 - 2 Omega beta_mu (1 + sin^2(psi)) ])]/[2 beta_mu sin(psi)]
+    std::complex<long double> dxs = std::sqrt(1.0L - 2.0L * o * bmu * ( 1.0L + spsi * spsi ));
+    std::complex<long double> up = ( (o + bmu)*cpsi - dxs ) / (2.0L * bmu * spsi); // the + - inversion is expected 
+    std::complex<long double> un = ( (o + bmu)*cpsi + dxs ) / (2.0L * bmu * spsi); 
+    
+    // alpha+-: [(Omega + beta_mu) cos(psi) +- sqrt([....])]/2
+    std::complex<long double> ap = ( (o + bmu)*cpsi + dxs ) * 0.5L; 
+    std::complex<long double> an = ( (o + bmu)*cpsi + dxs ) * 0.5L; 
+
+    // beta+-: [(Omega - beta_mu ) + (Omega + beta_mu) sin(psi)^2 +- cos(psi) sqrt([....])]/(2 sin(psi))
+    std::complex<long double> bp = ( (o - bmu) + (o + bmu) * spsi * spsi - dxs * cpsi ) / (2.0L * spsi); 
+    std::complex<long double> bn = ( (o - bmu) + (o + bmu) * spsi * spsi + dxs * cpsi ) / (2.0L * spsi); 
+
+    // ----------------- More explanation of what all this means ----------------------- //
+    // Mobius transforms have fixed points - u+/u-
+    // But we need them in their eigenbasis to simplify the complicated sextic we would have to solve
+    // So we use the property of Mobius transforms:
+    // u+(-) = [b + a u+(-) ]/[ d + c u+(-) ] = beta+(-)/alpha+(-)
+    // To effectively "estimate" initial solutions of the sextic by 
+    // approximating a sextic as a (quadratic) x (Quartic)
+
+    long double Kp =  bmu * cpsi * cpsi;
+    long double Km = -bmu * cpsi * cpsi;
+
+    std::complex<long double> gxp[4], gxn[4];
+    branch(Kp, kf, up, un, ap, an, bn, bp, gxp); 
+    branch(Km, kf, up, un, ap, an, bn, bp, gxn); 
+  
+    std::cout << "---------" << std::endl; 
+    std::cout << gxp[0] << std::endl;
+    std::cout << gxp[1] << std::endl;
+    std::cout << gxp[2] << std::endl;
+    std::cout << gxp[3] << std::endl;
+
+    std::cout << gxn[0] << std::endl;
+    std::cout << gxn[1] << std::endl;
+    std::cout << gxn[2] << std::endl;
+    std::cout << gxn[3] << std::endl;
 
 
-    //long double mob = this -> Mobius(spp.real(), true);
-    //long double ssx = (spsi * spsi - beta * beta * cpsi * cpsi) * std::pow(mob, 4);
-    //ssx += -2 * spsi * cpsi * std::pow(mob, 3);
-    //ssx += cpsi * cpsi * (2 - beta*beta) * std::pow(mob, 2);
-    //ssx +=  2 * spsi * cpsi * mob + spsi * spsi; 
-    //std::cout << ssx << std::endl;
-
-    ////int lx = 1000000; 
-    ////for (int x(0); x < lx; ++x){
-    ////    long double _t = tx + (lx/2 - x)*0.00001; 
-
-    ////    long double u   = std::tanh(_t);
-    ////    long double rhs = std::cosh(_t) / this -> kappa(_t); 
-    ////    long double lhs = this -> Mobius(_t);
-
-    ////    long double fhs = (cpsi * beta);
-    ////    long double dlt = fhs * lhs * lhs + rhs; 
-    ////    std::cout << _t << " " << dlt << " " << rhs << " " << mob << " " << rs << " " << std::endl;
 
 
-    ////}
-    ////abort(); 
+    return 0.0L; 
+}
+
+void Conuix::characteristic::dPdtau_t::test(atomics_t* tx){
+    this -> PL0(tx); 
 
 
+
+
+
+    abort(); 
 
 }
+

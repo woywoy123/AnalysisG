@@ -25,7 +25,7 @@ matrix_t matrix_t::dot(const matrix_t& o){
     return mx; 
 }
 
-double& matrix_t::at(int _r, int _c){
+long double& matrix_t::at(int _r, int _c){
     if (this -> r < _r || this -> c < _c){
         std::cout << "Invalid memory access: \n"; 
         std::cout << "r_matrix " << _r << " -> " << "r_in" << _r << "\n"; 
@@ -36,7 +36,7 @@ double& matrix_t::at(int _r, int _c){
     return this -> data[_r][_c]; 
 }
 
-const double& matrix_t::at(int _r, int _c) const {
+const long double& matrix_t::at(int _r, int _c) const {
     if (this -> r < _r || this -> c < _c){
         std::cout << "Invalid memory access: \n"; 
         std::cout << "r_matrix " << _r << " -> " << "r_in" << _r << "\n"; 
@@ -76,7 +76,7 @@ matrix_t& matrix_t::operator-(const matrix_t& o) const {
     return mx;
 }
 
-matrix_t& matrix_t::operator*(double s) const {
+matrix_t& matrix_t::operator*(long double s) const {
     matrix_t mx(this -> r, this -> c); 
     opm(mx.data, this -> data, this -> r, this -> c, s); 
     return mx;

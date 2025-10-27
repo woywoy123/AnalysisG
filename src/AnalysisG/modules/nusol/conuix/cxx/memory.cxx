@@ -1,15 +1,15 @@
 #include <conuix/memory.h>
 
-double** alloc(
+long double** alloc(
     const int dim_i, const int dim_j
 ){
-    double** out = new double*[dim_i]; 
-    for (int i(0); i < dim_i; ++i){out[i] = new double[dim_j]();}
+    long double** out = new long double*[dim_i]; 
+    for (int i(0); i < dim_i; ++i){out[i] = new long double[dim_j]();}
     return out; 
 }
 
-double** flush(
-    double** dmx, const int dim_i
+long double** flush(
+    long double** dmx, const int dim_i
 ){
     for (int i(0); i < dim_i; ++i){delete [] dmx[i];} 
     delete [] dmx; 
@@ -17,7 +17,7 @@ double** flush(
 }
 
 void copy(
-    double** from, double** to, 
+    long double** from, long double** to, 
     const int dim_i, const int dim_j
 ){
     for (int i(0); i < dim_i; ++i){
@@ -26,7 +26,7 @@ void copy(
 }
 
 void ops(
-    double** O, double** A, double** B, 
+    long double** O, long double** A, long double** B, 
     const int dim_i, const int dim_j, 
     const float sign
 ){ 
@@ -36,7 +36,7 @@ void ops(
 }
 
 void opm(
-    double** O, double** A, 
+    long double** O, long double** A, 
     const int dim_i, const int dim_j, 
     const float c
 ){
@@ -46,7 +46,7 @@ void opm(
 }
 
 void opt(
-    double** O, double** A, 
+    long double** O, long double** A, 
     const int dim_i, const int dim_j
 ){
     for (int i(0); i < dim_i; ++i){
