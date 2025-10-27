@@ -130,10 +130,13 @@ namespace Conuix {
             long double P(long double lambda, long double Z, long double tau) override; 
             long double L0(long double Z, long double tau); 
             long double PL0(long double tau); 
-            long double PL0(atomics_t* tx);
+            void PL0(atomics_t* tx);
 
             void test(atomics_t* tx); 
             long double cf     = 0; //coefficient
+
+            std::complex<long double> tau_sol[8]; 
+            long double solutiond[8]; 
         };
     }
 }
@@ -141,6 +144,8 @@ namespace Conuix {
 
 struct atomics_t {
     atomics_t(particle_template* jet, particle_template* lep, double m_nu = 0); 
+    ~atomics_t(); 
+
     void debug_mode(particle_template* jet, particle_template* lep); 
 
     // ---- Kinematics of the jet and lepton pairs ---- // 

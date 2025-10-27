@@ -2,7 +2,7 @@ from classes import *
 from conuic import Conuic
 
 ix = 0
-idx = 22
+idx = 1
 
 loss  = {}
 truth = {}
@@ -27,12 +27,13 @@ for i in DataLoader():
     if ix > 10: break
     ix += 1
     #idx += 1
+    break
 
-for i in sorted(truth):
-    print(
-            "multiplicity: ", i, 
-            "expected: "    , i * len(truth[i]), 
-            "recovered: "   , sum(truth[i]), 
-            "recovery (%): ", 100 * float(sum(truth[i])) / float(i * len(truth[i]) if len(truth[i]) and i > 0 else 1),
-            "fakes (%): "   , 100 * float(sum(junk[i])) / float(sum(njunk[i]))
-    )
+#for i in sorted(truth):
+#    print(
+#            "multiplicity: ", i, 
+#            "expected: "    , i * len(truth[i]), 
+#            "recovered: "   , sum(truth[i]), 
+#            "recovery (%): ", 100 * float(sum(truth[i])) / float(i * len(truth[i]) if len(truth[i]) and i > 0 else 1),
+#            "fakes (%): "   , 100 * float(sum(junk[i])) / float(sum(njunk[i]))
+#    )

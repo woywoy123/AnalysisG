@@ -100,7 +100,6 @@ class matrix:
         px, py, pz = self.lep.px, self.lep.py, self.lep.pz
         phi = np.arctan2(py, px)
         theta = np.arctan2(np.sqrt(px**2 + py**2), pz)
-        
         R_z = rotation_z(-phi)
         R_y = rotation_y(0.5*np.pi - theta)
         
@@ -167,6 +166,7 @@ class matrix:
         self.hc = self.R_T.dot(self.htc)
         self.h1 = self.R_T.dot(self.ht1)
         self.h2 = self.R_T.dot(self.ht2)
+
 
         # -------- Lepton Ellipsoid Quadric ------ # 
         self.amc, self.am1, self.am2 = A_mu(self)

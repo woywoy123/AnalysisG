@@ -99,20 +99,20 @@ long double Conuix::characteristic::dPdtau_t::PL0(long double tau){
     return (lhs * lhs)/this -> ylinear(tau)  + rhs * rhs * this -> cf;
 }
 
-long double Conuix::characteristic::dPdtau_t::PL0(atomics_t* tx){
+void Conuix::characteristic::dPdtau_t::PL0(atomics_t* tx){
     auto branch =[](
             long double sign, std::complex<long double> kf,
             std::complex<long double>   u_p, std::complex<long double> u_m, 
-            std::complex<long double> alp_m, std::complex<long double> alp_p, 
-            std::complex<long double> bta_m, std::complex<long double> bta_p,
-            std::complex<long double> out[4]
-    ) ->  void {
+            std::complex<long double> alp_p, std::complex<long double> alp_m, 
+            std::complex<long double> bta_p, std::complex<long double> bta_m,
+            std::complex<long double> out[4]) ->  void 
+    {
         const long double k2 = sign*sign;
 
         std::complex<long double> p4 =         k2 * std::pow(alp_m, 4); 
         std::complex<long double> p3 = -4.0L * k2 * std::pow(alp_m, 3) * alp_p; 
         std::complex<long double> p2 =  6.0L * k2 * std::pow(alp_m * alp_p, 2) - 2.0L * bta_m * bta_m; 
-        
+
         // palindromic divide by z^2
         // w = z + lambda/z
         // w^2 - (p3/p4) w + (p2 / p4 - 2lambda) = 0
@@ -126,6 +126,7 @@ long double Conuix::characteristic::dPdtau_t::PL0(atomics_t* tx){
         std::complex<long double>  _w1 = std::sqrt(w1 * w1 - 4.0L * kf); 
         std::complex<long double> z1w1 = (w1 + _w1) * 0.5L; 
         std::complex<long double> z2w1 = (w1 - _w1) * 0.5L; 
+
         out[0] = (u_p - u_m * z1w1) / (1.0L - z1w1); 
         out[1] = (u_p - u_m * z2w1) / (1.0L - z2w1); 
 
@@ -137,6 +138,24 @@ long double Conuix::characteristic::dPdtau_t::PL0(atomics_t* tx){
         out[3] = (u_p - u_m * z2w2) / (1.0L - z2w2); 
     }; 
 
+    auto newton =[](
+            long double k, int* x,
+            long double _a, long double _b, 
+            long double _c, long double _d, 
+            std::complex<long double> u) -> std::complex<long double>
+    {
+        std::complex<long double> dq = std::sqrt(1.0L - u * u); 
+        std::complex<long double>  N = (_a * u + _b); 
+        std::complex<long double>  D = (_d - u * _c); 
+
+        // ------- Mobius ------- //
+        std::complex<long double> md = k * dq + N / (D * D); 
+        if (std::fabs(md) < 1e-14){*x = 999; return std::atanh(u);}
+      
+        // ------- dMobius -------- //  
+        std::complex<long double> dm = (-k * u / dq) + (_a * D + 2.0 * _c * N) / (D * D * D);
+        return u - md / dm; // update u
+    };
 
     // ------- constants ---------- //
     long double spsi = tx -> base.spsi; 
@@ -149,17 +168,12 @@ long double Conuix::characteristic::dPdtau_t::PL0(atomics_t* tx){
     //      [a   b] [u+]
     //      [c   d] [u-]
     //
-    //long double _a =   bmu * cpsi; // beta_mu cos(psi)
-    //long double _b =   o   * spsi; // Omega   sin(psi)
-    //long double _c = - bmu * spsi; //-beta_mu sin(psi)
-    //long double _d =   o   * cpsi; // Omega   cos(psi)
-
     // ------- Eigenvalues -------- //
     // (beta_mu + Omega +- sqrt[ (beta_mu + Omega)^2 - 4 beta_mu Omega (Omega^2 + beta^2_mu) ])
     // ---------------------------------------------------------------------------------------
     //                          2 sqrt(Omega^2 + beta_mu^2)
     // -- simplify -> l+- = [cos(psi) (beta_mu + Omega) +- sqrt(1 - 2 beta_mu Omega (1 + sin^2(psi)))]/2
-    std::complex<long double> dsx = std::sqrt(1.0L - 2.0L * bmu * o * (1.0L + spsi*spsi));  
+    std::complex<long double> dsx = std::sqrt(std::complex<long double>(1.0 - 2.0 * bmu * o * (1.0 + spsi*spsi)));  
     std::complex<long double> lp = (cpsi * (bmu + o) + dsx) * 0.5L; 
     std::complex<long double> lm = (cpsi * (bmu + o) - dsx) * 0.5L; 
     std::complex<long double> kf = lp / lm; 
@@ -170,17 +184,17 @@ long double Conuix::characteristic::dPdtau_t::PL0(atomics_t* tx){
     // simplify solutions: 
     // u+: [(Omega - beta_mu) cos(psi) - sqrt([ 1 - 2 Omega beta_mu (1 + sin^2(psi)) ])]/[2 beta_mu sin(psi)]
     // u-: [(Omega - beta_mu) cos(psi) + sqrt([ 1 - 2 Omega beta_mu (1 + sin^2(psi)) ])]/[2 beta_mu sin(psi)]
-    std::complex<long double> dxs = std::sqrt(1.0L - 2.0L * o * bmu * ( 1.0L + spsi * spsi ));
-    std::complex<long double> up = ( (o + bmu)*cpsi - dxs ) / (2.0L * bmu * spsi); // the + - inversion is expected 
-    std::complex<long double> un = ( (o + bmu)*cpsi + dxs ) / (2.0L * bmu * spsi); 
-    
-    // alpha+-: [(Omega + beta_mu) cos(psi) +- sqrt([....])]/2
-    std::complex<long double> ap = ( (o + bmu)*cpsi + dxs ) * 0.5L; 
-    std::complex<long double> an = ( (o + bmu)*cpsi + dxs ) * 0.5L; 
+    std::complex<long double> up = ( (o - bmu)*cpsi - dsx )/ (2.0 * bmu * spsi); // the + - inversion is expected 
+    std::complex<long double> un = ( (o - bmu)*cpsi + dsx )/ (2.0 * bmu * spsi); 
 
-    // beta+-: [(Omega - beta_mu ) + (Omega + beta_mu) sin(psi)^2 +- cos(psi) sqrt([....])]/(2 sin(psi))
-    std::complex<long double> bp = ( (o - bmu) + (o + bmu) * spsi * spsi - dxs * cpsi ) / (2.0L * spsi); 
-    std::complex<long double> bn = ( (o - bmu) + (o + bmu) * spsi * spsi + dxs * cpsi ) / (2.0L * spsi); 
+    // alpha+-: [(Omega + beta_mu) cos(psi) +- sqrt([....])]/2
+    std::complex<long double> ap = ( (o + bmu)*cpsi + dsx ) * 0.5L; 
+    std::complex<long double> an = ( (o + bmu)*cpsi - dsx ) * 0.5L; 
+
+    // beta+: [(Omega - beta_mu ) - sqrt([...])] [(Omega + beta_mu ) + sqrt([...])]
+    // beta-: [(Omega - beta_mu ) + sqrt([...])] [(Omega + beta_mu ) - sqrt([...])]
+    std::complex<long double> bp = ( (o - bmu) * cpsi - dsx ) * ( (o + bmu) * cpsi + dsx )/ (4.0 * bmu * spsi); 
+    std::complex<long double> bn = ( (o - bmu) * cpsi + dsx ) * ( (o + bmu) * cpsi - dsx )/ (4.0 * bmu * spsi); 
 
     // ----------------- More explanation of what all this means ----------------------- //
     // Mobius transforms have fixed points - u+/u-
@@ -189,39 +203,39 @@ long double Conuix::characteristic::dPdtau_t::PL0(atomics_t* tx){
     // u+(-) = [b + a u+(-) ]/[ d + c u+(-) ] = beta+(-)/alpha+(-)
     // To effectively "estimate" initial solutions of the sextic by 
     // approximating a sextic as a (quadratic) x (Quartic)
-
     long double Kp =  bmu * cpsi * cpsi;
     long double Km = -bmu * cpsi * cpsi;
 
     std::complex<long double> gxp[4], gxn[4];
-    branch(Kp, kf, up, un, ap, an, bn, bp, gxp); 
-    branch(Km, kf, up, un, ap, an, bn, bp, gxn); 
-  
-    std::cout << "---------" << std::endl; 
-    std::cout << gxp[0] << std::endl;
-    std::cout << gxp[1] << std::endl;
-    std::cout << gxp[2] << std::endl;
-    std::cout << gxp[3] << std::endl;
+    branch(Kp, kf, up, un, ap, an, bp, bn, gxp); 
+    branch(Km, kf, up, un, ap, an, bp, bn, gxn); 
 
-    std::cout << gxn[0] << std::endl;
-    std::cout << gxn[1] << std::endl;
-    std::cout << gxn[2] << std::endl;
-    std::cout << gxn[3] << std::endl;
+    long double _a =   bmu * cpsi; // beta_mu cos(psi)
+    long double _b =   o   * spsi; // Omega   sin(psi)
+    long double _c =   bmu * spsi; // beta_mu sin(psi)
+    long double _d =   o   * cpsi; // Omega   cos(psi)
 
+    for (int y(0); y < 4; ++y){
+        for (int x(0); x < 10; ++x){gxp[y] = newton(Kp, &x, _a, _b, _c, _d, gxp[y]);}
+        for (int x(0); x < 10; ++x){gxn[y] = newton(Kp, &x, _a, _b, _c, _d, gxn[y]);}
+        this -> tau_sol[2*y] = gxp[y]; 
+        this -> solutiond[2*y] = this -> PL0(gxp[y].real()); 
 
-
-
-    return 0.0L; 
+        this -> tau_sol[y*2+1] = gxn[y]; 
+        this -> solutiond[y*2+1] = this -> PL0(gxn[y].real()); 
+    }
 }
 
 void Conuix::characteristic::dPdtau_t::test(atomics_t* tx){
     this -> PL0(tx); 
-
-
-
-
-
-    abort(); 
-
+    std::cout << "----------------" << std::endl; 
+    std::cout << this -> solutiond[0] << " " << this -> tau_sol[0] << std::endl; 
+    std::cout << this -> solutiond[1] << " " << this -> tau_sol[1] << std::endl; 
+    std::cout << this -> solutiond[2] << " " << this -> tau_sol[2] << std::endl; 
+    std::cout << this -> solutiond[3] << " " << this -> tau_sol[3] << std::endl; 
+    std::cout << this -> solutiond[4] << " " << this -> tau_sol[4] << std::endl; 
+    std::cout << this -> solutiond[5] << " " << this -> tau_sol[5] << std::endl; 
+    std::cout << this -> solutiond[6] << " " << this -> tau_sol[6] << std::endl; 
+    std::cout << this -> solutiond[7] << " " << this -> tau_sol[7] << std::endl; 
 }
 

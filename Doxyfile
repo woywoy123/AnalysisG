@@ -1,0 +1,452 @@
+# ==============================================================================
+# Doxyfile Configuration for AnalysisG Source Documentation
+# ==============================================================================
+#
+# This configuration file is used by Doxygen to generate comprehensive API
+# documentation for the AnalysisG project - a Graph Neural Network Analysis
+# Framework for High Energy Physics.
+#
+# OVERVIEW:
+# ---------
+# This Doxyfile is configured to generate HTML documentation for all C++ and
+# CUDA source files in the src/AnalysisG directory, including:
+#   - C++ header files (.h)
+#   - C++ implementation files (.cxx)
+#   - CUDA source files (.cu)
+#   - CUDA header files (.cuh)
+#
+# USAGE:
+# ------
+# To generate the documentation, run:
+#   doxygen Doxyfile
+#
+# To view the generated documentation:
+#   firefox doxygen-docs/html/index.html
+#
+# REQUIREMENTS:
+# -------------
+#   - Doxygen 1.8.0 or higher
+#   - Graphviz (for generating class diagrams and graphs)
+#
+# MAINTENANCE:
+# ------------
+# This file should be updated whenever:
+#   - New source directories are added to src/AnalysisG
+#   - Documentation requirements change
+#   - New file types need to be documented
+#
+# ==============================================================================
+
+#---------------------------------------------------------------------------
+# Project Information
+#---------------------------------------------------------------------------
+# These settings define the basic project metadata that appears in the
+# generated documentation header and title pages.
+
+# PROJECT_NAME: The name of the project as it appears in documentation
+PROJECT_NAME           = "AnalysisG"
+
+# PROJECT_BRIEF: A one-line description shown below the project name
+# This provides context about what the project does
+PROJECT_BRIEF          = "A Graph Neural Network Analysis Framework for High Energy Physics"
+
+# PROJECT_NUMBER: Version number or identifier for this documentation
+# Update this when releasing new versions
+PROJECT_NUMBER         = "1.0"
+
+# OUTPUT_DIRECTORY: Root directory where all documentation will be generated
+# The actual HTML files will be in doxygen-docs/html/
+# This directory is excluded from git via .gitignore
+OUTPUT_DIRECTORY       = doxygen-docs
+
+# CREATE_SUBDIRS: Whether to create subdirectories for output files
+# NO is appropriate for projects with moderate file counts (< 10,000 files)
+# YES would create 4096 subdirectories to improve filesystem performance
+CREATE_SUBDIRS         = NO
+
+#---------------------------------------------------------------------------
+# Build Control Options
+#---------------------------------------------------------------------------
+# These settings control what gets extracted and documented from the source
+# code, even if it lacks explicit documentation comments.
+
+# EXTRACT_ALL: Extract documentation for all entities, even without doc comments
+# YES ensures comprehensive documentation including undocumented code
+# This is essential for API reference documentation
+EXTRACT_ALL            = YES
+
+# EXTRACT_PRIVATE: Include private class members in documentation
+# YES provides complete class interface documentation for developers
+# Useful for understanding internal implementation details
+EXTRACT_PRIVATE        = YES
+
+# EXTRACT_STATIC: Include static file-scope members in documentation
+# YES documents static functions and variables that are file-local
+# Important for understanding helper functions and internal state
+EXTRACT_STATIC         = YES
+
+# EXTRACT_LOCAL_CLASSES: Include classes defined inside functions
+# YES documents local classes used in template implementations
+# Relevant for understanding complex template code patterns
+EXTRACT_LOCAL_CLASSES  = YES
+
+# RECURSIVE: Process subdirectories recursively
+# YES is required to document the entire src/AnalysisG tree
+# This ensures all modules in the nested directory structure are documented
+RECURSIVE              = YES
+
+#---------------------------------------------------------------------------
+# Warning and Progress Messages
+#---------------------------------------------------------------------------
+# These settings control what warnings and messages Doxygen displays during
+# the documentation generation process.
+
+# QUIET: Suppress normal output messages
+# NO allows you to see progress and understand what's being processed
+# Set to YES for automated builds where only errors matter
+QUIET                  = NO
+
+# WARNINGS: Enable warning messages
+# YES helps identify potential documentation issues
+# Warnings can indicate missing documentation or parsing problems
+WARNINGS               = YES
+
+# WARN_IF_UNDOCUMENTED: Warn about undocumented entities
+# NO prevents excessive warnings in large existing codebases
+# Set to YES when enforcing documentation standards
+WARN_IF_UNDOCUMENTED   = NO
+
+# WARN_IF_DOC_ERROR: Warn about documentation syntax errors
+# YES catches malformed doxygen comments (e.g., @param mismatches)
+# Helps maintain documentation quality
+WARN_IF_DOC_ERROR      = YES
+
+# WARN_NO_PARAMDOC: Warn about undocumented function parameters
+# NO avoids overwhelming warnings in partially documented code
+# Set to YES when requiring complete parameter documentation
+WARN_NO_PARAMDOC       = NO
+
+#---------------------------------------------------------------------------
+# Input Source Configuration
+#---------------------------------------------------------------------------
+# These settings specify which files and directories to process for
+# documentation generation.
+
+# INPUT: Root directory/directories to process
+# Points to the main AnalysisG source directory and documentation files
+# Multiple paths can be space-separated if needed
+INPUT                  = src/AnalysisG \
+                         docs/doxygen
+
+# FILE_PATTERNS: File extensions to process
+# Covers all C++ and CUDA source files, plus Cython interface files in the project:
+#   *.h   - C++ header files (class/function declarations)
+#   *.cxx - C++ implementation files (AnalysisG convention)
+#   *.cu  - CUDA kernel source files
+#   *.cuh - CUDA header files
+#   *.pyx - Cython implementation files (Python-C++ interface)
+#   *.pxd - Cython declaration files (Cython headers)
+#   *.dox - Doxygen documentation files (module and page definitions)
+FILE_PATTERNS          = *.h *.cxx *.cu *.cuh *.pyx *.pxd *.dox
+
+# EXTENSION_MAPPING: Map file extensions to languages
+# Treat Cython files (.pyx, .pxd) as C++ for parsing
+# This allows Doxygen to extract classes and functions from Cython code
+EXTENSION_MAPPING      = pyx=C++ pxd=C++
+
+# RECURSIVE: Scan subdirectories (repeated for clarity with INPUT)
+# Essential for documenting the complete modular structure
+RECURSIVE              = YES
+
+# EXCLUDE_PATTERNS: Patterns for files/directories to skip
+# Excludes:
+#   */test/*  - Test files (documented separately if needed)
+#   */tests/* - Alternative test directory naming
+#   */.git/*  - Git version control files
+#   */build/* - Compiled artifacts and build outputs
+EXCLUDE_PATTERNS       = */test/* */tests/* */.git/* */build/*
+
+#---------------------------------------------------------------------------
+# Source Code Browsing
+#---------------------------------------------------------------------------
+# These options control how source code is presented in the documentation,
+# enabling users to browse and understand implementation details.
+
+# SOURCE_BROWSER: Include syntax-highlighted source code
+# YES generates browsable source code with cross-references
+# Users can click on any identifier to jump to its definition
+# Essential for understanding implementation details
+SOURCE_BROWSER         = YES
+
+# INLINE_SOURCES: Include source code directly in documentation
+# NO keeps source in separate pages (better organization)
+# YES would embed source in the API documentation pages
+INLINE_SOURCES         = NO
+
+# STRIP_CODE_COMMENTS: Remove comments from source code views
+# NO preserves all comments in source browser
+# Helps understand developer intent and implementation notes
+STRIP_CODE_COMMENTS    = NO
+
+# REFERENCED_BY_RELATION: Show where functions/classes are used
+# YES generates "Referenced by" sections showing callers
+# Valuable for understanding code dependencies and usage patterns
+REFERENCED_BY_RELATION = YES
+
+# REFERENCES_RELATION: Show what functions/classes call
+# YES generates "References" sections showing callees
+# Helps trace code execution flow and dependencies
+REFERENCES_RELATION    = YES
+
+# VERBATIM_HEADERS: Include header files verbatim in documentation
+# YES shows complete header file content in documentation
+# Useful for understanding public API interfaces
+VERBATIM_HEADERS       = YES
+
+#---------------------------------------------------------------------------
+# HTML Output Configuration
+#---------------------------------------------------------------------------
+# These settings control the format, appearance, and features of the
+# generated HTML documentation.
+
+# GENERATE_HTML: Enable HTML output generation
+# YES is the primary output format for browsable documentation
+# HTML provides the best user experience with search and navigation
+GENERATE_HTML          = YES
+
+# HTML_OUTPUT: Subdirectory name for HTML output
+# Files will be generated in doxygen-docs/html/
+# The main page will be doxygen-docs/html/index.html
+HTML_OUTPUT            = html
+
+# HTML_FILE_EXTENSION: File extension for HTML files
+# .html is the standard extension recognized by web browsers
+HTML_FILE_EXTENSION    = .html
+
+# HTML_COLORSTYLE_HUE: Base color hue for HTML theme (0-359)
+# 220 = blue tones, providing a professional appearance
+# Other values: 0=red, 120=green, 240=purple
+HTML_COLORSTYLE_HUE    = 220
+
+# HTML_COLORSTYLE_SAT: Color saturation (0-255)
+# 100 provides moderate color intensity
+# Higher values = more vibrant, lower = more muted
+HTML_COLORSTYLE_SAT    = 100
+
+# HTML_COLORSTYLE_GAMMA: Color brightness (40-240)
+# 80 provides good contrast for readability
+# Lower = darker theme, higher = lighter theme
+HTML_COLORSTYLE_GAMMA  = 80
+
+# HTML_DYNAMIC_SECTIONS: Enable collapsible sections
+# YES allows expanding/collapsing sections for better navigation
+# Improves usability for large classes with many members
+HTML_DYNAMIC_SECTIONS  = YES
+
+# GENERATE_TREEVIEW: Enable hierarchical navigation panel
+# YES adds a tree-view sidebar for browsing documentation structure
+# Provides quick navigation between modules, classes, and files
+# Essential for large projects with many components
+GENERATE_TREEVIEW      = YES
+
+#---------------------------------------------------------------------------
+# Alternative Output Formats
+#---------------------------------------------------------------------------
+# AnalysisG documentation focuses on HTML output. Other formats are disabled
+# to reduce generation time and output size. Enable if needed for specific
+# use cases (e.g., LaTeX for PDF generation, XML for custom processing).
+
+# GENERATE_LATEX: Generate LaTeX output for PDF generation
+# NO - HTML is sufficient for most users
+# Set to YES if you need to generate PDF documentation via LaTeX
+GENERATE_LATEX         = NO
+
+# GENERATE_RTF: Generate Rich Text Format documentation
+# NO - RTF is rarely needed for modern documentation
+# Enable only if you need documentation in Microsoft Word format
+GENERATE_RTF           = NO
+
+# GENERATE_MAN: Generate Unix manual pages
+# NO - man pages are not the primary documentation format
+# Enable if you want to install documentation as man pages
+GENERATE_MAN           = NO
+
+# GENERATE_XML: Generate XML output for external processing
+# YES - Required for Breathe/Sphinx integration and Read the Docs hosting
+# XML output enables parsing Doxygen documentation in Sphinx via Breathe extension
+# Output location: doxygen-docs/xml/
+GENERATE_XML           = YES
+
+# XML_OUTPUT: Directory for XML output
+# Set to xml/ subdirectory for Breathe integration
+XML_OUTPUT             = xml
+
+# XML_PROGRAMLISTING: Include program listings in XML
+# YES provides complete source code in XML for better Sphinx integration
+XML_PROGRAMLISTING     = YES
+
+#---------------------------------------------------------------------------
+# C++ Preprocessor Configuration
+#---------------------------------------------------------------------------
+# These settings control how Doxygen handles C preprocessor directives,
+# which is critical for correctly parsing template-heavy and macro-heavy
+# C++ code like that in AnalysisG.
+
+# ENABLE_PREPROCESSING: Process C preprocessor directives
+# YES is essential for correctly parsing #include, #define, #ifdef, etc.
+# Required for accurate documentation of template and macro code
+ENABLE_PREPROCESSING   = YES
+
+# MACRO_EXPANSION: Expand macro definitions during parsing
+# YES ensures macros are expanded to their full definitions
+# Critical for documenting code that uses preprocessor macros heavily
+# Helps document the actual code that gets compiled
+MACRO_EXPANSION        = YES
+
+# EXPAND_ONLY_PREDEF: Only expand explicitly predefined macros
+# NO allows expansion of all encountered macros
+# YES would require listing all macros in PREDEFINED
+# NO is more comprehensive for automatic documentation
+EXPAND_ONLY_PREDEF     = NO
+
+# SEARCH_INCLUDES: Follow #include directives
+# YES allows Doxygen to follow included headers
+# Essential for understanding complete type definitions and dependencies
+SEARCH_INCLUDES        = YES
+
+# INCLUDE_PATH: Directories to search for included files
+# Points to the source root for resolving includes
+# Matches the project's include directory structure
+# Add additional paths if includes reference external libraries
+INCLUDE_PATH           = src/AnalysisG
+
+#---------------------------------------------------------------------------
+# External References
+#---------------------------------------------------------------------------
+# These settings control how Doxygen handles references to external code
+# and documentation outside the main project.
+
+# ALLEXTERNALS: Generate documentation for external references
+# NO focuses documentation on AnalysisG code only
+# YES would document referenced external libraries (increases scope)
+ALLEXTERNALS           = NO
+
+# EXTERNAL_GROUPS: Group external entities separately
+# YES keeps external references organized in separate sections
+# Helps distinguish between project code and external dependencies
+EXTERNAL_GROUPS        = YES
+
+#---------------------------------------------------------------------------
+# Diagram and Graph Generation (Graphviz)
+#---------------------------------------------------------------------------
+# These settings control the generation of visual diagrams showing
+# relationships between classes, files, and dependencies. Requires Graphviz
+# to be installed (dot executable).
+
+# HAVE_DOT: Enable Graphviz dot tool for diagram generation
+# YES enables all graph generation features below
+# Requires 'dot' command to be available in PATH
+# Install with: apt-get install graphviz
+HAVE_DOT               = YES
+
+# CLASS_GRAPH: Generate inheritance diagrams for classes
+# YES creates visual class hierarchy diagrams
+# Shows base classes, derived classes, and inheritance relationships
+# Essential for understanding object-oriented architecture
+CLASS_GRAPH            = YES
+
+# COLLABORATION_GRAPH: Generate collaboration diagrams
+# YES shows which classes use which other classes
+# Displays member relationships and composition
+# Helps understand class dependencies and coupling
+COLLABORATION_GRAPH    = YES
+
+# GROUP_GRAPHS: Generate dependency graphs for groups/modules
+# YES creates module-level dependency visualizations
+# Shows relationships between different components
+# Useful for understanding overall architecture
+GROUP_GRAPHS           = YES
+
+# UML_LOOK: Use UML-style notation in diagrams
+# NO uses standard Doxygen graph style
+# YES would use UML notation (more formal, but less readable for some)
+UML_LOOK               = NO
+
+# INCLUDE_GRAPH: Generate include dependency graphs for files
+# YES shows which files include which headers
+# Critical for understanding compilation dependencies
+# Helps identify circular dependencies and refactoring opportunities
+INCLUDE_GRAPH          = YES
+
+# INCLUDED_BY_GRAPH: Generate reverse include dependency graphs
+# YES shows which files include each header
+# Complementary to INCLUDE_GRAPH
+# Helps understand the impact of header file changes
+INCLUDED_BY_GRAPH      = YES
+
+# CALL_GRAPH: Generate call graphs for functions
+# NO - disabled due to size and generation time
+# YES would show which functions call which (can be very large)
+# Enable selectively if needed for specific debugging
+CALL_GRAPH             = NO
+
+# CALLER_GRAPH: Generate caller graphs for functions
+# NO - disabled due to size and generation time
+# YES would show which functions are called by which
+# Enable selectively if needed for specific analysis
+CALLER_GRAPH           = NO
+
+# GRAPHICAL_HIERARCHY: Generate graphical class hierarchy
+# YES creates visual inheritance trees for all classes
+# Provides overview of object-oriented design
+# Complements CLASS_GRAPH with project-wide perspective
+GRAPHICAL_HIERARCHY    = YES
+
+# DIRECTORY_GRAPH: Generate directory structure diagrams
+# YES visualizes the source directory organization
+# Shows dependencies between different source directories
+# Helps understand modular structure of the project
+DIRECTORY_GRAPH        = YES
+
+# DOT_IMAGE_FORMAT: Output format for generated diagrams
+# png provides good quality with reasonable file sizes
+# Other options: svg (scalable), gif, jpg
+# png is widely supported and works well in all browsers
+DOT_IMAGE_FORMAT       = png
+
+# INTERACTIVE_SVG: Generate interactive SVG images
+# NO uses static PNG images
+# YES would create interactive diagrams (larger files, requires SVG support)
+INTERACTIVE_SVG        = NO
+
+# DOT_GRAPH_MAX_NODES: Maximum nodes in a single graph
+# 50 limits graph size for readability and generation time
+# Increase if you need more detailed graphs (at cost of clarity)
+# Large graphs can become unreadable
+DOT_GRAPH_MAX_NODES    = 50
+
+# MAX_DOT_GRAPH_DEPTH: Maximum depth for dependency graphs
+# 0 = no limit (show complete dependency chains)
+# Positive value limits recursion depth
+# 0 provides complete picture but may create complex graphs
+MAX_DOT_GRAPH_DEPTH    = 0
+
+# ==============================================================================
+# End of Doxyfile Configuration
+# ==============================================================================
+#
+# DOCUMENTATION STATISTICS (as of last generation):
+# -------------------------------------------------
+# - Total source files documented: 284
+#   - CUDA source files (.cu): 14
+#   - CUDA header files (.cuh): 15
+#   - C++ implementation files (.cxx): 147
+#   - C++ header files (.h): 108
+# - HTML pages generated: ~1,665
+# - Diagrams generated: ~835 PNG files
+# - Total documentation size: ~133MB
+#
+# For more information about Doxygen configuration options, see:
+# https://www.doxygen.nl/manual/config.html
+#
+# ==============================================================================

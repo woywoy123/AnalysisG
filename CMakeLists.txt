@@ -13,10 +13,10 @@ set(CMAKE_CUDA_ARCHITECTURES "all")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 #set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
-option(BUILD_DOC "Build documentation" OFF)
-find_package(Doxygen)
+#option(BUILD_DOC "Build documentation" OFF)
+#find_package(Doxygen)
 
-set(CMAKE_ANALYSISG_CUDA OFF)
+set(CMAKE_ANALYSISG_CUDA ON)
 include(FetchContent)
 include(CheckLanguage)
 set(USE_SABI 1)

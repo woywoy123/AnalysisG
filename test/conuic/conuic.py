@@ -112,9 +112,9 @@ class Conuic(debug):
         self.engine = [conuic(i, j, event, self.fig) for i in self.lep for j in self.jet]
         for i in range(len(self.engine)*self.debug_mode): 
             self.debug(i)
-            self.engine[i].scan_regions(0.1)
-            self.engine[i].shapes()
-            self.fig.add_object("ellip" + str(i), self.engine[i])
+            #self.engine[i].scan_regions(0.1)
+            #self.engine[i].shapes()
+            #self.fig.add_object("ellip" + str(i), self.engine[i])
 
         self.candidates = []
         for i in range(len(self.engine)): 
@@ -126,10 +126,10 @@ class Conuic(debug):
             self.nfake  += (not eg.is_truth)
             self.candidates += [eg]*(not eg.reject)
         
-        #for i in range(len(self.candidates)):
-        #    for j in range(len(self.candidates)):
-        #        if i >= j: continue
-        #        self.intersections(self.candidates[i], self.candidates[j])
+        for i in range(len(self.candidates)):
+            for j in range(len(self.candidates)):
+                #if i >= j: continue
+                self.intersections(self.candidates[i], self.candidates[j])
         self.fig.show()
 
     def intersections(self, i, j):
@@ -204,12 +204,16 @@ class Conuic(debug):
         # Since H_tilde can be represented as Morbius transformations, 
         # It becomes a polynomial could be solved analytically. 
         # To be seen.
-        v0 = np.array([[0, 0, self.px],[0, 0, self.py], [0, 0, self.pz]]) * 0
+        v0 = np.array([[0, 0, self.px],[0, 0, self.py], [0, 0, self.pz]])
 
         traj = traject(self.fig)
         can_i = {abs(k.mobius) : k for k in i.parameters}
         can_j = {abs(t.mobius) : t for t in j.parameters}
 
+        print(can_i)
+        print(can_j)
+        
+        ox1 = None
         l = 0
         for k in sorted(can_i):
             ox = can_i[k]
@@ -219,15 +223,15 @@ class Conuic(debug):
             cX = (v0 - circle()).T.dot(K_).dot(v0 - circle())
             
             E_ = traj.figures(Ellipse, "r" if ox.tag_truth else "b", 1, True)
-            traj.ellipse(K_, None, None, E_)
-            E_.data.matrix = H
+            traj.ellipse(cX, None, None, E_)
+            E_.data.matrix = cX
             E_.alpha = 1.0
             
             ox1 = ox
-            ox1.hmatrix = H
-            break
+            ox1.hmatrix = cX
 
-
+        
+        ox2 = None
         for k in sorted(can_j):
             ox = can_j[k]
             H  = can_j[k].hmatrix
@@ -236,26 +240,29 @@ class Conuic(debug):
             cX = (v0 - circle()).T.dot(K_).dot(v0 - circle())
             
             E_ = traj.figures(Ellipse, "r" if ox.tag_truth else "b", 1, True)
-            traj.ellipse(K_, None, None, E_)
-            E_.data.matrix = H
+            traj.ellipse(cX, None, None, E_)
+            E_.data.matrix = cX
             E_.alpha = 1.0
             
             ox2 = ox
-            ox2.hmatrix = H
-            break
+            ox2.hmatrix = cX
 
-        #sols = plane_intersection(ox1, ox2)
-        #if sols is None: return
+        if ox1 is None or ox2 is None: return
+        sols = plane_intersection(ox1, ox2)
+        if sols is None: return
+        for i in sols:
+            print(sols[i])
 
-        #l1 = traj.figures(Line, "g-", 1, True)
-        #l2 = traj.figures(Line, "k-", 1, True)
-        #l1.data.intersect = sols["n1"]["sols"]
-        #l2.data.intersect = sols["n2"]["sols"]
-        #traj.line(sols["n1"]["r0"], sols["n1"]["d"], l1)
-        #traj.line(sols["n2"]["r0"], sols["n2"]["d"], l2)
 
-        self.fig.add_object("event" + str(ox.mobius) + str(ox.mobius), traj)
-        #self.fig.show()
+        l1 = traj.figures(Line, "g-", 1, True)
+        l2 = traj.figures(Line, "k-", 1, True)
+        l1.data.intersect = sols["n1"]["sols"]
+        l2.data.intersect = sols["n2"]["sols"]
+        traj.line(sols["n1"]["r0"], sols["n1"]["d"], l1)
+        traj.line(sols["n2"]["r0"], sols["n2"]["d"], l2)
+
+        self.fig.add_object("event" + str(ox2.mobius) + str(ox1.mobius), traj)
+        self.fig.show()
 
 
     def solver(self, ellip, i):

@@ -54,6 +54,14 @@ class debug:
         _assertions("mT", cx.mT2(csx, csy)**0.5, t.mass)
 
     def base_debug(self, cx):
+
+        print("cos ", cx.cos )
+        print("sin ", cx.sin )
+        print("w   ", cx.w   )
+        print("o   ", cx.o   )
+        print("o2  ", cx.o2  )
+        print("ml  ", cx.lep.mass)
+
         _print("RT", cx.RT)
         _print("Z^2 Polynomial", ["A", "B", "C", "D", "E"], cx)
         _print("psi-angles", ["cpsi", "spsi", "tpsi"], cx)
@@ -69,6 +77,9 @@ class debug:
         _print("Hc", cx.hc)
         _print("H1", cx.h1)
         _print("H2", cx.h2)
+        exit()
+
+
 
     def eigen_debug(self, cx):
         _l, _z, _t = cx.l, cx.z, cx.tau
@@ -110,12 +121,15 @@ class debug:
 
     def debug(self, idx):
         cx = self.engine[idx]
+        print("->", cx.lep)
+        print("+>", cx.jet)
         _print("--------- pair: " + str(idx) + " ---------")
         if len(cx.truth_pair): print(">>> TRUTH PAIR <<<")
-        self.reference_debug(cx)
-        self.infer_debug(cx)
-        #self.base_debug(cx)
-        self.eigen_debug(cx)
+        #self.reference_debug(cx)
+        #self.infer_debug(cx)
+        self.base_debug(cx)
+        #self.eigen_debug(cx)
+        exit()
 
 
 class traject:
