@@ -7,8 +7,10 @@ This directory contains the comprehensive documentation for the AnalysisG framew
 The documentation is built using Sphinx with the following components:
 
 - **Sphinx**: Main documentation system
-- **Breathe**: C++ documentation integration via Doxygen
+- **Breathe**: C++ documentation integration via Doxygen (optional, for local builds with Doxygen)
 - **Read the Docs Theme**: Professional documentation theme
+
+**Note**: The documentation builds successfully without Doxygen/Breathe. C++ API documentation via Breathe is only available when Doxygen is run locally.
 
 ## Structure
 

@@ -26,15 +26,18 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
     'sphinx.ext.imgmath',
-    'breathe',
 ]
 
-# Breathe Configuration for C++ documentation
-breathe_projects = {
-    "AnalysisG": "../doxygen/xml"
-}
-breathe_default_project = "AnalysisG"
-breathe_default_members = ('members', 'undoc-members')
+# Only add breathe if Doxygen output exists
+doxygen_xml_path = os.path.join(os.path.dirname(__file__), '../xml')
+if os.path.exists(doxygen_xml_path):
+    extensions.append('breathe')
+    # Breathe Configuration for C++ documentation
+    breathe_projects = {
+        "AnalysisG": "../xml"
+    }
+    breathe_default_project = "AnalysisG"
+    breathe_default_members = ('members', 'undoc-members')
 
 templates_path = ['_templates']
 exclude_patterns = []

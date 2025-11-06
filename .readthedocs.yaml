@@ -7,11 +7,6 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.11"
-  jobs:
-    pre_build:
-      # Install Doxygen and build C++ documentation
-      - apt-get update && apt-get install -y doxygen || true
-      - cd docs && doxygen Doxyfile || echo "Doxygen generation failed, continuing..."
 
 sphinx:
   configuration: docs/source/conf.py
