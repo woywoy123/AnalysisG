@@ -192,6 +192,102 @@ Particle Identification
    :type: str
    :getter: Returns type string
 
+
+Particle Type System
+--------------------
+
+AnalysisG uses a property-based system for particle identification, not methods:
+
+**Type Properties (Boolean)**:
+
+.. py:attribute:: is_lep
+   
+   True if particle is a lepton (electron, muon, tau).
+   
+   :type: bool
+   :getter: Returns True for leptons (|PDG ID| = 11, 13, 15)
+   
+   **Example**:
+   
+   .. code-block:: python
+   
+      # Correct way to select leptons
+      leptons = [p for p in event.Particles if p.is_lep]
+      
+      # Filter by pt
+      good_leptons = [p for p in event.Particles 
+                      if p.is_lep and p.pt > 25e3]
+
+.. py:attribute:: is_b
+   
+   True if particle is a b-quark or b-tagged jet.
+   
+   :type: bool
+   :getter: Returns True for b-particles
+   
+   **Example**:
+   
+   .. code-block:: python
+   
+      # Select b-jets
+      bjets = [p for p in event.Particles if p.is_b]
+      
+      # Require at least 2 b-jets
+      if len(bjets) >= 2:
+           print("Event has b-jets")
+
+.. py:attribute:: is_nu
+   
+   True if particle is a neutrino.
+   
+   :type: bool
+   :getter: Returns True for neutrinos (|PDG ID| = 12, 14, 16)
+   
+   **Example**:
+   
+   .. code-block:: python
+   
+      # Find neutrinos
+      neutrinos = [p for p in event.Particles if p.is_nu]
+
+.. py:attribute:: is_add
+   
+   True if particle is an additional particle (not from hard process).
+   
+   :type: bool
+   :getter: Returns True for additional particles
+
+**Type Property (String)**:
+
+The ``Type`` property contains a string identifier for the particle type. Common values include:
+
+* ``"jet"`` - Hadronic jets
+* ``"electron"`` - Electrons
+* ``"muon"`` - Muons  
+* ``"tau"`` - Tau leptons
+* ``"neutrino"`` - Neutrinos
+* ``"photon"`` - Photons
+* ``"met"`` - Missing transverse energy
+* Custom types defined in your event class
+
+**Example**:
+
+.. code-block:: python
+
+   # Select jets by Type
+   jets = [p for p in event.Particles if p.Type == "jet"]
+   
+   # Select electrons
+   electrons = [p for p in event.Particles if p.Type == "electron"]
+   
+   # Combine with kinematic cuts
+   good_jets = [p for p in event.Particles 
+                if p.Type == "jet" and p.pt > 30e3 and abs(p.eta) < 2.5]
+
+**Important**: Do NOT use methods like ``is_jet()``, ``is_lepton()``, or ``is_bjet()``. These do not exist in the ParticleTemplate class. Use the properties shown above.
+
+
+
 Decay Chain Information
 -----------------------
 
@@ -283,8 +379,8 @@ DeltaR()
    .. code-block:: python
    
       # Overlap removal: remove jets too close to leptons
-      leptons = [p for p in event.Particles if p.is_lepton()]
-      jets = [p for p in event.Particles if p.is_jet()]
+      leptons = [p for p in event.Particles if p.is_lep]
+      jets = [p for p in event.Particles if p.Type == "jet"]
       
       clean_jets = []
       for jet in jets:
@@ -435,8 +531,8 @@ Example 2: Top Quark Reconstruction
        leptons = [p for p in event.Particles 
                   if abs(p.pdgid) in [11, 13] and p.pt > 25e3]
        jets = [p for p in event.Particles 
-               if p.is_jet() and p.pt > 30e3]
-       bjets = [j for j in jets if j.is_bjet()]
+               if p.Type == "jet" and p.pt > 30e3]
+       bjets = [j for j in jets if j.is_b]
        
        top_candidates = []
        

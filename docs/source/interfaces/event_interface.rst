@@ -116,8 +116,8 @@ Selection Method
    
       def selection(self):
           # Require at least 2 leptons and 4 jets
-          leptons = [p for p in self.Particles if p.is_lepton()]
-          jets = [p for p in self.Particles if p.is_jet()]
+          leptons = [p for p in self.Particles if p.is_lep]
+          jets = [p for p in self.Particles if p.Type == "jet"]
           return len(leptons) >= 2 and len(jets) >= 4
 
 Strategy Method
@@ -195,7 +195,7 @@ Basic Event Selection
        
        def selection(self):
            # Select events with high jet multiplicity
-           jets = [p for p in self.Particles if p.is_jet()]
+           jets = [p for p in self.Particles if p.Type == "jet"]
            return len(jets) >= 6
 
 Event with Custom Processing
@@ -216,8 +216,8 @@ Event with Custom Processing
        
        def strategy(self):
            # Custom reconstruction
-           jets = [p for p in self.Particles if p.is_jet()]
-           leptons = [p for p in self.Particles if p.is_lepton()]
+           jets = [p for p in self.Particles if p.Type == "jet"]
+           leptons = [p for p in self.Particles if p.is_lep]
            
            # Reconstruct top candidates
            for l in leptons:

@@ -144,8 +144,8 @@ Particle Collections
               print(f"High-pT particle: pt={particle.pt/1e3:.1f} GeV")
       
       # Filter particles
-      jets = [p for p in event.Particles if p.is_jet()]
-      leptons = [p for p in event.Particles if p.is_lepton()]
+      jets = [p for p in event.Particles if p.Type == "jet"]
+      leptons = [p for p in event.Particles if p.is_lep]
 
 Methods to Override
 -------------------
@@ -190,7 +190,7 @@ selection()
               muons = [p for p in self.Particles 
                       if abs(p.pdgid) == 13 and p.pt > 25e3]
               jets = [p for p in self.Particles 
-                     if p.is_jet() and p.pt > 30e3 and abs(p.eta) < 2.5]
+                     if p.Type == "jet" and p.pt > 30e3 and abs(p.eta) < 2.5]
               
               # Apply cuts
               leptons = electrons + muons
@@ -201,7 +201,7 @@ selection()
                   return False  # Require at least 4 jets
               
               # Check for b-jets
-              bjets = [j for j in jets if j.is_bjet()]
+              bjets = [j for j in jets if j.is_b]
               if len(bjets) < 2:
                   return False  # Require at least 2 b-jets
               
@@ -235,9 +235,9 @@ strategy()
    
       def strategy(self):
           # Get particles
-          leptons = [p for p in self.Particles if p.is_lepton()]
-          jets = [p for p in self.Particles if p.is_jet()]
-          bjets = [j for j in jets if j.is_bjet()]
+          leptons = [p for p in self.Particles if p.is_lep]
+          jets = [p for p in self.Particles if p.Type == "jet"]
+          bjets = [j for j in jets if j.is_b]
           
           # Reconstruct W bosons from lepton pairs
           self.reconstructed_W = []
@@ -294,7 +294,7 @@ Here's a complete example showing how to create a custom event class for a 4-top
                    and abs(p.eta) < 2.5]
            
            jets = [p for p in self.Particles 
-                  if p.is_jet() 
+                  if p.Type == "jet" 
                   and p.pt > 30e3  # 30 GeV
                   and abs(p.eta) < 2.5]
            
@@ -312,7 +312,7 @@ Here's a complete example showing how to create a custom event class for a 4-top
                return False  # Need at least 6 jets for 4-top
            
            # B-jet requirement
-           bjets = [j for j in jets if j.is_bjet()]
+           bjets = [j for j in jets if j.is_b]
            self.n_bjets = len(bjets)
            if self.n_bjets < 3:
                return False  # Need at least 3 b-jets
@@ -323,9 +323,9 @@ Here's a complete example showing how to create a custom event class for a 4-top
        def strategy(self):
            """Reconstruct top quarks from selected events."""
            # Get particles (we know they pass selection now)
-           leptons = [p for p in self.Particles if p.is_lepton() and p.pt > 25e3]
-           jets = [p for p in self.Particles if p.is_jet() and p.pt > 30e3]
-           bjets = [j for j in jets if j.is_bjet()]
+           leptons = [p for p in self.Particles if p.is_lep and p.pt > 25e3]
+           jets = [p for p in self.Particles if p.Type == "jet" and p.pt > 30e3]
+           bjets = [j for j in jets if j.is_b]
            
            # Simple top reconstruction: lepton + b-jet combinations
            self.reconstructed_tops = []

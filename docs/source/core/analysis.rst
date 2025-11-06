@@ -46,7 +46,7 @@ Quick Start Example
            super().__init__()
        
        def selection(self):
-           leptons = [p for p in self.Particles if p.is_lepton()]
+           leptons = [p for p in self.Particles if p.is_lep]
            return len(leptons) >= 2
    
    # Create and configure analysis
@@ -396,8 +396,8 @@ Example 1: Simple Event Counting
            return True  # Accept all events
        
        def strategy(self):
-           self.n_jets = sum(1 for p in self.Particles if p.is_jet())
-           self.n_leptons = sum(1 for p in self.Particles if p.is_lepton())
+           self.n_jets = sum(1 for p in self.Particles if p.Type == "jet")
+           self.n_leptons = sum(1 for p in self.Particles if p.is_lep)
    
    # Run
    analysis = Analysis()
@@ -430,12 +430,12 @@ Example 2: Multi-Sample Analysis with Selection
            
            # Jet requirement
            jets = [p for p in self.Particles 
-                  if p.is_jet() and p.pt > 30e3]
+                  if p.Type == "jet" and p.pt > 30e3]
            if len(jets) < 2:
                return False
            
            # B-jet requirement
-           bjets = [j for j in jets if j.is_bjet()]
+           bjets = [j for j in jets if j.is_b]
            if len(bjets) < 1:
                return False
            
