@@ -29,7 +29,9 @@ Welcome to the comprehensive documentation for AnalysisG, a high-performance ana
    :caption: Complex Technical Components:
 
    technical/overview
+   technical/cpp_complete_reference
    technical/cpp_modules_api
+   technical/cuda_actual_api
    technical/cuda_kernels_api
    technical/cpp_api
    technical/cuda_api
