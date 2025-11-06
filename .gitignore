@@ -8,6 +8,14 @@
 **/.local
 scripts/source_this.sh
 
+# Documentation build artifacts
+docs/xml
+docs/html
+docs/latex
+docs/_build
+docs/source/_build
+docs/doxygen
+
 # Cache types 
 **.hdf5
 **.pkl

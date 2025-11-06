@@ -5,9 +5,14 @@ build:
   os: ubuntu-22.04
   tools: 
     python: "3.11"
+  commands:
+    # Build Doxygen documentation for C++ API
+    - cd docs && doxygen Doxyfile || true
+    # Build Sphinx documentation
+    - cd docs && make html
 
 sphinx:
-  configuration: ./docs/source/conf.py
+  configuration: docs/source/conf.py
 
 python:
   install:
