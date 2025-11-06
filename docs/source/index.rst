@@ -1,121 +1,148 @@
-A Graph Neural Network Analysis Framework for High Energy Physics!
-==================================================================
+AnalysisG Documentation
+=======================
 
-Abstract
---------
-As the field of High Energy Particle Physics (HEPP) has begun exploring more exotic machine learning algorithms, such as Graph Neural Networks (GNNs).
-Analyses commonly rely on pre-existing data science frameworks, including PyTorch, TensorFlow and Keras, to recast ROOT samples into some respective data structure.
-This often results in tedious and computationally expensive co-routines to be written.
-Community projects, such as UpROOT, Awkward, and Scikit-HEP are developing tools to address some of these problems.
-For instance, in the context of Graph Neural Networks, converting non-monolithic data into graphs with edge, node and graph level feature becomes increasingly complex.
-
-AnalysisG aims to address these residual issues, by following a similar philosophy as *AnalysisTop*, whereby events and particles are treated as polymorphic objects.
-The framework initially translate ROOT based n-tuples into user defined particle and event objects, where strings from ROOT samples (trees/branches/leaves) are mapped to their respective attributes.
-Particles living within the event definition can be retrospectively matched with other particles to build complex decay chains, and subsequently used for truth matching studies and machine learning algorithms.
-
-For Graph Neural Networks in particular, graph structures can be constructed via a template graph class, which will populate (graph, node and edge) feature tensors using the event and particle definitions using simple callable functions.
-The resulting graphs can then be used for inference or supervised training sessions.
-
-For preliminary cut based analyses, the framework offers selection templates, which take the prior event definitions as input and allows for detailed studies, which can then be exported into ROOT n-tuples.
-Alternatively, the resulting selection templates can be assigned relevant attributes, which can be subsequently serialized and plotted as would be the case in dedicated truth studies.
-
-To facilitate faster machine learning related training/inference in high energy particle physics, the framework exploits algorithms written entirely in C++ and native CUDA kernels.
-These algorithms can be found within a self contained sub-package referred to as *pyc* and can be used outside of this framework. 
-Some of the algorithms include; :math:`\Delta R`, Polar to Cartesian coordinate system transformations, Invariant Mass computations, edge/node single counting aggregation, analytical single/double neutrino reconstruction and many more.
-
-Given the growing trend in machine learning, across multiple collaborations, the framework aims to remain Analysis agnostic, such that mutually exclusive ATLAS/Belle-II analyses can benefit from this framework. 
-
-Core Modules and Languages used by AnalysisG
---------------------------------------------
-
-To ensure optimal performance, the package uses C++ as the underlying language, but interfaces with Python using Cython.
-Cython naturally interfaces with Python and provides minimal overhead in terms of multithreading limitations as would be the case of purely written Python code. 
-Furthermore, Cython permits the sharing of C++ classes and pointers, meaning that memory is not unintentionally copied and introducing inefficiencies.
-
-AnalysisG provides the following core modules that can be used in native C++, Cython and Python:
-
-- **EventTemplate**: A template class used to specify to the framework which type of event and particle definitions to be used for the event.
-- **ParticleTemplate**: A template class used in conjunction with **EventTemplate** to define the underlying particle type.
-- **GraphTemplate**: A template class used to define the inclusive graph features, such as edge, node and global graph attributes. 
-- **SelectionTemplate**: A template class for defining a customized event selection algorithm. 
-- **Plotting**: A wrapper around **boost_histograms** and **mpl-hepp** that uses an object like syntax to define plotting routines.
-- **io**: A Cython interface for the CERN ROOT C++ package, which centers around being simple to use and requiring as minimal syntax as possible to read ROOT n-tuples.
-- **ModelTemplate**: A template class used to define machine learning algorithms.
-- **Analysis**: The main analysis compiler used to define chains of actions to be performed given a user defined template class.
-- **Tools**: A collection of tools that are used by the package.
-- **pyc (Python CUDA)**: A completely detached package which implements high performance native C++ and CUDA code/kernels, utilizing the **PyTorch** API. 
-
-DOCUMENTATION IS STILL UNDER CONSTRUCTION
------------------------------------------
-
-**The current documentation is being updated, since a lot of changes have been made from the prior version.**
-
-
-
-Getting Started with AnalysisG
-------------------------------
-.. toctree::
-   :titlesonly:
-
-   getting-started/main.rst
-
-
-Core Class Documentation
-------------------------
+Welcome to the comprehensive documentation for AnalysisG, a high-performance analysis framework for High Energy Physics (HEP) featuring C++, CUDA, and Cython implementations.
 
 .. toctree::
-   :titlesonly:
+   :maxdepth: 2
+   :caption: Getting Started:
 
-   core-classes/main.rst
-   core-structs/main.rst
-
-
-CUDA, C++ and pyc via LibTorch
-------------------------------
-.. toctree::
-   :titlesonly:
-
-   pyc/main.rst
-   pyc/interface.rst
-
-Event and Particle Implementations
-----------------------------------
+   introduction
+   installation
+   quickstart
 
 .. toctree::
-   :titlesonly:
+   :maxdepth: 2
+   :caption: Simple Interfaces (User-Overridable):
 
-   mc16-events/main.rst
-
-Graph Neural Network Training
------------------------------
+   interfaces/overview
+   interfaces/core_templates
+   interfaces/event_interface
+   interfaces/particle_interface
+   interfaces/graph_interface
+   interfaces/metric_interface
+   interfaces/model_interface
+   interfaces/selection_interface
 
 .. toctree::
-   :titlesonly:
+   :maxdepth: 2
+   :caption: Complex Technical Components:
 
-   gnn-training/main.rst
+   technical/overview
+   technical/modules
+   technical/cpp_api
+   technical/cuda_api
 
-Analysis and Truth Studies Documentation
-----------------------------------------
 .. toctree::
-   :titlesonly:
-   :maxdepth: 1
- 
-   studies/main.rst 
+   :maxdepth: 2
+   :caption: Core Package:
 
-Documentation and Codebase Status
----------------------------------
+   core/analysis
+   core/event_template
+   core/particle_template
+   core/graph_template
+   core/metric_template
+   core/model_template
+   core/selection_template
+   core/io
+   core/lossfx
+   core/meta
+   core/notification
+   core/plotting
+   core/roc
+   core/structs
+   core/tools
 
-.. image:: https://readthedocs.org/projects/analysisg/badge/?version=latest
-    :target: https://analysisg.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
+.. toctree::
+   :maxdepth: 2
+   :caption: Events Package:
 
-.. image:: https://github.com/woywoy123/AnalysisG/actions/workflows/AnalysisG_build.yml/badge.svg
-   :target: https://github.com/woywoy123/AnalysisG/actions/workflows/AnalysisG_build.yml/badge.svg
-   :alt: Build Status: AnalysisG
+   events/overview
+   events/bsm_4tops
+   events/exp_mc20
+   events/gnn
+   events/ssml_mc20
 
-.. image:: https://github.com/woywoy123/AnalysisG/actions/workflows/release.yaml/badge.svg
-   :target: https://github.com/woywoy123/AnalysisG/actions/workflows/release.yaml/badge.svg
-   :alt: PyPI Release Build Status
+.. toctree::
+   :maxdepth: 2
+   :caption: Graphs Package:
 
-.. image:: https://static.pepy.tech/badge/analysisg/month
-   :target: https://pepy.tech/project/analysisg
+   graphs/overview
+   graphs/bsm_4tops
+   graphs/exp_mc20
+   graphs/ssml_mc20
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Metrics Package:
+
+   metrics/overview
+   metrics/accuracy
+   metrics/pagerank
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Models Package:
+
+   models/overview
+   models/grift
+   models/rgnn
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Modules Package (C++ Implementation):
+
+   modules/overview
+   modules/analysis
+   modules/container
+   modules/dataloader
+   modules/event
+   modules/graph
+   modules/io
+   modules/lossfx
+   modules/meta
+   modules/metric
+   modules/metrics
+   modules/model
+   modules/notification
+   modules/nusol
+   modules/optimizer
+   modules/particle
+   modules/plotting
+   modules/roc
+   modules/sampletracer
+   modules/selection
+   modules/structs
+   modules/tools
+   modules/typecasting
+
+.. toctree::
+   :maxdepth: 2
+   :caption: PyC Package (C++/CUDA/Cython):
+
+   pyc/overview
+   pyc/cutils
+   pyc/graph
+   pyc/interface
+   pyc/nusol
+   pyc/operators
+   pyc/physics
+   pyc/transform
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Templates:
+
+   templates/overview
+   templates/events
+   templates/graphs
+   templates/metrics
+   templates/models
+   templates/particles
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

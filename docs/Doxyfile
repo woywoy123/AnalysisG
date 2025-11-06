@@ -1,0 +1,51 @@
+# Doxyfile for AnalysisG C++ Documentation
+
+# Project information
+PROJECT_NAME           = "AnalysisG"
+PROJECT_NUMBER         = "0.2"
+PROJECT_BRIEF          = "Analysis Framework for HEP with C++, CUDA, and Cython"
+
+# Input configuration
+INPUT                  = ../src/AnalysisG
+RECURSIVE              = YES
+EXCLUDE                = ../src/AnalysisG/selections
+FILE_PATTERNS          = *.h *.hpp *.cuh *.cu *.cpp *.cxx
+EXTENSION_MAPPING      = cu=C++ cuh=C++
+
+# Output configuration
+OUTPUT_DIRECTORY       = .
+GENERATE_HTML          = NO
+GENERATE_LATEX         = NO
+GENERATE_XML           = YES
+XML_OUTPUT             = xml
+
+# Documentation extraction
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+
+# Other options
+JAVADOC_AUTOBRIEF      = YES
+OPTIMIZE_OUTPUT_FOR_C  = NO
+OPTIMIZE_FOR_FORTRAN   = NO
+OPTIMIZE_OUTPUT_JAVA   = NO
+BUILTIN_STL_SUPPORT    = YES
+INLINE_INFO            = YES
+SORT_MEMBER_DOCS       = YES
+SORT_BRIEF_DOCS        = NO
+SORT_MEMBERS_CTORS_1ST = YES
+SHOW_INCLUDE_FILES     = YES
+SHOW_FILES             = YES
+SHOW_NAMESPACES        = YES
+
+# Preprocessing
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+EXPAND_ONLY_PREDEF     = NO
+SEARCH_INCLUDES        = YES
+INCLUDE_PATH           = ../src/AnalysisG
+
+# Dot tool (for diagrams)
+HAVE_DOT               = NO
+CLASS_DIAGRAMS         = NO
