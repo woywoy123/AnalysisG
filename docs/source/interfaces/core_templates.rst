@@ -273,6 +273,6 @@ See Also
 --------
 
 * :doc:`../interfaces/overview`: Overview of simple interfaces
-* :doc:`event_template`: Detailed EventTemplate documentation
-* :doc:`particle_template`: Detailed ParticleTemplate documentation
-* :doc:`graph_template`: Detailed GraphTemplate documentation
+* :doc:`../core/event_template`: Detailed EventTemplate documentation
+* :doc:`../core/particle_template`: Detailed ParticleTemplate documentation
+* :doc:`../core/graph_template`: Detailed GraphTemplate documentation

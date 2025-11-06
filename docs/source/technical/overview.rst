@@ -97,6 +97,6 @@ Technical components follow a consistent structure:
 See Also
 --------
 
-* :doc:`modules`: Modules package documentation
+* :doc:`../modules/overview`: Modules package documentation
 * :doc:`cpp_api`: C++ API reference
 * :doc:`cuda_api`: CUDA API reference

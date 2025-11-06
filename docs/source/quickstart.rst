@@ -91,5 +91,5 @@ Next Steps
 ----------
 
 * Explore the :doc:`interfaces/core_templates` for available template classes
-* Read about :doc:`events/overview` to understand event structures
-* Learn about :doc:`technical/modules` for advanced usage
+* Read about :doc:`../events/overview` to understand event structures
+* Learn about :doc:`../technical/overview` for advanced usage
