@@ -1,15 +1,15 @@
-/**
- * @file CMakeLists.txt
- * @brief Build configuration for the pyc_transform module in the AnalysisG framework.
- */
+#*
+# @file CMakeLists.txt
+# @brief Build configuration for the pyc_transform module in the AnalysisG framework.
+#/
 
-/**
- * @brief Specifies source files and compilation options for the pyc_transform library.
- *
- * - If CUDA is enabled, includes CUDA-specific files and options.
- * - Otherwise, includes standard C++ files.
- * - Sets include directories and links the library to pyc_utils.
- */
+#*
+# @brief Specifies source files and compilation options for the pyc_transform library.
+#
+# - If CUDA is enabled, includes CUDA-specific files and options.
+# - Otherwise, includes standard C++ files.
+# - Sets include directories and links the library to pyc_utils.
+#/
 
 if(CMAKE_ANALYSISG_CUDA)
 set(SOURCE_FILES

@@ -1,7 +1,7 @@
-/**
- * @file CMakeLists.txt
- * @brief Build configuration for the pyc_nusol module in the AnalysisG framework.
- */
+#*
+# @file CMakeLists.txt
+# @brief Build configuration for the pyc_nusol module in the AnalysisG framework.
+#/
 
 if (CMAKE_ANALYSISG_CUDA)
 set(SOURCE_FILES
@@ -41,13 +41,13 @@ set(SOURCE_FILES
 add_library(pyc_nusol ${SOURCE_FILES})
 endif()
 
-/**
- * @brief Specifies source files and compilation options for the pyc_nusol library.
- *
- * - If CUDA is enabled, includes CUDA-specific files and options.
- * - Otherwise, includes standard C++ files.
- * - Links the library to pyc_utils, pyc_physics, pyc_operators, and pyc_transform.
- */
+#*
+# @brief Specifies source files and compilation options for the pyc_nusol library.
+#
+# - If CUDA is enabled, includes CUDA-specific files and options.
+# - Otherwise, includes standard C++ files.
+# - Links the library to pyc_utils, pyc_physics, pyc_operators, and pyc_transform.
+#/
 target_include_directories(pyc_nusol PRIVATE include/nusol)
 target_include_directories(pyc_nusol PUBLIC include)
 target_link_libraries(pyc_nusol PUBLIC pyc_utils pyc_physics pyc_operators pyc_transform)
