@@ -1,36 +1,94 @@
 # Build Notes and Troubleshooting
 
-This document contains detailed information about the AnalysisG build process based on actual build attempts.
+This document contains detailed information about the AnalysisG build process.
 
-!!! warning "Compilation Status"
-    **The framework was NOT successfully compiled.** While the conda environment was set up correctly with ROOT, PyTorch, and all dependencies, and CMake configuration succeeded, no actual C++ code was compiled. The root `CMakeLists.txt` only contains documentation build targets - the actual source code compilation logic appears to be missing or in a different location.
+## Build Methods
 
-## Build Attempt Summary
+The framework can be built using two approaches:
 
-### Environment Setup (Successful)
+### Method 1: Traditional CMake Build (Recommended)
 
-Successfully created conda environment with:
-- **ROOT**: 6.32.02 (from conda-forge)
-- **PyTorch**: 2.5.1 (with CUDA 12.6 support)  
-- **Python**: 3.12.4
-- **Compiler**: GCC 12.4.0
-- **CMake**: 3.30.2
-- **Build System**: scikit-build-core 0.11.6
+According to the repository maintainer, this method works correctly:
 
-All dependencies from `scripts/environment.yml` were installed successfully.
+```bash
+mkdir build
+cd build
+cmake ..
+make -j12
+cmake ..
+```
 
-### Build Attempt (Failed - No Source Compilation)
+This approach:
+- Uses standard CMake configuration and build
+- Compiles all C++ modules directly
+- The double `cmake ..` invocation may install files to Python site-packages
 
-When running `pip install -e .`:
-- CMake configuration succeeded ✓
-- Wheel package was created ✓  
-- But the wheel is only 8895 bytes (metadata only) ✗
-- No `.so` files were compiled ✗
-- Import fails with `ImportError: No module named 'AnalysisG.core.lossfx'` ✗
+### Method 2: Python Package Build via pip
 
-**Root Cause**: The `CMakeLists.txt` file only contains Doxygen documentation build commands. It does not include any `add_subdirectory()` or other commands to build the actual C++ source code in `src/`.
+Using `pip install -e .` with scikit-build-core:
 
-## Build System Overview
+```bash
+pip install -e .
+```
+
+This approach encountered compilation errors during testing, though the build system configuration was successful.
+
+## Prerequisites
+
+Before building, ensure you have:
+
+1. **System Dependencies**:
+   - CMake 3.20+
+   - C++20 compliant compiler (GCC 12.4+ or Clang)
+   - Python 3.8+
+
+2. **Required Libraries** (via conda or system packages):
+   - ROOT 6.x
+   - PyTorch 2.5+ with LibTorch
+   - HDF5 with C++ support
+   - RapidJSON (auto-downloaded via FetchContent)
+
+3. **Python Dependencies**:
+   ```bash
+   pip install boost_histogram mplhep pyyaml tqdm pwinput scipy h5py scikit-learn pyAMI-core cython
+   ```
+
+### Using Conda Environment (Recommended)
+
+The easiest way to get all dependencies:
+
+```bash
+conda env create -f scripts/environment.yml
+conda activate gnn-a100
+```
+
+This installs:
+- ROOT 6.32.02
+- PyTorch 2.5.1 with CUDA support
+- HDF5 1.14.3
+- All Python dependencies
+- Compilers and build tools
+
+## Build Instructions
+
+### Traditional CMake Build
+
+```bash
+mkdir build
+cd build
+cmake ..
+make -j12      # Adjust -j based on CPU cores
+cmake ..       # Second invocation for installation
+```
+
+### Python Package Build
+
+```bash
+pip install scikit-build-core
+pip install -e .
+```
+
+Note: This method uses scikit-build-core as a CMake wrapper.
 
 AnalysisG uses a complex build system:
 
