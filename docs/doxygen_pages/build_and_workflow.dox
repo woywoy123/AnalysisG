@@ -1,0 +1,121 @@
+/**
+ * @page build_system Build System
+ * 
+ * @section cmake_config CMake Configuration
+ *
+ * The AnalysisG framework uses CMake for building C++ modules and CUDA kernels.
+ *
+ * @subsection cmake_root Root CMakeLists.txt
+ *
+ * Key configuration:
+ * - C++20 standard required
+ * - CUDA support optional (detected automatically)
+ * - PyTorch LibTorch integration
+ * - ROOT framework integration
+ *
+ * @subsection dependencies Dependencies
+ *
+ * Required:
+ * - CMake 3.18+
+ * - C++20 compiler (GCC 10+, Clang 12+)
+ * - Python 3.8+
+ * - PyTorch 2.0+
+ * - ROOT 6.24+
+ *
+ * Optional:
+ * - CUDA 12.0+ for GPU acceleration
+ * - HDF5 for alternative data format
+ *
+ * @subsection build_flags Build Flags
+ *
+ * Debug mode:
+ * @code{.sh}
+ * cmake -DCMAKE_BUILD_TYPE=Debug ..
+ * # Flags: -g -O0 -fsanitize=address
+ * @endcode
+ *
+ * Release mode:
+ * @code{.sh}
+ * cmake -DCMAKE_BUILD_TYPE=Release ..
+ * # Flags: -O3 -DNDEBUG
+ * @endcode
+ *
+ * @subsection cuda_build CUDA Build
+ *
+ * CUDA architectures supported:
+ * - compute_75 (Turing)
+ * - compute_80 (Ampere)
+ * - compute_86 (Ampere)
+ *
+ * Configure CUDA:
+ * @code{.sh}
+ * CUDA_HOME=/usr/local/cuda cmake ..
+ * @endcode
+ */
+
+/**
+ * @page analysis_workflow Analysis Workflow
+ *
+ * @section pipeline_overview Pipeline Overview
+ *
+ * The Analysis class orchestrates the complete analysis pipeline:
+ *
+ * @code
+ * Input ROOT files
+ *   ↓
+ * check_cache() - Validate cache and setup directories
+ *   ↓
+ * build_project() - Compile sample metadata
+ *   ↓
+ * build_events() - Process events with ROOT tree navigation
+ *   ↓
+ * build_selections() - Apply physics object selections
+ *   ↓
+ * build_graphs() - Construct graphs for GNN
+ *   ↓
+ * build_model_session() - Training/validation/testing
+ *   OR
+ * build_inference() - Model inference on new data
+ *   ↓
+ * build_metric() - Compute and aggregate metrics
+ *   ↓
+ * Output results
+ * @endcode
+ *
+ * @section pipeline_methods Pipeline Methods
+ *
+ * @subsection public_api Public API
+ *
+ * Setup methods:
+ * - add_samples() - Register input ROOT/HDF5 files
+ * - add_event_template() - Define event selection logic
+ * - add_selection_template() - Add physics object selections
+ * - add_graph_template() - Configure graph representation
+ * - add_model() - Register PyTorch models
+ * - add_metric_template() - Add evaluation metrics
+ * - start() - Execute the pipeline
+ *
+ * @subsection private_pipeline Private Pipeline
+ *
+ * Internal methods (called by start()):
+ * - check_cache() - Cache validation, directory setup
+ * - build_project() - Sample metadata compilation
+ * - build_events() - Event-level processing
+ * - build_selections() - Selection application
+ * - build_graphs() - Graph construction
+ * - build_model_session() - ML training/testing
+ * - build_inference() - Model inference
+ * - build_metric() - Metric computation
+ *
+ * @section caching Caching Strategy
+ *
+ * Multi-level caching for performance:
+ * - Event cache: Processed events
+ * - Selection cache: Selected physics objects
+ * - Graph cache: Constructed graphs
+ *
+ * Cache invalidation on:
+ * - Event template changes
+ * - Selection template changes
+ * - Graph template changes
+ */

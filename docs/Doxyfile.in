@@ -1,0 +1,82 @@
+# Doxyfile for AnalysisG - C++/CUDA API Documentation
+
+# Project information
+PROJECT_NAME           = "AnalysisG"
+PROJECT_BRIEF          = "Analysis framework for particle physics with C++, CUDA, and Python interfaces"
+PROJECT_NUMBER         = 1.0
+OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/doxygen
+
+# Input configuration
+INPUT                  = ../src/AnalysisG/modules \
+                         ../src/AnalysisG/pyc \
+                         ./doxygen_pages
+                         
+FILE_PATTERNS          = *.h \
+                         *.cxx \
+                         *.cu \
+                         *.cuh \
+                         *.dox
+
+RECURSIVE              = YES
+EXCLUDE_PATTERNS       = */build/* \
+                         */dist/* \
+                         */__pycache__/* \
+                         */selections/* \
+                         */templates/*
+
+# Output formats
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_XML           = YES
+XML_OUTPUT             = xml
+
+# Documentation extraction
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+
+# Code parsing
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+EXPAND_ONLY_PREDEF     = NO
+SEARCH_INCLUDES        = YES
+
+INCLUDE_PATH           = ../src/AnalysisG/modules \
+                         ../src/AnalysisG/pyc
+
+# Documentation style
+JAVADOC_AUTOBRIEF      = YES
+QT_AUTOBRIEF           = YES
+MULTILINE_CPP_IS_BRIEF = NO
+
+# Diagrams and graphs
+HAVE_DOT               = NO
+CLASS_DIAGRAMS         = YES
+COLLABORATION_GRAPH    = NO
+INCLUDE_GRAPH          = NO
+INCLUDED_BY_GRAPH      = NO
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
+
+# Search and index
+SEARCHENGINE           = NO
+GENERATE_TREEVIEW      = NO
+
+# Warnings
+QUIET                  = NO
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = NO
+WARN_IF_DOC_ERROR      = YES
+WARN_NO_PARAMDOC       = NO
+
+# Source browsing
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+STRIP_CODE_COMMENTS    = NO
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+
+# Alphabetical index
+ALPHABETICAL_INDEX     = YES
+COLS_IN_ALPHA_INDEX    = 5

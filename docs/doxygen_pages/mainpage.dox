@@ -1,0 +1,112 @@
+/**
+ * @mainpage AnalysisG Framework Documentation
+ *
+ * @section intro_sec Introduction
+ *
+ * AnalysisG is a comprehensive analysis framework for particle physics combining:
+ * - C++ backend for performance-critical operations
+ * - CUDA kernels for GPU-accelerated computations
+ * - Python/Cython interfaces for ease of use
+ *
+ * @section structure_sec Framework Structure
+ *
+ * The framework is organized into several key components:
+ *
+ * @subsection cpp_modules C++ Modules
+ * Core analysis infrastructure implemented in C++:
+ * - @ref analysis "Analysis Pipeline" - Main orchestrator for event processing
+ * - @ref event_template "Event Template" - Base class for custom event types
+ * - @ref particle_template "Particle Template" - Physics particle representation
+ * - @ref graph_template "Graph Template" - Graph Neural Network interfaces
+ * - @ref selection_template "Selection Template" - Physics object selection
+ * - @ref metric_template "Metric Template" - Performance evaluation metrics
+ * - @ref model_template "Model Template" - Machine learning model interfaces
+ *
+ * @subsection data_management Data Management
+ * - @ref io "I/O Module" - ROOT and HDF5 file handling
+ * - @ref container "Container" - Event and graph collections
+ * - @ref dataloader "DataLoader" - Batch loading for training
+ * - @ref sampletracer "Sample Tracer" - Metadata tracking
+ *
+ * @subsection physics_modules Physics Modules
+ * - @ref nusol "Neutrino Solver" - Neutrino reconstruction algorithms
+ * - @ref lossfx "Loss Functions" - 20 PyTorch loss functions
+ * - @ref optimizer "Optimizers" - Training optimization (Adam, SGD, etc.)
+ *
+ * @subsection cuda_modules CUDA Modules  
+ * GPU-accelerated computations in pyc package:
+ * - @ref physics_cuda "Physics" - Kinematic calculations (P, M, Beta, DeltaR)
+ * - @ref operators_cuda "Operators" - Vector/matrix operations (Dot, Cross, rotations)
+ * - @ref graph_cuda "Graph" - PageRank and graph algorithms
+ * - @ref nusol_cuda "Neutrino Solver" - W→lν and ttbar→lνblνb solvers
+ * - @ref transform_cuda "Transform" - Coordinate system conversions
+ *
+ * @subsection utility_modules Utilities
+ * - @ref tools "Tools" - Common utility functions
+ * - @ref structs "Structs" - Core data structures
+ * - @ref typecasting "Type Casting" - Type conversion and merging
+ * - @ref notification "Notification" - Logging and progress tracking
+ * - @ref meta "Metadata" - Sample metadata management
+ *
+ * @section getting_started Getting Started
+ *
+ * @subsection installation Installation
+ *
+ * Build requirements:
+ * - C++20 compatible compiler (GCC 10+, Clang 12+)
+ * - CMake 3.18+
+ * - PyTorch LibTorch 2.0+
+ * - ROOT 6.24+ (for HEP data I/O)
+ * - CUDA 12.0+ (optional, for GPU acceleration)
+ *
+ * @code{.sh}
+ * # Clone repository
+ * git clone https://github.com/woywoy123/AnalysisG.git
+ * cd AnalysisG
+ *
+ * # Install with pip
+ * pip install .
+ *
+ * # Or with CUDA support
+ * CUDA_HOME=/usr/local/cuda pip install .
+ * @endcode
+ *
+ * @subsection quickstart Quick Start
+ *
+ * Basic analysis example:
+ *
+ * @code{.py}
+ * from AnalysisG.core import Analysis, EventTemplate, ParticleTemplate
+ *
+ * class MyEvent(EventTemplate):
+ *     def selection(self):
+ *         # Select events with at least 4 jets
+ *         jets = [p for p in self.Particles if p.Type == "jet"]
+ *         return len(jets) >= 4
+ *
+ * # Create analysis
+ * ana = Analysis()
+ * ana.AddEvent("MyEvent")
+ * ana.AddSamples(["data/*.root"])
+ * ana.OutputPath = "output/"
+ * ana.Start()
+ * @endcode
+ *
+ * @section modules Module Reference
+ *
+ * See the Classes and Files tabs for complete API documentation.
+ *
+ * @section examples Examples
+ *
+ * Complete examples available in src/AnalysisG/selections/:
+ * - 4-top BSM searches
+ * - Single and same-sign multi-lepton analyses
+ * - Graph Neural Network training
+ * - Neutrino reconstruction
+ *
+ * @section references External References
+ *
+ * - ROOT Framework: https://root.cern
+ * - PyTorch: https://pytorch.org
+ * - CUDA Toolkit: https://developer.nvidia.com/cuda-toolkit
+ */
