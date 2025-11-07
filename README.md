@@ -1,48 +1,48 @@
-# AnalysisG: Parameter-Free Generic Analysis
+# AnalysisG: A Framework for High Energy Physics Analysis
 
-AnalysisG is a framework for generating and analyzing financial models without requiring explicit parameter settings. It uses computational techniques to systematically evaluate performance across parameter spaces.
+AnalysisG is a C++ and Python-based framework designed for the analysis of high energy physics data, such as that from the Large Hadron Collider (LHC). It provides tools for data processing, event reconstruction, and visualization.
 
 ## Project Structure
 
 ```
 AnalysisG/
-├── data/                # Data storage and processing
-├── models/              # Model implementations
-├── analysis/            # Analysis tools and utilities
-├── visualizations/      # Visualization functions
-├── examples/            # Example notebooks and scripts
+├── src/                 # C++ source code for core functionalities
+├── python/              # Python bindings and analysis scripts
+├── studies/             # Specific physics analysis studies
+├── docs/                # Documentation source
+├── cmake/               # CMake modules
 ├── tests/               # Unit and integration tests
-└── docs/                # Documentation
+└── data/                # Example data or configuration files
 ```
 
 ## Core Concepts
 
-- **Parameter-free analysis**: Evaluate models across entire parameter spaces
-- **Robust optimization**: Find stable solutions across varied market conditions
-- **Statistical validation**: Rigorous testing of trading strategies
+- **Event Reconstruction**: Tools for reconstructing physics objects like jets, leptons, and tops from detector-level data.
+- **Data Analysis**: A flexible framework for implementing analysis selection cuts and producing histograms.
+- **Visualization**: Integrated plotting utilities to create publication-quality figures.
 
 ## Getting Started
 
-```python
-# Basic usage example
-from analysisg import ParameterFreeAnalysis
-
-analyzer = ParameterFreeAnalysis()
-results = analyzer.evaluate(model, data)
+To build the project, you can use CMake:
+```bash
+mkdir build && cd build
+cmake ..
+make
 ```
 
 ## Documentation
 
-Detailed documentation is available in the `/docs` directory.
+Detailed documentation is available in the `docs/` directory and can be built using Doxygen and Sphinx.
 
 ## Requirements
 
+- C++17 compatible compiler
+- CMake 3.20+
+- ROOT
 - Python 3.8+
-- NumPy
-- Pandas
-- Matplotlib
-- Scikit-learn
+- Doxygen (for documentation)
+- Sphinx (for documentation)
 
 ## License
 
-[Insert License Information]
+This project is licensed under the MIT License.
