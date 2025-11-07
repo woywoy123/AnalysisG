@@ -1,6 +1,7 @@
 # Random build related directories
 **/__pycache__
 **/build
+**/build_*
 **/*.egg*
 **/_Pickle
 **/gnn-analysis

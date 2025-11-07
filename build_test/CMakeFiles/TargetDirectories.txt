@@ -1,3 +1,0 @@
-/home/runner/work/AnalysisG/AnalysisG/build_test/CMakeFiles/doc_doxygen.dir
-/home/runner/work/AnalysisG/AnalysisG/build_test/CMakeFiles/edit_cache.dir
-/home/runner/work/AnalysisG/AnalysisG/build_test/CMakeFiles/rebuild_cache.dir

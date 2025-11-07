@@ -1,6 +1,9 @@
 # Build Notes and Troubleshooting
 
-This document contains detailed information about the AnalysisG build process based on actual build attempts.
+This document contains detailed information about the AnalysisG build process based on actual build exploration.
+
+!!! warning "Compilation Status"
+    **The framework was NOT successfully compiled due to missing ROOT dependency.** This document describes what was attempted and what would be required for successful compilation. The build system configuration was verified (CMake ran successfully), but actual compilation requires ROOT, which is not available in all environments.
 
 ## Build System Overview
 
@@ -17,6 +20,30 @@ The root `CMakeLists.txt` primarily handles documentation generation with Doxyge
 
 ## Build Attempts and Findings
 
+### What Was Actually Tested
+
+The following build steps were successfully executed:
+
+1. **CMake Configuration** ✓
+   ```bash
+   mkdir build_test && cd build_test
+   cmake -DBUILD_DOC=OFF ..
+   ```
+   **Result**: CMake configuration succeeded. It detected:
+   - C++ compiler (GNU 13.3.0) ✓
+   - CMake 3.31.6 ✓
+   - Python 3.12.3 ✓
+   - Doxygen was missing (not critical for library build)
+
+2. **Makefile Generation** ✓
+   - CMake successfully generated Makefiles
+   - Build targets were created for documentation
+
+3. **Actual Compilation** ✗
+   - NOT attempted because ROOT is not available in the test environment
+   - The root `CMakeLists.txt` only builds documentation (Doxygen)
+   - Full compilation requires `pip install -e .` which triggers scikit-build-core
+
 ### Attempt 1: Direct CMake (Root Directory)
 
 ```bash
@@ -25,19 +52,21 @@ cmake ..
 make
 ```
 
-**Result**: Only builds documentation (Doxygen). The actual library modules are not built this way.
+**Result**: Only tries to build documentation. Without Doxygen, this fails. The actual library modules are not built this way - they require scikit-build-core via pip.
 
-### Attempt 2: Using pip install
+### Attempt 2: Using pip install (Not Fully Tested)
 
 ```bash
 pip install -e .
 ```
 
-**Result**: This is the correct approach, but requires:
-- All Python dependencies (boost_histogram, mplhep, scipy, etc.)
-- ROOT framework installed and discoverable
-- PyTorch/LibTorch installed with correct ABI
-- HDF5 development libraries
+**Result**: This is the correct approach for building the full framework, but was not successfully completed because:
+- ROOT framework is not installed ❌
+- PyTorch C++ libraries would need to be configured ❌
+- HDF5 development libraries would be needed ❌
+- Build would take 15-30 minutes with all dependencies
+
+The documentation was verified by examining the CMakeLists.txt files and pyproject.toml configuration.
 
 ### Missing Dependencies Block Build
 
