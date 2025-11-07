@@ -46,73 +46,84 @@ For other CUDA versions, visit the [PyTorch download page](https://download.pyto
 
 ## Installation from Source
 
-!!! warning "Complex Build Process"
-    Building AnalysisG from source is a complex process that requires ROOT, PyTorch C++ libraries, and other HEP-specific dependencies. The build can take 15-30 minutes even on modern hardware.
+!!! warning "Complex Build Process - Critical Dependencies Required"
+    Building AnalysisG from source requires **ROOT**, **PyTorch C++ (LibTorch)**, and **HDF5** development libraries. These are not automatically installed. The build will fail without them.
+    
+    **ROOT is absolutely required** - almost every module links against ROOT libraries. Install ROOT first from https://root.cern/ or use a system where it's already available (e.g., CERN computing infrastructure).
 
 ### Prerequisites Check
 
-Before attempting installation, verify you have:
+Before attempting installation, verify you have all required dependencies:
 
 ```bash
-# Check C++ compiler
-g++ --version  # Should be 7+ (9.3.0+ recommended)
+# Check C++ compiler (must be 7+ for C++17 support)
+g++ --version
 
-# Check CMake
-cmake --version  # Should be 3.15+
+# Check CMake (must be 3.15+)
+cmake --version
 
-# Check Python
-python3 --version  # Should be 3.8+
+# Check Python (must be 3.8+)  
+python3 --version
 
-# Check ROOT (critical!)
-root-config --version  # Must be installed
+# Check ROOT (CRITICAL - build will fail without this!)
+root-config --version
 echo $ROOTSYS  # Should show ROOT installation path
+
+# Check if HDF5 development libraries are installed
+dpkg -l | grep libhdf5-dev  # On Ubuntu/Debian
+# Or: rpm -qa | grep hdf5-devel  # On RHEL/CentOS
 ```
+
+If ROOT is not installed, see: https://root.cern/install/
 
 ### Installation Steps
 
-The framework uses `scikit-build-core` for building. The recommended installation method is:
+The framework uses `scikit-build-core` for building, which automatically runs CMake during pip installation.
 
-#### Option 1: Using pip (Recommended)
+#### Step 1: Install Python Build Dependencies
+
+```bash
+pip install scikit-build-core cython cmake
+```
+
+#### Step 2: Install PyTorch (Critical - ABI Must Match)
+
+See the [PyTorch Compatibility](#pytorch-compatibility) section above for version details.
+
+```bash
+# Uninstall any existing PyTorch
+pip uninstall torch -y
+
+# Install compatible version (CPU)
+pip install "torch==2.7.0+cpu" --index-url https://download.pytorch.org/whl/cpu
+```
+
+#### Step 3: Install Python Runtime Dependencies
+
+```bash
+pip install boost_histogram mplhep pyyaml tqdm pwinput scipy h5py scikit-learn pyAMI-core
+```
+
+#### Step 4: Clone and Build
 
 ```bash
 # Clone the repository
 git clone https://github.com/woywoy123/AnalysisG.git
 cd AnalysisG
 
-# Install dependencies
-pip install -r docs/requirements.txt
-
-# Install PyTorch with correct ABI (see PyTorch Compatibility section)
-pip install "torch==2.7.0+cpu" --index-url https://download.pytorch.org/whl/cpu
-
-# Build and install (this will take a long time)
+# Build and install (this will take 15-30 minutes)
 pip install -e .
 ```
 
-#### Option 2: Using CMake directly
-
-If you need more control over the build process:
-
-```bash
-# Clone the repository
-git clone https://github.com/woywoy123/AnalysisG.git
-cd AnalysisG
-
-# Create build directory
-mkdir build && cd build
-
-# Configure
-cmake ..
-
-# Build (adjust -j based on CPU cores)
-make -j$(nproc)
-
-# Install to Python site-packages
-cmake ..
-```
-
-!!! note "scikit-build-core"
-    The project uses `scikit-build-core` as the build backend (defined in `pyproject.toml`), which automates CMake configuration and Python package installation.
+!!! note "What Happens During Build"
+    The `pip install` command triggers scikit-build-core, which:
+    
+    1. Runs CMake to discover ROOT, PyTorch, HDF5
+    2. Compiles all C++ modules in `src/AnalysisG/`
+    3. Builds Cython wrappers for Python  
+    4. Installs the package to your Python environment
+    
+    If CMake cannot find ROOT or PyTorch, the build will fail immediately.
 
 ### Step 6: Verify Installation
 
