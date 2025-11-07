@@ -1,9 +1,34 @@
 # Build Notes and Troubleshooting
 
-This document contains detailed information about the AnalysisG build process based on actual build exploration.
+This document contains detailed information about the AnalysisG build process based on actual build attempts.
 
 !!! warning "Compilation Status"
-    **The framework was NOT successfully compiled due to missing ROOT dependency.** This document describes what was attempted and what would be required for successful compilation. The build system configuration was verified (CMake ran successfully), but actual compilation requires ROOT, which is not available in all environments.
+    **The framework was NOT successfully compiled.** While the conda environment was set up correctly with ROOT, PyTorch, and all dependencies, and CMake configuration succeeded, no actual C++ code was compiled. The root `CMakeLists.txt` only contains documentation build targets - the actual source code compilation logic appears to be missing or in a different location.
+
+## Build Attempt Summary
+
+### Environment Setup (Successful)
+
+Successfully created conda environment with:
+- **ROOT**: 6.32.02 (from conda-forge)
+- **PyTorch**: 2.5.1 (with CUDA 12.6 support)  
+- **Python**: 3.12.4
+- **Compiler**: GCC 12.4.0
+- **CMake**: 3.30.2
+- **Build System**: scikit-build-core 0.11.6
+
+All dependencies from `scripts/environment.yml` were installed successfully.
+
+### Build Attempt (Failed - No Source Compilation)
+
+When running `pip install -e .`:
+- CMake configuration succeeded ✓
+- Wheel package was created ✓  
+- But the wheel is only 8895 bytes (metadata only) ✗
+- No `.so` files were compiled ✗
+- Import fails with `ImportError: No module named 'AnalysisG.core.lossfx'` ✗
+
+**Root Cause**: The `CMakeLists.txt` file only contains Doxygen documentation build commands. It does not include any `add_subdirectory()` or other commands to build the actual C++ source code in `src/`.
 
 ## Build System Overview
 
