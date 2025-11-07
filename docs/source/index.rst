@@ -96,6 +96,8 @@ Welcome to the comprehensive documentation for AnalysisG, a high-performance ana
    :caption: Modules Package (C++ Implementation):
 
    modules/overview
+   modules/cpp_complete_reference
+   modules/cpp_private_members
    modules/analysis
    modules/container
    modules/dataloader
