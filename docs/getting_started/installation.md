@@ -46,74 +46,88 @@ For other CUDA versions, visit the [PyTorch download page](https://download.pyto
 
 ## Installation from Source
 
-### Step 1: Clone the Repository
+!!! warning "Complex Build Process"
+    Building AnalysisG from source is a complex process that requires ROOT, PyTorch C++ libraries, and other HEP-specific dependencies. The build can take 15-30 minutes even on modern hardware.
+
+### Prerequisites Check
+
+Before attempting installation, verify you have:
 
 ```bash
+# Check C++ compiler
+g++ --version  # Should be 7+ (9.3.0+ recommended)
+
+# Check CMake
+cmake --version  # Should be 3.15+
+
+# Check Python
+python3 --version  # Should be 3.8+
+
+# Check ROOT (critical!)
+root-config --version  # Must be installed
+echo $ROOTSYS  # Should show ROOT installation path
+```
+
+### Installation Steps
+
+The framework uses `scikit-build-core` for building. The recommended installation method is:
+
+#### Option 1: Using pip (Recommended)
+
+```bash
+# Clone the repository
 git clone https://github.com/woywoy123/AnalysisG.git
 cd AnalysisG
+
+# Install dependencies
+pip install -r docs/requirements.txt
+
+# Install PyTorch with correct ABI (see PyTorch Compatibility section)
+pip install "torch==2.7.0+cpu" --index-url https://download.pytorch.org/whl/cpu
+
+# Build and install (this will take a long time)
+pip install -e .
 ```
 
-### Step 2: Create Build Directory
+#### Option 2: Using CMake directly
+
+If you need more control over the build process:
 
 ```bash
+# Clone the repository
+git clone https://github.com/woywoy123/AnalysisG.git
+cd AnalysisG
+
+# Create build directory
 mkdir build && cd build
-```
 
-### Step 3: Configure with CMake
-
-```bash
-# Configure using CMake (downloads LibTorch/RapidJSON)
+# Configure
 cmake ..
-```
 
-#### Optional CMake Flags
-
-You can customize the build with various CMake flags:
-
-```bash
-# Specify ROOT location if not in PATH
-cmake -DROOT_DIR=/path/to/root ..
-
-# Specify Boost location if not found automatically
-cmake -DBOOST_ROOT=/path/to/boost ..
-
-# Enable debug build
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-
-# Disable CUDA support
-cmake -DUSE_CUDA=OFF ..
-```
-
-### Step 4: Compile
-
-```bash
-# Compile (adjust -j based on your CPU cores)
+# Build (adjust -j based on CPU cores)
 make -j$(nproc)
-```
 
-!!! note "Compilation Time"
-    The compilation process, especially for CUDA kernels, can be computationally intensive and time-consuming. On a typical system, expect 15-30 minutes for the first build.
-
-### Step 5: Install Python Package
-
-```bash
-# Second cmake call installs the package to Python's site-packages
+# Install to Python site-packages
 cmake ..
 ```
 
-The second `cmake ..` command locates the Python `site-packages` directory and copies the built library there, making it importable in Python.
+!!! note "scikit-build-core"
+    The project uses `scikit-build-core` as the build backend (defined in `pyproject.toml`), which automates CMake configuration and Python package installation.
 
 ### Step 6: Verify Installation
 
 Test that the installation was successful:
 
 ```bash
-# Test C++ library (if built standalone executables)
-./test/test_analysis  # Example test binary
-
 # Test Python import
-python -c "import AnalysisG; print('AnalysisG version:', AnalysisG.__version__)"
+python3 -c "import AnalysisG; print('AnalysisG imported successfully')"
+
+# Check if core modules are available
+python3 -c "from AnalysisG import Analysis; print('Analysis class available')"
 ```
+
+!!! note "Import Testing"
+    If the import fails with symbol errors, verify your PyTorch version matches the ABI used during compilation (see PyTorch Compatibility section above).
 
 ## Troubleshooting
 

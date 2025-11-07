@@ -1,182 +1,205 @@
 # First Steps with AnalysisG
 
-This tutorial will guide you through your first analysis using AnalysisG, from loading data to producing results.
+This tutorial will guide you through understanding how to use AnalysisG based on actual working examples from the framework.
+
+!!! note "Prerequisites"
+    This guide assumes you have already installed AnalysisG following the [installation instructions](installation.md). The examples shown here are based on actual working code from the framework's `studies/` and tutorial directories.
 
 ## Overview
 
 A typical AnalysisG workflow consists of:
 
-1. **Define Event Structure** - Describe your input data format
-2. **Define Particle Objects** - Specify physics objects (jets, leptons, etc.)
-3. **Apply Selections** - Filter events based on physics criteria
-4. **Create Graphs** (optional) - Build graph representations for ML
-5. **Run Analysis** - Process the data
-6. **Visualize Results** - Create plots and histograms
+1. **Import Framework** - Import the Analysis class and required modules
+2. **Define/Use Event Templates** - Use pre-defined or create custom event structures
+3. **Define/Use Graph Templates** (optional) - For machine learning applications
+4. **Add Selections** (optional) - Filter events based on physics criteria
+5. **Configure Analysis** - Set up samples, events, graphs, and selections
+6. **Run Analysis** - Process the data with `Start()`
+7. **Visualize Results** - Use plotting utilities
 
-## Basic Example: Event Processing
+## Basic Example: Setting Up an Analysis
 
-### Step 1: Import AnalysisG
+### Step 1: Import Required Modules
 
-```python
-import AnalysisG as ag
-```
-
-### Step 2: Define an Event Template
-
-Event templates describe the structure of your input ROOT files:
+Based on actual usage from the framework:
 
 ```python
-class MyEvent(ag.EventTemplate):
-    """Custom event class for my analysis."""
-    
-    def __init__(self):
-        super().__init__()
-        # Define branches to read from ROOT file
-        self.add_branch("EventNumber", int)
-        self.add_branch("Jets_pt", "vector<float>")
-        self.add_branch("Jets_eta", "vector<float>")
-        self.add_branch("Jets_phi", "vector<float>")
-        self.add_branch("Jets_m", "vector<float>")
+from AnalysisG import Analysis
+from AnalysisG.events.gnn import EventGNN  # Pre-built event template
+from AnalysisG.core.plotting import TH1F, TH2F
 ```
 
-### Step 3: Create an Analysis
+### Step 2: Create and Configure Analysis
 
 ```python
 # Create analysis object
-ana = ag.Analysis()
+ana = Analysis()
 
-# Add input files
-ana.AddSamples([
-    "/path/to/data/sample1.root",
-    "/path/to/data/sample2.root"
-])
+# Create event template instance
+ev = EventGNN()
 
-# Specify the tree name in ROOT file
-ana.TreeName = "CollectionTree"
+# Add event template with a label
+ana.AddEvent(ev, "gnn")
 
-# Set the event template
-ana.EventCache = MyEvent
+# Add input ROOT files with matching label
+ana.AddSamples("/path/to/data.root", "gnn")
+
+# Set number of processing threads
+ana.Threads = 4
+
+# Set output path for results
+ana.OutputPath = "./output/"
 ```
 
-### Step 4: Process Events
+### Step 3: Add Selections (Optional)
 
 ```python
-# Process events
-ana.Run()
+from AnalysisG.selections.performance.topefficiency import TopEfficiency
 
-# Access processed events
-events = ana.EventCache
-
-# Print number of events
-print(f"Processed {len(events)} events")
+# Create and add selection
+sel = TopEfficiency()
+ana.AddSelection(sel)
 ```
 
-## Working with Particle Objects
-
-AnalysisG provides built-in physics object classes:
+### Step 4: Run the Analysis
 
 ```python
-# Access jets from an event
-for event in events:
-    for jet in event.jets:
-        print(f"Jet pT: {jet.pt:.2f} GeV")
-        print(f"Jet eta: {jet.eta:.2f}")
-        print(f"Jet phi: {jet.phi:.2f}")
+# Start processing
+ana.Start()
+
+# Access results from selection object
+# Results are stored in the selection instance
 ```
 
-## Applying Selections
+## Working with Graphs for Machine Learning
 
-Create selection classes to filter events:
+AnalysisG can create graph representations of events for GNN training:
 
 ```python
-class JetSelection(ag.SelectionTemplate):
-    """Select events with at least 4 jets."""
-    
-    def selection(self, event):
-        # Count jets with pT > 25 GeV and |eta| < 2.5
-        n_jets = sum(1 for jet in event.jets 
-                     if jet.pt > 25 and abs(jet.eta) < 2.5)
-        return n_jets >= 4
+from AnalysisG import Analysis
+from AnalysisG.events.bsm_4tops import BSM4Tops
+from AnalysisG.graphs.bsm_4tops import GraphJets
 
-# Apply selection
-ana.AddSelection(JetSelection)
-ana.Run()
+# Setup analysis
+ana = Analysis()
+ev = BSM4Tops()
+gr = GraphJets()
 
-print(f"Events passing selection: {ana.EventsPassed}")
+# Add components
+ana.AddEvent(ev, "bsm")
+ana.AddGraph(gr, "jets")
+ana.AddSamples("/path/to/data.root", "bsm")
+
+# Configure and run
+ana.Threads = 4
+ana.Start()
 ```
 
-## Creating Histograms
+## Creating Plots
 
-Use the plotting utilities to create histograms:
+Use the plotting utilities after processing:
 
 ```python
 from AnalysisG.core.plotting import TH1F
 
-# Create a histogram
-hist = TH1F()
-hist.Title = "Jet pT Distribution"
-hist.xTitle = "Jet pT [GeV]"
-hist.yTitle = "Events"
-hist.Filename = "jet_pt"
-hist.OutputDirectory = "./plots"
+# Create histogram with data
+hist = TH1F(
+    Title="Distribution Title",
+    xData=[1.0, 2.0, 3.0, 4.0, 5.0],  # Your data
+    xTitle="Variable [units]",
+    yTitle="Events",
+    Color="blue",
+    Density=True,
+    ErrorBars=True
+)
 
-# Fill histogram
-for event in events:
-    for jet in event.jets:
-        hist.Fill(jet.pt)
+# Configure output
+hist.Filename = "my_histogram"
+hist.OutputDirectory = "./plots/"
+hist.DPI = 300
 
-# Save the plot
+# Set style (optional)
+hist.Style = "ATLAS"  # Use ATLAS collaboration style
+
+# Save the figure
 hist.SaveFigure()
 ```
 
-## Complete Example
+## Complete Working Example
 
-Here's a complete example putting it all together:
+Based on the actual tutorial in the framework:
 
 ```python
-import AnalysisG as ag
+import os
+from AnalysisG import Analysis
+from AnalysisG.events.gnn import EventGNN
+from AnalysisG.selections.performance.topefficiency import TopEfficiency
 from AnalysisG.core.plotting import TH1F
 
-# Define event structure
-class MyEvent(ag.EventTemplate):
-    def __init__(self):
-        super().__init__()
-        self.add_branch("Jets_pt", "vector<float>")
-        self.add_branch("Jets_eta", "vector<float>")
-        self.add_branch("Jets_phi", "vector<float>")
+# Configuration
+DATA_PATH = "/path/to/your/data.root"
+OUTPUT_DIR = "./output/"
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Define selection
-class BasicSelection(ag.SelectionTemplate):
-    def selection(self, event):
-        return len(event.jets) >= 4
+# Create components
+sel = TopEfficiency()
+ana = Analysis()
+ev = EventGNN()
 
-# Create analysis
-ana = ag.Analysis()
-ana.AddSamples(["/path/to/data.root"])
-ana.TreeName = "CollectionTree"
-ana.EventCache = MyEvent
-ana.AddSelection(BasicSelection)
+# Configure analysis
+ana.Threads = 4
+ana.OutputPath = OUTPUT_DIR
+ana.AddEvent(ev, "gnn")
+ana.AddSelection(sel)
+ana.AddSamples(DATA_PATH, "gnn")
 
 # Run analysis
-ana.Run()
+print("Starting analysis...")
+ana.Start()
+print("Analysis finished!")
 
-# Create histogram
-hist = TH1F()
-hist.Title = "Leading Jet pT"
-hist.xTitle = "pT [GeV]"
-hist.yTitle = "Events"
+# Save results
+output_file = os.path.join(OUTPUT_DIR, "results.pkl")
+sel.dump(output_file)
+print(f"Results saved to {output_file}")
 
-# Fill histogram with leading jet pT
-for event in ana.EventCache:
-    if event.jets:
-        hist.Fill(event.jets[0].pt)
+# Create a plot from results
+# (Note: Actual plotting depends on what data your selection stores)
+hist = TH1F(
+    Title="Analysis Results",
+    xTitle="Observable [units]",
+    yTitle="Events",
+    Density=True
+)
+hist.Filename = "results"
+hist.OutputDirectory = OUTPUT_DIR
+# hist.SaveFigure()  # Uncomment when you have data to plot
+```
 
-# Save plot
-hist.Filename = "leading_jet_pt"
-hist.OutputDirectory = "./output"
-hist.SaveFigure()
+## Important Notes
 
-print(f"Analysis complete! Processed {len(ana.EventCache)} events")
+### About These Examples
+
+The examples in this guide are based on real working code from the AnalysisG framework but are **simplified for illustration**. In practice:
+
+1. **Event Templates**: The framework provides pre-built event templates (like `EventGNN`, `BSM4Tops`) that handle complex ROOT file structures. Creating custom event templates requires understanding the C++/Cython interface.
+
+2. **Data Requirements**: These examples assume you have ROOT files containing appropriate physics data. The framework is designed for LHC (Large Hadron Collider) data analysis.
+
+3. **Selection Objects**: The `TopEfficiency` and other selection classes shown are complex analysis tools with their own internal logic for physics reconstruction and filtering.
+
+4. **Results Access**: How you access results depends on what your selection class stores. Check the specific selection class documentation for available attributes.
+
+### Testing Your Installation
+
+To verify your installation works, you can run the existing tests:
+
+```bash
+# Navigate to test directory
+cd pyc/test/
+
+# Run a simple test (if dependencies are met)
+python3 test_operators.py
 ```
 
 ## Next Steps
@@ -185,10 +208,12 @@ Now that you understand the basics, explore:
 
 - [User Guide](../user_guide/index.md) - Detailed documentation of all features
 - [API Reference](../api/index.md) - Complete API documentation
-- [Examples](../examples/README.md) - More complex examples and tutorials
+- [Examples](../examples/README.md) - Real analysis examples from `studies/` directory
+- [Complete Tutorial](../_docs/templates/tutorial/complete_analysis.py) - Full working example
 
 ## Getting Help
 
-- Check the [troubleshooting guide](../misc/troubleshooting.rst)
-- Review the [API documentation](../api/index.md)
+- Check the existing examples in the `studies/` directory of the repository
+- Review the [troubleshooting guide](../_docs/misc/troubleshooting.rst)
+- Review the complete tutorial at `docs/_docs/templates/tutorial/complete_analysis.py`
 - Open an issue on [GitHub](https://github.com/woywoy123/AnalysisG/issues)
