@@ -29,7 +29,8 @@ Welcome to the comprehensive documentation for AnalysisG, a high-performance ana
    :caption: Complex Technical Components:
 
    technical/overview
-   technical/cpp_complete_reference
+   technical/build_system
+   technical/analysis_workflow
    technical/cpp_modules_api
    technical/cuda_actual_api
    technical/cuda_kernels_api
@@ -96,8 +97,12 @@ Welcome to the comprehensive documentation for AnalysisG, a high-performance ana
    :caption: Modules Package (C++ Implementation):
 
    modules/overview
+   modules/complete_cpp_documentation
    modules/cpp_complete_reference
    modules/cpp_private_members
+   modules/lossfx_complete
+   modules/io_root_writing
+   modules/merging_aggregation
    modules/analysis
    modules/container
    modules/dataloader
