@@ -106,3 +106,27 @@ The documentation will be in `build/html/`.
 ## Alternative: Use Pre-built Package
 
 If available, using a pre-built wheel or conda package is recommended over building from source unless you need to modify the C++ code.
+
+## Test Files and Sample Data
+
+The repository includes test files with sample ROOT data in `test/samples/`:
+
+```bash
+$ ls test/samples/sample1/
+smpl1.root  smpl2.root  smpl3.root
+```
+
+These are actual ROOT files (approximately 400-500 KB each) used by the test suite. Once AnalysisG is installed, you can verify it works by running:
+
+```bash
+cd test/
+python3 test_root_io.py
+```
+
+This test will:
+1. Load the sample ROOT files
+2. Access various trees and branches
+3. Verify data can be read correctly
+4. Check that missing branches/trees are properly reported
+
+If this test passes without errors, your installation is functional.

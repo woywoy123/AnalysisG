@@ -192,15 +192,35 @@ The examples in this guide are based on real working code from the AnalysisG fra
 
 ### Testing Your Installation
 
-To verify your installation works, you can run the existing tests:
+To verify your installation works, the framework includes test files with sample ROOT data:
 
 ```bash
 # Navigate to test directory
-cd pyc/test/
+cd test/
 
-# Run a simple test (if dependencies are met)
-python3 test_operators.py
+# Run IO test (requires AnalysisG to be installed)
+python3 test_root_io.py
 ```
+
+The test files use sample ROOT files located in `test/samples/` which are included in the repository. If the test passes, your installation is working correctly.
+
+**Available Tests:**
+- `test_root_io.py` - Tests ROOT file I/O functionality
+- `test_particles.py` - Tests particle object handling
+- `test_selection.py` - Tests selection templates
+- `test_evaluation.py` - Tests evaluation metrics
+- `test_generator.py` - Tests data generators
+
+For the pyc (CUDA/PyTorch) tests:
+```bash
+cd pyc/test/
+python3 test_operators.py  # Tests tensor operators
+python3 test_physics.py    # Tests physics calculations
+python3 test_graph.py      # Tests graph operations
+```
+
+!!! note "Test Requirements"
+    Tests require the framework to be fully installed with all dependencies. They will fail with `ModuleNotFoundError: No module named 'AnalysisG'` if the package is not installed.
 
 ## Next Steps
 
