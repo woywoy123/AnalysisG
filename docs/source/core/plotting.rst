@@ -1,21 +1,96 @@
-Plotting
-========
+plotting.pyx
+============
 
-Plotting utilities for visualization.
+**File Path**: ``src/AnalysisG/core/plotting.pyx``
 
-File Location
-~~~~~~~~~~~~~
+**File Type**: Cython Source
 
-* **Cython Implementation**: ``src/AnalysisG/core/plotting.pyx``
-* **Cython Header**: ``src/AnalysisG/core/plotting.pxd``
+**Lines**: 1062
 
-Description
------------
+**Cython Imports**:
 
-This module is part of the AnalysisG core package and provides essential functionality for the framework.
+- ``bool,``
+- ``dereference``
+- ``map``
+- ``string``
+- ``vector``
 
-See Also
---------
+**Python Imports**:
 
-* :doc:`../interfaces/overview`: Interface overview
-* :doc:`../technical/overview`: Technical overview
+- ``bool,``
+- ``boost_histogram``
+- ``cython.operator``
+- ``dereference``
+- ``ks_2samp``
+- ``libcpp``
+- ``libcpp.map``
+- ``libcpp.string``
+- ``libcpp.vector``
+- ``map``
+- ``matplotlib.pyplot``
+- ``mplhep``
+- ``numpy``
+- ``pathlib``
+- ``pickle``
+- ``random``
+- ``scipy.stats``
+- ``string``
+- ``vector``
+
+Classes
+-------
+
+``BasePlotting``
+~~~~~~~~~~~~~~~~
+
+Class defined in this file.
+
+``TH1F``
+~~~~~~~~
+
+Class defined in this file.
+
+``TH2F``
+~~~~~~~~
+
+Class defined in this file.
+
+``TLine``
+~~~~~~~~~
+
+Class defined in this file.
+
+Functions/Methods
+-----------------
+
+- ``Alpha()``
+- ``AutoScaling()``
+- ``AxisSize()``
+- ``CapSize()``
+- ``Color()``
+- ``Colors()``
+- ``CrossSection()``
+- ``DPI()``
+- ``Density()``
+- ``ErrorBars()``
+- ``FX()``
+- ``Filename()``
+- ``FontSize()``
+- ``Hatch()``
+- ``HistFill()``
+- ``IntegratedLuminosity()``
+- ``KStest()``
+- ``LegendSize()``
+- ``LineStyle()``
+- ``LineWidth()``
+- ``Marker()``
+- ``OutputDirectory()``
+- ``Overflow()``
+- ``SaveFigure()``
+- ``ShowCount()``
+- ``Stacked()``
+- ``Style()``
+- ``Title()``
+- ``TitleSize()``
+- ``UseLateX()``
+

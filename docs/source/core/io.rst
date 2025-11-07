@@ -1,21 +1,75 @@
-Io
-==
+io.pyx
+======
 
-Input/output utilities for reading ROOT files and managing data.
+**File Path**: ``src/AnalysisG/core/io.pyx``
 
-File Location
-~~~~~~~~~~~~~
+**File Type**: Cython Source
 
-* **Cython Implementation**: ``src/AnalysisG/core/io.pyx``
-* **Cython Header**: ``src/AnalysisG/core/io.pxd``
+**Lines**: 185
 
 Description
 -----------
 
-This module is part of the AnalysisG core package and provides essential functionality for the framework.
+from AnalysisG.core.tools cimport *
 
-See Also
---------
+**Cython Imports**:
 
-* :doc:`../interfaces/overview`: Interface overview
-* :doc:`../technical/overview`: Technical overview
+- ``*``
+- ``Meta,``
+- ``bool``
+- ``data_t,``
+- ``dereference``
+- ``io``
+- ``map,``
+- ``string``
+- ``vector``
+
+**Python Imports**:
+
+- ``*``
+- ``AnalysisG.core.io``
+- ``AnalysisG.core.meta``
+- ``AnalysisG.core.structs``
+- ``AnalysisG.core.tools``
+- ``Meta,``
+- ``bool``
+- ``cython.operator``
+- ``data_t,``
+- ``dereference``
+- ``io``
+- ``libcpp``
+- ``libcpp.map``
+- ``libcpp.string``
+- ``libcpp.vector``
+- ``map,``
+- ``string``
+- ``tqdm``
+- ``vector``
+
+Classes
+-------
+
+``IO``
+~~~~~~
+
+Class defined in this file.
+
+Functions/Methods
+-----------------
+
+- ``Branches()``
+- ``EnablePyAMI()``
+- ``Files()``
+- ``Keys()``
+- ``Leaves()``
+- ``MetaCachePath()``
+- ``SumOfWeightsTreeName()``
+- ``Trees()``
+- ``Verbose()``
+- ``__cinit__()``
+- ``__dealloc__()``
+- ``__init__()``
+- ``__iter__()``
+- ``__len__()``
+- ``__next__()``
+

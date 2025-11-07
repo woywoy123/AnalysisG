@@ -1,0 +1,26 @@
+.grift.cxx
+==========
+
+**File Path**: ``src/AnalysisG/models/grift/cxx/.grift.cxx``
+
+**File Type**: C++ Source
+
+**Lines**: 279
+
+Description
+-----------
+
+create the null buffers
+
+Dependencies
+------------
+
+**C++ Includes**:
+
+- ``grift.h``
+- ``pyc/pyc.h``
+
+**Python Imports**:
+
+- ``0``
+

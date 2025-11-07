@@ -1,21 +1,68 @@
-Tools
-=====
+tools.pyx
+=========
 
-Utility functions and helper methods.
+**File Path**: ``src/AnalysisG/core/tools.pyx``
 
-File Location
-~~~~~~~~~~~~~
+**File Type**: Cython Source
 
-* **Cython Implementation**: ``src/AnalysisG/core/tools.pyx``
-* **Cython Header**: ``src/AnalysisG/core/tools.pxd``
+**Lines**: 143
 
 Description
 -----------
 
-This module is part of the AnalysisG core package and provides essential functionality for the framework.
+cdef list env_vec(vector[string]* inpt):
 
-See Also
---------
+**Cython Imports**:
 
-* :doc:`../interfaces/overview`: Interface overview
-* :doc:`../technical/overview`: Technical overview
+- ``bool,``
+- ``dereference``
+- ``map,``
+- ``string``
+- ``unordered_map``
+- ``vector``
+
+**Python Imports**:
+
+- ``bool,``
+- ``cython.operator``
+- ``dereference``
+- ``libcpp``
+- ``libcpp.map``
+- ``libcpp.string``
+- ``libcpp.unordered_map``
+- ``libcpp.vector``
+- ``map,``
+- ``string``
+- ``unordered_map``
+- ``vector``
+
+Classes
+-------
+
+``Tools``
+~~~~~~~~~
+
+Class defined in this file.
+
+Functions/Methods
+-----------------
+
+- ``__cinit__()``
+- ``__dealloc__()``
+- ``__init__()``
+- ``abs()``
+- ``create_path()``
+- ``decode64()``
+- ``delete_path()``
+- ``discretize()``
+- ``encode64()``
+- ``ends_with()``
+- ``has_substring()``
+- ``has_value()``
+- ``hash()``
+- ``is_file()``
+- ``ls()``
+- ``rename()``
+- ``replace()``
+- ``split()``
+

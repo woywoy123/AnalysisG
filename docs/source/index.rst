@@ -39,8 +39,9 @@ Welcome to the comprehensive documentation for AnalysisG, a high-performance ana
 
 .. toctree::
    :maxdepth: 2
-   :caption: Core Package:
+   :caption: Core Package (Cython):
 
+   core/index
    core/analysis
    core/event_template
    core/particle_template
@@ -59,53 +60,55 @@ Welcome to the comprehensive documentation for AnalysisG, a high-performance ana
 
 .. toctree::
    :maxdepth: 2
-   :caption: Events Package:
+   :caption: Events Package (C++/Cython):
 
    events/overview
-   events/bsm_4tops
-   events/exp_mc20
-   events/gnn
-   events/ssml_mc20
+   events/bsm_4tops/index
+   events/exp_mc20/index
+   events/gnn/index
+   events/ssml_mc20/index
 
 .. toctree::
    :maxdepth: 2
-   :caption: Graphs Package:
+   :caption: Graphs Package (C++/Cython):
 
    graphs/overview
-   graphs/bsm_4tops
-   graphs/exp_mc20
-   graphs/ssml_mc20
+   graphs/bsm_4tops/index
+   graphs/exp_mc20/index
+   graphs/ssml_mc20/index
 
 .. toctree::
    :maxdepth: 2
-   :caption: Metrics Package:
+   :caption: Metrics Package (C++/Cython):
 
    metrics/overview
-   metrics/accuracy
-   metrics/pagerank
+   metrics/accuracy/index
+   metrics/pagerank/index
 
 .. toctree::
    :maxdepth: 2
-   :caption: Models Package:
+   :caption: Models Package (C++/Cython):
 
    models/overview
-   models/grift
-   models/rgnn
+   models/grift/index
+   models/RecursiveGraphNeuralNetwork/index
 
 .. toctree::
    :maxdepth: 2
    :caption: Modules Package (C++ Implementation):
 
    modules/overview
+   modules/dependency_graph
    modules/complete_cpp_documentation
    modules/cpp_complete_reference
    modules/cpp_private_members
    modules/lossfx_complete
    modules/io_root_writing
    modules/merging_aggregation
-   modules/analysis
-   modules/container
-   modules/dataloader
+   modules/files/index
+   modules/detailed/analysis
+   modules/detailed/container
+   modules/detailed/dataloader
    modules/event
    modules/graph
    modules/io
@@ -131,13 +134,13 @@ Welcome to the comprehensive documentation for AnalysisG, a high-performance ana
    :caption: PyC Package (C++/CUDA/Cython):
 
    pyc/overview
-   pyc/cutils
-   pyc/graph
-   pyc/interface
-   pyc/nusol
-   pyc/operators
-   pyc/physics
-   pyc/transform
+   pyc/cutils/index
+   pyc/graph/index
+   pyc/interface/index
+   pyc/nusol/index
+   pyc/operators/index
+   pyc/physics/index
+   pyc/transform/index
 
 .. toctree::
    :maxdepth: 2

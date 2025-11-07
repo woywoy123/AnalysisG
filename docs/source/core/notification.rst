@@ -1,21 +1,33 @@
-Notification
-============
+notification.pyx
+================
 
-Notification and progress tracking system.
+**File Path**: ``src/AnalysisG/core/notification.pyx``
 
-File Location
-~~~~~~~~~~~~~
+**File Type**: Cython Source
 
-* **Cython Implementation**: ``src/AnalysisG/core/notification.pyx``
-* **Cython Header**: ``src/AnalysisG/core/notification.pxd``
+**Lines**: 11
 
-Description
------------
+**Cython Imports**:
 
-This module is part of the AnalysisG core package and provides essential functionality for the framework.
+- ``notification``
 
-See Also
---------
+**Python Imports**:
 
-* :doc:`../interfaces/overview`: Interface overview
-* :doc:`../technical/overview`: Technical overview
+- ``AnalysisG.core.notification``
+- ``notification``
+
+Classes
+-------
+
+``Notification``
+~~~~~~~~~~~~~~~~
+
+Class defined in this file.
+
+Functions/Methods
+-----------------
+
+- ``__cinit__()``
+- ``__dealloc__()``
+- ``__init__()``
+

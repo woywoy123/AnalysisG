@@ -1,21 +1,18 @@
-Structs
-=======
+structs.pyx
+===========
 
-Core data structures shared across the framework.
+**File Path**: ``src/AnalysisG/core/structs.pyx``
 
-File Location
-~~~~~~~~~~~~~
+**File Type**: Cython Source
 
-* **Cython Implementation**: ``src/AnalysisG/core/structs.pyx``
-* **Cython Header**: ``src/AnalysisG/core/structs.pxd``
+**Lines**: 36
 
 Description
 -----------
 
-This module is part of the AnalysisG core package and provides essential functionality for the framework.
+cdef dict elements(basic* null, data_t* data):
+cdef dict switch_board(data_t* data):
+if data.type == data_enum.vvv_f: return elements(<vector[vector[float ]]*>(NULL), data)
+if data.type == data_enum.vvv_d: return elements(<vector[vector[double]]*>(NULL), data)
+if data.type == data_enum.vvv_l: return elements(<vector[vector[long  ]]*>(NULL), data)
 
-See Also
---------
-
-* :doc:`../interfaces/overview`: Interface overview
-* :doc:`../technical/overview`: Technical overview

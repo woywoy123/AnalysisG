@@ -1,21 +1,63 @@
-Selection Template
-==================
+selection_template.pyx
+======================
 
-Base template for selection criteria.
+**File Path**: ``src/AnalysisG/core/selection_template.pyx``
 
-File Location
-~~~~~~~~~~~~~
+**File Type**: Cython Source
 
-* **Cython Implementation**: ``src/AnalysisG/core/selection_template.pyx``
-* **Cython Header**: ``src/AnalysisG/core/selection_template.pxd``
+**Lines**: 148
 
 Description
 -----------
 
-This module is part of the AnalysisG core package and provides essential functionality for the framework.
+from AnalysisG.core.tools cimport *
+from AnalysisG.core.meta cimport *
 
-See Also
---------
+**Cython Imports**:
 
-* :doc:`../interfaces/overview`: Interface overview
-* :doc:`../technical/overview`: Technical overview
+- ``*``
+- ``map,``
+- ``string``
+- ``vector``
+
+**Python Imports**:
+
+- ``*``
+- ``AnalysisG.core.io``
+- ``AnalysisG.core.meta``
+- ``AnalysisG.core.tools``
+- ``IO``
+- ``libcpp``
+- ``libcpp.map``
+- ``libcpp.vector``
+- ``map,``
+- ``pathlib``
+- ``pickle``
+- ``string``
+- ``vector``
+
+Classes
+-------
+
+``SelectionTemplate``
+~~~~~~~~~~~~~~~~~~~~~
+
+Class defined in this file.
+
+Functions/Methods
+-----------------
+
+- ``GetMetaData()``
+- ``HashToWeightFile()``
+- ``InterpretROOT()``
+- ``PassedWeights()``
+- ``Postprocessing()``
+- ``__cinit__()``
+- ``__dealloc__()``
+- ``__hash__()``
+- ``__init__()``
+- ``__name__()``
+- ``__reduce__()``
+- ``dump()``
+- ``load()``
+

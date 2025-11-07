@@ -1,21 +1,61 @@
-Metric Template
-===============
+metric_template.pyx
+===================
 
-Base template for evaluation metrics.
+**File Path**: ``src/AnalysisG/core/metric_template.pyx``
 
-File Location
-~~~~~~~~~~~~~
+**File Type**: Cython Source
 
-* **Cython Implementation**: ``src/AnalysisG/core/metric_template.pyx``
-* **Cython Header**: ``src/AnalysisG/core/metric_template.pxd``
+**Lines**: 191
 
 Description
 -----------
 
-This module is part of the AnalysisG core package and provides essential functionality for the framework.
+from AnalysisG.core.tools cimport *
+from AnalysisG.core.meta cimport *
+from AnalysisG.core.structs cimport *
 
-See Also
---------
+**Cython Imports**:
 
-* :doc:`../interfaces/overview`: Interface overview
-* :doc:`../technical/overview`: Technical overview
+- ``*``
+- ``dereference``
+- ``map,``
+- ``string``
+- ``vector``
+
+**Python Imports**:
+
+- ``*``
+- ``AnalysisG.core.meta``
+- ``AnalysisG.core.structs``
+- ``AnalysisG.core.tools``
+- ``cython.operator``
+- ``cython.parallel``
+- ``dereference``
+- ``libcpp``
+- ``libcpp.map``
+- ``libcpp.vector``
+- ``map,``
+- ``prange``
+- ``string``
+- ``vector``
+
+Classes
+-------
+
+``MetricTemplate``
+~~~~~~~~~~~~~~~~~~
+
+Class defined in this file.
+
+Functions/Methods
+-----------------
+
+- ``InterpretROOT()``
+- ``Postprocessing()``
+- ``RunNames()``
+- ``Variables()``
+- ``__cinit__()``
+- ``__dealloc__()``
+- ``__init__()``
+- ``__name__()``
+
