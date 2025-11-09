@@ -39,62 +39,6 @@ Welcome to the comprehensive documentation for AnalysisG, a high-performance ana
 
 .. toctree::
    :maxdepth: 2
-   :caption: Core Package (Cython):
-
-   core/index
-   core/analysis
-   core/event_template
-   core/particle_template
-   core/graph_template
-   core/metric_template
-   core/model_template
-   core/selection_template
-   core/io
-   core/lossfx
-   core/meta
-   core/notification
-   core/plotting
-   core/roc
-   core/structs
-   core/tools
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Events Package (C++/Cython):
-
-   events/overview
-   events/bsm_4tops/index
-   events/exp_mc20/index
-   events/gnn/index
-   events/ssml_mc20/index
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Graphs Package (C++/Cython):
-
-   graphs/overview
-   graphs/bsm_4tops/index
-   graphs/exp_mc20/index
-   graphs/ssml_mc20/index
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Metrics Package (C++/Cython):
-
-   metrics/overview
-   metrics/accuracy/index
-   metrics/pagerank/index
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Models Package (C++/Cython):
-
-   models/overview
-   models/grift/index
-   models/RecursiveGraphNeuralNetwork/index
-
-.. toctree::
-   :maxdepth: 2
    :caption: Modules Package (C++ Implementation):
 
    modules/overview
@@ -128,19 +72,6 @@ Welcome to the comprehensive documentation for AnalysisG, a high-performance ana
    modules/structs
    modules/tools
    modules/typecasting
-
-.. toctree::
-   :maxdepth: 2
-   :caption: PyC Package (C++/CUDA/Cython):
-
-   pyc/overview
-   pyc/cutils/index
-   pyc/graph/index
-   pyc/interface/index
-   pyc/nusol/index
-   pyc/operators/index
-   pyc/physics/index
-   pyc/transform/index
 
 .. toctree::
    :maxdepth: 2
