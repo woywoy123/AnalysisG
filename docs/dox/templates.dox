@@ -1,0 +1,138 @@
+/**
+ * @page templates Template Classes
+ * 
+ * @section templates_overview Overview
+ * 
+ * AnalysisG provides template base classes that users inherit from to implement
+ * custom analysis components. These templates handle the infrastructure while
+ * allowing full customization of analysis logic.
+ * 
+ * @section event_template EventTemplate
+ * 
+ * Base class for event implementations. Provides particle collection management
+ * and ROOT integration.
+ * 
+ * @subsection event_properties Properties
+ * - `index` (int): Event number in the tree
+ * - `weight` (float): Event weight for analysis
+ * - `Tree` (str): Current TTree name
+ * - `Trees` (list[str]): All available TTrees
+ * - `Branches` (dict): All available branches
+ * - `Particles` (dict): Particle collections by type
+ * 
+ * @subsection event_methods Methods
+ * - `selection()`: Define event-level cuts and categorization
+ * - `strategy()`: Define particle collection building logic
+ * 
+ * @subsection event_example Example
+ * 
+ * @code{.py}
+ * from AnalysisG import EventTemplate
+ * 
+ * class MyEvent(EventTemplate):
+ *     def selection(self):
+ *         # Event-level cuts
+ *         if self.met < 20000:  # 20 GeV
+ *             return False
+ *         if len(self.leptons) < 2:
+ *             return False
+ *         return True
+ *     
+ *     def strategy(self):
+ *         # Build particle collections
+ *         self.leptons = [p for p in self.Particles 
+ *                        if p.is_lep and p.pt > 25000]
+ *         self.jets = [p for p in self.Particles 
+ *                     if p.Type == "jet" and p.pt > 30000]
+ * @endcode
+ * 
+ * @section particle_template ParticleTemplate
+ * 
+ * Base class for particle representations with four-momentum and type information.
+ * 
+ * @subsection particle_properties Properties
+ * 
+ * Kinematic properties:
+ * - `px`, `py`, `pz`, `e`: Four-momentum components (MeV)
+ * - `pt`: Transverse momentum (MeV)
+ * - `eta`: Pseudorapidity
+ * - `phi`: Azimuthal angle (radians)
+ * - `mass`: Invariant mass (MeV)
+ * 
+ * Particle identification:
+ * - `pdgid`: PDG particle ID code
+ * - `Type`: Particle type string ("electron", "muon", "jet", etc.)
+ * - `is_lep`: Boolean flag for leptons
+ * - `is_b`: Boolean flag for b-quarks/jets
+ * - `is_nu`: Boolean flag for neutrinos
+ * - `charge`: Electric charge
+ * 
+ * @subsection particle_methods Methods
+ * - `DeltaR(other)`: Angular separation from another particle
+ * 
+ * @subsection particle_example Example
+ * 
+ * @code{.py}
+ * # Filter high-pT electrons
+ * electrons = [p for p in particles 
+ *             if p.Type == "electron" and p.pt > 25000]
+ * 
+ * # Find b-jets
+ * bjets = [p for p in particles if p.is_b]
+ * 
+ * # Calculate angular separation
+ * deltaR = electron.DeltaR(muon)
+ * @endcode
+ * 
+ * @section selection_template SelectionTemplate
+ * 
+ * Base class for implementing analysis selections and processing logic.
+ * 
+ * @subsection selection_methods Methods
+ * - `selection()`: Apply selection cuts
+ * - `strategy()`: Process selected events
+ * - `merge()`: Combine results from multiple samples
+ * 
+ * @subsection selection_example Example
+ * 
+ * @code{.py}
+ * from AnalysisG import SelectionTemplate
+ * 
+ * class TopPairSelection(SelectionTemplate):
+ *     def selection(self):
+ *         # Require exactly 1 lepton and >= 4 jets
+ *         return len(self.leptons) == 1 and len(self.jets) >= 4
+ *     
+ *     def strategy(self):
+ *         # Reconstruct top quarks
+ *         leptonic_top = self.reconstruct_leptonic_top()
+ *         hadronic_top = self.reconstruct_hadronic_top()
+ *         self.ttbar_mass = (leptonic_top + hadronic_top).mass
+ * @endcode
+ * 
+ * @section graph_template GraphTemplate
+ * 
+ * Base class for graph neural network implementations.
+ * 
+ * @subsection graph_methods Methods
+ * - `CompileEvent()`: Build graph from event
+ * - `CompileGraph()`: Define graph structure
+ * - Node and edge feature extraction methods
+ * 
+ * @section metric_template MetricTemplate
+ * 
+ * Base class for metric calculation and evaluation.
+ * 
+ * @subsection metric_methods Methods
+ * - `forward()`: Calculate metric for a batch
+ * - `collect()`: Accumulate results
+ * 
+ * @section model_template ModelTemplate
+ * 
+ * Base class wrapping PyTorch models for integration with the framework.
+ * 
+ * @subsection model_methods Methods
+ * - `forward()`: Model forward pass
+ * - `Training()`: Training mode setup
+ * - `Inference()`: Inference mode setup
+ */

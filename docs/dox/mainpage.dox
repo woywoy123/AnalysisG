@@ -1,0 +1,100 @@
+/**
+ * @mainpage AnalysisG - HEP Analysis Framework
+ * 
+ * @section intro_sec Introduction
+ * 
+ * AnalysisG is a comprehensive high-energy physics (HEP) analysis framework that combines
+ * C++, CUDA, and Cython to provide efficient data processing and analysis capabilities.
+ * 
+ * The framework provides:
+ * - Template-based event, particle, selection, graph, metric, and model interfaces
+ * - ROOT I/O for reading and writing physics data
+ * - CUDA-accelerated operations for physics calculations
+ * - PyTorch integration for machine learning workflows
+ * - Comprehensive analysis pipeline management
+ * 
+ * @section install_sec Installation
+ * 
+ * The framework uses scikit-build-core for building. Install with:
+ * 
+ * @code{.sh}
+ * # Basic installation
+ * pip install .
+ * 
+ * # Editable/development installation
+ * pip install -e .
+ * @endcode
+ * 
+ * @subsection dependencies_sec Dependencies
+ * 
+ * Required dependencies:
+ * - CMake >= 3.23
+ * - Python >= 3.8
+ * - Cython >= 3.0
+ * - ROOT (CERN)
+ * - LibTorch (PyTorch C++ API)
+ * - HDF5
+ * - RapidJSON
+ * 
+ * Optional dependencies:
+ * - CUDA (for GPU acceleration)
+ * 
+ * @section modules_sec Core Modules
+ * 
+ * @subsection templates_sec Template Classes
+ * - @ref event_template "EventTemplate" - Base class for event implementations
+ * - @ref particle_template "ParticleTemplate" - Base class for particle representations
+ * - @ref selection_template "SelectionTemplate" - Selection and analysis interface
+ * - @ref graph_template "GraphTemplate" - Graph neural network interface
+ * - @ref metric_template "MetricTemplate" - Metric calculation interface
+ * - @ref model_template "ModelTemplate" - PyTorch model wrapper
+ * 
+ * @subsection analysis_sec Analysis Infrastructure
+ * - @ref Analysis "Analysis" - Main analysis orchestration class
+ * - @ref io "I/O" - ROOT and HDF5 file operations
+ * - @ref meta "Meta" - Metadata compilation and management
+ * - @ref lossfx "Loss Functions" - PyTorch loss function builders
+ * 
+ * @subsection data_sec Data Management
+ * - @ref container "Container" - Event container and iteration
+ * - @ref dataloader "DataLoader" - PyTorch DataLoader integration
+ * - @ref sampletracer "SampleTracer" - Sample tracking and management
+ * 
+ * @subsection cuda_sec CUDA Operations
+ * - @ref physics_cuda "Physics" - Momentum, mass, angular calculations
+ * - @ref operators_cuda "Operators" - Vector and matrix operations
+ * - @ref graph_cuda "Graph" - PageRank and graph algorithms
+ * - @ref nusol_cuda "NuSol" - Neutrino reconstruction solvers
+ * - @ref transform_cuda "Transform" - Coordinate transformations
+ * 
+ * @section usage_sec Usage Example
+ * 
+ * @code{.py}
+ * from AnalysisG import Analysis
+ * from AnalysisG.events import MyEvent
+ * from AnalysisG.selections import MySelection
+ * 
+ * # Create analysis
+ * ana = Analysis()
+ * ana.AddEvent("MyEvent")
+ * ana.AddSelection("MySelection")
+ * ana.AddSamples(["data_file1.root", "data_file2.root"])
+ * 
+ * # Run analysis
+ * ana.Start()
+ * @endcode
+ * 
+ * @section build_sec Build System
+ * 
+ * The project uses scikit-build-core which automatically handles CMake configuration.
+ * Each module has its own CMakeLists.txt for compilation:
+ * 
+ * - Root CMakeLists.txt: Project configuration and dependencies
+ * - src/AnalysisG/modules/: C++ library modules
+ * - src/AnalysisG/pyc/: CUDA kernel modules
+ * - src/AnalysisG/core/: Cython bindings
+ * 
+ * @section license_sec License
+ * 
+ * See LICENSE file in the repository.
+ */
