@@ -52,12 +52,13 @@ Selection Algorithms
 
    selections
 
-Full Class Reference
---------------------
+Complete API Reference
+----------------------
 
-For a complete alphabetical listing of all classes, see:
+Comprehensive documentation for all classes, structs, functions, and variables:
 
 .. toctree::
    :maxdepth: 1
 
-   classes
+   all_classes
+   all_structs
