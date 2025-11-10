@@ -1,57 +1,203 @@
 /**
  * @file container.h
- * @brief COMPLETE documentation for container.h
+ * @brief Data container management for batched event processing
  *
  * @details
  * Location: modules/container/include/container/container.h
- * Type: .h source file
- * Lines: 66
- * Size: 1944 bytes
+ * Type: Header file defining container system
+ * Lines: 65
  *
- * ## Includes
- * - `#include <meta/meta.h>`
- * - `#include <tools/tools.h>`
- * - `#include <templates/graph_template.h>`
- * - `#include <templates/event_template.h>`
- * - `#include <templates/selection_template.h>`
- * - `#include <generators/dataloader.h>`
+ * ## Purpose
  *
- * ## Macros
- * - `#define CONTAINER_H #include <meta/meta.h>`
+ * The container class serves as the primary data aggregation and management system in AnalysisG.
+ * It organizes events, graphs, and selections into efficiently accessible batches for processing
+ * and training. The container acts as an intermediate storage layer between raw event data and
+ * the dataloader, providing hash-based random access to grouped data elements.
  *
- * ## Structures
- * ### struct entry_t
- * - `std::string hash = "";`
- * - `std::vector<graph_t*>                m_data  = {`
+ * ## Role in Framework
  *
- * ## Classes
- * ### class container : public tools
- * **PUBLIC:**
- * - `container();`
- * - `~container();`
- * - `void add_meta_data(meta*, std::string);`
- * - `meta* get_meta_data();`
- * - `bool add_selection_template(selection_template*);`
- * - `bool add_event_template(event_template*, std::string label);`
- * - `bool add_graph_template(graph_template*, std::string label);`
- * - `void fill_selections(std::map<std::string, selection_template*>* inpt);`
- * - `void get_events(std::vector<event_template*>*, std::string label);`
- * - `void populate_dataloader(dataloader* dl);`
- * - `void compile(size_t* len, int threadIdx);`
- * - `size_t len();`
- * - `entry_t* add_entry(std::string hash);`
- * - `meta*        meta_data   = nullptr;`
- * - `std::string* filename    = nullptr;`
- * - `std::string* output_path = nullptr;`
- * - `std::string     label    = "";`
- * - `std::map<std::string, entry_t> random_access;`
- * - `std::map<std::string, selection_template*>* merged = nullptr;`
+ * Container sits at the center of the data pipeline:
+ * - **Input Side**: Receives events from ROOT file readers and selections from the analysis framework
+ * - **Storage Layer**: Organizes data by hash keys for efficient batch access
+ * - **Output Side**: Populates dataloaders with preprocessed batches for model training
  *
- * ## Function Implementations
- * - `template <typename g>
-    void destroy(std::vector<g*>* c)`
+ * Key architectural relationships:
+ * - Uses **event_template**: Stores processed physics events
+ * - Uses **graph_template**: Stores graph neural network representations
+ * - Uses **selection_template**: Stores selection algorithm results
+ * - Feeds **dataloader**: Transfers batched data for training/inference
+ * - References **meta**: Maintains metadata for provenance tracking
  *
- * @note This file has been COMPLETELY documented.
- * @note Every class, struct, function, variable, macro is listed above.
- * @see Doxygen HTML output for full cross-references
+ * ## Data Structure: entry_t
+ *
+ * The entry_t struct represents a single data batch with common characteristics:
+ *
+ * ### Members:
+ * - **hash**: Unique identifier for this batch (often based on event properties)
+ * - **m_data**: Raw graph_t structures for GNN input
+ * - **m_graph**: Graph template instances with domain-specific features
+ * - **m_event**: Event template instances with physics data
+ * - **m_selection**: Selection template instances with filtering results
+ *
+ * ### Methods:
+ * - **init()**: Initialize the entry (allocation, setup)
+ * - **destroy()**: Clean up and deallocate all stored data
+ * - **has_event(ev)**: Check if this entry contains a specific event
+ * - **has_graph(gr)**: Check if this entry contains a specific graph
+ * - **has_selection(sel)**: Check if this entry contains a specific selection
+ * - **destroy<T>(vector)**: Template method for safe deletion of vector contents
+ *
+ * The entry_t design allows:
+ * - **Grouped processing**: Related data elements share the same hash
+ * - **Efficient lookup**: Hash-based access provides O(1) retrieval
+ * - **Memory management**: Centralized cleanup via destroy methods
+ *
+ * ## Container Class Overview
+ *
+ * ### Inheritance
+ * Derives from **tools** base class, gaining access to:
+ * - String manipulation utilities
+ * - File path handling
+ * - Common helper functions
+ * - Thread-safe operations
+ *
+ * ### Core Responsibilities
+ *
+ * 1. **Data Aggregation**:
+ *    - Collect events from multiple sources
+ *    - Group related events by hash keys
+ *    - Maintain efficient random access structures
+ *
+ * 2. **Template Management**:
+ *    - Store event templates with label association
+ *    - Store graph templates with label association
+ *    - Store selection templates for filtering
+ *
+ * 3. **Metadata Tracking**:
+ *    - Associate meta objects with data batches
+ *    - Track file provenance
+ *    - Maintain output path information
+ *
+ * 4. **Dataloader Integration**:
+ *    - Transfer batched data to dataloader
+ *    - Preserve hash-based organization
+ *    - Enable efficient training workflows
+ *
+ * ## Public Interface
+ *
+ * ### Constructor/Destructor
+ * - **container()**: Initialize empty container with default settings
+ * - **~container()**: Cleanup all stored data and deallocate resources
+ *
+ * ### Metadata Management
+ * - **add_meta_data(meta*, string)**: Associate metadata object with label
+ * - **get_meta_data()**: Retrieve current metadata object
+ *
+ * ### Template Registration
+ * - **add_selection_template(sel)**: Register a selection algorithm
+ *   - Returns: bool indicating if template was added successfully
+ *   - Prevents duplicate registration
+ *
+ * - **add_event_template(ev, label)**: Register an event template with label
+ *   - Label allows multiple event types (e.g., "truth", "reco")
+ *   - Returns: bool indicating success
+ *
+ * - **add_graph_template(gr, label)**: Register a graph template with label
+ *   - Label distinguishes graph types (e.g., "jets", "leptons")
+ *   - Returns: bool indicating success
+ *
+ * ### Data Access & Population
+ * - **fill_selections(map)**: Populate selection map from stored selections
+ *   - Used for merging selections across containers
+ *
+ * - **get_events(vector, label)**: Retrieve events matching specific label
+ *   - Copies event pointers to provided vector
+ *
+ * - **populate_dataloader(dl)**: Transfer all data to dataloader
+ *   - Main method for training data preparation
+ *   - Preserves hash-based organization
+ *
+ * ### Processing & Compilation
+ * - **compile(len, threadIdx)**: Compile and finalize data in parallel thread
+ *   - len: Pointer to length counter (updated by method)
+ *   - threadIdx: Thread identifier for parallel processing
+ *   - Performs final validation and optimization
+ *
+ * - **len()**: Return total number of entries stored
+ *
+ * ### Entry Management
+ * - **add_entry(hash)**: Create or retrieve entry for given hash
+ *   - Returns: Pointer to entry_t for that hash
+ *   - Creates new entry if hash doesn't exist
+ *   - Returns existing entry if hash already present
+ *
+ * ## Public Members
+ *
+ * - **meta_data**: Pointer to metadata object for this container
+ * - **filename**: Pointer to source filename string
+ * - **output_path**: Pointer to output directory path
+ * - **label**: Container label for identification
+ * - **random_access**: Map from hash to entry_t for O(1) lookup
+ * - **merged**: Pointer to merged selection template map
+ *
+ * ## Usage Pattern
+ *
+ * @code
+ * // Create container
+ * container* cont = new container();
+ * cont->label = "ttbar_sample";
+ *
+ * // Register templates
+ * cont->add_event_template(my_event, "truth");
+ * cont->add_graph_template(my_graph, "jets");
+ * cont->add_selection_template(my_selection);
+ *
+ * // Add metadata
+ * meta* m = new meta();
+ * m->dsid = 410470;
+ * cont->add_meta_data(m, "mc16a");
+ *
+ * // Process events
+ * for (auto* event : events) {
+ *     std::string hash = compute_hash(event);
+ *     entry_t* entry = cont->add_entry(hash);
+ *     entry->m_event.push_back(event);
+ * }
+ *
+ * // Compile and populate dataloader
+ * size_t length = 0;
+ * cont->compile(&length, 0);  // Thread 0
+ * cont->populate_dataloader(my_dataloader);
+ * @endcode
+ *
+ * ## Thread Safety
+ *
+ * Container supports parallel processing:
+ * - Each thread gets its own container instance
+ * - Thread ID passed to compile() for coordination
+ * - No shared state between thread containers
+ * - Final merge happens in dataloader
+ *
+ * ## Memory Management
+ *
+ * Container owns its data:
+ * - Destructor calls entry_t::destroy() for all entries
+ * - Template pointers are references (not owned)
+ * - Meta object is referenced (not owned)
+ * - Clear separation of ownership boundaries
+ *
+ * ## Performance Considerations
+ *
+ * - **Hash-based access**: O(1) lookup for entries by hash
+ * - **Vector storage**: Contiguous memory for cache efficiency
+ * - **Lazy compilation**: Processing deferred until compile()
+ * - **Batch transfers**: Single populate_dataloader() call for efficiency
+ *
+ * ## Design Rationale
+ *
+ * The container abstraction provides:
+ * - **Decoupling**: Separates event processing from training
+ * - **Flexibility**: Supports multiple event/graph types via labels
+ * - **Efficiency**: Hash-based organization enables fast lookup
+ * - **Scalability**: Thread-safe design enables parallel processing
  */
