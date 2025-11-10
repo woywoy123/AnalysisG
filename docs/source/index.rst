@@ -50,59 +50,9 @@ DOCUMENTATION IS STILL UNDER CONSTRUCTION
 
 **The current documentation is being updated, since a lot of changes have been made from the prior version.**
 
-**Note:** Previous documentation has been moved to the ``deprecated`` folder. New comprehensive API documentation is automatically generated from the source code.
+**Note:** Previous documentation (Getting Started, Core Classes, PyC, MC16 Events, GNN Training, Studies) has been moved to the ``deprecated`` folder. The new documentation structure focuses on comprehensive API documentation automatically generated from the source code.
 
 
-
-Getting Started with AnalysisG
-------------------------------
-.. toctree::
-   :titlesonly:
-
-   getting-started/main.rst
-
-
-Core Class Documentation
-------------------------
-
-.. toctree::
-   :titlesonly:
-
-   core-classes/main.rst
-   core-structs/main.rst
-
-
-CUDA, C++ and pyc via LibTorch
-------------------------------
-.. toctree::
-   :titlesonly:
-
-   pyc/main.rst
-   pyc/interface.rst
-
-Event and Particle Implementations
-----------------------------------
-
-.. toctree::
-   :titlesonly:
-
-   mc16-events/main.rst
-
-Graph Neural Network Training
------------------------------
-
-.. toctree::
-   :titlesonly:
-
-   gnn-training/main.rst
-
-Analysis and Truth Studies Documentation
-----------------------------------------
-.. toctree::
-   :titlesonly:
-   :maxdepth: 1
- 
-   studies/main.rst 
 
 API Documentation (Auto-Generated)
 ----------------------------------

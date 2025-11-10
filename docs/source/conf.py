@@ -23,7 +23,16 @@ extensions = [
     "breathe",
 ]
 
-exclude_patterns = []
+# Exclude the old deprecated documentation that's still in source/
+exclude_patterns = [
+    'core-classes',
+    'core-structs',
+    'getting-started',
+    'gnn-training',
+    'mc16-events',
+    'pyc',
+    'studies',
+]
 
 # -- Breathe configuration ---------------------------------------------------
 breathe_projects = {
