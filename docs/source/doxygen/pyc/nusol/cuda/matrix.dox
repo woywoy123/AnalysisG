@@ -1,0 +1,98 @@
+/**
+ * @file matrix.cu
+ * @brief COMPLETE documentation for matrix.cu
+ *
+ * @details
+ * Location: pyc/nusol/cuda/matrix.cu
+ * Type: .cu source file
+ * Lines: 381
+ * Size: 17688 bytes
+ *
+ * ## Includes
+ * - `#include <nusol/base.cuh>`
+ * - `#include <nusol/device.cuh>`
+ * - `#include <utils/utils.cuh>`
+ * - `#include <physics/physics.cuh>`
+ * - `#include <operators/operators.cuh>`
+ * - `#include <transform/transform.cuh>`
+ *
+ * ## Function Implementations
+ * - `cuh>
+
+template <typename scalar_t>
+__global__ void _hmatrix_debug(const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> masses, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> cosine, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> rt,
+
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc_l, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> m2l, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> b2l, 
+
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc_b, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> m2b, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> b2b, 
+
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Hmatrix,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H_perp ,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> passed,
+
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> x0p,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>  x0,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>  Sx,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>  Sy,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>   w,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> om2,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> eps2,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>  x1,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>  y1,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>  z)`
+ * - ` if(x > 2)`
+ * - ` if(_iky < 3 && _ikz < 3)`
+ * - ` if(_iky < 3 && _ikz < 3)`
+ * - ` if(threadIdx.y || threadIdx.z)`
+ * - `std::map<std::string, torch::Tensor> nusol_::BaseDebug(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses)`
+ * - `template <size_t size_x>
+__global__ void _hmatrix(const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> masses, 
+        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> cosine, 
+        const torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> rt,
+
+        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> pmc_l, 
+        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> m2l, 
+        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> b2l, 
+
+        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> pmc_b, 
+        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> m2b, 
+        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> b2b, 
+
+        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> Hmatrix,
+        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> H_perp,
+        torch::PackedTensorAccessor64<double, 1, torch::RestrictPtrTraits> passed, 
+        const unsigned int dy, const unsigned int dx, const bool sm)`
+ * - ` if(_idx >= _lim)`
+ * - ` if(idy || idz)`
+ * - `std::map<std::string, torch::Tensor> nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses)`
+ * - `template <typename scalar_t>
+__global__ void _hmatrix(const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> cosine, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> rt,
+
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc_l, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> m2l, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> b2l, 
+
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc_b, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> m2b, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> b2b, 
+
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Hmatrix,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H_perp,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> passed,
+        double mass_T, double mass_W, double mass_nu = 0)`
+ * - ` if(_iky < 3 && _ikz < 3)`
+ * - ` if(_iky < 3 && _ikz < 3)`
+ * - ` if(threadIdx.y || threadIdx.z)`
+ * - `std::map<std::string, torch::Tensor> nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, double mT, double mW, double mN)`
+ *
+ * @note This file has been COMPLETELY documented.
+ * @note Every class, struct, function, variable, macro is listed above.
+ * @see Doxygen HTML output for full cross-references
+ */

@@ -1,0 +1,71 @@
+/**
+ * @file pagerank.cu
+ * @brief COMPLETE documentation for pagerank.cu
+ *
+ * @details
+ * Location: pyc/graph/pagerank.cu
+ * Type: .cu source file
+ * Lines: 259
+ * Size: 10128 bytes
+ *
+ * ## Includes
+ * - `#include <graph/pagerank.cuh>`
+ * - `#include <utils/atomic.cuh>`
+ * - `#include <utils/utils.cuh>`
+ *
+ * ## Function Implementations
+ * - `cuh>
+
+template <size_t size_x>
+__global__ void _get_max_node(const torch::PackedTensorAccessor64<long, 2, torch::RestrictPtrTraits> edge_inx, 
+          torch::PackedTensorAccessor64<long, 1, torch::RestrictPtrTraits> max_node, 
+          torch::PackedTensorAccessor64<long, 1, torch::RestrictPtrTraits> remap, 
+          const int el, const long mxn)`
+ * - ` if(!skp)`
+ * - ` if(!mx)`
+ * - ` if(skp)`
+ * - `__global__ void _get_remapping(const torch::PackedTensorAccessor64<long, 2, torch::RestrictPtrTraits> edge_inx, 
+    const torch::PackedTensorAccessor64<long, 1, torch::RestrictPtrTraits> ev_node, 
+          torch::PackedTensorAccessor64<long, 1, torch::RestrictPtrTraits> idx_map, 
+          torch::PackedTensorAccessor64<long, 1, torch::RestrictPtrTraits> num_batch, 
+          torch::PackedTensorAccessor64<long, 1, torch::RestrictPtrTraits> num_enode, 
+          const long mxn, const long mxn_ev)`
+ * - ` if(idx >= mxn)`
+ * - ` if(lx < 0)`
+ * - ` if(xi != 1)`
+ * - ` if(edge_inx[0][lx] != edge_inx[1][lx])`
+ * - `template <typename scalar_t, size_t size_x>
+__global__ void _page_rank(const torch::PackedTensorAccessor64<long    , 1, torch::RestrictPtrTraits> cu_xms, 
+    const torch::PackedTensorAccessor64<long    , 1, torch::RestrictPtrTraits> cu_xme,
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> edge_scores,
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pagerank,
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pageclus,
+          torch::PackedTensorAccessor64<long    , 3, torch::RestrictPtrTraits> count,
+          torch::PackedTensorAccessor64<bool    , 1, torch::RestrictPtrTraits> edge_inx,
+    const double alpha, 
+    const double mlp_lim,
+    const double threshold,
+    const unsigned int mx_ev, 
+    const unsigned int num_ev, 
+    const unsigned int min_nodes, 
+    const unsigned int mxn, 
+    const long timeout)`
+ * - ` if(idx >= num_ev)`
+ * - ` if(_idz >= nodes || _idy >= nodes)`
+ * - ` if(nodes >= size_x)`
+ * - ` if(s0 < s1 && s1 > mlp_lim)`
+ * - ` if(_idz != _idy)`
+ * - ` if(err > threshold)`
+ * - ` if(k == -1 || _idx_remp[_idy][k] > -1 || _topx_mpx[_idz][k] == -1)`
+ * - ` if(err < threshold)`
+ * - ` if(!norm)`
+ * - ` if(!_PgRank_o[_idy])`
+ * - ` if(_idx_remp[_idy][x] == -1)`
+ * - ` if(n < min_nodes)`
+ * - `std::map<std::string, torch::Tensor> graph_::page_rank(torch::Tensor* edge_index, torch::Tensor* edge_scores, 
+    double alpha, double threshold, double norm_low, long timeout, int num_cls)`
+ *
+ * @note This file has been COMPLETELY documented.
+ * @note Every class, struct, function, variable, macro is listed above.
+ * @see Doxygen HTML output for full cross-references
+ */
