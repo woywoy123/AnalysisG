@@ -1,0 +1,49 @@
+/**
+ * @file multisol.h
+ * @brief Documentation for modules/nusol/tmp/multisol/include/multisol/multisol.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/tmp/multisol/include/multisol/multisol.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ * - reconstruction/matrix.h
+ * - iostream
+ * - string
+ *
+ * @section classes Classes
+ * - multisol
+ *
+ * @section structs Structures
+ * - mass_t
+ * - multisol_t
+ * - rev_t
+ * - geo_t
+ *
+ * @section functions Functions
+ * - px()
+ * - pz()
+ * - py()
+ * - geometry()
+ * - lx()
+ * - make_rt()
+ * - H()
+ * - H_tilde()
+ * - center()
+ * - normal()
+ * - dHdt_tilde()
+ * - d2Hdt2()
+ * - eigenvalues()
+ * - d2v_dt_dphi()
+ * - lz()
+ * - intersection()
+ * - v()
+ * - translate()
+ * - ly()
+ * - masses()
+ *
+ * @see multisol.h
+ * @ingroup modules
+ */

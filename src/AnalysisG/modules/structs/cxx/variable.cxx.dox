@@ -1,0 +1,15 @@
+/**
+ * @file variable.cxx
+ * @brief Implementation for variable.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/cxx/variable.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `structs/element.h`
+ *
+ * @see variable.cxx
+ */

@@ -1,0 +1,58 @@
+/**
+ * @file metric_accuracy.pyx
+ * @brief Implementation for metric_accuracy.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `metrics/accuracy/metric_accuracy.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.roc`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_AccuracyMetric AccuracyMetric
+ * - **Inherits from**: MetricTemplate
+ * - **Member Variables**:
+ *   - `tuple mx_index`
+ *   - `int x`
+ *   - `double s`
+ *   - `void get_data`
+ *   - `int epoch`
+ *   - `int kfold`
+ *   - `int ntops`
+ *   - `tuple mx`
+ *   - `string model`
+ *   - `string mode`
+ *   - `string key`
+ *   - `tools tl`
+ *   - `class AccuracyMetric`
+ *   - `ROC rc`
+ *   - `str name_`
+ *   - `string name`
+ *   - `int ep`
+ *   - `dict colx`
+ *   - `dict lines`
+ *   - `dict cols`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `Postprocessing(self)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_Postprocessing Postprocessing
+ * - **Signature**: `void Postprocessing(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see metric_accuracy.pyx
+ */

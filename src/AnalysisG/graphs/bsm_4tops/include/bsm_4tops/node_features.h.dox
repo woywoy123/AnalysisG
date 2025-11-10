@@ -1,0 +1,87 @@
+/**
+ * @file node_features.h
+ * @brief Implementation for node_features.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `graphs/bsm_4tops/include/bsm_4tops/node_features.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/event_template.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_charge charge
+ * - **Signature**: `void charge(double* o, particle_template* p)`
+ * - **Parameters**:
+ *   - `o` (double*)
+ *   - `p` (particle_template*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_energy energy
+ * - **Signature**: `void energy(double* o, particle_template* p)`
+ * - **Parameters**:
+ *   - `o` (double*)
+ *   - `p` (particle_template*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_eta eta
+ * - **Signature**: `void eta(double* o, particle_template* p)`
+ * - **Parameters**:
+ *   - `o` (double*)
+ *   - `p` (particle_template*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_is_bquark is_bquark
+ * - **Signature**: `void is_bquark(int* o, particle_template* p)`
+ * - **Parameters**:
+ *   - `o` (int*)
+ *   - `p` (particle_template*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_is_lepton is_lepton
+ * - **Signature**: `void is_lepton(int* o, particle_template* p)`
+ * - **Parameters**:
+ *   - `o` (int*)
+ *   - `p` (particle_template*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_is_neutrino is_neutrino
+ * - **Signature**: `void is_neutrino(int* o, particle_template* p)`
+ * - **Parameters**:
+ *   - `o` (int*)
+ *   - `p` (particle_template*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_phi phi
+ * - **Signature**: `void phi(double* o, particle_template* p)`
+ * - **Parameters**:
+ *   - `o` (double*)
+ *   - `p` (particle_template*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_pt pt
+ * - **Signature**: `void pt(double* o, particle_template* p)`
+ * - **Parameters**:
+ *   - `o` (double*)
+ *   - `p` (particle_template*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_res_node res_node
+ * - **Signature**: `void res_node(int* o, particle_template* p)`
+ * - **Parameters**:
+ *   - `o` (int*)
+ *   - `p` (particle_template*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_top_node top_node
+ * - **Signature**: `void top_node(int* o, particle_template* p)`
+ * - **Parameters**:
+ *   - `o` (int*)
+ *   - `p` (particle_template*)
+ * - **Returns**: `void`
+ *
+ * @see node_features.h
+ */

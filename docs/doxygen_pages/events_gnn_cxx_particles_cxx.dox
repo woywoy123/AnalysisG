@@ -1,0 +1,19 @@
+/**
+ * @file particles.cxx
+ * @brief Documentation for events/gnn/cxx/particles.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/gnn/cxx/particles.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - gnn-particles.h
+ *
+ * @section functions Functions
+ * - x()
+ * - particle_gnn()
+ *
+ * @see particles.cxx
+ * @ingroup events
+ */

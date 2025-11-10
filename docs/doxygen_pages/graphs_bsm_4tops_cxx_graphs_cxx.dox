@@ -1,0 +1,30 @@
+/**
+ * @file graphs.cxx
+ * @brief Documentation for graphs/bsm_4tops/cxx/graphs.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `graphs/bsm_4tops/cxx/graphs.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - bsm_4tops/graph_features.h
+ * - bsm_4tops/node_features.h
+ * - bsm_4tops/edge_features.h
+ * - bsm_4tops/graphs.h
+ * - bsm_4tops/event.h
+ *
+ * @section functions Functions
+ * - graph_tops()
+ * - graph_detector()
+ * - graph_truthjets_nonu()
+ * - graph_jets()
+ * - graph_children()
+ * - graph_jets_detector_lep()
+ * - graph_truthjets()
+ * - x()
+ * - graph_jets_nonu()
+ *
+ * @see graphs.cxx
+ * @ingroup graphs
+ */

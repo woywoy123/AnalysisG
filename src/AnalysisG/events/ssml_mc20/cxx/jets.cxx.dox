@@ -1,0 +1,15 @@
+/**
+ * @file jets.cxx
+ * @brief Implementation for jets.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `events/ssml_mc20/cxx/jets.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `particles.h`
+ *
+ * @see jets.cxx
+ */

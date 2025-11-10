@@ -1,0 +1,183 @@
+/**
+ * @file analysis.h
+ * @brief Implementation for analysis.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/analysis/include/AnalysisG/analysis.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `generators/dataloader.h`
+ * - `generators/optimizer.h`
+ * - `generators/sampletracer.h`
+ * - `io/io.h`
+ * - `string`
+ * - `structs/settings.h`
+ * - `templates/event_template.h`
+ * - `templates/graph_template.h`
+ * - `templates/metric_template.h`
+ * - `templates/model_template.h`
+ * - `templates/selection_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_analysis analysis
+ *
+ * @section functions Functions
+ *
+ * @subsection func_add_content add_content
+ * - **Signature**: `int add_content(auto std::map<std::string, torch::Tensor*>* data, std::vector<variable_t>* content, int index, std::...)`
+ * - **Parameters**:
+ *   - `std::map<std::string` (auto)
+ *   - `data` (torch::Tensor*>*)
+ *   - `content` (std::vector<variable_t>*)
+ *   - `index` (int)
+ *   - `prefx` (std::string)
+ *   - `nullptr` (TTree* tt =)
+ * - **Returns**: `int`
+ *
+ * @subsection func_add_event_template add_event_template
+ * - **Signature**: `void add_event_template(event_template* ev, std::string label)`
+ * - **Parameters**:
+ *   - `ev` (event_template*)
+ *   - `label` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_graph_template add_graph_template
+ * - **Signature**: `void add_graph_template(graph_template* gr, std::string label)`
+ * - **Parameters**:
+ *   - `gr` (graph_template*)
+ *   - `label` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_metric_template add_metric_template
+ * - **Signature**: `void add_metric_template(metric_template* mx, model_template* mdl)`
+ * - **Parameters**:
+ *   - `mx` (metric_template*)
+ *   - `mdl` (model_template*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_model add_model
+ * - **Signature**: `void add_model(model_template* model, optimizer_params_t* op, std::string run_name)`
+ * - **Parameters**:
+ *   - `model` (model_template*)
+ *   - `op` (optimizer_params_t*)
+ *   - `run_name` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_samples add_samples
+ * - **Signature**: `void add_samples(std::string path, std::string label)`
+ * - **Parameters**:
+ *   - `path` (std::string)
+ *   - `label` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_selection_template add_selection_template
+ * - **Signature**: `void add_selection_template(selection_template* sel)`
+ * - **Parameters**:
+ *   - `sel` (selection_template*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_attach_threads attach_threads
+ * - **Signature**: `void attach_threads()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_build_dataloader build_dataloader
+ * - **Signature**: `void build_dataloader(bool training)`
+ * - **Parameters**:
+ *   - `training` (bool)
+ * - **Returns**: `void`
+ *
+ * @subsection func_build_events build_events
+ * - **Signature**: `void build_events()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_build_graphs build_graphs
+ * - **Signature**: `void build_graphs()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_build_inference build_inference
+ * - **Signature**: `void build_inference()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_build_metric build_metric
+ * - **Signature**: `bool build_metric()`
+ * - **Returns**: `bool`
+ *
+ * @subsection func_build_metric_folds build_metric_folds
+ * - **Signature**: `void build_metric_folds()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_build_model_session build_model_session
+ * - **Signature**: `void build_model_session()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_build_project build_project
+ * - **Signature**: `void build_project()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_build_selections build_selections
+ * - **Signature**: `void build_selections()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_check_cache check_cache
+ * - **Signature**: `void check_cache()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_execution execution
+ * - **Signature**: `void execution(model_template* mdx, model_settings_t mds, std::vector<graph_t*>* data, size_t* prg, std::string out...)`
+ * - **Parameters**:
+ *   - `mdx` (model_template*)
+ *   - `mds` (model_settings_t)
+ *   - `data` (std::vector<graph_t*>*)
+ *   - `prg` (size_t*)
+ *   - `output` (std::string)
+ *   - `content` (std::vector<variable_t>*)
+ *   - `msg` (std::string*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_execution_metric execution_metric
+ * - **Signature**: `void execution_metric(metric_t* mt, size_t* prg, std::string* msg)`
+ * - **Parameters**:
+ *   - `mt` (metric_t*)
+ *   - `prg` (size_t*)
+ *   - `msg` (std::string*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_fetchtags fetchtags
+ * - **Signature**: `void fetchtags()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_flush flush
+ * - **Signature**: `void flush(auto std::map<std::string, g*>* data)`
+ * - **Parameters**:
+ *   - `std::map<std::string` (auto)
+ *   - `data` (g*>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_initialize_loop initialize_loop
+ * - **Signature**: `void initialize_loop(optimizer* op, int k, model_template* model, optimizer_params_t* config, model_report** rep)`
+ * - **Parameters**:
+ *   - `op` (optimizer*)
+ *   - `k` (int)
+ *   - `model` (model_template*)
+ *   - `config` (optimizer_params_t*)
+ *   - `rep` (model_report**)
+ * - **Returns**: `void`
+ *
+ * @subsection func_safe_clone safe_clone
+ * - **Signature**: `void safe_clone(auto std::map<std::string, g*>* mp, g* in)`
+ * - **Parameters**:
+ *   - `std::map<std::string` (auto)
+ *   - `mp` (g*>*)
+ *   - `in` (g*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_start start
+ * - **Signature**: `void start()`
+ * - **Returns**: `void`
+ *
+ * @see analysis.h
+ */

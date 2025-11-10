@@ -1,0 +1,24 @@
+/**
+ * @file node_features.h
+ * @brief Documentation for graphs/ssml_mc20/include/ssml_mc20/node_features.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `graphs/ssml_mc20/include/ssml_mc20/node_features.h`
+ * 
+ * @section functions Functions
+ * - energy()
+ * - is_bquark()
+ * - top_node()
+ * - res_node()
+ * - if()
+ * - is_lepton()
+ * - is_neutrino()
+ * - phi()
+ * - eta()
+ * - pt()
+ *
+ * @see node_features.h
+ * @ingroup graphs
+ */

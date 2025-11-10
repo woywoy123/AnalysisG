@@ -1,0 +1,21 @@
+/**
+ * @file pyc.h
+ * @brief Implementation for pyc.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/interface/include/pyc/pyc.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/particle_template.h`
+ * - `torch/all.h`
+ * - `tuple`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_neutrino neutrino
+ *
+ * @see pyc.h
+ */

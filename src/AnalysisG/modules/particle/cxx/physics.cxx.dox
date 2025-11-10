@@ -1,0 +1,15 @@
+/**
+ * @file physics.cxx
+ * @brief Implementation for physics.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/particle/cxx/physics.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/particle_template.h`
+ *
+ * @see physics.cxx
+ */

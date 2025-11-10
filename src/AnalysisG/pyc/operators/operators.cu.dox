@@ -1,0 +1,17 @@
+/**
+ * @file operators.cu
+ * @brief Implementation for operators.cu
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/operators/operators.cu`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `operators/base.cuh`
+ * - `operators/operators.cuh`
+ * - `utils/utils.cuh`
+ *
+ * @see operators.cu
+ */

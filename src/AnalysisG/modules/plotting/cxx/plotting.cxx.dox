@@ -1,0 +1,16 @@
+/**
+ * @file plotting.cxx
+ * @brief Implementation for plotting.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/plotting/cxx/plotting.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `cmath`
+ * - `plotting/plotting.h`
+ *
+ * @see plotting.cxx
+ */

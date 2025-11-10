@@ -1,0 +1,119 @@
+/**
+ * @file dataloader.h
+ * @brief Implementation for dataloader.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/dataloader/include/generators/dataloader.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `algorithm`
+ * - `c10/cuda/CUDACachingAllocator.h`
+ * - `cuda.h`
+ * - `map`
+ * - `notification/notification.h`
+ * - `random`
+ * - `structs/property.h`
+ * - `structs/settings.h`
+ * - `templates/graph_template.h`
+ * - `tools/tools.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_analysis analysis
+ *
+ * @subsection class_dataloader dataloader
+ *
+ * @subsection class_model_template model_template
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_model_report model_report
+ *
+ * @section functions Functions
+ *
+ * @subsection func_clean_data_elements clean_data_elements
+ * - **Signature**: `void clean_data_elements(auto std::map<std::string, int>** data_map, auto std::vector<std::map<std::string, int>*>* loader_ma...)`
+ * - **Parameters**:
+ *   - `std::map<std::string` (auto)
+ *   - `data_map` (int>**)
+ *   - `std::vector<std::map<std::string` (auto)
+ *   - `loader_map` (int>*>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_cuda_memory_server cuda_memory_server
+ * - **Signature**: `void cuda_memory_server()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_datatransfer datatransfer
+ * - **Signature**: `void datatransfer(torch::TensorOptions* op, size_t* num_events = nullptr, size_t* prg_events = nullptr)`
+ * - **Parameters**:
+ *   - `op` (torch::TensorOptions*)
+ *   - `nullptr` (size_t* num_events =)
+ *   - `nullptr` (size_t* prg_events =)
+ * - **Returns**: `void`
+ *
+ * @subsection func_dump_dataset dump_dataset
+ * - **Signature**: `void dump_dataset(std::string path)`
+ * - **Parameters**:
+ *   - `path` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_dump_graphs dump_graphs
+ * - **Signature**: `bool dump_graphs(std::string path = "./", int threads = 10)`
+ * - **Parameters**:
+ *   - `"./"` (std::string path =)
+ *   - `10` (int threads =)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_extract_data extract_data
+ * - **Signature**: `void extract_data(graph_t* gr)`
+ * - **Parameters**:
+ *   - `gr` (graph_t*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_generate_kfold_set generate_kfold_set
+ * - **Signature**: `void generate_kfold_set(int k)`
+ * - **Parameters**:
+ *   - `k` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_generate_test_set generate_test_set
+ * - **Signature**: `void generate_test_set(float percentage = 50)`
+ * - **Parameters**:
+ *   - `50` (float percentage =)
+ * - **Returns**: `void`
+ *
+ * @subsection func_restore_dataset restore_dataset
+ * - **Signature**: `bool restore_dataset(std::string path)`
+ * - **Parameters**:
+ *   - `path` (std::string)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_restore_graphs restore_graphs
+ * - **Signature**: `void restore_graphs(std::vector<std::string> paths, int threads)`
+ * - **Parameters**:
+ *   - `paths` (std::vector<std::string>)
+ *   - `threads` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_safe_delete safe_delete
+ * - **Signature**: `void safe_delete(std::vector<graph_t*>* data)`
+ * - **Parameters**:
+ *   - `data` (std::vector<graph_t*>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_shuffle shuffle
+ * - **Signature**: `void shuffle(std::vector<int>* idx)`
+ * - **Parameters**:
+ *   - `idx` (std::vector<int>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_start_cuda_server start_cuda_server
+ * - **Signature**: `void start_cuda_server()`
+ * - **Returns**: `void`
+ *
+ * @see dataloader.h
+ */

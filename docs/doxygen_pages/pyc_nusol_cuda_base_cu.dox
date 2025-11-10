@@ -1,0 +1,15 @@
+/**
+ * @file base.cu
+ * @brief Documentation for pyc/nusol/cuda/base.cu
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/nusol/cuda/base.cu`
+ * 
+ * @section dependencies Dependencies
+ * - nusol/base.cuh
+ *
+ * @see base.cu
+ * @ingroup pyc
+ */

@@ -1,0 +1,24 @@
+/**
+ * @file nu.cu
+ * @brief Documentation for pyc/nusol/cuda/nu.cu
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/nusol/cuda/nu.cu`
+ * 
+ * @section dependencies Dependencies
+ * - nusol/base.cuh
+ * - utils/utils.cuh
+ * - physics/physics.cuh
+ * - operators/operators.cuh
+ * - transform/transform.cuh
+ *
+ * @section functions Functions
+ * - _chi2()
+ * - x()
+ * - _nu_init_()
+ *
+ * @see nu.cu
+ * @ingroup pyc
+ */

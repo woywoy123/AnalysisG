@@ -1,0 +1,22 @@
+/**
+ * @file grift.h
+ * @brief Documentation for models/grift/include/models/grift.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `models/grift/include/models/grift.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/model_template.h
+ *
+ * @section classes Classes
+ * - grift
+ *
+ * @section functions Functions
+ * - message()
+ * - node_encode()
+ *
+ * @see grift.h
+ * @ingroup models
+ */

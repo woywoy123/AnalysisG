@@ -1,0 +1,15 @@
+/**
+ * @file polar.cxx
+ * @brief Implementation for polar.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/particle/cxx/polar.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/particle_template.h`
+ *
+ * @see polar.cxx
+ */

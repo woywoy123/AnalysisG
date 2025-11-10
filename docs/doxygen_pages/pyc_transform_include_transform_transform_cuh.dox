@@ -1,0 +1,27 @@
+/**
+ * @file transform.cuh
+ * @brief Documentation for pyc/transform/include/transform/transform.cuh
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/transform/include/transform/transform.cuh`
+ * 
+ * @section dependencies Dependencies
+ * - torch/torch.h
+ *
+ * @section functions Functions
+ * - Eta()
+ * - Pz()
+ * - Py()
+ * - Px()
+ * - PtEtaPhi()
+ * - PtEtaPhiE()
+ * - PxPyPz()
+ * - Pt()
+ * - PxPyPzE()
+ * - Phi()
+ *
+ * @see transform.cuh
+ * @ingroup pyc
+ */

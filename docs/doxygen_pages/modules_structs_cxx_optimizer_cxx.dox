@@ -1,0 +1,15 @@
+/**
+ * @file optimizer.cxx
+ * @brief Documentation for modules/structs/cxx/optimizer.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/cxx/optimizer.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - structs/optimizer.h
+ *
+ * @see optimizer.cxx
+ * @ingroup modules
+ */

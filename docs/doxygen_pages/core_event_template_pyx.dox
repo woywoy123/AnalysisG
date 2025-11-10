@@ -1,0 +1,30 @@
+/**
+ * @file event_template.pyx
+ * @brief Documentation for core/event_template.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/event_template.pyx`
+ * 
+ * @section classes Classes
+ * - EventTemplate
+ *
+ * @section functions Functions
+ * - Tree()
+ * - __cinit__()
+ * - __dealloc__()
+ * - __eq__()
+ * - weight()
+ * - Name()
+ * - __init__()
+ * - index()
+ * - __name__()
+ * - Branches()
+ * - is_self()
+ * - Trees()
+ * - __hash__()
+ *
+ * @see event_template.pyx
+ * @ingroup core
+ */

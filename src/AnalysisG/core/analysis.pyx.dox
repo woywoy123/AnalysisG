@@ -1,0 +1,337 @@
+/**
+ * @file analysis.pyx
+ * @brief Implementation for analysis.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/analysis.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.analysis`
+ * - `AnalysisG.core.event_template`
+ * - `AnalysisG.core.graph_template`
+ * - `AnalysisG.core.lossfx`
+ * - `AnalysisG.core.meta`
+ * - `AnalysisG.core.metric_template`
+ * - `AnalysisG.core.model_template`
+ * - `AnalysisG.core.selection_template`
+ * - `AnalysisG.core.tools`
+ * - `analysis`
+ * - `bool`
+ * - `libcpp`
+ * - `libcpp.map`
+ * - `libcpp.string`
+ * - `pair`
+ * - `sleep`
+ * - `string`
+ * - `time`
+ * - `tqdm`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_Analysis Analysis
+ * - **Member Variables**:
+ *   - `class Analysis`
+ *   - `string rm`
+ *   - `string rn`
+ *   - `str prj`
+ *   - `dict bars`
+ *   - `bool is_ok`
+ *   - `SelectionTemplate i`
+ *   - `Meta data`
+ *   - `int l`
+ *   - `list folds`
+ *   - `MetaLookup mlt`
+ * - **Methods**:
+ *   - `factory(title, total)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `AddSamples(self, str path, str label)`
+ *   - `AddEvent(self, EventTemplate ev, str label)`
+ *   - `AddGraph(self, GraphTemplate ev, str label)`
+ *   - `AddSelection(self, SelectionTemplate selc)`
+ *   - `AddMetric(self, MetricTemplate mex, ModelTemplate mdl)`
+ *   - `AddModel(self, ModelTemplate model, OptimizerConfig op, str run_name)`
+ *   - `AddModelInference(self, ModelTemplate model, str run_name = "run_name")`
+ *   - `Start(self)`
+ *   - `SumOfWeightsTreeName(self)`
+ *   - `SumOfWeightsTreeName(self, str val)`
+ *   - `OutputPath(self)`
+ *   - `OutputPath(self, str path)`
+ *   - `kFolds(self)`
+ *   - `kFolds(self, int k)`
+ *   - `kFold(self)`
+ *   - `kFold(self, val)`
+ *   - `GetMetaData(self)`
+ *   - `Epochs(self)`
+ *   - `Epochs(self, int k)`
+ *   - `NumExamples(self)`
+ *   - `NumExamples(self, int k)`
+ *   - `TrainingDataset(self)`
+ *   - `TrainingDataset(self, str path)`
+ *   - `TrainSize(self)`
+ *   - `TrainSize(self, float k)`
+ *   - `Training(self)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_AddEvent AddEvent
+ * - **Signature**: `void AddEvent(auto self, auto EventTemplate ev, auto str label)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `EventTemplate ev` (auto)
+ *   - `str label` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_AddGraph AddGraph
+ * - **Signature**: `void AddGraph(auto self, auto GraphTemplate ev, auto str label)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `GraphTemplate ev` (auto)
+ *   - `str label` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_AddMetric AddMetric
+ * - **Signature**: `void AddMetric(auto self, auto MetricTemplate mex, auto ModelTemplate mdl)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `MetricTemplate mex` (auto)
+ *   - `ModelTemplate mdl` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_AddModel AddModel
+ * - **Signature**: `void AddModel(auto self, auto ModelTemplate model, auto OptimizerConfig op, auto str run_name)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `ModelTemplate model` (auto)
+ *   - `OptimizerConfig op` (auto)
+ *   - `str run_name` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_AddModelInference AddModelInference
+ * - **Signature**: `void AddModelInference(auto self, auto ModelTemplate model, auto str run_name = "run_name")`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `ModelTemplate model` (auto)
+ *   - `str run_name = "run_name"` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_AddSamples AddSamples
+ * - **Signature**: `void AddSamples(auto self, auto str path, auto str label)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str path` (auto)
+ *   - `str label` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_AddSelection AddSelection
+ * - **Signature**: `void AddSelection(auto self, auto SelectionTemplate selc)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `SelectionTemplate selc` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_BatchSize BatchSize
+ * - **Signature**: `void BatchSize(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_BuildCache BuildCache
+ * - **Signature**: `void BuildCache(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_ContinueTraining ContinueTraining
+ * - **Signature**: `void ContinueTraining(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_DebugMode DebugMode
+ * - **Signature**: `void DebugMode(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Epochs Epochs
+ * - **Signature**: `void Epochs(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Evaluation Evaluation
+ * - **Signature**: `void Evaluation(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_FetchMeta FetchMeta
+ * - **Signature**: `void FetchMeta(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_GetMetaData GetMetaData
+ * - **Signature**: `void GetMetaData(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_GraphCache GraphCache
+ * - **Signature**: `void GraphCache(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_MaxRange MaxRange
+ * - **Signature**: `void MaxRange(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_NumExamples NumExamples
+ * - **Signature**: `void NumExamples(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_OutputPath OutputPath
+ * - **Signature**: `void OutputPath(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_PreTagEvents PreTagEvents
+ * - **Signature**: `void PreTagEvents(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_SaveSelectionToROOT SaveSelectionToROOT
+ * - **Signature**: `void SaveSelectionToROOT(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_SetLogY SetLogY
+ * - **Signature**: `void SetLogY(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Start Start
+ * - **Signature**: `void Start(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_SumOfWeightsTreeName SumOfWeightsTreeName
+ * - **Signature**: `void SumOfWeightsTreeName(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Targets Targets
+ * - **Signature**: `void Targets(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Threads Threads
+ * - **Signature**: `void Threads(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_TrainSize TrainSize
+ * - **Signature**: `void TrainSize(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Training Training
+ * - **Signature**: `void Training(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_TrainingDataset TrainingDataset
+ * - **Signature**: `void TrainingDataset(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Validation Validation
+ * - **Signature**: `void Validation(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_VarEnergy VarEnergy
+ * - **Signature**: `void VarEnergy(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_VarEta VarEta
+ * - **Signature**: `void VarEta(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_VarPhi VarPhi
+ * - **Signature**: `void VarPhi(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_VarPt VarPt
+ * - **Signature**: `void VarPt(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_factory factory
+ * - **Signature**: `void factory(auto title, auto total)`
+ * - **Parameters**:
+ *   - `title` (auto)
+ *   - `total` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_kFold kFold
+ * - **Signature**: `void kFold(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_kFolds kFolds
+ * - **Signature**: `void kFolds(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_nBins nBins
+ * - **Signature**: `void nBins(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see analysis.pyx
+ */

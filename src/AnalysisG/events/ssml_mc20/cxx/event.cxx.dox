@@ -1,0 +1,15 @@
+/**
+ * @file event.cxx
+ * @brief Implementation for event.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `events/ssml_mc20/cxx/event.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `event.h`
+ *
+ * @see event.cxx
+ */

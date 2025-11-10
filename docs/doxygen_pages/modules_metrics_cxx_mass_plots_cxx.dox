@@ -1,0 +1,25 @@
+/**
+ * @file mass_plots.cxx
+ * @brief Documentation for modules/metrics/cxx/mass_plots.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/metrics/cxx/mass_plots.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - metrics/metrics.h
+ * - TRatioPlot.h
+ * - THStack.h
+ * - c10/cuda/CUDAStream.h
+ * - c10/cuda/CUDAGuard.h
+ *
+ * @section functions Functions
+ * - TRatioPlot()
+ * - TCanvas()
+ * - TLegend()
+ * - x()
+ *
+ * @see mass_plots.cxx
+ * @ingroup modules
+ */

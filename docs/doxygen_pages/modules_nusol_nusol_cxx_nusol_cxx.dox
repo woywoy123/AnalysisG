@@ -1,0 +1,21 @@
+/**
+ * @file nusol.cxx
+ * @brief Documentation for modules/nusol/nusol/cxx/nusol.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/nusol/cxx/nusol.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - reconstruction/nusol.h
+ * - ellipse/ellipse.h
+ * - conuix/conuix.h
+ *
+ * @section functions Functions
+ * - conuix()
+ * - ellipse()
+ *
+ * @see nusol.cxx
+ * @ingroup modules
+ */

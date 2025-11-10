@@ -1,0 +1,15 @@
+/**
+ * @file tools.cxx
+ * @brief Implementation for tools.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/tools/cxx/tools.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `tools/tools.h`
+ *
+ * @see tools.cxx
+ */

@@ -1,0 +1,29 @@
+/**
+ * @file nusol.h
+ * @brief Documentation for modules/nusol/nusol/include/reconstruction/nusol.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/nusol/include/reconstruction/nusol.h`
+ * 
+ * @section dependencies Dependencies
+ * - tools/tools.h
+ * - notification/notification.h
+ * - templates/particle_template.h
+ *
+ * @section classes Classes
+ * - conuix
+ * - nusol_enum
+ * - ellipse
+ * - nusol
+ *
+ * @section structs Structures
+ * - nusol_t
+ *
+ * @section functions Functions
+ * - solve()
+ *
+ * @see nusol.h
+ * @ingroup modules
+ */

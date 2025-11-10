@@ -1,0 +1,24 @@
+/**
+ * @file optimizer_build.cxx
+ * @brief Implementation for optimizer_build.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/analysis/optimizer_build.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG/analysis.h`
+ * - `ROOT/RDataFrame.hxx`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_k k
+ * - **Signature**: `int k(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see optimizer_build.cxx
+ */

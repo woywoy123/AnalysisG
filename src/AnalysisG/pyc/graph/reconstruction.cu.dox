@@ -1,0 +1,40 @@
+/**
+ * @file reconstruction.cu
+ * @brief Implementation for reconstruction.cu
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/graph/reconstruction.cu`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `graph/pagerank.cuh`
+ * - `physics/physics.cuh`
+ * - `utils/atomic.cuh`
+ * - `utils/utils.cuh`
+ *
+ * @section functions Functions
+ *
+ * @subsection func__find_unique _find_unique
+ * - **Signature**: `void _find_unique(auto torch::PackedTensorAccessor64<long, auto 1, torch::RestrictPtrTraits> node_index, auto torch::P...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<long` (auto)
+ *   - `1` (auto)
+ *   - `node_index` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (auto)
+ *   - `3` (auto)
+ *   - `count` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `pmc` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `2` (auto)
+ *   - `pgrc` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `2` (auto)
+ *   - `pgrk` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @see reconstruction.cu
+ */

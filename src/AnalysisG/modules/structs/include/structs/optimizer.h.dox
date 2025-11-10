@@ -1,0 +1,30 @@
+/**
+ * @file optimizer.h
+ * @brief Implementation for optimizer.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/include/structs/optimizer.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `string`
+ * - `structs/enums.h`
+ * - `structs/property.h`
+ * - `vector`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_optimizer_params_t optimizer_params_t
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_loss_opt loss_opt
+ *
+ * @section enums Enumerations
+ *
+ * - `fx`
+ *
+ * @see optimizer.h
+ */

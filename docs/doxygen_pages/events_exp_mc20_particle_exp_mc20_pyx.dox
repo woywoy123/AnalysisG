@@ -1,0 +1,26 @@
+/**
+ * @file particle_exp_mc20.pyx
+ * @brief Documentation for events/exp_mc20/particle_exp_mc20.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/exp_mc20/particle_exp_mc20.pyx`
+ * 
+ * @section classes Classes
+ * - Jet
+ * - Muon
+ * - Top
+ * - Child
+ * - PhysicsTruth
+ * - PhysicsDetector
+ * - Electron
+ *
+ * @section functions Functions
+ * - __dealloc__()
+ * - __cinit__()
+ * - __init__()
+ *
+ * @see particle_exp_mc20.pyx
+ * @ingroup events
+ */

@@ -1,0 +1,52 @@
+/**
+ * @file memory.h
+ * @brief Implementation for memory.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/conuix/include/conuix/memory.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_copy copy
+ * - **Signature**: `void copy(long double** from, long double** to, const int dim_i, const int dim_j)`
+ * - **Parameters**:
+ *   - `from` (long double**)
+ *   - `to` (long double**)
+ *   - `dim_i` (const int)
+ *   - `dim_j` (const int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_opm opm
+ * - **Signature**: `void opm(long double** O, long double** A, const int dim_i, const int dim_j, const float c)`
+ * - **Parameters**:
+ *   - `O` (long double**)
+ *   - `A` (long double**)
+ *   - `dim_i` (const int)
+ *   - `dim_j` (const int)
+ *   - `c` (const float)
+ * - **Returns**: `void`
+ *
+ * @subsection func_ops ops
+ * - **Signature**: `void ops(long double** O, long double** A, long double** B, const int dim_i, const int dim_j, const float sig...)`
+ * - **Parameters**:
+ *   - `O` (long double**)
+ *   - `A` (long double**)
+ *   - `B` (long double**)
+ *   - `dim_i` (const int)
+ *   - `dim_j` (const int)
+ *   - `sign` (const float)
+ * - **Returns**: `void`
+ *
+ * @subsection func_opt opt
+ * - **Signature**: `void opt(long double** O, long double** A, const int dim_i, const int dim_j)`
+ * - **Parameters**:
+ *   - `O` (long double**)
+ *   - `A` (long double**)
+ *   - `dim_i` (const int)
+ *   - `dim_j` (const int)
+ * - **Returns**: `void`
+ *
+ * @see memory.h
+ */

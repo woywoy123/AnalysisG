@@ -1,0 +1,19 @@
+/**
+ * @file model_configuration.cxx
+ * @brief Documentation for modules/model/cxx/model_configuration.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/model/cxx/model_configuration.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/model_template.h
+ * - fstream
+ *
+ * @section functions Functions
+ * - x()
+ *
+ * @see model_configuration.cxx
+ * @ingroup modules
+ */

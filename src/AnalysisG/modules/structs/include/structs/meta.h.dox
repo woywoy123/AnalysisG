@@ -1,0 +1,24 @@
+/**
+ * @file meta.h
+ * @brief Implementation for meta.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/include/structs/meta.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `iostream`
+ * - `map`
+ * - `string`
+ * - `vector`
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_meta_t meta_t
+ *
+ * @subsection struct_weights_t weights_t
+ *
+ * @see meta.h
+ */

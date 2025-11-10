@@ -1,0 +1,44 @@
+/**
+ * @file tools.h
+ * @brief Documentation for modules/tools/include/tools/tools.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/tools/include/tools/tools.h`
+ * 
+ * @section dependencies Dependencies
+ * - iostream
+ * - string
+ * - vector
+ * - cstdint
+ * - map
+ *
+ * @section classes Classes
+ * - tools
+ *
+ * @section functions Functions
+ * - rename()
+ * - x()
+ * - min()
+ * - replace()
+ * - encode64()
+ * - put()
+ * - max()
+ * - is_file()
+ * - absolute_path()
+ * - has_string()
+ * - create_path()
+ * - ends_with()
+ * - has_value()
+ * - lower()
+ * - decode64()
+ * - unique_key()
+ * - sum()
+ * - to_string()
+ * - delete_path()
+ * - t()
+ *
+ * @see tools.h
+ * @ingroup modules
+ */

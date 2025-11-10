@@ -1,0 +1,19 @@
+/**
+ * @file conuic.cxx
+ * @brief Documentation for modules/nusol/conuix/cxx/conuic.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/conuix/cxx/conuic.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ * - conuix/conuic.h
+ *
+ * @section functions Functions
+ * - atomics_t()
+ *
+ * @see conuic.cxx
+ * @ingroup modules
+ */

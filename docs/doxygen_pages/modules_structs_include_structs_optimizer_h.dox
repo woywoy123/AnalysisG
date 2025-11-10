@@ -1,0 +1,44 @@
+/**
+ * @file optimizer.h
+ * @brief Documentation for modules/structs/include/structs/optimizer.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/include/structs/optimizer.h`
+ * 
+ * @section dependencies Dependencies
+ * - string
+ * - vector
+ * - structs/property.h
+ * - structs/enums.h
+ *
+ * @section classes Classes
+ * - optimizer_params_t
+ *
+ * @section structs Structures
+ * - loss_opt
+ *
+ * @section functions Functions
+ * - set_tolerance_change()
+ * - set_beta_hack()
+ * - set_betas()
+ * - set_nesterov()
+ * - set_max_eval()
+ * - set_dampening()
+ * - set_weight_decay()
+ * - set_amsgrad()
+ * - set_history_size()
+ * - set_lr()
+ * - set_initial_accumulator_value()
+ * - set_eps()
+ * - set_momentum()
+ * - set_max_iter()
+ * - set_centered()
+ * - set_tolerance_grad()
+ * - set_lr_decay()
+ * - set_alpha()
+ *
+ * @see optimizer.h
+ * @ingroup modules
+ */

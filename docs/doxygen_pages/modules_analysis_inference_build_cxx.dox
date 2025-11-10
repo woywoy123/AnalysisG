@@ -1,0 +1,22 @@
+/**
+ * @file inference_build.cxx
+ * @brief Documentation for modules/analysis/inference_build.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/analysis/inference_build.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - AnalysisG/analysis.h
+ * - ROOT/RDataFrame.hxx
+ * - tools/vector_cast.h
+ *
+ * @section functions Functions
+ * - i()
+ * - t()
+ * - x()
+ *
+ * @see inference_build.cxx
+ * @ingroup modules
+ */

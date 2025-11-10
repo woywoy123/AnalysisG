@@ -1,0 +1,34 @@
+/**
+ * @file nusol.cxx
+ * @brief Implementation for nusol.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/ellipse/cxx/nusol.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `ellipse/mtx.h`
+ * - `ellipse/nusol.h`
+ * - `ellipse/solvers.h`
+ * - `templates/particle_template.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_costheta costheta
+ * - **Signature**: `double costheta(wrapper* p1, wrapper* p2)`
+ * - **Parameters**:
+ *   - `p1` (wrapper*)
+ *   - `p2` (wrapper*)
+ * - **Returns**: `double`
+ *
+ * @subsection func_sintheta sintheta
+ * - **Signature**: `double sintheta(wrapper* p1, wrapper* p2)`
+ * - **Parameters**:
+ *   - `p1` (wrapper*)
+ *   - `p2` (wrapper*)
+ * - **Returns**: `double`
+ *
+ * @see nusol.cxx
+ */

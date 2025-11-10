@@ -1,0 +1,23 @@
+/**
+ * @file graph_exp_mc20.pyx
+ * @brief Documentation for graphs/exp_mc20/graph_exp_mc20.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `graphs/exp_mc20/graph_exp_mc20.pyx`
+ * 
+ * @section classes Classes
+ * - GraphDetectorLep
+ * - GraphJetsNoNu
+ * - GraphDetector
+ * - GraphJets
+ *
+ * @section functions Functions
+ * - __dealloc__()
+ * - __cinit__()
+ * - __init__()
+ *
+ * @see graph_exp_mc20.pyx
+ * @ingroup graphs
+ */

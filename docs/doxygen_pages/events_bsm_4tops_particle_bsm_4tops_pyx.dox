@@ -1,0 +1,12 @@
+/**
+ * @file particle_bsm_4tops.pyx
+ * @brief Documentation for events/bsm_4tops/particle_bsm_4tops.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/bsm_4tops/particle_bsm_4tops.pyx`
+ * 
+ * @see particle_bsm_4tops.pyx
+ * @ingroup events
+ */

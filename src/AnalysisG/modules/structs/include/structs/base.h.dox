@@ -1,0 +1,71 @@
+/**
+ * @file base.h
+ * @brief Implementation for base.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/include/structs/base.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `string`
+ * - `structs/enums.h`
+ * - `vector`
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_bsc_t bsc_t
+ *
+ * @section functions Functions
+ *
+ * @subsection func__getalt _getalt
+ * - **Signature**: `bool _getalt(g* v, g* out)`
+ * - **Parameters**:
+ *   - `v` (g*)
+ *   - `out` (g*)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_buildAll buildAll
+ * - **Signature**: `void buildAll()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_buildDict buildDict
+ * - **Signature**: `void buildDict(std::string name, std::string incl)`
+ * - **Parameters**:
+ *   - `name` (std::string)
+ *   - `incl` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_buildPCM buildPCM
+ * - **Signature**: `void buildPCM(std::string name, std::string incl, bool exl)`
+ * - **Parameters**:
+ *   - `name` (std::string)
+ *   - `incl` (std::string)
+ *   - `exl` (bool)
+ * - **Returns**: `void`
+ *
+ * @subsection func_element element
+ * - **Signature**: `bool element(std::vector<std::vector<std::vector<float>>>* el)`
+ * - **Parameters**:
+ *   - `el` (std::vector<std::vector<std::vector<float>>>*)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_flush_buffer flush_buffer
+ * - **Signature**: `void flush_buffer()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_registerInclude registerInclude
+ * - **Signature**: `void registerInclude(std::string name, bool is_abs = false)`
+ * - **Parameters**:
+ *   - `name` (std::string)
+ *   - `false` (bool is_abs =)
+ * - **Returns**: `void`
+ *
+ * @section enums Enumerations
+ *
+ * - `root_type_translate`
+ * - `type`
+ *
+ * @see base.h
+ */

@@ -1,0 +1,81 @@
+/**
+ * @file pagerank.cu
+ * @brief Implementation for pagerank.cu
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/graph/pagerank.cu`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `graph/pagerank.cuh`
+ * - `utils/atomic.cuh`
+ * - `utils/utils.cuh`
+ *
+ * @section functions Functions
+ *
+ * @subsection func__get_max_node _get_max_node
+ * - **Signature**: `void _get_max_node(const torch::PackedTensorAccessor64<long, auto 2, torch::RestrictPtrTraits> edge_inx, auto torch::Pa...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<long` (const)
+ *   - `2` (auto)
+ *   - `edge_inx` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (auto)
+ *   - `1` (auto)
+ *   - `max_node` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (auto)
+ *   - `1` (auto)
+ *   - `remap` (torch::RestrictPtrTraits>)
+ *   - `el` (const int)
+ *   - `mxn` (const long)
+ * - **Returns**: `void`
+ *
+ * @subsection func__get_remapping _get_remapping
+ * - **Signature**: `void _get_remapping(const torch::PackedTensorAccessor64<long, auto 2, torch::RestrictPtrTraits> edge_inx, const torch::P...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<long` (const)
+ *   - `2` (auto)
+ *   - `edge_inx` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (const)
+ *   - `1` (auto)
+ *   - `ev_node` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (auto)
+ *   - `1` (auto)
+ *   - `idx_map` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (auto)
+ *   - `1` (auto)
+ *   - `num_batch` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (auto)
+ *   - `1` (auto)
+ *   - `num_enode` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__page_rank _page_rank
+ * - **Signature**: `void _page_rank(const torch::PackedTensorAccessor64<long, auto 1, torch::RestrictPtrTraits> cu_xms, const torch::Pac...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<long` (const)
+ *   - `1` (auto)
+ *   - `cu_xms` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (const)
+ *   - `1` (auto)
+ *   - `cu_xme` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `edge_scores` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `2` (auto)
+ *   - `pagerank` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `2` (auto)
+ *   - `pageclus` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func_x x
+ * - **Signature**: `size_t x(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `size_t`
+ *
+ * @see pagerank.cu
+ */

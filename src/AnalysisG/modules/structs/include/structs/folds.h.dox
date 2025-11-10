@@ -1,0 +1,29 @@
+/**
+ * @file folds.h
+ * @brief Implementation for folds.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/include/structs/folds.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `string`
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_folds_t folds_t
+ *
+ * @subsection struct_graph_hdf5 graph_hdf5
+ *
+ * @subsection struct_graph_hdf5_w graph_hdf5_w
+ *
+ * @section functions Functions
+ *
+ * @subsection func_flush_data flush_data
+ * - **Signature**: `void flush_data()`
+ * - **Returns**: `void`
+ *
+ * @see folds.h
+ */

@@ -1,0 +1,22 @@
+/**
+ * @file event.h
+ * @brief Documentation for events/exp_mc20/include/exp_mc20/event.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/exp_mc20/include/exp_mc20/event.h`
+ * 
+ * @section dependencies Dependencies
+ * - exp_mc20/particles.h
+ * - templates/event_template.h
+ *
+ * @section classes Classes
+ * - exp_mc20
+ *
+ * @section functions Functions
+ * - vectorize()
+ *
+ * @see event.h
+ * @ingroup events
+ */

@@ -1,0 +1,18 @@
+/**
+ * @file nusol.h
+ * @brief Implementation for nusol.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/nusol/include/nusol/nusol.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `map`
+ * - `string`
+ * - `torch/torch.h`
+ * - `tuple`
+ *
+ * @see nusol.h
+ */

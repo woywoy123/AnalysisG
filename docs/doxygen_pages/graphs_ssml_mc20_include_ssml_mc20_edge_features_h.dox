@@ -1,0 +1,21 @@
+/**
+ * @file edge_features.h
+ * @brief Documentation for graphs/ssml_mc20/include/ssml_mc20/edge_features.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `graphs/ssml_mc20/include/ssml_mc20/edge_features.h`
+ * 
+ * @section functions Functions
+ * - m_res_edge()
+ * - y()
+ * - res_edge()
+ * - if()
+ * - m_top_edge()
+ * - x()
+ * - top_edge()
+ *
+ * @see edge_features.h
+ * @ingroup graphs
+ */

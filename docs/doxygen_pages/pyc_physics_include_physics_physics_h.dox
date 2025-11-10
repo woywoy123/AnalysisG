@@ -1,0 +1,27 @@
+/**
+ * @file physics.h
+ * @brief Documentation for pyc/physics/include/physics/physics.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/physics/include/physics/physics.h`
+ * 
+ * @section dependencies Dependencies
+ * - torch/torch.h
+ *
+ * @section functions Functions
+ * - Beta2()
+ * - Mt2()
+ * - P()
+ * - Mt()
+ * - Beta()
+ * - P2()
+ * - M()
+ * - Theta()
+ * - M2()
+ * - DeltaR()
+ *
+ * @see physics.h
+ * @ingroup pyc
+ */

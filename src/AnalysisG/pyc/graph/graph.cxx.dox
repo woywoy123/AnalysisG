@@ -1,0 +1,30 @@
+/**
+ * @file graph.cxx
+ * @brief Implementation for graph.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/graph/graph.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `graph/graph.h`
+ * - `utils/utils.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_i i
+ * - **Signature**: `int i(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_k k
+ * - **Signature**: `int k(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see graph.cxx
+ */

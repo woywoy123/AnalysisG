@@ -1,0 +1,37 @@
+/**
+ * @file particle_template.pyx
+ * @brief Documentation for core/particle_template.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/particle_template.pyx`
+ * 
+ * @section classes Classes
+ * - ParticleTemplate
+ *
+ * @section functions Functions
+ * - __cinit__()
+ * - px()
+ * - py()
+ * - pz()
+ * - Type()
+ * - Children()
+ * - index()
+ * - LeptonicDecay()
+ * - Mass()
+ * - is_b()
+ * - pt()
+ * - __iadd__()
+ * - is_lep()
+ * - __eq__()
+ * - symbol()
+ * - nudef()
+ * - __reduce__()
+ * - phi()
+ * - __add__()
+ * - pdgid()
+ *
+ * @see particle_template.pyx
+ * @ingroup core
+ */

@@ -1,0 +1,93 @@
+/**
+ * @file matrix.cxx
+ * @brief Implementation for matrix.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/tmp/conuix/cxx/matrix.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `conics/matrix.h`
+ * - `iomanip`
+ * - `iostream`
+ * - `math.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_copy copy
+ * - **Signature**: `void copy(double** from, double** to, int dim_i, int dim_j)`
+ * - **Parameters**:
+ *   - `from` (double**)
+ *   - `to` (double**)
+ *   - `dim_i` (int)
+ *   - `dim_j` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_flush flush
+ * - **Signature**: `void flush(double** dmx, int dim_i)`
+ * - **Parameters**:
+ *   - `dmx` (double**)
+ *   - `dim_i` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_i i
+ * - **Signature**: `int i(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_j j
+ * - **Signature**: `int j(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_k k
+ * - **Signature**: `int k(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_ops_add ops_add
+ * - **Signature**: `void ops_add(double** O, double** A, double** B, int dim_i, int dim_j)`
+ * - **Parameters**:
+ *   - `O` (double**)
+ *   - `A` (double**)
+ *   - `B` (double**)
+ *   - `dim_i` (int)
+ *   - `dim_j` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_ops_mul ops_mul
+ * - **Signature**: `void ops_mul(double** O, double** A, double s, int dim_i, int dim_j)`
+ * - **Parameters**:
+ *   - `O` (double**)
+ *   - `A` (double**)
+ *   - `s` (double)
+ *   - `dim_i` (int)
+ *   - `dim_j` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_ops_sub ops_sub
+ * - **Signature**: `void ops_sub(double** O, double** A, double** B, int dim_i, int dim_j)`
+ * - **Parameters**:
+ *   - `O` (double**)
+ *   - `A` (double**)
+ *   - `B` (double**)
+ *   - `dim_i` (int)
+ *   - `dim_j` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_ops_trs ops_trs
+ * - **Signature**: `void ops_trs(double** O, double** A, int dim_i, int dim_j)`
+ * - **Parameters**:
+ *   - `O` (double**)
+ *   - `A` (double**)
+ *   - `dim_i` (int)
+ *   - `dim_j` (int)
+ * - **Returns**: `void`
+ *
+ * @see matrix.cxx
+ */

@@ -1,0 +1,20 @@
+/**
+ * @file metrics.cxx
+ * @brief Implementation for metrics.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/metrics/cxx/metrics.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `TError.h`
+ * - `metrics/metrics.h`
+ *
+ * @section enums Enumerations
+ *
+ * - `mode`
+ *
+ * @see metrics.cxx
+ */

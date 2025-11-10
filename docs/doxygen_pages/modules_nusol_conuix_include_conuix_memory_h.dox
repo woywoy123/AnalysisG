@@ -1,0 +1,18 @@
+/**
+ * @file memory.h
+ * @brief Documentation for modules/nusol/conuix/include/conuix/memory.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/conuix/include/conuix/memory.h`
+ * 
+ * @section functions Functions
+ * - copy()
+ * - opm()
+ * - opt()
+ * - ops()
+ *
+ * @see memory.h
+ * @ingroup modules
+ */

@@ -1,0 +1,15 @@
+/**
+ * @file properties.cxx
+ * @brief Documentation for modules/graph/cxx/properties.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/graph/cxx/properties.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/graph_template.h
+ *
+ * @see properties.cxx
+ * @ingroup modules
+ */

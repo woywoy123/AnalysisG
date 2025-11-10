@@ -1,0 +1,42 @@
+/**
+ * @file pyc.h
+ * @brief Documentation for pyc/interface/include/pyc/pyc.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/interface/include/pyc/pyc.h`
+ * 
+ * @section dependencies Dependencies
+ * - tuple
+ * - torch/all.h
+ * - templates/particle_template.h
+ *
+ * @section classes Classes
+ * - neutrino
+ *
+ * @section functions Functions
+ * - CoFactors()
+ * - Ry()
+ * - PtEtaPhi()
+ * - PtEtaPhiE()
+ * - Determinant()
+ * - x()
+ * - M2()
+ * - Phi()
+ * - Mt2()
+ * - Mt()
+ * - Pz()
+ * - tensorize()
+ * - Beta()
+ * - Rz()
+ * - Rx()
+ * - particle_template()
+ * - M()
+ * - Pt()
+ * - PxPyPz()
+ * - Cross()
+ *
+ * @see pyc.h
+ * @ingroup pyc
+ */

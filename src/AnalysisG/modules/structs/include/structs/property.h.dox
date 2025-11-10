@@ -1,0 +1,48 @@
+/**
+ * @file property.h
+ * @brief Implementation for property.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/include/structs/property.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `functional`
+ * - `string`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_cproperty cproperty
+ * - **Member Variables**:
+ *   - `T data`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_clear clear
+ * - **Signature**: `void clear()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_set_object set_object
+ * - **Signature**: `void set_object(G* _obj)`
+ * - **Parameters**:
+ *   - `_obj` (G*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_x_getter x_getter
+ * - **Signature**: `void x_getter(auto T*, auto G*)`
+ * - **Parameters**:
+ *   - `T*` (auto)
+ *   - `G*` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_x_setter x_setter
+ * - **Signature**: `void x_setter(auto T*, auto G*)`
+ * - **Parameters**:
+ *   - `T*` (auto)
+ *   - `G*` (auto)
+ * - **Returns**: `void`
+ *
+ * @see property.h
+ */

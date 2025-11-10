@@ -1,0 +1,19 @@
+/**
+ * @file nusol.cu
+ * @brief Implementation for nusol.cu
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/nusol/cuda/nusol.cu`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `nusol/base.cuh`
+ * - `nusol/nusol.cuh`
+ * - `nusol/utils.cuh`
+ * - `physics/physics.cuh`
+ * - `utils/utils.cuh`
+ *
+ * @see nusol.cu
+ */

@@ -1,0 +1,48 @@
+/**
+ * @file particles.h
+ * @brief Implementation for particles.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `events/bsm_4tops/include/bsm_4tops/particles.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/particle_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_electron electron
+ *
+ * @subsection class_jet jet
+ *
+ * @subsection class_jetparton jetparton
+ *
+ * @subsection class_muon muon
+ *
+ * @subsection class_top top
+ *
+ * @subsection class_top_children top_children
+ *
+ * @subsection class_truthjet truthjet
+ *
+ * @subsection class_truthjetparton truthjetparton
+ *
+ * @section functions Functions
+ *
+ * @subsection func_assign_vector assign_vector
+ * - **Signature**: `void assign_vector(std::vector<g*>* inpt, element_t* el)`
+ * - **Parameters**:
+ *   - `inpt` (std::vector<g*>*)
+ *   - `el` (element_t*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_x x
+ * - **Signature**: `int x(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see particles.h
+ */

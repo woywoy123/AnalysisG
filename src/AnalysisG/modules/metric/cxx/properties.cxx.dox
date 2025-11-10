@@ -1,0 +1,19 @@
+/**
+ * @file properties.cxx
+ * @brief Implementation for properties.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/metric/cxx/properties.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/metric_template.h`
+ *
+ * @section enums Enumerations
+ *
+ * - `type`
+ *
+ * @see properties.cxx
+ */

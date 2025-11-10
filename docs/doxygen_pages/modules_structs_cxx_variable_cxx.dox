@@ -1,0 +1,20 @@
+/**
+ * @file variable.cxx
+ * @brief Documentation for modules/structs/cxx/variable.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/cxx/variable.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - structs/element.h
+ *
+ * @section functions Functions
+ * - TTree()
+ * - variable_t()
+ * - write_t()
+ *
+ * @see variable.cxx
+ * @ingroup modules
+ */

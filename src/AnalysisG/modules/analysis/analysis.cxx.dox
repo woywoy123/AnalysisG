@@ -1,0 +1,19 @@
+/**
+ * @file analysis.cxx
+ * @brief Implementation for analysis.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/analysis/analysis.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG/analysis.h`
+ * - `AnalysisG/cfg.h`
+ * - `ROOT/RDataFrame.hxx`
+ * - `TSystem.h`
+ * - `thread`
+ *
+ * @see analysis.cxx
+ */

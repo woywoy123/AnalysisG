@@ -1,0 +1,22 @@
+/**
+ * @file conuix.cxx
+ * @brief Documentation for modules/nusol/conuix/cxx/conuix.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/conuix/cxx/conuix.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - conuix/conuix.h
+ * - conuix/conuic.h
+ *
+ * @section functions Functions
+ * - i()
+ * - conuic()
+ * - j()
+ * - x()
+ *
+ * @see conuix.cxx
+ * @ingroup modules
+ */

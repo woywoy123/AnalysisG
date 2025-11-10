@@ -1,0 +1,20 @@
+/**
+ * @file graph_template.cxx
+ * @brief Documentation for modules/graph/cxx/graph_template.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/graph/cxx/graph_template.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/graph_template.h
+ *
+ * @section functions Functions
+ * - graph_template()
+ * - graph_t()
+ * - x()
+ *
+ * @see graph_template.cxx
+ * @ingroup modules
+ */

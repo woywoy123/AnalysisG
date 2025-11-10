@@ -1,0 +1,70 @@
+/**
+ * @file odeRK.h
+ * @brief Implementation for odeRK.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/tmp/odeRK.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `reconstruction/matrix.h`
+ * - `reconstruction/multisol.h`
+ * - `tools/tools.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_odeRK odeRK
+ * - **Member Variables**:
+ *   - `vec3 met_`
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_ellipse_t ellipse_t
+ * - **Members**:
+ *   - `vec3 met_`
+ *
+ * @subsection struct_recon_t recon_t
+ * - **Members**:
+ *   - `vec3 met_`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_ghost_angle ghost_angle
+ * - **Signature**: `double ghost_angle(int nui)`
+ * - **Parameters**:
+ *   - `nui` (int)
+ * - **Returns**: `double`
+ *
+ * @subsection func_print print
+ * - **Signature**: `void print()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_residual residual
+ * - **Signature**: `double residual(std::vector<double> wg, std::vector<double> phx)`
+ * - **Parameters**:
+ *   - `wg` (std::vector<double>)
+ *   - `phx` (std::vector<double>)
+ * - **Returns**: `double`
+ *
+ * @subsection func_rk4 rk4
+ * - **Signature**: `void rk4(double dt)`
+ * - **Parameters**:
+ *   - `dt` (double)
+ * - **Returns**: `void`
+ *
+ * @subsection func_solve solve
+ * - **Signature**: `void solve()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_solve_z_phi solve_z_phi
+ * - **Signature**: `double solve_z_phi()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_update_t update_t
+ * - **Signature**: `void update_t()`
+ * - **Returns**: `void`
+ *
+ * @see odeRK.h
+ */

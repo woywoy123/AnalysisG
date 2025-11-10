@@ -1,0 +1,47 @@
+/**
+ * @file dataloader.h
+ * @brief Documentation for modules/dataloader/include/generators/dataloader.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/dataloader/include/generators/dataloader.h`
+ * 
+ * @section dependencies Dependencies
+ * - cuda.h
+ * - c10/cuda/CUDACachingAllocator.h
+ * - tools/tools.h
+ * - structs/property.h
+ * - structs/settings.h
+ * - notification/notification.h
+ * - templates/graph_template.h
+ * - map
+ * - random
+ * - algorithm
+ *
+ * @section classes Classes
+ * - dataloader
+ * - analysis
+ * - model_template
+ *
+ * @section structs Structures
+ * - model_report
+ *
+ * @section functions Functions
+ * - restore_graphs()
+ * - cuda_memory_server()
+ * - dump_graphs()
+ * - safe_delete()
+ * - datatransfer()
+ * - generate_test_set()
+ * - extract_data()
+ * - start_cuda_server()
+ * - clean_data_elements()
+ * - shuffle()
+ * - restore_dataset()
+ * - dump_dataset()
+ * - generate_kfold_set()
+ *
+ * @see dataloader.h
+ * @ingroup modules
+ */

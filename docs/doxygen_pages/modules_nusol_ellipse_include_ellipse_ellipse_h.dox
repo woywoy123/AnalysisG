@@ -1,0 +1,34 @@
+/**
+ * @file ellipse.h
+ * @brief Documentation for modules/nusol/ellipse/include/ellipse/ellipse.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/ellipse/include/ellipse/ellipse.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ * - ellipse/solvers.h
+ * - ellipse/nusol.h
+ * - ellipse/mtx.h
+ *
+ * @section classes Classes
+ * - ellipse
+ *
+ * @section structs Structures
+ * - nusol_t
+ * - nunu_t
+ *
+ * @section functions Functions
+ * - prepare()
+ * - intersection()
+ * - angle_cross()
+ * - flush()
+ * - make_neutrinos()
+ * - solve()
+ * - generate()
+ *
+ * @see ellipse.h
+ * @ingroup modules
+ */

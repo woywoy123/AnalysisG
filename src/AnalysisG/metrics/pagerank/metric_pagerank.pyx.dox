@@ -1,0 +1,41 @@
+/**
+ * @file metric_pagerank.pyx
+ * @brief Implementation for metric_pagerank.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `metrics/pagerank/metric_pagerank.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.tools`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_PageRankMetric PageRankMetric
+ * - **Inherits from**: MetricTemplate
+ * - **Member Variables**:
+ *   - `void get_training`
+ *   - `int epoch`
+ *   - `int kfold`
+ *   - `string model`
+ *   - `string fname`
+ *   - `string mode`
+ *   - `bool stat`
+ *   - `void get_validation`
+ *   - `void get_evaluation`
+ *   - `class PageRankMetric`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see metric_pagerank.pyx
+ */

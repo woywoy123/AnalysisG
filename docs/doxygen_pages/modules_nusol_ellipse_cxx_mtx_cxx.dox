@@ -1,0 +1,40 @@
+/**
+ * @file mtx.cxx
+ * @brief Documentation for modules/nusol/ellipse/cxx/mtx.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/ellipse/cxx/mtx.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - ellipse/solvers.h
+ * - ellipse/mtx.h
+ * - iostream
+ * - iomanip
+ *
+ * @section functions Functions
+ * - vXc()
+ * - mtx()
+ * - r2()
+ * - j()
+ * - _m_02()
+ * - _m_12()
+ * - x()
+ * - _trace()
+ * - _m_21()
+ * - y()
+ * - solve_cubic()
+ * - r3()
+ * - _m_11()
+ * - out()
+ * - i()
+ * - vx()
+ * - _m_00()
+ * - r1()
+ * - _m_01()
+ * - _m_20()
+ *
+ * @see mtx.cxx
+ * @ingroup modules
+ */

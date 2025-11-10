@@ -1,0 +1,92 @@
+/**
+ * @file io.h
+ * @brief Implementation for io.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/io/include/io/io.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `H5Cpp.h`
+ * - `TBranch.h`
+ * - `TFile.h`
+ * - `TLeaf.h`
+ * - `TTree.h`
+ * - `TTreeReader.h`
+ * - `TTreeReaderArray.h`
+ * - `map`
+ * - `meta/meta.h`
+ * - `notification/notification.h`
+ * - `string`
+ * - `structs/element.h`
+ * - `structs/folds.h`
+ * - `structs/settings.h`
+ * - `tools/tools.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_io io
+ *
+ * @section functions Functions
+ *
+ * @subsection func_check_root_file_paths check_root_file_paths
+ * - **Signature**: `void check_root_file_paths()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_end end
+ * - **Signature**: `void end()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_import_settings import_settings
+ * - **Signature**: `void import_settings(settings_t* params)`
+ * - **Parameters**:
+ *   - `params` (settings_t*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_read read
+ * - **Signature**: `void read(std::vector<g>* outpt, std::string set_name)`
+ * - **Parameters**:
+ *   - `outpt` (std::vector<g>*)
+ *   - `set_name` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_root_begin root_begin
+ * - **Signature**: `void root_begin()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_root_end root_end
+ * - **Signature**: `void root_end()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_root_key_paths root_key_paths
+ * - **Signature**: `void root_key_paths(std::string path)`
+ * - **Parameters**:
+ *   - `path` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_scan_keys scan_keys
+ * - **Signature**: `bool scan_keys()`
+ * - **Returns**: `bool`
+ *
+ * @subsection func_start start
+ * - **Signature**: `bool start(std::string filename, std::string read_write)`
+ * - **Parameters**:
+ *   - `filename` (std::string)
+ *   - `read_write` (std::string)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_trigger_pcm trigger_pcm
+ * - **Signature**: `void trigger_pcm()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_write write
+ * - **Signature**: `void write(std::vector<g>* inpt, std::string set_name)`
+ * - **Parameters**:
+ *   - `inpt` (std::vector<g>*)
+ *   - `set_name` (std::string)
+ * - **Returns**: `void`
+ *
+ * @see io.h
+ */

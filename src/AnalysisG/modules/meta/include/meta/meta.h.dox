@@ -1,0 +1,66 @@
+/**
+ * @file meta.h
+ * @brief Implementation for meta.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/meta/include/meta/meta.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `TBranch.h`
+ * - `TFile.h`
+ * - `TH1F.h`
+ * - `TLeaf.h`
+ * - `TTree.h`
+ * - `notification/notification.h`
+ * - `rapidjson/document.h`
+ * - `structs/folds.h`
+ * - `structs/meta.h`
+ * - `structs/property.h`
+ * - `tools/tools.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_analysis analysis
+ * - **Member Variables**:
+ *   - `friend analysis`
+ *
+ * @subsection class_meta meta
+ * - **Member Variables**:
+ *   - `friend analysis`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_compiler compiler
+ * - **Signature**: `void compiler()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_parse_float parse_float
+ * - **Signature**: `float parse_float(std::string key, TTree* tr)`
+ * - **Parameters**:
+ *   - `key` (std::string)
+ *   - `tr` (TTree*)
+ * - **Returns**: `float`
+ *
+ * @subsection func_parse_json parse_json
+ * - **Signature**: `void parse_json(std::string inpt)`
+ * - **Parameters**:
+ *   - `inpt` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_scan_data scan_data
+ * - **Signature**: `void scan_data(TObject* obj)`
+ * - **Parameters**:
+ *   - `obj` (TObject*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_scan_sow scan_sow
+ * - **Signature**: `void scan_sow(TObject* obj)`
+ * - **Parameters**:
+ *   - `obj` (TObject*)
+ * - **Returns**: `void`
+ *
+ * @see meta.h
+ */

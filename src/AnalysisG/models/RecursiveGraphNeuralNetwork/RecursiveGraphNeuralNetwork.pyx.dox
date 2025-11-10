@@ -1,0 +1,99 @@
+/**
+ * @file RecursiveGraphNeuralNetwork.pyx
+ * @brief Implementation for RecursiveGraphNeuralNetwork.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `models/RecursiveGraphNeuralNetwork/RecursiveGraphNeuralNetwork.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.model_template`
+ * - `AnalysisG.models.RecursiveGraphNeuralNetwork.RecursiveGraphNeuralNetwork`
+ * - `ModelTemplate`
+ * - `recursivegraphneuralnetwork`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_RecursiveGraphNeuralNetwork RecursiveGraphNeuralNetwork
+ * - **Inherits from**: ModelTemplate
+ * - **Member Variables**:
+ *   - `class RecursiveGraphNeuralNetwork`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `dx(self)`
+ *   - `dx(self, int val)`
+ *   - `x(self)`
+ *   - `x(self, int val)`
+ *   - `output(self)`
+ *   - `output(self, int val)`
+ *   - `rep(self)`
+ *   - `rep(self, int val)`
+ *   - `is_mc(self)`
+ *   - `is_mc(self, bool val)`
+ *   - `res_mass(self)`
+ *   - `res_mass(self, double val)`
+ *   - `drop_out(self)`
+ *   - `drop_out(self, double val)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_drop_out drop_out
+ * - **Signature**: `void drop_out(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_dx dx
+ * - **Signature**: `void dx(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_is_mc is_mc
+ * - **Signature**: `void is_mc(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_output output
+ * - **Signature**: `void output(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_rep rep
+ * - **Signature**: `void rep(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_res_mass res_mass
+ * - **Signature**: `void res_mass(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_x x
+ * - **Signature**: `void x(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see RecursiveGraphNeuralNetwork.pyx
+ */

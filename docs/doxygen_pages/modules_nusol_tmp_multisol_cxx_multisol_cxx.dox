@@ -1,0 +1,33 @@
+/**
+ * @file multisol.cxx
+ * @brief Documentation for modules/nusol/tmp/multisol/cxx/multisol.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/tmp/multisol/cxx/multisol.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - reconstruction/multisol.h
+ * - reconstruction/solvers.h
+ * - reconstruction/mtx.h
+ * - fstream
+ * - math.h
+ *
+ * @section functions Functions
+ * - multisol_t()
+ * - _beta()
+ * - Rx()
+ * - Ry()
+ * - file()
+ * - geo_t()
+ * - Rz()
+ * - if()
+ * - cos_theta()
+ * - x()
+ * - i()
+ * - _mag()
+ *
+ * @see multisol.cxx
+ * @ingroup modules
+ */

@@ -1,0 +1,19 @@
+/**
+ * @file nusol.cxx
+ * @brief Documentation for modules/nusol/tmp/conuix/cxx/nusol.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/tmp/conuix/cxx/nusol.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - conics/nusol.h
+ * - complex
+ *
+ * @section functions Functions
+ * - nuclx_t()
+ *
+ * @see nusol.cxx
+ * @ingroup modules
+ */

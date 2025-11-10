@@ -1,0 +1,20 @@
+/**
+ * @file graph.cxx
+ * @brief Documentation for pyc/graph/graph.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/graph/graph.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - graph/graph.h
+ * - utils/utils.h
+ *
+ * @section functions Functions
+ * - i()
+ * - k()
+ *
+ * @see graph.cxx
+ * @ingroup pyc
+ */

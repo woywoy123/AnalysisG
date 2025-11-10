@@ -1,0 +1,18 @@
+/**
+ * @file metric_pagerank.pyx
+ * @brief Documentation for metrics/pagerank/metric_pagerank.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `metrics/pagerank/metric_pagerank.pyx`
+ * 
+ * @section classes Classes
+ * - PageRankMetric
+ *
+ * @section functions Functions
+ * - __cinit__()
+ *
+ * @see metric_pagerank.pyx
+ * @ingroup metrics
+ */

@@ -1,0 +1,23 @@
+/**
+ * @file matrix.h
+ * @brief Implementation for matrix.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/conuix/include/conuix/matrix.h`
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_matrix_t matrix_t
+ *
+ * @section functions Functions
+ *
+ * @subsection func_print print
+ * - **Signature**: `void print(int p = 9)`
+ * - **Parameters**:
+ *   - `9` (int p =)
+ * - **Returns**: `void`
+ *
+ * @see matrix.h
+ */

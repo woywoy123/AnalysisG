@@ -1,0 +1,44 @@
+/**
+ * @file element.h
+ * @brief Documentation for modules/structs/include/structs/element.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/include/structs/element.h`
+ * 
+ * @section dependencies Dependencies
+ * - TFile.h
+ * - TTree.h
+ * - TBranch.h
+ * - TLeaf.h
+ * - TTreeReaderArray.h
+ * - TTreeReader.h
+ * - tools/vector_cast.h
+ * - structs/base.h
+ * - structs/meta.h
+ * - iostream
+ *
+ * @section structs Structures
+ * - write_t
+ * - element_t
+ * - writer
+ * - data_t
+ *
+ * @section functions Functions
+ * - boundary()
+ * - close()
+ * - string_type()
+ * - process()
+ * - write()
+ * - next()
+ * - fetch_buffer()
+ * - flush()
+ * - get()
+ * - initialize()
+ * - set_meta()
+ * - create()
+ *
+ * @see element.h
+ * @ingroup modules
+ */

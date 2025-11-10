@@ -1,0 +1,100 @@
+/**
+ * @file htilde.h
+ * @brief Implementation for htilde.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/conuix/include/conuix/htilde.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `conuix/matrix.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_particle_template particle_template
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_H_matrix_t H_matrix_t
+ *
+ * @subsection struct_Sx_t Sx_t
+ *
+ * @subsection struct_Sy_t Sy_t
+ *
+ * @subsection struct_base_t base_t
+ *
+ * @subsection struct_kinematic_t kinematic_t
+ *
+ * @subsection struct_pencil_t pencil_t
+ *
+ * @subsection struct_rotation_t rotation_t
+ *
+ * @subsection struct_thetapsi_t thetapsi_t
+ *
+ * @section functions Functions
+ *
+ * @subsection func_get_base get_base
+ * - **Signature**: `void get_base(kinematic_t* jet, kinematic_t* lep, base_t* bs)`
+ * - **Parameters**:
+ *   - `jet` (kinematic_t*)
+ *   - `lep` (kinematic_t*)
+ *   - `bs` (base_t*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_get_hmatrix get_hmatrix
+ * - **Signature**: `void get_hmatrix(base_t* base, rotation_t* rot, H_matrix_t* H)`
+ * - **Parameters**:
+ *   - `base` (base_t*)
+ *   - `rot` (rotation_t*)
+ *   - `H` (H_matrix_t*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_get_kinematic get_kinematic
+ * - **Signature**: `void get_kinematic(particle_template* ptr, kinematic_t* kin)`
+ * - **Parameters**:
+ *   - `ptr` (particle_template*)
+ *   - `kin` (kinematic_t*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_get_pencil get_pencil
+ * - **Signature**: `void get_pencil(kinematic_t* lep, kinematic_t* nu, base_t* base, pencil_t* pen)`
+ * - **Parameters**:
+ *   - `lep` (kinematic_t*)
+ *   - `nu` (kinematic_t*)
+ *   - `base` (base_t*)
+ *   - `pen` (pencil_t*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_get_psi_theta_mapping get_psi_theta_mapping
+ * - **Signature**: `void get_psi_theta_mapping(base_t* bs, thetapsi_t* msp)`
+ * - **Parameters**:
+ *   - `bs` (base_t*)
+ *   - `msp` (thetapsi_t*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_get_rotation get_rotation
+ * - **Signature**: `void get_rotation(particle_template* jet, particle_template* lep, rotation_t* rot)`
+ * - **Parameters**:
+ *   - `jet` (particle_template*)
+ *   - `lep` (particle_template*)
+ *   - `rot` (rotation_t*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_get_sx get_sx
+ * - **Signature**: `void get_sx(base_t* bs, Sx_t* sx)`
+ * - **Parameters**:
+ *   - `bs` (base_t*)
+ *   - `sx` (Sx_t*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_get_sy get_sy
+ * - **Signature**: `void get_sy(base_t* bs, Sy_t* sy)`
+ * - **Parameters**:
+ *   - `bs` (base_t*)
+ *   - `sy` (Sy_t*)
+ * - **Returns**: `void`
+ *
+ * @see htilde.h
+ */

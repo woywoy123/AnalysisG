@@ -1,0 +1,44 @@
+/**
+ * @file mtx.cxx
+ * @brief Implementation for mtx.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/ellipse/cxx/mtx.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `ellipse/mtx.h`
+ * - `ellipse/solvers.h`
+ * - `iomanip`
+ * - `iostream`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_i i
+ * - **Signature**: `int i(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_j j
+ * - **Signature**: `int j(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_x x
+ * - **Signature**: `int x(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_y y
+ * - **Signature**: `int y(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see mtx.cxx
+ */

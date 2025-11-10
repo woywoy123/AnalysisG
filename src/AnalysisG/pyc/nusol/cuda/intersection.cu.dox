@@ -1,0 +1,92 @@
+/**
+ * @file intersection.cu
+ * @brief Implementation for intersection.cu
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/nusol/cuda/intersection.cu`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `nusol/base.cuh`
+ * - `nusol/device.cuh`
+ * - `operators/operators.cuh`
+ * - `utils/utils.cuh`
+ *
+ * @section functions Functions
+ *
+ * @subsection func__factor_degen _factor_degen
+ * - **Signature**: `void _factor_degen(const torch::PackedTensorAccessor64<scalar_t, auto 2, torch::RestrictPtrTraits> real, const torch::P...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `real` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `imag` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `A` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `B` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `4` (auto)
+ *   - `Lins` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__intersections _intersections
+ * - **Signature**: `void _intersections(auto torch::PackedTensorAccessor64<c10::complex<double>, auto 4, torch::RestrictPtrTraits> real, aut...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<c10::complex<double>` (auto)
+ *   - `4` (auto)
+ *   - `real` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `3` (auto)
+ *   - `ellipse` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `4` (auto)
+ *   - `lines` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `3` (auto)
+ *   - `s_pts` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `s_dst` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__swapAB _swapAB
+ * - **Signature**: `void _swapAB(auto torch::PackedTensorAccessor64<double, auto 3, torch::RestrictPtrTraits> inv_A_dot_B, auto torch...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `3` (auto)
+ *   - `inv_A_dot_B` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `3` (auto)
+ *   - `A` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `3` (auto)
+ *   - `B` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `detA` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `detB` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func_pos pos
+ * - **Signature**: `int pos(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_y y
+ * - **Signature**: `int y(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see intersection.cu
+ */

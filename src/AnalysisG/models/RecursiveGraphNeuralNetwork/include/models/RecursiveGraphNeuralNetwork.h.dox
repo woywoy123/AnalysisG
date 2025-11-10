@@ -1,0 +1,19 @@
+/**
+ * @file RecursiveGraphNeuralNetwork.h
+ * @brief Implementation for RecursiveGraphNeuralNetwork.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/model_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_recursivegraphneuralnetwork recursivegraphneuralnetwork
+ *
+ * @see RecursiveGraphNeuralNetwork.h
+ */

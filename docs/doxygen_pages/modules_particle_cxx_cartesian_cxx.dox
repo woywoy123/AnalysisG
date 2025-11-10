@@ -1,0 +1,15 @@
+/**
+ * @file cartesian.cxx
+ * @brief Documentation for modules/particle/cxx/cartesian.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/particle/cxx/cartesian.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ *
+ * @see cartesian.cxx
+ * @ingroup modules
+ */

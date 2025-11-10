@@ -1,0 +1,33 @@
+/**
+ * @file odeRK.h
+ * @brief Documentation for modules/nusol/tmp/odeRK.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/tmp/odeRK.h`
+ * 
+ * @section dependencies Dependencies
+ * - reconstruction/multisol.h
+ * - reconstruction/matrix.h
+ * - tools/tools.h
+ *
+ * @section classes Classes
+ * - odeRK
+ *
+ * @section structs Structures
+ * - recon_t
+ * - ellipse_t
+ *
+ * @section functions Functions
+ * - solve_z_phi()
+ * - residual()
+ * - print()
+ * - update_t()
+ * - solve()
+ * - ghost_angle()
+ * - rk4()
+ *
+ * @see odeRK.h
+ * @ingroup modules
+ */

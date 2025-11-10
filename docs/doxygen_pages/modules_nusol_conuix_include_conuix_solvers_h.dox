@@ -1,0 +1,21 @@
+/**
+ * @file solvers.h
+ * @brief Documentation for modules/nusol/conuix/include/conuix/solvers.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/conuix/include/conuix/solvers.h`
+ * 
+ * @section dependencies Dependencies
+ * - complex
+ * - cmath
+ *
+ * @section functions Functions
+ * - cubic()
+ * - quadratic()
+ * - linear()
+ *
+ * @see solvers.h
+ * @ingroup modules
+ */

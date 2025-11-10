@@ -1,0 +1,16 @@
+/**
+ * @file conuic.cxx
+ * @brief Implementation for conuic.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/conuix/cxx/conuic.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `conuix/conuic.h`
+ * - `templates/particle_template.h`
+ *
+ * @see conuic.cxx
+ */

@@ -1,0 +1,32 @@
+/**
+ * @file matrix.cxx
+ * @brief Documentation for modules/nusol/tmp/matrix.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/tmp/matrix.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - reconstruction/solvers.h
+ * - reconstruction/matrix.h
+ * - reconstruction/mtx.h
+ * - iostream
+ * - iomanip
+ * - math.h
+ *
+ * @section functions Functions
+ * - row()
+ * - col()
+ * - print()
+ * - j()
+ * - solve_linear()
+ * - k()
+ * - aug()
+ * - i()
+ * - mx()
+ * - invert_matrix()
+ *
+ * @see matrix.cxx
+ * @ingroup modules
+ */

@@ -1,0 +1,28 @@
+/**
+ * @file interface.cxx
+ * @brief Documentation for modules/nusol/tmp/interface.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/tmp/interface.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - nunu/nunu.h
+ *
+ * @section functions Functions
+ * - particle_template()
+ * - mtx()
+ * - nusol()
+ * - y()
+ * - b()
+ * - met()
+ * - odeRK()
+ * - i()
+ * - x()
+ * - multisol()
+ * - l()
+ *
+ * @see interface.cxx
+ * @ingroup modules
+ */

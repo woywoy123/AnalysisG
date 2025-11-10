@@ -1,0 +1,23 @@
+/**
+ * @file pagerank.cu
+ * @brief Documentation for pyc/graph/pagerank.cu
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/graph/pagerank.cu`
+ * 
+ * @section dependencies Dependencies
+ * - graph/pagerank.cuh
+ * - utils/atomic.cuh
+ * - utils/utils.cuh
+ *
+ * @section functions Functions
+ * - _page_rank()
+ * - _get_remapping()
+ * - _get_max_node()
+ * - x()
+ *
+ * @see pagerank.cu
+ * @ingroup pyc
+ */

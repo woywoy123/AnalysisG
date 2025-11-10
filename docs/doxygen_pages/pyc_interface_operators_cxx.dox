@@ -1,0 +1,21 @@
+/**
+ * @file operators.cxx
+ * @brief Documentation for pyc/interface/operators.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/interface/operators.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - pyc/pyc.h
+ * - utils/utils.cuh
+ * - physics/physics.cuh
+ * - operators/operators.cuh
+ * - utils/utils.h
+ * - physics/physics.h
+ * - operators/operators.h
+ *
+ * @see operators.cxx
+ * @ingroup pyc
+ */

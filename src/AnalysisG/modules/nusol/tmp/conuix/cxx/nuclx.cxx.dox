@@ -1,0 +1,38 @@
+/**
+ * @file nuclx.cxx
+ * @brief Implementation for nuclx.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/tmp/conuix/cxx/nuclx.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `conics/nusol.h`
+ * - `math.h`
+ * - `the`
+ *
+ * @section functions Functions
+ *
+ * @subsection func__beta _beta
+ * - **Signature**: `double _beta(particle_template* prt)`
+ * - **Parameters**:
+ *   - `prt` (particle_template*)
+ * - **Returns**: `double`
+ *
+ * @subsection func__mag _mag
+ * - **Signature**: `double _mag(particle_template* p)`
+ * - **Parameters**:
+ *   - `p` (particle_template*)
+ * - **Returns**: `double`
+ *
+ * @subsection func_cos_theta cos_theta
+ * - **Signature**: `double cos_theta(particle_template* b, particle_template* mu)`
+ * - **Parameters**:
+ *   - `b` (particle_template*)
+ *   - `mu` (particle_template*)
+ * - **Returns**: `double`
+ *
+ * @see nuclx.cxx
+ */

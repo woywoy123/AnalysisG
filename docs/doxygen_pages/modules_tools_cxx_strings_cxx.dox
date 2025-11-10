@@ -1,0 +1,23 @@
+/**
+ * @file strings.cxx
+ * @brief Documentation for modules/tools/cxx/strings.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/tools/cxx/strings.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - tools/tools.h
+ * - sstream
+ * - string
+ *
+ * @section functions Functions
+ * - i()
+ * - is_base64()
+ * - t()
+ * - x()
+ *
+ * @see strings.cxx
+ * @ingroup modules
+ */

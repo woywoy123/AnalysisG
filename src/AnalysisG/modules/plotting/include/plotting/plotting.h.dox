@@ -1,0 +1,44 @@
+/**
+ * @file plotting.h
+ * @brief Implementation for plotting.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/plotting/include/plotting/plotting.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `map`
+ * - `notification/notification.h`
+ * - `structs/property.h`
+ * - `tools/tools.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_plotting plotting
+ *
+ * @section functions Functions
+ *
+ * @subsection func_build_error build_error
+ * - **Signature**: `void build_error()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_get_max get_max
+ * - **Signature**: `float get_max(std::string dim)`
+ * - **Parameters**:
+ *   - `dim` (std::string)
+ * - **Returns**: `float`
+ *
+ * @subsection func_get_min get_min
+ * - **Signature**: `float get_min(std::string dim)`
+ * - **Parameters**:
+ *   - `dim` (std::string)
+ * - **Returns**: `float`
+ *
+ * @subsection func_sum_of_weights sum_of_weights
+ * - **Signature**: `float sum_of_weights()`
+ * - **Returns**: `float`
+ *
+ * @see plotting.h
+ */

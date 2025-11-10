@@ -1,0 +1,18 @@
+/**
+ * @file cache.cxx
+ * @brief Implementation for cache.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/dataloader/cxx/cache.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `cache`
+ * - `generators/dataloader.h`
+ * - `io/io.h`
+ * - `structs/folds.h`
+ *
+ * @see cache.cxx
+ */

@@ -1,0 +1,116 @@
+/**
+ * @file graph_exp_mc20.pyx
+ * @brief Implementation for graph_exp_mc20.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `graphs/exp_mc20/graph_exp_mc20.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.graph_template`
+ * - `AnalysisG.graphs.exp_mc20.graph_exp_mc20`
+ * - `GraphTemplate`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_GraphDetector GraphDetector
+ * - **Member Variables**:
+ *   - `class GraphJets`
+ *   - `class GraphJetsNoNu`
+ *   - `class GraphDetectorLep`
+ *   - `class GraphDetector`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *
+ * @subsection class_GraphDetectorLep GraphDetectorLep
+ * - **Inherits from**: GraphTemplate
+ * - **Member Variables**:
+ *   - `class GraphJets`
+ *   - `class GraphJetsNoNu`
+ *   - `class GraphDetectorLep`
+ *   - `class GraphDetector`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *
+ * @subsection class_GraphJets GraphJets
+ * - **Inherits from**: GraphTemplate
+ * - **Member Variables**:
+ *   - `class GraphJets`
+ *   - `class GraphJetsNoNu`
+ *   - `class GraphDetectorLep`
+ *   - `class GraphDetector`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *
+ * @subsection class_GraphJetsNoNu GraphJetsNoNu
+ * - **Inherits from**: GraphTemplate
+ * - **Member Variables**:
+ *   - `class GraphJets`
+ *   - `class GraphJetsNoNu`
+ *   - `class GraphDetectorLep`
+ *   - `class GraphDetector`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see graph_exp_mc20.pyx
+ */

@@ -1,0 +1,24 @@
+/**
+ * @file nusol.cxx
+ * @brief Documentation for modules/nusol/ellipse/cxx/nusol.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/ellipse/cxx/nusol.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ * - ellipse/solvers.h
+ * - ellipse/nusol.h
+ * - ellipse/mtx.h
+ *
+ * @section functions Functions
+ * - wrapper()
+ * - sintheta()
+ * - costheta()
+ * - mtx()
+ *
+ * @see nusol.cxx
+ * @ingroup modules
+ */

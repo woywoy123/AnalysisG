@@ -1,0 +1,18 @@
+/**
+ * @file particle_template.cxx
+ * @brief Documentation for modules/particle/cxx/particle_template.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/particle/cxx/particle_template.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ *
+ * @section functions Functions
+ * - particle_template()
+ *
+ * @see particle_template.cxx
+ * @ingroup modules
+ */

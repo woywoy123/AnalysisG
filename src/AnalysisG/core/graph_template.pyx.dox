@@ -1,0 +1,87 @@
+/**
+ * @file graph_template.pyx
+ * @brief Implementation for graph_template.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/graph_template.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.tools`
+ * - `int`
+ * - `libcpp`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_GraphTemplate GraphTemplate
+ * - **Member Variables**:
+ *   - `class GraphTemplate`
+ *   - `GraphTemplate ev`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__hash__(self)`
+ *   - `__eq__(self, other)`
+ *   - `is_self(self, inpt)`
+ *   - `index(self)`
+ *   - `Tree(self)`
+ *   - `PreSelection(self)`
+ *   - `PreSelection(self, val)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_PreSelection PreSelection
+ * - **Signature**: `void PreSelection(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Tree Tree
+ * - **Signature**: `void Tree(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___eq__ __eq__
+ * - **Signature**: `void __eq__(auto self, auto other)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `other` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___hash__ __hash__
+ * - **Signature**: `void __hash__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_index index
+ * - **Signature**: `void index(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_is_self is_self
+ * - **Signature**: `bool is_self(auto self, auto inpt)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `inpt` (auto)
+ * - **Returns**: `bool`
+ *
+ * @see graph_template.pyx
+ */

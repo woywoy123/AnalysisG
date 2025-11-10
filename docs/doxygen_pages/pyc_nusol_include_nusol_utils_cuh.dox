@@ -1,0 +1,29 @@
+/**
+ * @file utils.cuh
+ * @brief Documentation for pyc/nusol/include/nusol/utils.cuh
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/nusol/include/nusol/utils.cuh`
+ * 
+ * @section dependencies Dependencies
+ * - utils/atomic.cuh
+ * - curand_kernel.h
+ * - curand.h
+ * - math.h
+ *
+ * @section functions Functions
+ * - y()
+ * - _assign_mass()
+ * - _compare_solx()
+ * - _best_sols()
+ * - _combination()
+ * - x()
+ * - _count()
+ * - _jacobi()
+ * - _perturb()
+ *
+ * @see utils.cuh
+ * @ingroup pyc
+ */

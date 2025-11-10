@@ -1,0 +1,125 @@
+/**
+ * @file roc.pyx
+ * @brief Implementation for roc.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/roc.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.tools`
+ * - `bool`
+ * - `cython.operator`
+ * - `dereference`
+ * - `libcpp`
+ * - `libcpp.map`
+ * - `libcpp.string`
+ * - `libcpp.vector`
+ * - `map`
+ * - `metrics`
+ * - `numpy`
+ * - `pathlib`
+ * - `pickle`
+ * - `random`
+ * - `roc_curve`
+ * - `sklearn`
+ * - `sklearn.`
+ * - `sklearn.metrics`
+ * - `string`
+ * - `vector`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_ROC ROC
+ * - **Inherits from**: TLine
+ * - **Member Variables**:
+ *   - `class ROC`
+ *   - `void factory`
+ *   - `dict __compile__`
+ *   - `str title`
+ *   - `double auc_`
+ *   - `dict tprs`
+ *   - `dict aucs`
+ *   - `dict fprs`
+ *   - `int i`
+ *   - `dict lines`
+ *   - `dict cols`
+ *   - `TLine tl`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__init__(self, inpt = None, **kwargs)`
+ *   - `xBins(self)`
+ *   - `xBins(self, int val)`
+ *   - `Scores(self)`
+ *   - `Truth(self)`
+ *   - `Scores(self, val)`
+ *   - `Truth(self, val)`
+ *   - `Titles(self)`
+ *   - `Titles(self, list val)`
+ *   - `AUC(self)`
+ *   - `xData(self)`
+ *   - `xData(self, val)`
+ *   - `yData(self)`
+ *   - `yData(self, val)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_AUC AUC
+ * - **Signature**: `void AUC(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Scores Scores
+ * - **Signature**: `void Scores(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Titles Titles
+ * - **Signature**: `void Titles(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Truth Truth
+ * - **Signature**: `void Truth(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_xBins xBins
+ * - **Signature**: `void xBins(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_xData xData
+ * - **Signature**: `void xData(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_yData yData
+ * - **Signature**: `void yData(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see roc.pyx
+ */

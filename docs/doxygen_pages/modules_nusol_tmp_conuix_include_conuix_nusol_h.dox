@@ -1,0 +1,45 @@
+/**
+ * @file nusol.h
+ * @brief Documentation for modules/nusol/tmp/conuix/include/conuix/nusol.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/tmp/conuix/include/conuix/nusol.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ * - conics/matrix.h
+ *
+ * @section classes Classes
+ * - nuclx
+ *
+ * @section structs Structures
+ * - eig_t
+ * - nuclx_t
+ *
+ * @section functions Functions
+ * - G()
+ * - from_sx_sy()
+ * - get_mw()
+ * - mt()
+ * - sx()
+ * - H()
+ * - H_tilde()
+ * - shifts()
+ * - rotation()
+ * - hyperbolic()
+ * - sy()
+ * - critical_t0()
+ * - surface()
+ * - get_t()
+ * - P()
+ * - get_z()
+ * - dPl0()
+ * - dP_dL()
+ * - mw()
+ * - H_bar()
+ *
+ * @see nusol.h
+ * @ingroup modules
+ */

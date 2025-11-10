@@ -1,0 +1,27 @@
+/**
+ * @file particles.cxx
+ * @brief Documentation for events/bsm_4tops/cxx/particles.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/bsm_4tops/cxx/particles.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - particles.h
+ *
+ * @section functions Functions
+ * - electron()
+ * - truthjet()
+ * - y()
+ * - jet()
+ * - top_children()
+ * - top()
+ * - x()
+ * - jetparton()
+ * - muon()
+ * - truthjetparton()
+ *
+ * @see particles.cxx
+ * @ingroup events
+ */

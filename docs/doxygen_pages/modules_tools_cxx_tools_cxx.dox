@@ -1,0 +1,15 @@
+/**
+ * @file tools.cxx
+ * @brief Documentation for modules/tools/cxx/tools.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/tools/cxx/tools.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - tools/tools.h
+ *
+ * @see tools.cxx
+ * @ingroup modules
+ */

@@ -1,0 +1,24 @@
+/**
+ * @file utils.h
+ * @brief Implementation for utils.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/cutils/include/utils/utils.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `torch/torch.h`
+ * - `vector`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_changedev changedev
+ * - **Signature**: `void changedev(torch::Tensor* inpt)`
+ * - **Parameters**:
+ *   - `inpt` (torch::Tensor*)
+ * - **Returns**: `void`
+ *
+ * @see utils.h
+ */

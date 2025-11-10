@@ -1,0 +1,15 @@
+/**
+ * @file atomic.cuh
+ * @brief Implementation for atomic.cuh
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/cutils/include/utils/atomic.cuh`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `torch/torch.h`
+ *
+ * @see atomic.cuh
+ */

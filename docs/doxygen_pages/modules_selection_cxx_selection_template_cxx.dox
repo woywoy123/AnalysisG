@@ -1,0 +1,20 @@
+/**
+ * @file selection_template.cxx
+ * @brief Documentation for modules/selection/cxx/selection_template.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/selection/cxx/selection_template.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/selection_template.h
+ * - meta/meta.h
+ *
+ * @section functions Functions
+ * - x()
+ * - selection_template()
+ *
+ * @see selection_template.cxx
+ * @ingroup modules
+ */

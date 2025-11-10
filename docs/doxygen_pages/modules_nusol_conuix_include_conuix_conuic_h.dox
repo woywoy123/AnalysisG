@@ -1,0 +1,43 @@
+/**
+ * @file conuic.h
+ * @brief Documentation for modules/nusol/conuix/include/conuix/conuic.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/conuix/include/conuix/conuic.h`
+ * 
+ * @section dependencies Dependencies
+ * - conuix/struct.h
+ * - structs/property.h
+ * - complex
+ * - math.h
+ *
+ * @section classes Classes
+ * - conuic
+ * - particle_template
+ *
+ * @section functions Functions
+ * - lambda_dPdtau_qrt()
+ * - get_lmb()
+ * - dtx()
+ * - set_tau()
+ * - solve()
+ * - dPdL()
+ * - set_lmb()
+ * - get_scl()
+ * - gtx()
+ * - set_scl()
+ * - lambda_root_dPdtau()
+ * - gxx()
+ * - P()
+ * - lambda_dPdtau()
+ * - dPdZ()
+ * - Mobius()
+ * - get_tau()
+ * - dPdtau()
+ * - kappa()
+ *
+ * @see conuic.h
+ * @ingroup modules
+ */

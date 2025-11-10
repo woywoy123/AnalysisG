@@ -1,0 +1,15 @@
+/**
+ * @file properties.cxx
+ * @brief Implementation for properties.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/selection/cxx/properties.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/selection_template.h`
+ *
+ * @see properties.cxx
+ */

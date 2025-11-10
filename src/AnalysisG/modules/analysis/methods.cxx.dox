@@ -1,0 +1,27 @@
+/**
+ * @file methods.cxx
+ * @brief Implementation for methods.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/analysis/methods.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG/analysis.h`
+ * - `ROOT/RDataFrame.hxx`
+ * - `TFile.h`
+ * - `TTree.h`
+ * - `tools/vector_cast.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_ep ep
+ * - **Signature**: `int ep(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see methods.cxx
+ */

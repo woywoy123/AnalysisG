@@ -1,0 +1,20 @@
+/**
+ * @file base.cxx
+ * @brief Implementation for base.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/metric/cxx/base.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/metric_template.h`
+ * - `templates/model_template.h`
+ *
+ * @section enums Enumerations
+ *
+ * - `gr`
+ *
+ * @see base.cxx
+ */

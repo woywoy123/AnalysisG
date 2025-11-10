@@ -1,0 +1,38 @@
+/**
+ * @file htilde.h
+ * @brief Documentation for modules/nusol/conuix/include/conuix/htilde.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/conuix/include/conuix/htilde.h`
+ * 
+ * @section dependencies Dependencies
+ * - conuix/matrix.h
+ *
+ * @section classes Classes
+ * - particle_template
+ *
+ * @section structs Structures
+ * - rotation_t
+ * - pencil_t
+ * - H_matrix_t
+ * - kinematic_t
+ * - Sy_t
+ * - base_t
+ * - thetapsi_t
+ * - Sx_t
+ *
+ * @section functions Functions
+ * - get_rotation()
+ * - get_sx()
+ * - get_base()
+ * - get_kinematic()
+ * - get_sy()
+ * - get_hmatrix()
+ * - get_psi_theta_mapping()
+ * - get_pencil()
+ *
+ * @see htilde.h
+ * @ingroup modules
+ */

@@ -1,0 +1,30 @@
+/**
+ * @file io.cxx
+ * @brief Implementation for io.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/tools/cxx/io.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `filesystem`
+ * - `sys/stat.h`
+ * - `tools/tools.h`
+ * - `unistd.h`
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_stat stat
+ *
+ * @section functions Functions
+ *
+ * @subsection func_x x
+ * - **Signature**: `int x(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see io.cxx
+ */

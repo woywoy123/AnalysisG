@@ -1,0 +1,21 @@
+/**
+ * @file particle_gnn.pyx
+ * @brief Documentation for events/gnn/particle_gnn.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/gnn/particle_gnn.pyx`
+ * 
+ * @section classes Classes
+ * - ZPrime
+ * - Top
+ *
+ * @section functions Functions
+ * - __dealloc__()
+ * - __cinit__()
+ * - __init__()
+ *
+ * @see particle_gnn.pyx
+ * @ingroup events
+ */

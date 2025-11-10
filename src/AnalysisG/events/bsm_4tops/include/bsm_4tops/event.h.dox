@@ -1,0 +1,30 @@
+/**
+ * @file event.h
+ * @brief Implementation for event.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `events/bsm_4tops/include/bsm_4tops/event.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `bsm_4tops/particles.h`
+ * - `templates/event_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_bsm_4tops bsm_4tops
+ *
+ * @section functions Functions
+ *
+ * @subsection func_vectorize vectorize
+ * - **Signature**: `void vectorize(auto std::map<m, G*>* ipt, std::vector<particle_template*>* vec)`
+ * - **Parameters**:
+ *   - `std::map<m` (auto)
+ *   - `ipt` (G*>*)
+ *   - `vec` (std::vector<particle_template*>*)
+ * - **Returns**: `void`
+ *
+ * @see event.h
+ */

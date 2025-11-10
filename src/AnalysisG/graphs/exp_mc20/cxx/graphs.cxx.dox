@@ -1,0 +1,18 @@
+/**
+ * @file graphs.cxx
+ * @brief Implementation for graphs.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `graphs/exp_mc20/cxx/graphs.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `edge_features.h`
+ * - `graph_features.h`
+ * - `graphs.h`
+ * - `node_features.h`
+ *
+ * @see graphs.cxx
+ */

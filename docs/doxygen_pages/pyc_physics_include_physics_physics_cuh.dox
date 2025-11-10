@@ -1,0 +1,27 @@
+/**
+ * @file physics.cuh
+ * @brief Documentation for pyc/physics/include/physics/physics.cuh
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/physics/include/physics/physics.cuh`
+ * 
+ * @section dependencies Dependencies
+ * - torch/torch.h
+ *
+ * @section functions Functions
+ * - Beta2()
+ * - Mt2()
+ * - P()
+ * - Mt()
+ * - Beta()
+ * - P2()
+ * - M()
+ * - Theta()
+ * - M2()
+ * - DeltaR()
+ *
+ * @see physics.cuh
+ * @ingroup pyc
+ */

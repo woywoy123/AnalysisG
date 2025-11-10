@@ -1,0 +1,22 @@
+/**
+ * @file nusol.h
+ * @brief Documentation for pyc/nusol/include/nusol/nusol.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/nusol/include/nusol/nusol.h`
+ * 
+ * @section dependencies Dependencies
+ * - map
+ * - tuple
+ * - string
+ * - torch/torch.h
+ *
+ * @section functions Functions
+ * - BaseMatrix()
+ * - Hperp()
+ *
+ * @see nusol.h
+ * @ingroup pyc
+ */

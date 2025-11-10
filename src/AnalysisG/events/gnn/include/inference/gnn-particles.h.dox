@@ -1,0 +1,41 @@
+/**
+ * @file gnn-particles.h
+ * @brief Implementation for gnn-particles.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `events/gnn/include/inference/gnn-particles.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/particle_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_particle_gnn particle_gnn
+ *
+ * @subsection class_top top
+ *
+ * @subsection class_zprime zprime
+ *
+ * @section functions Functions
+ *
+ * @subsection func_read read
+ * - **Signature**: `void read(element_t* el, std::string key, std::vector<g>* out)`
+ * - **Parameters**:
+ *   - `el` (element_t*)
+ *   - `key` (std::string)
+ *   - `out` (std::vector<g>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_reduce reduce
+ * - **Signature**: `void reduce(element_t* el, std::string key, std::vector<g>* out)`
+ * - **Parameters**:
+ *   - `el` (element_t*)
+ *   - `key` (std::string)
+ *   - `out` (std::vector<g>*)
+ * - **Returns**: `void`
+ *
+ * @see gnn-particles.h
+ */

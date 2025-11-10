@@ -1,0 +1,27 @@
+/**
+ * @file report.h
+ * @brief Documentation for modules/structs/include/structs/report.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/include/structs/report.h`
+ * 
+ * @section dependencies Dependencies
+ * - structs/enums.h
+ * - string
+ * - map
+ *
+ * @section classes Classes
+ * - metrics
+ *
+ * @section structs Structures
+ * - model_report
+ *
+ * @section functions Functions
+ * - print()
+ * - prx()
+ *
+ * @see report.h
+ * @ingroup modules
+ */

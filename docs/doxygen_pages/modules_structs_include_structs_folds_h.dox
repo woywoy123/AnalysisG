@@ -1,0 +1,23 @@
+/**
+ * @file folds.h
+ * @brief Documentation for modules/structs/include/structs/folds.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/include/structs/folds.h`
+ * 
+ * @section dependencies Dependencies
+ * - string
+ *
+ * @section structs Structures
+ * - graph_hdf5
+ * - folds_t
+ * - graph_hdf5_w
+ *
+ * @section functions Functions
+ * - flush_data()
+ *
+ * @see folds.h
+ * @ingroup modules
+ */

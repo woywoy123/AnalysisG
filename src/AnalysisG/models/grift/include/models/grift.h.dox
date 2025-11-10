@@ -1,0 +1,19 @@
+/**
+ * @file grift.h
+ * @brief Implementation for grift.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `models/grift/include/models/grift.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/model_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_grift grift
+ *
+ * @see grift.h
+ */

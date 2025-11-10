@@ -1,0 +1,26 @@
+/**
+ * @file nuclx.cxx
+ * @brief Documentation for modules/nusol/tmp/conuix/cxx/nuclx.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/tmp/conuix/cxx/nuclx.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - conics/nusol.h
+ * - math.h
+ *
+ * @section functions Functions
+ * - _beta()
+ * - Rx()
+ * - sin()
+ * - Ry()
+ * - Rz()
+ * - if()
+ * - cos_theta()
+ * - _mag()
+ *
+ * @see nuclx.cxx
+ * @ingroup modules
+ */

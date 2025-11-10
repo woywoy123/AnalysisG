@@ -1,0 +1,15 @@
+/**
+ * @file transform.cuh
+ * @brief Implementation for transform.cuh
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/transform/include/transform/transform.cuh`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `torch/torch.h`
+ *
+ * @see transform.cuh
+ */

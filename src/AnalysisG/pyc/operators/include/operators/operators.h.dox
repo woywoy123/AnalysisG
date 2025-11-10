@@ -1,0 +1,15 @@
+/**
+ * @file operators.h
+ * @brief Implementation for operators.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/operators/include/operators/operators.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `torch/torch.h`
+ *
+ * @see operators.h
+ */

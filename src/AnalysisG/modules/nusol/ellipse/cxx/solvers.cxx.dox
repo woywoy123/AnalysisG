@@ -1,0 +1,190 @@
+/**
+ * @file solvers.cxx
+ * @brief Implementation for solvers.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/ellipse/cxx/solvers.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `cmath`
+ * - `complex`
+ * - `ellipse/mtx.h`
+ * - `ellipse/solvers.h`
+ * - `iostream`
+ *
+ * @section functions Functions
+ *
+ * @subsection func__arith _arith
+ * - **Signature**: `void _arith(double** o, double** v2, double s, int idx, int idy)`
+ * - **Parameters**:
+ *   - `o` (double**)
+ *   - `v2` (double**)
+ *   - `s` (double)
+ *   - `idx` (int)
+ *   - `idy` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func__copy _copy
+ * - **Signature**: `void _copy(double* dst, double* src, int lx)`
+ * - **Parameters**:
+ *   - `dst` (double*)
+ *   - `src` (double*)
+ *   - `lx` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func__det _det
+ * - **Signature**: `double _det(double** v)`
+ * - **Parameters**:
+ *   - `v` (double**)
+ * - **Returns**: `double`
+ *
+ * @subsection func__m_00 _m_00
+ * - **Signature**: `double _m_00(double** M)`
+ * - **Parameters**:
+ *   - `M` (double**)
+ * - **Returns**: `double`
+ *
+ * @subsection func__m_01 _m_01
+ * - **Signature**: `double _m_01(double** M)`
+ * - **Parameters**:
+ *   - `M` (double**)
+ * - **Returns**: `double`
+ *
+ * @subsection func__m_02 _m_02
+ * - **Signature**: `double _m_02(double** M)`
+ * - **Parameters**:
+ *   - `M` (double**)
+ * - **Returns**: `double`
+ *
+ * @subsection func__m_10 _m_10
+ * - **Signature**: `double _m_10(double** M)`
+ * - **Parameters**:
+ *   - `M` (double**)
+ * - **Returns**: `double`
+ *
+ * @subsection func__m_11 _m_11
+ * - **Signature**: `double _m_11(double** M)`
+ * - **Parameters**:
+ *   - `M` (double**)
+ * - **Returns**: `double`
+ *
+ * @subsection func__m_12 _m_12
+ * - **Signature**: `double _m_12(double** M)`
+ * - **Parameters**:
+ *   - `M` (double**)
+ * - **Returns**: `double`
+ *
+ * @subsection func__m_20 _m_20
+ * - **Signature**: `double _m_20(double** M)`
+ * - **Parameters**:
+ *   - `M` (double**)
+ * - **Returns**: `double`
+ *
+ * @subsection func__m_21 _m_21
+ * - **Signature**: `double _m_21(double** M)`
+ * - **Parameters**:
+ *   - `M` (double**)
+ * - **Returns**: `double`
+ *
+ * @subsection func__m_22 _m_22
+ * - **Signature**: `double _m_22(double** M)`
+ * - **Parameters**:
+ *   - `M` (double**)
+ * - **Returns**: `double`
+ *
+ * @subsection func__scale _scale
+ * - **Signature**: `void _scale(double** v, double** f, int idx, int idy, double s)`
+ * - **Parameters**:
+ *   - `v` (double**)
+ *   - `f` (double**)
+ *   - `idx` (int)
+ *   - `idy` (int)
+ *   - `s` (double)
+ * - **Returns**: `void`
+ *
+ * @subsection func__trace _trace
+ * - **Signature**: `double _trace(double** A)`
+ * - **Parameters**:
+ *   - `A` (double**)
+ * - **Returns**: `double`
+ *
+ * @subsection func_distance distance
+ * - **Signature**: `double distance(mtx* H1, double a1, mtx* H2, double a2)`
+ * - **Parameters**:
+ *   - `H1` (mtx*)
+ *   - `a1` (double)
+ *   - `H2` (mtx*)
+ *   - `a2` (double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_factor_degenerate factor_degenerate
+ * - **Signature**: `void factor_degenerate(mtx G, mtx* lines, int* lc, double* q0)`
+ * - **Parameters**:
+ *   - `G` (mtx)
+ *   - `lines` (mtx*)
+ *   - `lc` (int*)
+ *   - `q0` (double*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_i i
+ * - **Signature**: `int i(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_intersection_ellipses intersection_ellipses
+ * - **Signature**: `int intersection_ellipses(mtx* A, mtx* B, mtx** lines, mtx** pts, mtx** sols)`
+ * - **Parameters**:
+ *   - `A` (mtx*)
+ *   - `B` (mtx*)
+ *   - `lines` (mtx**)
+ *   - `pts` (mtx**)
+ *   - `sols` (mtx**)
+ * - **Returns**: `int`
+ *
+ * @subsection func_intersections_ellipse_line intersections_ellipse_line
+ * - **Signature**: `int intersections_ellipse_line(mtx* ellipse, mtx* line, mtx* pts)`
+ * - **Parameters**:
+ *   - `ellipse` (mtx*)
+ *   - `line` (mtx*)
+ *   - `pts` (mtx*)
+ * - **Returns**: `int`
+ *
+ * @subsection func_j j
+ * - **Signature**: `int j(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_multisqrt multisqrt
+ * - **Signature**: `void multisqrt(double y, double roots[2], int count)`
+ * - **Parameters**:
+ *   - `y` (double)
+ *   - `roots[2]` (double)
+ *   - `count` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_swap_index swap_index
+ * - **Signature**: `void swap_index(double** v, int idx)`
+ * - **Parameters**:
+ *   - `v` (double**)
+ *   - `idx` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_x x
+ * - **Signature**: `int x(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_y y
+ * - **Signature**: `int y(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see solvers.cxx
+ */

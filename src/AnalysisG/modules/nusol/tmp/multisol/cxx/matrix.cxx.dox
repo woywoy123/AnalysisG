@@ -1,0 +1,74 @@
+/**
+ * @file matrix.cxx
+ * @brief Implementation for matrix.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/tmp/multisol/cxx/matrix.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `iomanip`
+ * - `iostream`
+ * - `math.h`
+ * - `reconstruction/matrix.h`
+ * - `reconstruction/mtx.h`
+ * - `reconstruction/solvers.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_col col
+ * - **Signature**: `int col(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_i i
+ * - **Signature**: `int i(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_invert_matrix invert_matrix
+ * - **Signature**: `bool invert_matrix(const matrix& M, matrix& M_inv)`
+ * - **Parameters**:
+ *   - `M` (const matrix&)
+ *   - `M_inv` (matrix&)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_j j
+ * - **Signature**: `int j(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_k k
+ * - **Signature**: `int k(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_print print
+ * - **Signature**: `void print(double v, int p)`
+ * - **Parameters**:
+ *   - `v` (double)
+ *   - `p` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_row row
+ * - **Signature**: `int row(k + 1)`
+ * - **Parameters**:
+ *   - `1` (k +)
+ * - **Returns**: `int`
+ *
+ * @subsection func_solve_linear solve_linear
+ * - **Signature**: `bool solve_linear(const matrix& A_in, const matrix& b_in, matrix& x_out)`
+ * - **Parameters**:
+ *   - `A_in` (const matrix&)
+ *   - `b_in` (const matrix&)
+ *   - `x_out` (matrix&)
+ * - **Returns**: `bool`
+ *
+ * @see matrix.cxx
+ */

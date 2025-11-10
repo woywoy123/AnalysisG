@@ -1,0 +1,26 @@
+/**
+ * @file model.h
+ * @brief Implementation for model.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/include/structs/model.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `map`
+ * - `string`
+ * - `structs/enums.h`
+ * - `vector`
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_model_settings_t model_settings_t
+ *
+ * @section enums Enumerations
+ *
+ * - `e_optim`
+ *
+ * @see model.h
+ */

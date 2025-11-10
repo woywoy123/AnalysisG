@@ -1,0 +1,24 @@
+/**
+ * @file meta.cxx
+ * @brief Implementation for meta.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/meta/cxx/meta.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `TTreeReader.h`
+ * - `meta.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_x x
+ * - **Signature**: `size_t x(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `size_t`
+ *
+ * @see meta.cxx
+ */

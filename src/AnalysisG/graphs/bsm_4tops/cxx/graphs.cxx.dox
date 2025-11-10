@@ -1,0 +1,19 @@
+/**
+ * @file graphs.cxx
+ * @brief Implementation for graphs.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `graphs/bsm_4tops/cxx/graphs.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `bsm_4tops/edge_features.h`
+ * - `bsm_4tops/event.h`
+ * - `bsm_4tops/graph_features.h`
+ * - `bsm_4tops/graphs.h`
+ * - `bsm_4tops/node_features.h`
+ *
+ * @see graphs.cxx
+ */

@@ -1,0 +1,483 @@
+/**
+ * @file analysis.dox
+ * @brief Documentation for the Analysis core module
+ * 
+ * This file provides comprehensive documentation for the analysis.pyx, analysis.pxd,
+ * and corresponding C++ implementation files.
+ *
+ * @defgroup Analysis Analysis Module
+ * @brief Core analysis orchestration and workflow management
+ * 
+ * The Analysis module provides the main interface for orchestrating physics analysis workflows.
+ * It manages samples, events, selections, graphs, models, and metrics through a unified API.
+ *
+ * ## Overview
+ * 
+ * The Analysis class coordinates the entire analysis pipeline:
+ * - Sample loading and management
+ * - Event template registration
+ * - Selection application
+ * - Graph construction
+ * - Model training/inference
+ * - Metric computation
+ * 
+ * ## Architecture
+ * 
+ * ### Python Interface (analysis.pyx)
+ * 
+ * The Cython wrapper provides a Pythonic interface to the C++ analysis engine:
+ * 
+ * ```python
+ * from AnalysisG import Analysis
+ * 
+ * ana = Analysis()
+ * ana.AddSamples("path/to/samples/*.root", "signal")
+ * ana.AddEvent(MyEvent(), "my_event")
+ * ana.AddSelection(MySelection())
+ * ana.Start()
+ * ```
+ *
+ * ### C++ Declaration (analysis.pxd)
+ * 
+ * Cython extern declarations for C++ analysis class:
+ * - Inherits from notification for progress reporting
+ * - Manages collections of templates and models
+ * - Provides thread-safe execution
+ *
+ * ### C++ Implementation (analysis.h/analysis.cxx)
+ * 
+ * Core C++ analysis engine implementation.
+ *
+ * ## Classes
+ * 
+ * @{
+ */
+
+/**
+ * @class analysis
+ * @brief C++ analysis orchestration engine
+ * 
+ * @extends notification
+ * @extends tools
+ * 
+ * The analysis class manages the complete analysis workflow including:
+ * - Input sample registration and loading
+ * - Event/particle template management  
+ * - Selection and graph template coordination
+ * - Model and metric integration
+ * - Multi-threaded execution with progress tracking
+ * 
+ * ## Member Variables
+ * 
+ * ### Public Members
+ * 
+ * @var map<string, meta*> meta_data
+ * @brief Metadata cache for all registered samples
+ * 
+ * Maps sample labels to their metadata including:
+ * - Sum of weights
+ * - Cross sections
+ * - Number of events
+ * - Dataset information
+ * 
+ * @var settings_t m_settings
+ * @brief Configuration settings for the analysis
+ * 
+ * Contains:
+ * - Output paths
+ * - K-fold configuration  
+ * - Tree names (e.g., sum of weights)
+ * - Batch sizes
+ * - Thread counts
+ *
+ * ## Methods
+ * 
+ * ### Sample Management
+ * 
+ * @fn void add_samples(string path, string label)
+ * @brief Register input ROOT files for analysis
+ * 
+ * @param path Glob pattern or path to ROOT files (e.g., "/data/*.root")
+ * @param label Sample identifier used for grouping and metadata
+ * 
+ * Scans the specified path for ROOT files and registers them with the given label.
+ * Multiple calls with the same label will aggregate files under that sample.
+ * 
+ * Example:
+ * ```cpp
+ * analysis ana;
+ * ana.add_samples("/data/signal/*.root", "signal");
+ * ana.add_samples("/data/background/*.root", "background");
+ * ```
+ *
+ * ### Template Registration
+ * 
+ * @fn void add_event_template(event_template* ev, string label)
+ * @brief Register an event template for processing
+ * 
+ * @param ev Pointer to event template defining event-level processing
+ * @param label Identifier for this event template
+ * 
+ * The event template defines:
+ * - How to read particles from input files
+ * - Event-level selection criteria  
+ * - Custom event properties
+ * 
+ * @fn void add_selection_template(selection_template* sel)
+ * @brief Register a selection for physics object reconstruction
+ * 
+ * @param sel Pointer to selection template
+ * 
+ * Selections define:
+ * - Physics object definitions (tops, W bosons, etc.)
+ * - Reconstruction algorithms
+ * - Selection cuts
+ * 
+ * @fn void add_graph_template(graph_template* gr, string label)  
+ * @brief Register a graph template for GNN processing
+ * 
+ * @param gr Pointer to graph template
+ * @param label Identifier for this graph template
+ * 
+ * Graph templates define:
+ * - Node features (particle properties)
+ * - Edge features (particle relationships)
+ * - Graph-level features
+ *
+ * ### Model and Metric Management
+ * 
+ * @fn void add_model(model_template* model, optimizer_params_t* op, string run_name)
+ * @brief Register a model for training
+ * 
+ * @param model Pointer to PyTorch model wrapper
+ * @param op Optimizer configuration (learning rate, momentum, etc.)
+ * @param run_name Identifier for this training run
+ * 
+ * Used for model training with specified optimizer parameters.
+ * 
+ * @fn void add_model(model_template* model, string run_name)
+ * @brief Register a model for inference only
+ * 
+ * @param model Pointer to pre-trained PyTorch model
+ * @param run_name Identifier for this inference run
+ * 
+ * Used for applying pre-trained models without training.
+ * 
+ * @fn void add_metric_template(metric_template* metric, model_template* mdl)
+ * @brief Register a metric for model evaluation
+ * 
+ * @param metric Pointer to metric calculator
+ * @param mdl Pointer to model being evaluated
+ * 
+ * Metrics compute performance measures like:
+ * - Accuracy
+ * - Loss values
+ * - ROC curves
+ * - Custom physics metrics
+ *
+ * ### Execution Control
+ * 
+ * @fn void start()
+ * @brief Execute the analysis pipeline
+ * 
+ * Runs the complete analysis workflow:
+ * 1. Load and cache metadata
+ * 2. Build events from input files
+ * 3. Apply selections
+ * 4. Construct graphs
+ * 5. Train/apply models
+ * 6. Compute metrics
+ * 
+ * Execution is multi-threaded with progress tracking.
+ * 
+ * @fn void attach_threads()
+ * @brief Wait for all worker threads to complete
+ * 
+ * Blocks until all background processing is finished.
+ * Called automatically by start() when execution completes.
+ *
+ * ### Progress Monitoring
+ * 
+ * @fn map<string, vector<float>> progress()
+ * @brief Get current progress for all running tasks
+ * 
+ * @return Map of task names to progress vectors [current, increment, total]
+ * 
+ * Example:
+ * ```cpp
+ * auto prog = ana.progress();
+ * for (auto& p : prog) {
+ *     cout << p.first << ": " << p.second[0] << "/" << p.second[2] << endl;
+ * }
+ * ```
+ * 
+ * @fn map<string, string> progress_mode()
+ * @brief Get descriptive mode for each running task
+ * 
+ * @return Map of task names to human-readable descriptions
+ * 
+ * @fn map<string, string> progress_report()
+ * @brief Get detailed progress reports
+ * 
+ * @return Map of task names to detailed status messages
+ * 
+ * @fn map<string, bool> is_complete()
+ * @brief Check completion status of all tasks
+ * 
+ * @return Map of task names to completion flags (true = complete)
+ */
+
+/**
+ * @class Analysis  
+ * @brief Python wrapper for C++ analysis engine
+ * 
+ * Provides Pythonic interface to analysis functionality with:
+ * - Automatic memory management
+ * - Progress visualization with tqdm
+ * - Pickle-based metadata caching
+ * - Property-based configuration
+ * 
+ * ## Private Members
+ * 
+ * @var list selections_
+ * @brief Python references to registered selections
+ * @note Prevents garbage collection of selection objects
+ * 
+ * @var list graphs_
+ * @brief Python references to registered graph templates
+ * 
+ * @var list events_
+ * @brief Python references to registered event templates
+ * 
+ * @var list models_
+ * @brief Python references to registered models
+ * 
+ * @var list optim_
+ * @brief Python references to optimizer configurations
+ * 
+ * @var dict meta_
+ * @brief Cached metadata dictionary (sample_hash -> Meta object)
+ * 
+ * @var analysis* ana
+ * @brief Pointer to underlying C++ analysis instance
+ *
+ * ## Methods
+ * 
+ * ### Lifecycle
+ * 
+ * @fn __cinit__(self)
+ * @brief Constructor - allocates C++ analysis instance
+ * 
+ * @fn __dealloc__(self)  
+ * @brief Destructor - deallocates C++ instance and runs garbage collection
+ * 
+ * ### Configuration
+ * 
+ * @fn AddSamples(self, str path, str label)
+ * @brief Python wrapper for add_samples
+ * @param path File path or glob pattern
+ * @param label Sample identifier
+ * 
+ * @fn AddEvent(self, EventTemplate ev, str label)
+ * @brief Register event template
+ * @param ev Python EventTemplate wrapper
+ * @param label Event identifier
+ * 
+ * @fn AddGraph(self, GraphTemplate ev, str label)
+ * @brief Register graph template
+ * @param ev Python GraphTemplate wrapper
+ * @param label Graph identifier
+ * 
+ * @fn AddSelection(self, SelectionTemplate selc)
+ * @brief Register selection template  
+ * @param selc Python SelectionTemplate wrapper
+ * 
+ * @fn AddMetric(self, MetricTemplate mex, ModelTemplate mdl)
+ * @brief Register metric for model evaluation
+ * @param mex Python MetricTemplate wrapper
+ * @param mdl Python ModelTemplate wrapper
+ * 
+ * @fn AddModel(self, ModelTemplate model, OptimizerConfig op, str run_name)
+ * @brief Register model for training
+ * @param model Python ModelTemplate wrapper
+ * @param op Optimizer configuration
+ * @param run_name Training run identifier
+ * 
+ * @fn AddModelInference(self, ModelTemplate model, str run_name="run_name")
+ * @brief Register model for inference
+ * @param model Pre-trained model
+ * @param run_name Inference run identifier
+ * 
+ * ### Execution
+ * 
+ * @fn Start(self)
+ * @brief Execute analysis with progress tracking
+ * 
+ * Implements:
+ * - Metadata caching with pickle
+ * - Progress bars with tqdm
+ * - Keyboard interrupt handling
+ * - Model report generation
+ * - Automatic thread synchronization
+ * 
+ * Progress is displayed as:
+ * ```
+ * Building Events: 100%|████████| 1000/1000
+ * Training Model: 75%|██████  | 750/1000
+ * ```
+ *
+ * ## Properties
+ * 
+ * ### Configuration Properties
+ * 
+ * @property SumOfWeightsTreeName
+ * @brief Name of TTree containing sum of weights
+ * @type str
+ * @default "sumWeights"
+ * 
+ * Used to extract normalization information from MC samples.
+ * 
+ * @property OutputPath
+ * @brief Directory for output files
+ * @type str
+ * @default "./"
+ * 
+ * All output files (models, metrics, metadata) are written here.
+ * 
+ * @property kFolds
+ * @brief Number of k-folds for cross-validation
+ * @type int
+ * @default 1 (no cross-validation)
+ * 
+ * @property kFold
+ * @brief Which k-fold(s) to process
+ * @type int or list[int]
+ * @default []
+ * 
+ * Can specify single fold (int) or multiple folds (list).
+ * 
+ * @property FetchMeta
+ * @brief Whether to fetch and cache metadata
+ * @type bool
+ * @default False
+ * 
+ * When True, metadata is extracted from input files and cached to disk.
+ * 
+ * @property GetMetaData
+ * @brief Retrieve cached metadata
+ * @type MetaLookup
+ * @return Dictionary mapping sample hashes to Meta objects
+ * 
+ * Contains sum of weights, cross sections, and dataset information.
+ *
+ * ## Example Usage
+ * 
+ * ### Basic Analysis
+ * 
+ * ```python
+ * from AnalysisG import Analysis
+ * from MyAnalysis import MyEvent, MySelection
+ * 
+ * # Create analysis instance
+ * ana = Analysis()
+ * ana.OutputPath = "./output"
+ * ana.SumOfWeightsTreeName = "sumWeights"
+ * 
+ * # Add samples
+ * ana.AddSamples("/data/signal/*.root", "signal")
+ * ana.AddSamples("/data/background/*.root", "background")
+ * 
+ * # Add templates
+ * ana.AddEvent(MyEvent(), "physics")
+ * ana.AddSelection(MySelection())
+ * 
+ * # Run
+ * ana.Start()
+ * ```
+ * 
+ * ### Machine Learning Workflow
+ * 
+ * ```python
+ * # Add graph template for GNN
+ * ana.AddGraph(MyGraph(), "topology")
+ * 
+ * # Add model for training
+ * from AnalysisG import OptimizerConfig
+ * opt = OptimizerConfig()
+ * opt.optimizer = "Adam"
+ * opt.learning_rate = 0.001
+ * 
+ * from MyAnalysis import MyGNN
+ * model = MyGNN()
+ * ana.AddModel(model, opt, "gnn_training")
+ * 
+ * # Add metric
+ * from AnalysisG.metrics import Accuracy
+ * ana.AddMetric(Accuracy(), model)
+ * 
+ * # Train
+ * ana.Start()
+ * ```
+ * 
+ * ### Cross-Validation
+ * 
+ * ```python
+ * ana.kFolds = 5  # 5-fold cross-validation
+ * ana.kFold = [0, 1, 2]  # Process first 3 folds
+ * ana.Start()
+ * ```
+ * 
+ * ## Dependencies
+ * 
+ * ### Python Modules
+ * - time: Sleep for progress polling
+ * - tqdm: Progress bar visualization  
+ * - pickle: Metadata caching
+ * - gc: Garbage collection
+ * 
+ * ### Cython Imports
+ * - AnalysisG.core.meta: Metadata management
+ * - AnalysisG.core.tools: Utility functions
+ * - AnalysisG.core.lossfx: Optimizer configurations
+ * - AnalysisG.core.event_template: Event processing
+ * - AnalysisG.core.graph_template: Graph construction
+ * - AnalysisG.core.selection_template: Physics selections
+ * - AnalysisG.core.metric_template: Performance metrics
+ * - AnalysisG.core.model_template: PyTorch models
+ * 
+ * ### C++ Dependencies
+ * - libcpp.bool, libcpp.map, libcpp.vector, libcpp.string: STL containers
+ * - <AnalysisG/analysis.h>: C++ analysis implementation
+ * 
+ * ## Thread Safety
+ * 
+ * The analysis engine uses multi-threading for:
+ * - Parallel sample loading
+ * - Concurrent event processing
+ * - Multi-threaded model training
+ * 
+ * Progress tracking is thread-safe with mutex protection.
+ * 
+ * ## Error Handling
+ * 
+ * - Exceptions from C++ are propagated to Python
+ * - KeyboardInterrupt allows graceful cancellation
+ * - Missing metadata triggers warning messages
+ * - Invalid configurations raise exceptions
+ * 
+ * ## Performance Notes
+ * 
+ * - Metadata is cached to disk to avoid re-extraction
+ * - Progress polling uses 0.1s sleep to reduce overhead
+ * - Garbage collection is explicitly triggered on cleanup
+ * - References are held to prevent premature deallocation
+ * 
+ * @see event_template
+ * @see selection_template
+ * @see graph_template
+ * @see model_template
+ * @see metric_template
+ * @see meta
+ */
+
+/** @} */ // end of Analysis group

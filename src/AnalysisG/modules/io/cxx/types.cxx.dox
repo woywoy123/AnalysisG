@@ -1,0 +1,15 @@
+/**
+ * @file types.cxx
+ * @brief Implementation for types.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/io/cxx/types.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `io.h`
+ *
+ * @see types.cxx
+ */

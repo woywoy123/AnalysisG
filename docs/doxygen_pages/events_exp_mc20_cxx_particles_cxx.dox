@@ -1,0 +1,26 @@
+/**
+ * @file particles.cxx
+ * @brief Documentation for events/exp_mc20/cxx/particles.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/exp_mc20/cxx/particles.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - particles.h
+ *
+ * @section functions Functions
+ * - physics_truth()
+ * - jet()
+ * - child()
+ * - physics_detector()
+ * - top()
+ * - x()
+ * - mx()
+ * - muon()
+ * - electron()
+ *
+ * @see particles.cxx
+ * @ingroup events
+ */

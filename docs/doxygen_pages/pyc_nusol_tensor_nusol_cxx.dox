@@ -1,0 +1,32 @@
+/**
+ * @file nusol.cxx
+ * @brief Documentation for pyc/nusol/tensor/nusol.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/nusol/tensor/nusol.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - operators/operators.h
+ * - transform/transform.h
+ * - physics/physics.h
+ * - utils/utils.h
+ * - nusol/nusol.h
+ *
+ * @section functions Functions
+ * - Rotation()
+ * - _x0()
+ * - Sigma()
+ * - Shape()
+ * - _met()
+ * - Intersecting()
+ * - Pi_2()
+ * - Parallel()
+ * - _H_perp()
+ * - HorizontalVertical()
+ * - _N()
+ *
+ * @see nusol.cxx
+ * @ingroup pyc
+ */

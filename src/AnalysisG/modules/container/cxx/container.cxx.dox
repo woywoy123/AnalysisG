@@ -1,0 +1,16 @@
+/**
+ * @file container.cxx
+ * @brief Implementation for container.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/container/cxx/container.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `TSystem.h`
+ * - `container/container.h`
+ *
+ * @see container.cxx
+ */

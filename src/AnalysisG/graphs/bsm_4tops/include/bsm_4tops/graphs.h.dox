@@ -1,0 +1,33 @@
+/**
+ * @file graphs.h
+ * @brief Implementation for graphs.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `graphs/bsm_4tops/include/bsm_4tops/graphs.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/graph_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_graph_children graph_children
+ *
+ * @subsection class_graph_detector graph_detector
+ *
+ * @subsection class_graph_jets graph_jets
+ *
+ * @subsection class_graph_jets_detector_lep graph_jets_detector_lep
+ *
+ * @subsection class_graph_jets_nonu graph_jets_nonu
+ *
+ * @subsection class_graph_tops graph_tops
+ *
+ * @subsection class_graph_truthjets graph_truthjets
+ *
+ * @subsection class_graph_truthjets_nonu graph_truthjets_nonu
+ *
+ * @see graphs.h
+ */

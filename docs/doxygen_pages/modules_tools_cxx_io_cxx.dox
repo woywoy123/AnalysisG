@@ -1,0 +1,24 @@
+/**
+ * @file io.cxx
+ * @brief Documentation for modules/tools/cxx/io.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/tools/cxx/io.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - tools/tools.h
+ * - sys/stat.h
+ * - filesystem
+ * - unistd.h
+ *
+ * @section structs Structures
+ * - stat
+ *
+ * @section functions Functions
+ * - x()
+ *
+ * @see io.cxx
+ * @ingroup modules
+ */

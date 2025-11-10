@@ -1,0 +1,264 @@
+/**
+ * @file particle_exp_mc20.pyx
+ * @brief Implementation for particle_exp_mc20.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `events/exp_mc20/particle_exp_mc20.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.particle_template`
+ * - `AnalysisG.events.exp_mc20.particle_exp_mc20`
+ * - `ParticleTemplate`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_Child Child
+ * - **Inherits from**: ParticleTemplate
+ * - **Member Variables**:
+ *   - `class Top`
+ *   - `class Child`
+ *   - `class PhysicsDetector`
+ *   - `class PhysicsTruth`
+ *   - `class Electron`
+ *   - `class Muon`
+ *   - `class Jet`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *
+ * @subsection class_Electron Electron
+ * - **Inherits from**: ParticleTemplate
+ * - **Member Variables**:
+ *   - `class Top`
+ *   - `class Child`
+ *   - `class PhysicsDetector`
+ *   - `class PhysicsTruth`
+ *   - `class Electron`
+ *   - `class Muon`
+ *   - `class Jet`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *
+ * @subsection class_Jet Jet
+ * - **Inherits from**: ParticleTemplate
+ * - **Member Variables**:
+ *   - `class Top`
+ *   - `class Child`
+ *   - `class PhysicsDetector`
+ *   - `class PhysicsTruth`
+ *   - `class Electron`
+ *   - `class Muon`
+ *   - `class Jet`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *
+ * @subsection class_Muon Muon
+ * - **Inherits from**: ParticleTemplate
+ * - **Member Variables**:
+ *   - `class Top`
+ *   - `class Child`
+ *   - `class PhysicsDetector`
+ *   - `class PhysicsTruth`
+ *   - `class Electron`
+ *   - `class Muon`
+ *   - `class Jet`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *
+ * @subsection class_PhysicsDetector PhysicsDetector
+ * - **Inherits from**: ParticleTemplate
+ * - **Member Variables**:
+ *   - `class Top`
+ *   - `class Child`
+ *   - `class PhysicsDetector`
+ *   - `class PhysicsTruth`
+ *   - `class Electron`
+ *   - `class Muon`
+ *   - `class Jet`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *
+ * @subsection class_PhysicsTruth PhysicsTruth
+ * - **Inherits from**: ParticleTemplate
+ * - **Member Variables**:
+ *   - `class Top`
+ *   - `class Child`
+ *   - `class PhysicsDetector`
+ *   - `class PhysicsTruth`
+ *   - `class Electron`
+ *   - `class Muon`
+ *   - `class Jet`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *
+ * @subsection class_Top Top
+ * - **Inherits from**: ParticleTemplate
+ * - **Member Variables**:
+ *   - `class Top`
+ *   - `class Child`
+ *   - `class PhysicsDetector`
+ *   - `class PhysicsTruth`
+ *   - `class Electron`
+ *   - `class Muon`
+ *   - `class Jet`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see particle_exp_mc20.pyx
+ */

@@ -1,0 +1,19 @@
+/**
+ * @file settings.h
+ * @brief Documentation for modules/structs/include/structs/settings.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/include/structs/settings.h`
+ * 
+ * @section dependencies Dependencies
+ * - string
+ * - vector
+ *
+ * @section structs Structures
+ * - settings_t
+ *
+ * @see settings.h
+ * @ingroup modules
+ */

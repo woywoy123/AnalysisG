@@ -1,0 +1,280 @@
+/**
+ * @file particle_template.pyx
+ * @brief Implementation for particle_template.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/particle_template.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.particle_template`
+ * - `AnalysisG.core.structs`
+ * - `AnalysisG.core.tools`
+ * - `bool`
+ * - `libcpp`
+ * - `libcpp.map`
+ * - `libcpp.string`
+ * - `libcpp.vector`
+ * - `map`
+ * - `particle_t`
+ * - `particle_template`
+ * - `string`
+ * - `vector`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_ParticleTemplate ParticleTemplate
+ * - **Member Variables**:
+ *   - `class ParticleTemplate`
+ *   - `dict slf_dict`
+ *   - `ParticleTemplate p`
+ *   - `ParticleTemplate o`
+ *   - `str i`
+ *   - `dict leaves`
+ *   - `ParticleTemplate v`
+ *   - `bool set_particle`
+ *   - `list make_particle`
+ *   - `list out`
+ *   - `ParticleTemplate pi`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self, inpt = None)`
+ *   - `__dealloc__(self)`
+ *   - `__reduce__(self, dict dictout = {})`
+ *   - `__hash__(self)`
+ *   - `__add__(self, ParticleTemplate other)`
+ *   - `__iadd__(self, ParticleTemplate other)`
+ *   - `__radd__(self, other)`
+ *   - `__eq__(self, other)`
+ *   - `__getleaves__(self)`
+ *   - `is_self(self, inpt)`
+ *   - `hash(self)`
+ *   - `index(self)`
+ *   - `px(self)`
+ *   - `py(self)`
+ *   - `pz(self)`
+ *   - `pt(self)`
+ *   - `eta(self)`
+ *   - `phi(self)`
+ *   - `e(self)`
+ *   - `Mass(self)`
+ *   - `charge(self)`
+ *   - `pdgid(self)`
+ *   - `symbol(self)`
+ *   - `Type(self)`
+ *   - `lepdef(self)`
+ *   - `nudef(self)`
+ *   - `is_lep(self)`
+ *   - `is_nu(self)`
+ *   - `is_b(self)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_Children Children
+ * - **Signature**: `list Children(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `list`
+ *
+ * @subsection func_LeptonicDecay LeptonicDecay
+ * - **Signature**: `bool LeptonicDecay(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_Mass Mass
+ * - **Signature**: `double Mass(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `double`
+ *
+ * @subsection func_Parents Parents
+ * - **Signature**: `list Parents(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `list`
+ *
+ * @subsection func_Type Type
+ * - **Signature**: `str Type(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `str`
+ *
+ * @subsection func___add__ __add__
+ * - **Signature**: `void __add__(auto self, auto ParticleTemplate other)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `ParticleTemplate other` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___eq__ __eq__
+ * - **Signature**: `void __eq__(auto self, auto other)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `other` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___getleaves__ __getleaves__
+ * - **Signature**: `void __getleaves__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___hash__ __hash__
+ * - **Signature**: `void __hash__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___iadd__ __iadd__
+ * - **Signature**: `void __iadd__(auto self, auto ParticleTemplate other)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `ParticleTemplate other` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___radd__ __radd__
+ * - **Signature**: `void __radd__(auto self, auto other)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `other` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___reduce__ __reduce__
+ * - **Signature**: `void __reduce__(auto self, auto dict dictout = {})`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `dict dictout = {}` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_charge charge
+ * - **Signature**: `double charge(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `double`
+ *
+ * @subsection func_e e
+ * - **Signature**: `double e(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `double`
+ *
+ * @subsection func_eta eta
+ * - **Signature**: `double eta(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `double`
+ *
+ * @subsection func_hash hash
+ * - **Signature**: `str hash(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `str`
+ *
+ * @subsection func_index index
+ * - **Signature**: `int index(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_is_add is_add
+ * - **Signature**: `bool is_add(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_is_b is_b
+ * - **Signature**: `bool is_b(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_is_lep is_lep
+ * - **Signature**: `bool is_lep(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_is_nu is_nu
+ * - **Signature**: `bool is_nu(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_is_self is_self
+ * - **Signature**: `void is_self(auto self, auto inpt)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `inpt` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_lepdef lepdef
+ * - **Signature**: `vector lepdef(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `vector`
+ *
+ * @subsection func_nudef nudef
+ * - **Signature**: `vector nudef(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `vector`
+ *
+ * @subsection func_pdgid pdgid
+ * - **Signature**: `int pdgid(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_phi phi
+ * - **Signature**: `double phi(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `double`
+ *
+ * @subsection func_pt pt
+ * - **Signature**: `double pt(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `double`
+ *
+ * @subsection func_px px
+ * - **Signature**: `double px(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `double`
+ *
+ * @subsection func_py py
+ * - **Signature**: `double py(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `double`
+ *
+ * @subsection func_pz pz
+ * - **Signature**: `double pz(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `double`
+ *
+ * @subsection func_symbol symbol
+ * - **Signature**: `str symbol(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `str`
+ *
+ * @see particle_template.pyx
+ */

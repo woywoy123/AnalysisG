@@ -1,0 +1,21 @@
+/**
+ * @file optimizer_build.cxx
+ * @brief Documentation for modules/analysis/optimizer_build.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/analysis/optimizer_build.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - AnalysisG/analysis.h
+ * - ROOT/RDataFrame.hxx
+ *
+ * @section functions Functions
+ * - k()
+ * - optimizer()
+ * - x()
+ *
+ * @see optimizer_build.cxx
+ * @ingroup modules
+ */

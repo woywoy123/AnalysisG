@@ -1,0 +1,140 @@
+/**
+ * @file selection_template.pyx
+ * @brief Implementation for selection_template.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/selection_template.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.io`
+ * - `AnalysisG.core.meta`
+ * - `AnalysisG.core.tools`
+ * - `IO`
+ * - `libcpp`
+ * - `libcpp.map`
+ * - `libcpp.vector`
+ * - `map`
+ * - `pathlib`
+ * - `pickle`
+ * - `string`
+ * - `vector`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_SelectionTemplate SelectionTemplate
+ * - **Member Variables**:
+ *   - `class SelectionTemplate`
+ *   - `list keys`
+ *   - `dict out`
+ *   - `void transform_dict_keys`
+ *   - `str hash`
+ *   - `Meta data`
+ *   - `string kx`
+ *   - `list rn`
+ *   - `list li`
+ *   - `list lo`
+ *   - `int lk`
+ *   - `dict i`
+ *   - `bool trig`
+ *   - `tools tl`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self, inpt = None)`
+ *   - `__dealloc__(self)`
+ *   - `__hash__(self)`
+ *   - `__name__(self)`
+ *   - `__reduce__(self)`
+ *   - `dump(self, str path = "./pkl-data", str name = "")`
+ *   - `load(self, str path = "./pkl-data", str name = "")`
+ *   - `PassedWeights(self)`
+ *   - `HashToWeightFile(self, hash_)`
+ *   - `GetMetaData(self)`
+ *   - `Postprocessing(self)`
+ *   - `InterpretROOT(self, str path, str tree)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_GetMetaData GetMetaData
+ * - **Signature**: `void GetMetaData(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_HashToWeightFile HashToWeightFile
+ * - **Signature**: `void HashToWeightFile(auto self, auto hash_)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `hash_` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_InterpretROOT InterpretROOT
+ * - **Signature**: `void InterpretROOT(auto self, auto str path, auto str tree)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str path` (auto)
+ *   - `str tree` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_PassedWeights PassedWeights
+ * - **Signature**: `void PassedWeights(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Postprocessing Postprocessing
+ * - **Signature**: `void Postprocessing(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___hash__ __hash__
+ * - **Signature**: `void __hash__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___name__ __name__
+ * - **Signature**: `void __name__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___reduce__ __reduce__
+ * - **Signature**: `void __reduce__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_dump dump
+ * - **Signature**: `void dump(auto self, auto str path = "./pkl-data", auto str name = "")`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str path = "./pkl-data"` (auto)
+ *   - `str name = ""` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_load load
+ * - **Signature**: `void load(auto self, auto str path = "./pkl-data", auto str name = "")`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str path = "./pkl-data"` (auto)
+ *   - `str name = ""` (auto)
+ * - **Returns**: `void`
+ *
+ * @see selection_template.pyx
+ */

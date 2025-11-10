@@ -1,0 +1,16 @@
+/**
+ * @file collector.cxx
+ * @brief Documentation for metrics/accuracy/cxx/collector.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `metrics/accuracy/cxx/collector.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - metrics/accuracy.h
+ * - string
+ *
+ * @see collector.cxx
+ * @ingroup metrics
+ */

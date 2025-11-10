@@ -1,0 +1,24 @@
+/**
+ * @file roc.h
+ * @brief Documentation for modules/roc/include/plotting/roc.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/roc/include/plotting/roc.h`
+ * 
+ * @section dependencies Dependencies
+ * - plotting/plotting.h
+ *
+ * @section classes Classes
+ * - roc
+ *
+ * @section structs Structures
+ * - roc_t
+ *
+ * @section functions Functions
+ * - build_ROC()
+ *
+ * @see roc.h
+ * @ingroup modules
+ */

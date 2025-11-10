@@ -1,0 +1,24 @@
+/**
+ * @file utils.cuh
+ * @brief Documentation for pyc/cutils/include/utils/utils.cuh
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/cutils/include/utils/utils.cuh`
+ * 
+ * @section dependencies Dependencies
+ * - vector
+ * - torch/torch.h
+ * - c10/cuda/CUDAFunctions.h
+ *
+ * @section functions Functions
+ * - MakeOp()
+ * - changedev()
+ * - blkn()
+ * - format()
+ * - blk_()
+ *
+ * @see utils.cuh
+ * @ingroup pyc
+ */

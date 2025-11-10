@@ -1,0 +1,18 @@
+/**
+ * @file base.cuh
+ * @brief Implementation for base.cuh
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/nusol/include/nusol/base.cuh`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `map`
+ * - `string`
+ * - `torch/torch.h`
+ * - `utils/atomic.cuh`
+ *
+ * @see base.cuh
+ */

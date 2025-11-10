@@ -1,0 +1,25 @@
+/**
+ * @file particles.h
+ * @brief Implementation for particles.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/include/structs/particles.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `map`
+ * - `string`
+ * - `vector`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_particle_template particle_template
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_particle_t particle_t
+ *
+ * @see particles.h
+ */

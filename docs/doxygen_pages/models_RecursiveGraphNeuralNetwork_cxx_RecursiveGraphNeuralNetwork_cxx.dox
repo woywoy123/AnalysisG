@@ -1,0 +1,20 @@
+/**
+ * @file RecursiveGraphNeuralNetwork.cxx
+ * @brief Documentation for models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - RecursiveGraphNeuralNetwork.h
+ * - pyc/pyc.h
+ *
+ * @section functions Functions
+ * - recursivegraphneuralnetwork()
+ * - t()
+ *
+ * @see RecursiveGraphNeuralNetwork.cxx
+ * @ingroup models
+ */

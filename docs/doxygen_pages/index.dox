@@ -1,0 +1,22 @@
+/**
+ * @mainpage AnalysisG Documentation
+ * 
+ * @section intro Introduction
+ * Complete API documentation for the AnalysisG framework.
+ * 
+ * @section modules Modules
+ * - @ref core - Core Python/Cython modules
+ * - @ref events - Event data structures
+ * - @ref graphs - Graph representations
+ * - @ref metrics - Performance metrics
+ * - @ref models - Machine learning models
+ * - @ref pyc - C++/CUDA interface modules
+ * 
+ * @section overview Framework Overview
+ * AnalysisG is a high-performance analysis framework combining:
+ * - Python/Cython for high-level interfaces
+ * - C++ for computational kernels
+ * - CUDA for GPU acceleration
+ * - ROOT for data I/O
+ * - PyTorch for machine learning
+ */

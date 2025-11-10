@@ -1,0 +1,158 @@
+/**
+ * @file metrics.h
+ * @brief Implementation for metrics.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/metrics/include/metrics/metrics.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `TCanvas.h`
+ * - `TGraph.h`
+ * - `TH1F.h`
+ * - `TLegend.h`
+ * - `TMultiGraph.h`
+ * - `TStyle.h`
+ * - `notification/notification.h`
+ * - `pyc/pyc.h`
+ * - `structs/report.h`
+ * - `structs/settings.h`
+ * - `templates/model_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_metrics metrics
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_analytics_t analytics_t
+ *
+ * @section functions Functions
+ *
+ * @subsection func_add_th1f_accuracy add_th1f_accuracy
+ * - **Signature**: `void add_th1f_accuracy(torch::Tensor* pred, torch::Tensor* truth, TH1F* hist, int kfold, int smpl_len)`
+ * - **Parameters**:
+ *   - `pred` (torch::Tensor*)
+ *   - `truth` (torch::Tensor*)
+ *   - `hist` (TH1F*)
+ *   - `kfold` (int)
+ *   - `smpl_len` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_th1f_loss add_th1f_loss
+ * - **Signature**: `void add_th1f_loss(auto std::map<std::string, torch::Tensor>* type, auto std::map<std::string, TH1F*>* lss_type, int kf...)`
+ * - **Parameters**:
+ *   - `std::map<std::string` (auto)
+ *   - `type` (torch::Tensor>*)
+ *   - `std::map<std::string` (auto)
+ *   - `lss_type` (TH1F*>*)
+ *   - `kfold` (int)
+ *   - `smpl_len` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_th1f_mass add_th1f_mass
+ * - **Signature**: `void add_th1f_mass(torch::Tensor* pmc, torch::Tensor* edge_index, torch::Tensor* truth, torch::Tensor* pred, int kfold,...)`
+ * - **Parameters**:
+ *   - `pmc` (torch::Tensor*)
+ *   - `edge_index` (torch::Tensor*)
+ *   - `truth` (torch::Tensor*)
+ *   - `pred` (torch::Tensor*)
+ *   - `kfold` (int)
+ *   - `mode` (mode_enum)
+ *   - `var_name` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_build_th1f_accuracy build_th1f_accuracy
+ * - **Signature**: `void build_th1f_accuracy(auto std::map<std::string, auto std::tuple<torch::Tensor*, lossfx*>>* type, graph_enum g_num, int kf...)`
+ * - **Parameters**:
+ *   - `std::map<std::string` (auto)
+ *   - `std::tuple<torch::Tensor*` (auto)
+ *   - `type` (lossfx*>>*)
+ *   - `g_num` (graph_enum)
+ *   - `kfold` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_build_th1f_loss build_th1f_loss
+ * - **Signature**: `void build_th1f_loss(auto std::map<std::string, auto std::tuple<torch::Tensor*, lossfx*>>* type, graph_enum g_num, int kf...)`
+ * - **Parameters**:
+ *   - `std::map<std::string` (auto)
+ *   - `std::tuple<torch::Tensor*` (auto)
+ *   - `type` (lossfx*>>*)
+ *   - `g_num` (graph_enum)
+ *   - `kfold` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_build_th1f_mass build_th1f_mass
+ * - **Signature**: `void build_th1f_mass(std::string var_name, graph_enum typ, int kfold)`
+ * - **Parameters**:
+ *   - `var_name` (std::string)
+ *   - `typ` (graph_enum)
+ *   - `kfold` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_capture capture
+ * - **Signature**: `void capture(auto mode_enum, int kfold, int epoch, int smpl_len)`
+ * - **Parameters**:
+ *   - `mode_enum` (auto)
+ *   - `kfold` (int)
+ *   - `epoch` (int)
+ *   - `smpl_len` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_destroy destroy
+ * - **Signature**: `void destroy(auto std::map<mode_enum, auto std::map<std::string, TH1F*>>* data)`
+ * - **Parameters**:
+ *   - `std::map<mode_enum` (auto)
+ *   - `std::map<std::string` (auto)
+ *   - `data` (TH1F*>>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_dump_accuracy_plots dump_accuracy_plots
+ * - **Signature**: `void dump_accuracy_plots(int k)`
+ * - **Parameters**:
+ *   - `k` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_dump_loss_plots dump_loss_plots
+ * - **Signature**: `void dump_loss_plots(int k)`
+ * - **Parameters**:
+ *   - `k` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_dump_mass_plots dump_mass_plots
+ * - **Signature**: `void dump_mass_plots(int k)`
+ * - **Parameters**:
+ *   - `k` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_dump_plots dump_plots
+ * - **Signature**: `void dump_plots(int k)`
+ * - **Parameters**:
+ *   - `k` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_generic_painter generic_painter
+ * - **Signature**: `void generic_painter(std::vector<TGraph*> k_graphs, std::string path, std::string title, std::string xtitle, std::string ...)`
+ * - **Parameters**:
+ *   - `k_graphs` (std::vector<TGraph*>)
+ *   - `path` (std::string)
+ *   - `title` (std::string)
+ *   - `xtitle` (std::string)
+ *   - `ytitle` (std::string)
+ *   - `epoch` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_purge purge
+ * - **Signature**: `void purge()`
+ * - **Returns**: `void`
+ *
+ * @section enums Enumerations
+ *
+ * - `g_num`
+ * - `mode`
+ * - `typ`
+ *
+ * @see metrics.h
+ */

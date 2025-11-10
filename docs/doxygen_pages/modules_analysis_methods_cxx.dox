@@ -1,0 +1,27 @@
+/**
+ * @file methods.cxx
+ * @brief Documentation for modules/analysis/methods.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/analysis/methods.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - AnalysisG/analysis.h
+ * - ROOT/RDataFrame.hxx
+ * - tools/vector_cast.h
+ * - TFile.h
+ * - TTree.h
+ *
+ * @section functions Functions
+ * - ep()
+ * - x()
+ * - add_content()
+ * - grd()
+ * - i()
+ * - l()
+ *
+ * @see methods.cxx
+ * @ingroup modules
+ */

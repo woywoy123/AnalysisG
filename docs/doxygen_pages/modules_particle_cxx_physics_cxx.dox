@@ -1,0 +1,15 @@
+/**
+ * @file physics.cxx
+ * @brief Documentation for modules/particle/cxx/physics.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/particle/cxx/physics.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ *
+ * @see physics.cxx
+ * @ingroup modules
+ */

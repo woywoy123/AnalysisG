@@ -1,0 +1,28 @@
+/**
+ * @file gnn-event.h
+ * @brief Documentation for events/gnn/include/inference/gnn-event.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/gnn/include/inference/gnn-event.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/event_template.h
+ * - inference/gnn-particles.h
+ *
+ * @section classes Classes
+ * - gnn_event
+ *
+ * @section functions Functions
+ * - vectorize()
+ * - G()
+ * - y()
+ * - print()
+ * - reduce()
+ * - sum()
+ * - x()
+ *
+ * @see gnn-event.h
+ * @ingroup events
+ */

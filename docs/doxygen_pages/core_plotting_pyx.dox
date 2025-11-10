@@ -1,0 +1,40 @@
+/**
+ * @file plotting.pyx
+ * @brief Documentation for core/plotting.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/plotting.pyx`
+ * 
+ * @section classes Classes
+ * - TH2F
+ * - TLine
+ * - TH1F
+ * - BasePlotting
+ *
+ * @section functions Functions
+ * - __cinit__()
+ * - xBins()
+ * - Hatch()
+ * - KStest()
+ * - xLabels()
+ * - IntegratedLuminosity()
+ * - yDataDown()
+ * - Stacked()
+ * - HistFill()
+ * - Marker()
+ * - LineStyle()
+ * - OutputDirectory()
+ * - yStep()
+ * - Title()
+ * - DPI()
+ * - CapSize()
+ * - yMin()
+ * - chi2()
+ * - __reduce__()
+ * - Colors()
+ *
+ * @see plotting.pyx
+ * @ingroup core
+ */

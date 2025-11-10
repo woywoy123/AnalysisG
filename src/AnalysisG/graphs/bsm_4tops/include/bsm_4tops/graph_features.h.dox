@@ -1,0 +1,112 @@
+/**
+ * @file graph_features.h
+ * @brief Implementation for graph_features.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `graphs/bsm_4tops/include/bsm_4tops/graph_features.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/event_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_bsm_4tops bsm_4tops
+ *
+ * @section functions Functions
+ *
+ * @subsection func_event_number event_number
+ * - **Signature**: `void event_number(long* o, bsm_4tops* event)`
+ * - **Parameters**:
+ *   - `o` (long*)
+ *   - `event` (bsm_4tops*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_event_weight event_weight
+ * - **Signature**: `void event_weight(double* o, bsm_4tops* event)`
+ * - **Parameters**:
+ *   - `o` (double*)
+ *   - `event` (bsm_4tops*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_missing_et missing_et
+ * - **Signature**: `void missing_et(double* o, bsm_4tops* event)`
+ * - **Parameters**:
+ *   - `o` (double*)
+ *   - `event` (bsm_4tops*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_missing_phi missing_phi
+ * - **Signature**: `void missing_phi(double* o, bsm_4tops* event)`
+ * - **Parameters**:
+ *   - `o` (double*)
+ *   - `event` (bsm_4tops*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_num_children_leps num_children_leps
+ * - **Signature**: `void num_children_leps(double* o, bsm_4tops* event)`
+ * - **Parameters**:
+ *   - `o` (double*)
+ *   - `event` (bsm_4tops*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_num_jets num_jets
+ * - **Signature**: `void num_jets(double* o, bsm_4tops* event)`
+ * - **Parameters**:
+ *   - `o` (double*)
+ *   - `event` (bsm_4tops*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_num_leps num_leps
+ * - **Signature**: `void num_leps(double* o, bsm_4tops* event)`
+ * - **Parameters**:
+ *   - `o` (double*)
+ *   - `event` (bsm_4tops*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_num_lepton num_lepton
+ * - **Signature**: `void num_lepton(int* o, bsm_4tops* event)`
+ * - **Parameters**:
+ *   - `o` (int*)
+ *   - `event` (bsm_4tops*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_num_neutrino num_neutrino
+ * - **Signature**: `void num_neutrino(int* o, bsm_4tops* event)`
+ * - **Parameters**:
+ *   - `o` (int*)
+ *   - `event` (bsm_4tops*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_num_quark num_quark
+ * - **Signature**: `void num_quark(double* o, bsm_4tops* event)`
+ * - **Parameters**:
+ *   - `o` (double*)
+ *   - `event` (bsm_4tops*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_num_tops num_tops
+ * - **Signature**: `void num_tops(int* o, bsm_4tops* event)`
+ * - **Parameters**:
+ *   - `o` (int*)
+ *   - `event` (bsm_4tops*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_num_truthjets num_truthjets
+ * - **Signature**: `void num_truthjets(double* o, bsm_4tops* event)`
+ * - **Parameters**:
+ *   - `o` (double*)
+ *   - `event` (bsm_4tops*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_signal_event signal_event
+ * - **Signature**: `void signal_event(bool* o, bsm_4tops* event)`
+ * - **Parameters**:
+ *   - `o` (bool*)
+ *   - `event` (bsm_4tops*)
+ * - **Returns**: `void`
+ *
+ * @see graph_features.h
+ */

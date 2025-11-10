@@ -1,0 +1,19 @@
+/**
+ * @file loss_plots.cxx
+ * @brief Implementation for loss_plots.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/metrics/cxx/loss_plots.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `metrics/metrics.h`
+ *
+ * @section enums Enumerations
+ *
+ * - `g_num`
+ *
+ * @see loss_plots.cxx
+ */

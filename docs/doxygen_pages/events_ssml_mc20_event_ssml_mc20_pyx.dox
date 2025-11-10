@@ -1,0 +1,20 @@
+/**
+ * @file event_ssml_mc20.pyx
+ * @brief Documentation for events/ssml_mc20/event_ssml_mc20.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/ssml_mc20/event_ssml_mc20.pyx`
+ * 
+ * @section classes Classes
+ * - SSML_MC20
+ *
+ * @section functions Functions
+ * - __dealloc__()
+ * - __cinit__()
+ * - __init__()
+ *
+ * @see event_ssml_mc20.pyx
+ * @ingroup events
+ */

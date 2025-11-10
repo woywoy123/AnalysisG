@@ -1,0 +1,69 @@
+/**
+ * @file sampletracer.h
+ * @brief Implementation for sampletracer.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/sampletracer/include/generators/sampletracer.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `container/container.h`
+ * - `notification/notification.h`
+ * - `thread`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_sampletracer sampletracer
+ *
+ * @section functions Functions
+ *
+ * @subsection func_add_event add_event
+ * - **Signature**: `bool add_event(event_template* ev, std::string label)`
+ * - **Parameters**:
+ *   - `ev` (event_template*)
+ *   - `label` (std::string)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_add_graph add_graph
+ * - **Signature**: `bool add_graph(graph_template* gr, std::string label)`
+ * - **Parameters**:
+ *   - `gr` (graph_template*)
+ *   - `label` (std::string)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_add_meta_data add_meta_data
+ * - **Signature**: `bool add_meta_data(meta* meta_, std::string filename)`
+ * - **Parameters**:
+ *   - `meta_` (meta*)
+ *   - `filename` (std::string)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_add_selection add_selection
+ * - **Signature**: `bool add_selection(selection_template* sel)`
+ * - **Parameters**:
+ *   - `sel` (selection_template*)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_compile_objects compile_objects
+ * - **Signature**: `void compile_objects(int threads)`
+ * - **Parameters**:
+ *   - `threads` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_fill_selections fill_selections
+ * - **Signature**: `void fill_selections(auto std::map<std::string, selection_template*>* inpt)`
+ * - **Parameters**:
+ *   - `std::map<std::string` (auto)
+ *   - `inpt` (selection_template*>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_populate_dataloader populate_dataloader
+ * - **Signature**: `void populate_dataloader(dataloader* dl)`
+ * - **Parameters**:
+ *   - `dl` (dataloader*)
+ * - **Returns**: `void`
+ *
+ * @see sampletracer.h
+ */

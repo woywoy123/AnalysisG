@@ -1,0 +1,94 @@
+/**
+ * @file device.cuh
+ * @brief Implementation for device.cuh
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/nusol/include/nusol/device.cuh`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `utils/atomic.cuh`
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_nusol nusol
+ *
+ * @section functions Functions
+ *
+ * @subsection func__abq _abq
+ * - **Signature**: `double _abq(nusol* sl, const unsigned int _iky, const unsigned int _ikz)`
+ * - **Parameters**:
+ *   - `sl` (nusol*)
+ *   - `_iky` (const unsigned int)
+ *   - `_ikz` (const unsigned int)
+ * - **Returns**: `double`
+ *
+ * @subsection func__amu _amu
+ * - **Signature**: `double _amu(nusol* sl, const unsigned int _iky, const unsigned int _ikz)`
+ * - **Parameters**:
+ *   - `sl` (nusol*)
+ *   - `_iky` (const unsigned int)
+ *   - `_ikz` (const unsigned int)
+ * - **Returns**: `double`
+ *
+ * @subsection func__case1 _case1
+ * - **Signature**: `double _case1(double G[3][3], const unsigned int _idy, const unsigned int _idz)`
+ * - **Parameters**:
+ *   - `G[3][3]` (double)
+ *   - `_idy` (const unsigned int)
+ *   - `_idz` (const unsigned int)
+ * - **Returns**: `double`
+ *
+ * @subsection func__case2 _case2
+ * - **Signature**: `double _case2(double G[3][3], const unsigned int _idy, const unsigned int _idz, bool swpXY)`
+ * - **Parameters**:
+ *   - `G[3][3]` (double)
+ *   - `_idy` (const unsigned int)
+ *   - `_idz` (const unsigned int)
+ *   - `swpXY` (bool)
+ * - **Returns**: `double`
+ *
+ * @subsection func__gnulls _gnulls
+ * - **Signature**: `double _gnulls(double coF[3][3], double Q[3][3], const unsigned int _idy, const unsigned int _idz)`
+ * - **Parameters**:
+ *   - `coF[3][3]` (double)
+ *   - `Q[3][3]` (double)
+ *   - `_idy` (const unsigned int)
+ *   - `_idz` (const unsigned int)
+ * - **Returns**: `double`
+ *
+ * @subsection func__htilde _htilde
+ * - **Signature**: `double _htilde(nusol* sl, const unsigned int _iky, const unsigned int _ikz)`
+ * - **Parameters**:
+ *   - `sl` (nusol*)
+ *   - `_iky` (const unsigned int)
+ *   - `_ikz` (const unsigned int)
+ * - **Returns**: `double`
+ *
+ * @subsection func__krot _krot
+ * - **Signature**: `double _krot(nusol* sl, const unsigned int _iky, const unsigned int _ikz)`
+ * - **Parameters**:
+ *   - `sl` (nusol*)
+ *   - `_iky` (const unsigned int)
+ *   - `_ikz` (const unsigned int)
+ * - **Returns**: `double`
+ *
+ * @subsection func__leqnulls _leqnulls
+ * - **Signature**: `double _leqnulls(double coF[3][3], double Q[3][3], const unsigned int _idy, const unsigned int _idz)`
+ * - **Parameters**:
+ *   - `coF[3][3]` (double)
+ *   - `Q[3][3]` (double)
+ *   - `_idy` (const unsigned int)
+ *   - `_idz` (const unsigned int)
+ * - **Returns**: `double`
+ *
+ * @subsection func__makeNuSol _makeNuSol
+ * - **Signature**: `void _makeNuSol(nusol* sl)`
+ * - **Parameters**:
+ *   - `sl` (nusol*)
+ * - **Returns**: `void`
+ *
+ * @see device.cuh
+ */

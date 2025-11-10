@@ -1,0 +1,31 @@
+/**
+ * @file utils.cu
+ * @brief Implementation for utils.cu
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/cutils/utils.cu`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `utils/utils.cuh`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_blkn blkn
+ * - **Signature**: `int blkn(unsigned int lx, int thl)`
+ * - **Parameters**:
+ *   - `lx` (unsigned int)
+ *   - `thl` (int)
+ * - **Returns**: `int`
+ *
+ * @subsection func_changedev changedev
+ * - **Signature**: `Tensor changedev(std::string dev, torch::Tensor* inx)`
+ * - **Parameters**:
+ *   - `dev` (std::string)
+ *   - `inx` (torch::Tensor*)
+ * - **Returns**: `Tensor`
+ *
+ * @see utils.cu
+ */

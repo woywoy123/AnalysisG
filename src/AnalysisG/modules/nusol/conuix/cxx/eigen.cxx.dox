@@ -1,0 +1,20 @@
+/**
+ * @file eigen.cxx
+ * @brief Implementation for eigen.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/conuix/cxx/eigen.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `cmath`
+ * - `conuix/conuic.h`
+ * - `conuix/solvers.h`
+ * - `iomanip`
+ * - `iostream`
+ * - `string`
+ *
+ * @see eigen.cxx
+ */

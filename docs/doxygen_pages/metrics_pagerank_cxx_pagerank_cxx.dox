@@ -1,0 +1,24 @@
+/**
+ * @file pagerank.cxx
+ * @brief Documentation for metrics/pagerank/cxx/pagerank.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `metrics/pagerank/cxx/pagerank.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - metrics/pagerank.h
+ * - fstream
+ *
+ * @section functions Functions
+ * - y()
+ * - src()
+ * - pagerank_metric()
+ * - x()
+ * - files()
+ * - t()
+ *
+ * @see pagerank.cxx
+ * @ingroup metrics
+ */

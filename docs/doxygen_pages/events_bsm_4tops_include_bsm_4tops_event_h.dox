@@ -1,0 +1,22 @@
+/**
+ * @file event.h
+ * @brief Documentation for events/bsm_4tops/include/bsm_4tops/event.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/bsm_4tops/include/bsm_4tops/event.h`
+ * 
+ * @section dependencies Dependencies
+ * - bsm_4tops/particles.h
+ * - templates/event_template.h
+ *
+ * @section classes Classes
+ * - bsm_4tops
+ *
+ * @section functions Functions
+ * - vectorize()
+ *
+ * @see event.h
+ * @ingroup events
+ */

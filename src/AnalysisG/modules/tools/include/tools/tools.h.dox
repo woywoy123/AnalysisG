@@ -1,0 +1,94 @@
+/**
+ * @file tools.h
+ * @brief Implementation for tools.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/tools/include/tools/tools.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `cstdint`
+ * - `iostream`
+ * - `map`
+ * - `string`
+ * - `vector`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_tools tools
+ *
+ * @section functions Functions
+ *
+ * @subsection func_create_path create_path
+ * - **Signature**: `void create_path(std::string path)`
+ * - **Parameters**:
+ *   - `path` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_delete_path delete_path
+ * - **Signature**: `void delete_path(std::string path)`
+ * - **Parameters**:
+ *   - `path` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_ends_with ends_with
+ * - **Signature**: `bool ends_with(std::string* inpt, std::string val)`
+ * - **Parameters**:
+ *   - `inpt` (std::string*)
+ *   - `val` (std::string)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_has_string has_string
+ * - **Signature**: `bool has_string(std::string* inpt, std::string trg)`
+ * - **Parameters**:
+ *   - `inpt` (std::string*)
+ *   - `trg` (std::string)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_has_value has_value
+ * - **Signature**: `bool has_value(std::vector<std::string>* data, std::string trg)`
+ * - **Parameters**:
+ *   - `data` (std::vector<std::string>*)
+ *   - `trg` (std::string)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_is_file is_file
+ * - **Signature**: `bool is_file(std::string path)`
+ * - **Parameters**:
+ *   - `path` (std::string)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_put put
+ * - **Signature**: `void put(std::vector<g*>* out, std::vector<g*>* src, std::vector<int>* trg)`
+ * - **Parameters**:
+ *   - `out` (std::vector<g*>*)
+ *   - `src` (std::vector<g*>*)
+ *   - `trg` (std::vector<int>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_rename rename
+ * - **Signature**: `void rename(std::string start, std::string target)`
+ * - **Parameters**:
+ *   - `start` (std::string)
+ *   - `target` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_replace replace
+ * - **Signature**: `void replace(std::string* in, std::string repl_str, std::string repl_with)`
+ * - **Parameters**:
+ *   - `in` (std::string*)
+ *   - `repl_str` (std::string)
+ *   - `repl_with` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_unique_key unique_key
+ * - **Signature**: `void unique_key(std::vector<g>* inx, std::vector<g>* oth)`
+ * - **Parameters**:
+ *   - `inx` (std::vector<g>*)
+ *   - `oth` (std::vector<g>*)
+ * - **Returns**: `void`
+ *
+ * @see tools.h
+ */

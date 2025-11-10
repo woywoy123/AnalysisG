@@ -1,0 +1,27 @@
+/**
+ * @file base.cuh
+ * @brief Documentation for pyc/physics/include/physics/base.cuh
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/physics/include/physics/base.cuh`
+ * 
+ * @section dependencies Dependencies
+ * - utils/atomic.cuh
+ *
+ * @section functions Functions
+ * - _P2K()
+ * - _Beta()
+ * - _Beta2()
+ * - _Mt()
+ * - _PK()
+ * - _theta()
+ * - _M()
+ * - _deltar()
+ * - _Mt2()
+ * - _M2()
+ *
+ * @see base.cuh
+ * @ingroup pyc
+ */

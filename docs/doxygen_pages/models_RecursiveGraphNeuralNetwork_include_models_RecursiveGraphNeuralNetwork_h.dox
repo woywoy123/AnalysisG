@@ -1,0 +1,21 @@
+/**
+ * @file RecursiveGraphNeuralNetwork.h
+ * @brief Documentation for models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/model_template.h
+ *
+ * @section classes Classes
+ * - recursivegraphneuralnetwork
+ *
+ * @section functions Functions
+ * - message()
+ *
+ * @see RecursiveGraphNeuralNetwork.h
+ * @ingroup models
+ */

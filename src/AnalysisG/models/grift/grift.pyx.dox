@@ -1,0 +1,81 @@
+/**
+ * @file grift.pyx
+ * @brief Implementation for grift.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `models/grift/grift.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.model_template`
+ * - `ModelTemplate`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_Grift Grift
+ * - **Inherits from**: ModelTemplate
+ * - **Member Variables**:
+ *   - `class Grift`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `xrec(self)`
+ *   - `xrec(self, int val)`
+ *   - `x(self)`
+ *   - `x(self, int val)`
+ *   - `is_mc(self)`
+ *   - `is_mc(self, bool val)`
+ *   - `drop_out(self)`
+ *   - `drop_out(self, double val)`
+ *   - `PageRank(self)`
+ *   - `PageRank(self, bool v)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_PageRank PageRank
+ * - **Signature**: `void PageRank(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_drop_out drop_out
+ * - **Signature**: `void drop_out(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_is_mc is_mc
+ * - **Signature**: `void is_mc(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_x x
+ * - **Signature**: `void x(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_xrec xrec
+ * - **Signature**: `void xrec(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see grift.pyx
+ */

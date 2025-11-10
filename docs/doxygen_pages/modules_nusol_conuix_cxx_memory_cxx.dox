@@ -1,0 +1,23 @@
+/**
+ * @file memory.cxx
+ * @brief Documentation for modules/nusol/conuix/cxx/memory.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/conuix/cxx/memory.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - conuix/memory.h
+ *
+ * @section functions Functions
+ * - opt()
+ * - copy()
+ * - j()
+ * - i()
+ * - opm()
+ * - ops()
+ *
+ * @see memory.cxx
+ * @ingroup modules
+ */

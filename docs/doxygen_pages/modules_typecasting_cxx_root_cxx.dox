@@ -1,0 +1,15 @@
+/**
+ * @file root.cxx
+ * @brief Documentation for modules/typecasting/cxx/root.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/typecasting/cxx/root.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - tools/vector_cast.h
+ *
+ * @see root.cxx
+ * @ingroup modules
+ */

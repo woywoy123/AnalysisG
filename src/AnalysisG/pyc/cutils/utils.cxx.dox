@@ -1,0 +1,30 @@
+/**
+ * @file utils.cxx
+ * @brief Implementation for utils.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/cutils/utils.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `cutils/utils.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_changedev changedev
+ * - **Signature**: `Tensor changedev(std::string dev, torch::Tensor* inx)`
+ * - **Parameters**:
+ *   - `dev` (std::string)
+ *   - `inx` (torch::Tensor*)
+ * - **Returns**: `Tensor`
+ *
+ * @subsection func_i i
+ * - **Signature**: `int i(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see utils.cxx
+ */

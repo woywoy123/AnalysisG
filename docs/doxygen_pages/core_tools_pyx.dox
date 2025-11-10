@@ -1,0 +1,35 @@
+/**
+ * @file tools.pyx
+ * @brief Documentation for core/tools.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/tools.pyx`
+ * 
+ * @section classes Classes
+ * - Tools
+ *
+ * @section functions Functions
+ * - encode64()
+ * - __cinit__()
+ * - __dealloc__()
+ * - split()
+ * - ls()
+ * - abs()
+ * - ends_with()
+ * - discretize()
+ * - __init__()
+ * - is_file()
+ * - has_value()
+ * - delete_path()
+ * - rename()
+ * - decode64()
+ * - has_substring()
+ * - create_path()
+ * - hash()
+ * - replace()
+ *
+ * @see tools.pyx
+ * @ingroup core
+ */

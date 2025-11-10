@@ -1,0 +1,17 @@
+/**
+ * @file operators.cu
+ * @brief Documentation for pyc/operators/operators.cu
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/operators/operators.cu`
+ * 
+ * @section dependencies Dependencies
+ * - operators/operators.cuh
+ * - operators/base.cuh
+ * - utils/utils.cuh
+ *
+ * @see operators.cu
+ * @ingroup pyc
+ */

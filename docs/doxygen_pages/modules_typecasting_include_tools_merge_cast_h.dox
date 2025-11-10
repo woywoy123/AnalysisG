@@ -1,0 +1,26 @@
+/**
+ * @file merge_cast.h
+ * @brief Documentation for modules/typecasting/include/tools/merge_cast.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/typecasting/include/tools/merge_cast.h`
+ * 
+ * @section dependencies Dependencies
+ * - string
+ * - vector
+ * - map
+ *
+ * @section functions Functions
+ * - merge_data()
+ * - reserve_count()
+ * - contract_data()
+ * - sum_data()
+ * - x()
+ * - release_vector()
+ * - i()
+ *
+ * @see merge_cast.h
+ * @ingroup modules
+ */

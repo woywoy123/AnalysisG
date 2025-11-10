@@ -1,0 +1,37 @@
+/**
+ * @file odeRK.cxx
+ * @brief Implementation for odeRK.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/tmp/odeRK.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `P_met`
+ * - `reconstruction/odeRK.h`
+ * - `the`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_i i
+ * - **Signature**: `size_t i(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `size_t`
+ *
+ * @subsection func_s s
+ * - **Signature**: `int s(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_x x
+ * - **Signature**: `int x(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see odeRK.cxx
+ */

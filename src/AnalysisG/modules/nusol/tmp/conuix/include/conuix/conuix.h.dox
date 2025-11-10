@@ -1,0 +1,37 @@
+/**
+ * @file conuix.h
+ * @brief Implementation for conuix.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/tmp/conuix/include/conuix/conuix.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/particle_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_conics conics
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_nusol_t nusol_t
+ *
+ * @section functions Functions
+ *
+ * @subsection func_b b
+ * - **Signature**: `int b(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_l l
+ * - **Signature**: `int l(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see conuix.h
+ */

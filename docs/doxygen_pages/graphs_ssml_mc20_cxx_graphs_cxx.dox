@@ -1,0 +1,25 @@
+/**
+ * @file graphs.cxx
+ * @brief Documentation for graphs/ssml_mc20/cxx/graphs.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `graphs/ssml_mc20/cxx/graphs.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - graphs.h
+ * - graph_features.h
+ * - node_features.h
+ * - edge_features.h
+ *
+ * @section functions Functions
+ * - graph_detector()
+ * - graph_jets()
+ * - graph_jets_detector_lep()
+ * - x()
+ * - graph_jets_nonu()
+ *
+ * @see graphs.cxx
+ * @ingroup graphs
+ */

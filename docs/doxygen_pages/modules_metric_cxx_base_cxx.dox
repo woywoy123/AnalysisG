@@ -1,0 +1,23 @@
+/**
+ * @file base.cxx
+ * @brief Documentation for modules/metric/cxx/base.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/metric/cxx/base.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/metric_template.h
+ * - templates/model_template.h
+ *
+ * @section functions Functions
+ * - variable_t()
+ * - enums_to_string()
+ * - metric_t()
+ * - x()
+ * - t()
+ *
+ * @see base.cxx
+ * @ingroup modules
+ */

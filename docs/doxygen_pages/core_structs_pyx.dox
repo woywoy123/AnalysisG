@@ -1,0 +1,12 @@
+/**
+ * @file structs.pyx
+ * @brief Documentation for core/structs.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/structs.pyx`
+ * 
+ * @see structs.pyx
+ * @ingroup core
+ */

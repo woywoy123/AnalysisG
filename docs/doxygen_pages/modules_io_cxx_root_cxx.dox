@@ -1,0 +1,27 @@
+/**
+ * @file root.cxx
+ * @brief Documentation for modules/io/cxx/root.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/io/cxx/root.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - io.h
+ * - TH1.h
+ * - io/cfg.h
+ * - TSystem.h
+ * - thread
+ *
+ * @section functions Functions
+ * - meta()
+ * - data_t()
+ * - m()
+ * - x()
+ * - if()
+ * - t()
+ *
+ * @see root.cxx
+ * @ingroup modules
+ */

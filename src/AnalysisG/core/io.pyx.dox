@@ -1,0 +1,156 @@
+/**
+ * @file io.pyx
+ * @brief Implementation for io.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/io.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.io`
+ * - `AnalysisG.core.meta`
+ * - `AnalysisG.core.structs`
+ * - `AnalysisG.core.tools`
+ * - `Meta`
+ * - `bool`
+ * - `cython.operator`
+ * - `data_t`
+ * - `dereference`
+ * - `io`
+ * - `libcpp`
+ * - `libcpp.map`
+ * - `libcpp.string`
+ * - `libcpp.vector`
+ * - `map`
+ * - `string`
+ * - `tqdm`
+ * - `vector`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_IO IO
+ * - **Member Variables**:
+ *   - `class IO`
+ *   - `dict output`
+ *   - `string di`
+ *   - `string dx`
+ *   - `Meta data`
+ *   - `list f_val`
+ *   - `str fname`
+ *   - `str fname_`
+ *   - `str fname__`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self, root = [])`
+ *   - `__dealloc__(self)`
+ *   - `__len__(self)`
+ *   - `__iter__(self)`
+ *   - `__next__(self)`
+ *   - `Verbose(self)`
+ *   - `Verbose(self, bool val)`
+ *   - `EnablePyAMI(self)`
+ *   - `EnablePyAMI(self, val)`
+ *   - `MetaCachePath(self)`
+ *   - `MetaCachePath(self, val)`
+ *   - `Trees(self)`
+ *   - `SumOfWeightsTreeName(self)`
+ *   - `SumOfWeightsTreeName(self, str val)`
+ *   - `Trees(self, val)`
+ *   - `Branches(self)`
+ *   - `Branches(self, val)`
+ *   - `Leaves(self)`
+ *   - `Leaves(self, val)`
+ *   - `Files(self)`
+ *   - `Files(self, val)`
+ *   - `Keys(self)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_Branches Branches
+ * - **Signature**: `void Branches(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_EnablePyAMI EnablePyAMI
+ * - **Signature**: `void EnablePyAMI(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Files Files
+ * - **Signature**: `void Files(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Keys Keys
+ * - **Signature**: `void Keys(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Leaves Leaves
+ * - **Signature**: `void Leaves(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_MetaCachePath MetaCachePath
+ * - **Signature**: `void MetaCachePath(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_SumOfWeightsTreeName SumOfWeightsTreeName
+ * - **Signature**: `void SumOfWeightsTreeName(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Trees Trees
+ * - **Signature**: `void Trees(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Verbose Verbose
+ * - **Signature**: `void Verbose(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___iter__ __iter__
+ * - **Signature**: `void __iter__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___len__ __len__
+ * - **Signature**: `void __len__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___next__ __next__
+ * - **Signature**: `void __next__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see io.pyx
+ */

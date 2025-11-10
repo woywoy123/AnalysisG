@@ -1,0 +1,15 @@
+/**
+ * @file types.cxx
+ * @brief Documentation for modules/io/cxx/types.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/io/cxx/types.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - io.h
+ *
+ * @see types.cxx
+ * @ingroup modules
+ */

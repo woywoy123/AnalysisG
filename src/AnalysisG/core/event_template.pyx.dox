@@ -1,0 +1,124 @@
+/**
+ * @file event_template.pyx
+ * @brief Implementation for event_template.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/event_template.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.event_template`
+ * - `AnalysisG.core.tools`
+ * - `int`
+ * - `libcpp`
+ * - `libcpp.vector`
+ * - `vector`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_EventTemplate EventTemplate
+ * - **Member Variables**:
+ *   - `class EventTemplate`
+ *   - `EventTemplate ev`
+ *   - `string x`
+ *   - `str i`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__name__(self)`
+ *   - `__hash__(self)`
+ *   - `__eq__(self, other)`
+ *   - `is_self(self, inpt)`
+ *   - `index(self)`
+ *   - `index(self, val: Union[str, double])`
+ *   - `weight(self)`
+ *   - `weight(self, val: Union[str, double])`
+ *   - `Tree(self)`
+ *   - `Tree(self, str val)`
+ *   - `Trees(self)`
+ *   - `Trees(self, val: Union[str, list])`
+ *   - `Branches(self)`
+ *   - `Branches(self, val: Union[str, list])`
+ *   - `Name(self)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_Branches Branches
+ * - **Signature**: `list Branches(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `list`
+ *
+ * @subsection func_Name Name
+ * - **Signature**: `void Name(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Tree Tree
+ * - **Signature**: `str Tree(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `str`
+ *
+ * @subsection func_Trees Trees
+ * - **Signature**: `list Trees(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `list`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___eq__ __eq__
+ * - **Signature**: `void __eq__(auto self, auto other)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `other` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___hash__ __hash__
+ * - **Signature**: `void __hash__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___name__ __name__
+ * - **Signature**: `void __name__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_index index
+ * - **Signature**: `int index(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_is_self is_self
+ * - **Signature**: `bool is_self(auto self, auto inpt)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `inpt` (auto)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_weight weight
+ * - **Signature**: `double weight(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `double`
+ *
+ * @see event_template.pyx
+ */

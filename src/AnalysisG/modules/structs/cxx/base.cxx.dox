@@ -1,0 +1,58 @@
+/**
+ * @file base.cxx
+ * @brief Implementation for base.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/cxx/base.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `;
+    if (is_abs){shrt += `
+ * - `TInterpreter.h`
+ * - `iostream`
+ * - `structs/base.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_buildAll buildAll
+ * - **Signature**: `void buildAll()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_buildDict buildDict
+ * - **Signature**: `void buildDict(std::string _name, std::string _shrt)`
+ * - **Parameters**:
+ *   - `_name` (std::string)
+ *   - `_shrt` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_buildPCM buildPCM
+ * - **Signature**: `void buildPCM(std::string name, std::string incl, bool exl)`
+ * - **Parameters**:
+ *   - `name` (std::string)
+ *   - `incl` (std::string)
+ *   - `exl` (bool)
+ * - **Returns**: `void`
+ *
+ * @subsection func_count count
+ * - **Signature**: `int count(const std::string* str, const std::string sub)`
+ * - **Parameters**:
+ *   - `str` (const std::string*)
+ *   - `sub` (const std::string)
+ * - **Returns**: `int`
+ *
+ * @subsection func_registerInclude registerInclude
+ * - **Signature**: `void registerInclude(std::string pth, bool is_abs)`
+ * - **Parameters**:
+ *   - `pth` (std::string)
+ *   - `is_abs` (bool)
+ * - **Returns**: `void`
+ *
+ * @section enums Enumerations
+ *
+ * - `bsc_t`
+ *
+ * @see base.cxx
+ */

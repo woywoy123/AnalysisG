@@ -1,0 +1,17 @@
+/**
+ * @file structs.cxx
+ * @brief Implementation for structs.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/cxx/structs.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `element.h`
+ * - `folds.h`
+ * - `report.h`
+ *
+ * @see structs.cxx
+ */

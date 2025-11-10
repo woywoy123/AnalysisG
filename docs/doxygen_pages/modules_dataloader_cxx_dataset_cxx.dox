@@ -1,0 +1,25 @@
+/**
+ * @file dataset.cxx
+ * @brief Documentation for modules/dataloader/cxx/dataset.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/dataloader/cxx/dataset.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - generators/dataloader.h
+ * - structs/folds.h
+ * - io/io.h
+ *
+ * @section functions Functions
+ * - io()
+ * - y()
+ * - x()
+ * - k()
+ * - if()
+ * - t()
+ *
+ * @see dataset.cxx
+ * @ingroup modules
+ */

@@ -1,0 +1,17 @@
+/**
+ * @file RecursiveGraphNeuralNetwork.cxx
+ * @brief Implementation for RecursiveGraphNeuralNetwork.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `0`
+ * - `RecursiveGraphNeuralNetwork.h`
+ * - `pyc/pyc.h`
+ *
+ * @see RecursiveGraphNeuralNetwork.cxx
+ */

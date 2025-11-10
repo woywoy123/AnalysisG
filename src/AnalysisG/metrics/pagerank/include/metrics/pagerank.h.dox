@@ -1,0 +1,114 @@
+/**
+ * @file pagerank.h
+ * @brief Implementation for pagerank.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `metrics/pagerank/include/metrics/pagerank.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/metric_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_collector collector
+ *
+ * @subsection class_pagerank_metric pagerank_metric
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_kinematic_t kinematic_t
+ *
+ * @subsection struct_meta_event_t meta_event_t
+ *
+ * @subsection struct_sample_t sample_t
+ *
+ * @section functions Functions
+ *
+ * @subsection func_add_file_map add_file_map
+ * - **Signature**: `void add_file_map(std::string fname, long idx_, std::string mode, std::string model, int kfold, int epoch, bool stat)`
+ * - **Parameters**:
+ *   - `fname` (std::string)
+ *   - `idx_` (long)
+ *   - `mode` (std::string)
+ *   - `model` (std::string)
+ *   - `kfold` (int)
+ *   - `epoch` (int)
+ *   - `stat` (bool)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_meta add_meta
+ * - **Signature**: `bool add_meta(std::string data, std::string model, int kfold, int epoch)`
+ * - **Parameters**:
+ *   - `data` (std::string)
+ *   - `model` (std::string)
+ *   - `kfold` (int)
+ *   - `epoch` (int)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_add_nominal add_nominal
+ * - **Signature**: `void add_nominal(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)`
+ * - **Parameters**:
+ *   - `p` (kinematic_t*)
+ *   - `mode` (std::string)
+ *   - `model` (std::string)
+ *   - `kfold` (int)
+ *   - `epoch` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_pagerank add_pagerank
+ * - **Signature**: `void add_pagerank(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)`
+ * - **Parameters**:
+ *   - `p` (kinematic_t*)
+ *   - `mode` (std::string)
+ *   - `model` (std::string)
+ *   - `kfold` (int)
+ *   - `epoch` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_process add_process
+ * - **Signature**: `void add_process(int prc, std::string mode, std::string model, int kfold, int epoch)`
+ * - **Parameters**:
+ *   - `prc` (int)
+ *   - `mode` (std::string)
+ *   - `model` (std::string)
+ *   - `kfold` (int)
+ *   - `epoch` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_truth add_truth
+ * - **Signature**: `void add_truth(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)`
+ * - **Parameters**:
+ *   - `p` (kinematic_t*)
+ *   - `mode` (std::string)
+ *   - `model` (std::string)
+ *   - `kfold` (int)
+ *   - `epoch` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_pagerank pagerank
+ * - **Signature**: `void pagerank(auto std::map<int, auto std::map<std::string, particle_template*>>* clust, auto std::map<std::string...)`
+ * - **Parameters**:
+ *   - `std::map<int` (auto)
+ *   - `std::map<std::string` (auto)
+ *   - `clust` (particle_template*>>*)
+ *   - `std::map<std::string` (auto)
+ *   - `out` (std::vector<particle_template*>>*)
+ *   - `std::map<std::string` (auto)
+ *   - `bin_out` (float>*)
+ *   - `std::map<int` (auto)
+ *   - `std::map<int` (auto)
+ *   - `bin_data` (float>>*)
+ *   - `batch_offset` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_set_index set_index
+ * - **Signature**: `void set_index(long idx_)`
+ * - **Parameters**:
+ *   - `idx_` (long)
+ * - **Returns**: `void`
+ *
+ * @see pagerank.h
+ */

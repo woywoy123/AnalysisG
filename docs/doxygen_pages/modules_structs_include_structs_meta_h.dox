@@ -1,0 +1,22 @@
+/**
+ * @file meta.h
+ * @brief Documentation for modules/structs/include/structs/meta.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/include/structs/meta.h`
+ * 
+ * @section dependencies Dependencies
+ * - iostream
+ * - string
+ * - vector
+ * - map
+ *
+ * @section structs Structures
+ * - meta_t
+ * - weights_t
+ *
+ * @see meta.h
+ * @ingroup modules
+ */

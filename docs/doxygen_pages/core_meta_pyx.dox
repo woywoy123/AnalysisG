@@ -1,0 +1,42 @@
+/**
+ * @file meta.pyx
+ * @brief Documentation for core/meta.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/meta.pyx`
+ * 
+ * @section classes Classes
+ * - Data
+ * - ami_client
+ * - Meta
+ * - MetaLookup
+ * - atlas
+ * - httpx
+ *
+ * @section functions Functions
+ * - __cinit__()
+ * - expected_events()
+ * - data()
+ * - amitag()
+ * - eventNumber()
+ * - fileSize()
+ * - GenerateData()
+ * - keywords()
+ * - connect()
+ * - generatorName()
+ * - __call__()
+ * - totalEvents()
+ * - SumOfWeights()
+ * - keyword()
+ * - prodsysStatus()
+ * - file_type()
+ * - totalSize()
+ * - run_number()
+ * - conditionsTag()
+ * - version()
+ *
+ * @see meta.pyx
+ * @ingroup core
+ */

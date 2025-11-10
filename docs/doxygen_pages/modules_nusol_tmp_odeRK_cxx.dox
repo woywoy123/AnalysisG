@@ -1,0 +1,25 @@
+/**
+ * @file odeRK.cxx
+ * @brief Documentation for modules/nusol/tmp/odeRK.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/tmp/odeRK.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - reconstruction/odeRK.h
+ *
+ * @section functions Functions
+ * - A()
+ * - for()
+ * - b()
+ * - _phi()
+ * - x()
+ * - s()
+ * - i()
+ * - _scl()
+ *
+ * @see odeRK.cxx
+ * @ingroup modules
+ */

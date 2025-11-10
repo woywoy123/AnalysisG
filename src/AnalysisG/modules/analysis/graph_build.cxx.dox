@@ -1,0 +1,16 @@
+/**
+ * @file graph_build.cxx
+ * @brief Implementation for graph_build.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/analysis/graph_build.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG/analysis.h`
+ * - `events`
+ *
+ * @see graph_build.cxx
+ */

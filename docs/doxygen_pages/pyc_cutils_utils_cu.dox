@@ -1,0 +1,23 @@
+/**
+ * @file utils.cu
+ * @brief Documentation for pyc/cutils/utils.cu
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/cutils/utils.cu`
+ * 
+ * @section dependencies Dependencies
+ * - utils/utils.cuh
+ *
+ * @section functions Functions
+ * - MakeOp()
+ * - changedev()
+ * - blkn()
+ * - format()
+ * - x()
+ * - blk_()
+ *
+ * @see utils.cu
+ * @ingroup pyc
+ */

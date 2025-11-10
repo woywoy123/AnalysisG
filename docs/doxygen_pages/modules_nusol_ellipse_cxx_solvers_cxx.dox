@@ -1,0 +1,41 @@
+/**
+ * @file solvers.cxx
+ * @brief Documentation for modules/nusol/ellipse/cxx/solvers.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/ellipse/cxx/solvers.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - ellipse/solvers.h
+ * - ellipse/mtx.h
+ * - iostream
+ * - complex
+ * - cmath
+ *
+ * @section functions Functions
+ * - _scale()
+ * - mtx()
+ * - _arith()
+ * - make_ellipse()
+ * - pow()
+ * - j()
+ * - intersection_ellipses()
+ * - _m_02()
+ * - find_roots()
+ * - _m_12()
+ * - swap_index()
+ * - x()
+ * - _trace()
+ * - _m_21()
+ * - y()
+ * - _m_11()
+ * - factor_degenerate()
+ * - out()
+ * - i()
+ * - intersections_ellipse_line()
+ *
+ * @see solvers.cxx
+ * @ingroup modules
+ */

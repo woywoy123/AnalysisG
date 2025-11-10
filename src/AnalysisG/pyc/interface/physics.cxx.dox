@@ -1,0 +1,21 @@
+/**
+ * @file physics.cxx
+ * @brief Implementation for physics.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/interface/physics.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `physics/physics.cuh`
+ * - `physics/physics.h`
+ * - `pyc/pyc.h`
+ * - `transform/transform.cuh`
+ * - `transform/transform.h`
+ * - `utils/utils.cuh`
+ * - `utils/utils.h`
+ *
+ * @see physics.cxx
+ */

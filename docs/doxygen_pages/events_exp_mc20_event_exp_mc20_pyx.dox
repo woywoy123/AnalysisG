@@ -1,0 +1,20 @@
+/**
+ * @file event_exp_mc20.pyx
+ * @brief Documentation for events/exp_mc20/event_exp_mc20.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/exp_mc20/event_exp_mc20.pyx`
+ * 
+ * @section classes Classes
+ * - ExpMC20
+ *
+ * @section functions Functions
+ * - __dealloc__()
+ * - __cinit__()
+ * - __init__()
+ *
+ * @see event_exp_mc20.pyx
+ * @ingroup events
+ */

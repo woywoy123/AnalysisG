@@ -1,0 +1,24 @@
+/**
+ * @file event.h
+ * @brief Documentation for events/ssml_mc20/include/ssml_mc20/event.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/ssml_mc20/include/ssml_mc20/event.h`
+ * 
+ * @section dependencies Dependencies
+ * - ssml_mc20/particles.h
+ * - templates/event_template.h
+ *
+ * @section classes Classes
+ * - ssml_mc20
+ *
+ * @section functions Functions
+ * - if()
+ * - vectorize()
+ * - match_object()
+ *
+ * @see event.h
+ * @ingroup events
+ */

@@ -1,0 +1,24 @@
+/**
+ * @file optimizer_config.cxx
+ * @brief Documentation for modules/lossfx/cxx/optimizer_config.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/lossfx/cxx/optimizer_config.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/lossfx.h
+ *
+ * @section functions Functions
+ * - optim_()
+ * - m_xavier_uniform()
+ * - m_kaiming_normal()
+ * - m_uniform()
+ * - m_normal()
+ * - m_xavier_normal()
+ * - m_kaiming_uniform()
+ *
+ * @see optimizer_config.cxx
+ * @ingroup modules
+ */

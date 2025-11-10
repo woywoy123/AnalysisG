@@ -1,0 +1,15 @@
+/**
+ * @file physics.h
+ * @brief Implementation for physics.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/physics/include/physics/physics.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `torch/torch.h`
+ *
+ * @see physics.h
+ */

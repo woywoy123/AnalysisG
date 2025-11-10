@@ -1,0 +1,42 @@
+/**
+ * @file event_gnn.pyx
+ * @brief Implementation for event_gnn.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `events/gnn/event_gnn.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.event_template`
+ * - `AnalysisG.events.gnn.event_gnn`
+ * - `EventTemplate`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_EventGNN EventGNN
+ * - **Inherits from**: EventTemplate
+ * - **Member Variables**:
+ *   - `class EventGNN`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see event_gnn.pyx
+ */

@@ -1,0 +1,17 @@
+/**
+ * @file graph.h
+ * @brief Documentation for pyc/graph/include/graph/graph.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/graph/include/graph/graph.h`
+ * 
+ * @section dependencies Dependencies
+ * - map
+ * - string
+ * - torch/torch.h
+ *
+ * @see graph.h
+ * @ingroup pyc
+ */

@@ -1,0 +1,15 @@
+/**
+ * @file root.cxx
+ * @brief Implementation for root.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/typecasting/cxx/root.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `tools/vector_cast.h`
+ *
+ * @see root.cxx
+ */

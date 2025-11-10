@@ -1,0 +1,53 @@
+/**
+ * @file optimizer_config.cxx
+ * @brief Implementation for optimizer_config.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/lossfx/cxx/optimizer_config.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/lossfx.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_m_kaiming_normal m_kaiming_normal
+ * - **Signature**: `void m_kaiming_normal(torch::nn::Module& m)`
+ * - **Parameters**:
+ *   - `m` (torch::nn::Module&)
+ * - **Returns**: `void`
+ *
+ * @subsection func_m_kaiming_uniform m_kaiming_uniform
+ * - **Signature**: `void m_kaiming_uniform(torch::nn::Module& m)`
+ * - **Parameters**:
+ *   - `m` (torch::nn::Module&)
+ * - **Returns**: `void`
+ *
+ * @subsection func_m_normal m_normal
+ * - **Signature**: `void m_normal(torch::nn::Module& m)`
+ * - **Parameters**:
+ *   - `m` (torch::nn::Module&)
+ * - **Returns**: `void`
+ *
+ * @subsection func_m_uniform m_uniform
+ * - **Signature**: `void m_uniform(torch::nn::Module& m)`
+ * - **Parameters**:
+ *   - `m` (torch::nn::Module&)
+ * - **Returns**: `void`
+ *
+ * @subsection func_m_xavier_normal m_xavier_normal
+ * - **Signature**: `void m_xavier_normal(torch::nn::Module& m)`
+ * - **Parameters**:
+ *   - `m` (torch::nn::Module&)
+ * - **Returns**: `void`
+ *
+ * @subsection func_m_xavier_uniform m_xavier_uniform
+ * - **Signature**: `void m_xavier_uniform(torch::nn::Module& m)`
+ * - **Parameters**:
+ *   - `m` (torch::nn::Module&)
+ * - **Returns**: `void`
+ *
+ * @see optimizer_config.cxx
+ */

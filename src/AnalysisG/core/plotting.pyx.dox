@@ -1,0 +1,514 @@
+/**
+ * @file plotting.pyx
+ * @brief Implementation for plotting.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/plotting.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `bool`
+ * - `boost_histogram`
+ * - `cython.operator`
+ * - `dereference`
+ * - `ks_2samp`
+ * - `libcpp`
+ * - `libcpp.map`
+ * - `libcpp.string`
+ * - `libcpp.vector`
+ * - `map`
+ * - `matplotlib.pyplot`
+ * - `mplhep`
+ * - `numpy`
+ * - `pathlib`
+ * - `pickle`
+ * - `random`
+ * - `scipy.stats`
+ * - `string`
+ * - `vector`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_BasePlotting BasePlotting
+ * - **Member Variables**:
+ *   - `dict out`
+ *   - `float v1`
+ *   - `float _chi2`
+ *   - `class BasePlotting`
+ *   - `void __figure__`
+ *   - `void __resetplt__`
+ *   - `dict __compile__`
+ *   - `list keys`
+ *   - `bool cls`
+ *   - `BasePlotting s`
+ *   - `str titl`
+ *   - `list __ticks__`
+ *   - `list tick`
+ *   - `float step`
+ *   - `str raw`
+ *   - `dict com`
+ *   - `class TH1F`
+ *   - `float i`
+ *   - `dict apl`
+ *   - `list k`
+ * - **Methods**:
+ *   - `ratio(...)`
+ *   - `chi2(...)`
+ *   - `__cinit__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__init__(self, inpt = None)`
+ *   - `__reduce__(self)`
+ *   - `dump(self, str path = "", str name = "")`
+ *   - `load(self, str path = "", str name = "")`
+ *   - `__add__(self, BasePlotting other)`
+ *   - `__radd__(self, other)`
+ *   - `Hatch(self)`
+ *   - `Hatch(self, str val)`
+ *   - `DPI(self)`
+ *   - `DPI(self, int val)`
+ *   - `Style(self)`
+ *   - `Style(self, str val)`
+ *   - `CapSize(self)`
+ *   - `CapSize(self, float val)`
+ *   - `ErrorBars(self)`
+ *   - `ErrorBars(self, bool val)`
+ *   - `Filename(self)`
+ *   - `Filename(self, str val)`
+ *   - `OutputDirectory(self)`
+ *   - `OutputDirectory(self, str val)`
+ *   - `FontSize(self)`
+ *   - `FontSize(self, float val)`
+ *   - `AxisSize(self)`
+ *   - `AxisSize(self, float val)`
+ *   - `LegendSize(self)`
+ *   - `LegendSize(self, float val)`
+ *
+ * @subsection class_TH1F TH1F
+ * - **Inherits from**: BasePlotting
+ * - **Member Variables**:
+ *   - `dict out`
+ *   - `float v1`
+ *   - `float _chi2`
+ *   - `class BasePlotting`
+ *   - `void __figure__`
+ *   - `void __resetplt__`
+ *   - `dict __compile__`
+ *   - `list keys`
+ *   - `bool cls`
+ *   - `BasePlotting s`
+ *   - `str titl`
+ *   - `list __ticks__`
+ *   - `list tick`
+ *   - `float step`
+ *   - `str raw`
+ *   - `dict com`
+ *   - `class TH1F`
+ *   - `float i`
+ *   - `dict apl`
+ *   - `list k`
+ * - **Methods**:
+ *   - `ratio(...)`
+ *   - `chi2(...)`
+ *   - `__cinit__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__init__(self, inpt = None)`
+ *   - `__reduce__(self)`
+ *   - `dump(self, str path = "", str name = "")`
+ *   - `load(self, str path = "", str name = "")`
+ *   - `__add__(self, BasePlotting other)`
+ *   - `__radd__(self, other)`
+ *   - `Hatch(self)`
+ *   - `Hatch(self, str val)`
+ *   - `DPI(self)`
+ *   - `DPI(self, int val)`
+ *   - `Style(self)`
+ *   - `Style(self, str val)`
+ *   - `CapSize(self)`
+ *   - `CapSize(self, float val)`
+ *   - `ErrorBars(self)`
+ *   - `ErrorBars(self, bool val)`
+ *   - `Filename(self)`
+ *   - `Filename(self, str val)`
+ *   - `OutputDirectory(self)`
+ *   - `OutputDirectory(self, str val)`
+ *   - `FontSize(self)`
+ *   - `FontSize(self, float val)`
+ *   - `AxisSize(self)`
+ *   - `AxisSize(self, float val)`
+ *   - `LegendSize(self)`
+ *   - `LegendSize(self, float val)`
+ *
+ * @subsection class_TH2F TH2F
+ * - **Inherits from**: BasePlotting
+ * - **Member Variables**:
+ *   - `dict out`
+ *   - `float v1`
+ *   - `float _chi2`
+ *   - `class BasePlotting`
+ *   - `void __figure__`
+ *   - `void __resetplt__`
+ *   - `dict __compile__`
+ *   - `list keys`
+ *   - `bool cls`
+ *   - `BasePlotting s`
+ *   - `str titl`
+ *   - `list __ticks__`
+ *   - `list tick`
+ *   - `float step`
+ *   - `str raw`
+ *   - `dict com`
+ *   - `class TH1F`
+ *   - `float i`
+ *   - `dict apl`
+ *   - `list k`
+ * - **Methods**:
+ *   - `ratio(...)`
+ *   - `chi2(...)`
+ *   - `__cinit__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__init__(self, inpt = None)`
+ *   - `__reduce__(self)`
+ *   - `dump(self, str path = "", str name = "")`
+ *   - `load(self, str path = "", str name = "")`
+ *   - `__add__(self, BasePlotting other)`
+ *   - `__radd__(self, other)`
+ *   - `Hatch(self)`
+ *   - `Hatch(self, str val)`
+ *   - `DPI(self)`
+ *   - `DPI(self, int val)`
+ *   - `Style(self)`
+ *   - `Style(self, str val)`
+ *   - `CapSize(self)`
+ *   - `CapSize(self, float val)`
+ *   - `ErrorBars(self)`
+ *   - `ErrorBars(self, bool val)`
+ *   - `Filename(self)`
+ *   - `Filename(self, str val)`
+ *   - `OutputDirectory(self)`
+ *   - `OutputDirectory(self, str val)`
+ *   - `FontSize(self)`
+ *   - `FontSize(self, float val)`
+ *   - `AxisSize(self)`
+ *   - `AxisSize(self, float val)`
+ *   - `LegendSize(self)`
+ *   - `LegendSize(self, float val)`
+ *
+ * @subsection class_TLine TLine
+ * - **Inherits from**: BasePlotting
+ * - **Member Variables**:
+ *   - `dict out`
+ *   - `float v1`
+ *   - `float _chi2`
+ *   - `class BasePlotting`
+ *   - `void __figure__`
+ *   - `void __resetplt__`
+ *   - `dict __compile__`
+ *   - `list keys`
+ *   - `bool cls`
+ *   - `BasePlotting s`
+ *   - `str titl`
+ *   - `list __ticks__`
+ *   - `list tick`
+ *   - `float step`
+ *   - `str raw`
+ *   - `dict com`
+ *   - `class TH1F`
+ *   - `float i`
+ *   - `dict apl`
+ *   - `list k`
+ * - **Methods**:
+ *   - `ratio(...)`
+ *   - `chi2(...)`
+ *   - `__cinit__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__init__(self, inpt = None)`
+ *   - `__reduce__(self)`
+ *   - `dump(self, str path = "", str name = "")`
+ *   - `load(self, str path = "", str name = "")`
+ *   - `__add__(self, BasePlotting other)`
+ *   - `__radd__(self, other)`
+ *   - `Hatch(self)`
+ *   - `Hatch(self, str val)`
+ *   - `DPI(self)`
+ *   - `DPI(self, int val)`
+ *   - `Style(self)`
+ *   - `Style(self, str val)`
+ *   - `CapSize(self)`
+ *   - `CapSize(self, float val)`
+ *   - `ErrorBars(self)`
+ *   - `ErrorBars(self, bool val)`
+ *   - `Filename(self)`
+ *   - `Filename(self, str val)`
+ *   - `OutputDirectory(self)`
+ *   - `OutputDirectory(self, str val)`
+ *   - `FontSize(self)`
+ *   - `FontSize(self, float val)`
+ *   - `AxisSize(self)`
+ *   - `AxisSize(self, float val)`
+ *   - `LegendSize(self)`
+ *   - `LegendSize(self, float val)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_Alpha Alpha
+ * - **Signature**: `void Alpha(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_AutoScaling AutoScaling
+ * - **Signature**: `void AutoScaling(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_AxisSize AxisSize
+ * - **Signature**: `void AxisSize(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_CapSize CapSize
+ * - **Signature**: `void CapSize(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Color Color
+ * - **Signature**: `void Color(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Colors Colors
+ * - **Signature**: `void Colors(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_CrossSection CrossSection
+ * - **Signature**: `void CrossSection(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_DPI DPI
+ * - **Signature**: `void DPI(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Density Density
+ * - **Signature**: `void Density(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_ErrorBars ErrorBars
+ * - **Signature**: `void ErrorBars(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_FX FX
+ * - **Signature**: `void FX(auto self, auto val = None)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `val = None` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Filename Filename
+ * - **Signature**: `void Filename(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_FontSize FontSize
+ * - **Signature**: `void FontSize(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Hatch Hatch
+ * - **Signature**: `void Hatch(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_HistFill HistFill
+ * - **Signature**: `void HistFill(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_IntegratedLuminosity IntegratedLuminosity
+ * - **Signature**: `void IntegratedLuminosity(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_KStest KStest
+ * - **Signature**: `void KStest(auto self, auto TH1F hist)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `TH1F hist` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_LegendSize LegendSize
+ * - **Signature**: `void LegendSize(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_LineStyle LineStyle
+ * - **Signature**: `void LineStyle(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_LineWidth LineWidth
+ * - **Signature**: `void LineWidth(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Marker Marker
+ * - **Signature**: `void Marker(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_OutputDirectory OutputDirectory
+ * - **Signature**: `void OutputDirectory(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Overflow Overflow
+ * - **Signature**: `void Overflow(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_SaveFigure SaveFigure
+ * - **Signature**: `void SaveFigure(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_ShowCount ShowCount
+ * - **Signature**: `void ShowCount(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Stacked Stacked
+ * - **Signature**: `void Stacked(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Style Style
+ * - **Signature**: `void Style(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Title Title
+ * - **Signature**: `void Title(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_TitleSize TitleSize
+ * - **Signature**: `void TitleSize(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_UseLateX UseLateX
+ * - **Signature**: `void UseLateX(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Weights Weights
+ * - **Signature**: `void Weights(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___add__ __add__
+ * - **Signature**: `void __add__(auto self, auto BasePlotting other)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `BasePlotting other` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___build__ __build__
+ * - **Signature**: `void __build__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___error__ __error__
+ * - **Signature**: `void __error__(auto self, auto vector[float] xarr, auto vector[float] up, auto vector[float] low, auto str label = ...)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `vector[float] xarr` (auto)
+ *   - `vector[float] up` (auto)
+ *   - `vector[float] low` (auto)
+ *   - `str label = "Uncertainty"` (auto)
+ *   - `str color = "k"` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___get_error_seg__ __get_error_seg__
+ * - **Signature**: `void __get_error_seg__(auto self, auto plot, auto str label = "Uncertainty", auto str color = "k")`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `plot` (auto)
+ *   - `str label = "Uncertainty"` (auto)
+ *   - `str color = "k"` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___radd__ __radd__
+ * - **Signature**: `void __radd__(auto self, auto other)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `other` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___reduce__ __reduce__
+ * - **Signature**: `void __reduce__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_chi2 chi2
+ * - **Signature**: `void chi2(auto H1, auto H2, auto axis, auto ylabel = "Ratio", auto normalize = False, auto yerror = False, aut...)`
+ * - **Parameters**:
+ *   - `H1` (auto)
+ *   - `H2` (auto)
+ *   - `axis` (auto)
+ *   - `ylabel = "Ratio"` (auto)
+ *   - `normalize = False` (auto)
+ *   - `yerror = False` (auto)
+ *   - `this_hist = None` (auto)
+ * - **Returns**: `void`
+ *
+ * @see plotting.pyx
+ */

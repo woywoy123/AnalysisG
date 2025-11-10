@@ -1,0 +1,28 @@
+/**
+ * @file edge_features.cxx
+ * @brief Documentation for graphs/bsm_4tops/cxx/edge_features.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `graphs/bsm_4tops/cxx/edge_features.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - bsm_4tops/edge_features.h
+ * - bsm_4tops/event.h
+ * - pyc/pyc.h
+ *
+ * @section functions Functions
+ * - m_res_edge()
+ * - det_res_edge()
+ * - det_top_edge()
+ * - y()
+ * - res_edge()
+ * - if()
+ * - m_top_edge()
+ * - x()
+ * - top_edge()
+ *
+ * @see edge_features.cxx
+ * @ingroup graphs
+ */

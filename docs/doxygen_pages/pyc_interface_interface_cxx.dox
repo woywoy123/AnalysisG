@@ -1,0 +1,24 @@
+/**
+ * @file interface.cxx
+ * @brief Documentation for pyc/interface/interface.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/interface/interface.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - pyc/pyc.h
+ * - tools/tensor_cast.h
+ * - tools/vector_cast.h
+ * - utils/utils.cuh
+ * - utils/utils.h
+ *
+ * @section functions Functions
+ * - neutrino()
+ * - y()
+ * - x()
+ *
+ * @see interface.cxx
+ * @ingroup pyc
+ */

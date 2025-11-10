@@ -1,0 +1,35 @@
+/**
+ * @file pagerank.h
+ * @brief Documentation for metrics/pagerank/include/metrics/pagerank.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `metrics/pagerank/include/metrics/pagerank.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/metric_template.h
+ *
+ * @section classes Classes
+ * - pagerank_metric
+ * - collector
+ *
+ * @section structs Structures
+ * - meta_event_t
+ * - sample_t
+ * - kinematic_t
+ *
+ * @section functions Functions
+ * - add_file_map()
+ * - add_process()
+ * - create_kinematic()
+ * - add_meta()
+ * - add_truth()
+ * - set_index()
+ * - add_pagerank()
+ * - add_nominal()
+ * - pagerank()
+ *
+ * @see pagerank.h
+ * @ingroup metrics
+ */

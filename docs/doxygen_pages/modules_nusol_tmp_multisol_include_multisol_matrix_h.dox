@@ -1,0 +1,28 @@
+/**
+ * @file matrix.h
+ * @brief Documentation for modules/nusol/tmp/multisol/include/multisol/matrix.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/tmp/multisol/include/multisol/matrix.h`
+ * 
+ * @section structs Structures
+ * - vec3
+ * - matrix
+ * - vec4
+ *
+ * @section functions Functions
+ * - inverse()
+ * - det()
+ * - eigenvalues()
+ * - dot()
+ * - print()
+ * - safe()
+ * - solve_linear()
+ * - I()
+ * - invert_matrix()
+ *
+ * @see matrix.h
+ * @ingroup modules
+ */

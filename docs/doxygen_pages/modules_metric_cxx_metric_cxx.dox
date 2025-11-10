@@ -1,0 +1,18 @@
+/**
+ * @file metric.cxx
+ * @brief Documentation for modules/metric/cxx/metric.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/metric/cxx/metric.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/metric_template.h
+ *
+ * @section functions Functions
+ * - x()
+ *
+ * @see metric.cxx
+ * @ingroup modules
+ */

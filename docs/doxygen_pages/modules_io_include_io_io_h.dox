@@ -1,0 +1,42 @@
+/**
+ * @file io.h
+ * @brief Documentation for modules/io/include/io/io.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/io/include/io/io.h`
+ * 
+ * @section dependencies Dependencies
+ * - map
+ * - string
+ * - H5Cpp.h
+ * - TFile.h
+ * - TTree.h
+ * - TBranch.h
+ * - TLeaf.h
+ * - TTreeReader.h
+ * - TTreeReaderArray.h
+ * - meta/meta.h
+ *
+ * @section classes Classes
+ * - io
+ *
+ * @section functions Functions
+ * - check_root_file_paths()
+ * - end()
+ * - root_begin()
+ * - file_info()
+ * - root_key_paths()
+ * - write()
+ * - start()
+ * - read()
+ * - import_settings()
+ * - member()
+ * - trigger_pcm()
+ * - root_end()
+ * - scan_keys()
+ *
+ * @see io.h
+ * @ingroup modules
+ */

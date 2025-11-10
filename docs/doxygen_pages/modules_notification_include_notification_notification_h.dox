@@ -1,0 +1,37 @@
+/**
+ * @file notification.h
+ * @brief Documentation for modules/notification/include/notification/notification.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/notification/include/notification/notification.h`
+ * 
+ * @section dependencies Dependencies
+ * - iostream
+ * - sstream
+ * - string
+ * - vector
+ * - thread
+ *
+ * @section classes Classes
+ * - notification
+ *
+ * @section functions Functions
+ * - _format()
+ * - info()
+ * - progressbar1()
+ * - monitor()
+ * - progressbar2()
+ * - sum()
+ * - progressbar3()
+ * - failure()
+ * - success()
+ * - running()
+ * - progressbar()
+ * - warning()
+ * - t()
+ *
+ * @see notification.h
+ * @ingroup modules
+ */

@@ -1,0 +1,138 @@
+/**
+ * @file model_template.pyx
+ * @brief Implementation for model_template.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/model_template.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.model_template`
+ * - `AnalysisG.core.tools`
+ * - `cython.operator`
+ * - `dereference`
+ * - `libcpp.map`
+ * - `libcpp.string`
+ * - `map`
+ * - `model_template`
+ * - `string`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_ModelTemplate ModelTemplate
+ * - **Member Variables**:
+ *   - `class ModelTemplate`
+ *   - `dict conv`
+ *   - `dict out`
+ *   - `str i`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `o_graph(self)`
+ *   - `o_graph(self, dict inpt)`
+ *   - `o_node(self)`
+ *   - `o_node(self, dict inpt)`
+ *   - `o_edge(self)`
+ *   - `o_edge(self, dict inpt)`
+ *   - `i_graph(self)`
+ *   - `i_graph(self, list inpt)`
+ *   - `i_node(self)`
+ *   - `i_node(self, list inpt)`
+ *   - `i_edge(self)`
+ *   - `i_edge(self, list inpt)`
+ *   - `device(self)`
+ *   - `device(self, str dev)`
+ *   - `checkpoint_path(self)`
+ *   - `checkpoint_path(self, str pth)`
+ *   - `weight_name(self)`
+ *   - `weight_name(self, str val)`
+ *   - `tree_name(self)`
+ *   - `tree_name(self, str val)`
+ *   - `name(self)`
+ *   - `name(self, str nx)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_checkpoint_path checkpoint_path
+ * - **Signature**: `void checkpoint_path(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_device device
+ * - **Signature**: `void device(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_i_edge i_edge
+ * - **Signature**: `void i_edge(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_i_graph i_graph
+ * - **Signature**: `void i_graph(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_i_node i_node
+ * - **Signature**: `void i_node(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_name name
+ * - **Signature**: `void name(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_o_edge o_edge
+ * - **Signature**: `void o_edge(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_o_graph o_graph
+ * - **Signature**: `void o_graph(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_o_node o_node
+ * - **Signature**: `void o_node(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_tree_name tree_name
+ * - **Signature**: `void tree_name(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_weight_name weight_name
+ * - **Signature**: `void weight_name(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see model_template.pyx
+ */

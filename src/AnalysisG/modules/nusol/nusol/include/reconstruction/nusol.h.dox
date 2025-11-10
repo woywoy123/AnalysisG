@@ -1,0 +1,52 @@
+/**
+ * @file nusol.h
+ * @brief Implementation for nusol.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/nusol/include/reconstruction/nusol.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `notification/notification.h`
+ * - `templates/particle_template.h`
+ * - `tools/tools.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_conuix conuix
+ * - **Member Variables**:
+ *   - `friend ellipse`
+ *
+ * @subsection class_ellipse ellipse
+ * - **Member Variables**:
+ *   - `friend ellipse`
+ *
+ * @subsection class_nusol nusol
+ * - **Member Variables**:
+ *   - `friend ellipse`
+ *
+ * @subsection class_nusol_enum nusol_enum
+ * - **Member Variables**:
+ *   - `friend ellipse`
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_nusol_t nusol_t
+ * - **Members**:
+ *   - `friend ellipse`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_solve solve
+ * - **Signature**: `void solve()`
+ * - **Returns**: `void`
+ *
+ * @section enums Enumerations
+ *
+ * - `mode`
+ * - `nusol_enum`
+ *
+ * @see nusol.h
+ */

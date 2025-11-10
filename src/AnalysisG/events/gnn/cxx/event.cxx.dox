@@ -1,0 +1,15 @@
+/**
+ * @file event.cxx
+ * @brief Implementation for event.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `events/gnn/cxx/event.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `gnn-event.h`
+ *
+ * @see event.cxx
+ */

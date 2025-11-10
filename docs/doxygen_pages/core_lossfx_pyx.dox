@@ -1,0 +1,37 @@
+/**
+ * @file lossfx.pyx
+ * @brief Documentation for core/lossfx.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/lossfx.pyx`
+ * 
+ * @section classes Classes
+ * - OptimizerConfig
+ *
+ * @section functions Functions
+ * - __cinit__()
+ * - dampening()
+ * - max_iter()
+ * - Optimizer()
+ * - max_eval()
+ * - momentum()
+ * - initial_accumulator_value()
+ * - amsgrad()
+ * - betas()
+ * - lr_decay()
+ * - history_size()
+ * - __init__()
+ * - eps()
+ * - tolerance_grad()
+ * - tolerance_change()
+ * - centered()
+ * - lr()
+ * - __dealloc__()
+ * - gamma()
+ * - nesterov()
+ *
+ * @see lossfx.pyx
+ * @ingroup core
+ */

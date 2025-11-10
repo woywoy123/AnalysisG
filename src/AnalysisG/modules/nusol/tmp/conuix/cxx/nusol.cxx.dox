@@ -1,0 +1,16 @@
+/**
+ * @file nusol.cxx
+ * @brief Implementation for nusol.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/tmp/conuix/cxx/nusol.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `complex`
+ * - `conics/nusol.h`
+ *
+ * @see nusol.cxx
+ */

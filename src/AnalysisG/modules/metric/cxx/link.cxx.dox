@@ -1,0 +1,20 @@
+/**
+ * @file link.cxx
+ * @brief Implementation for link.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/metric/cxx/link.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/metric_template.h`
+ * - `templates/model_template.h`
+ *
+ * @section enums Enumerations
+ *
+ * - `mx`
+ *
+ * @see link.cxx
+ */

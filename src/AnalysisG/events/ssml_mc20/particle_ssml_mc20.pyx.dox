@@ -1,0 +1,17 @@
+/**
+ * @file particle_ssml_mc20.pyx
+ * @brief Implementation for particle_ssml_mc20.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `events/ssml_mc20/particle_ssml_mc20.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.particle_template`
+ * - `AnalysisG.events.ssml_mc20.particle_ssml_mc20`
+ * - `ParticleTemplate`
+ *
+ * @see particle_ssml_mc20.pyx
+ */

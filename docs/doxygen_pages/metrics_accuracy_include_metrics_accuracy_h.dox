@@ -1,0 +1,29 @@
+/**
+ * @file accuracy.h
+ * @brief Documentation for metrics/accuracy/include/metrics/accuracy.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `metrics/accuracy/include/metrics/accuracy.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/metric_template.h
+ *
+ * @section classes Classes
+ * - accuracy_metric
+ * - collector
+ *
+ * @section structs Structures
+ * - cmodel_t
+ * - cdata_t
+ *
+ * @section functions Functions
+ * - add_ntop_scores()
+ * - add_ntru_ntop_scores()
+ * - add_ntop_edge_accuracy()
+ * - add_ntop_truth()
+ *
+ * @see accuracy.h
+ * @ingroup metrics
+ */

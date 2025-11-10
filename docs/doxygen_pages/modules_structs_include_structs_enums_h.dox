@@ -1,0 +1,22 @@
+/**
+ * @file enums.h
+ * @brief Documentation for modules/structs/include/structs/enums.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/include/structs/enums.h`
+ * 
+ * @section classes Classes
+ * - data_enum
+ * - particle_enum
+ * - loss_enum
+ * - opt_enum
+ * - graph_enum
+ * - mlp_init
+ * - mode_enum
+ * - scheduler_enum
+ *
+ * @see enums.h
+ * @ingroup modules
+ */

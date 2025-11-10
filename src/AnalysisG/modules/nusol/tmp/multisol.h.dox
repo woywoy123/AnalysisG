@@ -1,0 +1,98 @@
+/**
+ * @file multisol.h
+ * @brief Implementation for multisol.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/tmp/multisol.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `iostream`
+ * - `reconstruction/matrix.h`
+ * - `string`
+ * - `templates/particle_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_multisol multisol
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_geo_t geo_t
+ *
+ * @subsection struct_mass_t mass_t
+ *
+ * @subsection struct_multisol_t multisol_t
+ *
+ * @subsection struct_rev_t rev_t
+ *
+ * @section functions Functions
+ *
+ * @subsection func_dp_dt dp_dt
+ * - **Signature**: `double dp_dt()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_eigenvalues eigenvalues
+ * - **Signature**: `bool eigenvalues(double t, double z, vec3* real = nullptr, vec3* imag = nullptr)`
+ * - **Parameters**:
+ *   - `t` (double)
+ *   - `z` (double)
+ *   - `nullptr` (vec3* real =)
+ *   - `nullptr` (vec3* imag =)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_export_ellipse export_ellipse
+ * - **Signature**: `void export_ellipse(std::string name, double t, double z)`
+ * - **Parameters**:
+ *   - `name` (std::string)
+ *   - `t` (double)
+ *   - `z` (double)
+ * - **Returns**: `void`
+ *
+ * @subsection func_lx lx
+ * - **Signature**: `double lx(double s)`
+ * - **Parameters**:
+ *   - `s` (double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_ly ly
+ * - **Signature**: `double ly(double s)`
+ * - **Parameters**:
+ *   - `s` (double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_lz lz
+ * - **Signature**: `double lz(double s)`
+ * - **Parameters**:
+ *   - `s` (double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_make_rt make_rt
+ * - **Signature**: `void make_rt()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_px px
+ * - **Signature**: `double px(double u, double v)`
+ * - **Parameters**:
+ *   - `u` (double)
+ *   - `v` (double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_py py
+ * - **Signature**: `double py(double u, double v)`
+ * - **Parameters**:
+ *   - `u` (double)
+ *   - `v` (double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_pz pz
+ * - **Signature**: `double pz(double u, double v)`
+ * - **Parameters**:
+ *   - `u` (double)
+ *   - `v` (double)
+ * - **Returns**: `double`
+ *
+ * @see multisol.h
+ */

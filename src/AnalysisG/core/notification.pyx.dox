@@ -1,0 +1,40 @@
+/**
+ * @file notification.pyx
+ * @brief Implementation for notification.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/notification.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.notification`
+ * - `notification`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_Notification Notification
+ * - **Member Variables**:
+ *   - `class Notification`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see notification.pyx
+ */

@@ -1,0 +1,23 @@
+/**
+ * @file event.cxx
+ * @brief Implementation for event.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `events/bsm_4tops/cxx/event.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `bsm_4tops/event.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_x x
+ * - **Signature**: `int x(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see event.cxx
+ */

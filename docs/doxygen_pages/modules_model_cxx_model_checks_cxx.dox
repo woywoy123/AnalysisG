@@ -1,0 +1,15 @@
+/**
+ * @file model_checks.cxx
+ * @brief Documentation for modules/model/cxx/model_checks.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/model/cxx/model_checks.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/model_template.h
+ *
+ * @see model_checks.cxx
+ * @ingroup modules
+ */

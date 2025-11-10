@@ -1,0 +1,15 @@
+/**
+ * @file interfaces.cxx
+ * @brief Documentation for modules/particle/cxx/interfaces.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/particle/cxx/interfaces.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ *
+ * @see interfaces.cxx
+ * @ingroup modules
+ */

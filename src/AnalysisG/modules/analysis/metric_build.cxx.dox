@@ -1,0 +1,19 @@
+/**
+ * @file metric_build.cxx
+ * @brief Implementation for metric_build.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/analysis/metric_build.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG/analysis.h`
+ *
+ * @section enums Enumerations
+ *
+ * - `mt`
+ *
+ * @see metric_build.cxx
+ */

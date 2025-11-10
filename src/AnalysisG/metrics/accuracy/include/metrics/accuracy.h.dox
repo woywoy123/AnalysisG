@@ -1,0 +1,72 @@
+/**
+ * @file accuracy.h
+ * @brief Implementation for accuracy.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `metrics/accuracy/include/metrics/accuracy.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/metric_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_accuracy_metric accuracy_metric
+ *
+ * @subsection class_collector collector
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_cdata_t cdata_t
+ *
+ * @subsection struct_cmodel_t cmodel_t
+ *
+ * @section functions Functions
+ *
+ * @subsection func_add_ntop_edge_accuracy add_ntop_edge_accuracy
+ * - **Signature**: `void add_ntop_edge_accuracy(std::string mode, std::string model, int epoch, int kfold, int ntops, double data)`
+ * - **Parameters**:
+ *   - `mode` (std::string)
+ *   - `model` (std::string)
+ *   - `epoch` (int)
+ *   - `kfold` (int)
+ *   - `ntops` (int)
+ *   - `data` (double)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_ntop_scores add_ntop_scores
+ * - **Signature**: `void add_ntop_scores(std::string mode, std::string model, int epoch, int kfold, std::vector<double>* data)`
+ * - **Parameters**:
+ *   - `mode` (std::string)
+ *   - `model` (std::string)
+ *   - `epoch` (int)
+ *   - `kfold` (int)
+ *   - `data` (std::vector<double>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_ntop_truth add_ntop_truth
+ * - **Signature**: `void add_ntop_truth(std::string mode, std::string model, int epoch, int kfold, int data)`
+ * - **Parameters**:
+ *   - `mode` (std::string)
+ *   - `model` (std::string)
+ *   - `epoch` (int)
+ *   - `kfold` (int)
+ *   - `data` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_ntru_ntop_scores add_ntru_ntop_scores
+ * - **Signature**: `void add_ntru_ntop_scores(std::string mode, std::string model, int epoch, int kfold, int ntru, int ntop, double data)`
+ * - **Parameters**:
+ *   - `mode` (std::string)
+ *   - `model` (std::string)
+ *   - `epoch` (int)
+ *   - `kfold` (int)
+ *   - `ntru` (int)
+ *   - `ntop` (int)
+ *   - `data` (double)
+ * - **Returns**: `void`
+ *
+ * @see accuracy.h
+ */

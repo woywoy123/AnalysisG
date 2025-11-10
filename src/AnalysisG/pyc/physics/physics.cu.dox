@@ -1,0 +1,18 @@
+/**
+ * @file physics.cu
+ * @brief Implementation for physics.cu
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/physics/physics.cu`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `physics/base.cuh`
+ * - `physics/physics.cuh`
+ * - `transform/transform.cuh`
+ * - `utils/utils.cuh`
+ *
+ * @see physics.cu
+ */

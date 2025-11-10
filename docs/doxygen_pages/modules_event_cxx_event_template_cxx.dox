@@ -1,0 +1,21 @@
+/**
+ * @file event_template.cxx
+ * @brief Documentation for modules/event/cxx/event_template.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/event/cxx/event_template.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/event_template.h
+ * - reconstruction/nusol.h
+ *
+ * @section functions Functions
+ * - nusol()
+ * - event_template()
+ * - x()
+ *
+ * @see event_template.cxx
+ * @ingroup modules
+ */

@@ -1,0 +1,25 @@
+/**
+ * @file report.h
+ * @brief Implementation for report.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/include/structs/report.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `map`
+ * - `string`
+ * - `structs/enums.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_metrics metrics
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_model_report model_report
+ *
+ * @see report.h
+ */

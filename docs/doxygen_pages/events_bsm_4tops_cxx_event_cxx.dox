@@ -1,0 +1,20 @@
+/**
+ * @file event.cxx
+ * @brief Documentation for events/bsm_4tops/cxx/event.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/bsm_4tops/cxx/event.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - bsm_4tops/event.h
+ *
+ * @section functions Functions
+ * - bsm_4tops()
+ * - z()
+ * - x()
+ *
+ * @see event.cxx
+ * @ingroup events
+ */

@@ -1,0 +1,25 @@
+/**
+ * @file matrix.cu
+ * @brief Documentation for pyc/nusol/cuda/matrix.cu
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/nusol/cuda/matrix.cu`
+ * 
+ * @section dependencies Dependencies
+ * - nusol/base.cuh
+ * - nusol/device.cuh
+ * - utils/utils.cuh
+ * - physics/physics.cuh
+ * - operators/operators.cuh
+ * - transform/transform.cuh
+ *
+ * @section functions Functions
+ * - _hmatrix()
+ * - x()
+ * - _hmatrix_debug()
+ *
+ * @see matrix.cu
+ * @ingroup pyc
+ */

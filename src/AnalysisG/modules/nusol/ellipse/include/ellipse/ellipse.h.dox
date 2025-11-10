@@ -1,0 +1,73 @@
+/**
+ * @file ellipse.h
+ * @brief Implementation for ellipse.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/ellipse/include/ellipse/ellipse.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `ellipse/mtx.h`
+ * - `ellipse/nusol.h`
+ * - `ellipse/solvers.h`
+ * - `templates/particle_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_ellipse ellipse
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_nunu_t nunu_t
+ *
+ * @subsection struct_nusol_t nusol_t
+ *
+ * @section functions Functions
+ *
+ * @subsection func_angle_cross angle_cross
+ * - **Signature**: `int angle_cross(mtx** v, mtx** v_)`
+ * - **Parameters**:
+ *   - `v` (mtx**)
+ *   - `v_` (mtx**)
+ * - **Returns**: `int`
+ *
+ * @subsection func_flush flush
+ * - **Signature**: `void flush()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_generate generate
+ * - **Signature**: `int generate(nuelx* nu1, nuelx* nu2)`
+ * - **Parameters**:
+ *   - `nu1` (nuelx*)
+ *   - `nu2` (nuelx*)
+ * - **Returns**: `int`
+ *
+ * @subsection func_intersection intersection
+ * - **Signature**: `int intersection(mtx** v, mtx** v_)`
+ * - **Parameters**:
+ *   - `v` (mtx**)
+ *   - `v_` (mtx**)
+ * - **Returns**: `int`
+ *
+ * @subsection func_make_neutrinos make_neutrinos
+ * - **Signature**: `void make_neutrinos(mtx* v, mtx* v_)`
+ * - **Parameters**:
+ *   - `v` (mtx*)
+ *   - `v_` (mtx*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_prepare prepare
+ * - **Signature**: `void prepare(double mt, double mw)`
+ * - **Parameters**:
+ *   - `mt` (double)
+ *   - `mw` (double)
+ * - **Returns**: `void`
+ *
+ * @subsection func_solve solve
+ * - **Signature**: `void solve()`
+ * - **Returns**: `void`
+ *
+ * @see ellipse.h
+ */

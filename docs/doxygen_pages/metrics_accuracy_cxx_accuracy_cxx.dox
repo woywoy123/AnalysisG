@@ -1,0 +1,22 @@
+/**
+ * @file accuracy.cxx
+ * @brief Documentation for metrics/accuracy/cxx/accuracy.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `metrics/accuracy/cxx/accuracy.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - metrics/accuracy.h
+ *
+ * @section functions Functions
+ * - y()
+ * - f()
+ * - x()
+ * - accuracy_metric()
+ * - c()
+ *
+ * @see accuracy.cxx
+ * @ingroup metrics
+ */

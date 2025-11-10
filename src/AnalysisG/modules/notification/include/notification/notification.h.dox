@@ -1,0 +1,76 @@
+/**
+ * @file notification.h
+ * @brief Implementation for notification.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/notification/include/notification/notification.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `iostream`
+ * - `sstream`
+ * - `string`
+ * - `thread`
+ * - `vector`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_notification notification
+ *
+ * @section functions Functions
+ *
+ * @subsection func__format _format
+ * - **Signature**: `void _format(std::string* message)`
+ * - **Parameters**:
+ *   - `message` (std::string*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_failure failure
+ * - **Signature**: `void failure(std::string message)`
+ * - **Parameters**:
+ *   - `message` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_info info
+ * - **Signature**: `void info(std::string message)`
+ * - **Parameters**:
+ *   - `message` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_monitor monitor
+ * - **Signature**: `void monitor(std::vector<std::thread*>* thr)`
+ * - **Parameters**:
+ *   - `thr` (std::vector<std::thread*>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_progressbar progressbar
+ * - **Signature**: `void progressbar(float prog, std::string title)`
+ * - **Parameters**:
+ *   - `prog` (float)
+ *   - `title` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_running running
+ * - **Signature**: `int running(std::vector<std::thread*>* thr, std::vector<size_t>* prg, std::vector<size_t>* trgt)`
+ * - **Parameters**:
+ *   - `thr` (std::vector<std::thread*>*)
+ *   - `prg` (std::vector<size_t>*)
+ *   - `trgt` (std::vector<size_t>*)
+ * - **Returns**: `int`
+ *
+ * @subsection func_success success
+ * - **Signature**: `void success(std::string message)`
+ * - **Parameters**:
+ *   - `message` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_warning warning
+ * - **Signature**: `void warning(std::string message)`
+ * - **Parameters**:
+ *   - `message` (std::string)
+ * - **Returns**: `void`
+ *
+ * @see notification.h
+ */

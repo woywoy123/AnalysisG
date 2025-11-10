@@ -1,0 +1,33 @@
+/**
+ * @file graph_features.h
+ * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/graph_features.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `graphs/bsm_4tops/include/bsm_4tops/graph_features.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/event_template.h
+ *
+ * @section classes Classes
+ * - bsm_4tops
+ *
+ * @section functions Functions
+ * - num_jets()
+ * - missing_phi()
+ * - event_number()
+ * - num_tops()
+ * - num_leps()
+ * - num_quark()
+ * - num_neutrino()
+ * - num_children_leps()
+ * - num_lepton()
+ * - missing_et()
+ * - event_weight()
+ * - num_truthjets()
+ * - signal_event()
+ *
+ * @see graph_features.h
+ * @ingroup graphs
+ */

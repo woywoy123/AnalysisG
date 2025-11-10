@@ -1,0 +1,53 @@
+/**
+ * @file merge_cast.h
+ * @brief Implementation for merge_cast.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/typecasting/include/tools/merge_cast.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `map`
+ * - `string`
+ * - `vector`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_contract_data contract_data
+ * - **Signature**: `void contract_data(std::vector<g>* out, g* p2)`
+ * - **Parameters**:
+ *   - `out` (std::vector<g>*)
+ *   - `p2` (g*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_merge_data merge_data
+ * - **Signature**: `void merge_data(std::vector<G>* out, std::vector<G>* p2)`
+ * - **Parameters**:
+ *   - `out` (std::vector<G>*)
+ *   - `p2` (std::vector<G>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_release_vector release_vector
+ * - **Signature**: `void release_vector(std::vector<g>* ipt)`
+ * - **Parameters**:
+ *   - `ipt` (std::vector<g>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_reserve_count reserve_count
+ * - **Signature**: `void reserve_count(g* inp, long* ix)`
+ * - **Parameters**:
+ *   - `inp` (g*)
+ *   - `ix` (long*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_sum_data sum_data
+ * - **Signature**: `void sum_data(G* out, G* p2)`
+ * - **Parameters**:
+ *   - `out` (G*)
+ *   - `p2` (G*)
+ * - **Returns**: `void`
+ *
+ * @see merge_cast.h
+ */

@@ -1,0 +1,18 @@
+/**
+ * @file io.cxx
+ * @brief Implementation for io.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/io/cxx/io.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `TSystem.h`
+ * - `io/cfg.h`
+ * - `io/io.h`
+ * - `thread`
+ *
+ * @see io.cxx
+ */

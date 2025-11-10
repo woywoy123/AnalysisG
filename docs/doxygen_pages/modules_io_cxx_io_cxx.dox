@@ -1,0 +1,18 @@
+/**
+ * @file io.cxx
+ * @brief Documentation for modules/io/cxx/io.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/io/cxx/io.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - io/io.h
+ * - io/cfg.h
+ * - TSystem.h
+ * - thread
+ *
+ * @see io.cxx
+ * @ingroup modules
+ */

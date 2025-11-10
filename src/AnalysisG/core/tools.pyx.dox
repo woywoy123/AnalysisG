@@ -1,0 +1,199 @@
+/**
+ * @file tools.pyx
+ * @brief Implementation for tools.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/tools.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `bool`
+ * - `cython.operator`
+ * - `dereference`
+ * - `libcpp`
+ * - `libcpp.map`
+ * - `libcpp.string`
+ * - `libcpp.unordered_map`
+ * - `libcpp.vector`
+ * - `map`
+ * - `string`
+ * - `unordered_map`
+ * - `vector`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_Tools Tools
+ * - **Member Variables**:
+ *   - `string enc`
+ *   - `str env`
+ *   - `list env_vec`
+ *   - `int i`
+ *   - `list out`
+ *   - `dict as_basic_dist_dict_f`
+ *   - `dict output`
+ *   - `list as_list`
+ *   - `dict as_basic_dict`
+ *   - `dict as_basic_udict`
+ *   - `dict as_basic_dict_dict`
+ *   - `dict as_dict`
+ *   - `dict as_dict_dict`
+ *   - `dict as_dict_dict_dict`
+ *   - `void as_map`
+ *   - `str key`
+ *   - `void as_umap`
+ *   - `dict as_basic_dict_dict_f`
+ *   - `class Tools`
+ *   - `string sx`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `create_path(self, str pth)`
+ *   - `delete_path(self, str pth)`
+ *   - `is_file(self, str pth)`
+ *   - `rename(self, str src, str dst)`
+ *   - `abs(self, str pth)`
+ *   - `ls(self, str pth, str ext)`
+ *   - `replace(self, str val, str rpl, str rpwl)`
+ *   - `has_substring(self, str val, str rpl)`
+ *   - `ends_with(self, str val, str rpl)`
+ *   - `has_value(self, list data, str trg)`
+ *   - `split(self, str data, trg)`
+ *   - `hash(self, str data, int lx = 8)`
+ *   - `encode64(self, str data)`
+ *   - `decode64(self, str data)`
+ *   - `discretize(self, list data, int lx)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_abs abs
+ * - **Signature**: `void abs(auto self, auto str pth)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str pth` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_create_path create_path
+ * - **Signature**: `void create_path(auto self, auto str pth)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str pth` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_decode64 decode64
+ * - **Signature**: `void decode64(auto self, auto str data)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str data` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_delete_path delete_path
+ * - **Signature**: `void delete_path(auto self, auto str pth)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str pth` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_discretize discretize
+ * - **Signature**: `void discretize(auto self, auto list data, auto int lx)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `list data` (auto)
+ *   - `int lx` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_encode64 encode64
+ * - **Signature**: `void encode64(auto self, auto str data)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str data` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_ends_with ends_with
+ * - **Signature**: `void ends_with(auto self, auto str val, auto str rpl)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str val` (auto)
+ *   - `str rpl` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_has_substring has_substring
+ * - **Signature**: `void has_substring(auto self, auto str val, auto str rpl)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str val` (auto)
+ *   - `str rpl` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_has_value has_value
+ * - **Signature**: `void has_value(auto self, auto list data, auto str trg)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `list data` (auto)
+ *   - `str trg` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_hash hash
+ * - **Signature**: `void hash(auto self, auto str data, auto int lx = 8)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str data` (auto)
+ *   - `int lx = 8` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_is_file is_file
+ * - **Signature**: `void is_file(auto self, auto str pth)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str pth` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_ls ls
+ * - **Signature**: `void ls(auto self, auto str pth, auto str ext)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str pth` (auto)
+ *   - `str ext` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_rename rename
+ * - **Signature**: `void rename(auto self, auto str src, auto str dst)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str src` (auto)
+ *   - `str dst` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_replace replace
+ * - **Signature**: `void replace(auto self, auto str val, auto str rpl, auto str rpwl)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str val` (auto)
+ *   - `str rpl` (auto)
+ *   - `str rpwl` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_split split
+ * - **Signature**: `void split(auto self, auto str data, auto trg)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str data` (auto)
+ *   - `trg` (auto)
+ * - **Returns**: `void`
+ *
+ * @see tools.pyx
+ */

@@ -1,0 +1,12 @@
+/**
+ * @file particle_ssml_mc20.pyx
+ * @brief Documentation for events/ssml_mc20/particle_ssml_mc20.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/ssml_mc20/particle_ssml_mc20.pyx`
+ * 
+ * @see particle_ssml_mc20.pyx
+ * @ingroup events
+ */

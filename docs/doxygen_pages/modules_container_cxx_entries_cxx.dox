@@ -1,0 +1,18 @@
+/**
+ * @file entries.cxx
+ * @brief Documentation for modules/container/cxx/entries.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/container/cxx/entries.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - container/container.h
+ *
+ * @section functions Functions
+ * - x()
+ *
+ * @see entries.cxx
+ * @ingroup modules
+ */

@@ -1,0 +1,20 @@
+/**
+ * @file misc.cxx
+ * @brief Documentation for modules/structs/cxx/misc.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/cxx/misc.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - element.h
+ * - report.h
+ * - folds.h
+ *
+ * @section functions Functions
+ * - x()
+ *
+ * @see misc.cxx
+ * @ingroup modules
+ */

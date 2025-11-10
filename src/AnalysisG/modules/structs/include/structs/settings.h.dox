@@ -1,0 +1,20 @@
+/**
+ * @file settings.h
+ * @brief Implementation for settings.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/include/structs/settings.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `string`
+ * - `vector`
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_settings_t settings_t
+ *
+ * @see settings.h
+ */

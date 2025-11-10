@@ -1,0 +1,23 @@
+/**
+ * @file particles.h
+ * @brief Documentation for modules/structs/include/structs/particles.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/include/structs/particles.h`
+ * 
+ * @section dependencies Dependencies
+ * - string
+ * - vector
+ * - map
+ *
+ * @section classes Classes
+ * - particle_template
+ *
+ * @section structs Structures
+ * - particle_t
+ *
+ * @see particles.h
+ * @ingroup modules
+ */

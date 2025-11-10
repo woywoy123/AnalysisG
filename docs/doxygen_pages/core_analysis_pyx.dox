@@ -1,0 +1,37 @@
+/**
+ * @file analysis.pyx
+ * @brief Documentation for core/analysis.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/analysis.pyx`
+ * 
+ * @section classes Classes
+ * - Analysis
+ *
+ * @section functions Functions
+ * - __cinit__()
+ * - GraphCache()
+ * - AddSelection()
+ * - DebugMode()
+ * - OutputPath()
+ * - BatchSize()
+ * - Epochs()
+ * - Threads()
+ * - Validation()
+ * - VarPhi()
+ * - AddModel()
+ * - AddModelInference()
+ * - VarEnergy()
+ * - GetMetaData()
+ * - TrainingDataset()
+ * - Targets()
+ * - AddEvent()
+ * - SetLogY()
+ * - PreTagEvents()
+ * - VarPt()
+ *
+ * @see analysis.pyx
+ * @ingroup core
+ */

@@ -1,0 +1,21 @@
+/**
+ * @file event.cxx
+ * @brief Documentation for events/gnn/cxx/event.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/gnn/cxx/event.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - gnn-event.h
+ *
+ * @section functions Functions
+ * - src()
+ * - gnn_event()
+ * - x()
+ * - y()
+ *
+ * @see event.cxx
+ * @ingroup events
+ */

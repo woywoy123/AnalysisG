@@ -1,0 +1,30 @@
+/**
+ * @file conuix.h
+ * @brief Documentation for modules/nusol/tmp/conuix/include/conuix/conuix.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/tmp/conuix/include/conuix/conuix.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ *
+ * @section classes Classes
+ * - conics
+ *
+ * @section structs Structures
+ * - nusol_t
+ *
+ * @section functions Functions
+ * - nusol()
+ * - y()
+ * - b()
+ * - odeRK()
+ * - x()
+ * - multisol()
+ * - l()
+ *
+ * @see conuix.h
+ * @ingroup modules
+ */

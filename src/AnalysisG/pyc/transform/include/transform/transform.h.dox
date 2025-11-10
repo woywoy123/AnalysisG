@@ -1,0 +1,15 @@
+/**
+ * @file transform.h
+ * @brief Implementation for transform.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/transform/include/transform/transform.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `torch/torch.h`
+ *
+ * @see transform.h
+ */

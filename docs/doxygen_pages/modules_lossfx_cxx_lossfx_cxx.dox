@@ -1,0 +1,15 @@
+/**
+ * @file lossfx.cxx
+ * @brief Documentation for modules/lossfx/cxx/lossfx.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/lossfx/cxx/lossfx.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/lossfx.h
+ *
+ * @see lossfx.cxx
+ * @ingroup modules
+ */

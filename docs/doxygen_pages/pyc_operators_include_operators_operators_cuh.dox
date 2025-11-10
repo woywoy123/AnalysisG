@@ -1,0 +1,27 @@
+/**
+ * @file operators.cuh
+ * @brief Documentation for pyc/operators/include/operators/operators.cuh
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/operators/include/operators/operators.cuh`
+ * 
+ * @section dependencies Dependencies
+ * - torch/torch.h
+ *
+ * @section functions Functions
+ * - CoFactors()
+ * - Rx()
+ * - SinTheta()
+ * - Ry()
+ * - Determinant()
+ * - RT()
+ * - Rz()
+ * - Cross()
+ * - CosTheta()
+ * - Dot()
+ *
+ * @see operators.cuh
+ * @ingroup pyc
+ */

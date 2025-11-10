@@ -1,0 +1,62 @@
+/**
+ * @file particles.h
+ * @brief Implementation for particles.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `events/ssml_mc20/include/ssml_mc20/particles.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/particle_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_electron electron
+ *
+ * @subsection class_jet jet
+ *
+ * @subsection class_lepton lepton
+ *
+ * @subsection class_muon muon
+ *
+ * @subsection class_parton parton
+ *
+ * @subsection class_top top
+ *
+ * @subsection class_truthjet truthjet
+ *
+ * @subsection class_zboson zboson
+ *
+ * @section functions Functions
+ *
+ * @subsection func_get_from_res get_from_res
+ * - **Signature**: `void get_from_res(bool* val, jet* el)`
+ * - **Parameters**:
+ *   - `val` (bool*)
+ *   - `el` (jet*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_pmu pmu
+ * - **Signature**: `void pmu(std::vector<g*>* out, element_t* el)`
+ * - **Parameters**:
+ *   - `out` (std::vector<g*>*)
+ *   - `el` (element_t*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_pmu_mass pmu_mass
+ * - **Signature**: `void pmu_mass(std::vector<g*>* out, element_t* el)`
+ * - **Parameters**:
+ *   - `out` (std::vector<g*>*)
+ *   - `el` (element_t*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_x x
+ * - **Signature**: `int x(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see particles.h
+ */

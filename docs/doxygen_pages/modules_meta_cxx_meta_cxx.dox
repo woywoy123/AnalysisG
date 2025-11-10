@@ -1,0 +1,21 @@
+/**
+ * @file meta.cxx
+ * @brief Documentation for modules/meta/cxx/meta.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/meta/cxx/meta.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - meta.h
+ * - TTreeReader.h
+ *
+ * @section functions Functions
+ * - i()
+ * - if()
+ * - x()
+ *
+ * @see meta.cxx
+ * @ingroup modules
+ */

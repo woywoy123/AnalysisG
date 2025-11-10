@@ -1,0 +1,16 @@
+/**
+ * @file event_template.cxx
+ * @brief Implementation for event_template.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/event/cxx/event_template.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `reconstruction/nusol.h`
+ * - `templates/event_template.h`
+ *
+ * @see event_template.cxx
+ */

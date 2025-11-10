@@ -1,0 +1,17 @@
+/**
+ * @file structs.cxx
+ * @brief Documentation for modules/structs/cxx/structs.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/cxx/structs.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - element.h
+ * - report.h
+ * - folds.h
+ *
+ * @see structs.cxx
+ * @ingroup modules
+ */

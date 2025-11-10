@@ -1,0 +1,25 @@
+/**
+ * @file graphs.h
+ * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/graphs.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `graphs/bsm_4tops/include/bsm_4tops/graphs.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/graph_template.h
+ *
+ * @section classes Classes
+ * - graph_tops
+ * - graph_detector
+ * - graph_truthjets_nonu
+ * - graph_jets
+ * - graph_children
+ * - graph_jets_detector_lep
+ * - graph_truthjets
+ * - graph_jets_nonu
+ *
+ * @see graphs.h
+ * @ingroup graphs
+ */

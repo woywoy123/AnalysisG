@@ -1,0 +1,19 @@
+/**
+ * @file hdf5.cxx
+ * @brief Documentation for modules/io/cxx/hdf5.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/io/cxx/hdf5.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - io.h
+ *
+ * @section functions Functions
+ * - if()
+ * - space()
+ *
+ * @see hdf5.cxx
+ * @ingroup modules
+ */

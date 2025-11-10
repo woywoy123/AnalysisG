@@ -1,0 +1,21 @@
+/**
+ * @file operators.cxx
+ * @brief Implementation for operators.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/interface/operators.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `operators/operators.cuh`
+ * - `operators/operators.h`
+ * - `physics/physics.cuh`
+ * - `physics/physics.h`
+ * - `pyc/pyc.h`
+ * - `utils/utils.cuh`
+ * - `utils/utils.h`
+ *
+ * @see operators.cxx
+ */

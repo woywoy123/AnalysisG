@@ -1,0 +1,11 @@
+/**
+ * @file edge_features.h
+ * @brief Implementation for edge_features.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `graphs/exp_mc20/include/exp_mc20/edge_features.h`
+ *
+ * @see edge_features.h
+ */

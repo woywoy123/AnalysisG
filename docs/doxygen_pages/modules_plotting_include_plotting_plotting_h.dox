@@ -1,0 +1,28 @@
+/**
+ * @file plotting.h
+ * @brief Documentation for modules/plotting/include/plotting/plotting.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/plotting/include/plotting/plotting.h`
+ * 
+ * @section dependencies Dependencies
+ * - notification/notification.h
+ * - structs/property.h
+ * - tools/tools.h
+ * - map
+ *
+ * @section classes Classes
+ * - plotting
+ *
+ * @section functions Functions
+ * - build_path()
+ * - build_error()
+ * - sum_of_weights()
+ * - get_max()
+ * - get_min()
+ *
+ * @see plotting.h
+ * @ingroup modules
+ */

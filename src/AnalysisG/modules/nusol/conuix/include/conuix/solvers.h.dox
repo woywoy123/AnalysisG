@@ -1,0 +1,51 @@
+/**
+ * @file solvers.h
+ * @brief Implementation for solvers.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/conuix/include/conuix/solvers.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `cmath`
+ * - `complex`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_cubic cubic
+ * - **Signature**: `int cubic(g a, g b, g c, g d, std::complex<g>* v0, std::complex<g>* v1, std::complex<g>* v2, double tol = 1e-1...)`
+ * - **Parameters**:
+ *   - `a` (g)
+ *   - `b` (g)
+ *   - `c` (g)
+ *   - `d` (g)
+ *   - `v0` (std::complex<g>*)
+ *   - `v1` (std::complex<g>*)
+ *   - `v2` (std::complex<g>*)
+ *   - `1e-14` (double tol =)
+ * - **Returns**: `int`
+ *
+ * @subsection func_linear linear
+ * - **Signature**: `int linear(g a, g b, std::complex<g>* v0, double tol = 1e-14)`
+ * - **Parameters**:
+ *   - `a` (g)
+ *   - `b` (g)
+ *   - `v0` (std::complex<g>*)
+ *   - `1e-14` (double tol =)
+ * - **Returns**: `int`
+ *
+ * @subsection func_quadratic quadratic
+ * - **Signature**: `int quadratic(g a, g b, g c, std::complex<g>* v0, std::complex<g>* v1, double tol = 1e-14)`
+ * - **Parameters**:
+ *   - `a` (g)
+ *   - `b` (g)
+ *   - `c` (g)
+ *   - `v0` (std::complex<g>*)
+ *   - `v1` (std::complex<g>*)
+ *   - `1e-14` (double tol =)
+ * - **Returns**: `int`
+ *
+ * @see solvers.h
+ */

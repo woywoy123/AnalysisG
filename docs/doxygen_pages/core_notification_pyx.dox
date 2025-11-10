@@ -1,0 +1,20 @@
+/**
+ * @file notification.pyx
+ * @brief Documentation for core/notification.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/notification.pyx`
+ * 
+ * @section classes Classes
+ * - Notification
+ *
+ * @section functions Functions
+ * - __dealloc__()
+ * - __cinit__()
+ * - __init__()
+ *
+ * @see notification.pyx
+ * @ingroup core
+ */

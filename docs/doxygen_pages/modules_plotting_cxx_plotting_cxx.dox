@@ -1,0 +1,19 @@
+/**
+ * @file plotting.cxx
+ * @brief Documentation for modules/plotting/cxx/plotting.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/plotting/cxx/plotting.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - plotting/plotting.h
+ * - cmath
+ *
+ * @section functions Functions
+ * - x()
+ *
+ * @see plotting.cxx
+ * @ingroup modules
+ */

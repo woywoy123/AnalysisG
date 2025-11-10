@@ -1,0 +1,37 @@
+/**
+ * @file vector_cast.h
+ * @brief Documentation for modules/typecasting/include/tools/vector_cast.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/typecasting/include/tools/vector_cast.h`
+ * 
+ * @section dependencies Dependencies
+ * - c10/core/DeviceType.h
+ * - c10/cuda/CUDAStream.h
+ * - ATen/cuda/CUDAContext.h
+ * - structs/meta.h
+ * - structs/base.h
+ * - torch/torch.h
+ * - TTree.h
+ * - vector
+ *
+ * @section structs Structures
+ * - write_t
+ * - variable_t
+ *
+ * @section functions Functions
+ * - build_switch()
+ * - process()
+ * - add_data()
+ * - tensor_to_vector()
+ * - _transfer()
+ * - tensor_vector()
+ * - x()
+ * - g()
+ * - create_meta()
+ *
+ * @see vector_cast.h
+ * @ingroup modules
+ */

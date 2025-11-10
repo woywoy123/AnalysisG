@@ -1,0 +1,25 @@
+/**
+ * @file optimizer.cxx
+ * @brief Implementation for optimizer.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/optimizer/cxx/optimizer.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `c10/cuda/CUDAGuard.h`
+ * - `c10/cuda/CUDAStream.h`
+ * - `generators/optimizer.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_ep ep
+ * - **Signature**: `int ep(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see optimizer.cxx
+ */

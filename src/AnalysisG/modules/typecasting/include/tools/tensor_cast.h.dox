@@ -1,0 +1,48 @@
+/**
+ * @file tensor_cast.h
+ * @brief Implementation for tensor_cast.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/typecasting/include/tools/tensor_cast.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `torch/torch.h`
+ * - `vector`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_as_primitive as_primitive
+ * - **Signature**: `void as_primitive(G* data, std::vector<g>* lin, std::vector<signed long>, unsigned int)`
+ * - **Parameters**:
+ *   - `data` (G*)
+ *   - `lin` (std::vector<g>*)
+ *   - `long>` (std::vector<signed)
+ *   - `int` (unsigned)
+ * - **Returns**: `void`
+ *
+ * @subsection func_nulls nulls
+ * - **Signature**: `void nulls(g* d, auto int*)`
+ * - **Parameters**:
+ *   - `d` (g*)
+ *   - `int*` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_scout_dim scout_dim
+ * - **Signature**: `void scout_dim(auto g*, auto int*)`
+ * - **Parameters**:
+ *   - `g*` (auto)
+ *   - `int*` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_standard standard
+ * - **Signature**: `bool standard(auto g*, auto int*)`
+ * - **Parameters**:
+ *   - `g*` (auto)
+ *   - `int*` (auto)
+ * - **Returns**: `bool`
+ *
+ * @see tensor_cast.h
+ */

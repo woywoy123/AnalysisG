@@ -1,0 +1,66 @@
+/**
+ * @file optimizer.h
+ * @brief Implementation for optimizer.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/optimizer/include/generators/optimizer.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `generators/dataloader.h`
+ * - `metrics/metrics.h`
+ * - `structs/settings.h`
+ * - `templates/model_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_analysis analysis
+ *
+ * @subsection class_optimizer optimizer
+ *
+ * @section functions Functions
+ *
+ * @subsection func_evaluation_loop evaluation_loop
+ * - **Signature**: `void evaluation_loop(int k, int epoch)`
+ * - **Parameters**:
+ *   - `k` (int)
+ *   - `epoch` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_import_dataloader import_dataloader
+ * - **Signature**: `void import_dataloader(dataloader* dl)`
+ * - **Parameters**:
+ *   - `dl` (dataloader*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_import_model_sessions import_model_sessions
+ * - **Signature**: `void import_model_sessions(auto std::tuple<model_template*, optimizer_params_t*>* models)`
+ * - **Parameters**:
+ *   - `std::tuple<model_template*` (auto)
+ *   - `models` (optimizer_params_t*>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_launch_model launch_model
+ * - **Signature**: `void launch_model(int k)`
+ * - **Parameters**:
+ *   - `k` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_training_loop training_loop
+ * - **Signature**: `void training_loop(int k, int epoch)`
+ * - **Parameters**:
+ *   - `k` (int)
+ *   - `epoch` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_validation_loop validation_loop
+ * - **Signature**: `void validation_loop(int k, int epoch)`
+ * - **Parameters**:
+ *   - `k` (int)
+ *   - `epoch` (int)
+ * - **Returns**: `void`
+ *
+ * @see optimizer.h
+ */

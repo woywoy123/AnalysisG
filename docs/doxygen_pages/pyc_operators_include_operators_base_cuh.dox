@@ -1,0 +1,30 @@
+/**
+ * @file base.cuh
+ * @brief Documentation for pyc/operators/include/operators/base.cuh
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/operators/include/operators/base.cuh`
+ * 
+ * @section dependencies Dependencies
+ * - utils/atomic.cuh
+ *
+ * @section functions Functions
+ * - y()
+ * - _cross()
+ * - _determinant()
+ * - _inverse()
+ * - _ry()
+ * - _rx()
+ * - _rt()
+ * - _costheta()
+ * - _rz()
+ * - x()
+ * - _dot()
+ * - _eigenvalue()
+ * - _cofactor()
+ *
+ * @see base.cuh
+ * @ingroup pyc
+ */

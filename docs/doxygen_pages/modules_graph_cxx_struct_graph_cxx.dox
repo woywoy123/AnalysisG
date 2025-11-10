@@ -1,0 +1,20 @@
+/**
+ * @file struct_graph.cxx
+ * @brief Documentation for modules/graph/cxx/struct_graph.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/graph/cxx/struct_graph.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/graph_template.h
+ * - tools/tools.h
+ *
+ * @section functions Functions
+ * - t()
+ * - x()
+ *
+ * @see struct_graph.cxx
+ * @ingroup modules
+ */

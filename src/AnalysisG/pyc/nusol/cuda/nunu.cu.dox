@@ -1,0 +1,119 @@
+/**
+ * @file nunu.cu
+ * @brief Implementation for nunu.cu
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/nusol/cuda/nunu.cu`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `nusol/base.cuh`
+ * - `operators/operators.cuh`
+ * - `physics/physics.cuh`
+ * - `transform/transform.cuh`
+ * - `utils/utils.cuh`
+ *
+ * @section functions Functions
+ *
+ * @subsection func__masses_ _masses_
+ * - **Signature**: `void _masses_(const torch::PackedTensorAccessor64<scalar_t, auto 2, torch::RestrictPtrTraits> b1, const torch::Pac...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `b1` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `b2` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `l1` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `l2` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `nu1` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__nunu_init_ _nunu_init_
+ * - **Signature**: `void _nunu_init_(const torch::PackedTensorAccessor64<scalar_t, auto 2, torch::RestrictPtrTraits> met_xy, const torch:...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `met_xy` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `H1_inv` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `H2_inv` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `H1` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `H2` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__nunu_vp_ _nunu_vp_
+ * - **Signature**: `void _nunu_vp_(const torch::PackedTensorAccessor64<scalar_t, auto 3, torch::RestrictPtrTraits> S, const torch::Pack...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `S` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `K` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `K_` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `n` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `n_` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__residual_ _residual_
+ * - **Signature**: `void _residual_(const torch::PackedTensorAccessor64<scalar_t, auto 2, torch::RestrictPtrTraits> metxy, const torch::...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `metxy` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `H_perp` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `H_perp_` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `nu1` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `nu2` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func_t t
+ * - **Signature**: `int t(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_y y
+ * - **Signature**: `size_t y(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `size_t`
+ *
+ * @subsection func_z z
+ * - **Signature**: `int z(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see nunu.cu
+ */

@@ -1,0 +1,20 @@
+/**
+ * @file jets.cxx
+ * @brief Documentation for events/ssml_mc20/cxx/jets.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/ssml_mc20/cxx/jets.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - particles.h
+ *
+ * @section functions Functions
+ * - truthjet()
+ * - jet()
+ * - x()
+ *
+ * @see jets.cxx
+ * @ingroup events
+ */

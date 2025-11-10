@@ -1,0 +1,55 @@
+/**
+ * @file struct.h
+ * @brief Documentation for modules/nusol/conuix/include/conuix/struct.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/conuix/include/conuix/struct.h`
+ * 
+ * @section dependencies Dependencies
+ * - conuix/matrix.h
+ * - conuix/htilde.h
+ * - iostream
+ * - string
+ * - iomanip
+ *
+ * @section classes Classes
+ * - particle_template
+ *
+ * @section structs Structures
+ * - poly_t
+ * - debug
+ * - rotation_t
+ * - pencil_t
+ * - H_matrix_t
+ * - kinematic_t
+ * - Sy_t
+ * - base_t
+ * - dPdtau_t
+ * - atomics_t
+ * - thetapsi_t
+ * - Sx_t
+ * - P_t
+ *
+ * @section functions Functions
+ * - H_Matrix()
+ * - PL0()
+ * - H_Tilde()
+ * - Sx()
+ * - variable()
+ * - print()
+ * - xlinear()
+ * - ylinear()
+ * - xyratio()
+ * - P()
+ * - Sy()
+ * - test()
+ * - debug_mode()
+ * - cos_theta()
+ * - Z2()
+ * - L0()
+ *
+ * @see struct.h
+ * @ingroup modules
+ */

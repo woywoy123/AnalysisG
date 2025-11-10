@@ -1,0 +1,20 @@
+/**
+ * @file eigen.cxx
+ * @brief Documentation for modules/nusol/conuix/cxx/eigen.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/conuix/cxx/eigen.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - conuix/solvers.h
+ * - conuix/conuic.h
+ * - iostream
+ * - iomanip
+ * - string
+ * - cmath
+ *
+ * @see eigen.cxx
+ * @ingroup modules
+ */

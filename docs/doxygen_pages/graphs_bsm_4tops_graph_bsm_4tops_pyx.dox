@@ -1,0 +1,29 @@
+/**
+ * @file graph_bsm_4tops.pyx
+ * @brief Documentation for graphs/bsm_4tops/graph_bsm_4tops.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `graphs/bsm_4tops/graph_bsm_4tops.pyx`
+ * 
+ * @section classes Classes
+ * - GraphTruthJetsNoNu
+ * - GraphTruthJets
+ * - GraphChildren
+ * - GraphTops
+ * - GraphDetector
+ * - GraphJetsNoNu
+ * - GraphJets
+ * - GraphDetectorLep
+ *
+ * @section functions Functions
+ * - __cinit__()
+ * - __dealloc__()
+ * - NumCuda()
+ * - __init__()
+ * - ForceMatch()
+ *
+ * @see graph_bsm_4tops.pyx
+ * @ingroup graphs
+ */

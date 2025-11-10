@@ -1,0 +1,19 @@
+/**
+ * @file model_lossfx.cxx
+ * @brief Implementation for model_lossfx.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/model/cxx/model_lossfx.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/model_template.h`
+ *
+ * @section enums Enumerations
+ *
+ * - `feat`
+ *
+ * @see model_lossfx.cxx
+ */

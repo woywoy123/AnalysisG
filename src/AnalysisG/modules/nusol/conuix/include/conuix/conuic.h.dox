@@ -1,0 +1,99 @@
+/**
+ * @file conuic.h
+ * @brief Implementation for conuic.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/conuix/include/conuix/conuic.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `complex`
+ * - `conuix/struct.h`
+ * - `math.h`
+ * - `structs/property.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_conuic conuic
+ *
+ * @subsection class_particle_template particle_template
+ *
+ * @section functions Functions
+ *
+ * @subsection func_Mobius Mobius
+ * - **Signature**: `double Mobius(long double _t, bool use_u = false, bool check_u = false)`
+ * - **Parameters**:
+ *   - `_t` (long double)
+ *   - `false` (bool use_u =)
+ *   - `false` (bool check_u =)
+ * - **Returns**: `double`
+ *
+ * @subsection func_P P
+ * - **Signature**: `double P()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_dPdL dPdL
+ * - **Signature**: `double dPdL()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_dPdZ dPdZ
+ * - **Signature**: `double dPdZ()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_dPdtau dPdtau
+ * - **Signature**: `double dPdtau()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_dtx dtx
+ * - **Signature**: `double dtx()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_gtx gtx
+ * - **Signature**: `double gtx()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_gxx gxx
+ * - **Signature**: `double gxx()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_kappa kappa
+ * - **Signature**: `double kappa(long double _t, bool use_u = false)`
+ * - **Parameters**:
+ *   - `_t` (long double)
+ *   - `false` (bool use_u =)
+ * - **Returns**: `double`
+ *
+ * @subsection func_lambda_dPdtau lambda_dPdtau
+ * - **Signature**: `void lambda_dPdtau(// long double _z, long double _t, // std::complex<long double>* lt, std::complex<long double>* Pt /...)`
+ * - **Parameters**:
+ *   - `_z` (// long double)
+ *   - `_t` (long double)
+ *   - `lt` (// std::complex<long double>*)
+ *   - `//` (std::complex<long double>* Pt)
+ * - **Returns**: `void`
+ *
+ * @subsection func_lambda_dPdtau_qrt lambda_dPdtau_qrt
+ * - **Signature**: `double lambda_dPdtau_qrt(long double _t, bool use_u)`
+ * - **Parameters**:
+ *   - `_t` (long double)
+ *   - `use_u` (bool)
+ * - **Returns**: `double`
+ *
+ * @subsection func_lambda_root_dPdtau lambda_root_dPdtau
+ * - **Signature**: `void lambda_root_dPdtau(// long double _z, long double _t, // std::complex<long double>* lt, std::complex<long double>* Pt, ...)`
+ * - **Parameters**:
+ *   - `_z` (// long double)
+ *   - `_t` (long double)
+ *   - `lt` (// std::complex<long double>*)
+ *   - `Pt` (std::complex<long double>*)
+ *   - `//` (// bool use_numerical = false)
+ * - **Returns**: `void`
+ *
+ * @subsection func_solve solve
+ * - **Signature**: `void solve()`
+ * - **Returns**: `void`
+ *
+ * @see conuic.h
+ */

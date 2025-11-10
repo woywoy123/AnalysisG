@@ -1,0 +1,25 @@
+/**
+ * @file nusol.cxx
+ * @brief Documentation for pyc/interface/nusol.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/interface/nusol.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - pyc/pyc.h
+ * - utils/utils.cuh
+ * - nusol/nusol.cuh
+ * - utils/utils.h
+ * - nusol/nusol.h
+ *
+ * @section functions Functions
+ * - particle_template()
+ * - a()
+ * - y()
+ * - x()
+ *
+ * @see nusol.cxx
+ * @ingroup pyc
+ */

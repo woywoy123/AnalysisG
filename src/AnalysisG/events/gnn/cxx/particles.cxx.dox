@@ -1,0 +1,23 @@
+/**
+ * @file particles.cxx
+ * @brief Implementation for particles.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `events/gnn/cxx/particles.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `gnn-particles.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_x x
+ * - **Signature**: `int x(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see particles.cxx
+ */

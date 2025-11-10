@@ -1,0 +1,27 @@
+/**
+ * @file operators.h
+ * @brief Documentation for pyc/operators/include/operators/operators.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/operators/include/operators/operators.h`
+ * 
+ * @section dependencies Dependencies
+ * - torch/torch.h
+ *
+ * @section functions Functions
+ * - CoFactors()
+ * - Inverse()
+ * - Rx()
+ * - SinTheta()
+ * - Ry()
+ * - Determinant()
+ * - Rz()
+ * - Cross()
+ * - CosTheta()
+ * - Dot()
+ *
+ * @see operators.h
+ * @ingroup pyc
+ */

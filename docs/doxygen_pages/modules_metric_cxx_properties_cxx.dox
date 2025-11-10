@@ -1,0 +1,19 @@
+/**
+ * @file properties.cxx
+ * @brief Documentation for modules/metric/cxx/properties.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/metric/cxx/properties.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/metric_template.h
+ *
+ * @section functions Functions
+ * - if()
+ * - x()
+ *
+ * @see properties.cxx
+ * @ingroup modules
+ */

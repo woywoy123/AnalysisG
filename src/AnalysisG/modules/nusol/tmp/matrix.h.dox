@@ -1,0 +1,57 @@
+/**
+ * @file matrix.h
+ * @brief Implementation for matrix.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/tmp/matrix.h`
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_matrix matrix
+ *
+ * @subsection struct_vec3 vec3
+ *
+ * @subsection struct_vec4 vec4
+ *
+ * @section functions Functions
+ *
+ * @subsection func_det det
+ * - **Signature**: `double det()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_eigenvalues eigenvalues
+ * - **Signature**: `void eigenvalues(vec3* real, vec3* imag)`
+ * - **Parameters**:
+ *   - `real` (vec3*)
+ *   - `imag` (vec3*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_invert_matrix invert_matrix
+ * - **Signature**: `bool invert_matrix(const matrix& M, matrix& M_inv)`
+ * - **Parameters**:
+ *   - `M` (const matrix&)
+ *   - `M_inv` (matrix&)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_print print
+ * - **Signature**: `void print()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_safe safe
+ * - **Signature**: `void safe(T** o)`
+ * - **Parameters**:
+ *   - `o` (T**)
+ * - **Returns**: `void`
+ *
+ * @subsection func_solve_linear solve_linear
+ * - **Signature**: `bool solve_linear(const matrix& A_in, const matrix& b_in, matrix& x_out)`
+ * - **Parameters**:
+ *   - `A_in` (const matrix&)
+ *   - `b_in` (const matrix&)
+ *   - `x_out` (matrix&)
+ * - **Returns**: `bool`
+ *
+ * @see matrix.h
+ */

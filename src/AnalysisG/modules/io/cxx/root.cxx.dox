@@ -1,0 +1,19 @@
+/**
+ * @file root.cxx
+ * @brief Implementation for root.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/io/cxx/root.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `TH1.h`
+ * - `TSystem.h`
+ * - `io.h`
+ * - `io/cfg.h`
+ * - `thread`
+ *
+ * @see root.cxx
+ */

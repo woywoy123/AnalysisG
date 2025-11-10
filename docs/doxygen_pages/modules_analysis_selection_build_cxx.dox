@@ -1,0 +1,18 @@
+/**
+ * @file selection_build.cxx
+ * @brief Documentation for modules/analysis/selection_build.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/analysis/selection_build.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - AnalysisG/analysis.h
+ *
+ * @section functions Functions
+ * - x()
+ *
+ * @see selection_build.cxx
+ * @ingroup modules
+ */

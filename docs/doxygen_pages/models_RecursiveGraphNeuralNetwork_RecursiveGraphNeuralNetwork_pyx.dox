@@ -1,0 +1,27 @@
+/**
+ * @file RecursiveGraphNeuralNetwork.pyx
+ * @brief Documentation for models/RecursiveGraphNeuralNetwork/RecursiveGraphNeuralNetwork.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `models/RecursiveGraphNeuralNetwork/RecursiveGraphNeuralNetwork.pyx`
+ * 
+ * @section classes Classes
+ * - RecursiveGraphNeuralNetwork
+ *
+ * @section functions Functions
+ * - __cinit__()
+ * - __dealloc__()
+ * - output()
+ * - res_mass()
+ * - is_mc()
+ * - rep()
+ * - __init__()
+ * - dx()
+ * - x()
+ * - drop_out()
+ *
+ * @see RecursiveGraphNeuralNetwork.pyx
+ * @ingroup models
+ */

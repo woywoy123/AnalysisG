@@ -1,0 +1,32 @@
+/**
+ * @file utils.cuh
+ * @brief Implementation for utils.cuh
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/cutils/include/utils/utils.cuh`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `c10/cuda/CUDAFunctions.h`
+ * - `torch/torch.h`
+ * - `vector`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_blkn blkn
+ * - **Signature**: `int blkn(unsigned int lx, int thl)`
+ * - **Parameters**:
+ *   - `lx` (unsigned int)
+ *   - `thl` (int)
+ * - **Returns**: `int`
+ *
+ * @subsection func_changedev changedev
+ * - **Signature**: `void changedev(torch::Tensor* inpt)`
+ * - **Parameters**:
+ *   - `inpt` (torch::Tensor*)
+ * - **Returns**: `void`
+ *
+ * @see utils.cuh
+ */

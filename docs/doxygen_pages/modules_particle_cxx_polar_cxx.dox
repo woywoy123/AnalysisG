@@ -1,0 +1,15 @@
+/**
+ * @file polar.cxx
+ * @brief Documentation for modules/particle/cxx/polar.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/particle/cxx/polar.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ *
+ * @see polar.cxx
+ * @ingroup modules
+ */

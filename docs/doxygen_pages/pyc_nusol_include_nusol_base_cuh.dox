@@ -1,0 +1,18 @@
+/**
+ * @file base.cuh
+ * @brief Documentation for pyc/nusol/include/nusol/base.cuh
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/nusol/include/nusol/base.cuh`
+ * 
+ * @section dependencies Dependencies
+ * - map
+ * - string
+ * - torch/torch.h
+ * - utils/atomic.cuh
+ *
+ * @see base.cuh
+ * @ingroup pyc
+ */

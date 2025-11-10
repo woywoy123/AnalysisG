@@ -1,0 +1,22 @@
+/**
+ * @file graphs.h
+ * @brief Documentation for graphs/exp_mc20/include/exp_mc20/graphs.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `graphs/exp_mc20/include/exp_mc20/graphs.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/graph_template.h
+ * - exp_mc20/event.h
+ *
+ * @section classes Classes
+ * - graph_jets
+ * - graph_detector
+ * - graph_jets_detector_lep
+ * - graph_jets_nonu
+ *
+ * @see graphs.h
+ * @ingroup graphs
+ */

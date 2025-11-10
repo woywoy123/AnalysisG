@@ -1,0 +1,22 @@
+/**
+ * @file notification.cxx
+ * @brief Documentation for modules/notification/cxx/notification.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/notification/cxx/notification.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - notification.h
+ * - stddef.h
+ * - iomanip
+ *
+ * @section functions Functions
+ * - int()
+ * - y()
+ * - x()
+ *
+ * @see notification.cxx
+ * @ingroup modules
+ */

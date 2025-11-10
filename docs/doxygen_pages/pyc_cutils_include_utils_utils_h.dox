@@ -1,0 +1,22 @@
+/**
+ * @file utils.h
+ * @brief Documentation for pyc/cutils/include/utils/utils.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/cutils/include/utils/utils.h`
+ * 
+ * @section dependencies Dependencies
+ * - torch/torch.h
+ * - vector
+ *
+ * @section functions Functions
+ * - changedev()
+ * - MakeOp()
+ * - format()
+ * - clip()
+ *
+ * @see utils.h
+ * @ingroup pyc
+ */

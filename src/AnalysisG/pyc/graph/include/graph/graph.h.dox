@@ -1,0 +1,17 @@
+/**
+ * @file graph.h
+ * @brief Implementation for graph.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/graph/include/graph/graph.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `map`
+ * - `string`
+ * - `torch/torch.h`
+ *
+ * @see graph.h
+ */

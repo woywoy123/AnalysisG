@@ -1,0 +1,19 @@
+/**
+ * @file event.h
+ * @brief Documentation for modules/structs/include/structs/event.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/include/structs/event.h`
+ * 
+ * @section dependencies Dependencies
+ * - iostream
+ * - string
+ *
+ * @section structs Structures
+ * - event_t
+ *
+ * @see event.h
+ * @ingroup modules
+ */

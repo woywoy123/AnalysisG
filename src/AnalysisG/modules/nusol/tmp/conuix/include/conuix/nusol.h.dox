@@ -1,0 +1,123 @@
+/**
+ * @file nusol.h
+ * @brief Implementation for nusol.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/tmp/conuix/include/conuix/nusol.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `conics/matrix.h`
+ * - `t`
+ * - `templates/particle_template.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_nuclx nuclx
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_eig_t eig_t
+ *
+ * @subsection struct_nuclx_t nuclx_t
+ *
+ * @section functions Functions
+ *
+ * @subsection func_G G
+ * - **Signature**: `double G(double t)`
+ * - **Parameters**:
+ *   - `t` (double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_H H
+ * - **Signature**: `void H()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_H_bar H_bar
+ * - **Signature**: `void H_bar()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_P P
+ * - **Signature**: `double P(double lambda, double t, double z)`
+ * - **Parameters**:
+ *   - `lambda` (double)
+ *   - `t` (double)
+ *   - `z` (double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_critical_t0 critical_t0
+ * - **Signature**: `void critical_t0()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_dP_dL dP_dL
+ * - **Signature**: `double dP_dL(double lambda, double t, double z)`
+ * - **Parameters**:
+ *   - `lambda` (double)
+ *   - `t` (double)
+ *   - `z` (double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_get_mt get_mt
+ * - **Signature**: `double get_mt(double _sx, double _sy)`
+ * - **Parameters**:
+ *   - `_sx` (double)
+ *   - `_sy` (double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_get_mw get_mw
+ * - **Signature**: `double get_mw(double _sx)`
+ * - **Parameters**:
+ *   - `_sx` (double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_get_t get_t
+ * - **Signature**: `double get_t(double _vp, double _up, double _z)`
+ * - **Parameters**:
+ *   - `_vp` (double)
+ *   - `_up` (double)
+ *   - `_z` (double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_get_z get_z
+ * - **Signature**: `double get_z(double _sx, double _sy)`
+ * - **Parameters**:
+ *   - `_sx` (double)
+ *   - `_sy` (double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_mt mt
+ * - **Signature**: `void mt()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_mw mw
+ * - **Signature**: `void mw()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_polynomial polynomial
+ * - **Signature**: `void polynomial()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_rotation rotation
+ * - **Signature**: `void rotation()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_shifts shifts
+ * - **Signature**: `void shifts()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_surface surface
+ * - **Signature**: `void surface()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_sx sx
+ * - **Signature**: `void sx()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_sy sy
+ * - **Signature**: `void sy()`
+ * - **Returns**: `void`
+ *
+ * @see nusol.h
+ */

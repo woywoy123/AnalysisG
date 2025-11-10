@@ -1,0 +1,18 @@
+/**
+ * @file sampletracer.cxx
+ * @brief Documentation for modules/sampletracer/cxx/sampletracer.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/sampletracer/cxx/sampletracer.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - generators/sampletracer.h
+ *
+ * @section functions Functions
+ * - x()
+ *
+ * @see sampletracer.cxx
+ * @ingroup modules
+ */

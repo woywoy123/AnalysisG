@@ -1,0 +1,27 @@
+/**
+ * @file roc.pyx
+ * @brief Documentation for core/roc.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/roc.pyx`
+ * 
+ * @section classes Classes
+ * - ROC
+ *
+ * @section functions Functions
+ * - __cinit__()
+ * - yData()
+ * - xBins()
+ * - __dealloc__()
+ * - xData()
+ * - Truth()
+ * - AUC()
+ * - Scores()
+ * - __init__()
+ * - Titles()
+ *
+ * @see roc.pyx
+ * @ingroup core
+ */

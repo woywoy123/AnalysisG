@@ -1,0 +1,27 @@
+/**
+ * @file ellipse.cxx
+ * @brief Documentation for modules/nusol/ellipse/cxx/ellipse.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/ellipse/cxx/ellipse.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - reconstruction/nusol.h
+ * - ellipse/ellipse.h
+ *
+ * @section functions Functions
+ * - particle_template()
+ * - nuelx()
+ * - mtx()
+ * - y()
+ * - b()
+ * - met()
+ * - x()
+ * - i()
+ * - l()
+ *
+ * @see ellipse.cxx
+ * @ingroup modules
+ */

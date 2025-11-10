@@ -1,0 +1,16 @@
+/**
+ * @file selection_build.cxx
+ * @brief Implementation for selection_build.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/analysis/selection_build.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG/analysis.h`
+ * - `Events`
+ *
+ * @see selection_build.cxx
+ */

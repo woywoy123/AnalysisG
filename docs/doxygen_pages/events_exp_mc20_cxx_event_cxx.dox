@@ -1,0 +1,21 @@
+/**
+ * @file event.cxx
+ * @brief Documentation for events/exp_mc20/cxx/event.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/exp_mc20/cxx/event.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - exp_mc20/event.h
+ *
+ * @section functions Functions
+ * - f()
+ * - exp_mc20()
+ * - t()
+ * - x()
+ *
+ * @see event.cxx
+ * @ingroup events
+ */

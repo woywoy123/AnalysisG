@@ -1,0 +1,24 @@
+/**
+ * @file matrix.cxx
+ * @brief Documentation for modules/nusol/conuix/cxx/matrix.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/conuix/cxx/matrix.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - conuix/matrix.h
+ * - conuix/memory.h
+ * - iostream
+ * - iomanip
+ *
+ * @section functions Functions
+ * - i()
+ * - mx()
+ * - j()
+ * - k()
+ *
+ * @see matrix.cxx
+ * @ingroup modules
+ */

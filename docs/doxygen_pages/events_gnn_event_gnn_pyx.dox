@@ -1,0 +1,20 @@
+/**
+ * @file event_gnn.pyx
+ * @brief Documentation for events/gnn/event_gnn.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/gnn/event_gnn.pyx`
+ * 
+ * @section classes Classes
+ * - EventGNN
+ *
+ * @section functions Functions
+ * - __dealloc__()
+ * - __cinit__()
+ * - __init__()
+ *
+ * @see event_gnn.pyx
+ * @ingroup events
+ */

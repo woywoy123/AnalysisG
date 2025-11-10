@@ -1,0 +1,17 @@
+/**
+ * @file metric_template.cxx
+ * @brief Implementation for metric_template.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/metric/cxx/metric_template.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `meta/meta.h`
+ * - `templates/metric_template.h`
+ * - `templates/model_template.h`
+ *
+ * @see metric_template.cxx
+ */

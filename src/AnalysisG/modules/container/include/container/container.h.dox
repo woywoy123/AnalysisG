@@ -1,0 +1,110 @@
+/**
+ * @file container.h
+ * @brief Implementation for container.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/container/include/container/container.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `generators/dataloader.h`
+ * - `meta/meta.h`
+ * - `templates/event_template.h`
+ * - `templates/graph_template.h`
+ * - `templates/selection_template.h`
+ * - `tools/tools.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_container container
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_entry_t entry_t
+ *
+ * @section functions Functions
+ *
+ * @subsection func_add_event_template add_event_template
+ * - **Signature**: `bool add_event_template(auto event_template*, std::string label)`
+ * - **Parameters**:
+ *   - `event_template*` (auto)
+ *   - `label` (std::string)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_add_graph_template add_graph_template
+ * - **Signature**: `bool add_graph_template(auto graph_template*, std::string label)`
+ * - **Parameters**:
+ *   - `graph_template*` (auto)
+ *   - `label` (std::string)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_add_meta_data add_meta_data
+ * - **Signature**: `void add_meta_data(auto meta*, auto std::string)`
+ * - **Parameters**:
+ *   - `meta*` (auto)
+ *   - `std::string` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_add_selection_template add_selection_template
+ * - **Signature**: `bool add_selection_template(auto selection_template*)`
+ * - **Parameters**:
+ *   - `selection_template*` (auto)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_compile compile
+ * - **Signature**: `void compile(size_t* len, int threadIdx)`
+ * - **Parameters**:
+ *   - `len` (size_t*)
+ *   - `threadIdx` (int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_destroy destroy
+ * - **Signature**: `void destroy()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_fill_selections fill_selections
+ * - **Signature**: `void fill_selections(auto std::map<std::string, selection_template*>* inpt)`
+ * - **Parameters**:
+ *   - `std::map<std::string` (auto)
+ *   - `inpt` (selection_template*>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_get_events get_events
+ * - **Signature**: `void get_events(auto std::vector<event_template*>*, std::string label)`
+ * - **Parameters**:
+ *   - `std::vector<event_template*>*` (auto)
+ *   - `label` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_has_event has_event
+ * - **Signature**: `bool has_event(event_template* ev)`
+ * - **Parameters**:
+ *   - `ev` (event_template*)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_has_graph has_graph
+ * - **Signature**: `bool has_graph(graph_template* gr)`
+ * - **Parameters**:
+ *   - `gr` (graph_template*)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_has_selection has_selection
+ * - **Signature**: `bool has_selection(selection_template* sel)`
+ * - **Parameters**:
+ *   - `sel` (selection_template*)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_init init
+ * - **Signature**: `void init()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_populate_dataloader populate_dataloader
+ * - **Signature**: `void populate_dataloader(dataloader* dl)`
+ * - **Parameters**:
+ *   - `dl` (dataloader*)
+ * - **Returns**: `void`
+ *
+ * @see container.h
+ */

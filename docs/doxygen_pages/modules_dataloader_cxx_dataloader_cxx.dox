@@ -1,0 +1,26 @@
+/**
+ * @file dataloader.cxx
+ * @brief Documentation for modules/dataloader/cxx/dataloader.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/dataloader/cxx/dataloader.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/model_template.h
+ * - structs/report.h
+ * - dataloader.h
+ * - chrono
+ *
+ * @section functions Functions
+ * - collect()
+ * - x()
+ * - graph_t()
+ * - if()
+ * - f()
+ * - t()
+ *
+ * @see dataloader.cxx
+ * @ingroup modules
+ */

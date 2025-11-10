@@ -1,0 +1,97 @@
+/**
+ * @file element.h
+ * @brief Implementation for element.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/include/structs/element.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `TBranch.h`
+ * - `TFile.h`
+ * - `TLeaf.h`
+ * - `TTree.h`
+ * - `TTreeReader.h`
+ * - `TTreeReaderArray.h`
+ * - `iostream`
+ * - `map`
+ * - `string`
+ * - `structs/base.h`
+ * - `structs/meta.h`
+ * - `tools/vector_cast.h`
+ * - `vector`
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_data_t data_t
+ *
+ * @subsection struct_element_t element_t
+ *
+ * @subsection struct_write_t write_t
+ *
+ * @subsection struct_writer writer
+ *
+ * @section functions Functions
+ *
+ * @subsection func_boundary boundary
+ * - **Signature**: `bool boundary()`
+ * - **Returns**: `bool`
+ *
+ * @subsection func_close close
+ * - **Signature**: `void close()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_create create
+ * - **Signature**: `void create(std::string tr_name, std::string path)`
+ * - **Parameters**:
+ *   - `tr_name` (std::string)
+ *   - `path` (std::string)
+ * - **Returns**: `void`
+ *
+ * @subsection func_fetch_buffer fetch_buffer
+ * - **Signature**: `void fetch_buffer()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_flush flush
+ * - **Signature**: `void flush()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_get get
+ * - **Signature**: `bool get(std::string key, g* var)`
+ * - **Parameters**:
+ *   - `key` (std::string)
+ *   - `var` (g*)
+ * - **Returns**: `bool`
+ *
+ * @subsection func_initialize initialize
+ * - **Signature**: `void initialize()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_next next
+ * - **Signature**: `bool next()`
+ * - **Returns**: `bool`
+ *
+ * @subsection func_process process
+ * - **Signature**: `void process(std::string* tree, std::string* name, g* t)`
+ * - **Parameters**:
+ *   - `tree` (std::string*)
+ *   - `name` (std::string*)
+ *   - `t` (g*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_set_meta set_meta
+ * - **Signature**: `void set_meta()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_string_type string_type
+ * - **Signature**: `void string_type()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_write write
+ * - **Signature**: `void write()`
+ * - **Returns**: `void`
+ *
+ * @see element.h
+ */

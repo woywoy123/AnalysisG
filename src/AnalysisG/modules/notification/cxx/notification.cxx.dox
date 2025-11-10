@@ -1,0 +1,17 @@
+/**
+ * @file notification.cxx
+ * @brief Implementation for notification.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/notification/cxx/notification.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `iomanip`
+ * - `notification.h`
+ * - `stddef.h`
+ *
+ * @see notification.cxx
+ */

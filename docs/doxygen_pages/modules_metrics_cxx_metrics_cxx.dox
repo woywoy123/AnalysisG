@@ -1,0 +1,19 @@
+/**
+ * @file metrics.cxx
+ * @brief Documentation for modules/metrics/cxx/metrics.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/metrics/cxx/metrics.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - metrics/metrics.h
+ * - TError.h
+ *
+ * @section functions Functions
+ * - model_report()
+ *
+ * @see metrics.cxx
+ * @ingroup modules
+ */

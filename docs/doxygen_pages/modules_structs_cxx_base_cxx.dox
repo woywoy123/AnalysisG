@@ -1,0 +1,27 @@
+/**
+ * @file base.cxx
+ * @brief Documentation for modules/structs/cxx/base.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/cxx/base.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - structs/base.h
+ * - TInterpreter.h
+ * - iostream
+ * - ;
+    if (is_abs){shrt += 
+ *
+ * @section functions Functions
+ * - buildPCM()
+ * - buildDict()
+ * - registerInclude()
+ * - count()
+ * - buildAll()
+ * - if()
+ *
+ * @see base.cxx
+ * @ingroup modules
+ */

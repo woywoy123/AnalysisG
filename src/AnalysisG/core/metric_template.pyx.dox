@@ -1,0 +1,102 @@
+/**
+ * @file metric_template.pyx
+ * @brief Implementation for metric_template.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/metric_template.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.meta`
+ * - `AnalysisG.core.structs`
+ * - `AnalysisG.core.tools`
+ * - `cython.operator`
+ * - `cython.parallel`
+ * - `dereference`
+ * - `libcpp`
+ * - `libcpp.map`
+ * - `libcpp.vector`
+ * - `map`
+ * - `prange`
+ * - `string`
+ * - `vector`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_MetricTemplate MetricTemplate
+ * - **Member Variables**:
+ *   - `class MetricTemplate`
+ *   - `long ix`
+ *   - `int kfold`
+ *   - `str k`
+ *   - `string key`
+ *   - `bool unpause`
+ *   - `list leaves`
+ *   - `dict itx`
+ *   - `dict meta`
+ *   - `tools tl`
+ *   - `dict remap`
+ *   - `IO iox`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__name__(self)`
+ *   - `RunNames(self)`
+ *   - `RunNames(self, dict val)`
+ *   - `Variables(self)`
+ *   - `Variables(self, list val)`
+ *   - `Postprocessing(self)`
+ *   - `InterpretROOT(self, str path, list epochs = [], list kfolds = [])`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_InterpretROOT InterpretROOT
+ * - **Signature**: `void InterpretROOT(auto self, auto str path, auto list epochs = [], auto list kfolds = [])`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str path` (auto)
+ *   - `list epochs = []` (auto)
+ *   - `list kfolds = []` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Postprocessing Postprocessing
+ * - **Signature**: `void Postprocessing(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_RunNames RunNames
+ * - **Signature**: `void RunNames(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Variables Variables
+ * - **Signature**: `void Variables(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___name__ __name__
+ * - **Signature**: `void __name__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see metric_template.pyx
+ */

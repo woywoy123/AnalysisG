@@ -1,0 +1,29 @@
+/**
+ * @file node_features.cxx
+ * @brief Documentation for graphs/bsm_4tops/cxx/node_features.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `graphs/bsm_4tops/cxx/node_features.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - bsm_4tops/node_features.h
+ * - bsm_4tops/event.h
+ *
+ * @section functions Functions
+ * - energy()
+ * - is_bquark()
+ * - top_node()
+ * - res_node()
+ * - if()
+ * - is_lepton()
+ * - is_neutrino()
+ * - phi()
+ * - charge()
+ * - eta()
+ * - pt()
+ *
+ * @see node_features.cxx
+ * @ingroup graphs
+ */

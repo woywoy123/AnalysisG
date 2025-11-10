@@ -1,0 +1,15 @@
+/**
+ * @file sampletracer.cxx
+ * @brief Implementation for sampletracer.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/sampletracer/cxx/sampletracer.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `generators/sampletracer.h`
+ *
+ * @see sampletracer.cxx
+ */

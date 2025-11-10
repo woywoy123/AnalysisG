@@ -1,0 +1,16 @@
+/**
+ * @file element.cxx
+ * @brief Implementation for element.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/cxx/element.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `structs/element.h`
+ * - `structs/meta.h`
+ *
+ * @see element.cxx
+ */

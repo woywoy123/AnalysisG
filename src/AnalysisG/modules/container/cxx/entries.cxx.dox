@@ -1,0 +1,15 @@
+/**
+ * @file entries.cxx
+ * @brief Implementation for entries.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/container/cxx/entries.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `container/container.h`
+ *
+ * @see entries.cxx
+ */

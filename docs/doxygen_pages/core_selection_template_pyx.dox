@@ -1,0 +1,30 @@
+/**
+ * @file selection_template.pyx
+ * @brief Documentation for core/selection_template.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/selection_template.pyx`
+ * 
+ * @section classes Classes
+ * - SelectionTemplate
+ *
+ * @section functions Functions
+ * - InterpretROOT()
+ * - __cinit__()
+ * - Postprocessing()
+ * - __dealloc__()
+ * - GetMetaData()
+ * - HashToWeightFile()
+ * - __init__()
+ * - load()
+ * - __name__()
+ * - __reduce__()
+ * - dump()
+ * - PassedWeights()
+ * - __hash__()
+ *
+ * @see selection_template.pyx
+ * @ingroup core
+ */

@@ -1,0 +1,17 @@
+/**
+ * @file inference_build.cxx
+ * @brief Implementation for inference_build.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/analysis/inference_build.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG/analysis.h`
+ * - `ROOT/RDataFrame.hxx`
+ * - `tools/vector_cast.h`
+ *
+ * @see inference_build.cxx
+ */

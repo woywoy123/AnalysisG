@@ -1,0 +1,42 @@
+/**
+ * @file nusol.h
+ * @brief Documentation for modules/nusol/ellipse/include/ellipse/nusol.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/ellipse/include/ellipse/nusol.h`
+ * 
+ * @section classes Classes
+ * - particle_template
+ * - mtx
+ * - nuelx
+ *
+ * @section structs Structures
+ * - wrapper
+ *
+ * @section functions Functions
+ * - x0()
+ * - dSy_dmT()
+ * - Sx()
+ * - flush()
+ * - y1()
+ * - dZ_dmW()
+ * - dSx_dmW()
+ * - Z2()
+ * - Z()
+ * - dZ_dmT()
+ * - dx1_dmW()
+ * - dy1_dmT()
+ * - r_mT()
+ * - w()
+ * - Z_mW()
+ * - Z_mT()
+ * - w2()
+ * - om2()
+ * - update()
+ * - misc()
+ *
+ * @see nusol.h
+ * @ingroup modules
+ */

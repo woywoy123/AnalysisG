@@ -1,0 +1,33 @@
+/**
+ * @file base.h
+ * @brief Documentation for modules/structs/include/structs/base.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/include/structs/base.h`
+ * 
+ * @section dependencies Dependencies
+ * - vector
+ * - string
+ * - structs/enums.h
+ *
+ * @section structs Structures
+ * - bsc_t
+ *
+ * @section functions Functions
+ * - buildPCM()
+ * - root_type_translate()
+ * - buildDict()
+ * - registerInclude()
+ * - scan_buffer()
+ * - element()
+ * - buildAll()
+ * - as_string()
+ * - if()
+ * - flush_buffer()
+ * - _getalt()
+ *
+ * @see base.h
+ * @ingroup modules
+ */

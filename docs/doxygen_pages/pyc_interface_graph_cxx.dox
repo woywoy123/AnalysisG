@@ -1,0 +1,22 @@
+/**
+ * @file graph.cxx
+ * @brief Documentation for pyc/interface/graph.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/interface/graph.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - pyc/pyc.h
+ * - utils/utils.cuh
+ * - transform/transform.cuh
+ * - graph/graph.cuh
+ * - graph/pagerank.cuh
+ * - utils/utils.h
+ * - transform/transform.h
+ * - graph/graph.h
+ *
+ * @see graph.cxx
+ * @ingroup pyc
+ */

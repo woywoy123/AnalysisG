@@ -1,0 +1,86 @@
+/**
+ * @file base.cuh
+ * @brief Implementation for base.cuh
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/graph/include/graph/base.cuh`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `utils/atomic.cuh`
+ *
+ * @section functions Functions
+ *
+ * @subsection func__edge_summing _edge_summing
+ * - **Signature**: `void _edge_summing(auto torch::PackedTensorAccessor64<long, auto 3, torch::RestrictPtrTraits> pairs, auto torch::Packed...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<long` (auto)
+ *   - `3` (auto)
+ *   - `pairs` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `pmu` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `pmi` (torch::RestrictPtrTraits>)
+ *   - `pred_lx` (const unsigned int)
+ *   - `node_lx` (const unsigned int)
+ *   - `node_fx` (const unsigned int)
+ * - **Returns**: `void`
+ *
+ * @subsection func__fast_unique _fast_unique
+ * - **Signature**: `void _fast_unique(auto torch::PackedTensorAccessor64<long, auto 2, torch::RestrictPtrTraits> out_map, const torch::Pac...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<long` (auto)
+ *   - `2` (auto)
+ *   - `out_map` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (const)
+ *   - `2` (auto)
+ *   - `cluster_map` (torch::RestrictPtrTraits>)
+ *   - `dim_i` (const unsigned int)
+ *   - `dim_j` (const unsigned int)
+ *   - `dim_k` (const unsigned int)
+ * - **Returns**: `void`
+ *
+ * @subsection func__prediction_topology _prediction_topology
+ * - **Signature**: `void _prediction_topology(auto torch::PackedTensorAccessor64<long, auto 3, torch::RestrictPtrTraits> pairs, const torch::Packe...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<long` (auto)
+ *   - `3` (auto)
+ *   - `pairs` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (const)
+ *   - `2` (auto)
+ *   - `edge_index` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (const)
+ *   - `1` (auto)
+ *   - `pred` (torch::RestrictPtrTraits>)
+ *   - `dx_lx` (const unsigned int)
+ * - **Returns**: `void`
+ *
+ * @subsection func__unique_sum _unique_sum
+ * - **Signature**: `void _unique_sum(auto torch::PackedTensorAccessor64<scalar_t, auto 2, torch::RestrictPtrTraits> out, const torch::Pac...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `2` (auto)
+ *   - `out` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (const)
+ *   - `2` (auto)
+ *   - `cluster_map` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `features` (torch::RestrictPtrTraits>)
+ *   - `dim_i` (const unsigned int)
+ *   - `dim_j` (const unsigned int)
+ *   - `dim_k` (const unsigned int)
+ * - **Returns**: `void`
+ *
+ * @subsection func_i i
+ * - **Signature**: `int i(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see base.cuh
+ */

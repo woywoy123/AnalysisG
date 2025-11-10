@@ -1,0 +1,19 @@
+/**
+ * @file nusol.cxx
+ * @brief Implementation for nusol.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/interface/nusol.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `nusol/nusol.cuh`
+ * - `nusol/nusol.h`
+ * - `pyc/pyc.h`
+ * - `utils/utils.cuh`
+ * - `utils/utils.h`
+ *
+ * @see nusol.cxx
+ */

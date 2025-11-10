@@ -1,0 +1,145 @@
+/**
+ * @file nusol.h
+ * @brief Implementation for nusol.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/ellipse/include/ellipse/nusol.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_mtx mtx
+ *
+ * @subsection class_nuelx nuelx
+ *
+ * @subsection class_particle_template particle_template
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_wrapper wrapper
+ *
+ * @section functions Functions
+ *
+ * @subsection func_Sx Sx
+ * - **Signature**: `double Sx()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_Sy Sy
+ * - **Signature**: `double Sy()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_Z Z
+ * - **Signature**: `double Z()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_Z2 Z2
+ * - **Signature**: `double Z2()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_Z_mT Z_mT
+ * - **Signature**: `void Z_mT(double* mt1_, double* mt2_, double mw_)`
+ * - **Parameters**:
+ *   - `mt1_` (double*)
+ *   - `mt2_` (double*)
+ *   - `mw_` (double)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Z_mW Z_mW
+ * - **Signature**: `void Z_mW(double* mw1_, double* mw2_)`
+ * - **Parameters**:
+ *   - `mw1_` (double*)
+ *   - `mw2_` (double*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_dSx_dmW dSx_dmW
+ * - **Signature**: `double dSx_dmW()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_dSy_dmT dSy_dmT
+ * - **Signature**: `double dSy_dmT()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_dSy_dmW dSy_dmW
+ * - **Signature**: `double dSy_dmW()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_dZ_dmT dZ_dmT
+ * - **Signature**: `double dZ_dmT()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_dZ_dmW dZ_dmW
+ * - **Signature**: `double dZ_dmW()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_dx1_dmT dx1_dmT
+ * - **Signature**: `double dx1_dmT()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_dx1_dmW dx1_dmW
+ * - **Signature**: `double dx1_dmW()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_dy1_dmT dy1_dmT
+ * - **Signature**: `double dy1_dmT()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_dy1_dmW dy1_dmW
+ * - **Signature**: `double dy1_dmW()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_flush flush
+ * - **Signature**: `void flush()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_misc misc
+ * - **Signature**: `void misc()`
+ * - **Returns**: `void`
+ *
+ * @subsection func_om2 om2
+ * - **Signature**: `double om2()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_r_mT r_mT
+ * - **Signature**: `void r_mT(double* mt1_, double* mt2_)`
+ * - **Parameters**:
+ *   - `mt1_` (double*)
+ *   - `mt2_` (double*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_r_mW r_mW
+ * - **Signature**: `void r_mW(double* mw1_, double* mw2_)`
+ * - **Parameters**:
+ *   - `mw1_` (double*)
+ *   - `mw2_` (double*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_update update
+ * - **Signature**: `void update(double mt, double mw)`
+ * - **Parameters**:
+ *   - `mt` (double)
+ *   - `mw` (double)
+ * - **Returns**: `void`
+ *
+ * @subsection func_w w
+ * - **Signature**: `double w()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_w2 w2
+ * - **Signature**: `double w2()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_x0 x0
+ * - **Signature**: `double x0()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_x1 x1
+ * - **Signature**: `double x1()`
+ * - **Returns**: `double`
+ *
+ * @subsection func_y1 y1
+ * - **Signature**: `double y1()`
+ * - **Returns**: `double`
+ *
+ * @see nusol.h
+ */

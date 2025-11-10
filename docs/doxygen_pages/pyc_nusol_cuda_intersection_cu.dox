@@ -1,0 +1,25 @@
+/**
+ * @file intersection.cu
+ * @brief Documentation for pyc/nusol/cuda/intersection.cu
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/nusol/cuda/intersection.cu`
+ * 
+ * @section dependencies Dependencies
+ * - nusol/base.cuh
+ * - nusol/device.cuh
+ * - utils/utils.cuh
+ * - operators/operators.cuh
+ *
+ * @section functions Functions
+ * - y()
+ * - pos()
+ * - _intersections()
+ * - _factor_degen()
+ * - _swapAB()
+ *
+ * @see intersection.cu
+ * @ingroup pyc
+ */

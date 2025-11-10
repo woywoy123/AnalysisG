@@ -1,0 +1,28 @@
+/**
+ * @file base.cuh
+ * @brief Documentation for pyc/transform/include/transform/base.cuh
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/transform/include/transform/base.cuh`
+ * 
+ * @section dependencies Dependencies
+ * - utils/atomic.cuh
+ *
+ * @section functions Functions
+ * - PzK()
+ * - PxPyPzK()
+ * - PyK()
+ * - PxK()
+ * - PxPyPzEK()
+ * - PtK()
+ * - if()
+ * - PtEtaPhiK()
+ * - PtEtaPhiEK()
+ * - EtaK()
+ * - PhiK()
+ *
+ * @see base.cuh
+ * @ingroup pyc
+ */

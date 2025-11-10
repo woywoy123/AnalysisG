@@ -1,0 +1,613 @@
+/**
+ * @file meta.pyx
+ * @brief Implementation for meta.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/meta.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG`
+ * - `AnalysisG.core.meta`
+ * - `AnalysisG.core.notification`
+ * - `AnalysisG.core.structs`
+ * - `AnalysisG.core.tools`
+ * - `auth_pyami`
+ * - `cython.operator`
+ * - `cython.parallel`
+ * - `dereference`
+ * - `libcpp.map`
+ * - `libcpp.string`
+ * - `libcpp.vector`
+ * - `meta_t`
+ * - `pair`
+ * - `prange`
+ * - `pyAMI.client`
+ * - `pyAMI.httpclient`
+ * - `pyAMI_atlas.api`
+ * - `string`
+ * - `vector`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_Data Data
+ * - **Member Variables**:
+ *   - `dict chn`
+ *   - `dict confx`
+ *   - `class ami_client`
+ *   - `bool loadcache`
+ *   - `str dsidr`
+ *   - `string cached_dsid`
+ *   - `string cached_maps`
+ *   - `string cached_info`
+ *   - `void savecache`
+ *   - `void dressmeta`
+ *   - `dict files`
+ *   - `list keys`
+ *   - `dict info`
+ *   - `void list_datasets`
+ *   - `list ami_tags`
+ *   - `dict command`
+ *   - `bool hit`
+ *   - `bool fset`
+ *   - `str i`
+ *   - `list srch`
+ * - **Methods**:
+ *   - `__init__(self, config)`
+ *   - `connect(self, endpoint)`
+ *   - `__init__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, MetaLookup data = None)`
+ *   - `__call__(self, inpt)`
+ *   - `DatasetName(self)`
+ *   - `CrossSection(self)`
+ *   - `ExpectedEvents(self)`
+ *   - `SumOfWeights(self)`
+ *   - `GenerateData(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, mtl)`
+ *   - `__add__(self, Data other)`
+ *   - `__radd__(self, other)`
+ *   - `weights(self)`
+ *   - `weights(self, dict val)`
+ *   - `data(self)`
+ *   - `data(self, dict val)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, inpt = None)`
+ *   - `__dealloc__(self)`
+ *   - `__meta__(self, meta* _meta)`
+ *   - `__reduce__(self)`
+ *   - `__str__(self)`
+ *   - `expected_events(self, float lumi = 140.1)`
+ *   - `GetSumOfWeights(self, str name)`
+ *
+ * @subsection class_Meta Meta
+ * - **Member Variables**:
+ *   - `dict chn`
+ *   - `dict confx`
+ *   - `class ami_client`
+ *   - `bool loadcache`
+ *   - `str dsidr`
+ *   - `string cached_dsid`
+ *   - `string cached_maps`
+ *   - `string cached_info`
+ *   - `void savecache`
+ *   - `void dressmeta`
+ *   - `dict files`
+ *   - `list keys`
+ *   - `dict info`
+ *   - `void list_datasets`
+ *   - `list ami_tags`
+ *   - `dict command`
+ *   - `bool hit`
+ *   - `bool fset`
+ *   - `str i`
+ *   - `list srch`
+ * - **Methods**:
+ *   - `__init__(self, config)`
+ *   - `connect(self, endpoint)`
+ *   - `__init__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, MetaLookup data = None)`
+ *   - `__call__(self, inpt)`
+ *   - `DatasetName(self)`
+ *   - `CrossSection(self)`
+ *   - `ExpectedEvents(self)`
+ *   - `SumOfWeights(self)`
+ *   - `GenerateData(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, mtl)`
+ *   - `__add__(self, Data other)`
+ *   - `__radd__(self, other)`
+ *   - `weights(self)`
+ *   - `weights(self, dict val)`
+ *   - `data(self)`
+ *   - `data(self, dict val)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, inpt = None)`
+ *   - `__dealloc__(self)`
+ *   - `__meta__(self, meta* _meta)`
+ *   - `__reduce__(self)`
+ *   - `__str__(self)`
+ *   - `expected_events(self, float lumi = 140.1)`
+ *   - `GetSumOfWeights(self, str name)`
+ *
+ * @subsection class_MetaLookup MetaLookup
+ * - **Member Variables**:
+ *   - `dict chn`
+ *   - `dict confx`
+ *   - `class ami_client`
+ *   - `bool loadcache`
+ *   - `str dsidr`
+ *   - `string cached_dsid`
+ *   - `string cached_maps`
+ *   - `string cached_info`
+ *   - `void savecache`
+ *   - `void dressmeta`
+ *   - `dict files`
+ *   - `list keys`
+ *   - `dict info`
+ *   - `void list_datasets`
+ *   - `list ami_tags`
+ *   - `dict command`
+ *   - `bool hit`
+ *   - `bool fset`
+ *   - `str i`
+ *   - `list srch`
+ * - **Methods**:
+ *   - `__init__(self, config)`
+ *   - `connect(self, endpoint)`
+ *   - `__init__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, MetaLookup data = None)`
+ *   - `__call__(self, inpt)`
+ *   - `DatasetName(self)`
+ *   - `CrossSection(self)`
+ *   - `ExpectedEvents(self)`
+ *   - `SumOfWeights(self)`
+ *   - `GenerateData(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, mtl)`
+ *   - `__add__(self, Data other)`
+ *   - `__radd__(self, other)`
+ *   - `weights(self)`
+ *   - `weights(self, dict val)`
+ *   - `data(self)`
+ *   - `data(self, dict val)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, inpt = None)`
+ *   - `__dealloc__(self)`
+ *   - `__meta__(self, meta* _meta)`
+ *   - `__reduce__(self)`
+ *   - `__str__(self)`
+ *   - `expected_events(self, float lumi = 140.1)`
+ *   - `GetSumOfWeights(self, str name)`
+ *
+ * @subsection class_ami_client ami_client
+ * - **Member Variables**:
+ *   - `dict chn`
+ *   - `dict confx`
+ *   - `class ami_client`
+ *   - `bool loadcache`
+ *   - `str dsidr`
+ *   - `string cached_dsid`
+ *   - `string cached_maps`
+ *   - `string cached_info`
+ *   - `void savecache`
+ *   - `void dressmeta`
+ *   - `dict files`
+ *   - `list keys`
+ *   - `dict info`
+ *   - `void list_datasets`
+ *   - `list ami_tags`
+ *   - `dict command`
+ *   - `bool hit`
+ *   - `bool fset`
+ *   - `str i`
+ *   - `list srch`
+ * - **Methods**:
+ *   - `__init__(self, config)`
+ *   - `connect(self, endpoint)`
+ *   - `__init__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, MetaLookup data = None)`
+ *   - `__call__(self, inpt)`
+ *   - `DatasetName(self)`
+ *   - `CrossSection(self)`
+ *   - `ExpectedEvents(self)`
+ *   - `SumOfWeights(self)`
+ *   - `GenerateData(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, mtl)`
+ *   - `__add__(self, Data other)`
+ *   - `__radd__(self, other)`
+ *   - `weights(self)`
+ *   - `weights(self, dict val)`
+ *   - `data(self)`
+ *   - `data(self, dict val)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, inpt = None)`
+ *   - `__dealloc__(self)`
+ *   - `__meta__(self, meta* _meta)`
+ *   - `__reduce__(self)`
+ *   - `__str__(self)`
+ *   - `expected_events(self, float lumi = 140.1)`
+ *   - `GetSumOfWeights(self, str name)`
+ *
+ * @subsection class_atlas atlas
+ * - **Inherits from**: pyAMI.client.Client
+ * - **Member Variables**:
+ *   - `dict chn`
+ *   - `dict confx`
+ *   - `class ami_client`
+ *   - `bool loadcache`
+ *   - `str dsidr`
+ *   - `string cached_dsid`
+ *   - `string cached_maps`
+ *   - `string cached_info`
+ *   - `void savecache`
+ *   - `void dressmeta`
+ *   - `dict files`
+ *   - `list keys`
+ *   - `dict info`
+ *   - `void list_datasets`
+ *   - `list ami_tags`
+ *   - `dict command`
+ *   - `bool hit`
+ *   - `bool fset`
+ *   - `str i`
+ *   - `list srch`
+ * - **Methods**:
+ *   - `__init__(self, config)`
+ *   - `connect(self, endpoint)`
+ *   - `__init__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, MetaLookup data = None)`
+ *   - `__call__(self, inpt)`
+ *   - `DatasetName(self)`
+ *   - `CrossSection(self)`
+ *   - `ExpectedEvents(self)`
+ *   - `SumOfWeights(self)`
+ *   - `GenerateData(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, mtl)`
+ *   - `__add__(self, Data other)`
+ *   - `__radd__(self, other)`
+ *   - `weights(self)`
+ *   - `weights(self, dict val)`
+ *   - `data(self)`
+ *   - `data(self, dict val)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, inpt = None)`
+ *   - `__dealloc__(self)`
+ *   - `__meta__(self, meta* _meta)`
+ *   - `__reduce__(self)`
+ *   - `__str__(self)`
+ *   - `expected_events(self, float lumi = 140.1)`
+ *   - `GetSumOfWeights(self, str name)`
+ *
+ * @subsection class_httpx httpx
+ * - **Inherits from**: pyAMI.httpclient.HttpClient
+ * - **Member Variables**:
+ *   - `dict chn`
+ *   - `dict confx`
+ *   - `class ami_client`
+ *   - `bool loadcache`
+ *   - `str dsidr`
+ *   - `string cached_dsid`
+ *   - `string cached_maps`
+ *   - `string cached_info`
+ *   - `void savecache`
+ *   - `void dressmeta`
+ *   - `dict files`
+ *   - `list keys`
+ *   - `dict info`
+ *   - `void list_datasets`
+ *   - `list ami_tags`
+ *   - `dict command`
+ *   - `bool hit`
+ *   - `bool fset`
+ *   - `str i`
+ *   - `list srch`
+ * - **Methods**:
+ *   - `__init__(self, config)`
+ *   - `connect(self, endpoint)`
+ *   - `__init__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, MetaLookup data = None)`
+ *   - `__call__(self, inpt)`
+ *   - `DatasetName(self)`
+ *   - `CrossSection(self)`
+ *   - `ExpectedEvents(self)`
+ *   - `SumOfWeights(self)`
+ *   - `GenerateData(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, mtl)`
+ *   - `__add__(self, Data other)`
+ *   - `__radd__(self, other)`
+ *   - `weights(self)`
+ *   - `weights(self, dict val)`
+ *   - `data(self)`
+ *   - `data(self, dict val)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self, inpt = None)`
+ *   - `__dealloc__(self)`
+ *   - `__meta__(self, meta* _meta)`
+ *   - `__reduce__(self)`
+ *   - `__str__(self)`
+ *   - `expected_events(self, float lumi = 140.1)`
+ *   - `GetSumOfWeights(self, str name)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_AtlasRelease AtlasRelease
+ * - **Signature**: `str AtlasRelease(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `str`
+ *
+ * @subsection func_CrossSection CrossSection
+ * - **Signature**: `void CrossSection(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_DatasetName DatasetName
+ * - **Signature**: `void DatasetName(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_ExpectedEvents ExpectedEvents
+ * - **Signature**: `void ExpectedEvents(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_FetchMeta FetchMeta
+ * - **Signature**: `void FetchMeta(auto self, auto int dsid, auto str amitag)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `int dsid` (auto)
+ *   - `str amitag` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Files Files
+ * - **Signature**: `dict Files(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `dict`
+ *
+ * @subsection func_GenerateData GenerateData
+ * - **Signature**: `void GenerateData(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_GetSumOfWeights GetSumOfWeights
+ * - **Signature**: `void GetSumOfWeights(auto self, auto str name)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `str name` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_MetaCachePath MetaCachePath
+ * - **Signature**: `void MetaCachePath(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_PDF PDF
+ * - **Signature**: `str PDF(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `str`
+ *
+ * @subsection func_SumOfWeights SumOfWeights
+ * - **Signature**: `void SumOfWeights(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___add__ __add__
+ * - **Signature**: `void __add__(auto self, auto Data other)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `Data other` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___call__ __call__
+ * - **Signature**: `void __call__(auto self, auto inpt)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `inpt` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___meta__ __meta__
+ * - **Signature**: `void __meta__(auto self, auto meta* _meta)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `meta* _meta` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___radd__ __radd__
+ * - **Signature**: `void __radd__(auto self, auto other)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `other` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___reduce__ __reduce__
+ * - **Signature**: `void __reduce__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_amiStatus amiStatus
+ * - **Signature**: `str amiStatus(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `str`
+ *
+ * @subsection func_amitag amitag
+ * - **Signature**: `str amitag(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `str`
+ *
+ * @subsection func_beamType beamType
+ * - **Signature**: `str beamType(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `str`
+ *
+ * @subsection func_beam_energy beam_energy
+ * - **Signature**: `float beam_energy(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `float`
+ *
+ * @subsection func_campaign campaign
+ * - **Signature**: `void campaign(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_completion completion
+ * - **Signature**: `float completion(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `float`
+ *
+ * @subsection func_conditionsTag conditionsTag
+ * - **Signature**: `str conditionsTag(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `str`
+ *
+ * @subsection func_config config
+ * - **Signature**: `dict config(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `dict`
+ *
+ * @subsection func_connect connect
+ * - **Signature**: `void connect(auto self, auto endpoint)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `endpoint` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_crossSection crossSection
+ * - **Signature**: `float crossSection(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `float`
+ *
+ * @subsection func_crossSection_mean crossSection_mean
+ * - **Signature**: `float crossSection_mean(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `float`
+ *
+ * @subsection func_data data
+ * - **Signature**: `void data(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_dataType dataType
+ * - **Signature**: `str dataType(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `str`
+ *
+ * @subsection func_datasetNumber datasetNumber
+ * - **Signature**: `int datasetNumber(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_derivationFormat derivationFormat
+ * - **Signature**: `str derivationFormat(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `str`
+ *
+ * @subsection func_dsid dsid
+ * - **Signature**: `int dsid(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_ecmEnergy ecmEnergy
+ * - **Signature**: `float ecmEnergy(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `float`
+ *
+ * @subsection func_eventNumber eventNumber
+ * - **Signature**: `double eventNumber(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `double`
+ *
+ * @subsection func_event_index event_index
+ * - **Signature**: `int event_index(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_events events
+ * - **Signature**: `dict events(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `dict`
+ *
+ * @subsection func_expected_events expected_events
+ * - **Signature**: `void expected_events(auto self, auto float lumi = 140.1)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ *   - `float lumi = 140.1` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_fileGUID fileGUID
+ * - **Signature**: `dict fileGUID(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `dict`
+ *
+ * @see meta.pyx
+ */

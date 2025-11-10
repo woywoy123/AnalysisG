@@ -1,0 +1,61 @@
+/**
+ * @file nu.cu
+ * @brief Implementation for nu.cu
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/nusol/cuda/nu.cu`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `nusol/base.cuh`
+ * - `operators/operators.cuh`
+ * - `physics/physics.cuh`
+ * - `transform/transform.cuh`
+ * - `utils/utils.cuh`
+ *
+ * @section functions Functions
+ *
+ * @subsection func__chi2 _chi2
+ * - **Signature**: `void _chi2(auto torch::PackedTensorAccessor64<scalar_t, auto 3, torch::RestrictPtrTraits> sols, auto torch::Pac...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `sols` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `dst` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `H` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `X` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `nu` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__nu_init_ _nu_init_
+ * - **Signature**: `void _nu_init_(const torch::PackedTensorAccessor64<scalar_t, auto 3, torch::RestrictPtrTraits> s2, const torch::Pac...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `s2` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `met_xy` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `H` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `X` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `M` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @see nu.cu
+ */

@@ -1,0 +1,21 @@
+/**
+ * @file model.h
+ * @brief Documentation for modules/structs/include/structs/model.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/include/structs/model.h`
+ * 
+ * @section dependencies Dependencies
+ * - structs/enums.h
+ * - string
+ * - vector
+ * - map
+ *
+ * @section structs Structures
+ * - model_settings_t
+ *
+ * @see model.h
+ * @ingroup modules
+ */

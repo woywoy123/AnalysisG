@@ -1,0 +1,16 @@
+/**
+ * @file event_build.cxx
+ * @brief Implementation for event_build.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/analysis/event_build.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG/analysis.h`
+ * - `ROOT/RDataFrame.hxx`
+ *
+ * @see event_build.cxx
+ */

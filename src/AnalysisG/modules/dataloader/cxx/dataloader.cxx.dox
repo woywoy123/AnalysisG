@@ -1,0 +1,26 @@
+/**
+ * @file dataloader.cxx
+ * @brief Implementation for dataloader.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/dataloader/cxx/dataloader.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `chrono`
+ * - `dataloader.h`
+ * - `structs/report.h`
+ * - `templates/model_template.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_t t
+ * - **Signature**: `int t(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see dataloader.cxx
+ */

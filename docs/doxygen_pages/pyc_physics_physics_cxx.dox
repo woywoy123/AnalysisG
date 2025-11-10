@@ -1,0 +1,17 @@
+/**
+ * @file physics.cxx
+ * @brief Documentation for pyc/physics/physics.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/physics/physics.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - physics/physics.h
+ * - utils/utils.h
+ * - cmath
+ *
+ * @see physics.cxx
+ * @ingroup pyc
+ */

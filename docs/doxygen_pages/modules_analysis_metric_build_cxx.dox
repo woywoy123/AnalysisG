@@ -1,0 +1,20 @@
+/**
+ * @file metric_build.cxx
+ * @brief Documentation for modules/analysis/metric_build.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/analysis/metric_build.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - AnalysisG/analysis.h
+ *
+ * @section functions Functions
+ * - k()
+ * - t()
+ * - x()
+ *
+ * @see metric_build.cxx
+ * @ingroup modules
+ */

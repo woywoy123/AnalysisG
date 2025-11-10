@@ -1,0 +1,36 @@
+/**
+ * @file atomic.cuh
+ * @brief Documentation for pyc/cutils/include/utils/atomic.cuh
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/cutils/include/utils/atomic.cuh`
+ * 
+ * @section dependencies Dependencies
+ * - torch/torch.h
+ *
+ * @section functions Functions
+ * - minus_mod()
+ * - foptim()
+ * - _p2()
+ * - x()
+ * - py_()
+ * - _div()
+ * - pz_()
+ * - pt_()
+ * - _cmp()
+ * - trigger()
+ * - _rx()
+ * - _rz()
+ * - _clp()
+ * - _arccos()
+ * - phi_()
+ * - px_()
+ * - _ry()
+ * - _sqrt()
+ * - eta_()
+ *
+ * @see atomic.cuh
+ * @ingroup pyc
+ */

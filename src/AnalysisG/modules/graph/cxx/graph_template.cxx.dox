@@ -1,0 +1,15 @@
+/**
+ * @file graph_template.cxx
+ * @brief Implementation for graph_template.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/graph/cxx/graph_template.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/graph_template.h`
+ *
+ * @see graph_template.cxx
+ */

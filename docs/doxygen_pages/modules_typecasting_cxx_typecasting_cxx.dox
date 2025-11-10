@@ -1,0 +1,20 @@
+/**
+ * @file typecasting.cxx
+ * @brief Documentation for modules/typecasting/cxx/typecasting.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/typecasting/cxx/typecasting.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - vector_cast.h
+ *
+ * @section functions Functions
+ * - TTree()
+ * - _transfer()
+ * - x()
+ *
+ * @see typecasting.cxx
+ * @ingroup modules
+ */

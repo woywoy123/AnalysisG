@@ -1,0 +1,20 @@
+/**
+ * @file struct_graph.cxx
+ * @brief Implementation for struct_graph.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/graph/cxx/struct_graph.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/graph_template.h`
+ * - `tools/tools.h`
+ *
+ * @section enums Enumerations
+ *
+ * - `tp`
+ *
+ * @see struct_graph.cxx
+ */

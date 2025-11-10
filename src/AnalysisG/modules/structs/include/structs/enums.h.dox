@@ -1,0 +1,40 @@
+/**
+ * @file enums.h
+ * @brief Implementation for enums.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/include/structs/enums.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_data_enum data_enum
+ *
+ * @subsection class_graph_enum graph_enum
+ *
+ * @subsection class_loss_enum loss_enum
+ *
+ * @subsection class_mlp_init mlp_init
+ *
+ * @subsection class_mode_enum mode_enum
+ *
+ * @subsection class_opt_enum opt_enum
+ *
+ * @subsection class_particle_enum particle_enum
+ *
+ * @subsection class_scheduler_enum scheduler_enum
+ *
+ * @section enums Enumerations
+ *
+ * - `data_enum`
+ * - `graph_enum`
+ * - `loss_enum`
+ * - `mlp_init`
+ * - `mode_enum`
+ * - `opt_enum`
+ * - `particle_enum`
+ * - `scheduler_enum`
+ *
+ * @see enums.h
+ */

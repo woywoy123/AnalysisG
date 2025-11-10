@@ -1,0 +1,195 @@
+/**
+ * @file lossfx.pyx
+ * @brief Implementation for lossfx.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/lossfx.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.lossfx`
+ * - `AnalysisG.core.tools`
+ * - `float`
+ * - `libcpp`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_OptimizerConfig OptimizerConfig
+ * - **Member Variables**:
+ *   - `class OptimizerConfig`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `Optimizer(self)`
+ *   - `Optimizer(self, str val)`
+ *   - `Scheduler(self)`
+ *   - `Scheduler(self, str val)`
+ *   - `step_size(self)`
+ *   - `step_size(self, int val)`
+ *   - `gamma(self)`
+ *   - `gamma(self, double val)`
+ *   - `lr(self)`
+ *   - `lr(self, double val)`
+ *   - `lr_decay(self)`
+ *   - `lr_decay(self, double val)`
+ *   - `weight_decay(self)`
+ *   - `weight_decay(self, double val)`
+ *   - `initial_accumulator_value(self)`
+ *   - `initial_accumulator_value(self, double val)`
+ *   - `eps(self)`
+ *   - `eps(self, double val)`
+ *   - `tolerance_grad(self)`
+ *   - `tolerance_grad(self, double val)`
+ *   - `tolerance_change(self)`
+ *   - `tolerance_change(self, double val)`
+ *   - `alpha(self)`
+ *   - `alpha(self, double val)`
+ *   - `momentum(self)`
+ *   - `momentum(self, double val)`
+ *   - `dampening(self)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_Optimizer Optimizer
+ * - **Signature**: `void Optimizer(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_Scheduler Scheduler
+ * - **Signature**: `void Scheduler(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_alpha alpha
+ * - **Signature**: `void alpha(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_amsgrad amsgrad
+ * - **Signature**: `void amsgrad(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_betas betas
+ * - **Signature**: `void betas(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_centered centered
+ * - **Signature**: `void centered(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_dampening dampening
+ * - **Signature**: `void dampening(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_eps eps
+ * - **Signature**: `void eps(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_gamma gamma
+ * - **Signature**: `void gamma(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_history_size history_size
+ * - **Signature**: `void history_size(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_initial_accumulator_value initial_accumulator_value
+ * - **Signature**: `void initial_accumulator_value(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_lr lr
+ * - **Signature**: `void lr(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_lr_decay lr_decay
+ * - **Signature**: `void lr_decay(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_max_eval max_eval
+ * - **Signature**: `void max_eval(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_max_iter max_iter
+ * - **Signature**: `void max_iter(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_momentum momentum
+ * - **Signature**: `void momentum(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_nesterov nesterov
+ * - **Signature**: `void nesterov(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_step_size step_size
+ * - **Signature**: `void step_size(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_tolerance_change tolerance_change
+ * - **Signature**: `void tolerance_change(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_tolerance_grad tolerance_grad
+ * - **Signature**: `void tolerance_grad(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_weight_decay weight_decay
+ * - **Signature**: `void weight_decay(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see lossfx.pyx
+ */

@@ -1,0 +1,28 @@
+/**
+ * @file transform.h
+ * @brief Documentation for pyc/transform/include/transform/transform.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/transform/include/transform/transform.h`
+ * 
+ * @section dependencies Dependencies
+ * - torch/torch.h
+ *
+ * @section functions Functions
+ * - Eta()
+ * - Pz()
+ * - Py()
+ * - Px()
+ * - PtEtaPhi()
+ * - PtEtaPhiE()
+ * - PxPyPz()
+ * - Pt()
+ * - PtEta()
+ * - PxPyPzE()
+ * - Phi()
+ *
+ * @see transform.h
+ * @ingroup pyc
+ */

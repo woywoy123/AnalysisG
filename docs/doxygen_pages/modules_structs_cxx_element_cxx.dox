@@ -1,0 +1,19 @@
+/**
+ * @file element.cxx
+ * @brief Documentation for modules/structs/cxx/element.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/cxx/element.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - structs/element.h
+ * - structs/meta.h
+ *
+ * @section functions Functions
+ * - x()
+ *
+ * @see element.cxx
+ * @ingroup modules
+ */

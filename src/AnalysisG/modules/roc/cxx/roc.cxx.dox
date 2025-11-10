@@ -1,0 +1,16 @@
+/**
+ * @file roc.cxx
+ * @brief Implementation for roc.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/roc/cxx/roc.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `cmath`
+ * - `plotting/roc.h`
+ *
+ * @see roc.cxx
+ */

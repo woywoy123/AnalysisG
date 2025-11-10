@@ -1,0 +1,30 @@
+/**
+ * @file nunu.cu
+ * @brief Documentation for pyc/nusol/cuda/nunu.cu
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/nusol/cuda/nunu.cu`
+ * 
+ * @section dependencies Dependencies
+ * - nusol/base.cuh
+ * - utils/utils.cuh
+ * - physics/physics.cuh
+ * - operators/operators.cuh
+ * - transform/transform.cuh
+ *
+ * @section functions Functions
+ * - _nunu_init_()
+ * - _nunu_vp_()
+ * - y()
+ * - _masses_()
+ * - x()
+ * - z()
+ * - if()
+ * - t()
+ * - _residual_()
+ *
+ * @see nunu.cu
+ * @ingroup pyc
+ */

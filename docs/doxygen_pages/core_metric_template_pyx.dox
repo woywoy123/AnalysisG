@@ -1,0 +1,25 @@
+/**
+ * @file metric_template.pyx
+ * @brief Documentation for core/metric_template.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/metric_template.pyx`
+ * 
+ * @section classes Classes
+ * - MetricTemplate
+ *
+ * @section functions Functions
+ * - InterpretROOT()
+ * - __cinit__()
+ * - Postprocessing()
+ * - __dealloc__()
+ * - __init__()
+ * - Variables()
+ * - __name__()
+ * - RunNames()
+ *
+ * @see metric_template.pyx
+ * @ingroup core
+ */

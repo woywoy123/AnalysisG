@@ -1,0 +1,16 @@
+/**
+ * @file model_configuration.cxx
+ * @brief Implementation for model_configuration.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/model/cxx/model_configuration.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `fstream`
+ * - `templates/model_template.h`
+ *
+ * @see model_configuration.cxx
+ */

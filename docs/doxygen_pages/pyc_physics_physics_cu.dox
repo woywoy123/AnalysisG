@@ -1,0 +1,18 @@
+/**
+ * @file physics.cu
+ * @brief Documentation for pyc/physics/physics.cu
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/physics/physics.cu`
+ * 
+ * @section dependencies Dependencies
+ * - utils/utils.cuh
+ * - transform/transform.cuh
+ * - physics/physics.cuh
+ * - physics/base.cuh
+ *
+ * @see physics.cu
+ * @ingroup pyc
+ */

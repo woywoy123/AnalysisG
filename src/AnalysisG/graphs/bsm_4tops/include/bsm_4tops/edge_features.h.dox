@@ -1,0 +1,49 @@
+/**
+ * @file edge_features.h
+ * @brief Implementation for edge_features.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `graphs/bsm_4tops/include/bsm_4tops/edge_features.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/event_template.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_det_res_edge det_res_edge
+ * - **Signature**: `void det_res_edge(int* o, auto std::tuple<particle_template*, particle_template*>* pij)`
+ * - **Parameters**:
+ *   - `o` (int*)
+ *   - `std::tuple<particle_template*` (auto)
+ *   - `pij` (particle_template*>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_det_top_edge det_top_edge
+ * - **Signature**: `void det_top_edge(int* o, auto std::tuple<particle_template*, particle_template*>* pij)`
+ * - **Parameters**:
+ *   - `o` (int*)
+ *   - `std::tuple<particle_template*` (auto)
+ *   - `pij` (particle_template*>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_res_edge res_edge
+ * - **Signature**: `void res_edge(int* o, auto std::tuple<particle_template*, particle_template*>* pij)`
+ * - **Parameters**:
+ *   - `o` (int*)
+ *   - `std::tuple<particle_template*` (auto)
+ *   - `pij` (particle_template*>*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_top_edge top_edge
+ * - **Signature**: `void top_edge(int* o, auto std::tuple<particle_template*, particle_template*>* pij)`
+ * - **Parameters**:
+ *   - `o` (int*)
+ *   - `std::tuple<particle_template*` (auto)
+ *   - `pij` (particle_template*>*)
+ * - **Returns**: `void`
+ *
+ * @see edge_features.h
+ */

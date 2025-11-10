@@ -1,0 +1,11 @@
+/**
+ * @file particle_bsm_4tops.pyx
+ * @brief Implementation for particle_bsm_4tops.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `events/bsm_4tops/particle_bsm_4tops.pyx`
+ *
+ * @see particle_bsm_4tops.pyx
+ */

@@ -1,0 +1,26 @@
+/**
+ * @file property.h
+ * @brief Documentation for modules/structs/include/structs/property.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/structs/include/structs/property.h`
+ * 
+ * @section dependencies Dependencies
+ * - functional
+ * - string
+ *
+ * @section classes Classes
+ * - cproperty
+ *
+ * @section functions Functions
+ * - x_getter()
+ * - clear()
+ * - T()
+ * - x_setter()
+ * - set_object()
+ *
+ * @see property.h
+ * @ingroup modules
+ */

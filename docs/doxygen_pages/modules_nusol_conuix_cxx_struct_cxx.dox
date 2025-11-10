@@ -1,0 +1,17 @@
+/**
+ * @file struct.cxx
+ * @brief Documentation for modules/nusol/conuix/cxx/struct.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/conuix/cxx/struct.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ * - conuix/struct.h
+ * - conuix/htilde.h
+ *
+ * @see struct.cxx
+ * @ingroup modules
+ */

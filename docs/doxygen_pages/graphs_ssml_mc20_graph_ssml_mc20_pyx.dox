@@ -1,0 +1,23 @@
+/**
+ * @file graph_ssml_mc20.pyx
+ * @brief Documentation for graphs/ssml_mc20/graph_ssml_mc20.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `graphs/ssml_mc20/graph_ssml_mc20.pyx`
+ * 
+ * @section classes Classes
+ * - GraphDetectorLep
+ * - GraphJetsNoNu
+ * - GraphDetector
+ * - GraphJets
+ *
+ * @section functions Functions
+ * - __dealloc__()
+ * - __cinit__()
+ * - __init__()
+ *
+ * @see graph_ssml_mc20.pyx
+ * @ingroup graphs
+ */

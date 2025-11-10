@@ -1,0 +1,38 @@
+/**
+ * @file matrix.cxx
+ * @brief Implementation for matrix.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/conuix/cxx/matrix.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `conuix/matrix.h`
+ * - `conuix/memory.h`
+ * - `iomanip`
+ * - `iostream`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_i i
+ * - **Signature**: `int i(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_j j
+ * - **Signature**: `int j(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_k k
+ * - **Signature**: `int k(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see matrix.cxx
+ */

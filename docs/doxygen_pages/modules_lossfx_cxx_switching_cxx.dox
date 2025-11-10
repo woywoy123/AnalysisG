@@ -1,0 +1,18 @@
+/**
+ * @file switching.cxx
+ * @brief Documentation for modules/lossfx/cxx/switching.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/lossfx/cxx/switching.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/lossfx.h
+ *
+ * @section functions Functions
+ * - x()
+ *
+ * @see switching.cxx
+ * @ingroup modules
+ */

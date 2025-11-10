@@ -1,0 +1,20 @@
+/**
+ * @file event.h
+ * @brief Implementation for event.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/structs/include/structs/event.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `iostream`
+ * - `string`
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_event_t event_t
+ *
+ * @see event.h
+ */

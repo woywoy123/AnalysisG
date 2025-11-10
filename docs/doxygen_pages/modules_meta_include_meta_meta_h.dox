@@ -1,0 +1,50 @@
+/**
+ * @file meta.h
+ * @brief Documentation for modules/meta/include/meta/meta.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/meta/include/meta/meta.h`
+ * 
+ * @section dependencies Dependencies
+ * - structs/meta.h
+ * - structs/folds.h
+ * - structs/property.h
+ * - rapidjson/document.h
+ * - notification/notification.h
+ * - tools/tools.h
+ * - TFile.h
+ * - TTree.h
+ * - TBranch.h
+ * - TLeaf.h
+ *
+ * @section classes Classes
+ * - analysis
+ * - meta
+ *
+ * @section functions Functions
+ * - get_AtlasRelease()
+ * - get_PDF()
+ * - get_generatorName()
+ * - scan_data()
+ * - get_prodsysStatus()
+ * - get_weights()
+ * - get_dataType()
+ * - get_sample_name()
+ * - get_principalPhysicsGroup()
+ * - get_logicalDatasetName()
+ * - get_datasetNumber()
+ * - get_statsAlgorithm()
+ * - get_misc()
+ * - get_physicsShort()
+ * - parse_float()
+ * - parse_string()
+ * - get_conditionsTag()
+ * - get_eventNumber()
+ * - get_campaign_luminosity()
+ * - get_kfactor()
+ *
+ * @see meta.h
+ * @ingroup modules
+ */

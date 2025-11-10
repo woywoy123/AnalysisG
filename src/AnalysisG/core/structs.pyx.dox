@@ -1,0 +1,11 @@
+/**
+ * @file structs.pyx
+ * @brief Implementation for structs.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `core/structs.pyx`
+ *
+ * @see structs.pyx
+ */

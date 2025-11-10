@@ -1,0 +1,15 @@
+/**
+ * @file collector.cxx
+ * @brief Implementation for collector.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `metrics/pagerank/cxx/collector.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `metrics/pagerank.h`
+ *
+ * @see collector.cxx
+ */

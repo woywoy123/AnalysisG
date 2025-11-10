@@ -1,0 +1,20 @@
+/**
+ * @file operators.cxx
+ * @brief Documentation for pyc/operators/operators.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/operators/operators.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - operators/operators.h
+ * - utils/utils.h
+ *
+ * @section functions Functions
+ * - i()
+ * - j()
+ *
+ * @see operators.cxx
+ * @ingroup pyc
+ */

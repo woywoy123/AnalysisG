@@ -1,0 +1,26 @@
+/**
+ * @file graph_template.pyx
+ * @brief Documentation for core/graph_template.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/graph_template.pyx`
+ * 
+ * @section classes Classes
+ * - GraphTemplate
+ *
+ * @section functions Functions
+ * - Tree()
+ * - __cinit__()
+ * - __dealloc__()
+ * - __eq__()
+ * - PreSelection()
+ * - __init__()
+ * - index()
+ * - is_self()
+ * - __hash__()
+ *
+ * @see graph_template.pyx
+ * @ingroup core
+ */

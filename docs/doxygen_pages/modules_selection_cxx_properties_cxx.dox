@@ -1,0 +1,15 @@
+/**
+ * @file properties.cxx
+ * @brief Documentation for modules/selection/cxx/properties.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/selection/cxx/properties.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/selection_template.h
+ *
+ * @see properties.cxx
+ * @ingroup modules
+ */

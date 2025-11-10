@@ -1,0 +1,19 @@
+/**
+ * @file selection_core.cxx
+ * @brief Documentation for modules/selection/cxx/selection_core.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/selection/cxx/selection_core.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/selection_template.h
+ * - meta/meta.h
+ *
+ * @section functions Functions
+ * - x()
+ *
+ * @see selection_core.cxx
+ * @ingroup modules
+ */

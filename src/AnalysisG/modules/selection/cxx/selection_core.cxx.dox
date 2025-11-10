@@ -1,0 +1,20 @@
+/**
+ * @file selection_core.cxx
+ * @brief Implementation for selection_core.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/selection/cxx/selection_core.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `meta/meta.h`
+ * - `templates/selection_template.h`
+ *
+ * @section enums Enumerations
+ *
+ * - `attrs`
+ *
+ * @see selection_core.cxx
+ */

@@ -1,0 +1,25 @@
+/**
+ * @file grift.pyx
+ * @brief Documentation for models/grift/grift.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `models/grift/grift.pyx`
+ * 
+ * @section classes Classes
+ * - Grift
+ *
+ * @section functions Functions
+ * - PageRank()
+ * - __cinit__()
+ * - __dealloc__()
+ * - is_mc()
+ * - __init__()
+ * - xrec()
+ * - x()
+ * - drop_out()
+ *
+ * @see grift.pyx
+ * @ingroup models
+ */

@@ -1,0 +1,30 @@
+/**
+ * @file device.cuh
+ * @brief Documentation for pyc/nusol/include/nusol/device.cuh
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/nusol/include/nusol/device.cuh`
+ * 
+ * @section dependencies Dependencies
+ * - utils/atomic.cuh
+ *
+ * @section structs Structures
+ * - nusol
+ *
+ * @section functions Functions
+ * - _krot()
+ * - _amu()
+ * - _htilde()
+ * - _case1()
+ * - _case2()
+ * - x()
+ * - _leqnulls()
+ * - _gnulls()
+ * - _abq()
+ * - _makeNuSol()
+ *
+ * @see device.cuh
+ * @ingroup pyc
+ */

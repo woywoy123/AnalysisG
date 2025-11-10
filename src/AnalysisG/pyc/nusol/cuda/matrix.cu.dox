@@ -1,0 +1,62 @@
+/**
+ * @file matrix.cu
+ * @brief Implementation for matrix.cu
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/nusol/cuda/matrix.cu`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `nusol/base.cuh`
+ * - `nusol/device.cuh`
+ * - `operators/operators.cuh`
+ * - `physics/physics.cuh`
+ * - `transform/transform.cuh`
+ * - `utils/utils.cuh`
+ *
+ * @section functions Functions
+ *
+ * @subsection func__hmatrix _hmatrix
+ * - **Signature**: `void _hmatrix(const torch::PackedTensorAccessor64<double, auto 2, torch::RestrictPtrTraits> masses, const torch::P...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<double` (const)
+ *   - `2` (auto)
+ *   - `masses` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (const)
+ *   - `2` (auto)
+ *   - `cosine` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (const)
+ *   - `3` (auto)
+ *   - `rt` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (const)
+ *   - `2` (auto)
+ *   - `pmc_l` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (const)
+ *   - `2` (auto)
+ *   - `m2l` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__hmatrix_debug _hmatrix_debug
+ * - **Signature**: `void _hmatrix_debug(const torch::PackedTensorAccessor64<scalar_t, auto 2, torch::RestrictPtrTraits> masses, const torch:...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `masses` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `cosine` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `rt` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `pmc_l` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `m2l` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @see matrix.cu
+ */

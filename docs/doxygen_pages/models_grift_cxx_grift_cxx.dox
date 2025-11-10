@@ -1,0 +1,19 @@
+/**
+ * @file grift.cxx
+ * @brief Documentation for models/grift/cxx/grift.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `models/grift/cxx/grift.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - grift.h
+ * - pyc/pyc.h
+ *
+ * @section functions Functions
+ * - grift()
+ *
+ * @see grift.cxx
+ * @ingroup models
+ */

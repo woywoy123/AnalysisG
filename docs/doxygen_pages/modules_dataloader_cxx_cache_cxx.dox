@@ -1,0 +1,26 @@
+/**
+ * @file cache.cxx
+ * @brief Documentation for modules/dataloader/cxx/cache.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/dataloader/cxx/cache.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - generators/dataloader.h
+ * - structs/folds.h
+ * - io/io.h
+ *
+ * @section functions Functions
+ * - io()
+ * - x()
+ * - k()
+ * - graph_t()
+ * - t()
+ * - l()
+ * - p()
+ *
+ * @see cache.cxx
+ * @ingroup modules
+ */

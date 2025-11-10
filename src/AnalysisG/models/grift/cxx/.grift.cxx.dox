@@ -1,0 +1,17 @@
+/**
+ * @file .grift.cxx
+ * @brief Implementation for .grift.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `models/grift/cxx/.grift.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `0`
+ * - `grift.h`
+ * - `pyc/pyc.h`
+ *
+ * @see .grift.cxx
+ */

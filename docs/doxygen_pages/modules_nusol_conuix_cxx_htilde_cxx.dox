@@ -1,0 +1,23 @@
+/**
+ * @file htilde.cxx
+ * @brief Documentation for modules/nusol/conuix/cxx/htilde.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/conuix/cxx/htilde.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ * - conuix/htilde.h
+ * - conuix/struct.h
+ * - cmath
+ *
+ * @section functions Functions
+ * - Ry()
+ * - Rz()
+ * - Rx()
+ *
+ * @see htilde.cxx
+ * @ingroup modules
+ */

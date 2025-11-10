@@ -1,0 +1,30 @@
+/**
+ * @file optimizer.h
+ * @brief Documentation for modules/optimizer/include/generators/optimizer.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/optimizer/include/generators/optimizer.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/model_template.h
+ * - generators/dataloader.h
+ * - metrics/metrics.h
+ * - structs/settings.h
+ *
+ * @section classes Classes
+ * - analysis
+ * - optimizer
+ *
+ * @section functions Functions
+ * - import_model_sessions()
+ * - launch_model()
+ * - training_loop()
+ * - import_dataloader()
+ * - validation_loop()
+ * - evaluation_loop()
+ *
+ * @see optimizer.h
+ * @ingroup modules
+ */

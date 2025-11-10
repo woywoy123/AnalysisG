@@ -1,0 +1,18 @@
+/**
+ * @file collector.cxx
+ * @brief Documentation for metrics/pagerank/cxx/collector.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `metrics/pagerank/cxx/collector.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - metrics/pagerank.h
+ *
+ * @section functions Functions
+ * - mapping()
+ *
+ * @see collector.cxx
+ * @ingroup metrics
+ */

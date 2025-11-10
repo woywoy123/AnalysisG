@@ -1,0 +1,31 @@
+/**
+ * @file particles.h
+ * @brief Documentation for events/bsm_4tops/include/bsm_4tops/particles.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/bsm_4tops/include/bsm_4tops/particles.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ *
+ * @section classes Classes
+ * - electron
+ * - truthjet
+ * - jet
+ * - top_children
+ * - top
+ * - jetparton
+ * - muon
+ * - truthjetparton
+ *
+ * @section functions Functions
+ * - g()
+ * - get_from_res()
+ * - assign_vector()
+ * - x()
+ *
+ * @see particles.h
+ * @ingroup events
+ */

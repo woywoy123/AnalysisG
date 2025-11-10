@@ -1,0 +1,24 @@
+/**
+ * @file tensor_cast.h
+ * @brief Documentation for modules/typecasting/include/tools/tensor_cast.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/typecasting/include/tools/tensor_cast.h`
+ * 
+ * @section dependencies Dependencies
+ * - vector
+ * - torch/torch.h
+ *
+ * @section functions Functions
+ * - build_tensor()
+ * - as_primitive()
+ * - standard()
+ * - nulls()
+ * - scout_dim()
+ * - x()
+ *
+ * @see tensor_cast.h
+ * @ingroup modules
+ */

@@ -1,0 +1,17 @@
+/**
+ * @file transform.cu
+ * @brief Documentation for pyc/transform/transform.cu
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/transform/transform.cu`
+ * 
+ * @section dependencies Dependencies
+ * - transform/transform.cuh
+ * - transform/base.cuh
+ * - utils/utils.cuh
+ *
+ * @see transform.cu
+ * @ingroup pyc
+ */

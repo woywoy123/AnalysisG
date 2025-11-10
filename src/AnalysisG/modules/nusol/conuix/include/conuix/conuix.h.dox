@@ -1,0 +1,31 @@
+/**
+ * @file conuix.h
+ * @brief Implementation for conuix.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/conuix/include/conuix/conuix.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `reconstruction/nusol.h`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_conuic conuic
+ *
+ * @subsection class_conuix conuix
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_nusol_t nusol_t
+ *
+ * @section functions Functions
+ *
+ * @subsection func_solve solve
+ * - **Signature**: `void solve()`
+ * - **Returns**: `void`
+ *
+ * @see conuix.h
+ */

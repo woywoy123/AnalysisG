@@ -1,0 +1,144 @@
+/**
+ * @file utils.cuh
+ * @brief Implementation for utils.cuh
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/nusol/include/nusol/utils.cuh`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `curand.h`
+ * - `curand_kernel.h`
+ * - `math.h`
+ * - `utils/atomic.cuh`
+ *
+ * @section functions Functions
+ *
+ * @subsection func__assign_mass _assign_mass
+ * - **Signature**: `void _assign_mass(auto torch::PackedTensorAccessor64<double, auto 2, torch::RestrictPtrTraits> mass_tw, const double m...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `mass_tw` (torch::RestrictPtrTraits>)
+ *   - `mass_t` (const double)
+ *   - `mass_w` (const double)
+ *   - `lenx` (const long)
+ * - **Returns**: `void`
+ *
+ * @subsection func__best_sols _best_sols
+ * - **Signature**: `void _best_sols(auto torch::PackedTensorAccessor64<double, auto 2, torch::RestrictPtrTraits> dtw, auto torch::Packed...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `dtw` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `ptw` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `3` (auto)
+ *   - `mtw` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `3` (auto)
+ *   - `nu1` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `3` (auto)
+ *   - `nu2` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__combination _combination
+ * - **Signature**: `void _combination(const torch::PackedTensorAccessor64<scalar_t, auto 2, torch::RestrictPtrTraits> pid, const torch::Pa...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `pid` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `1` (auto)
+ *   - `batch` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `1` (auto)
+ *   - `num_edges` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `edge_idx` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `num_pid` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__compare_solx _compare_solx
+ * - **Signature**: `void _compare_solx(auto torch::PackedTensorAccessor64<long, auto 1, torch::RestrictPtrTraits> cmx_dx, auto torch::Packe...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<long` (auto)
+ *   - `1` (auto)
+ *   - `cmx_dx` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (auto)
+ *   - `1` (auto)
+ *   - `evnt_dx` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `1` (auto)
+ *   - `o_sol` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<long` (auto)
+ *   - `2` (auto)
+ *   - `o_cmb` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `o_nu1` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__count _count
+ * - **Signature**: `void _count(const torch::PackedTensorAccessor64<scalar_t, auto 1, torch::RestrictPtrTraits> batch, const torch::...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `1` (auto)
+ *   - `batch` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `pid` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `1` (auto)
+ *   - `num_events` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `2` (auto)
+ *   - `num_pid` (torch::RestrictPtrTraits>)
+ *   - `dx` (const unsigned int)
+ * - **Returns**: `void`
+ *
+ * @subsection func__jacobi _jacobi
+ * - **Signature**: `void _jacobi(auto torch::PackedTensorAccessor64<double, auto 2, torch::RestrictPtrTraits> nu_params, auto torch::...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `nu_params` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `dnu_res` (torch::RestrictPtrTraits>)
+ *   - `lnx` (const unsigned long)
+ *   - `dt` (const double)
+ *   - `ofs` (unsigned int)
+ *   - `_x` (const unsigned long)
+ * - **Returns**: `void`
+ *
+ * @subsection func__perturb _perturb
+ * - **Signature**: `void _perturb(auto torch::PackedTensorAccessor64<double, auto 2, torch::RestrictPtrTraits> nu_params, auto torch::...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `nu_params` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `dnu_met` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `dnu_tw1` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<double` (auto)
+ *   - `2` (auto)
+ *   - `dnu_tw2` (torch::RestrictPtrTraits>)
+ *   - `lnx` (const unsigned long)
+ *   - `dt` (const double)
+ *   - `ofs` (const unsigned int)
+ * - **Returns**: `void`
+ *
+ * @see utils.cuh
+ */

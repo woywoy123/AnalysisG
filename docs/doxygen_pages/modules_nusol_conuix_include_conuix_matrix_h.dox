@@ -1,0 +1,19 @@
+/**
+ * @file matrix.h
+ * @brief Documentation for modules/nusol/conuix/include/conuix/matrix.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/nusol/conuix/include/conuix/matrix.h`
+ * 
+ * @section structs Structures
+ * - matrix_t
+ *
+ * @section functions Functions
+ * - print()
+ * - dot()
+ *
+ * @see matrix.h
+ * @ingroup modules
+ */

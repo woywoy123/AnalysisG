@@ -1,0 +1,169 @@
+/**
+ * @file base.cuh
+ * @brief Implementation for base.cuh
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `pyc/operators/include/operators/base.cuh`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `utils/atomic.cuh`
+ *
+ * @section functions Functions
+ *
+ * @subsection func__cofactor _cofactor
+ * - **Signature**: `void _cofactor(const torch::PackedTensorAccessor64<scalar_t, auto 3, torch::RestrictPtrTraits> matrix, auto torch::...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `matrix` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `out` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__costheta _costheta
+ * - **Signature**: `void _costheta(const torch::PackedTensorAccessor64<scalar_t, auto 2, torch::RestrictPtrTraits> x, const torch::Pack...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `x` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `y` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `2` (auto)
+ *   - `out` (torch::RestrictPtrTraits>)
+ *   - `dx` (const unsigned int)
+ *   - `dy` (const unsigned int)
+ *   - `false` (bool get_sin =)
+ * - **Returns**: `void`
+ *
+ * @subsection func__cross _cross
+ * - **Signature**: `void _cross(const torch::PackedTensorAccessor64<scalar_t, auto 4, torch::RestrictPtrTraits> v1, const torch::Pac...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `4` (auto)
+ *   - `v1` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `v2` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `4` (auto)
+ *   - `out` (torch::RestrictPtrTraits>)
+ *   - `dy` (const unsigned int)
+ *   - `dz` (const unsigned int)
+ * - **Returns**: `void`
+ *
+ * @subsection func__determinant _determinant
+ * - **Signature**: `void _determinant(const torch::PackedTensorAccessor64<scalar_t, auto 3, torch::RestrictPtrTraits> matrix, auto torch::...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `matrix` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `2` (auto)
+ *   - `out` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__dot _dot
+ * - **Signature**: `void _dot(const torch::PackedTensorAccessor64<scalar_t, auto 3, torch::RestrictPtrTraits> v1, const torch::Pac...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `v1` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `v2` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `out` (torch::RestrictPtrTraits>)
+ *   - `dx` (const unsigned int)
+ *   - `dz` (const unsigned int)
+ * - **Returns**: `void`
+ *
+ * @subsection func__eigenvalue _eigenvalue
+ * - **Signature**: `void _eigenvalue(const torch::PackedTensorAccessor64<scalar_t, auto 3, torch::RestrictPtrTraits> matrix, auto torch::...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `matrix` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `2` (auto)
+ *   - `real` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `2` (auto)
+ *   - `img` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__inverse _inverse
+ * - **Signature**: `void _inverse(const torch::PackedTensorAccessor64<scalar_t, auto 3, torch::RestrictPtrTraits> matrix, auto torch::...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `3` (auto)
+ *   - `matrix` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `inv` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `2` (auto)
+ *   - `det` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__rt _rt
+ * - **Signature**: `void _rt(const torch::PackedTensorAccessor64<scalar_t, auto 2, torch::RestrictPtrTraits> pmc, const torch::Pa...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `pmc` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `phi` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `theta` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `out` (torch::RestrictPtrTraits>)
+ * - **Returns**: `void`
+ *
+ * @subsection func__rx _rx
+ * - **Signature**: `void _rx(const torch::PackedTensorAccessor64<scalar_t, auto 2, torch::RestrictPtrTraits> angle, auto torch::P...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `angle` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `out` (torch::RestrictPtrTraits>)
+ *   - `dx` (const unsigned int)
+ * - **Returns**: `void`
+ *
+ * @subsection func__ry _ry
+ * - **Signature**: `void _ry(const torch::PackedTensorAccessor64<scalar_t, auto 2, torch::RestrictPtrTraits> angle, auto torch::P...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `angle` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `out` (torch::RestrictPtrTraits>)
+ *   - `dx` (const unsigned int)
+ * - **Returns**: `void`
+ *
+ * @subsection func__rz _rz
+ * - **Signature**: `void _rz(const torch::PackedTensorAccessor64<scalar_t, auto 2, torch::RestrictPtrTraits> angle, auto torch::P...)`
+ * - **Parameters**:
+ *   - `torch::PackedTensorAccessor64<scalar_t` (const)
+ *   - `2` (auto)
+ *   - `angle` (torch::RestrictPtrTraits>)
+ *   - `torch::PackedTensorAccessor64<scalar_t` (auto)
+ *   - `3` (auto)
+ *   - `out` (torch::RestrictPtrTraits>)
+ *   - `dx` (const unsigned int)
+ * - **Returns**: `void`
+ *
+ * @see base.cuh
+ */

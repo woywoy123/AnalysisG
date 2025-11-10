@@ -1,0 +1,32 @@
+/**
+ * @file mass_plots.cxx
+ * @brief Implementation for mass_plots.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/metrics/cxx/mass_plots.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `THStack.h`
+ * - `TRatioPlot.h`
+ * - `c10/cuda/CUDAGuard.h`
+ * - `c10/cuda/CUDAStream.h`
+ * - `metrics/metrics.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_x x
+ * - **Signature**: `size_t x(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `size_t`
+ *
+ * @section enums Enumerations
+ *
+ * - `mode`
+ * - `typ`
+ *
+ * @see mass_plots.cxx
+ */

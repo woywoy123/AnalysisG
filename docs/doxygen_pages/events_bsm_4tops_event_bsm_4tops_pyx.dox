@@ -1,0 +1,20 @@
+/**
+ * @file event_bsm_4tops.pyx
+ * @brief Documentation for events/bsm_4tops/event_bsm_4tops.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/bsm_4tops/event_bsm_4tops.pyx`
+ * 
+ * @section classes Classes
+ * - BSM4Tops
+ *
+ * @section functions Functions
+ * - __dealloc__()
+ * - __cinit__()
+ * - __init__()
+ *
+ * @see event_bsm_4tops.pyx
+ * @ingroup events
+ */

@@ -1,0 +1,374 @@
+/**
+ * @file graph_bsm_4tops.pyx
+ * @brief Implementation for graph_bsm_4tops.pyx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `graphs/bsm_4tops/graph_bsm_4tops.pyx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `AnalysisG.core.graph_template`
+ * - `AnalysisG.graphs.bsm_4tops.graph_bsm_4tops`
+ * - `GraphTemplate`
+ * - `bool`
+ * - `libcpp`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_GraphChildren GraphChildren
+ * - **Inherits from**: GraphTemplate
+ * - **Member Variables**:
+ *   - `class GraphTops`
+ *   - `class GraphChildren`
+ *   - `class GraphTruthJets`
+ *   - `class GraphTruthJetsNoNu`
+ *   - `class GraphJets`
+ *   - `class GraphJetsNoNu`
+ *   - `class GraphDetectorLep`
+ *   - `class GraphDetector`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `NumCuda(self)`
+ *   - `NumCuda(self, int v)`
+ *   - `ForceMatch(self)`
+ *   - `ForceMatch(self, bool v)`
+ *
+ * @subsection class_GraphDetector GraphDetector
+ * - **Member Variables**:
+ *   - `class GraphTops`
+ *   - `class GraphChildren`
+ *   - `class GraphTruthJets`
+ *   - `class GraphTruthJetsNoNu`
+ *   - `class GraphJets`
+ *   - `class GraphJetsNoNu`
+ *   - `class GraphDetectorLep`
+ *   - `class GraphDetector`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `NumCuda(self)`
+ *   - `NumCuda(self, int v)`
+ *   - `ForceMatch(self)`
+ *   - `ForceMatch(self, bool v)`
+ *
+ * @subsection class_GraphDetectorLep GraphDetectorLep
+ * - **Inherits from**: GraphTemplate
+ * - **Member Variables**:
+ *   - `class GraphTops`
+ *   - `class GraphChildren`
+ *   - `class GraphTruthJets`
+ *   - `class GraphTruthJetsNoNu`
+ *   - `class GraphJets`
+ *   - `class GraphJetsNoNu`
+ *   - `class GraphDetectorLep`
+ *   - `class GraphDetector`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `NumCuda(self)`
+ *   - `NumCuda(self, int v)`
+ *   - `ForceMatch(self)`
+ *   - `ForceMatch(self, bool v)`
+ *
+ * @subsection class_GraphJets GraphJets
+ * - **Inherits from**: GraphTemplate
+ * - **Member Variables**:
+ *   - `class GraphTops`
+ *   - `class GraphChildren`
+ *   - `class GraphTruthJets`
+ *   - `class GraphTruthJetsNoNu`
+ *   - `class GraphJets`
+ *   - `class GraphJetsNoNu`
+ *   - `class GraphDetectorLep`
+ *   - `class GraphDetector`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `NumCuda(self)`
+ *   - `NumCuda(self, int v)`
+ *   - `ForceMatch(self)`
+ *   - `ForceMatch(self, bool v)`
+ *
+ * @subsection class_GraphJetsNoNu GraphJetsNoNu
+ * - **Inherits from**: GraphTemplate
+ * - **Member Variables**:
+ *   - `class GraphTops`
+ *   - `class GraphChildren`
+ *   - `class GraphTruthJets`
+ *   - `class GraphTruthJetsNoNu`
+ *   - `class GraphJets`
+ *   - `class GraphJetsNoNu`
+ *   - `class GraphDetectorLep`
+ *   - `class GraphDetector`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `NumCuda(self)`
+ *   - `NumCuda(self, int v)`
+ *   - `ForceMatch(self)`
+ *   - `ForceMatch(self, bool v)`
+ *
+ * @subsection class_GraphTops GraphTops
+ * - **Inherits from**: GraphTemplate
+ * - **Member Variables**:
+ *   - `class GraphTops`
+ *   - `class GraphChildren`
+ *   - `class GraphTruthJets`
+ *   - `class GraphTruthJetsNoNu`
+ *   - `class GraphJets`
+ *   - `class GraphJetsNoNu`
+ *   - `class GraphDetectorLep`
+ *   - `class GraphDetector`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `NumCuda(self)`
+ *   - `NumCuda(self, int v)`
+ *   - `ForceMatch(self)`
+ *   - `ForceMatch(self, bool v)`
+ *
+ * @subsection class_GraphTruthJets GraphTruthJets
+ * - **Inherits from**: GraphTemplate
+ * - **Member Variables**:
+ *   - `class GraphTops`
+ *   - `class GraphChildren`
+ *   - `class GraphTruthJets`
+ *   - `class GraphTruthJetsNoNu`
+ *   - `class GraphJets`
+ *   - `class GraphJetsNoNu`
+ *   - `class GraphDetectorLep`
+ *   - `class GraphDetector`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `NumCuda(self)`
+ *   - `NumCuda(self, int v)`
+ *   - `ForceMatch(self)`
+ *   - `ForceMatch(self, bool v)`
+ *
+ * @subsection class_GraphTruthJetsNoNu GraphTruthJetsNoNu
+ * - **Inherits from**: GraphTemplate
+ * - **Member Variables**:
+ *   - `class GraphTops`
+ *   - `class GraphChildren`
+ *   - `class GraphTruthJets`
+ *   - `class GraphTruthJetsNoNu`
+ *   - `class GraphJets`
+ *   - `class GraphJetsNoNu`
+ *   - `class GraphDetectorLep`
+ *   - `class GraphDetector`
+ * - **Methods**:
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `__cinit__(self)`
+ *   - `__init__(self)`
+ *   - `__dealloc__(self)`
+ *   - `NumCuda(self)`
+ *   - `NumCuda(self, int v)`
+ *   - `ForceMatch(self)`
+ *   - `ForceMatch(self, bool v)`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_ForceMatch ForceMatch
+ * - **Signature**: `void ForceMatch(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func_NumCuda NumCuda
+ * - **Signature**: `void NumCuda(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___cinit__ __cinit__
+ * - **Signature**: `void __cinit__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @subsection func___dealloc__ __dealloc__
+ * - **Signature**: `void __dealloc__(auto self)`
+ * - **Parameters**:
+ *   - `self` (auto)
+ * - **Returns**: `void`
+ *
+ * @see graph_bsm_4tops.pyx
+ */

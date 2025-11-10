@@ -1,0 +1,15 @@
+/**
+ * @file atomic.cu
+ * @brief Documentation for pyc/cutils/atomic.cu
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/cutils/atomic.cu`
+ * 
+ * @section dependencies Dependencies
+ * - utils/atomic.cuh
+ *
+ * @see atomic.cu
+ * @ingroup pyc
+ */

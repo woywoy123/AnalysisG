@@ -1,0 +1,147 @@
+/**
+ * @file struct.h
+ * @brief Implementation for struct.h
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/nusol/conuix/include/conuix/struct.h`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `conuix/htilde.h`
+ * - `conuix/matrix.h`
+ * - `iomanip`
+ * - `iostream`
+ * - `psi`
+ * - `string`
+ *
+ * @section classes Classes
+ *
+ * @subsection class_particle_template particle_template
+ *
+ * @section structs Structures
+ *
+ * @subsection struct_H_matrix_t H_matrix_t
+ *
+ * @subsection struct_P_t P_t
+ *
+ * @subsection struct_Sx_t Sx_t
+ *
+ * @subsection struct_Sy_t Sy_t
+ *
+ * @subsection struct_atomics_t atomics_t
+ *
+ * @subsection struct_base_t base_t
+ *
+ * @subsection struct_dPdtau_t dPdtau_t
+ *
+ * @subsection struct_debug debug
+ *
+ * @subsection struct_kinematic_t kinematic_t
+ *
+ * @subsection struct_pencil_t pencil_t
+ *
+ * @subsection struct_poly_t poly_t
+ *
+ * @subsection struct_rotation_t rotation_t
+ *
+ * @subsection struct_thetapsi_t thetapsi_t
+ *
+ * @section functions Functions
+ *
+ * @subsection func_L0 L0
+ * - **Signature**: `double L0(long double Z, long double tau)`
+ * - **Parameters**:
+ *   - `Z` (long double)
+ *   - `tau` (long double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_P P
+ * - **Signature**: `double P(long double lambda, long double Z, long double tau)`
+ * - **Parameters**:
+ *   - `lambda` (long double)
+ *   - `Z` (long double)
+ *   - `tau` (long double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_PL0 PL0
+ * - **Signature**: `double PL0(long double tau)`
+ * - **Parameters**:
+ *   - `tau` (long double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_Sx Sx
+ * - **Signature**: `double Sx(long double tau, long double Z)`
+ * - **Parameters**:
+ *   - `tau` (long double)
+ *   - `Z` (long double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_Sy Sy
+ * - **Signature**: `double Sy(long double tau, long double Z)`
+ * - **Parameters**:
+ *   - `tau` (long double)
+ *   - `Z` (long double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_Z2 Z2
+ * - **Signature**: `double Z2(long double Sx, long double Sy)`
+ * - **Parameters**:
+ *   - `Sx` (long double)
+ *   - `Sy` (long double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_cos_theta cos_theta
+ * - **Signature**: `double cos_theta(particle_template* jet, particle_template* lep)`
+ * - **Parameters**:
+ *   - `jet` (particle_template*)
+ *   - `lep` (particle_template*)
+ * - **Returns**: `double`
+ *
+ * @subsection func_debug_mode debug_mode
+ * - **Signature**: `void debug_mode(particle_template* jet, particle_template* lep)`
+ * - **Parameters**:
+ *   - `jet` (particle_template*)
+ *   - `lep` (particle_template*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_print print
+ * - **Signature**: `void print(int p = 16)`
+ * - **Parameters**:
+ *   - `16` (int p =)
+ * - **Returns**: `void`
+ *
+ * @subsection func_test test
+ * - **Signature**: `void test(atomics_t* tx)`
+ * - **Parameters**:
+ *   - `tx` (atomics_t*)
+ * - **Returns**: `void`
+ *
+ * @subsection func_variable variable
+ * - **Signature**: `void variable(std::string name, long double val)`
+ * - **Parameters**:
+ *   - `name` (std::string)
+ *   - `val` (long double)
+ * - **Returns**: `void`
+ *
+ * @subsection func_xlinear xlinear
+ * - **Signature**: `double xlinear(long double tau)`
+ * - **Parameters**:
+ *   - `tau` (long double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_xyratio xyratio
+ * - **Signature**: `double xyratio(long double tau)`
+ * - **Parameters**:
+ *   - `tau` (long double)
+ * - **Returns**: `double`
+ *
+ * @subsection func_ylinear ylinear
+ * - **Signature**: `double ylinear(long double tau)`
+ * - **Parameters**:
+ *   - `tau` (long double)
+ * - **Returns**: `double`
+ *
+ * @see struct.h
+ */

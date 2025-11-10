@@ -1,0 +1,24 @@
+/**
+ * @file gnn-particles.h
+ * @brief Documentation for events/gnn/include/inference/gnn-particles.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `events/gnn/include/inference/gnn-particles.h`
+ * 
+ * @section dependencies Dependencies
+ * - templates/particle_template.h
+ *
+ * @section classes Classes
+ * - zprime
+ * - top
+ * - particle_gnn
+ *
+ * @section functions Functions
+ * - read()
+ * - reduce()
+ *
+ * @see gnn-particles.h
+ * @ingroup events
+ */

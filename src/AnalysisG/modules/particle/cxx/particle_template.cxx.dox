@@ -1,0 +1,15 @@
+/**
+ * @file particle_template.cxx
+ * @brief Implementation for particle_template.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/particle/cxx/particle_template.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/particle_template.h`
+ *
+ * @see particle_template.cxx
+ */

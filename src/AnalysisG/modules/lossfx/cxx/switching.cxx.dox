@@ -1,0 +1,19 @@
+/**
+ * @file switching.cxx
+ * @brief Implementation for switching.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/lossfx/cxx/switching.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `templates/lossfx.h`
+ *
+ * @section enums Enumerations
+ *
+ * - `lossfx`
+ *
+ * @see switching.cxx
+ */

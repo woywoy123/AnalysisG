@@ -1,0 +1,17 @@
+/**
+ * @file graph.cuh
+ * @brief Documentation for pyc/graph/include/graph/graph.cuh
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `pyc/graph/include/graph/graph.cuh`
+ * 
+ * @section dependencies Dependencies
+ * - map
+ * - string
+ * - torch/torch.h
+ *
+ * @see graph.cuh
+ * @ingroup pyc
+ */

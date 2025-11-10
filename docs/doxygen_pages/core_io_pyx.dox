@@ -1,0 +1,32 @@
+/**
+ * @file io.pyx
+ * @brief Documentation for core/io.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/io.pyx`
+ * 
+ * @section classes Classes
+ * - IO
+ *
+ * @section functions Functions
+ * - __cinit__()
+ * - __dealloc__()
+ * - Files()
+ * - __len__()
+ * - __iter__()
+ * - EnablePyAMI()
+ * - Keys()
+ * - __init__()
+ * - SumOfWeightsTreeName()
+ * - Branches()
+ * - Verbose()
+ * - Trees()
+ * - MetaCachePath()
+ * - __next__()
+ * - Leaves()
+ *
+ * @see io.pyx
+ * @ingroup core
+ */

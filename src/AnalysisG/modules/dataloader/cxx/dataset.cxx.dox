@@ -1,0 +1,37 @@
+/**
+ * @file dataset.cxx
+ * @brief Implementation for dataset.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/dataloader/cxx/dataset.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `generators/dataloader.h`
+ * - `io/io.h`
+ * - `structs/folds.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_k k
+ * - **Signature**: `int k(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_x x
+ * - **Signature**: `int x(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @subsection func_y y
+ * - **Signature**: `int y(auto 0)`
+ * - **Parameters**:
+ *   - `0` (auto)
+ * - **Returns**: `int`
+ *
+ * @see dataset.cxx
+ */

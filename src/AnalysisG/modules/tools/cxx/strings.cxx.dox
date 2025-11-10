@@ -1,0 +1,25 @@
+/**
+ * @file strings.cxx
+ * @brief Implementation for strings.cxx
+ * 
+ * @details
+ * This file contains the implementation of various components for the AnalysisG framework.
+ * 
+ * **Location**: `modules/tools/cxx/strings.cxx`
+ *
+ * @section dependencies Dependencies
+ *
+ * - `sstream`
+ * - `string`
+ * - `tools/tools.h`
+ *
+ * @section functions Functions
+ *
+ * @subsection func_is_base64 is_base64
+ * - **Signature**: `bool is_base64(unsigned char c)`
+ * - **Parameters**:
+ *   - `c` (unsigned char)
+ * - **Returns**: `bool`
+ *
+ * @see strings.cxx
+ */

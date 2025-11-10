@@ -1,0 +1,20 @@
+/**
+ * @file container.cxx
+ * @brief Documentation for modules/container/cxx/container.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/container/cxx/container.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - container/container.h
+ * - TSystem.h
+ *
+ * @section functions Functions
+ * - write_t()
+ * - x()
+ *
+ * @see container.cxx
+ * @ingroup modules
+ */

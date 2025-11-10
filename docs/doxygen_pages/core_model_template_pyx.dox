@@ -1,0 +1,31 @@
+/**
+ * @file model_template.pyx
+ * @brief Documentation for core/model_template.pyx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `core/model_template.pyx`
+ * 
+ * @section classes Classes
+ * - ModelTemplate
+ *
+ * @section functions Functions
+ * - o_node()
+ * - __cinit__()
+ * - checkpoint_path()
+ * - __dealloc__()
+ * - device()
+ * - i_graph()
+ * - i_edge()
+ * - tree_name()
+ * - __init__()
+ * - weight_name()
+ * - o_edge()
+ * - name()
+ * - o_graph()
+ * - i_node()
+ *
+ * @see model_template.pyx
+ * @ingroup core
+ */

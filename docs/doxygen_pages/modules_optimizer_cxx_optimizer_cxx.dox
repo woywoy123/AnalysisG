@@ -1,0 +1,23 @@
+/**
+ * @file optimizer.cxx
+ * @brief Documentation for modules/optimizer/cxx/optimizer.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * @details
+ * Source file: `modules/optimizer/cxx/optimizer.cxx`
+ * 
+ * @section dependencies Dependencies
+ * - generators/optimizer.h
+ * - c10/cuda/CUDAStream.h
+ * - c10/cuda/CUDAGuard.h
+ *
+ * @section functions Functions
+ * - ep()
+ * - grd()
+ * - metrics()
+ * - x()
+ *
+ * @see optimizer.cxx
+ * @ingroup modules
+ */
