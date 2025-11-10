@@ -960,7 +960,7 @@ Figure 4.3.f (REFERENCE)
    :name: Figure.4.3.nunu.f
 
    A heat-map of the momenta differential in the y and z direction between the truth and reconstructed neutrino solution pairs.
-   This figure is the cummulation of Figure 4 1.f and 4.2.f. 
+   This figure is the cummulation of Figure 4.1.f and 4.2.f. 
 
 Figure 4.g
 ^^^^^^^^^^

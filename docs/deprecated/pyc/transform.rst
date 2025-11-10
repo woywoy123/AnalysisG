@@ -98,7 +98,7 @@ Transformation for Combined Floats
 .. py:function:: pyc.Transform.Pt(list[list[px, py, pz, e]]) -> list[float]
     :no-index:
 
-.. py:function:: pyc.Transform.Eta(tlist[list[px, py, pz, e]] -> list[float]
+.. py:function:: pyc.Transform.Eta(list[list[px, py, pz, e]]) -> list[float]
     :no-index:
 
 .. py:function:: pyc.Transform.Phi(list[list[px, py, pz, e]]) -> list[float]
