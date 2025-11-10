@@ -157,44 +157,25 @@ This modular design allows mixing and matching components for different analyses
 API Reference
 -------------
 
-EventTemplate Class
-~~~~~~~~~~~~~~~~~~~
+The complete API documentation for template classes is generated from source code using Doxygen.
 
-.. doxygenclass:: event_template
-   :members:
-   :undoc-members:
+.. note::
+   To view the full API reference with all template classes, build the Doxygen documentation locally:
+   
+   .. code-block:: bash
+   
+      cd docs
+      doxygen Doxyfile
+      # Open build/doxygen/html/index.html
 
-ParticleTemplate Class
-~~~~~~~~~~~~~~~~~~~~~~
-
-.. doxygenclass:: particle_template
-   :members:
-   :undoc-members:
-
-GraphTemplate Class
-~~~~~~~~~~~~~~~~~~~
-
-.. doxygenclass:: graph_template
-   :members:
-   :undoc-members:
-
-ModelTemplate Class
-~~~~~~~~~~~~~~~~~~~
-
-.. doxygenclass:: model_template
-   :members:
-   :undoc-members:
-
-SelectionTemplate Class
-~~~~~~~~~~~~~~~~~~~~~~~
-
-.. doxygenclass:: selection_template
-   :members:
-   :undoc-members:
-
-MetricTemplate Class
+Key Template Classes
 ~~~~~~~~~~~~~~~~~~~~
 
-.. doxygenclass:: metric_template
-   :members:
-   :undoc-members:
+The following template classes form the core of the AnalysisG framework:
+
+- ``event_template`` - Base class for event definitions
+- ``particle_template`` - Base class for particle types
+- ``graph_template`` - Base class for graph structures
+- ``model_template`` - Base class for ML models
+- ``selection_template`` - Base class for event selections
+- ``metric_template`` - Base class for performance metrics

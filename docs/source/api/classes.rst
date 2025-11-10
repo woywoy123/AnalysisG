@@ -38,14 +38,11 @@ All Classes and Structures
 Core Data Structures
 ~~~~~~~~~~~~~~~~~~~~
 
-.. doxygenstruct:: element_t
-   :members:
+The framework uses several core data structures:
 
-.. doxygenstruct:: variable_t
-   :members:
+- ``element_t`` - ROOT tree/branch/leaf mapping structure (defined in ``modules/structs/include/structs/element.h``)
+- ``variable_t`` - Variable metadata structure (defined in ``modules/structs/include/structs/variable.h``)
+- ``data_t`` - Data storage structure (defined in ``modules/structs/include/structs/data.h``)
+- ``write_t`` - Output writing structure (defined in ``modules/structs/include/structs/write.h``)
 
-.. doxygenstruct:: data_t
-   :members:
-
-.. doxygenstruct:: write_t
-   :members:
+These structures are used throughout the framework for data management and I/O operations. See the Doxygen HTML documentation for complete member details.
