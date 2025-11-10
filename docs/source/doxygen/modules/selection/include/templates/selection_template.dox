@@ -1,91 +1,262 @@
 /**
  * @file selection_template.h
- * @brief COMPLETE documentation for selection_template.h
+ * @brief Event Selection and Filtering Framework
  *
- * @details
- * Location: modules/selection/include/templates/selection_template.h
- * Type: .h source file
- * Lines: 199
- * Size: 7462 bytes
+ * ## Purpose
  *
- * ## Includes
- * - `#include <templates/particle_template.h>`
- * - `#include <templates/event_template.h>`
- * - `#include <structs/property.h>`
- * - `#include <structs/event.h>`
- * - `#include <structs/enums.h>`
- * - `#include <meta/meta.h>`
- * - `#include <tools/vector_cast.h>`
- * - `#include <tools/merge_cast.h>`
- * - `#include <tools/tools.h>`
+ * The `selection_template` class provides the foundational framework for implementing
+ * event selection and filtering algorithms in particle physics analysis. It serves as
+ * the base class for all custom selection criteria, enabling analysts to define cuts,
+ * filters, and selection strategies that determine which events pass analysis requirements.
  *
- * ## Macros
- * - `#define SELECTION_TEMPLATE_H #include <templates/particle_template.h>`
+ * ## Role in Framework
  *
- * ## Classes
- * ### class selection_template : public tools
- * **PUBLIC:**
- * - `selection_template();`
- * - `virtual ~selection_template();`
- * - `cproperty<std::string, selection_template> name;`
- * - `void static set_name(std::string*, selection_template*);`
- * - `void static get_name(std::string*, selection_template*);`
- * - `cproperty<std::string, selection_template> hash;`
- * - `void static set_hash(std::string*, selection_template*);`
- * - `void static get_hash(std::string*, selection_template*);`
- * - `cproperty<std::string, selection_template> tree;`
- * - `void static get_tree(std::string*, selection_template*);`
- * - `cproperty<double, selection_template> weight;`
- * - `void static set_weight(double*, selection_template*);`
- * - `void static get_weight(double*, selection_template*);`
- * - `cproperty<long, selection_template> index;`
- * - `void static set_index(long*, selection_template*);`
- * - `virtual selection_template* clone();`
- * - `virtual bool selection(event_template* ev);`
- * - `virtual bool strategy(event_template* ev);`
- * - `virtual void merge(selection_template* sel);`
- * - `virtual void bulk_write(const long* idx, std::string* hx);`
- * - `virtual void write(std::vector<particle_template*>* particles, std::string _name, particle_enum attrs);`
- * - `template <typename g>`
- * - `void write(std::vector<g*>* particles, std::string _name, particle_enum attrs){`
- * - `std::vector<particle_template*> ox;`
- * - `this -> downcast(particles, &ox);`
- * - `this -> write(&ox, _name, attrs);`
+ * selection_template is a critical component in the analysis pipeline that:
+ * - Filters physics events based on user-defined criteria
+ * - Writes selected particle data to output files
+ * - Manages event weights and metadata
+ * - Enables complex multi-stage selection strategies
+ * - Interfaces with the container system for batch processing
  *
- * ## Function Implementations
- * - `template <typename g>
-        void write(std::vector<g*>* particles, std::string _name, particle_enum attrs)`
- * - `template <typename g> 
-        void write(g* var, std::string _name)`
- * - ` if(!this -> handle)`
- * - `template <typename g> 
-        void write(g var, std::string _name)`
- * - ` if(!this -> handle)`
- * - `template <typename g, typename k>
-        void sum(std::vector<g*>* ch, k** out)`
- * - `template <typename g>
-        void safe_delete(std::vector<g*>* particles)`
- * - `template <typename g>
-        g* sum(std::map<std::string, g*>* ch)`
- * - `template <typename g>
-        float sum(std::vector<g*>* ch)`
- * - `template <typename g>
-        std::vector<g*> vectorize(std::map<std::string, g*>* in)`
- * - `template <typename g>
-        std::vector<g*> make_unique(std::vector<g*>* inpt)`
- * - `template <typename g>
-        void downcast(std::vector<g*>* inpt, std::vector<particle_template*>* out)`
- * - `template <typename o, typename g>
-        void upcast(std::map<std::string, o*>* inpt, std::vector<g*>* out)`
- * - `template <typename o, typename g>
-        void upcast(std::vector<o*>* inpt, std::vector<g*>* out)`
- * - `template <typename g>
-        void get_leptonics(std::map<std::string, g*> inpt, std::vector<particle_template*>* out)`
- * - ` if(!itr -> second -> is_lep && !itr -> second -> is_nu)`
- * - `template <typename g, typename j>
-        bool contains(std::vector<g*>* inpt, j* pcheck)`
+ * ## Key Relationships
  *
- * @note This file has been COMPLETELY documented.
- * @note Every class, struct, function, variable, macro is listed above.
- * @see Doxygen HTML output for full cross-references
+ * **Base Class**:
+ * - `tools`: Provides utility functions for particle manipulation, casting, and vector operations
+ *
+ * **Collaborators**:
+ * - `event_template`: Receives events for selection evaluation
+ * - `particle_template`: Manipulates particles within selected events
+ * - `container`: Orchestrates batch selection processing
+ * - `meta`: Stores and retrieves metadata for selected events
+ * - Writer/IO system: Outputs selected event data to ROOT files
+ *
+ * **Inheritance Pattern**:
+ * Users derive from selection_template to implement custom selection logic:
+ * ```cpp
+ * class MySelection : public selection_template {
+ *     bool selection(event_template* ev) override {
+ *         // Implement selection cuts
+ *         return ev->num_jets >= 4 && ev->num_leptons == 1;
+ *     }
+ * };
+ * ```
+ *
+ * ## Selection Workflow
+ *
+ * ### 1. Event-Level Selection
+ * The primary selection flow involves:
+ * 1. **Receive Event**: `build()` receives an event_template pointer
+ * 2. **Apply Strategy**: `strategy()` performs pre-selection setup
+ * 3. **Evaluate Selection**: `selection()` applies physics cuts
+ * 4. **Write Output**: Successful events trigger `write()` calls
+ * 5. **Compile**: `CompileEvent()` finalizes event processing
+ *
+ * ### 2. Particle-Level Operations
+ * Within selection logic, users can:
+ * - Sum particle four-momenta using `sum()` templates
+ * - Remove duplicates with `make_unique()`
+ * - Cast between particle types using `upcast()`/`downcast()`
+ * - Filter particles with `get_leptonics()` and `contains()`
+ * - Manage memory with `safe_delete()` for temporary particles
+ *
+ * ### 3. Output Management
+ * Selected events are written through:
+ * - `write()`: Single variable or particle collection output
+ * - `bulk_write()`: Batch output for multiple events
+ * - Automatic ROOT file and tree management via write_t handle
+ *
+ * ## Properties (cproperty System)
+ *
+ * ### name
+ * **Type**: `cproperty<std::string, selection_template>`
+ * **Purpose**: Unique identifier for this selection
+ * **Usage**: Used for tracking and organizing multiple selections
+ *
+ * ### hash
+ * **Type**: `cproperty<std::string, selection_template>`
+ * **Purpose**: Unique hash identifying the selection instance
+ * **Usage**: Enables deduplication and tracking across parallel processing
+ *
+ * ### tree
+ * **Type**: `cproperty<std::string, selection_template>` (read-only)
+ * **Purpose**: ROOT TTree name for output
+ * **Usage**: Automatically assigned based on selection name
+ *
+ * ### weight
+ * **Type**: `cproperty<double, selection_template>`
+ * **Purpose**: Event weight for this selection
+ * **Usage**: Applied to histogram fills and cross-section calculations
+ *
+ * ### index
+ * **Type**: `cproperty<long, selection_template>`
+ * **Purpose**: Sequential index in processing order
+ * **Usage**: Tracks event ordering for reproducibility
+ *
+ * ## Virtual Methods (Override Required)
+ *
+ * ### selection(event_template* ev)
+ * **Purpose**: Implements the physics selection cuts
+ * **Returns**: `true` if event passes selection, `false` otherwise
+ * **Usage**: Override this method to define your selection criteria
+ * **Example**:
+ * ```cpp
+ * bool MySelection::selection(event_template* ev) {
+ *     // Require at least 4 jets
+ *     if (ev->jets.size() < 4) return false;
+ *     
+ *     // Require exactly 1 lepton
+ *     if (ev->leptons.size() != 1) return false;
+ *     
+ *     // Apply kinematic cuts
+ *     if (ev->met < 20.0) return false;
+ *     
+ *     return true;
+ * }
+ * ```
+ *
+ * ### strategy(event_template* ev)
+ * **Purpose**: Pre-selection setup and filtering strategy
+ * **Returns**: `true` to proceed with selection, `false` to skip
+ * **Usage**: Implement early rejection or event preparation
+ * **When Called**: Before `selection()`, enables fast rejection
+ *
+ * ### clone()
+ * **Purpose**: Create a deep copy of the selection object
+ * **Returns**: Pointer to new selection_template instance
+ * **Usage**: Required for multi-threaded processing
+ * **Implementation**: Must copy all member state
+ *
+ * ### merge(selection_template* sel)
+ * **Purpose**: Merge results from parallel selection instances
+ * **Usage**: Combines statistics from multi-threaded execution
+ * **When Called**: After parallel processing completes
+ *
+ * ## Data Writing Methods
+ *
+ * ### write(std::vector<particle_template*>*, std::string, particle_enum)
+ * **Purpose**: Write particle collection with specific attributes
+ * **Parameters**:
+ * - Particle vector pointer
+ * - Variable name for output
+ * - Particle attributes enum (pt, eta, phi, energy, etc.)
+ * **Usage**: Writes particle kinematics to ROOT tree
+ *
+ * ### write(T var, std::string name)
+ * **Purpose**: Write single variable to ROOT tree
+ * **Template**: Works with any POD type (int, float, double, bool, etc.)
+ * **Usage**: Store event-level quantities like missing ET, mass, etc.
+ *
+ * ### bulk_write(const long* idx, std::string* hx)
+ * **Purpose**: Batch write multiple events efficiently
+ * **Parameters**: Event index and hash for identification
+ * **Usage**: Called automatically by container for bulk operations
+ *
+ * ## Particle Manipulation Utilities
+ *
+ * ### sum(std::vector<T*>* particles, T** output)
+ * **Purpose**: Sum four-momenta of particle collection
+ * **Result**: Creates new particle with combined momentum
+ * **Memory**: Result marked for automatic garbage collection
+ * **Usage**: Reconstruct parent particles from decay products
+ *
+ * ### make_unique(std::vector<T*>* particles)
+ * **Purpose**: Remove duplicate particles based on hash
+ * **Returns**: New vector with unique particles only
+ * **Usage**: Prevent double-counting in overlapping collections
+ *
+ * ### vectorize(std::map<string, T*>* map)
+ * **Purpose**: Convert particle map to vector
+ * **Returns**: Vector of particle pointers
+ * **Usage**: Interface between map-based and vector-based algorithms
+ *
+ * ### downcast/upcast
+ * **Purpose**: Type conversion between particle hierarchies
+ * **Usage**: Convert between base particle_template and derived types
+ * **Safety**: Maintains particle identity and relationships
+ *
+ * ### safe_delete(std::vector<T*>* particles)
+ * **Purpose**: Delete particles not marked for retention
+ * **Usage**: Clean up temporary particles while preserving marked ones
+ * **Memory**: Prevents double-deletion of garbage-collected particles
+ *
+ * ## Thread Safety
+ *
+ * ### threadIdx
+ * **Type**: `int` (default: -1)
+ * **Purpose**: Thread identifier for parallel selection
+ * **Usage**: Assigned by container during multi-threaded execution
+ * **Thread-Local**: Each thread receives unique index
+ *
+ * ### Parallel Processing
+ * - Each thread receives a `clone()` of the selection
+ * - Selections process events independently
+ * - Results merged via `merge()` after completion
+ * - No shared state between threads during processing
+ *
+ * ## Memory Management
+ *
+ * ### Garbage Collection
+ * **garbage** map: `std::map<std::string, std::vector<particle_template*>>`
+ * - Stores temporary particles created during selection
+ * - Particles marked with `_is_marked = true`
+ * - Automatically deleted when selection object destroyed
+ * - Prevents memory leaks from four-momentum sums
+ *
+ * ### Output Handle
+ * **handle**: `write_t*` pointer
+ * - Managed by container system
+ * - Automatically configured for ROOT file writing
+ * - Null when not writing output
+ * - Shared across thread-cloned instances
+ *
+ * ## Usage Example
+ *
+ * ```cpp
+ * class TopPairSelection : public selection_template {
+ * public:
+ *     bool selection(event_template* ev) override {
+ *         // Require 4+ jets
+ *         if (ev->jets.size() < 4) return false;
+ *         
+ *         // Require 1 lepton
+ *         if (ev->leptons.size() != 1) return false;
+ *         
+ *         // Select b-tagged jets
+ *         std::vector<jet*> bjets;
+ *         for (auto* j : ev->jets) {
+ *             if (j->btag > 0.8) bjets.push_back(j);
+ *         }
+ *         
+ *         // Require 2+ b-jets
+ *         if (bjets.size() < 2) return false;
+ *         
+ *         // Write selected objects
+ *         this->write(&ev->jets, "jet", particle_enum::PT);
+ *         this->write(&ev->leptons, "lep", particle_enum::ETA);
+ *         this->write(ev->met, "MET");
+ *         
+ *         return true;
+ *     }
+ * };
+ * ```
+ *
+ * ## Design Considerations
+ *
+ * ### Performance
+ * - Virtual methods allow polymorphic selection strategies
+ * - Template methods avoid vtable overhead for utilities
+ * - Bulk writing reduces ROOT I/O overhead
+ * - Parallel processing scales across cores
+ *
+ * ### Flexibility
+ * - Override only `selection()` for simple cuts
+ * - Add `strategy()` for complex multi-stage logic
+ * - Implement `merge()` for custom statistics aggregation
+ * - Extend with additional member variables as needed
+ *
+ * ### Integration
+ * - Seamlessly integrates with analysis framework
+ * - Compatible with container batch processing
+ * - Works with all event_template derivations
+ * - Supports arbitrary particle hierarchies
  */
