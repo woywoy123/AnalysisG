@@ -1,73 +1,124 @@
 /**
  * @file event_template.h
- * @brief COMPLETE documentation for event_template.h
+ * @brief Base template class for physics event representation and particle management
  *
  * @details
- * Location: modules/event/include/templates/event_template.h
- * Type: .h source file
- * Lines: 102
- * Size: 3778 bytes
+ * The event_template class is the foundational template for all physics events in the AnalysisG framework.
+ * It provides a standardized interface for loading, building, and managing physics events from various data sources
+ * (primarily ROOT files). This class serves as the base for all event implementations (bsm_4tops, exp_mc20, gnn, ssml_mc20)
+ * and handles the complex task of mapping raw data trees/branches to physics objects.
  *
- * ## Includes
- * - `#include <templates/particle_template.h>`
- * - `#include <structs/property.h>`
- * - `#include <structs/element.h>`
- * - `#include <structs/event.h>`
- * - `#include <tools/tools.h>`
- * - `#include <meta/meta.h>`
+ * ## Purpose and Role in Framework
+ * event_template is the cornerstone of the event processing pipeline. It:
+ * - **Manages ROOT TTree/Branch/Leaf structure**: Maps ROOT data hierarchies to C++ objects
+ * - **Coordinates particle creation**: Registers particle types and builds particle collections from raw data
+ * - **Provides event metadata**: Stores event index, hash, weight, filename for tracking and weighting
+ * - **Enables extensibility**: Derived classes override CompileEvent() to implement specific physics analyses
+ * - **Interfaces with analysis class**: Works with the analysis class to process multiple events in parallel
  *
- * ## Macros
- * - `#define EVENT_TEMPLATE_H #include <templates/particle_template.h>`
+ * ## Key Relationships
+ * - **Inherits from**: `tools` (provides utility functions for hash generation, string manipulation)
+ * - **Contains**: Collections of `particle_template` derived objects (jets, leptons, neutrinos, etc.)
+ * - **Used by**: `analysis` class (orchestrates event loading and processing)
+ * - **Used by**: `graph_template` class (transforms events into graph representations for ML)
+ * - **Linked to**: `meta` class (stores dataset-level metadata)
+ * - **Linked to**: `dataloader` class (batch processes events for neural network training)
  *
- * ## Classes
- * ### class event_template : public tools
- * **PUBLIC:**
- * - `event_template();`
- * - `virtual ~event_template();`
- * - `cproperty<std::vector<std::string>, event_template> trees;`
- * - `void static set_trees(std::vector<std::string>*, event_template*);`
- * - `cproperty<std::vector<std::string>, event_template> branches;`
- * - `void static set_branches(std::vector<std::string>*, event_template*);`
- * - `cproperty<std::vector<std::string>, event_template> leaves;`
- * - `void static get_leaves(std::vector<std::string>*, event_template*);`
- * - `void add_leaf(std::string key, std::string leaf = "");`
- * - `cproperty<std::string, event_template> name;`
- * - `void static set_name(std::string*, event_template*);`
- * - `cproperty<std::string, event_template> hash;`
- * - `void static set_hash(std::string*, event_template*);`
- * - `void static get_hash(std::string*, event_template*);`
- * - `cproperty<std::string, event_template> tree;`
- * - `void static set_tree(std::string*, event_template*);`
- * - `void static get_tree(std::string*, event_template*);`
- * - `cproperty<double, event_template> weight;`
- * - `void static set_weight(double*, event_template*);`
- * - `cproperty<long, event_template> index;`
- * - `void static set_index(long*, event_template*);`
- * - `std::map<std::string, std::string> m_trees;`
- * - `std::map<std::string, std::string> m_branches;`
- * - `std::map<std::string, std::string> m_leaves;`
- * - `virtual event_template* clone();`
- * - `virtual void build(element_t* el);`
- * - `virtual void CompileEvent();`
- * - `std::vector<particle_template*> double_neutrino(`
- * - `std::vector<particle_template*>* targets, double phi, double met, double limit = 1e3`
- * - `);`
- * - `std::map<std::string, event_template*> build_event(std::map<std::string, data_t*>* evnt);`
- * - `template <typename G>`
- * - `void register_particle(std::map<std::string, G*>* object){`
- * - `G* x = new G();`
- * - `std::string tp = x -> type;`
- * - `std::map<std::string, std::string>::iterator itr = x -> leaves.begin();`
- * - `for (; itr != x -> leaves.end(); ++itr){`
- * - `this -> m_leaves[tp + "/" + itr -> first] = itr -> second;`
+ * ## ROOT Data Processing Flow
+ * 1. analysis class identifies data files and creates event instances
+ * 2. event_template::build_event() is called with raw ROOT data (std::map<std::string, data_t*>)
+ * 3. build_mapping() internally maps tree/branch/leaf names to registered particles
+ * 4. register_particle<T>() templates instantiate specific particle types (e.g., electron, jet)
+ * 5. Each particle's build() method populates its data from corresponding ROOT leaves
+ * 6. CompileEvent() is called (overridden in derived classes) to apply physics logic
+ * 7. Event is now ready for selection, graph construction, or direct analysis
  *
- * ## Function Implementations
- * - `template <typename G>
-        void register_particle(std::map<std::string, G*>* object)`
- * - `template <typename G>
-        void deregister_particle(std::map<std::string, G*>* object)`
+ * ## Usage Pattern
+ * Users derive from event_template to create physics-specific event classes:
+ * ```cpp
+ * class my_event : public event_template {
+ *   public:
+ *     // Declare particle collections
+ *     std::map<std::string, electron*> Electrons;
+ *     std::map<std::string, jet*> Jets;
+ *     std::map<std::string, neutrino*> Neutrinos;
+ *     
+ *     my_event() {
+ *       // Register particles so they're populated from ROOT data
+ *       this->register_particle<electron>(&Electrons);
+ *       this->register_particle<jet>(&Jets);
+ *       this->register_particle<neutrino>(&Neutrinos);
+ *       
+ *       // Define which ROOT leaves to read for each particle type
+ *       this->add_leaf("electron/pt", "el_pt");
+ *       this->add_leaf("jet/pt", "jet_pt");
+ *     }
+ *     
+ *     void CompileEvent() override {
+ *       // Apply event-level physics logic here
+ *       // e.g., select leptons passing cuts, pair objects, calculate invariant masses
+ *     }
+ * };
+ * ```
  *
- * @note This file has been COMPLETELY documented.
- * @note Every class, struct, function, variable, macro is listed above.
- * @see Doxygen HTML output for full cross-references
+ * ## Core Members and Their Purposes
+ *
+ * ### Data Access Properties (cproperty pattern)
+ * The class uses cproperty<T, event_template> for lazy evaluation and custom getters/setters:
+ * - **trees**: List of ROOT TTree names in the file
+ * - **branches**: List of TBranch names within trees  
+ * - **leaves**: List of TLeaf names mapped to particle properties
+ * - **name**: Event type identifier (e.g., "ttbar", "4top")
+ * - **hash**: Unique identifier for this specific event instance
+ * - **tree**: Current TTree being processed
+ * - **weight**: Monte Carlo event weight for histogram/plot weighting
+ * - **index**: Event number in the dataset sequence
+ *
+ * ### Mapping Structures
+ * - **m_trees**: Maps logical tree names to ROOT TTree names
+ * - **m_branches**: Maps logical branch names to ROOT TBranch names
+ * - **m_leaves**: Maps "particletype/property" to ROOT TLeaf names (e.g., "electron/pt" → "el_pt")
+ *
+ * ### Virtual Methods for Overriding
+ * - **clone()**: Create a new instance of the derived event class (factory pattern)
+ * - **build(element_t*)**: Populate event from a single element (legacy interface)
+ * - **CompileEvent()**: User-defined physics logic applied after particles are loaded
+ *
+ * ### Particle Management
+ * - **register_particle<G>()**: Template method to register particle types and map their leaves
+ * - **deregister_particle<G>()**: Clean up particle collections and free memory
+ * - **particle_link**: Maps particle type names to their collection pointers
+ * - **particle_generators**: Stores factory instances for creating particles of each type
+ * - **flush_particles()**: Deletes all particles and clears collections
+ *
+ * ### Physics Utility Methods
+ * - **double_neutrino()**: Calculates neutrino four-momenta for di-leptonic top decays
+ *   - Takes target particles (e.g., b-jets), missing ET (φ, magnitude)
+ *   - Returns possible neutrino solutions using kinematic constraints
+ *   - Essential for ttbar → l+jets and ttbar → dilepton analyses
+ *
+ * ### Data Storage
+ * - **data**: event_t struct containing serialized event data
+ * - **meta_data**: Pointer to meta object with dataset-level information
+ * - **filename**: Source ROOT file path
+ * - **garbage**: Collection of temporary particles to be deleted
+ *
+ * ## Thread Safety
+ * event_template instances are designed to be created per-thread in parallel processing:
+ * - Each thread in analysis class gets its own event clone
+ * - No shared mutable state between event instances
+ * - Safe for parallel event processing across multiple CPU cores
+ *
+ * ## Memory Management
+ * - Event owns its particles (manages lifetime)
+ * - flush_particles() must be called or destructor invoked to prevent leaks
+ * - garbage collection tracks particles created during processing
+ * - clone() creates deep copy for thread-local processing
+ *
+ * @see particle_template For particle object structure and kinematics
+ * @see analysis For event loop orchestration and parallel processing
+ * @see graph_template For converting events to ML graph structures  
+ * @see element_t For raw data element structure from ROOT
+ * @see event_t For serialized event data structure
+ * @see meta For dataset-level metadata management
  */
