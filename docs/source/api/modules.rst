@@ -91,27 +91,22 @@ The ``selection_template`` enables cut-based analyses:
 API Reference
 -------------
 
-The complete API documentation for module classes is generated from source code using Doxygen.
+The complete API documentation for module classes is automatically generated from source code using Doxygen and displayed below.
 
-.. note::
-   To view the full API reference with all module classes and functions, build the Doxygen documentation locally:
-   
-   .. code-block:: bash
-   
-      cd docs
-      doxygen Doxyfile
-      # Open build/doxygen/html/index.html
+Analysis Class
+~~~~~~~~~~~~~~
 
-Key Module Classes
-~~~~~~~~~~~~~~~~~~
+.. doxygenclass:: analysis
+   :members:
 
-The following classes form the core framework modules:
+Container Class
+~~~~~~~~~~~~~~~
 
-- ``analysis`` - Main analysis orchestrator (defined in ``modules/analysis/``)
-- ``container`` - Data container management (defined in ``modules/container/``)
-- ``dataloader`` - Efficient data loading (defined in ``modules/dataloader/``)
-- ``event_template`` - Event base class (defined in ``modules/event/``)
-- ``particle_template`` - Particle base class (defined in ``modules/particle/``)
-- ``graph_template`` - Graph base class (defined in ``modules/graph/``)
-- ``model_template`` - Model base class (defined in ``modules/model/``)
-- ``selection_template`` - Selection base class (defined in ``modules/selection/``)
+.. doxygenclass:: container
+   :members:
+
+DataLoader Class
+~~~~~~~~~~~~~~~~
+
+.. doxygenclass:: dataloader
+   :members:

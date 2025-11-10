@@ -18,7 +18,7 @@ BUILTIN_STL_SUPPORT    = YES
 INPUT                  = ../src/AnalysisG source/doxygen
 FILE_PATTERNS          = *.h *.cxx *.py *.dox
 RECURSIVE              = YES
-EXCLUDE_PATTERNS       = */test/* */tests/* */.git/* */build/*
+EXCLUDE_PATTERNS       = */test/* */tests/* */.git/* */build/* */<name>.* */<event-name>.* */<model-name>.* */<particle-name>.* */<particle-module>.* */<selection-name>.*
 
 # Source browsing
 SOURCE_BROWSER         = YES
