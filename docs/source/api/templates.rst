@@ -153,3 +153,48 @@ Templates work together to form complete workflows:
 - **Analysis** orchestrates all components
 
 This modular design allows mixing and matching components for different analyses.
+
+API Reference
+-------------
+
+EventTemplate Class
+~~~~~~~~~~~~~~~~~~~
+
+.. doxygenclass:: event_template
+   :members:
+   :undoc-members:
+
+ParticleTemplate Class
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. doxygenclass:: particle_template
+   :members:
+   :undoc-members:
+
+GraphTemplate Class
+~~~~~~~~~~~~~~~~~~~
+
+.. doxygenclass:: graph_template
+   :members:
+   :undoc-members:
+
+ModelTemplate Class
+~~~~~~~~~~~~~~~~~~~
+
+.. doxygenclass:: model_template
+   :members:
+   :undoc-members:
+
+SelectionTemplate Class
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. doxygenclass:: selection_template
+   :members:
+   :undoc-members:
+
+MetricTemplate Class
+~~~~~~~~~~~~~~~~~~~~
+
+.. doxygenclass:: metric_template
+   :members:
+   :undoc-members:

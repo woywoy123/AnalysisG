@@ -87,3 +87,26 @@ The ``selection_template`` enables cut-based analyses:
 - Event selection logic
 - Histogram management
 - Cutflow tracking
+
+API Reference
+-------------
+
+Analysis Class
+~~~~~~~~~~~~~~
+
+.. doxygenclass:: analysis
+   :members:
+   :undoc-members:
+
+Container Class
+~~~~~~~~~~~~~~~
+
+.. doxygenclass:: container
+   :members:
+   :undoc-members:
+
+DataLoader Class
+~~~~~~~~~~~~~~~~
+
+.. doxygenfile:: dataloader.h
+   :sections: briefdescription detaileddescription
