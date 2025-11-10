@@ -1,14 +1,20 @@
 /**
- * @file events_ssml_mc20_cxx_particles
- * @brief Documentation for events_ssml_mc20_cxx_particles
+ * @file events_ssml_mc20_cxx_particles_cxx
+ * @brief Detailed documentation for particles.cxx
  *
+ * ## File Information
+ * - Path: events/ssml_mc20/cxx/particles.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new zboson(...)
- * - new top(...)
- * - size_t x(...)
- * - new parton(...)
+ * ## Function Implementations
+ * - particle_template* **zboson::clone**(void)
+ * - void **zboson::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **top::clone**(void)
+ * - void **top::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **parton::clone**(void)
+ * - void **parton::build**(std::map<std::string, particle_template*>* prt, element_t* el)
  *
  * ## Dependencies
  * - particles.h
+ *
  */

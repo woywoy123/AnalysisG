@@ -1,11 +1,40 @@
 /**
- * @file modules_lossfx_cxx_loss_config
- * @brief Documentation for modules_lossfx_cxx_loss_config
+ * @file modules_lossfx_cxx_loss_config_cxx
+ * @brief Detailed documentation for loss_config.cxx
  *
+ * ## File Information
+ * - Path: modules/lossfx/cxx/loss_config.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
+ * ## Enumerations
+ * ### enum lss
+ * Values: switch (lss){
+        case loss_enum::bce                         : return this -> _fx_loss(this -> m_bce, pred, truth);  
+        case loss_enum::bce_with_logits             : return this -> _fx_loss(this -> m_bce_with_logits, pred, truth);  
+        case loss_enum::cosine_embedding            : return this -> _fx_loss(this -> m_cosine_embedding, pred, truth);  
+        case loss_enum::cross_entropy               : return this -> _fx_loss(this -> m_cross_entropy, pred, truth);  
+        case loss_enum::ctc                         : return this -> _fx_loss(this -> m_ctc, pred
+ *
+ * ## Function Implementations
+ * - h>
+
+void **lossfx::interpret**(std::string* val)
+ * - void **lossfx::build_fx_loss**(torch::nn::BCELossImpl* lossfx_)
+ * - void **lossfx::build_fx_loss**(torch::nn::BCEWithLogitsLossImpl* lossfx_)
+ * - void **lossfx::build_fx_loss**(torch::nn::CosineEmbeddingLossImpl* lossfx_)
+ * - void **lossfx::build_fx_loss**(torch::nn::CrossEntropyLossImpl* lossfx_)
+ * - void **lossfx::build_fx_loss**(torch::nn::CTCLossImpl* lossfx_)
+ * - void **lossfx::build_fx_loss**(torch::nn::HingeEmbeddingLossImpl* lossfx_)
+ * - void **lossfx::build_fx_loss**(torch::nn::HuberLossImpl* lossfx_)
+ * - void **lossfx::build_fx_loss**(torch::nn::KLDivLossImpl* lossfx_)
+ * - void **lossfx::build_fx_loss**(torch::nn::L1LossImpl* lossfx_)
+ * - void **lossfx::build_fx_loss**(torch::nn::MarginRankingLossImpl* lossfx_)
+ * - void **lossfx::build_fx_loss**(torch::nn::MSELossImpl* lossfx_)
+ * - void **lossfx::build_fx_loss**(torch::nn::MultiLabelMarginLossImpl* lossfx_)
+ * - void **lossfx::build_fx_loss**(torch::nn::MultiLabelSoftMarginLossImpl* lossfx_)
+ * - void **lossfx::build_fx_loss**(torch::nn::MultiMarginLossImpl* lossfx_)
  *
  * ## Dependencies
  * - templates/lossfx.h
+ *
  */

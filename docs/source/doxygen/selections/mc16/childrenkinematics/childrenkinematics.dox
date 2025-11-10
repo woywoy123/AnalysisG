@@ -1,18 +1,61 @@
 /**
- * @file selections_mc16_childrenkinematics_childrenkinematics
- * @brief Documentation for selections_mc16_childrenkinematics_childrenkinematics
+ * @file selections_mc16_childrenkinematics_childrenkinematics_h
+ * @brief Detailed documentation for childrenkinematics.h
  *
+ * ## File Information
+ * - Path: selections/mc16/childrenkinematics/childrenkinematics.h
+ * - Type: .h file
  *
  * ## Classes
- * - childrenkinematics : inherits from selection_template
+ * ### class childrenkinematics : selection_template
+ * **Methods:**
+ * - selection_template* clone(...)
+ * - bool selection(...)
+ * - bool strategy(...)
+ * - void merge(...)
+ * **Members:**
+ * - std::vector<kinematic_t> res_kinematics
  *
- * ## Key Functions
- * - new childrenkinematics(...)
- * - size_t x(...)
- * - size_t c(...)
+ * ## Structures
+ * ### struct kinematic_t
+ * - float pt
+ * - float energy
+ * - float eta
+ * - float phi
+ * - int pdgid
+ *
+ * ### struct misc_t
+ * - kinematic_t kin
+ * - bool is_lep
+ * - float mass_clust
+ * - float delta_R
+ * - float frc_energy
+ * - float frc_pt
+ *
+ * ### struct perms_t
+ * - bool RR
+ * - bool SS
+ * - bool RS
+ * - bool CT
+ * - bool FT
+ * - float delta_R
+ * - float top_pt
+ * - float top_e
+ * - float mass
+ *
+ * ## Functions
+ * - selection_template* **clone**(void)
+ * - bool **selection**(event_template* ev)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sl)
+ * - void **dump_kinematics**(std::vector<kinematic_t>* data, g* p)
+ * - void **dump_kinematics**(kinematic_t* data, g* p)
  *
  * ## Dependencies
  * - bsm_4tops/event.h
- * - childrenkinematics.h
  * - templates/selection_template.h
+ *
+ * ## Macros
+ * - #define CHILDRENKINEMATICS_H #include <bsm_4tops/event.h>
+ *
  */

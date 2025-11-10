@@ -1,20 +1,32 @@
 /**
- * @file selections_example_met_met
- * @brief Documentation for selections_example_met_met
+ * @file selections_example_met_met_h
+ * @brief Detailed documentation for met.h
  *
+ * ## File Information
+ * - Path: selections/example/met/met.h
+ * - Type: .h file
  *
  * ## Classes
- * - met : inherits from selection_template
- *
- * ## Key Functions
- * - new met(...)
+ * ### class met : selection_template
+ * **Methods:**
  * - selection_template* clone(...)
  * - bool selection(...)
  * - bool strategy(...)
  * - void merge(...)
+ * **Members:**
+ * - std::map<std::string, float> missing_et
+ *
+ * ## Functions
+ * - selection_template* **clone**(void)
+ * - bool **selection**(event_template* ev)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sl)
  *
  * ## Dependencies
  * - bsm_4tops/event.h
- * - met.h
  * - templates/selection_template.h
+ *
+ * ## Macros
+ * - #define MC16_MET_H #include <bsm_4tops/event.h>
+ *
  */

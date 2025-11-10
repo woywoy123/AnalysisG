@@ -1,23 +1,25 @@
 /**
- * @file graphs_bsm_4tops_cxx_node_features
- * @brief Documentation for graphs_bsm_4tops_cxx_node_features
+ * @file graphs_bsm_4tops_cxx_node_features_cxx
+ * @brief Detailed documentation for node_features.cxx
  *
+ * ## File Information
+ * - Path: graphs/bsm_4tops/cxx/node_features.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - h>
-
-void res_node(...)
- * - void top_node(...)
- * - void pt(...)
- * - void eta(...)
- * - void phi(...)
- * - void energy(...)
- * - void charge(...)
- * - void is_lepton(...)
- * - void is_bquark(...)
- * - void is_neutrino(...)
+ * ## Functions
+ * - void **res_node**(int* o, particle_template* p)
+ * - void **top_node**(int* o, particle_template* p)
+ * - void **pt**(double* o, particle_template* p)
+ * - void **eta**(double* o, particle_template* p)
+ * - void **phi**(double* o, particle_template* p)
+ * - void **energy**(double* o, particle_template* p)
+ * - void **charge**(double* o, particle_template* p)
+ * - void **is_lepton**(int* o, particle_template* p)
+ * - void **is_bquark**(int* o, particle_template* p)
+ * - void **is_neutrino**(int* o, particle_template* p)
  *
  * ## Dependencies
  * - bsm_4tops/event.h
  * - bsm_4tops/node_features.h
+ *
  */

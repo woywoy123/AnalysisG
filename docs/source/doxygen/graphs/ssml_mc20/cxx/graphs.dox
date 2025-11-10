@@ -1,19 +1,25 @@
 /**
- * @file graphs_ssml_mc20_cxx_graphs
- * @brief Documentation for graphs_ssml_mc20_cxx_graphs
+ * @file graphs_ssml_mc20_cxx_graphs_cxx
+ * @brief Detailed documentation for graphs.cxx
  *
+ * ## File Information
+ * - Path: graphs/ssml_mc20/cxx/graphs.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new graph_jets(...)
- * - size_t x(...)
- * - new graph_jets_nonu(...)
- * - Detector leptons(...)
- * - new graph_jets_detector_lep(...)
- * - new graph_detector(...)
+ * ## Function Implementations
+ * - graph_template* **graph_jets::clone**(void)
+ * - void **graph_jets::CompileEvent**(void)
+ * - graph_template* **graph_jets_nonu::clone**(void)
+ * - void **graph_jets_nonu::CompileEvent**(void)
+ * - graph_template* **graph_jets_detector_lep::clone**(void)
+ * - void **graph_jets_detector_lep::CompileEvent**(void)
+ * - graph_template* **graph_detector::clone**(void)
+ * - void **graph_detector::CompileEvent**(void)
  *
  * ## Dependencies
  * - edge_features.h
  * - graph_features.h
  * - graphs.h
  * - node_features.h
+ *
  */

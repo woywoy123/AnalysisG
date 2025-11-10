@@ -1,23 +1,38 @@
 /**
- * @file modules_metrics_include_metrics_metrics
- * @brief Documentation for modules_metrics_include_metrics_metrics
+ * @file modules_metrics_include_metrics_metrics_h
+ * @brief Detailed documentation for metrics.h
  *
+ * ## File Information
+ * - Path: modules/metrics/include/metrics/metrics.h
+ * - Type: .h file
  *
  * ## Classes
- * - metrics : inherits from tools
+ * ### class metrics : tools, 
+    public notification
+ * **Members:**
+ * - std::string output_path
+ * - const std::vector<Color_t> colors_h
  *
- * ## Key Functions
- * - void purge(...)
- * - void destroy(...)
- * - public: metrics(...)
- * - void dump_plots(...)
- * - void dump_loss_plots(...)
- * - void dump_accuracy_plots(...)
- * - void dump_mass_plots(...)
- * - model_report* register_model(...)
- * - void capture(...)
- * - private: 
-        void build_th1f_loss(...)
+ * ## Structures
+ * ### struct analytics_t
+ * - model_template* model
+ * - model_report* report
+ * - int this_epoch
+ * - std::map<mode_enum, std::map<std::string, TH1F*>> loss_graph
+ *
+ * ## Enumerations
+ * ### enum g_num
+ *
+ * ## Functions
+ * - void **purge**(void)
+ * - void **destroy**(std::map<mode_enum, std::map<std::string, TH1F*>>* data)
+ * - void **dump_plots**(int k)
+ * - void **dump_loss_plots**(int k)
+ * - void **dump_accuracy_plots**(int k)
+ * - void **dump_mass_plots**(int k)
+ * - model_report* **register_model**(model_template* model, int kfold)
+ * - void **capture**(mode_enum, int kfold, int epoch, int smpl_len)
+ * - void **build_th1f_mass**(std::string var_name, graph_enum typ, int kfold)
  *
  * ## Dependencies
  * - TCanvas.h
@@ -31,4 +46,10 @@
  * - structs/report.h
  * - structs/settings.h
  * - templates/model_template.h
+ *
+ * ## Macros
+ * - #define METRICS_H #include <TH1F.h>
+ * - #define cu_pyc c10::kCUDA
+ * - #define cu_pyc c10::kCPU
+ *
  */

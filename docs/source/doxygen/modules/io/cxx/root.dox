@@ -1,14 +1,23 @@
 /**
- * @file modules_io_cxx_root
- * @brief Documentation for modules_io_cxx_root
+ * @file modules_io_cxx_root_cxx
+ * @brief Detailed documentation for root.cxx
  *
+ * ## File Information
+ * - Path: modules/io/cxx/root.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - new meta(...)
- * - size_t t(...)
- * - size_t m(...)
- * - new TFile(...)
+ * ## Function Implementations
+ * - include <thread>
+
+void **io::trigger_pcm**(void)
+ * - new **std::thread**(buildDict, "meta_t"   , mta)
+ * - void **io::root_key_paths**(std::string path, TTree*)
+ * - void **io::root_key_paths**(std::string path)
+ * - bool **io::scan_keys**(void)
+ * - std::map<std::string, long> **io::root_size**(void)
+ * - void **io::root_begin**(void)
+ * - std::map<std::string, data_t*>* **io::get_data**(void)
+ * - void **io::root_end**(void)
  *
  * ## Dependencies
  * - TH1.h
@@ -16,4 +25,5 @@
  * - io.h
  * - io/cfg.h
  * - thread
+ *
  */

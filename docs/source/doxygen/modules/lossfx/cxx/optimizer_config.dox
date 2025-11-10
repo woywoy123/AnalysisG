@@ -1,15 +1,37 @@
 /**
- * @file modules_lossfx_cxx_optimizer_config
- * @brief Documentation for modules_lossfx_cxx_optimizer_config
+ * @file modules_lossfx_cxx_optimizer_config_cxx
+ * @brief Detailed documentation for optimizer_config.cxx
  *
+ * ## File Information
+ * - Path: modules/lossfx/cxx/optimizer_config.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - torch::optim::AdamOptions optim_(...)
- * - void m_xavier_normal(...)
- * - void m_xavier_uniform(...)
- * - void m_normal(...)
- * - void m_uniform(...)
+ * ## Functions
+ * - torch::optim::AdamOptions **optim_**(op -> lr)
+ * - torch::optim::AdagradOptions **optim_**(op -> lr)
+ * - torch::optim::AdamWOptions **optim_**(op -> lr)
+ * - torch::optim::LBFGSOptions **optim_**(op -> lr)
+ * - torch::optim::RMSpropOptions **optim_**(op -> lr)
+ * - torch::optim::SGDOptions **optim_**(op -> lr)
+ * - void **m_xavier_normal**(torch::nn::Module& m)
+ * - void **m_xavier_uniform**(torch::nn::Module& m)
+ * - void **m_normal**(torch::nn::Module& m)
+ * - void **m_uniform**(torch::nn::Module& m)
+ * - void **m_kaiming_normal**(torch::nn::Module& m)
+ * - void **m_kaiming_uniform**(torch::nn::Module& m)
+ *
+ * ## Function Implementations
+ * - h>
+
+void **lossfx::build_adam**(optimizer_params_t* op, std::vector<torch::Tensor>* params)
+ * - void **lossfx::build_adagrad**(optimizer_params_t* op, std::vector<torch::Tensor>* params)
+ * - void **lossfx::build_adamw**(optimizer_params_t* op, std::vector<torch::Tensor>* params)
+ * - void **lossfx::build_lbfgs**(optimizer_params_t* op, std::vector<torch::Tensor>* params)
+ * - void **lossfx::build_rmsprop**(optimizer_params_t* op, std::vector<torch::Tensor>* params)
+ * - void **lossfx::build_sgd**(optimizer_params_t* op, std::vector<torch::Tensor>* params)
+ * - void **lossfx::weight_init**(torch::nn::Sequential* data, mlp_init method)
  *
  * ## Dependencies
  * - templates/lossfx.h
+ *
  */

@@ -1,14 +1,18 @@
 /**
- * @file events_exp_mc20_cxx_event
- * @brief Documentation for events_exp_mc20_cxx_event
+ * @file events_exp_mc20_cxx_event_cxx
+ * @brief Detailed documentation for event.cxx
  *
+ * ## File Information
+ * - Path: events/exp_mc20/cxx/event.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new exp_mc20(...)
- * - size_t x(...)
- * - size_t t(...)
- * - size_t f(...)
+ * ## Function Implementations
+ * - h> **exp_mc20::exp_mc20**(void)
+ * - event_template* **exp_mc20::clone**(void)
+ * - void **exp_mc20::build**(element_t* el)
+ * - void **exp_mc20::CompileEvent**(void)
  *
  * ## Dependencies
  * - exp_mc20/event.h
+ *
  */

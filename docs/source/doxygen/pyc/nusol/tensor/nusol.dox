@@ -1,21 +1,41 @@
 /**
- * @file pyc_nusol_tensor_nusol
- * @brief Documentation for pyc_nusol_tensor_nusol
+ * @file pyc_nusol_tensor_nusol_cxx
+ * @brief Detailed documentation for nusol.cxx
  *
+ * ## File Information
+ * - Path: pyc/nusol/tensor/nusol.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - h>
-
-
-std::map<std::string, torch::Tensor> GetMasses(...)
- * - torch::Tensor HorizontalVertical(...)
- * - torch::Tensor Parallel(...)
- * - torch::Tensor Intersecting(...)
- * - Solution 1(...)
- * - Solution 2(...)
- * - torch::Tensor Pi_2(...)
- * - torch::Tensor Rotation(...)
- * - torch::Tensor Shape(...)
+ * ## Functions
+ * - std::map<std::string, torch::Tensor> **GetMasses**(torch::Tensor* L, torch::Tensor* masses)
+ * - torch::Tensor **_x0**(torch::Tensor* pmc, torch::Tensor* _pm2, torch::Tensor* mH2, torch::Tensor* mL2)
+ * - torch::Tensor **HorizontalVertical**(torch::Tensor* G)
+ * - torch::Tensor **Parallel**(torch::Tensor* G, torch::Tensor* CoF)
+ * - torch::Tensor **Intersecting**(torch::Tensor* G, torch::Tensor* g22, torch::Tensor* CoF)
+ * - torch::Tensor **Pi_2**(torch::Tensor* x)
+ * - torch::Tensor **Rotation**(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* base)
+ * - torch::Tensor **Shape**(torch::Tensor* x, std::vector<int> diag)
+ * - torch::Tensor **Sigma**(torch::Tensor* x, torch::Tensor* sigma)
+ * - torch::Tensor **_met**(torch::Tensor* met_xy)
+ * - torch::Tensor **_H_perp**(torch::Tensor* base)
+ * - torch::Tensor **_N**(torch::Tensor* hperp)
+ *
+ * ## Function Implementations
+ * - return **torch::cat**({ G01, t0, G12, t0, G01, G02 - G12, t0, t0, t0}, -1)
+ * - return **torch::acos**(z)
+ * - return **torch::matmul**(torch::matmul(Rz, torch::matmul(Ry, Rx)
+ * - return **torch::cat**({t0, t0, matrix}, -1)
+ * - return **torch::matmul**(H_T, H)
+ * - return **torch::cat**({ Z / O, _0, x1 - muP, (w*Z)
+ * - torch::Tensor **nusol_::Hperp**(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses)
+ * - std::tuple<torch::Tensor, torch::Tensor> **nusol_::Intersection**(torch::Tensor* A, torch::Tensor* B, double null)
+ * - std::map<std::string, torch::Tensor> **nusol_::Nu**(torch::Tensor* pmc_b , torch::Tensor* pmc_mu, torch::Tensor* met_xy, 
+        torch::Tensor* masses, torch::Tensor* sigma, double null)
+ * - std::map<std::string, torch::Tensor> **nusol_::NuNu**(torch::Tensor* pmc_b1, torch::Tensor* pmc_b2, 
+        torch::Tensor* pmc_l1, torch::Tensor* pmc_l2, 
+        torch::Tensor* met_xy, double null, torch::Tensor* m1, torch::Tensor* m2)
+ * - H1, **torch::inverse**(H1_perp)
+ * - H2, **torch::inverse**(H2_perp)
  *
  * ## Dependencies
  * - nusol/nusol.h
@@ -23,4 +43,5 @@ std::map<std::string, torch::Tensor> GetMasses(...)
  * - physics/physics.h
  * - transform/transform.h
  * - utils/utils.h
+ *
  */

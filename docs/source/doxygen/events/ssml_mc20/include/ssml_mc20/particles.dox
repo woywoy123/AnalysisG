@@ -1,32 +1,102 @@
 /**
- * @file events_ssml_mc20_include_ssml_mc20_particles
- * @brief Documentation for events_ssml_mc20_include_ssml_mc20_particles
+ * @file events_ssml_mc20_include_ssml_mc20_particles_h
+ * @brief Detailed documentation for particles.h
  *
+ * ## File Information
+ * - Path: events/ssml_mc20/include/ssml_mc20/particles.h
+ * - Type: .h file
  *
  * ## Classes
- * - zboson : inherits from particle_template
- * - top : inherits from particle_template
- * - truthjet : inherits from particle_template
- * - jet : inherits from particle_template
- * - electron : inherits from particle_template
- * - muon : inherits from particle_template
- * - parton : inherits from particle_template
- * - lepton : inherits from particle_template
- *
- * ## Key Functions
- * - h>
-
-template <typename g>
-void pmu(...)
- * - int x(...)
- * - new g(...)
- * - template <typename g>
-void pmu_mass(...)
- * - public: zboson(...)
+ * ### class zboson : particle_template
+ * **Methods:**
  * - particle_template* clone(...)
  * - void build(...)
- * - public: top(...)
+ *
+ * ### class top : particle_template
+ * **Members:**
+ * - bool from_res
+ * - std::vector<particle_template*> jets
+ *
+ * ### class truthjet : particle_template
+ * **Methods:**
+ * - particle_template* clone(...)
+ * - void build(...)
+ * **Members:**
+ * - int top_index
+ *
+ * ### class jet : particle_template
+ * **Methods:**
+ * - particle_template* clone(...)
+ * - void build(...)
+ * - static void get_from_res(...)
+ * **Members:**
+ * - cproperty<bool, jet> from_res
+ * - int top_index
+ * - bool btag_77
+ * - bool btag_85
+ * - bool btag_90
+ * - bool sel_85
+ *
+ * ### class electron : particle_template
+ * **Methods:**
+ * - particle_template* clone(...)
+ * - void build(...)
+ * - static void get_from_res(...)
+ * **Members:**
+ * - cproperty<bool, electron> from_res
+ * - int top_index
+ * - int pass_ecids
+ *
+ * ### class muon : particle_template
+ * **Methods:**
+ * - particle_template* clone(...)
+ * - void build(...)
+ * - static void get_from_res(...)
+ * **Members:**
+ * - int top_index
+ * - cproperty<bool, muon> from_res
+ *
+ * ### class parton : particle_template
+ * **Methods:**
+ * - particle_template* clone(...)
+ * - void build(...)
+ * **Members:**
+ * - int top_index
+ * - int jet_index
+ * - int truthjet_index
+ * - int muon_index
+ * - int electron_index
+ * - std::map<std::string, jet*> jets
+ * - std::map<std::string, truthjet*> truthjets
+ *
+ * ### class lepton : particle_template
+ * **Methods:**
+ * - particle_template* clone(...)
+ * - void build(...)
+ * **Members:**
+ * - int ambiguity
+ *
+ * ## Functions
+ * - void **pmu**(std::vector<g*>* out, element_t* el)
+ * - void **pmu_mass**(std::vector<g*>* out, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - void **get_from_res**(bool* val, jet* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - void **get_from_res**(bool* val, electron* el)
+ * - particle_template* **clone**(void)
  *
  * ## Dependencies
  * - templates/particle_template.h
+ *
+ * ## Macros
+ * - #define PARTICLES_SSML_MC20_H #include <templates/particle_template.h>
+ *
  */

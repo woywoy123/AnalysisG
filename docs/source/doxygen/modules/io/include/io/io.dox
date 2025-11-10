@@ -1,21 +1,37 @@
 /**
- * @file modules_io_include_io_io
- * @brief Documentation for modules_io_include_io_io
+ * @file modules_io_include_io_io_h
+ * @brief Detailed documentation for io.h
  *
+ * ## File Information
+ * - Path: modules/io/include/io/io.h
+ * - Type: .h file
  *
  * ## Classes
- * - io : inherits from tools
+ * ### class io : tools, 
+    public notification
+ * **Methods:**
+ * - void write(...)
+ * **Members:**
+ * - long long unsigned int length
+ * - hid_t pairs
+ * - H5::DataSet* dataset
  *
- * ## Key Functions
- * - public: io(...)
- * - template <typename g>
-        void write(...)
- * - template <typename g>
-        void read(...)
- * - length, g(...)
- * - bool start(...)
- * - void end(...)
- * - std::vector<std::string> dataset_names(...)
+ * ## Functions
+ * - void **write**(std::vector<g>* inpt, std::string set_name)
+ * - void **write**(g* inpt, std::string set_name)
+ * - void **read**(std::vector<g>* outpt, std::string set_name)
+ * - void **read**(g* out, std::string set_name)
+ * - void **read**(graph_hdf5_w* out, std::string set_name)
+ * - bool **start**(std::string filename, std::string read_write)
+ * - void **end**(void)
+ * - std::vector<std::string> **dataset_names**(void)
+ * - std::map<std::string, long> **root_size**(void)
+ * - void **check_root_file_paths**(void)
+ * - bool **scan_keys**(void)
+ * - void **root_begin**(void)
+ * - void **root_end**(void)
+ * - void **trigger_pcm**(void)
+ * - void **import_settings**(settings_t* params)
  *
  * ## Dependencies
  * - H5Cpp.h
@@ -33,4 +49,8 @@
  * - structs/folds.h
  * - structs/settings.h
  * - tools/tools.h
+ *
+ * ## Macros
+ * - #define IO_IO_H #include <map>
+ *
  */

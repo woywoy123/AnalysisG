@@ -1,7 +1,23 @@
 /**
- * @file pyc_interface_operators
- * @brief Documentation for pyc_interface_operators
+ * @file pyc_interface_operators_cxx
+ * @brief Detailed documentation for operators.cxx
  *
+ * ## File Information
+ * - Path: pyc/interface/operators.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - return **operators_::Dot**(&v1, &v2)
+ * - return **operators_::CosTheta**(&v1, &v2)
+ * - return **operators_::SinTheta**(&v1, &v2)
+ * - return **operators_::Rx**(&angle)
+ * - return **operators_::Ry**(&angle)
+ * - return **operators_::Rz**(&angle)
+ * - return **operators_::RT**(&pmc_b, &phi, &theta)
+ * - return **operators_::CoFactors**(&matrix)
+ * - return **operators_::Determinant**(&matrix)
+ * - return **operators_::Inverse**(&matrix)
+ * - return **operators_::Cross**(&mat1, &mat2)
  *
  * ## Dependencies
  * - operators/operators.cuh
@@ -11,4 +27,5 @@
  * - pyc/pyc.h
  * - utils/utils.cuh
  * - utils/utils.h
+ *
  */

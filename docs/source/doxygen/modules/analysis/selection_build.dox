@@ -1,11 +1,17 @@
 /**
- * @file modules_analysis_selection_build
- * @brief Documentation for modules_analysis_selection_build
+ * @file modules_analysis_selection_build_cxx
+ * @brief Detailed documentation for selection_build.cxx
  *
+ * ## File Information
+ * - Path: modules/analysis/selection_build.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
+ * ## Function Implementations
+ * - h>
+
+void **analysis::build_selections**(void)
  *
  * ## Dependencies
  * - AnalysisG/analysis.h
+ *
  */

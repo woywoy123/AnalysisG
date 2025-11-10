@@ -1,14 +1,14 @@
 /**
- * @file modules_selection_include_templates_selection_template
- * @brief Documentation for modules_selection_include_templates_selection_template
+ * @file modules_selection_include_templates_selection_template_h
+ * @brief Detailed documentation for selection_template.h
  *
+ * ## File Information
+ * - Path: modules/selection/include/templates/selection_template.h
+ * - Type: .h file
  *
  * ## Classes
- * - container
- * - selection_template : inherits from tools
- *
- * ## Key Functions
- * - public: selection_template(...)
+ * ### class container
+ * **Methods:**
  * - void static set_name(...)
  * - void static get_name(...)
  * - void static set_hash(...)
@@ -18,6 +18,40 @@
  * - void static get_weight(...)
  * - void static set_index(...)
  * - selection_template* clone(...)
+ * - bool selection(...)
+ * **Members:**
+ * - cproperty<std::string, selection_template> name
+ * - cproperty<std::string, selection_template> hash
+ * - cproperty<std::string, selection_template> tree
+ * - cproperty<double, selection_template> weight
+ * - cproperty<long, selection_template> index
+ * - std::vector<particle_template*> ox
+ *
+ * ## Enumerations
+ * ### enum attrs
+ * Values: std::vector<particle_template*> ox; 
+            this -> downcast(particles, &ox); 
+            this -> write(&ox, _name, attrs);
+ *
+ * ### enum attrs
+ * Values: if (!this -> handle){return;
+ *
+ * ## Functions
+ * - void static **set_name**(std::string*, selection_template*)
+ * - void static **get_name**(std::string*, selection_template*)
+ * - void static **set_hash**(std::string*, selection_template*)
+ * - void static **get_hash**(std::string*, selection_template*)
+ * - void static **get_tree**(std::string*, selection_template*)
+ * - void static **set_weight**(double*, selection_template*)
+ * - void static **get_weight**(double*, selection_template*)
+ * - void static **set_index**(long*, selection_template*)
+ * - selection_template* **clone**(void)
+ * - bool **selection**(event_template* ev)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sel)
+ * - void **bulk_write**(const long* idx, std::string* hx)
+ * - void **write**(std::vector<particle_template*>* particles, std::string _name, particle_enum attrs)
+ * - void **write**(std::vector<g*>* particles, std::string _name, particle_enum attrs)
  *
  * ## Dependencies
  * - meta/meta.h
@@ -29,4 +63,8 @@
  * - tools/merge_cast.h
  * - tools/tools.h
  * - tools/vector_cast.h
+ *
+ * ## Macros
+ * - #define SELECTION_TEMPLATE_H #include <templates/particle_template.h>
+ *
  */

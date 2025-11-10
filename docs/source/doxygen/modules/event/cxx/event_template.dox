@@ -1,14 +1,27 @@
 /**
- * @file modules_event_cxx_event_template
- * @brief Documentation for modules_event_cxx_event_template
+ * @file modules_event_cxx_event_template_cxx
+ * @brief Detailed documentation for event_template.cxx
  *
+ * ## File Information
+ * - Path: modules/event/cxx/event_template.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - return new event_template(...)
- * - new nusol(...)
+ * ## Functions
+ * - return new **event_template**(void)
+ *
+ * ## Function Implementations
+ * - h> **event_template::event_template**(void)
+ * - void **event_template::build_mapping**(std::map<std::string, data_t*>* evnt)
+ * - std::map<std::string, event_template*> **event_template::build_event**(std::map<std::string, data_t*>* evnt)
+ * - void **event_template::build**(element_t*)
+ * - void **event_template::flush_leaf_string**(void)
+ * - void **event_template::flush_particles**(void)
+ * - void **event_template::CompileEvent**(void)
+ * - event_template* **event_template::clone**(void)
+ * - std::vector<particle_template*> **event_template::double_neutrino**(std::vector<particle_template*>* targets, double phi, double met, double limit)
  *
  * ## Dependencies
  * - reconstruction/nusol.h
  * - templates/event_template.h
+ *
  */

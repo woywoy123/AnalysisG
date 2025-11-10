@@ -1,12 +1,23 @@
 /**
- * @file modules_structs_cxx_element
- * @brief Documentation for modules_structs_cxx_element
+ * @file modules_structs_cxx_element_cxx
+ * @brief Detailed documentation for element.cxx
  *
+ * ## File Information
+ * - Path: modules/structs/cxx/element.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
+ * ## Function Implementations
+ * - h>
+
+void **element_t::set_meta**(void)
+ * - bool **element_t::next**(void)
+ * - bool **element_t::boundary**(void)
+ * - void **data_t::flush**(void)
+ * - void **data_t::initialize**(void)
+ * - bool **data_t::next**(void)
  *
  * ## Dependencies
  * - structs/element.h
  * - structs/meta.h
+ *
  */

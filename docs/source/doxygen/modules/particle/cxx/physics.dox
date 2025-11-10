@@ -1,8 +1,23 @@
 /**
- * @file modules_particle_cxx_physics
- * @brief Documentation for modules_particle_cxx_physics
+ * @file modules_particle_cxx_physics_cxx
+ * @brief Detailed documentation for physics.cxx
  *
+ * ## File Information
+ * - Path: modules/particle/cxx/physics.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - h>
+
+double **particle_template::DeltaR**(particle_template* part)
+ * - return **std::pow**(sum, 0.5)
+ * - void **particle_template::set_e**(double* val, particle_template* prt)
+ * - void **particle_template::set_mass**(double* val, particle_template* prt)
+ * - void **particle_template::get_mass**(double* val, particle_template* prt)
+ * - void **particle_template::get_P**(double* val, particle_template* prt)
+ * - void **particle_template::get_beta**(double* val, particle_template* prt)
  *
  * ## Dependencies
  * - templates/particle_template.h
+ *
  */

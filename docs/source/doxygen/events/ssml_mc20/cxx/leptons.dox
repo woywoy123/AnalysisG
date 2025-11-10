@@ -1,14 +1,22 @@
 /**
- * @file events_ssml_mc20_cxx_leptons
- * @brief Documentation for events_ssml_mc20_cxx_leptons
+ * @file events_ssml_mc20_cxx_leptons_cxx
+ * @brief Detailed documentation for leptons.cxx
  *
+ * ## File Information
+ * - Path: events/ssml_mc20/cxx/leptons.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new muon(...)
- * - size_t x(...)
- * - new electron(...)
- * - new lepton(...)
+ * ## Function Implementations
+ * - particle_template* **muon::clone**(void)
+ * - void **muon::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - void **muon::get_from_res**(bool* val, muon* el)
+ * - particle_template* **electron::clone**(void)
+ * - void **electron::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - void **electron::get_from_res**(bool* val, electron* el)
+ * - particle_template* **lepton::clone**(void)
+ * - void **lepton::build**(std::map<std::string, particle_template*>* prt, element_t* el)
  *
  * ## Dependencies
  * - particles.h
+ *
  */

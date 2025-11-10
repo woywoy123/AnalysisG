@@ -1,14 +1,20 @@
 /**
- * @file modules_roc_cxx_roc
- * @brief Documentation for modules_roc_cxx_roc
+ * @file modules_roc_cxx_roc_cxx
+ * @brief Detailed documentation for roc.cxx
  *
+ * ## File Information
+ * - Path: modules/roc/cxx/roc.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - size_t y(...)
- * - new roc_t(...)
+ * ## Function Implementations
+ * - include <cmath> **roc::roc**(void)
+ * - void **roc::build_ROC**(std::string name, int kfold, 
+        std::vector<int>* label, 
+        std::vector<std::vector<double>>* scores)
+ * - std::vector<roc_t*> **roc::get_ROC**(void)
  *
  * ## Dependencies
  * - cmath
  * - plotting/roc.h
+ *
  */

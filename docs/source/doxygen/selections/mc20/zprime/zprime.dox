@@ -1,22 +1,32 @@
 /**
- * @file selections_mc20_zprime_zprime
- * @brief Documentation for selections_mc20_zprime_zprime
+ * @file selections_mc20_zprime_zprime_h
+ * @brief Detailed documentation for zprime.h
  *
+ * ## File Information
+ * - Path: selections/mc20/zprime/zprime.h
+ * - Type: .h file
  *
  * ## Classes
- * - zprime : inherits from selection_template
- *
- * ## Key Functions
- * - new zprime(...)
- * - size_t x(...)
- * - size_t t(...)
+ * ### class zprime : selection_template
+ * **Methods:**
  * - selection_template* clone(...)
  * - bool selection(...)
  * - bool strategy(...)
  * - void merge(...)
+ * **Members:**
+ * - std::vector<float> zprime_truth_tops
+ *
+ * ## Functions
+ * - selection_template* **clone**(void)
+ * - bool **selection**(event_template* ev)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sl)
  *
  * ## Dependencies
  * - ssml_mc20/event.h
  * - templates/selection_template.h
- * - zprime.h
+ *
+ * ## Macros
+ * - #define ZPRIME_H #include <ssml_mc20/event.h>
+ *
  */

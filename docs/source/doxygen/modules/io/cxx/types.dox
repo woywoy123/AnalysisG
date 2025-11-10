@@ -1,11 +1,16 @@
 /**
- * @file modules_io_cxx_types
- * @brief Documentation for modules_io_cxx_types
+ * @file modules_io_cxx_types_cxx
+ * @brief Detailed documentation for types.cxx
  *
+ * ## File Information
+ * - Path: modules/io/cxx/types.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - H5T_COMPOUND, sizeof(...)
+ * ## Function Implementations
+ * - hid_t **io::member**(folds_t)
+ * - hid_t **io::member**(graph_hdf5_w inpt)
  *
  * ## Dependencies
  * - io.h
+ *
  */

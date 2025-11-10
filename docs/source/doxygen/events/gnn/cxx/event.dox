@@ -1,14 +1,17 @@
 /**
- * @file events_gnn_cxx_event
- * @brief Documentation for events_gnn_cxx_event
+ * @file events_gnn_cxx_event_cxx
+ * @brief Detailed documentation for event.cxx
  *
+ * ## File Information
+ * - Path: events/gnn/cxx/event.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new gnn_event(...)
- * - size_t y(...)
- * - size_t x(...)
- * - size_t src(...)
+ * ## Function Implementations
+ * - event_template* **gnn_event::clone**(void)
+ * - void **gnn_event::build**(element_t* el)
+ * - void **gnn_event::CompileEvent**(void)
  *
  * ## Dependencies
  * - gnn-event.h
+ *
  */

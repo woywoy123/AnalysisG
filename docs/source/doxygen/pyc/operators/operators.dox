@@ -1,13 +1,40 @@
 /**
- * @file pyc_operators_operators
- * @brief Documentation for pyc_operators_operators
+ * @file pyc_operators_operators_cxx
+ * @brief Detailed documentation for operators.cxx
  *
+ * ## File Information
+ * - Path: pyc/operators/operators.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - int i(...)
- * - int j(...)
+ * ## Function Implementations
+ * - h>
+
+torch::Tensor **operators_::Dot**(torch::Tensor* v1, torch::Tensor* v2)
+ * - torch::Tensor **operators_::CosTheta**(torch::Tensor* v1, torch::Tensor* v2)
+ * - torch::Tensor **operators_::SinTheta**(torch::Tensor* v1, torch::Tensor* v2)
+ * - return **torch::sqrt**(1 - dot2/(v1_2*v2_2)
+ * - torch::Tensor **operators_::Rx**(torch::Tensor* angle)
+ * - return **torch::cat**({t1,  t0,   t0, 
+                       t0, cos, -sin, 
+                       t0, sin,  cos
+    }, -1)
+ * - torch::Tensor **operators_::Ry**(torch::Tensor* angle)
+ * - return **torch::cat**({cos, t0, sin, 
+                        t0, t1,  t0, 
+                      -sin, t0, cos
+    }, -1)
+ * - torch::Tensor **operators_::Rz**(torch::Tensor* angle)
+ * - return **torch::cat**({cos, -sin, t0, 
+                       sin,  cos, t0, 
+                       t0 ,   t0, t1
+    }, -1)
+ * - torch::Tensor **operators_::CoFactors**(torch::Tensor* matrix)
+ * - return **torch::cat**(out, -1)
+ * - torch::Tensor **operators_::Determinant**(torch::Tensor* matrix)
+ * - return **torch::det**(*matrix)
  *
  * ## Dependencies
  * - operators/operators.h
  * - utils/utils.h
+ *
  */

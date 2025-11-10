@@ -1,22 +1,63 @@
 /**
- * @file modules_nusol_tmp_odeRK
- * @brief Documentation for modules_nusol_tmp_odeRK
+ * @file modules_nusol_tmp_odeRK_h
+ * @brief Detailed documentation for odeRK.h
  *
+ * ## File Information
+ * - Path: modules/nusol/tmp/odeRK.h
+ * - Type: .h file
  *
  * ## Classes
- * - odeRK : inherits from tools
+ * ### class odeRK : tools
+ * **Methods:**
+ * - void solve(...)
+ * - void rk4(...)
+ * - void update_t(...)
+ * - double solve_z_phi(...)
+ * - double residual(...)
+ * - std::vector<ellipse_t> derivative(...)
+ * - double ghost_angle(...)
+ * - std::vector<double> plane_rk4(...)
+ * - std::vector<double> plane_align(...)
+ * **Members:**
+ * - vec3 met_
+ * - int itr
+ * - int nsx
+ * - double dt_
+ * - double ct
+ * - std::vector<ellipse_t> _state
  *
- * ## Key Functions
- * - size_t i(...)
- * - int s(...)
- * - int x(...)
- * - matrix A(...)
- * - matrix b(...)
- * - std::vector<double> weights(...)
+ * ## Structures
+ * ### struct ellipse_t
+ * - vec3   A,   B, C
+ * - vec3  vA,  vB, vC
+ * - double t
+ * - double z
+ *
+ * ### struct recon_t
+ * - bool is_valid
+ * - double residual
+ * - std::vector<double> t
+ * - std::vector<double> z
+ * - std::vector<double> phi
+ *
+ * ## Functions
+ * - void **print**(void)
+ * - void **solve**(void)
+ * - void **rk4**(double dt)
+ * - void **update_t**(void)
+ * - double **solve_z_phi**(void)
+ * - double **residual**(std::vector<double> wg, std::vector<double> phx)
+ * - std::vector<ellipse_t> **derivative**(const std::vector<ellipse_t>& dS)
+ * - double **ghost_angle**(int nui)
+ * - std::vector<double> **plane_rk4**(const std::vector<double>& t_initial)
+ * - std::vector<double> **plane_align**(const std::vector<ellipse_t>& current_state)
  *
  * ## Dependencies
  * - reconstruction/matrix.h
  * - reconstruction/multisol.h
- * - reconstruction/odeRK.h
  * - tools/tools.h
+ *
+ * ## Macros
+ * - #define MULTISOL_RK4_H #include <reconstruction/multisol.h>
+ *
  */

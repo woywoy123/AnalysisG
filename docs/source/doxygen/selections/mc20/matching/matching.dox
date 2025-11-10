@@ -1,22 +1,54 @@
 /**
- * @file selections_mc20_matching_matching
- * @brief Documentation for selections_mc20_matching_matching
+ * @file selections_mc20_matching_matching_h
+ * @brief Detailed documentation for matching.h
  *
+ * ## File Information
+ * - Path: selections/mc20/matching/matching.h
+ * - Type: .h file
  *
  * ## Classes
- * - matching : inherits from selection_template
- *
- * ## Key Functions
- * - new matching(...)
- * - size_t y(...)
- * - size_t x(...)
+ * ### class matching : selection_template
+ * **Methods:**
  * - selection_template* clone(...)
  * - void reference(...)
  * - void experimental(...)
  * - void current(...)
- * - void dump(...)
+ * - std::vector<int> get_pdgid(...)
+ * - bool strategy(...)
+ * - void merge(...)
+ * **Members:**
+ * - int* num_jets
+ * - double energy_constraint
+ * - buffer_t data
+ *
+ * ## Structures
+ * ### struct object_data_t
+ * - int num_tops
+ * - int num_ltop
+ * - int num_htop
+ * - int num_false
+ * - std::vector<double> mass
+ *
+ * ### struct buffer_t
+ * - object_data_t top_partons
+ * - object_data_t top_children
+ * - object_data_t top_truthjets
+ * - object_data_t top_jets_children
+ * - object_data_t top_jets_leptons
+ *
+ * ## Functions
+ * - selection_template* **clone**(void)
+ * - void **reference**(event_template* ev)
+ * - void **experimental**(event_template* ev)
+ * - void **current**(event_template* ev)
+ * - std::vector<int> **get_pdgid**(std::vector<particle_template*>* prt)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sl)
  *
  * ## Dependencies
- * - matching.h
  * - templates/selection_template.h
+ *
+ * ## Macros
+ * - #define MATCHING_H #include <templates/selection_template.h>
+ *
  */

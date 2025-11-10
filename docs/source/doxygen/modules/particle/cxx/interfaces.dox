@@ -1,8 +1,31 @@
 /**
- * @file modules_particle_cxx_interfaces
- * @brief Documentation for modules_particle_cxx_interfaces
+ * @file modules_particle_cxx_interfaces_cxx
+ * @brief Detailed documentation for interfaces.cxx
  *
+ * ## File Information
+ * - Path: modules/particle/cxx/interfaces.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - h>
+
+void **particle_template::set_pdgid**(int* val, particle_template* prt)
+ * - void **particle_template::get_pdgid**(int* val, particle_template* prt)
+ * - void **particle_template::set_symbol**(std::string* val, particle_template* prt)
+ * - void **particle_template::get_symbol**(std::string* val, particle_template* prt)
+ * - void **particle_template::set_charge**(double* val, particle_template* prt)
+ * - void **particle_template::get_charge**(double* val, particle_template* prt)
+ * - void **particle_template::get_isb**(bool* val, particle_template* prt)
+ * - void **particle_template::get_isnu**(bool* val, particle_template* prt)
+ * - void **particle_template::get_islep**(bool* val, particle_template* prt)
+ * - void **particle_template::get_isadd**(bool* val, particle_template* prt)
+ * - bool **particle_template::is**(std::vector<int> p)
+ * - void **particle_template::get_lepdecay**(bool* val, particle_template* prt)
+ * - void **particle_template::add_leaf**(std::string key, std::string leaf)
+ * - void **particle_template::set_parents**(std::map<std::string, particle_template*>* val, particle_template* prt)
+ * - void **particle_template::get_parents**(std::map<std::string, particle_template*>* val, particle_template* prt)
  *
  * ## Dependencies
  * - templates/particle_template.h
+ *
  */

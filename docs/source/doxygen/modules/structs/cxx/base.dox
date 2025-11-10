@@ -1,17 +1,39 @@
 /**
- * @file modules_structs_cxx_base
- * @brief Documentation for modules_structs_cxx_base
+ * @file modules_structs_cxx_base_cxx
+ * @brief Detailed documentation for base.cxx
  *
+ * ## File Information
+ * - Path: modules/structs/cxx/base.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - include <iostream>
-
-void buildDict(...)
- * - void registerInclude(...)
- * - void buildPCM(...)
- * - Add your type(...)
- * - void buildAll(...)
- * - int count(...)
+ * ## Enumerations
+ * ### enum bsc_t
+ * Values: int vec, "vector"); 
+    if (vec
+ *
+ * ## Functions
+ * - void **buildDict**(std::string _name, std::string _shrt)
+ * - void **registerInclude**(std::string pth, bool is_abs)
+ * - void **buildPCM**(std::string name, std::string incl, bool exl)
+ * - void **buildAll**(void)
+ * - int **count**(const std::string* str, const std::string sub)
+ *
+ * ## Function Implementations
+ * - data_enum **bsc_t::root_type_translate**(std::string* root_str)
+ * - std::string **bsc_t::as_string**(void)
+ * - std::string **bsc_t::scan_buffer**(void)
+ * - void **bsc_t::flush_buffer**(void)
+ * - bool **bsc_t::element**(std::vector<std::vector<std::vector<float>>>* el)
+ * - bool **bsc_t::element**(std::vector<std::vector<std::vector<double>>>* el)
+ * - bool **bsc_t::element**(std::vector<std::vector<std::vector<long>>>* el)
+ * - bool **bsc_t::element**(std::vector<std::vector<std::vector<int>>>* el)
+ * - bool **bsc_t::element**(std::vector<std::vector<std::vector<bool>>>* el)
+ * - bool **bsc_t::element**(std::vector<std::vector<float>>* el)
+ * - bool **bsc_t::element**(std::vector<std::vector<double>>* el)
+ * - bool **bsc_t::element**(std::vector<std::vector<long>>* el)
+ * - bool **bsc_t::element**(std::vector<std::vector<int>>* el)
+ * - bool **bsc_t::element**(std::vector<std::vector<bool>>* el)
+ * - bool **bsc_t::element**(std::vector<float>* el)
  *
  * ## Dependencies
  * - ;
@@ -19,4 +41,5 @@ void buildDict(...)
  * - TInterpreter.h
  * - iostream
  * - structs/base.h
+ *
  */

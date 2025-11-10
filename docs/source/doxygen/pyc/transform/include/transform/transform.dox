@@ -1,18 +1,35 @@
 /**
- * @file pyc_transform_include_transform_transform
- * @brief Documentation for pyc_transform_include_transform_transform
+ * @file pyc_transform_include_transform_transform_h
+ * @brief Detailed documentation for transform.h
  *
+ * ## File Information
+ * - Path: pyc/transform/include/transform/transform.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - torch::Tensor Px(...)
- * - torch::Tensor Py(...)
- * - torch::Tensor Pz(...)
- * - torch::Tensor PxPyPz(...)
- * - torch::Tensor PxPyPzE(...)
- * - torch::Tensor Pt(...)
- * - torch::Tensor PtEta(...)
- * - torch::Tensor Phi(...)
+ * ## Functions
+ * - torch::Tensor **Px**(torch::Tensor* pt, torch::Tensor* phi)
+ * - torch::Tensor **Py**(torch::Tensor* pt, torch::Tensor* phi)
+ * - torch::Tensor **Pz**(torch::Tensor* pt, torch::Tensor* eta)
+ * - torch::Tensor **PxPyPz**(torch::Tensor* pt, torch::Tensor* eta, torch::Tensor* phi)
+ * - torch::Tensor **PxPyPzE**(torch::Tensor* pt, torch::Tensor* eta, torch::Tensor* phi, torch::Tensor* energy)
+ * - torch::Tensor **PxPyPz**(torch::Tensor* pmu)
+ * - torch::Tensor **PxPyPzE**(torch::Tensor* pmu)
+ * - torch::Tensor **Pt**(torch::Tensor* px, torch::Tensor* py)
+ * - torch::Tensor **PtEta**(torch::Tensor* pt, torch::Tensor* pz)
+ * - torch::Tensor **Phi**(torch::Tensor* pmc)
+ * - torch::Tensor **Phi**(torch::Tensor* px, torch::Tensor* py)
+ * - torch::Tensor **Eta**(torch::Tensor* pmc)
+ * - torch::Tensor **Eta**(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * - torch::Tensor **PtEtaPhi**(torch::Tensor* pmc)
+ * - torch::Tensor **PtEtaPhiE**(torch::Tensor* pmc)
+ *
+ * ## Namespaces
+ * - transform_
  *
  * ## Dependencies
  * - torch/torch.h
+ *
+ * ## Macros
+ * - #define TRANSFORM_H #include <torch/torch.h>
+ *
  */

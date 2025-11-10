@@ -1,11 +1,27 @@
 /**
- * @file modules_event_cxx_properties
- * @brief Documentation for modules_event_cxx_properties
+ * @file modules_event_cxx_properties_cxx
+ * @brief Detailed documentation for properties.cxx
  *
+ * ## File Information
+ * - Path: modules/event/cxx/properties.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
+ * ## Function Implementations
+ * - h>
+
+void **event_template::set_trees**(std::vector<std::string>* inpt, event_template* ev)
+ * - void **event_template::set_branches**(std::vector<std::string>* inpt, event_template* ev)
+ * - void **event_template::add_leaf**(std::string key, std::string val)
+ * - void **event_template::get_leaves**(std::vector<std::string>* inpt, event_template* ev)
+ * - void **event_template::set_tree**(std::string* name, event_template* ev)
+ * - void **event_template::get_tree**(std::string* name, event_template* ev)
+ * - void **event_template::set_name**(std::string* name, event_template* ev)
+ * - void **event_template::set_hash**(std::string* path, event_template* ev)
+ * - void **event_template::get_hash**(std::string* val, event_template* ev)
+ * - void **event_template::set_weight**(double* inpt, event_template* ev)
+ * - void **event_template::set_index**(long* inpt, event_template* ev)
  *
  * ## Dependencies
  * - templates/event_template.h
+ *
  */

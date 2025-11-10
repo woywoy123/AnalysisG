@@ -1,22 +1,49 @@
 /**
- * @file selections_neutrino_combinatorial_combinatorial
- * @brief Documentation for selections_neutrino_combinatorial_combinatorial
+ * @file selections_neutrino_combinatorial_combinatorial_h
+ * @brief Detailed documentation for combinatorial.h
  *
+ * ## File Information
+ * - Path: selections/neutrino/combinatorial/combinatorial.h
+ * - Type: .h file
  *
  * ## Classes
- * - neutrino
- * - combinatorial : inherits from selection_template
+ * ### class neutrino
+ * **Members:**
+ * - std::vector<particle_template*> particles
  *
- * ## Key Functions
- * - size_t x(...)
- * - new combinatorial(...)
- * - size_t i(...)
- * - double chi2(...)
- * - particle_template* safe_get(...)
+ * ### class combinatorial : selection_template
+ * **Methods:**
+ * - selection_template* clone(...)
+ * - bool selection(...)
+ * - bool strategy(...)
+ * - void merge(...)
+ * - void update_state(...)
+ * - void reconstruction(...)
+ * **Members:**
+ * - int num_device
+ * - double masstop
+ * - double massw
+ * - std::vector<packet_t*> storage
+ *
+ * ## Structures
+ * ### struct packet_t
+ * - std::vector<particle_template*> particles
+ *
+ * ## Functions
+ * - selection_template* **clone**(void)
+ * - bool **selection**(event_template* ev)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sl)
+ * - void **update_state**(packet_t* data)
+ * - void **reconstruction**(packet_t* data)
+ * - packet_t* **build_packet**(g* evnt, std::string name)
+ * - std::vector<g*> **upcast**(std::vector<particle_template*>* inpt)
+ * - std::vector<g*> **upcast**(std::map<std::string, particle_template*>* inpt)
  *
  * ## Dependencies
- * - bsm_4tops/event.h
- * - combinatorial.h
- * - pyc/pyc.h
  * - templates/selection_template.h
+ *
+ * ## Macros
+ * - #define COMBINATORIAL_H #include <templates/selection_template.h>
+ *
  */

@@ -1,19 +1,26 @@
 /**
- * @file modules_typecasting_cxx_typecasting
- * @brief Documentation for modules_typecasting_cxx_typecasting
+ * @file modules_typecasting_cxx_typecasting_cxx
+ * @brief Detailed documentation for typecasting.cxx
  *
+ * ## File Information
+ * - Path: modules/typecasting/cxx/typecasting.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - std::vector<signed long> tensor_size(...)
- * - size_t x(...)
- * - new TTree(...)
- * - Add your type(...)
- * - vv_d, data, &s, double(...)
- * - vv_f, data, &s, float(...)
- * - vv_l, data, &s, long(...)
- * - vv_i, data, &s, int(...)
- * - vv_b, data, &s, bool(...)
+ * ## Enumerations
+ * ### enum and
+ * Values: std::vector<signed long> s, data);
+        this -> variable_name
+ *
+ * ## Functions
+ * - bool **_transfer**(torch::Tensor* data, torch::Tensor* cpux)
+ * - std::vector<signed long> **tensor_size**(torch::Tensor* inpt)
+ *
+ * ## Function Implementations
+ * - void **variable_t::create_meta**(meta_t* mtf)
+ * - void **variable_t::build_switch**(size_t s, torch::Tensor* tx)
+ * - void **variable_t::process**(torch::Tensor* data, std::string* varname, TTree* tr)
  *
  * ## Dependencies
  * - vector_cast.h
+ *
  */

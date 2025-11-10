@@ -1,17 +1,19 @@
 /**
- * @file templates_selections_<selection-name>
- * @brief Documentation for templates_selections_<selection-name>
+ * @file templates_selections_<selection-name>_h
+ * @brief Detailed documentation for <selection-name>.h
  *
+ * ## File Information
+ * - Path: templates/selections/<selection-name>.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - example variable merge_data(...)
- * - selection_template* clone(...)
- * - bool selection(...)
- * - bool strategy(...)
- * - void merge(...)
+ * ## Functions
+ * - selection_template* **clone**(void)
+ * - bool **selection**(event_template* ev)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sl)
  *
  * ## Dependencies
  * - <event-name
- * - <selection-name
  * - templates/selection_template.h
+ *
  */

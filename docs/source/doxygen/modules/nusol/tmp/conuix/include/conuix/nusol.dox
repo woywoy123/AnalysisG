@@ -1,28 +1,66 @@
 /**
- * @file modules_nusol_tmp_conuix_include_conuix_nusol
- * @brief Documentation for modules_nusol_tmp_conuix_include_conuix_nusol
+ * @file modules_nusol_tmp_conuix_include_conuix_nusol_h
+ * @brief Detailed documentation for nusol.h
  *
+ * ## File Information
+ * - Path: modules/nusol/tmp/conuix/include/conuix/nusol.h
+ * - Type: .h file
  *
  * ## Classes
- * - nuclx
+ * ### class nuclx
+ * **Methods:**
+ * - matrix_t H(...)
+ * - matrix_t H_tilde(...)
+ * - double P(...)
+ * - double dP_dL(...)
+ * - eig_t dPl0(...)
+ * - double G(...)
+ * - matrix_t hyperbolic(...)
+ * **Members:**
+ * - lambda values where dP_dL
+ * - nuclx_t* data
+ * - particle_template* jet
+ * - particle_template* lepton
  *
- * ## Key Functions
- * - nuclx_t from_sx_sy(...)
- * - double get_t(...)
- * - double get_z(...)
- * - nuclx_t from_z_t(...)
- * - double get_mt(...)
- * - double get_mw(...)
- * - void surface(...)
- * - shift of surface 
-    void shifts(...)
- * - parameterization
-    void sx(...)
- * - Sx
-                                      
-    void sy(...)
+ * ## Structures
+ * ### struct eig_t
+ * - double r1
+ * - double i1
+ *
+ * ### struct nuclx_t
+ * - double u
+ * - double u_p
+ * - double t_v
+ * - double sx_v
+ * - double mt_v
+ * - double A
+ * - double D
+ * - double s0x
+ * - double psi
+ * - double lmb1
+ *
+ * ## Functions
+ * - nuclx_t **from_sx_sy**(double _sx, double _sy)
+ * - double **get_t**(double _vp, double _up, double _z)
+ * - double **get_z**(double _sx, double _sy)
+ * - nuclx_t **from_z_t**(double _z, double _t)
+ * - double **get_mt**(double _sx, double _sy)
+ * - double **get_mw**(double _sx)
+ * - void **surface**(void)
+ * - void **shifts**(void)
+ * - void **sx**(void)
+ * - void **sy**(void)
+ * - void **mw**(void)
+ * - void **mt**(void)
+ * - void **polynomial**(void)
+ * - void **critical_t0**(void)
+ * - void **H_bar**(void)
  *
  * ## Dependencies
  * - conics/matrix.h
  * - templates/particle_template.h
+ *
+ * ## Macros
+ * - #define H_NUSOL_CNS #include <templates/particle_template.h>
+ *
  */

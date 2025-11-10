@@ -1,16 +1,38 @@
 /**
- * @file modules_nusol_tmp_multisol_cxx__odeRK
- * @brief Documentation for modules_nusol_tmp_multisol_cxx__odeRK
+ * @file modules_nusol_tmp_multisol_cxx__odeRK_cxx
+ * @brief Detailed documentation for _odeRK.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/tmp/multisol/cxx/_odeRK.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t i(...)
- * - int s(...)
- * - int x(...)
- * - matrix A(...)
- * - matrix b(...)
- * - std::vector<double> weights(...)
+ * ## Functions
+ * - matrix **_phi**(this -> nsx, 1)
+ * - matrix **_scl**(this -> nsx, 1)
+ * - matrix **A**(3, 3 * this -> nsx)
+ * - matrix **b**(3, 1)
+ * - std::vector<double> **weights**(this -> nsx)
+ * - std::vector<double> **phis**(this -> nsx)
+ * - std::vector<double> **dt_ds**(this -> nsx)
+ * - std::vector<double> **t_k2**(this->nsx)
+ * - std::vector<double> **t_k3**(this->nsx)
+ * - std::vector<double> **t_k4**(this->nsx)
+ * - std::vector<double> **t_final**(this->nsx)
+ *
+ * ## Function Implementations
+ * - void **ellipse_t::print**(void)
+ * - void **odeRK::update_t**(void)
+ * - void **odeRK::solve**(void)
+ * - std::cout << **std::string**((!x)
+ * - std::cout << **std::string**((!x)
+ * - return **std::fmod**(std::atan2(l_dr.y, l_dr.x)
+ * - double **odeRK::solve_z_phi**(void)
+ * - std::vector<double> **odeRK::plane_align**(const std::vector<ellipse_t>& current_state)
+ * - std::vector<double> **odeRK::plane_rk4**(const std::vector<double>& t_initial)
+ * - std::vector<ellipse_t> **odeRK::derivative**(const std::vector<ellipse_t>& dS)
+ * - void **odeRK::rk4**(double dt)
  *
  * ## Dependencies
  * - reconstruction/odeRK.h
+ *
  */

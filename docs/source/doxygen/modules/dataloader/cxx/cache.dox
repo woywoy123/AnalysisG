@@ -1,20 +1,27 @@
 /**
- * @file modules_dataloader_cxx_cache
- * @brief Documentation for modules_dataloader_cxx_cache
+ * @file modules_dataloader_cxx_cache_cxx
+ * @brief Detailed documentation for cache.cxx
  *
+ * ## File Information
+ * - Path: modules/dataloader/cxx/cache.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t t(...)
- * - new io(...)
- * - size_t l(...)
- * - std::vector<std::vector<std::tuple<graph_hdf5_w, graph_hdf5>>*> serials(...)
- * - do prealloc 
-    std::vector<std::map<std::string, std::vector<int>*>> fnames(...)
- * - std::vector<size_t> handles(...)
- * - std::vector<std::thread*> th_(...)
+ * ## Function Implementations
+ * - h>
+
+bool **dataloader::dump_graphs**(std::string path, int threads)
+ * - new **std::thread**(serialize, &quant[t], serials[t], &fnames[t], &handles[t])
+ * - new **std::string**(void)
+ * - new **std::thread**(write, titles[dx], itf -> first, &prdata[dx], itf -> second)
+ * - std::map<std::string, graph_t*>* **dataloader::restore_graphs_**(std::vector<std::string> cache_, int threads)
+ * - new **std::thread**(this -> progressbar2, &handles, &len_cache, &title)
+ * - new **std::thread**(threaded_reader, cache_io[x], gr_ev, cache_rebuild[x], &handles[x])
+ * - void **dataloader::restore_graphs**(std::vector<std::string> path, int threads)
+ * - void **dataloader::restore_graphs**(std::string path, int threads)
  *
  * ## Dependencies
  * - generators/dataloader.h
  * - io/io.h
  * - structs/folds.h
+ *
  */

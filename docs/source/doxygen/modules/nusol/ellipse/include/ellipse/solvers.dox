@@ -1,17 +1,29 @@
 /**
- * @file modules_nusol_ellipse_include_ellipse_solvers
- * @brief Documentation for modules_nusol_ellipse_include_ellipse_solvers
+ * @file modules_nusol_ellipse_include_ellipse_solvers_h
+ * @brief Detailed documentation for solvers.h
  *
+ * ## File Information
+ * - Path: modules/nusol/ellipse/include/ellipse/solvers.h
+ * - Type: .h file
  *
- * ## Classes
- * - mtx
+ * ## Functions
+ * - mtx* **find_roots**(double a, double b, double c)
+ * - mtx* **find_roots**(double a, double b, double c, double d)
+ * - mtx* **solve_cubic**(double a, double b, double c, double d)
+ * - mtx* **find_roots**(double a, double b, double c, double d, double e)
+ * - mtx* **smatx**(double px, double py, double pz)
+ * - mtx* **Rz**(double angle)
+ * - mtx* **Ry**(double angle)
+ * - mtx* **Rx**(double angle)
+ * - mtx* **unit**(void)
+ * - void **_arith**(double**  o, double** v2, double s, int idx, int idy)
+ * - void **_scale**(double**  v, double**  f, int idx, int idy, double s)
+ * - void **_copy**(double*  dst, double* src, int lx)
+ * - void **_copy**(bool*    dst, bool*   src, int lx)
+ * - void **_copy**(double** dst, double** src, int lx, int ly)
+ * - void **_copy**(bool**   dst, bool**   src, int lx, int ly)
  *
- * ## Key Functions
- * - mtx* find_roots(...)
- * - mtx* solve_cubic(...)
- * - mtx* smatx(...)
- * - mtx* Rz(...)
- * - mtx* Ry(...)
- * - mtx* Rx(...)
- * - mtx* unit(...)
+ * ## Macros
+ * - #define H_NUSOL_SOLVERS class mtx;
+ *
  */

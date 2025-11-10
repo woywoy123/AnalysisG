@@ -1,24 +1,55 @@
 /**
- * @file metrics_accuracy_include_metrics_accuracy
- * @brief Documentation for metrics_accuracy_include_metrics_accuracy
+ * @file metrics_accuracy_include_metrics_accuracy_h
+ * @brief Detailed documentation for accuracy.h
  *
+ * ## File Information
+ * - Path: metrics/accuracy/include/metrics/accuracy.h
+ * - Type: .h file
  *
  * ## Classes
- * - accuracy_metric : inherits from metric_template
- * - collector : inherits from tools
- *
- * ## Key Functions
- * - public: accuracy_metric(...)
+ * ### class accuracy_metric : metric_template
+ * **Methods:**
  * - accuracy_metric* clone(...)
  * - void define_metric(...)
  * - void define_variables(...)
  * - void event(...)
  * - void batch(...)
  * - void end(...)
- * - public: collector(...)
- * - cdata_t* get_mode(...)
- * - void add_ntop_truth(...)
+ * **Members:**
+ * - std::string mode
+ * - long idx
+ * - float edge_accuracy
+ * - float global_edge_accuracy
+ * - int ntop_truth
+ * - std::vector<float> ntop_scores
+ *
+ * ### class collector : tools
+ * **Methods:**
+ * - std::map<std::string, std::vector<cdata_t*>> get_plts(...)
+ * **Members:**
+ * - std::vector<std::string> model_names
+ *
+ * ## Structures
+ * ### struct cdata_t
+ * - int kfold
+ * - std::vector<int> ntops_truth
+ *
+ * ### struct cmodel_t
+ * - std::map<int, std::map<int, cdata_t>> evaluation_kfold_data
+ *
+ * ## Functions
+ * - accuracy_metric* **clone**(void)
+ * - void **define_metric**(metric_t* mtx)
+ * - void **define_variables**(void)
+ * - void **event**(void)
+ * - void **batch**(void)
+ * - void **end**(void)
+ * - std::map<std::string, std::vector<cdata_t*>> **get_plts**(void)
  *
  * ## Dependencies
  * - templates/metric_template.h
+ *
+ * ## Macros
+ * - #define AVERAGE_METRIC_H #include <templates/metric_template.h>
+ *
  */

@@ -1,11 +1,18 @@
 /**
- * @file modules_analysis_graph_build
- * @brief Documentation for modules_analysis_graph_build
+ * @file modules_analysis_graph_build_cxx
+ * @brief Detailed documentation for graph_build.cxx
  *
+ * ## File Information
+ * - Path: modules/analysis/graph_build.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
+ * ## Function Implementations
+ * - h>
+
+void **analysis::build_graphs**(void)
+ * - void **analysis::build_dataloader**(bool training)
  *
  * ## Dependencies
  * - AnalysisG/analysis.h
+ *
  */

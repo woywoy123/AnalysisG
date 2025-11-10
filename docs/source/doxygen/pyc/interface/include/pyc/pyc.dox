@@ -1,23 +1,51 @@
 /**
- * @file pyc_interface_include_pyc_pyc
- * @brief Documentation for pyc_interface_include_pyc_pyc
+ * @file pyc_interface_include_pyc_pyc_h
+ * @brief Detailed documentation for pyc.h
  *
+ * ## File Information
+ * - Path: pyc/interface/include/pyc/pyc.h
+ * - Type: .h file
  *
  * ## Classes
- * - neutrino : inherits from particle_template
+ * ### class neutrino : particle_template
+ * **Members:**
+ * - double min
+ * - long l_idx
+ * - long b_idx
+ * - particle_template* bquark
+ * - particle_template* lepton
+ * - std::vector<neutrino*> alternatives
  *
- * ## Key Functions
- * - public: neutrino(...)
- * - torch::Dict<std::string, torch::Tensor> std_to_dict(...)
- * - torch::Tensor tensorize(...)
- * - template <typename g>
-    std::vector<double> as_pmc(...)
- * - template <typename g>
-    std::vector<std::vector<double>> to_pmc(...)
- * - size_t x(...)
+ * ## Functions
+ * - torch::Dict<std::string, torch::Tensor> **std_to_dict**(std::map<std::string, torch::Tensor>* inpt)
+ * - torch::Dict<std::string, torch::Tensor> **std_to_dict**(std::map<std::string, torch::Tensor> inpt)
+ * - torch::Tensor **tensorize**(std::vector<std::vector<double>>* inpt)
+ * - torch::Tensor **tensorize**(std::vector<std::vector<long>>* inpt)
+ * - torch::Tensor **tensorize**(std::vector<double>* inpt)
+ * - torch::Tensor **tensorize**(std::vector<long>* inpt)
+ * - std::vector<double> **as_pmc**(g* p)
+ * - std::vector<std::vector<double>> **to_pmc**(std::vector<g*>* p)
+ * - torch::Tensor **Pt**(torch::Tensor px, torch::Tensor py)
+ * - torch::Tensor **Eta**(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+ * - torch::Tensor **Phi**(torch::Tensor px, torch::Tensor py)
+ * - torch::Tensor **PtEtaPhi**(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+ * - torch::Tensor **PtEtaPhiE**(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
+ * - torch::Tensor **Px**(torch::Tensor pt, torch::Tensor phi)
+ * - torch::Tensor **Py**(torch::Tensor pt, torch::Tensor phi)
+ *
+ * ## Namespaces
+ * - separate
+ * - cartesian
+ * - operators
+ * - physics
+ * - graph
  *
  * ## Dependencies
  * - templates/particle_template.h
  * - torch/all.h
  * - tuple
+ *
+ * ## Macros
+ * - #define PYC_H #include <tuple>
+ *
  */

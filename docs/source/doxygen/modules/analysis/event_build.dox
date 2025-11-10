@@ -1,16 +1,18 @@
 /**
- * @file modules_analysis_event_build
- * @brief Documentation for modules_analysis_event_build
+ * @file modules_analysis_event_build_cxx
+ * @brief Detailed documentation for event_build.cxx
  *
+ * ## File Information
+ * - Path: modules/analysis/event_build.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new io(...)
- * - size_t x(...)
- * - std::vector<size_t> th_prg(...)
- * - std::vector<std::thread*> thrs(...)
- * - std::vector<std::string*> title(...)
+ * ## Function Implementations
+ * - hxx>
+
+void **analysis::build_events**(void)
  *
  * ## Dependencies
  * - AnalysisG/analysis.h
  * - ROOT/RDataFrame.hxx
+ *
  */

@@ -1,16 +1,31 @@
 /**
- * @file events_exp_mc20_cxx_particles
- * @brief Documentation for events_exp_mc20_cxx_particles
+ * @file events_exp_mc20_cxx_particles_cxx
+ * @brief Detailed documentation for particles.cxx
  *
+ * ## File Information
+ * - Path: events/exp_mc20/cxx/particles.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new top(...)
- * - size_t x(...)
- * - new child(...)
- * - new physics_detector(...)
- * - new physics_truth(...)
- * - int mx(...)
+ * ## Functions
+ * - int **mx**(0)
+ *
+ * ## Function Implementations
+ * - particle_template* **top::clone**(void)
+ * - void **top::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **child::clone**(void)
+ * - void **child::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **physics_detector::clone**(void)
+ * - void **physics_detector::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **physics_truth::clone**(void)
+ * - void **physics_truth::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **jet::clone**(void)
+ * - void **jet::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **electron::clone**(void)
+ * - void **electron::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **muon::clone**(void)
+ * - void **muon::build**(std::map<std::string, particle_template*>* prt, element_t* el)
  *
  * ## Dependencies
  * - particles.h
+ *
  */

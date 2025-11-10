@@ -1,8 +1,13 @@
 /**
- * @file models___init__
- * @brief Documentation for models___init__
+ * @file models___init___py
+ * @brief Detailed documentation for __init__.py
  *
+ * ## File Information
+ * - Path: models/__init__.py
+ * - Type: .py file
  *
- * ## Dependencies
- * - Grift
+ * ## Python Imports
+ * - .grift.grift.Grift
+
+ *
  */

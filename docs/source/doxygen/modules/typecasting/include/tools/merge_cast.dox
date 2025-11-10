@@ -1,23 +1,31 @@
 /**
- * @file modules_typecasting_include_tools_merge_cast
- * @brief Documentation for modules_typecasting_include_tools_merge_cast
+ * @file modules_typecasting_include_tools_merge_cast_h
+ * @brief Detailed documentation for merge_cast.h
  *
+ * ## File Information
+ * - Path: modules/typecasting/include/tools/merge_cast.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - include <map>
-
-template <typename G>
-void merge_data(...)
- * - template <typename G>
-void sum_data(...)
- * - template <typename g>
-void reserve_count(...)
- * - size_t x(...)
- * - template <typename g>
-void contract_data(...)
+ * ## Functions
+ * - void **merge_data**(std::vector<G>* out, std::vector<G>* p2)
+ * - void **merge_data**(G* out, G* p2)
+ * - void **merge_data**(std::map<g, G>* out, std::map<g, G>* p2)
+ * - void **sum_data**(G* out, G* p2)
+ * - void **sum_data**(std::vector<G>* out, std::vector<G>* p2)
+ * - void **sum_data**(std::map<g, G>* out, std::map<g, G>* p2)
+ * - void **reserve_count**(g* inp, long* ix)
+ * - void **reserve_count**(std::vector<g>* inp, long* ix)
+ * - void **contract_data**(std::vector<g>* out, g* p2)
+ * - void **contract_data**(std::vector<g>* out, std::vector<g>* p2)
+ * - void **contract_data**(std::vector<g>* out, std::vector<std::vector<g>>* p2)
+ * - void **release_vector**(std::vector<g>* ipt)
  *
  * ## Dependencies
  * - map
  * - string
  * - vector
+ *
+ * ## Macros
+ * - #define TYPECASTING_MERGE_CAST_H #include <string>
+ *
  */

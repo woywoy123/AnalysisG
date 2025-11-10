@@ -1,19 +1,20 @@
 /**
- * @file modules_nusol_conuix_include_conuix_solvers
- * @brief Documentation for modules_nusol_conuix_include_conuix_solvers
+ * @file modules_nusol_conuix_include_conuix_solvers_h
+ * @brief Detailed documentation for solvers.h
  *
+ * ## File Information
+ * - Path: modules/nusol/conuix/include/conuix/solvers.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - include <cmath>
-
-template <typename g>
-int linear(...)
- * - template <typename g>
-int quadratic(...)
- * - template <typename g>
-int cubic(...)
+ * ## Functions
+ * - int **linear**(g a, g b, std::complex<g>* v0, double tol = 1e-14)
+ * - int **quadratic**(g a, g b, g c, std::complex<g>* v0, std::complex<g>* v1, double tol = 1e-14)
  *
  * ## Dependencies
  * - cmath
  * - complex
+ *
+ * ## Macros
+ * - #define H_CONUIX_SOLVERS #define PI 3.14159265358979323846
+ *
  */

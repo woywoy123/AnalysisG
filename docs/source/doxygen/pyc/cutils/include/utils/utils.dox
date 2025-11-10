@@ -1,17 +1,24 @@
 /**
- * @file pyc_cutils_include_utils_utils
- * @brief Documentation for pyc_cutils_include_utils_utils
+ * @file pyc_cutils_include_utils_utils_h
+ * @brief Detailed documentation for utils.h
  *
+ * ## File Information
+ * - Path: pyc/cutils/include/utils/utils.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - include <vector>
-
-torch::Tensor clip(...)
- * - torch::Tensor format(...)
- * - torch::TensorOptions MakeOp(...)
- * - void changedev(...)
+ * ## Functions
+ * - torch::Tensor **clip**(torch::Tensor* inpt, int dim)
+ * - torch::Tensor **format**(std::vector<torch::Tensor>* inpt)
+ * - torch::Tensor **format**(std::vector<torch::Tensor*> inpt)
+ * - torch::TensorOptions **MakeOp**(torch::Tensor* x)
+ * - void **changedev**(torch::Tensor* inpt)
+ * - torch::Tensor **changedev**(std::string dev, torch::Tensor* inx)
  *
  * ## Dependencies
  * - torch/torch.h
  * - vector
+ *
+ * ## Macros
+ * - #define UTILS_H #include <torch/torch.h>
+ *
  */

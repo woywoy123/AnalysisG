@@ -1,8 +1,31 @@
 /**
- * @file modules_typecasting_cxx_root
- * @brief Documentation for modules_typecasting_cxx_root
+ * @file modules_typecasting_cxx_root_cxx
+ * @brief Detailed documentation for root.cxx
  *
+ * ## File Information
+ * - Path: modules/typecasting/cxx/root.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - h>
+
+void **variable_t::process**(std::vector<std::vector<float>>* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(std::vector<std::vector<double>>* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(std::vector<std::vector<long>>* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(std::vector<std::vector<int>>* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(std::vector<std::vector<bool>>* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(std::vector<float>* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(std::vector<double>* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(std::vector<long>* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(std::vector<int>* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(std::vector<bool>* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(float* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(double* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(long* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(int* data, std::string* varname, TTree* tr)
+ * - void **variable_t::process**(bool* data, std::string* varname, TTree* tr)
  *
  * ## Dependencies
  * - tools/vector_cast.h
+ *
  */

@@ -1,23 +1,47 @@
 /**
- * @file graphs_exp_mc20_include_exp_mc20_graphs
- * @brief Documentation for graphs_exp_mc20_include_exp_mc20_graphs
+ * @file graphs_exp_mc20_include_exp_mc20_graphs_h
+ * @brief Detailed documentation for graphs.h
  *
+ * ## File Information
+ * - Path: graphs/exp_mc20/include/exp_mc20/graphs.h
+ * - Type: .h file
  *
  * ## Classes
- * - graph_jets : inherits from graph_template
- * - graph_jets_nonu : inherits from graph_template
- * - graph_jets_detector_lep : inherits from graph_template
- * - graph_detector : inherits from graph_template
- *
- * ## Key Functions
- * - public: graph_jets(...)
+ * ### class graph_jets : graph_template
+ * **Methods:**
  * - graph_template* clone(...)
  * - void CompileEvent(...)
- * - public: graph_jets_nonu(...)
- * - public: graph_jets_detector_lep(...)
- * - public: graph_detector(...)
+ *
+ * ### class graph_jets_nonu : graph_template
+ * **Methods:**
+ * - graph_template* clone(...)
+ * - void CompileEvent(...)
+ *
+ * ### class graph_jets_detector_lep : graph_template
+ * **Methods:**
+ * - graph_template* clone(...)
+ * - void CompileEvent(...)
+ *
+ * ### class graph_detector : graph_template
+ * **Methods:**
+ * - graph_template* clone(...)
+ * - void CompileEvent(...)
+ *
+ * ## Functions
+ * - graph_template* **clone**(void)
+ * - void **CompileEvent**(void)
+ * - graph_template* **clone**(void)
+ * - void **CompileEvent**(void)
+ * - graph_template* **clone**(void)
+ * - void **CompileEvent**(void)
+ * - graph_template* **clone**(void)
+ * - void **CompileEvent**(void)
  *
  * ## Dependencies
  * - exp_mc20/event.h
  * - templates/graph_template.h
+ *
+ * ## Macros
+ * - #define GRAPHS_EXP_MC20_H #include <templates/graph_template.h>
+ *
  */

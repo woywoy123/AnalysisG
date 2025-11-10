@@ -1,21 +1,27 @@
 /**
- * @file modules_typecasting_include_tools_tensor_cast
- * @brief Documentation for modules_typecasting_include_tools_tensor_cast
+ * @file modules_typecasting_include_tools_tensor_cast_h
+ * @brief Detailed documentation for tensor_cast.h
  *
+ * ## File Information
+ * - Path: modules/typecasting/include/tools/tensor_cast.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - template <typename g>
-void scout_dim(...)
- * - template <typename g>
-void nulls(...)
- * - template <typename g>
-bool standard(...)
- * - template <typename G, typename g>
-void as_primitive(...)
- * - size_t x(...)
- * - size_t t(...)
+ * ## Functions
+ * - void **scout_dim**(g*, int*)
+ * - void **nulls**(g* d, int*)
+ * - bool **standard**(g*, int*)
+ * - void **as_primitive**(G* data, std::vector<g>* lin, std::vector<signed long>*, unsigned int)
+ * - void **scout_dim**(const std::vector<G>* vec, int* mx_dim)
+ * - void **nulls**(const std::vector<g>* d, int* mx_dim)
+ * - bool **standard**(const std::vector<g>* vec, int* mx_dim)
+ * - void **as_primitive**(std::vector<G>* data, std::vector<g>* linear, std::vector<signed long>* dims, unsigned int depth = 0)
+ * - torch::Tensor **build_tensor**(std::vector<G>* _data, at::ScalarType _op, g, torch::TensorOptions* op)
  *
  * ## Dependencies
  * - torch/torch.h
  * - vector
+ *
+ * ## Macros
+ * - #define TYPECASTING_TENSOR_CAST_H #include <vector>
+ *
  */

@@ -1,16 +1,21 @@
 /**
- * @file templates_events_include_<event-name>_<event-name>
- * @brief Documentation for templates_events_include_<event-name>_<event-name>
+ * @file templates_events_include_<event-name>_<event-name>_h
+ * @brief Detailed documentation for <event-name>.h
  *
+ * ## File Information
+ * - Path: templates/events/include/<event-name>/<event-name>.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - some variable of the event 
-
-        event_template* clone(...)
- * - void build(...)
- * - void CompileEvent(...)
+ * ## Functions
+ * - event_template* **clone**(void)
+ * - void **build**(element_t* el)
+ * - void **CompileEvent**(void)
  *
  * ## Dependencies
  * - <particle-module
  * - templates/event_template.h
+ *
+ * ## Macros
+ * - #define EVENTS_ <EVENT-NAME>_H
+ *
  */

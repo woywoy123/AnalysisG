@@ -1,15 +1,33 @@
 /**
- * @file modules_notification_cxx_notification
- * @brief Documentation for modules_notification_cxx_notification
+ * @file modules_notification_cxx_notification_cxx
+ * @brief Detailed documentation for notification.cxx
  *
+ * ## File Information
+ * - Path: modules/notification/cxx/notification.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - size_t y(...)
- * - return int(...)
+ * ## Functions
+ * - return **int**(idx)
+ *
+ * ## Function Implementations
+ * - include <iomanip> **notification::notification**(void)
+ * - void **notification::_format**(std::string* message)
+ * - void **notification::success**(std::string message)
+ * - void **notification::warning**(std::string message)
+ * - void **notification::failure**(std::string message)
+ * - void **notification::info**(std::string message)
+ * - void **notification::progressbar**(float lProgress, std::string title)
+ * - void **notification::progressbar**(std::vector<size_t>* threads, std::vector<size_t>* trgt, std::vector<std::string>* title)
+ * - std::cout << std::fixed << **std::setprecision**(4)
+ * - void **notification::progressbar2**(std::vector<size_t>* threads, size_t* l, std::string* title)
+ * - void **notification::progressbar3**(std::vector<size_t>* threads, std::vector<size_t>* l, std::vector<std::string*>* title)
+ * - new **std::string**("Thread (" + std::to_string(x+1)
+ * - void **notification::monitor**(std::vector<std::thread*>* thr)
+ * - int **notification::running**(std::vector<std::thread*>* thr, std::vector<size_t>* prg, std::vector<size_t>* trgt)
  *
  * ## Dependencies
  * - iomanip
  * - notification.h
  * - stddef.h
+ *
  */

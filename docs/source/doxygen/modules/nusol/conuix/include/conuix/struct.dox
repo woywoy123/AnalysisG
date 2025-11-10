@@ -1,17 +1,69 @@
 /**
- * @file modules_nusol_conuix_include_conuix_struct
- * @brief Documentation for modules_nusol_conuix_include_conuix_struct
+ * @file modules_nusol_conuix_include_conuix_struct_h
+ * @brief Detailed documentation for struct.h
  *
+ * ## File Information
+ * - Path: modules/nusol/conuix/include/conuix/struct.h
+ * - Type: .h file
  *
  * ## Classes
- * - particle_template
+ * ### class particle_template
+ * **Members:**
+ * - int prec
  *
- * ## Key Functions
- * - void print(...)
- * - void variable(...)
- * - long double Z2(...)
- * - long double Sx(...)
- * - long double Sy(...)
+ * ## Structures
+ * ### struct atomics_t
+ * - int prec
+ *
+ * ### struct kinematic_t
+ * - long double beta
+ * - long double mass
+ * - long double energy
+ *
+ * ### struct rotation_t
+ * - long double phi
+ * - long double theta
+ * - matrix_t vec
+ * - matrix_t R_T
+ *
+ * ### struct base_t
+ * - long double rbl
+ * - long double cos
+ * - long double sin
+ * - long double w
+ * - long double o
+ * - long double w2
+ * - long double o2
+ * - long double beta
+ * - long double mass
+ * - long double E
+ *
+ * ### struct thetapsi_t
+ * - long double p_sin
+ * - long double m_sin
+ * - long double p_cos
+ * - long double m_cos
+ *
+ * ## Functions
+ * - void **print**(int p = 16)
+ * - void **variable**(std::string name, long double val)
+ * - void **print**(int p)
+ * - void **print**(int p)
+ * - void **print**(int p)
+ * - long double **Z2**(long double Sx, long double Sy)
+ * - void **print**(int p)
+ * - long double **Sx**(long double tau, long double Z)
+ * - void **print**(int p)
+ * - long double **Sy**(long double tau, long double Z)
+ * - void **print**(int p)
+ * - matrix_t **H_Matrix**(long double tau, long double Z)
+ * - matrix_t **H_Tilde**(long double tau, long double Z)
+ * - void **print**(int p)
+ * - long double **cos_theta**(particle_template* jet, particle_template* lep)
+ *
+ * ## Namespaces
+ * - characteristic
+ * - Conuix
  *
  * ## Dependencies
  * - conuix/htilde.h
@@ -19,4 +71,8 @@
  * - iomanip
  * - iostream
  * - string
+ *
+ * ## Macros
+ * - #define H_CONUIX_STRUCT #include <conuix/matrix.h>
+ *
  */

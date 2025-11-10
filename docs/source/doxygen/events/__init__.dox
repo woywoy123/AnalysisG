@@ -1,8 +1,13 @@
 /**
- * @file events___init__
- * @brief Documentation for events___init__
+ * @file events___init___py
+ * @brief Detailed documentation for __init__.py
  *
+ * ## File Information
+ * - Path: events/__init__.py
+ * - Type: .py file
  *
- * ## Dependencies
- * - ExpMC20
+ * ## Python Imports
+ * - .exp_mc20.ExpMC20
+
+ *
  */

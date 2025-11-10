@@ -1,13 +1,24 @@
 /**
- * @file modules_metric_cxx_metric_template
- * @brief Documentation for modules_metric_cxx_metric_template
+ * @file modules_metric_cxx_metric_template_cxx
+ * @brief Detailed documentation for metric_template.cxx
  *
+ * ## File Information
+ * - Path: modules/metric/cxx/metric_template.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - return new metric_template(...)
+ * ## Function Implementations
+ * - h> **metric_template::metric_template**(void)
+ * - metric_template* **metric_template::clone**(void)
+ * - metric_template* **metric_template::clone**(int)
+ * - void **metric_template::define_metric**(metric_t*)
+ * - void **metric_template::define_variables**(void)
+ * - void **metric_template::event**(void)
+ * - void **metric_template::batch**(void)
+ * - void **metric_template::end**(void)
  *
  * ## Dependencies
  * - meta/meta.h
  * - templates/metric_template.h
  * - templates/model_template.h
+ *
  */

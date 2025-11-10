@@ -1,15 +1,15 @@
 /**
- * @file modules_structs_include_structs_optimizer
- * @brief Documentation for modules_structs_include_structs_optimizer
+ * @file modules_structs_include_structs_optimizer_h
+ * @brief Detailed documentation for optimizer.h
  *
+ * ## File Information
+ * - Path: modules/structs/include/structs/optimizer.h
+ * - Type: .h file
  *
  * ## Classes
- * - optimizer_params_t
- *
- * ## Key Functions
- * - public: optimizer_params_t(...)
- * - private:
-        void static set_eps(...)
+ * ### class optimizer_params_t
+ * **Methods:**
+ * - void static set_eps(...)
  * - void static set_lr(...)
  * - void static set_lr_decay(...)
  * - void static set_weight_decay(...)
@@ -18,10 +18,59 @@
  * - void static set_betas(...)
  * - void static set_amsgrad(...)
  * - void static set_max_iter(...)
+ * - void static set_max_eval(...)
+ * **Members:**
+ * - std::string optimizer
+ * - cproperty<double, optimizer_params_t> lr
+ * - cproperty<double, optimizer_params_t> lr_decay
+ * - cproperty<double, optimizer_params_t> weight_decay
+ * - cproperty<double, optimizer_params_t> initial_accumulator_value
+ * - cproperty<double, optimizer_params_t> eps
+ * - cproperty<double, optimizer_params_t> tolerance_grad
+ * - cproperty<double, optimizer_params_t> tolerance_change
+ * - cproperty<double, optimizer_params_t> alpha
+ * - cproperty<double, optimizer_params_t> momentum
+ *
+ * ## Structures
+ * ### struct loss_opt
+ * - loss_enum fx
+ * - bool mean
+ * - bool sum
+ * - bool none
+ * - bool swap
+ * - bool full
+ * - bool batch_mean
+ * - bool target
+ * - bool zero_inf
+ * - bool defaults
+ *
+ * ## Enumerations
+ * ### enum fx
+ *
+ * ## Functions
+ * - void static **set_eps**(double*, optimizer_params_t* obj)
+ * - void static **set_lr**(double*, optimizer_params_t* obj)
+ * - void static **set_lr_decay**(double*, optimizer_params_t* obj)
+ * - void static **set_weight_decay**(double*, optimizer_params_t* obj)
+ * - void static **set_initial_accumulator_value**(double*, optimizer_params_t* obj)
+ * - void static **set_beta_hack**(std::vector<float>* val, optimizer_params_t* obj)
+ * - void static **set_betas**(std::tuple<float, float>*, optimizer_params_t* obj)
+ * - void static **set_amsgrad**(bool*, optimizer_params_t* obj)
+ * - void static **set_max_iter**(int*, optimizer_params_t* obj)
+ * - void static **set_max_eval**(int*, optimizer_params_t* obj)
+ * - void static **set_tolerance_grad**(double*, optimizer_params_t* obj)
+ * - void static **set_tolerance_change**(double*, optimizer_params_t* obj)
+ * - void static **set_history_size**(int*, optimizer_params_t* obj)
+ * - void static **set_centered**(bool*, optimizer_params_t* obj)
+ * - void static **set_nesterov**(bool*, optimizer_params_t* obj)
  *
  * ## Dependencies
  * - string
  * - structs/enums.h
  * - structs/property.h
  * - vector
+ *
+ * ## Macros
+ * - #define MODEL_ENUM_FUNCTIONS_H #include <string>
+ *
  */

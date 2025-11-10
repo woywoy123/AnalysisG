@@ -1,11 +1,37 @@
 /**
- * @file modules_structs_include_structs_meta
- * @brief Documentation for modules_structs_include_structs_meta
+ * @file modules_structs_include_structs_meta_h
+ * @brief Detailed documentation for meta.h
  *
+ * ## File Information
+ * - Path: modules/structs/include/structs/meta.h
+ * - Type: .h file
+ *
+ * ## Structures
+ * ### struct weights_t
+ * - int dsid
+ * - bool isAFII
+ * - std::string generator
+ * - std::string ami_tag
+ * - float total_events_weighted
+ * - float total_events
+ * - float processed_events
+ * - float processed_events_weighted
+ * - float processed_events_weighted_squared
+ * - std::map<std::string, float> hist_data
+ *
+ * ### struct meta_t
+ * - unsigned int dsid
+ * - bool isMC
+ * - std::string derivationFormat
+ * - std::map<int, std::string> inputfiles
  *
  * ## Dependencies
  * - iostream
  * - map
  * - string
  * - vector
+ *
+ * ## Macros
+ * - #define META_STRUCTS_H #include <iostream>
+ *
  */

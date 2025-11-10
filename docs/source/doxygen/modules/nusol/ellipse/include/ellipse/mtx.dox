@@ -1,21 +1,56 @@
 /**
- * @file modules_nusol_ellipse_include_ellipse_mtx
- * @brief Documentation for modules_nusol_ellipse_include_ellipse_mtx
+ * @file modules_nusol_ellipse_include_ellipse_mtx_h
+ * @brief Detailed documentation for mtx.h
  *
+ * ## File Information
+ * - Path: modules/nusol/ellipse/include/ellipse/mtx.h
+ * - Type: .h file
  *
  * ## Classes
- * - mtx
- *
- * ## Key Functions
- * - public: mtx(...)
+ * ### class mtx
+ * **Methods:**
  * - double trace(...)
  * - double det(...)
  * - mtx copy(...)
+ * - void copy(...)
+ * - void copy(...)
  * - bool assign(...)
  * - bool unique(...)
  * - mtx* cat(...)
  * - mtx* slice(...)
+ * - mtx* eigenvalues(...)
+ * **Members:**
+ * - mtx* ipt, int idx, int idy
+ * - idx, int idy, double val, bool valid
+ * - 6, int width
+ * - mtx& operator
+ * - double** _m
+ * - bool  ** _b
+ * - int dim_i
+ * - int dim_j
+ * - double tol
+ *
+ * ## Functions
+ * - double **trace**(void)
+ * - double **det**(void)
+ * - mtx **copy**(void)
+ * - void **copy**(const mtx* ipt, int idx, int idy = -1)
+ * - void **copy**(const mtx* ipt, int idx, int jdy, int idy)
+ * - bool **assign**(int idx, int idy, double val, bool valid = true)
+ * - bool **unique**(int id1, int id2, double v1, double v2)
+ * - mtx* **cat**(const mtx* v2)
+ * - mtx* **slice**(int idx)
+ * - mtx* **eigenvalues**(void)
+ * - mtx* **eigenvector**(void)
+ * - mtx **T**(void)
+ * - mtx **inv**(void)
+ * - mtx **cof**(void)
+ * - mtx **diag**(void)
  *
  * ## Dependencies
  * - cmath
+ *
+ * ## Macros
+ * - #define H_MTX #include <cmath>
+ *
  */

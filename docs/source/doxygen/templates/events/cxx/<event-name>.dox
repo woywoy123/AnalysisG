@@ -1,8 +1,12 @@
 /**
- * @file templates_events_cxx_<event-name>
- * @brief Documentation for templates_events_cxx_<event-name>
+ * @file templates_events_cxx_<event-name>_cxx
+ * @brief Detailed documentation for <event-name>.cxx
  *
+ * ## File Information
+ * - Path: templates/events/cxx/<event-name>.cxx
+ * - Type: .cxx file
  *
  * ## Dependencies
  * - <event-name
+ *
  */

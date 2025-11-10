@@ -1,14 +1,30 @@
 /**
- * @file modules_tools_cxx_io
- * @brief Documentation for modules_tools_cxx_io
+ * @file modules_tools_cxx_io_cxx
+ * @brief Detailed documentation for io.cxx
  *
+ * ## File Information
+ * - Path: modules/tools/cxx/io.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - unsigned int x(...)
+ * ## Structures
+ * ### struct stat
+ *
+ * ### struct stat
+ *
+ * ## Function Implementations
+ * - h>
+
+void **tools::create_path**(std::string input_path)
+ * - void **tools::rename**(std::string start, std::string target)
+ * - void **tools::delete_path**(std::string input_path)
+ * - bool **tools::is_file**(std::string path)
+ * - std::vector<std::string> **tools::ls**(std::string path, std::string ext)
+ * - std::string **tools::absolute_path**(std::string path)
  *
  * ## Dependencies
  * - filesystem
  * - sys/stat.h
  * - tools/tools.h
  * - unistd.h
+ *
  */

@@ -1,26 +1,26 @@
 /**
- * @file modules_structs_include_structs_property
- * @brief Documentation for modules_structs_include_structs_property
+ * @file modules_structs_include_structs_property_h
+ * @brief Detailed documentation for property.h
  *
+ * ## File Information
+ * - Path: modules/structs/include/structs/property.h
+ * - Type: .h file
  *
  * ## Classes
- * - cproperty
+ * ### class cproperty
  *
- * ## Key Functions
- * - include <string>
-
-template <typename T, typename G>
-void x_setter(...)
- * - template <typename T, typename G>
-void x_getter(...)
- * - public: cproperty(...)
- * - void set_setter(...)
- * - void set_getter(...)
- * - void set_object(...)
- * - operator T(...)
- * - void clear(...)
+ * ## Functions
+ * - void **x_setter**(T*, G*)
+ * - void **x_getter**(T*, G*)
+ * - void **set_object**(G* _obj)
+ * - operator **T**(void)
+ * - void **clear**(void)
  *
  * ## Dependencies
  * - functional
  * - string
+ *
+ * ## Macros
+ * - #define PROPERTY_STRUCTS_H #include <functional>
+ *
  */

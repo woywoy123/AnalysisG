@@ -1,20 +1,59 @@
 /**
- * @file modules_nusol_nusol_include_reconstruction_nusol
- * @brief Documentation for modules_nusol_nusol_include_reconstruction_nusol
+ * @file modules_nusol_nusol_include_reconstruction_nusol_h
+ * @brief Detailed documentation for nusol.h
  *
+ * ## File Information
+ * - Path: modules/nusol/nusol/include/reconstruction/nusol.h
+ * - Type: .h file
  *
  * ## Classes
- * - nusol
- * - ellipse
- * - conuix
- * - nusol_enum
+ * ### class nusol
  *
- * ## Key Functions
- * - public: nusol(...)
+ * ### class nusol
+ * **Methods:**
  * - void solve(...)
+ * **Members:**
+ * - nusol_t* params
+ * - ellipse* D_nunu
+ * - conuix* M_nunu
+ *
+ * ## Structures
+ * ### struct nusol_t
+ * - double met
+ * - double phi
+ * - double mt
+ * - double mw
+ * - double limit
+ * - nusol_enum mode
+ * - std::vector<particle_template*>* targets
+ * - friend ellipse
+ * - friend conuix
+ * - friend nusol
+ *
+ * ## Enumerations
+ * ### enum nusol_enum
+ * Values: ellipse, // https://arxiv.org/pdf/1305.1878
+    conuix, // generalized n-neutrino approach
+    undefined
+ *
+ * ### enum mode
+ * Values: public:
+        nusol(nusol_t* parameters); 
+        void solve(); 
+        ~nusol(); 
+
+    private:
+        nusol_t* params
+ *
+ * ## Functions
+ * - void **solve**(void)
  *
  * ## Dependencies
  * - notification/notification.h
  * - templates/particle_template.h
  * - tools/tools.h
+ *
+ * ## Macros
+ * - #define H_NUSOL #include <tools/tools.h>
+ *
  */

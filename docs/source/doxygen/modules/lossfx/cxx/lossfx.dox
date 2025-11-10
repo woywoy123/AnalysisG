@@ -1,8 +1,58 @@
 /**
- * @file modules_lossfx_cxx_lossfx
- * @brief Documentation for modules_lossfx_cxx_lossfx
+ * @file modules_lossfx_cxx_lossfx_cxx
+ * @brief Detailed documentation for lossfx.cxx
  *
+ * ## File Information
+ * - Path: modules/lossfx/cxx/lossfx.cxx
+ * - Type: .cxx file
+ *
+ * ## Enumerations
+ * ### enum op_
+ * Values: case opt_enum::adam   : this -> build_adam(op, params);    return this -> m_adam;       
+        case opt_enum::adagrad: this -> build_adagrad(op, params); return this -> m_adagrad;    
+        case opt_enum::adamw  : this -> build_adamw(op, params);   return this -> m_adamw;    
+        case opt_enum::lbfgs  : this -> build_lbfgs(op, params);   return this -> m_lbfgs;    
+        case opt_enum::rmsprop: this -> build_rmsprop(op, params); return this -> m_rmsprop;  
+        case opt_enum::sgd    : this -> build_sgd(op, params);     return this -> m_sgd;      
+        default: return nullptr;
+ *
+ * ### enum spx_
+ * Values: this -> failure("Invalid Scheduler: " + op -> scheduler);
+ *
+ * ### enum lss
+ * Values: switch (lss){
+        case loss_enum::bce                         : this -> build_fx_loss(this -> m_bce                         ); return true; 
+        case loss_enum::bce_with_logits             : this -> build_fx_loss(this -> m_bce_with_logits             ); return true; 
+        case loss_enum::cosine_embedding            : this -> build_fx_loss(this -> m_cosine_embedding            ); return true; 
+        case loss_enum::cross_entropy               : this -> build_fx_loss(this -> m_cross_entropy               ); return true; 
+        case loss_enum::ctc                         : this -> build_fx_loss(this -> m_ctc                         ); return true; 
+        case loss_enum::hinge_embedding             : this -> build_fx_loss(this -> m_hinge_embedding             ); return true; 
+        case loss_enum::huber                       : this -> build_fx_loss(this -> m_huber                       ); return true; 
+        case loss_enum::kl_div                      : this -> build_fx_loss(this -> m_kl_div                      ); return true; 
+        case loss_enum::l1                          : this -> build_fx_loss(this -> m_l1                          ); return true; 
+        case loss_enum::margin_ranking              : this -> build_fx_loss(this -> m_margin_ranking              ); return true; 
+        case loss_enum::mse                         : this -> build_fx_loss(this -> m_mse                         ); return true; 
+        case loss_enum::multi_label_margin          : this -> build_fx_loss(this -> m_multi_label_margin          ); return true; 
+        case loss_enum::multi_label_soft_margin     : this -> build_fx_loss(this -> m_multi_label_soft_margin     ); return true; 
+        case loss_enum::multi_margin                : this -> build_fx_loss(this -> m_multi_margin                ); return true; 
+        case loss_enum::nll                         : this -> build_fx_loss(this -> m_nll                         ); return true; 
+        case loss_enum::poisson_nll                 : this -> build_fx_loss(this -> m_poisson_nll                 ); return true; 
+        case loss_enum::smooth_l1                   : this -> build_fx_loss(this -> m_smooth_l1                   ); return true; 
+        case loss_enum::soft_margin                 : this -> build_fx_loss(this -> m_soft_margin                 ); return true; 
+        case loss_enum::triplet_margin              : this -> build_fx_loss(this -> m_triplet_margin              ); return true; 
+        case loss_enum::triplet_margin_with_distance: this -> build_fx_loss(this -> m_triplet_margin_with_distance); return true; 
+        default: break;
+ *
+ * ## Function Implementations
+ * - h> **lossfx::lossfx**(void)
+ * - torch::optim::Optimizer* **lossfx::build_optimizer**(optimizer_params_t* op, std::vector<torch::Tensor>* params)
+ * - void **lossfx::build_scheduler**(optimizer_params_t* op, torch::optim::Optimizer* opx)
+ * - void **lossfx::step**(void)
+ * - bool **lossfx::build_loss_function**(void)
+ * - bool **lossfx::build_loss_function**(loss_enum lss)
+ * - void **lossfx::to**(torch::TensorOptions* op)
  *
  * ## Dependencies
  * - templates/lossfx.h
+ *
  */

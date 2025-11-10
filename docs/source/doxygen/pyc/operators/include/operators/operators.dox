@@ -1,20 +1,30 @@
 /**
- * @file pyc_operators_include_operators_operators
- * @brief Documentation for pyc_operators_include_operators_operators
+ * @file pyc_operators_include_operators_operators_h
+ * @brief Detailed documentation for operators.h
  *
+ * ## File Information
+ * - Path: pyc/operators/include/operators/operators.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - torch::Tensor Dot(...)
- * - torch::Tensor Cross(...)
- * - torch::Tensor CosTheta(...)
- * - torch::Tensor SinTheta(...)
- * - torch::Tensor Rx(...)
- * - torch::Tensor Ry(...)
- * - torch::Tensor Rz(...)
- * - torch::Tensor CoFactors(...)
- * - torch::Tensor Determinant(...)
- * - torch::Tensor Inverse(...)
+ * ## Functions
+ * - torch::Tensor **Dot**(torch::Tensor* v1, torch::Tensor* v2)
+ * - torch::Tensor **Cross**(torch::Tensor* v1, torch::Tensor* v2)
+ * - torch::Tensor **CosTheta**(torch::Tensor* v1, torch::Tensor* v2)
+ * - torch::Tensor **SinTheta**(torch::Tensor* v1, torch::Tensor* v2)
+ * - torch::Tensor **Rx**(torch::Tensor* angle)
+ * - torch::Tensor **Ry**(torch::Tensor* angle)
+ * - torch::Tensor **Rz**(torch::Tensor* angle)
+ * - torch::Tensor **CoFactors**(torch::Tensor* matrix)
+ * - torch::Tensor **Determinant**(torch::Tensor* matrix)
+ * - torch::Tensor **Inverse**(torch::Tensor* matrix)
+ *
+ * ## Namespaces
+ * - operators_
  *
  * ## Dependencies
  * - torch/torch.h
+ *
+ * ## Macros
+ * - #define OPERATORS_H #include <torch/torch.h>
+ *
  */

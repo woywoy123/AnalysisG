@@ -1,15 +1,49 @@
 /**
- * @file modules_structs_include_structs_enums
- * @brief Documentation for modules_structs_include_structs_enums
+ * @file modules_structs_include_structs_enums_h
+ * @brief Detailed documentation for enums.h
  *
+ * ## File Information
+ * - Path: modules/structs/include/structs/enums.h
+ * - Type: .h file
  *
  * ## Classes
- * - data_enum
- * - opt_enum
- * - mlp_init
- * - loss_enum
- * - scheduler_enum
- * - graph_enum
- * - mode_enum
- * - particle_enum
+ * ### class data_enum
+ *
+ * ### class opt_enum
+ *
+ * ### class mlp_init
+ *
+ * ### class loss_enum
+ *
+ * ### class scheduler_enum
+ *
+ * ### class graph_enum
+ *
+ * ### class mode_enum
+ *
+ * ### class particle_enum
+ *
+ * ## Enumerations
+ * ### enum data_enum
+ * Values: // vector<vector<vector<...>>> -> vvv_<X>
+// vector<vector<...>> -> vv_<X>
+// vector<...> -> v_<X>
+// primitives (float, double, long, ...)
+    d, v_d, vv_d, vvv_d, f, v_f, vv_f
+ *
+ * ### enum opt_enum
+ * Values: adam, adagrad, adamw, lbfgs, rmsprop, sgd, invalid_optimizer
+ *
+ * ### enum mlp_init
+ * Values: uniform, normal, xavier_normal, xavier_uniform, kaiming_uniform, kaiming_normal
+ *
+ * ### enum loss_enum
+ * Values: bce, bce_with_logits, cosine_embedding, cross_entropy, ctc, hinge_embedding, huber, kl_div, l1, margin_ranking
+ *
+ * ### enum scheduler_enum
+ * Values: steplr, reducelronplateauscheduler, lrscheduler, invalid_scheduler
+ *
+ * ## Macros
+ * - #define STRUCTS_ENUMS_H // ========= (0). add the type here v -- vector, vv -- vector<vector> ============ //
+ *
  */

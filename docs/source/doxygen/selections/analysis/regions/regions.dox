@@ -1,21 +1,51 @@
 /**
- * @file selections_analysis_regions_regions
- * @brief Documentation for selections_analysis_regions_regions
+ * @file selections_analysis_regions_regions_h
+ * @brief Detailed documentation for regions.h
  *
+ * ## File Information
+ * - Path: selections/analysis/regions/regions.h
+ * - Type: .h file
  *
  * ## Classes
- * - regions : inherits from selection_template
- *
- * ## Key Functions
- * - new regions(...)
- * - size_t x(...)
+ * ### class regions : selection_template
+ * **Methods:**
  * - selection_template* clone(...)
  * - bool selection(...)
  * - bool strategy(...)
  * - void merge(...)
+ * **Members:**
+ * - std::vector<package_t> output
+ *
+ * ## Structures
+ * ### struct regions_t
+ * - double weight
+ * - double variable1
+ * - double variable2
+ * - bool passed
+ *
+ * ### struct package_t
+ * - regions_t CRttbarCO2l_CO
+ * - regions_t CRttbarCO2l_CO_2b
+ * - regions_t CRttbarCO2l_gstr
+ * - regions_t CRttbarCO2l_gstr_2b
+ * - regions_t CR1b3lem
+ * - regions_t CR1b3le
+ * - regions_t CR1b3lm
+ * - regions_t CRttW2l_plus
+ * - regions_t CRttW2l_minus
+ * - regions_t CR1bplus
+ *
+ * ## Functions
+ * - selection_template* **clone**(void)
+ * - bool **selection**(event_template* ev)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sl)
  *
  * ## Dependencies
- * - regions.h
  * - ssml_mc20/event.h
  * - templates/selection_template.h
+ *
+ * ## Macros
+ * - #define REGIONS_H #include <ssml_mc20/event.h>
+ *
  */

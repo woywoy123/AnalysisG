@@ -1,15 +1,18 @@
 /**
- * @file selections_mc20_matching_mc16_ref
- * @brief Documentation for selections_mc20_matching_mc16_ref
+ * @file selections_mc20_matching_mc16_ref_cxx
+ * @brief Detailed documentation for mc16_ref.cxx
  *
+ * ## File Information
+ * - Path: selections/mc20/matching/mc16_ref.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - size_t y(...)
- * - size_t c(...)
- * - size_t j(...)
+ * ## Function Implementations
+ * - h>
+
+void **matching::reference**(event_template* ev)
  *
  * ## Dependencies
  * - bsm_4tops/event.h
  * - matching.h
+ *
  */

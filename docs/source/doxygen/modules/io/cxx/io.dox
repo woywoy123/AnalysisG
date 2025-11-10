@@ -1,11 +1,19 @@
 /**
- * @file modules_io_cxx_io
- * @brief Documentation for modules_io_cxx_io
+ * @file modules_io_cxx_io_cxx
+ * @brief Detailed documentation for io.cxx
  *
+ * ## File Information
+ * - Path: modules/io/cxx/io.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - include <thread> **io::io**(void)
+ * - void **io::import_settings**(settings_t* params)
  *
  * ## Dependencies
  * - TSystem.h
  * - io/cfg.h
  * - io/io.h
  * - thread
+ *
  */

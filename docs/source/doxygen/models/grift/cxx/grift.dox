@@ -1,13 +1,21 @@
 /**
- * @file models_grift_cxx_grift
- * @brief Documentation for models_grift_cxx_grift
+ * @file models_grift_cxx_grift_cxx
+ * @brief Detailed documentation for grift.cxx
  *
+ * ## File Information
+ * - Path: models/grift/cxx/grift.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - walk to the next node(...)
- * - new grift(...)
+ * ## Function Implementations
+ * - h> **grift::grift**(void)
+ * - torch::Tensor **grift::node_encode**(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn)
+ * - return **torch::cat**({pyc::physics::cartesian::combined::M(pmc)
+ * - torch::Tensor **grift::message**(torch::Tensor _trk_i, torch::Tensor _trk_j, torch::Tensor pmc, torch::Tensor hx_i, torch::Tensor hx_j)
+ * - void **grift::forward**(graph_t* data)
+ * - model_template* **grift::clone**(void)
  *
  * ## Dependencies
  * - grift.h
  * - pyc/pyc.h
+ *
  */

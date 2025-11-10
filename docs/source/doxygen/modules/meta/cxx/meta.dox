@@ -1,14 +1,33 @@
 /**
- * @file modules_meta_cxx_meta
- * @brief Documentation for modules_meta_cxx_meta
+ * @file modules_meta_cxx_meta_cxx
+ * @brief Detailed documentation for meta.cxx
  *
+ * ## File Information
+ * - Path: modules/meta/cxx/meta.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - rapidjson::SizeType i(...)
- * - TTreeReaderValue<TString> dr(...)
- * - size_t x(...)
+ * ## Functions
+ * - TTreeReaderValue<TString> **dr**(_r, "file")
+ *
+ * ## Function Implementations
+ * - h> **meta::meta**(void)
+ * - void **meta::parse_json**(std::string inpt)
+ * - new **rapidjson::Document**(void)
+ * - new **rapidjson::Document**(void)
+ * - void **meta::scan_data**(TObject* obj)
+ * - float **meta::parse_float**(std::string key, TTree* tr)
+ * - std::string **meta::parse_string**(std::string key, TTree* tr)
+ * - void **meta::scan_sow**(TObject* obj)
+ * - std::string **meta::hash**(std::string fname)
+ * - void **meta::get_sum_of_weights**(double* val, meta* m)
+ * - const folds_t* **meta::get_tags**(std::string hash_)
+ * - void **meta::get_cross_section_fb**(double* val, meta* m)
+ * - void **meta::get_cross_section_pb**(double* val, meta* m)
+ * - void **meta::get_cross_section_nb**(double* val, meta* m)
+ * - void **meta::get_campaign**(std::string* val, meta* m)
  *
  * ## Dependencies
  * - TTreeReader.h
  * - meta.h
+ *
  */

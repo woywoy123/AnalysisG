@@ -1,11 +1,24 @@
 /**
- * @file modules_io_cxx_hdf5
- * @brief Documentation for modules_io_cxx_hdf5
+ * @file modules_io_cxx_hdf5_cxx
+ * @brief Detailed documentation for hdf5.cxx
  *
+ * ## File Information
+ * - Path: modules/io/cxx/hdf5.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - H5::DataSpace space(...)
+ * ## Functions
+ * - H5::DataSpace **space**(1, dim)
+ *
+ * ## Function Implementations
+ * - void **io::read**(graph_hdf5_w* out, std::string set_name)
+ * - bool **io::start**(std::string filename, std::string read_write)
+ * - new **H5::H5File**(filename.c_str()
+ * - H5::DataSet* **io::dataset**(std::string set_name, hid_t type, long long unsigned int length)
+ * - new **H5::DataSet**(this -> file -> createDataSet(set_name.c_str()
+ * - std::vector<std::string> **io::dataset_names**(void)
+ * - H5::DataSet* **io::dataset**(std::string set_name)
  *
  * ## Dependencies
  * - io.h
+ *
  */

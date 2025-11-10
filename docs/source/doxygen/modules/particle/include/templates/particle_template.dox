@@ -1,20 +1,52 @@
 /**
- * @file modules_particle_include_templates_particle_template
- * @brief Documentation for modules_particle_include_templates_particle_template
+ * @file modules_particle_include_templates_particle_template_h
+ * @brief Detailed documentation for particle_template.h
  *
+ * ## File Information
+ * - Path: modules/particle/include/templates/particle_template.h
+ * - Type: .h file
  *
  * ## Classes
- * - event_template
- * - selection_template
- * - particle_template : inherits from tools
- *
- * ## Key Functions
- * - public: particle_template(...)
+ * ### class event_template
+ * **Methods:**
+ * - explicit particle_template(...)
+ * - explicit particle_template(...)
+ * - explicit particle_template(...)
+ * - explicit particle_template(...)
  * - void static set_e(...)
  * - void static get_e(...)
  * - void static set_pt(...)
  * - void static get_pt(...)
  * - void static set_eta(...)
+ * - void static get_eta(...)
+ * **Members:**
+ * - p, bool dump
+ * - cproperty<double, particle_template> e
+ * - cproperty<double, particle_template> pt
+ * - cproperty<double, particle_template> eta
+ * - cproperty<double, particle_template> phi
+ * - cproperty<double, particle_template> px
+ * - cproperty<double, particle_template> py
+ * - cproperty<double, particle_template> pz
+ * - cproperty<double, particle_template> mass
+ * - cproperty<double, particle_template> P
+ *
+ * ## Functions
+ * - explicit **particle_template**(particle_t* p)
+ * - explicit **particle_template**(particle_template* p, bool dump = false)
+ * - explicit **particle_template**(double px, double py, double pz, double e)
+ * - explicit **particle_template**(double px, double py, double pz)
+ * - void static **set_e**(double*, particle_template*)
+ * - void static **get_e**(double*, particle_template*)
+ * - void static **set_pt**(double*, particle_template*)
+ * - void static **get_pt**(double*, particle_template*)
+ * - void static **set_eta**(double*, particle_template*)
+ * - void static **get_eta**(double*, particle_template*)
+ * - void static **set_phi**(double*, particle_template*)
+ * - void static **get_phi**(double*, particle_template*)
+ * - void static **set_px**(double*, particle_template*)
+ * - void static **get_px**(double*, particle_template*)
+ * - void static **set_py**(double*, particle_template*)
  *
  * ## Dependencies
  * - cmath
@@ -26,4 +58,8 @@
  * - structs/particles.h
  * - structs/property.h
  * - tools/tools.h
+ *
+ * ## Macros
+ * - #define PARTICLETEMPLATE_H #include <structs/particles.h>
+ *
  */

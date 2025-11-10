@@ -1,16 +1,23 @@
 /**
- * @file graphs_exp_mc20_include_exp_mc20_node_features
- * @brief Documentation for graphs_exp_mc20_include_exp_mc20_node_features
+ * @file graphs_exp_mc20_include_exp_mc20_node_features_h
+ * @brief Detailed documentation for node_features.h
  *
+ * ## File Information
+ * - Path: graphs/exp_mc20/include/exp_mc20/node_features.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - void static res_node(...)
- * - void static top_node(...)
- * - void static pt(...)
- * - void static eta(...)
- * - void static phi(...)
- * - void static energy(...)
- * - void static is_lepton(...)
- * - void static is_bquark(...)
- * - void static is_neutrino(...)
+ * ## Functions
+ * - void static **res_node**(int* o, particle_template* p)
+ * - void static **top_node**(int* o, particle_template* p)
+ * - void static **pt**(double* o, particle_template* p)
+ * - void static **eta**(double* o, particle_template* p)
+ * - void static **phi**(double* o, particle_template* p)
+ * - void static **energy**(double* o, particle_template* p)
+ * - void static **is_lepton**(int* o, particle_template* p)
+ * - void static **is_bquark**(int* o, particle_template* p)
+ * - void static **is_neutrino**(int* o, particle_template* p)
+ *
+ * ## Macros
+ * - #define NODES_FEATURES_EXP_MC20_H // --------------------- Node Truth --------------------- //
+ *
  */

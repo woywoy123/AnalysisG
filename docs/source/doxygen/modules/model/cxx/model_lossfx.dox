@@ -1,12 +1,24 @@
 /**
- * @file modules_model_cxx_model_lossfx
- * @brief Documentation for modules_model_cxx_model_lossfx
+ * @file modules_model_cxx_model_lossfx_cxx
+ * @brief Detailed documentation for model_lossfx.cxx
  *
+ * ## File Information
+ * - Path: modules/model/cxx/model_lossfx.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - nullptr, new lossfx(...)
- * - size_t x(...)
+ * ## Enumerations
+ * ### enum feat
+ * Values: std::tuple<torch::Tensor*, lossfx*>* truth
+ *
+ * ## Function Implementations
+ * - h>
+
+void **model_template::set_output_features**(std::map<std::string, std::string>* inpt, 
+        std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* out_fx)
+ * - torch::Tensor* **model_template::compute_loss**(std::string pred, graph_enum feat)
+ * - void **model_template::train_sequence**(bool train)
  *
  * ## Dependencies
  * - templates/model_template.h
+ *
  */

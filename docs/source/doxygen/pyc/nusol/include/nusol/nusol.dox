@@ -1,18 +1,26 @@
 /**
- * @file pyc_nusol_include_nusol_nusol
- * @brief Documentation for pyc_nusol_include_nusol_nusol
+ * @file pyc_nusol_include_nusol_nusol_h
+ * @brief Detailed documentation for nusol.h
  *
+ * ## File Information
+ * - Path: pyc/nusol/include/nusol/nusol.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - torch::Tensor BaseMatrix(...)
- * - torch::Tensor Hperp(...)
- * - std::tuple<torch::Tensor, torch::Tensor> Intersection(...)
- * - std::map<std::string, torch::Tensor> Nu(...)
- * - std::map<std::string, torch::Tensor> NuNu(...)
+ * ## Functions
+ * - torch::Tensor **BaseMatrix**(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses)
+ * - torch::Tensor **Hperp**(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses)
+ * - std::tuple<torch::Tensor, torch::Tensor> **Intersection**(torch::Tensor* A, torch::Tensor* B, double nulls)
+ *
+ * ## Namespaces
+ * - nusol_
  *
  * ## Dependencies
  * - map
  * - string
  * - torch/torch.h
  * - tuple
+ *
+ * ## Macros
+ * - #define NUSOL_H #include <map>
+ *
  */

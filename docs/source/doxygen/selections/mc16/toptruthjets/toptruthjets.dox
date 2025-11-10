@@ -1,23 +1,32 @@
 /**
- * @file selections_mc16_toptruthjets_toptruthjets
- * @brief Documentation for selections_mc16_toptruthjets_toptruthjets
+ * @file selections_mc16_toptruthjets_toptruthjets_h
+ * @brief Detailed documentation for toptruthjets.h
  *
+ * ## File Information
+ * - Path: selections/mc16/toptruthjets/toptruthjets.h
+ * - Type: .h file
  *
  * ## Classes
- * - toptruthjets : inherits from selection_template
+ * ### class toptruthjets : selection_template
+ * **Methods:**
+ * - selection_template* clone(...)
+ * - bool selection(...)
+ * - bool strategy(...)
+ * - void merge(...)
+ * **Members:**
+ * - std::map<std::string, std::map<std::string, std::map<std::string, std::vector<float>>>> top_mass
  *
- * ## Key Functions
- * - new toptruthjets(...)
- * - size_t x(...)
- * - size_t i(...)
- * - size_t tj1(...)
- * - size_t tj2(...)
- * - size_t tp(...)
- * - size_t tj_(...)
- * - size_t pr_i(...)
+ * ## Functions
+ * - selection_template* **clone**(void)
+ * - bool **selection**(event_template* ev)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sl)
  *
  * ## Dependencies
  * - bsm_4tops/event.h
  * - templates/selection_template.h
- * - toptruthjets.h
+ *
+ * ## Macros
+ * - #define TOPTRUTHJETS_H #include <bsm_4tops/event.h>
+ *
  */

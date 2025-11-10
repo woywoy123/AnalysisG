@@ -1,13 +1,30 @@
 /**
- * @file modules_model_cxx_model_configuration
- * @brief Documentation for modules_model_cxx_model_configuration
+ * @file modules_model_cxx_model_configuration_cxx
+ * @brief Detailed documentation for model_configuration.cxx
  *
+ * ## File Information
+ * - Path: modules/model/cxx/model_configuration.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - std::ofstream ofs(...)
+ * ## Function Implementations
+ * - include <fstream>
+
+void **model_template::clone_settings**(model_settings_t* setd)
+ * - model_template* **model_template::clone**(int)
+ * - void **model_template::import_settings**(model_settings_t* setd)
+ * - void **model_template::set_name**(std::string* nx, model_template* md)
+ * - void **model_template::get_name**(std::string* nx, model_template* md)
+ * - void **model_template::set_device**(std::string* dev, model_template* md)
+ * - new **torch::TensorOptions**(device_enum)
+ * - void **model_template::get_dev_index**(int* nx, model_template* md)
+ * - void **model_template::set_dev_index**(int*, model_template*)
+ * - void **model_template::set_optimizer**(std::string _name)
+ * - void **model_template::initialize**(optimizer_params_t* op_params)
+ * - void **model_template::save_state**(void)
+ * - bool **model_template::restore_state**(void)
  *
  * ## Dependencies
  * - fstream
  * - templates/model_template.h
+ *
  */

@@ -1,8 +1,12 @@
 /**
- * @file templates_metrics_cxx_<name>
- * @brief Documentation for templates_metrics_cxx_<name>
+ * @file templates_metrics_cxx_<name>_cxx
+ * @brief Detailed documentation for <name>.cxx
  *
+ * ## File Information
+ * - Path: templates/metrics/cxx/<name>.cxx
+ * - Type: .cxx file
  *
  * ## Dependencies
  * - metrics/<name
+ *
  */

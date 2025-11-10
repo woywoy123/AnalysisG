@@ -1,8 +1,23 @@
 /**
- * @file modules_particle_cxx_cartesian
- * @brief Documentation for modules_particle_cxx_cartesian
+ * @file modules_particle_cxx_cartesian_cxx
+ * @brief Detailed documentation for cartesian.cxx
  *
+ * ## File Information
+ * - Path: modules/particle/cxx/cartesian.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - h>
+
+void **particle_template::set_px**(double* val, particle_template* prt)
+ * - void **particle_template::get_px**(double* val, particle_template* prt)
+ * - void **particle_template::set_py**(double* val, particle_template* prt)
+ * - void **particle_template::get_py**(double* val, particle_template* prt)
+ * - void **particle_template::set_pz**(double* val, particle_template* prt)
+ * - void **particle_template::get_pz**(double* val, particle_template* prt)
+ * - void **particle_template::to_cartesian**(void)
  *
  * ## Dependencies
  * - templates/particle_template.h
+ *
  */

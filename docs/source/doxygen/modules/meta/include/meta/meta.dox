@@ -1,14 +1,14 @@
 /**
- * @file modules_meta_include_meta_meta
- * @brief Documentation for modules_meta_include_meta_meta
+ * @file modules_meta_include_meta_meta_h
+ * @brief Detailed documentation for meta.h
  *
+ * ## File Information
+ * - Path: modules/meta/include/meta/meta.h
+ * - Type: .h file
  *
  * ## Classes
- * - analysis
- * - meta : inherits from tools
- *
- * ## Key Functions
- * - public: meta(...)
+ * ### class analysis
+ * **Methods:**
  * - const folds_t* get_tags(...)
  * - void scan_data(...)
  * - void scan_sow(...)
@@ -18,6 +18,35 @@
  * - float parse_float(...)
  * - std::string parse_string(...)
  * - void static get_isMC(...)
+ * - void static get_found(...)
+ * **Members:**
+ * - rapidjson::Document* rpd
+ * - std::string metacache_path
+ * - meta_t meta_data
+ * - cproperty<bool, meta> isMC
+ * - cproperty<bool, meta> found
+ * - cproperty<double, meta> eventNumber
+ * - cproperty<double, meta> event_index
+ * - cproperty<double, meta> totalSize
+ * - cproperty<double, meta> kfactor
+ * - cproperty<double, meta> ecmEnergy
+ *
+ * ## Functions
+ * - const folds_t* **get_tags**(std::string hash)
+ * - void **scan_data**(TObject* obj)
+ * - void **scan_sow**(TObject* obj)
+ * - void **parse_json**(std::string inpt)
+ * - std::string **hash**(std::string fname)
+ * - void **compiler**(void)
+ * - float **parse_float**(std::string key, TTree* tr)
+ * - std::string **parse_string**(std::string key, TTree* tr)
+ * - void static **get_isMC**(bool*, meta*)
+ * - void static **get_found**(bool*, meta*)
+ * - void static **get_eventNumber**(double*, meta*)
+ * - void static **get_event_index**(double*, meta*)
+ * - void static **get_totalSize**(double*, meta*)
+ * - void static **get_kfactor**(double*, meta*)
+ * - void static **get_ecmEnergy**(double*, meta*)
  *
  * ## Dependencies
  * - TBranch.h
@@ -31,4 +60,8 @@
  * - structs/meta.h
  * - structs/property.h
  * - tools/tools.h
+ *
+ * ## Macros
+ * - #define META_META_H #include <structs/meta.h>
+ *
  */

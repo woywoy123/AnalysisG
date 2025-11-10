@@ -1,20 +1,36 @@
 /**
- * @file modules_nusol_ellipse_cxx_nusol
- * @brief Documentation for modules_nusol_ellipse_cxx_nusol
+ * @file modules_nusol_ellipse_cxx_nusol_cxx
+ * @brief Detailed documentation for nusol.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/ellipse/cxx/nusol.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - h>
-
-double costheta(...)
- * - double sintheta(...)
- * - new wrapper(...)
- * - new mtx(...)
- * - return pow(...)
+ * ## Functions
+ * - double **costheta**(wrapper* p1, wrapper* p2)
+ * - double **sintheta**(wrapper* p1, wrapper* p2)
+ *
+ * ## Function Implementations
+ * - return **std::pow**(1 - std::pow(costheta(p1, p2)
+ * - void **nuelx::flush**(void)
+ * - mtx* **nuelx::R_T**(void)
+ * - double **nuelx::x0**(void)
+ * - double **nuelx::Sx**(void)
+ * - double **nuelx::Sy**(void)
+ * - double **nuelx::w**(void)
+ * - double **nuelx::w2**(void)
+ * - double **nuelx::om2**(void)
+ * - double **nuelx::x1**(void)
+ * - double **nuelx::y1**(void)
+ * - void **nuelx::Z2**(double* A, double* B, double* C)
+ * - double **nuelx::Z2**(void)
+ * - double **nuelx::Z**(void)
+ * - mtx* **nuelx::H**(void)
  *
  * ## Dependencies
  * - ellipse/mtx.h
  * - ellipse/nusol.h
  * - ellipse/solvers.h
  * - templates/particle_template.h
+ *
  */

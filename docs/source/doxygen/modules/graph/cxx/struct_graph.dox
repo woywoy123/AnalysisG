@@ -1,18 +1,42 @@
 /**
- * @file modules_graph_cxx_struct_graph
- * @brief Documentation for modules_graph_cxx_struct_graph
+ * @file modules_graph_cxx_struct_graph_cxx
+ * @brief Detailed documentation for struct_graph.cxx
  *
+ * ## File Information
+ * - Path: modules/graph/cxx/struct_graph.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - case graph_enum::edge_index  : return(...)
- * - size_t x(...)
- * - size_t t(...)
- * - std::unique_lock<std::mutex> lk(...)
- * - std::vector<long> bc(...)
- * - evw, torch::kDouble, double(...)
- * - bc , torch::kLong, long(...)
+ * ## Enumerations
+ * ### enum tp
+ * Values: std::map<std::string, int>* pos_, std::vector<torch::Tensor>>* dev_mp
+ *
+ * ## Functions
+ * - std::unique_lock<std::mutex> **lk**(this -> mut)
+ * - std::vector<long> **bc**(this -> num_nodes, 0)
+ *
+ * ## Function Implementations
+ * - h>
+
+void **graph_t::add_truth_graph**(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * - void **graph_t::add_truth_node**(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * - void **graph_t::add_truth_edge**(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * - void **graph_t::add_data_graph**(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * - void **graph_t::add_data_node**(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * - void **graph_t::add_data_edge**(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * - void **graph_t::_purge_all**(void)
+ * - torch::Tensor* **graph_t::return_any**(std::map<std::string, int>* loc, std::map<int, 
+    std::vector<torch::Tensor>>* container, 
+    std::string _name, int dev_)
+ * - torch::Tensor* **graph_t::has_feature**(graph_enum tp, std::string _name, int dev)
+ * - void **graph_t::_purge_data**(std::map<int, torch::Tensor*>* data)
+ * - void **graph_t::_purge_data**(std::vector<torch::Tensor*>* data)
+ * - void **graph_t::_purge_data**(std::map<int, std::vector<torch::Tensor*>*>* data)
+ * - std::vector<torch::Tensor*>* **graph_t::add_content**(std::map<std::string, torch::Tensor*>* inpt)
+ * - void **graph_t::transfer_to_device**(torch::TensorOptions* dev)
+ * - void **graph_t::_transfer_to_device**(std::vector<torch::Tensor>* trgt, std::vector<torch::Tensor*>* src, torch::TensorOptions* dev)
  *
  * ## Dependencies
  * - templates/graph_template.h
  * - tools/tools.h
+ *
  */

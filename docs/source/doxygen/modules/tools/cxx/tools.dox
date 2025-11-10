@@ -1,8 +1,15 @@
 /**
- * @file modules_tools_cxx_tools
- * @brief Documentation for modules_tools_cxx_tools
+ * @file modules_tools_cxx_tools_cxx
+ * @brief Detailed documentation for tools.cxx
  *
+ * ## File Information
+ * - Path: modules/tools/cxx/tools.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - h> **tools::tools**(void)
  *
  * ## Dependencies
  * - tools/tools.h
+ *
  */

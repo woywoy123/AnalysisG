@@ -1,24 +1,45 @@
 /**
- * @file modules_analysis_include_AnalysisG_analysis
- * @brief Documentation for modules_analysis_include_AnalysisG_analysis
+ * @file modules_analysis_include_AnalysisG_analysis_h
+ * @brief Detailed documentation for analysis.h
  *
+ * ## File Information
+ * - Path: modules/analysis/include/AnalysisG/analysis.h
+ * - Type: .h file
  *
  * ## Classes
- * - analysis : inherits from notification
- *
- * ## Key Functions
- * - h>
-
-template <typename g>
-void flush(...)
- * - public: analysis(...)
+ * ### class analysis : notification, 
+    public tools
+ * **Methods:**
  * - void add_samples(...)
  * - void add_selection_template(...)
  * - void add_event_template(...)
  * - void add_graph_template(...)
  * - void add_metric_template(...)
  * - void add_model(...)
+ * - void add_model(...)
  * - void attach_threads(...)
+ * - void start(...)
+ * - std::map<std::string, std::vector<float>> progress(...)
+ * **Members:**
+ * - settings_t m_settings
+ * - std::map<std::string, meta*> meta_data
+ *
+ * ## Functions
+ * - void **flush**(std::map<std::string, g*>* data)
+ * - void **add_samples**(std::string path, std::string label)
+ * - void **add_selection_template**(selection_template* sel)
+ * - void **add_event_template**(event_template* ev, std::string label)
+ * - void **add_graph_template**(graph_template* gr, std::string label)
+ * - void **add_metric_template**(metric_template* mx, model_template* mdl)
+ * - void **add_model**(model_template* model, optimizer_params_t* op, std::string run_name)
+ * - void **add_model**(model_template* model, std::string run_name)
+ * - void **attach_threads**(void)
+ * - void **start**(void)
+ * - std::map<std::string, std::vector<float>> **progress**(void)
+ * - std::map<std::string, std::string> **progress_mode**(void)
+ * - std::map<std::string, std::string> **progress_report**(void)
+ * - std::map<std::string, bool> **is_complete**(void)
+ * - void **check_cache**(void)
  *
  * ## Dependencies
  * - generators/dataloader.h
@@ -32,4 +53,8 @@ void flush(...)
  * - templates/metric_template.h
  * - templates/model_template.h
  * - templates/selection_template.h
+ *
+ * ## Macros
+ * - #define ANALYSIS_H #include <string>
+ *
  */

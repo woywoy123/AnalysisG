@@ -1,14 +1,33 @@
 /**
- * @file modules_nusol_ellipse_cxx_solvers
- * @brief Documentation for modules_nusol_ellipse_cxx_solvers
+ * @file modules_nusol_ellipse_cxx_solvers_cxx
+ * @brief Detailed documentation for solvers.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/ellipse/cxx/solvers.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - include <cmath>
-
-mtx* find_roots(...)
- * - new mtx(...)
- * - int i(...)
+ * ## Functions
+ * - mtx* **find_roots**(double a, double b, double c)
+ * - mtx* **find_roots**(double a, double b, double c, double d)
+ * - mtx* **find_roots**(double a, double b, double c, double d, double e)
+ * - mtx* **solve_cubic**(double a, double b, double c, double d)
+ * - mtx* **Rz**(double angle)
+ * - mtx* **Ry**(double angle)
+ * - mtx* **Rx**(double angle)
+ * - mtx* **unit**(void)
+ * - mtx* **smatx**(double px, double py, double pz)
+ * - mtx* **intersection_angle**(mtx* H1, mtx* H2, mtx* MET, int* n_sols)
+ * - mtx **make_ellipse**(mtx* H, double angle)
+ * - mtx **vt**(3, 1)
+ * - double **distance**(mtx* H1, double a1, mtx* H2, double a2)
+ * - return **pow**(d, 0.5)
+ * - void **swap_index**(double** v, int idx)
+ *
+ * ## Function Implementations
+ * - 3 * q * **std::pow**(-3 / p3, 0.5)
+ * - 0 * **std::pow**(r, cb)
+ * - ix, 0, **std::atan2**(st, ct)
+ * - 0, 0, **std::cos**(angle)
  *
  * ## Dependencies
  * - cmath
@@ -16,4 +35,5 @@ mtx* find_roots(...)
  * - ellipse/mtx.h
  * - ellipse/solvers.h
  * - iostream
+ *
  */

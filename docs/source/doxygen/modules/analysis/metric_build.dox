@@ -1,18 +1,33 @@
 /**
- * @file modules_analysis_metric_build
- * @brief Documentation for modules_analysis_metric_build
+ * @file modules_analysis_metric_build_cxx
+ * @brief Detailed documentation for metric_build.cxx
  *
+ * ## File Information
+ * - Path: modules/analysis/metric_build.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - size_t k(...)
- * - std::vector<size_t> th_prg(...)
- * - std::vector<size_t> num_data(...)
- * - std::vector<metric_t*> mx(...)
- * - std::vector<std::thread*> th_prc(...)
- * - std::vector<std::string*> th_title(...)
- * - size_t t(...)
+ * ## Enumerations
+ * ### enum mt
+ * Values: if (!mode){return;
+ *
+ * ## Functions
+ * - std::vector<size_t> **th_prg**(sx, 0)
+ * - std::vector<size_t> **num_data**(sx, 0)
+ * - std::vector<metric_t*> **mx**(sx, nullptr)
+ * - std::vector<std::thread*> **th_prc**(sx, nullptr)
+ * - std::vector<std::string*> **th_title**(sx, nullptr)
+ * - size_t **t**(0)
+ *
+ * ## Function Implementations
+ * - h>
+
+
+void **analysis::build_metric_folds**(void)
+ * - bool **analysis::build_metric**(void)
+ * - new **std::thread**(this -> execution_metric, mx[x], &th_prg[x], th_title[x])
+ * - new **std::thread**(this -> progressbar3, &th_prg, &num_data, &th_title)
  *
  * ## Dependencies
  * - AnalysisG/analysis.h
+ *
  */

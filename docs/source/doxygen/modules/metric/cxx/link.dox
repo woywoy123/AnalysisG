@@ -1,14 +1,26 @@
 /**
- * @file modules_metric_cxx_link
- * @brief Documentation for modules_metric_cxx_link
+ * @file modules_metric_cxx_link_cxx
+ * @brief Detailed documentation for link.cxx
  *
+ * ## File Information
+ * - Path: modules/metric/cxx/link.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - std::vector<particle_template*> ptx(...)
- * - new particle_template(...)
+ * ## Enumerations
+ * ### enum mx
+ * Values: if (this -> hash_bta.count(hsx) && this -> hash_bta[hsx].count(mx)){return;
+ *
+ * ## Function Implementations
+ * - h>
+
+bool **metric_template::link**(model_template* mdl)
+ * - void **metric_template::link**(std::string hsx, std::vector<graph_t*>* data, mode_enum mx)
+ * - void **metric_template::flush_garbage**(void)
+ * - std::vector<particle_template*> **metric_template::make_particle**(std::vector<std::vector<double>>* pt , std::vector<std::vector<double>>* eta, 
+        std::vector<std::vector<double>>* phi, std::vector<std::vector<double>>* energy)
  *
  * ## Dependencies
  * - templates/metric_template.h
  * - templates/model_template.h
+ *
  */

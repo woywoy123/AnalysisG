@@ -1,12 +1,15 @@
 /**
- * @file templates_particles_cxx_<particle-name>
- * @brief Documentation for templates_particles_cxx_<particle-name>
+ * @file templates_particles_cxx_<particle-name>_cxx
+ * @brief Detailed documentation for <particle-name>.cxx
  *
+ * ## File Information
+ * - Path: templates/particles/cxx/<particle-name>.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - void build(...)
- * - int x(...)
+ * ## Functions
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
  *
  * ## Dependencies
  * - <particle-name
+ *
  */

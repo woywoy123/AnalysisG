@@ -1,15 +1,17 @@
 /**
- * @file modules_nusol_conuix_cxx_conuix
- * @brief Documentation for modules_nusol_conuix_cxx_conuix
+ * @file modules_nusol_conuix_cxx_conuix_cxx
+ * @brief Detailed documentation for conuix.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/conuix/cxx/conuix.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - size_t i(...)
- * - size_t j(...)
- * - new conuic(...)
+ * ## Function Implementations
+ * - h> **conuix::conuix**(nusol_t* parameters)
+ * - void **conuix::solve**(void)
  *
  * ## Dependencies
  * - conuix/conuic.h
  * - conuix/conuix.h
+ *
  */

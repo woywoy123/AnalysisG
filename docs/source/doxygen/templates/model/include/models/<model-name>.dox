@@ -1,12 +1,16 @@
 /**
- * @file templates_model_include_models_<model-name>
- * @brief Documentation for templates_model_include_models_<model-name>
+ * @file templates_model_include_models_<model-name>_h
+ * @brief Detailed documentation for <model-name>.h
  *
+ * ## File Information
+ * - Path: templates/model/include/models/<model-name>.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - model_template* clone(...)
- * - void forward(...)
+ * ## Functions
+ * - model_template* **clone**(void)
+ * - void **forward**(graph_t*)
  *
  * ## Dependencies
  * - templates/model_template.h
+ *
  */

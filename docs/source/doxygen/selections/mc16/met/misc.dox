@@ -1,17 +1,27 @@
 /**
- * @file selections_mc16_met_misc
- * @brief Documentation for selections_mc16_met_misc
+ * @file selections_mc16_met_misc_cxx
+ * @brief Detailed documentation for misc.cxx
  *
+ * ## File Information
+ * - Path: selections/mc16/met/misc.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - size_t i(...)
- * - size_t y(...)
- * - size_t c(...)
- * - size_t j(...)
+ * ## Function Implementations
+ * - std::vector<double> **met::pmc**(particle_template* p1)
+ * - std::vector<double> **met::cross**(std::vector<double> v1, std::vector<double> v2, bool norm)
+ * - double **met::chi2**(particle_template* nut, particle_template* nur)
+ * - std::tuple<std::vector<neutrino*>, std::vector<neutrino*>> **met::reconstruction**(std::vector<particle_template*> nodes, double met_, double phi_)
+ * - std::vector<double> **met::sum_cart**(std::vector<particle_template*> ptx)
+ * - double **met::cart_px**(std::vector<particle_template*> prt)
+ * - double **met::cart_py**(std::vector<particle_template*> prt)
+ * - double **met::cart_pz**(std::vector<particle_template*> prt)
+ * - double **met::cart_px**(double pt, double phi)
+ * - double **met::cart_py**(double pt, double phi)
+ * - std::map<int, std::map<std::string, particle_template*>> **met::match_tops**(std::vector<particle_template*> tops, std::vector<particle_template*> dleps)
  *
  * ## Dependencies
  * - bsm_4tops/event.h
  * - met.h
  * - pyc/pyc.h
+ *
  */

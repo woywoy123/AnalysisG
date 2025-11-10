@@ -1,7 +1,27 @@
 /**
- * @file pyc_interface_transform
- * @brief Documentation for pyc_interface_transform
+ * @file pyc_interface_transform_cxx
+ * @brief Detailed documentation for transform.cxx
  *
+ * ## File Information
+ * - Path: pyc/interface/transform.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - return **transform_::Pt**(&px, &py)
+ * - return **transform_::Pt**(&px, &py)
+ * - return **transform_::Eta**(&px, &py, &pz)
+ * - return **transform_::Eta**(&pmc)
+ * - return **transform_::Phi**(&px, &py)
+ * - return **transform_::Phi**(&px, &py)
+ * - return **transform_::PtEtaPhi**(&px, &py, &pz)
+ * - return **transform_::PtEtaPhi**(&pmc)
+ * - return **transform_::PtEtaPhiE**(&px, &py, &pz, &e)
+ * - return **transform_::PtEtaPhiE**(&pmc)
+ * - return **transform_::Px**(&pt, &phi)
+ * - return **transform_::Px**(&pt, &phi)
+ * - return **transform_::Py**(&pt, &phi)
+ * - return **transform_::Py**(&pt, &phi)
+ * - return **transform_::Pz**(&pt, &eta)
  *
  * ## Dependencies
  * - pyc/pyc.h
@@ -9,4 +29,5 @@
  * - transform/transform.h
  * - utils/utils.cuh
  * - utils/utils.h
+ *
  */

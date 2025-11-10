@@ -1,9 +1,32 @@
 /**
- * @file pyc_transform_transform
- * @brief Documentation for pyc_transform_transform
+ * @file pyc_transform_transform_cxx
+ * @brief Detailed documentation for transform.cxx
  *
+ * ## File Information
+ * - Path: pyc/transform/transform.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - h>
+
+torch::Tensor **transform_::Px**(torch::Tensor* pt, torch::Tensor* phi)
+ * - torch::Tensor **transform_::Py**(torch::Tensor* pt, torch::Tensor* phi)
+ * - torch::Tensor **transform_::Pz**(torch::Tensor* pt, torch::Tensor* eta)
+ * - torch::Tensor **transform_::PxPyPz**(torch::Tensor* pt, torch::Tensor* eta, torch::Tensor* phi)
+ * - return **torch::cat**({_px, _py, _pz}, -1)
+ * - return **torch::cat**({transform_::PxPyPz(pt, eta, phi)
+ * - torch::Tensor **transform_::PxPyPz**(torch::Tensor* pmu)
+ * - return **transform_::PxPyPz**(&pt, &eta, &phi)
+ * - torch::Tensor **transform_::PxPyPzE**(torch::Tensor* pmu)
+ * - return **torch::cat**({_px, _py, _pz, e}, -1)
+ * - return **torch::sqrt**(px -> pow(2)
+ * - torch::Tensor **transform_::Phi**(torch::Tensor* px, torch::Tensor* py)
+ * - return **torch::atan2**(*py, *px)
+ * - torch::Tensor **transform_::Phi**(torch::Tensor* pmc)
+ * - return **transform_::Phi**(&px, &py)
  *
  * ## Dependencies
  * - transform/transform.h
  * - utils/utils.h
+ *
  */

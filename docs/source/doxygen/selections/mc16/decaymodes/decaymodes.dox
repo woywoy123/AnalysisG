@@ -1,18 +1,32 @@
 /**
- * @file selections_mc16_decaymodes_decaymodes
- * @brief Documentation for selections_mc16_decaymodes_decaymodes
+ * @file selections_mc16_decaymodes_decaymodes_h
+ * @brief Detailed documentation for decaymodes.h
  *
+ * ## File Information
+ * - Path: selections/mc16/decaymodes/decaymodes.h
+ * - Type: .h file
  *
  * ## Classes
- * - decaymodes : inherits from selection_template
+ * ### class decaymodes : selection_template
+ * **Methods:**
+ * - selection_template* clone(...)
+ * - bool selection(...)
+ * - bool strategy(...)
+ * - void merge(...)
+ * **Members:**
+ * - std::map<std::string, std::vector<double>> res_top_modes
  *
- * ## Key Functions
- * - new decaymodes(...)
- * - size_t x(...)
- * - size_t l(...)
+ * ## Functions
+ * - selection_template* **clone**(void)
+ * - bool **selection**(event_template* ev)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sl)
  *
  * ## Dependencies
  * - bsm_4tops/event.h
- * - decaymodes.h
  * - templates/selection_template.h
+ *
+ * ## Macros
+ * - #define SELECTION_DECAYMODES_H #include <bsm_4tops/event.h>
+ *
  */

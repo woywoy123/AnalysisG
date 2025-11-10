@@ -1,13 +1,36 @@
 /**
- * @file modules_model_cxx_model_template
- * @brief Documentation for modules_model_cxx_model_template
+ * @file modules_model_cxx_model_template_cxx
+ * @brief Detailed documentation for model_template.cxx
  *
+ * ## File Information
+ * - Path: modules/model/cxx/model_template.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new lossfx(...)
- * - size_t x(...)
- * - return new model_template(...)
+ * ## Enumerations
+ * ### enum type
+ * Values: torch::Tensor* tn, this); this -> m_i_graph[inpt], this); this -> m_i_node[inpt], this); this -> m_i_edge[inpt], this); std::get<0>(this -> m_o_graph[inpt]), this); std::get<0>(this -> m_o_node[inpt]), this); std::get<0>(this -> m_o_edge[inpt])
+ *
+ * ### enum type
+ * Values: auto g_data, std::string key) -> torch::Tensor* {return d -> get_data_graph(key, this);
+ *
+ * ## Function Implementations
+ * - h> **model_template::model_template**(void)
+ * - model_template* **model_template::clone**(void)
+ * - void **model_template::register_module**(torch::nn::Sequential* data)
+ * - void **model_template::register_module**(torch::nn::Sequential* data, mlp_init method)
+ * - void **model_template::forward**(graph_t*)
+ * - torch::Tensor* **model_template::assign_features**(std::string inpt, graph_enum type, graph_t* data)
+ * - torch::Tensor* **model_template::assign_features**(std::string inpt, graph_enum type, std::vector<graph_t*>* data)
+ * - return new **torch::Tensor**(torch::cat(arr, {0})
+ * - void **model_template::forward**(graph_t* data, bool train)
+ * - void **model_template::forward**(std::vector<graph_t*> data, bool train)
+ * - new **torch::Tensor**(torch::cat(_edge_index, {-1})
+ * - void **model_template::evaluation_mode**(bool mode)
+ * - void **model_template::prediction_graph_feature**(std::string key, torch::Tensor pred)
+ * - new **torch::Tensor**(pred)
+ * - void **model_template::prediction_node_feature**(std::string key, torch::Tensor pred)
  *
  * ## Dependencies
  * - templates/model_template.h
+ *
  */

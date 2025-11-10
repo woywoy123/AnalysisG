@@ -1,24 +1,87 @@
 /**
- * @file metrics_pagerank_include_metrics_pagerank
- * @brief Documentation for metrics_pagerank_include_metrics_pagerank
+ * @file metrics_pagerank_include_metrics_pagerank_h
+ * @brief Detailed documentation for pagerank.h
  *
+ * ## File Information
+ * - Path: metrics/pagerank/include/metrics/pagerank.h
+ * - Type: .h file
  *
  * ## Classes
- * - pagerank_metric : inherits from metric_template
- * - collector : inherits from tools
- *
- * ## Key Functions
- * - public: pagerank_metric(...)
+ * ### class pagerank_metric : metric_template
+ * **Methods:**
  * - pagerank_metric* clone(...)
  * - void define_metric(...)
  * - void define_variables(...)
  * - void event(...)
  * - void batch(...)
  * - void end(...)
- * - void pagerank(...)
  * - std::vector<particle_template*> build_top(...)
- * - public: collector(...)
+ * **Members:**
+ * - std::map<std::string, std::map<std::string, long>> file_maps
+ * - std::map<std::string, std::map<std::string, long>> file_stats
+ * - float alpha
+ * - float norm_lim
+ * - size_t max_itr
+ * - int kfold
+ * - int epoch
+ * - std::string mode
+ * - int process_mapping
+ * - std::vector<int> top_truth_num_nodes
+ *
+ * ### class collector : tools
+ * **Methods:**
+ * - void set_index(...)
+ * - void add_truth(...)
+ * - void add_pagerank(...)
+ * - void add_nominal(...)
+ * - void add_process(...)
+ * - bool add_meta(...)
+ * - void add_file_map(...)
+ * **Members:**
+ * - long idx
+ * - std::map<std::string, std::map<int, std::map<int, sample_t>>> data
+ *
+ * ## Structures
+ * ### struct kinematic_t
+ * - double px
+ * - double py
+ * - double pz
+ * - double mass
+ * - double pt
+ * - double eta
+ * - double phi
+ * - double energy
+ * - int num_nodes
+ * - double score
+ *
+ * ### struct meta_event_t
+ * - int process_mapping
+ * - std::vector<kinematic_t> truth
+ *
+ * ### struct sample_t
+ * - std::string meta_data
+ * - std::map<std::string, std::map<std::string, long>> file_map
+ *
+ * ## Functions
+ * - pagerank_metric* **clone**(void)
+ * - void **define_metric**(metric_t* mtx)
+ * - void **define_variables**(void)
+ * - void **event**(void)
+ * - void **batch**(void)
+ * - void **end**(void)
+ * - std::vector<particle_template*> **build_top**(std::map<int, std::map<int, particle_template*>>*)
+ * - void **set_index**(long idx_)
+ * - void **add_truth**(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
+ * - void **add_pagerank**(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
+ * - void **add_nominal**(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
+ * - void **add_process**(int prc, std::string mode, std::string model, int kfold, int epoch)
+ * - bool **add_meta**(std::string data, std::string model, int kfold, int epoch)
+ * - void **add_file_map**(std::string fname, long idx_, std::string mode, std::string model, int kfold, int epoch, bool stat)
  *
  * ## Dependencies
  * - templates/metric_template.h
+ *
+ * ## Macros
+ * - #define PAGERANK_METRIC_H #include <templates/metric_template.h>
+ *
  */

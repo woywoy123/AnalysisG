@@ -1,14 +1,23 @@
 /**
- * @file modules_structs_cxx_variable
- * @brief Documentation for modules_structs_cxx_variable
+ * @file modules_structs_cxx_variable_cxx
+ * @brief Detailed documentation for variable.cxx
  *
+ * ## File Information
+ * - Path: modules/structs/cxx/variable.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new TFile(...)
- * - new TTree(...)
- * - new variable_t(...)
- * - new write_t(...)
+ * ## Function Implementations
+ * - h>
+
+void **write_t::write**(void)
+ * - void **write_t::create**(std::string tr_name, std::string path)
+ * - void **write_t::close**(void)
+ * - variable_t* **write_t::process**(std::string* name)
+ * - void **writer::create**(std::string* out)
+ * - variable_t* **writer::process**(std::string* tree, std::string* name)
+ * - void **writer::write**(std::string* tree)
  *
  * ## Dependencies
  * - structs/element.h
+ *
  */

@@ -1,15 +1,24 @@
 /**
- * @file modules_analysis_optimizer_build
- * @brief Documentation for modules_analysis_optimizer_build
+ * @file modules_analysis_optimizer_build_cxx
+ * @brief Detailed documentation for optimizer_build.cxx
  *
+ * ## File Information
+ * - Path: modules/analysis/optimizer_build.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - int k(...)
- * - size_t x(...)
- * - new optimizer(...)
- * - progress*100, float(...)
+ * ## Function Implementations
+ * - hxx>
+
+void **analysis::build_model_session**(void)
+ * - new **std::thread**(initialize_loop, optim, k_, std::get<0>(para)
+ * - std::map<std::string, std::vector<float>> **analysis::progress**(void)
+ * - std::map<std::string, std::string> **analysis::progress_mode**(void)
+ * - std::map<std::string, std::string> **analysis::progress_report**(void)
+ * - std::map<std::string, bool> **analysis::is_complete**(void)
+ * - void **analysis::attach_threads**(void)
  *
  * ## Dependencies
  * - AnalysisG/analysis.h
  * - ROOT/RDataFrame.hxx
+ *
  */

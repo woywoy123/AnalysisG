@@ -1,17 +1,27 @@
 /**
- * @file modules_dataloader_cxx_dataset
- * @brief Documentation for modules_dataloader_cxx_dataset
+ * @file modules_dataloader_cxx_dataset_cxx
+ * @brief Detailed documentation for dataset.cxx
  *
+ * ## File Information
+ * - Path: modules/dataloader/cxx/dataset.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - int k(...)
- * - int x(...)
- * - Splitting training dataset(...)
- * - int y(...)
- * - size_t t(...)
+ * ## Function Implementations
+ * - h>
+
+std::vector<graph_t*> **dataloader::get_random**(int num)
+ * - void **dataloader::generate_kfold_set**(int k)
+ * - void **dataloader::generate_test_set**(float percentage)
+ * - std::vector<graph_t*>* **dataloader::get_k_train_set**(int k)
+ * - std::vector<graph_t*>* **dataloader::get_k_validation_set**(int k)
+ * - std::vector<graph_t*>* **dataloader::get_test_set**(void)
+ * - std::map<std::string, std::vector<graph_t*>>* **dataloader::get_inference**(void)
+ * - new **std::thread**(lamb, &itr -> second)
+ * - bool **dataloader::restore_dataset**(std::string path)
  *
  * ## Dependencies
  * - generators/dataloader.h
  * - io/io.h
  * - structs/folds.h
+ *
  */

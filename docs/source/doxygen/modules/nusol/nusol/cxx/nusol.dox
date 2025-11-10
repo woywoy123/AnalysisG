@@ -1,14 +1,18 @@
 /**
- * @file modules_nusol_nusol_cxx_nusol
- * @brief Documentation for modules_nusol_nusol_cxx_nusol
+ * @file modules_nusol_nusol_cxx_nusol_cxx
+ * @brief Detailed documentation for nusol.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/nusol/cxx/nusol.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new ellipse(...)
- * - new conuix(...)
+ * ## Function Implementations
+ * - h> **nusol::nusol**(nusol_t* parameters)
+ * - void **nusol::solve**(void)
  *
  * ## Dependencies
  * - conuix/conuix.h
  * - ellipse/ellipse.h
  * - reconstruction/nusol.h
+ *
  */

@@ -1,16 +1,47 @@
 /**
- * @file modules_metric_cxx_base
- * @brief Documentation for modules_metric_cxx_base
+ * @file modules_metric_cxx_base_cxx
+ * @brief Detailed documentation for base.cxx
  *
+ * ## File Information
+ * - Path: modules/metric/cxx/base.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - std::string enums_to_string(...)
- * - size_t t(...)
- * - new variable_t(...)
- * - size_t x(...)
- * - new metric_t(...)
+ * ## Enumerations
+ * ### enum gr
+ * Values: switch(gr){
+        case graph_enum::truth_graph:  return "truth::graph::"; 
+        case graph_enum::truth_node :  return "truth::node::"; 
+        case graph_enum::truth_edge :  return "truth::edge::"; 
+        case graph_enum::pred_graph:   return "prediction::graph::"; 
+        case graph_enum::pred_node :   return "prediction::node::"; 
+        case graph_enum::pred_edge :   return "prediction::edge::"; 
+        case graph_enum::data_graph:   return "data::graph::"; 
+        case graph_enum::data_node :   return "data::node::"; 
+        case graph_enum::data_edge :   return "data::edge::"; 
+        case graph_enum::pred_extra  : return "prediction::extra::"; 
+        case graph_enum::edge_index  : return "data::edge::"; 
+        case graph_enum::batch_index : return "data::node:"; 
+        case graph_enum::weight      : return "data::graph::"; 
+        case graph_enum::batch_events: return "data::graph::"; 
+        default: return "undef";
+ *
+ * ## Functions
+ * - std::string **enums_to_string**(graph_enum gr)
+ *
+ * ## Function Implementations
+ * - h>
+
+std::map<int, torch::TensorOptions*> **metric_template::get_devices**(void)
+ * - std::vector<int> **metric_template::get_kfolds**(void)
+ * - size_t **metric_template::size**(void)
+ * - void **metric_template::construct**(std::map<graph_enum, std::vector<variable_t*>>* varx, 
+        std::map<graph_enum, std::vector<std::string>>* req, 
+        model_template* mdl, graph_t* grx, std::string* mtx)
+ * - void **metric_template::execute**(metric_t* mtx, metric_template* obj, size_t* prg, std::string* msg)
+ * - void **metric_template::define**(std::vector<metric_t*>* vr, std::vector<size_t>* num, std::vector<std::string*>* title, size_t* offset)
  *
  * ## Dependencies
  * - templates/metric_template.h
  * - templates/model_template.h
+ *
  */

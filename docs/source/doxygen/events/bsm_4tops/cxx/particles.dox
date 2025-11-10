@@ -1,16 +1,29 @@
 /**
- * @file events_bsm_4tops_cxx_particles
- * @brief Documentation for events_bsm_4tops_cxx_particles
+ * @file events_bsm_4tops_cxx_particles_cxx
+ * @brief Detailed documentation for particles.cxx
  *
+ * ## File Information
+ * - Path: events/bsm_4tops/cxx/particles.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new top(...)
- * - int x(...)
- * - new top_children(...)
- * - int y(...)
- * - return new truthjet(...)
- * - return new truthjetparton(...)
+ * ## Function Implementations
+ * - particle_template* **top::clone**(void)
+ * - void **top::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - void **top_children::get_from_res**(bool* val, top_children* prt)
+ * - particle_template* **top_children::clone**(void)
+ * - void **top_children::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **truthjet::clone**(void)
+ * - void **truthjet::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - void **truthjet::get_from_res**(bool* val, truthjet* prt)
+ * - particle_template* **truthjetparton::clone**(void)
+ * - void **truthjetparton::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **jet::clone**(void)
+ * - void **jet::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - void **jet::get_from_res**(bool* val, jet* prt)
+ * - particle_template* **jetparton::clone**(void)
+ * - void **jetparton::build**(std::map<std::string, particle_template*>* prt, element_t* el)
  *
  * ## Dependencies
  * - particles.h
+ *
  */

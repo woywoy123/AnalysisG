@@ -1,12 +1,24 @@
 /**
- * @file modules_nusol_conuix_cxx_conuic
- * @brief Documentation for modules_nusol_conuix_cxx_conuic
+ * @file modules_nusol_conuix_cxx_conuic_cxx
+ * @brief Detailed documentation for conuic.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/conuix/cxx/conuic.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new atomics_t(...)
+ * ## Function Implementations
+ * - h>
+
+void **conuic::get_tau**(long double* v, conuic* c)
+ * - void **conuic::set_tau**(long double* v, conuic* c)
+ * - void **conuic::set_scl**(long double* v, conuic* c)
+ * - void **conuic::get_scl**(long double* v, conuic* c)
+ * - void **conuic::set_lmb**(long double* v, conuic* c)
+ * - void **conuic::get_lmb**(long double* v, conuic* c)
+ * - void **conuic::solve**(void)
  *
  * ## Dependencies
  * - conuix/conuic.h
  * - templates/particle_template.h
+ *
  */

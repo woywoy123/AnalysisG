@@ -1,12 +1,25 @@
 /**
- * @file modules_metrics_cxx_metrics
- * @brief Documentation for modules_metrics_cxx_metrics
+ * @file modules_metrics_cxx_metrics_cxx
+ * @brief Detailed documentation for metrics.cxx
  *
+ * ## File Information
+ * - Path: modules/metrics/cxx/metrics.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new model_report(...)
+ * ## Enumerations
+ * ### enum mode
+ * Values: analytics_t* an, std::map<std::string, torch::Tensor>> lss, &an -> loss_graph[mode], kfold, smpl_len); 
+    this -> add_th1f_loss(&lss[graph_enum::truth_node], &an -> loss_node[mode], kfold, smpl_len); 
+    this -> add_th1f_loss(&lss[graph_enum::truth_edge], &an -> loss_edge[mode]
+ *
+ * ## Function Implementations
+ * - h> **metrics::metrics**(void)
+ * - model_report* **metrics::register_model**(model_template* mod, int kfold)
+ * - void **metrics::capture**(mode_enum mode, int kfold, int epoch, int smpl_len)
+ * - void **metrics::dump_plots**(int k)
  *
  * ## Dependencies
  * - TError.h
  * - metrics/metrics.h
+ *
  */

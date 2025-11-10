@@ -1,10 +1,23 @@
 /**
- * @file modules_nusol_conuix_cxx_struct
- * @brief Documentation for modules_nusol_conuix_cxx_struct
+ * @file modules_nusol_conuix_cxx_struct_cxx
+ * @brief Detailed documentation for struct.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/conuix/cxx/struct.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - h> **atomics_t::atomics_t**(particle_template* jet, particle_template* lep, double m_nu)
+ * - std::cout << std::fixed << **std::setprecision**(this -> prec)
+ * - long double **Conuix::cos_theta**(particle_template* jet, particle_template* lep)
+ * - HBS * **std::sinh**(tau)
+ * - HTS * **std::sinh**(tau)
+ * - a * **std::cosh**(tau)
+ * - a * **std::cosh**(tau)
  *
  * ## Dependencies
  * - conuix/htilde.h
  * - conuix/struct.h
  * - templates/particle_template.h
+ *
  */

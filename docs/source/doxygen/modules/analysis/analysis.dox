@@ -1,14 +1,25 @@
 /**
- * @file modules_analysis_analysis
- * @brief Documentation for modules_analysis_analysis
+ * @file modules_analysis_analysis_cxx
+ * @brief Detailed documentation for analysis.cxx
  *
+ * ## File Information
+ * - Path: modules/analysis/analysis.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new sampletracer(...)
- * - new dataloader(...)
- * - new io(...)
- * - size_t x(...)
- * - size_t y(...)
+ * ## Function Implementations
+ * - include <thread> **analysis::analysis**(void)
+ * - new **std::thread**(buildDict, "meta_t"   , mta)
+ * - void **analysis::add_samples**(std::string path, std::string label)
+ * - void **analysis::add_event_template**(event_template* ev, std::string label)
+ * - void **analysis::add_graph_template**(graph_template* ev, std::string label)
+ * - void **analysis::add_selection_template**(selection_template* sel)
+ * - void **analysis::add_metric_template**(metric_template* mx, model_template* mdl)
+ * - void **analysis::add_model**(model_template* model, optimizer_params_t* op, std::string run_name)
+ * - void **analysis::add_model**(model_template* model, std::string run_name)
+ * - void **analysis::build_project**(void)
+ * - void **analysis::check_cache**(void)
+ * - void **analysis::fetchtags**(void)
+ * - void **analysis::start**(void)
  *
  * ## Dependencies
  * - AnalysisG/analysis.h
@@ -16,4 +27,5 @@
  * - ROOT/RDataFrame.hxx
  * - TSystem.h
  * - thread
+ *
  */

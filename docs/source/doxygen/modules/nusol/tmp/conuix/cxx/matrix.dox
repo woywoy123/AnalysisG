@@ -1,19 +1,36 @@
 /**
- * @file modules_nusol_tmp_conuix_cxx_matrix
- * @brief Documentation for modules_nusol_tmp_conuix_cxx_matrix
+ * @file modules_nusol_tmp_conuix_cxx_matrix_cxx
+ * @brief Detailed documentation for matrix.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/tmp/conuix/cxx/matrix.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - void flush(...)
- * - int i(...)
- * - double** alloc(...)
- * - void copy(...)
- * - int j(...)
- * - void ops_add(...)
+ * ## Functions
+ * - void **flush**(double** dmx, int dim_i)
+ * - double** **alloc**(int dim_i, int dim_j)
+ * - void **copy**(double** from, double** to, int dim_i, int dim_j)
+ * - void **ops_add**(double** O, double** A, double** B, int dim_i, int dim_j)
+ * - void **ops_sub**(double** O, double** A, double** B, int dim_i, int dim_j)
+ * - void **ops_mul**(double** O, double** A, double s, int dim_i, int dim_j)
+ * - void **ops_trs**(double** O, double** A, int dim_i, int dim_j)
+ * - matrix_t **mx**(this -> r, this -> c)
+ * - matrix_t **mx**(this -> r, this -> c)
+ * - matrix_t **mx**(this -> r, this -> c)
+ * - matrix_t **mx**(this -> c, this -> r)
+ * - matrix_t **mx**(this -> r, o.c)
+ *
+ * ## Function Implementations
+ * - matrix_t **matrix_t::T**(void)
+ * - matrix_t **matrix_t::dot**(const matrix_t& o)
+ * - double& **matrix_t::at**(int _r, int _c)
+ * - const double& **matrix_t::at**(int _r, int _c)
+ * - void **matrix_t::print**(int p)
  *
  * ## Dependencies
  * - conics/matrix.h
  * - iomanip
  * - iostream
  * - math.h
+ *
  */

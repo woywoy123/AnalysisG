@@ -1,14 +1,21 @@
 /**
- * @file models_RecursiveGraphNeuralNetwork_cxx_RecursiveGraphNeuralNetwork
- * @brief Documentation for models_RecursiveGraphNeuralNetwork_cxx_RecursiveGraphNeuralNetwork
+ * @file models_RecursiveGraphNeuralNetwork_cxx_RecursiveGraphNeuralNetwork_cxx
+ * @brief Detailed documentation for RecursiveGraphNeuralNetwork.cxx
  *
+ * ## File Information
+ * - Path: models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t t(...)
- * - Make a new prediction with prior inputs of hx(...)
- * - new recursivegraphneuralnetwork(...)
+ * ## Function Implementations
+ * - h> **recursivegraphneuralnetwork::recursivegraphneuralnetwork**(int rep, double drop_out)
+ * - torch::Tensor **recursivegraphneuralnetwork::message**(torch::Tensor _trk_i, torch::Tensor _trk_j, 
+        torch::Tensor pmc, torch::Tensor pmc_i, torch::Tensor pmc_j,
+        torch::Tensor hx_i, torch::Tensor hx_j)
+ * - void **recursivegraphneuralnetwork::forward**(graph_t* data)
+ * - model_template* **recursivegraphneuralnetwork::clone**(void)
  *
  * ## Dependencies
  * - RecursiveGraphNeuralNetwork.h
  * - pyc/pyc.h
+ *
  */

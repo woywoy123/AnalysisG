@@ -1,8 +1,24 @@
 /**
- * @file modules_selection_cxx_properties
- * @brief Documentation for modules_selection_cxx_properties
+ * @file modules_selection_cxx_properties_cxx
+ * @brief Detailed documentation for properties.cxx
  *
+ * ## File Information
+ * - Path: modules/selection/cxx/properties.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - h>
+
+void **selection_template::set_name**(std::string* name, selection_template* ev)
+ * - void **selection_template::get_name**(std::string* name, selection_template* ev)
+ * - void **selection_template::set_hash**(std::string* path, selection_template* ev)
+ * - void **selection_template::get_hash**(std::string* val, selection_template* ev)
+ * - void **selection_template::get_tree**(std::string* name, selection_template* ev)
+ * - void **selection_template::set_weight**(double* inpt, selection_template* ev)
+ * - void **selection_template::get_weight**(double* inpt, selection_template* ev)
+ * - void **selection_template::set_index**(long* inpt, selection_template* ev)
  *
  * ## Dependencies
  * - templates/selection_template.h
+ *
  */

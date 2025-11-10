@@ -1,15 +1,27 @@
 /**
- * @file modules_nusol_ellipse_include_ellipse_nusol
- * @brief Documentation for modules_nusol_ellipse_include_ellipse_nusol
+ * @file modules_nusol_ellipse_include_ellipse_nusol_h
+ * @brief Detailed documentation for nusol.h
  *
+ * ## File Information
+ * - Path: modules/nusol/ellipse/include/ellipse/nusol.h
+ * - Type: .h file
  *
  * ## Classes
- * - mtx
- * - particle_template
- * - nuelx
+ * ### class mtx
+ * **Members:**
+ * - double p
+ * - double m
+ * - double b
+ * - double p2
+ * - double m2
+ * - double b2
+ * - double phi
+ * - double theta
+ * - double px
+ * - double py
  *
- * ## Key Functions
- * - public: nuelx(...)
+ * ### class nuelx
+ * **Methods:**
  * - double Sx(...)
  * - double dSx_dmW(...)
  * - double Sy(...)
@@ -19,4 +31,50 @@
  * - double w2(...)
  * - double om2(...)
  * - double Z(...)
+ * - double Z2(...)
+ * **Members:**
+ * - wrapper* b
+ * - wrapper* l
+ * - double mw
+ * - double mt
+ * - double mw2
+ * - double mt2
+ * - double _s
+ * - double _c
+ * - mtx* h_tilde
+ * - mtx* h
+ *
+ * ## Structures
+ * ### struct wrapper
+ * - double p
+ * - double m
+ * - double b
+ * - double p2
+ * - double m2
+ * - double b2
+ * - double phi
+ * - double theta
+ * - double px
+ * - double py
+ *
+ * ## Functions
+ * - double **Sx**(void)
+ * - double **dSx_dmW**(void)
+ * - double **Sy**(void)
+ * - double **dSy_dmW**(void)
+ * - double **dSy_dmT**(void)
+ * - double **w**(void)
+ * - double **w2**(void)
+ * - double **om2**(void)
+ * - double **Z**(void)
+ * - double **Z2**(void)
+ * - double **dZ_dmT**(void)
+ * - double **dZ_dmW**(void)
+ * - double **x0**(void)
+ * - double **x1**(void)
+ * - double **dx1_dmW**(void)
+ *
+ * ## Macros
+ * - #define HXX_NUSOL class mtx;
+ *
  */

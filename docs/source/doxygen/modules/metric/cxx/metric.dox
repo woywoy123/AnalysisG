@@ -1,11 +1,17 @@
 /**
- * @file modules_metric_cxx_metric
- * @brief Documentation for modules_metric_cxx_metric
+ * @file modules_metric_cxx_metric_cxx
+ * @brief Detailed documentation for metric.cxx
  *
+ * ## File Information
+ * - Path: modules/metric/cxx/metric.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
+ * ## Function Implementations
+ * - void **metric_t::build**(void)
+ * - std::string **metric_t::mode**(void)
+ * - std::string* **metric_t::get_filename**(long unsigned int idx)
  *
  * ## Dependencies
  * - templates/metric_template.h
+ *
  */

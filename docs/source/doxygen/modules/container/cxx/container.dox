@@ -1,13 +1,28 @@
 /**
- * @file modules_container_cxx_container
- * @brief Documentation for modules_container_cxx_container
+ * @file modules_container_cxx_container_cxx
+ * @brief Detailed documentation for container.cxx
  *
+ * ## File Information
+ * - Path: modules/container/cxx/container.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new write_t(...)
- * - size_t x(...)
+ * ## Function Implementations
+ * - h> **container::container**(void)
+ * - void **container::get_events**(std::vector<event_template*>* out, std::string _label)
+ * - void **container::add_meta_data**(meta* data, std::string fname)
+ * - new **std::string**(fname)
+ * - entry_t* **container::add_entry**(std::string hash)
+ * - bool **container::add_event_template**(event_template* ev, std::string _label)
+ * - bool **container::add_graph_template**(graph_template* gr, std::string _label)
+ * - bool **container::add_selection_template**(selection_template* sel)
+ * - void **container::compile**(size_t* l, int threadIdx)
+ * - new **std::string**(ev -> hash)
+ * - void **container::fill_selections**(std::map<std::string, selection_template*>* inpt)
+ * - void **container::populate_dataloader**(dataloader* dl)
+ * - size_t **container::len**(void)
  *
  * ## Dependencies
  * - TSystem.h
  * - container/container.h
+ *
  */

@@ -1,17 +1,30 @@
 /**
- * @file modules_nusol_conuix_cxx_matrix
- * @brief Documentation for modules_nusol_conuix_cxx_matrix
+ * @file modules_nusol_conuix_cxx_matrix_cxx
+ * @brief Detailed documentation for matrix.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/conuix/cxx/matrix.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - matrix_t mx(...)
- * - int i(...)
- * - int j(...)
- * - int k(...)
+ * ## Functions
+ * - matrix_t **mx**(this -> r, o.c)
+ * - matrix_t **mx**(this -> c, this -> r)
+ * - matrix_t **mx**(this -> r, this -> c)
+ * - matrix_t **mx**(this -> r, this -> c)
+ * - matrix_t **mx**(this -> r, this -> c)
+ *
+ * ## Function Implementations
+ * - include <iomanip> **matrix_t::matrix_t**(int _r, int _c)
+ * - matrix_t **matrix_t::dot**(const matrix_t& o)
+ * - long double& **matrix_t::at**(int _r, int _c)
+ * - const long double& **matrix_t::at**(int _r, int _c)
+ * - matrix_t **matrix_t::T**(void)
+ * - void **matrix_t::print**(int p)
  *
  * ## Dependencies
  * - conuix/matrix.h
  * - conuix/memory.h
  * - iomanip
  * - iostream
+ *
  */

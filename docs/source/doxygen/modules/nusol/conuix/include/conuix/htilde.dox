@@ -1,21 +1,40 @@
 /**
- * @file modules_nusol_conuix_include_conuix_htilde
- * @brief Documentation for modules_nusol_conuix_include_conuix_htilde
+ * @file modules_nusol_conuix_include_conuix_htilde_h
+ * @brief Detailed documentation for htilde.h
  *
+ * ## File Information
+ * - Path: modules/nusol/conuix/include/conuix/htilde.h
+ * - Type: .h file
  *
  * ## Classes
- * - particle_template
+ * ### class particle_template
+ * **Members:**
+ * - struct kinematic_t
+ * - struct rotation_t
+ * - struct base_t
+ * - struct thetapsi_t
+ * - struct pencil_t
+ * - struct Sx_t
+ * - struct Sy_t
+ * - struct H_matrix_t
  *
- * ## Key Functions
- * - void get_kinematic(...)
- * - void get_psi_theta_mapping(...)
- * - void get_rotation(...)
- * - void get_base(...)
- * - void get_pencil(...)
- * - void get_sx(...)
- * - void get_sy(...)
- * - void get_hmatrix(...)
+ * ## Functions
+ * - void **get_kinematic**(particle_template* ptr, kinematic_t* kin)
+ * - void **get_psi_theta_mapping**(base_t* bs, thetapsi_t* msp)
+ * - void **get_rotation**(particle_template* jet, particle_template* lep, rotation_t* rot)
+ * - void **get_base**(kinematic_t* jet, kinematic_t* lep, base_t* bs)
+ * - void **get_pencil**(kinematic_t* lep, kinematic_t* nu, base_t* base, pencil_t* pen)
+ * - void **get_sx**(base_t* bs, Sx_t* sx)
+ * - void **get_sy**(base_t* bs, Sy_t* sy)
+ * - void **get_hmatrix**(base_t* base, rotation_t* rot, H_matrix_t* H)
+ *
+ * ## Namespaces
+ * - Conuix
  *
  * ## Dependencies
  * - conuix/matrix.h
+ *
+ * ## Macros
+ * - #define H_CONUIX_STRUCT_H #include <conuix/matrix.h>
+ *
  */

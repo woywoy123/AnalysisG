@@ -1,17 +1,25 @@
 /**
- * @file pyc_cutils_utils
- * @brief Documentation for pyc_cutils_utils
+ * @file pyc_cutils_utils_cxx
+ * @brief Detailed documentation for utils.cxx
  *
+ * ## File Information
+ * - Path: pyc/cutils/utils.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - h>
-
-torch::Tensor clip(...)
- * - torch::Tensor format(...)
- * - unsigned int i(...)
- * - torch::TensorOptions MakeOp(...)
- * - torch::Tensor changedev(...)
+ * ## Functions
+ * - torch::Tensor **clip**(torch::Tensor* inpt, int dim)
+ * - torch::Tensor **format**(std::vector<torch::Tensor>* inpt)
+ * - torch::Tensor **format**(std::vector<torch::Tensor*> inpt)
+ * - torch::TensorOptions **MakeOp**(torch::Tensor* x)
+ * - torch::Tensor **changedev**(std::string dev, torch::Tensor* inx)
+ * - void **changedev**(torch::Tensor* inpt)
+ *
+ * ## Function Implementations
+ * - return **torch::cat**(tmp, -1)
+ * - return **torch::cat**(tmp, -1)
+ * - return **torch::TensorOptions**(void)
  *
  * ## Dependencies
  * - cutils/utils.h
+ *
  */

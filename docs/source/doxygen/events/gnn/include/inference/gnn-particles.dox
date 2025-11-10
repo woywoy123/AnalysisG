@@ -1,26 +1,42 @@
 /**
- * @file events_gnn_include_inference_gnn-particles
- * @brief Documentation for events_gnn_include_inference_gnn-particles
+ * @file events_gnn_include_inference_gnn-particles_h
+ * @brief Detailed documentation for gnn-particles.h
  *
+ * ## File Information
+ * - Path: events/gnn/include/inference/gnn-particles.h
+ * - Type: .h file
  *
  * ## Classes
- * - particle_gnn : inherits from particle_template
- * - top : inherits from particle_template
- * - zprime : inherits from particle_template
- *
- * ## Key Functions
- * - h>
-
-template <typename g>
-void reduce(...)
- * - template <typename g>
-void read(...)
- * - public: particle_gnn(...)
+ * ### class particle_gnn : particle_template
+ * **Methods:**
  * - particle_template* clone(...)
  * - void build(...)
- * - public: top(...)
- * - public: zprime(...)
+ * **Members:**
+ * - bool lep
+ *
+ * ### class top : particle_template
+ * **Members:**
+ * - float av_score
+ * - int n_leps
+ * - int n_nodes
+ *
+ * ### class zprime : particle_template
+ * **Members:**
+ * - float av_score
+ * - int n_leps
+ * - int n_nodes
+ *
+ * ## Functions
+ * - void **reduce**(element_t* el, std::string key, std::vector<g>* out)
+ * - void **reduce**(element_t* el, std::string key, g* out)
+ * - void **read**(element_t* el, std::string key, std::vector<g>* out)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
  *
  * ## Dependencies
  * - templates/particle_template.h
+ *
+ * ## Macros
+ * - #define EVENTS_PARTICLE_GNN_H #include <templates/particle_template.h>
+ *
  */

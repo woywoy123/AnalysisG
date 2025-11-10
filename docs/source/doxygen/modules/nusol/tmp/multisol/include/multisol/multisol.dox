@@ -1,26 +1,98 @@
 /**
- * @file modules_nusol_tmp_multisol_include_multisol_multisol
- * @brief Documentation for modules_nusol_tmp_multisol_include_multisol_multisol
+ * @file modules_nusol_tmp_multisol_include_multisol_multisol_h
+ * @brief Detailed documentation for multisol.h
  *
+ * ## File Information
+ * - Path: modules/nusol/tmp/multisol/include/multisol/multisol.h
+ * - Type: .h file
  *
  * ## Classes
- * - multisol
- *
- * ## Key Functions
- * - double px(...)
- * - double py(...)
- * - double pz(...)
- * - ellipse x ellipse: L(...)
- * - double lx(...)
- * - double ly(...)
- * - double lz(...)
- * - public: multisol(...)
+ * ### class multisol
+ * **Methods:**
  * - void make_rt(...)
  * - matrix H_tilde(...)
+ * - matrix dHdt_tilde(...)
+ * - matrix H(...)
+ * - matrix dHdt(...)
+ * - matrix d2Hdt2(...)
+ * - vec3 v(...)
+ * - vec3 dv_dt(...)
+ * - vec3 dv_dphi(...)
+ * - vec3 d2v_dt_dphi(...)
+ * **Members:**
+ * - t, double z
+ * - t, double z
+ * - t, double z
+ * - t, double z, vec3* real
+ * - matrix* rt
+ * - multisol_t* para
+ * - double b_lep
+ * - double p_lep
+ * - double m2_lep
+ * - double e2_lep
+ *
+ * ## Structures
+ * ### struct multisol_t
+ * - double A
+ * - double D
+ * - double s0x
+ * - double psi
+ * - double lmb1
+ * - double a_x
+ * - double a_y
+ * - double a_w
+ * - double a_t
+ * - matrix ht1, ht2, ht3
+ *
+ * ### struct rev_t
+ * - double u
+ * - double v
+ * - double u_p
+ * - double v_p
+ * - double t
+ * - double z
+ *
+ * ### struct mass_t
+ * - double mt
+ * - double mw
+ * - double sx
+ * - double sy
+ *
+ * ### struct geo_t
+ * - vec3 perp1, perp2, center
+ * - vec3 r0, d, _pts1, _pts2
+ * - bool valid
+ * - double _s1
+ * - double _p1
+ * - double _d1
+ * - double asym
+ * - geo_t* nu1
+ * - geo_t* nu2
+ *
+ * ## Functions
+ * - double **px**(double u, double v)
+ * - double **py**(double u, double v)
+ * - double **pz**(double u, double v)
+ * - double **lx**(double s)
+ * - double **ly**(double s)
+ * - double **lz**(double s)
+ * - void **make_rt**(void)
+ * - matrix **H_tilde**(double t, double z)
+ * - matrix **dHdt_tilde**(double t, double z = 1)
+ * - matrix **H**(double t, double z)
+ * - matrix **dHdt**(double t, double z = 1)
+ * - matrix **d2Hdt2**(double t, double z = 1)
+ * - vec3 **v**(double t, double z, double phi)
+ * - vec3 **dv_dt**(double t, double z, double phi)
+ * - vec3 **dv_dphi**(double t, double z, double phi)
  *
  * ## Dependencies
  * - iostream
  * - reconstruction/matrix.h
  * - string
  * - templates/particle_template.h
+ *
+ * ## Macros
+ * - #define MULTISOL_H #include <templates/particle_template.h>
+ *
  */

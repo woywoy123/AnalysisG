@@ -1,14 +1,21 @@
 /**
- * @file graphs_bsm_4tops_include_bsm_4tops_edge_features
- * @brief Documentation for graphs_bsm_4tops_include_bsm_4tops_edge_features
+ * @file graphs_bsm_4tops_include_bsm_4tops_edge_features_h
+ * @brief Detailed documentation for edge_features.h
  *
+ * ## File Information
+ * - Path: graphs/bsm_4tops/include/bsm_4tops/edge_features.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - void res_edge(...)
- * - void top_edge(...)
- * - void det_top_edge(...)
- * - void det_res_edge(...)
+ * ## Functions
+ * - void **res_edge**(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * - void **top_edge**(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * - void **det_top_edge**(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * - void **det_res_edge**(int* o, std::tuple<particle_template*, particle_template*>* pij)
  *
  * ## Dependencies
  * - templates/event_template.h
+ *
+ * ## Macros
+ * - #define EDGE_FEATURES_BSM_4TOPS_H #include <templates/event_template.h>
+ *
  */

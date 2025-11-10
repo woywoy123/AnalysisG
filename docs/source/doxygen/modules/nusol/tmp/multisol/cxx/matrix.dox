@@ -1,13 +1,41 @@
 /**
- * @file modules_nusol_tmp_multisol_cxx_matrix
- * @brief Documentation for modules_nusol_tmp_multisol_cxx_matrix
+ * @file modules_nusol_tmp_multisol_cxx_matrix_cxx
+ * @brief Detailed documentation for matrix.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/tmp/multisol/cxx/matrix.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - int i(...)
- * - int j(...)
- * - matrix mx(...)
- * - int k(...)
+ * ## Functions
+ * - matrix **mx**(size, size)
+ * - matrix **mx**(this -> _c, this -> _r)
+ * - matrix **mx**(3, 3)
+ * - matrix **mx**(this -> _r, o._c)
+ * - matrix **mx**(this -> _r, this -> _c)
+ * - matrix **mx**(this -> _r, this -> _c)
+ * - matrix **mx**(this -> _r, o._c)
+ * - matrix **mx**(this -> _r, this -> _c)
+ * - bool **solve_linear**(const matrix& A_in, const matrix& b_in, matrix& x_out)
+ * - matrix **aug**(size, size + 1)
+ * - bool **invert_matrix**(const matrix& M, matrix& M_inv)
+ * - void **print**(double v, int p)
+ *
+ * ## Function Implementations
+ * - double **vec3::mag**(void)
+ * - return **std::pow**(this -> mag2()
+ * - double **vec3::dot**(const vec3& o)
+ * - vec3 **vec3::cross**(const vec3& o)
+ * - void **vec3::print**(void)
+ * - double **vec4::dot**(const vec4& o)
+ * - void **vec4::print**(void)
+ * - int **matrix::rows**(void)
+ * - int **matrix::cols**(void)
+ * - double& **matrix::at**(int r, int c)
+ * - const double& **matrix::at**(int r, int c)
+ * - void **matrix::print**(int p)
+ * - std::cout << std::fixed << **std::setprecision**(p)
+ * - return **std::pow**(sum_sq, 0.5)
+ * - matrix **matrix::T**(void)
  *
  * ## Dependencies
  * - iomanip
@@ -16,4 +44,5 @@
  * - reconstruction/matrix.h
  * - reconstruction/mtx.h
  * - reconstruction/solvers.h
+ *
  */

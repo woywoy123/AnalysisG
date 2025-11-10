@@ -1,9 +1,29 @@
 /**
- * @file modules_structs_include_structs_settings
- * @brief Documentation for modules_structs_include_structs_settings
+ * @file modules_structs_include_structs_settings_h
+ * @brief Detailed documentation for settings.h
  *
+ * ## File Information
+ * - Path: modules/structs/include/structs/settings.h
+ * - Type: .h file
+ *
+ * ## Structures
+ * ### struct settings_t
+ * - std::string output_path
+ * - std::string run_name
+ * - std::string sow_name
+ * - std::string metacache_path
+ * - bool fetch_meta
+ * - bool pretagevents
+ * - int epochs
+ * - int kfolds
+ * - int batch_size
+ * - std::vector<int> kfold
  *
  * ## Dependencies
  * - string
  * - vector
+ *
+ * ## Macros
+ * - #define SETTINGS_STRUCTS_H #include <string>
+ *
  */

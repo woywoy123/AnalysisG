@@ -1,16 +1,19 @@
 /**
- * @file templates_metrics_include_metrics_<name>
- * @brief Documentation for templates_metrics_include_metrics_<name>
+ * @file templates_metrics_include_metrics_<name>_h
+ * @brief Detailed documentation for <name>.h
  *
+ * ## File Information
+ * - Path: templates/metrics/include/metrics/<name>.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - name>_metric* clone(...)
- * - void define_metric(...)
- * - void define_variables(...)
- * - void event(...)
- * - void batch(...)
- * - void end(...)
+ * ## Functions
+ * - void **define_metric**(metric_t* mtx)
+ * - void **define_variables**(void)
+ * - void **event**(void)
+ * - void **batch**(void)
+ * - void **end**(void)
  *
  * ## Dependencies
  * - templates/metric_template.h
+ *
  */

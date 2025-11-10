@@ -1,16 +1,28 @@
 /**
- * @file modules_metrics_cxx_mass_plots
- * @brief Documentation for modules_metrics_cxx_mass_plots
+ * @file modules_metrics_cxx_mass_plots_cxx
+ * @brief Detailed documentation for mass_plots.cxx
  *
+ * ## File Information
+ * - Path: modules/metrics/cxx/mass_plots.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new TH1F(...)
- * - new THStack(...)
- * - new TLegend(...)
- * - size_t x(...)
- * - new TCanvas(...)
- * - new TRatioPlot(...)
- * - Invariant Mass(...)
+ * ## Enumerations
+ * ### enum typ
+ * Values: analytics_t* an, std::map<std::string, TH1F*>>* type_
+ *
+ * ### enum mode
+ * Values: analytics_t* an, std::map<std::string, TH1F*>>* type_, torch::Tensor> pred_mass, pred_, pmc_); 
+    pred_mass, pmc_); 
+    torch::Tensor pred_mass_cu
+ *
+ * ## Function Implementations
+ * - h>
+
+void **metrics::dump_mass_plots**(int k)
+ * - void **metrics::build_th1f_mass**(std::string var_name, graph_enum typ, int kfold)
+ * - void **metrics::add_th1f_mass**(torch::Tensor* pmc, torch::Tensor* edge_index, 
+        torch::Tensor* truth, torch::Tensor* pred, 
+        int kfold, mode_enum mode, std::string var_name)
  *
  * ## Dependencies
  * - THStack.h
@@ -18,4 +30,5 @@
  * - c10/cuda/CUDAGuard.h
  * - c10/cuda/CUDAStream.h
  * - metrics/metrics.h
+ *
  */

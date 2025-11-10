@@ -1,12 +1,17 @@
 /**
- * @file events_ssml_mc20_cxx_event
- * @brief Documentation for events_ssml_mc20_cxx_event
+ * @file events_ssml_mc20_cxx_event_cxx
+ * @brief Detailed documentation for event.cxx
  *
+ * ## File Information
+ * - Path: events/ssml_mc20/cxx/event.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new ssml_mc20(...)
- * - size_t x(...)
+ * ## Function Implementations
+ * - event_template* **ssml_mc20::clone**(void)
+ * - void **ssml_mc20::build**(element_t* el)
+ * - void **ssml_mc20::CompileEvent**(void)
  *
  * ## Dependencies
  * - event.h
+ *
  */

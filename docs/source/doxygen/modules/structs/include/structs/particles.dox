@@ -1,13 +1,44 @@
 /**
- * @file modules_structs_include_structs_particles
- * @brief Documentation for modules_structs_include_structs_particles
+ * @file modules_structs_include_structs_particles_h
+ * @brief Detailed documentation for particles.h
  *
+ * ## File Information
+ * - Path: modules/structs/include/structs/particles.h
+ * - Type: .h file
  *
  * ## Classes
- * - particle_template
+ * ### class particle_template
+ * **Members:**
+ * - double e
+ * - double mass
+ * - double px
+ * - double py
+ * - double pz
+ * - double pt
+ * - double eta
+ * - double phi
+ * - bool cartesian
+ * - bool polar
+ *
+ * ## Structures
+ * ### struct particle_t
+ * - double e
+ * - double mass
+ * - double px
+ * - double py
+ * - double pz
+ * - double pt
+ * - double eta
+ * - double phi
+ * - bool cartesian
+ * - bool polar
  *
  * ## Dependencies
  * - map
  * - string
  * - vector
+ *
+ * ## Macros
+ * - #define PARTICLES_STRUCTS_H #include <string>
+ *
  */

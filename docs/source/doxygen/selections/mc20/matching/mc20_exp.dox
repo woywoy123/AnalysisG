@@ -1,13 +1,18 @@
 /**
- * @file selections_mc20_matching_mc20_exp
- * @brief Documentation for selections_mc20_matching_mc20_exp
+ * @file selections_mc20_matching_mc20_exp_cxx
+ * @brief Detailed documentation for mc20_exp.cxx
  *
+ * ## File Information
+ * - Path: selections/mc20/matching/mc20_exp.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - size_t y(...)
+ * ## Function Implementations
+ * - h>
+
+void **matching::experimental**(event_template* ev)
  *
  * ## Dependencies
  * - exp_mc20/event.h
  * - matching.h
+ *
  */

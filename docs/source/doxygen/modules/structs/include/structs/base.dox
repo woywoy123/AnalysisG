@@ -1,24 +1,51 @@
 /**
- * @file modules_structs_include_structs_base
- * @brief Documentation for modules_structs_include_structs_base
+ * @file modules_structs_include_structs_base_h
+ * @brief Detailed documentation for base.h
  *
+ * ## File Information
+ * - Path: modules/structs/include/structs/base.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - go here first
-
-void buildPCM(...)
- * - void registerInclude(...)
- * - void buildDict(...)
- * - void buildAll(...)
- * - public: bsc_t(...)
- * - void flush_buffer(...)
- * - std::string as_string(...)
- * - std::string scan_buffer(...)
- * - data_enum root_type_translate(...)
- * - bool element(...)
+ * ## Structures
+ * ### struct bsc_t
+ * - std::vector<std::vector<std::vector<unsigned long long>>>* vvv_ull
+ * - std::vector<std::vector<std::vector<unsigned int>>>* vvv_ui
+ * - std::vector<std::vector<std::vector<double>>>* vvv_d
+ * - std::vector<std::vector<std::vector<long>>>* vvv_l
+ * - std::vector<std::vector<std::vector<float>>>* vvv_f
+ * - std::vector<std::vector<std::vector<int>>>* vvv_i
+ * - std::vector<std::vector<std::vector<bool>>>* vvv_b
+ * - std::vector<std::vector<std::vector<char>>>* vvv_c
+ * - std::vector<std::vector<unsigned long long>>* vv_ull
+ * - std::vector<std::vector<unsigned int>>* vv_ui
+ *
+ * ## Enumerations
+ * ### enum root_type_translate
+ * Values: if (!(*data)){return false;
+ *
+ * ## Functions
+ * - void **buildPCM**(std::string name, std::string incl, bool exl)
+ * - void **registerInclude**(std::string name, bool is_abs = false)
+ * - void **buildDict**(std::string name, std::string incl)
+ * - void **buildAll**(void)
+ * - void **flush_buffer**(void)
+ * - std::string **as_string**(void)
+ * - std::string **scan_buffer**(void)
+ * - data_enum **root_type_translate**(std::string*)
+ * - bool **element**(std::vector<std::vector<std::vector<float>>>*  el)
+ * - bool **element**(std::vector<std::vector<std::vector<double>>>* el)
+ * - bool **element**(std::vector<std::vector<std::vector<long>>>*   el)
+ * - bool **element**(std::vector<std::vector<std::vector<int>>>*    el)
+ * - bool **element**(std::vector<std::vector<std::vector<bool>>>*   el)
+ * - bool **element**(std::vector<std::vector<float>>*  el)
+ * - bool **element**(std::vector<std::vector<double>>* el)
  *
  * ## Dependencies
  * - string
  * - structs/enums.h
  * - vector
+ *
+ * ## Macros
+ * - #define STRUCTS_BASE_H #include <vector>
+ *
  */

@@ -1,17 +1,53 @@
 /**
- * @file modules_lossfx_include_templates_lossfx
- * @brief Documentation for modules_lossfx_include_templates_lossfx
+ * @file modules_lossfx_include_templates_lossfx_h
+ * @brief Detailed documentation for lossfx.h
  *
+ * ## File Information
+ * - Path: modules/lossfx/include/templates/lossfx.h
+ * - Type: .h file
  *
  * ## Classes
- * - lossfx : inherits from tools
+ * ### class lossfx : tools, 
+    public notification
+ * **Methods:**
+ * - loss_enum loss_string(...)
+ * - opt_enum optim_string(...)
+ * - scheduler_enum scheduler_string(...)
+ * - void loss_opt_string(...)
+ * - torch::Tensor loss(...)
+ * - torch::Tensor loss(...)
+ * - void weight_init(...)
+ * - torch::optim::Optimizer* build_optimizer(...)
+ * - void build_scheduler(...)
+ * - bool build_loss_function(...)
+ * **Members:**
+ * - std::string variable
+ * - loss_opt lss_cfg
+ * - torch::optim::Adam* m_adam
+ * - torch::optim::Adagrad* m_adagrad
+ * - torch::optim::AdamW* m_adamw
+ * - torch::optim::LBFGS* m_lbfgs
+ * - torch::optim::RMSprop* m_rmsprop
+ * - torch::optim::SGD* m_sgd
+ * - torch::optim::StepLR* m_steplr
+ * - torch::optim::ReduceLROnPlateauScheduler* m_rlp
  *
- * ## Key Functions
- * - h>
-
-template <typename g, typename go>
-g* generate_ops(...)
- * - return new g(...)
+ * ## Functions
+ * - g* **generate_ops**(g* imp, go* opx, bool dx)
+ * - return new **g**(*opx)
+ * - void **_dress_reduction**(g* imx, loss_opt* params)
+ * - void **_dress_batch**(g* imx, loss_opt* params)
+ * - void **_dress_ignore**(g* imx, loss_opt* params)
+ * - void **_dress_smoothing**(g* imx, loss_opt* params)
+ * - void **_dress_margin**(g* imx, loss_opt* params)
+ * - void **_dress_blank**(g* imx, loss_opt* params)
+ * - void **_dress_zero**(g* imx, loss_opt* params)
+ * - void **_dress_swap**(g* imx, loss_opt* params)
+ * - void **_dress_eps**(g* imx, loss_opt* params)
+ * - void **_dress_beta**(g* imx, loss_opt* params)
+ * - void **_dress_full**(g* imx, loss_opt* params)
+ * - void **_dress_target**(g* imx, loss_opt* params)
+ * - void **_dress_delta**(g* imx, loss_opt* params)
  *
  * ## Dependencies
  * - map
@@ -22,4 +58,8 @@ g* generate_ops(...)
  * - tools/tools.h
  * - torch/torch.h
  * - vector
+ *
+ * ## Macros
+ * - #define LOSSFX_H #include <map>
+ *
  */

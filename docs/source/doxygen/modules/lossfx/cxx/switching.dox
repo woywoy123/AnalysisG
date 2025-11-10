@@ -1,11 +1,32 @@
 /**
- * @file modules_lossfx_cxx_switching
- * @brief Documentation for modules_lossfx_cxx_switching
+ * @file modules_lossfx_cxx_switching_cxx
+ * @brief Detailed documentation for switching.cxx
  *
+ * ## File Information
+ * - Path: modules/lossfx/cxx/switching.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
+ * ## Enumerations
+ * ### enum lossfx
+ * Values: name
+ *
+ * ### enum lossfx
+ * Values: name
+ *
+ * ### enum lossfx
+ * Values: name
+ *
+ * ## Function Implementations
+ * - h>
+
+loss_enum **lossfx::loss_string**(std::string name)
+ * - opt_enum **lossfx::optim_string**(std::string name)
+ * - scheduler_enum **lossfx::scheduler_string**(std::string name)
+ * - void **lossfx::loss_opt_string**(std::string vars)
+ * - return **std::stoi**(*v)
+ * - return **std::stod**(*v)
  *
  * ## Dependencies
  * - templates/lossfx.h
+ *
  */

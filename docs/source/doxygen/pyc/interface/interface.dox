@@ -1,15 +1,24 @@
 /**
- * @file pyc_interface_interface
- * @brief Documentation for pyc_interface_interface
+ * @file pyc_interface_interface_cxx
+ * @brief Detailed documentation for interface.cxx
  *
+ * ## File Information
+ * - Path: pyc/interface/interface.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - return build_tensor(...)
- * - 1, int(...)
- * - std::vector<neutrino*> construct_particle(...)
- * - inpt, &pmc, &s, double(...)
- * - ln, &_l, &s, long(...)
+ * ## Functions
+ * - std::vector<neutrino*> **construct_particle**(torch::Tensor* inpt, torch::Tensor* ln, torch::Tensor* bn, std::vector<double>* dst)
+ * - std::vector<neutrino*> **out**(o, nullptr)
+ *
+ * ## Function Implementations
+ * - endif **neutrino::neutrino**(void)
+ * - torch::Dict<std::string, torch::Tensor> **pyc::std_to_dict**(std::map<std::string, torch::Tensor>* inpt)
+ * - torch::Dict<std::string, torch::Tensor> **pyc::std_to_dict**(std::map<std::string, torch::Tensor> inpt)
+ * - return **pyc::std_to_dict**(&inpt)
+ * - torch::Tensor **pyc::tensorize**(std::vector<long>* inpt)
+ * - torch::Tensor **pyc::tensorize**(std::vector<std::vector<double>>* inpt)
+ * - return **torch::cat**(mrg, {0})
+ * - return **torch::cat**(mrg, {0})
  *
  * ## Dependencies
  * - pyc/pyc.h
@@ -17,4 +26,5 @@
  * - tools/vector_cast.h
  * - utils/utils.cuh
  * - utils/utils.h
+ *
  */

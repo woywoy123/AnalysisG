@@ -1,18 +1,28 @@
 /**
- * @file modules_nusol_ellipse_cxx_ellipse
- * @brief Documentation for modules_nusol_ellipse_cxx_ellipse
+ * @file modules_nusol_ellipse_cxx_ellipse_cxx
+ * @brief Detailed documentation for ellipse.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/ellipse/cxx/ellipse.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - int l(...)
- * - int b(...)
- * - new nuelx(...)
- * - size_t y(...)
- * - double mt1(...)
- * - new mtx(...)
+ * ## Functions
+ * - return new **mtx**(vxt)
+ * - mtx **met**(1, 3)
+ *
+ * ## Function Implementations
+ * - h> **nunu_t::nunu_t**(void)
+ * - void **ellipse::prepare**(double mt, double mw)
+ * - void **ellipse::solve**(void)
+ * - int **ellipse::generate**(nuelx* nu1, nuelx* nu2)
+ * - void **ellipse::flush**(void)
+ * - int **ellipse::intersection**(mtx** v, mtx** v_)
+ * - int **ellipse::angle_cross**(mtx** v, mtx** v_)
+ * - void **ellipse::make_neutrinos**(mtx* v, mtx* v_)
+ * - std::vector<particle_template*> **ellipse::nunu_make**(void)
  *
  * ## Dependencies
  * - ellipse/ellipse.h
  * - reconstruction/nusol.h
+ *
  */

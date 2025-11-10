@@ -1,13 +1,18 @@
 /**
- * @file events_bsm_4tops_cxx_event
- * @brief Documentation for events_bsm_4tops_cxx_event
+ * @file events_bsm_4tops_cxx_event_cxx
+ * @brief Detailed documentation for event.cxx
  *
+ * ## File Information
+ * - Path: events/bsm_4tops/cxx/event.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new bsm_4tops(...)
- * - int x(...)
- * - size_t z(...)
+ * ## Function Implementations
+ * - h> **bsm_4tops::bsm_4tops**(void)
+ * - event_template* **bsm_4tops::clone**(void)
+ * - void **bsm_4tops::build**(element_t* el)
+ * - void **bsm_4tops::CompileEvent**(void)
  *
  * ## Dependencies
  * - bsm_4tops/event.h
+ *
  */

@@ -1,19 +1,38 @@
 /**
- * @file modules_typecasting_include_tools_vector_cast
- * @brief Documentation for modules_typecasting_include_tools_vector_cast
+ * @file modules_typecasting_include_tools_vector_cast_h
+ * @brief Detailed documentation for vector_cast.h
  *
+ * ## File Information
+ * - Path: modules/typecasting/include/tools/vector_cast.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - template <typename G>
-std::vector<std::vector<G>> chunking(...)
- * - template <typename g>
-void tensor_vector(...)
- * - size_t x(...)
- * - template <typename G, typename g>
-bool tensor_to_vector(...)
- * - typename std::vector<g> linear(...)
- * - std::vector<signed long> tensor_size(...)
- * - data, out, &s, g(...)
+ * ## Structures
+ * ### struct write_t
+ * - std::string variable_name
+ * - bool failed_branch
+ * - friend write_t
+ * - bool use_external
+ * - bool is_triggered
+ * - TBranch* tb
+ * - TTree* tt
+ * - meta_t* mtx
+ *
+ * ## Functions
+ * - bool **_transfer**(torch::Tensor* data, torch::Tensor* cpux)
+ * - std::vector<std::vector<G>> **chunking**(std::vector<G>* v, int N)
+ * - void **tensor_vector**(std::vector<g>* trgt, std::vector<g>* chnks, std::vector<signed long>*, int)
+ * - void **tensor_vector**(std::vector<G>* trgt, std::vector<g>* chnks, std::vector<signed long>* dims, int next_dim = 0)
+ * - bool **tensor_to_vector**(torch::Tensor* data, std::vector<G>* out, std::vector<signed long>* dims, g)
+ * - std::vector<signed long> **tensor_size**(torch::Tensor* inpt)
+ * - void **tensor_to_vector**(torch::Tensor* data, std::vector<g>* out)
+ * - void **create_meta**(meta_t* mt)
+ * - void **build_switch**(size_t s, torch::Tensor* tx)
+ * - void **process**(torch::Tensor* data, std::string* varname, TTree* tr)
+ * - void **process**(std::vector<std::vector<float>>*  data, std::string* varname, TTree* tr)
+ * - void **process**(std::vector<std::vector<double>>* data, std::string* varname, TTree* tr)
+ * - void **process**(std::vector<std::vector<long>>*   data, std::string* varname, TTree* tr)
+ * - void **process**(std::vector<std::vector<int>>*    data, std::string* varname, TTree* tr)
+ * - void **process**(std::vector<std::vector<bool>>*   data, std::string* varname, TTree* tr)
  *
  * ## Dependencies
  * - ATen/cuda/CUDAContext.h
@@ -24,4 +43,8 @@ bool tensor_to_vector(...)
  * - structs/meta.h
  * - torch/torch.h
  * - vector
+ *
+ * ## Macros
+ * - #define TYPECASTING_VECTOR_CAST_H #include <c10/core/DeviceType.h>
+ *
  */

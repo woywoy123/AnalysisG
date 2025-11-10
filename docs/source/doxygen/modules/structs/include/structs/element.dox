@@ -1,18 +1,53 @@
 /**
- * @file modules_structs_include_structs_element
- * @brief Documentation for modules_structs_include_structs_element
+ * @file modules_structs_include_structs_element_h
+ * @brief Detailed documentation for element.h
  *
+ * ## File Information
+ * - Path: modules/structs/include/structs/element.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - public: data_t(...)
- * - void initialize(...)
- * - void flush(...)
- * - bool next(...)
- * - private:
-        void fetch_buffer(...)
- * - void string_type(...)
- * - TTreeReaderValue<T> dr(...)
- * - void set_meta(...)
+ * ## Structures
+ * ### struct data_t
+ * - std::string leaf_name
+ * - std::string branch_name
+ * - std::string tree_name
+ * - std::string leaf_type
+ * - std::string path
+ * - std::string* fname
+ * - TLeaf* leaf
+ * - TBranch* branch
+ * - TTree* tree
+ * - TFile* file
+ *
+ * ### struct element_t
+ * - std::string tree
+ * - long event_index
+ * - std::string filename
+ *
+ * ### struct write_t
+ * - TFile* file
+ * - TTree* tree
+ * - meta_t* mtx
+ * - std::map<std::string, variable_t*>* data
+ *
+ * ### struct writer
+ *
+ * ## Functions
+ * - void **initialize**(void)
+ * - void **flush**(void)
+ * - bool **next**(void)
+ * - void **fetch_buffer**(void)
+ * - void **string_type**(void)
+ * - void **fetch_buffer**(std::vector<T>** data)
+ * - bool **next**(void)
+ * - void **set_meta**(void)
+ * - bool **boundary**(void)
+ * - bool **get**(std::string key, g* var)
+ * - variable_t* **process**(std::string* name)
+ * - void **write**(void)
+ * - void **create**(std::string tr_name, std::string path)
+ * - void **close**(void)
+ * - void **create**(std::string* pth)
  *
  * ## Dependencies
  * - TBranch.h
@@ -28,4 +63,8 @@
  * - structs/meta.h
  * - tools/vector_cast.h
  * - vector
+ *
+ * ## Macros
+ * - #define STRUCTS_ELEMENTS_H #include <TFile.h>
+ *
  */

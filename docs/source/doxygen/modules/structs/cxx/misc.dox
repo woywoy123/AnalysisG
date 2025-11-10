@@ -1,13 +1,21 @@
 /**
- * @file modules_structs_cxx_misc
- * @brief Documentation for modules_structs_cxx_misc
+ * @file modules_structs_cxx_misc_cxx
+ * @brief Detailed documentation for misc.cxx
  *
+ * ## File Information
+ * - Path: modules/structs/cxx/misc.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
+ * ## Function Implementations
+ * - h>
+
+void **graph_hdf5_w::flush_data**(void)
+ * - std::string **model_report::print**(void)
+ * - std::string **model_report::prx**(std::map<mode_enum, std::map<std::string, float>>* data, std::string title)
  *
  * ## Dependencies
  * - element.h
  * - folds.h
  * - report.h
+ *
  */

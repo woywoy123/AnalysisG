@@ -1,29 +1,43 @@
 /**
- * @file events_gnn_include_inference_gnn-event
- * @brief Documentation for events_gnn_include_inference_gnn-event
+ * @file events_gnn_include_inference_gnn-event_h
+ * @brief Detailed documentation for gnn-event.h
  *
+ * ## File Information
+ * - Path: events/gnn/include/inference/gnn-event.h
+ * - Type: .h file
  *
  * ## Classes
- * - gnn_event : inherits from event_template
+ * ### class gnn_event : event_template
+ * **Members:**
+ * - int num_bjets
+ * - double num_jets
+ * - double num_leps
+ * - double met
+ * - double phi
+ * - int p_ntops
+ * - int p_signal
+ * - float s_ntops
+ * - float s_signal
+ * - std::vector<float> ntops_scores
  *
- * ## Key Functions
- * - h>
-
-template <typename g>
-void reduce(...)
- * - size_t x(...)
- * - public: gnn_event(...)
- * - event_template* clone(...)
- * - void build(...)
- * - void CompileEvent(...)
- * - template <typename G>
-        std::map<int, G*> sort_by_index(...)
- * - template <typename m, typename G, typename Gx>
-        void vectorize(...)
- * - template <typename g, typename G>
-        void sum(...)
+ * ## Functions
+ * - void **reduce**(element_t* el, std::string key, g* out)
+ * - void **reduce**(element_t* el, std::string key, std::vector<g>* out, int dim)
+ * - event_template* **clone**(void)
+ * - void **build**(element_t* el)
+ * - void **CompileEvent**(void)
+ * - std::map<int, G*> **sort_by_index**(std::map<std::string, G*>* ipt)
+ * - void **vectorize**(std::map<m, G*>* ipt, std::vector<Gx*>* vec)
+ * - void **sum**(std::vector<g*>* ch, G** out)
+ * - void **print**(std::vector<std::vector<g>>* data)
+ * - void **print**(std::map<g, std::map<g, k>>* data)
+ * - void **print**(std::map<g, k>* data)
  *
  * ## Dependencies
  * - inference/gnn-particles.h
  * - templates/event_template.h
+ *
+ * ## Macros
+ * - #define EVENTS_GNN_EVENT_H #include <templates/event_template.h>
+ *
  */

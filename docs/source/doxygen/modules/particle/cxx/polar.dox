@@ -1,8 +1,23 @@
 /**
- * @file modules_particle_cxx_polar
- * @brief Documentation for modules_particle_cxx_polar
+ * @file modules_particle_cxx_polar_cxx
+ * @brief Detailed documentation for polar.cxx
  *
+ * ## File Information
+ * - Path: modules/particle/cxx/polar.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - h>
+
+void **particle_template::set_pt**(double* val, particle_template* prt)
+ * - void **particle_template::get_pt**(double* val, particle_template* prt)
+ * - void **particle_template::set_eta**(double* val, particle_template* prt)
+ * - void **particle_template::get_eta**(double* val, particle_template* prt)
+ * - void **particle_template::set_phi**(double* val, particle_template* prt)
+ * - void **particle_template::get_phi**(double* val, particle_template* prt)
+ * - void **particle_template::to_polar**(void)
  *
  * ## Dependencies
  * - templates/particle_template.h
+ *
  */

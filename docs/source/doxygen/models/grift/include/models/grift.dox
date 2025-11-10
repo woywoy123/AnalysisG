@@ -1,18 +1,38 @@
 /**
- * @file models_grift_include_models_grift
- * @brief Documentation for models_grift_include_models_grift
+ * @file models_grift_include_models_grift_h
+ * @brief Detailed documentation for grift.h
  *
+ * ## File Information
+ * - Path: models/grift/include/models/grift.h
+ * - Type: .h file
  *
  * ## Classes
- * - grift : inherits from model_template
- *
- * ## Key Functions
- * - public: grift(...)
+ * ### class grift : model_template
+ * **Methods:**
  * - model_template* clone(...)
  * - void forward(...)
- * - torch::Tensor message(...)
  * - torch::Tensor node_encode(...)
+ * **Members:**
+ * - int _hidden
+ * - int _xrec
+ * - int _xin
+ * - int _xout
+ * - int _xtop
+ * - double drop_out
+ * - bool is_mc
+ * - bool init
+ * - bool pagerank
+ * - torch::nn::Sequential* rnn_x
+ *
+ * ## Functions
+ * - model_template* **clone**(void)
+ * - void **forward**(graph_t*)
+ * - torch::Tensor **node_encode**(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn)
  *
  * ## Dependencies
  * - templates/model_template.h
+ *
+ * ## Macros
+ * - #define GNN_GRIFT_H #include <templates/model_template.h>
+ *
  */

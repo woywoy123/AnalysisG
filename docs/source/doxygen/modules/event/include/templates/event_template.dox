@@ -1,13 +1,14 @@
 /**
- * @file modules_event_include_templates_event_template
- * @brief Documentation for modules_event_include_templates_event_template
+ * @file modules_event_include_templates_event_template_h
+ * @brief Detailed documentation for event_template.h
  *
+ * ## File Information
+ * - Path: modules/event/include/templates/event_template.h
+ * - Type: .h file
  *
  * ## Classes
- * - event_template : inherits from tools
- *
- * ## Key Functions
- * - public: event_template(...)
+ * ### class event_template : tools
+ * **Methods:**
  * - void static set_trees(...)
  * - void static set_branches(...)
  * - void static get_leaves(...)
@@ -17,6 +18,35 @@
  * - void static get_hash(...)
  * - void static set_tree(...)
  * - void static get_tree(...)
+ * - void static set_weight(...)
+ * **Members:**
+ * - cproperty<std::vector<std::string>, event_template> trees
+ * - cproperty<std::vector<std::string>, event_template> branches
+ * - cproperty<std::vector<std::string>, event_template> leaves
+ * - key, std::string leaf
+ * - cproperty<std::string, event_template> name
+ * - cproperty<std::string, event_template> hash
+ * - cproperty<std::string, event_template> tree
+ * - cproperty<double, event_template> weight
+ * - cproperty<long, event_template> index
+ * - std::map<std::string, std::string> m_trees
+ *
+ * ## Functions
+ * - void static **set_trees**(std::vector<std::string>*, event_template*)
+ * - void static **set_branches**(std::vector<std::string>*, event_template*)
+ * - void static **get_leaves**(std::vector<std::string>*, event_template*)
+ * - void **add_leaf**(std::string key, std::string leaf = "")
+ * - void static **set_name**(std::string*, event_template*)
+ * - void static **set_hash**(std::string*, event_template*)
+ * - void static **get_hash**(std::string*, event_template*)
+ * - void static **set_tree**(std::string*, event_template*)
+ * - void static **get_tree**(std::string*, event_template*)
+ * - void static **set_weight**(double*, event_template*)
+ * - void static **set_index**(long*, event_template*)
+ * - event_template* **clone**(void)
+ * - void **build**(element_t* el)
+ * - void **CompileEvent**(void)
+ * - std::map<std::string, event_template*> **build_event**(std::map<std::string, data_t*>* evnt)
  *
  * ## Dependencies
  * - meta/meta.h
@@ -25,4 +55,8 @@
  * - structs/property.h
  * - templates/particle_template.h
  * - tools/tools.h
+ *
+ * ## Macros
+ * - #define EVENT_TEMPLATE_H #include <templates/particle_template.h>
+ *
  */

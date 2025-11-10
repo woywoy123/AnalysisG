@@ -1,14 +1,19 @@
 /**
- * @file templates_particles_include_<particle-module>_<particle-name>
- * @brief Documentation for templates_particles_include_<particle-module>_<particle-name>
+ * @file templates_particles_include_<particle-module>_<particle-name>_h
+ * @brief Detailed documentation for <particle-name>.h
  *
+ * ## File Information
+ * - Path: templates/particles/include/<particle-module>/<particle-name>.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - some variable of the particle
-
-        particle_template* clone(...)
- * - void build(...)
+ * ## Functions
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
  *
  * ## Dependencies
  * - templates/particle_template.h
+ *
+ * ## Macros
+ * - #define EVENTS_ <PARTICLE-NAME>_H
+ *
  */

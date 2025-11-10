@@ -1,22 +1,28 @@
 /**
- * @file events_bsm_4tops_include_bsm_4tops_event
- * @brief Documentation for events_bsm_4tops_include_bsm_4tops_event
+ * @file events_bsm_4tops_include_bsm_4tops_event_h
+ * @brief Detailed documentation for event.h
  *
+ * ## File Information
+ * - Path: events/bsm_4tops/include/bsm_4tops/event.h
+ * - Type: .h file
  *
  * ## Classes
- * - bsm_4tops : inherits from event_template
+ * ### class bsm_4tops : event_template
+ * **Members:**
+ * - std::vector<particle_template*> Tops
  *
- * ## Key Functions
- * - public: bsm_4tops(...)
- * - event_template* clone(...)
- * - void build(...)
- * - void CompileEvent(...)
- * - template <typename G>
-        std::map<int, G*> sort_by_index(...)
- * - template <typename m, typename G>
-        void vectorize(...)
+ * ## Functions
+ * - event_template* **clone**(void)
+ * - void **build**(element_t* el)
+ * - void **CompileEvent**(void)
+ * - std::map<int, G*> **sort_by_index**(std::map<std::string, G*>* ipt)
+ * - void **vectorize**(std::map<m, G*>* ipt, std::vector<particle_template*>* vec)
  *
  * ## Dependencies
  * - bsm_4tops/particles.h
  * - templates/event_template.h
+ *
+ * ## Macros
+ * - #define EVENTS_BSM4TOPS_H #include <bsm_4tops/particles.h>
+ *
  */

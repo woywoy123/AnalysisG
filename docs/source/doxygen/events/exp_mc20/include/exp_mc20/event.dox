@@ -1,22 +1,42 @@
 /**
- * @file events_exp_mc20_include_exp_mc20_event
- * @brief Documentation for events_exp_mc20_include_exp_mc20_event
+ * @file events_exp_mc20_include_exp_mc20_event_h
+ * @brief Detailed documentation for event.h
  *
+ * ## File Information
+ * - Path: events/exp_mc20/include/exp_mc20/event.h
+ * - Type: .h file
  *
  * ## Classes
- * - exp_mc20 : inherits from event_template
- *
- * ## Key Functions
- * - public: exp_mc20(...)
+ * ### class exp_mc20 : event_template
+ * **Methods:**
  * - event_template* clone(...)
  * - void build(...)
  * - void CompileEvent(...)
- * - template <typename G>
-        std::map<int, G*> sort_by_index(...)
- * - template <typename m, typename G, typename g>
-        void vectorize(...)
+ * - std::map<int, G*> sort_by_index(...)
+ * **Members:**
+ * - std::vector<particle_template*> Tops
+ * - std::vector<particle_template*> TopChildren
+ * - std::vector<particle_template*> PhysicsTruth
+ * - std::vector<particle_template*> PhysicsDetector
+ * - std::vector<particle_template*> Jets
+ * - std::vector<particle_template*> Leptons
+ * - std::vector<particle_template*> Detector
+ * - unsigned long long event_number
+ * - float met_sum
+ * - float met
+ *
+ * ## Functions
+ * - event_template* **clone**(void)
+ * - void **build**(element_t* el)
+ * - void **CompileEvent**(void)
+ * - std::map<int, G*> **sort_by_index**(std::map<std::string, G*>* ipt)
+ * - void **vectorize**(std::map<m, G*>* ipt, std::vector<g*>* vec)
  *
  * ## Dependencies
  * - exp_mc20/particles.h
  * - templates/event_template.h
+ *
+ * ## Macros
+ * - #define EVENTS_EXP_MC20_H #include <exp_mc20/particles.h>
+ *
  */

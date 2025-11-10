@@ -1,15 +1,18 @@
 /**
- * @file selections_mc20_matching_mc20_ref
- * @brief Documentation for selections_mc20_matching_mc20_ref
+ * @file selections_mc20_matching_mc20_ref_cxx
+ * @brief Detailed documentation for mc20_ref.cxx
  *
+ * ## File Information
+ * - Path: selections/mc20/matching/mc20_ref.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - size_t x(...)
- * - size_t y(...)
- * - size_t c(...)
- * - size_t j(...)
+ * ## Function Implementations
+ * - h>
+
+void **matching::current**(event_template* ev)
  *
  * ## Dependencies
  * - matching.h
  * - ssml_mc20/event.h
+ *
  */

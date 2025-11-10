@@ -1,17 +1,31 @@
 /**
- * @file graphs_bsm_4tops_cxx_edge_features
- * @brief Documentation for graphs_bsm_4tops_cxx_edge_features
+ * @file graphs_bsm_4tops_cxx_edge_features_cxx
+ * @brief Detailed documentation for edge_features.cxx
  *
+ * ## File Information
+ * - Path: graphs/bsm_4tops/cxx/edge_features.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - h>
-
-void m_res_edge(...)
- * - void res_edge(...)
- * - int m_top_edge(...)
+ * ## Functions
+ * - void **m_res_edge**(int* o, top* t)
+ * - void **m_res_edge**(int* o, top_children* t)
+ * - void **m_res_edge**(int* o, truthjet* t)
+ * - void **m_res_edge**(int* o, jet* t)
+ * - void **m_res_edge**(int* o, electron* t)
+ * - void **m_res_edge**(int* o, muon* t)
+ * - void **m_res_edge**(int* o, particle_template* pn, particle_template* nu)
+ * - void **res_edge**(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * - int **m_top_edge**(top* t)
+ * - int **m_top_edge**(top_children* t)
+ * - std::vector<int> **m_top_edge**(jet*      t)
+ * - std::vector<int> **m_top_edge**(muon*     t)
+ * - std::vector<int> **m_top_edge**(electron* t)
+ * - std::vector<int> **m_top_edge**(truthjet* t)
+ * - std::vector<int> **m_top_edge**(particle_template* pn, particle_template* nu)
  *
  * ## Dependencies
  * - bsm_4tops/edge_features.h
  * - bsm_4tops/event.h
  * - pyc/pyc.h
+ *
  */

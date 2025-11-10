@@ -1,30 +1,81 @@
 /**
- * @file events_exp_mc20_include_exp_mc20_particles
- * @brief Documentation for events_exp_mc20_include_exp_mc20_particles
+ * @file events_exp_mc20_include_exp_mc20_particles_h
+ * @brief Detailed documentation for particles.h
  *
+ * ## File Information
+ * - Path: events/exp_mc20/include/exp_mc20/particles.h
+ * - Type: .h file
  *
  * ## Classes
- * - top : inherits from particle_template
- * - child : inherits from particle_template
- * - physics_detector : inherits from particle_template
- * - physics_truth : inherits from particle_template
- * - electron : inherits from particle_template
- * - muon : inherits from particle_template
- * - jet : inherits from particle_template
- *
- * ## Key Functions
- * - h>
-
-template <typename g>
-void pmu(...)
- * - size_t x(...)
- * - new g(...)
- * - public: top(...)
+ * ### class top : particle_template
+ * **Methods:**
  * - particle_template* clone(...)
  * - void build(...)
- * - public: child(...)
- * - public: physics_detector(...)
+ * **Members:**
+ * - int top_index
+ *
+ * ### class child : particle_template
+ * **Members:**
+ * - std::vector<int> top_index
+ *
+ * ### class physics_detector : particle_template
+ * **Members:**
+ * - std::vector<int> top_index
+ *
+ * ### class physics_truth : particle_template
+ * **Members:**
+ * - std::vector<int> top_index
+ *
+ * ### class electron : particle_template
+ * **Members:**
+ * - float d0
+ * - int true_type
+ * - float delta_z0
+ * - int true_origin
+ * - bool is_tight
+ * - std::vector<int> top_index
+ *
+ * ### class muon : particle_template
+ * **Members:**
+ * - float d0
+ * - int true_type
+ * - float delta_z0
+ * - int true_origin
+ * - bool is_tight
+ * - std::vector<int> top_index
+ *
+ * ### class jet : particle_template
+ * **Members:**
+ * - bool btag_65
+ * - bool btag_70
+ * - bool btag_77
+ * - bool btag_85
+ * - bool btag_90
+ * - int flav
+ * - int label
+ * - std::vector<int> top_index
+ *
+ * ## Functions
+ * - void **pmu**(std::vector<g*>* out, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
  *
  * ## Dependencies
  * - templates/particle_template.h
+ *
+ * ## Macros
+ * - #define EVENTS_PARTICLES_EXP_MC20_H #include <templates/particle_template.h>
+ *
  */

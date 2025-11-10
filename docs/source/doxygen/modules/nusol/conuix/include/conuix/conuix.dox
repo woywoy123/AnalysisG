@@ -1,16 +1,33 @@
 /**
- * @file modules_nusol_conuix_include_conuix_conuix
- * @brief Documentation for modules_nusol_conuix_include_conuix_conuix
+ * @file modules_nusol_conuix_include_conuix_conuix_h
+ * @brief Detailed documentation for conuix.h
  *
+ * ## File Information
+ * - Path: modules/nusol/conuix/include/conuix/conuix.h
+ * - Type: .h file
  *
  * ## Classes
- * - conuic
- * - conuix
- *
- * ## Key Functions
- * - public: conuix(...)
+ * ### class conuic
+ * **Methods:**
  * - void solve(...)
+ * **Members:**
+ * - std::string prefix
+ * - nusol_t* params
+ * - std::vector<conuic*>* cnx
+ *
+ * ## Structures
+ * ### struct nusol_t
+ * - std::string prefix
+ * - nusol_t* params
+ * - std::vector<conuic*>* cnx
+ *
+ * ## Functions
+ * - void **solve**(void)
  *
  * ## Dependencies
  * - reconstruction/nusol.h
+ *
+ * ## Macros
+ * - #define H_CONUIX #include <reconstruction/nusol.h>
+ *
  */

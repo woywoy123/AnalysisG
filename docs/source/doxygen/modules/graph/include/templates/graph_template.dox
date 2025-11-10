@@ -1,37 +1,59 @@
 /**
- * @file modules_graph_include_templates_graph_template
- * @brief Documentation for modules_graph_include_templates_graph_template
+ * @file modules_graph_include_templates_graph_template_h
+ * @brief Detailed documentation for graph_template.h
  *
+ * ## File Information
+ * - Path: modules/graph/include/templates/graph_template.h
+ * - Type: .h file
  *
  * ## Classes
- * - graph_template
- * - dataloader
- * - container
- * - analysis
- * - meta
+ * ### class graph_template
+ * **Methods:**
+ * - torch::Tensor* get_truth_graph(...)
  *
- * ## Key Functions
- * - public: 
-        template <typename g>
-        torch::Tensor* get_truth_graph(...)
- * - template <typename g>
-        torch::Tensor* get_truth_node(...)
- * - template <typename g>
-        torch::Tensor* get_truth_edge(...)
- * - template <typename g>
-        torch::Tensor* get_data_graph(...)
- * - template <typename g>
-        torch::Tensor* get_data_node(...)
- * - template <typename g>
-        torch::Tensor* get_data_edge(...)
- * - template <typename g>
-        torch::Tensor* get_edge_index(...)
- * - template <typename g>
-        torch::Tensor* get_event_weight(...)
- * - template <typename g>
-        torch::Tensor* get_batch_index(...)
- * - template <typename g>
-        torch::Tensor* get_batched_events(...)
+ * ### class graph_template : tools
+ * **Methods:**
+ * - graph_template* clone(...)
+ * - void CompileEvent(...)
+ * - bool PreSelection(...)
+ * - void define_particle_nodes(...)
+ * - void define_topology(...)
+ * - void flush_particles(...)
+ * - G* get_event(...)
+ * **Members:**
+ * - bool operator
+ * - cproperty<long  , graph_template> index
+ * - cproperty<double, graph_template> weight
+ * - cproperty<bool  , graph_template> preselection
+ * - cproperty<std::string, graph_template> hash
+ * - cproperty<std::string, graph_template> tree
+ * - cproperty<std::string, graph_template> name
+ * - int threadIdx
+ * - std::string filename
+ * - meta* meta_data
+ *
+ * ## Structures
+ * ### struct graph_t
+ *
+ * ## Enumerations
+ * ### enum tp
+ *
+ * ## Functions
+ * - torch::Tensor* **get_truth_graph**(std::string _name, g* mdl)
+ * - torch::Tensor* **get_truth_node**(std::string _name, g* mdl)
+ * - torch::Tensor* **get_truth_edge**(std::string _name, g* mdl)
+ * - torch::Tensor* **get_data_graph**(std::string _name, g* mdl)
+ * - torch::Tensor* **get_data_node**(std::string _name, g* mdl)
+ * - torch::Tensor* **get_data_edge**(std::string _name, g* mdl)
+ * - torch::Tensor* **get_edge_index**(g* mdl)
+ * - torch::Tensor* **get_event_weight**(g* mdl)
+ * - torch::Tensor* **get_batch_index**(g* mdl)
+ * - torch::Tensor* **get_batched_events**(g* mdl)
+ * - torch::Tensor* **has_feature**(graph_enum tp, std::string _name, int dev)
+ * - void **add_truth_graph**(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * - void **add_truth_node**(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * - void **add_truth_edge**(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * - void **add_data_graph**(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
  *
  * ## Dependencies
  * - c10/core/DeviceType.h
@@ -46,4 +68,10 @@
  * - tools/tensor_cast.h
  * - tools/tools.h
  * - torch/torch.h
+ *
+ * ## Macros
+ * - #define GRAPH_TEMPLATE_H #include <templates/particle_template.h>
+ * - #define cu_pyc c10::kCUDA
+ * - #define cu_pyc c10::kCPU
+ *
  */

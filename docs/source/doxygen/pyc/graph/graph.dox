@@ -1,13 +1,19 @@
 /**
- * @file pyc_graph_graph
- * @brief Documentation for pyc_graph_graph
+ * @file pyc_graph_graph_cxx
+ * @brief Detailed documentation for graph.cxx
  *
+ * ## File Information
+ * - Path: pyc/graph/graph.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - signed int i(...)
- * - signed int k(...)
+ * ## Function Implementations
+ * - h>
+
+std::map<std::string, torch::Tensor> **graph_::edge_aggregation**(torch::Tensor* edge_index, torch::Tensor* prediction, torch::Tensor* node_feature)
+ * - std::map<std::string, torch::Tensor> **graph_::node_aggregation**(torch::Tensor* edge_index, torch::Tensor* prediction, torch::Tensor* node_feature)
  *
  * ## Dependencies
  * - graph/graph.h
  * - utils/utils.h
+ *
  */

@@ -1,14 +1,27 @@
 /**
- * @file modules_graph_cxx_graph_template
- * @brief Documentation for modules_graph_cxx_graph_template
+ * @file modules_graph_cxx_graph_template_cxx
+ * @brief Detailed documentation for graph_template.cxx
  *
+ * ## File Information
+ * - Path: modules/graph/cxx/graph_template.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - return new graph_template(...)
- * - size_t x(...)
- * - src_, torch::kInt, int(...)
- * - new graph_t(...)
+ * ## Functions
+ * - return new **graph_template**(void)
+ *
+ * ## Function Implementations
+ * - h> **graph_template::graph_template**(void)
+ * - new **torch::TensorOptions**(torch::kCPU)
+ * - graph_template* **graph_template::clone**(void)
+ * - void **graph_template::flush_particles**(void)
+ * - void **graph_template::define_particle_nodes**(std::vector<particle_template*>* prt)
+ * - void **graph_template::define_topology**(std::function<bool(particle_template*, particle_template*)
+ * - graph_t* **graph_template::data_export**(void)
+ * - new **torch::Tensor**(this -> m_topology)
+ * - void **graph_template::CompileEvent**(void)
+ * - bool **graph_template::PreSelection**(void)
  *
  * ## Dependencies
  * - templates/graph_template.h
+ *
  */

@@ -1,19 +1,45 @@
 /**
- * @file selections_performance_topefficiency_topefficiency
- * @brief Documentation for selections_performance_topefficiency_topefficiency
+ * @file selections_performance_topefficiency_topefficiency_h
+ * @brief Detailed documentation for topefficiency.h
  *
+ * ## File Information
+ * - Path: selections/performance/topefficiency/topefficiency.h
+ * - Type: .h file
  *
  * ## Classes
- * - topefficiency : inherits from selection_template
+ * ### class topefficiency : selection_template
+ * **Methods:**
+ * - selection_template* clone(...)
+ * - bool selection(...)
+ * - bool strategy(...)
+ * - void merge(...)
+ * - int iters(...)
+ * - std::string region(...)
+ * - std::string decaymode(...)
+ * **Members:**
+ * - double pt_start
+ * - double eta_start
+ * - double pt_end
+ * - double eta_end
+ * - double eta_step
+ * - double pt_step
+ * - double score_step
+ * - std::map<std::string, std::map<std::string, std::vector<float>>> p_topmass
  *
- * ## Key Functions
- * - new topefficiency(...)
- * - int i(...)
- * - size_t x(...)
- * - size_t s(...)
+ * ## Functions
+ * - selection_template* **clone**(void)
+ * - bool **selection**(event_template* ev)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sl)
+ * - int **iters**(double start, double end, double step)
+ * - std::string **region**(double pt, double eta)
+ * - std::string **decaymode**(std::vector<top*> ev_tops)
  *
  * ## Dependencies
  * - inference/gnn-event.h
  * - templates/selection_template.h
- * - topefficiency.h
+ *
+ * ## Macros
+ * - #define TOPEFFICIENCY_H #include <templates/selection_template.h>
+ *
  */

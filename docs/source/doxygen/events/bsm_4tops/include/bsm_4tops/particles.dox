@@ -1,28 +1,90 @@
 /**
- * @file events_bsm_4tops_include_bsm_4tops_particles
- * @brief Documentation for events_bsm_4tops_include_bsm_4tops_particles
+ * @file events_bsm_4tops_include_bsm_4tops_particles_h
+ * @brief Detailed documentation for particles.h
  *
+ * ## File Information
+ * - Path: events/bsm_4tops/include/bsm_4tops/particles.h
+ * - Type: .h file
  *
  * ## Classes
- * - truthjetparton
- * - jetparton
- * - truthjet
- * - jet
- * - top : inherits from particle_template
- * - top_children : inherits from particle_template
- * - electron : inherits from particle_template
- * - muon : inherits from particle_template
+ * ### class truthjetparton
+ * **Members:**
+ * - std::vector<int> _index, _pdgid
+ * - std::vector<float> _pt, _eta, _phi, _e
+ * - g* p
  *
- * ## Key Functions
- * - template <typename g>
-void assign_vector(...)
- * - int x(...)
- * - new g(...)
+ * ### class top : particle_template
+ * **Members:**
+ * - bool from_res
+ * - int status
+ * - std::vector<truthjet*> TruthJets
+ *
+ * ### class top_children : particle_template
+ * **Methods:**
  * - particle_template* clone(...)
  * - void build(...)
- * - private:
-        void static get_from_res(...)
+ * - void static get_from_res(...)
+ * **Members:**
+ * - int top_index
+ * - cproperty<bool, top_children> from_res
+ *
+ * ### class truthjet : particle_template
+ * **Members:**
+ * - int top_quark_count
+ * - int w_boson_count
+ * - std::vector<int> top_index
+ *
+ * ### class truthjetparton : particle_template
+ * **Members:**
+ * - int truthjet_index
+ * - std::vector<int> topchild_index
+ *
+ * ### class jet : particle_template
+ * **Members:**
+ * - std::vector<top*> Tops
+ *
+ * ### class jetparton : particle_template
+ * **Members:**
+ * - int jet_index
+ * - std::vector<int> topchild_index
+ *
+ * ### class electron : particle_template
+ * **Methods:**
+ * - particle_template* clone(...)
+ * - void build(...)
+ * **Members:**
+ * - bool from_res
+ * - int top_index
+ *
+ * ### class muon : particle_template
+ * **Methods:**
+ * - particle_template* clone(...)
+ * - void build(...)
+ * **Members:**
+ * - bool from_res
+ * - int top_index
+ *
+ * ## Functions
+ * - void **assign_vector**(std::vector<g*>* inpt, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - void static **get_from_res**(bool*, top_children*)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - void static **get_from_res**(bool*, truthjet*)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - particle_template* **clone**(void)
+ * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - void static **get_from_res**(bool*, jet*)
+ * - particle_template* **clone**(void)
  *
  * ## Dependencies
  * - templates/particle_template.h
+ *
+ * ## Macros
+ * - #define EVENTS_BSM4TOPS_PARTICLES_H #include <templates/particle_template.h>
+ *
  */

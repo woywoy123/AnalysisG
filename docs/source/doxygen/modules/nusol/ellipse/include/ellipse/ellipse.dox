@@ -1,25 +1,47 @@
 /**
- * @file modules_nusol_ellipse_include_ellipse_ellipse
- * @brief Documentation for modules_nusol_ellipse_include_ellipse_ellipse
+ * @file modules_nusol_ellipse_include_ellipse_ellipse_h
+ * @brief Detailed documentation for ellipse.h
  *
+ * ## File Information
+ * - Path: modules/nusol/ellipse/include/ellipse/ellipse.h
+ * - Type: .h file
  *
  * ## Classes
- * - ellipse
- *
- * ## Key Functions
- * - public: ellipse(...)
+ * ### class ellipse
+ * **Methods:**
  * - void prepare(...)
  * - std::vector<particle_template*> nunu_make(...)
  * - void solve(...)
- * - void flush(...)
- * - void make_neutrinos(...)
- * - int generate(...)
- * - int intersection(...)
- * - int angle_cross(...)
+ * **Members:**
+ * - nusol_t* params
+ * - std::map<int, std::tuple<nuelx*, nuelx*>> pairings
+ * - std::map<double, nunu_t> solvs
+ *
+ * ## Structures
+ * ### struct nusol_t
+ * - mtx* nu1
+ * - mtx* nu2
+ * - mtx* agl
+ * - nuelx* nux1
+ * - nuelx* nux2
+ *
+ * ## Functions
+ * - void **prepare**(double mt, double mw)
+ * - std::vector<particle_template*> **nunu_make**(void)
+ * - void **solve**(void)
+ * - void **flush**(void)
+ * - void **make_neutrinos**(mtx* v, mtx* v_)
+ * - int **generate**(nuelx* nu1, nuelx* nu2)
+ * - int **intersection**(mtx** v, mtx** v_)
+ * - int **angle_cross**(mtx** v, mtx** v_)
  *
  * ## Dependencies
  * - ellipse/mtx.h
  * - ellipse/nusol.h
  * - ellipse/solvers.h
  * - templates/particle_template.h
+ *
+ * ## Macros
+ * - #define H_ELLIPSE #include <templates/particle_template.h>
+ *
  */

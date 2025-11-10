@@ -1,8 +1,13 @@
 /**
- * @file selections_performance_topefficiency___init__
- * @brief Documentation for selections_performance_topefficiency___init__
+ * @file selections_performance_topefficiency___init___py
+ * @brief Detailed documentation for __init__.py
  *
+ * ## File Information
+ * - Path: selections/performance/topefficiency/__init__.py
+ * - Type: .py file
  *
- * ## Dependencies
- * - TopEfficiency
+ * ## Python Imports
+ * - .topefficiency.TopEfficiency
+
+ *
  */

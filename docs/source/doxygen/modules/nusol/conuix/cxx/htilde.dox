@@ -1,16 +1,33 @@
 /**
- * @file modules_nusol_conuix_cxx_htilde
- * @brief Documentation for modules_nusol_conuix_cxx_htilde
+ * @file modules_nusol_conuix_cxx_htilde_cxx
+ * @brief Detailed documentation for htilde.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/conuix/cxx/htilde.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - matrix_t Rz(...)
- * - matrix_t Ry(...)
- * - matrix_t Rx(...)
+ * ## Functions
+ * - matrix_t **Rz**(3, 3)
+ * - matrix_t **Ry**(3, 3)
+ * - matrix_t **Rx**(3, 3)
+ *
+ * ## Function Implementations
+ * - include <cmath>
+
+void **Conuix::get_kinematic**(particle_template* ptr, Conuix::kinematic_t* kin)
+ * - void **Conuix::get_rotation**(particle_template* jet, particle_template* lep, Conuix::rotation_t* rot)
+ * - void **Conuix::get_psi_theta_mapping**(Conuix::base_t* base, Conuix::thetapsi_t* msp)
+ * - void **Conuix::get_base**(Conuix::kinematic_t* jet, Conuix::kinematic_t* lep, Conuix::base_t* bs)
+ * - void **Conuix::get_pencil**(Conuix::kinematic_t* lep, Conuix::kinematic_t* nu, 
+        Conuix::base_t* base, Conuix::pencil_t* pen)
+ * - void **Conuix::get_sx**(Conuix::base_t* base, Conuix::Sx_t* sx)
+ * - void **Conuix::get_sy**(Conuix::base_t* base, Conuix::Sy_t* sy)
+ * - void **Conuix::get_hmatrix**(Conuix::base_t* base, Conuix::rotation_t* rot, Conuix::H_matrix_t* H)
  *
  * ## Dependencies
  * - cmath
  * - conuix/htilde.h
  * - conuix/struct.h
  * - templates/particle_template.h
+ *
  */

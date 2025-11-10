@@ -1,11 +1,18 @@
 /**
- * @file modules_nusol_conuix_cxx_eigen
- * @brief Documentation for modules_nusol_conuix_cxx_eigen
+ * @file modules_nusol_conuix_cxx_eigen_cxx
+ * @brief Detailed documentation for eigen.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/conuix/cxx/eigen.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - beta_mu sin(...)
- * - Omega cos(...)
+ * ## Function Implementations
+ * - x_a * **std::sinh**(tau)
+ * - y_a * **std::sinh**(tau)
+ * - Z * Z * Z * **std::sinh**(tau)
+ * - Z * Z * Z * **std::cosh**(tau)
+ * - c * **std::cosh**(tau)
+ * - k2 * **std::pow**(alp_m, 4)
  *
  * ## Dependencies
  * - cmath
@@ -14,4 +21,5 @@
  * - iomanip
  * - iostream
  * - string
+ *
  */

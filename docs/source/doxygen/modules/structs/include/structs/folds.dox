@@ -1,11 +1,51 @@
 /**
- * @file modules_structs_include_structs_folds
- * @brief Documentation for modules_structs_include_structs_folds
+ * @file modules_structs_include_structs_folds_h
+ * @brief Detailed documentation for folds.h
  *
+ * ## File Information
+ * - Path: modules/structs/include/structs/folds.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - void flush_data(...)
+ * ## Structures
+ * ### struct folds_t
+ * - int k
+ * - bool is_train
+ * - bool is_valid
+ * - bool is_eval
+ * - char* hash
+ *
+ * ### struct graph_hdf5
+ * - int num_nodes
+ * - double event_weight
+ * - long event_index
+ * - std::string hash
+ * - std::string filename
+ * - std::string edge_index
+ * - std::string data_map_graph
+ * - std::string data_map_node
+ * - std::string data_map_edge
+ * - std::string truth_map_graph
+ *
+ * ### struct graph_hdf5_w
+ * - int num_nodes
+ * - double event_weight
+ * - long event_index
+ * - char* hash
+ * - char* filename
+ * - char* edge_index
+ * - char* data_map_graph
+ * - char* data_map_node
+ * - char* data_map_edge
+ * - char* truth_map_graph
+ *
+ * ## Functions
+ * - void **flush_data**(void)
+ * - void **flush_data**(void)
  *
  * ## Dependencies
  * - string
+ *
+ * ## Macros
+ * - #define STRUCTS_FOLDS_H #include <string>
+ *
  */

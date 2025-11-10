@@ -1,24 +1,39 @@
 /**
- * @file modules_optimizer_include_generators_optimizer
- * @brief Documentation for modules_optimizer_include_generators_optimizer
+ * @file modules_optimizer_include_generators_optimizer_h
+ * @brief Detailed documentation for optimizer.h
  *
+ * ## File Information
+ * - Path: modules/optimizer/include/generators/optimizer.h
+ * - Type: .h file
  *
  * ## Classes
- * - analysis
- * - optimizer : inherits from tools
- *
- * ## Key Functions
- * - public: optimizer(...)
+ * ### class analysis
+ * **Methods:**
  * - void import_dataloader(...)
  * - void import_model_sessions(...)
  * - void training_loop(...)
  * - void validation_loop(...)
  * - void evaluation_loop(...)
  * - void launch_model(...)
+ * **Members:**
+ * - settings_t m_settings
+ * - std::map<int, model_template*> kfold_sessions
+ *
+ * ## Functions
+ * - void **import_dataloader**(dataloader* dl)
+ * - void **import_model_sessions**(std::tuple<model_template*, optimizer_params_t*>* models)
+ * - void **training_loop**(int k, int epoch)
+ * - void **validation_loop**(int k, int epoch)
+ * - void **evaluation_loop**(int k, int epoch)
+ * - void **launch_model**(int k)
  *
  * ## Dependencies
  * - generators/dataloader.h
  * - metrics/metrics.h
  * - structs/settings.h
  * - templates/model_template.h
+ *
+ * ## Macros
+ * - #define OPTIMIZER_GENERATOR_H #include <templates/model_template.h>
+ *
  */

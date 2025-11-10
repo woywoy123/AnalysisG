@@ -1,21 +1,34 @@
 /**
- * @file selections_mc20_topmatching_topmatching
- * @brief Documentation for selections_mc20_topmatching_topmatching
+ * @file selections_mc20_topmatching_topmatching_h
+ * @brief Detailed documentation for topmatching.h
  *
+ * ## File Information
+ * - Path: selections/mc20/topmatching/topmatching.h
+ * - Type: .h file
  *
  * ## Classes
- * - topmatching : inherits from selection_template
- *
- * ## Key Functions
- * - new topmatching(...)
- * - size_t x(...)
- * - size_t c(...)
+ * ### class topmatching : selection_template
+ * **Methods:**
  * - selection_template* clone(...)
  * - bool selection(...)
  * - bool strategy(...)
+ * - void merge(...)
+ * **Members:**
+ * - std::vector<float> truth_top
+ *
+ * ## Functions
+ * - selection_template* **clone**(void)
+ * - bool **selection**(event_template* ev)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sl)
+ * - std::vector<T*> **vectorize**(std::map<std::string, T*>* mp)
+ * - std::vector<particle_template*> **downcast**(std::vector<T*>* mp)
  *
  * ## Dependencies
  * - ssml_mc20/event.h
  * - templates/selection_template.h
- * - topmatching.h
+ *
+ * ## Macros
+ * - #define MC16_TOPMATCHING_H #include <ssml_mc20/event.h>
+ *
  */

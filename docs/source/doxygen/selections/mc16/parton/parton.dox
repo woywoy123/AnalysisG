@@ -1,20 +1,37 @@
 /**
- * @file selections_mc16_parton_parton
- * @brief Documentation for selections_mc16_parton_parton
+ * @file selections_mc16_parton_parton_h
+ * @brief Detailed documentation for parton.h
  *
+ * ## File Information
+ * - Path: selections/mc16/parton/parton.h
+ * - Type: .h file
  *
  * ## Classes
- * - parton : inherits from selection_template
- *
- * ## Key Functions
- * - new parton(...)
- * - size_t x(...)
- * - size_t p(...)
- * - size_t t(...)
+ * ### class parton : selection_template
+ * **Methods:**
  * - selection_template* clone(...)
+ * - bool selection(...)
+ * - bool strategy(...)
+ * - void merge(...)
+ * - float top_mass_contribution(...)
+ * - size_t tn(...)
+ * **Members:**
+ * - std::string top_i
+ * - typename std::vector<g*> passed
+ * - typename std::vector<gx*> tjp
+ *
+ * ## Functions
+ * - selection_template* **clone**(void)
+ * - bool **selection**(event_template* ev)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sl)
+ * - float **top_mass_contribution**(std::vector<g*> jts, std::map<std::string, std::vector<float>>* fracx, gx* p, top* ti, float cut, bool cut_gluon)
  *
  * ## Dependencies
  * - bsm_4tops/event.h
- * - parton.h
  * - templates/selection_template.h
+ *
+ * ## Macros
+ * - #define PARTON_H #include <bsm_4tops/event.h>
+ *
  */

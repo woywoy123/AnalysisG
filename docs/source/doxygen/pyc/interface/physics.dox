@@ -1,7 +1,27 @@
 /**
- * @file pyc_interface_physics
- * @brief Documentation for pyc_interface_physics
+ * @file pyc_interface_physics_cxx
+ * @brief Detailed documentation for physics.cxx
  *
+ * ## File Information
+ * - Path: pyc/interface/physics.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - return **physics_::P2**(&px, &py, &pz)
+ * - return **physics_::P2**(&pmc)
+ * - return **physics_::P2**(&pmc)
+ * - return **physics_::P2**(&pmc)
+ * - return **physics_::P**(&px, &py, &pz)
+ * - return **physics_::P**(&pmc)
+ * - return **physics_::P**(&pmc)
+ * - return **physics_::P**(&pmc)
+ * - return **physics_::Beta2**(&px, &py, &pz, &e)
+ * - return **physics_::Beta2**(&pmc)
+ * - return **physics_::Beta2**(&pmc)
+ * - return **physics_::Beta2**(&pmc)
+ * - return **physics_::Beta**(&px, &py, &pz, &e)
+ * - return **physics_::Beta**(&pmc)
+ * - return **physics_::Beta**(&pmc)
  *
  * ## Dependencies
  * - physics/physics.cuh
@@ -11,4 +31,5 @@
  * - transform/transform.h
  * - utils/utils.cuh
  * - utils/utils.h
+ *
  */

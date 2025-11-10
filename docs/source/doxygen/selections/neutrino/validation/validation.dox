@@ -1,19 +1,45 @@
 /**
- * @file selections_neutrino_validation_validation
- * @brief Documentation for selections_neutrino_validation_validation
+ * @file selections_neutrino_validation_validation_h
+ * @brief Detailed documentation for validation.h
  *
+ * ## File Information
+ * - Path: selections/neutrino/validation/validation.h
+ * - Type: .h file
  *
  * ## Classes
- * - validation : inherits from selection_template
+ * ### class validation : selection_template
+ * **Methods:**
+ * - selection_template* clone(...)
+ * - bool selection(...)
+ * - bool strategy(...)
+ * - void merge(...)
+ * - void reconstruction(...)
+ * - void update_state(...)
+ * **Members:**
+ * - int num_device
+ * - double masstop
+ * - double massw
+ * - std::vector<packet_t*> storage
  *
- * ## Key Functions
- * - size_t x(...)
- * - new validation(...)
- * - size_t i(...)
+ * ## Structures
+ * ### struct packet_t
+ * - std::vector<particle_template*> bquarks
+ *
+ * ## Functions
+ * - selection_template* **clone**(void)
+ * - bool **selection**(event_template* ev)
+ * - bool **strategy**(event_template* ev)
+ * - void **merge**(selection_template* sl)
+ * - void **reconstruction**(packet_t* data)
+ * - void **update_state**(packet_t* data)
+ * - packet_t* **build_packet**(g* evnt, std::string name)
+ * - std::vector<g*> **upcast**(std::vector<particle_template*>* inpt)
+ * - std::vector<g*> **upcast**(std::map<std::string, particle_template*>* inpt)
  *
  * ## Dependencies
- * - bsm_4tops/event.h
- * - pyc/pyc.h
  * - templates/selection_template.h
- * - validation.h
+ *
+ * ## Macros
+ * - #define VALIDATION_H #include <templates/selection_template.h>
+ *
  */

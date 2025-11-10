@@ -1,17 +1,38 @@
 /**
- * @file modules_structs_include_structs_report
- * @brief Documentation for modules_structs_include_structs_report
+ * @file modules_structs_include_structs_report_h
+ * @brief Detailed documentation for report.h
  *
+ * ## File Information
+ * - Path: modules/structs/include/structs/report.h
+ * - Type: .h file
  *
  * ## Classes
- * - metrics
+ * ### class metrics
+ * **Members:**
+ * - int k
+ * - int epoch
+ * - bool is_complete
+ * - metrics* waiting_plot
+ * - std::vector<double> current_lr
  *
- * ## Key Functions
- * - std::string print(...)
- * - std::string prx(...)
+ * ## Structures
+ * ### struct model_report
+ * - int k
+ * - int epoch
+ * - bool is_complete
+ * - metrics* waiting_plot
+ * - std::vector<double> current_lr
+ *
+ * ## Functions
+ * - std::string **print**(void)
+ * - std::string **prx**(std::map<mode_enum, std::map<std::string, float>>* data, std::string title)
  *
  * ## Dependencies
  * - map
  * - string
  * - structs/enums.h
+ *
+ * ## Macros
+ * - #define REPORT_STRUCTS_H #include <structs/enums.h>
+ *
  */

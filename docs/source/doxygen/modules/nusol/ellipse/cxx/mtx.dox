@@ -1,17 +1,46 @@
 /**
- * @file modules_nusol_ellipse_cxx_mtx
- * @brief Documentation for modules_nusol_ellipse_cxx_mtx
+ * @file modules_nusol_ellipse_cxx_mtx_cxx
+ * @brief Detailed documentation for mtx.cxx
  *
+ * ## File Information
+ * - Path: modules/nusol/ellipse/cxx/mtx.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - int x(...)
- * - int y(...)
- * - mtx out(...)
- * - int j(...)
+ * ## Functions
+ * - mtx **out**(this -> dim_j, this -> dim_i)
+ * - mtx **vXc**(3, 3)
+ * - mtx **vx**(1, 3)
+ * - return **mtx**(this -> dim_i, this -> dim_j)
+ * - mtx **o**(this -> dim_i, this -> dim_i)
+ * - mtx **r1**(1, 3)
+ * - mtx **r2**(1, 3)
+ * - mtx **r3**(1, 3)
+ * - return **solve_cubic**(1.0, a, b, c)
+ * - int **i**(0)
+ * - mtx **out**(this -> dim_i, this -> dim_j)
+ * - mtx **out**(this -> dim_i, this -> dim_j)
+ *
+ * ## Function Implementations
+ * - include <iomanip> **mtx::mtx**(void)
+ * - void **mtx::print**(int prec, int width)
+ * - std::cout << std::fixed << **std::setprecision**(prec)
+ * - std::cout << **std::setw**(width)
+ * - mtx **mtx::dot**(const mtx* other)
+ * - mtx **mtx::dot**(const mtx& other)
+ * - mtx **mtx::cross**(mtx* r1)
+ * - mtx **mtx::cross**(mtx* r1, mtx* r2)
+ * - mtx **mtx::inv**(void)
+ * - mtx **mtx::diag**(void)
+ * - mtx* **mtx::eigenvector**(void)
+ * - return **std::pow**(m, 0.5)
+ * - mtx* **mtx::eigenvalues**(void)
+ * - bool **mtx::valid**(int idx, int idy)
+ * - bool **mtx::assign**(int idx, int idy, double val, bool valid)
  *
  * ## Dependencies
  * - ellipse/mtx.h
  * - ellipse/solvers.h
  * - iomanip
  * - iostream
+ *
  */

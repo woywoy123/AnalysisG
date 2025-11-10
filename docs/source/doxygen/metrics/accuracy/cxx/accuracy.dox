@@ -1,16 +1,23 @@
 /**
- * @file metrics_accuracy_cxx_accuracy
- * @brief Documentation for metrics_accuracy_cxx_accuracy
+ * @file metrics_accuracy_cxx_accuracy_cxx
+ * @brief Detailed documentation for accuracy.cxx
  *
+ * ## File Information
+ * - Path: metrics/accuracy/cxx/accuracy.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - return new accuracy_metric(...)
- * - int x(...)
- * - int c(...)
- * - int f(...)
- * - int y(...)
- * - return float(...)
+ * ## Functions
+ * - int **c**(0)
+ *
+ * ## Function Implementations
+ * - accuracy_metric* **accuracy_metric::clone**(void)
+ * - void **accuracy_metric::define_variables**(void)
+ * - void **accuracy_metric::event**(void)
+ * - void **accuracy_metric::batch**(void)
+ * - void **accuracy_metric::end**(void)
+ * - void **accuracy_metric::define_metric**(metric_t* mtx)
  *
  * ## Dependencies
  * - metrics/accuracy.h
+ *
  */

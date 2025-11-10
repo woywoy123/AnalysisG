@@ -1,25 +1,70 @@
 /**
- * @file modules_metric_include_templates_metric_template
- * @brief Documentation for modules_metric_include_templates_metric_template
+ * @file modules_metric_include_templates_metric_template_h
+ * @brief Detailed documentation for metric_template.h
  *
+ * ## File Information
+ * - Path: modules/metric/include/templates/metric_template.h
+ * - Type: .h file
  *
  * ## Classes
- * - analysis
- * - model_template
- * - metric_template
+ * ### class analysis
+ * **Methods:**
+ * - g get(...)
+ * **Members:**
+ * - int kfold
+ * - int epoch
+ * - int device
+ * - g out
+ * - return out
  *
- * ## Key Functions
- * - template <typename g>
-        g get(...)
- * - std::string mode(...)
- * - std::string* get_filename(...)
- * - void build(...)
- * - public: metric_template(...)
+ * ### class metric_template : tools, 
+    public notification
+ * **Methods:**
  * - metric_template* clone(...)
  * - void define_variables(...)
  * - void define_metric(...)
  * - void event(...)
  * - void batch(...)
+ * - void end(...)
+ * - void register_output(...)
+ * **Members:**
+ * - cproperty<std::string, metric_template> name
+ * - cproperty<std::string, metric_template> output_path
+ * - cproperty<std::vector<std::string>, metric_template> variables
+ * - cproperty<std::map<std::string, std::string>, metric_template> run_names
+ *
+ * ## Structures
+ * ### struct graph_t
+ * - int kfold
+ * - int epoch
+ * - int device
+ * - g out
+ * - return out
+ *
+ * ## Enumerations
+ * ### enum grx
+ * Values: g out
+ *
+ * ### enum train_mode
+ *
+ * ### enum mx
+ *
+ * ## Functions
+ * - g **get**(graph_enum grx, std::string _name)
+ * - std::string **mode**(void)
+ * - std::string* **get_filename**(long unsigned int idx)
+ * - void **build**(void)
+ * - metric_template* **clone**(void)
+ * - void **define_variables**(void)
+ * - void **define_metric**(metric_t* v)
+ * - void **event**(void)
+ * - void **batch**(void)
+ * - void **end**(void)
+ * - void **register_output**(std::string tree, std::string __name, T* t)
+ * - void **write**(std::string tree, std::string __name, T* t, bool fill = false)
+ * - void **sum**(std::vector<g*>* ch, k** out)
+ * - void **safe_delete**(std::vector<g*>* particles)
+ * - std::vector<g*> **make_unique**(std::vector<g*>* inpt)
  *
  * ## Dependencies
  * - meta/meta.h
@@ -34,4 +79,8 @@
  * - tools/merge_cast.h
  * - tools/tools.h
  * - tools/vector_cast.h
+ *
+ * ## Macros
+ * - #define METRIC_TEMPLATE_H #include <templates/particle_template.h>
+ *
  */

@@ -1,10 +1,18 @@
 /**
- * @file modules_structs_cxx_structs
- * @brief Documentation for modules_structs_cxx_structs
+ * @file modules_structs_cxx_structs_cxx
+ * @brief Detailed documentation for structs.cxx
  *
+ * ## File Information
+ * - Path: modules/structs/cxx/structs.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - void **data_t::fetch_buffer**(void)
+ * - void **data_t::string_type**(void)
  *
  * ## Dependencies
  * - element.h
  * - folds.h
  * - report.h
+ *
  */

@@ -1,18 +1,42 @@
 /**
- * @file modules_nusol_tmp_multisol_include_multisol_matrix
- * @brief Documentation for modules_nusol_tmp_multisol_include_multisol_matrix
+ * @file modules_nusol_tmp_multisol_include_multisol_matrix_h
+ * @brief Detailed documentation for matrix.h
  *
+ * ## File Information
+ * - Path: modules/nusol/tmp/multisol/include/multisol/matrix.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - define MULTISOL_MATRIX_H
-
-template <typename T>
-void safe(...)
- * - vec3 cross(...)
- * - double dot(...)
- * - double mag2(...)
- * - double mag(...)
- * - void print(...)
- * - fetch and assignment methods
-    double& at(...)
+ * ## Structures
+ * ### struct vec3
+ * - double x
+ *
+ * ### struct vec4
+ * - double x
+ *
+ * ### struct matrix
+ * - int c
+ * - matrix& operator
+ * - double** data
+ * - int _r
+ *
+ * ## Functions
+ * - void **safe**(T** o)
+ * - vec3 **cross**(const vec3& o)
+ * - double **dot**(const vec3& o)
+ * - double **mag2**(void)
+ * - double **mag**(void)
+ * - void **print**(void)
+ * - double **dot**(const vec4& o)
+ * - void **print**(void)
+ * - void **print**(int p = 5)
+ * - double& **at**(int r, int c)
+ * - const double& **at**(int r, int c)
+ * - int **rows**(void)
+ * - int **cols**(void)
+ * - double **mag**(void)
+ * - matrix **I**(int size)
+ *
+ * ## Macros
+ * - #define MULTISOL_MATRIX_H template <typename T>
+ *
  */

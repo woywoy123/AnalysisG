@@ -1,13 +1,19 @@
 /**
- * @file events_ssml_mc20_cxx_jets
- * @brief Documentation for events_ssml_mc20_cxx_jets
+ * @file events_ssml_mc20_cxx_jets_cxx
+ * @brief Detailed documentation for jets.cxx
  *
+ * ## File Information
+ * - Path: events/ssml_mc20/cxx/jets.cxx
+ * - Type: .cxx file
  *
- * ## Key Functions
- * - new jet(...)
- * - size_t x(...)
- * - new truthjet(...)
+ * ## Function Implementations
+ * - particle_template* **jet::clone**(void)
+ * - void **jet::build**(std::map<std::string, particle_template*>* prt, element_t* el)
+ * - void **jet::get_from_res**(bool* val, jet* el)
+ * - particle_template* **truthjet::clone**(void)
+ * - void **truthjet::build**(std::map<std::string, particle_template*>* prt, element_t* el)
  *
  * ## Dependencies
  * - particles.h
+ *
  */

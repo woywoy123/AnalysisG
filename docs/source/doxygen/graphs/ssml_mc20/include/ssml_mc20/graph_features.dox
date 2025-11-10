@@ -1,15 +1,26 @@
 /**
- * @file graphs_ssml_mc20_include_ssml_mc20_graph_features
- * @brief Documentation for graphs_ssml_mc20_include_ssml_mc20_graph_features
+ * @file graphs_ssml_mc20_include_ssml_mc20_graph_features_h
+ * @brief Detailed documentation for graph_features.h
  *
+ * ## File Information
+ * - Path: graphs/ssml_mc20/include/ssml_mc20/graph_features.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - void static signal_event(...)
- * - size_t x(...)
- * - void static num_tops(...)
- * - void static num_neutrino(...)
- * - void static num_lepton(...)
- * - void static missing_et(...)
- * - void static missing_phi(...)
- * - void static num_children_leps(...)
+ * ## Functions
+ * - void static **signal_event**(bool* o, ssml_mc20* event)
+ * - void static **num_tops**(int* o, ssml_mc20* event)
+ * - void static **num_neutrino**(int* o, ssml_mc20* event)
+ * - void static **num_lepton**(int* o, ssml_mc20* event)
+ * - void static **missing_et**(double* o, ssml_mc20* event)
+ * - void static **missing_phi**(double* o, ssml_mc20* event)
+ * - void static **num_children_leps**(double* o, ssml_mc20* event)
+ * - void static **num_leps**(double* o, ssml_mc20* event)
+ * - void static **num_quark**(double* o, ssml_mc20* event)
+ * - void static **num_jets**(double* o, ssml_mc20* event)
+ * - void static **event_number**(long* o, ssml_mc20* event)
+ * - void static **event_weight**(double* o, ssml_mc20* event)
+ *
+ * ## Macros
+ * - #define GRAPH_FEATURES_SSML_MC20_H // ------------------ Truth Graph Features --------------------- //
+ *
  */

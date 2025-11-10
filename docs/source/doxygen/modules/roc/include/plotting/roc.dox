@@ -1,19 +1,34 @@
 /**
- * @file modules_roc_include_plotting_roc
- * @brief Documentation for modules_roc_include_plotting_roc
+ * @file modules_roc_include_plotting_roc_h
+ * @brief Detailed documentation for roc.h
  *
+ * ## File Information
+ * - Path: modules/roc/include/plotting/roc.h
+ * - Type: .h file
  *
  * ## Classes
- * - roc : inherits from plotting
- *
- * ## Key Functions
- * - public: roc(...)
- * - void build_ROC(...)
+ * ### class roc : plotting
+ * **Methods:**
  * - std::vector<roc_t*> get_ROC(...)
- * - template <typename g>
-        std::vector<std::vector<g>>* generate(...)
- * - typename std::vector<g> v(...)
+ * **Members:**
+ * - std::map<std::string, std::map<int, std::vector<std::vector<double>>*>> roc_data
+ *
+ * ## Structures
+ * ### struct roc_t
+ * - int cls
+ * - int kfold
+ * - std::string model
+ * - std::vector<double> _auc
+ *
+ * ## Functions
+ * - std::vector<roc_t*> **get_ROC**(void)
+ * - std::vector<std::vector<g>>* **generate**(size_t x, size_t y)
+ * - typename std::vector<g> **v**(y, 0)
  *
  * ## Dependencies
  * - plotting/plotting.h
+ *
+ * ## Macros
+ * - #define ROC_H #include <plotting/plotting.h>
+ *
  */

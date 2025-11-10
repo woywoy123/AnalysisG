@@ -1,15 +1,12 @@
 /**
- * @file modules_nusol_conuix_include_conuix_memory
- * @brief Documentation for modules_nusol_conuix_include_conuix_memory
+ * @file modules_nusol_conuix_include_conuix_memory_h
+ * @brief Detailed documentation for memory.h
  *
+ * ## File Information
+ * - Path: modules/nusol/conuix/include/conuix/memory.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - define H_CONUIX_MEMORY
-
-long double** alloc(...)
- * - long double** flush(...)
- * - void copy(...)
- * - void ops(...)
- * - void opm(...)
- * - void opt(...)
+ * ## Macros
+ * - #define H_CONUIX_MEMORY long double** alloc(
+ *
  */

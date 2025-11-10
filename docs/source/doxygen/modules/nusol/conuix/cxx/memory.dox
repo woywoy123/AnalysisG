@@ -1,18 +1,12 @@
 /**
- * @file modules_nusol_conuix_cxx_memory
- * @brief Documentation for modules_nusol_conuix_cxx_memory
+ * @file modules_nusol_conuix_cxx_memory_cxx
+ * @brief Detailed documentation for memory.cxx
  *
- *
- * ## Key Functions
- * - h>
-
-long double** alloc(...)
- * - int i(...)
- * - long double** flush(...)
- * - void copy(...)
- * - int j(...)
- * - void ops(...)
+ * ## File Information
+ * - Path: modules/nusol/conuix/cxx/memory.cxx
+ * - Type: .cxx file
  *
  * ## Dependencies
  * - conuix/memory.h
+ *
  */

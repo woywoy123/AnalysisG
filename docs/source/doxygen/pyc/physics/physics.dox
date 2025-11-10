@@ -1,10 +1,33 @@
 /**
- * @file pyc_physics_physics
- * @brief Documentation for pyc_physics_physics
+ * @file pyc_physics_physics_cxx
+ * @brief Detailed documentation for physics.cxx
  *
+ * ## File Information
+ * - Path: pyc/physics/physics.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - include <cmath>
+
+torch::Tensor **physics_::P2**(torch::Tensor* pmc)
+ * - torch::Tensor **physics_::P2**(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * - return **physics_::P2**(&pmx)
+ * - return **torch::sqrt**(physics_::P2(pmc)
+ * - return **physics_::P**(&pmx)
+ * - return **physics_::P2**(pmc)
+ * - return **physics_::Beta2**(&pmx)
+ * - return **physics_::P**(pmc)
+ * - torch::Tensor **physics_::Beta**(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * - return **physics_::Beta**(&pmx)
+ * - torch::Tensor **physics_::M2**(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * - return **physics_::M2**(&pmx)
+ * - torch::Tensor **physics_::M**(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * - return **physics_::M**(&pmx)
+ * - torch::Tensor **physics_::Mt2**(torch::Tensor* pz, torch::Tensor* e)
  *
  * ## Dependencies
  * - cmath
  * - physics/physics.h
  * - utils/utils.h
+ *
  */

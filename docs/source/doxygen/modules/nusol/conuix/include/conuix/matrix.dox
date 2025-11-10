@@ -1,12 +1,27 @@
 /**
- * @file modules_nusol_conuix_include_conuix_matrix
- * @brief Documentation for modules_nusol_conuix_include_conuix_matrix
+ * @file modules_nusol_conuix_include_conuix_matrix_h
+ * @brief Detailed documentation for matrix.h
  *
+ * ## File Information
+ * - Path: modules/nusol/conuix/include/conuix/matrix.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - public: matrix_t(...)
- * - matrix_t dot(...)
- * - matrix_t T(...)
- * - long double& at(...)
- * - void print(...)
+ * ## Structures
+ * ### struct matrix_t
+ * - 3, int _c
+ * - matrix_t& operator
+ * - int r
+ * - int c
+ * - long double** data
+ *
+ * ## Functions
+ * - matrix_t **dot**(const matrix_t& o)
+ * - matrix_t **T**(void)
+ * - long double& **at**(int _r, int _c)
+ * - const long double& **at**(int _r, int _c)
+ * - void **print**(int p = 9)
+ *
+ * ## Macros
+ * - #define H_CONUIX_MATRIX struct matrix_t {
+ *
  */

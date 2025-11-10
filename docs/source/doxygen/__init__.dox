@@ -1,17 +1,22 @@
 /**
- * @file __init__
- * @brief Documentation for __init__
+ * @file __init___py
+ * @brief Detailed documentation for __init__.py
  *
+ * ## File Information
+ * - Path: __init__.py
+ * - Type: .py file
  *
- * ## Key Functions
- * - config_pyami(...)
- * - auth_pyami(...)
+ * ## Functions
+ * - void **_getcmd**(cmd)
+ * - void **config_pyami**()
+ * - void **auth_pyami**()
  *
- * ## Dependencies
- * - Analysis
-except Exception as error
- * - pwinput
+ * ## Python Imports
+ * - pwinput.pwinput
 import subprocess
 
 def _getcmd
+ * - .core.analysis.Analysis
+except Exception as error
+ *
  */

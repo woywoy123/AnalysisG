@@ -1,7 +1,27 @@
 /**
- * @file pyc_interface_graph
- * @brief Documentation for pyc_interface_graph
+ * @file pyc_interface_graph_cxx
+ * @brief Detailed documentation for graph.cxx
  *
+ * ## File Information
+ * - Path: pyc/interface/graph.cxx
+ * - Type: .cxx file
+ *
+ * ## Function Implementations
+ * - endif
+    return **pyc::std_to_dict**(&out)
+ * - endif
+
+    return **pyc::std_to_dict**(&out)
+ * - return **pyc::std_to_dict**(&out)
+ * - return **pyc::std_to_dict**(&out)
+ * - return **pyc::std_to_dict**(&out)
+ * - return **pyc::std_to_dict**(&out)
+ * - return **pyc::std_to_dict**(&out)
+ * - return **pyc::std_to_dict**(&out)
+ * - return **pyc::std_to_dict**(&out)
+ * - return **pyc::std_to_dict**(&out)
+ * - return **pyc::std_to_dict**(&out)
+ * - return **pyc::std_to_dict**(&out)
  *
  * ## Dependencies
  * - graph/graph.cuh
@@ -12,4 +32,5 @@
  * - transform/transform.h
  * - utils/utils.cuh
  * - utils/utils.h
+ *
  */

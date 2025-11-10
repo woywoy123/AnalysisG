@@ -1,8 +1,12 @@
 /**
- * @file templates_model_cxx_<model-name>
- * @brief Documentation for templates_model_cxx_<model-name>
+ * @file templates_model_cxx_<model-name>_cxx
+ * @brief Detailed documentation for <model-name>.cxx
  *
+ * ## File Information
+ * - Path: templates/model/cxx/<model-name>.cxx
+ * - Type: .cxx file
  *
  * ## Dependencies
  * - <model-name
+ *
  */

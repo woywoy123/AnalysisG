@@ -1,15 +1,35 @@
 /**
- * @file pyc_physics_include_physics_physics
- * @brief Documentation for pyc_physics_include_physics_physics
+ * @file pyc_physics_include_physics_physics_h
+ * @brief Detailed documentation for physics.h
  *
+ * ## File Information
+ * - Path: pyc/physics/include/physics/physics.h
+ * - Type: .h file
  *
- * ## Key Functions
- * - torch::Tensor P2(...)
- * - torch::Tensor P(...)
- * - torch::Tensor Beta2(...)
- * - torch::Tensor Beta(...)
- * - torch::Tensor M2(...)
+ * ## Functions
+ * - torch::Tensor **P2**(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * - torch::Tensor **P2**(torch::Tensor* pmc)
+ * - torch::Tensor **P**(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * - torch::Tensor **P**(torch::Tensor* pmc)
+ * - torch::Tensor **Beta2**(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * - torch::Tensor **Beta2**(torch::Tensor* pmc)
+ * - torch::Tensor **Beta**(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * - torch::Tensor **Beta**(torch::Tensor* pmc)
+ * - torch::Tensor **M2**(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * - torch::Tensor **M2**(torch::Tensor* pmc)
+ * - torch::Tensor **M**(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * - torch::Tensor **M**(torch::Tensor* pmc)
+ * - torch::Tensor **Mt2**(torch::Tensor* pz, torch::Tensor* e)
+ * - torch::Tensor **Mt2**(torch::Tensor* pmc)
+ * - torch::Tensor **Mt**(torch::Tensor* pz, torch::Tensor* e)
+ *
+ * ## Namespaces
+ * - physics_
  *
  * ## Dependencies
  * - torch/torch.h
+ *
+ * ## Macros
+ * - #define PHYSICS_H #include <torch/torch.h>
+ *
  */
