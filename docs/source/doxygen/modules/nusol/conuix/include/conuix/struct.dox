@@ -1,78 +1,92 @@
 /**
- * @file modules_nusol_conuix_include_conuix_struct_h
- * @brief Detailed documentation for struct.h
+ * @file struct.h
+ * @brief Manual documentation for struct.h
  *
  * ## File Information
- * - Path: modules/nusol/conuix/include/conuix/struct.h
- * - Type: .h file
+ * - **Full Path**: modules/nusol/conuix/include/conuix/struct.h
+ * - **File Type**: .h file
+ * - **Total Lines**: 176
  *
- * ## Classes
- * ### class particle_template
- * **Members:**
- * - int prec
- *
- * ## Structures
- * ### struct atomics_t
- * - int prec
- *
- * ### struct kinematic_t
- * - long double beta
- * - long double mass
- * - long double energy
- *
- * ### struct rotation_t
- * - long double phi
- * - long double theta
- * - matrix_t vec
- * - matrix_t R_T
- *
- * ### struct base_t
- * - long double rbl
- * - long double cos
- * - long double sin
- * - long double w
- * - long double o
- * - long double w2
- * - long double o2
- * - long double beta
- * - long double mass
- * - long double E
- *
- * ### struct thetapsi_t
- * - long double p_sin
- * - long double m_sin
- * - long double p_cos
- * - long double m_cos
- *
- * ## Functions
- * - void **print**(int p = 16)
- * - void **variable**(std::string name, long double val)
- * - void **print**(int p)
- * - void **print**(int p)
- * - void **print**(int p)
- * - long double **Z2**(long double Sx, long double Sy)
- * - void **print**(int p)
- * - long double **Sx**(long double tau, long double Z)
- * - void **print**(int p)
- * - long double **Sy**(long double tau, long double Z)
- * - void **print**(int p)
- * - matrix_t **H_Matrix**(long double tau, long double Z)
- * - matrix_t **H_Tilde**(long double tau, long double Z)
- * - void **print**(int p)
- * - long double **cos_theta**(particle_template* jet, particle_template* lep)
+ * ## Include Dependencies
+ * - `#include <conuix/matrix.h>`
+ * - `#include <conuix/htilde.h>`
+ * - `#include <iostream>`
+ * - `#include <string>`
+ * - `#include <iomanip>`
  *
  * ## Namespaces
- * - characteristic
- * - Conuix
+ * - `characteristic`
+ * - `Conuix`
  *
- * ## Dependencies
- * - conuix/htilde.h
- * - conuix/matrix.h
- * - iomanip
- * - iostream
- * - string
+ * ## Preprocessor Macros
+ * - `#define H_CONUIX_STRUCT #include <conuix/matrix.h>`
  *
- * ## Macros
- * - #define H_CONUIX_STRUCT #include <conuix/matrix.h>
+ * ## Structures
+ * ### struct debug
+ * **Members:**
+ * - `virtual void print(int p = 16);`
+ * - `void variable(std::string name, long double val);`
+ * - `int prec = 16;`
+ *
+ * ### struct thetapsi_t
+ * **Members:**
+ * - `long double p_sin = 0;`
+ * - `long double m_sin = 0;`
+ * - `long double p_cos = 0;`
+ * - `long double m_cos = 0;`
+ *
+ * ### struct atomics_t
+ * **Members:**
+ * - `atomics_t(particle_template* jet, particle_template* lep, double m_nu = 0);`
+ * - `void debug_mode(particle_template* jet, particle_template* lep);`
+ * - `Conuix::kinematic_t lp; // === Lepton`
+ * - `Conuix::kinematic_t jt; // === jet`
+ * - `Conuix::kinematic_t nu; // === neutrino`
+ * - `Conuix::base_t     base;`
+ * - `Conuix::rotation_t rotation;`
+ * - `Conuix::thetapsi_t psi_theta;`
+ * - `Conuix::pencil_t pencil;`
+ * - `Conuix::Sx_t Sx;`
+ * - `Conuix::Sy_t Sy;`
+ * - `Conuix::H_matrix_t H_Matrix;`
+ * - `Conuix::characteristic::P_t*       P     = nullptr;`
+ * - `Conuix::characteristic::dPdtau_t* dPdtau = nullptr;`
+ *
+ * ## Standalone Functions
+ * - `virtual void print(int p = 16);`
+ * - `void variable(std::string name, long double val);`
+ * - `void print(int p) override;`
+ * - `void print(int p) override;`
+ * - `void print(int p) override;`
+ * - `long double Z2(long double Sx, long double Sy);`
+ * - `void print(int p) override;`
+ * - `long double Sx(long double tau, long double Z);`
+ * - `void print(int p) override;`
+ * - `long double Sy(long double tau, long double Z);`
+ * - `void print(int p) override;`
+ * - `matrix_t H_Matrix(long double tau, long double Z);`
+ * - `matrix_t H_Tilde(long double tau, long double Z);`
+ * - `void print(int p) override;`
+ * - `long double cos_theta(particle_template* jet, particle_template* lep);`
+ * - `virtual long double xlinear(long double tau);`
+ * - `virtual long double ylinear(long double tau);`
+ * - `virtual long double xyratio(long double tau);`
+ * - `virtual long double P(long double lambda, long double Z, long double tau);`
+ * - `P_t(base_t* base);`
+ * - `long double P(long double lambda, long double Z, long double tau) override;`
+ * - `void print(int p) override;`
+ * - `dPdtau_t(base_t* base);`
+ * - `long double P(long double lambda, long double Z, long double tau) override;`
+ * - `long double L0(long double Z, long double tau);`
+ * - `long double PL0(long double tau);`
+ * - `long double PL0(atomics_t* tx);`
+ * - `void test(atomics_t* tx);`
+ * - `atomics_t(particle_template* jet, particle_template* lep, double m_nu = 0);`
+ * - `void debug_mode(particle_template* jet, particle_template* lep);`
+ *
+ * ## Additional Notes
+ * This documentation was generated by reading the actual source file.
+ * For complete implementation details, refer to the source code.
+ * Doxygen will provide additional cross-references and call graphs.
  *
  */

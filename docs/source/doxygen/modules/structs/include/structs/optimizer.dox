@@ -1,76 +1,101 @@
 /**
- * @file modules_structs_include_structs_optimizer_h
- * @brief Detailed documentation for optimizer.h
+ * @file optimizer.h
+ * @brief Manual documentation for optimizer.h
  *
  * ## File Information
- * - Path: modules/structs/include/structs/optimizer.h
- * - Type: .h file
+ * - **Full Path**: modules/structs/include/structs/optimizer.h
+ * - **File Type**: .h file
+ * - **Total Lines**: 106
  *
- * ## Classes
- * ### class optimizer_params_t
- * **Methods:**
- * - void static set_eps(...)
- * - void static set_lr(...)
- * - void static set_lr_decay(...)
- * - void static set_weight_decay(...)
- * - void static set_initial_accumulator_value(...)
- * - void static set_beta_hack(...)
- * - void static set_betas(...)
- * - void static set_amsgrad(...)
- * - void static set_max_iter(...)
- * - void static set_max_eval(...)
- * **Members:**
- * - std::string optimizer
- * - cproperty<double, optimizer_params_t> lr
- * - cproperty<double, optimizer_params_t> lr_decay
- * - cproperty<double, optimizer_params_t> weight_decay
- * - cproperty<double, optimizer_params_t> initial_accumulator_value
- * - cproperty<double, optimizer_params_t> eps
- * - cproperty<double, optimizer_params_t> tolerance_grad
- * - cproperty<double, optimizer_params_t> tolerance_change
- * - cproperty<double, optimizer_params_t> alpha
- * - cproperty<double, optimizer_params_t> momentum
+ * ## Include Dependencies
+ * - `#include <string>`
+ * - `#include <vector>`
+ * - `#include <structs/property.h>`
+ * - `#include <structs/enums.h>`
+ *
+ * ## Preprocessor Macros
+ * - `#define MODEL_ENUM_FUNCTIONS_H #include <string>`
  *
  * ## Structures
  * ### struct loss_opt
- * - loss_enum fx
- * - bool mean
- * - bool sum
- * - bool none
- * - bool swap
- * - bool full
- * - bool batch_mean
- * - bool target
- * - bool zero_inf
- * - bool defaults
+ * **Members:**
+ * - `loss_enum fx = loss_enum::invalid_loss;`
+ * - `bool mean = false;`
+ * - `bool sum  = false;`
+ * - `bool none = false;`
+ * - `bool swap = false;`
+ * - `bool full = false;`
+ * - `bool batch_mean = false;`
+ * - `bool target     = false;`
+ * - `bool zero_inf   = false;`
+ * - `bool defaults   = true;`
+ * - `int ignore = 1000;`
+ * - `int blank  = 0;`
+ * - `double margin    = 0;`
+ * - `double beta      = 0;`
+ * - `double eps       = 0;`
+ * - ... and 2 more members
  *
- * ## Enumerations
- * ### enum fx
+ * ## Classes
+ * ### class optimizer_params_t
  *
- * ## Functions
- * - void static **set_eps**(double*, optimizer_params_t* obj)
- * - void static **set_lr**(double*, optimizer_params_t* obj)
- * - void static **set_lr_decay**(double*, optimizer_params_t* obj)
- * - void static **set_weight_decay**(double*, optimizer_params_t* obj)
- * - void static **set_initial_accumulator_value**(double*, optimizer_params_t* obj)
- * - void static **set_beta_hack**(std::vector<float>* val, optimizer_params_t* obj)
- * - void static **set_betas**(std::tuple<float, float>*, optimizer_params_t* obj)
- * - void static **set_amsgrad**(bool*, optimizer_params_t* obj)
- * - void static **set_max_iter**(int*, optimizer_params_t* obj)
- * - void static **set_max_eval**(int*, optimizer_params_t* obj)
- * - void static **set_tolerance_grad**(double*, optimizer_params_t* obj)
- * - void static **set_tolerance_change**(double*, optimizer_params_t* obj)
- * - void static **set_history_size**(int*, optimizer_params_t* obj)
- * - void static **set_centered**(bool*, optimizer_params_t* obj)
- * - void static **set_nesterov**(bool*, optimizer_params_t* obj)
+ * **Public Members:**
+ * - `std::string optimizer = "";`
+ * - `cproperty<double, optimizer_params_t> lr;`
+ * - `cproperty<double, optimizer_params_t> lr_decay;`
+ * - `cproperty<double, optimizer_params_t> weight_decay;`
+ * - `cproperty<double, optimizer_params_t> initial_accumulator_value;`
+ * - `cproperty<double, optimizer_params_t> eps;`
+ * - `cproperty<double, optimizer_params_t> tolerance_grad;`
+ * - `cproperty<double, optimizer_params_t> tolerance_change;`
+ * - `cproperty<double, optimizer_params_t> alpha;`
+ * - `cproperty<double, optimizer_params_t> momentum;`
+ * - `cproperty<double, optimizer_params_t> dampening;`
+ * - `cproperty<bool, optimizer_params_t> amsgrad;`
+ * - `cproperty<bool, optimizer_params_t> centered;`
+ * - `cproperty<bool, optimizer_params_t> nesterov;`
+ * - `cproperty<int, optimizer_params_t> max_iter;`
+ * - ... and 24 more
  *
- * ## Dependencies
- * - string
- * - structs/enums.h
- * - structs/property.h
- * - vector
+ * **Public Methods:**
+ * - `optimizer_params_t();`
  *
- * ## Macros
- * - #define MODEL_ENUM_FUNCTIONS_H #include <string>
+ * **Private Methods:**
+ * - `void static set_eps(double*, optimizer_params_t* obj);`
+ * - `void static set_lr(double*, optimizer_params_t* obj);`
+ * - `void static set_lr_decay(double*, optimizer_params_t* obj);`
+ * - `void static set_weight_decay(double*, optimizer_params_t* obj);`
+ * - `void static set_initial_accumulator_value(double*, optimizer_params_t* obj);`
+ * - `void static set_beta_hack(std::vector<float>* val, optimizer_params_t* obj);`
+ * - `void static set_betas(std::tuple<float, float>*, optimizer_params_t* obj);`
+ * - `void static set_amsgrad(bool*, optimizer_params_t* obj);`
+ * - `void static set_max_iter(int*, optimizer_params_t* obj);`
+ * - `void static set_max_eval(int*, optimizer_params_t* obj);`
+ *
+ * ## Standalone Functions
+ * - `optimizer_params_t();`
+ * - `void static set_eps(double*, optimizer_params_t* obj);`
+ * - `void static set_lr(double*, optimizer_params_t* obj);`
+ * - `void static set_lr_decay(double*, optimizer_params_t* obj);`
+ * - `void static set_weight_decay(double*, optimizer_params_t* obj);`
+ * - `void static set_initial_accumulator_value(double*, optimizer_params_t* obj);`
+ * - `void static set_beta_hack(std::vector<float>* val, optimizer_params_t* obj);`
+ * - `void static set_betas(std::tuple<float, float>*, optimizer_params_t* obj);`
+ * - `void static set_amsgrad(bool*, optimizer_params_t* obj);`
+ * - `void static set_max_iter(int*, optimizer_params_t* obj);`
+ * - `void static set_max_eval(int*, optimizer_params_t* obj);`
+ * - `void static set_tolerance_grad(double*, optimizer_params_t* obj);`
+ * - `void static set_tolerance_change(double*, optimizer_params_t* obj);`
+ * - `void static set_history_size(int*, optimizer_params_t* obj);`
+ * - `void static set_centered(bool*, optimizer_params_t* obj);`
+ * - `void static set_nesterov(bool*, optimizer_params_t* obj);`
+ * - `void static set_alpha(double*, optimizer_params_t* obj);`
+ * - `void static set_momentum(double*, optimizer_params_t* obj);`
+ * - `void static set_dampening(double*, optimizer_params_t* obj);`
+ *
+ * ## Additional Notes
+ * This documentation was generated by reading the actual source file.
+ * For complete implementation details, refer to the source code.
+ * Doxygen will provide additional cross-references and call graphs.
  *
  */

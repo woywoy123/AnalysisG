@@ -1,62 +1,89 @@
 /**
- * @file modules_event_include_templates_event_template_h
- * @brief Detailed documentation for event_template.h
+ * @file event_template.h
+ * @brief Manual documentation for event_template.h
  *
  * ## File Information
- * - Path: modules/event/include/templates/event_template.h
- * - Type: .h file
+ * - **Full Path**: modules/event/include/templates/event_template.h
+ * - **File Type**: .h file
+ * - **Total Lines**: 102
+ *
+ * ## Include Dependencies
+ * - `#include <templates/particle_template.h>`
+ * - `#include <structs/property.h>`
+ * - `#include <structs/element.h>`
+ * - `#include <structs/event.h>`
+ * - `#include <tools/tools.h>`
+ * - `#include <meta/meta.h>`
+ *
+ * ## Preprocessor Macros
+ * - `#define EVENT_TEMPLATE_H #include <templates/particle_template.h>`
  *
  * ## Classes
  * ### class event_template : tools
- * **Methods:**
- * - void static set_trees(...)
- * - void static set_branches(...)
- * - void static get_leaves(...)
- * - void add_leaf(...)
- * - void static set_name(...)
- * - void static set_hash(...)
- * - void static get_hash(...)
- * - void static set_tree(...)
- * - void static get_tree(...)
- * - void static set_weight(...)
- * **Members:**
- * - cproperty<std::vector<std::string>, event_template> trees
- * - cproperty<std::vector<std::string>, event_template> branches
- * - cproperty<std::vector<std::string>, event_template> leaves
- * - key, std::string leaf
- * - cproperty<std::string, event_template> name
- * - cproperty<std::string, event_template> hash
- * - cproperty<std::string, event_template> tree
- * - cproperty<double, event_template> weight
- * - cproperty<long, event_template> index
- * - std::map<std::string, std::string> m_trees
  *
- * ## Functions
- * - void static **set_trees**(std::vector<std::string>*, event_template*)
- * - void static **set_branches**(std::vector<std::string>*, event_template*)
- * - void static **get_leaves**(std::vector<std::string>*, event_template*)
- * - void **add_leaf**(std::string key, std::string leaf = "")
- * - void static **set_name**(std::string*, event_template*)
- * - void static **set_hash**(std::string*, event_template*)
- * - void static **get_hash**(std::string*, event_template*)
- * - void static **set_tree**(std::string*, event_template*)
- * - void static **get_tree**(std::string*, event_template*)
- * - void static **set_weight**(double*, event_template*)
- * - void static **set_index**(long*, event_template*)
- * - event_template* **clone**(void)
- * - void **build**(element_t* el)
- * - void **CompileEvent**(void)
- * - std::map<std::string, event_template*> **build_event**(std::map<std::string, data_t*>* evnt)
+ * **Public Members:**
+ * - `cproperty<std::vector<std::string>, event_template> trees;`
+ * - `cproperty<std::vector<std::string>, event_template> branches;`
+ * - `cproperty<std::vector<std::string>, event_template> leaves;`
+ * - `cproperty<std::string, event_template> name;`
+ * - `cproperty<std::string, event_template> hash;`
+ * - `cproperty<std::string, event_template> tree;`
+ * - `cproperty<double, event_template> weight;`
+ * - `cproperty<long, event_template> index;`
+ * - `std::map<std::string, std::string> m_trees;`
+ * - `std::map<std::string, std::string> m_branches;`
+ * - `std::map<std::string, std::string> m_leaves;`
+ * - `);`
+ * - `std::string tp = x -> type;`
+ * - `this -> m_leaves[tp + "/" + itr -> first] = itr -> second;`
  *
- * ## Dependencies
- * - meta/meta.h
- * - structs/element.h
- * - structs/event.h
- * - structs/property.h
- * - templates/particle_template.h
- * - tools/tools.h
+ * **Public Methods:**
+ * - `event_template();`
+ * - `virtual ~event_template();`
+ * - `void static set_trees(std::vector<std::string>*, event_template*);`
+ * - `void static set_branches(std::vector<std::string>*, event_template*);`
+ * - `void static get_leaves(std::vector<std::string>*, event_template*);`
+ * - `void add_leaf(std::string key, std::string leaf = "");`
+ * - `void static set_name(std::string*, event_template*);`
+ * - `void static set_hash(std::string*, event_template*);`
+ * - `void static get_hash(std::string*, event_template*);`
+ * - `void static set_tree(std::string*, event_template*);`
+ * - `void static get_tree(std::string*, event_template*);`
+ * - `void static set_weight(double*, event_template*);`
+ * - `void static set_index(long*, event_template*);`
+ * - `virtual event_template* clone();`
+ * - `virtual void build(element_t* el);`
+ * - `virtual void CompileEvent();`
+ * - `std::map<std::string, event_template*> build_event(std::map<std::string, data_t*>* evnt);`
+ * - `void register_particle(std::map<std::string, G*>* object){`
+ * - `G* x = new G();`
+ * - `std::map<std::string, std::string>::iterator itr = x -> leaves.begin();`
+ * - ... and 1 more
  *
- * ## Macros
- * - #define EVENT_TEMPLATE_H #include <templates/particle_template.h>
+ * ## Standalone Functions
+ * - `event_template();`
+ * - `void static set_trees(std::vector<std::string>*, event_template*);`
+ * - `void static set_branches(std::vector<std::string>*, event_template*);`
+ * - `void static get_leaves(std::vector<std::string>*, event_template*);`
+ * - `void add_leaf(std::string key, std::string leaf = "");`
+ * - `void static set_name(std::string*, event_template*);`
+ * - `void static set_hash(std::string*, event_template*);`
+ * - `void static get_hash(std::string*, event_template*);`
+ * - `void static set_tree(std::string*, event_template*);`
+ * - `void static get_tree(std::string*, event_template*);`
+ * - `void static set_weight(double*, event_template*);`
+ * - `void static set_index(long*, event_template*);`
+ * - `virtual event_template* clone();`
+ * - `virtual void build(element_t* el);`
+ * - `virtual void CompileEvent();`
+ * - `std::map<std::string, event_template*> build_event(std::map<std::string, data_t*>* evnt);`
+ * - `void flush_particles();`
+ * - `void build_mapping(std::map<std::string, data_t*>* evnt);`
+ * - `void flush_leaf_string();`
+ *
+ * ## Additional Notes
+ * This documentation was generated by reading the actual source file.
+ * For complete implementation details, refer to the source code.
+ * Doxygen will provide additional cross-references and call graphs.
  *
  */

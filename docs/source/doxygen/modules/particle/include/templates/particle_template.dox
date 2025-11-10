@@ -1,65 +1,106 @@
 /**
- * @file modules_particle_include_templates_particle_template_h
- * @brief Detailed documentation for particle_template.h
+ * @file particle_template.h
+ * @brief Manual documentation for particle_template.h
  *
  * ## File Information
- * - Path: modules/particle/include/templates/particle_template.h
- * - Type: .h file
+ * - **Full Path**: modules/particle/include/templates/particle_template.h
+ * - **File Type**: .h file
+ * - **Total Lines**: 166
+ *
+ * ## Include Dependencies
+ * - `#include <structs/particles.h>`
+ * - `#include <structs/property.h>`
+ * - `#include <structs/element.h>`
+ * - `#include <tools/tools.h>`
+ * - `#include <iostream>`
+ * - `#include <sstream>`
+ * - `#include <string>`
+ * - `#include <cstdlib>`
+ * - `#include <cmath>`
+ *
+ * ## Preprocessor Macros
+ * - `#define PARTICLETEMPLATE_H #include <structs/particles.h>`
  *
  * ## Classes
- * ### class event_template
- * **Methods:**
- * - explicit particle_template(...)
- * - explicit particle_template(...)
- * - explicit particle_template(...)
- * - explicit particle_template(...)
- * - void static set_e(...)
- * - void static get_e(...)
- * - void static set_pt(...)
- * - void static get_pt(...)
- * - void static set_eta(...)
- * - void static get_eta(...)
- * **Members:**
- * - p, bool dump
- * - cproperty<double, particle_template> e
- * - cproperty<double, particle_template> pt
- * - cproperty<double, particle_template> eta
- * - cproperty<double, particle_template> phi
- * - cproperty<double, particle_template> px
- * - cproperty<double, particle_template> py
- * - cproperty<double, particle_template> pz
- * - cproperty<double, particle_template> mass
- * - cproperty<double, particle_template> P
+ * ### class particle_template : tools
  *
- * ## Functions
- * - explicit **particle_template**(particle_t* p)
- * - explicit **particle_template**(particle_template* p, bool dump = false)
- * - explicit **particle_template**(double px, double py, double pz, double e)
- * - explicit **particle_template**(double px, double py, double pz)
- * - void static **set_e**(double*, particle_template*)
- * - void static **get_e**(double*, particle_template*)
- * - void static **set_pt**(double*, particle_template*)
- * - void static **get_pt**(double*, particle_template*)
- * - void static **set_eta**(double*, particle_template*)
- * - void static **get_eta**(double*, particle_template*)
- * - void static **set_phi**(double*, particle_template*)
- * - void static **get_phi**(double*, particle_template*)
- * - void static **set_px**(double*, particle_template*)
- * - void static **get_px**(double*, particle_template*)
- * - void static **set_py**(double*, particle_template*)
+ * **Public Members:**
+ * - `cproperty<double, particle_template> e;`
+ * - `cproperty<double, particle_template> pt;`
+ * - `cproperty<double, particle_template> eta;`
+ * - `cproperty<double, particle_template> phi;`
+ * - `cproperty<double, particle_template> px;`
+ * - `cproperty<double, particle_template> py;`
+ * - `cproperty<double, particle_template> pz;`
+ * - `cproperty<double, particle_template> mass;`
+ * - `cproperty<double, particle_template> P;`
+ * - `cproperty<double, particle_template> beta;`
+ * - `cproperty<int, particle_template> pdgid;`
+ * - `cproperty<std::string, particle_template> symbol;`
+ * - `cproperty<double, particle_template> charge;`
+ * - `cproperty<std::string, particle_template> hash;`
+ * - `cproperty<bool, particle_template> is_b;`
+ * - ... and 11 more
  *
- * ## Dependencies
- * - cmath
- * - cstdlib
- * - iostream
- * - sstream
- * - string
- * - structs/element.h
- * - structs/particles.h
- * - structs/property.h
- * - tools/tools.h
+ * **Public Methods:**
+ * - `particle_template();`
+ * - `virtual ~particle_template();`
+ * - `explicit particle_template(particle_t* p);`
+ * - `explicit particle_template(particle_template* p, bool dump = false);`
+ * - `explicit particle_template(double px, double py, double pz, double e);`
+ * - `explicit particle_template(double px, double py, double pz);`
+ * - `void static set_e(double*, particle_template*);`
+ * - `void static get_e(double*, particle_template*);`
+ * - `void static set_pt(double*, particle_template*);`
+ * - `void static get_pt(double*, particle_template*);`
+ * - `void static set_eta(double*, particle_template*);`
+ * - `void static get_eta(double*, particle_template*);`
+ * - `void static set_phi(double*, particle_template*);`
+ * - `void static get_phi(double*, particle_template*);`
+ * - `void static set_px(double*, particle_template*);`
+ * - `void static get_px(double*, particle_template*);`
+ * - `void static set_py(double*, particle_template*);`
+ * - `void static get_py(double*, particle_template*);`
+ * - `void static set_pz(double*, particle_template*);`
+ * - `void static get_pz(double*, particle_template*);`
+ * - ... and 35 more
  *
- * ## Macros
- * - #define PARTICLETEMPLATE_H #include <structs/particles.h>
+ * ## Standalone Functions
+ * - `particle_template();`
+ * - `explicit particle_template(particle_t* p);`
+ * - `explicit particle_template(particle_template* p, bool dump = false);`
+ * - `explicit particle_template(double px, double py, double pz, double e);`
+ * - `explicit particle_template(double px, double py, double pz);`
+ * - `void static set_e(double*, particle_template*);`
+ * - `void static get_e(double*, particle_template*);`
+ * - `void static set_pt(double*, particle_template*);`
+ * - `void static get_pt(double*, particle_template*);`
+ * - `void static set_eta(double*, particle_template*);`
+ * - `void static get_eta(double*, particle_template*);`
+ * - `void static set_phi(double*, particle_template*);`
+ * - `void static get_phi(double*, particle_template*);`
+ * - `void static set_px(double*, particle_template*);`
+ * - `void static get_px(double*, particle_template*);`
+ * - `void static set_py(double*, particle_template*);`
+ * - `void static get_py(double*, particle_template*);`
+ * - `void static set_pz(double*, particle_template*);`
+ * - `void static get_pz(double*, particle_template*);`
+ * - `void to_cartesian();`
+ * - `void to_polar();`
+ * - `void static set_mass(double*, particle_template*);`
+ * - `void static get_mass(double*, particle_template*);`
+ * - `void static get_P(double*, particle_template*);`
+ * - `void static get_beta(double*, particle_template*);`
+ * - `void static set_pdgid(int*, particle_template*);`
+ * - `void static get_pdgid(int*, particle_template*);`
+ * - `void static set_symbol(std::string*, particle_template*);`
+ * - `void static get_symbol(std::string*, particle_template*);`
+ * - `void static set_charge(double*, particle_template*);`
+ * - ... and 25 more functions
+ *
+ * ## Additional Notes
+ * This documentation was generated by reading the actual source file.
+ * For complete implementation details, refer to the source code.
+ * Doxygen will provide additional cross-references and call graphs.
  *
  */

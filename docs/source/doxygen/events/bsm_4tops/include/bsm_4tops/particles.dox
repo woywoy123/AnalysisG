@@ -1,90 +1,144 @@
 /**
- * @file events_bsm_4tops_include_bsm_4tops_particles_h
- * @brief Detailed documentation for particles.h
+ * @file particles.h
+ * @brief Manual documentation for particles.h
  *
  * ## File Information
- * - Path: events/bsm_4tops/include/bsm_4tops/particles.h
- * - Type: .h file
+ * - **Full Path**: events/bsm_4tops/include/bsm_4tops/particles.h
+ * - **File Type**: .h file
+ * - **Total Lines**: 202
+ *
+ * ## Include Dependencies
+ * - `#include <templates/particle_template.h>`
+ *
+ * ## Preprocessor Macros
+ * - `#define EVENTS_BSM4TOPS_PARTICLES_H #include <templates/particle_template.h>`
  *
  * ## Classes
- * ### class truthjetparton
- * **Members:**
- * - std::vector<int> _index, _pdgid
- * - std::vector<float> _pt, _eta, _phi, _e
- * - g* p
- *
  * ### class top : particle_template
- * **Members:**
- * - bool from_res
- * - int status
- * - std::vector<truthjet*> TruthJets
+ *
+ * **Public Members:**
+ * - `using particle_template::particle_template;`
+ * - `bool from_res = false;`
+ * - `int status = -1;`
+ *
+ * **Public Methods:**
+ * - `top();`
+ * - `virtual ~top();`
  *
  * ### class top_children : particle_template
- * **Methods:**
- * - particle_template* clone(...)
- * - void build(...)
- * - void static get_from_res(...)
- * **Members:**
- * - int top_index
- * - cproperty<bool, top_children> from_res
+ *
+ * **Public Members:**
+ * - `using particle_template::particle_template;`
+ * - `int top_index = -1;`
+ * - `cproperty<bool, top_children> from_res;`
+ *
+ * **Public Methods:**
+ * - `top_children();`
+ * - `virtual ~top_children();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ *
+ * **Private Methods:**
+ * - `void static get_from_res(bool*, top_children*);`
  *
  * ### class truthjet : particle_template
- * **Members:**
- * - int top_quark_count
- * - int w_boson_count
- * - std::vector<int> top_index
+ *
+ * **Public Members:**
+ * - `using particle_template::particle_template;`
+ * - `int top_quark_count = -1;`
+ * - `int w_boson_count = -1;`
+ *
+ * **Public Methods:**
+ * - `truthjet();`
+ * - `virtual ~truthjet();`
  *
  * ### class truthjetparton : particle_template
- * **Members:**
- * - int truthjet_index
- * - std::vector<int> topchild_index
+ *
+ * **Public Members:**
+ * - `using particle_template::particle_template;`
+ * - `int truthjet_index;`
+ *
+ * **Public Methods:**
+ * - `truthjetparton();`
+ * - `virtual ~truthjetparton();`
  *
  * ### class jet : particle_template
- * **Members:**
- * - std::vector<top*> Tops
+ *
+ * **Public Members:**
+ * - `using particle_template::particle_template;`
+ *
+ * **Public Methods:**
+ * - `jet();`
+ * - `virtual ~jet();`
  *
  * ### class jetparton : particle_template
- * **Members:**
- * - int jet_index
- * - std::vector<int> topchild_index
+ *
+ * **Public Members:**
+ * - `using particle_template::particle_template;`
+ * - `int jet_index;`
+ *
+ * **Public Methods:**
+ * - `jetparton();`
+ * - `virtual ~jetparton();`
  *
  * ### class electron : particle_template
- * **Methods:**
- * - particle_template* clone(...)
- * - void build(...)
- * **Members:**
- * - bool from_res
- * - int top_index
+ *
+ * **Public Members:**
+ * - `using particle_template::particle_template;`
+ * - `bool from_res = false;`
+ * - `int top_index = -1;`
+ *
+ * **Public Methods:**
+ * - `electron();`
+ * - `virtual ~electron();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
  *
  * ### class muon : particle_template
- * **Methods:**
- * - particle_template* clone(...)
- * - void build(...)
- * **Members:**
- * - bool from_res
- * - int top_index
  *
- * ## Functions
- * - void **assign_vector**(std::vector<g*>* inpt, element_t* el)
- * - particle_template* **clone**(void)
- * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
- * - particle_template* **clone**(void)
- * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
- * - void static **get_from_res**(bool*, top_children*)
- * - particle_template* **clone**(void)
- * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
- * - void static **get_from_res**(bool*, truthjet*)
- * - particle_template* **clone**(void)
- * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
- * - particle_template* **clone**(void)
- * - void **build**(std::map<std::string, particle_template*>* prt, element_t* el)
- * - void static **get_from_res**(bool*, jet*)
- * - particle_template* **clone**(void)
+ * **Public Members:**
+ * - `using particle_template::particle_template;`
+ * - `bool from_res = false;`
+ * - `int top_index = -1;`
  *
- * ## Dependencies
- * - templates/particle_template.h
+ * **Public Methods:**
+ * - `muon();`
+ * - `virtual ~muon();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
  *
- * ## Macros
- * - #define EVENTS_BSM4TOPS_PARTICLES_H #include <templates/particle_template.h>
+ * ## Standalone Functions
+ * - `top();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ * - `top_children();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ * - `void static get_from_res(bool*, top_children*);`
+ * - `truthjet();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ * - `void static get_from_res(bool*, truthjet*);`
+ * - `truthjetparton();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ * - `jet();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ * - `void static get_from_res(bool*, jet*);`
+ * - `jetparton();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ * - `electron();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ * - `muon();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ *
+ * ## Additional Notes
+ * This documentation was generated by reading the actual source file.
+ * For complete implementation details, refer to the source code.
+ * Doxygen will provide additional cross-references and call graphs.
  *
  */

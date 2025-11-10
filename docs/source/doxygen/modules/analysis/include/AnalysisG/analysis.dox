@@ -1,60 +1,83 @@
 /**
- * @file modules_analysis_include_AnalysisG_analysis_h
- * @brief Detailed documentation for analysis.h
+ * @file analysis.h
+ * @brief Manual documentation for analysis.h
  *
  * ## File Information
- * - Path: modules/analysis/include/AnalysisG/analysis.h
- * - Type: .h file
+ * - **Full Path**: modules/analysis/include/AnalysisG/analysis.h
+ * - **File Type**: .h file
+ * - **Total Lines**: 124
+ *
+ * ## Include Dependencies
+ * - `#include <string>`
+ * - `#include <generators/sampletracer.h>`
+ * - `#include <generators/dataloader.h>`
+ * - `#include <generators/optimizer.h>`
+ * - `#include <templates/graph_template.h>`
+ * - `#include <templates/event_template.h>`
+ * - `#include <templates/metric_template.h>`
+ * - `#include <templates/selection_template.h>`
+ * - `#include <templates/model_template.h>`
+ * - `#include <structs/settings.h>`
+ * - `#include <io/io.h>`
+ *
+ * ## Preprocessor Macros
+ * - `#define ANALYSIS_H #include <string>`
  *
  * ## Classes
  * ### class analysis : notification, 
     public tools
- * **Methods:**
- * - void add_samples(...)
- * - void add_selection_template(...)
- * - void add_event_template(...)
- * - void add_graph_template(...)
- * - void add_metric_template(...)
- * - void add_model(...)
- * - void add_model(...)
- * - void attach_threads(...)
- * - void start(...)
- * - std::map<std::string, std::vector<float>> progress(...)
- * **Members:**
- * - settings_t m_settings
- * - std::map<std::string, meta*> meta_data
  *
- * ## Functions
- * - void **flush**(std::map<std::string, g*>* data)
- * - void **add_samples**(std::string path, std::string label)
- * - void **add_selection_template**(selection_template* sel)
- * - void **add_event_template**(event_template* ev, std::string label)
- * - void **add_graph_template**(graph_template* gr, std::string label)
- * - void **add_metric_template**(metric_template* mx, model_template* mdl)
- * - void **add_model**(model_template* model, optimizer_params_t* op, std::string run_name)
- * - void **add_model**(model_template* model, std::string run_name)
- * - void **attach_threads**(void)
- * - void **start**(void)
- * - std::map<std::string, std::vector<float>> **progress**(void)
- * - std::map<std::string, std::string> **progress_mode**(void)
- * - std::map<std::string, std::string> **progress_report**(void)
- * - std::map<std::string, bool> **is_complete**(void)
- * - void **check_cache**(void)
+ * **Public Members:**
+ * - `settings_t m_settings;`
  *
- * ## Dependencies
- * - generators/dataloader.h
- * - generators/optimizer.h
- * - generators/sampletracer.h
- * - io/io.h
- * - string
- * - structs/settings.h
- * - templates/event_template.h
- * - templates/graph_template.h
- * - templates/metric_template.h
- * - templates/model_template.h
- * - templates/selection_template.h
+ * **Public Methods:**
+ * - `analysis();`
+ * - `~analysis();`
+ * - `void add_samples(std::string path, std::string label);`
+ * - `void add_selection_template(selection_template* sel);`
+ * - `void add_event_template(event_template* ev, std::string label);`
+ * - `void add_graph_template(graph_template* gr, std::string label);`
+ * - `void add_metric_template(metric_template* mx, model_template* mdl);`
+ * - `void add_model(model_template* model, optimizer_params_t* op, std::string run_name);`
+ * - `void add_model(model_template* model, std::string run_name);`
+ * - `void attach_threads();`
+ * - `void start();`
+ * - `std::map<std::string, std::vector<float>> progress();`
+ * - `std::map<std::string, std::string> progress_mode();`
+ * - `std::map<std::string, std::string> progress_report();`
+ * - `std::map<std::string, bool> is_complete();`
  *
- * ## Macros
- * - #define ANALYSIS_H #include <string>
+ * ## Standalone Functions
+ * - `analysis();`
+ * - `void add_samples(std::string path, std::string label);`
+ * - `void add_selection_template(selection_template* sel);`
+ * - `void add_event_template(event_template* ev, std::string label);`
+ * - `void add_graph_template(graph_template* gr, std::string label);`
+ * - `void add_metric_template(metric_template* mx, model_template* mdl);`
+ * - `void add_model(model_template* model, optimizer_params_t* op, std::string run_name);`
+ * - `void add_model(model_template* model, std::string run_name);`
+ * - `void attach_threads();`
+ * - `void start();`
+ * - `std::map<std::string, std::vector<float>> progress();`
+ * - `std::map<std::string, std::string> progress_mode();`
+ * - `std::map<std::string, std::string> progress_report();`
+ * - `std::map<std::string, bool> is_complete();`
+ * - `void check_cache();`
+ * - `void build_project();`
+ * - `void build_events();`
+ * - `void build_selections();`
+ * - `void build_graphs();`
+ * - `void build_model_session();`
+ * - `void build_inference();`
+ * - `bool build_metric();`
+ * - `void build_metric_folds();`
+ * - `void build_dataloader(bool training);`
+ * - `void fetchtags();`
+ * - `static void execution_metric(metric_t* mt, size_t* prg, std::string* msg);`
+ *
+ * ## Additional Notes
+ * This documentation was generated by reading the actual source file.
+ * For complete implementation details, refer to the source code.
+ * Doxygen will provide additional cross-references and call graphs.
  *
  */

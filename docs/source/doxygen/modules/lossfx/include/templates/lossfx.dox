@@ -1,65 +1,111 @@
 /**
- * @file modules_lossfx_include_templates_lossfx_h
- * @brief Detailed documentation for lossfx.h
+ * @file lossfx.h
+ * @brief Manual documentation for lossfx.h
  *
  * ## File Information
- * - Path: modules/lossfx/include/templates/lossfx.h
- * - Type: .h file
+ * - **Full Path**: modules/lossfx/include/templates/lossfx.h
+ * - **File Type**: .h file
+ * - **Total Lines**: 227
+ *
+ * ## Include Dependencies
+ * - `#include <map>`
+ * - `#include <vector>`
+ * - `#include <string>`
+ * - `#include <tools/tools.h>`
+ * - `#include <torch/torch.h>`
+ * - `#include <structs/enums.h>`
+ * - `#include <structs/optimizer.h>`
+ * - `#include <notification/notification.h>`
+ *
+ * ## Preprocessor Macros
+ * - `#define LOSSFX_H #include <map>`
  *
  * ## Classes
  * ### class lossfx : tools, 
     public notification
- * **Methods:**
- * - loss_enum loss_string(...)
- * - opt_enum optim_string(...)
- * - scheduler_enum scheduler_string(...)
- * - void loss_opt_string(...)
- * - torch::Tensor loss(...)
- * - torch::Tensor loss(...)
- * - void weight_init(...)
- * - torch::optim::Optimizer* build_optimizer(...)
- * - void build_scheduler(...)
- * - bool build_loss_function(...)
- * **Members:**
- * - std::string variable
- * - loss_opt lss_cfg
- * - torch::optim::Adam* m_adam
- * - torch::optim::Adagrad* m_adagrad
- * - torch::optim::AdamW* m_adamw
- * - torch::optim::LBFGS* m_lbfgs
- * - torch::optim::RMSprop* m_rmsprop
- * - torch::optim::SGD* m_sgd
- * - torch::optim::StepLR* m_steplr
- * - torch::optim::ReduceLROnPlateauScheduler* m_rlp
  *
- * ## Functions
- * - g* **generate_ops**(g* imp, go* opx, bool dx)
- * - return new **g**(*opx)
- * - void **_dress_reduction**(g* imx, loss_opt* params)
- * - void **_dress_batch**(g* imx, loss_opt* params)
- * - void **_dress_ignore**(g* imx, loss_opt* params)
- * - void **_dress_smoothing**(g* imx, loss_opt* params)
- * - void **_dress_margin**(g* imx, loss_opt* params)
- * - void **_dress_blank**(g* imx, loss_opt* params)
- * - void **_dress_zero**(g* imx, loss_opt* params)
- * - void **_dress_swap**(g* imx, loss_opt* params)
- * - void **_dress_eps**(g* imx, loss_opt* params)
- * - void **_dress_beta**(g* imx, loss_opt* params)
- * - void **_dress_full**(g* imx, loss_opt* params)
- * - void **_dress_target**(g* imx, loss_opt* params)
- * - void **_dress_delta**(g* imx, loss_opt* params)
+ * **Public Members:**
+ * - `std::string variable = "";`
+ * - `loss_opt lss_cfg;`
  *
- * ## Dependencies
- * - map
- * - notification/notification.h
- * - string
- * - structs/enums.h
- * - structs/optimizer.h
- * - tools/tools.h
- * - torch/torch.h
- * - vector
+ * **Public Methods:**
+ * - `lossfx();`
+ * - `lossfx(std::string var, std::string enx);`
+ * - `~lossfx();`
+ * - `loss_enum loss_string(std::string name);`
+ * - `opt_enum optim_string(std::string name);`
+ * - `scheduler_enum scheduler_string(std::string name);`
+ * - `void loss_opt_string(std::string name);`
+ * - `torch::Tensor loss(torch::Tensor* pred, torch::Tensor* truth);`
+ * - `torch::Tensor loss(torch::Tensor* pred, torch::Tensor* truth, loss_enum lss);`
+ * - `void weight_init(torch::nn::Sequential* data, mlp_init method);`
+ * - `torch::optim::Optimizer* build_optimizer(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_scheduler(optimizer_params_t* op, torch::optim::Optimizer* opx);`
+ * - `bool build_loss_function(loss_enum lss);`
+ * - `bool build_loss_function();`
+ * - `void to(torch::TensorOptions*);`
+ * - `void step();`
  *
- * ## Macros
- * - #define LOSSFX_H #include <map>
+ * **Private Members:**
+ * - `torch::optim::Adam*     m_adam    = nullptr;`
+ * - `torch::optim::Adagrad*  m_adagrad = nullptr;`
+ * - `torch::optim::AdamW*    m_adamw   = nullptr;`
+ * - `torch::optim::LBFGS*    m_lbfgs   = nullptr;`
+ * - `torch::optim::RMSprop*  m_rmsprop = nullptr;`
+ * - `torch::optim::SGD*      m_sgd     = nullptr;`
+ * - `torch::optim::StepLR*                     m_steplr = nullptr;`
+ * - `torch::optim::ReduceLROnPlateauScheduler* m_rlp    = nullptr;`
+ * - `torch::optim::LRScheduler*                m_lrs    = nullptr;`
+ * - `torch::nn::BCELossImpl*                       m_bce                          = nullptr;`
+ *
+ * **Private Methods:**
+ * - `void interpret(std::string* ox);`
+ * - `void build_adam(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_adagrad(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_adamw(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_lbfgs(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_rmsprop(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_sgd(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_fx_loss(torch::nn::BCELossImpl* lossfx_);`
+ * - `void build_fx_loss(torch::nn::BCEWithLogitsLossImpl* lossfx_);`
+ * - `void build_fx_loss(torch::nn::CosineEmbeddingLossImpl* lossfx_);`
+ *
+ * ## Standalone Functions
+ * - `return new g(*opx);`
+ * - `lossfx();`
+ * - `lossfx(std::string var, std::string enx);`
+ * - `loss_enum loss_string(std::string name);`
+ * - `opt_enum optim_string(std::string name);`
+ * - `scheduler_enum scheduler_string(std::string name);`
+ * - `void loss_opt_string(std::string name);`
+ * - `torch::Tensor loss(torch::Tensor* pred, torch::Tensor* truth);`
+ * - `torch::Tensor loss(torch::Tensor* pred, torch::Tensor* truth, loss_enum lss);`
+ * - `void weight_init(torch::nn::Sequential* data, mlp_init method);`
+ * - `torch::optim::Optimizer* build_optimizer(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_scheduler(optimizer_params_t* op, torch::optim::Optimizer* opx);`
+ * - `bool build_loss_function(loss_enum lss);`
+ * - `bool build_loss_function();`
+ * - `void to(torch::TensorOptions*);`
+ * - `void step();`
+ * - `void interpret(std::string* ox);`
+ * - `void build_adam(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_adagrad(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_adamw(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_lbfgs(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_rmsprop(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_sgd(optimizer_params_t* op, std::vector<torch::Tensor>* params);`
+ * - `void build_fx_loss(torch::nn::BCELossImpl* lossfx_);`
+ * - `void build_fx_loss(torch::nn::BCEWithLogitsLossImpl* lossfx_);`
+ * - `void build_fx_loss(torch::nn::CosineEmbeddingLossImpl* lossfx_);`
+ * - `void build_fx_loss(torch::nn::CrossEntropyLossImpl* lossfx_);`
+ * - `void build_fx_loss(torch::nn::CTCLossImpl* lossfx_);`
+ * - `void build_fx_loss(torch::nn::HingeEmbeddingLossImpl* lossfx_);`
+ * - `void build_fx_loss(torch::nn::HuberLossImpl* lossfx_);`
+ * - ... and 33 more functions
+ *
+ * ## Additional Notes
+ * This documentation was generated by reading the actual source file.
+ * For complete implementation details, refer to the source code.
+ * Doxygen will provide additional cross-references and call graphs.
  *
  */

@@ -1,70 +1,83 @@
 /**
- * @file modules_selection_include_templates_selection_template_h
- * @brief Detailed documentation for selection_template.h
+ * @file selection_template.h
+ * @brief Manual documentation for selection_template.h
  *
  * ## File Information
- * - Path: modules/selection/include/templates/selection_template.h
- * - Type: .h file
+ * - **Full Path**: modules/selection/include/templates/selection_template.h
+ * - **File Type**: .h file
+ * - **Total Lines**: 199
+ *
+ * ## Include Dependencies
+ * - `#include <templates/particle_template.h>`
+ * - `#include <templates/event_template.h>`
+ * - `#include <structs/property.h>`
+ * - `#include <structs/event.h>`
+ * - `#include <structs/enums.h>`
+ * - `#include <meta/meta.h>`
+ * - `#include <tools/vector_cast.h>`
+ * - `#include <tools/merge_cast.h>`
+ * - `#include <tools/tools.h>`
+ *
+ * ## Preprocessor Macros
+ * - `#define SELECTION_TEMPLATE_H #include <templates/particle_template.h>`
  *
  * ## Classes
- * ### class container
- * **Methods:**
- * - void static set_name(...)
- * - void static get_name(...)
- * - void static set_hash(...)
- * - void static get_hash(...)
- * - void static get_tree(...)
- * - void static set_weight(...)
- * - void static get_weight(...)
- * - void static set_index(...)
- * - selection_template* clone(...)
- * - bool selection(...)
- * **Members:**
- * - cproperty<std::string, selection_template> name
- * - cproperty<std::string, selection_template> hash
- * - cproperty<std::string, selection_template> tree
- * - cproperty<double, selection_template> weight
- * - cproperty<long, selection_template> index
- * - std::vector<particle_template*> ox
+ * ### class selection_template : tools
  *
- * ## Enumerations
- * ### enum attrs
- * Values: std::vector<particle_template*> ox; 
-            this -> downcast(particles, &ox); 
-            this -> write(&ox, _name, attrs);
+ * **Public Members:**
+ * - `cproperty<std::string, selection_template> name;`
+ * - `cproperty<std::string, selection_template> hash;`
+ * - `cproperty<std::string, selection_template> tree;`
+ * - `cproperty<double, selection_template> weight;`
+ * - `cproperty<long, selection_template> index;`
+ * - `std::vector<particle_template*> ox;`
  *
- * ### enum attrs
- * Values: if (!this -> handle){return;
+ * **Public Methods:**
+ * - `selection_template();`
+ * - `virtual ~selection_template();`
+ * - `void static set_name(std::string*, selection_template*);`
+ * - `void static get_name(std::string*, selection_template*);`
+ * - `void static set_hash(std::string*, selection_template*);`
+ * - `void static get_hash(std::string*, selection_template*);`
+ * - `void static get_tree(std::string*, selection_template*);`
+ * - `void static set_weight(double*, selection_template*);`
+ * - `void static get_weight(double*, selection_template*);`
+ * - `void static set_index(long*, selection_template*);`
+ * - `virtual selection_template* clone();`
+ * - `virtual bool selection(event_template* ev);`
+ * - `virtual bool strategy(event_template* ev);`
+ * - `virtual void merge(selection_template* sel);`
+ * - `virtual void bulk_write(const long* idx, std::string* hx);`
+ * - `virtual void write(std::vector<particle_template*>* particles, std::string _name, particle_enum attrs);`
+ * - `void write(std::vector<g*>* particles, std::string _name, particle_enum attrs){`
+ * - `this -> downcast(particles, &ox);`
+ * - `this -> write(&ox, _name, attrs);`
  *
- * ## Functions
- * - void static **set_name**(std::string*, selection_template*)
- * - void static **get_name**(std::string*, selection_template*)
- * - void static **set_hash**(std::string*, selection_template*)
- * - void static **get_hash**(std::string*, selection_template*)
- * - void static **get_tree**(std::string*, selection_template*)
- * - void static **set_weight**(double*, selection_template*)
- * - void static **get_weight**(double*, selection_template*)
- * - void static **set_index**(long*, selection_template*)
- * - selection_template* **clone**(void)
- * - bool **selection**(event_template* ev)
- * - bool **strategy**(event_template* ev)
- * - void **merge**(selection_template* sel)
- * - void **bulk_write**(const long* idx, std::string* hx)
- * - void **write**(std::vector<particle_template*>* particles, std::string _name, particle_enum attrs)
- * - void **write**(std::vector<g*>* particles, std::string _name, particle_enum attrs)
+ * ## Standalone Functions
+ * - `selection_template();`
+ * - `void static set_name(std::string*, selection_template*);`
+ * - `void static get_name(std::string*, selection_template*);`
+ * - `void static set_hash(std::string*, selection_template*);`
+ * - `void static get_hash(std::string*, selection_template*);`
+ * - `void static get_tree(std::string*, selection_template*);`
+ * - `void static set_weight(double*, selection_template*);`
+ * - `void static get_weight(double*, selection_template*);`
+ * - `void static set_index(long*, selection_template*);`
+ * - `virtual selection_template* clone();`
+ * - `virtual bool selection(event_template* ev);`
+ * - `virtual bool strategy(event_template* ev);`
+ * - `virtual void merge(selection_template* sel);`
+ * - `virtual void bulk_write(const long* idx, std::string* hx);`
+ * - `virtual void write(std::vector<particle_template*>* particles, std::string _name, particle_enum attrs);`
+ * - `std::vector<std::map<std::string, float>> reverse_hash(std::vector<std::string>* hashes);`
+ * - `bool CompileEvent();`
+ * - `selection_template* build(event_template* ev);`
+ * - `void bulk_write_out();`
+ * - `void merger(selection_template* sl2);`
  *
- * ## Dependencies
- * - meta/meta.h
- * - structs/enums.h
- * - structs/event.h
- * - structs/property.h
- * - templates/event_template.h
- * - templates/particle_template.h
- * - tools/merge_cast.h
- * - tools/tools.h
- * - tools/vector_cast.h
- *
- * ## Macros
- * - #define SELECTION_TEMPLATE_H #include <templates/particle_template.h>
+ * ## Additional Notes
+ * This documentation was generated by reading the actual source file.
+ * For complete implementation details, refer to the source code.
+ * Doxygen will provide additional cross-references and call graphs.
  *
  */

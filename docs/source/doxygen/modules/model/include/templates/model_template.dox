@@ -1,78 +1,79 @@
 /**
- * @file modules_model_include_templates_model_template_h
- * @brief Detailed documentation for model_template.h
+ * @file model_template.h
+ * @brief Manual documentation for model_template.h
  *
  * ## File Information
- * - Path: modules/model/include/templates/model_template.h
- * - Type: .h file
+ * - **Full Path**: modules/model/include/templates/model_template.h
+ * - **File Type**: .h file
+ * - **Total Lines**: 188
+ *
+ * ## Include Dependencies
+ * - `#include <notification/notification.h>`
+ * - `#include <templates/graph_template.h>`
+ * - `#include <templates/lossfx.h>`
+ * - `#include <structs/settings.h>`
+ * - `#include <structs/model.h>`
+ * - `#include <c10/cuda/CUDAStream.h>`
+ * - `#include <ATen/cuda/CUDAGraph.h>`
+ *
+ * ## Preprocessor Macros
+ * - `#define MODEL_TEMPLATE_H #include <notification/notification.h>`
  *
  * ## Classes
- * ### class metrics
- * **Members:**
- * - cproperty<int, model_template> device_index
- * - cproperty<std::string, model_template> name
- * - cproperty<std::string, model_template> device
- * - int kfold
- * - int epoch
- * - bool is_mc
- * - bool use_pkl
- * - bool inference_mode
- * - bool enable_anomaly
- * - bool retain_graph
+ * ### class model_template : notification, 
+    public tools
  *
- * ### class metrics
- * **Members:**
- * - typename std::map<std::string, G>::iterator itr
+ * **Public Members:**
+ * - `cproperty<int, model_template> device_index;`
+ * - `cproperty<std::string, model_template> name;`
+ * - `cproperty<std::string, model_template> device;`
+ * - `int kfold;`
+ * - `int epoch;`
+ * - `bool is_mc = false;`
+ * - `bool use_pkl = false;`
+ * - `bool inference_mode = false;`
+ * - `bool enable_anomaly = false;`
+ * - `bool retain_graph   = false;`
+ * - `std::string model_checkpoint_path = "";`
+ * - `std::string weight_name = "event_weight";`
+ * - `std::string tree_name  = "nominal";`
  *
- * ## Structures
- * ### struct graph_t
- * - cproperty<int, model_template> device_index
- * - cproperty<std::string, model_template> name
- * - cproperty<std::string, model_template> device
- * - int kfold
- * - int epoch
- * - bool is_mc
- * - bool use_pkl
- * - bool inference_mode
- * - bool enable_anomaly
- * - bool retain_graph
+ * **Public Methods:**
+ * - `model_template();`
+ * - `virtual ~model_template();`
  *
- * ### struct graph_t
- * - typename std::map<std::string, G>::iterator itr
+ * ## Standalone Functions
+ * - `model_template();`
+ * - `virtual model_template* clone();`
+ * - `virtual void train_sequence(bool mode);`
+ * - `void check_features(graph_t*);`
+ * - `void set_optimizer(std::string name);`
+ * - `void initialize(optimizer_params_t*);`
+ * - `void clone_settings(model_settings_t* setd);`
+ * - `void import_settings(model_settings_t* setd);`
+ * - `void register_module(torch::nn::Sequential* data);`
+ * - `void register_module(torch::nn::Sequential* data, mlp_init weight_init);`
+ * - `void prediction_graph_feature(std::string, torch::Tensor);`
+ * - `void prediction_node_feature(std::string, torch::Tensor);`
+ * - `void prediction_edge_feature(std::string, torch::Tensor);`
+ * - `void prediction_extra(std::string, torch::Tensor);`
+ * - `torch::Tensor* compute_loss(std::string, graph_enum);`
+ * - `void evaluation_mode(bool mode = true);`
+ * - `void save_state();`
+ * - `bool restore_state();`
+ * - `model_template* clone(int);`
+ * - `static void get_name(std::string*, model_template*);`
+ * - `static void set_name(std::string*, model_template*);`
+ * - `static void get_dev_index(int*, model_template*);`
+ * - `static void set_dev_index(int*, model_template*);`
+ * - `static void set_device(std::string*, model_template*);`
+ * - `torch::Tensor* assign_features(std::string inpt, graph_enum type, graph_t* data);`
+ * - `torch::Tensor* assign_features(std::string inpt, graph_enum type, std::vector<graph_t*>* data);`
+ * - `void flush_outputs();`
  *
- * ## Enumerations
- * ### enum mode
- * Values: typename std::map<std::string, G>::iterator itr, mode, data);
- *
- * ### enum type
- *
- * ## Functions
- * - model_template* **clone**(void)
- * - void **forward**(graph_t* data)
- * - void **train_sequence**(bool mode)
- * - void **check_features**(graph_t*)
- * - void **set_optimizer**(std::string name)
- * - void **initialize**(optimizer_params_t*)
- * - void **clone_settings**(model_settings_t* setd)
- * - void **import_settings**(model_settings_t* setd)
- * - void **forward**(graph_t* data, bool train)
- * - void **forward**(std::vector<graph_t*> data, bool train)
- * - void **register_module**(torch::nn::Sequential* data)
- * - void **register_module**(torch::nn::Sequential* data, mlp_init weight_init)
- * - void **prediction_graph_feature**(std::string, torch::Tensor)
- * - void **prediction_node_feature**(std::string, torch::Tensor)
- * - void **prediction_edge_feature**(std::string, torch::Tensor)
- *
- * ## Dependencies
- * - ATen/cuda/CUDAGraph.h
- * - c10/cuda/CUDAStream.h
- * - notification/notification.h
- * - structs/model.h
- * - structs/settings.h
- * - templates/graph_template.h
- * - templates/lossfx.h
- *
- * ## Macros
- * - #define MODEL_TEMPLATE_H #include <notification/notification.h>
+ * ## Additional Notes
+ * This documentation was generated by reading the actual source file.
+ * For complete implementation details, refer to the source code.
+ * Doxygen will provide additional cross-references and call graphs.
  *
  */

@@ -1,87 +1,117 @@
 /**
- * @file metrics_pagerank_include_metrics_pagerank_h
- * @brief Detailed documentation for pagerank.h
+ * @file pagerank.h
+ * @brief Manual documentation for pagerank.h
  *
  * ## File Information
- * - Path: metrics/pagerank/include/metrics/pagerank.h
- * - Type: .h file
+ * - **Full Path**: metrics/pagerank/include/metrics/pagerank.h
+ * - **File Type**: .h file
+ * - **Total Lines**: 139
  *
- * ## Classes
- * ### class pagerank_metric : metric_template
- * **Methods:**
- * - pagerank_metric* clone(...)
- * - void define_metric(...)
- * - void define_variables(...)
- * - void event(...)
- * - void batch(...)
- * - void end(...)
- * - std::vector<particle_template*> build_top(...)
- * **Members:**
- * - std::map<std::string, std::map<std::string, long>> file_maps
- * - std::map<std::string, std::map<std::string, long>> file_stats
- * - float alpha
- * - float norm_lim
- * - size_t max_itr
- * - int kfold
- * - int epoch
- * - std::string mode
- * - int process_mapping
- * - std::vector<int> top_truth_num_nodes
+ * ## Include Dependencies
+ * - `#include <templates/metric_template.h>`
  *
- * ### class collector : tools
- * **Methods:**
- * - void set_index(...)
- * - void add_truth(...)
- * - void add_pagerank(...)
- * - void add_nominal(...)
- * - void add_process(...)
- * - bool add_meta(...)
- * - void add_file_map(...)
- * **Members:**
- * - long idx
- * - std::map<std::string, std::map<int, std::map<int, sample_t>>> data
+ * ## Preprocessor Macros
+ * - `#define PAGERANK_METRIC_H #include <templates/metric_template.h>`
  *
  * ## Structures
  * ### struct kinematic_t
- * - double px
- * - double py
- * - double pz
- * - double mass
- * - double pt
- * - double eta
- * - double phi
- * - double energy
- * - int num_nodes
- * - double score
+ * **Members:**
+ * - `double px = 0;`
+ * - `double py = 0;`
+ * - `double pz = 0;`
+ * - `double mass = 0;`
+ * - `double pt  = 0;`
+ * - `double eta = 0;`
+ * - `double phi = 0;`
+ * - `double energy = 0;`
+ * - `int num_nodes = 0;`
+ * - `double score = 0;`
  *
  * ### struct meta_event_t
- * - int process_mapping
- * - std::vector<kinematic_t> truth
+ * **Members:**
+ * - `int process_mapping = -1;`
  *
  * ### struct sample_t
- * - std::string meta_data
- * - std::map<std::string, std::map<std::string, long>> file_map
+ * **Members:**
+ * - `std::string meta_data = "";`
  *
- * ## Functions
- * - pagerank_metric* **clone**(void)
- * - void **define_metric**(metric_t* mtx)
- * - void **define_variables**(void)
- * - void **event**(void)
- * - void **batch**(void)
- * - void **end**(void)
- * - std::vector<particle_template*> **build_top**(std::map<int, std::map<int, particle_template*>>*)
- * - void **set_index**(long idx_)
- * - void **add_truth**(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
- * - void **add_pagerank**(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
- * - void **add_nominal**(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
- * - void **add_process**(int prc, std::string mode, std::string model, int kfold, int epoch)
- * - bool **add_meta**(std::string data, std::string model, int kfold, int epoch)
- * - void **add_file_map**(std::string fname, long idx_, std::string mode, std::string model, int kfold, int epoch, bool stat)
+ * ## Classes
+ * ### class pagerank_metric : metric_template
  *
- * ## Dependencies
- * - templates/metric_template.h
+ * **Public Members:**
+ * - `);`
+ * - `std::map<std::string, std::map<std::string, long>> file_maps;`
+ * - `std::map<std::string, std::map<std::string, long>> file_stats;`
+ * - `float  alpha    = 0.85;`
+ * - `float  norm_lim = 1e-6;`
+ * - `size_t max_itr  = 1e6;`
+ * - `int kfold = -1;`
+ * - `int epoch = -1;`
  *
- * ## Macros
- * - #define PAGERANK_METRIC_H #include <templates/metric_template.h>
+ * **Public Methods:**
+ * - `pagerank_metric();`
+ * - `~pagerank_metric() override;`
+ * - `pagerank_metric* clone() override;`
+ * - `void define_metric(metric_t* mtx) override;`
+ * - `void define_variables() override;`
+ * - `void event() override;`
+ * - `void batch() override;`
+ * - `void end() override;`
+ * - `std::vector<particle_template*> build_top(std::map<int, std::map<int, particle_template*>>*);`
+ *
+ * **Private Members:**
+ * - `std::string mode = "";`
+ * - `int process_mapping = -1;`
+ * - `std::vector<int>    top_truth_num_nodes;`
+ * - `std::vector<double> top_truth_pt;`
+ * - `std::vector<double> top_truth_eta;`
+ * - `std::vector<double> top_truth_phi;`
+ * - `std::vector<double> top_truth_energy;`
+ * - `std::vector<double> top_truth_px;`
+ * - `std::vector<double> top_truth_py;`
+ * - `std::vector<double> top_truth_pz;`
+ *
+ * ### class collector : tools
+ *
+ * **Public Members:**
+ * - `);`
+ *
+ * **Public Methods:**
+ * - `collector();`
+ * - `~collector();`
+ * - `void set_index(long idx_);`
+ * - `void add_truth(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch);`
+ * - `void add_pagerank(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch);`
+ * - `void add_nominal(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch);`
+ * - `void add_process(int prc, std::string mode, std::string model, int kfold, int epoch);`
+ * - `bool add_meta(std::string data, std::string model, int kfold, int epoch);`
+ * - `void add_file_map(std::string fname, long idx_, std::string mode, std::string model, int kfold, int epoch, bool stat);`
+ *
+ * **Private Members:**
+ * - `long  idx = 0;`
+ * - `std::map<std::string, std::map<int, std::map<int, sample_t>>> data;`
+ *
+ * ## Standalone Functions
+ * - `pagerank_metric();`
+ * - `pagerank_metric* clone() override;`
+ * - `void define_metric(metric_t* mtx) override;`
+ * - `void define_variables() override;`
+ * - `void event() override;`
+ * - `void batch() override;`
+ * - `void end() override;`
+ * - `std::vector<particle_template*> build_top(std::map<int, std::map<int, particle_template*>>*);`
+ * - `collector();`
+ * - `void set_index(long idx_);`
+ * - `void add_truth(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch);`
+ * - `void add_pagerank(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch);`
+ * - `void add_nominal(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch);`
+ * - `void add_process(int prc, std::string mode, std::string model, int kfold, int epoch);`
+ * - `bool add_meta(std::string data, std::string model, int kfold, int epoch);`
+ * - `void add_file_map(std::string fname, long idx_, std::string mode, std::string model, int kfold, int epoch, bool stat);`
+ *
+ * ## Additional Notes
+ * This documentation was generated by reading the actual source file.
+ * For complete implementation details, refer to the source code.
+ * Doxygen will provide additional cross-references and call graphs.
  *
  */
