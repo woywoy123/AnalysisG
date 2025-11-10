@@ -1,0 +1,17 @@
+/**
+ * @file pyc_cutils_include_utils_utils
+ * @brief Documentation for pyc_cutils_include_utils_utils
+ *
+ *
+ * ## Key Functions
+ * - include <vector>
+
+torch::Tensor clip(...)
+ * - torch::Tensor format(...)
+ * - torch::TensorOptions MakeOp(...)
+ * - void changedev(...)
+ *
+ * ## Dependencies
+ * - torch/torch.h
+ * - vector
+ */

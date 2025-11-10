@@ -1,0 +1,19 @@
+/**
+ * @file modules_analysis_analysis
+ * @brief Documentation for modules_analysis_analysis
+ *
+ *
+ * ## Key Functions
+ * - new sampletracer(...)
+ * - new dataloader(...)
+ * - new io(...)
+ * - size_t x(...)
+ * - size_t y(...)
+ *
+ * ## Dependencies
+ * - AnalysisG/analysis.h
+ * - AnalysisG/cfg.h
+ * - ROOT/RDataFrame.hxx
+ * - TSystem.h
+ * - thread
+ */

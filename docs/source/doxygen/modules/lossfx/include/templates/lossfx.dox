@@ -1,0 +1,25 @@
+/**
+ * @file modules_lossfx_include_templates_lossfx
+ * @brief Documentation for modules_lossfx_include_templates_lossfx
+ *
+ *
+ * ## Classes
+ * - lossfx : inherits from tools
+ *
+ * ## Key Functions
+ * - h>
+
+template <typename g, typename go>
+g* generate_ops(...)
+ * - return new g(...)
+ *
+ * ## Dependencies
+ * - map
+ * - notification/notification.h
+ * - string
+ * - structs/enums.h
+ * - structs/optimizer.h
+ * - tools/tools.h
+ * - torch/torch.h
+ * - vector
+ */

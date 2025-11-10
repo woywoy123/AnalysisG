@@ -1,0 +1,12 @@
+/**
+ * @file modules_nusol_conuix_cxx_conuic
+ * @brief Documentation for modules_nusol_conuix_cxx_conuic
+ *
+ *
+ * ## Key Functions
+ * - new atomics_t(...)
+ *
+ * ## Dependencies
+ * - conuix/conuic.h
+ * - templates/particle_template.h
+ */

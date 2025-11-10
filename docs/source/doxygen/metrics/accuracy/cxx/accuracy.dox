@@ -1,0 +1,16 @@
+/**
+ * @file metrics_accuracy_cxx_accuracy
+ * @brief Documentation for metrics_accuracy_cxx_accuracy
+ *
+ *
+ * ## Key Functions
+ * - return new accuracy_metric(...)
+ * - int x(...)
+ * - int c(...)
+ * - int f(...)
+ * - int y(...)
+ * - return float(...)
+ *
+ * ## Dependencies
+ * - metrics/accuracy.h
+ */

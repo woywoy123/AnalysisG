@@ -1,0 +1,9 @@
+/**
+ * @file modules_nusol_tmp_conuix_cxx_conuix
+ * @brief Documentation for modules_nusol_tmp_conuix_cxx_conuix
+ *
+ *
+ * ## Dependencies
+ * - conics/conics.h
+ * - reconstruction/nusol.h
+ */

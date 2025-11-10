@@ -1,0 +1,18 @@
+/**
+ * @file models_grift_include_models_grift
+ * @brief Documentation for models_grift_include_models_grift
+ *
+ *
+ * ## Classes
+ * - grift : inherits from model_template
+ *
+ * ## Key Functions
+ * - public: grift(...)
+ * - model_template* clone(...)
+ * - void forward(...)
+ * - torch::Tensor message(...)
+ * - torch::Tensor node_encode(...)
+ *
+ * ## Dependencies
+ * - templates/model_template.h
+ */

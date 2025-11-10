@@ -1,0 +1,11 @@
+/**
+ * @file modules_lossfx_cxx_switching
+ * @brief Documentation for modules_lossfx_cxx_switching
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ *
+ * ## Dependencies
+ * - templates/lossfx.h
+ */

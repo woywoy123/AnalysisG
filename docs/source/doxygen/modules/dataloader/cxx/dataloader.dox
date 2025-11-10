@@ -1,0 +1,19 @@
+/**
+ * @file modules_dataloader_cxx_dataloader
+ * @brief Documentation for modules_dataloader_cxx_dataloader
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - size_t f(...)
+ * - std::vector<std::thread*> trans(...)
+ * - std::vector<std::string*> titles(...)
+ * - std::vector<size_t> num_events(...)
+ * - std::vector<size_t> prg_events(...)
+ *
+ * ## Dependencies
+ * - chrono
+ * - dataloader.h
+ * - structs/report.h
+ * - templates/model_template.h
+ */

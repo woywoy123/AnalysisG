@@ -1,0 +1,12 @@
+/**
+ * @file templates_particles_cxx_<particle-name>
+ * @brief Documentation for templates_particles_cxx_<particle-name>
+ *
+ *
+ * ## Key Functions
+ * - void build(...)
+ * - int x(...)
+ *
+ * ## Dependencies
+ * - <particle-name
+ */

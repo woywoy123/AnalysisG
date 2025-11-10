@@ -1,0 +1,13 @@
+/**
+ * @file modules_selection_cxx_selection_template
+ * @brief Documentation for modules_selection_cxx_selection_template
+ *
+ *
+ * ## Key Functions
+ * - return new selection_template(...)
+ * - size_t x(...)
+ *
+ * ## Dependencies
+ * - meta/meta.h
+ * - templates/selection_template.h
+ */

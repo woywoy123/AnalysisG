@@ -50,6 +50,8 @@ DOCUMENTATION IS STILL UNDER CONSTRUCTION
 
 **The current documentation is being updated, since a lot of changes have been made from the prior version.**
 
+**Note:** Previous documentation has been moved to the ``deprecated`` folder. New comprehensive API documentation is automatically generated from the source code.
+
 
 
 Getting Started with AnalysisG
@@ -101,6 +103,17 @@ Analysis and Truth Studies Documentation
    :maxdepth: 1
  
    studies/main.rst 
+
+API Documentation (Auto-Generated)
+----------------------------------
+
+Comprehensive API documentation automatically generated from source code using Doxygen.
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 2
+
+   api/index.rst
 
 Documentation and Codebase Status
 ---------------------------------

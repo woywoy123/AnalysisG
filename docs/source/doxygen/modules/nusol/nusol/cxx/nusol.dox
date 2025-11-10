@@ -1,0 +1,14 @@
+/**
+ * @file modules_nusol_nusol_cxx_nusol
+ * @brief Documentation for modules_nusol_nusol_cxx_nusol
+ *
+ *
+ * ## Key Functions
+ * - new ellipse(...)
+ * - new conuix(...)
+ *
+ * ## Dependencies
+ * - conuix/conuix.h
+ * - ellipse/ellipse.h
+ * - reconstruction/nusol.h
+ */

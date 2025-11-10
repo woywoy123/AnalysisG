@@ -1,0 +1,34 @@
+/**
+ * @file modules_metrics_include_metrics_metrics
+ * @brief Documentation for modules_metrics_include_metrics_metrics
+ *
+ *
+ * ## Classes
+ * - metrics : inherits from tools
+ *
+ * ## Key Functions
+ * - void purge(...)
+ * - void destroy(...)
+ * - public: metrics(...)
+ * - void dump_plots(...)
+ * - void dump_loss_plots(...)
+ * - void dump_accuracy_plots(...)
+ * - void dump_mass_plots(...)
+ * - model_report* register_model(...)
+ * - void capture(...)
+ * - private: 
+        void build_th1f_loss(...)
+ *
+ * ## Dependencies
+ * - TCanvas.h
+ * - TGraph.h
+ * - TH1F.h
+ * - TLegend.h
+ * - TMultiGraph.h
+ * - TStyle.h
+ * - notification/notification.h
+ * - pyc/pyc.h
+ * - structs/report.h
+ * - structs/settings.h
+ * - templates/model_template.h
+ */

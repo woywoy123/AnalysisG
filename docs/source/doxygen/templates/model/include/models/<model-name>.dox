@@ -1,0 +1,12 @@
+/**
+ * @file templates_model_include_models_<model-name>
+ * @brief Documentation for templates_model_include_models_<model-name>
+ *
+ *
+ * ## Key Functions
+ * - model_template* clone(...)
+ * - void forward(...)
+ *
+ * ## Dependencies
+ * - templates/model_template.h
+ */

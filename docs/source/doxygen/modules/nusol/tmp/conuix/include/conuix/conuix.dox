@@ -1,0 +1,22 @@
+/**
+ * @file modules_nusol_tmp_conuix_include_conuix_conuix
+ * @brief Documentation for modules_nusol_tmp_conuix_include_conuix_conuix
+ *
+ *
+ * ## Classes
+ * - conics
+ *
+ * ## Key Functions
+ * - public: conics(...)
+ * - int l(...)
+ * - int b(...)
+ * - new nusol(...)
+ * - new multisol(...)
+ * - 0 and P(...)
+ * - new odeRK(...)
+ * - size_t x(...)
+ * - size_t y(...)
+ *
+ * ## Dependencies
+ * - templates/particle_template.h
+ */

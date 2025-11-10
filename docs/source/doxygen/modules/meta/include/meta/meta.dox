@@ -1,0 +1,34 @@
+/**
+ * @file modules_meta_include_meta_meta
+ * @brief Documentation for modules_meta_include_meta_meta
+ *
+ *
+ * ## Classes
+ * - analysis
+ * - meta : inherits from tools
+ *
+ * ## Key Functions
+ * - public: meta(...)
+ * - const folds_t* get_tags(...)
+ * - void scan_data(...)
+ * - void scan_sow(...)
+ * - void parse_json(...)
+ * - std::string hash(...)
+ * - void compiler(...)
+ * - float parse_float(...)
+ * - std::string parse_string(...)
+ * - void static get_isMC(...)
+ *
+ * ## Dependencies
+ * - TBranch.h
+ * - TFile.h
+ * - TH1F.h
+ * - TLeaf.h
+ * - TTree.h
+ * - notification/notification.h
+ * - rapidjson/document.h
+ * - structs/folds.h
+ * - structs/meta.h
+ * - structs/property.h
+ * - tools/tools.h
+ */

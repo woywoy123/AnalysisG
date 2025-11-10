@@ -1,0 +1,27 @@
+/**
+ * @file modules_structs_include_structs_optimizer
+ * @brief Documentation for modules_structs_include_structs_optimizer
+ *
+ *
+ * ## Classes
+ * - optimizer_params_t
+ *
+ * ## Key Functions
+ * - public: optimizer_params_t(...)
+ * - private:
+        void static set_eps(...)
+ * - void static set_lr(...)
+ * - void static set_lr_decay(...)
+ * - void static set_weight_decay(...)
+ * - void static set_initial_accumulator_value(...)
+ * - void static set_beta_hack(...)
+ * - void static set_betas(...)
+ * - void static set_amsgrad(...)
+ * - void static set_max_iter(...)
+ *
+ * ## Dependencies
+ * - string
+ * - structs/enums.h
+ * - structs/property.h
+ * - vector
+ */

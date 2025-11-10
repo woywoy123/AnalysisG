@@ -1,0 +1,14 @@
+/**
+ * @file events_gnn_cxx_event
+ * @brief Documentation for events_gnn_cxx_event
+ *
+ *
+ * ## Key Functions
+ * - new gnn_event(...)
+ * - size_t y(...)
+ * - size_t x(...)
+ * - size_t src(...)
+ *
+ * ## Dependencies
+ * - gnn-event.h
+ */

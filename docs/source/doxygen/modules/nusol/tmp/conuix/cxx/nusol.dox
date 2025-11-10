@@ -1,0 +1,12 @@
+/**
+ * @file modules_nusol_tmp_conuix_cxx_nusol
+ * @brief Documentation for modules_nusol_tmp_conuix_cxx_nusol
+ *
+ *
+ * ## Key Functions
+ * - new nuclx_t(...)
+ *
+ * ## Dependencies
+ * - complex
+ * - conics/nusol.h
+ */

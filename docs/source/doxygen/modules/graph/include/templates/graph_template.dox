@@ -1,0 +1,49 @@
+/**
+ * @file modules_graph_include_templates_graph_template
+ * @brief Documentation for modules_graph_include_templates_graph_template
+ *
+ *
+ * ## Classes
+ * - graph_template
+ * - dataloader
+ * - container
+ * - analysis
+ * - meta
+ *
+ * ## Key Functions
+ * - public: 
+        template <typename g>
+        torch::Tensor* get_truth_graph(...)
+ * - template <typename g>
+        torch::Tensor* get_truth_node(...)
+ * - template <typename g>
+        torch::Tensor* get_truth_edge(...)
+ * - template <typename g>
+        torch::Tensor* get_data_graph(...)
+ * - template <typename g>
+        torch::Tensor* get_data_node(...)
+ * - template <typename g>
+        torch::Tensor* get_data_edge(...)
+ * - template <typename g>
+        torch::Tensor* get_edge_index(...)
+ * - template <typename g>
+        torch::Tensor* get_event_weight(...)
+ * - template <typename g>
+        torch::Tensor* get_batch_index(...)
+ * - template <typename g>
+        torch::Tensor* get_batched_events(...)
+ *
+ * ## Dependencies
+ * - c10/core/DeviceType.h
+ * - mutex
+ * - pyc/pyc.h
+ * - structs/enums.h
+ * - structs/event.h
+ * - structs/folds.h
+ * - structs/property.h
+ * - templates/event_template.h
+ * - templates/particle_template.h
+ * - tools/tensor_cast.h
+ * - tools/tools.h
+ * - torch/torch.h
+ */

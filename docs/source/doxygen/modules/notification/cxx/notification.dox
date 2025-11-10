@@ -1,0 +1,15 @@
+/**
+ * @file modules_notification_cxx_notification
+ * @brief Documentation for modules_notification_cxx_notification
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - size_t y(...)
+ * - return int(...)
+ *
+ * ## Dependencies
+ * - iomanip
+ * - notification.h
+ * - stddef.h
+ */

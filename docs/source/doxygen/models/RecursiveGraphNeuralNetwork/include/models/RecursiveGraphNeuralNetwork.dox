@@ -1,0 +1,17 @@
+/**
+ * @file models_RecursiveGraphNeuralNetwork_include_models_RecursiveGraphNeuralNetwork
+ * @brief Documentation for models_RecursiveGraphNeuralNetwork_include_models_RecursiveGraphNeuralNetwork
+ *
+ *
+ * ## Classes
+ * - recursivegraphneuralnetwork : inherits from model_template
+ *
+ * ## Key Functions
+ * - public: recursivegraphneuralnetwork(...)
+ * - model_template* clone(...)
+ * - void forward(...)
+ * - torch::Tensor message(...)
+ *
+ * ## Dependencies
+ * - templates/model_template.h
+ */

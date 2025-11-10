@@ -1,0 +1,26 @@
+/**
+ * @file events_gnn_include_inference_gnn-particles
+ * @brief Documentation for events_gnn_include_inference_gnn-particles
+ *
+ *
+ * ## Classes
+ * - particle_gnn : inherits from particle_template
+ * - top : inherits from particle_template
+ * - zprime : inherits from particle_template
+ *
+ * ## Key Functions
+ * - h>
+
+template <typename g>
+void reduce(...)
+ * - template <typename g>
+void read(...)
+ * - public: particle_gnn(...)
+ * - particle_template* clone(...)
+ * - void build(...)
+ * - public: top(...)
+ * - public: zprime(...)
+ *
+ * ## Dependencies
+ * - templates/particle_template.h
+ */

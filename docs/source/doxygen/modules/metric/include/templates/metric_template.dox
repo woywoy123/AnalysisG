@@ -1,0 +1,37 @@
+/**
+ * @file modules_metric_include_templates_metric_template
+ * @brief Documentation for modules_metric_include_templates_metric_template
+ *
+ *
+ * ## Classes
+ * - analysis
+ * - model_template
+ * - metric_template
+ *
+ * ## Key Functions
+ * - template <typename g>
+        g get(...)
+ * - std::string mode(...)
+ * - std::string* get_filename(...)
+ * - void build(...)
+ * - public: metric_template(...)
+ * - metric_template* clone(...)
+ * - void define_variables(...)
+ * - void define_metric(...)
+ * - void event(...)
+ * - void batch(...)
+ *
+ * ## Dependencies
+ * - meta/meta.h
+ * - notification/notification.h
+ * - plotting/plotting.h
+ * - structs/element.h
+ * - structs/enums.h
+ * - structs/event.h
+ * - structs/model.h
+ * - structs/property.h
+ * - templates/particle_template.h
+ * - tools/merge_cast.h
+ * - tools/tools.h
+ * - tools/vector_cast.h
+ */

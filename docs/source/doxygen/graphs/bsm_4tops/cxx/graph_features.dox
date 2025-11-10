@@ -1,0 +1,19 @@
+/**
+ * @file graphs_bsm_4tops_cxx_graph_features
+ * @brief Documentation for graphs_bsm_4tops_cxx_graph_features
+ *
+ *
+ * ## Key Functions
+ * - void signal_event(...)
+ * - size_t x(...)
+ * - void num_tops(...)
+ * - void num_neutrino(...)
+ * - void num_lepton(...)
+ * - void missing_et(...)
+ * - void missing_phi(...)
+ * - void num_jets(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/event.h
+ * - bsm_4tops/graph_features.h
+ */

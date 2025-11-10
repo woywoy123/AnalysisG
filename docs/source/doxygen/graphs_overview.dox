@@ -1,0 +1,17 @@
+/**
+ * @defgroup graphs Graphs Module
+ * @brief Graph representations for neural network training
+ *
+ * ## Overview
+ * This module contains:
+ *
+ * ### Submodules
+ * - bsm_4tops
+ * - exp_mc20
+ * - ssml_mc20
+ *
+ * ### Statistics
+ * - Header files: 12
+ * - Implementation files: 6
+ * - Python files: 4
+ */

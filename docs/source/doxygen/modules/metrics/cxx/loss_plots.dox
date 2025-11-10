@@ -1,0 +1,16 @@
+/**
+ * @file modules_metrics_cxx_loss_plots
+ * @brief Documentation for modules_metrics_cxx_loss_plots
+ *
+ *
+ * ## Key Functions
+ * - new TCanvas(...)
+ * - new TMultiGraph(...)
+ * - size_t x(...)
+ * - new TGraph(...)
+ * - MVA Loss(...)
+ * - new TH1F(...)
+ *
+ * ## Dependencies
+ * - metrics/metrics.h
+ */

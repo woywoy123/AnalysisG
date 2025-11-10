@@ -1,0 +1,16 @@
+/**
+ * @file modules_optimizer_cxx_optimizer
+ * @brief Documentation for modules_optimizer_cxx_optimizer
+ *
+ *
+ * ## Key Functions
+ * - new metrics(...)
+ * - size_t x(...)
+ * - torch::AutoGradMode grd(...)
+ * - int ep(...)
+ *
+ * ## Dependencies
+ * - c10/cuda/CUDAGuard.h
+ * - c10/cuda/CUDAStream.h
+ * - generators/optimizer.h
+ */

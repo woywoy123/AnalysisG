@@ -1,0 +1,14 @@
+/**
+ * @file modules_meta_cxx_meta
+ * @brief Documentation for modules_meta_cxx_meta
+ *
+ *
+ * ## Key Functions
+ * - rapidjson::SizeType i(...)
+ * - TTreeReaderValue<TString> dr(...)
+ * - size_t x(...)
+ *
+ * ## Dependencies
+ * - TTreeReader.h
+ * - meta.h
+ */

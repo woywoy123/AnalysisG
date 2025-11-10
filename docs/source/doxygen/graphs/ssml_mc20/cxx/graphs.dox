@@ -1,0 +1,19 @@
+/**
+ * @file graphs_ssml_mc20_cxx_graphs
+ * @brief Documentation for graphs_ssml_mc20_cxx_graphs
+ *
+ *
+ * ## Key Functions
+ * - new graph_jets(...)
+ * - size_t x(...)
+ * - new graph_jets_nonu(...)
+ * - Detector leptons(...)
+ * - new graph_jets_detector_lep(...)
+ * - new graph_detector(...)
+ *
+ * ## Dependencies
+ * - edge_features.h
+ * - graph_features.h
+ * - graphs.h
+ * - node_features.h
+ */

@@ -1,0 +1,17 @@
+/**
+ * @file templates_selections_<selection-name>
+ * @brief Documentation for templates_selections_<selection-name>
+ *
+ *
+ * ## Key Functions
+ * - example variable merge_data(...)
+ * - selection_template* clone(...)
+ * - bool selection(...)
+ * - bool strategy(...)
+ * - void merge(...)
+ *
+ * ## Dependencies
+ * - <event-name
+ * - <selection-name
+ * - templates/selection_template.h
+ */

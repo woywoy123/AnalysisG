@@ -1,0 +1,9 @@
+/**
+ * @file metrics_accuracy_cxx_collector
+ * @brief Documentation for metrics_accuracy_cxx_collector
+ *
+ *
+ * ## Dependencies
+ * - metrics/accuracy.h
+ * - string
+ */

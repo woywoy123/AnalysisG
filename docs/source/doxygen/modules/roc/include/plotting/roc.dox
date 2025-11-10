@@ -1,0 +1,19 @@
+/**
+ * @file modules_roc_include_plotting_roc
+ * @brief Documentation for modules_roc_include_plotting_roc
+ *
+ *
+ * ## Classes
+ * - roc : inherits from plotting
+ *
+ * ## Key Functions
+ * - public: roc(...)
+ * - void build_ROC(...)
+ * - std::vector<roc_t*> get_ROC(...)
+ * - template <typename g>
+        std::vector<std::vector<g>>* generate(...)
+ * - typename std::vector<g> v(...)
+ *
+ * ## Dependencies
+ * - plotting/plotting.h
+ */

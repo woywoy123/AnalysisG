@@ -1,0 +1,24 @@
+/**
+ * @file modules_optimizer_include_generators_optimizer
+ * @brief Documentation for modules_optimizer_include_generators_optimizer
+ *
+ *
+ * ## Classes
+ * - analysis
+ * - optimizer : inherits from tools
+ *
+ * ## Key Functions
+ * - public: optimizer(...)
+ * - void import_dataloader(...)
+ * - void import_model_sessions(...)
+ * - void training_loop(...)
+ * - void validation_loop(...)
+ * - void evaluation_loop(...)
+ * - void launch_model(...)
+ *
+ * ## Dependencies
+ * - generators/dataloader.h
+ * - metrics/metrics.h
+ * - structs/settings.h
+ * - templates/model_template.h
+ */

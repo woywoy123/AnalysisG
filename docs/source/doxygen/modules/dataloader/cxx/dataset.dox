@@ -1,0 +1,17 @@
+/**
+ * @file modules_dataloader_cxx_dataset
+ * @brief Documentation for modules_dataloader_cxx_dataset
+ *
+ *
+ * ## Key Functions
+ * - int k(...)
+ * - int x(...)
+ * - Splitting training dataset(...)
+ * - int y(...)
+ * - size_t t(...)
+ *
+ * ## Dependencies
+ * - generators/dataloader.h
+ * - io/io.h
+ * - structs/folds.h
+ */

@@ -1,0 +1,17 @@
+/**
+ * @file modules_nusol_tmp_conuix_cxx_nuclx
+ * @brief Documentation for modules_nusol_tmp_conuix_cxx_nuclx
+ *
+ *
+ * ## Key Functions
+ * - double cos_theta(...)
+ * - o * sqrt(...)
+ * - matrix_t Rz(...)
+ * - matrix_t Ry(...)
+ * - matrix_t Rx(...)
+ * - H1 * cosh(...)
+ *
+ * ## Dependencies
+ * - conics/nusol.h
+ * - math.h
+ */

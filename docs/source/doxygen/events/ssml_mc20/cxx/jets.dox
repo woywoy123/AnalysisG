@@ -1,0 +1,13 @@
+/**
+ * @file events_ssml_mc20_cxx_jets
+ * @brief Documentation for events_ssml_mc20_cxx_jets
+ *
+ *
+ * ## Key Functions
+ * - new jet(...)
+ * - size_t x(...)
+ * - new truthjet(...)
+ *
+ * ## Dependencies
+ * - particles.h
+ */

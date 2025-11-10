@@ -1,0 +1,17 @@
+/**
+ * @file modules_nusol_ellipse_include_ellipse_solvers
+ * @brief Documentation for modules_nusol_ellipse_include_ellipse_solvers
+ *
+ *
+ * ## Classes
+ * - mtx
+ *
+ * ## Key Functions
+ * - mtx* find_roots(...)
+ * - mtx* solve_cubic(...)
+ * - mtx* smatx(...)
+ * - mtx* Rz(...)
+ * - mtx* Ry(...)
+ * - mtx* Rx(...)
+ * - mtx* unit(...)
+ */

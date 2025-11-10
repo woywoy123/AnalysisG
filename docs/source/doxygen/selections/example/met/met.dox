@@ -1,0 +1,20 @@
+/**
+ * @file selections_example_met_met
+ * @brief Documentation for selections_example_met_met
+ *
+ *
+ * ## Classes
+ * - met : inherits from selection_template
+ *
+ * ## Key Functions
+ * - new met(...)
+ * - selection_template* clone(...)
+ * - bool selection(...)
+ * - bool strategy(...)
+ * - void merge(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/event.h
+ * - met.h
+ * - templates/selection_template.h
+ */

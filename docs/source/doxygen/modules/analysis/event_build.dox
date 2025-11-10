@@ -1,0 +1,16 @@
+/**
+ * @file modules_analysis_event_build
+ * @brief Documentation for modules_analysis_event_build
+ *
+ *
+ * ## Key Functions
+ * - new io(...)
+ * - size_t x(...)
+ * - std::vector<size_t> th_prg(...)
+ * - std::vector<std::thread*> thrs(...)
+ * - std::vector<std::string*> title(...)
+ *
+ * ## Dependencies
+ * - AnalysisG/analysis.h
+ * - ROOT/RDataFrame.hxx
+ */

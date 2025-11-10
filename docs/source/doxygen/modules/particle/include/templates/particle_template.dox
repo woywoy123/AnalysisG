@@ -1,0 +1,29 @@
+/**
+ * @file modules_particle_include_templates_particle_template
+ * @brief Documentation for modules_particle_include_templates_particle_template
+ *
+ *
+ * ## Classes
+ * - event_template
+ * - selection_template
+ * - particle_template : inherits from tools
+ *
+ * ## Key Functions
+ * - public: particle_template(...)
+ * - void static set_e(...)
+ * - void static get_e(...)
+ * - void static set_pt(...)
+ * - void static get_pt(...)
+ * - void static set_eta(...)
+ *
+ * ## Dependencies
+ * - cmath
+ * - cstdlib
+ * - iostream
+ * - sstream
+ * - string
+ * - structs/element.h
+ * - structs/particles.h
+ * - structs/property.h
+ * - tools/tools.h
+ */

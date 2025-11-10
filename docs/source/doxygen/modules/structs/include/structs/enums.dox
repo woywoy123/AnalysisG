@@ -1,0 +1,15 @@
+/**
+ * @file modules_structs_include_structs_enums
+ * @brief Documentation for modules_structs_include_structs_enums
+ *
+ *
+ * ## Classes
+ * - data_enum
+ * - opt_enum
+ * - mlp_init
+ * - loss_enum
+ * - scheduler_enum
+ * - graph_enum
+ * - mode_enum
+ * - particle_enum
+ */

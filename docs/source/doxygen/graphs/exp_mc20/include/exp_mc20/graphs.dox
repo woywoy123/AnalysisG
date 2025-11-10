@@ -1,0 +1,23 @@
+/**
+ * @file graphs_exp_mc20_include_exp_mc20_graphs
+ * @brief Documentation for graphs_exp_mc20_include_exp_mc20_graphs
+ *
+ *
+ * ## Classes
+ * - graph_jets : inherits from graph_template
+ * - graph_jets_nonu : inherits from graph_template
+ * - graph_jets_detector_lep : inherits from graph_template
+ * - graph_detector : inherits from graph_template
+ *
+ * ## Key Functions
+ * - public: graph_jets(...)
+ * - graph_template* clone(...)
+ * - void CompileEvent(...)
+ * - public: graph_jets_nonu(...)
+ * - public: graph_jets_detector_lep(...)
+ * - public: graph_detector(...)
+ *
+ * ## Dependencies
+ * - exp_mc20/event.h
+ * - templates/graph_template.h
+ */

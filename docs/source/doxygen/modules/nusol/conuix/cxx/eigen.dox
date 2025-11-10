@@ -1,0 +1,17 @@
+/**
+ * @file modules_nusol_conuix_cxx_eigen
+ * @brief Documentation for modules_nusol_conuix_cxx_eigen
+ *
+ *
+ * ## Key Functions
+ * - beta_mu sin(...)
+ * - Omega cos(...)
+ *
+ * ## Dependencies
+ * - cmath
+ * - conuix/conuic.h
+ * - conuix/solvers.h
+ * - iomanip
+ * - iostream
+ * - string
+ */

@@ -1,0 +1,20 @@
+/**
+ * @file modules_nusol_nusol_include_reconstruction_nusol
+ * @brief Documentation for modules_nusol_nusol_include_reconstruction_nusol
+ *
+ *
+ * ## Classes
+ * - nusol
+ * - ellipse
+ * - conuix
+ * - nusol_enum
+ *
+ * ## Key Functions
+ * - public: nusol(...)
+ * - void solve(...)
+ *
+ * ## Dependencies
+ * - notification/notification.h
+ * - templates/particle_template.h
+ * - tools/tools.h
+ */

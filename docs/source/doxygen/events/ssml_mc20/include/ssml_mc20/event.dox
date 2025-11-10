@@ -1,0 +1,24 @@
+/**
+ * @file events_ssml_mc20_include_ssml_mc20_event
+ * @brief Documentation for events_ssml_mc20_include_ssml_mc20_event
+ *
+ *
+ * ## Classes
+ * - ssml_mc20 : inherits from event_template
+ *
+ * ## Key Functions
+ * - public: ssml_mc20(...)
+ * - event_template* clone(...)
+ * - void build(...)
+ * - void CompileEvent(...)
+ * - template <typename G>
+        std::map<int, G*> sort_by_index(...)
+ * - template <typename m, typename G, typename g>
+        void vectorize(...)
+ * - template <typename lx>
+        bool match_object(...)
+ *
+ * ## Dependencies
+ * - ssml_mc20/particles.h
+ * - templates/event_template.h
+ */

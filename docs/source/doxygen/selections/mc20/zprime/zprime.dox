@@ -1,0 +1,22 @@
+/**
+ * @file selections_mc20_zprime_zprime
+ * @brief Documentation for selections_mc20_zprime_zprime
+ *
+ *
+ * ## Classes
+ * - zprime : inherits from selection_template
+ *
+ * ## Key Functions
+ * - new zprime(...)
+ * - size_t x(...)
+ * - size_t t(...)
+ * - selection_template* clone(...)
+ * - bool selection(...)
+ * - bool strategy(...)
+ * - void merge(...)
+ *
+ * ## Dependencies
+ * - ssml_mc20/event.h
+ * - templates/selection_template.h
+ * - zprime.h
+ */

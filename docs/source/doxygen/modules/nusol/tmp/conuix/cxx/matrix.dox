@@ -1,0 +1,19 @@
+/**
+ * @file modules_nusol_tmp_conuix_cxx_matrix
+ * @brief Documentation for modules_nusol_tmp_conuix_cxx_matrix
+ *
+ *
+ * ## Key Functions
+ * - void flush(...)
+ * - int i(...)
+ * - double** alloc(...)
+ * - void copy(...)
+ * - int j(...)
+ * - void ops_add(...)
+ *
+ * ## Dependencies
+ * - conics/matrix.h
+ * - iomanip
+ * - iostream
+ * - math.h
+ */

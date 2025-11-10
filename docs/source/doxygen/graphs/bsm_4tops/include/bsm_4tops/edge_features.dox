@@ -1,0 +1,14 @@
+/**
+ * @file graphs_bsm_4tops_include_bsm_4tops_edge_features
+ * @brief Documentation for graphs_bsm_4tops_include_bsm_4tops_edge_features
+ *
+ *
+ * ## Key Functions
+ * - void res_edge(...)
+ * - void top_edge(...)
+ * - void det_top_edge(...)
+ * - void det_res_edge(...)
+ *
+ * ## Dependencies
+ * - templates/event_template.h
+ */

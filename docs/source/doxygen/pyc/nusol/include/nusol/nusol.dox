@@ -1,0 +1,18 @@
+/**
+ * @file pyc_nusol_include_nusol_nusol
+ * @brief Documentation for pyc_nusol_include_nusol_nusol
+ *
+ *
+ * ## Key Functions
+ * - torch::Tensor BaseMatrix(...)
+ * - torch::Tensor Hperp(...)
+ * - std::tuple<torch::Tensor, torch::Tensor> Intersection(...)
+ * - std::map<std::string, torch::Tensor> Nu(...)
+ * - std::map<std::string, torch::Tensor> NuNu(...)
+ *
+ * ## Dependencies
+ * - map
+ * - string
+ * - torch/torch.h
+ * - tuple
+ */

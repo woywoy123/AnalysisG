@@ -1,0 +1,16 @@
+/**
+ * @defgroup metrics Metrics Module
+ * @brief Metrics and evaluation functions for model performance
+ *
+ * ## Overview
+ * This module contains:
+ *
+ * ### Submodules
+ * - accuracy
+ * - pagerank
+ *
+ * ### Statistics
+ * - Header files: 2
+ * - Implementation files: 4
+ * - Python files: 3
+ */

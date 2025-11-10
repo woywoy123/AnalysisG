@@ -1,0 +1,22 @@
+/**
+ * @file selections_mc20_matching_matching
+ * @brief Documentation for selections_mc20_matching_matching
+ *
+ *
+ * ## Classes
+ * - matching : inherits from selection_template
+ *
+ * ## Key Functions
+ * - new matching(...)
+ * - size_t y(...)
+ * - size_t x(...)
+ * - selection_template* clone(...)
+ * - void reference(...)
+ * - void experimental(...)
+ * - void current(...)
+ * - void dump(...)
+ *
+ * ## Dependencies
+ * - matching.h
+ * - templates/selection_template.h
+ */

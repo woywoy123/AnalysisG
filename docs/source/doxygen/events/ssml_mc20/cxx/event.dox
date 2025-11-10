@@ -1,0 +1,12 @@
+/**
+ * @file events_ssml_mc20_cxx_event
+ * @brief Documentation for events_ssml_mc20_cxx_event
+ *
+ *
+ * ## Key Functions
+ * - new ssml_mc20(...)
+ * - size_t x(...)
+ *
+ * ## Dependencies
+ * - event.h
+ */

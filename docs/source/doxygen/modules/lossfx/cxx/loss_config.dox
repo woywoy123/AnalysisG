@@ -1,0 +1,11 @@
+/**
+ * @file modules_lossfx_cxx_loss_config
+ * @brief Documentation for modules_lossfx_cxx_loss_config
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ *
+ * ## Dependencies
+ * - templates/lossfx.h
+ */

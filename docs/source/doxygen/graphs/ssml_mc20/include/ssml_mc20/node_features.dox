@@ -1,0 +1,16 @@
+/**
+ * @file graphs_ssml_mc20_include_ssml_mc20_node_features
+ * @brief Documentation for graphs_ssml_mc20_include_ssml_mc20_node_features
+ *
+ *
+ * ## Key Functions
+ * - void static res_node(...)
+ * - void static top_node(...)
+ * - void static pt(...)
+ * - void static eta(...)
+ * - void static phi(...)
+ * - void static energy(...)
+ * - void static is_lepton(...)
+ * - void static is_bquark(...)
+ * - void static is_neutrino(...)
+ */

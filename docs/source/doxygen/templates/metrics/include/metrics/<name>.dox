@@ -1,0 +1,16 @@
+/**
+ * @file templates_metrics_include_metrics_<name>
+ * @brief Documentation for templates_metrics_include_metrics_<name>
+ *
+ *
+ * ## Key Functions
+ * - name>_metric* clone(...)
+ * - void define_metric(...)
+ * - void define_variables(...)
+ * - void event(...)
+ * - void batch(...)
+ * - void end(...)
+ *
+ * ## Dependencies
+ * - templates/metric_template.h
+ */

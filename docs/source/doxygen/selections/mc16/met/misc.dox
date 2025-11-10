@@ -1,0 +1,17 @@
+/**
+ * @file selections_mc16_met_misc
+ * @brief Documentation for selections_mc16_met_misc
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - size_t i(...)
+ * - size_t y(...)
+ * - size_t c(...)
+ * - size_t j(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/event.h
+ * - met.h
+ * - pyc/pyc.h
+ */

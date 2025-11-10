@@ -1,0 +1,32 @@
+/**
+ * @file modules_selection_include_templates_selection_template
+ * @brief Documentation for modules_selection_include_templates_selection_template
+ *
+ *
+ * ## Classes
+ * - container
+ * - selection_template : inherits from tools
+ *
+ * ## Key Functions
+ * - public: selection_template(...)
+ * - void static set_name(...)
+ * - void static get_name(...)
+ * - void static set_hash(...)
+ * - void static get_hash(...)
+ * - void static get_tree(...)
+ * - void static set_weight(...)
+ * - void static get_weight(...)
+ * - void static set_index(...)
+ * - selection_template* clone(...)
+ *
+ * ## Dependencies
+ * - meta/meta.h
+ * - structs/enums.h
+ * - structs/event.h
+ * - structs/property.h
+ * - templates/event_template.h
+ * - templates/particle_template.h
+ * - tools/merge_cast.h
+ * - tools/tools.h
+ * - tools/vector_cast.h
+ */

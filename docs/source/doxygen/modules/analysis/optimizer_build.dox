@@ -1,0 +1,15 @@
+/**
+ * @file modules_analysis_optimizer_build
+ * @brief Documentation for modules_analysis_optimizer_build
+ *
+ *
+ * ## Key Functions
+ * - int k(...)
+ * - size_t x(...)
+ * - new optimizer(...)
+ * - progress*100, float(...)
+ *
+ * ## Dependencies
+ * - AnalysisG/analysis.h
+ * - ROOT/RDataFrame.hxx
+ */

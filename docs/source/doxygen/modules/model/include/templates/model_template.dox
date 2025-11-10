@@ -1,0 +1,33 @@
+/**
+ * @file modules_model_include_templates_model_template
+ * @brief Documentation for modules_model_include_templates_model_template
+ *
+ *
+ * ## Classes
+ * - metrics
+ * - analysis
+ * - model_template
+ * - metric_template
+ * - optimizer
+ * - dataloader
+ *
+ * ## Key Functions
+ * - public: model_template(...)
+ * - model_template* clone(...)
+ * - void forward(...)
+ * - void train_sequence(...)
+ * - void check_features(...)
+ * - void set_optimizer(...)
+ * - void initialize(...)
+ * - void clone_settings(...)
+ * - void import_settings(...)
+ *
+ * ## Dependencies
+ * - ATen/cuda/CUDAGraph.h
+ * - c10/cuda/CUDAStream.h
+ * - notification/notification.h
+ * - structs/model.h
+ * - structs/settings.h
+ * - templates/graph_template.h
+ * - templates/lossfx.h
+ */

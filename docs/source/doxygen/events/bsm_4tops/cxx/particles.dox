@@ -1,0 +1,16 @@
+/**
+ * @file events_bsm_4tops_cxx_particles
+ * @brief Documentation for events_bsm_4tops_cxx_particles
+ *
+ *
+ * ## Key Functions
+ * - new top(...)
+ * - int x(...)
+ * - new top_children(...)
+ * - int y(...)
+ * - return new truthjet(...)
+ * - return new truthjetparton(...)
+ *
+ * ## Dependencies
+ * - particles.h
+ */

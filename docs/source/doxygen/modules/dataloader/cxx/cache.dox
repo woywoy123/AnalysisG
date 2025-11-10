@@ -1,0 +1,20 @@
+/**
+ * @file modules_dataloader_cxx_cache
+ * @brief Documentation for modules_dataloader_cxx_cache
+ *
+ *
+ * ## Key Functions
+ * - size_t t(...)
+ * - new io(...)
+ * - size_t l(...)
+ * - std::vector<std::vector<std::tuple<graph_hdf5_w, graph_hdf5>>*> serials(...)
+ * - do prealloc 
+    std::vector<std::map<std::string, std::vector<int>*>> fnames(...)
+ * - std::vector<size_t> handles(...)
+ * - std::vector<std::thread*> th_(...)
+ *
+ * ## Dependencies
+ * - generators/dataloader.h
+ * - io/io.h
+ * - structs/folds.h
+ */

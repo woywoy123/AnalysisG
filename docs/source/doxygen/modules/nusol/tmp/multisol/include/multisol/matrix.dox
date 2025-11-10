@@ -1,0 +1,18 @@
+/**
+ * @file modules_nusol_tmp_multisol_include_multisol_matrix
+ * @brief Documentation for modules_nusol_tmp_multisol_include_multisol_matrix
+ *
+ *
+ * ## Key Functions
+ * - define MULTISOL_MATRIX_H
+
+template <typename T>
+void safe(...)
+ * - vec3 cross(...)
+ * - double dot(...)
+ * - double mag2(...)
+ * - double mag(...)
+ * - void print(...)
+ * - fetch and assignment methods
+    double& at(...)
+ */

@@ -1,0 +1,16 @@
+/**
+ * @file modules_nusol_conuix_cxx_htilde
+ * @brief Documentation for modules_nusol_conuix_cxx_htilde
+ *
+ *
+ * ## Key Functions
+ * - matrix_t Rz(...)
+ * - matrix_t Ry(...)
+ * - matrix_t Rx(...)
+ *
+ * ## Dependencies
+ * - cmath
+ * - conuix/htilde.h
+ * - conuix/struct.h
+ * - templates/particle_template.h
+ */

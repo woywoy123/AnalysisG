@@ -1,0 +1,21 @@
+/**
+ * @file modules_typecasting_include_tools_tensor_cast
+ * @brief Documentation for modules_typecasting_include_tools_tensor_cast
+ *
+ *
+ * ## Key Functions
+ * - template <typename g>
+void scout_dim(...)
+ * - template <typename g>
+void nulls(...)
+ * - template <typename g>
+bool standard(...)
+ * - template <typename G, typename g>
+void as_primitive(...)
+ * - size_t x(...)
+ * - size_t t(...)
+ *
+ * ## Dependencies
+ * - torch/torch.h
+ * - vector
+ */

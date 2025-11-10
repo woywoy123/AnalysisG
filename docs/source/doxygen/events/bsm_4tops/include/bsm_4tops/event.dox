@@ -1,0 +1,22 @@
+/**
+ * @file events_bsm_4tops_include_bsm_4tops_event
+ * @brief Documentation for events_bsm_4tops_include_bsm_4tops_event
+ *
+ *
+ * ## Classes
+ * - bsm_4tops : inherits from event_template
+ *
+ * ## Key Functions
+ * - public: bsm_4tops(...)
+ * - event_template* clone(...)
+ * - void build(...)
+ * - void CompileEvent(...)
+ * - template <typename G>
+        std::map<int, G*> sort_by_index(...)
+ * - template <typename m, typename G>
+        void vectorize(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/particles.h
+ * - templates/event_template.h
+ */

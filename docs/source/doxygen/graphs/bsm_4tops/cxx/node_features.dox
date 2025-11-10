@@ -1,0 +1,23 @@
+/**
+ * @file graphs_bsm_4tops_cxx_node_features
+ * @brief Documentation for graphs_bsm_4tops_cxx_node_features
+ *
+ *
+ * ## Key Functions
+ * - h>
+
+void res_node(...)
+ * - void top_node(...)
+ * - void pt(...)
+ * - void eta(...)
+ * - void phi(...)
+ * - void energy(...)
+ * - void charge(...)
+ * - void is_lepton(...)
+ * - void is_bquark(...)
+ * - void is_neutrino(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/event.h
+ * - bsm_4tops/node_features.h
+ */

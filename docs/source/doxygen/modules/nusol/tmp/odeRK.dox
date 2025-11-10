@@ -1,0 +1,22 @@
+/**
+ * @file modules_nusol_tmp_odeRK
+ * @brief Documentation for modules_nusol_tmp_odeRK
+ *
+ *
+ * ## Classes
+ * - odeRK : inherits from tools
+ *
+ * ## Key Functions
+ * - size_t i(...)
+ * - int s(...)
+ * - int x(...)
+ * - matrix A(...)
+ * - matrix b(...)
+ * - std::vector<double> weights(...)
+ *
+ * ## Dependencies
+ * - reconstruction/matrix.h
+ * - reconstruction/multisol.h
+ * - reconstruction/odeRK.h
+ * - tools/tools.h
+ */

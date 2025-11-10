@@ -1,0 +1,26 @@
+/**
+ * @file modules_nusol_conuix_include_conuix_conuic
+ * @brief Documentation for modules_nusol_conuix_include_conuix_conuic
+ *
+ *
+ * ## Classes
+ * - particle_template
+ * - conuic
+ *
+ * ## Key Functions
+ * - public: conuic(...)
+ * - void solve(...)
+ * - void static set_tau(...)
+ * - void static set_scl(...)
+ * - void static set_lmb(...)
+ * - void static get_tau(...)
+ * - void static get_scl(...)
+ * - void static get_lmb(...)
+ * - long double P(...)
+ *
+ * ## Dependencies
+ * - complex
+ * - conuix/struct.h
+ * - math.h
+ * - structs/property.h
+ */

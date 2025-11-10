@@ -1,0 +1,14 @@
+/**
+ * @file modules_metric_cxx_link
+ * @brief Documentation for modules_metric_cxx_link
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - std::vector<particle_template*> ptx(...)
+ * - new particle_template(...)
+ *
+ * ## Dependencies
+ * - templates/metric_template.h
+ * - templates/model_template.h
+ */

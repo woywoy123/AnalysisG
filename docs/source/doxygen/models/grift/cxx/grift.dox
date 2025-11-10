@@ -1,0 +1,13 @@
+/**
+ * @file models_grift_cxx_grift
+ * @brief Documentation for models_grift_cxx_grift
+ *
+ *
+ * ## Key Functions
+ * - walk to the next node(...)
+ * - new grift(...)
+ *
+ * ## Dependencies
+ * - grift.h
+ * - pyc/pyc.h
+ */

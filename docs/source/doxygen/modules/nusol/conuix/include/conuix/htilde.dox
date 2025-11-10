@@ -1,0 +1,21 @@
+/**
+ * @file modules_nusol_conuix_include_conuix_htilde
+ * @brief Documentation for modules_nusol_conuix_include_conuix_htilde
+ *
+ *
+ * ## Classes
+ * - particle_template
+ *
+ * ## Key Functions
+ * - void get_kinematic(...)
+ * - void get_psi_theta_mapping(...)
+ * - void get_rotation(...)
+ * - void get_base(...)
+ * - void get_pencil(...)
+ * - void get_sx(...)
+ * - void get_sy(...)
+ * - void get_hmatrix(...)
+ *
+ * ## Dependencies
+ * - conuix/matrix.h
+ */

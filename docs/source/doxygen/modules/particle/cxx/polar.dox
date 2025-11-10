@@ -1,0 +1,8 @@
+/**
+ * @file modules_particle_cxx_polar
+ * @brief Documentation for modules_particle_cxx_polar
+ *
+ *
+ * ## Dependencies
+ * - templates/particle_template.h
+ */

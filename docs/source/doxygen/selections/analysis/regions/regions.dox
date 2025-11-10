@@ -1,0 +1,21 @@
+/**
+ * @file selections_analysis_regions_regions
+ * @brief Documentation for selections_analysis_regions_regions
+ *
+ *
+ * ## Classes
+ * - regions : inherits from selection_template
+ *
+ * ## Key Functions
+ * - new regions(...)
+ * - size_t x(...)
+ * - selection_template* clone(...)
+ * - bool selection(...)
+ * - bool strategy(...)
+ * - void merge(...)
+ *
+ * ## Dependencies
+ * - regions.h
+ * - ssml_mc20/event.h
+ * - templates/selection_template.h
+ */

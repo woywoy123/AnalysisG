@@ -1,0 +1,22 @@
+/**
+ * @file selections_neutrino_combinatorial_combinatorial
+ * @brief Documentation for selections_neutrino_combinatorial_combinatorial
+ *
+ *
+ * ## Classes
+ * - neutrino
+ * - combinatorial : inherits from selection_template
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - new combinatorial(...)
+ * - size_t i(...)
+ * - double chi2(...)
+ * - particle_template* safe_get(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/event.h
+ * - combinatorial.h
+ * - pyc/pyc.h
+ * - templates/selection_template.h
+ */

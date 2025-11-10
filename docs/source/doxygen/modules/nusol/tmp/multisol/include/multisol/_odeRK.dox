@@ -1,0 +1,25 @@
+/**
+ * @file modules_nusol_tmp_multisol_include_multisol__odeRK
+ * @brief Documentation for modules_nusol_tmp_multisol_include_multisol__odeRK
+ *
+ *
+ * ## Classes
+ * - odeRK : inherits from tools
+ *
+ * ## Key Functions
+ * - void print(...)
+ * - public: odeRK(...)
+ * - void solve(...)
+ * - void rk4(...)
+ * - void update_t(...)
+ * - double solve_z_phi(...)
+ * - double residual(...)
+ * - std::vector<ellipse_t> derivative(...)
+ * - double ghost_angle(...)
+ * - std::vector<double> plane_rk4(...)
+ *
+ * ## Dependencies
+ * - reconstruction/matrix.h
+ * - reconstruction/multisol.h
+ * - tools/tools.h
+ */

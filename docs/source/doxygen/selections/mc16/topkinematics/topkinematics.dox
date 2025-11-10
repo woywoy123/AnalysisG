@@ -1,0 +1,18 @@
+/**
+ * @file selections_mc16_topkinematics_topkinematics
+ * @brief Documentation for selections_mc16_topkinematics_topkinematics
+ *
+ *
+ * ## Classes
+ * - topkinematics : inherits from selection_template
+ *
+ * ## Key Functions
+ * - new topkinematics(...)
+ * - size_t x(...)
+ * - size_t y(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/event.h
+ * - templates/selection_template.h
+ * - topkinematics.h
+ */

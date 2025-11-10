@@ -1,0 +1,31 @@
+/**
+ * @file modules_structs_include_structs_element
+ * @brief Documentation for modules_structs_include_structs_element
+ *
+ *
+ * ## Key Functions
+ * - public: data_t(...)
+ * - void initialize(...)
+ * - void flush(...)
+ * - bool next(...)
+ * - private:
+        void fetch_buffer(...)
+ * - void string_type(...)
+ * - TTreeReaderValue<T> dr(...)
+ * - void set_meta(...)
+ *
+ * ## Dependencies
+ * - TBranch.h
+ * - TFile.h
+ * - TLeaf.h
+ * - TTree.h
+ * - TTreeReader.h
+ * - TTreeReaderArray.h
+ * - iostream
+ * - map
+ * - string
+ * - structs/base.h
+ * - structs/meta.h
+ * - tools/vector_cast.h
+ * - vector
+ */

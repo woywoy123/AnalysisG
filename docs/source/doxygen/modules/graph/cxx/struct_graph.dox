@@ -1,0 +1,18 @@
+/**
+ * @file modules_graph_cxx_struct_graph
+ * @brief Documentation for modules_graph_cxx_struct_graph
+ *
+ *
+ * ## Key Functions
+ * - case graph_enum::edge_index  : return(...)
+ * - size_t x(...)
+ * - size_t t(...)
+ * - std::unique_lock<std::mutex> lk(...)
+ * - std::vector<long> bc(...)
+ * - evw, torch::kDouble, double(...)
+ * - bc , torch::kLong, long(...)
+ *
+ * ## Dependencies
+ * - templates/graph_template.h
+ * - tools/tools.h
+ */

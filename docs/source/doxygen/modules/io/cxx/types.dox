@@ -1,0 +1,11 @@
+/**
+ * @file modules_io_cxx_types
+ * @brief Documentation for modules_io_cxx_types
+ *
+ *
+ * ## Key Functions
+ * - H5T_COMPOUND, sizeof(...)
+ *
+ * ## Dependencies
+ * - io.h
+ */

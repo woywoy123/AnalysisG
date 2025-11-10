@@ -1,0 +1,13 @@
+/**
+ * @file modules_metric_cxx_metric_template
+ * @brief Documentation for modules_metric_cxx_metric_template
+ *
+ *
+ * ## Key Functions
+ * - return new metric_template(...)
+ *
+ * ## Dependencies
+ * - meta/meta.h
+ * - templates/metric_template.h
+ * - templates/model_template.h
+ */

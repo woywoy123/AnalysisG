@@ -1,0 +1,17 @@
+/**
+ * @file modules_structs_include_structs_report
+ * @brief Documentation for modules_structs_include_structs_report
+ *
+ *
+ * ## Classes
+ * - metrics
+ *
+ * ## Key Functions
+ * - std::string print(...)
+ * - std::string prx(...)
+ *
+ * ## Dependencies
+ * - map
+ * - string
+ * - structs/enums.h
+ */

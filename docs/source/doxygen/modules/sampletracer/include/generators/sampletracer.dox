@@ -1,0 +1,25 @@
+/**
+ * @file modules_sampletracer_include_generators_sampletracer
+ * @brief Documentation for modules_sampletracer_include_generators_sampletracer
+ *
+ *
+ * ## Classes
+ * - sampletracer : inherits from tools
+ *
+ * ## Key Functions
+ * - public: sampletracer(...)
+ * - bool add_meta_data(...)
+ * - meta* get_meta_data(...)
+ * - std::vector<event_template*> get_events(...)
+ * - void fill_selections(...)
+ * - bool add_event(...)
+ * - bool add_graph(...)
+ * - bool add_selection(...)
+ * - void populate_dataloader(...)
+ * - void compile_objects(...)
+ *
+ * ## Dependencies
+ * - container/container.h
+ * - notification/notification.h
+ * - thread
+ */

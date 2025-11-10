@@ -1,0 +1,17 @@
+/**
+ * @file metrics_pagerank_cxx_pagerank
+ * @brief Documentation for metrics_pagerank_cxx_pagerank
+ *
+ *
+ * ## Key Functions
+ * - return new pagerank_metric(...)
+ * - size_t x(...)
+ * - std::ofstream files(...)
+ * - int y(...)
+ * - size_t t(...)
+ * - int src(...)
+ *
+ * ## Dependencies
+ * - fstream
+ * - metrics/pagerank.h
+ */

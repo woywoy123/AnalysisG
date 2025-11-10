@@ -1,0 +1,13 @@
+/**
+ * @file events_bsm_4tops_cxx_event
+ * @brief Documentation for events_bsm_4tops_cxx_event
+ *
+ *
+ * ## Key Functions
+ * - new bsm_4tops(...)
+ * - int x(...)
+ * - size_t z(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/event.h
+ */

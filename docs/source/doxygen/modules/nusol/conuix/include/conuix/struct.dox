@@ -1,0 +1,22 @@
+/**
+ * @file modules_nusol_conuix_include_conuix_struct
+ * @brief Documentation for modules_nusol_conuix_include_conuix_struct
+ *
+ *
+ * ## Classes
+ * - particle_template
+ *
+ * ## Key Functions
+ * - void print(...)
+ * - void variable(...)
+ * - long double Z2(...)
+ * - long double Sx(...)
+ * - long double Sy(...)
+ *
+ * ## Dependencies
+ * - conuix/htilde.h
+ * - conuix/matrix.h
+ * - iomanip
+ * - iostream
+ * - string
+ */

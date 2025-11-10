@@ -1,0 +1,16 @@
+/**
+ * @file modules_nusol_tmp_multisol_cxx__odeRK
+ * @brief Documentation for modules_nusol_tmp_multisol_cxx__odeRK
+ *
+ *
+ * ## Key Functions
+ * - size_t i(...)
+ * - int s(...)
+ * - int x(...)
+ * - matrix A(...)
+ * - matrix b(...)
+ * - std::vector<double> weights(...)
+ *
+ * ## Dependencies
+ * - reconstruction/odeRK.h
+ */

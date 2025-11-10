@@ -1,0 +1,18 @@
+/**
+ * @file modules_nusol_ellipse_cxx_ellipse
+ * @brief Documentation for modules_nusol_ellipse_cxx_ellipse
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - int l(...)
+ * - int b(...)
+ * - new nuelx(...)
+ * - size_t y(...)
+ * - double mt1(...)
+ * - new mtx(...)
+ *
+ * ## Dependencies
+ * - ellipse/ellipse.h
+ * - reconstruction/nusol.h
+ */

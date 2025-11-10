@@ -1,0 +1,36 @@
+/**
+ * @file modules_io_include_io_io
+ * @brief Documentation for modules_io_include_io_io
+ *
+ *
+ * ## Classes
+ * - io : inherits from tools
+ *
+ * ## Key Functions
+ * - public: io(...)
+ * - template <typename g>
+        void write(...)
+ * - template <typename g>
+        void read(...)
+ * - length, g(...)
+ * - bool start(...)
+ * - void end(...)
+ * - std::vector<std::string> dataset_names(...)
+ *
+ * ## Dependencies
+ * - H5Cpp.h
+ * - TBranch.h
+ * - TFile.h
+ * - TLeaf.h
+ * - TTree.h
+ * - TTreeReader.h
+ * - TTreeReaderArray.h
+ * - map
+ * - meta/meta.h
+ * - notification/notification.h
+ * - string
+ * - structs/element.h
+ * - structs/folds.h
+ * - structs/settings.h
+ * - tools/tools.h
+ */

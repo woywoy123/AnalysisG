@@ -1,0 +1,28 @@
+/**
+ * @file modules_nusol_tmp_conuix_include_conuix_nusol
+ * @brief Documentation for modules_nusol_tmp_conuix_include_conuix_nusol
+ *
+ *
+ * ## Classes
+ * - nuclx
+ *
+ * ## Key Functions
+ * - nuclx_t from_sx_sy(...)
+ * - double get_t(...)
+ * - double get_z(...)
+ * - nuclx_t from_z_t(...)
+ * - double get_mt(...)
+ * - double get_mw(...)
+ * - void surface(...)
+ * - shift of surface 
+    void shifts(...)
+ * - parameterization
+    void sx(...)
+ * - Sx
+                                      
+    void sy(...)
+ *
+ * ## Dependencies
+ * - conics/matrix.h
+ * - templates/particle_template.h
+ */

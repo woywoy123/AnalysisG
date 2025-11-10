@@ -1,0 +1,23 @@
+/**
+ * @file graphs_bsm_4tops_include_bsm_4tops_graph_features
+ * @brief Documentation for graphs_bsm_4tops_include_bsm_4tops_graph_features
+ *
+ *
+ * ## Classes
+ * - bsm_4tops
+ *
+ * ## Key Functions
+ * - void num_tops(...)
+ * - void num_lepton(...)
+ * - void num_neutrino(...)
+ * - void signal_event(...)
+ * - void missing_et(...)
+ * - void missing_phi(...)
+ * - void num_leps(...)
+ * - void num_jets(...)
+ * - void num_quark(...)
+ * - void num_truthjets(...)
+ *
+ * ## Dependencies
+ * - templates/event_template.h
+ */

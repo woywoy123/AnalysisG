@@ -1,0 +1,23 @@
+/**
+ * @file modules_plotting_include_plotting_plotting
+ * @brief Documentation for modules_plotting_include_plotting_plotting
+ *
+ *
+ * ## Classes
+ * - plotting : inherits from tools
+ *
+ * ## Key Functions
+ * - public: plotting(...)
+ * - std::string build_path(...)
+ * - float get_max(...)
+ * - float get_min(...)
+ * - float sum_of_weights(...)
+ * - void build_error(...)
+ * - std::tuple<float, float> mean_stdev(...)
+ *
+ * ## Dependencies
+ * - map
+ * - notification/notification.h
+ * - structs/property.h
+ * - tools/tools.h
+ */

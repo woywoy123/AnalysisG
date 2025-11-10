@@ -1,0 +1,26 @@
+/**
+ * @file modules_nusol_tmp_multisol_include_multisol_multisol
+ * @brief Documentation for modules_nusol_tmp_multisol_include_multisol_multisol
+ *
+ *
+ * ## Classes
+ * - multisol
+ *
+ * ## Key Functions
+ * - double px(...)
+ * - double py(...)
+ * - double pz(...)
+ * - ellipse x ellipse: L(...)
+ * - double lx(...)
+ * - double ly(...)
+ * - double lz(...)
+ * - public: multisol(...)
+ * - void make_rt(...)
+ * - matrix H_tilde(...)
+ *
+ * ## Dependencies
+ * - iostream
+ * - reconstruction/matrix.h
+ * - string
+ * - templates/particle_template.h
+ */

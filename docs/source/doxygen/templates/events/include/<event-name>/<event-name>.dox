@@ -1,0 +1,16 @@
+/**
+ * @file templates_events_include_<event-name>_<event-name>
+ * @brief Documentation for templates_events_include_<event-name>_<event-name>
+ *
+ *
+ * ## Key Functions
+ * - some variable of the event 
+
+        event_template* clone(...)
+ * - void build(...)
+ * - void CompileEvent(...)
+ *
+ * ## Dependencies
+ * - <particle-module
+ * - templates/event_template.h
+ */

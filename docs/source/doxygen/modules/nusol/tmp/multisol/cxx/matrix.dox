@@ -1,0 +1,19 @@
+/**
+ * @file modules_nusol_tmp_multisol_cxx_matrix
+ * @brief Documentation for modules_nusol_tmp_multisol_cxx_matrix
+ *
+ *
+ * ## Key Functions
+ * - int i(...)
+ * - int j(...)
+ * - matrix mx(...)
+ * - int k(...)
+ *
+ * ## Dependencies
+ * - iomanip
+ * - iostream
+ * - math.h
+ * - reconstruction/matrix.h
+ * - reconstruction/mtx.h
+ * - reconstruction/solvers.h
+ */

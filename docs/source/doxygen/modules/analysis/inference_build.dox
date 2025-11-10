@@ -1,0 +1,20 @@
+/**
+ * @file modules_analysis_inference_build
+ * @brief Documentation for modules_analysis_inference_build
+ *
+ *
+ * ## Key Functions
+ * - std::vector<size_t> th_prg(...)
+ * - std::vector<size_t> num_data(...)
+ * - std::vector<std::thread*> th_prc(...)
+ * - std::vector<std::string*> mdl_title(...)
+ * - std::vector<std::vector<graph_t*>*> batched_data(...)
+ * - size_t x(...)
+ * - size_t i(...)
+ * - size_t t(...)
+ *
+ * ## Dependencies
+ * - AnalysisG/analysis.h
+ * - ROOT/RDataFrame.hxx
+ * - tools/vector_cast.h
+ */

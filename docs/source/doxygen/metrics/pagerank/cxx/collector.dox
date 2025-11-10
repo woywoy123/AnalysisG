@@ -1,0 +1,11 @@
+/**
+ * @file metrics_pagerank_cxx_collector
+ * @brief Documentation for metrics_pagerank_cxx_collector
+ *
+ *
+ * ## Key Functions
+ * - std::string mapping(...)
+ *
+ * ## Dependencies
+ * - metrics/pagerank.h
+ */

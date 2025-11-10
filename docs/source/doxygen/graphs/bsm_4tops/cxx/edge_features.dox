@@ -1,0 +1,17 @@
+/**
+ * @file graphs_bsm_4tops_cxx_edge_features
+ * @brief Documentation for graphs_bsm_4tops_cxx_edge_features
+ *
+ *
+ * ## Key Functions
+ * - h>
+
+void m_res_edge(...)
+ * - void res_edge(...)
+ * - int m_top_edge(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/edge_features.h
+ * - bsm_4tops/event.h
+ * - pyc/pyc.h
+ */

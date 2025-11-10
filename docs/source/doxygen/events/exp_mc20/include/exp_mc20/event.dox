@@ -1,0 +1,22 @@
+/**
+ * @file events_exp_mc20_include_exp_mc20_event
+ * @brief Documentation for events_exp_mc20_include_exp_mc20_event
+ *
+ *
+ * ## Classes
+ * - exp_mc20 : inherits from event_template
+ *
+ * ## Key Functions
+ * - public: exp_mc20(...)
+ * - event_template* clone(...)
+ * - void build(...)
+ * - void CompileEvent(...)
+ * - template <typename G>
+        std::map<int, G*> sort_by_index(...)
+ * - template <typename m, typename G, typename g>
+        void vectorize(...)
+ *
+ * ## Dependencies
+ * - exp_mc20/particles.h
+ * - templates/event_template.h
+ */

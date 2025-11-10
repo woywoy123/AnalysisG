@@ -1,0 +1,25 @@
+/**
+ * @file modules_nusol_ellipse_include_ellipse_ellipse
+ * @brief Documentation for modules_nusol_ellipse_include_ellipse_ellipse
+ *
+ *
+ * ## Classes
+ * - ellipse
+ *
+ * ## Key Functions
+ * - public: ellipse(...)
+ * - void prepare(...)
+ * - std::vector<particle_template*> nunu_make(...)
+ * - void solve(...)
+ * - void flush(...)
+ * - void make_neutrinos(...)
+ * - int generate(...)
+ * - int intersection(...)
+ * - int angle_cross(...)
+ *
+ * ## Dependencies
+ * - ellipse/mtx.h
+ * - ellipse/nusol.h
+ * - ellipse/solvers.h
+ * - templates/particle_template.h
+ */

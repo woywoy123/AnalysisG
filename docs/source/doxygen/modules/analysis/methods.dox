@@ -1,0 +1,21 @@
+/**
+ * @file modules_analysis_methods
+ * @brief Documentation for modules_analysis_methods
+ *
+ *
+ * ## Key Functions
+ * - int ep(...)
+ * - size_t x(...)
+ * - new TTree(...)
+ * - torch::AutoGradMode grd(...)
+ * - size_t i(...)
+ * - Scan the outputs add_content(...)
+ * - size_t l(...)
+ *
+ * ## Dependencies
+ * - AnalysisG/analysis.h
+ * - ROOT/RDataFrame.hxx
+ * - TFile.h
+ * - TTree.h
+ * - tools/vector_cast.h
+ */

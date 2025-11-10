@@ -1,0 +1,22 @@
+/**
+ * @file modules_nusol_ellipse_include_ellipse_nusol
+ * @brief Documentation for modules_nusol_ellipse_include_ellipse_nusol
+ *
+ *
+ * ## Classes
+ * - mtx
+ * - particle_template
+ * - nuelx
+ *
+ * ## Key Functions
+ * - public: nuelx(...)
+ * - double Sx(...)
+ * - double dSx_dmW(...)
+ * - double Sy(...)
+ * - double dSy_dmW(...)
+ * - double dSy_dmT(...)
+ * - double w(...)
+ * - double w2(...)
+ * - double om2(...)
+ * - double Z(...)
+ */

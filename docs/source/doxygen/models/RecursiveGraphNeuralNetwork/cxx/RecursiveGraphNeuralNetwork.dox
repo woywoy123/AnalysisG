@@ -1,0 +1,14 @@
+/**
+ * @file models_RecursiveGraphNeuralNetwork_cxx_RecursiveGraphNeuralNetwork
+ * @brief Documentation for models_RecursiveGraphNeuralNetwork_cxx_RecursiveGraphNeuralNetwork
+ *
+ *
+ * ## Key Functions
+ * - size_t t(...)
+ * - Make a new prediction with prior inputs of hx(...)
+ * - new recursivegraphneuralnetwork(...)
+ *
+ * ## Dependencies
+ * - RecursiveGraphNeuralNetwork.h
+ * - pyc/pyc.h
+ */

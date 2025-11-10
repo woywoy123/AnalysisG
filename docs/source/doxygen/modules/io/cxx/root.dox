@@ -1,0 +1,19 @@
+/**
+ * @file modules_io_cxx_root
+ * @brief Documentation for modules_io_cxx_root
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - new meta(...)
+ * - size_t t(...)
+ * - size_t m(...)
+ * - new TFile(...)
+ *
+ * ## Dependencies
+ * - TH1.h
+ * - TSystem.h
+ * - io.h
+ * - io/cfg.h
+ * - thread
+ */

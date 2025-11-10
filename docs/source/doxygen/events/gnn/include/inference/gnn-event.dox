@@ -1,0 +1,29 @@
+/**
+ * @file events_gnn_include_inference_gnn-event
+ * @brief Documentation for events_gnn_include_inference_gnn-event
+ *
+ *
+ * ## Classes
+ * - gnn_event : inherits from event_template
+ *
+ * ## Key Functions
+ * - h>
+
+template <typename g>
+void reduce(...)
+ * - size_t x(...)
+ * - public: gnn_event(...)
+ * - event_template* clone(...)
+ * - void build(...)
+ * - void CompileEvent(...)
+ * - template <typename G>
+        std::map<int, G*> sort_by_index(...)
+ * - template <typename m, typename G, typename Gx>
+        void vectorize(...)
+ * - template <typename g, typename G>
+        void sum(...)
+ *
+ * ## Dependencies
+ * - inference/gnn-particles.h
+ * - templates/event_template.h
+ */

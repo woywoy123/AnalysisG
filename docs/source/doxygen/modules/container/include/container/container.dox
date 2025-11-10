@@ -1,0 +1,27 @@
+/**
+ * @file modules_container_include_container_container
+ * @brief Documentation for modules_container_include_container_container
+ *
+ *
+ * ## Classes
+ * - container : inherits from tools
+ *
+ * ## Key Functions
+ * - void init(...)
+ * - void destroy(...)
+ * - bool has_event(...)
+ * - bool has_graph(...)
+ * - bool has_selection(...)
+ * - size_t x(...)
+ * - public: container(...)
+ * - void add_meta_data(...)
+ * - meta* get_meta_data(...)
+ *
+ * ## Dependencies
+ * - generators/dataloader.h
+ * - meta/meta.h
+ * - templates/event_template.h
+ * - templates/graph_template.h
+ * - templates/selection_template.h
+ * - tools/tools.h
+ */

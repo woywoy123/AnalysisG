@@ -1,0 +1,11 @@
+/**
+ * @file modules_event_cxx_properties
+ * @brief Documentation for modules_event_cxx_properties
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ *
+ * ## Dependencies
+ * - templates/event_template.h
+ */

@@ -1,0 +1,19 @@
+/**
+ * @file modules_nusol_tmp_multisol_cxx_multisol
+ * @brief Documentation for modules_nusol_tmp_multisol_cxx_multisol
+ *
+ *
+ * ## Key Functions
+ * - double cos_theta(...)
+ * - new multisol_t(...)
+ * - a_x * cosh(...)
+ * - b_x * sinh(...)
+ * - b_y: cos(...)
+ *
+ * ## Dependencies
+ * - fstream
+ * - math.h
+ * - reconstruction/mtx.h
+ * - reconstruction/multisol.h
+ * - reconstruction/solvers.h
+ */

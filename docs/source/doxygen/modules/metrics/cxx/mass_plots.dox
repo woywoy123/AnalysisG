@@ -1,0 +1,21 @@
+/**
+ * @file modules_metrics_cxx_mass_plots
+ * @brief Documentation for modules_metrics_cxx_mass_plots
+ *
+ *
+ * ## Key Functions
+ * - new TH1F(...)
+ * - new THStack(...)
+ * - new TLegend(...)
+ * - size_t x(...)
+ * - new TCanvas(...)
+ * - new TRatioPlot(...)
+ * - Invariant Mass(...)
+ *
+ * ## Dependencies
+ * - THStack.h
+ * - TRatioPlot.h
+ * - c10/cuda/CUDAGuard.h
+ * - c10/cuda/CUDAStream.h
+ * - metrics/metrics.h
+ */

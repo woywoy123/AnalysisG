@@ -1,0 +1,24 @@
+/**
+ * @file metrics_pagerank_include_metrics_pagerank
+ * @brief Documentation for metrics_pagerank_include_metrics_pagerank
+ *
+ *
+ * ## Classes
+ * - pagerank_metric : inherits from metric_template
+ * - collector : inherits from tools
+ *
+ * ## Key Functions
+ * - public: pagerank_metric(...)
+ * - pagerank_metric* clone(...)
+ * - void define_metric(...)
+ * - void define_variables(...)
+ * - void event(...)
+ * - void batch(...)
+ * - void end(...)
+ * - void pagerank(...)
+ * - std::vector<particle_template*> build_top(...)
+ * - public: collector(...)
+ *
+ * ## Dependencies
+ * - templates/metric_template.h
+ */

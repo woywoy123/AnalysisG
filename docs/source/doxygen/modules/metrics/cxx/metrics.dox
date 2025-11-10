@@ -1,0 +1,12 @@
+/**
+ * @file modules_metrics_cxx_metrics
+ * @brief Documentation for modules_metrics_cxx_metrics
+ *
+ *
+ * ## Key Functions
+ * - new model_report(...)
+ *
+ * ## Dependencies
+ * - TError.h
+ * - metrics/metrics.h
+ */

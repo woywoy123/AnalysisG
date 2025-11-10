@@ -1,0 +1,14 @@
+/**
+ * @file events_ssml_mc20_cxx_particles
+ * @brief Documentation for events_ssml_mc20_cxx_particles
+ *
+ *
+ * ## Key Functions
+ * - new zboson(...)
+ * - new top(...)
+ * - size_t x(...)
+ * - new parton(...)
+ *
+ * ## Dependencies
+ * - particles.h
+ */

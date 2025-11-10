@@ -1,0 +1,14 @@
+/**
+ * @file events_exp_mc20_cxx_event
+ * @brief Documentation for events_exp_mc20_cxx_event
+ *
+ *
+ * ## Key Functions
+ * - new exp_mc20(...)
+ * - size_t x(...)
+ * - size_t t(...)
+ * - size_t f(...)
+ *
+ * ## Dependencies
+ * - exp_mc20/event.h
+ */

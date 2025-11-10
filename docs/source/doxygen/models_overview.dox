@@ -1,0 +1,16 @@
+/**
+ * @defgroup models Models Module
+ * @brief Machine learning model implementations
+ *
+ * ## Overview
+ * This module contains:
+ *
+ * ### Submodules
+ * - RecursiveGraphNeuralNetwork
+ * - grift
+ *
+ * ### Statistics
+ * - Header files: 2
+ * - Implementation files: 3
+ * - Python files: 3
+ */

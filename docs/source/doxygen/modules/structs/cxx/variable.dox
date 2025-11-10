@@ -1,0 +1,14 @@
+/**
+ * @file modules_structs_cxx_variable
+ * @brief Documentation for modules_structs_cxx_variable
+ *
+ *
+ * ## Key Functions
+ * - new TFile(...)
+ * - new TTree(...)
+ * - new variable_t(...)
+ * - new write_t(...)
+ *
+ * ## Dependencies
+ * - structs/element.h
+ */

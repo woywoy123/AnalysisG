@@ -1,0 +1,26 @@
+/**
+ * @file pyc_nusol_tensor_nusol
+ * @brief Documentation for pyc_nusol_tensor_nusol
+ *
+ *
+ * ## Key Functions
+ * - h>
+
+
+std::map<std::string, torch::Tensor> GetMasses(...)
+ * - torch::Tensor HorizontalVertical(...)
+ * - torch::Tensor Parallel(...)
+ * - torch::Tensor Intersecting(...)
+ * - Solution 1(...)
+ * - Solution 2(...)
+ * - torch::Tensor Pi_2(...)
+ * - torch::Tensor Rotation(...)
+ * - torch::Tensor Shape(...)
+ *
+ * ## Dependencies
+ * - nusol/nusol.h
+ * - operators/operators.h
+ * - physics/physics.h
+ * - transform/transform.h
+ * - utils/utils.h
+ */

@@ -1,0 +1,11 @@
+/**
+ * @file modules_container_cxx_entries
+ * @brief Documentation for modules_container_cxx_entries
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ *
+ * ## Dependencies
+ * - container/container.h
+ */

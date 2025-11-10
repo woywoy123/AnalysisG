@@ -1,0 +1,14 @@
+/**
+ * @file templates_particles_include_<particle-module>_<particle-name>
+ * @brief Documentation for templates_particles_include_<particle-module>_<particle-name>
+ *
+ *
+ * ## Key Functions
+ * - some variable of the particle
+
+        particle_template* clone(...)
+ * - void build(...)
+ *
+ * ## Dependencies
+ * - templates/particle_template.h
+ */

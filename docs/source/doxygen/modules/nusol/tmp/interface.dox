@@ -1,0 +1,18 @@
+/**
+ * @file modules_nusol_tmp_interface
+ * @brief Documentation for modules_nusol_tmp_interface
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - int l(...)
+ * - int b(...)
+ * - new nusol(...)
+ * - new multisol(...)
+ * - 0 and P(...)
+ * - new odeRK(...)
+ * - size_t y(...)
+ *
+ * ## Dependencies
+ * - nunu/nunu.h
+ */

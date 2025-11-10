@@ -1,0 +1,13 @@
+/**
+ * @file modules_structs_include_structs_particles
+ * @brief Documentation for modules_structs_include_structs_particles
+ *
+ *
+ * ## Classes
+ * - particle_template
+ *
+ * ## Dependencies
+ * - map
+ * - string
+ * - vector
+ */

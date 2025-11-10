@@ -1,0 +1,21 @@
+/**
+ * @file modules_nusol_ellipse_include_ellipse_mtx
+ * @brief Documentation for modules_nusol_ellipse_include_ellipse_mtx
+ *
+ *
+ * ## Classes
+ * - mtx
+ *
+ * ## Key Functions
+ * - public: mtx(...)
+ * - double trace(...)
+ * - double det(...)
+ * - mtx copy(...)
+ * - bool assign(...)
+ * - bool unique(...)
+ * - mtx* cat(...)
+ * - mtx* slice(...)
+ *
+ * ## Dependencies
+ * - cmath
+ */

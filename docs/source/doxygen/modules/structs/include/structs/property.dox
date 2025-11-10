@@ -1,0 +1,26 @@
+/**
+ * @file modules_structs_include_structs_property
+ * @brief Documentation for modules_structs_include_structs_property
+ *
+ *
+ * ## Classes
+ * - cproperty
+ *
+ * ## Key Functions
+ * - include <string>
+
+template <typename T, typename G>
+void x_setter(...)
+ * - template <typename T, typename G>
+void x_getter(...)
+ * - public: cproperty(...)
+ * - void set_setter(...)
+ * - void set_getter(...)
+ * - void set_object(...)
+ * - operator T(...)
+ * - void clear(...)
+ *
+ * ## Dependencies
+ * - functional
+ * - string
+ */

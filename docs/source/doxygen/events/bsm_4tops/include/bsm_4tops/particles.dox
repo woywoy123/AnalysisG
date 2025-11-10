@@ -1,0 +1,28 @@
+/**
+ * @file events_bsm_4tops_include_bsm_4tops_particles
+ * @brief Documentation for events_bsm_4tops_include_bsm_4tops_particles
+ *
+ *
+ * ## Classes
+ * - truthjetparton
+ * - jetparton
+ * - truthjet
+ * - jet
+ * - top : inherits from particle_template
+ * - top_children : inherits from particle_template
+ * - electron : inherits from particle_template
+ * - muon : inherits from particle_template
+ *
+ * ## Key Functions
+ * - template <typename g>
+void assign_vector(...)
+ * - int x(...)
+ * - new g(...)
+ * - particle_template* clone(...)
+ * - void build(...)
+ * - private:
+        void static get_from_res(...)
+ *
+ * ## Dependencies
+ * - templates/particle_template.h
+ */

@@ -1,0 +1,19 @@
+/**
+ * @file modules_nusol_conuix_include_conuix_solvers
+ * @brief Documentation for modules_nusol_conuix_include_conuix_solvers
+ *
+ *
+ * ## Key Functions
+ * - include <cmath>
+
+template <typename g>
+int linear(...)
+ * - template <typename g>
+int quadratic(...)
+ * - template <typename g>
+int cubic(...)
+ *
+ * ## Dependencies
+ * - cmath
+ * - complex
+ */

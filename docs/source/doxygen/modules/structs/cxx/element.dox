@@ -1,0 +1,12 @@
+/**
+ * @file modules_structs_cxx_element
+ * @brief Documentation for modules_structs_cxx_element
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ *
+ * ## Dependencies
+ * - structs/element.h
+ * - structs/meta.h
+ */

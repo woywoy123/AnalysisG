@@ -1,0 +1,10 @@
+/**
+ * @file modules_structs_cxx_structs
+ * @brief Documentation for modules_structs_cxx_structs
+ *
+ *
+ * ## Dependencies
+ * - element.h
+ * - folds.h
+ * - report.h
+ */

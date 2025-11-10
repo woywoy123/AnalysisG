@@ -1,0 +1,19 @@
+/**
+ * @file selections_neutrino_validation_validation
+ * @brief Documentation for selections_neutrino_validation_validation
+ *
+ *
+ * ## Classes
+ * - validation : inherits from selection_template
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - new validation(...)
+ * - size_t i(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/event.h
+ * - pyc/pyc.h
+ * - templates/selection_template.h
+ * - validation.h
+ */

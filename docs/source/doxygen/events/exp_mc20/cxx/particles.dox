@@ -1,0 +1,16 @@
+/**
+ * @file events_exp_mc20_cxx_particles
+ * @brief Documentation for events_exp_mc20_cxx_particles
+ *
+ *
+ * ## Key Functions
+ * - new top(...)
+ * - size_t x(...)
+ * - new child(...)
+ * - new physics_detector(...)
+ * - new physics_truth(...)
+ * - int mx(...)
+ *
+ * ## Dependencies
+ * - particles.h
+ */

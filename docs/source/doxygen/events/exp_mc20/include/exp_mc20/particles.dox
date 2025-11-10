@@ -1,0 +1,30 @@
+/**
+ * @file events_exp_mc20_include_exp_mc20_particles
+ * @brief Documentation for events_exp_mc20_include_exp_mc20_particles
+ *
+ *
+ * ## Classes
+ * - top : inherits from particle_template
+ * - child : inherits from particle_template
+ * - physics_detector : inherits from particle_template
+ * - physics_truth : inherits from particle_template
+ * - electron : inherits from particle_template
+ * - muon : inherits from particle_template
+ * - jet : inherits from particle_template
+ *
+ * ## Key Functions
+ * - h>
+
+template <typename g>
+void pmu(...)
+ * - size_t x(...)
+ * - new g(...)
+ * - public: top(...)
+ * - particle_template* clone(...)
+ * - void build(...)
+ * - public: child(...)
+ * - public: physics_detector(...)
+ *
+ * ## Dependencies
+ * - templates/particle_template.h
+ */

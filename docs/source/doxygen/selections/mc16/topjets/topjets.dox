@@ -1,0 +1,23 @@
+/**
+ * @file selections_mc16_topjets_topjets
+ * @brief Documentation for selections_mc16_topjets_topjets
+ *
+ *
+ * ## Classes
+ * - topjets : inherits from selection_template
+ *
+ * ## Key Functions
+ * - new topjets(...)
+ * - size_t x(...)
+ * - size_t i(...)
+ * - size_t j1(...)
+ * - size_t j2(...)
+ * - size_t tp(...)
+ * - size_t j_(...)
+ * - size_t pr_i(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/event.h
+ * - templates/selection_template.h
+ * - topjets.h
+ */

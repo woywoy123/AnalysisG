@@ -1,0 +1,16 @@
+/**
+ * @file modules_metric_cxx_base
+ * @brief Documentation for modules_metric_cxx_base
+ *
+ *
+ * ## Key Functions
+ * - std::string enums_to_string(...)
+ * - size_t t(...)
+ * - new variable_t(...)
+ * - size_t x(...)
+ * - new metric_t(...)
+ *
+ * ## Dependencies
+ * - templates/metric_template.h
+ * - templates/model_template.h
+ */

@@ -1,0 +1,17 @@
+/**
+ * @file __init__
+ * @brief Documentation for __init__
+ *
+ *
+ * ## Key Functions
+ * - config_pyami(...)
+ * - auth_pyami(...)
+ *
+ * ## Dependencies
+ * - Analysis
+except Exception as error
+ * - pwinput
+import subprocess
+
+def _getcmd
+ */

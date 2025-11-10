@@ -1,0 +1,19 @@
+/**
+ * @file modules_nusol_ellipse_cxx_solvers
+ * @brief Documentation for modules_nusol_ellipse_cxx_solvers
+ *
+ *
+ * ## Key Functions
+ * - include <cmath>
+
+mtx* find_roots(...)
+ * - new mtx(...)
+ * - int i(...)
+ *
+ * ## Dependencies
+ * - cmath
+ * - complex
+ * - ellipse/mtx.h
+ * - ellipse/solvers.h
+ * - iostream
+ */

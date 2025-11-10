@@ -1,0 +1,21 @@
+/**
+ * @defgroup pyc Pyc Module
+ * @brief High-performance C++/CUDA implementations with PyTorch integration
+ *
+ * ## Overview
+ * This module contains:
+ *
+ * ### Submodules
+ * - cutils
+ * - graph
+ * - interface
+ * - nusol
+ * - operators
+ * - physics
+ * - transform
+ *
+ * ### Statistics
+ * - Header files: 7
+ * - Implementation files: 12
+ * - Python files: 0
+ */

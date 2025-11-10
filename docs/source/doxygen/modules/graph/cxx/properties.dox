@@ -1,0 +1,15 @@
+/**
+ * @file modules_graph_cxx_properties
+ * @brief Documentation for modules_graph_cxx_properties
+ *
+ *
+ * ## Key Functions
+ * - torch::kBool, bool(...)
+ * - torch::kFloat, float(...)
+ * - torch::kDouble, double(...)
+ * - torch::kLong, long(...)
+ * - torch::kInt, int(...)
+ *
+ * ## Dependencies
+ * - templates/graph_template.h
+ */

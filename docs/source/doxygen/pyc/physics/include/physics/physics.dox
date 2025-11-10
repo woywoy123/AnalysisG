@@ -1,0 +1,15 @@
+/**
+ * @file pyc_physics_include_physics_physics
+ * @brief Documentation for pyc_physics_include_physics_physics
+ *
+ *
+ * ## Key Functions
+ * - torch::Tensor P2(...)
+ * - torch::Tensor P(...)
+ * - torch::Tensor Beta2(...)
+ * - torch::Tensor Beta(...)
+ * - torch::Tensor M2(...)
+ *
+ * ## Dependencies
+ * - torch/torch.h
+ */

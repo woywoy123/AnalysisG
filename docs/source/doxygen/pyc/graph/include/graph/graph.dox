@@ -1,0 +1,14 @@
+/**
+ * @file pyc_graph_include_graph_graph
+ * @brief Documentation for pyc_graph_include_graph_graph
+ *
+ *
+ * ## Key Functions
+ * - std::map<std::string, torch::Tensor> edge_aggregation(...)
+ * - std::map<std::string, torch::Tensor> node_aggregation(...)
+ *
+ * ## Dependencies
+ * - map
+ * - string
+ * - torch/torch.h
+ */

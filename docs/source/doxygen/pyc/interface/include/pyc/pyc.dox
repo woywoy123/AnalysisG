@@ -1,0 +1,23 @@
+/**
+ * @file pyc_interface_include_pyc_pyc
+ * @brief Documentation for pyc_interface_include_pyc_pyc
+ *
+ *
+ * ## Classes
+ * - neutrino : inherits from particle_template
+ *
+ * ## Key Functions
+ * - public: neutrino(...)
+ * - torch::Dict<std::string, torch::Tensor> std_to_dict(...)
+ * - torch::Tensor tensorize(...)
+ * - template <typename g>
+    std::vector<double> as_pmc(...)
+ * - template <typename g>
+    std::vector<std::vector<double>> to_pmc(...)
+ * - size_t x(...)
+ *
+ * ## Dependencies
+ * - templates/particle_template.h
+ * - torch/all.h
+ * - tuple
+ */

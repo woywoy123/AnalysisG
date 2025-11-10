@@ -1,0 +1,11 @@
+/**
+ * @file modules_particle_cxx_particle_template
+ * @brief Documentation for modules_particle_cxx_particle_template
+ *
+ *
+ * ## Key Functions
+ * - new particle_template(...)
+ *
+ * ## Dependencies
+ * - templates/particle_template.h
+ */

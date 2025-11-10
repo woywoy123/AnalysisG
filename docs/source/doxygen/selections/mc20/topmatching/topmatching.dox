@@ -1,0 +1,21 @@
+/**
+ * @file selections_mc20_topmatching_topmatching
+ * @brief Documentation for selections_mc20_topmatching_topmatching
+ *
+ *
+ * ## Classes
+ * - topmatching : inherits from selection_template
+ *
+ * ## Key Functions
+ * - new topmatching(...)
+ * - size_t x(...)
+ * - size_t c(...)
+ * - selection_template* clone(...)
+ * - bool selection(...)
+ * - bool strategy(...)
+ *
+ * ## Dependencies
+ * - ssml_mc20/event.h
+ * - templates/selection_template.h
+ * - topmatching.h
+ */

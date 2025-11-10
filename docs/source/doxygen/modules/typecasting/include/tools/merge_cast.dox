@@ -1,0 +1,23 @@
+/**
+ * @file modules_typecasting_include_tools_merge_cast
+ * @brief Documentation for modules_typecasting_include_tools_merge_cast
+ *
+ *
+ * ## Key Functions
+ * - include <map>
+
+template <typename G>
+void merge_data(...)
+ * - template <typename G>
+void sum_data(...)
+ * - template <typename g>
+void reserve_count(...)
+ * - size_t x(...)
+ * - template <typename g>
+void contract_data(...)
+ *
+ * ## Dependencies
+ * - map
+ * - string
+ * - vector
+ */

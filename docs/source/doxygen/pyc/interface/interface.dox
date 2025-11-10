@@ -1,0 +1,20 @@
+/**
+ * @file pyc_interface_interface
+ * @brief Documentation for pyc_interface_interface
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - return build_tensor(...)
+ * - 1, int(...)
+ * - std::vector<neutrino*> construct_particle(...)
+ * - inpt, &pmc, &s, double(...)
+ * - ln, &_l, &s, long(...)
+ *
+ * ## Dependencies
+ * - pyc/pyc.h
+ * - tools/tensor_cast.h
+ * - tools/vector_cast.h
+ * - utils/utils.cuh
+ * - utils/utils.h
+ */

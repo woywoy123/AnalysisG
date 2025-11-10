@@ -1,0 +1,12 @@
+/**
+ * @file modules_nusol_conuix_include_conuix_matrix
+ * @brief Documentation for modules_nusol_conuix_include_conuix_matrix
+ *
+ *
+ * ## Key Functions
+ * - public: matrix_t(...)
+ * - matrix_t dot(...)
+ * - matrix_t T(...)
+ * - long double& at(...)
+ * - void print(...)
+ */

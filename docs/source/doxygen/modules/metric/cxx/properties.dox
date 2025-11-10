@@ -1,0 +1,11 @@
+/**
+ * @file modules_metric_cxx_properties
+ * @brief Documentation for modules_metric_cxx_properties
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ *
+ * ## Dependencies
+ * - templates/metric_template.h
+ */

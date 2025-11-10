@@ -1,0 +1,26 @@
+/**
+ * @file modules_notification_include_notification_notification
+ * @brief Documentation for modules_notification_include_notification_notification
+ *
+ *
+ * ## Classes
+ * - notification
+ *
+ * ## Key Functions
+ * - public: notification(...)
+ * - void success(...)
+ * - void warning(...)
+ * - void failure(...)
+ * - void info(...)
+ * - void progressbar(...)
+ * - int running(...)
+ * - void monitor(...)
+ * - void static progressbar1(...)
+ *
+ * ## Dependencies
+ * - iostream
+ * - sstream
+ * - string
+ * - thread
+ * - vector
+ */

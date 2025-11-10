@@ -1,0 +1,17 @@
+/**
+ * @file modules_nusol_ellipse_cxx_mtx
+ * @brief Documentation for modules_nusol_ellipse_cxx_mtx
+ *
+ *
+ * ## Key Functions
+ * - int x(...)
+ * - int y(...)
+ * - mtx out(...)
+ * - int j(...)
+ *
+ * ## Dependencies
+ * - ellipse/mtx.h
+ * - ellipse/solvers.h
+ * - iomanip
+ * - iostream
+ */

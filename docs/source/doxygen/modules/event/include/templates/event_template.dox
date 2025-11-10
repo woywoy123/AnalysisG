@@ -1,0 +1,28 @@
+/**
+ * @file modules_event_include_templates_event_template
+ * @brief Documentation for modules_event_include_templates_event_template
+ *
+ *
+ * ## Classes
+ * - event_template : inherits from tools
+ *
+ * ## Key Functions
+ * - public: event_template(...)
+ * - void static set_trees(...)
+ * - void static set_branches(...)
+ * - void static get_leaves(...)
+ * - void add_leaf(...)
+ * - void static set_name(...)
+ * - void static set_hash(...)
+ * - void static get_hash(...)
+ * - void static set_tree(...)
+ * - void static get_tree(...)
+ *
+ * ## Dependencies
+ * - meta/meta.h
+ * - structs/element.h
+ * - structs/event.h
+ * - structs/property.h
+ * - templates/particle_template.h
+ * - tools/tools.h
+ */

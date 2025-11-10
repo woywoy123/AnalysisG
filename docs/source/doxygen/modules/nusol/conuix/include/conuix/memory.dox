@@ -1,0 +1,15 @@
+/**
+ * @file modules_nusol_conuix_include_conuix_memory
+ * @brief Documentation for modules_nusol_conuix_include_conuix_memory
+ *
+ *
+ * ## Key Functions
+ * - define H_CONUIX_MEMORY
+
+long double** alloc(...)
+ * - long double** flush(...)
+ * - void copy(...)
+ * - void ops(...)
+ * - void opm(...)
+ * - void opt(...)
+ */

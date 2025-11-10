@@ -1,0 +1,19 @@
+/**
+ * @file selections_performance_topefficiency_topefficiency
+ * @brief Documentation for selections_performance_topefficiency_topefficiency
+ *
+ *
+ * ## Classes
+ * - topefficiency : inherits from selection_template
+ *
+ * ## Key Functions
+ * - new topefficiency(...)
+ * - int i(...)
+ * - size_t x(...)
+ * - size_t s(...)
+ *
+ * ## Dependencies
+ * - inference/gnn-event.h
+ * - templates/selection_template.h
+ * - topefficiency.h
+ */

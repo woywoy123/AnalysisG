@@ -1,0 +1,11 @@
+/**
+ * @file modules_structs_include_structs_meta
+ * @brief Documentation for modules_structs_include_structs_meta
+ *
+ *
+ * ## Dependencies
+ * - iostream
+ * - map
+ * - string
+ * - vector
+ */

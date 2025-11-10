@@ -1,0 +1,12 @@
+/**
+ * @file events_gnn_cxx_particles
+ * @brief Documentation for events_gnn_cxx_particles
+ *
+ *
+ * ## Key Functions
+ * - new particle_gnn(...)
+ * - int x(...)
+ *
+ * ## Dependencies
+ * - gnn-particles.h
+ */

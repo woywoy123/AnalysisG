@@ -1,0 +1,15 @@
+/**
+ * @file modules_lossfx_cxx_optimizer_config
+ * @brief Documentation for modules_lossfx_cxx_optimizer_config
+ *
+ *
+ * ## Key Functions
+ * - torch::optim::AdamOptions optim_(...)
+ * - void m_xavier_normal(...)
+ * - void m_xavier_uniform(...)
+ * - void m_normal(...)
+ * - void m_uniform(...)
+ *
+ * ## Dependencies
+ * - templates/lossfx.h
+ */

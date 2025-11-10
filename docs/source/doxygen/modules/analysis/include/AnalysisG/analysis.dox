@@ -1,0 +1,35 @@
+/**
+ * @file modules_analysis_include_AnalysisG_analysis
+ * @brief Documentation for modules_analysis_include_AnalysisG_analysis
+ *
+ *
+ * ## Classes
+ * - analysis : inherits from notification
+ *
+ * ## Key Functions
+ * - h>
+
+template <typename g>
+void flush(...)
+ * - public: analysis(...)
+ * - void add_samples(...)
+ * - void add_selection_template(...)
+ * - void add_event_template(...)
+ * - void add_graph_template(...)
+ * - void add_metric_template(...)
+ * - void add_model(...)
+ * - void attach_threads(...)
+ *
+ * ## Dependencies
+ * - generators/dataloader.h
+ * - generators/optimizer.h
+ * - generators/sampletracer.h
+ * - io/io.h
+ * - string
+ * - structs/settings.h
+ * - templates/event_template.h
+ * - templates/graph_template.h
+ * - templates/metric_template.h
+ * - templates/model_template.h
+ * - templates/selection_template.h
+ */

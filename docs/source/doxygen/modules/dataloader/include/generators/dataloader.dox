@@ -1,0 +1,34 @@
+/**
+ * @file modules_dataloader_include_generators_dataloader
+ * @brief Documentation for modules_dataloader_include_generators_dataloader
+ *
+ *
+ * ## Classes
+ * - analysis
+ * - model_template
+ * - dataloader : inherits from notification
+ *
+ * ## Key Functions
+ * - public: dataloader(...)
+ * - std::vector<graph_t*>* get_k_train_set(...)
+ * - std::vector<graph_t*>* get_k_validation_set(...)
+ * - std::vector<graph_t*>* get_test_set(...)
+ * - std::vector<graph_t*>* build_batch(...)
+ * - void safe_delete(...)
+ * - std::map<std::string, std::vector<graph_t*>>* get_inference(...)
+ * - void generate_test_set(...)
+ * - void generate_kfold_set(...)
+ * - void dump_dataset(...)
+ *
+ * ## Dependencies
+ * - algorithm
+ * - c10/cuda/CUDACachingAllocator.h
+ * - cuda.h
+ * - map
+ * - notification/notification.h
+ * - random
+ * - structs/property.h
+ * - structs/settings.h
+ * - templates/graph_template.h
+ * - tools/tools.h
+ */

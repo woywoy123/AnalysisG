@@ -1,0 +1,17 @@
+/**
+ * @file pyc_interface_nusol
+ * @brief Documentation for pyc_interface_nusol
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - size_t y(...)
+ * - new particle_template(...)
+ *
+ * ## Dependencies
+ * - nusol/nusol.cuh
+ * - nusol/nusol.h
+ * - pyc/pyc.h
+ * - utils/utils.cuh
+ * - utils/utils.h
+ */

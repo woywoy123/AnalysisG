@@ -1,0 +1,18 @@
+/**
+ * @file selections_mc16_decaymodes_decaymodes
+ * @brief Documentation for selections_mc16_decaymodes_decaymodes
+ *
+ *
+ * ## Classes
+ * - decaymodes : inherits from selection_template
+ *
+ * ## Key Functions
+ * - new decaymodes(...)
+ * - size_t x(...)
+ * - size_t l(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/event.h
+ * - decaymodes.h
+ * - templates/selection_template.h
+ */

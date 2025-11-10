@@ -1,0 +1,19 @@
+/**
+ * @file modules_typecasting_cxx_typecasting
+ * @brief Documentation for modules_typecasting_cxx_typecasting
+ *
+ *
+ * ## Key Functions
+ * - std::vector<signed long> tensor_size(...)
+ * - size_t x(...)
+ * - new TTree(...)
+ * - Add your type(...)
+ * - vv_d, data, &s, double(...)
+ * - vv_f, data, &s, float(...)
+ * - vv_l, data, &s, long(...)
+ * - vv_i, data, &s, int(...)
+ * - vv_b, data, &s, bool(...)
+ *
+ * ## Dependencies
+ * - vector_cast.h
+ */

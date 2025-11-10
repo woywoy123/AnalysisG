@@ -1,0 +1,17 @@
+/**
+ * @file modules_nusol_conuix_cxx_matrix
+ * @brief Documentation for modules_nusol_conuix_cxx_matrix
+ *
+ *
+ * ## Key Functions
+ * - matrix_t mx(...)
+ * - int i(...)
+ * - int j(...)
+ * - int k(...)
+ *
+ * ## Dependencies
+ * - conuix/matrix.h
+ * - conuix/memory.h
+ * - iomanip
+ * - iostream
+ */

@@ -1,0 +1,16 @@
+/**
+ * @file modules_nusol_conuix_include_conuix_conuix
+ * @brief Documentation for modules_nusol_conuix_include_conuix_conuix
+ *
+ *
+ * ## Classes
+ * - conuic
+ * - conuix
+ *
+ * ## Key Functions
+ * - public: conuix(...)
+ * - void solve(...)
+ *
+ * ## Dependencies
+ * - reconstruction/nusol.h
+ */

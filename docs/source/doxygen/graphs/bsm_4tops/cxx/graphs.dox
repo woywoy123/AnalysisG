@@ -1,0 +1,20 @@
+/**
+ * @file graphs_bsm_4tops_cxx_graphs
+ * @brief Documentation for graphs_bsm_4tops_cxx_graphs
+ *
+ *
+ * ## Key Functions
+ * - return new graph_tops(...)
+ * - return new graph_children(...)
+ * - return new graph_truthjets(...)
+ * - size_t x(...)
+ * - return new graph_truthjets_nonu(...)
+ * - return new graph_jets(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/edge_features.h
+ * - bsm_4tops/event.h
+ * - bsm_4tops/graph_features.h
+ * - bsm_4tops/graphs.h
+ * - bsm_4tops/node_features.h
+ */

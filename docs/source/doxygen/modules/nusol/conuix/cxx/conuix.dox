@@ -1,0 +1,15 @@
+/**
+ * @file modules_nusol_conuix_cxx_conuix
+ * @brief Documentation for modules_nusol_conuix_cxx_conuix
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - size_t i(...)
+ * - size_t j(...)
+ * - new conuic(...)
+ *
+ * ## Dependencies
+ * - conuix/conuic.h
+ * - conuix/conuix.h
+ */

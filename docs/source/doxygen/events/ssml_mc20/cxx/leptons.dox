@@ -1,0 +1,14 @@
+/**
+ * @file events_ssml_mc20_cxx_leptons
+ * @brief Documentation for events_ssml_mc20_cxx_leptons
+ *
+ *
+ * ## Key Functions
+ * - new muon(...)
+ * - size_t x(...)
+ * - new electron(...)
+ * - new lepton(...)
+ *
+ * ## Dependencies
+ * - particles.h
+ */

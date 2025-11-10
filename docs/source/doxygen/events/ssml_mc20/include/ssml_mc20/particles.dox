@@ -1,0 +1,32 @@
+/**
+ * @file events_ssml_mc20_include_ssml_mc20_particles
+ * @brief Documentation for events_ssml_mc20_include_ssml_mc20_particles
+ *
+ *
+ * ## Classes
+ * - zboson : inherits from particle_template
+ * - top : inherits from particle_template
+ * - truthjet : inherits from particle_template
+ * - jet : inherits from particle_template
+ * - electron : inherits from particle_template
+ * - muon : inherits from particle_template
+ * - parton : inherits from particle_template
+ * - lepton : inherits from particle_template
+ *
+ * ## Key Functions
+ * - h>
+
+template <typename g>
+void pmu(...)
+ * - int x(...)
+ * - new g(...)
+ * - template <typename g>
+void pmu_mass(...)
+ * - public: zboson(...)
+ * - particle_template* clone(...)
+ * - void build(...)
+ * - public: top(...)
+ *
+ * ## Dependencies
+ * - templates/particle_template.h
+ */

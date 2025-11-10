@@ -1,0 +1,22 @@
+/**
+ * @file modules_structs_cxx_base
+ * @brief Documentation for modules_structs_cxx_base
+ *
+ *
+ * ## Key Functions
+ * - include <iostream>
+
+void buildDict(...)
+ * - void registerInclude(...)
+ * - void buildPCM(...)
+ * - Add your type(...)
+ * - void buildAll(...)
+ * - int count(...)
+ *
+ * ## Dependencies
+ * - ;
+    if (is_abs){shrt += 
+ * - TInterpreter.h
+ * - iostream
+ * - structs/base.h
+ */

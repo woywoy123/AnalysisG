@@ -1,0 +1,11 @@
+/**
+ * @file modules_structs_include_structs_model
+ * @brief Documentation for modules_structs_include_structs_model
+ *
+ *
+ * ## Dependencies
+ * - map
+ * - string
+ * - structs/enums.h
+ * - vector
+ */

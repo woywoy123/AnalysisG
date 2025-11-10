@@ -1,0 +1,12 @@
+/**
+ * @file modules_plotting_cxx_plotting
+ * @brief Documentation for modules_plotting_cxx_plotting
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ *
+ * ## Dependencies
+ * - cmath
+ * - plotting/plotting.h
+ */

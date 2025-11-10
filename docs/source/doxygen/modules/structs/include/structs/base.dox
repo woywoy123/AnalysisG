@@ -1,0 +1,24 @@
+/**
+ * @file modules_structs_include_structs_base
+ * @brief Documentation for modules_structs_include_structs_base
+ *
+ *
+ * ## Key Functions
+ * - go here first
+
+void buildPCM(...)
+ * - void registerInclude(...)
+ * - void buildDict(...)
+ * - void buildAll(...)
+ * - public: bsc_t(...)
+ * - void flush_buffer(...)
+ * - std::string as_string(...)
+ * - std::string scan_buffer(...)
+ * - data_enum root_type_translate(...)
+ * - bool element(...)
+ *
+ * ## Dependencies
+ * - string
+ * - structs/enums.h
+ * - vector
+ */

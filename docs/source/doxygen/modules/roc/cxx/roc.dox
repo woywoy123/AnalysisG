@@ -1,0 +1,14 @@
+/**
+ * @file modules_roc_cxx_roc
+ * @brief Documentation for modules_roc_cxx_roc
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - size_t y(...)
+ * - new roc_t(...)
+ *
+ * ## Dependencies
+ * - cmath
+ * - plotting/roc.h
+ */

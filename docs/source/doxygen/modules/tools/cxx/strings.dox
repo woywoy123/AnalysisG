@@ -1,0 +1,17 @@
+/**
+ * @file modules_tools_cxx_strings
+ * @brief Documentation for modules_tools_cxx_strings
+ *
+ *
+ * ## Key Functions
+ * - size_t i(...)
+ * - std::hex << hasher(...)
+ * - size_t x(...)
+ * - size_t t(...)
+ * - bool is_base64(...)
+ *
+ * ## Dependencies
+ * - sstream
+ * - string
+ * - tools/tools.h
+ */

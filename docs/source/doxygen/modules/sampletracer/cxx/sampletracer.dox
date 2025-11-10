@@ -1,0 +1,15 @@
+/**
+ * @file modules_sampletracer_cxx_sampletracer
+ * @brief Documentation for modules_sampletracer_cxx_sampletracer
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - std::vector<size_t> progres(...)
+ * - std::vector<size_t> handles(...)
+ * - std::vector<std::string*> titles_(...)
+ * - std::vector<std::thread*> threads_(...)
+ *
+ * ## Dependencies
+ * - generators/sampletracer.h
+ */

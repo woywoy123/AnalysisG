@@ -1,0 +1,18 @@
+/**
+ * @file modules_analysis_metric_build
+ * @brief Documentation for modules_analysis_metric_build
+ *
+ *
+ * ## Key Functions
+ * - size_t x(...)
+ * - size_t k(...)
+ * - std::vector<size_t> th_prg(...)
+ * - std::vector<size_t> num_data(...)
+ * - std::vector<metric_t*> mx(...)
+ * - std::vector<std::thread*> th_prc(...)
+ * - std::vector<std::string*> th_title(...)
+ * - size_t t(...)
+ *
+ * ## Dependencies
+ * - AnalysisG/analysis.h
+ */

@@ -1,0 +1,20 @@
+/**
+ * @file selections_mc16_parton_parton
+ * @brief Documentation for selections_mc16_parton_parton
+ *
+ *
+ * ## Classes
+ * - parton : inherits from selection_template
+ *
+ * ## Key Functions
+ * - new parton(...)
+ * - size_t x(...)
+ * - size_t p(...)
+ * - size_t t(...)
+ * - selection_template* clone(...)
+ *
+ * ## Dependencies
+ * - bsm_4tops/event.h
+ * - parton.h
+ * - templates/selection_template.h
+ */

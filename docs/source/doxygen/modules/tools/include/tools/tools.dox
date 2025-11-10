@@ -1,0 +1,28 @@
+/**
+ * @file modules_tools_include_tools_tools
+ * @brief Documentation for modules_tools_include_tools_tools
+ *
+ *
+ * ## Classes
+ * - tools
+ *
+ * ## Key Functions
+ * - public: tools(...)
+ * - cxx
+        static void create_path(...)
+ * - void delete_path(...)
+ * - bool is_file(...)
+ * - void rename(...)
+ * - std::string absolute_path(...)
+ * - std::vector<std::string> ls(...)
+ * - cxx
+        static std::string to_string(...)
+ * - void replace(...)
+ *
+ * ## Dependencies
+ * - cstdint
+ * - iostream
+ * - map
+ * - string
+ * - vector
+ */

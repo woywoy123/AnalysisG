@@ -1,0 +1,11 @@
+/**
+ * @file modules_io_cxx_hdf5
+ * @brief Documentation for modules_io_cxx_hdf5
+ *
+ *
+ * ## Key Functions
+ * - H5::DataSpace space(...)
+ *
+ * ## Dependencies
+ * - io.h
+ */
