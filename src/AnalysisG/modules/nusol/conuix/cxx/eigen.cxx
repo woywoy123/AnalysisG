@@ -226,8 +226,48 @@ void Conuix::characteristic::dPdtau_t::PL0(atomics_t* tx){
     }
 }
 
+void Conuix::characteristic::dPdtau_t::PL1(atomics_t* tx){
+    long double _o = tx -> base.o;
+    long double _t = tx -> base.w;
+    long double _b = tx -> base.beta;
+    long double _c = tx -> base.cpsi; 
+   
+    for (int i(1); i < 5000; ++i){
+        // z = e^{2tau}
+        long double z = 0.00000001 * i * i; 
+        long double tau = 0.5 * std::log(z);   
+
+        long double a_1 = (_o * _t - _b) / (_o * _t + _b); 
+        long double b_1 = (_o - _b * _t) / (_o * _t + _b); 
+        long double c_1 = (_o + _b * _t) / (_o - _b * _t); 
+
+        long double f1 = std::pow(z + a_1, 2) * std::pow(z + 1, 4);
+        long double f2 = -4 * std::pow(_b * _c * _c * _c, 2) * (_o - _b * _t)*(_o * _t + _b); 
+        long double f3 = b_1 * b_1 * b_1;
+        long double f4 = std::pow(z + c_1, 4) * z; 
+        long double prd = f1 + f2 * f3 * f4; 
+
+        long double dpdl0 = this -> L0(1.0L, tau); 
+        long double mob   = this -> PL0(tau); 
+        long double ply   = tx -> P -> P(dpdl0, 1.0L, tau); 
+        std::cout << "tau: " << tau << " Z: " << z << " lambda 0: " << dpdl0 << " char: " << ply << " Mobius: " << mob << " prd: " << prd << std::endl;
+//        if (mob > 0.1 ){break;}
+    }
+
+    abort(); 
+
+
+}
+
+
+
+
+
+
 void Conuix::characteristic::dPdtau_t::test(atomics_t* tx){
     this -> PL0(tx); 
+    this -> PL1(tx); 
+
     std::cout << "----------------" << std::endl; 
     std::cout << this -> solutiond[0] << " " << this -> tau_sol[0] << std::endl; 
     std::cout << this -> solutiond[1] << " " << this -> tau_sol[1] << std::endl; 
@@ -237,5 +277,9 @@ void Conuix::characteristic::dPdtau_t::test(atomics_t* tx){
     std::cout << this -> solutiond[5] << " " << this -> tau_sol[5] << std::endl; 
     std::cout << this -> solutiond[6] << " " << this -> tau_sol[6] << std::endl; 
     std::cout << this -> solutiond[7] << " " << this -> tau_sol[7] << std::endl; 
+
+
+
+
 }
 

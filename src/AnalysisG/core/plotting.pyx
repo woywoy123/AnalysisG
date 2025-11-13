@@ -394,10 +394,9 @@ cdef class BasePlotting:
             com["bbox_inches"] = "tight"
             com["pad_inches"] = 0
             com["transparent"] = True
-            com["backend"] = "pgf"
-
+            if self.ptr.use_latex: com["backend"] = "pgf"
             self.matpl.savefig(env(out), **com)
-            self.matpl.savefig(raw, **com)
+            if self.ptr.use_latex: self.matpl.savefig(raw, **com)
             self.matpl.close("all")
             self.ptr.success(b"Finished Plotting: " + out)
         except Exception as error:

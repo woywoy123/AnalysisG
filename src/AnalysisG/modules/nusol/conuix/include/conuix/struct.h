@@ -130,6 +130,7 @@ namespace Conuix {
             long double P(long double lambda, long double Z, long double tau) override; 
             long double L0(long double Z, long double tau); 
             long double PL0(long double tau); 
+            void PL1(atomics_t* tx); 
             void PL0(atomics_t* tx);
 
             void test(atomics_t* tx); 
