@@ -3,8 +3,8 @@
 #include <conuix/matrix.h>
 #include <conuix/htilde.h>
 #include <iostream>
-#include <string>
 #include <iomanip>
+#include <string>
 
 class particle_template; 
 struct atomics_t; 
@@ -17,14 +17,14 @@ namespace Conuix {
     }; 
 
     struct kinematic_t : public debug {
-        void print(int p) override; 
+        void print(int p = 16) override; 
         long double beta = 0;
         long double mass = 0;
         long double energy = 0; 
     }; 
 
     struct rotation_t : public debug {
-        void print(int p) override; 
+        void print(int p = 16) override; 
         long double phi   = 0;
         long double theta = 0;
         matrix_t vec;
@@ -32,7 +32,7 @@ namespace Conuix {
     }; 
     
     struct base_t : public debug {
-        void print(int p) override; 
+        void print(int p = 16) override; 
 
         long double rbl = 0;
 
@@ -106,47 +106,52 @@ namespace Conuix {
         matrix_t HTC;
     };
 
+    struct Mobius_t : debug {
+        void init(base_t* base);  
+
+        long double alpha_p(long double u); 
+        long double alpha_m(long double u); 
+        // a: Omega * tpsi, b:          beta_mu
+        // c: Omega       , d: - tpsi * beta_mu 
+        long double a, b, c, d;
+
+        long double dPl0(long double x, bool use_tanh = false); 
+        long double a_; // beta * cos(psi)**3
+
+        std::complex<long double> eig_v1; 
+        std::complex<long double> eig_v2; 
+        
+        std::complex<long double> eig_vx[2]; 
+        std::complex<long double> eig_vy[2]; 
+
+        std::complex<long double> kfactor; 
+        
+        std::complex<long double> f1_pts; 
+        std::complex<long double> f2_pts; 
+    
+        std::complex<long double> mid; 
+
+
+
+    }; 
+
+
+
+
+
+
     long double cos_theta(particle_template* jet, particle_template* lep); 
-
-    namespace characteristic{
-        struct poly_t : debug {
-            long double a, b, c, d = 0; 
-            long double x_a, x_b, y_a, y_b = 0;
-
-            virtual long double xlinear(long double tau); 
-            virtual long double ylinear(long double tau);
-            virtual long double xyratio(long double tau);
-            virtual long double P(long double lambda, long double Z, long double tau); 
-        };
-
-        struct P_t : public poly_t {
-            P_t(base_t* base);
-            long double P(long double lambda, long double Z, long double tau) override; 
-            void print(int p) override; 
-        };
-
-        struct dPdtau_t : public poly_t {
-            dPdtau_t(base_t* base);
-            long double P(long double lambda, long double Z, long double tau) override; 
-            long double L0(long double Z, long double tau); 
-            long double PL0(long double tau); 
-            void PL1(atomics_t* tx); 
-            void PL0(atomics_t* tx);
-
-            void test(atomics_t* tx); 
-            long double cf     = 0; //coefficient
-
-            std::complex<long double> tau_sol[8]; 
-            long double solutiond[8]; 
-        };
-    }
 }
 
 
-struct atomics_t {
+struct atomics_t : public Conuix::debug {
     atomics_t(particle_template* jet, particle_template* lep, double m_nu = 0); 
     ~atomics_t(); 
 
+    long double x1(long double Z, long double t); 
+    long double y1(long double Z, long double t); 
+    bool GetTauZ(long double sx, long double sy, long double* z, long double* t); 
+    void masses(long double Z, long double t, std::complex<long double>* mw, std::complex<long double>* mt); 
     void debug_mode(particle_template* jet, particle_template* lep); 
 
     // ---- Kinematics of the jet and lepton pairs ---- // 
@@ -171,9 +176,14 @@ struct atomics_t {
     // ---------- H and H_tilde matrices -------- //
     Conuix::H_matrix_t H_Matrix; 
 
-    // ----------------- Inspect at own risk ........ --------- //
-    Conuix::characteristic::P_t*       P     = nullptr; 
-    Conuix::characteristic::dPdtau_t* dPdtau = nullptr; 
+    // ---------- Mobius --------- //
+    // Enter at your own risk....
+    Conuix::Mobius_t Mobius; 
+
+
+
+
+
 }; 
 
 #endif

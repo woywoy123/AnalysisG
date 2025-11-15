@@ -16,7 +16,6 @@ class Ellipsoid(cosmetic):
         cosmetic.__init__(self, ax)
         self.show_eigen = True
         self.data = None
-        self.el   = obj
 
     def equation(self, n_points):
         u = self._lin(0, 2*np.pi, n_points)
@@ -51,26 +50,25 @@ class Ellipsoid(cosmetic):
 
 class Ellipse(cosmetic):
 
-    def __init__(self, obj, ax):
+    def __init__(self, ax):
         cosmetic.__init__(self, ax)
         self.data = None
-        self.el = obj
+        self.eign = None
+        self.theta = None
 
     def equation(self, a, b, phi):
         return self.data.matrix.dot([np.cos(phi), np.sin(phi), np.ones_like(phi)])
 
     def make(self, n_points = 100):
-        vl, vx = np.linalg.eigh(self.data.matrix)
-      
-        idx = vl.argsort()[::-1]
-        vl, vx = vl[idx], vx[:,idx]
+        #vl, vx = np.linalg.eigh(self.data.matrix)
+        #idx = vl.argsort()[::-1]
+        #vl, vx = vl[idx], vx[:,idx]
 
-        if vl[0] < 0 or vl[1] < 0: return None, None, None
-        r = np.sqrt(vl)
-        v1, v2 = vx[:,0], vx[:,1]
-        a, b   = v1 * r[0], v2 * r[1]
-        
-        return self.equation(a, b, self._lin(0, 2*np.pi, n_points))
+        ##if vl[0] < 0 or vl[1] < 0: return None, None, None
+        #r = np.sqrt(vl)
+        #v1, v2 = vx[:,0], vx[:,1]
+        #a, b   = v1 * r[0], v2 * r[1]
+        return self.equation(None, None, self._lin(0, 2*np.pi, n_points))
 
     def plot(self):
         x, y, z = self.make(self.data.npts)
@@ -78,8 +76,19 @@ class Ellipse(cosmetic):
         self.max_x, self.min_x = np.max(x), np.min(x)
         self.max_y, self.min_y = np.max(y), np.min(y)
         self.max_z, self.min_z = np.max(z), np.min(z)
-
         self._plot3(x, y, z)
+        if self.eign is None: return 
+        self.color = "r"
+        self.marker_size = 23
+        if self.theta is not None: 
+            x, y, z = self.equation(None, None, self.theta)
+            self._scatter3(x, y, z)
+
+        #self._quiver(
+        #        self.eign[0], self.eign[1], self.eign[2], 
+        #        self.eign[0], self.eign[1], self.eign[2]
+        #)
+
 
 class Plane(cosmetic):
 

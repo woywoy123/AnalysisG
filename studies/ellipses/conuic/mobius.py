@@ -1,3 +1,4 @@
+from atomics import *
 import cmath
 import numpy
 import math
@@ -11,91 +12,63 @@ class mobius:
         self.spsi  = obj.spsi
         self.tpsi  = obj.tpsi
 
-    def condition(self): return self.beta * self.cpsi ** 2 * (1 - self.u**2)**0.5 + self.aplx() / self.aplm()**2
+    def alpha_p(self, x): return self.Omega * self.tpsi + self.beta * x
+    def alpha_m(self, x): return self.Omega - self.tpsi * self.beta * x
 
-    def pole_P(self): return - (self.Omega / self.beta) * self.tpsi 
-    def pole_M(self): return   (self.Omega / self.beta) * 1.0 / self.tpsi
+    def matrix(self): 
+        return np.array([
+            [-self.beta * self.tpsi, self.Omega], 
+            [self.beta , self.Omega * self.tpsi]
+        ])
 
-    def aplx(self): return self.Omega * self.spsi + self.beta * self.cpsi * self.u
-    def aplm(self): return self.Omega * self.cpsi - self.beta * self.spsi * self.u
+    def eigenval(self):
+        f = self.tpsi * (self.Omega - self.beta) 
+        c = complex(self.tpsi ** 2 * (self.Omega - self.beta)**2 + 4 * self.Omega * self.beta * (1 + self.tpsi**2)) ** 0.5
+        return (f + c)/2, (f-c)/2
 
-    # Condition where alpha^+/alpha^- = 1 - u
-    def alpha_pm(self): 
-        D  = (self.beta * (self.spsi + self.cpsi) + self.Omega * self.cpsi)**2
-        D += 4 * self.beta * self.Omega * (self.spsi - self.cpsi) * self.spsi
-        D = complex(D)**0.5
-        r1 = (self.beta * (self.spsi + self.cpsi) + self.Omega * self.cpsi + D)/(2 * self.beta * self.spsi)
-        r2 = (self.beta * (self.spsi + self.cpsi) + self.Omega * self.cpsi - D)/(2 * self.beta * self.spsi)
-        return r1, r2
+    def eigenvec(self):
+        v1, v2 = self.eigenval()
+        return np.array([[1, (self.beta * self.tpsi + v1) / self.Omega ], [1, (self.beta * self.tpsi + v2) / self.Omega ]])
 
-
-    # Condition where alpha^-/alpha^+ = 1 + u
-    def alpha_mp(self): 
-        D  = (self.beta * (self.spsi + self.cpsi) + self.Omega * self.spsi)**2
-        D -= 4 * self.beta * self.Omega * (self.spsi - self.cpsi) * self.cpsi
-        D = complex(D)**0.5
-        r1 = (-self.beta * (self.spsi + self.cpsi) - self.Omega * self.spsi + D)/(2 * self.beta * self.cpsi)
-        r2 = (-self.beta * (self.spsi + self.cpsi) - self.Omega * self.spsi - D)/(2 * self.beta * self.cpsi)
-        return r1, r2
-
-    # beta_mu cos^2(psi) + (1 - u')/alpha^-(u') = 0
-    def uprime(self):
-        u = 1 + self.beta * self.Omega * self.cpsi**3
-        d = 1 + self.beta ** 2 * self.spsi * self.cpsi ** 2
-        return u / d
-    
-    def kfactor(self, u = None, ux = None):
-        u1p, u1m = self.alpha_pm()
-        u2p, u2m = self.alpha_mp()
-
-        kp = (u2p - u1m)/(u2p - u1p)
-        km = (u2m - u1m)/(u2m - u1p)
-        
-        if u  is not None: return  kp * (u - u1p)/(u - u1m), km * (u - u1p)/(u - u1m)
-        if ux is not None: return (kp * u1p - ux *u1m)/(kp - ux), (km * u1p - ux *u1m)/(km - ux)
-        return kp, km 
+    def kfactor(self):
+        l1 = (self.Omega - self.beta) * self.tpsi
+        l2 = 4 * self.beta * self.Omega * (1 + self.tpsi**2)
+        return (l1 - complex(l1 ** 2 + l2))/(l1 + complex(l1 ** 2 + l2))
 
     def fixed_points(self):
-        dc = self.cpsi * complex( (self.beta - self.Omega) ** 2 - 4 * self.beta * self.Omega * self.tpsi ** 2)**0.5
-        u_p = - self.cpsi * ( self.beta - self.Omega ) + dc
-        u_m = - self.cpsi * ( self.beta - self.Omega ) - dc
-        return u_p / (2 * self.beta * self.spsi), u_m / (2 * self.beta * self.spsi)
+        c = complex((self.Omega * self.tpsi + self.beta * self.tpsi) ** 2 + 4 * self.beta * self.Omega)**0.5
+        f = - (self.Omega + self.beta) * self.tpsi
+        return (f + c)/(2 * self.beta), (f - c)/(2 * self.beta)
+   
+    def midpoint(self): return - self.tpsi * ( self.Omega + self.beta ) / (2 * self.beta)
 
-    def normal_form(self):
-        u_p, u_m = self.fixed_points()
-        k = (self.tpsi - u_p)/(self.tpsi + u_m) * (u_m / u_p)
-        return k * (self.u - u_p)/(self.u - u_m)
+    def dPl0(self, x, use_tanh = False):
+        x = np.tanh(x) if use_tanh else x
+        ap, am = self.alpha_p(x), self.alpha_m(x)
+        return self.beta * self.cpsi ** 3 * (1 - x**2) ** 0.5 * am - ap / am
 
-    def eigenvalues(self):
-        dc = complex( self.cpsi ** 2 * (self.beta + self.Omega) ** 2 - 4 * self.beta * self.Omega )**0.5  
-        u_p = self.cpsi * ( self.beta + self.Omega ) + dc
-        u_m = self.cpsi * ( self.beta + self.Omega ) - dc
-        return u_p / 2, u_m / 2
+    def newton_method(self, tol=1e-10, max_iter=100):
+        def f(x): 
+            ap = self.alpha_p(x)
+            am = self.alpha_m(x)
+            return (self.beta * np.sqrt(1 - x**2) * am**2 - (1 / self.cpsi) ** 3 * ap)
 
-    def mobius_Matrix(self):
-        return numpy.array([
-           [ self.beta * self.cpsi, self.Omega * self.spsi],
-           [-self.beta * self.spsi, self.Omega * self.cpsi]
-        ])
-    
-    def phi(self):
-        a = complex(4 * self.beta * self.Omega - self.cpsi ** 2 * (self.beta + self.Omega) ** 2) ** 0.5
-        a = a / (self.cpsi * (self.beta + self.Omega)) 
-        return 2 * numpy.atan2(a.imag, a.real)
+        def f_prime(x):
+            am = self.alpha_m(x)
+            sqx = np.sqrt(1 - x**2)
 
-    def newton(self):
-        dx = - (self.beta * self.u * self.cpsi ** 2) / (1 - self.u ** 2) ** 2
-        dy = self.beta * (self.aplm() * self.cpsi + 2 * self.aplx() * self.spsi) / self.aplm() ** 3
-        
-        x = self.beta * self.cpsi ** 2 * (1 - self.u ** 2) ** 0.5 + self.aplx() / self.aplm() ** 2
-        return self.u - x / (dx + dy)
+            d_quad = -2 * am * self.beta * self.tpsi
+            return  - self.beta * (x / sqx) * am **2 + self.beta * sqx * d_quad - (1 / self.cpsi) ** 3 * self.beta
 
-    def input(self, tau): self.u = numpy.tanh(tau)
-
-    def test_sol1(self, kp, km, uv):
-        fx = (1 - uv) / (self.Omega * self.cpsi - self.beta * self.spsi * uv)
-        return self.beta * self.cpsi ** 2 * complex((1 - kp) * (1 + km))**0.5 + fx
-
-
-
+        x = self.midpoint()
+        for i in range(max_iter):
+            fx = f(x)
+            fpx = f_prime(x)
+            print("->", x, fx, fpx)
+            if abs(fpx) < 1e-15: return x
+            delta = fx / fpx
+            x = x - delta
+            if abs(delta) > tol: continue
+            return x
+        return x
 

@@ -12,9 +12,15 @@ struct matrix_t {
         const long double& at(int _r, int _c) const;
 
         matrix_t& operator=(const matrix_t& other);
-        matrix_t& operator+(const matrix_t& o) const;
-        matrix_t& operator-(const matrix_t& o) const;
-        matrix_t& operator*(long double s) const;
+
+        matrix_t operator+(const matrix_t& o);
+        matrix_t operator+(const matrix_t& o) const;
+
+        matrix_t operator-(const matrix_t& o);
+        matrix_t operator-(const matrix_t& o) const;
+
+        matrix_t operator*(long double s);
+        matrix_t operator*(long double s) const;
 
         void print(int p = 9);
 

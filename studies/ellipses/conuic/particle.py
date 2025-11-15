@@ -45,6 +45,12 @@ class Particle:
     def b(self): return self.b2**0.5
 
     @property
+    def phi(self): return math.atan2(self.py, self.px)
+
+    @property
+    def theta(self): return math.atan2((self.px**2 + self.py**2)**0.5, self.pz)
+
+    @property
     def gev(self): 
         self.px *= 0.001
         self.py *= 0.001

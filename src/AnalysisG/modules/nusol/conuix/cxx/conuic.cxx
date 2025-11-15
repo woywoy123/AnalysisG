@@ -42,8 +42,38 @@ conuic::~conuic(){
 }
 
 void conuic::solve(){
-    this -> cache -> dPdtau -> PL0(this -> cache); 
-    //this -> lambda_root_dPdtau(0, 0, nullptr, nullptr); 
+    this -> debug();   
 }
+
+void conuic::debug(){
+    std::string hx = std::string(this -> _jet -> hash) + "-" + std::string(this -> _lep -> hash);
+    if (hx != "0x5a4ac8ead1f7d952-0x1dbf9ed01fdef73b"){return;}
+    this -> cache -> debug_mode(this -> _jet, this -> _lep); 
+    abort(); 
+
+}
+
+
+matrix_t conuic::get_RT(){return this -> cache -> rotation.R_T;}
+
+long double conuic::Z2(long double sx, long double sy){
+    return this -> cache -> pencil.Z2(sx, sy); 
+}
+
+long double conuic::Sx(long double Tau, long double Z){
+    return this -> cache -> Sx.Sx(Tau, Z); 
+}
+
+long double conuic::Sy(long double Tau, long double Z){
+    return this -> cache -> Sy.Sy(Tau, Z); 
+}
+
+
+
+
+
+
+
+
 
 

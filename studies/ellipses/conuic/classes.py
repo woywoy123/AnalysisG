@@ -6,17 +6,21 @@ class Conuic:
 
     def __init__(self, met, phi, detector, event = None):
 
-        self.fig = None #figure()
-        #self.fig.auto_lims = True
+        self.fig = figure()
+        self.fig.auto_lims = True
 
-        #self.fig.plot_title(f'Event Ellipses {event.idx}', 12)
-        #self.fig.axis_label("x", "Sx")
-        #self.fig.axis_label("y", "Sy")
-        #self.fig.axis_label("z", "Sz")
+        self.fig.plot_title(f'Event Ellipses {event.idx}', 12)
+        self.fig.axis_label("x", "Sx")
+        self.fig.axis_label("y", "Sy")
+        self.fig.axis_label("z", "Sz")
 
         self.px = math.cos(phi)*met
         self.py = math.sin(phi)*met
         self.pz = 0
+        self.fig.color = "r"
+        self.fig.marker_size = 24
+        self.fig.marker_sym = "*"
+        #self.fig._scatter3(self.px, self.py, self.pz)
         self.loss = 0
 
         self.lep, self.jet = [], []
@@ -31,20 +35,22 @@ class Conuic:
             if i.error is None: self.loss += i.is_truth; continue
             try: _tmp_lep[i.lep.hash][i.jet.hash] = i.jet
             except KeyError: _tmp_lep[i.lep.hash] = {i.lep.hash : i.lep}
+            self.fig.objects[i.name] = [i.ellipse]
 
-        print("--------- second ------------")
-        self.engine = []
-        for i in _tmp_lep:
-            jets = [_tmp_lep[i][k] for k in _tmp_lep[i] if k != i]
-            if not len(jets): continue
-            jets = sum(jets) if len(jets) > 1 else jets[0]
-            c = conuic(_tmp_lep[i][i], jets, event, self.fig)
-            print(c.error, c.is_truth)
-            if c.error is not None: self.engine.append(c)
-            elif c.is_truth: print("---- rejected truth !!!!!!!!!!!!!!!---- ") 
+        exit()
+        #print("--------- second ------------")
+        #self.engine = []
+        #for i in _tmp_lep:
+        #    jets = [_tmp_lep[i][k] for k in _tmp_lep[i] if k != i]
+        #    if not len(jets): continue
+        #    jets = sum(jets) if len(jets) > 1 else jets[0]
+        #    c = conuic(_tmp_lep[i][i], jets, event, self.fig)
+        #    print(c.error, c.is_truth)
+        #    if c.error is not None: self.engine.append(c)
+        #    elif c.is_truth: print("---- rejected truth !!!!!!!!!!!!!!!---- ") 
        
-        print(self.loss)
-        #self.fig.show()
+        print("neutrino loss:", self.loss)
+        self.fig.show()
 
 
 

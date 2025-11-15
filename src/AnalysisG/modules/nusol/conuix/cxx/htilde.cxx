@@ -87,18 +87,20 @@ void Conuix::get_pencil(
     // Z^2 = a Sx^2 + b Sx Sy + c Sy^2 + d Sx + e 
     pen -> a = (1 - base -> o2) / base -> o2;
     pen -> b = 2 * base -> w / base -> o2;
-    pen -> c = - (base -> o2 - base -> w2) / base -> o2; 
+    pen -> c = (base -> w2 - base -> o2) / base -> o2; 
     pen -> d = 2 * lep -> energy * lep -> beta; 
     pen -> e = lep -> mass * lep -> mass - nu -> mass * nu -> mass; 
 }
 
 void Conuix::get_sx(Conuix::base_t* base, Conuix::Sx_t* sx){
+    // Sx(tau) = Z [ (Omega / beta_mu) cos(psi) cosh(tau) - sin(psi) sinh(tau)] - m^2_mu / (E_mu beta_mu)
     sx -> a =  (base -> cpsi / base -> beta) * base -> o;
     sx -> b = - base -> spsi; 
     sx -> c = - base -> mass * base -> mass / (base -> E * base -> beta); 
 }
 
 void Conuix::get_sy(Conuix::base_t* base, Conuix::Sy_t* sy){
+    // Sy(tau) = Z [(sin(psi) / beta_mu) Omega cosh(tau) + cos(psi) sinh(tau)] - tan(psi) E_mu / beta_mu
     sy -> a = (base -> spsi / base -> beta) * base -> o;
     sy -> b =  base -> cpsi; 
     sy -> c = - (base -> E / base -> beta) * base -> tpsi; 
@@ -132,8 +134,8 @@ void Conuix::get_hmatrix(Conuix::base_t* base, Conuix::rotation_t* rot, Conuix::
     H -> HBC.at(1, 1) = 0;
     H -> HBC.at(2, 1) = 0;
 
-    H -> HBC.at(0, 2) = - base -> beta * base -> cpsi / base -> o;
-    H -> HBC.at(1, 2) = - base -> beta * base -> spsi / base -> o;
+    H -> HBC.at(0, 2) = base -> beta * base -> cpsi / base -> o;
+    H -> HBC.at(1, 2) = base -> beta * base -> spsi / base -> o;
     H -> HBC.at(2, 2) = 0; 
     H -> HTC = rot -> R_T.dot(H -> HBC);
 
@@ -146,8 +148,8 @@ void Conuix::get_hmatrix(Conuix::base_t* base, Conuix::rotation_t* rot, Conuix::
     H -> HBS.at(1, 1) = 0;
     H -> HBS.at(2, 1) = 0;
 
-    H -> HBS.at(0, 2) = - base -> spsi;
-    H -> HBS.at(1, 2) =   base -> cpsi;
+    H -> HBS.at(0, 2) =   base -> spsi;
+    H -> HBS.at(1, 2) = - base -> cpsi;
     H -> HBS.at(2, 2) = 0; 
     H -> HTS = rot -> R_T.dot(H -> HBS); 
 }

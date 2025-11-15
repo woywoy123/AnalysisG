@@ -64,19 +64,38 @@ matrix_t& matrix_t::operator=(const matrix_t& o){
     return *this; 
 }
 
-matrix_t& matrix_t::operator+(const matrix_t& o) const {
+matrix_t matrix_t::operator+(const matrix_t& o) const {
     matrix_t mx(this -> r, this -> c); 
     ops(mx.data, this -> data, o.data, this -> r, this -> c, 1); 
     return mx;
 }
 
-matrix_t& matrix_t::operator-(const matrix_t& o) const {
+matrix_t matrix_t::operator+(const matrix_t& o){
+    matrix_t mx(this -> r, this -> c); 
+    ops(mx.data, this -> data, o.data, this -> r, this -> c, 1); 
+    return mx;
+}
+
+matrix_t matrix_t::operator-(const matrix_t& o) const {
     matrix_t mx(this -> r, this -> c); 
     ops(mx.data, this -> data, o.data, this -> r, this -> c, -1); 
     return mx;
 }
 
-matrix_t& matrix_t::operator*(long double s) const {
+matrix_t matrix_t::operator-(const matrix_t& o){
+    matrix_t mx(this -> r, this -> c); 
+    ops(mx.data, this -> data, o.data, this -> r, this -> c, -1); 
+    return mx;
+}
+
+
+matrix_t matrix_t::operator*(long double s) const {
+    matrix_t mx(this -> r, this -> c); 
+    opm(mx.data, this -> data, this -> r, this -> c, s); 
+    return mx;
+}
+
+matrix_t matrix_t::operator*(long double s){
     matrix_t mx(this -> r, this -> c); 
     opm(mx.data, this -> data, this -> r, this -> c, s); 
     return mx;
