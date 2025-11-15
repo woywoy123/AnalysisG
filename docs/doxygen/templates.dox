@@ -1,0 +1,215 @@
+/**
+ * @defgroup templates_module Templates Module
+ * @brief Code templates and examples for extending the framework
+ *
+ * The Templates module provides boilerplate code and examples for creating
+ * custom implementations of AnalysisG components. These templates serve as
+ * starting points for developing new analysis code, models, and event types.
+ *
+ * @section templates_components Template Types
+ *
+ * @subsection templates_events Event Templates
+ * **Location**: `src/AnalysisG/templates/events/`
+ *
+ * Templates for creating custom event types:
+ * - Event class structure
+ * - Particle registration
+ * - Event compilation logic
+ * - Custom property definitions
+ *
+ * **Template Files**:
+ * - Header files defining event interface
+ * - Implementation files with boilerplate
+ * - CMakeLists.txt for building
+ *
+ * **Usage**: Copy template and customize for specific analysis needs
+ *
+ * @subsection templates_particles Particle Templates
+ * **Location**: `src/AnalysisG/templates/particles/`
+ *
+ * Templates for custom particle types:
+ * - Particle class structure
+ * - Property definitions
+ * - Kinematic calculations
+ * - Particle identification
+ *
+ * **Common Properties**:
+ * - Four-momentum components
+ * - Charge, mass, PDG ID
+ * - Isolation variables
+ * - Quality flags
+ *
+ * @subsection templates_graphs Graph Templates
+ * **Location**: `src/AnalysisG/templates/graphs/`
+ *
+ * Templates for graph construction:
+ * - Graph building from events
+ * - Node feature extraction
+ * - Edge definition logic
+ * - Global feature computation
+ *
+ * **Customization Points**:
+ * - Node feature selection
+ * - Edge connectivity rules
+ * - Feature normalization
+ * - Graph-level aggregation
+ *
+ * @subsection templates_models Model Templates
+ * **Location**: `src/AnalysisG/templates/model/`
+ *
+ * Templates for neural network models:
+ * - Model class structure
+ * - Layer definitions
+ * - Forward pass implementation
+ * - Parameter initialization
+ *
+ * **Architecture Components**:
+ * - Input processing layers
+ * - Hidden layers
+ * - Output layers
+ * - Activation functions
+ *
+ * @subsection templates_metrics Metric Templates
+ * **Location**: `src/AnalysisG/templates/metrics/`
+ *
+ * Templates for custom metrics:
+ * - Metric class structure
+ * - Event-level computation
+ * - Batch aggregation
+ * - Final statistics
+ *
+ * **Metric Types**:
+ * - Classification metrics
+ * - Regression metrics
+ * - Physics-specific metrics
+ * - Custom loss functions
+ *
+ * @subsection templates_selections Selection Templates
+ * **Location**: `src/AnalysisG/templates/selections/`
+ *
+ * Templates for event selections:
+ * - Selection class structure
+ * - Cut definitions
+ * - Cut flow tracking
+ * - Efficiency calculations
+ *
+ * **Selection Features**:
+ * - Sequential cuts
+ * - Event categorization
+ * - Weight handling
+ * - Histogram filling
+ *
+ * @section templates_usage Using Templates
+ *
+ * @subsection templates_workflow Typical Workflow
+ *
+ * 1. **Copy Template**: Copy relevant template directory
+ * @code{.sh}
+ * cp -r templates/events/eventtemplate myanalysis/events/myevent
+ * @endcode
+ *
+ * 2. **Customize Names**: Update class names and namespaces
+ * @code{.cpp}
+ * // Change from:
+ * class EventTemplate : public event_template
+ * // To:
+ * class MyEvent : public event_template
+ * @endcode
+ *
+ * 3. **Implement Logic**: Add analysis-specific functionality
+ * @code{.cpp}
+ * void MyEvent::CompileEvent() {
+ *     // Custom event processing
+ *     compute_custom_variables();
+ *     apply_corrections();
+ * }
+ * @endcode
+ *
+ * 4. **Build and Test**: Compile and validate the implementation
+ * @code{.sh}
+ * mkdir build && cd build
+ * cmake ..
+ * make
+ * @endcode
+ *
+ * @section templates_structure Template Structure
+ *
+ * Each template typically includes:
+ * - **Header file** (`.h`): Class declaration and interface
+ * - **Implementation file** (`.cxx`): Method implementations
+ * - **CMakeLists.txt**: Build configuration
+ * - **Documentation** (`.md`): Usage instructions
+ *
+ * @section templates_best_practices Best Practices
+ *
+ * When using templates:
+ * - **Keep Original**: Don't modify template files directly
+ * - **Rename Properly**: Use consistent naming for all components
+ * - **Document Changes**: Add comments explaining customizations
+ * - **Follow Conventions**: Maintain framework coding style
+ * - **Test Thoroughly**: Validate custom implementations
+ *
+ * @section templates_examples Example Customizations
+ *
+ * @subsection templates_event_example Custom Event Example
+ * @code{.cpp}
+ * class TopPairEvent : public event_template {
+ *     public:
+ *         void CompileEvent() override {
+ *             // Find top quark candidates
+ *             find_top_candidates();
+ *             
+ *             // Compute invariant masses
+ *             compute_masses();
+ *             
+ *             // Apply event categorization
+ *             categorize_event();
+ *         }
+ *         
+ *     private:
+ *         void find_top_candidates();
+ *         void compute_masses();
+ *         void categorize_event();
+ *         
+ *         // Custom properties
+ *         double m_ttbar;
+ *         int n_bjets;
+ * };
+ * @endcode
+ *
+ * @subsection templates_metric_example Custom Metric Example
+ * @code{.cpp}
+ * class TopMassAccuracy : public metric_template {
+ *     public:
+ *         void event() override {
+ *             // Compute per-event accuracy
+ *             double true_mass = get_true_top_mass();
+ *             double pred_mass = get_predicted_top_mass();
+ *             double error = std::abs(true_mass - pred_mass);
+ *             
+ *             total_error += error;
+ *             n_events++;
+ *         }
+ *         
+ *         void end() override {
+ *             // Compute final metric
+ *             mean_error = total_error / n_events;
+ *         }
+ *         
+ *     private:
+ *         double total_error = 0.0;
+ *         int n_events = 0;
+ *         double mean_error = 0.0;
+ * };
+ * @endcode
+ *
+ * @note Templates are designed to be minimal starting points. Extensive
+ * customization is expected and encouraged for specific analysis needs.
+ *
+ * @see For template documentation files moved to deprecated folder:
+ * - `src/deprecated/eventtemplate.md`
+ * - `src/deprecated/modeltemplate.md`
+ * - `src/deprecated/selectiontemplate.md`
+ * - `src/deprecated/graphtemplate.md`
+ * - `src/deprecated/particletemplate.md`
+ */

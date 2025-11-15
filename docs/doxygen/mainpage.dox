@@ -1,0 +1,45 @@
+/**
+ * @mainpage AnalysisG - Graph Neural Network Analysis Framework
+ *
+ * @section intro_sec Introduction
+ *
+ * AnalysisG is a comprehensive Graph Neural Network Analysis Framework designed
+ * specifically for High Energy Physics (HEP) applications. The framework provides
+ * tools for event processing, graph construction, model development, and analysis
+ * in particle physics research.
+ *
+ * @section modules_sec Framework Modules
+ *
+ * The framework is organized into several key modules:
+ *
+ * @subsection core_modules Core Modules
+ * - @ref core_module "Core" - Core functionality and base templates
+ * - @ref events_module "Events" - Event processing and particle physics events
+ * - @ref graphs_module "Graphs" - Graph construction from physics events
+ * - @ref metrics_module "Metrics" - Performance metrics and evaluation
+ * - @ref models_module "Models" - Neural network model implementations
+ *
+ * @subsection infrastructure_modules Infrastructure Modules
+ * - @ref modules_module "Modules" - Framework infrastructure components
+ * - @ref pyc_module "Python-C++ Interface" - Python bindings and interfaces
+ * - @ref templates_module "Templates" - Code templates and examples
+ *
+ * @section features_sec Key Features
+ *
+ * - **Event Processing**: Flexible event processing pipeline for HEP data
+ * - **Graph Neural Networks**: Graph-based neural network architectures
+ * - **Model Training**: Complete training infrastructure with metrics
+ * - **Analysis Tools**: Comprehensive analysis and visualization tools
+ * - **Python Integration**: Seamless Python-C++ integration via Cython
+ *
+ * @section getting_started_sec Getting Started
+ *
+ * To get started with AnalysisG, explore the module documentation:
+ * - Start with @ref core_module for understanding base templates
+ * - See @ref events_module for event processing
+ * - Check @ref models_module for implementing neural networks
+ *
+ * @section license_sec License
+ *
+ * See LICENSE file in the repository root for licensing information.
+ */

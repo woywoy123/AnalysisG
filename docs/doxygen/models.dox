@@ -1,0 +1,126 @@
+/**
+ * @defgroup models_module Models Module
+ * @brief Neural network model implementations for graph-based learning
+ *
+ * The Models module contains implementations of Graph Neural Network (GNN)
+ * architectures designed for high-energy physics applications. These models
+ * process graph-structured data to make predictions about particle interactions
+ * and event properties.
+ *
+ * @section models_implementations Model Implementations
+ *
+ * @subsection model_grift GRIFT Model
+ * **Location**: `src/AnalysisG/models/grift/`
+ *
+ * Graph Reconstruction and Inference for Tops (GRIFT):
+ * - Message-passing GNN architecture
+ * - Top quark reconstruction from jets
+ * - Edge classification for particle assignment
+ * - Recurrent neural network components
+ *
+ * **Classes**:
+ * - `grift` - Main GRIFT model implementation
+ *
+ * **Architecture Components**:
+ * - **Node Encoder** (`node_encode`) - Encodes particle features
+ * - **Message Function** (`message`) - Computes edge messages
+ * - **RNN Layers**:
+ *   - `rnn_x` - Node feature processing
+ *   - `rnn_dx` - Delta feature encoding
+ *   - `rnn_txx` - Temporal feature integration
+ *   - `rnn_rxx` - Recurrent state updates
+ *   - `rnn_hxx` - Hidden state processing
+ * - **Output Layers**:
+ *   - `mlp_ntop` - Top multiplicity prediction
+ *   - `mlp_sig` - Edge classification sigmoid
+ *
+ * **Key Parameters**:
+ * - `_hidden` (int) - Hidden layer dimension (default: 1024)
+ * - `_xrec` (int) - Recurrent state dimension (default: 128)
+ * - `_xin` (int) - Input feature dimension (default: 6)
+ * - `_xout` (int) - Output dimension (default: 2)
+ * - `_xtop` (int) - Top multiplicity classes (default: 5)
+ * - `drop_out` (double) - Dropout rate (default: 0.01)
+ *
+ * **Control Flags**:
+ * - `is_mc` (bool) - Monte Carlo mode flag
+ * - `init` (bool) - Initialization status
+ * - `pagerank` (bool) - PageRank integration
+ *
+ * @subsection model_rgnn Recursive GNN Model
+ * **Location**: `src/AnalysisG/models/RecursiveGraphNeuralNetwork/`
+ *
+ * Recursive Graph Neural Network architecture:
+ * - Iterative message passing
+ * - Deep graph processing
+ * - Hierarchical feature learning
+ * - Recursive aggregation schemes
+ *
+ * **Classes**:
+ * - `RecursiveGraphNeuralNetwork` - Recursive GNN implementation
+ *
+ * **Features**:
+ * - Multiple message-passing iterations
+ * - Graph coarsening support
+ * - Attention mechanisms
+ * - Residual connections
+ *
+ * @section models_interface Model Interface
+ *
+ * All models inherit from `model_template` and implement:
+ * - `forward()` - Forward pass computation
+ * - `clone()` - Model cloning for multi-process training
+ *
+ * @section models_usage Usage Pattern
+ *
+ * @code{.cpp}
+ * // Create and configure model
+ * grift* model = new grift();
+ * model->_hidden = 512;
+ * model->drop_out = 0.1;
+ * 
+ * // Forward pass
+ * model->forward(&graph_data);
+ * 
+ * // Access predictions
+ * auto edge_scores = graph_data.edge_predictions;
+ * auto ntop_pred = graph_data.ntop_prediction;
+ * @endcode
+ *
+ * @section models_training Training Integration
+ *
+ * Models are designed to integrate with PyTorch training loops:
+ * - Automatic gradient computation
+ * - Mixed precision training support
+ * - Distributed training compatibility
+ * - Checkpoint saving and loading
+ *
+ * @section models_extending Custom Models
+ *
+ * To implement custom models:
+ * 1. Inherit from `model_template`
+ * 2. Define neural network layers as member variables
+ * 3. Implement `forward()` method with model logic
+ * 4. Implement `clone()` for distributed training
+ * 5. Register layer parameters for optimization
+ *
+ * Example:
+ * @code{.cpp}
+ * class MyModel : public model_template {
+ *     public:
+ *         void forward(graph_t* graph) override {
+ *             // Implement forward pass
+ *             auto x = (*rnn_encoder)(graph->node_features);
+ *             auto edges = (*edge_mlp)(graph->edge_features);
+ *             // ... model logic ...
+ *         }
+ *     
+ *     private:
+ *         torch::nn::Sequential* rnn_encoder = nullptr;
+ *         torch::nn::Sequential* edge_mlp = nullptr;
+ * };
+ * @endcode
+ *
+ * @note All models use LibTorch (PyTorch C++) for tensor operations and
+ * neural network primitives.
+ */
