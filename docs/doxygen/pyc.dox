@@ -1,0 +1,177 @@
+/**
+ * @defgroup pyc_module Python-C++ Interface Module
+ * @brief Python bindings and interface layer for C++ functionality
+ *
+ * The PyC module provides Python bindings for AnalysisG's C++ components using
+ * Cython. This enables high-performance C++ code to be accessed seamlessly from
+ * Python, combining Python's ease of use with C++'s computational efficiency.
+ *
+ * @section pyc_components Interface Components
+ *
+ * @subsection pyc_cutils C Utilities
+ * **Location**: `src/AnalysisG/pyc/cutils/`
+ *
+ * Low-level C utility bindings:
+ * - Memory management utilities
+ * - Basic data structures
+ * - Type conversion helpers
+ * - Buffer operations
+ *
+ * @subsection pyc_interface Interface Layer
+ * **Location**: `src/AnalysisG/pyc/interface/`
+ *
+ * Main Python-C++ interface:
+ * - Core class wrappers
+ * - Method bindings
+ * - Property accessors
+ * - Python-friendly APIs
+ *
+ * **Features**:
+ * - Automatic memory management
+ * - Exception handling
+ * - Type checking
+ * - Documentation strings
+ *
+ * @subsection pyc_operators Operators Module
+ * **Location**: `src/AnalysisG/pyc/operators/`
+ *
+ * Operator implementations for Python:
+ * - Mathematical operators
+ * - Comparison operators
+ * - Container operators
+ * - Special methods (__add__, __mul__, etc.)
+ *
+ * @subsection pyc_physics Physics Module
+ * **Location**: `src/AnalysisG/pyc/physics/`
+ *
+ * Physics calculation bindings:
+ * - Kinematic calculations
+ * - Four-vector operations
+ * - Invariant mass computations
+ * - Angular measurements
+ *
+ * **Common Functions**:
+ * - Transverse momentum (pT)
+ * - Pseudorapidity (η)
+ * - Azimuthal angle (φ)
+ * - ΔR distance
+ * - Invariant mass
+ *
+ * @subsection pyc_transform Transform Module
+ * **Location**: `src/AnalysisG/pyc/transform/`
+ *
+ * Data transformation utilities:
+ * - Coordinate transformations
+ * - Reference frame changes
+ * - Normalization operations
+ * - Feature scaling
+ *
+ * @subsection pyc_graph Graph Module
+ * **Location**: `src/AnalysisG/pyc/graph/`
+ *
+ * Graph operations for Python:
+ * - Graph construction from Python
+ * - Node/edge manipulation
+ * - Graph property access
+ * - Conversion to PyTorch Geometric format
+ *
+ * @subsection pyc_nusol Neutrino Solver Interface
+ * **Location**: `src/AnalysisG/pyc/nusol/`
+ *
+ * Python interface to neutrino reconstruction:
+ * - Solver configuration from Python
+ * - Solution access
+ * - Result visualization
+ * - CUDA solver interface (if available)
+ *
+ * **Submodules**:
+ * - `tensor/` - Tensor operations for neutrino solving
+ * - `cuda/` - CUDA-accelerated solving interface
+ *
+ * @section pyc_usage Usage Patterns
+ *
+ * @subsection pyc_basic_usage Basic Usage
+ *
+ * From Python, use AnalysisG components naturally:
+ * @code{.py}
+ * from AnalysisG import Event, Particle, Graph
+ * 
+ * # Create event
+ * event = Event()
+ * event.load_from_file("data.root")
+ * 
+ * # Access particles
+ * for particle in event.particles:
+ *     print(f"pT: {particle.pt}, eta: {particle.eta}")
+ * 
+ * # Build graph
+ * graph = Graph()
+ * graph.build(event)
+ * @endcode
+ *
+ * @subsection pyc_advanced Advanced Usage
+ *
+ * Advanced features with type annotations:
+ * @code{.py}
+ * from AnalysisG import NeutrinoSolver, PhysicsUtils
+ * 
+ * # Neutrino reconstruction
+ * solver = NeutrinoSolver()
+ * solutions = solver.solve(leptons, jets, met)
+ * 
+ * # Physics calculations
+ * dr = PhysicsUtils.delta_r(particle1, particle2)
+ * mass = PhysicsUtils.invariant_mass([p1, p2, p3])
+ * @endcode
+ *
+ * @section pyc_design Design Philosophy
+ *
+ * The PyC interface follows these principles:
+ * - **Pythonic**: Natural Python syntax and idioms
+ * - **Performance**: Minimal overhead for C++ calls
+ * - **Safety**: Type checking and error handling
+ * - **Memory**: Automatic memory management
+ * - **Compatibility**: Works with NumPy, PyTorch, etc.
+ *
+ * @section pyc_cython Cython Implementation
+ *
+ * The module uses Cython for binding:
+ * - `.pxd` files: C++ declarations (headers)
+ * - `.pyx` files: Implementation (source)
+ * - Automatic wrapping of C++ classes
+ * - Direct memory access for performance
+ *
+ * Benefits:
+ * - Near-zero overhead for simple calls
+ * - Native Python object integration
+ * - Automatic reference counting
+ * - Exception translation
+ *
+ * @section pyc_extending Adding New Bindings
+ *
+ * To add Python bindings for a C++ class:
+ * 
+ * 1. Declare in `.pxd` file:
+ * @code{.pyx}
+ * cdef extern from "myclass.h":
+ *     cdef cppclass MyClass:
+ *         void method()
+ *         int property
+ * @endcode
+ *
+ * 2. Wrap in `.pyx` file:
+ * @code{.pyx}
+ * cdef class PyMyClass:
+ *     cdef MyClass* c_instance
+ *     
+ *     def method(self):
+ *         self.c_instance.method()
+ *     
+ *     @property
+ *     def property(self):
+ *         return self.c_instance.property
+ * @endcode
+ *
+ * @note The PyC module is essential for Python users of AnalysisG, enabling
+ * the full framework functionality from Python scripts and Jupyter notebooks.
+ */
