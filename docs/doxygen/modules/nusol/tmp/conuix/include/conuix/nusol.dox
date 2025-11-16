@@ -15,64 +15,92 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - nuclx_t
- * - eig_t
- * - nuclx
+ * This file defines the following classes/structures:
+ * - **eig_t**
+ * - **nuclx_t**
+ * - **nuclx**
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - G()
- * - H()
- * - H_bar()
- * - H_tilde()
- * - P()
- * - critical_t0()
- * - dP_dL()
- * - dPl0()
- * - from_sx_sy()
- * - from_z_t()
- * - get_mt()
- * - get_mw()
- * - get_t()
- * - get_z()
- * - hyperbolic()
- * - mt()
- * - mw()
- * - polynomial()
- * - rotation()
- * - shifts()
+ * **nuclx methods:**
+ * - `nuclx()` - nuclx(particle_template* bjet, particle_template* lep)
+ * - `nuclx()` - ~nuclx()
+ * - `H()` - matrix_t H(double z, double t)
+ * - `H_tilde()` - matrix_t H_tilde(double z, double t)
+ * - `P()` - double P(double lambda, double t, double z)
+ * - `dP_dL()` - double dP_dL(double lambda, double t, double z)
+ * - `dPl0()` - eig_t dPl0(double t, double z)
+ * - `G()` - double G(double t)
+ * - `hyperbolic()` - matrix_t hyperbolic(matrix_t* cx, matrix_t* sx, double t)
+ * 
+ * **nuclx_t methods:**
+ * - `nuclx_t()` - nuclx_t(particle_template* jet, particle_template* lep)
+ * - `from_sx_sy()` - nuclx_t from_sx_sy(double _sx, double _sy)
+ * - `get_t()` - double get_t(double _vp, double _up, double _z)
+ * - `get_z()` - double get_z(double _sx, double _sy)
+ * - `from_z_t()` - nuclx_t from_z_t(double _z, double _t)
+ * - `get_mt()` - double get_mt(double _sx, double _sy)
+ * - `get_mw()` - double get_mw(double _sx)
+ * - `surface()` - void surface()
+ * - `shifts()` - void shifts()
+ * - `sx()` - void sx()
+ * - `sy()` - void sy()
+ * - `mw()` - void mw()
+ * - `mt()` - void mt()
+ * - `polynomial()` - void polynomial()
+ * - `critical_t0()` - void critical_t0()
+ * - `H_bar()` - void H_bar()
+ * - `H()` - void H()
+ * - `rotation()` - void rotation()
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - A
- * - D
- * - a_l
- * - a_t
- * - a_w
- * - a_x
- * - a_y
- * - beta_lep
- * - cos_t
- * - data
- * - e_lep
- * - i1
- * - jet
- * - lepton
- * - lmb1
- * - mass_lep
- * - mt_v
- * - p_lep
- * - phi_mu
- * - psi
+ * **eig_t variables:**
+ * - Private:
+ *   - `r1` (double)
+ *   - `i1` (double)
+ * 
+ * **nuclx variables:**
+ * - Private:
+ *   - `data` (nuclx_t*)
+ *   - `jet` (particle_template*)
+ *   - `lepton` (particle_template*)
+ * 
+ * **nuclx_t variables:**
+ * - Private:
+ *   - `u` (double)
+ *   - `u_p` (double)
+ *   - `t_v` (double)
+ *   - `sx_v` (double)
+ *   - `mt_v` (double)
+ *   - `A` (double)
+ *   - `D` (double)
+ *   - `s0x` (double)
+ *   - `psi` (double)
+ *   - `lmb1` (double)
+ *   - `a_x` (double)
+ *   - `a_y` (double)
+ *   - `a_w` (double)
+ *   - `a_t` (double)
+ *   - `a_l` (double)
+ *   - `t_0` (double)
+ *   - `beta_lep` (double)
+ *   - `mass_lep` (double)
+ *   - `p_lep` (double)
+ *   - `e_lep` (double)
+ *   - `phi_mu` (double)
+ *   - `cos_t` (double)
+ *   - `w` (double)
+ *   - `w2` (double)
+ *   - `wr` (double)
+ * 
  */
 
 /** @} */  // end of modules_nusol_tmp_conuix_include_conuix_nusol_h

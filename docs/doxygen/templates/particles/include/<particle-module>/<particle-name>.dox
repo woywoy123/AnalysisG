@@ -14,19 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - build()
- * - clone()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - key_variable
- */
-
 /** @} */  // end of templates_particles_include_<particle_module>_<particle_name>_h

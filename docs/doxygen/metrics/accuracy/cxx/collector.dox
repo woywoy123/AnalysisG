@@ -14,14 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - ins
- * - lamb
- * - nullptr
- * - out
- */
-
 /** @} */  // end of metrics_accuracy_cxx_collector_cxx

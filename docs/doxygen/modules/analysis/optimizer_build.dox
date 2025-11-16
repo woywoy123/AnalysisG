@@ -14,17 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - dx
- * - k_
- * - mr
- * - mx
- * - optim
- * - output
- * - plt
- */
-
 /** @} */  // end of modules_analysis_optimizer_build_cxx

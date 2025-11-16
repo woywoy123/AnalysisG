@@ -14,30 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - build_graph
- * - cached
- * - check_b
- * - check_m
- * - check_t
- * - collect
- * - cuda_memory
- * - data
- * - data_
- * - dev
- * - dev_
- * - e_data
- * - e_truth
- * - false
- * - flush
- * - flushM
- * - g_data
- * - g_truth
- * - gr
- * - grx
- */
-
 /** @} */  // end of modules_dataloader_cxx_dataloader_cxx

@@ -14,11 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - build()
- */
-
 /** @} */  // end of templates_particles_cxx_<particle_name>_cxx

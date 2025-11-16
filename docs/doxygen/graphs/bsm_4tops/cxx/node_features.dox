@@ -14,27 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - charge()
- * - energy()
- * - eta()
- * - is_bquark()
- * - is_lepton()
- * - is_neutrino()
- * - phi()
- * - pt()
- * - res_node()
- * - top_node()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - tx
- */
-
 /** @} */  // end of graphs_bsm_4tops_cxx_node_features_cxx

@@ -14,17 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - io_g
- * - mdl
- * - opc
- * - opx
- * - s
- * - sg
- * - threads_
- */
-
 /** @} */  // end of modules_analysis_analysis_cxx

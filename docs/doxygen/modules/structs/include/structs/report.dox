@@ -15,25 +15,25 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - metrics
- * - model_report
+ * This file defines the following classes/structures:
+ * - **model_report**
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - epoch
- * - is_complete
- * - iters
- * - k
- * - metrics
- * - num_evnt
- * - progress
- * - waiting_plot
+ * **model_report variables:**
+ * - Private:
+ *   - `k` (int)
+ *   - `epoch` (int)
+ *   - `is_complete` (bool)
+ *   - `waiting_plot` (metrics*)
+ *   - `iters` (long)
+ *   - `num_evnt` (long)
+ *   - `progress` (float)
+ * 
  */
 
 /** @} */  // end of modules_structs_include_structs_report_h

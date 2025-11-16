@@ -15,34 +15,36 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - settings_t
+ * This file defines the following classes/structures:
+ * - **settings_t**
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - batch_size
- * - build_cache
- * - continue_training
- * - debug_mode
- * - epochs
- * - evaluation
- * - fetch_meta
- * - kfolds
- * - logy
- * - max_range
- * - nbins
- * - num_examples
- * - pretagevents
- * - selection_root
- * - threads
- * - train_size
- * - training
- * - validation
+ * **settings_t variables:**
+ * - Private:
+ *   - `fetch_meta` (bool)
+ *   - `pretagevents` (bool)
+ *   - `epochs` (int)
+ *   - `kfolds` (int)
+ *   - `batch_size` (int)
+ *   - `num_examples` (int)
+ *   - `train_size` (float)
+ *   - `training` (bool)
+ *   - `validation` (bool)
+ *   - `evaluation` (bool)
+ *   - `continue_training` (bool)
+ *   - `nbins` (int)
+ *   - `max_range` (int)
+ *   - `logy` (bool)
+ *   - `threads` (int)
+ *   - `debug_mode` (bool)
+ *   - `build_cache` (bool)
+ *   - `selection_root` (bool)
+ * 
  */
 
 /** @} */  // end of modules_structs_include_structs_settings_h

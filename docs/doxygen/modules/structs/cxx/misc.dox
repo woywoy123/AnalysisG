@@ -14,13 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - msg
- * - out
- * - trig
- */
-
 /** @} */  // end of modules_structs_cxx_misc_cxx

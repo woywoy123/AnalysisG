@@ -15,20 +15,10 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - mx()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - lamb
- * - p
- * - pdg
- * - true
+ * **Standalone functions:**
+ * - `mx()`
  */
 
 /** @} */  // end of events_exp_mc20_cxx_particles_cxx

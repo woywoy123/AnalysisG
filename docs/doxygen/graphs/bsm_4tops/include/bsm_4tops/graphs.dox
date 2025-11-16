@@ -15,34 +15,82 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - graph_truthjets
- * - graph_tops
- * - graph_jets_detector_lep
- * - graph_truthjets_nonu
- * - graph_detector
- * - graph_jets_nonu
- * - graph_jets
- * - graph_children
+ * This file defines the following classes/structures:
+ * - **graph_tops** (inherits from graph_template)
+ * - **graph_children** (inherits from graph_template)
+ * - **graph_truthjets** (inherits from graph_template)
+ * - **graph_truthjets_nonu** (inherits from graph_template)
+ * - **graph_jets** (inherits from graph_template)
+ * - **graph_jets_nonu** (inherits from graph_template)
+ * - **graph_jets_detector_lep** (inherits from graph_template)
+ * - **graph_detector** (inherits from graph_template)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - CompileEvent()
- * - PreSelection()
- * - clone()
+ * **graph_children methods:**
+ * - `graph_children()` - graph_children()
+ * - `graph_children()` - virtual ~graph_children()
+ * - `clone()` - graph_template* clone() override
+ * - `CompileEvent()` - void CompileEvent() override
+ * 
+ * **graph_detector methods:**
+ * - `graph_detector()` - graph_detector()
+ * - `graph_detector()` - virtual ~graph_detector()
+ * - `clone()` - graph_template* clone() override
+ * - `CompileEvent()` - void CompileEvent() override
+ * - `PreSelection()` - bool PreSelection() override
+ * 
+ * **graph_jets methods:**
+ * - `graph_jets()` - graph_jets()
+ * - `graph_jets()` - virtual ~graph_jets()
+ * - `clone()` - graph_template* clone() override
+ * - `CompileEvent()` - void CompileEvent() override
+ * - `PreSelection()` - bool PreSelection() override
+ * 
+ * **graph_jets_detector_lep methods:**
+ * - `graph_jets_detector_lep()` - graph_jets_detector_lep()
+ * - `graph_jets_detector_lep()` - virtual ~graph_jets_detector_lep()
+ * - `clone()` - graph_template* clone() override
+ * - `CompileEvent()` - void CompileEvent() override
+ * 
+ * **graph_jets_nonu methods:**
+ * - `graph_jets_nonu()` - graph_jets_nonu()
+ * - `graph_jets_nonu()` - virtual ~graph_jets_nonu()
+ * - `clone()` - graph_template* clone() override
+ * - `CompileEvent()` - void CompileEvent() override
+ * 
+ * **graph_tops methods:**
+ * - `graph_tops()` - graph_tops()
+ * - `graph_tops()` - virtual ~graph_tops()
+ * - `clone()` - graph_template* clone() override
+ * - `CompileEvent()` - void CompileEvent() override
+ * 
+ * **graph_truthjets methods:**
+ * - `graph_truthjets()` - graph_truthjets()
+ * - `graph_truthjets()` - virtual ~graph_truthjets()
+ * - `clone()` - graph_template* clone() override
+ * - `CompileEvent()` - void CompileEvent() override
+ * 
+ * **graph_truthjets_nonu methods:**
+ * - `graph_truthjets_nonu()` - graph_truthjets_nonu()
+ * - `graph_truthjets_nonu()` - virtual ~graph_truthjets_nonu()
+ * - `clone()` - graph_template* clone() override
+ * - `CompileEvent()` - void CompileEvent() override
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - force_match
- * - num_cuda
+ * **graph_detector variables:**
+ * - Public:
+ *   - `force_match` (bool)
+ *   - `num_cuda` (int)
+ * 
  */
 
 /** @} */  // end of graphs_bsm_4tops_include_bsm_4tops_graphs_h

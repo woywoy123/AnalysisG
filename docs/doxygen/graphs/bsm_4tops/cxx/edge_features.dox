@@ -14,25 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - det_res_edge()
- * - det_top_edge()
- * - m_res_edge()
- * - m_top_edge()
- * - res_edge()
- * - top_edge()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - out
- * - p1
- * - p2
- */
-
 /** @} */  // end of graphs_bsm_4tops_cxx_edge_features_cxx

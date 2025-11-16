@@ -14,13 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - ok
- * - ptx
- * - px
- */
-
 /** @} */  // end of modules_metric_cxx_link_cxx

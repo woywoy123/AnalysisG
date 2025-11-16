@@ -15,32 +15,55 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - zprime
- * - top
- * - particle_gnn
+ * This file defines the following classes/structures:
+ * - **particle_gnn** (inherits from particle_template)
+ * - **top** (inherits from particle_template)
+ * - **zprime** (inherits from particle_template)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - build()
- * - clone()
- * - read()
- * - reduce()
+ * **particle_gnn methods:**
+ * - `particle_gnn()` - particle_gnn()
+ * - `particle_gnn()` - ~particle_gnn()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **top methods:**
+ * - `top()` - top()
+ * - `top()` - ~top()
+ * 
+ * **zprime methods:**
+ * - `zprime()` - zprime()
+ * - `zprime()` - ~zprime()
+ * 
+ * **Standalone functions:**
+ * - `reduce()`
+ * - `read()`
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - av_score
- * - lep
- * - n_leps
- * - n_nodes
+ * **particle_gnn variables:**
+ * - Public:
+ *   - `lep` (bool)
+ * 
+ * **top variables:**
+ * - Public:
+ *   - `av_score` (float)
+ *   - `n_leps` (int)
+ *   - `n_nodes` (int)
+ * 
+ * **zprime variables:**
+ * - Public:
+ *   - `av_score` (float)
+ *   - `n_leps` (int)
+ *   - `n_nodes` (int)
+ * 
  */
 
 /** @} */  // end of events_gnn_include_inference_gnn_particles_h

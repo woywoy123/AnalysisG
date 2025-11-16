@@ -14,17 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - 0
- * - data
- * - f
- * - mode
- * - output
- * - pairs
- * - true
- */
-
 /** @} */  // end of modules_io_cxx_hdf5_cxx

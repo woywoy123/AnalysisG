@@ -14,16 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - device_n
- * - in_feats
- * - mds
- * - mo
- * - o_feats
- * - true
- */
-
 /** @} */  // end of modules_model_cxx_model_configuration_cxx

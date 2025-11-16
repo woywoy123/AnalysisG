@@ -15,47 +15,118 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - lepton
- * - truthjet
- * - top
- * - muon
- * - jet
- * - parton
- * - zboson
- * - electron
+ * This file defines the following classes/structures:
+ * - **zboson** (inherits from particle_template)
+ * - **top** (inherits from particle_template)
+ * - **truthjet** (inherits from particle_template)
+ * - **jet** (inherits from particle_template)
+ * - **electron** (inherits from particle_template)
+ * - **muon** (inherits from particle_template)
+ * - **parton** (inherits from particle_template)
+ * - **lepton** (inherits from particle_template)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - build()
- * - clone()
- * - get_from_res()
- * - pmu()
- * - pmu_mass()
+ * **electron methods:**
+ * - `electron()` - electron()
+ * - `electron()` - virtual ~electron()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * - `get_from_res()` - static void get_from_res(bool* val, electron* el)
+ * 
+ * **jet methods:**
+ * - `jet()` - jet()
+ * - `jet()` - virtual ~jet()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * - `get_from_res()` - static void get_from_res(bool* val, jet* el)
+ * 
+ * **lepton methods:**
+ * - `lepton()` - lepton()
+ * - `lepton()` - virtual ~lepton()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **muon methods:**
+ * - `muon()` - muon()
+ * - `muon()` - virtual ~muon()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * - `get_from_res()` - static void get_from_res(bool* val, muon* el)
+ * 
+ * **parton methods:**
+ * - `parton()` - parton()
+ * - `parton()` - virtual ~parton()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **top methods:**
+ * - `top()` - top()
+ * - `top()` - virtual ~top()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **truthjet methods:**
+ * - `truthjet()` - truthjet()
+ * - `truthjet()` - virtual ~truthjet()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **zboson methods:**
+ * - `zboson()` - zboson()
+ * - `zboson()` - virtual ~zboson()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - ambiguity
- * - btag_77
- * - btag_85
- * - btag_90
- * - electron_index
- * - from_res
- * - jet_index
- * - muon_index
- * - pass_ecids
- * - prt
- * - sel_85
- * - top_index
- * - truthjet_index
+ * **electron variables:**
+ * - Public:
+ *   - `from_res` (cproperty<bool, electron>)
+ *   - `top_index` (int)
+ *   - `pass_ecids` (int)
+ * 
+ * **jet variables:**
+ * - Public:
+ *   - `from_res` (cproperty<bool, jet>)
+ *   - `top_index` (int)
+ *   - `btag_77` (bool)
+ *   - `btag_85` (bool)
+ *   - `btag_90` (bool)
+ *   - `sel_85` (bool)
+ * 
+ * **lepton variables:**
+ * - Public:
+ *   - `ambiguity` (int)
+ * 
+ * **muon variables:**
+ * - Public:
+ *   - `top_index` (int)
+ *   - `from_res` (cproperty<bool, muon>)
+ * 
+ * **parton variables:**
+ * - Public:
+ *   - `top_index` (int)
+ *   - `jet_index` (int)
+ *   - `truthjet_index` (int)
+ *   - `muon_index` (int)
+ *   - `electron_index` (int)
+ * 
+ * **top variables:**
+ * - Public:
+ *   - `from_res` (bool)
+ * 
+ * **truthjet variables:**
+ * - Public:
+ *   - `top_index` (int)
+ * 
  */
 
 /** @} */  // end of events_ssml_mc20_include_ssml_mc20_particles_h

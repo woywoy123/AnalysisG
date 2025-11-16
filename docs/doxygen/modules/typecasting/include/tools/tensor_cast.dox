@@ -14,28 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - as_primitive()
- * - nulls()
- * - scout_dim()
- * - standard()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - d
- * - dim_
- * - false
- * - l
- * - max_dim
- * - s
- * - ten
- * - tx
- */
-
 /** @} */  // end of modules_typecasting_include_tools_tensor_cast_h

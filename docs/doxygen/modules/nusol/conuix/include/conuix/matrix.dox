@@ -15,28 +15,32 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - matrix_t
+ * This file defines the following classes/structures:
+ * - **matrix_t**
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - T()
- * - dot()
- * - print()
+ * **matrix_t methods:**
+ * - `matrix_t()` - matrix_t(int _r = 3, int _c = 3)
+ * - `matrix_t()` - ~matrix_t()
+ * - `dot()` - matrix_t dot(const matrix_t& o)
+ * - `T()` - matrix_t T() const
+ * - `print()` - void print(int p = 9)
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - c
- * - operator
- * - r
+ * **matrix_t variables:**
+ * - Private:
+ *   - `r` (int)
+ *   - `c` (int)
+ * 
  */
 
 /** @} */  // end of modules_nusol_conuix_include_conuix_matrix_h

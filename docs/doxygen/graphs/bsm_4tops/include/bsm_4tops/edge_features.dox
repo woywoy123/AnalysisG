@@ -15,13 +15,13 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - det_res_edge()
- * - det_top_edge()
- * - res_edge()
- * - top_edge()
+ * **Standalone functions:**
+ * - `res_edge()`
+ * - `top_edge()`
+ * - `det_top_edge()`
+ * - `det_res_edge()`
  */
 
 /** @} */  // end of graphs_bsm_4tops_include_bsm_4tops_edge_features_h

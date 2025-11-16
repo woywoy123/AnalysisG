@@ -14,11 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - gr_o
- */
-
 /** @} */  // end of modules_analysis_graph_build_cxx

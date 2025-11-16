@@ -14,14 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - event
- * - evn
- * - gx
- * - true
- */
-
 /** @} */  // end of graphs_bsm_4tops_cxx_graphs_cxx

@@ -14,16 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - flush
- * - index
- * - lamb
- * - out
- * - tidx
- * - true
- */
-
 /** @} */  // end of modules_sampletracer_cxx_sampletracer_cxx

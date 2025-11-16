@@ -15,43 +15,38 @@
  */
 
 /**
- * @section classes Classes
+ * @section functions Functions and Methods
  * 
- * This file defines the following classes:
- * - mtx
- */
-
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - Rx()
- * - Ry()
- * - Rz()
- * - _arith()
- * - _copy()
- * - _det()
- * - _m_00()
- * - _m_01()
- * - _m_02()
- * - _m_10()
- * - _m_11()
- * - _m_12()
- * - _m_20()
- * - _m_21()
- * - _m_22()
- * - _scale()
- * - _trace()
- * - distance()
- * - factor_degenerate()
- * - find_roots()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - mtx
+ * **Standalone functions:**
+ * - `find_roots()`
+ * - `solve_cubic()`
+ * - `smatx()`
+ * - `Rz()`
+ * - `Ry()`
+ * - `Rx()`
+ * - `unit()`
+ * - `_arith()`
+ * - `_scale()`
+ * - `_copy()`
+ * - `_trace()`
+ * - `_m_00()`
+ * - `_m_01()`
+ * - `_m_02()`
+ * - `_m_10()`
+ * - `_m_11()`
+ * - `_m_12()`
+ * - `_m_20()`
+ * - `_m_21()`
+ * - `_m_22()`
+ * - `_det()`
+ * - `swap_index()`
+ * - `multisqrt()`
+ * - `factor_degenerate()`
+ * - `intersections_ellipse_line()`
+ * - `intersection_ellipses()`
+ * - `intersection_angle()`
+ * - `make_ellipse()`
+ * - `distance()`
  */
 
 /** @} */  // end of modules_nusol_ellipse_include_ellipse_solvers_h

@@ -14,24 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - dev
- * - dv
- * - dx
- * - gr
- * - init
- * - k
- * - mdl
- * - mtx
- * - mx
- * - out
- * - stx
- * - sx
- * - v
- * - xt
- */
-
 /** @} */  // end of modules_metric_cxx_base_cxx

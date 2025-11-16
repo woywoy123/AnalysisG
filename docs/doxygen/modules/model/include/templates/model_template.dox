@@ -15,71 +15,32 @@
  */
 
 /**
- * @section classes Classes
+ * @section functions Functions and Methods
  * 
- * This file defines the following classes:
- * - dataloader
- * - graph_t
- * - metrics
- * - model_report
- * - optimizer
- * - metric_template
- * - variable_t
- * - optimizer_params_t
- * - analysis
- * - model_template
- */
-
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - assign()
- * - check_features()
- * - clone()
- * - clone_settings()
- * - evaluation_mode()
- * - flush_outputs()
- * - forward()
- * - get_dev_index()
- * - get_name()
- * - import_settings()
- * - initialize()
- * - prediction_edge_feature()
- * - prediction_extra()
- * - prediction_graph_feature()
- * - prediction_node_feature()
- * - register_module()
- * - restore_state()
- * - save_state()
- * - set_dev_index()
- * - set_device()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - analysis
- * - dataloader
- * - device
- * - device_index
- * - e_optim
- * - enable_anomaly
- * - epoch
- * - graph_t
- * - inference_mode
- * - is_mc
- * - kfold
- * - m_batched
- * - m_device_idx
- * - m_loss
- * - metric_template
- * - metrics
- * - model_report
- * - model_template
- * - name
- * - optimizer
+ * **Standalone functions:**
+ * - `check_features()`
+ * - `set_optimizer()`
+ * - `initialize()`
+ * - `clone_settings()`
+ * - `import_settings()`
+ * - `forward()`
+ * - `register_module()`
+ * - `prediction_graph_feature()`
+ * - `prediction_node_feature()`
+ * - `prediction_edge_feature()`
+ * - `prediction_extra()`
+ * - `evaluation_mode()`
+ * - `save_state()`
+ * - `restore_state()`
+ * - `clone()`
+ * - `set_input_features()`
+ * - `set_output_features()`
+ * - `get_name()`
+ * - `set_name()`
+ * - `get_dev_index()`
+ * - `set_dev_index()`
+ * - `set_device()`
+ * - `flush_outputs()`
  */
 
 /** @} */  // end of modules_model_include_templates_model_template_h

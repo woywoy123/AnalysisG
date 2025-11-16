@@ -15,42 +15,40 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - analytics_t
- * - metrics
+ * This file defines the following classes/structures:
+ * - **analytics_t**
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - add_th1f_accuracy()
- * - add_th1f_loss()
- * - add_th1f_mass()
- * - build_th1f_accuracy()
- * - build_th1f_loss()
- * - build_th1f_mass()
- * - capture()
- * - destroy()
- * - dump_accuracy_plots()
- * - dump_loss_plots()
- * - dump_mass_plots()
- * - dump_plots()
- * - generic_painter()
- * - purge()
- * - register_model()
+ * **Standalone functions:**
+ * - `dump_plots()`
+ * - `dump_loss_plots()`
+ * - `dump_accuracy_plots()`
+ * - `dump_mass_plots()`
+ * - `register_model()`
+ * - `capture()`
+ * - `build_th1f_loss()`
+ * - `add_th1f_loss()`
+ * - `build_th1f_accuracy()`
+ * - `add_th1f_accuracy()`
+ * - `build_th1f_mass()`
+ * - `add_th1f_mass()`
+ * - `generic_painter()`
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - m_settings
- * - model
- * - report
- * - this_epoch
+ * **analytics_t variables:**
+ * - Private:
+ *   - `model` (model_template*)
+ *   - `report` (model_report*)
+ *   - `this_epoch` (int)
+ * 
  */
 
 /** @} */  // end of modules_metrics_include_metrics_metrics_h

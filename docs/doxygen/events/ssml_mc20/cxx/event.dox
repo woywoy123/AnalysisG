@@ -14,17 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - ex
- * - jt
- * - jx
- * - mx
- * - px
- * - t
- * - tmp
- */
-
 /** @} */  // end of events_ssml_mc20_cxx_event_cxx

@@ -14,22 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - copy()
- * - opm()
- * - ops()
- * - opt()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - nullptr
- * - out
- */
-
 /** @} */  // end of modules_nusol_conuix_cxx_memory_cxx

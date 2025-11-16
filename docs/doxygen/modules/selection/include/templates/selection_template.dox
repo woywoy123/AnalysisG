@@ -15,57 +15,61 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - selection_template
- * - container
+ * This file defines the following classes/structures:
+ * - **selection_template** (inherits from tools)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - CompileEvent()
- * - build()
- * - bulk_write()
- * - bulk_write_out()
- * - clone()
- * - contains()
- * - downcast()
- * - get_leptonics()
- * - merge()
- * - merger()
- * - safe_delete()
- * - selection()
- * - strategy()
- * - sum()
- * - switch_board()
- * - upcast()
- * - write()
+ * **selection_template methods:**
+ * - `selection_template()` - selection_template()
+ * - `selection_template()` - virtual ~selection_template()
+ * - `clone()` - virtual selection_template* clone()
+ * - `selection()` - virtual bool selection(event_template* ev)
+ * - `strategy()` - virtual bool strategy(event_template* ev)
+ * - `merge()` - virtual void merge(selection_template* sel)
+ * - `bulk_write()` - virtual void bulk_write(const long* idx, std::string* hx)
+ * - `write()` - virtual void write(std::vector<particle_template*>* particles, std::string _name, particle_enum attrs)
+ * - `switch_board()` - void switch_board(particle_enum attrs, particle_template* ptr, std::vector<std::vector<double>>* data)
+ * - `switch_board()` - void switch_board(particle_enum attrs, particle_template* ptr, std::vector<int>*    data)
+ * - `switch_board()` - void switch_board(particle_enum attrs, particle_template* ptr, std::vector<double>* data)
+ * - `switch_board()` - void switch_board(particle_enum attrs, particle_template* ptr, std::vector<bool>*   data)
+ * - `CompileEvent()` - bool CompileEvent()
+ * - `build()` - selection_template* build(event_template* ev)
+ * - `bulk_write_out()` - void bulk_write_out()
+ * - `merger()` - void merger(selection_template* sl2)
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - container
- * - data
- * - false
- * - handle
- * - hash
- * - index
- * - m_event
- * - meta_data
- * - name
- * - operator
- * - out
- * - p_bulk_write
- * - prt
- * - threadIdx
- * - tree
- * - true
- * - weight
+ * **selection_template variables:**
+ * - Public:
+ *   - `name` (cproperty<std::string, selection_template>)
+ *   - `hash` (cproperty<std::string, selection_template>)
+ *   - `tree` (cproperty<std::string, selection_template>)
+ *   - `weight` (cproperty<double, selection_template>)
+ *   - `index` (cproperty<long, selection_template>)
+ *   - `meta_data` (meta*)
+ *   - `data` (event_t)
+ *   - `out` (g*)
+ *   - `out` (return)
+ *   - `prt` (particle_template*)
+ *   - `out` (return)
+ *   - `out` (return)
+ *   - `true` (return)
+ *   - `false` (return)
+ *   - `threadIdx` (int)
+ * - Private:
+ *   - `container` (friend)
+ *   - `p_bulk_write` (bool)
+ *   - `handle` (write_t*)
+ *   - `m_event` (event_template*)
+ * 
  */
 
 /** @} */  // end of modules_selection_include_templates_selection_template_h

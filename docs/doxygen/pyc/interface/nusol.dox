@@ -14,20 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - bl
- * - bq
- * - i
- * - is_b
- * - is_l
- * - lp
- * - nu1
- * - nu2
- * - nx
- * - out
- */
-
 /** @} */  // end of pyc_interface_nusol_cxx

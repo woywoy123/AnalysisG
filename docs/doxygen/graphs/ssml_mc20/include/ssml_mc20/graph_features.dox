@@ -14,13 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - leptons
- * - neutrinos
- * - t_
- */
-
 /** @} */  // end of graphs_ssml_mc20_include_ssml_mc20_graph_features_h

@@ -15,41 +15,42 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - tools
+ * This file defines the following classes/structures:
+ * - **tools**
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - create_path()
- * - delete_path()
- * - ends_with()
- * - has_string()
- * - has_value()
- * - is_file()
- * - max()
- * - min()
- * - put()
- * - rename()
- * - replace()
- * - sum()
- * - unique_key()
+ * **tools methods:**
+ * - `tools()` - tools()
+ * - `tools()` - ~tools()
+ * - `create_path()` - static void create_path(std::string path)
+ * - `delete_path()` - static void delete_path(std::string path)
+ * - `is_file()` - static bool is_file(std::string path)
+ * - `rename()` - static void rename(std::string start, std::string target)
+ * - `replace()` - static void replace(std::string* in, std::string repl_str, std::string repl_with)
+ * - `has_string()` - static bool has_string(std::string* inpt, std::string trg)
+ * - `ends_with()` - static bool ends_with(std::string* inpt, std::string val)
+ * - `has_value()` - static bool has_value(std::vector<std::string>* data, std::string trg)
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - end
- * - ix
- * - kx
- * - n
- * - out
- * - v
+ * **tools variables:**
+ * - Public:
+ *   - `end` (size_t)
+ *   - `out` (return)
+ *   - `ix` (return)
+ *   - `ix` (return)
+ *   - `ix` (g)
+ *   - `ix` (return)
+ *   - `out` (return)
+ * 
  */
 
 /** @} */  // end of modules_tools_include_tools_tools_h

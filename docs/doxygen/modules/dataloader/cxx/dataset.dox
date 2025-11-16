@@ -14,24 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - all
- * - fx
- * - gr
- * - index
- * - io_g
- * - k
- * - kf
- * - kv
- * - lamb
- * - len
- * - nullptr
- * - out
- * - output
- * - true
- */
-
 /** @} */  // end of modules_dataloader_cxx_dataset_cxx

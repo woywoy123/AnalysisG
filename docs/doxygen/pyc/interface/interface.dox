@@ -14,25 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - build_tensor()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - inb
- * - inx
- * - ix
- * - iy
- * - nx
- * - o
- * - out
- * - p
- */
-
 /** @} */  // end of pyc_interface_interface_cxx

@@ -14,15 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - lambb
- * - lambd
- * - lambi
- * - lambv
- * - vo
- */
-
 /** @} */  // end of modules_lossfx_cxx_switching_cxx

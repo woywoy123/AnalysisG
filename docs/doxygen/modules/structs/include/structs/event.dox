@@ -15,18 +15,20 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - event_t
+ * This file defines the following classes/structures:
+ * - **event_t**
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - index
- * - weight
+ * **event_t variables:**
+ * - Private:
+ *   - `weight` (double)
+ *   - `index` (long)
+ * 
  */
 
 /** @} */  // end of modules_structs_include_structs_event_h

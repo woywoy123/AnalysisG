@@ -15,40 +15,53 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - odeRK
- * - recon_t
- * - ellipse_t
+ * This file defines the following classes/structures:
+ * - **ellipse_t**
+ * - **recon_t**
+ * - **odeRK** (inherits from tools)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - ghost_angle()
- * - print()
- * - residual()
- * - rk4()
- * - solve()
- * - solve_z_phi()
- * - update_t()
+ * **ellipse_t methods:**
+ * - `print()` - void print()
+ * 
+ * **odeRK methods:**
+ * - `odeRK()` - odeRK(std::vector<multisol*>* sols, vec3 met, int iter, double step)
+ * - `odeRK()` - ~odeRK()
+ * - `solve()` - void solve()
+ * - `rk4()` - void rk4(double dt)
+ * - `update_t()` - void   update_t()
+ * - `solve_z_phi()` - double solve_z_phi()
+ * - `residual()` - double residual(std::vector<double> wg, std::vector<double> phx)
+ * - `ghost_angle()` - double ghost_angle(int nui)
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - ct
- * - dt_
- * - is_valid
- * - itr
- * - met_
- * - nsx
- * - residual
- * - t
- * - z
+ * **ellipse_t variables:**
+ * - Private:
+ *   - `t` (double)
+ *   - `z` (double)
+ * 
+ * **odeRK variables:**
+ * - Private:
+ *   - `met_` (vec3)
+ *   - `itr` (int)
+ *   - `nsx` (int)
+ *   - `dt_` (double)
+ *   - `ct` (double)
+ * 
+ * **recon_t variables:**
+ * - Private:
+ *   - `is_valid` (bool)
+ *   - `residual` (double)
+ * 
  */
 
 /** @} */  // end of modules_nusol_tmp_multisol_include_multisol__odeRK_h

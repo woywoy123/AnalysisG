@@ -14,22 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - contract_data()
- * - merge_data()
- * - release_vector()
- * - reserve_count()
- * - sum_data()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - ix
- */
-
 /** @} */  // end of modules_typecasting_include_tools_merge_cast_h

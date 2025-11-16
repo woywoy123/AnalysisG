@@ -14,13 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - leptons
- * - neutrinos
- * - num_leps
- */
-
 /** @} */  // end of graphs_exp_mc20_include_exp_mc20_graph_features_h

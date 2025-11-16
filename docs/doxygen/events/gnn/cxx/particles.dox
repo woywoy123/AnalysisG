@@ -14,11 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - p
- */
-
 /** @} */  // end of events_gnn_cxx_particles_cxx

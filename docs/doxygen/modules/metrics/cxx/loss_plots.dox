@@ -14,20 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - an
- * - can
- * - ep
- * - ev_
- * - gr
- * - k_
- * - mtg
- * - output
- * - tr_
- * - va_
- */
-
 /** @} */  // end of modules_metrics_cxx_loss_plots_cxx

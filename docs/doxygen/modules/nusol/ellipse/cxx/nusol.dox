@@ -14,39 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - costheta()
- * - pow()
- * - sintheta()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - A
- * - A0
- * - A1
- * - A2
- * - A_sy
- * - A_x1
- * - B
- * - B0
- * - B1
- * - B2
- * - B_sy
- * - B_x1
- * - C
- * - C_sub
- * - C_sy
- * - C_x1
- * - Cx
- * - Cy
- * - D0
- * - D1
- */
-
 /** @} */  // end of modules_nusol_ellipse_cxx_nusol_cxx

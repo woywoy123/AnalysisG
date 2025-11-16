@@ -14,21 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - avg
- * - event_f
- * - evn
- * - ext
- * - idx
- * - lamb
- * - meta_
- * - nevents
- * - num_ev
- * - num_evn
- * - rdr
- */
-
 /** @} */  // end of modules_analysis_event_build_cxx

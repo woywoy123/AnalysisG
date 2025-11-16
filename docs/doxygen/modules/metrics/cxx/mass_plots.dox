@@ -14,20 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - an
- * - can
- * - di
- * - dx
- * - h_sum
- * - legend
- * - mxr
- * - nb
- * - rp
- * - truth_
- */
-
 /** @} */  // end of modules_metrics_cxx_mass_plots_cxx

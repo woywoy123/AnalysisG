@@ -15,40 +15,47 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - entry_t
- * - container
+ * This file defines the following classes/structures:
+ * - **entry_t**
+ * - **container** (inherits from tools)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - add_entry()
- * - add_event_template()
- * - add_graph_template()
- * - add_meta_data()
- * - add_selection_template()
- * - compile()
- * - destroy()
- * - fill_selections()
- * - get_events()
- * - get_meta_data()
- * - has_event()
- * - has_graph()
- * - has_selection()
- * - init()
- * - len()
- * - populate_dataloader()
+ * **container methods:**
+ * - `container()` - container()
+ * - `container()` - ~container()
+ * - `add_meta_data()` - void add_meta_data(meta*, std::string)
+ * - `get_meta_data()` - meta* get_meta_data()
+ * - `add_selection_template()` - bool add_selection_template(selection_template*)
+ * - `add_event_template()` - bool add_event_template(event_template*, std::string label)
+ * - `add_graph_template()` - bool add_graph_template(graph_template*, std::string label)
+ * - `fill_selections()` - void fill_selections(std::map<std::string, selection_template*>* inpt)
+ * - `get_events()` - void get_events(std::vector<event_template*>*, std::string label)
+ * - `populate_dataloader()` - void populate_dataloader(dataloader* dl)
+ * - `compile()` - void compile(size_t* len, int threadIdx)
+ * - `len()` - size_t len()
+ * - `add_entry()` - entry_t* add_entry(std::string hash)
+ * 
+ * **entry_t methods:**
+ * - `init()` - void init()
+ * - `destroy()` - void destroy()
+ * - `has_event()` - bool has_event(event_template* ev)
+ * - `has_graph()` - bool has_graph(graph_template* gr)
+ * - `has_selection()` - bool has_selection(selection_template* sel)
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - meta_data
+ * **container variables:**
+ * - Public:
+ *   - `meta_data` (meta*)
+ * 
  */
 
 /** @} */  // end of modules_container_include_container_container_h

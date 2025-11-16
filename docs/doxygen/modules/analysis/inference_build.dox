@@ -14,21 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - dev_i
- * - dx
- * - index
- * - md
- * - mds
- * - mdx
- * - modls
- * - para
- * - smpls
- * - sx
- * - threads_
- */
-
 /** @} */  // end of modules_analysis_inference_build_cxx

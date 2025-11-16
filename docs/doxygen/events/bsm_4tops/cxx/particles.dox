@@ -14,13 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - p
- * - t
- * - tp
- */
-
 /** @} */  // end of events_bsm_4tops_cxx_particles_cxx

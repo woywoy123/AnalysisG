@@ -14,12 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - t
- * - wr
- */
-
 /** @} */  // end of modules_structs_cxx_variable_cxx

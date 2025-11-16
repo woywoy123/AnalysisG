@@ -14,30 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - __lf
- * - _lf
- * - br
- * - dir
- * - dt
- * - found
- * - fx
- * - has
- * - inx
- * - is_th1f
- * - is_ttree
- * - l
- * - mtx
- * - nev_
- * - obj
- * - opc
- * - opx
- * - output
- * - tr
- * - true
- */
-
 /** @} */  // end of modules_io_cxx_root_cxx

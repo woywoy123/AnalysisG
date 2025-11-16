@@ -15,52 +15,127 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - truthjet
- * - top
- * - muon
- * - jet
- * - jetparton
- * - truthjetparton
- * - top_children
- * - electron
+ * This file defines the following classes/structures:
+ * - **top** (inherits from particle_template)
+ * - **top_children** (inherits from particle_template)
+ * - **truthjet** (inherits from particle_template)
+ * - **truthjetparton** (inherits from particle_template)
+ * - **jet** (inherits from particle_template)
+ * - **jetparton** (inherits from particle_template)
+ * - **electron** (inherits from particle_template)
+ * - **muon** (inherits from particle_template)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - assign_vector()
- * - build()
- * - clone()
+ * **electron methods:**
+ * - `electron()` - electron()
+ * - `electron()` - virtual ~electron()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **jet methods:**
+ * - `jet()` - jet()
+ * - `jet()` - virtual ~jet()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **jetparton methods:**
+ * - `jetparton()` - jetparton()
+ * - `jetparton()` - virtual ~jetparton()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **muon methods:**
+ * - `muon()` - muon()
+ * - `muon()` - virtual ~muon()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **top methods:**
+ * - `top()` - top()
+ * - `top()` - virtual ~top()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **top_children methods:**
+ * - `top_children()` - top_children()
+ * - `top_children()` - virtual ~top_children()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **truthjet methods:**
+ * - `truthjet()` - truthjet()
+ * - `truthjet()` - virtual ~truthjet()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **truthjetparton methods:**
+ * - `truthjetparton()` - truthjetparton()
+ * - `truthjetparton()` - virtual ~truthjetparton()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - DL1_b
- * - DL1_c
- * - DL1_u
- * - DL1r_b
- * - DL1r_c
- * - DL1r_u
- * - btag_DL1_60
- * - btag_DL1_70
- * - btag_DL1_77
- * - btag_DL1_85
- * - btag_DL1r_60
- * - btag_DL1r_70
- * - btag_DL1r_77
- * - btag_DL1r_85
- * - from_res
- * - jet
- * - jet_index
- * - jetparton
- * - p
- * - status
+ * **electron variables:**
+ * - Public:
+ *   - `from_res` (bool)
+ *   - `top_index` (int)
+ * 
+ * **jet variables:**
+ * - Public:
+ *   - `from_res` (cproperty<bool, jet>)
+ *   - `btag_DL1r_60` (bool)
+ *   - `btag_DL1_60` (bool)
+ *   - `btag_DL1r_70` (bool)
+ *   - `btag_DL1_70` (bool)
+ *   - `btag_DL1r_77` (bool)
+ *   - `btag_DL1_77` (bool)
+ *   - `btag_DL1r_85` (bool)
+ *   - `btag_DL1_85` (bool)
+ *   - `DL1_b` (float)
+ *   - `DL1_c` (float)
+ *   - `DL1_u` (float)
+ *   - `DL1r_b` (float)
+ *   - `DL1r_c` (float)
+ *   - `DL1r_u` (float)
+ * 
+ * **jetparton variables:**
+ * - Public:
+ *   - `jet_index` (int)
+ * 
+ * **muon variables:**
+ * - Public:
+ *   - `from_res` (bool)
+ *   - `top_index` (int)
+ * 
+ * **top variables:**
+ * - Public:
+ *   - `from_res` (bool)
+ *   - `status` (int)
+ * 
+ * **top_children variables:**
+ * - Public:
+ *   - `top_index` (int)
+ *   - `from_res` (cproperty<bool, top_children>)
+ * 
+ * **truthjet variables:**
+ * - Public:
+ *   - `top_quark_count` (int)
+ *   - `w_boson_count` (int)
+ *   - `from_res` (cproperty<bool, truthjet>)
+ * 
+ * **truthjetparton variables:**
+ * - Public:
+ *   - `truthjet_index` (int)
+ * 
  */
 
 /** @} */  // end of events_bsm_4tops_include_bsm_4tops_particles_h

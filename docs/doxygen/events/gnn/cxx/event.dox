@@ -14,25 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - alpha
- * - cluster
- * - dst
- * - n_nodes
- * - norm
- * - ptr
- * - res_ij
- * - sc
- * - sm
- * - src
- * - sx
- * - t
- * - timeout
- * - tl
- * - top_ij
- */
-
 /** @} */  // end of events_gnn_cxx_event_cxx

@@ -14,30 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - bi
- * - content
- * - dir
- * - ds
- * - ei
- * - f
- * - gr
- * - index
- * - l
- * - last_ep
- * - md
- * - mk
- * - mr
- * - mtx
- * - mx
- * - ni
- * - settings
- * - t
- * - tmp
- * - tx
- */
-
 /** @} */  // end of modules_analysis_methods_cxx

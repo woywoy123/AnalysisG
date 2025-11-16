@@ -14,14 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - p1
- * - p2
- * - t
- * - x
- */
-
 /** @} */  // end of graphs_ssml_mc20_include_ssml_mc20_edge_features_h

@@ -15,40 +15,72 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - bsc_t
+ * This file defines the following classes/structures:
+ * - **bsc_t**
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - _getalt()
- * - buildAll()
- * - buildDict()
- * - buildPCM()
- * - element()
- * - flush_buffer()
- * - registerInclude()
- * - root_type_translate()
+ * **bsc_t methods:**
+ * - `bsc_t()` - bsc_t()
+ * - `bsc_t()` - virtual ~bsc_t()
+ * - `flush_buffer()` - void flush_buffer()
+ * - `root_type_translate()` - data_enum root_type_translate(std::string*)
+ * - `element()` - bool element(std::vector<std::vector<std::vector<float>>>*  el)
+ * - `element()` - bool element(std::vector<std::vector<std::vector<double>>>* el)
+ * - `element()` - bool element(std::vector<std::vector<std::vector<long>>>*   el)
+ * - `element()` - bool element(std::vector<std::vector<std::vector<int>>>*    el)
+ * - `element()` - bool element(std::vector<std::vector<std::vector<bool>>>*   el)
+ * - `element()` - bool element(std::vector<std::vector<float>>*  el)
+ * - `element()` - bool element(std::vector<std::vector<double>>* el)
+ * - `element()` - bool element(std::vector<std::vector<long>>*   el)
+ * - `element()` - bool element(std::vector<std::vector<int>>*    el)
+ * - `element()` - bool element(std::vector<std::vector<bool>>*   el)
+ * - `element()` - bool element(std::vector<float>* el)
+ * - `element()` - bool element(std::vector<double>* el)
+ * - `element()` - bool element(std::vector<long>* el)
+ * - `element()` - bool element(std::vector<int>* el)
+ * - `element()` - bool element(std::vector<char>* el)
+ * - `element()` - bool element(std::vector<bool>* el)
+ * - `element()` - bool element(double* el)
+ * - `element()` - bool element(float* el)
+ * - `element()` - bool element(long* el)
+ * - `element()` - bool element(int* el)
+ * - `element()` - bool element(bool* el)
+ * - `element()` - bool element(unsigned long long* el)
+ * - `element()` - bool element(unsigned int* el)
+ * - `element()` - bool element(char* el)
+ * 
+ * **Standalone functions:**
+ * - `buildPCM()`
+ * - `registerInclude()`
+ * - `buildDict()`
+ * - `buildAll()`
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - b
- * - c
- * - clear
- * - d
- * - f
- * - i
- * - index
- * - l
- * - true
- * - type
+ * **bsc_t variables:**
+ * - Public:
+ *   - `d` (double*)
+ *   - `l` (long*)
+ *   - `f` (float*)
+ *   - `i` (int*)
+ *   - `b` (bool*)
+ *   - `c` (char*)
+ *   - `index` (long)
+ *   - `clear` (bool)
+ *   - `type` (data_enum)
+ *   - `true` (return)
+ *   - `true` (return)
+ * - Private:
+ *   - `true` (return)
+ *   - `true` (return)
+ * 
  */
 
 /** @} */  // end of modules_structs_include_structs_base_h

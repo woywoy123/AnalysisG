@@ -14,14 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - p
- * - p_
- * - pl
- * - sum
- */
-
 /** @} */  // end of modules_particle_cxx_physics_cxx

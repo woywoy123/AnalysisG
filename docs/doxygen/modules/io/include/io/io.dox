@@ -15,38 +15,21 @@
  */
 
 /**
- * @section classes Classes
+ * @section functions Functions and Methods
  * 
- * This file defines the following classes:
- * - io
- */
-
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - check_root_file_paths()
- * - end()
- * - file_info()
- * - import_settings()
- * - member()
- * - read()
- * - root_begin()
- * - root_end()
- * - root_key_paths()
- * - scan_keys()
- * - start()
- * - trigger_pcm()
- * - write()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - enable_pyami
- * - file_root
- * - pairs
+ * **Standalone functions:**
+ * - `read()`
+ * - `start()`
+ * - `end()`
+ * - `check_root_file_paths()`
+ * - `scan_keys()`
+ * - `root_begin()`
+ * - `root_end()`
+ * - `trigger_pcm()`
+ * - `import_settings()`
+ * - `member()`
+ * - `file_info()`
+ * - `root_key_paths()`
  */
 
 /** @} */  // end of modules_io_include_io_io_h

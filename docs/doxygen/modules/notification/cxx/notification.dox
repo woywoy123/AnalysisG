@@ -15,29 +15,10 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - int()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - cwhite
- * - exec
- * - idx
- * - lEmptyStart
- * - lFilledStart
- * - ln
- * - n
- * - prg
- * - prgs
- * - s
- * - t
- * - xl
- * - xp
+ * **Standalone functions:**
+ * - `int()`
  */
 
 /** @} */  // end of modules_notification_cxx_notification_cxx

@@ -14,19 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - _transfer()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - out
- * - true
- */
-
 /** @} */  // end of modules_typecasting_cxx_typecasting_cxx

@@ -15,31 +15,36 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - recursivegraphneuralnetwork
+ * This file defines the following classes/structures:
+ * - **recursivegraphneuralnetwork** (inherits from model_template)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - clone()
- * - forward()
+ * **recursivegraphneuralnetwork methods:**
+ * - `recursivegraphneuralnetwork()` - recursivegraphneuralnetwork(int rep = 1024, double dpt = 0.1)
+ * - `recursivegraphneuralnetwork()` - ~recursivegraphneuralnetwork()
+ * - `clone()` - model_template* clone() override
+ * - `forward()` - void forward(graph_t*) override
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - _dx
- * - _output
- * - _rep
- * - _x
- * - drop_out
- * - is_mc
- * - res_mass
+ * **recursivegraphneuralnetwork variables:**
+ * - Public:
+ *   - `_dx` (int)
+ *   - `_x` (int)
+ *   - `_output` (int)
+ *   - `_rep` (int)
+ *   - `res_mass` (double)
+ *   - `drop_out` (double)
+ *   - `is_mc` (bool)
+ * 
  */
 
 /** @} */  // end of models_RecursiveGraphNeuralNetwork_include_models_RecursiveGraphNeuralNetwork_h

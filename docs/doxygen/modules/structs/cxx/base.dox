@@ -14,23 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - buildAll()
- * - buildDict()
- * - buildPCM()
- * - count()
- * - registerInclude()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - count
- * - vec
- */
-
 /** @} */  // end of modules_structs_cxx_base_cxx

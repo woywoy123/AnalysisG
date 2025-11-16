@@ -15,33 +15,37 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - particle_template
- * - conuic
+ * This file defines the following classes/structures:
+ * - **conuic**
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - debug()
- * - get_RT()
- * - solve()
+ * **conuic methods:**
+ * - `conuic()` - conuic(particle_template* jet, particle_template* lep)
+ * - `conuic()` - ~conuic()
+ * - `get_RT()` - matrix_t get_RT()
+ * - `debug()` - void debug()
+ * - `solve()` - void solve()
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - _jet
- * - _lep
- * - cache
- * - l
- * - particle_template
- * - t
- * - z
+ * **conuic variables:**
+ * - Public:
+ *   - `t` (cproperty<long double, conuic>)
+ *   - `z` (cproperty<long double, conuic>)
+ *   - `l` (cproperty<long double, conuic>)
+ * - Private:
+ *   - `cache` (atomics_t*)
+ *   - `_jet` (particle_template*)
+ *   - `_lep` (particle_template*)
+ * 
  */
 
 /** @} */  // end of modules_nusol_conuix_include_conuix_conuic_h

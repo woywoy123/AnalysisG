@@ -15,42 +15,56 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - write_t
- * - variable_t
+ * This file defines the following classes/structures:
+ * - **variable_t** (inherits from bsc_t)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - _transfer()
- * - add_data()
- * - build_switch()
- * - create_meta()
- * - process()
- * - tensor_to_vector()
- * - tensor_vector()
+ * **variable_t methods:**
+ * - `variable_t()` - variable_t()
+ * - `variable_t()` - variable_t(bool use_external)
+ * - `variable_t()` - ~variable_t() override
+ * - `create_meta()` - void create_meta(meta_t* mt)
+ * - `build_switch()` - void build_switch(size_t s, torch::Tensor* tx)
+ * - `process()` - void process(torch::Tensor* data, std::string* varname, TTree* tr)
+ * - `process()` - void process(std::vector<std::vector<float>>*  data, std::string* varname, TTree* tr)
+ * - `process()` - void process(std::vector<std::vector<double>>* data, std::string* varname, TTree* tr)
+ * - `process()` - void process(std::vector<std::vector<long>>*   data, std::string* varname, TTree* tr)
+ * - `process()` - void process(std::vector<std::vector<int>>*    data, std::string* varname, TTree* tr)
+ * - `process()` - void process(std::vector<std::vector<bool>>*   data, std::string* varname, TTree* tr)
+ * - `process()` - void process(std::vector<float>*  data, std::string* varname, TTree* tr)
+ * - `process()` - void process(std::vector<double>* data, std::string* varname, TTree* tr)
+ * - `process()` - void process(std::vector<long>*   data, std::string* varname, TTree* tr)
+ * - `process()` - void process(std::vector<int>*    data, std::string* varname, TTree* tr)
+ * - `process()` - void process(std::vector<bool>*   data, std::string* varname, TTree* tr)
+ * - `process()` - void process(float*  data, std::string* varname, TTree* tr)
+ * - `process()` - void process(double* data, std::string* varname, TTree* tr)
+ * - `process()` - void process(long*   data, std::string* varname, TTree* tr)
+ * - `process()` - void process(int*    data, std::string* varname, TTree* tr)
+ * - `process()` - void process(bool*   data, std::string* varname, TTree* tr)
+ * 
+ * **Standalone functions:**
+ * - `_transfer()`
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - end
- * - failed_branch
- * - is_triggered
- * - mtx
- * - n
- * - out
- * - tb
- * - tmp
- * - true
- * - tt
- * - use_external
- * - write_t
+ * **variable_t variables:**
+ * - Public:
+ *   - `failed_branch` (bool)
+ * - Private:
+ *   - `write_t` (friend)
+ *   - `use_external` (bool)
+ *   - `is_triggered` (bool)
+ *   - `tb` (TBranch*)
+ *   - `tt` (TTree*)
+ *   - `mtx` (meta_t*)
+ * 
  */
 
 /** @} */  // end of modules_typecasting_include_tools_vector_cast_h

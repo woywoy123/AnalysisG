@@ -15,41 +15,11 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - aug()
- * - ic()
- * - invert_matrix()
- * - mx()
- * - print()
- * - solve_linear()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - M_regularized
- * - a
- * - a00
- * - a10
- * - a20
- * - b
- * - c
- * - c00
- * - c11
- * - c22
- * - d
- * - det_
- * - f
- * - inv_det
- * - max_val
- * - mx
- * - n
- * - pr
- * - size
- * - solx
+ * **Standalone functions:**
+ * - `mx()`
+ * - `aug()`
  */
 
 /** @} */  // end of modules_nusol_tmp_multisol_cxx_matrix_cxx

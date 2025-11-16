@@ -14,14 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - data_
- * - gr
- * - idx
- * - n_nodes
- */
-
 /** @} */  // end of modules_graph_cxx_graph_template_cxx

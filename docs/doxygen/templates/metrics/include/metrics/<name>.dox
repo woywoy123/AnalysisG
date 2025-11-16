@@ -14,15 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - batch()
- * - define_metric()
- * - define_variables()
- * - end()
- * - event()
- */
-
 /** @} */  // end of templates_metrics_include_metrics_<name>_h

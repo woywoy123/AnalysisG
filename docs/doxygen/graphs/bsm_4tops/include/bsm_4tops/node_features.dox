@@ -15,19 +15,19 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - charge()
- * - energy()
- * - eta()
- * - is_bquark()
- * - is_lepton()
- * - is_neutrino()
- * - phi()
- * - pt()
- * - res_node()
- * - top_node()
+ * **Standalone functions:**
+ * - `res_node()`
+ * - `top_node()`
+ * - `pt()`
+ * - `eta()`
+ * - `phi()`
+ * - `energy()`
+ * - `charge()`
+ * - `is_lepton()`
+ * - `is_bquark()`
+ * - `is_neutrino()`
  */
 
 /** @} */  // end of graphs_bsm_4tops_include_bsm_4tops_node_features_h

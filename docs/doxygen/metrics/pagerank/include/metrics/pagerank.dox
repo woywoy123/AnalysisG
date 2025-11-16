@@ -15,58 +15,88 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - collector
- * - kinematic_t
- * - pagerank_metric
- * - sample_t
- * - meta_event_t
+ * This file defines the following classes/structures:
+ * - **pagerank_metric** (inherits from metric_template)
+ * - **kinematic_t**
+ * - **meta_event_t**
+ * - **sample_t**
+ * - **collector** (inherits from tools)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - add_file_map()
- * - add_meta()
- * - add_nominal()
- * - add_pagerank()
- * - add_process()
- * - add_truth()
- * - batch()
- * - clone()
- * - create_kinematic()
- * - define_metric()
- * - define_variables()
- * - end()
- * - event()
- * - pagerank()
- * - set_index()
+ * **collector methods:**
+ * - `collector()` - collector()
+ * - `collector()` - ~collector()
+ * - `set_index()` - void set_index(long idx_)
+ * - `create_kinematic()` - kinematic_t create_kinematic(
+                double px, double py,  double pz,  double mass,
+                double pt, double eta, double phi, double energy,  
+                int num_nodes, double score
+        )
+ * - `add_truth()` - void add_truth(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
+ * - `add_pagerank()` - void add_pagerank(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
+ * - `add_nominal()` - void add_nominal(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
+ * - `add_process()` - void add_process(int prc, std::string mode, std::string model, int kfold, int epoch)
+ * - `add_meta()` - bool add_meta(std::string data, std::string model, int kfold, int epoch)
+ * - `add_file_map()` - void add_file_map(std::string fname, long idx_, std::string mode, std::string model, int kfold, int epoch, bool stat)
+ * 
+ * **pagerank_metric methods:**
+ * - `pagerank_metric()` - pagerank_metric()
+ * - `pagerank_metric()` - ~pagerank_metric() override
+ * - `clone()` - pagerank_metric* clone() override
+ * - `define_metric()` - void define_metric(metric_t* mtx) override
+ * - `define_variables()` - void define_variables() override
+ * - `event()` - void event() override
+ * - `batch()` - void batch() override
+ * - `end()` - void end() override
+ * - `pagerank()` - void pagerank(
+            std::map<int, std::map<std::string, particle_template*>>* clust, 
+            std::map<std::string, std::vector<particle_template*>>* out,
+            std::map<std::string, float>* bin_out,
+            std::map<int, std::map<int, float>>* bin_data,
+            int batch_offset
+        )
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - alpha
- * - energy
- * - epoch
- * - eta
- * - idx
- * - kfold
- * - mass
- * - max_itr
- * - norm_lim
- * - num_nodes
- * - phi
- * - process_mapping
- * - pt
- * - px
- * - py
- * - pz
- * - score
+ * **collector variables:**
+ * - Private:
+ *   - `idx` (long)
+ * 
+ * **kinematic_t variables:**
+ * - Private:
+ *   - `px` (double)
+ *   - `py` (double)
+ *   - `pz` (double)
+ *   - `mass` (double)
+ *   - `pt` (double)
+ *   - `eta` (double)
+ *   - `phi` (double)
+ *   - `energy` (double)
+ *   - `num_nodes` (int)
+ *   - `score` (double)
+ * 
+ * **meta_event_t variables:**
+ * - Private:
+ *   - `process_mapping` (int)
+ * 
+ * **pagerank_metric variables:**
+ * - Public:
+ *   - `alpha` (float)
+ *   - `norm_lim` (float)
+ *   - `max_itr` (size_t)
+ *   - `kfold` (int)
+ *   - `epoch` (int)
+ * - Private:
+ *   - `process_mapping` (int)
+ * 
  */
 
 /** @} */  // end of metrics_pagerank_include_metrics_pagerank_h

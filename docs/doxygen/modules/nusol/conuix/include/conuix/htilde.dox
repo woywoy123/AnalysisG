@@ -15,47 +15,17 @@
  */
 
 /**
- * @section classes Classes
+ * @section functions Functions and Methods
  * 
- * This file defines the following classes:
- * - base_t
- * - rotation_t
- * - particle_template
- * - Sx_t
- * - pencil_t
- * - H_matrix_t
- * - kinematic_t
- * - Sy_t
- * - thetapsi_t
- */
-
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - get_base()
- * - get_hmatrix()
- * - get_kinematic()
- * - get_pencil()
- * - get_psi_theta_mapping()
- * - get_rotation()
- * - get_sx()
- * - get_sy()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - H_matrix_t
- * - Sx_t
- * - Sy_t
- * - base_t
- * - kinematic_t
- * - particle_template
- * - pencil_t
- * - rotation_t
- * - thetapsi_t
+ * **Standalone functions:**
+ * - `get_kinematic()`
+ * - `get_psi_theta_mapping()`
+ * - `get_rotation()`
+ * - `get_base()`
+ * - `get_pencil()`
+ * - `get_sx()`
+ * - `get_sy()`
+ * - `get_hmatrix()`
  */
 
 /** @} */  // end of modules_nusol_conuix_include_conuix_htilde_h

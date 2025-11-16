@@ -1,47 +1,101 @@
 /**
  * @file grift.h
- * @brief Documentation for models/grift/include/models/grift.h
+ * @brief GRIFT (Graph Reconstruction and Inference for Tops) model header
  * 
  * This file is part of the AnalysisG framework.
  * 
  * Location: src/AnalysisG/models/grift/include/models/grift.h
+ * 
+ * Defines the GRIFT model class for top quark reconstruction using graph neural networks.
+ * GRIFT uses message-passing and recurrent neural networks to reconstruct top quark decay chains
+ * from jet and particle data.
  */
 
 /**
  * @defgroup models_grift_include_models_grift_h grift.h
- * @brief grift.h - models/grift/include/models
+ * @brief GRIFT Model - Graph Neural Network for Top Quark Reconstruction
  * 
  * @{
  */
 
 /**
- * @section classes Classes
+ * @section classes_grift Classes and Structures
  * 
- * This file defines the following classes:
- * - grift
+ * This file defines the following class:
+ * - **grift** - Main GRIFT model class (inherits from model_template)
+ *   - Implements graph neural network for top quark reconstruction
+ *   - Uses message-passing between particles
+ *   - Employs recurrent neural networks for feature processing
+ *   - Supports both Monte Carlo and data modes
+ *   - Optional PageRank integration for node importance
  */
 
 /**
- * @section functions Functions
+ * @section functions_grift Functions and Methods
  * 
- * Key functions in this file:
- * - clone()
- * - forward()
+ * **grift class methods:**
+ * 
+ * **Constructors and Destructors:**
+ * - `grift()` - Default constructor, initializes GRIFT model
+ * - `~grift()` - Destructor, cleans up model resources
+ * 
+ * **Core Methods:**
+ * - `model_template* clone() override` - Creates a deep copy of the model for distributed training
+ * - `void forward(graph_t*) override` - Main forward pass, processes graph data through the network
+ * 
+ * **Neural Network Components:**
+ * - `torch::Tensor message(torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc, torch::Tensor hx_i, torch::Tensor hx_j)`
+ *   - Computes message between two nodes in the graph
+ *   - Parameters:
+ *     - trk_i: Features of source node
+ *     - trk_j: Features of target node
+ *     - pmc: Particle momentum and charge information
+ *     - hx_i: Hidden state of source node
+ *     - hx_j: Hidden state of target node
+ *   - Returns: Message tensor for edge update
+ * 
+ * - `torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn)`
+ *   - Encodes node features using recurrent neural network
+ *   - Parameters:
+ *     - pmc: Particle momentum and charge
+ *     - num_node: Number of nodes in graph
+ *     - node_rnn: Pointer to RNN state tensor
+ *   - Returns: Encoded node features
  */
 
 /**
- * @section variables Member Variables
+ * @section variables_grift Member Variables
  * 
- * Key member variables:
- * - _hidden
- * - _xin
- * - _xout
- * - _xrec
- * - _xtop
- * - drop_out
- * - init
- * - is_mc
- * - pagerank
+ * **grift class variables:**
+ * 
+ * **Neural Network Parameters (Public):**
+ * - `int _hidden = 1024` - Hidden layer dimension size for neural networks
+ * - `int _xrec = 128` - Recurrent state dimension for RNN layers
+ * - `int _xin = 6` - Input feature dimension (number of input features per particle)
+ * - `int _xout = 2` - Output dimension (binary classification for edges)
+ * - `int _xtop = 5` - Top multiplicity classes (number of possible top quarks)
+ * - `double drop_out = 0.01` - Dropout rate for regularization (default 1%)
+ * 
+ * **Model Configuration Flags (Public):**
+ * - `bool is_mc = true` - Monte Carlo mode flag (true for MC, false for data)
+ * - `bool init = false` - Initialization status flag
+ * - `bool pagerank = false` - PageRank integration flag (enables graph centrality features)
+ * 
+ * **Recurrent Neural Network Layers (Public):**
+ * - `torch::nn::Sequential* rnn_x = nullptr` - Primary node feature RNN
+ * - `torch::nn::Sequential* rnn_dx = nullptr` - Delta feature RNN (feature differences)
+ * - `torch::nn::Sequential* rnn_txx = nullptr` - Temporal feature RNN
+ * - `torch::nn::Sequential* rnn_rxx = nullptr` - Recurrent state update RNN
+ * - `torch::nn::Sequential* rnn_hxx = nullptr` - Hidden state processing RNN
+ * 
+ * **Multi-Layer Perceptron Output Layers (Public):**
+ * - `torch::nn::Sequential* mlp_ntop = nullptr` - MLP for top multiplicity prediction
+ * - `torch::nn::Sequential* mlp_sig = nullptr` - MLP for edge classification (sigmoid output)
+ * 
+ * **Null Tensors (Public):**
+ * - `torch::Tensor x_nulls` - Null tensor for node features (used for padding)
+ * - `torch::Tensor dx_nulls` - Null tensor for delta features
+ * - `torch::Tensor te_nulls` - Null tensor for temporal/edge features
  */
 
 /** @} */  // end of models_grift_include_models_grift_h

@@ -15,45 +15,98 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - child
- * - top
- * - physics_truth
- * - muon
- * - jet
- * - physics_detector
- * - electron
+ * This file defines the following classes/structures:
+ * - **top** (inherits from particle_template)
+ * - **child** (inherits from particle_template)
+ * - **physics_detector** (inherits from particle_template)
+ * - **physics_truth** (inherits from particle_template)
+ * - **electron** (inherits from particle_template)
+ * - **muon** (inherits from particle_template)
+ * - **jet** (inherits from particle_template)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - build()
- * - clone()
- * - pmu()
+ * **child methods:**
+ * - `child()` - child()
+ * - `child()` - virtual ~child()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **electron methods:**
+ * - `electron()` - electron()
+ * - `electron()` - virtual ~electron()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **jet methods:**
+ * - `jet()` - jet()
+ * - `jet()` - virtual ~jet()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **muon methods:**
+ * - `muon()` - muon()
+ * - `muon()` - virtual ~muon()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **physics_detector methods:**
+ * - `physics_detector()` - physics_detector()
+ * - `physics_detector()` - virtual ~physics_detector()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **physics_truth methods:**
+ * - `physics_truth()` - physics_truth()
+ * - `physics_truth()` - virtual ~physics_truth()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
+ * **top methods:**
+ * - `top()` - top()
+ * - `top()` - virtual ~top()
+ * - `clone()` - particle_template* clone() override
+ * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - btag_65
- * - btag_70
- * - btag_77
- * - btag_85
- * - btag_90
- * - d0
- * - delta_z0
- * - flav
- * - is_tight
- * - label
- * - prt
- * - top_index
- * - true_origin
- * - true_type
+ * **electron variables:**
+ * - Public:
+ *   - `d0` (float)
+ *   - `true_type` (int)
+ *   - `delta_z0` (float)
+ *   - `true_origin` (int)
+ *   - `is_tight` (bool)
+ * 
+ * **jet variables:**
+ * - Public:
+ *   - `btag_65` (bool)
+ *   - `btag_70` (bool)
+ *   - `btag_77` (bool)
+ *   - `btag_85` (bool)
+ *   - `btag_90` (bool)
+ *   - `flav` (int)
+ *   - `label` (int)
+ * 
+ * **muon variables:**
+ * - Public:
+ *   - `d0` (float)
+ *   - `true_type` (int)
+ *   - `delta_z0` (float)
+ *   - `true_origin` (int)
+ *   - `is_tight` (bool)
+ * 
+ * **top variables:**
+ * - Public:
+ *   - `top_index` (int)
+ * 
  */
 
 /** @} */  // end of events_exp_mc20_include_exp_mc20_particles_h

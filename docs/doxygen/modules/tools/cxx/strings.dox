@@ -15,30 +15,10 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - is_base64()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - diff
- * - false
- * - i
- * - in_
- * - in_len
- * - index
- * - j
- * - out
- * - pos
- * - ret
- * - s_dim
- * - true
- * - val
- * - x
+ * **Standalone functions:**
+ * - `find()`
  */
 
 /** @} */  // end of modules_tools_cxx_strings_cxx

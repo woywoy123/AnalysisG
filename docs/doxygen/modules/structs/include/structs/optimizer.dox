@@ -15,37 +15,81 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - loss_opt
- * - optimizer_params_t
+ * This file defines the following classes/structures:
+ * - **loss_opt**
+ * - **optimizer_params_t**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * 
+ * **optimizer_params_t methods:**
+ * - `optimizer_params_t()` - optimizer_params_t()
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - alpha
- * - amsgrad
- * - batch_mean
- * - beta
- * - blank
- * - centered
- * - dampening
- * - defaults
- * - delta
- * - eps
- * - full
- * - fx
- * - gamma
- * - history_size
- * - ignore
- * - initial_accumulator_value
- * - lr
- * - lr_decay
- * - m_alpha
- * - m_amsgrad
+ * **loss_opt variables:**
+ * - Private:
+ *   - `fx` (loss_enum)
+ *   - `mean` (bool)
+ *   - `sum` (bool)
+ *   - `none` (bool)
+ *   - `swap` (bool)
+ *   - `full` (bool)
+ *   - `batch_mean` (bool)
+ *   - `target` (bool)
+ *   - `zero_inf` (bool)
+ *   - `defaults` (bool)
+ *   - `ignore` (int)
+ *   - `blank` (int)
+ *   - `margin` (double)
+ *   - `beta` (double)
+ *   - `eps` (double)
+ *   - `smoothing` (double)
+ *   - `delta` (double)
+ * 
+ * **optimizer_params_t variables:**
+ * - Public:
+ *   - `lr` (cproperty<double, optimizer_params_t>)
+ *   - `lr_decay` (cproperty<double, optimizer_params_t>)
+ *   - `weight_decay` (cproperty<double, optimizer_params_t>)
+ *   - `initial_accumulator_value` (cproperty<double, optimizer_params_t>)
+ *   - `eps` (cproperty<double, optimizer_params_t>)
+ *   - `tolerance_grad` (cproperty<double, optimizer_params_t>)
+ *   - `tolerance_change` (cproperty<double, optimizer_params_t>)
+ *   - `alpha` (cproperty<double, optimizer_params_t>)
+ *   - `momentum` (cproperty<double, optimizer_params_t>)
+ *   - `dampening` (cproperty<double, optimizer_params_t>)
+ *   - `amsgrad` (cproperty<bool, optimizer_params_t>)
+ *   - `centered` (cproperty<bool, optimizer_params_t>)
+ *   - `nesterov` (cproperty<bool, optimizer_params_t>)
+ *   - `max_iter` (cproperty<int, optimizer_params_t>)
+ *   - `max_eval` (cproperty<int, optimizer_params_t>)
+ *   - `history_size` (cproperty<int, optimizer_params_t>)
+ *   - `gamma` (double)
+ *   - `m_lr` (bool)
+ *   - `m_lr_decay` (bool)
+ *   - `m_weight_decay` (bool)
+ *   - `m_initial_accumulator_value` (bool)
+ *   - `m_eps` (bool)
+ *   - `m_betas` (bool)
+ *   - `m_amsgrad` (bool)
+ *   - `m_max_iter` (bool)
+ *   - `m_max_eval` (bool)
+ *   - `m_tolerance_grad` (bool)
+ *   - `m_tolerance_change` (bool)
+ *   - `m_history_size` (bool)
+ *   - `m_alpha` (bool)
+ *   - `m_momentum` (bool)
+ *   - `m_centered` (bool)
+ *   - `m_dampening` (bool)
+ *   - `m_nesterov` (bool)
+ * 
  */
 
 /** @} */  // end of modules_structs_include_structs_optimizer_h

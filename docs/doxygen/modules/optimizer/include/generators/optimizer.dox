@@ -15,33 +15,15 @@
  */
 
 /**
- * @section classes Classes
+ * @section functions Functions and Methods
  * 
- * This file defines the following classes:
- * - optimizer
- * - analysis
- */
-
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - evaluation_loop()
- * - import_dataloader()
- * - import_model_sessions()
- * - launch_model()
- * - training_loop()
- * - validation_loop()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - analysis
- * - loader
- * - m_settings
- * - metric
+ * **Standalone functions:**
+ * - `import_dataloader()`
+ * - `import_model_sessions()`
+ * - `training_loop()`
+ * - `validation_loop()`
+ * - `evaluation_loop()`
+ * - `launch_model()`
  */
 
 /** @} */  // end of modules_optimizer_include_generators_optimizer_h

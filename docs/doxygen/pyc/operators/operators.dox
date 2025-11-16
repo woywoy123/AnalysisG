@@ -14,13 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - idx
- * - idy
- * - sx
- */
-
 /** @} */  // end of pyc_operators_operators_cxx

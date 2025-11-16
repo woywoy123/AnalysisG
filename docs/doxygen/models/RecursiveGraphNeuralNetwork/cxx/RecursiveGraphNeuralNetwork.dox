@@ -14,12 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - iter
- * - rnn
- */
-
 /** @} */  // end of models_RecursiveGraphNeuralNetwork_cxx_RecursiveGraphNeuralNetwork_cxx

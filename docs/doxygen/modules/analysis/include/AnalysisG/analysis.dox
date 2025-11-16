@@ -15,47 +15,32 @@
  */
 
 /**
- * @section classes Classes
+ * @section functions Functions and Methods
  * 
- * This file defines the following classes:
- * - analysis
- */
-
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - add_content()
- * - add_event_template()
- * - add_graph_template()
- * - add_metric_template()
- * - add_model()
- * - add_samples()
- * - add_selection_template()
- * - attach_threads()
- * - build_dataloader()
- * - build_events()
- * - build_graphs()
- * - build_inference()
- * - build_metric()
- * - build_metric_folds()
- * - build_model_session()
- * - build_project()
- * - build_selections()
- * - check_cache()
- * - execution()
- * - execution_metric()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - loader
- * - m_settings
- * - reader
- * - started
- * - tracer
+ * **Standalone functions:**
+ * - `add_samples()`
+ * - `add_selection_template()`
+ * - `add_event_template()`
+ * - `add_graph_template()`
+ * - `add_metric_template()`
+ * - `add_model()`
+ * - `attach_threads()`
+ * - `start()`
+ * - `check_cache()`
+ * - `build_project()`
+ * - `build_events()`
+ * - `build_selections()`
+ * - `build_graphs()`
+ * - `build_model_session()`
+ * - `build_inference()`
+ * - `build_metric()`
+ * - `build_metric_folds()`
+ * - `build_dataloader()`
+ * - `fetchtags()`
+ * - `add_content()`
+ * - `execution()`
+ * - `execution_metric()`
+ * - `initialize_loop()`
  */
 
 /** @} */  // end of modules_analysis_include_AnalysisG_analysis_h

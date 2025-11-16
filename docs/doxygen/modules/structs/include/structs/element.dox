@@ -15,47 +15,73 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - writer
- * - write_t
- * - element_t
- * - data_t
+ * This file defines the following classes/structures:
+ * - **data_t** (inherits from bsc_t)
+ * - **element_t**
+ * - **write_t**
+ * - **writer**
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - boundary()
- * - close()
- * - create()
- * - fetch_buffer()
- * - flush()
- * - get()
- * - initialize()
- * - next()
- * - process()
- * - set_meta()
- * - string_type()
- * - write()
+ * **data_t methods:**
+ * - `data_t()` - data_t()
+ * - `data_t()` - ~data_t() override
+ * - `initialize()` - void initialize()
+ * - `flush()` - void flush()
+ * - `next()` - bool next()
+ * - `fetch_buffer()` - void fetch_buffer()
+ * - `string_type()` - void string_type()
+ * 
+ * **element_t methods:**
+ * - `next()` - bool next()
+ * - `set_meta()` - void set_meta()
+ * - `boundary()` - bool boundary()
+ * 
+ * **write_t methods:**
+ * - `process()` - variable_t* process(std::string* name)
+ * - `write()` - void write()
+ * - `create()` - void create(std::string tr_name, std::string path)
+ * - `close()` - void close()
+ * 
+ * **writer methods:**
+ * - `writer()` - writer()
+ * - `writer()` - ~writer()
+ * - `create()` - void create(std::string* pth)
+ * - `write()` - void write(std::string* tree)
+ * - `process()` - variable_t* process(std::string* tree, std::string* name)
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - branch
- * - d
- * - event_index
- * - file
- * - file_index
- * - head
- * - leaf
- * - mtx
- * - r
- * - tree
+ * **data_t variables:**
+ * - Public:
+ *   - `leaf` (TLeaf*)
+ *   - `branch` (TBranch*)
+ *   - `tree` (TTree*)
+ *   - `file` (TFile*)
+ *   - `file_index` (int)
+ * 
+ * **element_t variables:**
+ * - Private:
+ *   - `event_index` (long)
+ *   - `d` (data_t*)
+ * 
+ * **write_t variables:**
+ * - Private:
+ *   - `file` (TFile*)
+ *   - `tree` (TTree*)
+ *   - `mtx` (meta_t*)
+ * 
+ * **writer variables:**
+ * - Private:
+ *   - `head` (write_t*)
+ * 
  */
 
 /** @} */  // end of modules_structs_include_structs_element_h

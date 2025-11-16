@@ -14,37 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - dx()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - data
- * - datar
- * - datax
- * - dt
- * - eval
- * - false
- * - fold
- * - gr
- * - grs
- * - grw
- * - gx
- * - h5_
- * - h5wrt
- * - idx
- * - io_g
- * - ior
- * - len_cache
- * - restored
- * - serialize
- * - threaded_reader
- */
-
 /** @} */  // end of modules_dataloader_cxx_cache_cxx

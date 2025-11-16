@@ -15,42 +15,43 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - gnn_event
+ * This file defines the following classes/structures:
+ * - **gnn_event** (inherits from event_template)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - CompileEvent()
- * - build()
- * - clone()
- * - print()
- * - reduce()
- * - sum()
- * - vectorize()
+ * **gnn_event methods:**
+ * - `gnn_event()` - gnn_event()
+ * - `gnn_event()` - ~gnn_event() override
+ * - `clone()` - event_template* clone() override
+ * - `build()` - void build(element_t* el) override
+ * - `CompileEvent()` - void CompileEvent() override
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - data
- * - met
- * - num_bjets
- * - num_jets
- * - num_leps
- * - p_ntops
- * - p_signal
- * - phi
- * - s_ntops
- * - s_signal
- * - sx
- * - t_ntops
- * - t_signal
+ * **gnn_event variables:**
+ * - Public:
+ *   - `num_bjets` (int)
+ *   - `num_jets` (double)
+ *   - `num_leps` (double)
+ *   - `met` (double)
+ *   - `phi` (double)
+ *   - `p_ntops` (int)
+ *   - `p_signal` (int)
+ *   - `s_ntops` (float)
+ *   - `s_signal` (float)
+ *   - `t_ntops` (int)
+ *   - `t_signal` (bool)
+ * - Private:
+ *   - `data` (return)
+ * 
  */
 
 /** @} */  // end of events_gnn_include_inference_gnn_event_h

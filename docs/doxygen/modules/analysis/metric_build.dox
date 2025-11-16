@@ -15,25 +15,10 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - t()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - debug_mode
- * - false
- * - idx
- * - lamb
- * - lambd
- * - sx
- * - threads_
- * - true
- * - xt
+ * **Standalone functions:**
+ * - `t()`
  */
 
 /** @} */  // end of modules_analysis_metric_build_cxx

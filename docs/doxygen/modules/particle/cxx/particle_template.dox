@@ -14,15 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - init
- * - out
- * - p
- * - pr
- * - t
- */
-
 /** @} */  // end of modules_particle_cxx_particle_template_cxx

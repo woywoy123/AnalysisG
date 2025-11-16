@@ -14,11 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - tx
- */
-
 /** @} */  // end of graphs_exp_mc20_include_exp_mc20_node_features_h

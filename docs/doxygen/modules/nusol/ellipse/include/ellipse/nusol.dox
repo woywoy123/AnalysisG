@@ -15,65 +15,100 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - mtx
- * - nuelx
- * - wrapper
- * - particle_template
+ * This file defines the following classes/structures:
+ * - **wrapper**
+ * - **nuelx**
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - H()
- * - H_perp()
- * - H_tilde()
- * - K()
- * - N()
- * - R_T()
- * - Sx()
- * - Sy()
- * - Z()
- * - Z2()
- * - Z_mT()
- * - Z_mW()
- * - dH_dmT()
- * - dH_dmW()
- * - dSx_dmW()
- * - dSy_dmT()
- * - dSy_dmW()
- * - dZ_dmT()
- * - dZ_dmW()
- * - dx1_dmT()
+ * **nuelx methods:**
+ * - `nuelx()` - nuelx()
+ * - `nuelx()` - nuelx(particle_template* b, particle_template* l, double mW, double mT)
+ * - `nuelx()` - ~nuelx()
+ * - `Sx()` - double Sx()
+ * - `dSx_dmW()` - double dSx_dmW()
+ * - `Sy()` - double Sy()
+ * - `dSy_dmW()` - double dSy_dmW()
+ * - `dSy_dmT()` - double dSy_dmT()
+ * - `w()` - double w()
+ * - `w2()` - double w2()
+ * - `om2()` - double om2()
+ * - `Z()` - double Z()
+ * - `Z2()` - double Z2()
+ * - `dZ_dmT()` - double dZ_dmT()
+ * - `dZ_dmW()` - double dZ_dmW()
+ * - `x0()` - double x0()
+ * - `x1()` - double x1()
+ * - `dx1_dmW()` - double dx1_dmW()
+ * - `dx1_dmT()` - double dx1_dmT()
+ * - `y1()` - double  y1()
+ * - `dy1_dmW()` - double dy1_dmW()
+ * - `dy1_dmT()` - double dy1_dmT()
+ * - `r_mT()` - void r_mT(double* mt1_, double* mt2_)
+ * - `r_mW()` - void r_mW(double* mw1_, double* mw2_)
+ * - `Z_mW()` - void Z_mW(double* mw1_, double* mw2_)
+ * - `Z_mT()` - void Z_mT(double* mt1_, double* mt2_, double mw_)
+ * - `update()` - void update(double mt, double mw)
+ * - `flush()` - void flush()
+ * - `N()` - mtx* N()
+ * - `H()` - mtx* H()
+ * - `H_perp()` - mtx* H_perp()
+ * - `H_tilde()` - mtx* H_tilde()
+ * - `dH_dmW()` - mtx* dH_dmW()
+ * - `dH_dmT()` - mtx* dH_dmT()
+ * - `K()` - mtx* K()
+ * - `R_T()` - mtx* R_T()
+ * - `Z2()` - void Z2(double* A, double* B, double* C)
+ * - `misc()` - void misc()
+ * 
+ * **wrapper methods:**
+ * - `wrapper()` - wrapper(particle_template* p_)
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - _c
- * - _s
- * - b
- * - b2
- * - dt_H
- * - dw_H
- * - e
- * - h
- * - h_perp
- * - h_tilde
- * - k
- * - l
- * - lnk
- * - m
- * - m2
- * - mt
- * - mt2
- * - mtx
- * - mw
- * - mw2
+ * **nuelx variables:**
+ * - Public:
+ *   - `b` (wrapper*)
+ *   - `l` (wrapper*)
+ * - Private:
+ *   - `mw` (double)
+ *   - `mt` (double)
+ *   - `mw2` (double)
+ *   - `mt2` (double)
+ *   - `_s` (double)
+ *   - `_c` (double)
+ *   - `h_tilde` (mtx*)
+ *   - `h` (mtx*)
+ *   - `r_t` (mtx*)
+ *   - `dw_H` (mtx*)
+ *   - `dt_H` (mtx*)
+ *   - `h_perp` (mtx*)
+ *   - `n_matrx` (mtx*)
+ *   - `k` (mtx*)
+ * 
+ * **wrapper variables:**
+ * - Private:
+ *   - `p` (double)
+ *   - `m` (double)
+ *   - `b` (double)
+ *   - `p2` (double)
+ *   - `m2` (double)
+ *   - `b2` (double)
+ *   - `phi` (double)
+ *   - `theta` (double)
+ *   - `px` (double)
+ *   - `py` (double)
+ *   - `pz` (double)
+ *   - `e` (double)
+ *   - `lnk` (particle_template*)
+ * 
  */
 
 /** @} */  // end of modules_nusol_ellipse_include_ellipse_nusol_h

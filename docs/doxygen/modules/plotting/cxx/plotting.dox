@@ -14,19 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - 1
- * - down
- * - mean
- * - n
- * - out
- * - path
- * - stdev
- * - t
- * - up
- */
-
 /** @} */  // end of modules_plotting_cxx_plotting_cxx

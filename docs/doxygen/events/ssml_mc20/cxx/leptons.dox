@@ -14,14 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - elx
- * - px
- * - sp
- * - t
- */
-
 /** @} */  // end of events_ssml_mc20_cxx_leptons_cxx

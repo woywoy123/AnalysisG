@@ -15,19 +15,21 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - model_settings_t
+ * This file defines the following classes/structures:
+ * - **model_settings_t**
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - e_optim
- * - inference_mode
- * - is_mc
+ * **model_settings_t variables:**
+ * - Private:
+ *   - `e_optim` (opt_enum)
+ *   - `inference_mode` (bool)
+ *   - `is_mc` (bool)
+ * 
  */
 
 /** @} */  // end of modules_structs_include_structs_model_h

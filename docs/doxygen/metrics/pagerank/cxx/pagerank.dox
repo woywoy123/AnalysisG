@@ -14,29 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - bx
- * - dst
- * - e
- * - mass
- * - n_nodes
- * - norm
- * - offset_node
- * - out
- * - ptr
- * - px
- * - s
- * - sc
- * - sm
- * - src
- * - sx
- * - top_0
- * - top_1
- * - tr
- * - tt
- */
-
 /** @} */  // end of metrics_pagerank_cxx_pagerank_cxx

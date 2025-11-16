@@ -15,36 +15,22 @@
  */
 
 /**
- * @section classes Classes
+ * @section functions Functions and Methods
  * 
- * This file defines the following classes:
- * - bsm_4tops
- */
-
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - event_number()
- * - event_weight()
- * - missing_et()
- * - missing_phi()
- * - num_children_leps()
- * - num_jets()
- * - num_leps()
- * - num_lepton()
- * - num_neutrino()
- * - num_quark()
- * - num_tops()
- * - num_truthjets()
- * - signal_event()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - bsm_4tops
+ * **Standalone functions:**
+ * - `num_tops()`
+ * - `num_lepton()`
+ * - `num_neutrino()`
+ * - `signal_event()`
+ * - `missing_et()`
+ * - `missing_phi()`
+ * - `num_leps()`
+ * - `num_jets()`
+ * - `num_quark()`
+ * - `num_truthjets()`
+ * - `num_children_leps()`
+ * - `event_number()`
+ * - `event_weight()`
  */
 
 /** @} */  // end of graphs_bsm_4tops_include_bsm_4tops_graph_features_h

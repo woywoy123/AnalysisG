@@ -15,13 +15,13 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - copy()
- * - opm()
- * - ops()
- * - opt()
+ * **Standalone functions:**
+ * - `copy()`
+ * - `ops()`
+ * - `opm()`
+ * - `opt()`
  */
 
 /** @} */  // end of modules_nusol_conuix_include_conuix_memory_h

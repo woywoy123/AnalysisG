@@ -14,14 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - false
- * - nullptr
- * - op_
- * - spx_
- */
-
 /** @} */  // end of modules_lossfx_cxx_lossfx_cxx

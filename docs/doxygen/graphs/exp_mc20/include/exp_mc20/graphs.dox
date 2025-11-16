@@ -15,21 +15,42 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - graph_jets_nonu
- * - graph_detector
- * - graph_jets
- * - graph_jets_detector_lep
+ * This file defines the following classes/structures:
+ * - **graph_jets** (inherits from graph_template)
+ * - **graph_jets_nonu** (inherits from graph_template)
+ * - **graph_jets_detector_lep** (inherits from graph_template)
+ * - **graph_detector** (inherits from graph_template)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - CompileEvent()
- * - clone()
+ * **graph_detector methods:**
+ * - `graph_detector()` - graph_detector()
+ * - `graph_detector()` - ~graph_detector() override
+ * - `clone()` - graph_template* clone() override
+ * - `CompileEvent()` - void CompileEvent() override
+ * 
+ * **graph_jets methods:**
+ * - `graph_jets()` - graph_jets()
+ * - `graph_jets()` - ~graph_jets() override
+ * - `clone()` - graph_template* clone() override
+ * - `CompileEvent()` - void CompileEvent() override
+ * 
+ * **graph_jets_detector_lep methods:**
+ * - `graph_jets_detector_lep()` - graph_jets_detector_lep()
+ * - `graph_jets_detector_lep()` - ~graph_jets_detector_lep() override
+ * - `clone()` - graph_template* clone() override
+ * - `CompileEvent()` - void CompileEvent() override
+ * 
+ * **graph_jets_nonu methods:**
+ * - `graph_jets_nonu()` - graph_jets_nonu()
+ * - `graph_jets_nonu()` - ~graph_jets_nonu() override
+ * - `clone()` - graph_template* clone() override
+ * - `CompileEvent()` - void CompileEvent() override
+ * 
  */
 
 /** @} */  // end of graphs_exp_mc20_include_exp_mc20_graphs_h

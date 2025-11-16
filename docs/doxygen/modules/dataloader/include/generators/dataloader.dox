@@ -15,42 +15,22 @@
  */
 
 /**
- * @section classes Classes
+ * @section functions Functions and Methods
  * 
- * This file defines the following classes:
- * - model_report
- * - dataloader
- * - analysis
- * - model_template
- */
-
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - clean_data_elements()
- * - cuda_memory_server()
- * - datatransfer()
- * - dump_dataset()
- * - dump_graphs()
- * - extract_data()
- * - generate_kfold_set()
- * - generate_test_set()
- * - restore_dataset()
- * - restore_graphs()
- * - safe_delete()
- * - shuffle()
- * - start_cuda_server()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - analysis
- * - model_report
- * - model_template
- * - setting
+ * **Standalone functions:**
+ * - `safe_delete()`
+ * - `generate_test_set()`
+ * - `generate_kfold_set()`
+ * - `dump_dataset()`
+ * - `restore_dataset()`
+ * - `extract_data()`
+ * - `datatransfer()`
+ * - `dump_graphs()`
+ * - `restore_graphs()`
+ * - `start_cuda_server()`
+ * - `cuda_memory_server()`
+ * - `clean_data_elements()`
+ * - `shuffle()`
  */
 
 /** @} */  // end of modules_dataloader_include_generators_dataloader_h

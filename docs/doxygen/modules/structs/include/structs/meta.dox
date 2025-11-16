@@ -15,37 +15,42 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - meta_t
- * - weights_t
+ * This file defines the following classes/structures:
+ * - **weights_t**
+ * - **meta_t**
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - beam_energy
- * - campaign_luminosity
- * - completion
- * - crossSection
- * - crossSection_mean
- * - dsid
- * - ecmEnergy
- * - eventNumber
- * - event_index
- * - found
- * - genFiltEff
- * - isAFII
- * - isMC
- * - kfactor
- * - processed_events
- * - processed_events_weighted
- * - processed_events_weighted_squared
- * - totalSize
- * - total_events
- * - total_events_weighted
+ * **meta_t variables:**
+ * - Private:
+ *   - `isMC` (bool)
+ *   - `eventNumber` (double)
+ *   - `event_index` (double)
+ *   - `found` (bool)
+ *   - `totalSize` (double)
+ *   - `kfactor` (double)
+ *   - `ecmEnergy` (double)
+ *   - `genFiltEff` (double)
+ *   - `completion` (double)
+ *   - `beam_energy` (double)
+ *   - `crossSection` (double)
+ *   - `crossSection_mean` (double)
+ *   - `campaign_luminosity` (double)
+ * 
+ * **weights_t variables:**
+ * - Private:
+ *   - `dsid` (int)
+ *   - `isAFII` (bool)
+ *   - `total_events_weighted` (float)
+ *   - `total_events` (float)
+ *   - `processed_events` (float)
+ *   - `processed_events_weighted` (float)
+ *   - `processed_events_weighted_squared` (float)
+ * 
  */
 
 /** @} */  // end of modules_structs_include_structs_meta_h

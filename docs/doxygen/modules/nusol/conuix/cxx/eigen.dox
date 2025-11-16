@@ -14,12 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - dfx
- * - fx
- */
-
 /** @} */  // end of modules_nusol_conuix_cxx_eigen_cxx

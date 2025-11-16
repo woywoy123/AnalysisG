@@ -14,11 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - true
- */
-
 /** @} */  // end of metrics_pagerank_cxx_collector_cxx

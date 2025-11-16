@@ -14,11 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - changedev()
- */
-
 /** @} */  // end of pyc_cutils_utils_cxx

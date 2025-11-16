@@ -14,12 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - clone()
- * - forward()
- */
-
 /** @} */  // end of templates_model_include_models_<model_name>_h

@@ -15,48 +15,14 @@
  */
 
 /**
- * @section classes Classes
+ * @section functions Functions and Methods
  * 
- * This file defines the following classes:
- * - analysis
- * - meta
- */
-
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - compiler()
- * - parse_float()
- * - parse_json()
- * - scan_data()
- * - scan_sow()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - AMITag
- * - AtlasRelease
- * - DatasetName
- * - PDF
- * - amiStatus
- * - analysis
- * - beamType
- * - beam_energy
- * - campaign
- * - campaign_luminosity
- * - completion
- * - conditionsTag
- * - cross_section_fb
- * - cross_section_nb
- * - cross_section_pb
- * - dataType
- * - datasetNumber
- * - derivationFormat
- * - dsid
- * - ecmEnergy
+ * **Standalone functions:**
+ * - `scan_data()`
+ * - `scan_sow()`
+ * - `parse_json()`
+ * - `compiler()`
+ * - `parse_float()`
  */
 
 /** @} */  // end of modules_meta_include_meta_meta_h

@@ -15,19 +15,12 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - Rx()
- * - Ry()
- * - Rz()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - b_p
+ * **Standalone functions:**
+ * - `Rz()`
+ * - `Ry()`
+ * - `Rx()`
  */
 
 /** @} */  // end of modules_nusol_conuix_cxx_htilde_cxx

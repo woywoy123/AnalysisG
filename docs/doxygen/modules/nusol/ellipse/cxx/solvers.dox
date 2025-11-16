@@ -15,55 +15,13 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - Rx()
- * - Ry()
- * - Rz()
- * - _arith()
- * - _copy()
- * - _det()
- * - _m_00()
- * - _m_01()
- * - _m_02()
- * - _m_10()
- * - _m_11()
- * - _m_12()
- * - _m_20()
- * - _m_21()
- * - _m_22()
- * - _pts()
- * - _scale()
- * - _trace()
- * - distance()
- * - factor_degenerate()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - A
- * - A_
- * - B_
- * - C
- * - D_
- * - G
- * - Q
- * - Q_
- * - _det
- * - a
- * - a0
- * - a1
- * - a2
- * - a3
- * - a4
- * - all_
- * - b
- * - b2
- * - c
- * - cb
+ * **Standalone functions:**
+ * - `vt()`
+ * - `pow()`
+ * - `_pts()`
+ * - `out()`
  */
 
 /** @} */  // end of modules_nusol_ellipse_cxx_solvers_cxx

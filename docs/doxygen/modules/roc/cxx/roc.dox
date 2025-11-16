@@ -14,13 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - clx
- * - lsx
- * - rc
- */
-
 /** @} */  // end of modules_roc_cxx_roc_cxx

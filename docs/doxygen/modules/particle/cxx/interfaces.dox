@@ -14,15 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - false
- * - lep
- * - nu
- * - p
- * - true
- */
-
 /** @} */  // end of modules_particle_cxx_interfaces_cxx

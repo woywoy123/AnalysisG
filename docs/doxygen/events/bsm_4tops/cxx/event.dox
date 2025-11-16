@@ -14,24 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - c
- * - dr
- * - index
- * - jp
- * - jt
- * - l
- * - lt
- * - n_nu
- * - p
- * - t
- * - tj
- * - tjp
- * - tx
- * - w
- */
-
 /** @} */  // end of events_bsm_4tops_cxx_event_cxx

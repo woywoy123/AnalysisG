@@ -15,30 +15,34 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - neutrino
+ * This file defines the following classes/structures:
+ * - **neutrino** (inherits from particle_template)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * 
+ * **neutrino methods:**
+ * - `neutrino()` - neutrino()
+ * - `neutrino()` - neutrino(double px, double py, double pz)
+ * - `neutrino()` - virtual ~neutrino()
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - alpha
- * - atx
- * - b_idx
- * - bquark
- * - from_res
- * - l_idx
- * - lepton
- * - mT
- * - min
- * - nu1
- * - nu2
- * - out
- * - steps
- * - tolerance
+ * **neutrino variables:**
+ * - Public:
+ *   - `min` (double)
+ *   - `l_idx` (long)
+ *   - `b_idx` (long)
+ *   - `bquark` (particle_template*)
+ *   - `lepton` (particle_template*)
+ *   - `from_res` (bool)
+ * 
  */
 
 /** @} */  // end of pyc_interface_include_pyc_pyc_h

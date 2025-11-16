@@ -14,12 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - sel_o
- * - sel_t
- */
-
 /** @} */  // end of modules_analysis_selection_build_cxx

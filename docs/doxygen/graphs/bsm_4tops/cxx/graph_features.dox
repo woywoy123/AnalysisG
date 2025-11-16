@@ -14,33 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - event_number()
- * - event_weight()
- * - missing_et()
- * - missing_phi()
- * - num_children_leps()
- * - num_jets()
- * - num_leps()
- * - num_lepton()
- * - num_neutrino()
- * - num_quark()
- * - num_tops()
- * - num_truthjets()
- * - signal_event()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - ch_
- * - leptons
- * - neutrinos
- * - t_
- */
-
 /** @} */  // end of graphs_bsm_4tops_cxx_graph_features_cxx

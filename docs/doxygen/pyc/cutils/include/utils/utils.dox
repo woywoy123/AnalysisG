@@ -15,10 +15,10 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - changedev()
+ * **Standalone functions:**
+ * - `changedev()`
  */
 
 /** @} */  // end of pyc_cutils_include_utils_utils_h

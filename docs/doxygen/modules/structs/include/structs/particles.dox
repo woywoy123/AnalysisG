@@ -15,31 +15,31 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - particle_template
- * - particle_t
+ * This file defines the following classes/structures:
+ * - **particle_t**
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - cartesian
- * - charge
- * - e
- * - eta
- * - index
- * - mass
- * - particle_template
- * - pdgid
- * - phi
- * - polar
- * - pt
- * - px
- * - py
- * - pz
+ * **particle_t variables:**
+ * - Private:
+ *   - `e` (double)
+ *   - `mass` (double)
+ *   - `px` (double)
+ *   - `py` (double)
+ *   - `pz` (double)
+ *   - `pt` (double)
+ *   - `eta` (double)
+ *   - `phi` (double)
+ *   - `cartesian` (bool)
+ *   - `polar` (bool)
+ *   - `charge` (double)
+ *   - `pdgid` (int)
+ *   - `index` (int)
+ * 
  */
 
 /** @} */  // end of modules_structs_include_structs_particles_h

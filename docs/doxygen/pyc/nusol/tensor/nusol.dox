@@ -14,17 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - G_
- * - H
- * - _sigma
- * - max_len
- * - out
- * - output
- * - shape
- */
-
 /** @} */  // end of pyc_nusol_tensor_nusol_cxx

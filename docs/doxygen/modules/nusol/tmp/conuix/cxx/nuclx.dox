@@ -15,33 +15,12 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - Rx()
- * - Ry()
- * - Rz()
- * - _beta()
- * - _mag()
- * - cos_theta()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - _d
- * - _t
- * - _z
- * - a
- * - alpha
- * - b
- * - b_p
- * - ch
- * - out
- * - p2
- * - r
- * - sh
+ * **Standalone functions:**
+ * - `Rz()`
+ * - `Ry()`
+ * - `Rx()`
  */
 
 /** @} */  // end of modules_nusol_tmp_conuix_cxx_nuclx_cxx

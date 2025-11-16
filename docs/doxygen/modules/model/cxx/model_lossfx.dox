@@ -14,12 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - inx
- * - lx
- */
-
 /** @} */  // end of modules_model_cxx_model_lossfx_cxx

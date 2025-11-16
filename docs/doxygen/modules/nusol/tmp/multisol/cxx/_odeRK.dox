@@ -15,39 +15,13 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - A()
- * - _phi()
- * - _scl()
- * - b()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - AAT
- * - A_T
- * - A_i
- * - B_i
- * - C_i
- * - H
- * - X
- * - bst
- * - cur
- * - d2H
- * - dA_dti
- * - dB_dti
- * - dC_dti
- * - dH
- * - dH_dti
- * - d_delta_d_ti
- * - delta_i
- * - dn_dti
- * - dt_ds
- * - dx
+ * **Standalone functions:**
+ * - `_phi()`
+ * - `_scl()`
+ * - `A()`
+ * - `b()`
  */
 
 /** @} */  // end of modules_nusol_tmp_multisol_cxx__odeRK_cxx

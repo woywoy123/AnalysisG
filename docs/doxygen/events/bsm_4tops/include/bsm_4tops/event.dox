@@ -15,30 +15,35 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - bsm_4tops
+ * This file defines the following classes/structures:
+ * - **bsm_4tops** (inherits from event_template)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - CompileEvent()
- * - build()
- * - clone()
- * - vectorize()
+ * **bsm_4tops methods:**
+ * - `bsm_4tops()` - bsm_4tops()
+ * - `bsm_4tops()` - virtual ~bsm_4tops()
+ * - `clone()` - event_template* clone() override
+ * - `build()` - void build(element_t* el) override
+ * - `CompileEvent()` - void CompileEvent() override
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - data
- * - met
- * - mu
- * - phi
+ * **bsm_4tops variables:**
+ * - Public:
+ *   - `mu` (float)
+ *   - `met` (float)
+ *   - `phi` (float)
+ * - Private:
+ *   - `data` (return)
+ * 
  */
 
 /** @} */  // end of events_bsm_4tops_include_bsm_4tops_event_h

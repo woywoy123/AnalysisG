@@ -14,14 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - c
- * - prt
- * - ti
- * - w
- */
-
 /** @} */  // end of events_exp_mc20_cxx_event_cxx

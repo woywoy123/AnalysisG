@@ -14,17 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - ev
- * - nu1
- * - nu2
- * - nx
- * - output
- * - para
- * - s
- */
-
 /** @} */  // end of modules_event_cxx_event_template_cxx

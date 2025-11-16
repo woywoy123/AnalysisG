@@ -15,25 +15,10 @@
  */
 
 /**
- * @section variables Member Variables
+ * @section functions Functions and Methods
  * 
- * Key member variables:
- * - _r
- * - _t
- * - capture
- * - data
- * - hs
- * - inx
- * - lf
- * - lx
- * - n_ev
- * - nullptr
- * - num_total
- * - tml
- * - val
- * - wg
- * - x
- * - xs
+ * **Standalone functions:**
+ * - `dr()`
  */
 
 /** @} */  // end of modules_meta_cxx_meta_cxx

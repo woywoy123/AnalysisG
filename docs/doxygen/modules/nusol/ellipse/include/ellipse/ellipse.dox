@@ -15,50 +15,60 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - nunu_t
- * - nusol_t
- * - ellipse
+ * This file defines the following classes/structures:
+ * - **nunu_t**
+ * - **ellipse**
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - angle_cross()
- * - flush()
- * - generate()
- * - intersection()
- * - make_neutrinos()
- * - prepare()
- * - solve()
+ * **ellipse methods:**
+ * - `ellipse()` - ellipse(nusol_t* parameters)
+ * - `ellipse()` - ~ellipse()
+ * - `prepare()` - void prepare(double mt, double mw)
+ * - `solve()` - void solve()
+ * - `flush()` - void flush()
+ * - `make_neutrinos()` - void make_neutrinos(mtx* v, mtx* v_)
+ * - `generate()` - int generate(nuelx* nu1, nuelx* nu2)
+ * - `intersection()` - int intersection(mtx** v, mtx** v_)
+ * - `angle_cross()` - int angle_cross( mtx** v, mtx** v_)
+ * 
+ * **nunu_t methods:**
+ * - `nunu_t()` - nunu_t()
+ * - `nunu_t()` - ~nunu_t()
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - _metx
- * - _mety
- * - _metz
- * - agl
- * - m_agl
- * - m_bst
- * - m_lx
- * - m_nu1
- * - m_nu2
- * - n_bs
- * - n_lp
- * - nu1
- * - nu2
- * - nusol_t
- * - nux1
- * - nux2
- * - p_nu1
- * - p_nu2
- * - params
+ * **ellipse variables:**
+ * - Private:
+ *   - `params` (nusol_t*)
+ *   - `p_nu1` (nuelx*)
+ *   - `p_nu2` (nuelx*)
+ *   - `m_nu1` (mtx*)
+ *   - `m_nu2` (mtx*)
+ *   - `m_agl` (mtx*)
+ *   - `m_lx` (int)
+ *   - `m_bst` (int)
+ *   - `_metx` (double)
+ *   - `_mety` (double)
+ *   - `_metz` (double)
+ *   - `n_lp` (int)
+ *   - `n_bs` (int)
+ * 
+ * **nunu_t variables:**
+ * - Private:
+ *   - `nu1` (mtx*)
+ *   - `nu2` (mtx*)
+ *   - `agl` (mtx*)
+ *   - `nux1` (nuelx*)
+ *   - `nux2` (nuelx*)
+ * 
  */
 
 /** @} */  // end of modules_nusol_ellipse_include_ellipse_ellipse_h

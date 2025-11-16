@@ -14,12 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - dxx_r
- * - md
- */
-
 /** @} */  // end of models_grift_cxx__grift_cxx

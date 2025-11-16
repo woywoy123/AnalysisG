@@ -15,46 +15,13 @@
  */
 
 /**
- * @section classes Classes
+ * @section functions Functions and Methods
  * 
- * This file defines the following classes:
- * - plotting
- */
-
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - build_error()
- * - get_max()
- * - get_min()
- * - sum_of_weights()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - alpha
- * - auto_scale
- * - axis_size
- * - cap_size
- * - counts
- * - cross_section
- * - density
- * - dpi
- * - errors
- * - font_size
- * - integrated_luminosity
- * - legend_size
- * - line_width
- * - stack
- * - title_size
- * - use_latex
- * - x_bins
- * - x_logarithmic
- * - x_max
- * - x_min
+ * **Standalone functions:**
+ * - `get_max()`
+ * - `get_min()`
+ * - `sum_of_weights()`
+ * - `build_error()`
  */
 
 /** @} */  // end of modules_plotting_include_plotting_plotting_h

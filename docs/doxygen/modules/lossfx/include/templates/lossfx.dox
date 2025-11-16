@@ -15,43 +15,26 @@
  */
 
 /**
- * @section classes Classes
+ * @section functions Functions and Methods
  * 
- * This file defines the following classes:
- * - lossfx
- */
-
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - _dress_batch()
- * - _dress_beta()
- * - _dress_blank()
- * - _dress_delta()
- * - _dress_eps()
- * - _dress_full()
- * - _dress_ignore()
- * - _dress_margin()
- * - _dress_reduction()
- * - _dress_smoothing()
- * - _dress_swap()
- * - _dress_target()
- * - _dress_zero()
- * - build_adagrad()
- * - build_adam()
- * - build_adamw()
- * - build_fx_loss()
- * - build_lbfgs()
- * - build_loss_function()
- * - build_rmsprop()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - lss_cfg
+ * **Standalone functions:**
+ * - `loss_string()`
+ * - `optim_string()`
+ * - `scheduler_string()`
+ * - `loss_opt_string()`
+ * - `weight_init()`
+ * - `build_scheduler()`
+ * - `build_loss_function()`
+ * - `to()`
+ * - `step()`
+ * - `interpret()`
+ * - `build_adam()`
+ * - `build_adagrad()`
+ * - `build_adamw()`
+ * - `build_lbfgs()`
+ * - `build_rmsprop()`
+ * - `build_sgd()`
+ * - `build_fx_loss()`
  */
 
 /** @} */  // end of modules_lossfx_include_templates_lossfx_h

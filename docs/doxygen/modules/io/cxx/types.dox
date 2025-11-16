@@ -14,12 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - px
- * - ss
- */
-
 /** @} */  // end of modules_io_cxx_types_cxx

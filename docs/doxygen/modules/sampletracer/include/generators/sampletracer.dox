@@ -15,24 +15,17 @@
  */
 
 /**
- * @section classes Classes
+ * @section functions Functions and Methods
  * 
- * This file defines the following classes:
- * - sampletracer
- */
-
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - add_event()
- * - add_graph()
- * - add_meta_data()
- * - add_selection()
- * - compile_objects()
- * - fill_selections()
- * - get_meta_data()
- * - populate_dataloader()
+ * **Standalone functions:**
+ * - `add_meta_data()`
+ * - `get_meta_data()`
+ * - `fill_selections()`
+ * - `add_event()`
+ * - `add_graph()`
+ * - `add_selection()`
+ * - `populate_dataloader()`
+ * - `compile_objects()`
  */
 
 /** @} */  // end of modules_sampletracer_include_generators_sampletracer_h

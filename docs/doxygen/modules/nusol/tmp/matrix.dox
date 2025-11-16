@@ -15,43 +15,65 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - matrix
- * - vec3
- * - vec4
+ * This file defines the following classes/structures:
+ * - **vec3**
+ * - **vec4**
+ * - **matrix**
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - I()
- * - T()
- * - at()
- * - cols()
- * - cross()
- * - det()
- * - dot()
- * - eigenvalues()
- * - inverse()
- * - invert_matrix()
- * - mag()
- * - mag2()
- * - print()
- * - rows()
- * - safe()
- * - solve_linear()
+ * **matrix methods:**
+ * - `matrix()` - matrix(int r=3, int c=3)
+ * - `matrix()` - matrix(const matrix& other)
+ * - `matrix()` - ~matrix()
+ * - `print()` - void print(int p = 5)
+ * - `at()` - double& at(int r, int c)
+ * - `at()` - const double& at(int r, int c) const
+ * - `rows()` - int rows() const
+ * - `cols()` - int cols() const
+ * - `mag()` - double mag() const
+ * - `I()` - static matrix I(int size)
+ * - `T()` - matrix T() const
+ * - `inverse()` - matrix inverse()
+ * - `det()` - double det()
+ * - `dot()` - matrix dot(const matrix& m)
+ * - `eigenvalues()` - void eigenvalues(vec3* real, vec3* imag)
+ * 
+ * **vec3 methods:**
+ * - `cross()` - vec3 cross(const vec3& o) const
+ * - `dot()` - double dot(const vec3& o) const
+ * - `mag2()` - double mag2() const
+ * - `mag()` - double mag() const
+ * - `print()` - void print() const
+ * 
+ * **vec4 methods:**
+ * - `dot()` - double dot(const vec4& o) const
+ * - `print()` - void print()
+ * 
+ * **Standalone functions:**
+ * - `solve_linear()`
+ * - `invert_matrix()`
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - _r
- * - operator
- * - x
+ * **matrix variables:**
+ * - Private:
+ *   - `_r` (int)
+ * 
+ * **vec3 variables:**
+ * - Private:
+ *   - `x` (double)
+ * 
+ * **vec4 variables:**
+ * - Private:
+ *   - `x` (double)
+ * 
  */
 
 /** @} */  // end of modules_nusol_tmp_matrix_h

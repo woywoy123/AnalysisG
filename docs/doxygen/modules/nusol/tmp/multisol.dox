@@ -15,66 +15,113 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - rev_t
- * - geo_t
- * - multisol_t
- * - multisol
- * - mass_t
+ * This file defines the following classes/structures:
+ * - **multisol_t**
+ * - **rev_t**
+ * - **mass_t**
+ * - **geo_t**
+ * - **multisol**
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - H()
- * - H_tilde()
- * - center()
- * - d2Hdt2()
- * - d2v_dt_dphi()
- * - dHdt()
- * - dHdt_tilde()
- * - dp_dt()
- * - dv_dphi()
- * - dv_dt()
- * - eigenvalues()
- * - export_ellipse()
- * - geometry()
- * - intersection()
- * - lx()
- * - ly()
- * - lz()
- * - make_rt()
- * - masses()
- * - normal()
+ * **geo_t methods:**
+ * - `geo_t()` - ~geo_t()
+ * - `px()` - double px(double u, double v)
+ * - `py()` - double py(double u, double v)
+ * - `pz()` - double pz(double u, double v)
+ * - `lx()` - double lx(double s)
+ * - `ly()` - double ly(double s)
+ * - `lz()` - double lz(double s)
+ * 
+ * **multisol methods:**
+ * - `multisol()` - multisol(particle_template* b, particle_template* l)
+ * - `multisol()` - ~multisol()
+ * - `make_rt()` - void make_rt()
+ * - `H_tilde()` - matrix    H_tilde(double t, double z)
+ * - `dHdt_tilde()` - matrix dHdt_tilde(double t, double z = 1)
+ * - `H()` - matrix    H(double t, double z)
+ * - `dHdt()` - matrix dHdt(double t, double z = 1)
+ * - `d2Hdt2()` - matrix d2Hdt2(double t, double z = 1)
+ * - `v()` - vec3 v          (double t, double z, double phi)
+ * - `dv_dt()` - vec3 dv_dt      (double t, double z, double phi)
+ * - `dv_dphi()` - vec3 dv_dphi    (double t, double z, double phi)
+ * - `d2v_dt_dphi()` - vec3 d2v_dt_dphi(double t, double z, double phi)
+ * - `geometry()` - geo_t  geometry(double t, double z)
+ * - `intersection()` - geo_t  intersection(multisol* nu, double t1, double z1, double t2, double z2)
+ * - `intersection()` - geo_t* intersection(const vec3& r0, const vec3& d, double t, double z)
+ * - `center()` - vec3 center(double t, double z)
+ * - `normal()` - vec3 normal(double t, double z)
+ * - `eigenvalues()` - bool eigenvalues(double t, double z, vec3* real = nullptr, vec3* imag = nullptr)
+ * - `dp_dt()` - double dp_dt()
+ * - `masses()` - mass_t masses(double t, double z)
+ * - `translate()` - rev_t  translate(double sx, double sy)
+ * - `export_ellipse()` - void export_ellipse(std::string name, double t, double z)
+ * - `export_ellipse()` - void export_ellipse(std::string name, double t, double z, int n_points)
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - A
- * - D
- * - _d1
- * - _p1
- * - _s1
- * - a_t
- * - a_w
- * - a_x
- * - a_y
- * - asym
- * - b_jet
- * - b_lep
- * - e2_lep
- * - lmb1
- * - m2_jet
- * - m2_lep
- * - mt
- * - mw
- * - nu1
- * - nu2
+ * **geo_t variables:**
+ * - Private:
+ *   - `valid` (bool)
+ *   - `_s1` (double)
+ *   - `_p1` (double)
+ *   - `_d1` (double)
+ *   - `asym` (double)
+ *   - `nu1` (geo_t*)
+ *   - `nu2` (geo_t*)
+ * 
+ * **mass_t variables:**
+ * - Private:
+ *   - `mt` (double)
+ *   - `mw` (double)
+ *   - `sx` (double)
+ *   - `sy` (double)
+ * 
+ * **multisol variables:**
+ * - Private:
+ *   - `rt` (matrix*)
+ *   - `para` (multisol_t*)
+ *   - `b_lep` (double)
+ *   - `p_lep` (double)
+ *   - `m2_lep` (double)
+ *   - `e2_lep` (double)
+ *   - `b_jet` (double)
+ *   - `p_jet` (double)
+ *   - `m2_jet` (double)
+ *   - `phi_mu` (double)
+ *   - `theta_mu` (double)
+ *   - `vx_jet` (vec3)
+ *   - `o` (double)
+ *   - `w` (double)
+ * 
+ * **multisol_t variables:**
+ * - Private:
+ *   - `A` (double)
+ *   - `D` (double)
+ *   - `s0x` (double)
+ *   - `psi` (double)
+ *   - `lmb1` (double)
+ *   - `a_x` (double)
+ *   - `a_y` (double)
+ *   - `a_w` (double)
+ *   - `a_t` (double)
+ * 
+ * **rev_t variables:**
+ * - Private:
+ *   - `u` (double)
+ *   - `v` (double)
+ *   - `u_p` (double)
+ *   - `v_p` (double)
+ *   - `t` (double)
+ *   - `z` (double)
+ * 
  */
 
 /** @} */  // end of modules_nusol_tmp_multisol_h

@@ -15,31 +15,36 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - exp_mc20
+ * This file defines the following classes/structures:
+ * - **exp_mc20** (inherits from event_template)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - CompileEvent()
- * - build()
- * - clone()
- * - vectorize()
+ * **exp_mc20 methods:**
+ * - `exp_mc20()` - exp_mc20()
+ * - `exp_mc20()` - virtual ~exp_mc20()
+ * - `clone()` - event_template* clone() override
+ * - `build()` - void build(element_t* el) override
+ * - `CompileEvent()` - void CompileEvent() override
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - data
- * - met
- * - met_sum
- * - mu
- * - phi
+ * **exp_mc20 variables:**
+ * - Public:
+ *   - `met_sum` (float)
+ *   - `met` (float)
+ *   - `phi` (float)
+ *   - `mu` (float)
+ * - Private:
+ *   - `data` (return)
+ * 
  */
 
 /** @} */  // end of events_exp_mc20_include_exp_mc20_event_h

@@ -15,17 +15,17 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - loss_enum
- * - opt_enum
- * - particle_enum
- * - data_enum
- * - graph_enum
- * - mlp_init
- * - scheduler_enum
- * - mode_enum
+ * This file defines the following classes/structures:
+ * - **data_enum**
+ * - **opt_enum**
+ * - **mlp_init**
+ * - **loss_enum**
+ * - **scheduler_enum**
+ * - **graph_enum**
+ * - **mode_enum**
+ * - **particle_enum**
  */
 
 /** @} */  // end of modules_structs_include_structs_enums_h

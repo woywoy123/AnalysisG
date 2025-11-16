@@ -14,20 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - CompileEvent()
- * - build()
- * - clone()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - key_name
- */
-
 /** @} */  // end of templates_events_include_<event_name>_<event_name>_h

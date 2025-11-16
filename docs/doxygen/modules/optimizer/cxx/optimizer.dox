@@ -14,19 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - base
- * - batched
- * - config
- * - gr
- * - l
- * - model
- * - model_k
- * - mr
- * - settings
- */
-
 /** @} */  // end of modules_optimizer_cxx_optimizer_cxx

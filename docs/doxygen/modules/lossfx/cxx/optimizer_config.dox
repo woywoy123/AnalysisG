@@ -14,16 +14,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- * 
- * Key functions in this file:
- * - m_kaiming_normal()
- * - m_kaiming_uniform()
- * - m_normal()
- * - m_uniform()
- * - m_xavier_normal()
- * - m_xavier_uniform()
- */
-
 /** @} */  // end of modules_lossfx_cxx_optimizer_config_cxx

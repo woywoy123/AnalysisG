@@ -14,16 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - dev_
- * - idx_
- * - out
- * - sm
- * - t
- * - tl
- */
-
 /** @} */  // end of modules_graph_cxx_struct_graph_cxx

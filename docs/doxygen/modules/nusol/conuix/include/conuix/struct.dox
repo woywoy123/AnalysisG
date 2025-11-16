@@ -15,52 +15,53 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - base_t
- * - Mobius_t
- * - rotation_t
- * - particle_template
- * - atomics_t
- * - Sx_t
- * - pencil_t
- * - H_matrix_t
- * - kinematic_t
- * - Sy_t
- * - thetapsi_t
- * - debug
+ * This file defines the following classes/structures:
+ * - **debug**
+ * - **kinematic_t** (inherits from debug)
+ * - **rotation_t** (inherits from debug)
+ * - **base_t** (inherits from debug)
+ * - **thetapsi_t**
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - GetTauZ()
- * - H_Matrix()
- * - H_Tilde()
- * - debug_mode()
- * - init()
- * - masses()
- * - print()
- * - variable()
+ * **base_t methods:**
+ * - `print()` - void print(int p = 16) override
+ * 
+ * **debug methods:**
+ * - `print()` - virtual void print(int p = 16)
+ * - `variable()` - void variable(std::string name, long double val)
+ * 
+ * **kinematic_t methods:**
+ * - `print()` - void print(int p = 16) override
+ * 
+ * **rotation_t methods:**
+ * - `print()` - void print(int p = 16) override
+ * 
+ * **Standalone functions:**
+ * - `H_Matrix()`
+ * - `H_Tilde()`
+ * - `init()`
+ * - `GetTauZ()`
+ * - `masses()`
+ * - `debug_mode()`
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - HBC
- * - HBS
- * - HBX
- * - HTC
- * - HTS
- * - HTX
- * - R_T
- * - atomics_t
- * - particle_template
- * - prec
- * - vec
+ * **debug variables:**
+ * - Private:
+ *   - `prec` (int)
+ * 
+ * **rotation_t variables:**
+ * - Private:
+ *   - `vec` (matrix_t)
+ *   - `R_T` (matrix_t)
+ * 
  */
 
 /** @} */  // end of modules_nusol_conuix_include_conuix_struct_h

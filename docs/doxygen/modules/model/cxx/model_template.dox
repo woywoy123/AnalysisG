@@ -14,22 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - e_data
- * - e_truth
- * - g_data
- * - g_truth
- * - gr
- * - lamb
- * - lamb_d
- * - lambda
- * - n_data
- * - n_truth
- * - offset_nodes
- * - tn
- */
-
 /** @} */  // end of modules_model_cxx_model_template_cxx

@@ -14,13 +14,4 @@
  * @{
  */
 
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - output
- * - sel
- * - true
- */
-
 /** @} */  // end of modules_selection_cxx_selection_core_cxx

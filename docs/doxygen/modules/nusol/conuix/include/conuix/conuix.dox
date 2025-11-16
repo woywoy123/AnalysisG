@@ -15,28 +15,29 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - conuix
- * - nusol_t
- * - conuic
+ * This file defines the following classes/structures:
+ * - **conuix**
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - solve()
+ * **conuix methods:**
+ * - `conuix()` - conuix(nusol_t* params)
+ * - `conuix()` - ~conuix()
+ * - `solve()` - void solve()
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - conuic
- * - nusol_t
- * - params
+ * **conuix variables:**
+ * - Private:
+ *   - `params` (nusol_t*)
+ * 
  */
 
 /** @} */  // end of modules_nusol_conuix_include_conuix_conuix_h

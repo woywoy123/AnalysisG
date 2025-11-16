@@ -15,56 +15,71 @@
  */
 
 /**
- * @section classes Classes
+ * @section classes Classes and Structures
  * 
- * This file defines the following classes:
- * - particle_template
- * - event_template
- * - selection_template
+ * This file defines the following classes/structures:
+ * - **particle_template** (inherits from tools)
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - DeltaR()
- * - add_leaf()
- * - apply_type_prefix()
- * - build()
- * - clone()
- * - iadd()
- * - is()
- * - particle_template()
- * - register_child()
- * - register_parent()
- * - to_cartesian()
- * - to_polar()
+ * **particle_template methods:**
+ * - `particle_template()` - particle_template()
+ * - `particle_template()` - explicit particle_template(particle_t* p)
+ * - `particle_template()` - explicit particle_template(particle_template* p, bool dump = false)
+ * - `particle_template()` - explicit particle_template(double px, double py, double pz, double e)
+ * - `particle_template()` - explicit particle_template(double px, double py, double pz)
+ * - `particle_template()` - virtual ~particle_template()
+ * - `particle_template()` - explicit particle_template(particle_t* p)
+ * - `particle_template()` - explicit particle_template(particle_template* p, bool dump = false)
+ * - `particle_template()` - explicit particle_template(double px, double py, double pz, double e)
+ * - `particle_template()` - explicit particle_template(double px, double py, double pz)
+ * - `to_cartesian()` - void to_cartesian()
+ * - `to_polar()` - void to_polar()
+ * - `is()` - bool is(std::vector<int> p)
+ * - `DeltaR()` - double DeltaR(particle_template* p)
+ * - `iadd()` - void iadd(particle_template* p)
+ * - `register_parent()` - bool register_parent(particle_template* p)
+ * - `register_child()` - bool register_child(particle_template* p)
+ * - `add_leaf()` - void add_leaf(std::string key, std::string leaf = "")
+ * - `apply_type_prefix()` - void apply_type_prefix()
+ * - `build()` - virtual void build(std::map<std::string, particle_template*>* event, element_t* el)
+ * - `clone()` - virtual particle_template* clone()
+ * 
  */
 
 /**
  * @section variables Member Variables
  * 
- * Key member variables:
- * - P
- * - _is_marked
- * - _is_serial
- * - beta
- * - charge
- * - data
- * - e
- * - eta
- * - event_template
- * - hash
- * - index
- * - is_add
- * - is_b
- * - is_lep
- * - is_nu
- * - lep_decay
- * - mass
- * - operator
- * - p2
- * - pdgid
+ * **particle_template variables:**
+ * - Public:
+ *   - `e` (cproperty<double, particle_template>)
+ *   - `pt` (cproperty<double, particle_template>)
+ *   - `eta` (cproperty<double, particle_template>)
+ *   - `phi` (cproperty<double, particle_template>)
+ *   - `px` (cproperty<double, particle_template>)
+ *   - `py` (cproperty<double, particle_template>)
+ *   - `pz` (cproperty<double, particle_template>)
+ *   - `mass` (cproperty<double, particle_template>)
+ *   - `P` (cproperty<double, particle_template>)
+ *   - `beta` (cproperty<double, particle_template>)
+ *   - `pdgid` (cproperty<int, particle_template>)
+ *   - `symbol` (cproperty<std::string, particle_template>)
+ *   - `charge` (cproperty<double, particle_template>)
+ *   - `hash` (cproperty<std::string, particle_template>)
+ *   - `is_b` (cproperty<bool, particle_template>)
+ *   - `is_lep` (cproperty<bool, particle_template>)
+ *   - `is_nu` (cproperty<bool, particle_template>)
+ *   - `is_add` (cproperty<bool, particle_template>)
+ *   - `lep_decay` (cproperty<bool, particle_template>)
+ *   - `type` (cproperty<std::string, particle_template>)
+ *   - `index` (cproperty<int, particle_template>)
+ *   - `p2` (return)
+ *   - `data` (particle_t)
+ *   - `_is_serial` (bool)
+ *   - `_is_marked` (bool)
+ * 
  */
 
 /** @} */  // end of modules_particle_include_templates_particle_template_h

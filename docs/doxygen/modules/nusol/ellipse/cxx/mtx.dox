@@ -15,45 +15,19 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions Functions and Methods
  * 
- * Key functions in this file:
- * - i()
- * - mtx()
- * - o()
- * - out()
- * - r1()
- * - r2()
- * - r3()
- * - solve_cubic()
- * - vXc()
- * - vx()
- */
-
-/**
- * @section variables Member Variables
- * 
- * Key member variables:
- * - B
- * - a
- * - b
- * - c
- * - cx
- * - det_
- * - e
- * - eig
- * - eiv
- * - false
- * - idx
- * - inv3x3
- * - lx
- * - m
- * - mag
- * - mag_
- * - o
- * - out
- * - ox
- * - q
+ * **Standalone functions:**
+ * - `out()`
+ * - `vXc()`
+ * - `vx()`
+ * - `mtx()`
+ * - `o()`
+ * - `r1()`
+ * - `r2()`
+ * - `r3()`
+ * - `solve_cubic()`
+ * - `i()`
  */
 
 /** @} */  // end of modules_nusol_ellipse_cxx_mtx_cxx
