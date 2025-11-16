@@ -12,11 +12,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- *
- * - `std::map<std::string, torch::Tensor> edge_aggregation(torch::Tensor* edge_index, torch::Tensor* pred`
- * - `std::map<std::string, torch::Tensor> node_aggregation(torch::Tensor* edge_index, torch::Tensor* pred`
- */
-
 /** @} */

@@ -16,53 +16,41 @@
  * @section classes Classes and Structures
  *
  * - **analytics_t** (struct)
- * - **metrics** (class)
  */
 
 /**
- * @section functions Functions
+ * @section functions_analytics_t analytics_t Methods
  *
- * - `void purge(){ this -> destroy(&this -> loss_graph);` (analytics_t::public)
- * - `this -> destroy(&this -> loss_graph);` (analytics_t::public)
- * - `this -> destroy(&this -> loss_node);` (analytics_t::public)
- * - `this -> destroy(&this -> loss_edge);` (analytics_t::public)
- * - `this -> destroy(&this -> accuracy_graph);` (analytics_t::public)
- * - `this -> destroy(&this -> accuracy_node);` (analytics_t::public)
- * - `this -> destroy(&this -> accuracy_edge);` (analytics_t::public)
- * - `this -> destroy(&this -> pred_mass_edge);` (analytics_t::public)
- * - `this -> destroy(&this -> truth_mass_edge);` (analytics_t::public)
- * - `void destroy(std::map<mode_enum, std::map<std::string, TH1F*>>* data){ std::map<mode_enum, std::map<` (analytics_t::public)
- * - `for (itr = data -> begin(); itr != data -> end(); ++itr){` (analytics_t::public)
- * - `std::map<std::string, TH1F*>::iterator ith = mps -> begin();` (analytics_t::public)
- * - `for (; ith != mps -> end(); ++ith){delete ith -> second;}` (analytics_t::public)
- * - `metrics();`
- * - `~metrics();`
- * - `void dump_plots(int k);`
- * - `void dump_loss_plots(int k);`
- * - `void dump_accuracy_plots(int k);`
- * - `void dump_mass_plots(int k);`
- * - `model_report* register_model(model_template* model, int kfold);`
- * - `void capture(mode_enum, int kfold, int epoch, int smpl_len);`
- * - `void build_th1f_mass(std::string var_name, graph_enum typ, int kfold);`
+ * - [private] `void purge()`
+ * - [private] `this -> destroy(&this -> loss_graph)`
+ * - [private] `this -> destroy(&this -> loss_node)`
+ * - [private] `this -> destroy(&this -> loss_edge)`
+ * - [private] `this -> destroy(&this -> accuracy_graph)`
+ * - [private] `this -> destroy(&this -> accuracy_node)`
+ * - [private] `this -> destroy(&this -> accuracy_edge)`
+ * - [private] `this -> destroy(&this -> pred_mass_edge)`
+ * - [private] `this -> destroy(&this -> truth_mass_edge)`
+ * - [private] `void destroy(std::map<mode_enum, std::map<std::string, TH1F*>>* data)`
+ * - [private] `for (itr = data -> begin()`
+ * - [private] `std::map<std::string, TH1F*>::iterator ith = mps -> begin()`
+ * - [private] `for (`
  */
 
 /**
- * @section variables Variables
+ * @section variables_analytics_t analytics_t Member Variables
  *
- * - `int this_epoch = 0;` (analytics_t::public)
- * - `std::map<mode_enum, std::map<std::string, TH1F*>> loss_graph = {};` (analytics_t::public)
- * - `std::map<mode_enum, std::map<std::string, TH1F*>> loss_node = {};` (analytics_t::public)
- * - `std::map<mode_enum, std::map<std::string, TH1F*>> loss_edge = {};` (analytics_t::public)
- * - `std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_graph = {};` (analytics_t::public)
- * - `std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_node = {};` (analytics_t::public)
- * - `std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_edge = {};` (analytics_t::public)
- * - `std::map<mode_enum, std::map<std::string, TH1F*>> pred_mass_edge = {};` (analytics_t::public)
- * - `std::map<mode_enum, std::map<std::string, TH1F*>> truth_mass_edge = {};` (analytics_t::public)
- * - `std::map<mode_enum, std::map<std::string, TH1F*>>::iterator itr;` (analytics_t::public)
- * - `std::map<std::string, TH1F*>* mps = &itr -> second;` (analytics_t::public)
- * - `std::map<std::string, TH1F*>::iterator ith = mps -> begin();` (analytics_t::public)
- * - `const std::vector<Color_t> colors_h = {` (::public)
- * - `std::map<int, analytics_t> registry = {};` (::public)
+ * **Private:**
+ * - `int this_epoch = 0;`
+ * - `std::map<mode_enum, std::map<std::string, TH1F*>> loss_graph = {};`
+ * - `std::map<mode_enum, std::map<std::string, TH1F*>> loss_node = {};`
+ * - `std::map<mode_enum, std::map<std::string, TH1F*>> loss_edge = {};`
+ * - `std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_graph = {};`
+ * - `std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_node = {};`
+ * - `std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_edge = {};`
+ * - `std::map<mode_enum, std::map<std::string, TH1F*>> pred_mass_edge = {};`
+ * - `std::map<mode_enum, std::map<std::string, TH1F*>> truth_mass_edge = {};`
+ * - `std::map<mode_enum, std::map<std::string, TH1F*>>::iterator itr;`
+ * - `std::map<std::string, TH1F*>* mps = &itr -> second;`
  */
 
 /** @} */

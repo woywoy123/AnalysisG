@@ -15,64 +15,45 @@
 /**
  * @section classes Classes and Structures
  *
- * - **pagerank_metric** (class)
  * - **kinematic_t** (struct)
  * - **meta_event_t** (struct)
  * - **sample_t** (struct)
- * - **collector** (class)
  */
 
 /**
- * @section functions Functions
+ * @section variables_kinematic_t kinematic_t Member Variables
  *
- * - `pagerank_metric();`
- * - `~pagerank_metric() override;`
- * - `pagerank_metric* clone() override;`
- * - `void define_metric(metric_t* mtx) override;`
- * - `void define_variables() override;`
- * - `void event() override;`
- * - `void batch() override;`
- * - `void end() override;`
- * - `std::vector<particle_template*> build_top(std::map<int, std::map<int, particle_template*>>*);`
- * - `collector();`
- * - `~collector();`
- * - `void set_index(long idx_);`
- * - `void add_truth(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch);`
- * - `void add_pagerank(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch);`
- * - `void add_nominal(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch);`
- * - `void add_process(int prc, std::string mode, std::string model, int kfold, int epoch);`
- * - `bool add_meta(std::string data, std::string model, int kfold, int epoch);`
- * - `void add_file_map(std::string fname, long idx_, std::string mode, std::string model, int kfold, int `
+ * **Private:**
+ * - `double px = 0;`
+ * - `double py = 0;`
+ * - `double pz = 0;`
+ * - `double mass = 0;`
+ * - `double pt  = 0;`
+ * - `double eta = 0;`
+ * - `double phi = 0;`
+ * - `double energy = 0;`
+ * - `int num_nodes = 0;`
+ * - `double score = 0;`
  */
 
 /**
- * @section variables Variables
+ * @section variables_meta_event_t meta_event_t Member Variables
  *
- * - `float  alpha    = 0.85;` (::private)
- * - `float  norm_lim = 1e-6;` (::private)
- * - `size_t max_itr  = 1e6;` (::private)
- * - `int kfold = -1;` (::private)
- * - `int epoch = -1;` (::private)
- * - `std::string mode = "";` (::private)
- * - `int process_mapping = -1;` (::private)
- * - `double px = 0;` (kinematic_t::public)
- * - `double py = 0;` (kinematic_t::public)
- * - `double pz = 0;` (kinematic_t::public)
- * - `double mass = 0;` (kinematic_t::public)
- * - `double pt  = 0;` (kinematic_t::public)
- * - `double eta = 0;` (kinematic_t::public)
- * - `double phi = 0;` (kinematic_t::public)
- * - `double energy = 0;` (kinematic_t::public)
- * - `int num_nodes = 0;` (kinematic_t::public)
- * - `double score = 0;` (kinematic_t::public)
- * - `std::vector<kinematic_t> truth = {};` (meta_event_t::public)
- * - `std::vector<kinematic_t> pageranked = {};` (meta_event_t::public)
- * - `std::vector<kinematic_t> nominal = {};` (meta_event_t::public)
- * - `std::string meta_data = "";` (sample_t::public)
- * - `std::map<std::string, std::map<std::string, long>> file_map  = {};` (sample_t::public)
- * - `std::map<std::string, std::map<std::string, long>> file_stat = {};` (sample_t::public)
- * - `std::map<std::string, std::map<long, meta_event_t>> data = {};` (sample_t::public)
- * - `long  idx = 0;` (::public)
+ * **Private:**
+ * - `int process_mapping = -1;`
+ * - `std::vector<kinematic_t> truth = {};`
+ * - `std::vector<kinematic_t> pageranked = {};`
+ * - `std::vector<kinematic_t> nominal = {};`
+ */
+
+/**
+ * @section variables_sample_t sample_t Member Variables
+ *
+ * **Private:**
+ * - `std::string meta_data = "";`
+ * - `std::map<std::string, std::map<std::string, long>> file_map  = {};`
+ * - `std::map<std::string, std::map<std::string, long>> file_stat = {};`
+ * - `std::map<std::string, std::map<long, meta_event_t>> data = {};`
  */
 
 /** @} */

@@ -15,34 +15,23 @@
 /**
  * @section classes Classes and Structures
  *
- * - **nusol** (class)
- * - **ellipse** (class)
- * - **conuix** (class)
- * - **nusol_enum** (class)
  * - **nusol_t** (struct)
- * - **nusol** (class)
  */
 
 /**
- * @section functions Functions
+ * @section variables_nusol_t nusol_t Member Variables
  *
- * - `nusol(nusol_t* parameters);`
- * - `void solve();`
- * - `~nusol();`
- */
-
-/**
- * @section variables Variables
- *
- * - `double met = 0;` (nusol_t::public)
- * - `double phi = 0;` (nusol_t::public)
- * - `double mt = 172.68 * 1000;` (nusol_t::public)
- * - `double mw = 80.385 * 1000;` (nusol_t::public)
- * - `double limit = 10000;` (nusol_t::public)
- * - `std::vector<particle_template*>* targets = nullptr;` (nusol_t::public)
- * - `double met_x = 0;` (nusol_t::private)
- * - `double met_y = 0;` (nusol_t::private)
- * - `double met_z = 0;` (nusol_t::private)
+ * **Public:**
+ * - `double met = 0;`
+ * - `double phi = 0;`
+ * - `double mt = 172.68 * 1000;`
+ * - `double mw = 80.385 * 1000;`
+ * - `double limit = 10000;`
+ * - `std::vector<particle_template*>* targets = nullptr;`
+ * **Private:**
+ * - `double met_x = 0;`
+ * - `double met_y = 0;`
+ * - `double met_z = 0;`
  */
 
 /** @} */

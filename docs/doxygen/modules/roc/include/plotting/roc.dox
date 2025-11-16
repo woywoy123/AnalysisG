@@ -16,34 +16,20 @@
  * @section classes Classes and Structures
  *
  * - **roc_t** (struct)
- * - **roc** (class)
  */
 
 /**
- * @section functions Functions
+ * @section variables_roc_t roc_t Member Variables
  *
- * - `roc();`
- * - `~roc();`
- * - `std::vector<roc_t*> get_ROC();`
- * - `std::vector<std::vector<g>>* generate(size_t x, size_t y){ typename std::vector<g> v(y, 0);`
- * - `typename std::vector<g> v(y, 0);`
- * - `return new std::vector<std::vector<g>>(x, v);`
- */
-
-/**
- * @section variables Variables
- *
- * - `int cls = 0;` (roc_t::public)
- * - `int kfold = 0;` (roc_t::public)
- * - `std::string model = "";` (roc_t::public)
- * - `std::vector<double> _auc = {};` (roc_t::public)
- * - `std::vector<std::vector<double>> tpr_ = {};` (roc_t::public)
- * - `std::vector<std::vector<double>> fpr_ = {};` (roc_t::public)
- * - `std::vector<std::vector<int>>*     truth = nullptr;` (roc_t::public)
- * - `std::vector<std::vector<double>>* scores = nullptr;` (roc_t::public)
- * - `std::map<std::string, std::map<int, std::vector<std::vector<double>>*>> roc_data` (::public)
- * - `std::map<std::string, std::map<int, std::vector<std::vector<int>>*>>      labels` (::public)
- * - `std::vector<roc_t*> ptr_roc = {};` (::public)
+ * **Private:**
+ * - `int cls = 0;`
+ * - `int kfold = 0;`
+ * - `std::string model = "";`
+ * - `std::vector<double> _auc = {};`
+ * - `std::vector<std::vector<double>> tpr_ = {};`
+ * - `std::vector<std::vector<double>> fpr_ = {};`
+ * - `std::vector<std::vector<int>>*     truth = nullptr;`
+ * - `std::vector<std::vector<double>>* scores = nullptr;`
  */
 
 /** @} */

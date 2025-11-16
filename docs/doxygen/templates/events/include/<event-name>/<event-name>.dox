@@ -12,28 +12,4 @@
  * @{
  */
 
-/**
- * @section classes Classes and Structures
- *
- * - **<event-name>** (class)
- */
-
-/**
- * @section functions Functions
- *
- * - `<event-name>();`
- * - `~<event-name>() override;`
- * - `event_template* clone() override;`
- * - `void build(element_t* el) override;`
- * - `void CompileEvent() override;`
- */
-
-/**
- * @section variables Variables
- *
- * - `std::vector<particle_template*> some_particles = {};` (::private)
- * - `float key_name = 0; // some variable of the event` (::private)
- * - `std::map<std::string, some_particle*> m_particle = {};` (::private)
- */
-
 /** @} */

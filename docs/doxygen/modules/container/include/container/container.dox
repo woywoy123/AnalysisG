@@ -16,49 +16,32 @@
  * @section classes Classes and Structures
  *
  * - **entry_t** (struct)
- * - **container** (class)
  */
 
 /**
- * @section functions Functions
+ * @section functions_entry_t entry_t Methods
  *
- * - `void init();` (entry_t::public)
- * - `void destroy();` (entry_t::public)
- * - `bool has_event(event_template* ev);` (entry_t::public)
- * - `bool has_graph(graph_template* gr);` (entry_t::public)
- * - `bool has_selection(selection_template* sel);` (entry_t::public)
- * - `void destroy(std::vector<g*>* c){ for (size_t x(0); x < c -> size(); ++x){` (entry_t::public)
- * - `for (size_t x(0); x < c -> size(); ++x){` (entry_t::public)
- * - `delete (*c)[x];` (entry_t::public)
- * - `(*c)[x] = nullptr;` (entry_t::public)
- * - `std::vector<g*>().swap(*c);` (entry_t::public)
- * - `container();`
- * - `~container();`
- * - `void add_meta_data(meta*, std::string);`
- * - `meta* get_meta_data();`
- * - `bool add_selection_template(selection_template*);`
- * - `bool add_event_template(event_template*, std::string label);`
- * - `bool add_graph_template(graph_template*, std::string label);`
- * - `void fill_selections(std::map<std::string, selection_template*>* inpt);`
- * - `void get_events(std::vector<event_template*>*, std::string label);`
- * - `void populate_dataloader(dataloader* dl);`
- * - `void compile(size_t* len, int threadIdx);`
- * - `size_t len();`
- * - `entry_t* add_entry(std::string hash);`
+ * - [private] `void init()`
+ * - [private] `void destroy()`
+ * - [private] `bool has_event(event_template* ev)`
+ * - [private] `bool has_graph(graph_template* gr)`
+ * - [private] `bool has_selection(selection_template* sel)`
+ * - [private] `void destroy(std::vector<g*>* c)`
+ * - [private] `for (size_t x(0)`
+ * - [private] `delete (*c)[x]`
+ * - [private] `(*c)[x] = nullptr`
+ * - [private] `std::vector<g*>().swap(*c)`
  */
 
 /**
- * @section variables Variables
+ * @section variables_entry_t entry_t Member Variables
  *
- * - `std::string hash = "";` (entry_t::public)
- * - `std::vector<graph_t*>                m_data  = {};` (entry_t::public)
- * - `std::vector<graph_template*>         m_graph = {};` (entry_t::public)
- * - `std::vector<event_template*>         m_event = {};` (entry_t::public)
- * - `std::vector<selection_template*> m_selection = {};` (entry_t::public)
- * - `std::string* filename    = nullptr;` (::public)
- * - `std::string* output_path = nullptr;` (::public)
- * - `std::string     label    = "";` (::public)
- * - `std::map<std::string, selection_template*>* merged = nullptr;` (::public)
+ * **Private:**
+ * - `std::string hash = "";`
+ * - `std::vector<graph_t*>                m_data  = {};`
+ * - `std::vector<graph_template*>         m_graph = {};`
+ * - `std::vector<event_template*>         m_event = {};`
+ * - `std::vector<selection_template*> m_selection = {};`
  */
 
 /** @} */

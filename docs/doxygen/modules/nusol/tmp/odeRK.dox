@@ -17,44 +17,31 @@
  *
  * - **ellipse_t** (struct)
  * - **recon_t** (struct)
- * - **odeRK** (class)
  */
 
 /**
- * @section functions Functions
+ * @section functions_ellipse_t ellipse_t Methods
  *
- * - `void print();` (ellipse_t::public)
- * - `ellipse_t operator+(const ellipse_t& a, const ellipse_t& b);`
- * - `ellipse_t operator*(const ellipse_t& a, double s);`
- * - `odeRK(std::vector<multisol*>* sols, vec3 met, int iter, double step);`
- * - `~odeRK();`
- * - `void solve();`
- * - `void rk4(double dt);`
- * - `void   update_t();`
- * - `double solve_z_phi();`
- * - `double residual(std::vector<double> wg, std::vector<double> phx);`
- * - `std::vector<ellipse_t> derivative(const std::vector<ellipse_t>& dS);`
- * - `double ghost_angle(int nui);`
- * - `std::vector<double> plane_rk4(const std::vector<double>& t_initial);`
- * - `std::vector<double> plane_align(const std::vector<ellipse_t>& current_state);`
+ * - [private] `void print()`
  */
 
 /**
- * @section variables Variables
+ * @section variables_ellipse_t ellipse_t Member Variables
  *
- * - `double t;` (ellipse_t::public)
- * - `double z = 1.0;` (ellipse_t::public)
- * - `bool is_valid = false;` (recon_t::public)
- * - `double residual = -1;` (recon_t::public)
- * - `std::vector<double> t;` (recon_t::public)
- * - `std::vector<double> z;` (recon_t::public)
- * - `std::vector<double> phi;` (recon_t::public)
- * - `int itr    = 0;` (::public)
- * - `int nsx    = 0;` (::public)
- * - `double dt_ = 0;` (::public)
- * - `double ct  = 0;` (::public)
- * - `std::vector<ellipse_t>  _state = {};` (::public)
- * - `std::vector<multisol*>* _data  = nullptr;` (::public)
+ * **Private:**
+ * - `double t;`
+ * - `double z = 1.0;`
+ */
+
+/**
+ * @section variables_recon_t recon_t Member Variables
+ *
+ * **Private:**
+ * - `bool is_valid = false;`
+ * - `double residual = -1;`
+ * - `std::vector<double> t;`
+ * - `std::vector<double> z;`
+ * - `std::vector<double> phi;`
  */
 
 /** @} */

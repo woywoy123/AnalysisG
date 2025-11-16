@@ -12,18 +12,4 @@
  * @{
  */
 
-/**
- * @section classes Classes and Structures
- *
- * - **nusol_t** (struct)
- * - **conics** (class)
- */
-
-/**
- * @section functions Functions
- *
- * - `conics(nusol_t* parameters);`
- * - `~conics();`
- */
-
 /** @} */

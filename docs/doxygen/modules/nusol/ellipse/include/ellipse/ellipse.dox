@@ -15,43 +15,48 @@
 /**
  * @section classes Classes and Structures
  *
- * - **nusol_t** (struct)
  * - **nunu_t** (struct)
  * - **ellipse** (class)
  */
 
 /**
- * @section functions Functions
+ * @section functions_nunu_t nunu_t Methods
  *
- * - `nunu_t();` (nunu_t::public)
- * - `~nunu_t();` (nunu_t::public)
- * - `ellipse(nusol_t* parameters);` (ellipse::public)
- * - `void prepare(double mt, double mw);` (ellipse::public)
- * - `std::vector<particle_template*> nunu_make();` (ellipse::public)
- * - `void solve();` (ellipse::public)
- * - `~ellipse();` (ellipse::public)
- * - `void flush();` (ellipse::private)
- * - `void make_neutrinos(mtx* v, mtx* v_);` (ellipse::private)
- * - `int generate(nuelx* nu1, nuelx* nu2);` (ellipse::private)
- * - `int intersection(mtx** v, mtx** v_);` (ellipse::private)
- * - `int angle_cross( mtx** v, mtx** v_);` (ellipse::private)
+ * - [private] `nunu_t()`
+ * - [private] `~nunu_t()`
  */
 
 /**
- * @section variables Variables
+ * @section functions_ellipse ellipse Methods
  *
- * - `std::map<int, std::tuple<nuelx*, nuelx*>> pairings;` (ellipse::private)
- * - `std::map<double, nunu_t> solvs = {};` (ellipse::private)
- * - `std::vector<particle_template*> bquarks = {};` (ellipse::private)
- * - `std::vector<particle_template*> leptons = {};` (ellipse::private)
- * - `std::vector<nuelx*> engines = {};` (ellipse::private)
- * - `int m_lx = 0;` (ellipse::private)
- * - `int m_bst = -1;` (ellipse::private)
- * - `double _metx = 0;` (ellipse::private)
- * - `double _mety = 0;` (ellipse::private)
- * - `double _metz = 0;` (ellipse::private)
- * - `int n_lp = 0;` (ellipse::private)
- * - `int n_bs = 0;` (ellipse::private)
+ * - [public] `ellipse(nusol_t* parameters)`
+ * - [public] `void prepare(double mt, double mw)`
+ * - [public] `std::vector<particle_template*> nunu_make()`
+ * - [public] `void solve()`
+ * - [public] `~ellipse()`
+ * - [private] `void flush()`
+ * - [private] `void make_neutrinos(mtx* v, mtx* v_)`
+ * - [private] `int generate(nuelx* nu1, nuelx* nu2)`
+ * - [private] `int intersection(mtx** v, mtx** v_)`
+ * - [private] `int angle_cross( mtx** v, mtx** v_)`
+ */
+
+/**
+ * @section variables_ellipse ellipse Member Variables
+ *
+ * **Private:**
+ * - `std::map<int, std::tuple<nuelx*, nuelx*>> pairings;`
+ * - `std::map<double, nunu_t> solvs = {};`
+ * - `std::vector<particle_template*> bquarks = {};`
+ * - `std::vector<particle_template*> leptons = {};`
+ * - `std::vector<nuelx*> engines = {};`
+ * - `int m_lx = 0;`
+ * - `int m_bst = -1;`
+ * - `double _metx = 0;`
+ * - `double _mety = 0;`
+ * - `double _metz = 0;`
+ * - `int n_lp = 0;`
+ * - `int n_bs = 0;`
  */
 
 /** @} */

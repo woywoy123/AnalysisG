@@ -15,41 +15,42 @@
 /**
  * @section classes Classes and Structures
  *
- * - **particle_template** (class)
  * - **conuic** (class)
  */
 
 /**
- * @section functions Functions
+ * @section functions_conuic conuic Methods
  *
- * - `conuic(particle_template* jet, particle_template* lep);` (conuic::public)
- * - `~conuic();` (conuic::public)
- * - `matrix_t get_RT();` (conuic::public)
- * - `long double Z2(long double Sx, long double Sy);` (conuic::public)
- * - `long double Sx(long double Tau, long double Z);` (conuic::public)
- * - `long double Sy(long double Tau, long double Z);` (conuic::public)
- * - `void debug();` (conuic::public)
- * - `void solve();` (conuic::public)
- * - `void static set_tau(long double* v, conuic* c);` (conuic::private)
- * - `void static set_scl(long double* v, conuic* c);` (conuic::private)
- * - `void static set_lmb(long double* v, conuic* c);` (conuic::private)
- * - `void static get_tau(long double* v, conuic* c);` (conuic::private)
- * - `void static get_scl(long double* v, conuic* c);` (conuic::private)
- * - `void static get_lmb(long double* v, conuic* c);` (conuic::private)
+ * - [public] `conuic(particle_template* jet, particle_template* lep)`
+ * - [public] `~conuic()`
+ * - [public] `matrix_t get_RT()`
+ * - [public] `long double Z2(long double Sx, long double Sy)`
+ * - [public] `long double Sx(long double Tau, long double Z)`
+ * - [public] `long double Sy(long double Tau, long double Z)`
+ * - [public] `void debug()`
+ * - [public] `void solve()`
+ * - [private] `void static set_tau(long double* v, conuic* c)`
+ * - [private] `void static set_scl(long double* v, conuic* c)`
+ * - [private] `void static set_lmb(long double* v, conuic* c)`
+ * - [private] `void static get_tau(long double* v, conuic* c)`
+ * - [private] `void static get_scl(long double* v, conuic* c)`
+ * - [private] `void static get_lmb(long double* v, conuic* c)`
  */
 
 /**
- * @section variables Variables
+ * @section variables_conuic conuic Member Variables
  *
- * - `cproperty<long double, conuic> t;  // tau` (conuic::public)
- * - `cproperty<long double, conuic> z;  // scale` (conuic::public)
- * - `cproperty<long double, conuic> l;  // lambda` (conuic::public)
- * - `long double tau  = 0; // simple hyperbolic parameter` (conuic::private)
- * - `long double stau = 0; // pre-compute sinh` (conuic::private)
- * - `long double ctau = 0; // pre-compute cosh` (conuic::private)
- * - `long double ttau = 0; // pre-compute tanh` (conuic::private)
- * - `long double scale = 0;` (conuic::private)
- * - `long double lamb  = 0;` (conuic::private)
+ * **Public:**
+ * - `cproperty<long double, conuic> t;`
+ * - `cproperty<long double, conuic> z;`
+ * - `cproperty<long double, conuic> l;`
+ * **Private:**
+ * - `long double tau  = 0;`
+ * - `long double stau = 0;`
+ * - `long double ctau = 0;`
+ * - `long double ttau = 0;`
+ * - `long double scale = 0;`
+ * - `long double lamb  = 0;`
  */
 
 /** @} */

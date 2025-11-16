@@ -12,31 +12,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- *
- * - `io::io(){this -> prefix = "io";}`
- * - `io::~io(){ this -> end();`
- * - `this -> end();`
- * - `this -> root_end();`
- * - `std::map<std::string, TFile*>::iterator itr = this -> files_open.begin();`
- * - `for (; itr != this -> files_open.end(); ++itr){`
- * - `if (itr -> second -> IsOpen()){itr -> second -> Close();}`
- * - `itr -> second -> Delete();`
- * - `std::map<std::string, meta*>::iterator itm = this -> meta_data.begin();`
- * - `for (; itm != this -> meta_data.end(); ++itm){`
- * - `if (!itm -> second){continue;}`
- * - `this -> meta_data.clear();`
- * - `void io::import_settings(settings_t* params){ this -> enable_pyami = params -> fetch_meta;`
- * - `if (!this -> sow_name.size()){return;}`
- * - `this -> info("Checking for Sum of Weights under tree name: " + this -> sow_name);`
- */
-
-/**
- * @section variables Variables
- *
- * - `std::map<std::string, TFile*>::iterator itr = this -> files_open.begin();` (::private)
- * - `std::map<std::string, meta*>::iterator itm = this -> meta_data.begin();` (::private)
- */
-
 /** @} */

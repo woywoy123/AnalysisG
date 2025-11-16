@@ -12,35 +12,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- *
- * - `void static signal_event(bool* o, exp_mc20* event){ if (event -> Tops.size() != 4){*o = false; retur`
- * - `if (event -> Tops.size() != 4){*o = false; return;}`
- * - `void static num_tops(int* o, exp_mc20* event){*o = (event -> Tops.size() >= 4) ? 4 : event -> Tops.s`
- * - `void static num_neutrino(int* o, exp_mc20* event){ int neutrinos = 0;`
- * - `for (size_t x(0); x < ch.size(); ++x){`
- * - `if (!ch[x] -> is_nu){continue;}`
- * - `void static num_lepton(int* o, exp_mc20* event){ int leptons = 0;`
- * - `if (ch[x] -> is_nu){continue;}`
- * - `if (ch[x] -> is_lep){continue;}`
- * - `void static missing_et(double* o, exp_mc20* event){*o = event -> met;};`
- * - `void static missing_phi(double* o, exp_mc20* event){*o = event -> phi;};`
- * - `void static num_children_leps(double* o, exp_mc20* event){ double num_leps = 0;`
- * - `if (ch[x] -> is_nu || !ch[x] -> is_lep){continue;}`
- * - `void static num_leps(double* o, exp_mc20* event){*o = int(event -> Leptons.size());}`
- * - `void static num_jets(double* o, exp_mc20* event){*o = event -> Jets.size();}`
- * - `void static event_number(long* o, exp_mc20* event){*o = event -> event_number;}`
- * - `void static event_weight(double* o, exp_mc20* event){*o = event -> weight;}`
- */
-
-/**
- * @section variables Variables
- *
- * - `int neutrinos = 0;` (::private)
- * - `std::vector<particle_template*> ch = event -> TopChildren;` (::private)
- * - `int leptons = 0;` (::private)
- * - `double num_leps = 0;` (::private)
- */
-
 /** @} */

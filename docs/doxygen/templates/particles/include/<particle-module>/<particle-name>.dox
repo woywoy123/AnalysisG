@@ -12,25 +12,4 @@
  * @{
  */
 
-/**
- * @section classes Classes and Structures
- *
- * - **<particle-name>** (class)
- */
-
-/**
- * @section functions Functions
- *
- * - `<particle-name>();`
- * - `~<particle-name>() override;`
- * - `particle_template* clone() override;`
- * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
- */
-
-/**
- * @section variables Variables
- *
- * - `float key_variable = 0; // some variable of the particle` (::private)
- */
-
 /** @} */

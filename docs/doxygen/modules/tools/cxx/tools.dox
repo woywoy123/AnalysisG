@@ -12,11 +12,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- *
- * - `tools::tools(){} tools::~tools(){}`
- * - `tools::~tools(){} `
- */
-
 /** @} */

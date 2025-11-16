@@ -15,34 +15,34 @@
 /**
  * @section classes Classes and Structures
  *
- * - **particle_template** (class)
  * - **particle_t** (struct)
  */
 
 /**
- * @section variables Variables
+ * @section variables_particle_t particle_t Member Variables
  *
- * - `double e = -0.000000000000001;` (particle_t::public)
- * - `double mass = -1;` (particle_t::public)
- * - `double px = 0;` (particle_t::public)
- * - `double py = 0;` (particle_t::public)
- * - `double pz = 0;` (particle_t::public)
- * - `double pt = 0;` (particle_t::public)
- * - `double eta = 0;` (particle_t::public)
- * - `double phi = 0;` (particle_t::public)
- * - `bool cartesian = false;` (particle_t::public)
- * - `bool polar = false;` (particle_t::public)
- * - `double charge = 0;` (particle_t::public)
- * - `int pdgid = 0;` (particle_t::public)
- * - `int index = -1;` (particle_t::public)
- * - `std::string type = "";` (particle_t::public)
- * - `std::string hash = "";` (particle_t::public)
- * - `std::string symbol = "";` (particle_t::public)
- * - `std::vector<int> lepdef = {11, 13, 15};` (particle_t::public)
- * - `std::vector<int> nudef  = {12, 14, 16};` (particle_t::public)
- * - `std::map<std::string, bool> children = {};` (particle_t::public)
- * - `std::map<std::string, bool> parents = {};` (particle_t::public)
- * - `std::map<std::string, particle_template*>* data_p = nullptr;` (particle_t::public)
+ * **Private:**
+ * - `double e = -0.000000000000001;`
+ * - `double mass = -1;`
+ * - `double px = 0;`
+ * - `double py = 0;`
+ * - `double pz = 0;`
+ * - `double pt = 0;`
+ * - `double eta = 0;`
+ * - `double phi = 0;`
+ * - `bool cartesian = false;`
+ * - `bool polar = false;`
+ * - `double charge = 0;`
+ * - `int pdgid = 0;`
+ * - `int index = -1;`
+ * - `std::string type = "";`
+ * - `std::string hash = "";`
+ * - `std::string symbol = "";`
+ * - `std::vector<int> lepdef = {11, 13, 15};`
+ * - `std::vector<int> nudef  = {12, 14, 16};`
+ * - `std::map<std::string, bool> children = {};`
+ * - `std::map<std::string, bool> parents = {};`
+ * - `std::map<std::string, particle_template*>* data_p = nullptr;`
  */
 
 /** @} */

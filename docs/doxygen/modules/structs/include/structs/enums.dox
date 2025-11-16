@@ -12,17 +12,4 @@
  * @{
  */
 
-/**
- * @section classes Classes and Structures
- *
- * - **data_enum** (class)
- * - **opt_enum** (class)
- * - **mlp_init** (class)
- * - **loss_enum** (class)
- * - **scheduler_enum** (class)
- * - **graph_enum** (class)
- * - **mode_enum** (class)
- * - **particle_enum** (class)
- */
-
 /** @} */

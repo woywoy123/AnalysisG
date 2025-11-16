@@ -12,39 +12,4 @@
  * @{
  */
 
-/**
- * @section classes Classes and Structures
- *
- * - **exp_mc20** (class)
- */
-
-/**
- * @section functions Functions
- *
- * - `exp_mc20();`
- * - `virtual ~exp_mc20();`
- * - `event_template* clone() override;`
- * - `void build(element_t* el) override;`
- * - `void CompileEvent() override;`
- * - `std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt){ std::map<int, G*> data = {};`
- * - `typename std::map<std::string, G*>::iterator ix = ipt -> begin();`
- * - `for (; ix != ipt -> end(); ++ix){data[int(ix -> second -> index)] = ix -> second;}`
- * - `void vectorize(std::map<m, G*>* ipt, std::vector<g*>* vec){ typename std::map<m, G*>::iterator ix = `
- * - `typename std::map<m, G*>::iterator ix = ipt -> begin();`
- * - `for (; ix != ipt -> end(); ++ix){vec -> push_back(ix -> second);}`
- */
-
-/**
- * @section variables Variables
- *
- * - `unsigned long long event_number = 0;` (::private)
- * - `float met_sum = 0;` (::private)
- * - `float met = 0;` (::private)
- * - `float phi = 0;` (::private)
- * - `float mu = 0;` (::private)
- * - `std::map<int, G*> data = {};` (::private)
- * - `typename std::map<std::string, G*>::iterator ix = ipt -> begin();` (::private)
- * - `typename std::map<m, G*>::iterator ix = ipt -> begin();` (::private)
- */
-
 /** @} */

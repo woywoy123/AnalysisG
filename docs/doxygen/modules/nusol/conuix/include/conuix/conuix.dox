@@ -15,24 +15,23 @@
 /**
  * @section classes Classes and Structures
  *
- * - **nusol_t** (struct)
- * - **conuic** (class)
  * - **conuix** (class)
  */
 
 /**
- * @section functions Functions
+ * @section functions_conuix conuix Methods
  *
- * - `conuix(nusol_t* params);` (conuix::public)
- * - `~conuix();` (conuix::public)
- * - `void solve();` (conuix::public)
+ * - [public] `conuix(nusol_t* params)`
+ * - [public] `~conuix()`
+ * - [public] `void solve()`
  */
 
 /**
- * @section variables Variables
+ * @section variables_conuix conuix Member Variables
  *
- * - `std::string prefix = "";` (conuix::private)
- * - `std::vector<conuic*>* cnx = nullptr;` (conuix::private)
+ * **Private:**
+ * - `std::string prefix = "";`
+ * - `std::vector<conuic*>* cnx = nullptr;`
  */
 
 /** @} */

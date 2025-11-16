@@ -12,47 +12,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- *
- * - `int linear(g a, g b, std::complex<g>* v0, double tol = 1e-14){ if (a < tol){return 0;}`
- * - `if (a < tol){return 0;}`
- * - `int quadratic(g a, g b, g c, std::complex<g>* v0, std::complex<g>* v1, double tol = 1e-14){ if (std:`
- * - `if (std::fabs(a) < tol){return linear(b, c, v1, tol);}`
- * - `std::complex<g> dsc = std::sqrt(std::complex<g>(b*b - 4 * a * c));`
- * - `const g hlf = 1.0 / (2.0 * a);`
- * - `(*v0) = (-std::complex<g>(b) + dsc) * hlf;`
- * - `(*v1) = (-std::complex<g>(b) - dsc) * hlf;`
- * - `if (std::fabs(a) < tol){return quadratic(b, c, d, v0, v1);}`
- * - `const g sthrd = std::sqrt(g(3.0));`
- * - `const g q = d_ + (2.0 * b_ * b_ * b_ - 9.0 * b_ * c_) * cnx;`
- * - `const g delta = (q * q) * 0.25 + (p * p * p) * cnx;`
- * - `if (delta > 0){ g disc = std::sqrt(delta);`
- * - `g disc = std::sqrt(delta);`
- * - `g u = std::cbrt(-q * hlf + disc);`
- * - `g v = std::cbrt(-q * hlf - disc);`
- * - `if (delta < 0){ const g r = std::sqrt(-p * p * p * cnx);`
- * - `const g r = std::sqrt(-p * p * p * cnx);`
- * - `const g theta = acos( - hlf * q / r );`
- * - `g u = std::cbrt(-q * hlf);`
- * - `if (std::fabs(u) < tol) { *v0 = -b_ * third;`
- */
-
-/**
- * @section variables Variables
- *
- * - `int linear(g a, g b, std::complex<g>* v0, double tol = 1e-14){` (::private)
- * - `int quadratic(g a, g b, g c, std::complex<g>* v0, std::complex<g>* v1, double to` (::private)
- * - `std::complex<g> dsc = std::sqrt(std::complex<g>(b*b - 4 * a * c));` (::private)
- * - `(*v0) = (-std::complex<g>(b) + dsc) * hlf;` (::private)
- * - `(*v1) = (-std::complex<g>(b) - dsc) * hlf;` (::private)
- * - `double tol = 1e-14` (::private)
- * - `const g sthrd = std::sqrt(g(3.0));` (::private)
- * - `g disc = std::sqrt(delta);` (::private)
- * - `g u = std::cbrt(-q * hlf + disc);` (::private)
- * - `g v = std::cbrt(-q * hlf - disc);` (::private)
- * - `const g r = std::sqrt(-p * p * p * cnx);` (::private)
- * - `g u = std::cbrt(-q * hlf);` (::private)
- */
-
 /** @} */

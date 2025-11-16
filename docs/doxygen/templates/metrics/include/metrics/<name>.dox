@@ -12,31 +12,4 @@
  * @{
  */
 
-/**
- * @section classes Classes and Structures
- *
- * - **<name>_metric** (class)
- */
-
-/**
- * @section functions Functions
- *
- * - `<name>_metric();`
- * - `~<name>_metric() override;`
- * - `<name>_metric* clone() override;`
- * - `void define_metric(metric_t* mtx) override;`
- * - `void define_variables() override;`
- * - `void event() override;`
- * - `void batch() override;`
- * - `void end() override;`
- */
-
-/**
- * @section variables Variables
- *
- * - `std::string mode = "";` (::private)
- * - `float <name> = 0;` (::private)
- * - `float global_<name> = 0;` (::private)
- */
-
 /** @} */

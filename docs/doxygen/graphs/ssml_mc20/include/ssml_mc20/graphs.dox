@@ -12,28 +12,4 @@
  * @{
  */
 
-/**
- * @section classes Classes and Structures
- *
- * - **graph_jets** (class)
- * - **graph_jets_nonu** (class)
- * - **graph_jets_detector_lep** (class)
- * - **graph_detector** (class)
- */
-
-/**
- * @section functions Functions
- *
- * - `graph_jets();`
- * - `~graph_jets() override;`
- * - `graph_template* clone() override;`
- * - `void CompileEvent() override;`
- * - `graph_jets_nonu();`
- * - `~graph_jets_nonu() override;`
- * - `graph_jets_detector_lep();`
- * - `~graph_jets_detector_lep() override;`
- * - `graph_detector();`
- * - `~graph_detector() override;`
- */
-
 /** @} */

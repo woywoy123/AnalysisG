@@ -12,18 +12,4 @@
  * @{
  */
 
-/**
- * @section functions Functions
- *
- * - `torch::Tensor BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses);`
- * - `torch::Tensor Hperp(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses);`
- * - `std::tuple<torch::Tensor, torch::Tensor> Intersection(torch::Tensor* A, torch::Tensor* B, double nul`
- */
-
-/**
- * @section variables Variables
- *
- * - `torch::Tensor* met_xy, double null, torch::Tensor* m1, torch::Tensor* m2 = nullp` (::private)
- */
-
 /** @} */

@@ -19,13 +19,14 @@
  */
 
 /**
- * @section variables Variables
+ * @section variables_event_t event_t Member Variables
  *
- * - `std::string name = "";` (event_t::public)
- * - `double weight = 1;` (event_t::public)
- * - `long   index = -1;` (event_t::public)
- * - `std::string hash = "";` (event_t::public)
- * - `std::string tree = "";` (event_t::public)
+ * **Private:**
+ * - `std::string name = "";`
+ * - `double weight = 1;`
+ * - `long   index = -1;`
+ * - `std::string hash = "";`
+ * - `std::string tree = "";`
  */
 
 /** @} */

@@ -19,22 +19,23 @@
  */
 
 /**
- * @section variables Variables
+ * @section variables_model_settings_t model_settings_t Member Variables
  *
- * - `std::string s_optim;` (model_settings_t::public)
- * - `std::string weight_name;` (model_settings_t::public)
- * - `std::string tree_name;` (model_settings_t::public)
- * - `std::string model_name;` (model_settings_t::public)
- * - `std::string model_device;` (model_settings_t::public)
- * - `std::string model_checkpoint_path;` (model_settings_t::public)
- * - `bool inference_mode;` (model_settings_t::public)
- * - `bool is_mc;` (model_settings_t::public)
- * - `std::map<std::string, std::string> o_graph;` (model_settings_t::public)
- * - `std::map<std::string, std::string> o_node;` (model_settings_t::public)
- * - `std::map<std::string, std::string> o_edge;` (model_settings_t::public)
- * - `std::vector<std::string> i_graph;` (model_settings_t::public)
- * - `std::vector<std::string> i_node;` (model_settings_t::public)
- * - `std::vector<std::string> i_edge;` (model_settings_t::public)
+ * **Private:**
+ * - `std::string s_optim;`
+ * - `std::string weight_name;`
+ * - `std::string tree_name;`
+ * - `std::string model_name;`
+ * - `std::string model_device;`
+ * - `std::string model_checkpoint_path;`
+ * - `bool inference_mode;`
+ * - `bool is_mc;`
+ * - `std::map<std::string, std::string> o_graph;`
+ * - `std::map<std::string, std::string> o_node;`
+ * - `std::map<std::string, std::string> o_edge;`
+ * - `std::vector<std::string> i_graph;`
+ * - `std::vector<std::string> i_node;`
+ * - `std::vector<std::string> i_edge;`
  */
 
 /** @} */

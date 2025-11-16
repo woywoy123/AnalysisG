@@ -12,37 +12,4 @@
  * @{
  */
 
-/**
- * @section classes Classes and Structures
- *
- * - **particle_gnn** (class)
- * - **top** (class)
- * - **zprime** (class)
- */
-
-/**
- * @section functions Functions
- *
- * - `void reduce(element_t* el, std::string key, std::vector<g>* out);`
- * - `void reduce(element_t* el, std::string key, g* out);`
- * - `void read(element_t* el, std::string key, std::vector<g>* out);`
- * - `particle_gnn();`
- * - `~particle_gnn();`
- * - `particle_template* clone() override;`
- * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
- * - `top();`
- * - `~top();`
- * - `zprime();`
- * - `~zprime();`
- */
-
-/**
- * @section variables Variables
- *
- * - `bool lep = false;` (::private)
- * - `float av_score = 0;` (::private)
- * - `int n_leps = 0;` (::private)
- * - `int n_nodes = 0;` (::private)
- */
-
 /** @} */

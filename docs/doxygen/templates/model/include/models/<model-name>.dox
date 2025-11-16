@@ -12,25 +12,4 @@
  * @{
  */
 
-/**
- * @section classes Classes and Structures
- *
- * - **<model-name>** (class)
- */
-
-/**
- * @section functions Functions
- *
- * - `<model-name>();`
- * - `~<model-name>();`
- * - `model_template* clone() override;`
- * - `void forward(graph_t*) override;`
- */
-
-/**
- * @section variables Variables
- *
- * - `torch::nn::Sequential* example = nullptr;` (::private)
- */
-
 /** @} */

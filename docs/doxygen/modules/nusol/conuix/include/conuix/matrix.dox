@@ -19,32 +19,31 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions_matrix_t matrix_t Methods
  *
- * - `matrix_t(int _r = 3, int _c = 3);` (matrix_t::public)
- * - `~matrix_t();` (matrix_t::public)
- * - `matrix_t dot(const matrix_t& o);` (matrix_t::public)
- * - `matrix_t T() const;` (matrix_t::public)
- * - `long double& at(int _r, int _c);` (matrix_t::public)
- * - `const long double& at(int _r, int _c) const;` (matrix_t::public)
- * - `matrix_t& operator=(const matrix_t& other);` (matrix_t::public)
- * - `matrix_t operator+(const matrix_t& o);` (matrix_t::public)
- * - `matrix_t operator+(const matrix_t& o) const;` (matrix_t::public)
- * - `matrix_t operator-(const matrix_t& o);` (matrix_t::public)
- * - `matrix_t operator-(const matrix_t& o) const;` (matrix_t::public)
- * - `matrix_t operator*(long double s);` (matrix_t::public)
- * - `matrix_t operator*(long double s) const;` (matrix_t::public)
- * - `void print(int p = 9);` (matrix_t::public)
+ * - [public] `matrix_t(int _r = 3, int _c = 3)`
+ * - [public] `~matrix_t()`
+ * - [public] `matrix_t dot(const matrix_t& o)`
+ * - [public] `matrix_t T() const`
+ * - [public] `long double& at(int _r, int _c)`
+ * - [public] `const long double& at(int _r, int _c) const`
+ * - [public] `matrix_t& operator=(const matrix_t& other)`
+ * - [public] `matrix_t operator+(const matrix_t& o)`
+ * - [public] `matrix_t operator+(const matrix_t& o) const`
+ * - [public] `matrix_t operator-(const matrix_t& o)`
+ * - [public] `matrix_t operator-(const matrix_t& o) const`
+ * - [public] `matrix_t operator*(long double s)`
+ * - [public] `matrix_t operator*(long double s) const`
+ * - [public] `void print(int p = 9)`
  */
 
 /**
- * @section variables Variables
+ * @section variables_matrix_t matrix_t Member Variables
  *
- * - `matrix_t(int _r = 3, int _c = 3);` (matrix_t::public)
- * - `void print(int p = 9);` (matrix_t::public)
- * - `int r = -1;` (matrix_t::private)
- * - `int c = -1;` (matrix_t::private)
- * - `long double** data = nullptr;` (matrix_t::private)
+ * **Private:**
+ * - `int r = -1;`
+ * - `int c = -1;`
+ * - `long double** data = nullptr;`
  */
 
 /** @} */

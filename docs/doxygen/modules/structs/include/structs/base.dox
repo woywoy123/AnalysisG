@@ -19,89 +19,86 @@
  */
 
 /**
- * @section functions Functions
+ * @section functions_bsc_t bsc_t Methods
  *
- * - `void buildPCM(std::string name, std::string incl, bool exl);`
- * - `void registerInclude(std::string name, bool is_abs = false);`
- * - `void buildDict(std::string name, std::string incl);`
- * - `void buildAll();`
- * - `bsc_t();` (bsc_t::public)
- * - `virtual ~bsc_t();` (bsc_t::public)
- * - `void flush_buffer();` (bsc_t::public)
- * - `std::string as_string();` (bsc_t::public)
- * - `std::string scan_buffer();` (bsc_t::public)
- * - `data_enum root_type_translate(std::string*);` (bsc_t::public)
- * - `bool element(std::vector<std::vector<std::vector<float>>>*  el);` (bsc_t::public)
- * - `bool element(std::vector<std::vector<std::vector<double>>>* el);` (bsc_t::public)
- * - `bool element(std::vector<std::vector<std::vector<long>>>*   el);` (bsc_t::public)
- * - `bool element(std::vector<std::vector<std::vector<int>>>*    el);` (bsc_t::public)
- * - `bool element(std::vector<std::vector<std::vector<bool>>>*   el);` (bsc_t::public)
- * - `bool element(std::vector<std::vector<float>>*  el);` (bsc_t::public)
- * - `bool element(std::vector<std::vector<double>>* el);` (bsc_t::public)
- * - `bool element(std::vector<std::vector<long>>*   el);` (bsc_t::public)
- * - `bool element(std::vector<std::vector<int>>*    el);` (bsc_t::public)
- * - `bool element(std::vector<std::vector<bool>>*   el);` (bsc_t::public)
- * - `bool element(std::vector<float>* el);` (bsc_t::public)
- * - `bool element(std::vector<double>* el);` (bsc_t::public)
- * - `bool element(std::vector<long>* el);` (bsc_t::public)
- * - `bool element(std::vector<int>* el);` (bsc_t::public)
- * - `bool element(std::vector<char>* el);` (bsc_t::public)
- * - `bool element(std::vector<bool>* el);` (bsc_t::public)
- * - `bool element(double* el);` (bsc_t::public)
- * - `bool element(float* el);` (bsc_t::public)
- * - `bool element(long* el);` (bsc_t::public)
- * - `bool element(int* el);` (bsc_t::public)
- * - `bool element(bool* el);` (bsc_t::public)
- * - `bool element(unsigned long long* el);` (bsc_t::public)
- * - `bool element(unsigned int* el);` (bsc_t::public)
- * - `bool element(char* el);` (bsc_t::public)
- * - `bool flush_buffer(std::vector<T>** data){ if (!(*data)){return false;}` (bsc_t::public)
- * - `if (!(*data)){return false;}` (bsc_t::public)
- * - `if (!this -> clear){(*data) -> clear(); return true;}` (bsc_t::public)
- * - `delete (*data); (*data) = nullptr;` (bsc_t::public)
- * - `bool flush_buffer(T** data){ if (!(*data)){return false;}` (bsc_t::public)
- * - `if (!this -> clear){(**data) = 0; return true;}` (bsc_t::public)
- * - `else {delete (*data); (*data) = nullptr;}` (bsc_t::public)
- * - `bool _getalt(g* v, g* out){ if (!v){return false;}` (bsc_t::private)
- * - `if (!v){return false;}` (bsc_t::private)
- * - `bool _getalt(std::vector<g>* vv, g* v, g* out){ if (!vv && !v){return false;}` (bsc_t::private)
- * - `if (!vv && !v){return false;}` (bsc_t::private)
- * - `else if (vv  && vv -> size() > this -> index){*out = (*vv)[this -> index];}` (bsc_t::private)
- * - `else if (!vv && v){*out = *v;}` (bsc_t::private)
+ * - [public] `bsc_t()`
+ * - [public] `virtual ~bsc_t()`
+ * - [public] `void flush_buffer()`
+ * - [public] `std::string as_string()`
+ * - [public] `std::string scan_buffer()`
+ * - [public] `data_enum root_type_translate(std::string*)`
+ * - [public] `bool element(std::vector<std::vector<std::vector<float>>>*  el)`
+ * - [public] `bool element(std::vector<std::vector<std::vector<double>>>* el)`
+ * - [public] `bool element(std::vector<std::vector<std::vector<long>>>*   el)`
+ * - [public] `bool element(std::vector<std::vector<std::vector<int>>>*    el)`
+ * - [public] `bool element(std::vector<std::vector<std::vector<bool>>>*   el)`
+ * - [public] `bool element(std::vector<std::vector<float>>*  el)`
+ * - [public] `bool element(std::vector<std::vector<double>>* el)`
+ * - [public] `bool element(std::vector<std::vector<long>>*   el)`
+ * - [public] `bool element(std::vector<std::vector<int>>*    el)`
+ * - [public] `bool element(std::vector<std::vector<bool>>*   el)`
+ * - [public] `bool element(std::vector<float>* el)`
+ * - [public] `bool element(std::vector<double>* el)`
+ * - [public] `bool element(std::vector<long>* el)`
+ * - [public] `bool element(std::vector<int>* el)`
+ * - [public] `bool element(std::vector<char>* el)`
+ * - [public] `bool element(std::vector<bool>* el)`
+ * - [public] `bool element(double* el)`
+ * - [public] `bool element(float* el)`
+ * - [public] `bool element(long* el)`
+ * - [public] `bool element(int* el)`
+ * - [public] `bool element(bool* el)`
+ * - [public] `bool element(unsigned long long* el)`
+ * - [public] `bool element(unsigned int* el)`
+ * - [public] `bool element(char* el)`
+ * - [public] `bool flush_buffer(std::vector<T>** data)`
+ * - [public] `if (!(*data))`
+ * - [public] `if (!this -> clear)`
+ * - [public] `delete (*data)`
+ * - [public] `bool flush_buffer(T** data)`
+ * - [public] `if (!(*data))`
+ * - [public] `if (!this -> clear)`
+ * - [public] `else`
+ * - [private] `bool _getalt(g* v, g* out)`
+ * - [private] `if (!v)`
+ * - [private] `bool _getalt(std::vector<g>* vv, g* v, g* out)`
+ * - [private] `if (!vv && !v)`
+ * - [private] `else if (vv  && vv -> size() > this -> index)`
+ * - [private] `else if (!vv && v)`
  */
 
 /**
- * @section variables Variables
+ * @section variables_bsc_t bsc_t Member Variables
  *
- * - `void registerInclude(std::string name, bool is_abs = false);` (::private)
- * - `std::vector<std::vector<std::vector<unsigned long long>>>* vvv_ull = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<std::vector<unsigned int>>>*       vvv_ui  = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<std::vector<double>>>*             vvv_d   = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<std::vector<long>>>*               vvv_l   = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<std::vector<float>>>*              vvv_f   = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<std::vector<int>>>*                vvv_i   = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<std::vector<bool>>>*               vvv_b   = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<std::vector<char>>>*               vvv_c   = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<unsigned long long>>*               vv_ull = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<unsigned int>>*                     vv_ui  = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<double>>*                           vv_d   = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<long>>*                             vv_l   = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<float>>*                            vv_f   = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<int>>*                              vv_i   = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<bool>>*                             vv_b   = nullptr;` (bsc_t::public)
- * - `std::vector<std::vector<char>>*                             vv_c   = nullptr;` (bsc_t::public)
- * - `std::vector<unsigned long long>*                             v_ull = nullptr;` (bsc_t::public)
- * - `std::vector<unsigned int>*                                   v_ui  = nullptr;` (bsc_t::public)
- * - `std::vector<double>*                                         v_d   = nullptr;` (bsc_t::public)
- * - `std::vector<long>*                                           v_l   = nullptr;` (bsc_t::public)
- * - `std::vector<float>*                                          v_f   = nullptr;` (bsc_t::public)
- * - `std::vector<int>*                                            v_i   = nullptr;` (bsc_t::public)
- * - `std::vector<bool>*                                           v_b   = nullptr;` (bsc_t::public)
- * - `std::vector<char>*                                           v_c   = nullptr;` (bsc_t::public)
- * - `unsigned long long*                                            ull = nullptr;` (bsc_t::public)
- * - `unsigned int*                                                  ui  = nullptr;` (bsc_t::public)
- * - `long index = 0;` (bsc_t::public)
- * - `bool clear = false;` (bsc_t::public)
+ * **Public:**
+ * - `std::vector<std::vector<std::vector<unsigned long long>>>* vvv_ull = nullptr;`
+ * - `std::vector<std::vector<std::vector<unsigned int>>>*       vvv_ui  = nullptr;`
+ * - `std::vector<std::vector<std::vector<double>>>*             vvv_d   = nullptr;`
+ * - `std::vector<std::vector<std::vector<long>>>*               vvv_l   = nullptr;`
+ * - `std::vector<std::vector<std::vector<float>>>*              vvv_f   = nullptr;`
+ * - `std::vector<std::vector<std::vector<int>>>*                vvv_i   = nullptr;`
+ * - `std::vector<std::vector<std::vector<bool>>>*               vvv_b   = nullptr;`
+ * - `std::vector<std::vector<std::vector<char>>>*               vvv_c   = nullptr;`
+ * - `std::vector<std::vector<unsigned long long>>*               vv_ull = nullptr;`
+ * - `std::vector<std::vector<unsigned int>>*                     vv_ui  = nullptr;`
+ * - `std::vector<std::vector<double>>*                           vv_d   = nullptr;`
+ * - `std::vector<std::vector<long>>*                             vv_l   = nullptr;`
+ * - `std::vector<std::vector<float>>*                            vv_f   = nullptr;`
+ * - `std::vector<std::vector<int>>*                              vv_i   = nullptr;`
+ * - `std::vector<std::vector<bool>>*                             vv_b   = nullptr;`
+ * - `std::vector<std::vector<char>>*                             vv_c   = nullptr;`
+ * - `std::vector<unsigned long long>*                             v_ull = nullptr;`
+ * - `std::vector<unsigned int>*                                   v_ui  = nullptr;`
+ * - `std::vector<double>*                                         v_d   = nullptr;`
+ * - `std::vector<long>*                                           v_l   = nullptr;`
+ * - `std::vector<float>*                                          v_f   = nullptr;`
+ * - `std::vector<int>*                                            v_i   = nullptr;`
+ * - `std::vector<bool>*                                           v_b   = nullptr;`
+ * - `std::vector<char>*                                           v_c   = nullptr;`
+ * - `unsigned long long*                                            ull = nullptr;`
+ * - `unsigned int*                                                  ui  = nullptr;`
+ * - `long index = 0;`
+ * - `bool clear = false;`
  */
 
 /** @} */

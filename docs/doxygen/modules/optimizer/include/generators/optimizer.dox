@@ -12,31 +12,4 @@
  * @{
  */
 
-/**
- * @section classes Classes and Structures
- *
- * - **analysis** (class)
- * - **optimizer** (class)
- */
-
-/**
- * @section functions Functions
- *
- * - `optimizer();`
- * - `~optimizer();`
- * - `void import_dataloader(dataloader* dl);`
- * - `void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models);`
- * - `void training_loop(int k, int epoch);`
- * - `void validation_loop(int k, int epoch);`
- * - `void evaluation_loop(int k, int epoch);`
- * - `void launch_model(int k);`
- */
-
-/**
- * @section variables Variables
- *
- * - `std::map<int, model_template*> kfold_sessions = {};` (::private)
- * - `std::map<std::string, model_report*> reports = {};` (::private)
- */
-
 /** @} */
