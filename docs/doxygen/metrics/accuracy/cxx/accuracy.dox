@@ -1,15 +1,63 @@
 /**
  * @file accuracy.cxx
- * @brief Documentation for src/AnalysisG/metrics/accuracy/cxx/accuracy.cxx
+ * @brief Implementation of accuracy_metric class
  *
- * **Location:** `src/AnalysisG/metrics/accuracy/cxx/accuracy.cxx`
+ * Location: src/AnalysisG/metrics/accuracy/cxx/accuracy.cxx
  *
- * **File Type:** cxx
+ * Implements the accuracy metric for evaluating model performance on top quark reconstruction.
+ *
+ * Includes:
+ * - metrics/accuracy.h
+ *
+ * accuracy_metric::accuracy_metric():
+ * - Sets name to "accuracy"
+ *
+ * accuracy_metric::~accuracy_metric():
+ * - Empty destructor
+ *
+ * accuracy_metric* clone():
+ * - Returns new accuracy_metric instance
+ *
+ * void define_variables():
+ * - Registers outputs for training, validation, evaluation modes
+ * - Registers edge accuracy (per-event and global)
+ * - Registers ntop_scores (predicted top multiplicity scores)
+ * - Registers ntop_truth (true top multiplicity)
+ * - Registers ntops_accuracy (accuracy per top count 0-4)
+ *
+ * void event():
+ * - Writes per-event metrics:
+ *   - ntop_scores to "event_accuracy_{mode}"
+ *   - ntop_truth to "event_accuracy_{mode}"
+ *   - edge_accuracy to "event_accuracy_{mode}" (with reset)
+ *
+ * void batch():
+ * - Empty implementation (no batch-level processing)
+ *
+ * void end():
+ * - Computes global ntops_accuracy confusion matrix (5x5 for 0-4 tops)
+ * - For each truth value x, calculates accuracy = correct/(correct + incorrect)
+ * - Writes global_edge_accuracy
+ * - Writes ntops_accuracy
+ *
+ * void define_metric(metric_t* mtx):
+ * - Lambda acc: computes accuracy from map {correct/incorrect counts}
+ * - Lambda maxv: finds index of maximum value in vector
+ * - Extracts from mtx:
+ *   - batch_idx: batch indices
+ *   - edge_idx: edge connectivity
+ *   - edge_sc: predicted edge scores
+ *   - edge_tr: truth edge labels
+ *   - graph_ntops_tru: true top counts
+ *   - graph_ntops_prd: predicted top scores
+ * - Handles mode changes (calls end() on mode switch)
+ * - For each graph:
+ *   - Finds predicted top count (argmax of scores)
+ *   - Updates confusion matrix ntop_accuracy[truth][pred]
+ * - For each edge:
+ *   - Determines if prediction correct (argmax matches truth)
+ *   - Updates _global_edge_accuracy map
+ *   - Updates per-batch accuracy
+ * - Computes global_edge_accuracy using acc lambda
+ * - For each batch, calls event() with batch-specific accuracy and scores
  */
-
-/**
- * @section dependencies Dependencies
- * This file includes:
- * - `metrics/accuracy.h`
- */
-

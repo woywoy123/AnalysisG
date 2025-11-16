@@ -1,52 +1,53 @@
 /**
  * @file grift.h
- * @brief Documentation for src/AnalysisG/models/grift/include/models/grift.h
+ * @brief GRIFT (Graph Recursive Inductive Field Theory) model header
  *
- * **Location:** `src/AnalysisG/models/grift/include/models/grift.h`
+ * Location: src/AnalysisG/models/grift/include/models/grift.h
  *
- * **File Type:** h
- */
-
-/**
- * @section dependencies Dependencies
- * This file includes:
- * - `templates/model_template.h`
- */
-
-/**
- * @section classes Classes
- * - **grift** (inherits from model_template)
- */
-
-/**
- * @section functions Functions and Methods
- * - public: grift
- * - public: clone
- * - public: forward
- * - public: node_encode
- */
-
-/**
- * @section variables Member Variables
+ * Defines the grift class for graph neural network-based particle physics event reconstruction.
  *
- * **Public:**
- * - _hidden
- * - _xrec
- * - _xin
- * - _xout
- * - _xtop
- * - drop_out
- * - is_mc
- * - init
- * - pagerank
- * - rnn_x
- * - rnn_dx
- * - rnn_txx
- * - rnn_rxx
- * - rnn_hxx
- * - mlp_ntop
- * - mlp_sig
- * - x_nulls
- * - dx_nulls
- * - te_nulls
+ * @section deps Dependencies  
+ * - templates/model_template.h
+ *
+ * @class grift
+ * @brief Recursive graph neural network for top quark reconstruction
+ *
+ * Inherits: model_template
+ *
+ * Public Methods:
+ * - grift() : Constructor, initializes 7 neural networks
+ * - ~grift() : Destructor
+ * - model_template* clone() : Creates copy with same hyperparameters
+ * - void forward(graph_t*) : Main forward pass
+ * - torch::Tensor message(torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc, torch::Tensor hx_i, torch::Tensor hx_j) : Computes message between particles
+ * - torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn) : Encodes node features
+ *
+ * Neural Network Parameters:
+ * - int _hidden = 1024 : Hidden layer dimension
+ * - int _xrec = 128 : Recurrent state dimension
+ * - int _xin = 6 : Input feature dimension
+ * - int _xout = 2 : Output dimension (binary classification)
+ * - int _xtop = 5 : Top-level feature dimension
+ * - double drop_out = 0.01 : Dropout rate
+ *
+ * Control Flags:
+ * - bool is_mc = true : Monte Carlo data flag
+ * - bool init = false : Initialization flag
+ * - bool pagerank = false : Enable PageRank reconstruction
+ *
+ * RNN Networks:
+ * - torch::nn::Sequential* rnn_x : Node encoding network
+ * - torch::nn::Sequential* rnn_dx : Message passing network
+ * - torch::nn::Sequential* rnn_txx : Top edge prediction
+ * - torch::nn::Sequential* rnn_rxx : Resonance edge prediction  
+ * - torch::nn::Sequential* rnn_hxx : Hidden state update
+ *
+ * MLP Networks:
+ * - torch::nn::Sequential* mlp_ntop : Top multiplicity prediction
+ * - torch::nn::Sequential* mlp_sig : Signal classification
+ *
+ * Null Buffers:
+ * - torch::Tensor x_nulls : Node state buffer
+ * - torch::Tensor dx_nulls : Edge state buffer
+ * - torch::Tensor te_nulls : Top edge buffer
  */

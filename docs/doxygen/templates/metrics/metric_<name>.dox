@@ -1,9 +1,0 @@
-/**
- * @file metric_<name>.pyx
- * @brief Documentation for src/AnalysisG/templates/metrics/metric_<name>.pyx
- *
- * **Location:** `src/AnalysisG/templates/metrics/metric_<name>.pyx`
- *
- * **File Type:** pyx
- */
-

@@ -1,9 +1,0 @@
-/**
- * @file <particle-name>.pyx
- * @brief Documentation for src/AnalysisG/templates/particles/<particle-name>.pyx
- *
- * **Location:** `src/AnalysisG/templates/particles/<particle-name>.pyx`
- *
- * **File Type:** pyx
- */
-

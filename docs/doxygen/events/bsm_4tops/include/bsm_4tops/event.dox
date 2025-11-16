@@ -1,49 +1,53 @@
 /**
  * @file event.h
- * @brief Documentation for src/AnalysisG/events/bsm_4tops/include/bsm_4tops/event.h
+ * @brief BSM 4-tops event class definition
  *
- * **Location:** `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/event.h`
+ * Location: src/AnalysisG/events/bsm_4tops/include/bsm_4tops/event.h
  *
- * **File Type:** h
- */
-
-/**
- * @section dependencies Dependencies
- * This file includes:
- * - `bsm_4tops/particles.h`
- * - `templates/event_template.h`
- */
-
-/**
- * @section classes Classes
- * - **bsm_4tops** (inherits from event_template)
- */
-
-/**
- * @section functions Functions and Methods
- * - public: bsm_4tops
- * - public: clone
- * - public: build
- * - public: CompileEvent
- * - private: vectorize
- */
-
-/**
- * @section variables Member Variables
+ * Defines event structure for Beyond Standard Model 4-top quark analysis.
  *
- * **Public:**
- * - Tops
- * - Children
- * - TruthJets
- * - Jets
- * - Electrons
- * - Muons
- * - DetectorObjects
- * - event_number
- * - mu
- * - met
- * - phi
+ * @section deps Dependencies
+ * - bsm_4tops/particles.h
+ * - templates/event_template.h
  *
- * **Private:**
- * - data
+ * @class bsm_4tops
+ * @brief Event container for 4-top analysis
+ *
+ * Inherits: event_template
+ *
+ * Public Methods:
+ * - bsm_4tops() : Constructor, registers particles and leaves
+ * - virtual ~bsm_4tops() : Destructor
+ * - event_template* clone() : Creates copy
+ * - void build(element_t* el) : Builds event from ROOT tree element
+ * - void CompileEvent() : Compiles relationships between particles
+ *
+ * Public Members (Particle Collections):
+ * - std::vector<particle_template*> Tops : Truth top quarks
+ * - std::vector<particle_template*> Children : Top decay products
+ * - std::vector<particle_template*> TruthJets : Truth-level jets
+ * - std::vector<particle_template*> Jets : Reconstructed jets
+ * - std::vector<particle_template*> Electrons : Reconstructed electrons
+ * - std::vector<particle_template*> Muons : Reconstructed muons
+ * - std::vector<particle_template*> DetectorObjects : All detector objects
+ *
+ * Public Members (Event Observables):
+ * - unsigned long long event_number : Unique event identifier
+ * - float mu : Pileup (average interactions per crossing)
+ * - float met : Missing transverse energy
+ * - float phi : MET azimuthal angle
+ *
+ * Private Members (Internal Storage Maps):
+ * - std::map<std::string, top*> m_Tops : Top quarks by hash
+ * - std::map<std::string, top_children*> m_Children : Top children by hash
+ * - std::map<std::string, truthjet*> m_TruthJets : Truth jets by hash
+ * - std::map<std::string, jet*> m_Jets : Jets by hash
+ * - std::map<std::string, electron*> m_Electrons : Electrons by hash
+ * - std::map<std::string, muon*> m_Muons : Muons by hash
+ * - std::map<std::string, jetparton*> m_JetParton : Jet partons by hash
+ * - std::map<std::string, truthjetparton*> m_TruthJetParton : Truth jet partons by hash
+ *
+ * Private Template Methods:
+ * - template<typename G> std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt) : Sorts particles by index
+ * - template<typename m, typename G> void vectorize(std::map<m, G*>* ipt, std::vector<particle_template*>* vec) : Converts map to vector
  */

@@ -1,15 +1,64 @@
 /**
  * @file collector.cxx
- * @brief Documentation for src/AnalysisG/metrics/pagerank/cxx/collector.cxx
+ * @brief Implementation of pagerank collector class
  *
- * **Location:** `src/AnalysisG/metrics/pagerank/cxx/collector.cxx`
+ * Location: src/AnalysisG/metrics/pagerank/cxx/collector.cxx
  *
- * **File Type:** cxx
+ * Implements data collection for PageRank reconstruction evaluation.
+ *
+ * Includes:
+ * - metrics/pagerank.h
+ *
+ * collector::collector():
+ * - Empty constructor
+ *
+ * collector::~collector():
+ * - Empty destructor
+ *
+ * void set_index(long idx_):
+ * - Sets current event index to idx_
+ *
+ * kinematic_t create_kinematic(px, py, pz, mass, pt, eta, phi, energy, num_nodes, score):
+ * - Creates and returns kinematic_t struct with all parameters
+ * - Used to package kinematic information
+ *
+ * void add_truth(kinematic_t* p, mode, model, kfold, epoch):
+ * - Adds truth top kinematics to data[model][epoch][kfold].data[mode][idx].truth
+ *
+ * void add_pagerank(kinematic_t* p, mode, model, kfold, epoch):
+ * - Adds PageRank reconstructed top to data[model][epoch][kfold].data[mode][idx].pageranked
+ *
+ * void add_nominal(kinematic_t* p, mode, model, kfold, epoch):
+ * - Adds nominal reconstructed top to data[model][epoch][kfold].data[mode][idx].nominal
+ *
+ * void add_process(int prc, mode, model, kfold, epoch):
+ * - Sets process_mapping for current event
+ * - Identifies physics process type
+ *
+ * bool add_meta(std::string data, model, kfold, epoch):
+ * - Adds metadata string if not already set
+ * - Returns false if metadata already exists
+ * - Returns true if successfully added
+ *
+ * void add_file_map(fname, idx_, mode, model, kfold, epoch, stat):
+ * - If stat=true: adds to file_stat map
+ * - If stat=false: adds to file_map
+ * - Maps filename to event index
+ *
+ * std::string mapping(std::string name, collector* cl):
+ * - Maps physics sample names to LaTeX labels
+ * - Identifies process types from filename strings:
+ *   - Single top: $t$
+ *   - ttbar: $t\\bar{t}$
+ *   - ttbar+leptons: $t\\bar{t}\\ell\\ell$
+ *   - ttbar+V: $t\\bar{t}V$
+ *   - ttbar+H: $t\\bar{t}H$
+ *   - Wt: $Wt$
+ *   - tV: $tV$
+ *   - Four tops: $t\\bar{t}t\\bar{t}$
+ *   - Diboson: $WZ$, $WW$, $ZZ$
+ *   - VH: $VH$
+ *   - V+leptons: $V\\ell\\nu$, $V\\ell\\ell$
+ *   - Multi-lepton: $\\ell\\ell\\ell\\ell$, $\\ell\\ell\\ell\\nu$, etc.
+ * - Returns "undef" if no match
  */
-
-/**
- * @section dependencies Dependencies
- * This file includes:
- * - `metrics/pagerank.h`
- */
-

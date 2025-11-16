@@ -1,16 +1,61 @@
 /**
  * @file pagerank.cxx
- * @brief Documentation for src/AnalysisG/metrics/pagerank/cxx/pagerank.cxx
+ * @brief Implementation of pagerank_metric class
  *
- * **Location:** `src/AnalysisG/metrics/pagerank/cxx/pagerank.cxx`
+ * Location: src/AnalysisG/metrics/pagerank/cxx/pagerank.cxx
  *
- * **File Type:** cxx
+ * Implements PageRank-based top quark reconstruction metric.
+ *
+ * Includes:
+ * - metrics/pagerank.h
+ * - fstream
+ *
+ * pagerank_metric::pagerank_metric():
+ * - Sets name to "pagerank"
+ *
+ * pagerank_metric::~pagerank_metric():
+ * - Empty destructor
+ *
+ * pagerank_metric* clone():
+ * - Returns new pagerank_metric instance
+ *
+ * void define_variables():
+ * - Registers outputs for training, validation, evaluation modes
+ * - For each mode, registers:
+ *   - Truth top kinematics (num_nodes, pt, eta, phi, energy, px, py, pz, mass)
+ *   - PageRank reconstructed kinematics (same + pagerank score)
+ *   - Nominal reconstructed kinematics (same + prediction score)
+ *   - process_mapping
+ *
+ * void event():
+ * - Writes all truth, PageRank, and nominal kinematics for current mode
+ * - Includes process_mapping
+ * - Writes filename and idx to file_maps
+ *
+ * void batch():
+ * - Empty implementation
+ *
+ * void end():
+ * - Empty implementation
+ *
+ * void pagerank(...):
+ * - Runs PageRank algorithm on particle clusters
+ * - Builds adjacency matrix from cluster connections
+ * - Iteratively updates PageRank scores until convergence or max iterations
+ * - Identifies top candidates based on scores
+ * - Stores results in output maps
+ *
+ * std::vector<particle_template*> build_top(...):
+ * - Constructs top quark candidates from particle clusters
+ * - Combines particles based on cluster assignments
+ * - Returns vector of top candidates
+ *
+ * void define_metric(metric_t* mtx):
+ * - Extracts event data from metric_t
+ * - Gets truth tops from event
+ * - Runs PageRank reconstruction
+ * - Runs nominal reconstruction
+ * - Stores kinematics in vectors
+ * - Calls event() to write data
+ * - Handles mode transitions
  */
-
-/**
- * @section dependencies Dependencies
- * This file includes:
- * - `metrics/pagerank.h`
- * - `fstream`
- */
-

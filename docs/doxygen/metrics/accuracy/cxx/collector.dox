@@ -1,16 +1,54 @@
 /**
  * @file collector.cxx
- * @brief Documentation for src/AnalysisG/metrics/accuracy/cxx/collector.cxx
+ * @brief Implementation of collector class for accuracy data aggregation
  *
- * **Location:** `src/AnalysisG/metrics/accuracy/cxx/collector.cxx`
+ * Location: src/AnalysisG/metrics/accuracy/cxx/collector.cxx
  *
- * **File Type:** cxx
+ * Implements data collection and organization for accuracy metrics across training phases.
+ *
+ * Includes:
+ * - metrics/accuracy.h
+ * - string
+ *
+ * collector::collector():
+ * - Empty constructor
+ *
+ * collector::~collector():
+ * - Empty destructor
+ *
+ * cdata_t* get_mode(std::string model, std::string mode, int epoch, int kfold):
+ * - Returns pointer to cdata_t for specific configuration
+ * - mode == "evaluation": returns evaluation_kfold_data[epoch][kfold]
+ * - mode == "validation": returns validation_kfold_data[epoch][kfold]
+ * - mode == "training": returns training_kfold_data[epoch][kfold]
+ * - Returns nullptr if mode unrecognized
+ *
+ * void add_ntop_truth(std::string mode, std::string model, int epoch, int kfold, int data):
+ * - Gets cdata_t for configuration
+ * - Pushes data to ntops_truth vector
+ *
+ * void add_ntop_edge_accuracy(std::string mode, std::string model, int epoch, int kfold, int ntops, double data):
+ * - Gets cdata_t for configuration
+ * - Pushes data to ntop_edge_accuracy[ntops] vector
+ *
+ * void add_ntop_scores(std::string mode, std::string model, int epoch, int kfold, std::vector<double>* data):
+ * - Gets cdata_t for configuration
+ * - Pushes entire score vector to ntop_score
+ *
+ * void add_ntru_ntop_scores(std::string mode, std::string model, int epoch, int kfold, int ntru, int ntop, double data):
+ * - Gets cdata_t for configuration
+ * - Pushes data to ntru_npred_matrix[ntru][ntop] vector
+ * - Builds confusion matrix data
+ *
+ * std::map<std::string, std::vector<cdata_t*>> get_plts():
+ * - Lambda lamb: processes one model/mode combination
+ *   - Selects appropriate data map (training/validation/evaluation)
+ *   - Iterates epochs and kfolds
+ *   - Creates key "model::mode::epoch-N"
+ *   - Stores pointers to cdata_t in output map
+ *   - Collects model_names, modes, epochs, kfolds
+ * - Iterates all models in model_data
+ * - Applies lamb for training, validation, evaluation
+ * - Deduplicates collected lists using unique_key
+ * - Returns map of plotting data organized by key
  */
-
-/**
- * @section dependencies Dependencies
- * This file includes:
- * - `metrics/accuracy.h`
- * - `string`
- */
-
