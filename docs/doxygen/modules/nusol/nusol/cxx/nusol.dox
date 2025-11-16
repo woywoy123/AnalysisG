@@ -1,0 +1,17 @@
+/**
+ * @file nusol.cxx
+ * @brief Documentation for modules/nusol/nusol/cxx/nusol.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/nusol/cxx/nusol.cxx
+ */
+
+/**
+ * @defgroup modules_nusol_nusol_cxx_nusol_cxx nusol.cxx
+ * @brief nusol.cxx - modules/nusol/nusol/cxx
+ * 
+ * @{
+ */
+
+/** @} */  // end of modules_nusol_nusol_cxx_nusol_cxx

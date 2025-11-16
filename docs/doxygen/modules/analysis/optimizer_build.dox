@@ -1,0 +1,30 @@
+/**
+ * @file optimizer_build.cxx
+ * @brief Documentation for modules/analysis/optimizer_build.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/analysis/optimizer_build.cxx
+ */
+
+/**
+ * @defgroup modules_analysis_optimizer_build_cxx optimizer_build.cxx
+ * @brief optimizer_build.cxx - modules/analysis
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - dx
+ * - k_
+ * - mr
+ * - mx
+ * - optim
+ * - output
+ * - plt
+ */
+
+/** @} */  // end of modules_analysis_optimizer_build_cxx

@@ -1,0 +1,47 @@
+/**
+ * @file nuclx.cxx
+ * @brief Documentation for modules/nusol/tmp/conuix/cxx/nuclx.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/tmp/conuix/cxx/nuclx.cxx
+ */
+
+/**
+ * @defgroup modules_nusol_tmp_conuix_cxx_nuclx_cxx nuclx.cxx
+ * @brief nuclx.cxx - modules/nusol/tmp/conuix/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - Rx()
+ * - Ry()
+ * - Rz()
+ * - _beta()
+ * - _mag()
+ * - cos_theta()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - _d
+ * - _t
+ * - _z
+ * - a
+ * - alpha
+ * - b
+ * - b_p
+ * - ch
+ * - out
+ * - p2
+ * - r
+ * - sh
+ */
+
+/** @} */  // end of modules_nusol_tmp_conuix_cxx_nuclx_cxx

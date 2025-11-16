@@ -1,0 +1,24 @@
+/**
+ * @file graphs.cxx
+ * @brief Documentation for graphs/exp_mc20/cxx/graphs.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/graphs/exp_mc20/cxx/graphs.cxx
+ */
+
+/**
+ * @defgroup graphs_exp_mc20_cxx_graphs_cxx graphs.cxx
+ * @brief graphs.cxx - graphs/exp_mc20/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - event
+ */
+
+/** @} */  // end of graphs_exp_mc20_cxx_graphs_cxx

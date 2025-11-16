@@ -1,0 +1,24 @@
+/**
+ * @file graph.cxx
+ * @brief Documentation for pyc/graph/graph.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/pyc/graph/graph.cxx
+ */
+
+/**
+ * @defgroup pyc_graph_graph_cxx graph.cxx
+ * @brief graph.cxx - pyc/graph
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - output
+ */
+
+/** @} */  // end of pyc_graph_graph_cxx

@@ -1,0 +1,25 @@
+/**
+ * @file variable.cxx
+ * @brief Documentation for modules/structs/cxx/variable.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/cxx/variable.cxx
+ */
+
+/**
+ * @defgroup modules_structs_cxx_variable_cxx variable.cxx
+ * @brief variable.cxx - modules/structs/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - t
+ * - wr
+ */
+
+/** @} */  // end of modules_structs_cxx_variable_cxx

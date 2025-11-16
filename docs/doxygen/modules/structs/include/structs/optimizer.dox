@@ -1,0 +1,51 @@
+/**
+ * @file optimizer.h
+ * @brief Documentation for modules/structs/include/structs/optimizer.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/include/structs/optimizer.h
+ */
+
+/**
+ * @defgroup modules_structs_include_structs_optimizer_h optimizer.h
+ * @brief optimizer.h - modules/structs/include/structs
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - loss_opt
+ * - optimizer_params_t
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - alpha
+ * - amsgrad
+ * - batch_mean
+ * - beta
+ * - blank
+ * - centered
+ * - dampening
+ * - defaults
+ * - delta
+ * - eps
+ * - full
+ * - fx
+ * - gamma
+ * - history_size
+ * - ignore
+ * - initial_accumulator_value
+ * - lr
+ * - lr_decay
+ * - m_alpha
+ * - m_amsgrad
+ */
+
+/** @} */  // end of modules_structs_include_structs_optimizer_h

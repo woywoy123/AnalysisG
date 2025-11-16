@@ -1,0 +1,26 @@
+/**
+ * @file grift.cxx
+ * @brief Documentation for models/grift/cxx/grift.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/models/grift/cxx/grift.cxx
+ */
+
+/**
+ * @defgroup models_grift_cxx_grift_cxx grift.cxx
+ * @brief grift.cxx - models/grift/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - dxx_1
+ * - dxx_r
+ * - md
+ */
+
+/** @} */  // end of models_grift_cxx_grift_cxx

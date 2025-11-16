@@ -1,0 +1,34 @@
+/**
+ * @file inference_build.cxx
+ * @brief Documentation for modules/analysis/inference_build.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/analysis/inference_build.cxx
+ */
+
+/**
+ * @defgroup modules_analysis_inference_build_cxx inference_build.cxx
+ * @brief inference_build.cxx - modules/analysis
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - dev_i
+ * - dx
+ * - index
+ * - md
+ * - mds
+ * - mdx
+ * - modls
+ * - para
+ * - smpls
+ * - sx
+ * - threads_
+ */
+
+/** @} */  // end of modules_analysis_inference_build_cxx

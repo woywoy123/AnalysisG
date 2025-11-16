@@ -1,0 +1,59 @@
+/**
+ * @file folds.h
+ * @brief Documentation for modules/structs/include/structs/folds.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/include/structs/folds.h
+ */
+
+/**
+ * @defgroup modules_structs_include_structs_folds_h folds.h
+ * @brief folds.h - modules/structs/include/structs
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - graph_hdf5_w
+ * - folds_t
+ * - graph_hdf5
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - flush_data()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - data_edge
+ * - data_graph
+ * - data_map_edge
+ * - data_map_graph
+ * - data_map_node
+ * - data_node
+ * - edge_index
+ * - event_index
+ * - event_weight
+ * - filename
+ * - hash
+ * - is_eval
+ * - is_train
+ * - is_valid
+ * - k
+ * - num_nodes
+ * - truth_edge
+ * - truth_graph
+ * - truth_map_edge
+ * - truth_map_graph
+ */
+
+/** @} */  // end of modules_structs_include_structs_folds_h

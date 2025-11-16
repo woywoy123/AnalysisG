@@ -1,0 +1,38 @@
+/**
+ * @file sampletracer.h
+ * @brief Documentation for modules/sampletracer/include/generators/sampletracer.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/sampletracer/include/generators/sampletracer.h
+ */
+
+/**
+ * @defgroup modules_sampletracer_include_generators_sampletracer_h sampletracer.h
+ * @brief sampletracer.h - modules/sampletracer/include/generators
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - sampletracer
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - add_event()
+ * - add_graph()
+ * - add_meta_data()
+ * - add_selection()
+ * - compile_objects()
+ * - fill_selections()
+ * - get_meta_data()
+ * - populate_dataloader()
+ */
+
+/** @} */  // end of modules_sampletracer_include_generators_sampletracer_h

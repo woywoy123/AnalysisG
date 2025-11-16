@@ -1,0 +1,26 @@
+/**
+ * @file link.cxx
+ * @brief Documentation for modules/metric/cxx/link.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/metric/cxx/link.cxx
+ */
+
+/**
+ * @defgroup modules_metric_cxx_link_cxx link.cxx
+ * @brief link.cxx - modules/metric/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - ok
+ * - ptx
+ * - px
+ */
+
+/** @} */  // end of modules_metric_cxx_link_cxx

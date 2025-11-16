@@ -1,0 +1,45 @@
+/**
+ * @file event.h
+ * @brief Documentation for events/exp_mc20/include/exp_mc20/event.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/events/exp_mc20/include/exp_mc20/event.h
+ */
+
+/**
+ * @defgroup events_exp_mc20_include_exp_mc20_event_h event.h
+ * @brief event.h - events/exp_mc20/include/exp_mc20
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - exp_mc20
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - CompileEvent()
+ * - build()
+ * - clone()
+ * - vectorize()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - data
+ * - met
+ * - met_sum
+ * - mu
+ * - phi
+ */
+
+/** @} */  // end of events_exp_mc20_include_exp_mc20_event_h

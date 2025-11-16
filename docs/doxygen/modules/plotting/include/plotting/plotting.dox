@@ -1,0 +1,60 @@
+/**
+ * @file plotting.h
+ * @brief Documentation for modules/plotting/include/plotting/plotting.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/plotting/include/plotting/plotting.h
+ */
+
+/**
+ * @defgroup modules_plotting_include_plotting_plotting_h plotting.h
+ * @brief plotting.h - modules/plotting/include/plotting
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - plotting
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - build_error()
+ * - get_max()
+ * - get_min()
+ * - sum_of_weights()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - alpha
+ * - auto_scale
+ * - axis_size
+ * - cap_size
+ * - counts
+ * - cross_section
+ * - density
+ * - dpi
+ * - errors
+ * - font_size
+ * - integrated_luminosity
+ * - legend_size
+ * - line_width
+ * - stack
+ * - title_size
+ * - use_latex
+ * - x_bins
+ * - x_logarithmic
+ * - x_max
+ * - x_min
+ */
+
+/** @} */  // end of modules_plotting_include_plotting_plotting_h

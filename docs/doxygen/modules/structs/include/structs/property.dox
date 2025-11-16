@@ -1,0 +1,48 @@
+/**
+ * @file property.h
+ * @brief Documentation for modules/structs/include/structs/property.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/include/structs/property.h
+ */
+
+/**
+ * @defgroup modules_structs_include_structs_property_h property.h
+ * @brief property.h - modules/structs/include/structs
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - cproperty
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - T()
+ * - clear()
+ * - set_getter()
+ * - set_object()
+ * - set_setter()
+ * - x_getter()
+ * - x_setter()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - data
+ * - has_getter
+ * - has_setter
+ * - obj
+ * - operator
+ */
+
+/** @} */  // end of modules_structs_include_structs_property_h

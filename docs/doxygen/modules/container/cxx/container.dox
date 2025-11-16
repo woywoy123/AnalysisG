@@ -1,0 +1,30 @@
+/**
+ * @file container.cxx
+ * @brief Documentation for modules/container/cxx/container.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/container/cxx/container.cxx
+ */
+
+/**
+ * @defgroup modules_container_cxx_container_cxx container.cxx
+ * @brief container.cxx - modules/container/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - col
+ * - ev
+ * - evt
+ * - gr_
+ * - sl
+ * - slx
+ * - t
+ */
+
+/** @} */  // end of modules_container_cxx_container_cxx

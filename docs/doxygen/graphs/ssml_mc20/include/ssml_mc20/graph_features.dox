@@ -1,0 +1,26 @@
+/**
+ * @file graph_features.h
+ * @brief Documentation for graphs/ssml_mc20/include/ssml_mc20/graph_features.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/graphs/ssml_mc20/include/ssml_mc20/graph_features.h
+ */
+
+/**
+ * @defgroup graphs_ssml_mc20_include_ssml_mc20_graph_features_h graph_features.h
+ * @brief graph_features.h - graphs/ssml_mc20/include/ssml_mc20
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - leptons
+ * - neutrinos
+ * - t_
+ */
+
+/** @} */  // end of graphs_ssml_mc20_include_ssml_mc20_graph_features_h

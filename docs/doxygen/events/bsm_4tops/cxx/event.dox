@@ -1,0 +1,37 @@
+/**
+ * @file event.cxx
+ * @brief Documentation for events/bsm_4tops/cxx/event.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/events/bsm_4tops/cxx/event.cxx
+ */
+
+/**
+ * @defgroup events_bsm_4tops_cxx_event_cxx event.cxx
+ * @brief event.cxx - events/bsm_4tops/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - c
+ * - dr
+ * - index
+ * - jp
+ * - jt
+ * - l
+ * - lt
+ * - n_nu
+ * - p
+ * - t
+ * - tj
+ * - tjp
+ * - tx
+ * - w
+ */
+
+/** @} */  // end of events_bsm_4tops_cxx_event_cxx

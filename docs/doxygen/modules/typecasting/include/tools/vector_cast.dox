@@ -1,0 +1,56 @@
+/**
+ * @file vector_cast.h
+ * @brief Documentation for modules/typecasting/include/tools/vector_cast.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/typecasting/include/tools/vector_cast.h
+ */
+
+/**
+ * @defgroup modules_typecasting_include_tools_vector_cast_h vector_cast.h
+ * @brief vector_cast.h - modules/typecasting/include/tools
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - write_t
+ * - variable_t
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - _transfer()
+ * - add_data()
+ * - build_switch()
+ * - create_meta()
+ * - process()
+ * - tensor_to_vector()
+ * - tensor_vector()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - end
+ * - failed_branch
+ * - is_triggered
+ * - mtx
+ * - n
+ * - out
+ * - tb
+ * - tmp
+ * - true
+ * - tt
+ * - use_external
+ * - write_t
+ */
+
+/** @} */  // end of modules_typecasting_include_tools_vector_cast_h

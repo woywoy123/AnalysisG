@@ -1,0 +1,17 @@
+/**
+ * @file operators.h
+ * @brief Documentation for pyc/operators/include/operators/operators.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/pyc/operators/include/operators/operators.h
+ */
+
+/**
+ * @defgroup pyc_operators_include_operators_operators_h operators.h
+ * @brief operators.h - pyc/operators/include/operators
+ * 
+ * @{
+ */
+
+/** @} */  // end of pyc_operators_include_operators_operators_h

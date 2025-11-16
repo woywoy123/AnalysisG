@@ -1,0 +1,33 @@
+/**
+ * @file mass_plots.cxx
+ * @brief Documentation for modules/metrics/cxx/mass_plots.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/metrics/cxx/mass_plots.cxx
+ */
+
+/**
+ * @defgroup modules_metrics_cxx_mass_plots_cxx mass_plots.cxx
+ * @brief mass_plots.cxx - modules/metrics/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - an
+ * - can
+ * - di
+ * - dx
+ * - h_sum
+ * - legend
+ * - mxr
+ * - nb
+ * - rp
+ * - truth_
+ */
+
+/** @} */  // end of modules_metrics_cxx_mass_plots_cxx

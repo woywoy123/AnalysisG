@@ -1,0 +1,81 @@
+/**
+ * @file graph_template.h
+ * @brief Documentation for modules/graph/include/templates/graph_template.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/graph/include/templates/graph_template.h
+ */
+
+/**
+ * @defgroup modules_graph_include_templates_graph_template_h graph_template.h
+ * @brief graph_template.h - modules/graph/include/templates
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - dataloader
+ * - graph_t
+ * - container
+ * - graph_template
+ * - analysis
+ * - meta
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - CompileEvent()
+ * - PreSelection()
+ * - _purge_all()
+ * - _purge_data()
+ * - _transfer_to_device()
+ * - add_data_edge()
+ * - add_data_graph()
+ * - add_data_node()
+ * - add_edge_data_feature()
+ * - add_edge_feature()
+ * - add_edge_truth_feature()
+ * - add_graph_data_feature()
+ * - add_graph_feature()
+ * - add_graph_truth_feature()
+ * - add_node_data_feature()
+ * - add_node_feature()
+ * - add_node_truth_feature()
+ * - add_truth_edge()
+ * - add_truth_graph()
+ * - add_truth_node()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - analysis
+ * - cdef
+ * - container
+ * - data
+ * - dataloader
+ * - dx
+ * - event_index
+ * - event_weight
+ * - graph_template
+ * - hash
+ * - in_use
+ * - index
+ * - is_owner
+ * - m_event
+ * - m_preselection
+ * - meta
+ * - meta_data
+ * - name
+ * - num_nodes
+ * - operator
+ */
+
+/** @} */  // end of modules_graph_include_templates_graph_template_h

@@ -1,0 +1,46 @@
+/**
+ * @file gnn-particles.h
+ * @brief Documentation for events/gnn/include/inference/gnn-particles.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/events/gnn/include/inference/gnn-particles.h
+ */
+
+/**
+ * @defgroup events_gnn_include_inference_gnn_particles_h gnn-particles.h
+ * @brief gnn-particles.h - events/gnn/include/inference
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - zprime
+ * - top
+ * - particle_gnn
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - build()
+ * - clone()
+ * - read()
+ * - reduce()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - av_score
+ * - lep
+ * - n_leps
+ * - n_nodes
+ */
+
+/** @} */  // end of events_gnn_include_inference_gnn_particles_h

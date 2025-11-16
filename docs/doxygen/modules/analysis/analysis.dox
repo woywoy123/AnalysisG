@@ -1,0 +1,30 @@
+/**
+ * @file analysis.cxx
+ * @brief Documentation for modules/analysis/analysis.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/analysis/analysis.cxx
+ */
+
+/**
+ * @defgroup modules_analysis_analysis_cxx analysis.cxx
+ * @brief analysis.cxx - modules/analysis
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - io_g
+ * - mdl
+ * - opc
+ * - opx
+ * - s
+ * - sg
+ * - threads_
+ */
+
+/** @} */  // end of modules_analysis_analysis_cxx

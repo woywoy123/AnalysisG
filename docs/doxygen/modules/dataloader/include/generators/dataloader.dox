@@ -1,0 +1,56 @@
+/**
+ * @file dataloader.h
+ * @brief Documentation for modules/dataloader/include/generators/dataloader.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/dataloader/include/generators/dataloader.h
+ */
+
+/**
+ * @defgroup modules_dataloader_include_generators_dataloader_h dataloader.h
+ * @brief dataloader.h - modules/dataloader/include/generators
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - model_report
+ * - dataloader
+ * - analysis
+ * - model_template
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - clean_data_elements()
+ * - cuda_memory_server()
+ * - datatransfer()
+ * - dump_dataset()
+ * - dump_graphs()
+ * - extract_data()
+ * - generate_kfold_set()
+ * - generate_test_set()
+ * - restore_dataset()
+ * - restore_graphs()
+ * - safe_delete()
+ * - shuffle()
+ * - start_cuda_server()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - analysis
+ * - model_report
+ * - model_template
+ * - setting
+ */
+
+/** @} */  // end of modules_dataloader_include_generators_dataloader_h

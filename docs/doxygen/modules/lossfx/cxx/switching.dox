@@ -1,0 +1,28 @@
+/**
+ * @file switching.cxx
+ * @brief Documentation for modules/lossfx/cxx/switching.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/lossfx/cxx/switching.cxx
+ */
+
+/**
+ * @defgroup modules_lossfx_cxx_switching_cxx switching.cxx
+ * @brief switching.cxx - modules/lossfx/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - lambb
+ * - lambd
+ * - lambi
+ * - lambv
+ * - vo
+ */
+
+/** @} */  // end of modules_lossfx_cxx_switching_cxx

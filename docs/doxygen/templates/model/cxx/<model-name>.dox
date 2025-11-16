@@ -1,0 +1,17 @@
+/**
+ * @file <model-name>.cxx
+ * @brief Documentation for templates/model/cxx/<model-name>.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/templates/model/cxx/<model-name>.cxx
+ */
+
+/**
+ * @defgroup templates_model_cxx_<model_name>_cxx <model-name>.cxx
+ * @brief <model-name>.cxx - templates/model/cxx
+ * 
+ * @{
+ */
+
+/** @} */  // end of templates_model_cxx_<model_name>_cxx

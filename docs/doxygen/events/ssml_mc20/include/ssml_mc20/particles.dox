@@ -1,0 +1,61 @@
+/**
+ * @file particles.h
+ * @brief Documentation for events/ssml_mc20/include/ssml_mc20/particles.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/events/ssml_mc20/include/ssml_mc20/particles.h
+ */
+
+/**
+ * @defgroup events_ssml_mc20_include_ssml_mc20_particles_h particles.h
+ * @brief particles.h - events/ssml_mc20/include/ssml_mc20
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - lepton
+ * - truthjet
+ * - top
+ * - muon
+ * - jet
+ * - parton
+ * - zboson
+ * - electron
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - build()
+ * - clone()
+ * - get_from_res()
+ * - pmu()
+ * - pmu_mass()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - ambiguity
+ * - btag_77
+ * - btag_85
+ * - btag_90
+ * - electron_index
+ * - from_res
+ * - jet_index
+ * - muon_index
+ * - pass_ecids
+ * - prt
+ * - sel_85
+ * - top_index
+ * - truthjet_index
+ */
+
+/** @} */  // end of events_ssml_mc20_include_ssml_mc20_particles_h

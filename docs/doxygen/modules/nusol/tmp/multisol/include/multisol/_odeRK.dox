@@ -1,0 +1,54 @@
+/**
+ * @file _odeRK.h
+ * @brief Documentation for modules/nusol/tmp/multisol/include/multisol/_odeRK.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/tmp/multisol/include/multisol/_odeRK.h
+ */
+
+/**
+ * @defgroup modules_nusol_tmp_multisol_include_multisol__odeRK_h _odeRK.h
+ * @brief _odeRK.h - modules/nusol/tmp/multisol/include/multisol
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - odeRK
+ * - recon_t
+ * - ellipse_t
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - ghost_angle()
+ * - print()
+ * - residual()
+ * - rk4()
+ * - solve()
+ * - solve_z_phi()
+ * - update_t()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - ct
+ * - dt_
+ * - is_valid
+ * - itr
+ * - met_
+ * - nsx
+ * - residual
+ * - t
+ * - z
+ */
+
+/** @} */  // end of modules_nusol_tmp_multisol_include_multisol__odeRK_h

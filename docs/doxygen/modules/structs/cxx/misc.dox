@@ -1,0 +1,26 @@
+/**
+ * @file misc.cxx
+ * @brief Documentation for modules/structs/cxx/misc.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/cxx/misc.cxx
+ */
+
+/**
+ * @defgroup modules_structs_cxx_misc_cxx misc.cxx
+ * @brief misc.cxx - modules/structs/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - msg
+ * - out
+ * - trig
+ */
+
+/** @} */  // end of modules_structs_cxx_misc_cxx

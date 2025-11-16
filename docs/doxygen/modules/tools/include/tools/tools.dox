@@ -1,0 +1,55 @@
+/**
+ * @file tools.h
+ * @brief Documentation for modules/tools/include/tools/tools.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/tools/include/tools/tools.h
+ */
+
+/**
+ * @defgroup modules_tools_include_tools_tools_h tools.h
+ * @brief tools.h - modules/tools/include/tools
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - tools
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - create_path()
+ * - delete_path()
+ * - ends_with()
+ * - has_string()
+ * - has_value()
+ * - is_file()
+ * - max()
+ * - min()
+ * - put()
+ * - rename()
+ * - replace()
+ * - sum()
+ * - unique_key()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - end
+ * - ix
+ * - kx
+ * - n
+ * - out
+ * - v
+ */
+
+/** @} */  // end of modules_tools_include_tools_tools_h

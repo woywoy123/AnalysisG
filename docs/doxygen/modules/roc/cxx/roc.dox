@@ -1,0 +1,26 @@
+/**
+ * @file roc.cxx
+ * @brief Documentation for modules/roc/cxx/roc.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/roc/cxx/roc.cxx
+ */
+
+/**
+ * @defgroup modules_roc_cxx_roc_cxx roc.cxx
+ * @brief roc.cxx - modules/roc/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - clx
+ * - lsx
+ * - rc
+ */
+
+/** @} */  // end of modules_roc_cxx_roc_cxx

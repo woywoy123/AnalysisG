@@ -1,0 +1,17 @@
+/**
+ * @file conuic.cxx
+ * @brief Documentation for modules/nusol/conuix/cxx/conuic.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/conuix/cxx/conuic.cxx
+ */
+
+/**
+ * @defgroup modules_nusol_conuix_cxx_conuic_cxx conuic.cxx
+ * @brief conuic.cxx - modules/nusol/conuix/cxx
+ * 
+ * @{
+ */
+
+/** @} */  // end of modules_nusol_conuix_cxx_conuic_cxx

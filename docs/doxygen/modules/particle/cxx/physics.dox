@@ -1,0 +1,27 @@
+/**
+ * @file physics.cxx
+ * @brief Documentation for modules/particle/cxx/physics.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/particle/cxx/physics.cxx
+ */
+
+/**
+ * @defgroup modules_particle_cxx_physics_cxx physics.cxx
+ * @brief physics.cxx - modules/particle/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - p
+ * - p_
+ * - pl
+ * - sum
+ */
+
+/** @} */  // end of modules_particle_cxx_physics_cxx

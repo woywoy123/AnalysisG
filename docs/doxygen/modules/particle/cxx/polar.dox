@@ -1,0 +1,24 @@
+/**
+ * @file polar.cxx
+ * @brief Documentation for modules/particle/cxx/polar.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/particle/cxx/polar.cxx
+ */
+
+/**
+ * @defgroup modules_particle_cxx_polar_cxx polar.cxx
+ * @brief polar.cxx - modules/particle/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - p
+ */
+
+/** @} */  // end of modules_particle_cxx_polar_cxx

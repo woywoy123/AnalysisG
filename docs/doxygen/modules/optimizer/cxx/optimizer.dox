@@ -1,0 +1,32 @@
+/**
+ * @file optimizer.cxx
+ * @brief Documentation for modules/optimizer/cxx/optimizer.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/optimizer/cxx/optimizer.cxx
+ */
+
+/**
+ * @defgroup modules_optimizer_cxx_optimizer_cxx optimizer.cxx
+ * @brief optimizer.cxx - modules/optimizer/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - base
+ * - batched
+ * - config
+ * - gr
+ * - l
+ * - model
+ * - model_k
+ * - mr
+ * - settings
+ */
+
+/** @} */  // end of modules_optimizer_cxx_optimizer_cxx

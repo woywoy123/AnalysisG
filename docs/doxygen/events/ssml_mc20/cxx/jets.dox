@@ -1,0 +1,26 @@
+/**
+ * @file jets.cxx
+ * @brief Documentation for events/ssml_mc20/cxx/jets.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/events/ssml_mc20/cxx/jets.cxx
+ */
+
+/**
+ * @defgroup events_ssml_mc20_cxx_jets_cxx jets.cxx
+ * @brief jets.cxx - events/ssml_mc20/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - elx
+ * - sp
+ * - t
+ */
+
+/** @} */  // end of events_ssml_mc20_cxx_jets_cxx

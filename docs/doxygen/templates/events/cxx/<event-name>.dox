@@ -1,0 +1,17 @@
+/**
+ * @file <event-name>.cxx
+ * @brief Documentation for templates/events/cxx/<event-name>.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/templates/events/cxx/<event-name>.cxx
+ */
+
+/**
+ * @defgroup templates_events_cxx_<event_name>_cxx <event-name>.cxx
+ * @brief <event-name>.cxx - templates/events/cxx
+ * 
+ * @{
+ */
+
+/** @} */  // end of templates_events_cxx_<event_name>_cxx

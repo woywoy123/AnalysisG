@@ -1,0 +1,24 @@
+/**
+ * @file metric_template.cxx
+ * @brief Documentation for modules/metric/cxx/metric_template.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/metric/cxx/metric_template.cxx
+ */
+
+/**
+ * @defgroup modules_metric_cxx_metric_template_cxx metric_template.cxx
+ * @brief metric_template.cxx - modules/metric/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - mx
+ */
+
+/** @} */  // end of modules_metric_cxx_metric_template_cxx

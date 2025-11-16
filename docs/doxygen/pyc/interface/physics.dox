@@ -1,0 +1,17 @@
+/**
+ * @file physics.cxx
+ * @brief Documentation for pyc/interface/physics.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/pyc/interface/physics.cxx
+ */
+
+/**
+ * @defgroup pyc_interface_physics_cxx physics.cxx
+ * @brief physics.cxx - pyc/interface
+ * 
+ * @{
+ */
+
+/** @} */  // end of pyc_interface_physics_cxx

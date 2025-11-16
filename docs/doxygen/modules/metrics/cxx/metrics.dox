@@ -1,0 +1,25 @@
+/**
+ * @file metrics.cxx
+ * @brief Documentation for modules/metrics/cxx/metrics.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/metrics/cxx/metrics.cxx
+ */
+
+/**
+ * @defgroup modules_metrics_cxx_metrics_cxx metrics.cxx
+ * @brief metrics.cxx - modules/metrics/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - an
+ * - mr
+ */
+
+/** @} */  // end of modules_metrics_cxx_metrics_cxx

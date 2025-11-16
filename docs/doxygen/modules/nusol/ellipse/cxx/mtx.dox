@@ -1,0 +1,59 @@
+/**
+ * @file mtx.cxx
+ * @brief Documentation for modules/nusol/ellipse/cxx/mtx.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/ellipse/cxx/mtx.cxx
+ */
+
+/**
+ * @defgroup modules_nusol_ellipse_cxx_mtx_cxx mtx.cxx
+ * @brief mtx.cxx - modules/nusol/ellipse/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - i()
+ * - mtx()
+ * - o()
+ * - out()
+ * - r1()
+ * - r2()
+ * - r3()
+ * - solve_cubic()
+ * - vXc()
+ * - vx()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - B
+ * - a
+ * - b
+ * - c
+ * - cx
+ * - det_
+ * - e
+ * - eig
+ * - eiv
+ * - false
+ * - idx
+ * - inv3x3
+ * - lx
+ * - m
+ * - mag
+ * - mag_
+ * - o
+ * - out
+ * - ox
+ * - q
+ */
+
+/** @} */  // end of modules_nusol_ellipse_cxx_mtx_cxx

@@ -1,0 +1,54 @@
+/**
+ * @file base.h
+ * @brief Documentation for modules/structs/include/structs/base.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/include/structs/base.h
+ */
+
+/**
+ * @defgroup modules_structs_include_structs_base_h base.h
+ * @brief base.h - modules/structs/include/structs
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - bsc_t
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - _getalt()
+ * - buildAll()
+ * - buildDict()
+ * - buildPCM()
+ * - element()
+ * - flush_buffer()
+ * - registerInclude()
+ * - root_type_translate()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - b
+ * - c
+ * - clear
+ * - d
+ * - f
+ * - i
+ * - index
+ * - l
+ * - true
+ * - type
+ */
+
+/** @} */  // end of modules_structs_include_structs_base_h

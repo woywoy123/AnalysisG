@@ -1,0 +1,24 @@
+/**
+ * @file entries.cxx
+ * @brief Documentation for modules/container/cxx/entries.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/container/cxx/entries.cxx
+ */
+
+/**
+ * @defgroup modules_container_cxx_entries_cxx entries.cxx
+ * @brief entries.cxx - modules/container/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - false
+ */
+
+/** @} */  // end of modules_container_cxx_entries_cxx

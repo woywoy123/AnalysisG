@@ -1,0 +1,33 @@
+/**
+ * @file htilde.cxx
+ * @brief Documentation for modules/nusol/conuix/cxx/htilde.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/conuix/cxx/htilde.cxx
+ */
+
+/**
+ * @defgroup modules_nusol_conuix_cxx_htilde_cxx htilde.cxx
+ * @brief htilde.cxx - modules/nusol/conuix/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - Rx()
+ * - Ry()
+ * - Rz()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - b_p
+ */
+
+/** @} */  // end of modules_nusol_conuix_cxx_htilde_cxx

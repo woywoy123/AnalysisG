@@ -1,0 +1,17 @@
+/**
+ * @file nusol.h
+ * @brief Documentation for pyc/nusol/include/nusol/nusol.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/pyc/nusol/include/nusol/nusol.h
+ */
+
+/**
+ * @defgroup pyc_nusol_include_nusol_nusol_h nusol.h
+ * @brief nusol.h - pyc/nusol/include/nusol
+ * 
+ * @{
+ */
+
+/** @} */  // end of pyc_nusol_include_nusol_nusol_h

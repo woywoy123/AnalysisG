@@ -1,0 +1,37 @@
+/**
+ * @file dataset.cxx
+ * @brief Documentation for modules/dataloader/cxx/dataset.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/dataloader/cxx/dataset.cxx
+ */
+
+/**
+ * @defgroup modules_dataloader_cxx_dataset_cxx dataset.cxx
+ * @brief dataset.cxx - modules/dataloader/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - all
+ * - fx
+ * - gr
+ * - index
+ * - io_g
+ * - k
+ * - kf
+ * - kv
+ * - lamb
+ * - len
+ * - nullptr
+ * - out
+ * - output
+ * - true
+ */
+
+/** @} */  // end of modules_dataloader_cxx_dataset_cxx

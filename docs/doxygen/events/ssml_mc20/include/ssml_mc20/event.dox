@@ -1,0 +1,61 @@
+/**
+ * @file event.h
+ * @brief Documentation for events/ssml_mc20/include/ssml_mc20/event.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/events/ssml_mc20/include/ssml_mc20/event.h
+ */
+
+/**
+ * @defgroup events_ssml_mc20_include_ssml_mc20_event_h event.h
+ * @brief event.h - events/ssml_mc20/include/ssml_mc20
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - ssml_mc20
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - CompileEvent()
+ * - build()
+ * - clone()
+ * - match_object()
+ * - vectorize()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - HT_all
+ * - brk
+ * - broken_event
+ * - data
+ * - event_category
+ * - global_trigger_SF
+ * - idx
+ * - met
+ * - met_sum
+ * - n_electrons
+ * - n_fjets
+ * - n_jets
+ * - n_leptons
+ * - n_muons
+ * - pass_eee
+ * - pass_eee_zveto
+ * - pass_eem
+ * - pass_eem_zveto
+ * - pass_emm
+ * - pass_emm_zveto
+ */
+
+/** @} */  // end of events_ssml_mc20_include_ssml_mc20_event_h

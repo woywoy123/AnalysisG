@@ -1,0 +1,34 @@
+/**
+ * @file particles.cxx
+ * @brief Documentation for events/exp_mc20/cxx/particles.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/events/exp_mc20/cxx/particles.cxx
+ */
+
+/**
+ * @defgroup events_exp_mc20_cxx_particles_cxx particles.cxx
+ * @brief particles.cxx - events/exp_mc20/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - mx()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - lamb
+ * - p
+ * - pdg
+ * - true
+ */
+
+/** @} */  // end of events_exp_mc20_cxx_particles_cxx

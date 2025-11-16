@@ -1,0 +1,52 @@
+/**
+ * @file solvers.h
+ * @brief Documentation for modules/nusol/conuix/include/conuix/solvers.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/conuix/include/conuix/solvers.h
+ */
+
+/**
+ * @defgroup modules_nusol_conuix_include_conuix_solvers_h solvers.h
+ * @brief solvers.h - modules/nusol/conuix/include/conuix
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - cubic()
+ * - linear()
+ * - quadratic()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - 1
+ * - 2
+ * - 3
+ * - a_
+ * - b_
+ * - c_
+ * - cnx
+ * - d_
+ * - delta
+ * - disc
+ * - hlf
+ * - p
+ * - q
+ * - r
+ * - sthrd
+ * - theta
+ * - third
+ * - tol
+ * - u
+ * - v
+ */
+
+/** @} */  // end of modules_nusol_conuix_include_conuix_solvers_h

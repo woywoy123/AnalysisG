@@ -1,0 +1,33 @@
+/**
+ * @file model.h
+ * @brief Documentation for modules/structs/include/structs/model.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/include/structs/model.h
+ */
+
+/**
+ * @defgroup modules_structs_include_structs_model_h model.h
+ * @brief model.h - modules/structs/include/structs
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - model_settings_t
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - e_optim
+ * - inference_mode
+ * - is_mc
+ */
+
+/** @} */  // end of modules_structs_include_structs_model_h

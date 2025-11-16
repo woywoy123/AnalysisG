@@ -1,0 +1,40 @@
+/**
+ * @file roc.h
+ * @brief Documentation for modules/roc/include/plotting/roc.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/roc/include/plotting/roc.h
+ */
+
+/**
+ * @defgroup modules_roc_include_plotting_roc_h roc.h
+ * @brief roc.h - modules/roc/include/plotting
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - roc
+ * - roc_t
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - build_ROC()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - cls
+ * - kfold
+ */
+
+/** @} */  // end of modules_roc_include_plotting_roc_h

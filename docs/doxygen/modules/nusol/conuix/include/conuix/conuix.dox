@@ -1,0 +1,42 @@
+/**
+ * @file conuix.h
+ * @brief Documentation for modules/nusol/conuix/include/conuix/conuix.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/conuix/include/conuix/conuix.h
+ */
+
+/**
+ * @defgroup modules_nusol_conuix_include_conuix_conuix_h conuix.h
+ * @brief conuix.h - modules/nusol/conuix/include/conuix
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - conuix
+ * - nusol_t
+ * - conuic
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - solve()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - conuic
+ * - nusol_t
+ * - params
+ */
+
+/** @} */  // end of modules_nusol_conuix_include_conuix_conuix_h

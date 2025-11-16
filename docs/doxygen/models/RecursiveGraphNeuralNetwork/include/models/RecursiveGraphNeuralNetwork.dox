@@ -1,0 +1,45 @@
+/**
+ * @file RecursiveGraphNeuralNetwork.h
+ * @brief Documentation for models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h
+ */
+
+/**
+ * @defgroup models_RecursiveGraphNeuralNetwork_include_models_RecursiveGraphNeuralNetwork_h RecursiveGraphNeuralNetwork.h
+ * @brief RecursiveGraphNeuralNetwork.h - models/RecursiveGraphNeuralNetwork/include/models
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - recursivegraphneuralnetwork
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - clone()
+ * - forward()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - _dx
+ * - _output
+ * - _rep
+ * - _x
+ * - drop_out
+ * - is_mc
+ * - res_mass
+ */
+
+/** @} */  // end of models_RecursiveGraphNeuralNetwork_include_models_RecursiveGraphNeuralNetwork_h

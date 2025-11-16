@@ -1,0 +1,31 @@
+/**
+ * @file properties.cxx
+ * @brief Documentation for modules/metric/cxx/properties.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/metric/cxx/properties.cxx
+ */
+
+/**
+ * @defgroup modules_metric_cxx_properties_cxx properties.cxx
+ * @brief properties.cxx - modules/metric/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - has_d
+ * - has_p
+ * - has_t
+ * - is_e
+ * - is_g
+ * - is_n
+ * - is_p
+ * - type
+ */
+
+/** @} */  // end of modules_metric_cxx_properties_cxx

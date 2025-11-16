@@ -1,0 +1,32 @@
+/**
+ * @file plotting.cxx
+ * @brief Documentation for modules/plotting/cxx/plotting.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/plotting/cxx/plotting.cxx
+ */
+
+/**
+ * @defgroup modules_plotting_cxx_plotting_cxx plotting.cxx
+ * @brief plotting.cxx - modules/plotting/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - 1
+ * - down
+ * - mean
+ * - n
+ * - out
+ * - path
+ * - stdev
+ * - t
+ * - up
+ */
+
+/** @} */  // end of modules_plotting_cxx_plotting_cxx

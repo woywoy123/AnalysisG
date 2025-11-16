@@ -1,0 +1,17 @@
+/**
+ * @file physics.h
+ * @brief Documentation for pyc/physics/include/physics/physics.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/pyc/physics/include/physics/physics.h
+ */
+
+/**
+ * @defgroup pyc_physics_include_physics_physics_h physics.h
+ * @brief physics.h - pyc/physics/include/physics
+ * 
+ * @{
+ */
+
+/** @} */  // end of pyc_physics_include_physics_physics_h

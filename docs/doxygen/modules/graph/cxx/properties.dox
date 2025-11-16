@@ -1,0 +1,24 @@
+/**
+ * @file properties.cxx
+ * @brief Documentation for modules/graph/cxx/properties.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/graph/cxx/properties.cxx
+ */
+
+/**
+ * @defgroup modules_graph_cxx_properties_cxx properties.cxx
+ * @brief properties.cxx - modules/graph/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - tru
+ */
+
+/** @} */  // end of modules_graph_cxx_properties_cxx

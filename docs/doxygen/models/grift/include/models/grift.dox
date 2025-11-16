@@ -1,0 +1,47 @@
+/**
+ * @file grift.h
+ * @brief Documentation for models/grift/include/models/grift.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/models/grift/include/models/grift.h
+ */
+
+/**
+ * @defgroup models_grift_include_models_grift_h grift.h
+ * @brief grift.h - models/grift/include/models
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - grift
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - clone()
+ * - forward()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - _hidden
+ * - _xin
+ * - _xout
+ * - _xrec
+ * - _xtop
+ * - drop_out
+ * - init
+ * - is_mc
+ * - pagerank
+ */
+
+/** @} */  // end of models_grift_include_models_grift_h

@@ -1,0 +1,38 @@
+/**
+ * @file event.cxx
+ * @brief Documentation for events/gnn/cxx/event.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/events/gnn/cxx/event.cxx
+ */
+
+/**
+ * @defgroup events_gnn_cxx_event_cxx event.cxx
+ * @brief event.cxx - events/gnn/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - alpha
+ * - cluster
+ * - dst
+ * - n_nodes
+ * - norm
+ * - ptr
+ * - res_ij
+ * - sc
+ * - sm
+ * - src
+ * - sx
+ * - t
+ * - timeout
+ * - tl
+ * - top_ij
+ */
+
+/** @} */  // end of events_gnn_cxx_event_cxx

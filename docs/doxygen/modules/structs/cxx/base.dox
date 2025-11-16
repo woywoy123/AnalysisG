@@ -1,0 +1,36 @@
+/**
+ * @file base.cxx
+ * @brief Documentation for modules/structs/cxx/base.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/cxx/base.cxx
+ */
+
+/**
+ * @defgroup modules_structs_cxx_base_cxx base.cxx
+ * @brief base.cxx - modules/structs/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - buildAll()
+ * - buildDict()
+ * - buildPCM()
+ * - count()
+ * - registerInclude()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - count
+ * - vec
+ */
+
+/** @} */  // end of modules_structs_cxx_base_cxx

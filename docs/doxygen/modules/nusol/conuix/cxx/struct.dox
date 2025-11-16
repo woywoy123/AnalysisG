@@ -1,0 +1,24 @@
+/**
+ * @file struct.cxx
+ * @brief Documentation for modules/nusol/conuix/cxx/struct.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/conuix/cxx/struct.cxx
+ */
+
+/**
+ * @defgroup modules_nusol_conuix_cxx_struct_cxx struct.cxx
+ * @brief struct.cxx - modules/nusol/conuix/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - true
+ */
+
+/** @} */  // end of modules_nusol_conuix_cxx_struct_cxx

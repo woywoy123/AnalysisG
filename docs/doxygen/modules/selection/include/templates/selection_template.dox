@@ -1,0 +1,71 @@
+/**
+ * @file selection_template.h
+ * @brief Documentation for modules/selection/include/templates/selection_template.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/selection/include/templates/selection_template.h
+ */
+
+/**
+ * @defgroup modules_selection_include_templates_selection_template_h selection_template.h
+ * @brief selection_template.h - modules/selection/include/templates
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - selection_template
+ * - container
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - CompileEvent()
+ * - build()
+ * - bulk_write()
+ * - bulk_write_out()
+ * - clone()
+ * - contains()
+ * - downcast()
+ * - get_leptonics()
+ * - merge()
+ * - merger()
+ * - safe_delete()
+ * - selection()
+ * - strategy()
+ * - sum()
+ * - switch_board()
+ * - upcast()
+ * - write()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - container
+ * - data
+ * - false
+ * - handle
+ * - hash
+ * - index
+ * - m_event
+ * - meta_data
+ * - name
+ * - operator
+ * - out
+ * - p_bulk_write
+ * - prt
+ * - threadIdx
+ * - tree
+ * - true
+ * - weight
+ */
+
+/** @} */  // end of modules_selection_include_templates_selection_template_h

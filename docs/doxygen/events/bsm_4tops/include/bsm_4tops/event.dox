@@ -1,0 +1,44 @@
+/**
+ * @file event.h
+ * @brief Documentation for events/bsm_4tops/include/bsm_4tops/event.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/events/bsm_4tops/include/bsm_4tops/event.h
+ */
+
+/**
+ * @defgroup events_bsm_4tops_include_bsm_4tops_event_h event.h
+ * @brief event.h - events/bsm_4tops/include/bsm_4tops
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - bsm_4tops
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - CompileEvent()
+ * - build()
+ * - clone()
+ * - vectorize()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - data
+ * - met
+ * - mu
+ * - phi
+ */
+
+/** @} */  // end of events_bsm_4tops_include_bsm_4tops_event_h

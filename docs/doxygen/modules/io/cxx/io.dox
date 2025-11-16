@@ -1,0 +1,17 @@
+/**
+ * @file io.cxx
+ * @brief Documentation for modules/io/cxx/io.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/io/cxx/io.cxx
+ */
+
+/**
+ * @defgroup modules_io_cxx_io_cxx io.cxx
+ * @brief io.cxx - modules/io/cxx
+ * 
+ * @{
+ */
+
+/** @} */  // end of modules_io_cxx_io_cxx

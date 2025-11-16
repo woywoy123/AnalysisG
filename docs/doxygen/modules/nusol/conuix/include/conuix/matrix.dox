@@ -1,0 +1,42 @@
+/**
+ * @file matrix.h
+ * @brief Documentation for modules/nusol/conuix/include/conuix/matrix.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/conuix/include/conuix/matrix.h
+ */
+
+/**
+ * @defgroup modules_nusol_conuix_include_conuix_matrix_h matrix.h
+ * @brief matrix.h - modules/nusol/conuix/include/conuix
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - matrix_t
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - T()
+ * - dot()
+ * - print()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - c
+ * - operator
+ * - r
+ */
+
+/** @} */  // end of modules_nusol_conuix_include_conuix_matrix_h

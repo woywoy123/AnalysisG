@@ -1,0 +1,43 @@
+/**
+ * @file root.cxx
+ * @brief Documentation for modules/io/cxx/root.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/io/cxx/root.cxx
+ */
+
+/**
+ * @defgroup modules_io_cxx_root_cxx root.cxx
+ * @brief root.cxx - modules/io/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - __lf
+ * - _lf
+ * - br
+ * - dir
+ * - dt
+ * - found
+ * - fx
+ * - has
+ * - inx
+ * - is_th1f
+ * - is_ttree
+ * - l
+ * - mtx
+ * - nev_
+ * - obj
+ * - opc
+ * - opx
+ * - output
+ * - tr
+ * - true
+ */
+
+/** @} */  // end of modules_io_cxx_root_cxx

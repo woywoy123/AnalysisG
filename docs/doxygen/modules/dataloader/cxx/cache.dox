@@ -1,0 +1,50 @@
+/**
+ * @file cache.cxx
+ * @brief Documentation for modules/dataloader/cxx/cache.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/dataloader/cxx/cache.cxx
+ */
+
+/**
+ * @defgroup modules_dataloader_cxx_cache_cxx cache.cxx
+ * @brief cache.cxx - modules/dataloader/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - dx()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - data
+ * - datar
+ * - datax
+ * - dt
+ * - eval
+ * - false
+ * - fold
+ * - gr
+ * - grs
+ * - grw
+ * - gx
+ * - h5_
+ * - h5wrt
+ * - idx
+ * - io_g
+ * - ior
+ * - len_cache
+ * - restored
+ * - serialize
+ * - threaded_reader
+ */
+
+/** @} */  // end of modules_dataloader_cxx_cache_cxx

@@ -1,0 +1,17 @@
+/**
+ * @file optimizer.cxx
+ * @brief Documentation for modules/structs/cxx/optimizer.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/cxx/optimizer.cxx
+ */
+
+/**
+ * @defgroup modules_structs_cxx_optimizer_cxx optimizer.cxx
+ * @brief optimizer.cxx - modules/structs/cxx
+ * 
+ * @{
+ */
+
+/** @} */  // end of modules_structs_cxx_optimizer_cxx

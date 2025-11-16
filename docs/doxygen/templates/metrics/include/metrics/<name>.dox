@@ -1,0 +1,28 @@
+/**
+ * @file <name>.h
+ * @brief Documentation for templates/metrics/include/metrics/<name>.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/templates/metrics/include/metrics/<name>.h
+ */
+
+/**
+ * @defgroup templates_metrics_include_metrics_<name>_h <name>.h
+ * @brief <name>.h - templates/metrics/include/metrics
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - batch()
+ * - define_metric()
+ * - define_variables()
+ * - end()
+ * - event()
+ */
+
+/** @} */  // end of templates_metrics_include_metrics_<name>_h

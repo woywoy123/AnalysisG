@@ -1,0 +1,30 @@
+/**
+ * @file nusol.cxx
+ * @brief Documentation for pyc/nusol/tensor/nusol.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/pyc/nusol/tensor/nusol.cxx
+ */
+
+/**
+ * @defgroup pyc_nusol_tensor_nusol_cxx nusol.cxx
+ * @brief nusol.cxx - pyc/nusol/tensor
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - G_
+ * - H
+ * - _sigma
+ * - max_len
+ * - out
+ * - output
+ * - shape
+ */
+
+/** @} */  // end of pyc_nusol_tensor_nusol_cxx

@@ -1,0 +1,80 @@
+/**
+ * @file multisol.h
+ * @brief Documentation for modules/nusol/tmp/multisol.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/tmp/multisol.h
+ */
+
+/**
+ * @defgroup modules_nusol_tmp_multisol_h multisol.h
+ * @brief multisol.h - modules/nusol/tmp
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - rev_t
+ * - geo_t
+ * - multisol_t
+ * - multisol
+ * - mass_t
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - H()
+ * - H_tilde()
+ * - center()
+ * - d2Hdt2()
+ * - d2v_dt_dphi()
+ * - dHdt()
+ * - dHdt_tilde()
+ * - dp_dt()
+ * - dv_dphi()
+ * - dv_dt()
+ * - eigenvalues()
+ * - export_ellipse()
+ * - geometry()
+ * - intersection()
+ * - lx()
+ * - ly()
+ * - lz()
+ * - make_rt()
+ * - masses()
+ * - normal()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - A
+ * - D
+ * - _d1
+ * - _p1
+ * - _s1
+ * - a_t
+ * - a_w
+ * - a_x
+ * - a_y
+ * - asym
+ * - b_jet
+ * - b_lep
+ * - e2_lep
+ * - lmb1
+ * - m2_jet
+ * - m2_lep
+ * - mt
+ * - mw
+ * - nu1
+ * - nu2
+ */
+
+/** @} */  // end of modules_nusol_tmp_multisol_h

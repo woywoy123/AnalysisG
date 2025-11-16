@@ -1,0 +1,39 @@
+/**
+ * @file report.h
+ * @brief Documentation for modules/structs/include/structs/report.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/include/structs/report.h
+ */
+
+/**
+ * @defgroup modules_structs_include_structs_report_h report.h
+ * @brief report.h - modules/structs/include/structs
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - metrics
+ * - model_report
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - epoch
+ * - is_complete
+ * - iters
+ * - k
+ * - metrics
+ * - num_evnt
+ * - progress
+ * - waiting_plot
+ */
+
+/** @} */  // end of modules_structs_include_structs_report_h

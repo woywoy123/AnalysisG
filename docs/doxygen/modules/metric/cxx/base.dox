@@ -1,0 +1,37 @@
+/**
+ * @file base.cxx
+ * @brief Documentation for modules/metric/cxx/base.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/metric/cxx/base.cxx
+ */
+
+/**
+ * @defgroup modules_metric_cxx_base_cxx base.cxx
+ * @brief base.cxx - modules/metric/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - dev
+ * - dv
+ * - dx
+ * - gr
+ * - init
+ * - k
+ * - mdl
+ * - mtx
+ * - mx
+ * - out
+ * - stx
+ * - sx
+ * - v
+ * - xt
+ */
+
+/** @} */  // end of modules_metric_cxx_base_cxx

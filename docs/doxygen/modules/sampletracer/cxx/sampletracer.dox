@@ -1,0 +1,29 @@
+/**
+ * @file sampletracer.cxx
+ * @brief Documentation for modules/sampletracer/cxx/sampletracer.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/sampletracer/cxx/sampletracer.cxx
+ */
+
+/**
+ * @defgroup modules_sampletracer_cxx_sampletracer_cxx sampletracer.cxx
+ * @brief sampletracer.cxx - modules/sampletracer/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - flush
+ * - index
+ * - lamb
+ * - out
+ * - tidx
+ * - true
+ */
+
+/** @} */  // end of modules_sampletracer_cxx_sampletracer_cxx

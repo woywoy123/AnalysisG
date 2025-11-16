@@ -1,0 +1,51 @@
+/**
+ * @file ellipse.cxx
+ * @brief Documentation for modules/nusol/ellipse/cxx/ellipse.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/ellipse/cxx/ellipse.cxx
+ */
+
+/**
+ * @defgroup modules_nusol_ellipse_cxx_ellipse_cxx ellipse.cxx
+ * @brief ellipse.cxx - modules/nusol/ellipse/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - met()
+ * - mt1()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - S
+ * - _vn
+ * - a1
+ * - a2
+ * - agl
+ * - dx
+ * - invH1
+ * - invH2
+ * - lamb1
+ * - lamb2
+ * - le
+ * - lin1
+ * - lin2
+ * - lx
+ * - make_nu
+ * - n
+ * - n_
+ * - n_pts
+ * - n_rts
+ * - nl
+ */
+
+/** @} */  // end of modules_nusol_ellipse_cxx_ellipse_cxx

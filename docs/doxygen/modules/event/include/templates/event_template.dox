@@ -1,0 +1,54 @@
+/**
+ * @file event_template.h
+ * @brief Documentation for modules/event/include/templates/event_template.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/event/include/templates/event_template.h
+ */
+
+/**
+ * @defgroup modules_event_include_templates_event_template_h event_template.h
+ * @brief event_template.h - modules/event/include/templates
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - event_template
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - CompileEvent()
+ * - add_leaf()
+ * - build()
+ * - build_mapping()
+ * - clone()
+ * - deregister_particle()
+ * - flush_leaf_string()
+ * - flush_particles()
+ * - register_particle()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - data
+ * - hash
+ * - index
+ * - meta_data
+ * - name
+ * - operator
+ * - tree
+ * - weight
+ * - x
+ */
+
+/** @} */  // end of modules_event_include_templates_event_template_h

@@ -1,0 +1,41 @@
+/**
+ * @file tensor_cast.h
+ * @brief Documentation for modules/typecasting/include/tools/tensor_cast.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/typecasting/include/tools/tensor_cast.h
+ */
+
+/**
+ * @defgroup modules_typecasting_include_tools_tensor_cast_h tensor_cast.h
+ * @brief tensor_cast.h - modules/typecasting/include/tools
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - as_primitive()
+ * - nulls()
+ * - scout_dim()
+ * - standard()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - d
+ * - dim_
+ * - false
+ * - l
+ * - max_dim
+ * - s
+ * - ten
+ * - tx
+ */
+
+/** @} */  // end of modules_typecasting_include_tools_tensor_cast_h

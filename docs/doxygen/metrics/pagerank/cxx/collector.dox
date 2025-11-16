@@ -1,0 +1,24 @@
+/**
+ * @file collector.cxx
+ * @brief Documentation for metrics/pagerank/cxx/collector.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/metrics/pagerank/cxx/collector.cxx
+ */
+
+/**
+ * @defgroup metrics_pagerank_cxx_collector_cxx collector.cxx
+ * @brief collector.cxx - metrics/pagerank/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - true
+ */
+
+/** @} */  // end of metrics_pagerank_cxx_collector_cxx

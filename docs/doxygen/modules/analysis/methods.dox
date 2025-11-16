@@ -1,0 +1,43 @@
+/**
+ * @file methods.cxx
+ * @brief Documentation for modules/analysis/methods.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/analysis/methods.cxx
+ */
+
+/**
+ * @defgroup modules_analysis_methods_cxx methods.cxx
+ * @brief methods.cxx - modules/analysis
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - bi
+ * - content
+ * - dir
+ * - ds
+ * - ei
+ * - f
+ * - gr
+ * - index
+ * - l
+ * - last_ep
+ * - md
+ * - mk
+ * - mr
+ * - mtx
+ * - mx
+ * - ni
+ * - settings
+ * - t
+ * - tmp
+ * - tx
+ */
+
+/** @} */  // end of modules_analysis_methods_cxx

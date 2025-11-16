@@ -1,0 +1,55 @@
+/**
+ * @file accuracy.h
+ * @brief Documentation for metrics/accuracy/include/metrics/accuracy.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h
+ */
+
+/**
+ * @defgroup metrics_accuracy_include_metrics_accuracy_h accuracy.h
+ * @brief accuracy.h - metrics/accuracy/include/metrics
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - collector
+ * - cmodel_t
+ * - cdata_t
+ * - accuracy_metric
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - add_ntop_edge_accuracy()
+ * - add_ntop_scores()
+ * - add_ntop_truth()
+ * - add_ntru_ntop_scores()
+ * - batch()
+ * - clone()
+ * - define_metric()
+ * - define_variables()
+ * - end()
+ * - event()
+ * - get_mode()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - edge_accuracy
+ * - global_edge_accuracy
+ * - idx
+ * - kfold
+ * - ntop_truth
+ */
+
+/** @} */  // end of metrics_accuracy_include_metrics_accuracy_h

@@ -1,0 +1,17 @@
+/**
+ * @file model_checks.cxx
+ * @brief Documentation for modules/model/cxx/model_checks.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/model/cxx/model_checks.cxx
+ */
+
+/**
+ * @defgroup modules_model_cxx_model_checks_cxx model_checks.cxx
+ * @brief model_checks.cxx - modules/model/cxx
+ * 
+ * @{
+ */
+
+/** @} */  // end of modules_model_cxx_model_checks_cxx

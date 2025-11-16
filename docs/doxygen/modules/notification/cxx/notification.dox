@@ -1,0 +1,43 @@
+/**
+ * @file notification.cxx
+ * @brief Documentation for modules/notification/cxx/notification.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/notification/cxx/notification.cxx
+ */
+
+/**
+ * @defgroup modules_notification_cxx_notification_cxx notification.cxx
+ * @brief notification.cxx - modules/notification/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - int()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - cwhite
+ * - exec
+ * - idx
+ * - lEmptyStart
+ * - lFilledStart
+ * - ln
+ * - n
+ * - prg
+ * - prgs
+ * - s
+ * - t
+ * - xl
+ * - xp
+ */
+
+/** @} */  // end of modules_notification_cxx_notification_cxx

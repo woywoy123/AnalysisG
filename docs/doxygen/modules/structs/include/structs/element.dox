@@ -1,0 +1,61 @@
+/**
+ * @file element.h
+ * @brief Documentation for modules/structs/include/structs/element.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/include/structs/element.h
+ */
+
+/**
+ * @defgroup modules_structs_include_structs_element_h element.h
+ * @brief element.h - modules/structs/include/structs
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - writer
+ * - write_t
+ * - element_t
+ * - data_t
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - boundary()
+ * - close()
+ * - create()
+ * - fetch_buffer()
+ * - flush()
+ * - get()
+ * - initialize()
+ * - next()
+ * - process()
+ * - set_meta()
+ * - string_type()
+ * - write()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - branch
+ * - d
+ * - event_index
+ * - file
+ * - file_index
+ * - head
+ * - leaf
+ * - mtx
+ * - r
+ * - tree
+ */
+
+/** @} */  // end of modules_structs_include_structs_element_h

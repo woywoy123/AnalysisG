@@ -1,0 +1,56 @@
+/**
+ * @file gnn-event.h
+ * @brief Documentation for events/gnn/include/inference/gnn-event.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/events/gnn/include/inference/gnn-event.h
+ */
+
+/**
+ * @defgroup events_gnn_include_inference_gnn_event_h gnn-event.h
+ * @brief gnn-event.h - events/gnn/include/inference
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - gnn_event
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - CompileEvent()
+ * - build()
+ * - clone()
+ * - print()
+ * - reduce()
+ * - sum()
+ * - vectorize()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - data
+ * - met
+ * - num_bjets
+ * - num_jets
+ * - num_leps
+ * - p_ntops
+ * - p_signal
+ * - phi
+ * - s_ntops
+ * - s_signal
+ * - sx
+ * - t_ntops
+ * - t_signal
+ */
+
+/** @} */  // end of events_gnn_include_inference_gnn_event_h

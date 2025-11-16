@@ -1,0 +1,25 @@
+/**
+ * @file types.cxx
+ * @brief Documentation for modules/io/cxx/types.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/io/cxx/types.cxx
+ */
+
+/**
+ * @defgroup modules_io_cxx_types_cxx types.cxx
+ * @brief types.cxx - modules/io/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - px
+ * - ss
+ */
+
+/** @} */  // end of modules_io_cxx_types_cxx

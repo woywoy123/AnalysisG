@@ -1,0 +1,48 @@
+/**
+ * @file settings.h
+ * @brief Documentation for modules/structs/include/structs/settings.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/include/structs/settings.h
+ */
+
+/**
+ * @defgroup modules_structs_include_structs_settings_h settings.h
+ * @brief settings.h - modules/structs/include/structs
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - settings_t
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - batch_size
+ * - build_cache
+ * - continue_training
+ * - debug_mode
+ * - epochs
+ * - evaluation
+ * - fetch_meta
+ * - kfolds
+ * - logy
+ * - max_range
+ * - nbins
+ * - num_examples
+ * - pretagevents
+ * - selection_root
+ * - threads
+ * - train_size
+ * - training
+ * - validation
+ */
+
+/** @} */  // end of modules_structs_include_structs_settings_h

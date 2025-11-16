@@ -1,0 +1,62 @@
+/**
+ * @file meta.h
+ * @brief Documentation for modules/meta/include/meta/meta.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/meta/include/meta/meta.h
+ */
+
+/**
+ * @defgroup modules_meta_include_meta_meta_h meta.h
+ * @brief meta.h - modules/meta/include/meta
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - analysis
+ * - meta
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - compiler()
+ * - parse_float()
+ * - parse_json()
+ * - scan_data()
+ * - scan_sow()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - AMITag
+ * - AtlasRelease
+ * - DatasetName
+ * - PDF
+ * - amiStatus
+ * - analysis
+ * - beamType
+ * - beam_energy
+ * - campaign
+ * - campaign_luminosity
+ * - completion
+ * - conditionsTag
+ * - cross_section_fb
+ * - cross_section_nb
+ * - cross_section_pb
+ * - dataType
+ * - datasetNumber
+ * - derivationFormat
+ * - dsid
+ * - ecmEnergy
+ */
+
+/** @} */  // end of modules_meta_include_meta_meta_h

@@ -1,0 +1,53 @@
+/**
+ * @file _odeRK.cxx
+ * @brief Documentation for modules/nusol/tmp/multisol/cxx/_odeRK.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/tmp/multisol/cxx/_odeRK.cxx
+ */
+
+/**
+ * @defgroup modules_nusol_tmp_multisol_cxx__odeRK_cxx _odeRK.cxx
+ * @brief _odeRK.cxx - modules/nusol/tmp/multisol/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - A()
+ * - _phi()
+ * - _scl()
+ * - b()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - AAT
+ * - A_T
+ * - A_i
+ * - B_i
+ * - C_i
+ * - H
+ * - X
+ * - bst
+ * - cur
+ * - d2H
+ * - dA_dti
+ * - dB_dti
+ * - dC_dti
+ * - dH
+ * - dH_dti
+ * - d_delta_d_ti
+ * - delta_i
+ * - dn_dti
+ * - dt_ds
+ * - dx
+ */
+
+/** @} */  // end of modules_nusol_tmp_multisol_cxx__odeRK_cxx

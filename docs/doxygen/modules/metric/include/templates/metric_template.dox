@@ -1,0 +1,75 @@
+/**
+ * @file metric_template.h
+ * @brief Documentation for modules/metric/include/templates/metric_template.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/metric/include/templates/metric_template.h
+ */
+
+/**
+ * @defgroup modules_metric_include_templates_metric_template_h metric_template.h
+ * @brief metric_template.h - modules/metric/include/templates
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - graph_t
+ * - metric_t
+ * - metric_template
+ * - analysis
+ * - model_template
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - batch()
+ * - build()
+ * - clone()
+ * - define()
+ * - define_metric()
+ * - define_variables()
+ * - end()
+ * - event()
+ * - execute()
+ * - flush_garbage()
+ * - get()
+ * - link()
+ * - register_output()
+ * - safe_delete()
+ * - size()
+ * - sum()
+ * - write()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - analysis
+ * - device
+ * - epoch
+ * - graph_t
+ * - handle
+ * - idx
+ * - index
+ * - kfold
+ * - mdlx
+ * - metric_template
+ * - model_template
+ * - mtx
+ * - name
+ * - out
+ * - output_path
+ * - prt
+ * - train_mode
+ * - v
+ */
+
+/** @} */  // end of modules_metric_include_templates_metric_template_h

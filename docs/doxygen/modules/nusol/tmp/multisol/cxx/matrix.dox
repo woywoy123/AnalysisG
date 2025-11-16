@@ -1,0 +1,55 @@
+/**
+ * @file matrix.cxx
+ * @brief Documentation for modules/nusol/tmp/multisol/cxx/matrix.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/tmp/multisol/cxx/matrix.cxx
+ */
+
+/**
+ * @defgroup modules_nusol_tmp_multisol_cxx_matrix_cxx matrix.cxx
+ * @brief matrix.cxx - modules/nusol/tmp/multisol/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - aug()
+ * - ic()
+ * - invert_matrix()
+ * - mx()
+ * - print()
+ * - solve_linear()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - M_regularized
+ * - a
+ * - a00
+ * - a10
+ * - a20
+ * - b
+ * - c
+ * - c00
+ * - c11
+ * - c22
+ * - d
+ * - det_
+ * - f
+ * - inv_det
+ * - max_val
+ * - mx
+ * - n
+ * - pr
+ * - size
+ * - solx
+ */
+
+/** @} */  // end of modules_nusol_tmp_multisol_cxx_matrix_cxx

@@ -1,0 +1,27 @@
+/**
+ * @file lossfx.cxx
+ * @brief Documentation for modules/lossfx/cxx/lossfx.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/lossfx/cxx/lossfx.cxx
+ */
+
+/**
+ * @defgroup modules_lossfx_cxx_lossfx_cxx lossfx.cxx
+ * @brief lossfx.cxx - modules/lossfx/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - false
+ * - nullptr
+ * - op_
+ * - spx_
+ */
+
+/** @} */  // end of modules_lossfx_cxx_lossfx_cxx

@@ -1,0 +1,25 @@
+/**
+ * @file <model-name>.h
+ * @brief Documentation for templates/model/include/models/<model-name>.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/templates/model/include/models/<model-name>.h
+ */
+
+/**
+ * @defgroup templates_model_include_models_<model_name>_h <model-name>.h
+ * @brief <model-name>.h - templates/model/include/models
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - clone()
+ * - forward()
+ */
+
+/** @} */  // end of templates_model_include_models_<model_name>_h

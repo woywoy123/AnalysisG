@@ -1,0 +1,28 @@
+/**
+ * @file interfaces.cxx
+ * @brief Documentation for modules/particle/cxx/interfaces.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/particle/cxx/interfaces.cxx
+ */
+
+/**
+ * @defgroup modules_particle_cxx_interfaces_cxx interfaces.cxx
+ * @brief interfaces.cxx - modules/particle/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - false
+ * - lep
+ * - nu
+ * - p
+ * - true
+ */
+
+/** @} */  // end of modules_particle_cxx_interfaces_cxx

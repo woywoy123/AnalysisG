@@ -1,0 +1,30 @@
+/**
+ * @file event_template.cxx
+ * @brief Documentation for modules/event/cxx/event_template.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/event/cxx/event_template.cxx
+ */
+
+/**
+ * @defgroup modules_event_cxx_event_template_cxx event_template.cxx
+ * @brief event_template.cxx - modules/event/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - ev
+ * - nu1
+ * - nu2
+ * - nx
+ * - output
+ * - para
+ * - s
+ */
+
+/** @} */  // end of modules_event_cxx_event_template_cxx

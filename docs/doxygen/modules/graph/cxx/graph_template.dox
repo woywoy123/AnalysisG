@@ -1,0 +1,27 @@
+/**
+ * @file graph_template.cxx
+ * @brief Documentation for modules/graph/cxx/graph_template.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/graph/cxx/graph_template.cxx
+ */
+
+/**
+ * @defgroup modules_graph_cxx_graph_template_cxx graph_template.cxx
+ * @brief graph_template.cxx - modules/graph/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - data_
+ * - gr
+ * - idx
+ * - n_nodes
+ */
+
+/** @} */  // end of modules_graph_cxx_graph_template_cxx

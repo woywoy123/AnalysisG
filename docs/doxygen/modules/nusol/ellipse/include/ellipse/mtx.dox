@@ -1,0 +1,60 @@
+/**
+ * @file mtx.h
+ * @brief Documentation for modules/nusol/ellipse/include/ellipse/mtx.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/ellipse/include/ellipse/mtx.h
+ */
+
+/**
+ * @defgroup modules_nusol_ellipse_include_ellipse_mtx_h mtx.h
+ * @brief mtx.h - modules/nusol/ellipse/include/ellipse
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - mtx
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - T()
+ * - assign()
+ * - cat()
+ * - cof()
+ * - copy()
+ * - cross()
+ * - det()
+ * - diag()
+ * - dot()
+ * - eigenvalues()
+ * - eigenvector()
+ * - inv()
+ * - m_00()
+ * - m_01()
+ * - m_02()
+ * - m_10()
+ * - m_11()
+ * - m_12()
+ * - m_20()
+ * - m_21()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - dim_i
+ * - dim_j
+ * - operator
+ * - tol
+ */
+
+/** @} */  // end of modules_nusol_ellipse_include_ellipse_mtx_h

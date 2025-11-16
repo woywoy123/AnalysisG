@@ -1,0 +1,35 @@
+/**
+ * @file merge_cast.h
+ * @brief Documentation for modules/typecasting/include/tools/merge_cast.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/typecasting/include/tools/merge_cast.h
+ */
+
+/**
+ * @defgroup modules_typecasting_include_tools_merge_cast_h merge_cast.h
+ * @brief merge_cast.h - modules/typecasting/include/tools
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - contract_data()
+ * - merge_data()
+ * - release_vector()
+ * - reserve_count()
+ * - sum_data()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - ix
+ */
+
+/** @} */  // end of modules_typecasting_include_tools_merge_cast_h

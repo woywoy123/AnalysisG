@@ -1,0 +1,64 @@
+/**
+ * @file ellipse.h
+ * @brief Documentation for modules/nusol/ellipse/include/ellipse/ellipse.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/ellipse/include/ellipse/ellipse.h
+ */
+
+/**
+ * @defgroup modules_nusol_ellipse_include_ellipse_ellipse_h ellipse.h
+ * @brief ellipse.h - modules/nusol/ellipse/include/ellipse
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - nunu_t
+ * - nusol_t
+ * - ellipse
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - angle_cross()
+ * - flush()
+ * - generate()
+ * - intersection()
+ * - make_neutrinos()
+ * - prepare()
+ * - solve()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - _metx
+ * - _mety
+ * - _metz
+ * - agl
+ * - m_agl
+ * - m_bst
+ * - m_lx
+ * - m_nu1
+ * - m_nu2
+ * - n_bs
+ * - n_lp
+ * - nu1
+ * - nu2
+ * - nusol_t
+ * - nux1
+ * - nux2
+ * - p_nu1
+ * - p_nu2
+ * - params
+ */
+
+/** @} */  // end of modules_nusol_ellipse_include_ellipse_ellipse_h

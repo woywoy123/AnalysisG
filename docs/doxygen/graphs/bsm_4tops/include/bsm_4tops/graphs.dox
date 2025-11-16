@@ -1,0 +1,48 @@
+/**
+ * @file graphs.h
+ * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/graphs.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h
+ */
+
+/**
+ * @defgroup graphs_bsm_4tops_include_bsm_4tops_graphs_h graphs.h
+ * @brief graphs.h - graphs/bsm_4tops/include/bsm_4tops
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - graph_truthjets
+ * - graph_tops
+ * - graph_jets_detector_lep
+ * - graph_truthjets_nonu
+ * - graph_detector
+ * - graph_jets_nonu
+ * - graph_jets
+ * - graph_children
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - CompileEvent()
+ * - PreSelection()
+ * - clone()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - force_match
+ * - num_cuda
+ */
+
+/** @} */  // end of graphs_bsm_4tops_include_bsm_4tops_graphs_h

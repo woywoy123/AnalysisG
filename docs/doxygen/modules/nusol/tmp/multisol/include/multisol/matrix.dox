@@ -1,0 +1,57 @@
+/**
+ * @file matrix.h
+ * @brief Documentation for modules/nusol/tmp/multisol/include/multisol/matrix.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/tmp/multisol/include/multisol/matrix.h
+ */
+
+/**
+ * @defgroup modules_nusol_tmp_multisol_include_multisol_matrix_h matrix.h
+ * @brief matrix.h - modules/nusol/tmp/multisol/include/multisol
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - matrix
+ * - vec3
+ * - vec4
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - I()
+ * - T()
+ * - at()
+ * - cols()
+ * - cross()
+ * - det()
+ * - dot()
+ * - eigenvalues()
+ * - inverse()
+ * - invert_matrix()
+ * - mag()
+ * - mag2()
+ * - print()
+ * - rows()
+ * - safe()
+ * - solve_linear()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - _r
+ * - operator
+ * - x
+ */
+
+/** @} */  // end of modules_nusol_tmp_multisol_include_multisol_matrix_h

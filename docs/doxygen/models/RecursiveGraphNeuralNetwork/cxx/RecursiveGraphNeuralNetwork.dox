@@ -1,0 +1,25 @@
+/**
+ * @file RecursiveGraphNeuralNetwork.cxx
+ * @brief Documentation for models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
+ */
+
+/**
+ * @defgroup models_RecursiveGraphNeuralNetwork_cxx_RecursiveGraphNeuralNetwork_cxx RecursiveGraphNeuralNetwork.cxx
+ * @brief RecursiveGraphNeuralNetwork.cxx - models/RecursiveGraphNeuralNetwork/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - iter
+ * - rnn
+ */
+
+/** @} */  // end of models_RecursiveGraphNeuralNetwork_cxx_RecursiveGraphNeuralNetwork_cxx

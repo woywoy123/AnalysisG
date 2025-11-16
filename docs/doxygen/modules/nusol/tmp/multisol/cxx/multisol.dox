@@ -1,0 +1,55 @@
+/**
+ * @file multisol.cxx
+ * @brief Documentation for modules/nusol/tmp/multisol/cxx/multisol.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/tmp/multisol/cxx/multisol.cxx
+ */
+
+/**
+ * @defgroup modules_nusol_tmp_multisol_cxx_multisol_cxx multisol.cxx
+ * @brief multisol.cxx - modules/nusol/tmp/multisol/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - Rx()
+ * - Ry()
+ * - Rz()
+ * - _beta()
+ * - _mag()
+ * - cos_theta()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - A
+ * - B
+ * - Dx
+ * - N
+ * - _d
+ * - a
+ * - a1
+ * - a2
+ * - alpha
+ * - b
+ * - b_p
+ * - beta
+ * - c
+ * - ch
+ * - d
+ * - delta
+ * - dm
+ * - dp
+ * - dt
+ * - dw
+ */
+
+/** @} */  // end of modules_nusol_tmp_multisol_cxx_multisol_cxx

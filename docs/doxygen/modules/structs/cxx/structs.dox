@@ -1,0 +1,17 @@
+/**
+ * @file structs.cxx
+ * @brief Documentation for modules/structs/cxx/structs.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/cxx/structs.cxx
+ */
+
+/**
+ * @defgroup modules_structs_cxx_structs_cxx structs.cxx
+ * @brief structs.cxx - modules/structs/cxx
+ * 
+ * @{
+ */
+
+/** @} */  // end of modules_structs_cxx_structs_cxx

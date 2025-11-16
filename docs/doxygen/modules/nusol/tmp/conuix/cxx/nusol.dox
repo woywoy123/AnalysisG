@@ -1,0 +1,30 @@
+/**
+ * @file nusol.cxx
+ * @brief Documentation for modules/nusol/tmp/conuix/cxx/nusol.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/tmp/conuix/cxx/nusol.cxx
+ */
+
+/**
+ * @defgroup modules_nusol_tmp_conuix_cxx_nusol_cxx nusol.cxx
+ * @brief nusol.cxx - modules/nusol/tmp/conuix/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - a
+ * - b
+ * - cx
+ * - l1
+ * - n
+ * - sh
+ * - z1
+ */
+
+/** @} */  // end of modules_nusol_tmp_conuix_cxx_nusol_cxx

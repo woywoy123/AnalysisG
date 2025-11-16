@@ -1,0 +1,85 @@
+/**
+ * @file model_template.h
+ * @brief Documentation for modules/model/include/templates/model_template.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/model/include/templates/model_template.h
+ */
+
+/**
+ * @defgroup modules_model_include_templates_model_template_h model_template.h
+ * @brief model_template.h - modules/model/include/templates
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - dataloader
+ * - graph_t
+ * - metrics
+ * - model_report
+ * - optimizer
+ * - metric_template
+ * - variable_t
+ * - optimizer_params_t
+ * - analysis
+ * - model_template
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - assign()
+ * - check_features()
+ * - clone()
+ * - clone_settings()
+ * - evaluation_mode()
+ * - flush_outputs()
+ * - forward()
+ * - get_dev_index()
+ * - get_name()
+ * - import_settings()
+ * - initialize()
+ * - prediction_edge_feature()
+ * - prediction_extra()
+ * - prediction_graph_feature()
+ * - prediction_node_feature()
+ * - register_module()
+ * - restore_state()
+ * - save_state()
+ * - set_dev_index()
+ * - set_device()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - analysis
+ * - dataloader
+ * - device
+ * - device_index
+ * - e_optim
+ * - enable_anomaly
+ * - epoch
+ * - graph_t
+ * - inference_mode
+ * - is_mc
+ * - kfold
+ * - m_batched
+ * - m_device_idx
+ * - m_loss
+ * - metric_template
+ * - metrics
+ * - model_report
+ * - model_template
+ * - name
+ * - optimizer
+ */
+
+/** @} */  // end of modules_model_include_templates_model_template_h

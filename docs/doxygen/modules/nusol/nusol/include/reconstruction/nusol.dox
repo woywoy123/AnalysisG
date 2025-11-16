@@ -1,0 +1,56 @@
+/**
+ * @file nusol.h
+ * @brief Documentation for modules/nusol/nusol/include/reconstruction/nusol.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/nusol/include/reconstruction/nusol.h
+ */
+
+/**
+ * @defgroup modules_nusol_nusol_include_reconstruction_nusol_h nusol.h
+ * @brief nusol.h - modules/nusol/nusol/include/reconstruction
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - conuix
+ * - nusol_enum
+ * - nusol_t
+ * - ellipse
+ * - nusol
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - solve()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - D_nunu
+ * - M_nunu
+ * - conuix
+ * - ellipse
+ * - limit
+ * - met
+ * - met_x
+ * - met_y
+ * - met_z
+ * - mode
+ * - mt
+ * - mw
+ * - nusol
+ * - params
+ * - phi
+ */
+
+/** @} */  // end of modules_nusol_nusol_include_reconstruction_nusol_h

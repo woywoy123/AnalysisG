@@ -1,0 +1,25 @@
+/**
+ * @file selection_build.cxx
+ * @brief Documentation for modules/analysis/selection_build.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/analysis/selection_build.cxx
+ */
+
+/**
+ * @defgroup modules_analysis_selection_build_cxx selection_build.cxx
+ * @brief selection_build.cxx - modules/analysis
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - sel_o
+ * - sel_t
+ */
+
+/** @} */  // end of modules_analysis_selection_build_cxx

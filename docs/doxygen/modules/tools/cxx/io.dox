@@ -1,0 +1,32 @@
+/**
+ * @file io.cxx
+ * @brief Documentation for modules/tools/cxx/io.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/tools/cxx/io.cxx
+ */
+
+/**
+ * @defgroup modules_tools_cxx_io_cxx io.cxx
+ * @brief io.cxx - modules/tools/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - stat
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - f
+ * - out
+ */
+
+/** @} */  // end of modules_tools_cxx_io_cxx

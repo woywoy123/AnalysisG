@@ -1,0 +1,32 @@
+/**
+ * @file typecasting.cxx
+ * @brief Documentation for modules/typecasting/cxx/typecasting.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/typecasting/cxx/typecasting.cxx
+ */
+
+/**
+ * @defgroup modules_typecasting_cxx_typecasting_cxx typecasting.cxx
+ * @brief typecasting.cxx - modules/typecasting/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - _transfer()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - out
+ * - true
+ */
+
+/** @} */  // end of modules_typecasting_cxx_typecasting_cxx

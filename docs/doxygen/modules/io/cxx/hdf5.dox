@@ -1,0 +1,30 @@
+/**
+ * @file hdf5.cxx
+ * @brief Documentation for modules/io/cxx/hdf5.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/io/cxx/hdf5.cxx
+ */
+
+/**
+ * @defgroup modules_io_cxx_hdf5_cxx hdf5.cxx
+ * @brief hdf5.cxx - modules/io/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - 0
+ * - data
+ * - f
+ * - mode
+ * - output
+ * - pairs
+ * - true
+ */
+
+/** @} */  // end of modules_io_cxx_hdf5_cxx

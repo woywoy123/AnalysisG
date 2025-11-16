@@ -1,0 +1,44 @@
+/**
+ * @file strings.cxx
+ * @brief Documentation for modules/tools/cxx/strings.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/tools/cxx/strings.cxx
+ */
+
+/**
+ * @defgroup modules_tools_cxx_strings_cxx strings.cxx
+ * @brief strings.cxx - modules/tools/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - is_base64()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - diff
+ * - false
+ * - i
+ * - in_
+ * - in_len
+ * - index
+ * - j
+ * - out
+ * - pos
+ * - ret
+ * - s_dim
+ * - true
+ * - val
+ * - x
+ */
+
+/** @} */  // end of modules_tools_cxx_strings_cxx

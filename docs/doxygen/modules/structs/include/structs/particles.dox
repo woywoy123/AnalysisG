@@ -1,0 +1,45 @@
+/**
+ * @file particles.h
+ * @brief Documentation for modules/structs/include/structs/particles.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/include/structs/particles.h
+ */
+
+/**
+ * @defgroup modules_structs_include_structs_particles_h particles.h
+ * @brief particles.h - modules/structs/include/structs
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - particle_template
+ * - particle_t
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - cartesian
+ * - charge
+ * - e
+ * - eta
+ * - index
+ * - mass
+ * - particle_template
+ * - pdgid
+ * - phi
+ * - polar
+ * - pt
+ * - px
+ * - py
+ * - pz
+ */
+
+/** @} */  // end of modules_structs_include_structs_particles_h

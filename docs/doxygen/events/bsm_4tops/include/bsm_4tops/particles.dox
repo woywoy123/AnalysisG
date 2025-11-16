@@ -1,0 +1,66 @@
+/**
+ * @file particles.h
+ * @brief Documentation for events/bsm_4tops/include/bsm_4tops/particles.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h
+ */
+
+/**
+ * @defgroup events_bsm_4tops_include_bsm_4tops_particles_h particles.h
+ * @brief particles.h - events/bsm_4tops/include/bsm_4tops
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - truthjet
+ * - top
+ * - muon
+ * - jet
+ * - jetparton
+ * - truthjetparton
+ * - top_children
+ * - electron
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - assign_vector()
+ * - build()
+ * - clone()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - DL1_b
+ * - DL1_c
+ * - DL1_u
+ * - DL1r_b
+ * - DL1r_c
+ * - DL1r_u
+ * - btag_DL1_60
+ * - btag_DL1_70
+ * - btag_DL1_77
+ * - btag_DL1_85
+ * - btag_DL1r_60
+ * - btag_DL1r_70
+ * - btag_DL1r_77
+ * - btag_DL1r_85
+ * - from_res
+ * - jet
+ * - jet_index
+ * - jetparton
+ * - p
+ * - status
+ */
+
+/** @} */  // end of events_bsm_4tops_include_bsm_4tops_particles_h

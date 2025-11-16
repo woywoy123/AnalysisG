@@ -1,0 +1,70 @@
+/**
+ * @file particle_template.h
+ * @brief Documentation for modules/particle/include/templates/particle_template.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/particle/include/templates/particle_template.h
+ */
+
+/**
+ * @defgroup modules_particle_include_templates_particle_template_h particle_template.h
+ * @brief particle_template.h - modules/particle/include/templates
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - particle_template
+ * - event_template
+ * - selection_template
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - DeltaR()
+ * - add_leaf()
+ * - apply_type_prefix()
+ * - build()
+ * - clone()
+ * - iadd()
+ * - is()
+ * - particle_template()
+ * - register_child()
+ * - register_parent()
+ * - to_cartesian()
+ * - to_polar()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - P
+ * - _is_marked
+ * - _is_serial
+ * - beta
+ * - charge
+ * - data
+ * - e
+ * - eta
+ * - event_template
+ * - hash
+ * - index
+ * - is_add
+ * - is_b
+ * - is_lep
+ * - is_nu
+ * - lep_decay
+ * - mass
+ * - operator
+ * - p2
+ * - pdgid
+ */
+
+/** @} */  // end of modules_particle_include_templates_particle_template_h

@@ -1,0 +1,44 @@
+/**
+ * @file pyc.h
+ * @brief Documentation for pyc/interface/include/pyc/pyc.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/pyc/interface/include/pyc/pyc.h
+ */
+
+/**
+ * @defgroup pyc_interface_include_pyc_pyc_h pyc.h
+ * @brief pyc.h - pyc/interface/include/pyc
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - neutrino
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - alpha
+ * - atx
+ * - b_idx
+ * - bquark
+ * - from_res
+ * - l_idx
+ * - lepton
+ * - mT
+ * - min
+ * - nu1
+ * - nu2
+ * - out
+ * - steps
+ * - tolerance
+ */
+
+/** @} */  // end of pyc_interface_include_pyc_pyc_h

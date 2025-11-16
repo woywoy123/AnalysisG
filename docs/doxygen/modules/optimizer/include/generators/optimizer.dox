@@ -1,0 +1,47 @@
+/**
+ * @file optimizer.h
+ * @brief Documentation for modules/optimizer/include/generators/optimizer.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/optimizer/include/generators/optimizer.h
+ */
+
+/**
+ * @defgroup modules_optimizer_include_generators_optimizer_h optimizer.h
+ * @brief optimizer.h - modules/optimizer/include/generators
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - optimizer
+ * - analysis
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - evaluation_loop()
+ * - import_dataloader()
+ * - import_model_sessions()
+ * - launch_model()
+ * - training_loop()
+ * - validation_loop()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - analysis
+ * - loader
+ * - m_settings
+ * - metric
+ */
+
+/** @} */  // end of modules_optimizer_include_generators_optimizer_h

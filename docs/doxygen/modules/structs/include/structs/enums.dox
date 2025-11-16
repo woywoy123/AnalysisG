@@ -1,0 +1,31 @@
+/**
+ * @file enums.h
+ * @brief Documentation for modules/structs/include/structs/enums.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/include/structs/enums.h
+ */
+
+/**
+ * @defgroup modules_structs_include_structs_enums_h enums.h
+ * @brief enums.h - modules/structs/include/structs
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - loss_enum
+ * - opt_enum
+ * - particle_enum
+ * - data_enum
+ * - graph_enum
+ * - mlp_init
+ * - scheduler_enum
+ * - mode_enum
+ */
+
+/** @} */  // end of modules_structs_include_structs_enums_h

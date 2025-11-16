@@ -1,0 +1,17 @@
+/**
+ * @file properties.cxx
+ * @brief Documentation for modules/selection/cxx/properties.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/selection/cxx/properties.cxx
+ */
+
+/**
+ * @defgroup modules_selection_cxx_properties_cxx properties.cxx
+ * @brief properties.cxx - modules/selection/cxx
+ * 
+ * @{
+ */
+
+/** @} */  // end of modules_selection_cxx_properties_cxx

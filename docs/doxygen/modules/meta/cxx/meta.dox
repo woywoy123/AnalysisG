@@ -1,0 +1,39 @@
+/**
+ * @file meta.cxx
+ * @brief Documentation for modules/meta/cxx/meta.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/meta/cxx/meta.cxx
+ */
+
+/**
+ * @defgroup modules_meta_cxx_meta_cxx meta.cxx
+ * @brief meta.cxx - modules/meta/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - _r
+ * - _t
+ * - capture
+ * - data
+ * - hs
+ * - inx
+ * - lf
+ * - lx
+ * - n_ev
+ * - nullptr
+ * - num_total
+ * - tml
+ * - val
+ * - wg
+ * - x
+ * - xs
+ */
+
+/** @} */  // end of modules_meta_cxx_meta_cxx

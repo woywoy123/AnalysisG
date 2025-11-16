@@ -1,0 +1,51 @@
+/**
+ * @file interface.cxx
+ * @brief Documentation for modules/nusol/tmp/interface.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/tmp/interface.cxx
+ */
+
+/**
+ * @defgroup modules_nusol_tmp_interface_cxx interface.cxx
+ * @brief interface.cxx - modules/nusol/tmp
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - met()
+ * - mt1()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - S
+ * - _vn
+ * - a1
+ * - a2
+ * - agl
+ * - dx
+ * - gx
+ * - invH1
+ * - invH2
+ * - lamb1
+ * - lamb2
+ * - le
+ * - lin1
+ * - lin2
+ * - lx
+ * - make_nu
+ * - n
+ * - n1
+ * - n2
+ * - n_
+ */
+
+/** @} */  // end of modules_nusol_tmp_interface_cxx

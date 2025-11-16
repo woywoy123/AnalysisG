@@ -1,0 +1,25 @@
+/**
+ * @file eigen.cxx
+ * @brief Documentation for modules/nusol/conuix/cxx/eigen.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/conuix/cxx/eigen.cxx
+ */
+
+/**
+ * @defgroup modules_nusol_conuix_cxx_eigen_cxx eigen.cxx
+ * @brief eigen.cxx - modules/nusol/conuix/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - dfx
+ * - fx
+ */
+
+/** @} */  // end of modules_nusol_conuix_cxx_eigen_cxx

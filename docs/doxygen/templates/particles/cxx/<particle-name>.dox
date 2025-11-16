@@ -1,0 +1,24 @@
+/**
+ * @file <particle-name>.cxx
+ * @brief Documentation for templates/particles/cxx/<particle-name>.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/templates/particles/cxx/<particle-name>.cxx
+ */
+
+/**
+ * @defgroup templates_particles_cxx_<particle_name>_cxx <particle-name>.cxx
+ * @brief <particle-name>.cxx - templates/particles/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - build()
+ */
+
+/** @} */  // end of templates_particles_cxx_<particle_name>_cxx

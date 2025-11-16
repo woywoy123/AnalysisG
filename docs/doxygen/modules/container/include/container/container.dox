@@ -1,0 +1,54 @@
+/**
+ * @file container.h
+ * @brief Documentation for modules/container/include/container/container.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/container/include/container/container.h
+ */
+
+/**
+ * @defgroup modules_container_include_container_container_h container.h
+ * @brief container.h - modules/container/include/container
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - entry_t
+ * - container
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - add_entry()
+ * - add_event_template()
+ * - add_graph_template()
+ * - add_meta_data()
+ * - add_selection_template()
+ * - compile()
+ * - destroy()
+ * - fill_selections()
+ * - get_events()
+ * - get_meta_data()
+ * - has_event()
+ * - has_graph()
+ * - has_selection()
+ * - init()
+ * - len()
+ * - populate_dataloader()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - meta_data
+ */
+
+/** @} */  // end of modules_container_include_container_container_h

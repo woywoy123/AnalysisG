@@ -1,0 +1,35 @@
+/**
+ * @file model_template.cxx
+ * @brief Documentation for modules/model/cxx/model_template.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/model/cxx/model_template.cxx
+ */
+
+/**
+ * @defgroup modules_model_cxx_model_template_cxx model_template.cxx
+ * @brief model_template.cxx - modules/model/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - e_data
+ * - e_truth
+ * - g_data
+ * - g_truth
+ * - gr
+ * - lamb
+ * - lamb_d
+ * - lambda
+ * - n_data
+ * - n_truth
+ * - offset_nodes
+ * - tn
+ */
+
+/** @} */  // end of modules_model_cxx_model_template_cxx

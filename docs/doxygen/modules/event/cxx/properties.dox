@@ -1,0 +1,17 @@
+/**
+ * @file properties.cxx
+ * @brief Documentation for modules/event/cxx/properties.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/event/cxx/properties.cxx
+ */
+
+/**
+ * @defgroup modules_event_cxx_properties_cxx properties.cxx
+ * @brief properties.cxx - modules/event/cxx
+ * 
+ * @{
+ */
+
+/** @} */  // end of modules_event_cxx_properties_cxx

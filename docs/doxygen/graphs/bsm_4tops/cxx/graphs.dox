@@ -1,0 +1,27 @@
+/**
+ * @file graphs.cxx
+ * @brief Documentation for graphs/bsm_4tops/cxx/graphs.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/graphs/bsm_4tops/cxx/graphs.cxx
+ */
+
+/**
+ * @defgroup graphs_bsm_4tops_cxx_graphs_cxx graphs.cxx
+ * @brief graphs.cxx - graphs/bsm_4tops/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - event
+ * - evn
+ * - gx
+ * - true
+ */
+
+/** @} */  // end of graphs_bsm_4tops_cxx_graphs_cxx

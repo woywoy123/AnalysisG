@@ -1,0 +1,39 @@
+/**
+ * @file metric_build.cxx
+ * @brief Documentation for modules/analysis/metric_build.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/analysis/metric_build.cxx
+ */
+
+/**
+ * @defgroup modules_analysis_metric_build_cxx metric_build.cxx
+ * @brief metric_build.cxx - modules/analysis
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - t()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - debug_mode
+ * - false
+ * - idx
+ * - lamb
+ * - lambd
+ * - sx
+ * - threads_
+ * - true
+ * - xt
+ */
+
+/** @} */  // end of modules_analysis_metric_build_cxx

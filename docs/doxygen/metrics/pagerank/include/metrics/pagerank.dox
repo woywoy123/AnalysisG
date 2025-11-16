@@ -1,0 +1,72 @@
+/**
+ * @file pagerank.h
+ * @brief Documentation for metrics/pagerank/include/metrics/pagerank.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/metrics/pagerank/include/metrics/pagerank.h
+ */
+
+/**
+ * @defgroup metrics_pagerank_include_metrics_pagerank_h pagerank.h
+ * @brief pagerank.h - metrics/pagerank/include/metrics
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - collector
+ * - kinematic_t
+ * - pagerank_metric
+ * - sample_t
+ * - meta_event_t
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - add_file_map()
+ * - add_meta()
+ * - add_nominal()
+ * - add_pagerank()
+ * - add_process()
+ * - add_truth()
+ * - batch()
+ * - clone()
+ * - create_kinematic()
+ * - define_metric()
+ * - define_variables()
+ * - end()
+ * - event()
+ * - pagerank()
+ * - set_index()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - alpha
+ * - energy
+ * - epoch
+ * - eta
+ * - idx
+ * - kfold
+ * - mass
+ * - max_itr
+ * - norm_lim
+ * - num_nodes
+ * - phi
+ * - process_mapping
+ * - pt
+ * - px
+ * - py
+ * - pz
+ * - score
+ */
+
+/** @} */  // end of metrics_pagerank_include_metrics_pagerank_h

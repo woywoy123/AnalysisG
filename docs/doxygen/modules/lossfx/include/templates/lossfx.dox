@@ -1,0 +1,57 @@
+/**
+ * @file lossfx.h
+ * @brief Documentation for modules/lossfx/include/templates/lossfx.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/lossfx/include/templates/lossfx.h
+ */
+
+/**
+ * @defgroup modules_lossfx_include_templates_lossfx_h lossfx.h
+ * @brief lossfx.h - modules/lossfx/include/templates
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - lossfx
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - _dress_batch()
+ * - _dress_beta()
+ * - _dress_blank()
+ * - _dress_delta()
+ * - _dress_eps()
+ * - _dress_full()
+ * - _dress_ignore()
+ * - _dress_margin()
+ * - _dress_reduction()
+ * - _dress_smoothing()
+ * - _dress_swap()
+ * - _dress_target()
+ * - _dress_zero()
+ * - build_adagrad()
+ * - build_adam()
+ * - build_adamw()
+ * - build_fx_loss()
+ * - build_lbfgs()
+ * - build_loss_function()
+ * - build_rmsprop()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - lss_cfg
+ */
+
+/** @} */  // end of modules_lossfx_include_templates_lossfx_h

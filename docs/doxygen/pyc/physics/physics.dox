@@ -1,0 +1,24 @@
+/**
+ * @file physics.cxx
+ * @brief Documentation for pyc/physics/physics.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/pyc/physics/physics.cxx
+ */
+
+/**
+ * @defgroup pyc_physics_physics_cxx physics.cxx
+ * @brief physics.cxx - pyc/physics
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - mass
+ */
+
+/** @} */  // end of pyc_physics_physics_cxx

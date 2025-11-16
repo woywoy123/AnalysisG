@@ -1,0 +1,40 @@
+/**
+ * @file accuracy.cxx
+ * @brief Documentation for metrics/accuracy/cxx/accuracy.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/metrics/accuracy/cxx/accuracy.cxx
+ */
+
+/**
+ * @defgroup metrics_accuracy_cxx_accuracy_cxx accuracy.cxx
+ * @brief accuracy.cxx - metrics/accuracy/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - c()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - acc
+ * - c
+ * - ed_t
+ * - ibx
+ * - idx
+ * - maxv
+ * - n_tp
+ * - n_tt
+ * - src
+ * - v
+ */
+
+/** @} */  // end of metrics_accuracy_cxx_accuracy_cxx

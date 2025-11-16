@@ -1,0 +1,78 @@
+/**
+ * @file nusol.h
+ * @brief Documentation for modules/nusol/tmp/conuix/include/conuix/nusol.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/nusol.h
+ */
+
+/**
+ * @defgroup modules_nusol_tmp_conuix_include_conuix_nusol_h nusol.h
+ * @brief nusol.h - modules/nusol/tmp/conuix/include/conuix
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - nuclx_t
+ * - eig_t
+ * - nuclx
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - G()
+ * - H()
+ * - H_bar()
+ * - H_tilde()
+ * - P()
+ * - critical_t0()
+ * - dP_dL()
+ * - dPl0()
+ * - from_sx_sy()
+ * - from_z_t()
+ * - get_mt()
+ * - get_mw()
+ * - get_t()
+ * - get_z()
+ * - hyperbolic()
+ * - mt()
+ * - mw()
+ * - polynomial()
+ * - rotation()
+ * - shifts()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - A
+ * - D
+ * - a_l
+ * - a_t
+ * - a_w
+ * - a_x
+ * - a_y
+ * - beta_lep
+ * - cos_t
+ * - data
+ * - e_lep
+ * - i1
+ * - jet
+ * - lepton
+ * - lmb1
+ * - mass_lep
+ * - mt_v
+ * - p_lep
+ * - phi_mu
+ * - psi
+ */
+
+/** @} */  // end of modules_nusol_tmp_conuix_include_conuix_nusol_h

@@ -1,0 +1,28 @@
+/**
+ * @file particle_template.cxx
+ * @brief Documentation for modules/particle/cxx/particle_template.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/particle/cxx/particle_template.cxx
+ */
+
+/**
+ * @defgroup modules_particle_cxx_particle_template_cxx particle_template.cxx
+ * @brief particle_template.cxx - modules/particle/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - init
+ * - out
+ * - p
+ * - pr
+ * - t
+ */
+
+/** @} */  // end of modules_particle_cxx_particle_template_cxx

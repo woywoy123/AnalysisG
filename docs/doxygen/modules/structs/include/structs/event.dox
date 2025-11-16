@@ -1,0 +1,32 @@
+/**
+ * @file event.h
+ * @brief Documentation for modules/structs/include/structs/event.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/include/structs/event.h
+ */
+
+/**
+ * @defgroup modules_structs_include_structs_event_h event.h
+ * @brief event.h - modules/structs/include/structs
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - event_t
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - index
+ * - weight
+ */
+
+/** @} */  // end of modules_structs_include_structs_event_h

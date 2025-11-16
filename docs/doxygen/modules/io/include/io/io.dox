@@ -1,0 +1,52 @@
+/**
+ * @file io.h
+ * @brief Documentation for modules/io/include/io/io.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/io/include/io/io.h
+ */
+
+/**
+ * @defgroup modules_io_include_io_io_h io.h
+ * @brief io.h - modules/io/include/io
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - io
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - check_root_file_paths()
+ * - end()
+ * - file_info()
+ * - import_settings()
+ * - member()
+ * - read()
+ * - root_begin()
+ * - root_end()
+ * - root_key_paths()
+ * - scan_keys()
+ * - start()
+ * - trigger_pcm()
+ * - write()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - enable_pyami
+ * - file_root
+ * - pairs
+ */
+
+/** @} */  // end of modules_io_include_io_io_h

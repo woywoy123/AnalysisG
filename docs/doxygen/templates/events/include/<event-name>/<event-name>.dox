@@ -1,0 +1,33 @@
+/**
+ * @file <event-name>.h
+ * @brief Documentation for templates/events/include/<event-name>/<event-name>.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/templates/events/include/<event-name>/<event-name>.h
+ */
+
+/**
+ * @defgroup templates_events_include_<event_name>_<event_name>_h <event-name>.h
+ * @brief <event-name>.h - templates/events/include/<event-name>
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - CompileEvent()
+ * - build()
+ * - clone()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - key_name
+ */
+
+/** @} */  // end of templates_events_include_<event_name>_<event_name>_h

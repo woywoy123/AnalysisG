@@ -1,0 +1,53 @@
+/**
+ * @file notification.h
+ * @brief Documentation for modules/notification/include/notification/notification.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/notification/include/notification/notification.h
+ */
+
+/**
+ * @defgroup modules_notification_include_notification_notification_h notification.h
+ * @brief notification.h - modules/notification/include/notification
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - notification
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - _format()
+ * - failure()
+ * - info()
+ * - monitor()
+ * - progressbar()
+ * - running()
+ * - success()
+ * - sum()
+ * - warning()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - _failure
+ * - _info
+ * - _success
+ * - _warning
+ * - bold
+ * - caller
+ * - ix
+ * - shush
+ */
+
+/** @} */  // end of modules_notification_include_notification_notification_h

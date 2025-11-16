@@ -1,0 +1,40 @@
+/**
+ * @file node_features.cxx
+ * @brief Documentation for graphs/bsm_4tops/cxx/node_features.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/graphs/bsm_4tops/cxx/node_features.cxx
+ */
+
+/**
+ * @defgroup graphs_bsm_4tops_cxx_node_features_cxx node_features.cxx
+ * @brief node_features.cxx - graphs/bsm_4tops/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - charge()
+ * - energy()
+ * - eta()
+ * - is_bquark()
+ * - is_lepton()
+ * - is_neutrino()
+ * - phi()
+ * - pt()
+ * - res_node()
+ * - top_node()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - tx
+ */
+
+/** @} */  // end of graphs_bsm_4tops_cxx_node_features_cxx

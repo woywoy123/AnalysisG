@@ -1,0 +1,17 @@
+/**
+ * @file root.cxx
+ * @brief Documentation for modules/typecasting/cxx/root.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/typecasting/cxx/root.cxx
+ */
+
+/**
+ * @defgroup modules_typecasting_cxx_root_cxx root.cxx
+ * @brief root.cxx - modules/typecasting/cxx
+ * 
+ * @{
+ */
+
+/** @} */  // end of modules_typecasting_cxx_root_cxx

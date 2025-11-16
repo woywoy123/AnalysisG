@@ -1,0 +1,17 @@
+/**
+ * @file loss_config.cxx
+ * @brief Documentation for modules/lossfx/cxx/loss_config.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/lossfx/cxx/loss_config.cxx
+ */
+
+/**
+ * @defgroup modules_lossfx_cxx_loss_config_cxx loss_config.cxx
+ * @brief loss_config.cxx - modules/lossfx/cxx
+ * 
+ * @{
+ */
+
+/** @} */  // end of modules_lossfx_cxx_loss_config_cxx

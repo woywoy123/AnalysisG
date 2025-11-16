@@ -1,0 +1,42 @@
+/**
+ * @file pagerank.cxx
+ * @brief Documentation for metrics/pagerank/cxx/pagerank.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/metrics/pagerank/cxx/pagerank.cxx
+ */
+
+/**
+ * @defgroup metrics_pagerank_cxx_pagerank_cxx pagerank.cxx
+ * @brief pagerank.cxx - metrics/pagerank/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - bx
+ * - dst
+ * - e
+ * - mass
+ * - n_nodes
+ * - norm
+ * - offset_node
+ * - out
+ * - ptr
+ * - px
+ * - s
+ * - sc
+ * - sm
+ * - src
+ * - sx
+ * - top_0
+ * - top_1
+ * - tr
+ * - tt
+ */
+
+/** @} */  // end of metrics_pagerank_cxx_pagerank_cxx

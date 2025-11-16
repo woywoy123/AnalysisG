@@ -1,0 +1,38 @@
+/**
+ * @file edge_features.cxx
+ * @brief Documentation for graphs/bsm_4tops/cxx/edge_features.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/graphs/bsm_4tops/cxx/edge_features.cxx
+ */
+
+/**
+ * @defgroup graphs_bsm_4tops_cxx_edge_features_cxx edge_features.cxx
+ * @brief edge_features.cxx - graphs/bsm_4tops/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - det_res_edge()
+ * - det_top_edge()
+ * - m_res_edge()
+ * - m_top_edge()
+ * - res_edge()
+ * - top_edge()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - out
+ * - p1
+ * - p2
+ */
+
+/** @} */  // end of graphs_bsm_4tops_cxx_edge_features_cxx

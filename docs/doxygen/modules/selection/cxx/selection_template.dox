@@ -1,0 +1,24 @@
+/**
+ * @file selection_template.cxx
+ * @brief Documentation for modules/selection/cxx/selection_template.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/selection/cxx/selection_template.cxx
+ */
+
+/**
+ * @defgroup modules_selection_cxx_selection_template_cxx selection_template.cxx
+ * @brief selection_template.cxx - modules/selection/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - types
+ */
+
+/** @} */  // end of modules_selection_cxx_selection_template_cxx

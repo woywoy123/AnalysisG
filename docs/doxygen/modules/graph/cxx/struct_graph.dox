@@ -1,0 +1,29 @@
+/**
+ * @file struct_graph.cxx
+ * @brief Documentation for modules/graph/cxx/struct_graph.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/graph/cxx/struct_graph.cxx
+ */
+
+/**
+ * @defgroup modules_graph_cxx_struct_graph_cxx struct_graph.cxx
+ * @brief struct_graph.cxx - modules/graph/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - dev_
+ * - idx_
+ * - out
+ * - sm
+ * - t
+ * - tl
+ */
+
+/** @} */  // end of modules_graph_cxx_struct_graph_cxx

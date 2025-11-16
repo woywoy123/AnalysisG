@@ -1,0 +1,51 @@
+/**
+ * @file meta.h
+ * @brief Documentation for modules/structs/include/structs/meta.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/structs/include/structs/meta.h
+ */
+
+/**
+ * @defgroup modules_structs_include_structs_meta_h meta.h
+ * @brief meta.h - modules/structs/include/structs
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - meta_t
+ * - weights_t
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - beam_energy
+ * - campaign_luminosity
+ * - completion
+ * - crossSection
+ * - crossSection_mean
+ * - dsid
+ * - ecmEnergy
+ * - eventNumber
+ * - event_index
+ * - found
+ * - genFiltEff
+ * - isAFII
+ * - isMC
+ * - kfactor
+ * - processed_events
+ * - processed_events_weighted
+ * - processed_events_weighted_squared
+ * - totalSize
+ * - total_events
+ * - total_events_weighted
+ */
+
+/** @} */  // end of modules_structs_include_structs_meta_h

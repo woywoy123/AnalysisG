@@ -1,0 +1,66 @@
+/**
+ * @file struct.h
+ * @brief Documentation for modules/nusol/conuix/include/conuix/struct.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/conuix/include/conuix/struct.h
+ */
+
+/**
+ * @defgroup modules_nusol_conuix_include_conuix_struct_h struct.h
+ * @brief struct.h - modules/nusol/conuix/include/conuix
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - base_t
+ * - Mobius_t
+ * - rotation_t
+ * - particle_template
+ * - atomics_t
+ * - Sx_t
+ * - pencil_t
+ * - H_matrix_t
+ * - kinematic_t
+ * - Sy_t
+ * - thetapsi_t
+ * - debug
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - GetTauZ()
+ * - H_Matrix()
+ * - H_Tilde()
+ * - debug_mode()
+ * - init()
+ * - masses()
+ * - print()
+ * - variable()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - HBC
+ * - HBS
+ * - HBX
+ * - HTC
+ * - HTS
+ * - HTX
+ * - R_T
+ * - atomics_t
+ * - particle_template
+ * - prec
+ * - vec
+ */
+
+/** @} */  // end of modules_nusol_conuix_include_conuix_struct_h

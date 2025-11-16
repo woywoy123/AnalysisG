@@ -1,0 +1,57 @@
+/**
+ * @file solvers.h
+ * @brief Documentation for modules/nusol/ellipse/include/ellipse/solvers.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/nusol/ellipse/include/ellipse/solvers.h
+ */
+
+/**
+ * @defgroup modules_nusol_ellipse_include_ellipse_solvers_h solvers.h
+ * @brief solvers.h - modules/nusol/ellipse/include/ellipse
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - mtx
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - Rx()
+ * - Ry()
+ * - Rz()
+ * - _arith()
+ * - _copy()
+ * - _det()
+ * - _m_00()
+ * - _m_01()
+ * - _m_02()
+ * - _m_10()
+ * - _m_11()
+ * - _m_12()
+ * - _m_20()
+ * - _m_21()
+ * - _m_22()
+ * - _scale()
+ * - _trace()
+ * - distance()
+ * - factor_degenerate()
+ * - find_roots()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - mtx
+ */
+
+/** @} */  // end of modules_nusol_ellipse_include_ellipse_solvers_h

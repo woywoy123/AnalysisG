@@ -1,0 +1,24 @@
+/**
+ * @file graphs.cxx
+ * @brief Documentation for graphs/ssml_mc20/cxx/graphs.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/graphs/ssml_mc20/cxx/graphs.cxx
+ */
+
+/**
+ * @defgroup graphs_ssml_mc20_cxx_graphs_cxx graphs.cxx
+ * @brief graphs.cxx - graphs/ssml_mc20/cxx
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - event
+ */
+
+/** @} */  // end of graphs_ssml_mc20_cxx_graphs_cxx

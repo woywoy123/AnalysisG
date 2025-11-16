@@ -1,0 +1,61 @@
+/**
+ * @file analysis.h
+ * @brief Documentation for modules/analysis/include/AnalysisG/analysis.h
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/analysis/include/AnalysisG/analysis.h
+ */
+
+/**
+ * @defgroup modules_analysis_include_AnalysisG_analysis_h analysis.h
+ * @brief analysis.h - modules/analysis/include/AnalysisG
+ * 
+ * @{
+ */
+
+/**
+ * @section classes Classes
+ * 
+ * This file defines the following classes:
+ * - analysis
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - add_content()
+ * - add_event_template()
+ * - add_graph_template()
+ * - add_metric_template()
+ * - add_model()
+ * - add_samples()
+ * - add_selection_template()
+ * - attach_threads()
+ * - build_dataloader()
+ * - build_events()
+ * - build_graphs()
+ * - build_inference()
+ * - build_metric()
+ * - build_metric_folds()
+ * - build_model_session()
+ * - build_project()
+ * - build_selections()
+ * - check_cache()
+ * - execution()
+ * - execution_metric()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - loader
+ * - m_settings
+ * - reader
+ * - started
+ * - tracer
+ */
+
+/** @} */  // end of modules_analysis_include_AnalysisG_analysis_h

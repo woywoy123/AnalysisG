@@ -1,0 +1,38 @@
+/**
+ * @file interface.cxx
+ * @brief Documentation for pyc/interface/interface.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/pyc/interface/interface.cxx
+ */
+
+/**
+ * @defgroup pyc_interface_interface_cxx interface.cxx
+ * @brief interface.cxx - pyc/interface
+ * 
+ * @{
+ */
+
+/**
+ * @section functions Functions
+ * 
+ * Key functions in this file:
+ * - build_tensor()
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - inb
+ * - inx
+ * - ix
+ * - iy
+ * - nx
+ * - o
+ * - out
+ * - p
+ */
+
+/** @} */  // end of pyc_interface_interface_cxx

@@ -1,0 +1,17 @@
+/**
+ * @file metric.cxx
+ * @brief Documentation for modules/metric/cxx/metric.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/metric/cxx/metric.cxx
+ */
+
+/**
+ * @defgroup modules_metric_cxx_metric_cxx metric.cxx
+ * @brief metric.cxx - modules/metric/cxx
+ * 
+ * @{
+ */
+
+/** @} */  // end of modules_metric_cxx_metric_cxx

@@ -1,0 +1,34 @@
+/**
+ * @file event_build.cxx
+ * @brief Documentation for modules/analysis/event_build.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/modules/analysis/event_build.cxx
+ */
+
+/**
+ * @defgroup modules_analysis_event_build_cxx event_build.cxx
+ * @brief event_build.cxx - modules/analysis
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - avg
+ * - event_f
+ * - evn
+ * - ext
+ * - idx
+ * - lamb
+ * - meta_
+ * - nevents
+ * - num_ev
+ * - num_evn
+ * - rdr
+ */
+
+/** @} */  // end of modules_analysis_event_build_cxx

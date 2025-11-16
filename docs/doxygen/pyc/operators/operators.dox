@@ -1,0 +1,26 @@
+/**
+ * @file operators.cxx
+ * @brief Documentation for pyc/operators/operators.cxx
+ * 
+ * This file is part of the AnalysisG framework.
+ * 
+ * Location: src/AnalysisG/pyc/operators/operators.cxx
+ */
+
+/**
+ * @defgroup pyc_operators_operators_cxx operators.cxx
+ * @brief operators.cxx - pyc/operators
+ * 
+ * @{
+ */
+
+/**
+ * @section variables Member Variables
+ * 
+ * Key member variables:
+ * - idx
+ * - idy
+ * - sx
+ */
+
+/** @} */  // end of pyc_operators_operators_cxx
