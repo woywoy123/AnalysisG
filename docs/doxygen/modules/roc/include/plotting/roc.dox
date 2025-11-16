@@ -3,47 +3,47 @@
  * @brief Documentation for modules/roc/include/plotting/roc.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/roc/include/plotting/roc.h
  */
 
 /**
  * @defgroup modules_roc_include_plotting_roc_h roc.h
- * @brief roc.h - modules/roc/include/plotting
- * 
+ * @brief roc.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **roc_t**
- * - **roc** (inherits from plotting)
+ *
+ * - **roc_t** (struct)
+ * - **roc** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **roc methods:**
- * - `roc()` - roc()
- * - `roc()` - ~roc()
- * - `build_ROC()` - void build_ROC(
-            std::string name, int kfold, 
-            std::vector<int>* label, 
-            std::vector<std::vector<double>>* scores
-        )
- * 
+ * @section functions Functions
+ *
+ * - `roc();`
+ * - `~roc();`
+ * - `std::vector<roc_t*> get_ROC();`
+ * - `std::vector<std::vector<g>>* generate(size_t x, size_t y){ typename std::vector<g> v(y, 0);`
+ * - `typename std::vector<g> v(y, 0);`
+ * - `return new std::vector<std::vector<g>>(x, v);`
  */
 
 /**
- * @section variables Member Variables
- * 
- * **roc_t variables:**
- * - Private:
- *   - `cls` (int)
- *   - `kfold` (int)
- * 
+ * @section variables Variables
+ *
+ * - `int cls = 0;` (roc_t::public)
+ * - `int kfold = 0;` (roc_t::public)
+ * - `std::string model = "";` (roc_t::public)
+ * - `std::vector<double> _auc = {};` (roc_t::public)
+ * - `std::vector<std::vector<double>> tpr_ = {};` (roc_t::public)
+ * - `std::vector<std::vector<double>> fpr_ = {};` (roc_t::public)
+ * - `std::vector<std::vector<int>>*     truth = nullptr;` (roc_t::public)
+ * - `std::vector<std::vector<double>>* scores = nullptr;` (roc_t::public)
+ * - `std::map<std::string, std::map<int, std::vector<std::vector<double>>*>> roc_data` (::public)
+ * - `std::map<std::string, std::map<int, std::vector<std::vector<int>>*>>      labels` (::public)
+ * - `std::vector<roc_t*> ptr_roc = {};` (::public)
  */
 
-/** @} */  // end of modules_roc_include_plotting_roc_h
+/** @} */

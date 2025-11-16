@@ -3,85 +3,85 @@
  * @brief Documentation for modules/structs/include/structs/element.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/structs/include/structs/element.h
  */
 
 /**
  * @defgroup modules_structs_include_structs_element_h element.h
- * @brief element.h - modules/structs/include/structs
- * 
+ * @brief element.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **data_t** (inherits from bsc_t)
- * - **element_t**
- * - **write_t**
- * - **writer**
+ *
+ * - **data_t** (struct)
+ * - **element_t** (struct)
+ * - **write_t** (struct)
+ * - **writer** (struct)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **data_t methods:**
- * - `data_t()` - data_t()
- * - `data_t()` - ~data_t() override
- * - `initialize()` - void initialize()
- * - `flush()` - void flush()
- * - `next()` - bool next()
- * - `fetch_buffer()` - void fetch_buffer()
- * - `string_type()` - void string_type()
- * 
- * **element_t methods:**
- * - `next()` - bool next()
- * - `set_meta()` - void set_meta()
- * - `boundary()` - bool boundary()
- * 
- * **write_t methods:**
- * - `process()` - variable_t* process(std::string* name)
- * - `write()` - void write()
- * - `create()` - void create(std::string tr_name, std::string path)
- * - `close()` - void close()
- * 
- * **writer methods:**
- * - `writer()` - writer()
- * - `writer()` - ~writer()
- * - `create()` - void create(std::string* pth)
- * - `write()` - void write(std::string* tree)
- * - `process()` - variable_t* process(std::string* tree, std::string* name)
- * 
+ * @section functions Functions
+ *
+ * - `data_t();`
+ * - `~data_t() override;`
+ * - `void initialize();`
+ * - `void flush();`
+ * - `bool next();`
+ * - `void fetch_buffer();`
+ * - `void string_type();`
+ * - `void fetch_buffer(std::vector<T>** data){ TTreeReader r = TTreeReader(this -> tree);`
+ * - `TTreeReader r = TTreeReader(this -> tree);`
+ * - `TTreeReaderValue<T> dr(r, this -> branch_name.c_str());`
+ * - `if (*data){(*data) -> clear();}`
+ * - `if (!(*data)){(*data) = new std::vector<T>();}`
+ * - `while (r.Next()){(*data) -> push_back(*dr);}`
+ * - `(*data) -> shrink_to_fit();`
+ * - `void set_meta();` (element_t::public)
+ * - `bool boundary();` (element_t::public)
+ * - `bool get(std::string key, g* var){ if (!this -> handle.count(key)){return false;}` (element_t::public)
+ * - `if (!this -> handle.count(key)){return false;}` (element_t::public)
+ * - `if (this -> handle[key] -> element(var)){return true;}` (element_t::public)
+ * - `for (itr = this -> handle.begin(); itr != this -> handle.end(); ++itr){` (element_t::public)
+ * - `abort();` (element_t::public)
+ * - `variable_t* process(std::string* name);` (write_t::public)
+ * - `void write();` (write_t::public)
+ * - `void create(std::string tr_name, std::string path);` (write_t::public)
+ * - `void close();` (write_t::public)
+ * - `writer();` (writer::public)
+ * - `~writer();` (writer::public)
+ * - `void create(std::string* pth);` (writer::public)
+ * - `void write(std::string* tree);` (writer::public)
+ * - `void process(std::string* tree, std::string* name, g* t){ this -> process(tree, name) -> process(t, ` (writer::public)
+ * - `this -> process(tree, name) -> process(t, name, nullptr);` (writer::public)
+ * - `variable_t* process(std::string* tree, std::string* name);` (writer::private)
  */
 
 /**
- * @section variables Member Variables
- * 
- * **data_t variables:**
- * - Public:
- *   - `leaf` (TLeaf*)
- *   - `branch` (TBranch*)
- *   - `tree` (TTree*)
- *   - `file` (TFile*)
- *   - `file_index` (int)
- * 
- * **element_t variables:**
- * - Private:
- *   - `event_index` (long)
- *   - `d` (data_t*)
- * 
- * **write_t variables:**
- * - Private:
- *   - `file` (TFile*)
- *   - `tree` (TTree*)
- *   - `mtx` (meta_t*)
- * 
- * **writer variables:**
- * - Private:
- *   - `head` (write_t*)
- * 
+ * @section variables Variables
+ *
+ * - `std::string   leaf_name = "";` (::private)
+ * - `std::string branch_name = "";` (::private)
+ * - `std::string   tree_name = "";` (::private)
+ * - `std::string   leaf_type = "";` (::private)
+ * - `std::string        path = "";` (::private)
+ * - `std::string*      fname = nullptr;` (::private)
+ * - `int file_index = 0;` (::private)
+ * - `std::vector<std::string>* files_s = nullptr;` (::private)
+ * - `std::vector<long>*        files_i = nullptr;` (::private)
+ * - `std::vector<TFile*>*      files_t = nullptr;` (::private)
+ * - `if (!(*data)){(*data) = new std::vector<T>();}` (::private)
+ * - `std::string tree = "";` (element_t::public)
+ * - `long event_index = -1;` (element_t::public)
+ * - `std::string filename = "";` (element_t::public)
+ * - `std::cout << "INVALID DATA TYPE GIVEN FOR: " + key << std::endl;` (element_t::public)
+ * - `std::map<std::string, data_t*>::iterator itr;` (element_t::public)
+ * - `std::cout << "Leaf name: " << d -> leaf_name;` (element_t::public)
+ * - `std::cout << "|" << d -> leaf_type << std::endl;` (element_t::public)
+ * - `std::map<std::string, data_t*> handle = {};` (element_t::public)
+ * - `std::map<std::string, variable_t*>* data = nullptr;` (write_t::public)
+ * - `std::map<std::string, write_t*> handle = {};` (writer::private)
  */
 
-/** @} */  // end of modules_structs_include_structs_element_h
+/** @} */

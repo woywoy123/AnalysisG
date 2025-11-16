@@ -1,50 +1,89 @@
 /**
  * @file RecursiveGraphNeuralNetwork.h
- * @brief Documentation for models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h
+ * @brief Recursive Graph Neural Network model for particle physics analysis
  * 
  * This file is part of the AnalysisG framework.
  * 
  * Location: src/AnalysisG/models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h
+ * 
+ * Defines the Recursive Graph Neural Network (RGNN) model class that uses iterative
+ * message-passing for deep graph processing and hierarchical feature learning.
  */
 
 /**
  * @defgroup models_RecursiveGraphNeuralNetwork_include_models_RecursiveGraphNeuralNetwork_h RecursiveGraphNeuralNetwork.h
- * @brief RecursiveGraphNeuralNetwork.h - models/RecursiveGraphNeuralNetwork/include/models
+ * @brief Recursive GNN Model - Iterative Message-Passing Architecture
  * 
  * @{
  */
 
 /**
- * @section classes Classes and Structures
+ * @section classes_rgnn Classes and Structures
  * 
- * This file defines the following classes/structures:
+ * This file defines the following class:
  * - **recursivegraphneuralnetwork** (inherits from model_template)
+ *   - Implements recursive graph neural network architecture
+ *   - Uses multiple message-passing iterations for deep processing
+ *   - Supports hierarchical feature learning and graph coarsening
+ *   - Configurable recursion depth and dropout rate
  */
 
 /**
- * @section functions Functions and Methods
+ * @section functions_rgnn Functions and Methods
  * 
- * **recursivegraphneuralnetwork methods:**
- * - `recursivegraphneuralnetwork()` - recursivegraphneuralnetwork(int rep = 1024, double dpt = 0.1)
- * - `recursivegraphneuralnetwork()` - ~recursivegraphneuralnetwork()
- * - `clone()` - model_template* clone() override
- * - `forward()` - void forward(graph_t*) override
+ * **recursivegraphneuralnetwork class methods:**
  * 
+ * **Constructors and Destructors:**
+ * - `recursivegraphneuralnetwork(int rep = 1024, double dpt = 0.1)` 
+ *   - Constructor with configurable parameters
+ *   - Parameters:
+ *     - rep: Representation dimension (default: 1024)
+ *     - dpt: Dropout rate (default: 0.1)
+ * - `~recursivegraphneuralnetwork()` - Destructor, cleans up model resources
+ * 
+ * **Core Methods:**
+ * - `model_template* clone() override` - Creates a deep copy of the model for distributed training
+ * - `void forward(graph_t*) override` - Main forward pass, processes graph through recursive layers
+ * 
+ * **Neural Network Components:**
+ * - `torch::Tensor message(torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc, torch::Tensor pmc_i, torch::Tensor pmc_j, torch::Tensor hx_i, torch::Tensor hx_j)`
+ *   - Computes message between two nodes for edge update
+ *   - Parameters:
+ *     - trk_i: Track features of source node
+ *     - trk_j: Track features of target node  
+ *     - pmc: Particle momentum and charge (global context)
+ *     - pmc_i: Momentum and charge of source node
+ *     - pmc_j: Momentum and charge of target node
+ *     - hx_i: Hidden state of source node
+ *     - hx_j: Hidden state of target node
+ *   - Returns: Message tensor for edge update
  */
 
 /**
- * @section variables Member Variables
+ * @section variables_rgnn Member Variables
  * 
- * **recursivegraphneuralnetwork variables:**
- * - Public:
- *   - `_dx` (int)
- *   - `_x` (int)
- *   - `_output` (int)
- *   - `_rep` (int)
- *   - `res_mass` (double)
- *   - `drop_out` (double)
- *   - `is_mc` (bool)
+ * **recursivegraphneuralnetwork class variables:**
  * 
+ * **Neural Network Parameters (Public):**
+ * - `int _dx = 26` - Delta feature dimension for edge computations
+ * - `int _x = 5` - Node feature dimension
+ * - `int _output = 2` - Output dimension (binary classification)
+ * - `int _rep = 256` - Representation/hidden dimension for recursive layers
+ * - `double res_mass = 0` - Resonance mass constraint for physics-informed learning
+ * - `double drop_out = 0.1` - Dropout rate for regularization (default 10%)
+ * 
+ * **Model Configuration (Public):**
+ * - `bool is_mc = true` - Monte Carlo mode flag (true for MC, false for data)
+ * 
+ * **Neural Network Layers (Public):**
+ * - `torch::nn::Sequential* rnn_x = nullptr` - RNN for node feature processing
+ * - `torch::nn::Sequential* rnn_dx = nullptr` - RNN for delta/edge features
+ * - `torch::nn::Sequential* rnn_merge = nullptr` - RNN for merging node and edge information
+ * - `torch::nn::Sequential* rnn_update = nullptr` - RNN for updating node states recursively
+ * - `torch::nn::Sequential* exotic_mlp = nullptr` - MLP for exotic particle detection
+ * - `torch::nn::Sequential* node_aggr_mlp = nullptr` - MLP for node aggregation
+ * - `torch::nn::Sequential* ntops_mlp = nullptr` - MLP for top quark multiplicity prediction
+ * - `torch::nn::Sequential* exo_mlp = nullptr` - MLP for exotic decay classification
  */
 
 /** @} */  // end of models_RecursiveGraphNeuralNetwork_include_models_RecursiveGraphNeuralNetwork_h

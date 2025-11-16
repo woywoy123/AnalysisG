@@ -3,49 +3,53 @@
  * @brief Documentation for modules/nusol/conuix/include/conuix/conuic.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/conuix/include/conuix/conuic.h
  */
 
 /**
  * @defgroup modules_nusol_conuix_include_conuix_conuic_h conuic.h
- * @brief conuic.h - modules/nusol/conuix/include/conuix
- * 
+ * @brief conuic.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **conuic**
+ *
+ * - **particle_template** (class)
+ * - **conuic** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **conuic methods:**
- * - `conuic()` - conuic(particle_template* jet, particle_template* lep)
- * - `conuic()` - ~conuic()
- * - `get_RT()` - matrix_t get_RT()
- * - `debug()` - void debug()
- * - `solve()` - void solve()
- * 
+ * @section functions Functions
+ *
+ * - `conuic(particle_template* jet, particle_template* lep);` (conuic::public)
+ * - `~conuic();` (conuic::public)
+ * - `matrix_t get_RT();` (conuic::public)
+ * - `long double Z2(long double Sx, long double Sy);` (conuic::public)
+ * - `long double Sx(long double Tau, long double Z);` (conuic::public)
+ * - `long double Sy(long double Tau, long double Z);` (conuic::public)
+ * - `void debug();` (conuic::public)
+ * - `void solve();` (conuic::public)
+ * - `void static set_tau(long double* v, conuic* c);` (conuic::private)
+ * - `void static set_scl(long double* v, conuic* c);` (conuic::private)
+ * - `void static set_lmb(long double* v, conuic* c);` (conuic::private)
+ * - `void static get_tau(long double* v, conuic* c);` (conuic::private)
+ * - `void static get_scl(long double* v, conuic* c);` (conuic::private)
+ * - `void static get_lmb(long double* v, conuic* c);` (conuic::private)
  */
 
 /**
- * @section variables Member Variables
- * 
- * **conuic variables:**
- * - Public:
- *   - `t` (cproperty<long double, conuic>)
- *   - `z` (cproperty<long double, conuic>)
- *   - `l` (cproperty<long double, conuic>)
- * - Private:
- *   - `cache` (atomics_t*)
- *   - `_jet` (particle_template*)
- *   - `_lep` (particle_template*)
- * 
+ * @section variables Variables
+ *
+ * - `cproperty<long double, conuic> t;  // tau` (conuic::public)
+ * - `cproperty<long double, conuic> z;  // scale` (conuic::public)
+ * - `cproperty<long double, conuic> l;  // lambda` (conuic::public)
+ * - `long double tau  = 0; // simple hyperbolic parameter` (conuic::private)
+ * - `long double stau = 0; // pre-compute sinh` (conuic::private)
+ * - `long double ctau = 0; // pre-compute cosh` (conuic::private)
+ * - `long double ttau = 0; // pre-compute tanh` (conuic::private)
+ * - `long double scale = 0;` (conuic::private)
+ * - `long double lamb  = 0;` (conuic::private)
  */
 
-/** @} */  // end of modules_nusol_conuix_include_conuix_conuic_h
+/** @} */

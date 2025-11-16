@@ -3,15 +3,45 @@
  * @brief Documentation for events/gnn/cxx/particles.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/events/gnn/cxx/particles.cxx
  */
 
 /**
  * @defgroup events_gnn_cxx_particles_cxx particles.cxx
- * @brief particles.cxx - events/gnn/cxx
- * 
+ * @brief particles.cxx
  * @{
  */
 
-/** @} */  // end of events_gnn_cxx_particles_cxx
+/**
+ * @section functions Functions
+ *
+ * - `particle_gnn::particle_gnn(){ this -> type = "gnn-particle";`
+ * - `this -> add_leaf("pt", "n_i_pt");`
+ * - `this -> add_leaf("eta", "n_i_eta");`
+ * - `this -> add_leaf("phi", "n_i_phi");`
+ * - `this -> add_leaf("energy", "n_i_energy");`
+ * - `this -> add_leaf("lep", "extra_is_lep");`
+ * - `particle_gnn::~particle_gnn(){}  particle_template* particle_gnn::clone(){return (particle_template*`
+ * - `particle_template* particle_gnn::clone(){return (particle_template*)new particle_gnn();}`
+ * - `void particle_gnn::build(std::map<std::string, particle_template*>* prt, element_t* el){ std::vector`
+ * - `el -> get("pt"    , &_pt);`
+ * - `el -> get("eta"   , &_eta);`
+ * - `el -> get("phi"   , &_phi);`
+ * - `el -> get("energy", &_energy);`
+ * - `el -> get("lep", &_is_lep);`
+ * - `for (int x(0); x < _energy.size(); ++x){`
+ * - `particle_gnn* p = new particle_gnn();`
+ * - `(*prt)[std::string(p -> hash)] = p;`
+ * - `top::top(){ this -> type = "top";`
+ * - `top::~top(){}  zprime::zprime(){`
+ * - `zprime::zprime(){ this -> type = "zprime";`
+ * - `zprime::~zprime(){} `
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `(*prt)[std::string(p -> hash)] = p;` (::private)
+ */
+
+/** @} */

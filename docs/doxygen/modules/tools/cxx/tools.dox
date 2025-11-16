@@ -3,15 +3,20 @@
  * @brief Documentation for modules/tools/cxx/tools.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/tools/cxx/tools.cxx
  */
 
 /**
  * @defgroup modules_tools_cxx_tools_cxx tools.cxx
- * @brief tools.cxx - modules/tools/cxx
- * 
+ * @brief tools.cxx
  * @{
  */
 
-/** @} */  // end of modules_tools_cxx_tools_cxx
+/**
+ * @section functions Functions
+ *
+ * - `tools::tools(){} tools::~tools(){}`
+ * - `tools::~tools(){} `
+ */
+
+/** @} */

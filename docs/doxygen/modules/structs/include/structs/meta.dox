@@ -3,54 +3,90 @@
  * @brief Documentation for modules/structs/include/structs/meta.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/structs/include/structs/meta.h
  */
 
 /**
  * @defgroup modules_structs_include_structs_meta_h meta.h
- * @brief meta.h - modules/structs/include/structs
- * 
+ * @brief meta.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **weights_t**
- * - **meta_t**
+ *
+ * - **weights_t** (struct)
+ * - **meta_t** (struct)
  */
 
 /**
- * @section variables Member Variables
- * 
- * **meta_t variables:**
- * - Private:
- *   - `isMC` (bool)
- *   - `eventNumber` (double)
- *   - `event_index` (double)
- *   - `found` (bool)
- *   - `totalSize` (double)
- *   - `kfactor` (double)
- *   - `ecmEnergy` (double)
- *   - `genFiltEff` (double)
- *   - `completion` (double)
- *   - `beam_energy` (double)
- *   - `crossSection` (double)
- *   - `crossSection_mean` (double)
- *   - `campaign_luminosity` (double)
- * 
- * **weights_t variables:**
- * - Private:
- *   - `dsid` (int)
- *   - `isAFII` (bool)
- *   - `total_events_weighted` (float)
- *   - `total_events` (float)
- *   - `processed_events` (float)
- *   - `processed_events_weighted` (float)
- *   - `processed_events_weighted_squared` (float)
- * 
+ * @section variables Variables
+ *
+ * - `int dsid = -1;` (weights_t::public)
+ * - `bool isAFII = false;` (weights_t::public)
+ * - `std::string generator = "";` (weights_t::public)
+ * - `std::string ami_tag = "";` (weights_t::public)
+ * - `float total_events_weighted = -1;` (weights_t::public)
+ * - `float total_events = -1;` (weights_t::public)
+ * - `float processed_events = -1;` (weights_t::public)
+ * - `float processed_events_weighted = -1;` (weights_t::public)
+ * - `float processed_events_weighted_squared = -1;` (weights_t::public)
+ * - `std::map<std::string, float> hist_data = {};` (weights_t::public)
+ * - `unsigned int dsid = 0;` (meta_t::public)
+ * - `bool isMC = true;` (meta_t::public)
+ * - `std::string derivationFormat = "";` (meta_t::public)
+ * - `std::map<int, std::string> inputfiles = {};` (meta_t::public)
+ * - `std::map<std::string, std::string> config = {};` (meta_t::public)
+ * - `std::string AMITag = "";` (meta_t::public)
+ * - `std::string generators = "";` (meta_t::public)
+ * - `std::map<int, int> inputrange = {};` (meta_t::public)
+ * - `double eventNumber = -1;` (meta_t::public)
+ * - `double event_index = -1;` (meta_t::public)
+ * - `bool found = false;` (meta_t::public)
+ * - `std::string DatasetName = "";` (meta_t::public)
+ * - `double totalSize = 0;` (meta_t::public)
+ * - `double kfactor   = 0;` (meta_t::public)
+ * - `double ecmEnergy = 0;` (meta_t::public)
+ * - `double genFiltEff = 0;` (meta_t::public)
+ * - `double completion = 0;` (meta_t::public)
+ * - `double beam_energy = 0;` (meta_t::public)
+ * - `double crossSection = 0;` (meta_t::public)
+ * - `double crossSection_mean = 0;` (meta_t::public)
+ * - `double campaign_luminosity = 0;` (meta_t::public)
+ * - `unsigned int nFiles = 0;` (meta_t::public)
+ * - `unsigned int totalEvents = 0;` (meta_t::public)
+ * - `unsigned int datasetNumber = 0;` (meta_t::public)
+ * - `std::string identifier = "";` (meta_t::public)
+ * - `std::string prodsysStatus = "";` (meta_t::public)
+ * - `std::string dataType = "";` (meta_t::public)
+ * - `std::string version = "";` (meta_t::public)
+ * - `std::string PDF = "";` (meta_t::public)
+ * - `std::string AtlasRelease = "";` (meta_t::public)
+ * - `std::string principalPhysicsGroup = "";` (meta_t::public)
+ * - `std::string physicsShort = "";` (meta_t::public)
+ * - `std::string generatorName = "";` (meta_t::public)
+ * - `std::string geometryVersion = "";` (meta_t::public)
+ * - `std::string conditionsTag = "";` (meta_t::public)
+ * - `std::string generatorTune = "";` (meta_t::public)
+ * - `std::string amiStatus = "";` (meta_t::public)
+ * - `std::string beamType = "";` (meta_t::public)
+ * - `std::string productionStep = "";` (meta_t::public)
+ * - `std::string projectName = "";` (meta_t::public)
+ * - `std::string statsAlgorithm = "";` (meta_t::public)
+ * - `std::string genFilterNames = "";` (meta_t::public)
+ * - `std::string file_type = "";` (meta_t::public)
+ * - `std::string sample_name = "";` (meta_t::public)
+ * - `std::string logicalDatasetName = "";` (meta_t::public)
+ * - `std::string campaign = "";` (meta_t::public)
+ * - `std::vector<std::string> keywords = {};` (meta_t::public)
+ * - `std::vector<std::string> weights = {};` (meta_t::public)
+ * - `std::vector<std::string> keyword = {};` (meta_t::public)
+ * - `std::vector<int> events = {};` (meta_t::public)
+ * - `std::vector<int> run_number = {};` (meta_t::public)
+ * - `std::vector<double> fileSize = {};` (meta_t::public)
+ * - `std::vector<std::string> fileGUID = {};` (meta_t::public)
+ * - `std::map<std::string, int> LFN = {};` (meta_t::public)
+ * - `std::map<std::string, weights_t> misc = {};` (meta_t::public)
  */
 
-/** @} */  // end of modules_structs_include_structs_meta_h
+/** @} */

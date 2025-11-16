@@ -3,15 +3,28 @@
  * @brief Documentation for pyc/operators/include/operators/operators.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/pyc/operators/include/operators/operators.h
  */
 
 /**
  * @defgroup pyc_operators_include_operators_operators_h operators.h
- * @brief operators.h - pyc/operators/include/operators
- * 
+ * @brief operators.h
  * @{
  */
 
-/** @} */  // end of pyc_operators_include_operators_operators_h
+/**
+ * @section functions Functions
+ *
+ * - `torch::Tensor Dot(torch::Tensor* v1, torch::Tensor* v2);`
+ * - `torch::Tensor Cross(torch::Tensor* v1, torch::Tensor* v2);`
+ * - `torch::Tensor CosTheta(torch::Tensor* v1, torch::Tensor* v2);`
+ * - `torch::Tensor SinTheta(torch::Tensor* v1, torch::Tensor* v2);`
+ * - `torch::Tensor Rx(torch::Tensor* angle);`
+ * - `torch::Tensor Ry(torch::Tensor* angle);`
+ * - `torch::Tensor Rz(torch::Tensor* angle);`
+ * - `torch::Tensor CoFactors(torch::Tensor* matrix);`
+ * - `torch::Tensor Determinant(torch::Tensor* matrix);`
+ * - `torch::Tensor Inverse(torch::Tensor* matrix);`
+ */
+
+/** @} */

@@ -3,15 +3,35 @@
  * @brief Documentation for modules/analysis/selection_build.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/analysis/selection_build.cxx
  */
 
 /**
  * @defgroup modules_analysis_selection_build_cxx selection_build.cxx
- * @brief selection_build.cxx - modules/analysis
- * 
+ * @brief selection_build.cxx
  * @{
  */
 
-/** @} */  // end of modules_analysis_selection_build_cxx
+/**
+ * @section functions Functions
+ *
+ * - `void analysis::build_selections(){ std::vector<event_template*> events_ = this -> tracer -> get_even`
+ * - `std::vector<event_template*> events_ = this -> tracer -> get_events("");`
+ * - `if (!events_.size()){return this -> warning("No Events found for Selection. Skipping...");}`
+ * - `if (this -> m_settings.selection_root){this -> tracer -> output_path = &this -> m_settings.output_pa`
+ * - `std::map<std::string, selection_template*>::iterator itx = this -> selection_names.begin();`
+ * - `for (; itx != this -> selection_names.end(); ++itx){`
+ * - `for (size_t x(0); x < events_.size(); ++x){`
+ * - `selection_template* sel_o = sel_t -> build(events_[x]);`
+ * - `if (!this -> tracer -> add_selection(sel_o)){continue;}`
+ * - `this -> success("Built Selections from Events");`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::vector<event_template*> events_ = this -> tracer -> get_events("");` (::private)
+ * - `std::map<std::string, selection_template*>::iterator itx = this -> selection_nam` (::private)
+ */
+
+/** @} */

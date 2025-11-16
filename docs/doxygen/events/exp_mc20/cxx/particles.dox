@@ -3,22 +3,129 @@
  * @brief Documentation for events/exp_mc20/cxx/particles.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/events/exp_mc20/cxx/particles.cxx
  */
 
 /**
  * @defgroup events_exp_mc20_cxx_particles_cxx particles.cxx
- * @brief particles.cxx - events/exp_mc20/cxx
- * 
+ * @brief particles.cxx
  * @{
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `mx()`
+ * @section functions Functions
+ *
+ * - `top::top(){ this -> type = "top";`
+ * - `this -> add_leaf("pt"    , "_pt");`
+ * - `this -> add_leaf("eta"   , "_eta");`
+ * - `this -> add_leaf("phi"   , "_phi");`
+ * - `this -> add_leaf("energy", "_e");`
+ * - `this -> add_leaf("charge", "_charge");`
+ * - `this -> add_leaf("pdgid"  , "_pdgid");`
+ * - `this -> add_leaf("index"  , "_top_index");`
+ * - `this -> add_leaf("barcode", "_barcode");`
+ * - `this -> add_leaf("status" , "_status");`
+ * - `this -> apply_type_prefix();`
+ * - `top::~top(){}  particle_template* top::clone(){return (particle_template*)new top();}`
+ * - `particle_template* top::clone(){return (particle_template*)new top();}`
+ * - `void top::build(std::map<std::string, particle_template*>* prt, element_t* el){ std::vector<top*> tp`
+ * - `pmu(&tps, el);`
+ * - `el -> get("charge", &ch);`
+ * - `el -> get("index"  , &idx);`
+ * - `el -> get("pdgid"  , &_pdgid);`
+ * - `for (size_t x(0); x < tps.size(); ++x){`
+ * - `(*prt)[std::string(tps[x] -> hash)] = tps[x];`
+ * - `child::child(){ this -> type = "child";`
+ * - `child::~child(){} particle_template* child::clone(){return (particle_template*)new child();}`
+ * - `particle_template* child::clone(){return (particle_template*)new child();}`
+ * - `void child::build(std::map<std::string, particle_template*>* prt, element_t* el){ std::vector<child*`
+ * - `physics_detector::physics_detector(){ this -> type = "physdet";`
+ * - `this -> add_leaf("index"    , "_index");`
+ * - `this -> add_leaf("top_index", "_top_index");`
+ * - `this -> add_leaf("parton"   , "_trueflavor");`
+ * - `physics_detector::~physics_detector(){} particle_template* physics_detector::clone(){return (particl`
+ * - `particle_template* physics_detector::clone(){return (particle_template*)new physics_detector();}`
+ * - `void physics_detector::build(std::map<std::string, particle_template*>* prt, element_t* el){ auto la`
+ * - `auto lamb = [](physics_detector* msp){ if (msp -> top_index.size() > 1){return true;}`
+ * - `if (msp -> top_index.size() > 1){return true;}`
+ * - `if (msp -> top_index[0] == -1){return false;}`
+ * - `el -> get("index" , &_index);`
+ * - `el -> get("parton", &parton);`
+ * - `el -> get("top_index", &_top_index);`
+ * - `tps.reserve(_top_index.size());`
+ * - `if (!lamb(tps[x])){delete tps[x]; tps[x] = nullptr;}`
+ * - `else {(*prt)[std::string(tps[x] -> hash)] = tps[x];}`
+ * - `physics_truth::physics_truth(){ this -> type = "phystru";`
+ * - `this -> add_leaf("index" , "_index");`
+ * - `this -> add_leaf("parton", "_partontruthlabel");`
+ * - `this -> add_leaf("type"     , "_type");`
+ * - `physics_truth::~physics_truth(){} particle_template* physics_truth::clone(){return (particle_templat`
+ * - `particle_template* physics_truth::clone(){return (particle_template*)new physics_truth();}`
+ * - `void physics_truth::build(std::map<std::string, particle_template*>* prt, element_t* el){ auto lamb `
+ * - `auto lamb = [](physics_truth* msp, std::vector<int>* prt){ int pdg = msp -> pdgid;`
+ * - `pdg = std::abs(pdg);`
+ * - `if (!prt -> size()){return false;}`
+ * - `if (pdg == 0){return false;}`
+ * - `if (pdg == 6){return false;}`
+ * - `if (pdg == 24){return false;}`
+ * - `if (pdg >= 11 && pdg <= 16){return false;}`
+ * - `int mx(0);`
+ * - `for (size_t x(0); x < prt -> size(); ++x){out[std::abs((*prt)[x])] += 1;}`
+ * - `for (itx = out.begin(); itx != out.end(); ++itx){`
+ * - `if (itx -> second < mx){continue;}`
+ * - `el -> get("type", &_type);`
+ * - `if (!lamb(tps[x], &_type[x])){delete tps[x]; tps[x] = nullptr;}`
+ * - `jet::jet(){ this -> type = "jet";`
+ * - `this -> add_leaf("flav"  , "_truthflav");`
+ * - `this -> add_leaf("parton", "_truthPartonLabel");`
+ * - `particle_template* jet::clone(){return (particle_template*)new jet();}`
+ * - `void jet::build(std::map<std::string, particle_template*>* prt, element_t* el){ std::vector<jet*> tp`
+ * - `el -> get("flav"  , &fl);`
+ * - `el -> get("parton", &prtn);`
+ * - `for (int x(0); x < tps.size(); ++x){`
+ * - `(*prt)[std::string(p -> hash)] = p;`
+ * - `jet::~jet(){}  electron::electron(){`
+ * - `electron::electron(){ this -> type = "el";`
+ * - `this -> add_leaf("charge"  , "_charge");`
+ * - `this -> add_leaf("tight"   , "_isTight");`
+ * - `this -> add_leaf("d0sig"   , "_d0sig");`
+ * - `this -> add_leaf("delta_z0", "_delta_z0_sintheta");`
+ * - `this -> add_leaf("type"    , "_true_type");`
+ * - `this -> add_leaf("origin"  , "_true_origin");`
+ * - `particle_template* electron::clone(){return (particle_template*)new electron();}`
+ * - `void electron::build(std::map<std::string, particle_template*>* prt, element_t* el){ std::vector<ele`
+ * - `el -> get("charge"  , &_charge);`
+ * - `el -> get("delta_z0", &z0);`
+ * - `el -> get("d0sig"   , &d0);`
+ * - `el -> get("tight", &tight);`
+ * - `el -> get("type"  , &typ);`
+ * - `el -> get("origin", &org);`
+ * - `p -> is_tight    = (bool)tight[x];`
+ * - `p -> pdgid       = int(11 * _charge[x]);`
+ * - `electron::~electron(){}  // ============================= Muon ========================= // muon::mu`
+ * - `muon::muon(){ this -> type = "mu";`
+ * - `this -> add_leaf("pt"      , "_pt");`
+ * - `this -> add_leaf("eta"     , "_eta");`
+ * - `this -> add_leaf("phi"     , "_phi");`
+ * - `this -> add_leaf("energy"  , "_e");`
+ * - `particle_template* muon::clone(){return (particle_template*)new muon();}`
+ * - `void muon::build(std::map<std::string, particle_template*>* prt, element_t* el){ std::vector<muon*> `
+ * - `p -> pdgid       = int(13 * _charge[x]);`
+ * - `muon::~muon(){}         `
  */
 
-/** @} */  // end of events_exp_mc20_cxx_particles_cxx
+/**
+ * @section variables Variables
+ *
+ * - `(*prt)[std::string(tps[x] -> hash)] = tps[x];` (::private)
+ * - `std::vector<physics_detector*> tps = {};` (::private)
+ * - `else {(*prt)[std::string(tps[x] -> hash)] = tps[x];}` (::private)
+ * - `auto lamb = [](physics_truth* msp, std::vector<int>* prt){` (::private)
+ * - `int pdg = msp -> pdgid;` (::private)
+ * - `pdg = std::abs(pdg);` (::private)
+ * - `for (size_t x(0); x < prt -> size(); ++x){out[std::abs((*prt)[x])] += 1;}` (::private)
+ * - `std::vector<physics_truth*> tps = {};` (::private)
+ * - `(*prt)[std::string(p -> hash)] = p;` (::private)
+ */
+
+/** @} */

@@ -3,15 +3,294 @@
  * @brief Documentation for metrics/pagerank/cxx/pagerank.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/metrics/pagerank/cxx/pagerank.cxx
  */
 
 /**
  * @defgroup metrics_pagerank_cxx_pagerank_cxx pagerank.cxx
- * @brief pagerank.cxx - metrics/pagerank/cxx
- * 
+ * @brief pagerank.cxx
  * @{
  */
 
-/** @} */  // end of metrics_pagerank_cxx_pagerank_cxx
+/**
+ * @section functions Functions
+ *
+ * - `pagerank_metric::~pagerank_metric(){} pagerank_metric* pagerank_metric::clone(){return new pagerank_`
+ * - `pagerank_metric* pagerank_metric::clone(){return new pagerank_metric();}`
+ * - `pagerank_metric::pagerank_metric(){this -> name = "pagerank";}`
+ * - `void pagerank_metric::define_variables(){ std::vector<std::string> modes_ = {"training", "validation`
+ * - `for (size_t x(0); x < modes_.size(); ++x){`
+ * - `this -> register_output(key, "top_truth_num_nodes", &this -> top_truth_num_nodes);`
+ * - `this -> register_output(key, "top_truth_pt"       , &this -> top_truth_pt );`
+ * - `this -> register_output(key, "top_truth_eta"      , &this -> top_truth_eta);`
+ * - `this -> register_output(key, "top_truth_phi"      , &this -> top_truth_phi);`
+ * - `this -> register_output(key, "top_truth_energy"   , &this -> top_truth_energy);`
+ * - `this -> register_output(key, "top_truth_px"       , &this -> top_truth_px  );`
+ * - `this -> register_output(key, "top_truth_py"       , &this -> top_truth_py  );`
+ * - `this -> register_output(key, "top_truth_pz"       , &this -> top_truth_pz  );`
+ * - `this -> register_output(key, "top_truth_mass"     , &this -> top_truth_mass);`
+ * - `this -> register_output(key, "top_pr_reco_num_nodes", &this -> top_pr_reco_num_nodes);`
+ * - `this -> register_output(key, "top_pr_reco_pt"       , &this -> top_pr_reco_pt       );`
+ * - `this -> register_output(key, "top_pr_reco_eta"      , &this -> top_pr_reco_eta      );`
+ * - `this -> register_output(key, "top_pr_reco_phi"      , &this -> top_pr_reco_phi      );`
+ * - `this -> register_output(key, "top_pr_reco_energy"   , &this -> top_pr_reco_energy   );`
+ * - `this -> register_output(key, "top_pr_reco_px"       , &this -> top_pr_reco_px      );`
+ * - `this -> register_output(key, "top_pr_reco_py"       , &this -> top_pr_reco_py      );`
+ * - `this -> register_output(key, "top_pr_reco_pz"       , &this -> top_pr_reco_pz      );`
+ * - `this -> register_output(key, "top_pr_reco_mass"     , &this -> top_pr_reco_mass    );`
+ * - `this -> register_output(key, "top_pr_reco_pagerank" , &this -> top_pr_reco_pagerank);`
+ * - `this -> register_output(key, "top_nom_reco_num_nodes", &this -> top_nom_reco_num_nodes);`
+ * - `this -> register_output(key, "top_nom_reco_pt"       , &this -> top_nom_reco_pt       );`
+ * - `this -> register_output(key, "top_nom_reco_eta"      , &this -> top_nom_reco_eta      );`
+ * - `this -> register_output(key, "top_nom_reco_phi"      , &this -> top_nom_reco_phi      );`
+ * - `this -> register_output(key, "top_nom_reco_energy"   , &this -> top_nom_reco_energy   );`
+ * - `this -> register_output(key, "top_nom_reco_px"       , &this -> top_nom_reco_px   );`
+ * - `this -> register_output(key, "top_nom_reco_py"       , &this -> top_nom_reco_py   );`
+ * - `this -> register_output(key, "top_nom_reco_pz"       , &this -> top_nom_reco_pz   );`
+ * - `this -> register_output(key, "top_nom_reco_mass"     , &this -> top_nom_reco_mass );`
+ * - `this -> register_output(key, "top_nom_reco_score"    , &this -> top_nom_reco_score);`
+ * - `this -> register_output(key, "process_mapping"       , &this -> process_mapping);`
+ * - `void pagerank_metric::event(){ this -> write("event_" + this -> mode, "top_truth_num_nodes"   , &thi`
+ * - `this -> write("event_" + this -> mode, "top_truth_num_nodes"   , &this -> top_truth_num_nodes);`
+ * - `this -> write("event_" + this -> mode, "top_truth_pt"          , &this -> top_truth_pt       );`
+ * - `this -> write("event_" + this -> mode, "top_truth_eta"         , &this -> top_truth_eta      );`
+ * - `this -> write("event_" + this -> mode, "top_truth_phi"         , &this -> top_truth_phi      );`
+ * - `this -> write("event_" + this -> mode, "top_truth_energy"      , &this -> top_truth_energy   );`
+ * - `this -> write("event_" + this -> mode, "top_truth_px"          , &this -> top_truth_px  );`
+ * - `this -> write("event_" + this -> mode, "top_truth_py"          , &this -> top_truth_py  );`
+ * - `this -> write("event_" + this -> mode, "top_truth_pz"          , &this -> top_truth_pz  );`
+ * - `this -> write("event_" + this -> mode, "top_truth_mass"        , &this -> top_truth_mass);`
+ * - `this -> write("event_" + this -> mode, "top_pr_reco_num_nodes" , &this -> top_pr_reco_num_nodes);`
+ * - `this -> write("event_" + this -> mode, "top_pr_reco_pt"        , &this -> top_pr_reco_pt       );`
+ * - `this -> write("event_" + this -> mode, "top_pr_reco_eta"       , &this -> top_pr_reco_eta      );`
+ * - `this -> write("event_" + this -> mode, "top_pr_reco_phi"       , &this -> top_pr_reco_phi      );`
+ * - `this -> write("event_" + this -> mode, "top_pr_reco_energy"    , &this -> top_pr_reco_energy   );`
+ * - `this -> write("event_" + this -> mode, "top_pr_reco_px"        , &this -> top_pr_reco_px      );`
+ * - `this -> write("event_" + this -> mode, "top_pr_reco_py"        , &this -> top_pr_reco_py      );`
+ * - `this -> write("event_" + this -> mode, "top_pr_reco_pz"        , &this -> top_pr_reco_pz      );`
+ * - `this -> write("event_" + this -> mode, "top_pr_reco_mass"      , &this -> top_pr_reco_mass    );`
+ * - `this -> write("event_" + this -> mode, "top_pr_reco_pagerank"  , &this -> top_pr_reco_pagerank);`
+ * - `this -> write("event_" + this -> mode, "top_nom_reco_num_nodes", &this -> top_nom_reco_num_nodes);`
+ * - `this -> write("event_" + this -> mode, "top_nom_reco_pt"       , &this -> top_nom_reco_pt       );`
+ * - `this -> write("event_" + this -> mode, "top_nom_reco_eta"      , &this -> top_nom_reco_eta      );`
+ * - `this -> write("event_" + this -> mode, "top_nom_reco_phi"      , &this -> top_nom_reco_phi      );`
+ * - `this -> write("event_" + this -> mode, "top_nom_reco_energy"   , &this -> top_nom_reco_energy   );`
+ * - `this -> write("event_" + this -> mode, "top_nom_reco_px"       , &this -> top_nom_reco_px   );`
+ * - `this -> write("event_" + this -> mode, "top_nom_reco_py"       , &this -> top_nom_reco_py   );`
+ * - `this -> write("event_" + this -> mode, "top_nom_reco_pz"       , &this -> top_nom_reco_pz   );`
+ * - `this -> write("event_" + this -> mode, "top_nom_reco_mass"     , &this -> top_nom_reco_mass );`
+ * - `this -> write("event_" + this -> mode, "top_nom_reco_score"    , &this -> top_nom_reco_score);`
+ * - `this -> write("event_" + this -> mode, "process_mapping"       , &this -> process_mapping, true); //`
+ * - `this -> top_truth_num_nodes.clear();`
+ * - `this -> top_truth_pt.clear();`
+ * - `this -> top_truth_eta.clear();`
+ * - `this -> top_truth_phi.clear();`
+ * - `this -> top_truth_energy.clear();`
+ * - `this -> top_truth_px.clear();`
+ * - `this -> top_truth_py.clear();`
+ * - `this -> top_truth_pz.clear();`
+ * - `this -> top_truth_mass.clear();`
+ * - `this -> top_pr_reco_num_nodes.clear();`
+ * - `this -> top_pr_reco_pt.clear();`
+ * - `this -> top_pr_reco_eta.clear();`
+ * - `this -> top_pr_reco_phi.clear();`
+ * - `this -> top_pr_reco_energy.clear();`
+ * - `this -> top_pr_reco_px.clear();`
+ * - `this -> top_pr_reco_py.clear();`
+ * - `this -> top_pr_reco_pz.clear();`
+ * - `this -> top_pr_reco_mass.clear();`
+ * - `this -> top_pr_reco_pagerank.clear();`
+ * - `this -> top_nom_reco_num_nodes.clear();`
+ * - `this -> top_nom_reco_pt.clear();`
+ * - `this -> top_nom_reco_eta.clear();`
+ * - `this -> top_nom_reco_phi.clear();`
+ * - `this -> top_nom_reco_energy.clear();`
+ * - `this -> top_nom_reco_px.clear();`
+ * - `this -> top_nom_reco_py.clear();`
+ * - `this -> top_nom_reco_pz.clear();`
+ * - `this -> top_nom_reco_mass.clear();`
+ * - `this -> top_nom_reco_score.clear();`
+ * - `void pagerank_metric::batch(){} void pagerank_metric::end(){`
+ * - `void pagerank_metric::end(){ std::map<std::string, std::map<std::string, long>>::iterator itr;`
+ * - `for (itr = this -> file_maps.begin(); itr != this -> file_maps.end(); ++itr){`
+ * - `std::map<std::string, long>::iterator itp = itr -> second.begin();`
+ * - `for (; itp != itr -> second.end(); ++itp){kx += itp -> first + "::" + std::to_string(itp -> second) `
+ * - `for (itr = this -> file_stats.begin(); itr != this -> file_stats.end(); ++itr){`
+ * - `std::ofstream files(out + ".txt");`
+ * - `files.close();`
+ * - `std::vector<particle_template*> pagerank_metric::build_top(std::map<int, std::map<int, particle_temp`
+ * - `std::map<int, std::map<int, particle_template*>>::iterator itr = mx -> begin();`
+ * - `for (; itr != mx -> end(); ++itr){`
+ * - `std::map<int, particle_template*>::iterator itx = itr -> second.begin();`
+ * - `for (; itx != itr -> second.end(); ++itx){tmp.push_back(itx -> second);}`
+ * - `this -> sum(&tmp, &px);`
+ * - `if (tops_.count(mass)){continue;}`
+ * - `for (size_t x(0); x < tmp.size(); ++x){px -> register_parent(tmp[x]);}`
+ * - `out.push_back(px);`
+ * - `int e = batch_offset + clust -> size();`
+ * - `float n_nodes = 1.0 / float(clust -> size());`
+ * - `for (itr = clust -> begin(); itr != clust -> end(); ++itr){`
+ * - `for (int y(s); y < e; ++y){Mij[src][y] = (src != y)*(*bin_data)[src][y];}`
+ * - `for (int y(s); y < e; ++y){`
+ * - `for (int x(s); x < e; ++x){sm += Mij[x][y];}`
+ * - `sm = ((sm) ? 1.0/sm : 0);`
+ * - `for (int x(s); x < e; ++x){Mij[x][y] = ((sm) ? Mij[x][y]*sm : n_nodes) * this -> alpha;}`
+ * - `pr_[y] = (*bin_data)[y][y] * n_nodes;`
+ * - `for (size_t t(0); t < this -> max_itr; ++t){`
+ * - `pr_.clear();`
+ * - `for (int src(s); src < e; ++src){`
+ * - `for (int x(s); x < e; ++x){pr_[src] += (Mij[src][x]*PR[x]);}`
+ * - `pr_[src] += (1 - this -> alpha) * n_nodes;`
+ * - `norm += std::abs(pr_[itr -> first] - PR[itr -> first]);`
+ * - `if (norm > this -> norm_lim){continue;}`
+ * - `for (int x(s); x < e; ++x){`
+ * - `for (int y(s); y < e; ++y){sc += (x != y) * Mij[x][y] * (pr_[y]);}`
+ * - `if (!norm){break;}`
+ * - `for (int x(s); x < e; ++x){PR[x] = PR[x] / norm;}`
+ * - `if (!PR[itr -> first]){continue;}`
+ * - `for (itp = itr -> second.begin(); itp != itr -> second.end(); ++itp){`
+ * - `if ((*bin_data)[itr -> first][ptr -> index] < 0.5){continue;}`
+ * - `std::map<std::string, particle_template*> mps = (*clust)[ptr -> index];`
+ * - `std::map<std::string, particle_template*>::iterator itx = mps.begin();`
+ * - `for (; itx != mps.end(); ++itx){`
+ * - `if (tmp.count(ptr -> hash) || clust -> count(ptr -> index)){continue;}`
+ * - `mps = (*clust)[ptr -> index];`
+ * - `itx = mps.begin();`
+ * - `if (tmp.size() <= 2){continue;}`
+ * - `for (itp = tmp.begin(); itp != tmp.end(); ++itp){hash = this -> tools::hash(hash + itp -> first);}`
+ * - `if (out -> count(hash)){continue;}`
+ * - `for (itp = tmp.begin(); itp != tmp.end(); ++itp){(*bin_out)[hash] += PR[itp -> second -> index];}`
+ * - `(*out)[hash] = this -> vectorize(&tmp);`
+ * - `void pagerank_metric::define_metric(metric_t* mtx){ this -> mode  = mtx -> mode();`
+ * - `this -> mode  = mtx -> mode();`
+ * - `std::vector<long> batch_idx              = mtx -> get<std::vector<long>>(graph_enum::batch_index, "i`
+ * - `std::vector<std::vector<int>>  edge_idx  = mtx -> get<std::vector<std::vector<int>>>(graph_enum::edg`
+ * - `std::vector<std::vector<int>> top_edge_t = mtx -> get<std::vector<std::vector<int>>>(graph_enum::tru`
+ * - `std::vector<std::vector<float>> edge_sc  = mtx -> get<std::vector<std::vector<float>>>( graph_enum::`
+ * - `std::vector<std::vector<double>> pt      = mtx -> get<std::vector<std::vector<double>>>(graph_enum::`
+ * - `std::vector<std::vector<double>> eta     = mtx -> get<std::vector<std::vector<double>>>(graph_enum::`
+ * - `std::vector<std::vector<double>> phi     = mtx -> get<std::vector<std::vector<double>>>(graph_enum::`
+ * - `std::vector<std::vector<double>> energy  = mtx -> get<std::vector<std::vector<double>>>(graph_enum::`
+ * - `std::vector<particle_template*> ptx = this -> make_particle(&pt, &eta, &phi, &energy);`
+ * - `for (size_t x(0); x < edge_idx[0].size(); ++x){`
+ * - `node_offsets[bx] += (src == dst);`
+ * - `if (top_edge_t[x][0]){real_tops[bx][src][dst] = ptr;}`
+ * - `if (top_0 >= top_1){continue;}`
+ * - `std::map<long, std::map<int, std::map<int, particle_template*>>>::iterator its = real_tops.begin();`
+ * - `for (; its != real_tops.end(); ++its){`
+ * - `std::vector<particle_template*> top_truth = this -> build_top(&real_tops[its -> first]);`
+ * - `std::string* fname = mtx -> get_filename(its -> first);`
+ * - `std::vector<std::string> spl = this -> split(*fname, "/");`
+ * - `if (spl.size() > 2){fn = spl[spl.size()-2] + "::" + spl[spl.size()-1];}`
+ * - `if (!this -> file_maps[this -> mode].count(fn)){ this -> file_maps[this -> mode][fn] = this -> file_`
+ * - `this -> file_maps[this -> mode][fn] = this -> file_stats[this -> mode].size();`
+ * - `for (size_t x(0); x < top_truth.size(); ++x){`
+ * - `this -> top_truth_num_nodes.push_back(px.size());`
+ * - `this -> top_truth_pt.push_back(tt -> pt / 1000.0);`
+ * - `this -> top_truth_eta.push_back(tt -> eta);`
+ * - `this -> top_truth_phi.push_back(tt -> phi);`
+ * - `this -> top_truth_energy.push_back(tt -> e / 1000.0);`
+ * - `this -> top_truth_px.push_back(tt -> px / 1000.0);`
+ * - `this -> top_truth_py.push_back(tt -> py / 1000.0);`
+ * - `this -> top_truth_pz.push_back(tt -> pz / 1000.0);`
+ * - `this -> top_truth_mass.push_back(tt -> mass / 1000.0);`
+ * - `std::map<int, std::map<int, particle_template*>>::iterator itr = nominal_tops[its -> first].begin();`
+ * - `for (; itr != nominal_tops[its -> first].end(); ++itr){`
+ * - `std::map<int, particle_template*>::iterator itx = nominal_tops[its -> first][itr -> first].begin();`
+ * - `for (; itx != nominal_tops[its -> first][itr -> first].end(); ++itx){`
+ * - `std::vector<particle_template*> vc = this -> vectorize(&tmp);`
+ * - `if (!vc.size()){continue;}`
+ * - `this -> sum(&vc, &px);`
+ * - `if (tops_.count(px -> hash)){continue;}`
+ * - `this -> top_nom_reco_num_nodes.push_back(vc.size());`
+ * - `this -> top_nom_reco_pt.push_back(px -> pt / 1000.0);`
+ * - `this -> top_nom_reco_eta.push_back(px -> eta);`
+ * - `this -> top_nom_reco_phi.push_back(px -> phi);`
+ * - `this -> top_nom_reco_energy.push_back(px -> e / 1000.0);`
+ * - `this -> top_nom_reco_px.push_back(px -> px / 1000.0);`
+ * - `this -> top_nom_reco_py.push_back(px -> py / 1000.0);`
+ * - `this -> top_nom_reco_pz.push_back(px -> pz / 1000.0);`
+ * - `this -> top_nom_reco_mass.push_back(px -> mass / 1000.0);`
+ * - `this -> top_nom_reco_score.push_back(sc);`
+ * - `this -> pagerank(&reco_tops[its -> first], &reco_tops_pr, &reco_tops_pagerank, &bin_top[its -> first`
+ * - `std::map<std::string, float>::iterator itp = reco_tops_pagerank.begin();`
+ * - `for (; itp != reco_tops_pagerank.end(); ++itp){`
+ * - `this -> sum(&tv, &tr);`
+ * - `this -> top_pr_reco_num_nodes.push_back(tv.size());`
+ * - `this -> top_pr_reco_pt.push_back(tr -> pt / 1000.0);`
+ * - `this -> top_pr_reco_eta.push_back(tr -> eta);`
+ * - `this -> top_pr_reco_phi.push_back(tr -> phi);`
+ * - `this -> top_pr_reco_energy.push_back(tr -> e / 1000.0);`
+ * - `this -> top_pr_reco_px.push_back(tr -> px / 1000.0);`
+ * - `this -> top_pr_reco_py.push_back(tr -> py / 1000.0);`
+ * - `this -> top_pr_reco_pz.push_back(tr -> pz / 1000.0);`
+ * - `this -> top_pr_reco_mass.push_back(tr -> mass / 1000.0);`
+ * - `this -> top_pr_reco_pagerank.push_back(itp -> second);`
+ * - `this -> event();`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::vector<std::string> modes_ = {"training", "validation", "evaluation"};` (::private)
+ * - `std::string key = "event_" + modes_[x];` (::private)
+ * - `std::string kx = "<file-mapping>\n";` (::private)
+ * - `std::map<std::string, long>::iterator itp = itr -> second.begin();` (::private)
+ * - `for (; itp != itr -> second.end(); ++itp){kx += itp -> first + "::" + std::to_st` (::private)
+ * - `std::string out = this -> output_path;` (::private)
+ * - `std::vector<particle_template*> out = {};` (::private)
+ * - `std::map<double, particle_template*> tops_ = {};` (::private)
+ * - `std::map<int, std::map<int, particle_template*>>::iterator itr = mx -> begin();` (::private)
+ * - `std::map<int, particle_template*>::iterator itx = itr -> second.begin();` (::private)
+ * - `double mass = px -> mass;` (::private)
+ * - `int s = batch_offset;` (::private)
+ * - `int e = batch_offset + clust -> size();` (::private)
+ * - `float n_nodes = 1.0 / float(clust -> size());` (::private)
+ * - `int src = itr -> first;` (::private)
+ * - `for (int y(s); y < e; ++y){Mij[src][y] = (src != y)*(*bin_data)[src][y];}` (::private)
+ * - `float sm = 0;` (::private)
+ * - `for (int x(s); x < e; ++x){sm += Mij[x][y];}` (::private)
+ * - `for (int x(s); x < e; ++x){Mij[x][y] = ((sm) ? Mij[x][y]*sm : n_nodes) * this ->` (::private)
+ * - `std::map<int, float> PR = pr_;` (::private)
+ * - `float sx = 0;` (::private)
+ * - `for (int x(s); x < e; ++x){pr_[src] += (Mij[src][x]*PR[x]);}` (::private)
+ * - `float norm = 0;` (::private)
+ * - `norm += std::abs(pr_[itr -> first] - PR[itr -> first]);` (::private)
+ * - `float sc = 0;` (::private)
+ * - `for (int y(s); y < e; ++y){sc += (x != y) * Mij[x][y] * (pr_[y]);}` (::private)
+ * - `for (int x(s); x < e; ++x){PR[x] = PR[x] / norm;}` (::private)
+ * - `std::map<std::string, particle_template*> mps = (*clust)[ptr -> index];` (::private)
+ * - `std::map<std::string, particle_template*>::iterator itx = mps.begin();` (::private)
+ * - `std::string hash = "";` (::private)
+ * - `std::vector<long> batch_idx              = mtx -> get<std::vector<long>>(graph_e` (::private)
+ * - `std::vector<std::vector<int>>  edge_idx  = mtx -> get<std::vector<std::vector<in` (::private)
+ * - `std::vector<std::vector<int>> top_edge_t = mtx -> get<std::vector<std::vector<in` (::private)
+ * - `std::vector<std::vector<float>> edge_sc  = mtx -> get<std::vector<std::vector<fl` (::private)
+ * - `std::vector<std::vector<double>> pt      = mtx -> get<std::vector<std::vector<do` (::private)
+ * - `std::vector<std::vector<double>> eta     = mtx -> get<std::vector<std::vector<do` (::private)
+ * - `std::vector<std::vector<double>> phi     = mtx -> get<std::vector<std::vector<do` (::private)
+ * - `std::vector<std::vector<double>> energy  = mtx -> get<std::vector<std::vector<do` (::private)
+ * - `std::vector<particle_template*> ptx = this -> make_particle(&pt, &eta, &phi, &en` (::private)
+ * - `int src = edge_idx[0][x];` (::private)
+ * - `int dst = edge_idx[1][x];` (::private)
+ * - `long bx = batch_idx[dst];` (::private)
+ * - `float top_0 = edge_sc[x][0];` (::private)
+ * - `float top_1 = edge_sc[x][1];` (::private)
+ * - `std::string hx = ptr -> hash;` (::private)
+ * - `int offset_node = 0;` (::private)
+ * - `std::map<long, std::map<int, std::map<int, particle_template*>>>::iterator its =` (::private)
+ * - `std::vector<particle_template*> top_truth = this -> build_top(&real_tops[its -> ` (::private)
+ * - `std::string fn = "";` (::private)
+ * - `std::string* fname = mtx -> get_filename(its -> first);` (::private)
+ * - `std::vector<std::string> spl = this -> split(*fname, "/");` (::private)
+ * - `std::map<std::string, particle_template*> px = tt -> parents;` (::private)
+ * - `std::map<int, std::map<int, particle_template*>>::iterator itr = nominal_tops[it` (::private)
+ * - `std::map<int, particle_template*>::iterator itx = nominal_tops[its -> first][itr` (::private)
+ * - `std::vector<particle_template*> vc = this -> vectorize(&tmp);` (::private)
+ * - `std::map<std::string, float> reco_tops_pagerank = {};` (::private)
+ * - `std::map<std::string, std::vector<particle_template*>> reco_tops_pr = {};` (::private)
+ * - `std::map<std::string, float>::iterator itp = reco_tops_pagerank.begin();` (::private)
+ * - `std::vector<particle_template*> tv = reco_tops_pr[itp -> first];` (::private)
+ */
+
+/** @} */

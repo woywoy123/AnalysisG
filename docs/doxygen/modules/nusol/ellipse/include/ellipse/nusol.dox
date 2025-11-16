@@ -3,112 +3,89 @@
  * @brief Documentation for modules/nusol/ellipse/include/ellipse/nusol.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/ellipse/include/ellipse/nusol.h
  */
 
 /**
  * @defgroup modules_nusol_ellipse_include_ellipse_nusol_h nusol.h
- * @brief nusol.h - modules/nusol/ellipse/include/ellipse
- * 
+ * @brief nusol.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **wrapper**
- * - **nuelx**
+ *
+ * - **mtx** (class)
+ * - **particle_template** (class)
+ * - **wrapper** (struct)
+ * - **nuelx** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **nuelx methods:**
- * - `nuelx()` - nuelx()
- * - `nuelx()` - nuelx(particle_template* b, particle_template* l, double mW, double mT)
- * - `nuelx()` - ~nuelx()
- * - `Sx()` - double Sx()
- * - `dSx_dmW()` - double dSx_dmW()
- * - `Sy()` - double Sy()
- * - `dSy_dmW()` - double dSy_dmW()
- * - `dSy_dmT()` - double dSy_dmT()
- * - `w()` - double w()
- * - `w2()` - double w2()
- * - `om2()` - double om2()
- * - `Z()` - double Z()
- * - `Z2()` - double Z2()
- * - `dZ_dmT()` - double dZ_dmT()
- * - `dZ_dmW()` - double dZ_dmW()
- * - `x0()` - double x0()
- * - `x1()` - double x1()
- * - `dx1_dmW()` - double dx1_dmW()
- * - `dx1_dmT()` - double dx1_dmT()
- * - `y1()` - double  y1()
- * - `dy1_dmW()` - double dy1_dmW()
- * - `dy1_dmT()` - double dy1_dmT()
- * - `r_mT()` - void r_mT(double* mt1_, double* mt2_)
- * - `r_mW()` - void r_mW(double* mw1_, double* mw2_)
- * - `Z_mW()` - void Z_mW(double* mw1_, double* mw2_)
- * - `Z_mT()` - void Z_mT(double* mt1_, double* mt2_, double mw_)
- * - `update()` - void update(double mt, double mw)
- * - `flush()` - void flush()
- * - `N()` - mtx* N()
- * - `H()` - mtx* H()
- * - `H_perp()` - mtx* H_perp()
- * - `H_tilde()` - mtx* H_tilde()
- * - `dH_dmW()` - mtx* dH_dmW()
- * - `dH_dmT()` - mtx* dH_dmT()
- * - `K()` - mtx* K()
- * - `R_T()` - mtx* R_T()
- * - `Z2()` - void Z2(double* A, double* B, double* C)
- * - `misc()` - void misc()
- * 
- * **wrapper methods:**
- * - `wrapper()` - wrapper(particle_template* p_)
- * 
+ * @section functions Functions
+ *
+ * - `wrapper(particle_template* p_);`
+ * - `nuelx();`
+ * - `nuelx(particle_template* b, particle_template* l, double mW, double mT);`
+ * - `~nuelx();`
+ * - `double Sx();`
+ * - `double dSx_dmW();`
+ * - `double Sy();`
+ * - `double dSy_dmW();`
+ * - `double dSy_dmT();`
+ * - `double w();`
+ * - `double w2();`
+ * - `double om2();`
+ * - `double Z();`
+ * - `double Z2();`
+ * - `double dZ_dmT();`
+ * - `double dZ_dmW();`
+ * - `double x0();`
+ * - `double x1();`
+ * - `double dx1_dmW();`
+ * - `double dx1_dmT();`
+ * - `double  y1();`
+ * - `double dy1_dmW();`
+ * - `double dy1_dmT();`
+ * - `void r_mT(double* mt1_, double* mt2_);`
+ * - `void r_mW(double* mw1_, double* mw2_);`
+ * - `void Z_mW(double* mw1_, double* mw2_);`
+ * - `void Z_mT(double* mt1_, double* mt2_, double mw_);`
+ * - `void update(double mt, double mw);`
+ * - `void flush();`
+ * - `mtx* N();`
+ * - `mtx* H();`
+ * - `mtx* H_perp();`
+ * - `mtx* H_tilde();`
+ * - `mtx* dH_dmW();`
+ * - `mtx* dH_dmT();`
+ * - `mtx* K();`
+ * - `mtx* R_T();`
+ * - `void Z2(double* A, double* B, double* C);`
+ * - `void misc();`
  */
 
 /**
- * @section variables Member Variables
- * 
- * **nuelx variables:**
- * - Public:
- *   - `b` (wrapper*)
- *   - `l` (wrapper*)
- * - Private:
- *   - `mw` (double)
- *   - `mt` (double)
- *   - `mw2` (double)
- *   - `mt2` (double)
- *   - `_s` (double)
- *   - `_c` (double)
- *   - `h_tilde` (mtx*)
- *   - `h` (mtx*)
- *   - `r_t` (mtx*)
- *   - `dw_H` (mtx*)
- *   - `dt_H` (mtx*)
- *   - `h_perp` (mtx*)
- *   - `n_matrx` (mtx*)
- *   - `k` (mtx*)
- * 
- * **wrapper variables:**
- * - Private:
- *   - `p` (double)
- *   - `m` (double)
- *   - `b` (double)
- *   - `p2` (double)
- *   - `m2` (double)
- *   - `b2` (double)
- *   - `phi` (double)
- *   - `theta` (double)
- *   - `px` (double)
- *   - `py` (double)
- *   - `pz` (double)
- *   - `e` (double)
- *   - `lnk` (particle_template*)
- * 
+ * @section variables Variables
+ *
+ * - `double p  = 0;` (::private)
+ * - `double m  = 0;` (::private)
+ * - `double b  = 0;` (::private)
+ * - `double p2 = 0;` (::private)
+ * - `double m2 = 0;` (::private)
+ * - `double b2 = 0;` (::private)
+ * - `double phi = 0;` (::private)
+ * - `double theta = 0;` (::private)
+ * - `double px = 0;` (::private)
+ * - `double py = 0;` (::private)
+ * - `double pz = 0;` (::private)
+ * - `double e  = 0;` (::private)
+ * - `double mw = 0;` (::private)
+ * - `double mt = 0;` (::private)
+ * - `double mw2 = 0;` (::private)
+ * - `double mt2 = 0;` (::private)
+ * - `double _s = 0;` (::private)
+ * - `double _c = 0;` (::private)
  */
 
-/** @} */  // end of modules_nusol_ellipse_include_ellipse_nusol_h
+/** @} */

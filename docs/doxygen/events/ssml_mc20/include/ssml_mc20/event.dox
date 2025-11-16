@@ -3,77 +3,64 @@
  * @brief Documentation for events/ssml_mc20/include/ssml_mc20/event.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/events/ssml_mc20/include/ssml_mc20/event.h
  */
 
 /**
  * @defgroup events_ssml_mc20_include_ssml_mc20_event_h event.h
- * @brief event.h - events/ssml_mc20/include/ssml_mc20
- * 
+ * @brief event.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **ssml_mc20** (inherits from event_template)
+ *
+ * - **ssml_mc20** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **ssml_mc20 methods:**
- * - `ssml_mc20()` - ssml_mc20()
- * - `ssml_mc20()` - virtual ~ssml_mc20()
- * - `clone()` - event_template* clone() override
- * - `build()` - void build(element_t* el) override
- * - `CompileEvent()` - void CompileEvent() override
- * 
+ * @section functions Functions
+ *
+ * - `ssml_mc20();`
+ * - `virtual ~ssml_mc20();`
+ * - `event_template* clone() override;`
+ * - `void build(element_t* el) override;`
+ * - `void CompileEvent() override;`
+ * - `std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt){ std::map<int, G*> data = {};`
+ * - `typename std::map<std::string, G*>::iterator ix = ipt -> begin();`
+ * - `for (; ix != ipt -> end(); ++ix){data[int(ix -> second -> index)] = ix -> second;}`
+ * - `void vectorize(std::map<m, G*>* ipt, std::vector<g*>* vec){ typename std::map<m, G*>::iterator ix = `
+ * - `typename std::map<m, G*>::iterator ix = ipt -> begin();`
+ * - `for (; ix != ipt -> end(); ++ix){vec -> push_back(ix -> second);}`
+ * - `bool match_object(std::map<int, top*>* topx, std::map<std::string, lx*>* objects){ typename std::map`
+ * - `typename std::map<std::string, lx*>::iterator ite = objects -> begin();`
+ * - `for (; ite != objects -> end(); ++ite){`
+ * - `particle_template* tx = (particle_template*)ite -> second;`
+ * - `if (ty == "mu" || ty == "el"){this -> Leptons.push_back(tx);}`
+ * - `else if (ty == "jet"){this -> Jets.push_back(tx);}`
+ * - `else if (ty == "truth_jet"){this -> TruthJets.push_back(tx);}`
+ * - `else if (ty == "parton"){this -> TruthChildren.push_back(tx);}`
+ * - `if (idx < 0 || !topx -> count(idx)){continue;}`
+ * - `top* tp = (*topx)[idx];`
+ * - `if (ty == "mu" || ty == "el"){tp -> leptons.push_back(tx);}`
+ * - `else if (ty == "jet"){tp -> jets.push_back(tx);}`
+ * - `else if (ty == "truth_jet"){tp -> truthjets.push_back(tx);}`
+ * - `else if (ty == "parton"){ tp -> register_child(tx);`
+ * - `tp -> register_child(tx);`
+ * - `tx -> register_parent((particle_template*)tp);`
  */
 
 /**
- * @section variables Member Variables
- * 
- * **ssml_mc20 variables:**
- * - Public:
- *   - `event_category` (float)
- *   - `weight_mc` (float)
- *   - `weight_pileup` (float)
- *   - `weight_beamspot` (float)
- *   - `weight_jvt_effSF` (float)
- *   - `weight_lep_tightSF` (float)
- *   - `weight_ftag_effSF` (float)
- *   - `global_trigger_SF` (float)
- *   - `phi` (float)
- *   - `met` (float)
- *   - `met_sum` (float)
- *   - `HT_all` (float)
- *   - `pass_ssee` (int)
- *   - `pass_ssem` (int)
- *   - `pass_ssmm` (int)
- *   - `pass_eem_zveto` (int)
- *   - `pass_eee_zveto` (int)
- *   - `pass_emm_zveto` (int)
- *   - `pass_mmm_zveto` (int)
- *   - `pass_llll_zveto` (int)
- *   - `pass_eem` (int)
- *   - `pass_eee` (int)
- *   - `pass_emm` (int)
- *   - `pass_mmm` (int)
- *   - `broken_event` (bool)
- *   - `n_electrons` (int)
- *   - `n_fjets` (int)
- *   - `n_jets` (int)
- *   - `n_leptons` (int)
- *   - `n_muons` (int)
- * - Private:
- *   - `data` (return)
- *   - `brk` (bool)
- *   - `idx` (int)
- *   - `brk` (return)
- * 
+ * @section variables Variables
+ *
+ * - `bool broken_event = false;` (::private)
+ * - `std::map<int, G*> data = {};` (::private)
+ * - `typename std::map<std::string, G*>::iterator ix = ipt -> begin();` (::private)
+ * - `typename std::map<m, G*>::iterator ix = ipt -> begin();` (::private)
+ * - `typename std::map<std::string, lx*>::iterator ite = objects -> begin();` (::private)
+ * - `bool brk = false;` (::private)
+ * - `int idx = ite -> second -> top_index;` (::private)
+ * - `std::string ty = ite -> second -> type;` (::private)
  */
 
-/** @} */  // end of events_ssml_mc20_include_ssml_mc20_event_h
+/** @} */

@@ -3,15 +3,65 @@
  * @brief Documentation for modules/model/cxx/model_lossfx.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/model/cxx/model_lossfx.cxx
  */
 
 /**
  * @defgroup modules_model_cxx_model_lossfx_cxx model_lossfx.cxx
- * @brief model_lossfx.cxx - modules/model/cxx
- * 
+ * @brief model_lossfx.cxx
  * @{
  */
 
-/** @} */  // end of modules_model_cxx_model_lossfx_cxx
+/**
+ * @section functions Functions
+ *
+ * - `std::map<std::string, std::string>::iterator itx = inpt -> begin();`
+ * - `for (; itx != inpt -> end(); ++itx){`
+ * - `if (out_fx -> count(o_fx)){continue;}`
+ * - `(*out_fx)[o_fx] = {nullptr, new lossfx(o_fx, l_fx)};`
+ * - `torch::Tensor* model_template::compute_loss(std::string pred, graph_enum feat){ std::tuple<torch::Te`
+ * - `switch(feat){ case graph_enum::truth_graph: prediction = this -> m_p_graph[pred]; truth = &this -> m`
+ * - `if (!prediction){return nullptr;}`
+ * - `this -> m_p_loss[feat][pred] = std::get<1>(*truth) -> loss(prediction,  std::get<0>(*truth));`
+ * - `void model_template::train_sequence(bool train){ if (this -> inference_mode){return;}`
+ * - `if (this -> inference_mode){return;}`
+ * - `if (this -> enable_anomaly){torch::autograd::AnomalyMode::set_enabled(true);}`
+ * - `if (!this -> _losses.size()){this -> _losses = std::vector<torch::Tensor*>(gr.size() + nd.size() + e`
+ * - `for (itr = gr.begin(); itr != gr.end(); ++itr, ++inx){this -> _losses[inx] = this -> compute_loss(it`
+ * - `for (itr = nd.begin(); itr != nd.end(); ++itr, ++inx){this -> _losses[inx] = this -> compute_loss(it`
+ * - `for (itr = ed.begin(); itr != ed.end(); ++itr, ++inx){this -> _losses[inx] = this -> compute_loss(it`
+ * - `if (!train || !this -> m_optim){return;}`
+ * - `this -> m_optim -> zero_grad();`
+ * - `size_t lx = this -> _losses.size();`
+ * - `for (size_t x(0); x < lx; ++x){`
+ * - `if (!this -> _losses[x]){continue;}`
+ * - `if (this -> retain_graph){ if (x < lx-1){this -> _losses[x] -> backward({}, c10::optional<bool>(true`
+ * - `if (x < lx-1){this -> _losses[x] -> backward({}, c10::optional<bool>(true), true);}`
+ * - `else {this -> _losses[x] -> backward();}`
+ * - `if (inx == -1){lss = *this -> _losses[x]; inx = x;}`
+ * - `if (!this -> retain_graph){lss.backward();}`
+ * - `this -> m_optim -> step();`
+ * - `if (lss.index({torch::isnan(lss) == false}).size({0})){return;}`
+ * - `this -> failure("Found NAN in loss. Aborting");`
+ * - `abort();`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::map<std::string, std::string>::iterator itx = inpt -> begin();` (::private)
+ * - `std::string o_fx = itx -> first;` (::private)
+ * - `std::string l_fx = itx -> second;` (::private)
+ * - `std::tuple<torch::Tensor*, lossfx*>* truth = nullptr;` (::private)
+ * - `torch::Tensor* prediction = nullptr;` (::private)
+ * - `this -> m_p_loss[feat][pred] = std::get<1>(*truth) -> loss(prediction,  std::get` (::private)
+ * - `std::map<std::string, std::string> gr = this -> o_graph;` (::private)
+ * - `std::map<std::string, std::string> nd = this -> o_node;` (::private)
+ * - `std::map<std::string, std::string> ed = this -> o_edge;` (::private)
+ * - `if (!this -> _losses.size()){this -> _losses = std::vector<torch::Tensor*>(gr.si` (::private)
+ * - `int inx = 0;` (::private)
+ * - `size_t lx = this -> _losses.size();` (::private)
+ * - `if (lss.index({torch::isnan(lss) == false}).size({0})){return;}` (::private)
+ */
+
+/** @} */

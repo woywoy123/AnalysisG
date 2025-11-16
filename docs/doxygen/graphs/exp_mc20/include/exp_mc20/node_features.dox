@@ -3,15 +3,40 @@
  * @brief Documentation for graphs/exp_mc20/include/exp_mc20/node_features.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/graphs/exp_mc20/include/exp_mc20/node_features.h
  */
 
 /**
  * @defgroup graphs_exp_mc20_include_exp_mc20_node_features_h node_features.h
- * @brief node_features.h - graphs/exp_mc20/include/exp_mc20
- * 
+ * @brief node_features.h
  * @{
  */
 
-/** @} */  // end of graphs_exp_mc20_include_exp_mc20_node_features_h
+/**
+ * @section functions Functions
+ *
+ * - `void static res_node(int* o, particle_template* p){ //    std::string type = p -> type;`
+ * - `void static top_node(int* o, particle_template* p){ std::string type = p -> type;`
+ * - `if (type == "jet"){ jet* tx = (jet*)p;`
+ * - `jet* tx = (jet*)p;`
+ * - `if (tx -> top_index < 0){*o = -1;}`
+ * - `else if (type == "mu"){ muon* tx = (muon*)p;`
+ * - `muon* tx = (muon*)p;`
+ * - `else if (type == "el"){ electron* tx = (electron*)p;`
+ * - `electron* tx = (electron*)p;`
+ * - `void static pt(double* o, particle_template* p){*o = p -> pt;}`
+ * - `void static eta(double* o, particle_template* p){*o = p -> eta;}`
+ * - `void static phi(double* o, particle_template* p){*o = p -> phi;}`
+ * - `void static energy(double* o, particle_template* p){*o = p -> e;}`
+ * - `void static is_lepton(int* o, particle_template* p){*o = (p -> is_lep && !p -> is_nu);}`
+ * - `void static is_bquark(int* o, particle_template* p){*o = p -> is_b;}`
+ * - `void static is_neutrino(int* o, particle_template* p){*o = p -> is_nu;}`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::string type = p -> type;` (::private)
+ */
+
+/** @} */

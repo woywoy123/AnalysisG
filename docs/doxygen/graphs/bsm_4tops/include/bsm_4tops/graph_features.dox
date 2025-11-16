@@ -3,34 +3,37 @@
  * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/graph_features.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graph_features.h
  */
 
 /**
  * @defgroup graphs_bsm_4tops_include_bsm_4tops_graph_features_h graph_features.h
- * @brief graph_features.h - graphs/bsm_4tops/include/bsm_4tops
- * 
+ * @brief graph_features.h
  * @{
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `num_tops()`
- * - `num_lepton()`
- * - `num_neutrino()`
- * - `signal_event()`
- * - `missing_et()`
- * - `missing_phi()`
- * - `num_leps()`
- * - `num_jets()`
- * - `num_quark()`
- * - `num_truthjets()`
- * - `num_children_leps()`
- * - `event_number()`
- * - `event_weight()`
+ * @section classes Classes and Structures
+ *
+ * - **bsm_4tops** (class)
  */
 
-/** @} */  // end of graphs_bsm_4tops_include_bsm_4tops_graph_features_h
+/**
+ * @section functions Functions
+ *
+ * - `void num_tops(int* o, bsm_4tops* event);`
+ * - `void num_lepton(int* o, bsm_4tops* event);`
+ * - `void num_neutrino(int* o, bsm_4tops* event);`
+ * - `void signal_event(bool* o, bsm_4tops* event);`
+ * - `void missing_et(double* o, bsm_4tops* event);`
+ * - `void missing_phi(double* o, bsm_4tops* event);`
+ * - `void num_leps(double* o, bsm_4tops* event);`
+ * - `void num_jets(double* o, bsm_4tops* event);`
+ * - `void num_quark(double* o, bsm_4tops* event);`
+ * - `void num_truthjets(double* o, bsm_4tops* event);`
+ * - `void num_children_leps(double* o, bsm_4tops* event);`
+ * - `void event_number(long* o, bsm_4tops* event);`
+ * - `void event_weight(double* o, bsm_4tops* event);`
+ */
+
+/** @} */

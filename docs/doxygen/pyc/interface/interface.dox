@@ -3,15 +3,198 @@
  * @brief Documentation for pyc/interface/interface.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/pyc/interface/interface.cxx
  */
 
 /**
  * @defgroup pyc_interface_interface_cxx interface.cxx
- * @brief interface.cxx - pyc/interface
- * 
+ * @brief interface.cxx
  * @{
  */
 
-/** @} */  // end of pyc_interface_interface_cxx
+/**
+ * @section functions Functions
+ *
+ * - `neutrino::neutrino(){this -> type = "nunu";}`
+ * - `neutrino::neutrino(double px, double py, double pz){ particle_t* p = &this -> data;`
+ * - `neutrino::~neutrino(){ if (this -> bquark){delete this -> bquark;}`
+ * - `if (this -> bquark){delete this -> bquark;}`
+ * - `if (this -> lepton){delete this -> lepton;}`
+ * - `for (size_t x(0); x < this -> alternatives.size(); ++x){`
+ * - `if (!this -> alternatives[x]){continue;}`
+ * - `torch::Dict<std::string, torch::Tensor> pyc::std_to_dict(std::map<std::string, torch::Tensor>* inpt)`
+ * - `std::map<std::string, torch::Tensor>::iterator itr = inpt -> begin();`
+ * - `for (; itr != inpt -> end(); ++itr){out.insert(itr -> first, itr -> second);}`
+ * - `torch::Dict<std::string, torch::Tensor> pyc::std_to_dict(std::map<std::string, torch::Tensor> inpt){`
+ * - `return pyc::std_to_dict(&inpt);`
+ * - `torch::Tensor pyc::tensorize(std::vector<double>* inpt){ torch::TensorOptions ops = torch::TensorOpt`
+ * - `torch::TensorOptions ops = torch::TensorOptions(torch::kCPU);`
+ * - `return build_tensor(inpt, torch::kDouble, double(), &ops).view({-1, int(inpt -> size())});`
+ * - `torch::Tensor pyc::tensorize(std::vector<long>* inpt){ torch::TensorOptions ops = torch::TensorOptio`
+ * - `return build_tensor(inpt, torch::kLong, long(), &ops).view({-1, int(inpt -> size())});`
+ * - `torch::Tensor pyc::tensorize(std::vector<std::vector<double>>* inpt){ std::vector<torch::Tensor> mrg`
+ * - `for (size_t x(0); x < inpt -> size(); ++x){mrg.push_back(pyc::tensorize(&(*inpt)[x]));}`
+ * - `return torch::cat(mrg, {0});`
+ * - `torch::Tensor pyc::tensorize(std::vector<std::vector<long>>* inpt){ std::vector<torch::Tensor> mrg;`
+ * - `std::vector<neutrino*> construct_particle(torch::Tensor* inpt, torch::Tensor* ln, torch::Tensor* bn,`
+ * - `std::vector<signed long> s = tensor_size(inpt);`
+ * - `tensor_to_vector(inpt, &pmc, &s, double(0));`
+ * - `if (ln){ s = tensor_size(ln);`
+ * - `s = tensor_size(ln);`
+ * - `tensor_to_vector(ln, &_l, &s, long(0));`
+ * - `tensor_to_vector(bn, &_b, &s, long(0));`
+ * - `for (size_t x(0); x < dst -> size(); ++x){o += (*dst)[x] != 0;}`
+ * - `if (!o){return {};}`
+ * - `std::vector<neutrino*> out(o, nullptr); o = 0;`
+ * - `for (size_t x(0); x < pmc.size(); ++x){`
+ * - `if (!(*dst)[x]){continue;}`
+ * - `if (!(pmc[x][0]*pmc[x][1]*pmc[x][2])){continue;}`
+ * - `neutrino* nx = new neutrino(pmc[x][0], pmc[x][1], pmc[x][2]);`
+ * - `nx -> min   = (*dst)[x];`
+ * - `nx -> b_idx = (bn) ? _b[x / 6][0] : x / 6;`
+ * - `nx -> l_idx = (ln) ? _l[x / 6][0] : x / 6;`
+ * - `torch::Tensor b1   = pyc::tensorize(pmc_b1);`
+ * - `torch::Tensor b2   = pyc::tensorize(pmc_b2);`
+ * - `torch::Tensor l1   = pyc::tensorize(pmc_l1);`
+ * - `torch::Tensor l2   = pyc::tensorize(pmc_l2);`
+ * - `torch::Tensor m1   = pyc::tensorize(mass1);`
+ * - `torch::Tensor m2   = pyc::tensorize(mass2);`
+ * - `torch::Tensor met_ = pyc::tensorize(met).view({-1, 1});`
+ * - `torch::Tensor phi_ = pyc::tensorize(phi).view({-1, 1});`
+ * - `b1   = changedev(dev, &b1  );`
+ * - `b2   = changedev(dev, &b2  );`
+ * - `l1   = changedev(dev, &l1  );`
+ * - `l2   = changedev(dev, &l2  );`
+ * - `m1   = changedev(dev, &m1  );`
+ * - `m2   = changedev(dev, &m2  );`
+ * - `met_ = changedev(dev, &met_);`
+ * - `phi_ = changedev(dev, &phi_);`
+ * - `torch::Tensor metxy = torch::cat({pyc::transform::separate::Px(met_, phi_), pyc::transform::separate`
+ * - `torch::Dict<std::string, torch::Tensor> nus = pyc::nusol::NuNu(b1, b2, l1, l2, metxy, null, m1, m2, `
+ * - `torch::Tensor nu1 = nus.at("nu1").view({-1, 3});`
+ * - `torch::Tensor nu2 = nus.at("nu2").view({-1, 3});`
+ * - `torch::Tensor dis = nus.at("distances").view({-1});`
+ * - `tensor_to_vector(&dis, &dist);`
+ * - `std::vector<neutrino*> nu1_ = construct_particle(&nu1, nullptr, nullptr, &dist);`
+ * - `std::vector<neutrino*> nu2_ = construct_particle(&nu2, nullptr, nullptr, &dist);`
+ * - `for (size_t x(0); x < nu1_.size(); ++x){out.push_back({nu1_[x], nu2_[x]});}`
+ * - `edge_index_.push_back({});`
+ * - `for (size_t x(0); x < bth_ -> size(); ++x){`
+ * - `long ix = (*bth_)[x];`
+ * - `for (size_t y(0); y < bth_ -> size(); ++y){`
+ * - `long iy = (*bth_)[y];`
+ * - `if (iy != ix){continue;}`
+ * - `edge_index_[0].push_back(long(x));`
+ * - `edge_index_[1].push_back(long(y));`
+ * - `if (!steps){std::cout << "FAILURE steps parameter set to 0" << std::endl; abort();}`
+ * - `torch::Tensor met        = pyc::tensorize(met_);`
+ * - `torch::Tensor phi        = pyc::tensorize(phi_);`
+ * - `torch::Tensor pmc        = pyc::tensorize(pmc_);`
+ * - `torch::Tensor isb        = pyc::tensorize(is_b_);`
+ * - `torch::Tensor isl        = pyc::tensorize(is_l_);`
+ * - `torch::Tensor bth        = pyc::tensorize(bth_);`
+ * - `torch::Tensor edge_index = pyc::tensorize(&edge_index_);`
+ * - `pmc        = changedev(dev, &pmc);`
+ * - `bth        = changedev(dev, &bth).view({-1});`
+ * - `met        = changedev(dev, &met).view({-1, 1});`
+ * - `phi        = changedev(dev, &phi).view({-1, 1});`
+ * - `edge_index = changedev(dev, &edge_index);`
+ * - `torch::Tensor pid   = torch::cat({changedev(dev, &isl).view({-1, 1}), changedev(dev, &isb).view({-1,`
+ * - `torch::Tensor metxy = torch::cat({pyc::transform::separate::Px(met, phi), pyc::transform::separate::`
+ * - `torch::Dict<std::string, torch::Tensor> nus = pyc::nusol::combinatorial(edge_index, bth, pmc, pid, m`
+ * - `if (!nus.contains("nu1")){return {};}`
+ * - `torch::Tensor nu1 = nus.at("nu1");`
+ * - `torch::Tensor nu2 = nus.at("nu2");`
+ * - `torch::Tensor l1  = nus.at("l1");`
+ * - `torch::Tensor l2  = nus.at("l2");`
+ * - `torch::Tensor b1  = nus.at("b1");`
+ * - `torch::Tensor b2  = nus.at("b2");`
+ * - `torch::Tensor dis = nus.at("distances");`
+ * - `torch::Tensor alt_dist = nus.at("alt.distances").reshape({-1});`
+ * - `torch::Tensor alt_nu1  = nus.at("alt.nu1").reshape({-1, 3});`
+ * - `torch::Tensor alt_nu2  = nus.at("alt.nu2").reshape({-1, 3});`
+ * - `torch::Tensor alt_l1   = nus.at("alt.l1");`
+ * - `torch::Tensor alt_b1   = nus.at("alt.b1");`
+ * - `torch::Tensor alt_l2   = nus.at("alt.l2");`
+ * - `torch::Tensor alt_b2   = nus.at("alt.b2");`
+ * - `std::vector<neutrino*> nu1_ = construct_particle(&nu1, &l1, &b1, &dist);`
+ * - `std::vector<neutrino*> nu2_ = construct_particle(&nu2, &l2, &b2, &dist);`
+ * - `tensor_to_vector(&alt_dist, &dist_);`
+ * - `std::vector<neutrino*> nu1alt = construct_particle(&alt_nu1, &alt_l1, &alt_b1, &dist_);`
+ * - `std::vector<neutrino*> nu2alt = construct_particle(&alt_nu2, &alt_l2, &alt_b2, &dist_);`
+ * - `for (size_t x(0); x < nu1_.size(); ++x){`
+ * - `bool inb = (!nu1_[x] || !nu2_[x]);`
+ * - `if (inb && nu1_[x]){delete nu1_[x]; nu1_[x] = nullptr;}`
+ * - `if (inb && nu2_[x]){delete nu2_[x]; nu2_[x] = nullptr;}`
+ * - `if (!inb){out.push_back({nu1_[x], nu2_[x]});}`
+ * - `for (size_t y(0); y < nu1alt.size(); ++y){`
+ * - `bool inx = (!nu1alt[y] || !nu2alt[y] || inb);`
+ * - `if (!inx && size_t(nu1_[x] -> index) != x){continue;}`
+ * - `if (inx && nu1alt[y]){delete nu1alt[y]; nu1alt[y] = nullptr;}`
+ * - `if (inx && nu2alt[y]){delete nu2alt[y]; nu2alt[y] = nullptr;}`
+ * - `if (inx){continue;}`
+ * - `nu1_[x] -> alternatives.push_back(nu1alt[y]);`
+ * - `nu2_[x] -> alternatives.push_back(nu2alt[y]);`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::map<std::string, torch::Tensor>::iterator itr = inpt -> begin();` (::private)
+ * - `torch::TensorOptions ops = torch::TensorOptions(torch::kCPU);` (::private)
+ * - `std::vector<signed long> s = tensor_size(inpt);` (::private)
+ * - `size_t o = 0;` (::private)
+ * - `for (size_t x(0); x < dst -> size(); ++x){o += (*dst)[x] != 0;}` (::private)
+ * - `std::vector<neutrino*> out(o, nullptr); o = 0;` (::private)
+ * - `torch::Tensor b1   = pyc::tensorize(pmc_b1);` (::private)
+ * - `torch::Tensor b2   = pyc::tensorize(pmc_b2);` (::private)
+ * - `torch::Tensor l1   = pyc::tensorize(pmc_l1);` (::private)
+ * - `torch::Tensor l2   = pyc::tensorize(pmc_l2);` (::private)
+ * - `torch::Tensor m1   = pyc::tensorize(mass1);` (::private)
+ * - `torch::Tensor m2   = pyc::tensorize(mass2);` (::private)
+ * - `torch::Tensor met_ = pyc::tensorize(met).view({-1, 1});` (::private)
+ * - `torch::Tensor phi_ = pyc::tensorize(phi).view({-1, 1});` (::private)
+ * - `torch::Tensor metxy = torch::cat({pyc::transform::separate::Px(met_, phi_), pyc:` (::private)
+ * - `torch::Dict<std::string, torch::Tensor> nus = pyc::nusol::NuNu(b1, b2, l1, l2, m` (::private)
+ * - `torch::Tensor nu1 = nus.at("nu1").view({-1, 3});` (::private)
+ * - `torch::Tensor nu2 = nus.at("nu2").view({-1, 3});` (::private)
+ * - `torch::Tensor dis = nus.at("distances").view({-1});` (::private)
+ * - `std::vector<neutrino*> nu1_ = construct_particle(&nu1, nullptr, nullptr, &dist);` (::private)
+ * - `std::vector<neutrino*> nu2_ = construct_particle(&nu2, nullptr, nullptr, &dist);` (::private)
+ * - `std::vector<std::vector<long>> edge_index_ = {};` (::private)
+ * - `long ix = (*bth_)[x];` (::private)
+ * - `long iy = (*bth_)[y];` (::private)
+ * - `torch::Tensor met        = pyc::tensorize(met_);` (::private)
+ * - `torch::Tensor phi        = pyc::tensorize(phi_);` (::private)
+ * - `torch::Tensor pmc        = pyc::tensorize(pmc_);` (::private)
+ * - `torch::Tensor isb        = pyc::tensorize(is_b_);` (::private)
+ * - `torch::Tensor isl        = pyc::tensorize(is_l_);` (::private)
+ * - `torch::Tensor bth        = pyc::tensorize(bth_);` (::private)
+ * - `torch::Tensor edge_index = pyc::tensorize(&edge_index_);` (::private)
+ * - `torch::Tensor pid   = torch::cat({changedev(dev, &isl).view({-1, 1}), changedev(` (::private)
+ * - `torch::Tensor metxy = torch::cat({pyc::transform::separate::Px(met, phi), pyc::t` (::private)
+ * - `torch::Dict<std::string, torch::Tensor> nus = pyc::nusol::combinatorial(edge_ind` (::private)
+ * - `torch::Tensor nu1 = nus.at("nu1");` (::private)
+ * - `torch::Tensor nu2 = nus.at("nu2");` (::private)
+ * - `torch::Tensor l1  = nus.at("l1");` (::private)
+ * - `torch::Tensor l2  = nus.at("l2");` (::private)
+ * - `torch::Tensor b1  = nus.at("b1");` (::private)
+ * - `torch::Tensor b2  = nus.at("b2");` (::private)
+ * - `torch::Tensor dis = nus.at("distances");` (::private)
+ * - `torch::Tensor alt_dist = nus.at("alt.distances").reshape({-1});` (::private)
+ * - `torch::Tensor alt_nu1  = nus.at("alt.nu1").reshape({-1, 3});` (::private)
+ * - `torch::Tensor alt_nu2  = nus.at("alt.nu2").reshape({-1, 3});` (::private)
+ * - `torch::Tensor alt_l1   = nus.at("alt.l1");` (::private)
+ * - `torch::Tensor alt_b1   = nus.at("alt.b1");` (::private)
+ * - `torch::Tensor alt_l2   = nus.at("alt.l2");` (::private)
+ * - `torch::Tensor alt_b2   = nus.at("alt.b2");` (::private)
+ * - `std::vector<neutrino*> nu1_ = construct_particle(&nu1, &l1, &b1, &dist);` (::private)
+ * - `std::vector<neutrino*> nu2_ = construct_particle(&nu2, &l2, &b2, &dist);` (::private)
+ * - `std::vector<neutrino*> nu1alt = construct_particle(&alt_nu1, &alt_l1, &alt_b1, &` (::private)
+ * - `std::vector<neutrino*> nu2alt = construct_particle(&alt_nu2, &alt_l2, &alt_b2, &` (::private)
+ * - `std::vector<std::pair<neutrino*, neutrino*>> out = {};` (::private)
+ * - `bool inb = (!nu1_[x] || !nu2_[x]);` (::private)
+ * - `bool inx = (!nu1alt[y] || !nu2alt[y] || inb);` (::private)
+ */
+
+/** @} */

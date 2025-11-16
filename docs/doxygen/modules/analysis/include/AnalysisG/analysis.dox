@@ -3,44 +3,84 @@
  * @brief Documentation for modules/analysis/include/AnalysisG/analysis.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/analysis/include/AnalysisG/analysis.h
  */
 
 /**
  * @defgroup modules_analysis_include_AnalysisG_analysis_h analysis.h
- * @brief analysis.h - modules/analysis/include/AnalysisG
- * 
+ * @brief analysis.h
  * @{
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `add_samples()`
- * - `add_selection_template()`
- * - `add_event_template()`
- * - `add_graph_template()`
- * - `add_metric_template()`
- * - `add_model()`
- * - `attach_threads()`
- * - `start()`
- * - `check_cache()`
- * - `build_project()`
- * - `build_events()`
- * - `build_selections()`
- * - `build_graphs()`
- * - `build_model_session()`
- * - `build_inference()`
- * - `build_metric()`
- * - `build_metric_folds()`
- * - `build_dataloader()`
- * - `fetchtags()`
- * - `add_content()`
- * - `execution()`
- * - `execution_metric()`
- * - `initialize_loop()`
+ * @section classes Classes and Structures
+ *
+ * - **analysis** (class)
  */
 
-/** @} */  // end of modules_analysis_include_AnalysisG_analysis_h
+/**
+ * @section functions Functions
+ *
+ * - `void flush(std::map<std::string, g*>* data){ typename std::map<std::string, g*>::iterator tx = data `
+ * - `typename std::map<std::string, g*>::iterator tx = data -> begin();`
+ * - `for (; tx != data -> end(); ++tx){delete tx -> second;}`
+ * - `data -> clear();`
+ * - `analysis();`
+ * - `~analysis();`
+ * - `void add_samples(std::string path, std::string label);`
+ * - `void add_selection_template(selection_template* sel);`
+ * - `void add_event_template(event_template* ev, std::string label);`
+ * - `void add_graph_template(graph_template* gr, std::string label);`
+ * - `void add_metric_template(metric_template* mx, model_template* mdl);`
+ * - `void add_model(model_template* model, optimizer_params_t* op, std::string run_name);`
+ * - `void add_model(model_template* model, std::string run_name);`
+ * - `void attach_threads();`
+ * - `void start();`
+ * - `std::map<std::string, std::vector<float>> progress();`
+ * - `std::map<std::string, std::string> progress_mode();`
+ * - `std::map<std::string, std::string> progress_report();`
+ * - `std::map<std::string, bool> is_complete();`
+ * - `void check_cache();`
+ * - `void build_project();`
+ * - `void build_events();`
+ * - `void build_selections();`
+ * - `void build_graphs();`
+ * - `void build_model_session();`
+ * - `void build_inference();`
+ * - `bool build_metric();`
+ * - `void build_metric_folds();`
+ * - `void build_dataloader(bool training);`
+ * - `void fetchtags();`
+ * - `static void execution_metric(metric_t* mt, size_t* prg, std::string* msg);`
+ * - `void safe_clone(std::map<std::string, g*>* mp, g* in){ std::string name = in -> name;`
+ * - `if (mp -> count(name)){return;}`
+ * - `(*mp)[name] = in -> clone(1);`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `typename std::map<std::string, g*>::iterator tx = data -> begin();` (::private)
+ * - `std::map<std::string, meta*> meta_data = {};` (::private)
+ * - `bool started = false;` (::private)
+ * - `std::string prefx, TTree* tt = nullptr` (::private)
+ * - `std::string name = in -> name;` (::private)
+ * - `std::map<std::string, std::string> file_labels = {};` (::private)
+ * - `std::map<std::string, event_template*> event_labels = {};` (::private)
+ * - `std::map<std::string, metric_template*> metric_names = {};` (::private)
+ * - `std::map<std::string, selection_template*> selection_names = {};` (::private)
+ * - `std::map<std::string, std::map<std::string, graph_template*>> graph_labels = {};` (::private)
+ * - `std::vector<std::string> model_session_names = {};` (::private)
+ * - `std::map<std::string, model_template*> model_inference = {};` (::private)
+ * - `std::map<std::string, model_template*> model_metrics   = {};` (::private)
+ * - `std::vector<std::tuple<model_template*, optimizer_params_t*>> model_sessions = {` (::private)
+ * - `std::map<std::string, optimizer*   > trainer = {};` (::private)
+ * - `std::map<std::string, model_report*> reports = {};` (::private)
+ * - `std::vector<std::thread*> threads = {};` (::private)
+ * - `std::map<std::string, std::map<std::string, bool>> in_cache = {};` (::private)
+ * - `std::map<std::string, bool> skip_event_build = {};` (::private)
+ * - `std::map<std::string, std::string> graph_types = {};` (::private)
+ * - `std::vector<folds_t>* tags  = nullptr;` (::private)
+ */
+
+/** @} */

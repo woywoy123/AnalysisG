@@ -3,73 +3,119 @@
  * @brief Documentation for modules/selection/include/templates/selection_template.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/selection/include/templates/selection_template.h
  */
 
 /**
  * @defgroup modules_selection_include_templates_selection_template_h selection_template.h
- * @brief selection_template.h - modules/selection/include/templates
- * 
+ * @brief selection_template.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **selection_template** (inherits from tools)
+ *
+ * - **container** (class)
+ * - **selection_template** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **selection_template methods:**
- * - `selection_template()` - selection_template()
- * - `selection_template()` - virtual ~selection_template()
- * - `clone()` - virtual selection_template* clone()
- * - `selection()` - virtual bool selection(event_template* ev)
- * - `strategy()` - virtual bool strategy(event_template* ev)
- * - `merge()` - virtual void merge(selection_template* sel)
- * - `bulk_write()` - virtual void bulk_write(const long* idx, std::string* hx)
- * - `write()` - virtual void write(std::vector<particle_template*>* particles, std::string _name, particle_enum attrs)
- * - `switch_board()` - void switch_board(particle_enum attrs, particle_template* ptr, std::vector<std::vector<double>>* data)
- * - `switch_board()` - void switch_board(particle_enum attrs, particle_template* ptr, std::vector<int>*    data)
- * - `switch_board()` - void switch_board(particle_enum attrs, particle_template* ptr, std::vector<double>* data)
- * - `switch_board()` - void switch_board(particle_enum attrs, particle_template* ptr, std::vector<bool>*   data)
- * - `CompileEvent()` - bool CompileEvent()
- * - `build()` - selection_template* build(event_template* ev)
- * - `bulk_write_out()` - void bulk_write_out()
- * - `merger()` - void merger(selection_template* sl2)
- * 
+ * @section functions Functions
+ *
+ * - `selection_template();`
+ * - `virtual ~selection_template();`
+ * - `void static set_name(std::string*, selection_template*);`
+ * - `void static get_name(std::string*, selection_template*);`
+ * - `void static set_hash(std::string*, selection_template*);`
+ * - `void static get_hash(std::string*, selection_template*);`
+ * - `void static get_tree(std::string*, selection_template*);`
+ * - `void static set_weight(double*, selection_template*);`
+ * - `void static get_weight(double*, selection_template*);`
+ * - `void static set_index(long*, selection_template*);`
+ * - `virtual selection_template* clone();`
+ * - `virtual bool selection(event_template* ev);`
+ * - `virtual bool strategy(event_template* ev);`
+ * - `virtual void merge(selection_template* sel);`
+ * - `virtual void bulk_write(const long* idx, std::string* hx);`
+ * - `virtual void write(std::vector<particle_template*>* particles, std::string _name, particle_enum attr`
+ * - `void write(std::vector<g*>* particles, std::string _name, particle_enum attrs){ std::vector<particle`
+ * - `this -> downcast(particles, &ox);`
+ * - `this -> write(&ox, _name, attrs);`
+ * - `void switch_board(particle_enum attrs, particle_template* ptr, std::vector<std::vector<double>>* dat`
+ * - `void switch_board(particle_enum attrs, particle_template* ptr, std::vector<int>*    data);`
+ * - `void switch_board(particle_enum attrs, particle_template* ptr, std::vector<double>* data);`
+ * - `void switch_board(particle_enum attrs, particle_template* ptr, std::vector<bool>*   data);`
+ * - `void write(g* var, std::string _name){ if (!this -> handle){return;}`
+ * - `if (!this -> handle){return;}`
+ * - `this -> handle -> process(&_name) -> process(var, &_name, this -> handle -> tree);`
+ * - `void write(g var, std::string _name){ if (!this -> handle){return;}`
+ * - `this -> handle -> process(&_name) -> process(&var, &_name, this -> handle -> tree);`
+ * - `std::vector<std::map<std::string, float>> reverse_hash(std::vector<std::string>* hashes);`
+ * - `bool CompileEvent();`
+ * - `selection_template* build(event_template* ev);`
+ * - `bool operator == (selection_template& p);`
+ * - `void sum(std::vector<g*>* ch, k** out){ k* prt = new k();`
+ * - `k* prt = new k();`
+ * - `for (size_t x(0); x < ch -> size(); ++x){`
+ * - `if (!ch -> at(x)){continue;}`
+ * - `if (maps[ch -> at(x) -> hash]){continue;}`
+ * - `maps[ch -> at(x) -> hash] = true;`
+ * - `prt -> iadd(ch -> at(x));`
+ * - `this -> garbage[hash_].push_back((particle_template*)prt);`
+ * - `(*out) = prt;`
+ * - `void safe_delete(std::vector<g*>* particles){ for (size_t x(0); x < particles -> size(); ++x){`
+ * - `for (size_t x(0); x < particles -> size(); ++x){`
+ * - `if (particles -> at(x) -> _is_marked){continue;}`
+ * - `delete particles -> at(x);`
+ * - `(*particles)[x] = nullptr;`
+ * - `g* sum(std::map<std::string, g*>* ch){ g* out = nullptr;`
+ * - `typename std::vector<g*> vec = this -> vectorize(ch);`
+ * - `this -> sum(&vec, &out);`
+ * - `float sum(std::vector<g*>* ch){ particle_template* prt = nullptr;`
+ * - `this -> sum(ch, &prt);`
+ * - `std::vector<g*> vectorize(std::map<std::string, g*>* in){ typename std::vector<g*> out = {};`
+ * - `typename std::map<std::string, g*>::iterator itr = in -> begin();`
+ * - `for (; itr != in -> end(); ++itr){out.push_back(itr -> second);}`
+ * - `std::vector<g*> make_unique(std::vector<g*>* inpt){ std::map<std::string, g*> tmp;`
+ * - `for (size_t x(0); x < inpt -> size(); ++x){`
+ * - `std::string hash_ = (*inpt)[x] -> hash;`
+ * - `tmp[hash_] = (*inpt)[x];`
+ * - `for (itr = tmp.begin(); itr != tmp.end(); ++itr){out.push_back(itr -> second);}`
+ * - `void downcast(std::vector<g*>* inpt, std::vector<particle_template*>* out){ for (size_t x(0); x < in`
+ * - `for (size_t x(0); x < inpt -> size(); ++x){out -> push_back((particle_template*)(*inpt)[x]);}`
+ * - `void upcast(std::map<std::string, o*>* inpt, std::vector<g*>* out){ typename std::map<std::string, o`
+ * - `typename std::map<std::string, o*>::iterator itx = inpt -> begin();`
+ * - `for (; itx != inpt -> end(); ++itx){out -> push_back((g*)itx -> second);}`
+ * - `void upcast(std::vector<o*>* inpt, std::vector<g*>* out){ for (size_t x(0); x < inpt -> size(); ++x)`
+ * - `for (size_t x(0); x < inpt -> size(); ++x){out -> push_back((g*)(*inpt)[x]);}`
+ * - `void get_leptonics(std::map<std::string, g*> inpt, std::vector<particle_template*>* out){ typename s`
+ * - `typename std::map<std::string, g*>::iterator itr = inpt.begin();`
+ * - `for (; itr != inpt.end(); ++itr){`
+ * - `if (!itr -> second -> is_lep && !itr -> second -> is_nu){continue;}`
+ * - `out -> push_back((particle_template*)itr -> second);`
+ * - `bool contains(std::vector<g*>* inpt, j* pcheck){ for (size_t x(0); x < inpt -> size(); ++x){`
+ * - `if ((*inpt)[x] -> hash != pcheck -> hash){continue;}`
+ * - `void bulk_write_out();`
+ * - `void merger(selection_template* sl2);`
  */
 
 /**
- * @section variables Member Variables
- * 
- * **selection_template variables:**
- * - Public:
- *   - `name` (cproperty<std::string, selection_template>)
- *   - `hash` (cproperty<std::string, selection_template>)
- *   - `tree` (cproperty<std::string, selection_template>)
- *   - `weight` (cproperty<double, selection_template>)
- *   - `index` (cproperty<long, selection_template>)
- *   - `meta_data` (meta*)
- *   - `data` (event_t)
- *   - `out` (g*)
- *   - `out` (return)
- *   - `prt` (particle_template*)
- *   - `out` (return)
- *   - `out` (return)
- *   - `true` (return)
- *   - `false` (return)
- *   - `threadIdx` (int)
- * - Private:
- *   - `container` (friend)
- *   - `p_bulk_write` (bool)
- *   - `handle` (write_t*)
- *   - `m_event` (event_template*)
- * 
+ * @section variables Variables
+ *
+ * - `bool operator == (selection_template& p);` (::private)
+ * - `std::string filename = "";` (::private)
+ * - `std::string hash_ = prt -> hash;` (::private)
+ * - `typename std::vector<g*> vec = this -> vectorize(ch);` (::private)
+ * - `typename std::vector<g*> out = {};` (::private)
+ * - `typename std::map<std::string, g*>::iterator itr = in -> begin();` (::private)
+ * - `std::string hash_ = (*inpt)[x] -> hash;` (::private)
+ * - `typename std::map<std::string, o*>::iterator itx = inpt -> begin();` (::private)
+ * - `typename std::map<std::string, g*>::iterator itr = inpt.begin();` (::private)
+ * - `int threadIdx = -1;` (::private)
+ * - `std::map<std::string, std::map<std::string, float>> passed_weights = {};` (::private)
+ * - `std::map<std::string, meta_t> matched_meta = {};` (::private)
+ * - `bool p_bulk_write = true;` (::private)
+ * - `std::map<std::string, std::vector<particle_template*>> garbage = {};` (::private)
  */
 
-/** @} */  // end of modules_selection_include_templates_selection_template_h
+/** @} */

@@ -3,15 +3,97 @@
  * @brief Documentation for modules/typecasting/cxx/typecasting.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/typecasting/cxx/typecasting.cxx
  */
 
 /**
  * @defgroup modules_typecasting_cxx_typecasting_cxx typecasting.cxx
- * @brief typecasting.cxx - modules/typecasting/cxx
- * 
+ * @brief typecasting.cxx
  * @{
  */
 
-/** @} */  // end of modules_typecasting_cxx_typecasting_cxx
+/**
+ * @section functions Functions
+ *
+ * - `bool _transfer(torch::Tensor* data, torch::Tensor* cpux){ //    c10::cuda::CUDAStream strx = at::cud`
+ * - `cpux -> copy_(*data, true);`
+ * - `torch::cuda::synchronize(data -> device().index());`
+ * - `if (!cpux -> is_pinned()){return false;}`
+ * - `std::vector<signed long> tensor_size(torch::Tensor* inpt){ c10::IntArrayRef dims = inpt -> sizes();`
+ * - `c10::IntArrayRef dims = inpt -> sizes();`
+ * - `for (size_t x(0); x < dims.size(); ++x){out.push_back(dims[x]);}`
+ * - `variable_t::variable_t(){} variable_t::variable_t(bool ux){ this -> use_external = ux;}`
+ * - `variable_t::variable_t(bool ux){ this -> use_external = ux;}`
+ * - `variable_t::~variable_t(){ if (this -> type == data_enum::unset){return;}`
+ * - `if (this -> type == data_enum::unset){return;}`
+ * - `this -> flush_buffer();`
+ * - `void variable_t::create_meta(meta_t* mtf){ if (mtf){this -> mtx = mtf;}`
+ * - `if (mtf){this -> mtx = mtf;}`
+ * - `if (!this -> mtx){return;}`
+ * - `this -> tt = new TTree("MetaData", "meta");`
+ * - `this -> tt -> Branch("MetaData", mtf);`
+ * - `this -> tt -> Fill();`
+ * - `this -> tt -> Write("", TObject::kOverwrite);`
+ * - `void variable_t::build_switch(size_t s, torch::Tensor* tx){ // ======================= DEFINE YOUR V`
+ * - `if      (s == 3 && tx -> dtype() == torch::kDouble ){this -> type = data_enum::vvv_d;}`
+ * - `else if (s == 3 && tx -> dtype() == torch::kFloat32){this -> type = data_enum::vvv_f;}`
+ * - `else if (s == 3 && tx -> dtype() == torch::kLong   ){this -> type = data_enum::vvv_l;}`
+ * - `else if (s == 3 && tx -> dtype() == torch::kInt    ){this -> type = data_enum::vvv_i;}`
+ * - `else if (s == 3 && tx -> dtype() == torch::kBool   ){this -> type = data_enum::vvv_b;}`
+ * - `else if (s == 2 && tx -> dtype() == torch::kDouble ){this -> type = data_enum::vv_d;}`
+ * - `else if (s == 2 && tx -> dtype() == torch::kFloat32){this -> type = data_enum::vv_f;}`
+ * - `else if (s == 2 && tx -> dtype() == torch::kLong   ){this -> type = data_enum::vv_l;}`
+ * - `else if (s == 2 && tx -> dtype() == torch::kInt    ){this -> type = data_enum::vv_i;}`
+ * - `else if (s == 2 && tx -> dtype() == torch::kBool   ){this -> type = data_enum::vv_b;}`
+ * - `else if (s == 1 && tx -> dtype() == torch::kDouble ){this -> type = data_enum::v_d; }`
+ * - `else if (s == 1 && tx -> dtype() == torch::kFloat32){this -> type = data_enum::v_f; }`
+ * - `else if (s == 1 && tx -> dtype() == torch::kLong   ){this -> type = data_enum::v_l; }`
+ * - `else if (s == 1 && tx -> dtype() == torch::kInt    ){this -> type = data_enum::v_i; }`
+ * - `else if (s == 1 && tx -> dtype() == torch::kBool   ){this -> type = data_enum::v_b; }`
+ * - `if (this -> type != data_enum::undef){return;}`
+ * - `std::cout << "Tensor Type: " << tx -> dtype() << std::endl;`
+ * - `abort();`
+ * - `void variable_t::process(torch::Tensor* data, std::string* varname, TTree* tr){ std::vector<signed l`
+ * - `std::vector<signed long> s = tensor_size(data);`
+ * - `if (this -> type == data_enum::unset && varname){ this -> build_switch(s.size(), data);`
+ * - `this -> build_switch(s.size(), data);`
+ * - `if (!this -> tt && tr){ this -> create_meta(nullptr);`
+ * - `this -> create_meta(nullptr);`
+ * - `switch(this -> type){ case data_enum::vv_d: this -> add_data(this -> vv_d, data, &s, double(0)); bre`
+ * - `case data_enum::vv_d: this -> add_data(this -> vv_d, data, &s, double(0)); break;`
+ * - `case data_enum::vv_f: this -> add_data(this -> vv_f, data, &s, float(0) ); break;`
+ * - `case data_enum::vv_l: this -> add_data(this -> vv_l, data, &s, long(0)  ); break;`
+ * - `case data_enum::vv_i: this -> add_data(this -> vv_i, data, &s, int(0)   ); break;`
+ * - `case data_enum::vv_b: this -> add_data(this -> vv_b, data, &s, bool(0)  ); break;`
+ * - `case data_enum::v_d:  this -> add_data(this ->  v_d, data, &s, double(0)); break;`
+ * - `case data_enum::v_f:  this -> add_data(this ->  v_f, data, &s, float(0) ); break;`
+ * - `case data_enum::v_l:  this -> add_data(this ->  v_l, data, &s, long(0)  ); break;`
+ * - `case data_enum::v_i:  this -> add_data(this ->  v_i, data, &s, int(0)   ); break;`
+ * - `case data_enum::v_b:  this -> add_data(this ->  v_b, data, &s, bool(0)  ); break;`
+ * - `if (!this -> tt || !this -> tb || !this -> is_triggered){return;}`
+ * - `if (this -> is_triggered){this -> tt -> AddBranchToCache(this -> tb, true);}`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `variable_t::variable_t(bool ux){ this -> use_external = ux;}` (::private)
+ * - `if      (s == 3 && tx -> dtype() == torch::kDouble ){this -> type = data_enum::v` (::private)
+ * - `else if (s == 3 && tx -> dtype() == torch::kFloat32){this -> type = data_enum::v` (::private)
+ * - `else if (s == 3 && tx -> dtype() == torch::kLong   ){this -> type = data_enum::v` (::private)
+ * - `else if (s == 3 && tx -> dtype() == torch::kInt    ){this -> type = data_enum::v` (::private)
+ * - `else if (s == 3 && tx -> dtype() == torch::kBool   ){this -> type = data_enum::v` (::private)
+ * - `else if (s == 2 && tx -> dtype() == torch::kDouble ){this -> type = data_enum::v` (::private)
+ * - `else if (s == 2 && tx -> dtype() == torch::kFloat32){this -> type = data_enum::v` (::private)
+ * - `else if (s == 2 && tx -> dtype() == torch::kLong   ){this -> type = data_enum::v` (::private)
+ * - `else if (s == 2 && tx -> dtype() == torch::kInt    ){this -> type = data_enum::v` (::private)
+ * - `else if (s == 2 && tx -> dtype() == torch::kBool   ){this -> type = data_enum::v` (::private)
+ * - `else if (s == 1 && tx -> dtype() == torch::kDouble ){this -> type = data_enum::v` (::private)
+ * - `else if (s == 1 && tx -> dtype() == torch::kFloat32){this -> type = data_enum::v` (::private)
+ * - `else if (s == 1 && tx -> dtype() == torch::kLong   ){this -> type = data_enum::v` (::private)
+ * - `else if (s == 1 && tx -> dtype() == torch::kInt    ){this -> type = data_enum::v` (::private)
+ * - `else if (s == 1 && tx -> dtype() == torch::kBool   ){this -> type = data_enum::v` (::private)
+ * - `std::vector<signed long> s = tensor_size(data);` (::private)
+ */
+
+/** @} */

@@ -3,15 +3,53 @@
  * @brief Documentation for modules/roc/cxx/roc.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/roc/cxx/roc.cxx
  */
 
 /**
  * @defgroup modules_roc_cxx_roc_cxx roc.cxx
- * @brief roc.cxx - modules/roc/cxx
- * 
+ * @brief roc.cxx
  * @{
  */
 
-/** @} */  // end of modules_roc_cxx_roc_cxx
+/**
+ * @section functions Functions
+ *
+ * - `roc::roc(){} roc::~roc(){`
+ * - `roc::~roc(){ std::map<int, std::vector<std::vector<double>>*>::iterator itx;`
+ * - `for (itm = this -> roc_data.begin(); itm != this -> roc_data.end(); ++itm){`
+ * - `for (itx = itm -> second.begin(); itx != itm -> second.end(); ++itx){`
+ * - `for (size_t x(0); x < this -> ptr_roc.size(); ++x){delete this -> ptr_roc[x];}`
+ * - `size_t clx = (scores) ? scores -> at(0).size() : (1 + this -> max(label));`
+ * - `size_t lsx = (scores) ? scores -> size() : label -> size();`
+ * - `if (this -> roc_data[name].count(kfold)){ if (scores){`
+ * - `if (scores){ delete this -> roc_data[name][kfold];`
+ * - `this -> roc_data[name][kfold] = this -> generate<double>(lsx, clx);`
+ * - `else if (!scores){this -> roc_data[name][kfold] = this -> generate<double>(lsx, clx);}`
+ * - `else {this -> roc_data[name][kfold] = this -> generate<double>(lsx, clx);}`
+ * - `if (this -> labels[name].count(kfold)){ if (label){`
+ * - `if (label){ delete this -> labels[name][kfold];`
+ * - `this -> labels[name][kfold] = this -> generate<int>(lsx, clx);`
+ * - `else if (!label){this -> labels[name][kfold] = this -> generate<int>(lsx, clx);}`
+ * - `else {this -> labels[name][kfold] = this -> generate<int>(lsx, clx);}`
+ * - `for (size_t x(0); x < lsx; ++x){`
+ * - `for (size_t y(0); y < clx*(1 - !scores); ++y){(*vs)[x][y] = scores -> at(x).at(y);}`
+ * - `for (size_t y(0); y < clx*(1 - !label ); ++y){(*vt)[x][y] = label  -> at(x) == y;}`
+ * - `std::vector<roc_t*> roc::get_ROC(){ std::map<int, std::vector<std::vector<double>>*>::iterator itx;`
+ * - `roc_t* rc = new roc_t();`
+ * - `rc -> cls    = this -> labels[itm -> first][itx -> first] -> at(0).size();`
+ * - `this -> ptr_roc.push_back(rc);`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `size_t clx = (scores) ? scores -> at(0).size() : (1 + this -> max(label));` (::private)
+ * - `size_t lsx = (scores) ? scores -> size() : label -> size();` (::private)
+ * - `std::vector<std::vector<double>>* vs = this -> roc_data[name][kfold];` (::private)
+ * - `std::vector<std::vector<int   >>* vt = this -> labels[name][kfold];` (::private)
+ * - `for (size_t y(0); y < clx*(1 - !scores); ++y){(*vs)[x][y] = scores -> at(x).at(y` (::private)
+ * - `for (size_t y(0); y < clx*(1 - !label ); ++y){(*vt)[x][y] = label  -> at(x) == y` (::private)
+ */
+
+/** @} */

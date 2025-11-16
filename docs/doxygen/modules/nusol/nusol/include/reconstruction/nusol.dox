@@ -3,51 +3,46 @@
  * @brief Documentation for modules/nusol/nusol/include/reconstruction/nusol.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/nusol/include/reconstruction/nusol.h
  */
 
 /**
  * @defgroup modules_nusol_nusol_include_reconstruction_nusol_h nusol.h
- * @brief nusol.h - modules/nusol/nusol/include/reconstruction
- * 
+ * @brief nusol.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **nusol_enum**
- * - **nusol_t**
+ *
+ * - **nusol** (class)
+ * - **ellipse** (class)
+ * - **conuix** (class)
+ * - **nusol_enum** (class)
+ * - **nusol_t** (struct)
+ * - **nusol** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `solve()`
+ * @section functions Functions
+ *
+ * - `nusol(nusol_t* parameters);`
+ * - `void solve();`
+ * - `~nusol();`
  */
 
 /**
- * @section variables Member Variables
- * 
- * **nusol_t variables:**
- * - Public:
- *   - `met` (double)
- *   - `phi` (double)
- *   - `mt` (double)
- *   - `mw` (double)
- *   - `limit` (double)
- *   - `mode` (nusol_enum)
- * - Private:
- *   - `ellipse` (friend)
- *   - `conuix` (friend)
- *   - `nusol` (friend)
- *   - `met_x` (double)
- *   - `met_y` (double)
- *   - `met_z` (double)
- * 
+ * @section variables Variables
+ *
+ * - `double met = 0;` (nusol_t::public)
+ * - `double phi = 0;` (nusol_t::public)
+ * - `double mt = 172.68 * 1000;` (nusol_t::public)
+ * - `double mw = 80.385 * 1000;` (nusol_t::public)
+ * - `double limit = 10000;` (nusol_t::public)
+ * - `std::vector<particle_template*>* targets = nullptr;` (nusol_t::public)
+ * - `double met_x = 0;` (nusol_t::private)
+ * - `double met_y = 0;` (nusol_t::private)
+ * - `double met_z = 0;` (nusol_t::private)
  */
 
-/** @} */  // end of modules_nusol_nusol_include_reconstruction_nusol_h
+/** @} */

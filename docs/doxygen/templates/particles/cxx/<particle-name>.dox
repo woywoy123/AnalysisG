@@ -3,15 +3,35 @@
  * @brief Documentation for templates/particles/cxx/<particle-name>.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/templates/particles/cxx/<particle-name>.cxx
  */
 
 /**
- * @defgroup templates_particles_cxx_<particle_name>_cxx <particle-name>.cxx
- * @brief <particle-name>.cxx - templates/particles/cxx
- * 
+ * @defgroup templates_particles_cxx__particle_name__cxx <particle-name>.cxx
+ * @brief <particle-name>.cxx
  * @{
  */
 
-/** @} */  // end of templates_particles_cxx_<particle_name>_cxx
+/**
+ * @section functions Functions
+ *
+ * - `<particle-name>::<particle-name>(){ this -> type = "<some-particle>";`
+ * - `this -> add_leaf("<kinematic-key>", "<leaf-name-of-kinematic>");`
+ * - `this -> apply_type_prefix();`
+ * - `<particle-name>::~<particle-name>(){}  particle_template* <particle-name>::clone(){return (event_tem`
+ * - `particle_template* <particle-name>::clone(){return (event_template*)new <particle-name>();}`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el){ // here the framework bui`
+ * - `el -> get("<kinematic-key>", &some_kinematic);`
+ * - `for (int x(0); x < some_kinematic.size(); ++x){`
+ * - `<particle-name>* p = new <particle-name>();`
+ * - `(*prt)[std::string(p -> hash)] = p;`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::vector<float> some_kinematic = {};` (::private)
+ * - `(*prt)[std::string(p -> hash)] = p;` (::private)
+ */
+
+/** @} */

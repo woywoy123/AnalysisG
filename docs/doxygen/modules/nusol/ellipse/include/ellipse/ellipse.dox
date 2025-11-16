@@ -3,72 +3,55 @@
  * @brief Documentation for modules/nusol/ellipse/include/ellipse/ellipse.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/ellipse/include/ellipse/ellipse.h
  */
 
 /**
  * @defgroup modules_nusol_ellipse_include_ellipse_ellipse_h ellipse.h
- * @brief ellipse.h - modules/nusol/ellipse/include/ellipse
- * 
+ * @brief ellipse.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **nunu_t**
- * - **ellipse**
+ *
+ * - **nusol_t** (struct)
+ * - **nunu_t** (struct)
+ * - **ellipse** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **ellipse methods:**
- * - `ellipse()` - ellipse(nusol_t* parameters)
- * - `ellipse()` - ~ellipse()
- * - `prepare()` - void prepare(double mt, double mw)
- * - `solve()` - void solve()
- * - `flush()` - void flush()
- * - `make_neutrinos()` - void make_neutrinos(mtx* v, mtx* v_)
- * - `generate()` - int generate(nuelx* nu1, nuelx* nu2)
- * - `intersection()` - int intersection(mtx** v, mtx** v_)
- * - `angle_cross()` - int angle_cross( mtx** v, mtx** v_)
- * 
- * **nunu_t methods:**
- * - `nunu_t()` - nunu_t()
- * - `nunu_t()` - ~nunu_t()
- * 
+ * @section functions Functions
+ *
+ * - `nunu_t();` (nunu_t::public)
+ * - `~nunu_t();` (nunu_t::public)
+ * - `ellipse(nusol_t* parameters);` (ellipse::public)
+ * - `void prepare(double mt, double mw);` (ellipse::public)
+ * - `std::vector<particle_template*> nunu_make();` (ellipse::public)
+ * - `void solve();` (ellipse::public)
+ * - `~ellipse();` (ellipse::public)
+ * - `void flush();` (ellipse::private)
+ * - `void make_neutrinos(mtx* v, mtx* v_);` (ellipse::private)
+ * - `int generate(nuelx* nu1, nuelx* nu2);` (ellipse::private)
+ * - `int intersection(mtx** v, mtx** v_);` (ellipse::private)
+ * - `int angle_cross( mtx** v, mtx** v_);` (ellipse::private)
  */
 
 /**
- * @section variables Member Variables
- * 
- * **ellipse variables:**
- * - Private:
- *   - `params` (nusol_t*)
- *   - `p_nu1` (nuelx*)
- *   - `p_nu2` (nuelx*)
- *   - `m_nu1` (mtx*)
- *   - `m_nu2` (mtx*)
- *   - `m_agl` (mtx*)
- *   - `m_lx` (int)
- *   - `m_bst` (int)
- *   - `_metx` (double)
- *   - `_mety` (double)
- *   - `_metz` (double)
- *   - `n_lp` (int)
- *   - `n_bs` (int)
- * 
- * **nunu_t variables:**
- * - Private:
- *   - `nu1` (mtx*)
- *   - `nu2` (mtx*)
- *   - `agl` (mtx*)
- *   - `nux1` (nuelx*)
- *   - `nux2` (nuelx*)
- * 
+ * @section variables Variables
+ *
+ * - `std::map<int, std::tuple<nuelx*, nuelx*>> pairings;` (ellipse::private)
+ * - `std::map<double, nunu_t> solvs = {};` (ellipse::private)
+ * - `std::vector<particle_template*> bquarks = {};` (ellipse::private)
+ * - `std::vector<particle_template*> leptons = {};` (ellipse::private)
+ * - `std::vector<nuelx*> engines = {};` (ellipse::private)
+ * - `int m_lx = 0;` (ellipse::private)
+ * - `int m_bst = -1;` (ellipse::private)
+ * - `double _metx = 0;` (ellipse::private)
+ * - `double _mety = 0;` (ellipse::private)
+ * - `double _metz = 0;` (ellipse::private)
+ * - `int n_lp = 0;` (ellipse::private)
+ * - `int n_bs = 0;` (ellipse::private)
  */
 
-/** @} */  // end of modules_nusol_ellipse_include_ellipse_ellipse_h
+/** @} */

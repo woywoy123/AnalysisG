@@ -3,44 +3,110 @@
  * @brief Documentation for modules/model/include/templates/model_template.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/model/include/templates/model_template.h
  */
 
 /**
  * @defgroup modules_model_include_templates_model_template_h model_template.h
- * @brief model_template.h - modules/model/include/templates
- * 
+ * @brief model_template.h
  * @{
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `check_features()`
- * - `set_optimizer()`
- * - `initialize()`
- * - `clone_settings()`
- * - `import_settings()`
- * - `forward()`
- * - `register_module()`
- * - `prediction_graph_feature()`
- * - `prediction_node_feature()`
- * - `prediction_edge_feature()`
- * - `prediction_extra()`
- * - `evaluation_mode()`
- * - `save_state()`
- * - `restore_state()`
- * - `clone()`
- * - `set_input_features()`
- * - `set_output_features()`
- * - `get_name()`
- * - `set_name()`
- * - `get_dev_index()`
- * - `set_dev_index()`
- * - `set_device()`
- * - `flush_outputs()`
+ * @section classes Classes and Structures
+ *
+ * - **metrics** (class)
+ * - **analysis** (class)
+ * - **model_template** (class)
+ * - **metric_template** (class)
+ * - **optimizer** (class)
+ * - **dataloader** (class)
+ * - **graph_t** (struct)
+ * - **variable_t** (struct)
+ * - **optimizer_params_t** (struct)
+ * - **model_report** (struct)
+ * - **model_template** (class)
+ * - **graph_t** (struct)
+ * - **model_report** (struct)
+ * - **metrics** (class)
+ * - **analysis** (class)
+ * - **optimizer** (class)
+ * - **dataloader** (class)
+ * - **metric_template** (class)
  */
 
-/** @} */  // end of modules_model_include_templates_model_template_h
+/**
+ * @section functions Functions
+ *
+ * - `model_template();`
+ * - `virtual ~model_template();`
+ * - `virtual model_template* clone();`
+ * - `virtual void forward(graph_t* data);`
+ * - `virtual void train_sequence(bool mode);`
+ * - `void check_features(graph_t*);`
+ * - `void set_optimizer(std::string name);`
+ * - `void initialize(optimizer_params_t*);`
+ * - `void clone_settings(model_settings_t* setd);`
+ * - `void import_settings(model_settings_t* setd);`
+ * - `void forward(graph_t* data, bool train);`
+ * - `void forward(std::vector<graph_t*> data, bool train);`
+ * - `void register_module(torch::nn::Sequential* data);`
+ * - `void register_module(torch::nn::Sequential* data, mlp_init weight_init);`
+ * - `void prediction_graph_feature(std::string, torch::Tensor);`
+ * - `void prediction_node_feature(std::string, torch::Tensor);`
+ * - `void prediction_edge_feature(std::string, torch::Tensor);`
+ * - `void prediction_extra(std::string, torch::Tensor);`
+ * - `torch::Tensor* compute_loss(std::string, graph_enum);`
+ * - `void evaluation_mode(bool mode = true);`
+ * - `void save_state();`
+ * - `bool restore_state();`
+ * - `model_template* clone(int);`
+ * - `static void get_name(std::string*, model_template*);`
+ * - `static void set_name(std::string*, model_template*);`
+ * - `static void get_dev_index(int*, model_template*);`
+ * - `static void set_dev_index(int*, model_template*);`
+ * - `void assign(std::map<std::string, G>* inpt, graph_enum mode, F* data){ typename std::map<std::string`
+ * - `typename std::map<std::string, G>::iterator itr = inpt -> begin();`
+ * - `for (; itr != inpt -> end(); ++itr){this -> assign_features(itr -> first, mode, data);}`
+ * - `static void set_device(std::string*, model_template*);`
+ * - `torch::Tensor* assign_features(std::string inpt, graph_enum type, graph_t* data);`
+ * - `torch::Tensor* assign_features(std::string inpt, graph_enum type, std::vector<graph_t*>* data);`
+ * - `void flush_outputs();`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `bool is_mc = false;` (::private)
+ * - `bool use_pkl = false;` (::private)
+ * - `bool inference_mode = false;` (::private)
+ * - `bool enable_anomaly = false;` (::private)
+ * - `bool retain_graph   = false;` (::private)
+ * - `std::string model_checkpoint_path = "";` (::private)
+ * - `std::string weight_name = "event_weight";` (::private)
+ * - `std::string tree_name  = "nominal";` (::private)
+ * - `std::vector<torch::Tensor*> _losses = {};` (::private)
+ * - `torch::optim::Optimizer* m_optim  = nullptr;` (::private)
+ * - `void evaluation_mode(bool mode = true);` (::private)
+ * - `typename std::map<std::string, G>::iterator itr = inpt -> begin();` (::private)
+ * - `torch::TensorOptions*    m_option = nullptr;` (::private)
+ * - `torch::Tensor*         edge_index = nullptr;` (::private)
+ * - `bool                    m_batched = false;` (::private)
+ * - `int                  m_device_idx = -2;` (::private)
+ * - `std::string      s_optim = "";` (::private)
+ * - `std::string      m_name  = "model-template";` (::private)
+ * - `std::vector<torch::nn::Sequential*> m_data = {};` (::private)
+ * - `std::map<std::string, torch::Tensor*> m_i_graph = {};` (::private)
+ * - `std::map<std::string, torch::Tensor*> m_i_node = {};` (::private)
+ * - `std::map<std::string, torch::Tensor*> m_i_edge = {};` (::private)
+ * - `std::map<std::string, torch::Tensor*> m_p_graph = {};` (::private)
+ * - `std::map<std::string, torch::Tensor*> m_p_node = {};` (::private)
+ * - `std::map<std::string, torch::Tensor*> m_p_edge = {};` (::private)
+ * - `std::map<std::string, torch::Tensor*> m_p_undef = {};` (::private)
+ * - `std::map<std::string, std::tuple<torch::Tensor*, lossfx*>> m_o_graph = {};` (::private)
+ * - `std::map<std::string, std::tuple<torch::Tensor*, lossfx*>> m_o_node = {};` (::private)
+ * - `std::map<std::string, std::tuple<torch::Tensor*, lossfx*>> m_o_edge = {};` (::private)
+ * - `std::map<graph_enum, std::map<std::string, torch::Tensor>> m_p_loss = {};` (::private)
+ */
+
+/** @} */

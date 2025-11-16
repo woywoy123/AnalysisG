@@ -3,65 +3,58 @@
  * @brief Documentation for modules/nusol/tmp/multisol/include/multisol/_odeRK.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/tmp/multisol/include/multisol/_odeRK.h
  */
 
 /**
  * @defgroup modules_nusol_tmp_multisol_include_multisol__odeRK_h _odeRK.h
- * @brief _odeRK.h - modules/nusol/tmp/multisol/include/multisol
- * 
+ * @brief _odeRK.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **ellipse_t**
- * - **recon_t**
- * - **odeRK** (inherits from tools)
+ *
+ * - **ellipse_t** (struct)
+ * - **recon_t** (struct)
+ * - **odeRK** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **ellipse_t methods:**
- * - `print()` - void print()
- * 
- * **odeRK methods:**
- * - `odeRK()` - odeRK(std::vector<multisol*>* sols, vec3 met, int iter, double step)
- * - `odeRK()` - ~odeRK()
- * - `solve()` - void solve()
- * - `rk4()` - void rk4(double dt)
- * - `update_t()` - void   update_t()
- * - `solve_z_phi()` - double solve_z_phi()
- * - `residual()` - double residual(std::vector<double> wg, std::vector<double> phx)
- * - `ghost_angle()` - double ghost_angle(int nui)
- * 
+ * @section functions Functions
+ *
+ * - `void print();` (ellipse_t::public)
+ * - `ellipse_t operator+(const ellipse_t& a, const ellipse_t& b);`
+ * - `ellipse_t operator*(const ellipse_t& a, double s);`
+ * - `odeRK(std::vector<multisol*>* sols, vec3 met, int iter, double step);`
+ * - `~odeRK();`
+ * - `void solve();`
+ * - `void rk4(double dt);`
+ * - `void   update_t();`
+ * - `double solve_z_phi();`
+ * - `double residual(std::vector<double> wg, std::vector<double> phx);`
+ * - `std::vector<ellipse_t> derivative(const std::vector<ellipse_t>& dS);`
+ * - `double ghost_angle(int nui);`
+ * - `std::vector<double> plane_rk4(const std::vector<double>& t_initial);`
+ * - `std::vector<double> plane_align(const std::vector<ellipse_t>& current_state);`
  */
 
 /**
- * @section variables Member Variables
- * 
- * **ellipse_t variables:**
- * - Private:
- *   - `t` (double)
- *   - `z` (double)
- * 
- * **odeRK variables:**
- * - Private:
- *   - `met_` (vec3)
- *   - `itr` (int)
- *   - `nsx` (int)
- *   - `dt_` (double)
- *   - `ct` (double)
- * 
- * **recon_t variables:**
- * - Private:
- *   - `is_valid` (bool)
- *   - `residual` (double)
- * 
+ * @section variables Variables
+ *
+ * - `double t;` (ellipse_t::public)
+ * - `double z = 1.0;` (ellipse_t::public)
+ * - `bool is_valid = false;` (recon_t::public)
+ * - `double residual = -1;` (recon_t::public)
+ * - `std::vector<double> t;` (recon_t::public)
+ * - `std::vector<double> z;` (recon_t::public)
+ * - `std::vector<double> phi;` (recon_t::public)
+ * - `int itr    = 0;` (::public)
+ * - `int nsx    = 0;` (::public)
+ * - `double dt_ = 0;` (::public)
+ * - `double ct  = 0;` (::public)
+ * - `std::vector<ellipse_t>  _state = {};` (::public)
+ * - `std::vector<multisol*>* _data  = nullptr;` (::public)
  */
 
-/** @} */  // end of modules_nusol_tmp_multisol_include_multisol__odeRK_h
+/** @} */

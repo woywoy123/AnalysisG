@@ -3,15 +3,36 @@
  * @brief Documentation for modules/nusol/conuix/cxx/memory.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/conuix/cxx/memory.cxx
  */
 
 /**
  * @defgroup modules_nusol_conuix_cxx_memory_cxx memory.cxx
- * @brief memory.cxx - modules/nusol/conuix/cxx
- * 
+ * @brief memory.cxx
  * @{
  */
 
-/** @} */  // end of modules_nusol_conuix_cxx_memory_cxx
+/**
+ * @section functions Functions
+ *
+ * - `for (int i(0); i < dim_i; ++i){out[i] = new long double[dim_j]();}`
+ * - `for (int i(0); i < dim_i; ++i){delete [] dmx[i];}`
+ * - `for (int i(0); i < dim_i; ++i){`
+ * - `for (int j(0); j < dim_j; ++j){to[i][j] = from[i][j];}`
+ * - `for (int j(0); j < dim_j; ++j){O[i][j] = A[i][j] + sign * B[i][j];}`
+ * - `for (int j(0); j < dim_j; ++j){O[i][j] = c * A[i][j];}`
+ * - `for (int j(0); j < dim_j; ++j){O[j][i] = A[i][j];}`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `long double** out = new long double*[dim_i];` (::private)
+ * - `for (int i(0); i < dim_i; ++i){out[i] = new long double[dim_j]();}` (::private)
+ * - `for (int j(0); j < dim_j; ++j){to[i][j] = from[i][j];}` (::private)
+ * - `for (int j(0); j < dim_j; ++j){O[i][j] = A[i][j] + sign * B[i][j];}` (::private)
+ * - `for (int j(0); j < dim_j; ++j){O[i][j] = c * A[i][j];}` (::private)
+ * - `for (int j(0); j < dim_j; ++j){O[j][i] = A[i][j];}` (::private)
+ */
+
+/** @} */

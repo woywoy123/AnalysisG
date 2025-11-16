@@ -3,104 +3,86 @@
  * @brief Documentation for modules/nusol/tmp/conuix/include/conuix/nusol.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/nusol.h
  */
 
 /**
  * @defgroup modules_nusol_tmp_conuix_include_conuix_nusol_h nusol.h
- * @brief nusol.h - modules/nusol/tmp/conuix/include/conuix
- * 
+ * @brief nusol.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **eig_t**
- * - **nuclx_t**
- * - **nuclx**
+ *
+ * - **eig_t** (struct)
+ * - **nuclx_t** (struct)
+ * - **nuclx** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **nuclx methods:**
- * - `nuclx()` - nuclx(particle_template* bjet, particle_template* lep)
- * - `nuclx()` - ~nuclx()
- * - `H()` - matrix_t H(double z, double t)
- * - `H_tilde()` - matrix_t H_tilde(double z, double t)
- * - `P()` - double P(double lambda, double t, double z)
- * - `dP_dL()` - double dP_dL(double lambda, double t, double z)
- * - `dPl0()` - eig_t dPl0(double t, double z)
- * - `G()` - double G(double t)
- * - `hyperbolic()` - matrix_t hyperbolic(matrix_t* cx, matrix_t* sx, double t)
- * 
- * **nuclx_t methods:**
- * - `nuclx_t()` - nuclx_t(particle_template* jet, particle_template* lep)
- * - `from_sx_sy()` - nuclx_t from_sx_sy(double _sx, double _sy)
- * - `get_t()` - double get_t(double _vp, double _up, double _z)
- * - `get_z()` - double get_z(double _sx, double _sy)
- * - `from_z_t()` - nuclx_t from_z_t(double _z, double _t)
- * - `get_mt()` - double get_mt(double _sx, double _sy)
- * - `get_mw()` - double get_mw(double _sx)
- * - `surface()` - void surface()
- * - `shifts()` - void shifts()
- * - `sx()` - void sx()
- * - `sy()` - void sy()
- * - `mw()` - void mw()
- * - `mt()` - void mt()
- * - `polynomial()` - void polynomial()
- * - `critical_t0()` - void critical_t0()
- * - `H_bar()` - void H_bar()
- * - `H()` - void H()
- * - `rotation()` - void rotation()
- * 
+ * @section functions Functions
+ *
+ * - `nuclx_t(particle_template* jet, particle_template* lep);` (nuclx_t::public)
+ * - `nuclx_t from_sx_sy(double _sx, double _sy);` (nuclx_t::public)
+ * - `double get_t(double _vp, double _up, double _z);` (nuclx_t::public)
+ * - `double get_z(double _sx, double _sy);` (nuclx_t::public)
+ * - `nuclx_t from_z_t(double _z, double _t);` (nuclx_t::public)
+ * - `double get_mt(double _sx, double _sy);` (nuclx_t::public)
+ * - `double get_mw(double _sx);` (nuclx_t::public)
+ * - `void surface();` (nuclx_t::public)
+ * - `void shifts();` (nuclx_t::public)
+ * - `void sx();` (nuclx_t::public)
+ * - `void sy();` (nuclx_t::public)
+ * - `void mw();` (nuclx_t::public)
+ * - `void mt();` (nuclx_t::public)
+ * - `void polynomial();` (nuclx_t::public)
+ * - `void critical_t0();` (nuclx_t::public)
+ * - `void H_bar();` (nuclx_t::public)
+ * - `void H();` (nuclx_t::public)
+ * - `void rotation();` (nuclx_t::public)
+ * - `double wr = 0; // (1 + w*w)^(-0.5)` (nuclx_t::public)
+ * - `nuclx(particle_template* bjet, particle_template* lep);` (nuclx::public)
+ * - `matrix_t H(double z, double t);` (nuclx::public)
+ * - `matrix_t H_tilde(double z, double t);` (nuclx::public)
+ * - `double P(double lambda, double t, double z);` (nuclx::public)
+ * - `double dP_dL(double lambda, double t, double z);` (nuclx::public)
+ * - `eig_t dPl0(double t, double z);` (nuclx::public)
+ * - `~nuclx();` (nuclx::public)
+ * - `double G(double t);` (nuclx::private)
+ * - `matrix_t hyperbolic(matrix_t* cx, matrix_t* sx, double t);` (nuclx::private)
  */
 
 /**
- * @section variables Member Variables
- * 
- * **eig_t variables:**
- * - Private:
- *   - `r1` (double)
- *   - `i1` (double)
- * 
- * **nuclx variables:**
- * - Private:
- *   - `data` (nuclx_t*)
- *   - `jet` (particle_template*)
- *   - `lepton` (particle_template*)
- * 
- * **nuclx_t variables:**
- * - Private:
- *   - `u` (double)
- *   - `u_p` (double)
- *   - `t_v` (double)
- *   - `sx_v` (double)
- *   - `mt_v` (double)
- *   - `A` (double)
- *   - `D` (double)
- *   - `s0x` (double)
- *   - `psi` (double)
- *   - `lmb1` (double)
- *   - `a_x` (double)
- *   - `a_y` (double)
- *   - `a_w` (double)
- *   - `a_t` (double)
- *   - `a_l` (double)
- *   - `t_0` (double)
- *   - `beta_lep` (double)
- *   - `mass_lep` (double)
- *   - `p_lep` (double)
- *   - `e_lep` (double)
- *   - `phi_mu` (double)
- *   - `cos_t` (double)
- *   - `w` (double)
- *   - `w2` (double)
- *   - `wr` (double)
- * 
+ * @section variables Variables
+ *
+ * - `double r1 = 0, r2 = 0;` (eig_t::public)
+ * - `double i1 = 0, i2 = 0;` (eig_t::public)
+ * - `double u = 0, v = 0;` (nuclx_t::public)
+ * - `double u_p = 0, v_p = 0;` (nuclx_t::public)
+ * - `double t_v = 0, z_v = 0;  // ---- z < 0 means failed: non-physical` (nuclx_t::public)
+ * - `double sx_v = 0, sy_v = 0;` (nuclx_t::public)
+ * - `double mt_v = 0, mw_v = 0;` (nuclx_t::public)
+ * - `double A = 0, B = 0, C = 0;` (nuclx_t::public)
+ * - `double D = 0, E = 0, F = 0;` (nuclx_t::public)
+ * - `double s0x = 0, s0y = 0;` (nuclx_t::public)
+ * - `double psi = 0, cpsi = 0, spsi = 0;` (nuclx_t::public)
+ * - `double lmb1 = -1, lmb2 = 0;` (nuclx_t::public)
+ * - `double a_x = 0, b_x = 0, c_x = 0;  // Sx` (nuclx_t::public)
+ * - `double a_y = 0, b_y = 0, c_y = 0;  // Sy` (nuclx_t::public)
+ * - `double a_w = 0, b_w = 0;  // mW` (nuclx_t::public)
+ * - `double a_t = 0, b_t = 0, c_t = 0;  // mT` (nuclx_t::public)
+ * - `double a_l = 0, b_l = 0, c_l = 0, d_l = 0;` (nuclx_t::public)
+ * - `double t_0 = 0;` (nuclx_t::public)
+ * - `double beta_lep = 0, beta_jet = 0;` (nuclx_t::public)
+ * - `double mass_lep = 0, mass_jet = 0;` (nuclx_t::public)
+ * - `double p_lep    = 0,    p_jet = 0;` (nuclx_t::public)
+ * - `double e_lep    = 0,    e_jet = 0;` (nuclx_t::public)
+ * - `double phi_mu = 0, theta_mu = 0;` (nuclx_t::public)
+ * - `double cos_t  = 0, sin_t    = 0;` (nuclx_t::public)
+ * - `double w  = 0, o  = 0; // omega, Omega` (nuclx_t::public)
+ * - `double w2 = 0, o2 = 0; // omega^2, Omega^2` (nuclx_t::public)
+ * - `double wr = 0; // (1 + w*w)^(-0.5)` (nuclx_t::public)
  */
 
-/** @} */  // end of modules_nusol_tmp_conuix_include_conuix_nusol_h
+/** @} */

@@ -3,41 +3,36 @@
  * @brief Documentation for modules/nusol/conuix/include/conuix/conuix.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/conuix/include/conuix/conuix.h
  */
 
 /**
  * @defgroup modules_nusol_conuix_include_conuix_conuix_h conuix.h
- * @brief conuix.h - modules/nusol/conuix/include/conuix
- * 
+ * @brief conuix.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **conuix**
+ *
+ * - **nusol_t** (struct)
+ * - **conuic** (class)
+ * - **conuix** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **conuix methods:**
- * - `conuix()` - conuix(nusol_t* params)
- * - `conuix()` - ~conuix()
- * - `solve()` - void solve()
- * 
+ * @section functions Functions
+ *
+ * - `conuix(nusol_t* params);` (conuix::public)
+ * - `~conuix();` (conuix::public)
+ * - `void solve();` (conuix::public)
  */
 
 /**
- * @section variables Member Variables
- * 
- * **conuix variables:**
- * - Private:
- *   - `params` (nusol_t*)
- * 
+ * @section variables Variables
+ *
+ * - `std::string prefix = "";` (conuix::private)
+ * - `std::vector<conuic*>* cnx = nullptr;` (conuix::private)
  */
 
-/** @} */  // end of modules_nusol_conuix_include_conuix_conuix_h
+/** @} */

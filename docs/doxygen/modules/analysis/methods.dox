@@ -3,15 +3,158 @@
  * @brief Documentation for modules/analysis/methods.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/analysis/methods.cxx
  */
 
 /**
  * @defgroup modules_analysis_methods_cxx methods.cxx
- * @brief methods.cxx - modules/analysis
- * 
+ * @brief methods.cxx
  * @{
  */
 
-/** @} */  // end of modules_analysis_methods_cxx
+/**
+ * @section functions Functions
+ *
+ * - `model -> clone_settings(&settings);`
+ * - `c10::cuda::SetDevice(model -> m_option -> device().index());`
+ * - `model_template* mk = model -> clone();`
+ * - `mk -> import_settings(&settings);`
+ * - `mk -> set_optimizer(config -> optimizer);`
+ * - `mk -> initialize(config);`
+ * - `for (int ep(0); ep < op -> m_settings.epochs+1; ++ep){`
+ * - `std::string pth_ = pth + "state/epoch-" + std::to_string(ep+1) + "/";`
+ * - `pth_ += "kfold-" + std::to_string(k+1) + "_model.pt";`
+ * - `if (op -> m_settings.continue_training && op -> is_file(pth_)){++last_ep; continue;}`
+ * - `if (!op -> m_settings.continue_training){break;}`
+ * - `mk -> restore_state();`
+ * - `if (last_ep > 0){mk -> epoch = last_ep; mk -> restore_state();}`
+ * - `std::vector<graph_t*> rnd = op -> loader -> get_random(1);`
+ * - `mk -> check_features(rnd[0]);`
+ * - `model_report* mr = op -> metric -> register_model(mk, k);`
+ * - `op -> reports[mr -> run_name + std::to_string(mr -> k)] = mr;`
+ * - `(*rep) = mr;`
+ * - `op -> launch_model(k);`
+ * - `std::map<std::string, torch::Tensor*>::iterator itr = data -> begin();`
+ * - `for (; itr != data -> end(); ++itr, ++index){`
+ * - `if (!tt){content -> push_back(variable_t());}`
+ * - `(*content)[index].process(itr -> second, &name, tt);`
+ * - `torch::Tensor edge_i = edge -> view({-1});`
+ * - `torch::Tensor node_i = node -> view({-1});`
+ * - `torch::Tensor batch_i = batch -> view({-1});`
+ * - `long ei = edge_i.size({0});`
+ * - `long ni = node_i.size({0});`
+ * - `long bi = batch_i.size({0});`
+ * - `for (itr = data -> begin(); itr != data -> end(); ++itr){`
+ * - `if      (tn -> size({0}) == ei){idx = &edge_i;}`
+ * - `else if (tn -> size({0}) == ni){idx = &node_i;}`
+ * - `else if (tn -> size({0}) == bi){idx = &batch_i;}`
+ * - `for (size_t x(0); x < mask.size(); ++x){(*buff)[x].push_back(tn -> index({(*idx) == mask[x]}));}`
+ * - `(*prg) = 1;`
+ * - `for (size_t x(0); x < data -> size(); ++x){ds += (*data)[x] -> batched_events.size();}`
+ * - `TFile* tmp = TFile::Open(output.c_str(), "READ");`
+ * - `if (tmp){ TDirectory* dir = gDirectory;`
+ * - `for (TObject* key : *dir -> GetListOfKeys()){ std::string name = std::string(key -> GetName());`
+ * - `std::string name = std::string(key -> GetName());`
+ * - `if (name != mds.tree_name){continue;}`
+ * - `TTree* tx = tmp -> Get<TTree>(key -> GetName());`
+ * - `size_t l = tx -> GetEntries();`
+ * - `if (l != ds){break;}`
+ * - `(*msg) = "\033[1;33m (Already Completed) " + (*msg) + "\033[0m";`
+ * - `model_template* md = mdx -> clone();`
+ * - `md -> import_settings(&mds);`
+ * - `if(!md -> restore_state()){ (*msg) = "\033[1;31m (Missing Model) " + (*msg) + "\033[0m";`
+ * - `(*msg) = "\033[1;31m (Missing Model) " + (*msg) + "\033[0m";`
+ * - `std::this_thread::sleep_for(std::chrono::seconds(1));`
+ * - `(*prg) = ds;`
+ * - `(*msg) = "\033[1;32m (Processing) " + (*msg) + "\033[0m";`
+ * - `TFile* f = TFile::Open(output.c_str(), "RECREATE");`
+ * - `f -> TestBit(TFile::kRecovered);`
+ * - `TTree* t = new TTree(mds.tree_name.c_str(), "data");`
+ * - `t -> SetCacheSize(10000000U);`
+ * - `(*prg) = 0;`
+ * - `torch::AutoGradMode grd(false);`
+ * - `for (size_t x(0); x < data -> size(); ++x){`
+ * - `graph_t* gr = (*data)[x];`
+ * - `md -> forward(gr, false);`
+ * - `bf.assign(batch_i.size(), {});`
+ * - `torch::Tensor* bt = gr -> get_batched_events(md);`
+ * - `torch::Tensor* nb = gr -> get_batch_index(md);`
+ * - `torch::Tensor ei  = gr -> get_edge_index(md) -> transpose(0, 1);`
+ * - `torch::Tensor ex  = nb -> index({ei.index({torch::indexing::Slice(), 0})});`
+ * - `addhoc[mds.weight_name] = (*data)[x] -> get_event_weight(md);`
+ * - `if (!x){ int index = 0;`
+ * - `index = add_content(&md -> m_i_graph, content, index, "g_i_", t);`
+ * - `index = add_content(&md -> m_i_node , content, index, "n_i_", t);`
+ * - `index = add_content(&md -> m_i_edge , content, index, "e_i_", t);`
+ * - `index = add_content(&md -> m_p_graph, content, index, "g_o_", t);`
+ * - `index = add_content(&md -> m_p_node , content, index, "n_o_", t);`
+ * - `index = add_content(&md -> m_p_edge , content, index, "e_o_", t);`
+ * - `index = add_content(&addhoc, content, index, "", t);`
+ * - `index = add_content(&md -> m_p_undef, content, index, "extra_", t);`
+ * - `for (size_t i(0); i < content -> size(); ++i){`
+ * - `if (!(*content)[i].failed_branch){continue;}`
+ * - `std::string _f = (*content)[i].variable_name + (*content)[i].scan_buffer();`
+ * - `_bt += (!_bt.size()) ? " > " + _f : _f;`
+ * - `if (_bt.size()){ (*msg) = "\033[1;31m (Failed to Initialize Branch) " + _bt + "\033[0m";`
+ * - `(*msg) = "\033[1;31m (Failed to Initialize Branch) " + _bt + "\033[0m";`
+ * - `add_content(&md -> m_i_graph, &bf, bt, nb, &ex, batch_i);`
+ * - `add_content(&md -> m_i_node,  &bf, bt, nb, &ex, batch_i);`
+ * - `add_content(&md -> m_i_edge,  &bf, bt, nb, &ex, batch_i);`
+ * - `add_content(&md -> m_p_graph, &bf, bt, nb, &ex, batch_i);`
+ * - `add_content(&md -> m_p_node,  &bf, bt, nb, &ex, batch_i);`
+ * - `add_content(&md -> m_p_edge,  &bf, bt, nb, &ex, batch_i);`
+ * - `add_content(&addhoc, &bf, bt, nb, &ex, batch_i);`
+ * - `add_content(&md -> m_p_undef, &bf, bt, nb, &ex, batch_i);`
+ * - `for (size_t l(0); l < bf.size(); ++l){`
+ * - `if ((*content)[i].variable_name == "edge_index"){bf[l][i] -= std::get<0>(bf[l][i].min({0}));}`
+ * - `(*content)[i].process(&bf[l][i], nullptr, t);`
+ * - `t -> Fill();`
+ * - `if (!x){t -> StopCacheLearningPhase();}`
+ * - `if (!(batch_i.size() + (*prg) >= ds)){(*prg) += batch_i.size(); continue;}`
+ * - `(*msg) = "\033[1;32m (Done) " + (*msg) + "\033[0m";`
+ * - `t -> Write("", TObject::kOverwrite);`
+ * - `t -> ResetBranchAddresses();`
+ * - `f -> Close();`
+ * - `f -> Delete();`
+ * - `void analysis::execution_metric(metric_t* mt, size_t* prg, std::string* msg){ metric_template* mtx =`
+ * - `metric_template* mx = mtx -> clone();`
+ * - `mtx -> execute(mt, mx, prg, msg);`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::string pth = model -> model_checkpoint_path;` (::private)
+ * - `int last_ep = 0;` (::private)
+ * - `std::string pth_ = pth + "state/epoch-" + std::to_string(ep+1) + "/";` (::private)
+ * - `pth_ += "kfold-" + std::to_string(k+1) + "_model.pt";` (::private)
+ * - `std::vector<graph_t*> rnd = op -> loader -> get_random(1);` (::private)
+ * - `op -> reports[mr -> run_name + std::to_string(mr -> k)] = mr;` (::private)
+ * - `std::map<std::string, torch::Tensor*>::iterator itr = data -> begin();` (::private)
+ * - `std::string name = prefx + itr -> first;` (::private)
+ * - `torch::Tensor edge_i = edge -> view({-1});` (::private)
+ * - `torch::Tensor node_i = node -> view({-1});` (::private)
+ * - `torch::Tensor batch_i = batch -> view({-1});` (::private)
+ * - `long ei = edge_i.size({0});` (::private)
+ * - `long ni = node_i.size({0});` (::private)
+ * - `long bi = batch_i.size({0});` (::private)
+ * - `torch::Tensor* tn = itr -> second;` (::private)
+ * - `torch::Tensor* idx = nullptr;` (::private)
+ * - `for (size_t x(0); x < mask.size(); ++x){(*buff)[x].push_back(tn -> index({(*idx)` (::private)
+ * - `size_t ds = 0;` (::private)
+ * - `for (size_t x(0); x < data -> size(); ++x){ds += (*data)[x] -> batched_events.si` (::private)
+ * - `std::string name = std::string(key -> GetName());` (::private)
+ * - `size_t l = tx -> GetEntries();` (::private)
+ * - `std::vector<std::vector<torch::Tensor>> bf = {};` (::private)
+ * - `std::vector<long> batch_i = gr -> batched_events;` (::private)
+ * - `torch::Tensor* bt = gr -> get_batched_events(md);` (::private)
+ * - `torch::Tensor* nb = gr -> get_batch_index(md);` (::private)
+ * - `torch::Tensor ei  = gr -> get_edge_index(md) -> transpose(0, 1);` (::private)
+ * - `torch::Tensor ex  = nb -> index({ei.index({torch::indexing::Slice(), 0})});` (::private)
+ * - `int index = 0;` (::private)
+ * - `std::string _bt = "";` (::private)
+ * - `std::string _f = (*content)[i].variable_name + (*content)[i].scan_buffer();` (::private)
+ * - `if ((*content)[i].variable_name == "edge_index"){bf[l][i] -= std::get<0>(bf[l][i` (::private)
+ */
+
+/** @} */

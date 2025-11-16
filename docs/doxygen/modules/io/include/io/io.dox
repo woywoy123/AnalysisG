@@ -3,33 +3,90 @@
  * @brief Documentation for modules/io/include/io/io.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/io/include/io/io.h
  */
 
 /**
  * @defgroup modules_io_include_io_io_h io.h
- * @brief io.h - modules/io/include/io
- * 
+ * @brief io.h
  * @{
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `read()`
- * - `start()`
- * - `end()`
- * - `check_root_file_paths()`
- * - `scan_keys()`
- * - `root_begin()`
- * - `root_end()`
- * - `trigger_pcm()`
- * - `import_settings()`
- * - `member()`
- * - `file_info()`
- * - `root_key_paths()`
+ * @section classes Classes and Structures
+ *
+ * - **io** (class)
  */
 
-/** @} */  // end of modules_io_include_io_io_h
+/**
+ * @section functions Functions
+ *
+ * - `io();`
+ * - `~io();`
+ * - `void write(std::vector<g>* inpt, std::string set_name){ long long unsigned int length = inpt -> size`
+ * - `long long unsigned int length = inpt -> size();`
+ * - `hid_t pairs = this -> member(g());`
+ * - `H5::DataSet* dataset = this -> dataset(set_name, pairs, length);`
+ * - `if (!dataset){return;}`
+ * - `dataset -> write(inpt -> data(), pairs);`
+ * - `H5Tclose(pairs);`
+ * - `void write(g* inpt, std::string set_name){ long long unsigned int length = 1;`
+ * - `dataset -> write(inpt, pairs);`
+ * - `void read(std::vector<g>* outpt, std::string set_name){ hid_t pairs = this -> member(g());`
+ * - `H5::DataSet* dataset = this -> dataset(set_name);`
+ * - `H5::DataSpace space_r = dataset -> getSpace();`
+ * - `space_r.getSimpleExtentDims(dim_r);`
+ * - `outpt -> assign(length, g());`
+ * - `dataset -> read(outpt -> data(), pairs);`
+ * - `space_r.close();`
+ * - `void read(g* out, std::string set_name){ hid_t pairs = this -> member(g());`
+ * - `dataset -> read(out, pairs);`
+ * - `void read(graph_hdf5_w* out, std::string set_name);`
+ * - `bool start(std::string filename, std::string read_write);`
+ * - `void end();`
+ * - `std::vector<std::string> dataset_names();`
+ * - `std::map<std::string, long> root_size();`
+ * - `void check_root_file_paths();`
+ * - `bool scan_keys();`
+ * - `void root_begin();`
+ * - `void root_end();`
+ * - `void trigger_pcm();`
+ * - `void import_settings(settings_t* params);`
+ * - `std::map<std::string, data_t*>* get_data();`
+ * - `hid_t member(folds_t t);`
+ * - `hid_t member(graph_hdf5_w t);`
+ * - `static herr_t file_info(hid_t loc_id, const char* name, const H5L_info_t* linfo, void *opdata);`
+ * - `H5::DataSet* dataset(std::string set_name, hid_t type, long long unsigned int length);`
+ * - `H5::DataSet* dataset(std::string set_name);`
+ * - `void root_key_paths(std::string path);`
+ * - `void root_key_paths(std::string path, TTree* t);`
+ * - `void root_key_paths(std::string path, TBranch* t);`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `long long unsigned int length = inpt -> size();` (::private)
+ * - `long long unsigned int length = 1;` (::private)
+ * - `long long unsigned int length = dim_r[0];` (::private)
+ * - `bool enable_pyami = true;` (::private)
+ * - `std::string metacache_path = "./";` (::private)
+ * - `std::string current_working_path = ".";` (::private)
+ * - `std::string sow_name = "";` (::private)
+ * - `std::vector<std::string> trees = {};` (::private)
+ * - `std::vector<std::string> branches = {};` (::private)
+ * - `std::vector<std::string> leaves = {};` (::private)
+ * - `std::map<std::string, TFile*> files_open = {};` (::private)
+ * - `std::map<std::string, meta*>   meta_data = {};` (::private)
+ * - `std::map<std::string, std::map<std::string, TTree*>> tree_data  = {};` (::private)
+ * - `std::map<std::string, std::map<std::string, long>> tree_entries = {};` (::private)
+ * - `std::map<std::string, std::map<std::string, TBranch*>> branch_data = {};` (::private)
+ * - `std::map<std::string, std::map<std::string, TLeaf*>>      leaf_data = {};` (::private)
+ * - `std::map<std::string, std::map<std::string, std::string>> leaf_typed = {};` (::private)
+ * - `std::map<std::string, bool> root_files = {};` (::private)
+ * - `std::map<std::string, data_t*>*   iters = nullptr;` (::private)
+ * - `std::map<std::string, bool> missing_trigger = {};` (::private)
+ * - `std::map<std::string, bool> success_trigger = {};` (::private)
+ */
+
+/** @} */

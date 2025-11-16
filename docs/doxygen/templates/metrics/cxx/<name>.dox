@@ -3,15 +3,54 @@
  * @brief Documentation for templates/metrics/cxx/<name>.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/templates/metrics/cxx/<name>.cxx
  */
 
 /**
- * @defgroup templates_metrics_cxx_<name>_cxx <name>.cxx
- * @brief <name>.cxx - templates/metrics/cxx
- * 
+ * @defgroup templates_metrics_cxx__name__cxx <name>.cxx
+ * @brief <name>.cxx
  * @{
  */
 
-/** @} */  // end of templates_metrics_cxx_<name>_cxx
+/**
+ * @section functions Functions
+ *
+ * - `<name>_metric::~<name>_metric(){} <name>_metric* <name>_metric::clone(){return new <name>_metric();}`
+ * - `<name>_metric* <name>_metric::clone(){return new <name>_metric();}`
+ * - `<name>_metric::<name>_metric(){this -> name = "<name>";}`
+ * - `void <name>_metric::define_variables(){ this -> register_output("event_<name>_training"   , "<variab`
+ * - `this -> register_output("event_<name>_training"   , "<variable>", &this -> <name>);`
+ * - `this -> register_output("event_<name>_validation" , "<variable>", &this -> <name>);`
+ * - `this -> register_output("event_<name>_evaluation" , "<variable>", &this -> <name>);`
+ * - `this -> register_output("global_<name>_training"  , "<variable>", &this -> global_<name>);`
+ * - `this -> register_output("global_<name>_validation", "<variable>", &this -> global_<name>);`
+ * - `this -> register_output("global_<name>_evaluation", "<variable>", &this -> global_<name>);`
+ * - `void <name>_metric::event(){ this -> write("event_<name>_" + this -> mode, "<variable>"  , &this -> `
+ * - `this -> write("event_<name>_" + this -> mode, "<variable>"  , &this -> <name>);`
+ * - `this -> write("event_<name>_" + this -> mode, "<variable-2>", &this -> <name_2>, true);// <--- write`
+ * - `void <name>_metric::batch(){} void <name>_metric::end(){`
+ * - `void <name>_metric::end(){ this -> write("global_<name>_" + this -> mode, "<variable>", &this -> glo`
+ * - `this -> write("global_<name>_" + this -> mode, "<variable>", &this -> global_<name>);`
+ * - `this -> write("global_<name>_" + this -> mode, "<variable>", &this -> global_<name_2>, true);`
+ * - `void <name>_metric::define_metric(metric_t* mtx){ this -> mode = mtx -> mode();`
+ * - `this -> mode = mtx -> mode();`
+ * - `std::vector<long> batch_idx             = mtx -> get<std::vector<long>>( graph_enum::batch_index, "i`
+ * - `std::vector<std::vector<int>> edge_idx  = mtx -> get<std::vector<std::vector<int>>>(  graph_enum::ed`
+ * - `std::vector<std::vector<float>> edge_sc = mtx -> get<std::vector<std::vector<float>>>(graph_enum::pr`
+ * - `std::vector<std::vector<int>>   edge_tr = mtx -> get<std::vector<std::vector<int>>>(  graph_enum::tr`
+ * - `std::vector<std::vector<int>>   ntops_tru = mtx -> get<std::vector<std::vector<int>>>(  graph_enum::`
+ * - `std::vector<std::vector<float>> ntops_prd = mtx -> get<std::vector<std::vector<float>>>(graph_enum::`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::vector<long> batch_idx             = mtx -> get<std::vector<long>>( graph_e` (::private)
+ * - `std::vector<std::vector<int>> edge_idx  = mtx -> get<std::vector<std::vector<int` (::private)
+ * - `std::vector<std::vector<float>> edge_sc = mtx -> get<std::vector<std::vector<flo` (::private)
+ * - `std::vector<std::vector<int>>   edge_tr = mtx -> get<std::vector<std::vector<int` (::private)
+ * - `std::vector<std::vector<int>>   ntops_tru = mtx -> get<std::vector<std::vector<i` (::private)
+ * - `std::vector<std::vector<float>> ntops_prd = mtx -> get<std::vector<std::vector<f` (::private)
+ */
+
+/** @} */

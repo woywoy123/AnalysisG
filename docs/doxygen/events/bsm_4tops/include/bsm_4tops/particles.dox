@@ -3,139 +3,83 @@
  * @brief Documentation for events/bsm_4tops/include/bsm_4tops/particles.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h
  */
 
 /**
  * @defgroup events_bsm_4tops_include_bsm_4tops_particles_h particles.h
- * @brief particles.h - events/bsm_4tops/include/bsm_4tops
- * 
+ * @brief particles.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **top** (inherits from particle_template)
- * - **top_children** (inherits from particle_template)
- * - **truthjet** (inherits from particle_template)
- * - **truthjetparton** (inherits from particle_template)
- * - **jet** (inherits from particle_template)
- * - **jetparton** (inherits from particle_template)
- * - **electron** (inherits from particle_template)
- * - **muon** (inherits from particle_template)
+ *
+ * - **truthjetparton** (class)
+ * - **jetparton** (class)
+ * - **truthjet** (class)
+ * - **jet** (class)
+ * - **top** (class)
+ * - **top_children** (class)
+ * - **truthjet** (class)
+ * - **truthjetparton** (class)
+ * - **jet** (class)
+ * - **jetparton** (class)
+ * - **electron** (class)
+ * - **muon** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **electron methods:**
- * - `electron()` - electron()
- * - `electron()` - virtual ~electron()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
- * **jet methods:**
- * - `jet()` - jet()
- * - `jet()` - virtual ~jet()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
- * **jetparton methods:**
- * - `jetparton()` - jetparton()
- * - `jetparton()` - virtual ~jetparton()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
- * **muon methods:**
- * - `muon()` - muon()
- * - `muon()` - virtual ~muon()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
- * **top methods:**
- * - `top()` - top()
- * - `top()` - virtual ~top()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
- * **top_children methods:**
- * - `top_children()` - top_children()
- * - `top_children()` - virtual ~top_children()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
- * **truthjet methods:**
- * - `truthjet()` - truthjet()
- * - `truthjet()` - virtual ~truthjet()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
- * **truthjetparton methods:**
- * - `truthjetparton()` - truthjetparton()
- * - `truthjetparton()` - virtual ~truthjetparton()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
+ * @section functions Functions
+ *
+ * - `void assign_vector(std::vector<g*>* inpt, element_t* el){ std::vector<int> _index, _pdgid;`
+ * - `el -> get("index"   , &_index);`
+ * - `el -> get("pdgid"   , &_pdgid);`
+ * - `el -> get("pt" , &_pt);`
+ * - `el -> get("eta", &_eta);`
+ * - `el -> get("phi", &_phi);`
+ * - `el -> get("e"  , &_e);`
+ * - `for (int x(0); x < _pt.size(); ++x){`
+ * - `g* p          = new g();`
+ * - `inpt -> push_back(p);`
+ * - `top();`
+ * - `virtual ~top();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ * - `top_children();`
+ * - `virtual ~top_children();`
+ * - `void static get_from_res(bool*, top_children*);`
+ * - `truthjet();`
+ * - `virtual ~truthjet();`
+ * - `void static get_from_res(bool*, truthjet*);`
+ * - `truthjetparton();`
+ * - `virtual ~truthjetparton();`
+ * - `jet();`
+ * - `virtual ~jet();`
+ * - `void static get_from_res(bool*, jet*);`
+ * - `jetparton();`
+ * - `virtual ~jetparton();`
+ * - `electron();`
+ * - `virtual ~electron();`
+ * - `muon();`
+ * - `virtual ~muon();`
  */
 
 /**
- * @section variables Member Variables
- * 
- * **electron variables:**
- * - Public:
- *   - `from_res` (bool)
- *   - `top_index` (int)
- * 
- * **jet variables:**
- * - Public:
- *   - `from_res` (cproperty<bool, jet>)
- *   - `btag_DL1r_60` (bool)
- *   - `btag_DL1_60` (bool)
- *   - `btag_DL1r_70` (bool)
- *   - `btag_DL1_70` (bool)
- *   - `btag_DL1r_77` (bool)
- *   - `btag_DL1_77` (bool)
- *   - `btag_DL1r_85` (bool)
- *   - `btag_DL1_85` (bool)
- *   - `DL1_b` (float)
- *   - `DL1_c` (float)
- *   - `DL1_u` (float)
- *   - `DL1r_b` (float)
- *   - `DL1r_c` (float)
- *   - `DL1r_u` (float)
- * 
- * **jetparton variables:**
- * - Public:
- *   - `jet_index` (int)
- * 
- * **muon variables:**
- * - Public:
- *   - `from_res` (bool)
- *   - `top_index` (int)
- * 
- * **top variables:**
- * - Public:
- *   - `from_res` (bool)
- *   - `status` (int)
- * 
- * **top_children variables:**
- * - Public:
- *   - `top_index` (int)
- *   - `from_res` (cproperty<bool, top_children>)
- * 
- * **truthjet variables:**
- * - Public:
- *   - `top_quark_count` (int)
- *   - `w_boson_count` (int)
- *   - `from_res` (cproperty<bool, truthjet>)
- * 
- * **truthjetparton variables:**
- * - Public:
- *   - `truthjet_index` (int)
- * 
+ * @section variables Variables
+ *
+ * - `bool from_res = false;` (::private)
+ * - `int status = -1;` (::private)
+ * - `std::vector<truthjet*> TruthJets = {};` (::private)
+ * - `std::vector<jet*> Jets = {};` (::private)
+ * - `int top_index = -1;` (::private)
+ * - `int top_quark_count = -1;` (::private)
+ * - `int w_boson_count = -1;` (::private)
+ * - `std::vector<int> top_index = {};` (::private)
+ * - `std::vector<top*> Tops = {};` (::private)
+ * - `std::vector<truthjetparton*> Parton = {};` (::private)
+ * - `std::vector<int> topchild_index = {};` (::private)
+ * - `std::vector<jetparton*> Parton = {};` (::private)
  */
 
-/** @} */  // end of events_bsm_4tops_include_bsm_4tops_particles_h
+/** @} */

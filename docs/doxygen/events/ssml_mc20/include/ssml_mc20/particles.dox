@@ -3,130 +3,89 @@
  * @brief Documentation for events/ssml_mc20/include/ssml_mc20/particles.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/events/ssml_mc20/include/ssml_mc20/particles.h
  */
 
 /**
  * @defgroup events_ssml_mc20_include_ssml_mc20_particles_h particles.h
- * @brief particles.h - events/ssml_mc20/include/ssml_mc20
- * 
+ * @brief particles.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **zboson** (inherits from particle_template)
- * - **top** (inherits from particle_template)
- * - **truthjet** (inherits from particle_template)
- * - **jet** (inherits from particle_template)
- * - **electron** (inherits from particle_template)
- * - **muon** (inherits from particle_template)
- * - **parton** (inherits from particle_template)
- * - **lepton** (inherits from particle_template)
+ *
+ * - **zboson** (class)
+ * - **top** (class)
+ * - **truthjet** (class)
+ * - **jet** (class)
+ * - **electron** (class)
+ * - **muon** (class)
+ * - **parton** (class)
+ * - **lepton** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **electron methods:**
- * - `electron()` - electron()
- * - `electron()` - virtual ~electron()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * - `get_from_res()` - static void get_from_res(bool* val, electron* el)
- * 
- * **jet methods:**
- * - `jet()` - jet()
- * - `jet()` - virtual ~jet()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * - `get_from_res()` - static void get_from_res(bool* val, jet* el)
- * 
- * **lepton methods:**
- * - `lepton()` - lepton()
- * - `lepton()` - virtual ~lepton()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
- * **muon methods:**
- * - `muon()` - muon()
- * - `muon()` - virtual ~muon()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * - `get_from_res()` - static void get_from_res(bool* val, muon* el)
- * 
- * **parton methods:**
- * - `parton()` - parton()
- * - `parton()` - virtual ~parton()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
- * **top methods:**
- * - `top()` - top()
- * - `top()` - virtual ~top()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
- * **truthjet methods:**
- * - `truthjet()` - truthjet()
- * - `truthjet()` - virtual ~truthjet()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
- * **zboson methods:**
- * - `zboson()` - zboson()
- * - `zboson()` - virtual ~zboson()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
+ * @section functions Functions
+ *
+ * - `void pmu(std::vector<g*>* out, element_t* el){ std::vector<float> pt, eta, phi, en;`
+ * - `el -> get("pt"    , &pt);`
+ * - `el -> get("eta"   , &eta);`
+ * - `el -> get("phi"   , &phi);`
+ * - `el -> get("energy", &en);`
+ * - `for (int x(0); x < pt.size(); ++x){`
+ * - `g* prt       = new g();`
+ * - `out -> push_back(prt);`
+ * - `void pmu_mass(std::vector<g*>* out, element_t* el){ std::vector<float> pt, eta, phi, en;`
+ * - `el -> get("pt"  , &pt);`
+ * - `el -> get("eta" , &eta);`
+ * - `el -> get("phi" , &phi);`
+ * - `el -> get("mass", &en);`
+ * - `for (size_t x(0); x < pt.size(); ++x){`
+ * - `if (en[x] < 0){break;}`
+ * - `out-> push_back(prt);`
+ * - `zboson();`
+ * - `virtual ~zboson();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ * - `top();`
+ * - `virtual ~top();`
+ * - `truthjet();`
+ * - `virtual ~truthjet();`
+ * - `jet();`
+ * - `virtual ~jet();`
+ * - `static void get_from_res(bool* val, jet* el);`
+ * - `electron();`
+ * - `virtual ~electron();`
+ * - `static void get_from_res(bool* val, electron* el);`
+ * - `muon();`
+ * - `virtual ~muon();`
+ * - `static void get_from_res(bool* val, muon* el);`
+ * - `parton();`
+ * - `virtual ~parton();`
+ * - `lepton();`
+ * - `virtual ~lepton();`
  */
 
 /**
- * @section variables Member Variables
- * 
- * **electron variables:**
- * - Public:
- *   - `from_res` (cproperty<bool, electron>)
- *   - `top_index` (int)
- *   - `pass_ecids` (int)
- * 
- * **jet variables:**
- * - Public:
- *   - `from_res` (cproperty<bool, jet>)
- *   - `top_index` (int)
- *   - `btag_77` (bool)
- *   - `btag_85` (bool)
- *   - `btag_90` (bool)
- *   - `sel_85` (bool)
- * 
- * **lepton variables:**
- * - Public:
- *   - `ambiguity` (int)
- * 
- * **muon variables:**
- * - Public:
- *   - `top_index` (int)
- *   - `from_res` (cproperty<bool, muon>)
- * 
- * **parton variables:**
- * - Public:
- *   - `top_index` (int)
- *   - `jet_index` (int)
- *   - `truthjet_index` (int)
- *   - `muon_index` (int)
- *   - `electron_index` (int)
- * 
- * **top variables:**
- * - Public:
- *   - `from_res` (bool)
- * 
- * **truthjet variables:**
- * - Public:
- *   - `top_index` (int)
- * 
+ * @section variables Variables
+ *
+ * - `bool from_res = false;` (::private)
+ * - `std::vector<particle_template*> jets = {};` (::private)
+ * - `std::vector<particle_template*> leptons = {};` (::private)
+ * - `std::vector<particle_template*> truthjets = {};` (::private)
+ * - `int top_index = -1;` (::private)
+ * - `bool btag_77 = false;` (::private)
+ * - `bool btag_85 = false;` (::private)
+ * - `bool btag_90 = false;` (::private)
+ * - `bool sel_85  = false;` (::private)
+ * - `int pass_ecids = -1;` (::private)
+ * - `int top_index      = -1;` (::private)
+ * - `int jet_index      = -1;` (::private)
+ * - `int truthjet_index = -1;` (::private)
+ * - `int muon_index     = -1;` (::private)
+ * - `int electron_index = -1;` (::private)
+ * - `int ambiguity = 99;` (::private)
  */
 
-/** @} */  // end of events_ssml_mc20_include_ssml_mc20_particles_h
+/** @} */

@@ -3,15 +3,39 @@
  * @brief Documentation for modules/metric/cxx/metric.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/metric/cxx/metric.cxx
  */
 
 /**
  * @defgroup modules_metric_cxx_metric_cxx metric.cxx
- * @brief metric.cxx - modules/metric/cxx
- * 
+ * @brief metric.cxx
  * @{
  */
 
-/** @} */  // end of modules_metric_cxx_metric_cxx
+/**
+ * @section functions Functions
+ *
+ * - `metric_t::~metric_t(){ std::map<graph_enum, std::vector<variable_t*>>::iterator itv = this -> handl `
+ * - `std::map<graph_enum, std::vector<variable_t*>>::iterator itv = this -> handl -> begin();`
+ * - `for (; itv != this -> handl -> end(); ++itv){`
+ * - `for (size_t x(0); x < itv -> second.size(); ++x){`
+ * - `if (!itv -> second[x]){continue;}`
+ * - `void metric_t::build(){ std::map<graph_enum, std::vector<std::string>>::iterator it;`
+ * - `for (it = this -> vars -> begin(); it != this -> vars -> end(); ++it){`
+ * - `for (size_t x(0); x < it -> second.size(); ++x){`
+ * - `if (!(*this -> handl)[it -> first][x]){continue;}`
+ * - `std::string metric_t::mode(){ switch (this -> train_mode){`
+ * - `switch (this -> train_mode){ case mode_enum::training:   return "training";`
+ * - `std::string* metric_t::get_filename(long unsigned int idx){ if (!this -> batch_files){return nullptr`
+ * - `if (!this -> batch_files){return nullptr;}`
+ * - `if (this -> batch_files -> size() < idx){return nullptr;}`
+ * - `return this -> batch_files -> at(idx);`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::map<graph_enum, std::vector<variable_t*>>::iterator itv = this -> handl -> ` (::private)
+ */
+
+/** @} */

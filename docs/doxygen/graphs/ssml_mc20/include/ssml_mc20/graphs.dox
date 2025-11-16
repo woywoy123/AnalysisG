@@ -3,54 +3,37 @@
  * @brief Documentation for graphs/ssml_mc20/include/ssml_mc20/graphs.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/graphs/ssml_mc20/include/ssml_mc20/graphs.h
  */
 
 /**
  * @defgroup graphs_ssml_mc20_include_ssml_mc20_graphs_h graphs.h
- * @brief graphs.h - graphs/ssml_mc20/include/ssml_mc20
- * 
+ * @brief graphs.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **graph_jets** (inherits from graph_template)
- * - **graph_jets_nonu** (inherits from graph_template)
- * - **graph_jets_detector_lep** (inherits from graph_template)
- * - **graph_detector** (inherits from graph_template)
+ *
+ * - **graph_jets** (class)
+ * - **graph_jets_nonu** (class)
+ * - **graph_jets_detector_lep** (class)
+ * - **graph_detector** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **graph_detector methods:**
- * - `graph_detector()` - graph_detector()
- * - `graph_detector()` - ~graph_detector() override
- * - `clone()` - graph_template* clone() override
- * - `CompileEvent()` - void CompileEvent() override
- * 
- * **graph_jets methods:**
- * - `graph_jets()` - graph_jets()
- * - `graph_jets()` - ~graph_jets() override
- * - `clone()` - graph_template* clone() override
- * - `CompileEvent()` - void CompileEvent() override
- * 
- * **graph_jets_detector_lep methods:**
- * - `graph_jets_detector_lep()` - graph_jets_detector_lep()
- * - `graph_jets_detector_lep()` - ~graph_jets_detector_lep() override
- * - `clone()` - graph_template* clone() override
- * - `CompileEvent()` - void CompileEvent() override
- * 
- * **graph_jets_nonu methods:**
- * - `graph_jets_nonu()` - graph_jets_nonu()
- * - `graph_jets_nonu()` - ~graph_jets_nonu() override
- * - `clone()` - graph_template* clone() override
- * - `CompileEvent()` - void CompileEvent() override
- * 
+ * @section functions Functions
+ *
+ * - `graph_jets();`
+ * - `~graph_jets() override;`
+ * - `graph_template* clone() override;`
+ * - `void CompileEvent() override;`
+ * - `graph_jets_nonu();`
+ * - `~graph_jets_nonu() override;`
+ * - `graph_jets_detector_lep();`
+ * - `~graph_jets_detector_lep() override;`
+ * - `graph_detector();`
+ * - `~graph_detector() override;`
  */
 
-/** @} */  // end of graphs_ssml_mc20_include_ssml_mc20_graphs_h
+/** @} */

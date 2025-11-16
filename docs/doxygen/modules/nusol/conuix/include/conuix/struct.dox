@@ -3,65 +3,102 @@
  * @brief Documentation for modules/nusol/conuix/include/conuix/struct.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/conuix/include/conuix/struct.h
  */
 
 /**
  * @defgroup modules_nusol_conuix_include_conuix_struct_h struct.h
- * @brief struct.h - modules/nusol/conuix/include/conuix
- * 
+ * @brief struct.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **debug**
- * - **kinematic_t** (inherits from debug)
- * - **rotation_t** (inherits from debug)
- * - **base_t** (inherits from debug)
- * - **thetapsi_t**
+ *
+ * - **particle_template** (class)
+ * - **atomics_t** (struct)
+ * - **debug** (struct)
+ * - **kinematic_t** (struct)
+ * - **rotation_t** (struct)
+ * - **base_t** (struct)
+ * - **thetapsi_t** (struct)
+ * - **pencil_t** (struct)
+ * - **Sx_t** (struct)
+ * - **Sy_t** (struct)
+ * - **H_matrix_t** (struct)
+ * - **Mobius_t** (struct)
+ * - **atomics_t** (struct)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **base_t methods:**
- * - `print()` - void print(int p = 16) override
- * 
- * **debug methods:**
- * - `print()` - virtual void print(int p = 16)
- * - `variable()` - void variable(std::string name, long double val)
- * 
- * **kinematic_t methods:**
- * - `print()` - void print(int p = 16) override
- * 
- * **rotation_t methods:**
- * - `print()` - void print(int p = 16) override
- * 
- * **Standalone functions:**
- * - `H_Matrix()`
- * - `H_Tilde()`
- * - `init()`
- * - `GetTauZ()`
- * - `masses()`
- * - `debug_mode()`
+ * @section functions Functions
+ *
+ * - `virtual void print(int p = 16);` (debug::public)
+ * - `void variable(std::string name, long double val);` (debug::public)
+ * - `void print(int p = 16) override;` (kinematic_t::public)
+ * - `long double Z2(long double Sx, long double Sy);` (pencil_t::public)
+ * - `void print(int p) override;` (pencil_t::public)
+ * - `long double Sx(long double tau, long double Z);` (Sx_t::public)
+ * - `long double Sy(long double tau, long double Z);` (Sy_t::public)
+ * - `matrix_t H_Matrix(long double tau, long double Z);` (H_matrix_t::public)
+ * - `matrix_t H_Tilde(long double tau, long double Z);` (H_matrix_t::public)
+ * - `void init(base_t* base);` (Mobius_t::public)
+ * - `long double alpha_p(long double u);` (Mobius_t::public)
+ * - `long double alpha_m(long double u);` (Mobius_t::public)
+ * - `long double dPl0(long double x, bool use_tanh = false);` (Mobius_t::public)
+ * - `long double a_; // beta * cos(psi)**3` (Mobius_t::public)
+ * - `long double cos_theta(particle_template* jet, particle_template* lep);` (Mobius_t::public)
+ * - `atomics_t(particle_template* jet, particle_template* lep, double m_nu = 0);` (atomics_t::public)
+ * - `~atomics_t();` (atomics_t::public)
+ * - `long double x1(long double Z, long double t);` (atomics_t::public)
+ * - `long double y1(long double Z, long double t);` (atomics_t::public)
+ * - `bool GetTauZ(long double sx, long double sy, long double* z, long double* t);` (atomics_t::public)
+ * - `void masses(long double Z, long double t, std::complex<long double>* mw, std::complex<long double>* ` (atomics_t::public)
+ * - `void debug_mode(particle_template* jet, particle_template* lep);` (atomics_t::public)
  */
 
 /**
- * @section variables Member Variables
- * 
- * **debug variables:**
- * - Private:
- *   - `prec` (int)
- * 
- * **rotation_t variables:**
- * - Private:
- *   - `vec` (matrix_t)
- *   - `R_T` (matrix_t)
- * 
+ * @section variables Variables
+ *
+ * - `virtual void print(int p = 16);` (debug::public)
+ * - `int prec = 16;` (debug::public)
+ * - `void print(int p = 16) override;` (kinematic_t::public)
+ * - `long double beta = 0;` (kinematic_t::public)
+ * - `long double mass = 0;` (kinematic_t::public)
+ * - `long double energy = 0;` (kinematic_t::public)
+ * - `long double phi   = 0;` (rotation_t::public)
+ * - `long double theta = 0;` (rotation_t::public)
+ * - `long double rbl = 0;` (base_t::public)
+ * - `long double cos = 0;` (base_t::public)
+ * - `long double sin = 0;` (base_t::public)
+ * - `long double w   = 0;` (base_t::public)
+ * - `long double o   = 0;` (base_t::public)
+ * - `long double w2  = 0;` (base_t::public)
+ * - `long double o2  = 0;` (base_t::public)
+ * - `long double E    = 0;` (base_t::public)
+ * - `long double tpsi = 0;` (base_t::public)
+ * - `long double cpsi = 0;` (base_t::public)
+ * - `long double spsi = 0;` (base_t::public)
+ * - `long double p_sin = 0;` (thetapsi_t::public)
+ * - `long double m_sin = 0;` (thetapsi_t::public)
+ * - `long double p_cos = 0;` (thetapsi_t::public)
+ * - `long double m_cos = 0;` (thetapsi_t::public)
+ * - `long double a = 0;` (pencil_t::public)
+ * - `long double b = 0;` (pencil_t::public)
+ * - `long double c = 0;` (pencil_t::public)
+ * - `long double d = 0;` (pencil_t::public)
+ * - `long double e = 0;` (pencil_t::public)
+ * - `long double a, b, c, d;` (Mobius_t::public)
+ * - `long double dPl0(long double x, bool use_tanh = false);` (Mobius_t::public)
+ * - `std::complex<long double> eig_v1;` (Mobius_t::public)
+ * - `std::complex<long double> eig_v2;` (Mobius_t::public)
+ * - `std::complex<long double> eig_vx[2];` (Mobius_t::public)
+ * - `std::complex<long double> eig_vy[2];` (Mobius_t::public)
+ * - `std::complex<long double> kfactor;` (Mobius_t::public)
+ * - `std::complex<long double> f1_pts;` (Mobius_t::public)
+ * - `std::complex<long double> f2_pts;` (Mobius_t::public)
+ * - `std::complex<long double> mid;` (Mobius_t::public)
+ * - `atomics_t(particle_template* jet, particle_template* lep, double m_nu = 0);` (atomics_t::public)
  */
 
-/** @} */  // end of modules_nusol_conuix_include_conuix_struct_h
+/** @} */

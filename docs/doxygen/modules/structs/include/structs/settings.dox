@@ -3,48 +3,54 @@
  * @brief Documentation for modules/structs/include/structs/settings.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/structs/include/structs/settings.h
  */
 
 /**
  * @defgroup modules_structs_include_structs_settings_h settings.h
- * @brief settings.h - modules/structs/include/structs
- * 
+ * @brief settings.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **settings_t**
+ *
+ * - **settings_t** (struct)
  */
 
 /**
- * @section variables Member Variables
- * 
- * **settings_t variables:**
- * - Private:
- *   - `fetch_meta` (bool)
- *   - `pretagevents` (bool)
- *   - `epochs` (int)
- *   - `kfolds` (int)
- *   - `batch_size` (int)
- *   - `num_examples` (int)
- *   - `train_size` (float)
- *   - `training` (bool)
- *   - `validation` (bool)
- *   - `evaluation` (bool)
- *   - `continue_training` (bool)
- *   - `nbins` (int)
- *   - `max_range` (int)
- *   - `logy` (bool)
- *   - `threads` (int)
- *   - `debug_mode` (bool)
- *   - `build_cache` (bool)
- *   - `selection_root` (bool)
- * 
+ * @section variables Variables
+ *
+ * - `std::string output_path = "./ProjectName";` (settings_t::public)
+ * - `std::string run_name = "";` (settings_t::public)
+ * - `std::string sow_name = "";` (settings_t::public)
+ * - `std::string metacache_path = "./";` (settings_t::public)
+ * - `bool fetch_meta = false;` (settings_t::public)
+ * - `bool pretagevents = false;` (settings_t::public)
+ * - `int epochs = 10;` (settings_t::public)
+ * - `int kfolds = 10;` (settings_t::public)
+ * - `int batch_size = 1;` (settings_t::public)
+ * - `std::vector<int> kfold = {};` (settings_t::public)
+ * - `int num_examples = 3;` (settings_t::public)
+ * - `float train_size = 50;` (settings_t::public)
+ * - `bool training = true;` (settings_t::public)
+ * - `bool validation = true;` (settings_t::public)
+ * - `bool evaluation = true;` (settings_t::public)
+ * - `bool continue_training = true;` (settings_t::public)
+ * - `std::string training_dataset = "";` (settings_t::public)
+ * - `std::string graph_cache = "";` (settings_t::public)
+ * - `std::string var_pt = "pt";` (settings_t::public)
+ * - `std::string var_eta = "eta";` (settings_t::public)
+ * - `std::string var_phi = "phi";` (settings_t::public)
+ * - `std::string var_energy = "energy";` (settings_t::public)
+ * - `std::vector<std::string> targets = {};` (settings_t::public)
+ * - `int nbins = 400;` (settings_t::public)
+ * - `int max_range = 400;` (settings_t::public)
+ * - `bool logy = false;` (settings_t::public)
+ * - `int threads = 10;` (settings_t::public)
+ * - `bool debug_mode = false;` (settings_t::public)
+ * - `bool build_cache = false;` (settings_t::public)
+ * - `bool selection_root = false;` (settings_t::public)
  */
 
-/** @} */  // end of modules_structs_include_structs_settings_h
+/** @} */

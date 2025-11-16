@@ -3,15 +3,46 @@
  * @brief Documentation for modules/selection/cxx/selection_template.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/selection/cxx/selection_template.cxx
  */
 
 /**
  * @defgroup modules_selection_cxx_selection_template_cxx selection_template.cxx
- * @brief selection_template.cxx - modules/selection/cxx
- * 
+ * @brief selection_template.cxx
  * @{
  */
 
-/** @} */  // end of modules_selection_cxx_selection_template_cxx
+/**
+ * @section functions Functions
+ *
+ * - `bool selection_template::selection(event_template*){return true;}`
+ * - `bool selection_template::strategy(event_template*){return true;}`
+ * - `selection_template* selection_template::clone(){return new selection_template();}`
+ * - `void selection_template::merge(selection_template*){} void selection_template::bulk_write(const long`
+ * - `void selection_template::bulk_write(const long*, std::string*){this -> p_bulk_write = false;}`
+ * - `void selection_template::write(std::vector<particle_template*>* particles, std::string _name, partic`
+ * - `switch (attrs){ case particle_enum::pt:     _name += "_pt"    ; types = data_enum::v_d;  break;`
+ * - `for (size_t x(0); x < particles -> size(); ++x){`
+ * - `switch (types){ case data_enum::v_d:  this -> switch_board(attrs, particles -> at(x), &data_d);  bre`
+ * - `case data_enum::v_d:  this -> switch_board(attrs, particles -> at(x), &data_d);  break;`
+ * - `case data_enum::v_i:  this -> switch_board(attrs, particles -> at(x), &data_i);  break;`
+ * - `case data_enum::v_b:  this -> switch_board(attrs, particles -> at(x), &data_b);  break;`
+ * - `case data_enum::vv_d: this -> switch_board(attrs, particles -> at(x), &data_dd); break;`
+ * - `switch (types){ case data_enum::v_d:  return this -> write(&data_d,  _name);`
+ * - `case data_enum::v_d:  return this -> write(&data_d,  _name);`
+ * - `case data_enum::v_i:  return this -> write(&data_i,  _name);`
+ * - `case data_enum::v_b:  return this -> write(&data_b,  _name);`
+ * - `case data_enum::vv_d: return this -> write(&data_dd, _name);`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `void selection_template::bulk_write(const long*, std::string*){this -> p_bulk_wr` (::private)
+ * - `std::vector<int> data_i = {};` (::private)
+ * - `std::vector<bool> data_b = {};` (::private)
+ * - `std::vector<double> data_d = {};` (::private)
+ * - `std::vector<std::vector<double>> data_dd = {};` (::private)
+ */
+
+/** @} */

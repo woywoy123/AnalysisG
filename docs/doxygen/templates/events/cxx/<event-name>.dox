@@ -3,15 +3,32 @@
  * @brief Documentation for templates/events/cxx/<event-name>.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/templates/events/cxx/<event-name>.cxx
  */
 
 /**
- * @defgroup templates_events_cxx_<event_name>_cxx <event-name>.cxx
- * @brief <event-name>.cxx - templates/events/cxx
- * 
+ * @defgroup templates_events_cxx__event_name__cxx <event-name>.cxx
+ * @brief <event-name>.cxx
  * @{
  */
 
-/** @} */  // end of templates_events_cxx_<event_name>_cxx
+/**
+ * @section functions Functions
+ *
+ * - `<event-name>::<event-name>(){ this -> name = "<event-name>";`
+ * - `this -> add_leaf("<key_name>", "<leaf-name>");`
+ * - `this -> register_particle(&this -> m_particle);`
+ * - `<event-name>::~<event-name>(){}  event_template* <event-name>::clone(){return (event_template*)new <`
+ * - `event_template* <event-name>::clone(){return (event_template*)new <event-name>();}`
+ * - `void <event-name>::build(element_t* el){ el -> get("<key_name>", &this -> key_name);`
+ * - `el -> get("<key_name>", &this -> key_name);`
+ * - `void <event-name>::CompileEvent(){ std::map<std::string, some_particle*> particle = this -> m_partic`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::map<std::string, some_particle*> particle = this -> m_particle;` (::private)
+ */
+
+/** @} */

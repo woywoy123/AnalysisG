@@ -3,47 +3,62 @@
  * @brief Documentation for events/bsm_4tops/include/bsm_4tops/event.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/events/bsm_4tops/include/bsm_4tops/event.h
  */
 
 /**
  * @defgroup events_bsm_4tops_include_bsm_4tops_event_h event.h
- * @brief event.h - events/bsm_4tops/include/bsm_4tops
- * 
+ * @brief event.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **bsm_4tops** (inherits from event_template)
+ *
+ * - **bsm_4tops** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **bsm_4tops methods:**
- * - `bsm_4tops()` - bsm_4tops()
- * - `bsm_4tops()` - virtual ~bsm_4tops()
- * - `clone()` - event_template* clone() override
- * - `build()` - void build(element_t* el) override
- * - `CompileEvent()` - void CompileEvent() override
- * 
+ * @section functions Functions
+ *
+ * - `bsm_4tops();`
+ * - `virtual ~bsm_4tops();`
+ * - `event_template* clone() override;`
+ * - `void build(element_t* el) override;`
+ * - `void CompileEvent() override;`
+ * - `std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt){ std::map<int, G*> data = {};`
+ * - `typename std::map<std::string, G*>::iterator ix = ipt -> begin();`
+ * - `for (; ix != ipt -> end(); ++ix){data[int(ix -> second -> index)] = ix -> second;}`
+ * - `void vectorize(std::map<m, G*>* ipt, std::vector<particle_template*>* vec){ typename std::map<m, G*>`
+ * - `typename std::map<m, G*>::iterator ix = ipt -> begin();`
+ * - `for (; ix != ipt -> end(); ++ix){vec -> push_back(ix -> second);}`
  */
 
 /**
- * @section variables Member Variables
- * 
- * **bsm_4tops variables:**
- * - Public:
- *   - `mu` (float)
- *   - `met` (float)
- *   - `phi` (float)
- * - Private:
- *   - `data` (return)
- * 
+ * @section variables Variables
+ *
+ * - `std::vector<particle_template*> Tops = {};` (::private)
+ * - `std::vector<particle_template*> Children = {};` (::private)
+ * - `std::vector<particle_template*> TruthJets = {};` (::private)
+ * - `std::vector<particle_template*> Jets = {};` (::private)
+ * - `std::vector<particle_template*> Electrons = {};` (::private)
+ * - `std::vector<particle_template*> Muons = {};` (::private)
+ * - `std::vector<particle_template*> DetectorObjects = {};` (::private)
+ * - `unsigned long long event_number = 0;` (::private)
+ * - `float mu = 0;` (::private)
+ * - `float met = 0;` (::private)
+ * - `float phi = 0;` (::private)
+ * - `std::map<std::string, top*>            m_Tops = {};` (::private)
+ * - `std::map<std::string, top_children*>   m_Children = {};` (::private)
+ * - `std::map<std::string, truthjet*>       m_TruthJets = {};` (::private)
+ * - `std::map<std::string, jet*>            m_Jets = {};` (::private)
+ * - `std::map<std::string, electron*>       m_Electrons = {};` (::private)
+ * - `std::map<std::string, muon*>           m_Muons = {};` (::private)
+ * - `std::map<std::string, jetparton*>      m_JetParton = {};` (::private)
+ * - `std::map<std::string, truthjetparton*> m_TruthJetParton = {};` (::private)
+ * - `std::map<int, G*> data = {};` (::private)
+ * - `typename std::map<std::string, G*>::iterator ix = ipt -> begin();` (::private)
+ * - `typename std::map<m, G*>::iterator ix = ipt -> begin();` (::private)
  */
 
-/** @} */  // end of events_bsm_4tops_include_bsm_4tops_event_h
+/** @} */

@@ -3,15 +3,51 @@
  * @brief Documentation for graphs/exp_mc20/cxx/graphs.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/graphs/exp_mc20/cxx/graphs.cxx
  */
 
 /**
  * @defgroup graphs_exp_mc20_cxx_graphs_cxx graphs.cxx
- * @brief graphs.cxx - graphs/exp_mc20/cxx
- * 
+ * @brief graphs.cxx
  * @{
  */
 
-/** @} */  // end of graphs_exp_mc20_cxx_graphs_cxx
+/**
+ * @section functions Functions
+ *
+ * - `graph_jets::graph_jets(){this -> name = "graph_jets";}`
+ * - `graph_jets::~graph_jets(){} graph_template* graph_jets::clone(){return (graph_template*)new graph_je`
+ * - `graph_template* graph_jets::clone(){return (graph_template*)new graph_jets();}`
+ * - `void graph_jets::CompileEvent(){ exp_mc20* event = this -> get_event<exp_mc20>();`
+ * - `exp_mc20* event = this -> get_event<exp_mc20>();`
+ * - `for (size_t x(0); x < ch.size(); ++x){`
+ * - `if (!ch[x] -> is_lep && !ch[x] -> is_nu){continue;}`
+ * - `nodes.push_back(ch[x]);`
+ * - `nodes.insert(nodes.end(), event -> Jets.begin(), event -> Jets.end());`
+ * - `this -> define_particle_nodes(&nodes);`
+ * - `graph_jets_nonu::graph_jets_nonu(){this -> name = "graph_jets_nonu";}`
+ * - `graph_jets_nonu::~graph_jets_nonu(){} graph_template* graph_jets_nonu::clone(){return (graph_templat`
+ * - `graph_template* graph_jets_nonu::clone(){return (graph_template*)new graph_jets_nonu();}`
+ * - `void graph_jets_nonu::CompileEvent(){ exp_mc20* event = this -> get_event<exp_mc20>();`
+ * - `if (!ch[x] -> is_lep || ch[x] -> is_nu){continue;}`
+ * - `graph_jets_detector_lep::graph_jets_detector_lep(){this -> name = "graph_jets_detector_lep";}`
+ * - `graph_jets_detector_lep::~graph_jets_detector_lep(){} graph_template* graph_jets_detector_lep::clone`
+ * - `graph_template* graph_jets_detector_lep::clone(){return (graph_template*)new graph_jets_detector_lep`
+ * - `void graph_jets_detector_lep::CompileEvent(){ exp_mc20* event = this -> get_event<exp_mc20>();`
+ * - `if (!ch[x] -> is_nu){continue;}`
+ * - `graph_detector::graph_detector(){this -> name = "graph_detector";}`
+ * - `graph_detector::~graph_detector(){} graph_template* graph_detector::clone(){return (graph_template*)`
+ * - `graph_template* graph_detector::clone(){return (graph_template*)new graph_detector();}`
+ * - `void graph_detector::CompileEvent(){ exp_mc20* event = this -> get_event<exp_mc20>();`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::vector<particle_template*> nodes = {};` (::private)
+ * - `std::vector<particle_template*> ch = event -> TopChildren;` (::private)
+ * - `std::vector<particle_template*> nodes = event -> Leptons;` (::private)
+ * - `std::vector<particle_template*> nodes = event -> Detector;` (::private)
+ */
+
+/** @} */

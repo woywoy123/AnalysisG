@@ -3,40 +3,27 @@
  * @brief Documentation for modules/nusol/tmp/conuix/include/conuix/conuix.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/conuix.h
  */
 
 /**
  * @defgroup modules_nusol_tmp_conuix_include_conuix_conuix_h conuix.h
- * @brief conuix.h - modules/nusol/tmp/conuix/include/conuix
- * 
+ * @brief conuix.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **conics**
+ *
+ * - **nusol_t** (struct)
+ * - **conics** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **conics methods:**
- * - `conics()` - conics(nusol_t* parameters)
- * - `conics()` - ~conics()
- * 
+ * @section functions Functions
+ *
+ * - `conics(nusol_t* parameters);`
+ * - `~conics();`
  */
 
-/**
- * @section variables Member Variables
- * 
- * **conics variables:**
- * - Private:
- *   - `params` (nusol_t*)
- * 
- */
-
-/** @} */  // end of modules_nusol_tmp_conuix_include_conuix_conuix_h
+/** @} */

@@ -3,25 +3,292 @@
  * @brief Documentation for modules/nusol/tmp/multisol/cxx/multisol.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/tmp/multisol/cxx/multisol.cxx
  */
 
 /**
  * @defgroup modules_nusol_tmp_multisol_cxx_multisol_cxx multisol.cxx
- * @brief multisol.cxx - modules/nusol/tmp/multisol/cxx
- * 
+ * @brief multisol.cxx
  * @{
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `Rz()`
- * - `Ry()`
- * - `Rx()`
- * - `v()`
+ * @section functions Functions
+ *
+ * - `double _mag(particle_template* p){ double p2 = double(p -> px) * double(p -> px);`
+ * - `double p2 = double(p -> px) * double(p -> px);`
+ * - `p2 += double(p -> py) * double(p -> py);`
+ * - `p2 += double(p -> pz) * double(p -> pz);`
+ * - `return std::pow(p2, 0.5);`
+ * - `double _beta(particle_template* prt){ return _mag(prt) / double(prt -> e);`
+ * - `return _mag(prt) / double(prt -> e);`
+ * - `double cos_theta(particle_template* b, particle_template* mu){ double _d = double(b -> px) * double(`
+ * - `double _d = double(b -> px) * double(mu -> px);`
+ * - `_d += double(b -> py) * double(mu -> py);`
+ * - `_d += double(b -> pz) * double(mu -> pz);`
+ * - `return _d / (_mag(b) * _mag(mu));`
+ * - `geo_t::~geo_t(){ if (this -> nu1){delete this -> nu1;}`
+ * - `if (this -> nu1){delete this -> nu1;}`
+ * - `if (this -> nu2){delete this -> nu2;}`
+ * - `double geo_t::px(double u, double v){ return this -> center.x + this -> perp1.x*u + this -> perp2.x*`
+ * - `double geo_t::py(double u, double v){ return this -> center.y + this -> perp1.y*u + this -> perp2.y*`
+ * - `double geo_t::pz(double u, double v){ return this -> center.z + this -> perp1.z*u + this -> perp2.z*`
+ * - `double geo_t::lx(double s){ return this -> r0.x + this -> d.x*s;`
+ * - `double geo_t::ly(double s){ return this -> r0.y + this -> d.y*s;`
+ * - `double geo_t::lz(double s){ return this -> r0.z + this -> d.z*s;`
+ * - `multisol::multisol(particle_template* bjet, particle_template* lep){ this -> b_lep = _beta(lep);`
+ * - `this -> b_lep = _beta(lep);`
+ * - `this -> b_jet = _beta(bjet);`
+ * - `this -> p_lep = _mag(lep);`
+ * - `this -> p_jet = _mag(bjet);`
+ * - `this -> m2_lep = std::pow(lep -> mass, 2);`
+ * - `this -> m2_jet = std::pow(bjet -> mass, 2);`
+ * - `this -> e2_lep = std::pow(lep -> e, 2);`
+ * - `this -> phi_mu   = std::atan2(lep -> py, lep -> px);`
+ * - `this -> theta_mu = std::acos( double(lep -> pz) / this -> p_lep);`
+ * - `this -> para = new multisol_t();`
+ * - `double c  = cos_theta(bjet, lep);`
+ * - `double s  = std::pow(1.0 - c*c, 0.5);`
+ * - `this -> w = (this -> b_lep / this -> b_jet - c)/s;`
+ * - `this -> o = std::pow(o2, 0.5);`
+ * - `this -> para -> B  = - this -> m2_lep / (o2 * this -> e2_lep);`
+ * - `double wf = std::pow(1 + this -> w * this -> w, -0.5);`
+ * - `this -> para -> s0y = - this -> w * this -> p_lep / (this -> b_lep * this -> b_lep);`
+ * - `this -> para -> psi = std::atan(this -> w);`
+ * - `this -> para -> lmb2 = (this -> b_lep * this -> b_lep) / o2;`
+ * - `this -> para -> a_x =  (this -> o / this -> b_lep) * this -> para -> cpsi;`
+ * - `this -> para -> a_y = (this -> o / this -> b_lep) * this -> para -> spsi;`
+ * - `this -> para -> b_t = -2 * (this -> p_lep + this -> p_jet * c);`
+ * - `this -> make_rt();`
+ * - `this -> para -> ht1.at(0,0) = 1.0 / this -> o;`
+ * - `this -> para -> ht1.at(1,0) = this -> w / this -> o;`
+ * - `this -> para -> ht1.at(2,1) = 1.0;`
+ * - `this -> para -> ht2.at(0,2) = -this -> b_lep * wf             / this -> o;`
+ * - `this -> para -> ht2.at(1,2) = -this -> b_lep * wf * this -> w / this -> o;`
+ * - `this -> para -> ht3.at(0,2) = -this -> w * wf;`
+ * - `this -> para -> ht3.at(1,2) =  wf;`
+ * - `this -> para -> hx1 = (*this -> rt) * this -> para -> ht1;`
+ * - `this -> para -> hx2 = (*this -> rt) * this -> para -> ht2;`
+ * - `this -> para -> hx3 = (*this -> rt) * this -> para -> ht3;`
+ * - `multisol::~multisol(){ safe(&this -> rt  );`
+ * - `safe(&this -> rt  );`
+ * - `safe(&this -> para);`
+ * - `void multisol::make_rt(){ if (this -> rt){return;}`
+ * - `if (this -> rt){return;}`
+ * - `matrix Rz(3,3);`
+ * - `Rz.at(0,0) =  std::cos(this -> phi_mu);`
+ * - `Rz.at(0,1) = -std::sin(this -> phi_mu);`
+ * - `Rz.at(2,2) = 1;`
+ * - `Rz.at(1,0) = std::sin(this -> phi_mu);`
+ * - `Rz.at(1,1) = std::cos(this -> phi_mu);`
+ * - `matrix Ry(3,3);`
+ * - `Ry.at(0,0) = std::cos(this -> theta_mu);`
+ * - `Ry.at(0,2) = std::sin(this -> theta_mu);`
+ * - `Ry.at(1,1) = 1;`
+ * - `Ry.at(2,0) = -std::sin(this -> theta_mu);`
+ * - `Ry.at(2,2) =  std::cos(this -> theta_mu);`
+ * - `vec3 b_p = Ry * (Rz * this -> vx_jet);`
+ * - `double alpha = -std::atan2(b_p.z, b_p.y);`
+ * - `matrix Rx(3,3);`
+ * - `Rx.at(0,0) = 1;`
+ * - `Rx.at(1,1) =  std::cos(alpha);`
+ * - `Rx.at(1,2) = -std::sin(alpha);`
+ * - `Rx.at(2,1) =  std::sin(alpha);`
+ * - `Rx.at(2,2) =  std::cos(alpha);`
+ * - `this -> rt = new matrix(Rz.T() * Ry.T() * Rx.T());`
+ * - `rev_t multisol::translate(double sx, double sy){ double z = 0;`
+ * - `z = std::pow(z, 0.5);`
+ * - `double r = this -> o / this -> b_lep * (v_p / u_p);`
+ * - `if (u_p > 0 && fabs(r) < 1){t  = std::atanh(r);}`
+ * - `else if (u_p < 0 && v_p < 0){t = std::asinh(v_p / z);}`
+ * - `else {t = std::acosh(fabs(u_p) * this -> b_lep / (z * this -> o))*(1 - 2 * (v_p < 0));}`
+ * - `mass_t multisol::masses(double t, double z){ mass_t out;`
+ * - `double sh = std::sinh(t);`
+ * - `double ch = std::cosh(t);`
+ * - `out.sx = z * (this -> para -> a_x * ch + this -> para -> b_x * sh) + this -> para -> c_x;`
+ * - `out.sy = z * (this -> para -> a_y * ch + this -> para -> b_y * sh) + this -> para -> c_y;`
+ * - `out.mw = std::pow(std::abs(dw), 0.5);`
+ * - `out.mt = std::pow(std::abs(dt), 0.5);`
+ * - `matrix multisol::H_tilde(double t, double z){ return (this -> para -> ht1 + this -> para -> ht2 * st`
+ * - `return (this -> para -> ht1 + this -> para -> ht2 * std::cosh(t) + this -> para -> ht3 * std::sinh(t`
+ * - `matrix multisol::dHdt_tilde(double t, double z){ return (this -> para -> ht2 * std::sinh(t) + this -`
+ * - `return (this -> para -> ht2 * std::sinh(t) + this -> para -> ht3 * std::cosh(t)) * z;`
+ * - `matrix multisol::H(double t, double z){ return (this -> para -> hx1 + this -> para -> hx2 * std::cos`
+ * - `return (this -> para -> hx1 + this -> para -> hx2 * std::cosh(t) + this -> para -> hx3 * std::sinh(t`
+ * - `matrix multisol::dHdt(double t, double z){ return (this -> para -> hx2 * std::sinh(t) + this -> para`
+ * - `return (this -> para -> hx2 * std::sinh(t) + this -> para -> hx3 * std::cosh(t)) * z;`
+ * - `matrix multisol::d2Hdt2(double t, double z){ return (this -> para -> hx2 * std::cosh(t) + this -> pa`
+ * - `return (this -> para -> hx2 * std::cosh(t) + this -> para -> hx3 * std::sinh(t)) * z;`
+ * - `vec3 multisol::v(double t, double z, double phi){ return this -> H(t, z) * vec3{std::cos(phi), std::`
+ * - `return this -> H(t, z) * vec3{std::cos(phi), std::sin(phi), 1.0};`
+ * - `vec3 multisol::dv_dt(double t, double z, double phi){ return this -> dHdt(t, z) * vec3{std::cos(phi)`
+ * - `return this -> dHdt(t, z) * vec3{std::cos(phi), std::sin(phi), 1.0};`
+ * - `vec3 multisol::dv_dphi(double t, double z, double phi){ return this -> H(t, z) * vec3{-std::sin(phi)`
+ * - `return this -> H(t, z) * vec3{-std::sin(phi), std::cos(phi), 1.0};`
+ * - `vec3 multisol::d2v_dt_dphi(double t, double z, double phi){ return this -> dHdt(t, z) * vec3{-std::s`
+ * - `return this -> dHdt(t, z) * vec3{-std::sin(phi), std::cos(phi), 1.0};`
+ * - `bool multisol::eigenvalues(double t, double z, vec3* real, vec3* imag){ double r  = std::pow(1 + thi`
+ * - `double r  = std::pow(1 + this -> w * this -> w, 0.5);`
+ * - `double c = (z*z/(this -> o * r)) * (this -> b_lep * this -> w * std::cosh(t) - this -> o * std::sinh`
+ * - `double d = (z*z*z/this -> o) * r * std::sinh(t);`
+ * - `mtx* solx = solve_cubic(a, b, c, d);`
+ * - `for (int x(0); x < 3; ++x){vio += std::fabs(solx -> _m[1][x]);}`
+ * - `if (!real || !imag){delete solx; return vio > 10e-4;}`
+ * - `double multisol::dp_dt(){ double r = std::pow(1 + this -> w * this -> w, 0.5);`
+ * - `double r = std::pow(1 + this -> w * this -> w, 0.5);`
+ * - `double s = std::pow(this -> m2_lep / this -> e2_lep, 0.5);`
+ * - `double d =  this -> b_lep * this -> w * std::pow(r, 3);`
+ * - `double e = -this -> b_lep * this -> w * this -> o * std::pow(r, 5);`
+ * - `mtx* slx = find_roots(a, b, c, d, e);`
+ * - `double t = std::atanh((this -> o - slx -> _m[0][0])/(this -> b_lep * this -> w));`
+ * - `vec3 multisol::center(double t, double z){ return this -> H(t, z) * vec3{0, 0, 1};`
+ * - `return this -> H(t, z) * vec3{0, 0, 1};`
+ * - `vec3 multisol::normal(double t, double z){ matrix h = this -> H(t, z);`
+ * - `matrix h = this -> H(t, z);`
+ * - `return A.cross(h * vec3{0, 1, 0});`
+ * - `geo_t multisol::geometry(double t, double z){ geo_t gx;`
+ * - `gx.center = this -> center(t, z);`
+ * - `vec3 N = this -> normal(t, z);`
+ * - `N = N * (1.0 / N.mag());`
+ * - `bool sw = (std::abs(N.x) > 1e-6) * (std::abs(N.y) > 1e-6);`
+ * - `gx.perp1 = p1 * (1.0 / p1.mag());`
+ * - `vec3 p2  = N.cross(gx.perp1);`
+ * - `gx.perp2 = p2 * (1.0 / p2.mag());`
+ * - `geo_t multisol::intersection(multisol* nu, double t1, double z1, double t2, double z2){ vec3 n1 = th`
+ * - `vec3 n1 = this -> normal(t1, z1);`
+ * - `vec3 n2 =   nu -> normal(t2, z2);`
+ * - `double n1_ = n1.dot(n1);`
+ * - `double n2_ = n2.dot(n2);`
+ * - `double nx_ = n1.dot(n2);`
+ * - `double a1 = n1.dot(this -> center(t1, z1));`
+ * - `double a2 = n2.dot(  nu -> center(t2, z2));`
+ * - `mx.d   = n1.cross(n2);`
+ * - `mx.r0  = (n1 * fn1  + n2 * fn2) * (1.0/(n1_ * n2_ - nx_*nx_));`
+ * - `mx.nu1 = this -> intersection(mx.r0, mx.d, t1, z1);`
+ * - `mx.nu2 =   nu -> intersection(mx.r0, mx.d, t2, z2);`
+ * - `mx._d1 = dp.dot(dp);`
+ * - `mx._d2 = dm.dot(dm);`
+ * - `mx.asym = std::abs(mx._d1 - mx._d2)/(0.5 * (mx._d1 + mx._d2));`
+ * - `mx._d1 = std::pow(dp.dot(dp), 0.5);`
+ * - `mx._d2 = std::pow(dm.dot(dm), 0.5);`
+ * - `mx.valid = (mx.nu1 -> valid * mx.nu2 -> valid);`
+ * - `geo_t* multisol::intersection(const vec3& r0, const vec3& d, double t, double z){ matrix h = this ->`
+ * - `vec3 Dx = r0 - this -> center(t, z);`
+ * - `double a = 1.0 / A.mag2(), b = 1.0 / B.mag2();`
+ * - `double alpha = a * Dx.dot(A);`
+ * - `double beta  = a *  d.dot(A);`
+ * - `double delta = b *  d.dot(B);`
+ * - `double gamma = b * Dx.dot(B);`
+ * - `geo_t* mx = new geo_t();`
+ * - `dx = std::pow(std::abs(dx), 0.5);`
+ * - `mx -> _s1 = (-x2 + dx) / x1;`
+ * - `mx -> _s2 = (-x2 - dx) / x1;`
+ * - `mx -> _p1 = std::fmod(std::atan2(gamma + delta * mx -> _s1, alpha + beta * mx -> _s1), 2 * M_PI);`
+ * - `mx -> _p2 = std::fmod(std::atan2(gamma + delta * mx -> _s2, alpha + beta * mx -> _s2), 2 * M_PI);`
+ * - `if (mx -> _p1 > 2 * M_PI){mx -> _p1 = M_PI + std::fabs(mx -> _p1 - M_PI);}`
+ * - `if (mx -> _p2 > 2 * M_PI){mx -> _p2 = M_PI + std::fabs(mx -> _p2 - M_PI);}`
+ * - `if (mx -> _p1 < 0){mx -> _p1 = 2 *M_PI + mx -> _p1;}`
+ * - `if (mx -> _p2 < 0){mx -> _p2 = 2 *M_PI + mx -> _p2;}`
+ * - `void multisol::export_ellipse(std::string name, double t, double z){ matrix h = this -> H(t, z);`
+ * - `std::ofstream file("data/H" + name + ".csv");`
+ * - `file << h.at(0, 0) << "," << h.at(0, 1) << "," << h.at(0, 2) << "\n";`
+ * - `file << h.at(1, 0) << "," << h.at(1, 1) << "," << h.at(1, 2) << "\n";`
+ * - `file << h.at(2, 0) << "," << h.at(2, 1) << "," << h.at(2, 2) << "\n";`
+ * - `file.close();`
+ * - `void multisol::export_ellipse(std::string filename, double t, double z, int n_pts){ std::ofstream fi`
+ * - `std::ofstream file("data/E" + filename + ".csv");`
+ * - `for (int i(0); i <= n_pts; ++i){`
+ * - `vec3 p = this -> v(t, z, phi);`
  */
 
-/** @} */  // end of modules_nusol_tmp_multisol_cxx_multisol_cxx
+/**
+ * @section variables Variables
+ *
+ * - `double p2 = double(p -> px) * double(p -> px);` (::private)
+ * - `double _d = double(b -> px) * double(mu -> px);` (::private)
+ * - `this -> m2_lep = std::pow(lep -> mass, 2);` (::private)
+ * - `this -> m2_jet = std::pow(bjet -> mass, 2);` (::private)
+ * - `this -> e2_lep = std::pow(lep -> e, 2);` (::private)
+ * - `this -> phi_mu   = std::atan2(lep -> py, lep -> px);` (::private)
+ * - `this -> theta_mu = std::acos( double(lep -> pz) / this -> p_lep);` (::private)
+ * - `double c  = cos_theta(bjet, lep);` (::private)
+ * - `double s  = std::pow(1.0 - c*c, 0.5);` (::private)
+ * - `double o2 = this -> w * this -> w + 1 - this -> b_lep * this -> b_lep;` (::private)
+ * - `this -> o = std::pow(o2, 0.5);` (::private)
+ * - `double wf = std::pow(1 + this -> w * this -> w, -0.5);` (::private)
+ * - `this -> para -> psi = std::atan(this -> w);` (::private)
+ * - `Rz.at(0,0) =  std::cos(this -> phi_mu);` (::private)
+ * - `Rz.at(0,1) = -std::sin(this -> phi_mu);` (::private)
+ * - `Rz.at(1,0) = std::sin(this -> phi_mu);` (::private)
+ * - `Rz.at(1,1) = std::cos(this -> phi_mu);` (::private)
+ * - `Ry.at(0,0) = std::cos(this -> theta_mu);` (::private)
+ * - `Ry.at(0,2) = std::sin(this -> theta_mu);` (::private)
+ * - `Ry.at(2,0) = -std::sin(this -> theta_mu);` (::private)
+ * - `Ry.at(2,2) =  std::cos(this -> theta_mu);` (::private)
+ * - `double alpha = -std::atan2(b_p.z, b_p.y);` (::private)
+ * - `Rx.at(1,1) =  std::cos(alpha);` (::private)
+ * - `Rx.at(1,2) = -std::sin(alpha);` (::private)
+ * - `Rx.at(2,1) =  std::sin(alpha);` (::private)
+ * - `Rx.at(2,2) =  std::cos(alpha);` (::private)
+ * - `double z = 0;` (::private)
+ * - `z = std::pow(z, 0.5);` (::private)
+ * - `double u = sx - this -> para -> s0x;` (::private)
+ * - `double v = sy - this -> para -> s0y;` (::private)
+ * - `double u_p =  u * this -> para -> cpsi + v * this -> para -> spsi;` (::private)
+ * - `double v_p = -u * this -> para -> spsi + v * this -> para -> cpsi;` (::private)
+ * - `double r = this -> o / this -> b_lep * (v_p / u_p);` (::private)
+ * - `double t = 0;` (::private)
+ * - `if (u_p > 0 && fabs(r) < 1){t  = std::atanh(r);}` (::private)
+ * - `else if (u_p < 0 && v_p < 0){t = std::asinh(v_p / z);}` (::private)
+ * - `else {t = std::acosh(fabs(u_p) * this -> b_lep / (z * this -> o))*(1 - 2 * (v_p ` (::private)
+ * - `double sh = std::sinh(t);` (::private)
+ * - `double ch = std::cosh(t);` (::private)
+ * - `double dw = this -> para -> b_w * out.sx + this -> para -> a_w;` (::private)
+ * - `out.mw = std::pow(std::abs(dw), 0.5);` (::private)
+ * - `double dt = this -> para -> b_t * out.sx + this -> para -> c_t * out.sy + this -` (::private)
+ * - `out.mt = std::pow(std::abs(dt), 0.5);` (::private)
+ * - `double r  = std::pow(1 + this -> w * this -> w, 0.5);` (::private)
+ * - `double a = 1.0;` (::private)
+ * - `double b = -z / this -> o;` (::private)
+ * - `double c = (z*z/(this -> o * r)) * (this -> b_lep * this -> w * std::cosh(t) - t` (::private)
+ * - `double d = (z*z*z/this -> o) * r * std::sinh(t);` (::private)
+ * - `double vio = 0;` (::private)
+ * - `for (int x(0); x < 3; ++x){vio += std::fabs(solx -> _m[1][x]);}` (::private)
+ * - `double r = std::pow(1 + this -> w * this -> w, 0.5);` (::private)
+ * - `double s = std::pow(this -> m2_lep / this -> e2_lep, 0.5);` (::private)
+ * - `double a = 1;` (::private)
+ * - `double b = -2 * this -> o;` (::private)
+ * - `double c = r * r * s;` (::private)
+ * - `double d =  this -> b_lep * this -> w * std::pow(r, 3);` (::private)
+ * - `double e = -this -> b_lep * this -> w * this -> o * std::pow(r, 5);` (::private)
+ * - `double t = std::atanh((this -> o - slx -> _m[0][0])/(this -> b_lep * this -> w))` (::private)
+ * - `bool sw = (std::abs(N.x) > 1e-6) * (std::abs(N.y) > 1e-6);` (::private)
+ * - `double n1_ = n1.dot(n1);` (::private)
+ * - `double n2_ = n2.dot(n2);` (::private)
+ * - `double nx_ = n1.dot(n2);` (::private)
+ * - `double a1 = n1.dot(this -> center(t1, z1));` (::private)
+ * - `double a2 = n2.dot(  nu -> center(t2, z2));` (::private)
+ * - `double fn1 = a1 * n2_ - a2 * nx_;` (::private)
+ * - `double fn2 = a2 * n1_ - a1 * nx_;` (::private)
+ * - `mx.asym = std::abs(mx._d1 - mx._d2)/(0.5 * (mx._d1 + mx._d2));` (::private)
+ * - `mx._d1 = std::pow(dp.dot(dp), 0.5);` (::private)
+ * - `mx._d2 = std::pow(dm.dot(dm), 0.5);` (::private)
+ * - `double a = 1.0 / A.mag2(), b = 1.0 / B.mag2();` (::private)
+ * - `double alpha = a * Dx.dot(A);` (::private)
+ * - `double beta  = a *  d.dot(A);` (::private)
+ * - `double delta = b *  d.dot(B);` (::private)
+ * - `double gamma = b * Dx.dot(B);` (::private)
+ * - `double x1 =  beta * beta + delta * delta;` (::private)
+ * - `double x2 = alpha * beta + gamma * delta;` (::private)
+ * - `double x3 = alpha * alpha + gamma * gamma - 1;` (::private)
+ * - `double dx = x2 * x2 - x1 * x3;` (::private)
+ * - `dx = std::pow(std::abs(dx), 0.5);` (::private)
+ * - `mx -> _p1 = std::fmod(std::atan2(gamma + delta * mx -> _s1, alpha + beta * mx ->` (::private)
+ * - `mx -> _p2 = std::fmod(std::atan2(gamma + delta * mx -> _s2, alpha + beta * mx ->` (::private)
+ * - `if (mx -> _p1 > 2 * M_PI){mx -> _p1 = M_PI + std::fabs(mx -> _p1 - M_PI);}` (::private)
+ * - `if (mx -> _p2 > 2 * M_PI){mx -> _p2 = M_PI + std::fabs(mx -> _p2 - M_PI);}` (::private)
+ * - `for (int i(0); i <= n_pts; ++i){` (::private)
+ * - `double phi = 2 * M_PI * i / n_pts;` (::private)
+ */
+
+/** @} */

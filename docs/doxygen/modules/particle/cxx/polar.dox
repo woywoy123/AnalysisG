@@ -3,15 +3,42 @@
  * @brief Documentation for modules/particle/cxx/polar.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/particle/cxx/polar.cxx
  */
 
 /**
  * @defgroup modules_particle_cxx_polar_cxx polar.cxx
- * @brief polar.cxx - modules/particle/cxx
- * 
+ * @brief polar.cxx
  * @{
  */
 
-/** @} */  // end of modules_particle_cxx_polar_cxx
+/**
+ * @section functions Functions
+ *
+ * - `void particle_template::set_pt(double* val, particle_template* prt){ prt -> data.pt = *val;`
+ * - `void particle_template::get_pt(double* val, particle_template* prt){ prt -> to_polar();`
+ * - `prt -> to_polar();`
+ * - `void particle_template::set_eta(double* val, particle_template* prt){ prt -> data.eta = *val;`
+ * - `void particle_template::get_eta(double* val, particle_template* prt){ prt -> to_polar();`
+ * - `void particle_template::set_phi(double* val, particle_template* prt){ prt -> data.phi = *val;`
+ * - `void particle_template::get_phi(double* val, particle_template* prt){ prt -> to_polar();`
+ * - `void particle_template::to_polar(){ particle_t* p = &this -> data;`
+ * - `if (!p -> polar){ return; }`
+ * - `p -> pt  = std::pow(p -> px, 2);`
+ * - `p -> pt += std::pow(p -> py, 2);`
+ * - `p -> pt  = std::pow(p -> pt, 0.5);`
+ * - `p -> eta = std::asinh(p -> pz / p -> pt);`
+ * - `p -> phi = std::atan2(p -> py, p -> px);`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `p -> pt  = std::pow(p -> px, 2);` (::private)
+ * - `p -> pt += std::pow(p -> py, 2);` (::private)
+ * - `p -> pt  = std::pow(p -> pt, 0.5);` (::private)
+ * - `p -> eta = std::asinh(p -> pz / p -> pt);` (::private)
+ * - `p -> phi = std::atan2(p -> py, p -> px);` (::private)
+ */
+
+/** @} */

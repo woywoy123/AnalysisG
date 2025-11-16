@@ -3,43 +3,46 @@
  * @brief Documentation for modules/structs/include/structs/particles.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/structs/include/structs/particles.h
  */
 
 /**
  * @defgroup modules_structs_include_structs_particles_h particles.h
- * @brief particles.h - modules/structs/include/structs
- * 
+ * @brief particles.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **particle_t**
+ *
+ * - **particle_template** (class)
+ * - **particle_t** (struct)
  */
 
 /**
- * @section variables Member Variables
- * 
- * **particle_t variables:**
- * - Private:
- *   - `e` (double)
- *   - `mass` (double)
- *   - `px` (double)
- *   - `py` (double)
- *   - `pz` (double)
- *   - `pt` (double)
- *   - `eta` (double)
- *   - `phi` (double)
- *   - `cartesian` (bool)
- *   - `polar` (bool)
- *   - `charge` (double)
- *   - `pdgid` (int)
- *   - `index` (int)
- * 
+ * @section variables Variables
+ *
+ * - `double e = -0.000000000000001;` (particle_t::public)
+ * - `double mass = -1;` (particle_t::public)
+ * - `double px = 0;` (particle_t::public)
+ * - `double py = 0;` (particle_t::public)
+ * - `double pz = 0;` (particle_t::public)
+ * - `double pt = 0;` (particle_t::public)
+ * - `double eta = 0;` (particle_t::public)
+ * - `double phi = 0;` (particle_t::public)
+ * - `bool cartesian = false;` (particle_t::public)
+ * - `bool polar = false;` (particle_t::public)
+ * - `double charge = 0;` (particle_t::public)
+ * - `int pdgid = 0;` (particle_t::public)
+ * - `int index = -1;` (particle_t::public)
+ * - `std::string type = "";` (particle_t::public)
+ * - `std::string hash = "";` (particle_t::public)
+ * - `std::string symbol = "";` (particle_t::public)
+ * - `std::vector<int> lepdef = {11, 13, 15};` (particle_t::public)
+ * - `std::vector<int> nudef  = {12, 14, 16};` (particle_t::public)
+ * - `std::map<std::string, bool> children = {};` (particle_t::public)
+ * - `std::map<std::string, bool> parents = {};` (particle_t::public)
+ * - `std::map<std::string, particle_template*>* data_p = nullptr;` (particle_t::public)
  */
 
-/** @} */  // end of modules_structs_include_structs_particles_h
+/** @} */

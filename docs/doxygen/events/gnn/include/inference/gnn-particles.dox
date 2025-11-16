@@ -3,67 +3,46 @@
  * @brief Documentation for events/gnn/include/inference/gnn-particles.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/events/gnn/include/inference/gnn-particles.h
  */
 
 /**
  * @defgroup events_gnn_include_inference_gnn_particles_h gnn-particles.h
- * @brief gnn-particles.h - events/gnn/include/inference
- * 
+ * @brief gnn-particles.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **particle_gnn** (inherits from particle_template)
- * - **top** (inherits from particle_template)
- * - **zprime** (inherits from particle_template)
+ *
+ * - **particle_gnn** (class)
+ * - **top** (class)
+ * - **zprime** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **particle_gnn methods:**
- * - `particle_gnn()` - particle_gnn()
- * - `particle_gnn()` - ~particle_gnn()
- * - `clone()` - particle_template* clone() override
- * - `build()` - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- * 
- * **top methods:**
- * - `top()` - top()
- * - `top()` - ~top()
- * 
- * **zprime methods:**
- * - `zprime()` - zprime()
- * - `zprime()` - ~zprime()
- * 
- * **Standalone functions:**
- * - `reduce()`
- * - `read()`
+ * @section functions Functions
+ *
+ * - `void reduce(element_t* el, std::string key, std::vector<g>* out);`
+ * - `void reduce(element_t* el, std::string key, g* out);`
+ * - `void read(element_t* el, std::string key, std::vector<g>* out);`
+ * - `particle_gnn();`
+ * - `~particle_gnn();`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ * - `top();`
+ * - `~top();`
+ * - `zprime();`
+ * - `~zprime();`
  */
 
 /**
- * @section variables Member Variables
- * 
- * **particle_gnn variables:**
- * - Public:
- *   - `lep` (bool)
- * 
- * **top variables:**
- * - Public:
- *   - `av_score` (float)
- *   - `n_leps` (int)
- *   - `n_nodes` (int)
- * 
- * **zprime variables:**
- * - Public:
- *   - `av_score` (float)
- *   - `n_leps` (int)
- *   - `n_nodes` (int)
- * 
+ * @section variables Variables
+ *
+ * - `bool lep = false;` (::private)
+ * - `float av_score = 0;` (::private)
+ * - `int n_leps = 0;` (::private)
+ * - `int n_nodes = 0;` (::private)
  */
 
-/** @} */  // end of events_gnn_include_inference_gnn_particles_h
+/** @} */

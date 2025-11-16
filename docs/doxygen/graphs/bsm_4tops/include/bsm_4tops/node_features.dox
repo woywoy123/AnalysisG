@@ -3,31 +3,28 @@
  * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/node_features.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/node_features.h
  */
 
 /**
  * @defgroup graphs_bsm_4tops_include_bsm_4tops_node_features_h node_features.h
- * @brief node_features.h - graphs/bsm_4tops/include/bsm_4tops
- * 
+ * @brief node_features.h
  * @{
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `res_node()`
- * - `top_node()`
- * - `pt()`
- * - `eta()`
- * - `phi()`
- * - `energy()`
- * - `charge()`
- * - `is_lepton()`
- * - `is_bquark()`
- * - `is_neutrino()`
+ * @section functions Functions
+ *
+ * - `void res_node(int* o, particle_template* p);`
+ * - `void top_node(int* o, particle_template* p);`
+ * - `void pt(double* o, particle_template* p);`
+ * - `void eta(double* o, particle_template* p);`
+ * - `void phi(double* o, particle_template* p);`
+ * - `void energy(double* o, particle_template* p);`
+ * - `void charge(double* o, particle_template* p);`
+ * - `void is_lepton(int* o, particle_template* p);`
+ * - `void is_bquark(int* o, particle_template* p);`
+ * - `void is_neutrino(int* o, particle_template* p);`
  */
 
-/** @} */  // end of graphs_bsm_4tops_include_bsm_4tops_node_features_h
+/** @} */

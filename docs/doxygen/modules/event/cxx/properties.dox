@@ -3,15 +3,47 @@
  * @brief Documentation for modules/event/cxx/properties.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/event/cxx/properties.cxx
  */
 
 /**
  * @defgroup modules_event_cxx_properties_cxx properties.cxx
- * @brief properties.cxx - modules/event/cxx
- * 
+ * @brief properties.cxx
  * @{
  */
 
-/** @} */  // end of modules_event_cxx_properties_cxx
+/**
+ * @section functions Functions
+ *
+ * - `void event_template::set_trees(std::vector<std::string>* inpt, event_template* ev){ for (size_t x(0)`
+ * - `for (size_t x(0); x < inpt -> size(); ++x){`
+ * - `ev -> m_trees[inpt -> at(x)] = "tree";`
+ * - `void event_template::set_branches(std::vector<std::string>* inpt, event_template* ev){ for (size_t x`
+ * - `for (size_t x(0); x < inpt -> size(); ++x){ev -> m_branches[inpt -> at(x)] = "branch";}`
+ * - `void event_template::add_leaf(std::string key, std::string val){ if (!val.size()){val = key;}`
+ * - `if (!val.size()){val = key;}`
+ * - `void event_template::get_leaves(std::vector<std::string>* inpt, event_template* ev){ std::map<std::s`
+ * - `std::map<std::string, std::string>::iterator itr = ev -> m_leaves.begin();`
+ * - `for (; itr != ev -> m_leaves.end(); ++itr){inpt -> push_back(itr -> second);}`
+ * - `void event_template::set_tree(std::string* name, event_template* ev){ ev -> data.name = *name;`
+ * - `void event_template::get_tree(std::string* name, event_template* ev){ *name = ev -> data.name;`
+ * - `void event_template::set_name(std::string* name, event_template* ev){ ev -> data.name = *name;`
+ * - `void event_template::set_hash(std::string* path, event_template* ev){ if (ev -> data.hash.size()){re`
+ * - `if (ev -> data.hash.size()){return;}`
+ * - `std::string x = *path + "/" + ev -> to_string(ev -> index);`
+ * - `ev -> data.hash = ev -> tools::hash(x, 18);`
+ * - `void event_template::get_hash(std::string* val, event_template* ev){ *val = ev -> data.hash;`
+ * - `void event_template::set_weight(double* inpt, event_template* ev){ ev -> data.weight = *inpt;`
+ * - `void event_template::set_index(long* inpt, event_template* ev){ ev -> data.index = *inpt;`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `for (size_t x(0); x < inpt -> size(); ++x){ev -> m_branches[inpt -> at(x)] = "br` (::private)
+ * - `std::string n = this -> name;` (::private)
+ * - `std::map<std::string, std::string>::iterator itr = ev -> m_leaves.begin();` (::private)
+ * - `std::string x = *path + "/" + ev -> to_string(ev -> index);` (::private)
+ */
+
+/** @} */

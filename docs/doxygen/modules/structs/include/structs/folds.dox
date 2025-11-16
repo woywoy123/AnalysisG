@@ -3,72 +3,57 @@
  * @brief Documentation for modules/structs/include/structs/folds.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/structs/include/structs/folds.h
  */
 
 /**
  * @defgroup modules_structs_include_structs_folds_h folds.h
- * @brief folds.h - modules/structs/include/structs
- * 
+ * @brief folds.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **folds_t**
- * - **graph_hdf5**
- * - **graph_hdf5_w**
+ *
+ * - **folds_t** (struct)
+ * - **graph_hdf5** (struct)
+ * - **graph_hdf5_w** (struct)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **graph_hdf5_w methods:**
- * - `flush_data()` - void flush_data()
- * 
+ * @section functions Functions
+ *
+ * - `void flush_data(){ if (!this -> hash){return;}` (folds_t::public)
+ * - `if (!this -> hash){return;}` (folds_t::public)
+ * - `free(this -> hash);` (folds_t::public)
+ * - `void flush_data();` (graph_hdf5_w::public)
  */
 
 /**
- * @section variables Member Variables
- * 
- * **folds_t variables:**
- * - Private:
- *   - `k` (int)
- *   - `is_train` (bool)
- *   - `is_valid` (bool)
- *   - `is_eval` (bool)
- *   - `hash` (char*)
- * 
- * **graph_hdf5 variables:**
- * - Private:
- *   - `num_nodes` (int)
- *   - `event_weight` (double)
- *   - `event_index` (long)
- * 
- * **graph_hdf5_w variables:**
- * - Private:
- *   - `num_nodes` (int)
- *   - `event_weight` (double)
- *   - `event_index` (long)
- *   - `hash` (char*)
- *   - `filename` (char*)
- *   - `edge_index` (char*)
- *   - `data_map_graph` (char*)
- *   - `data_map_node` (char*)
- *   - `data_map_edge` (char*)
- *   - `truth_map_graph` (char*)
- *   - `truth_map_node` (char*)
- *   - `truth_map_edge` (char*)
- *   - `data_graph` (char*)
- *   - `data_node` (char*)
- *   - `data_edge` (char*)
- *   - `truth_graph` (char*)
- *   - `truth_node` (char*)
- *   - `truth_edge` (char*)
- * 
+ * @section variables Variables
+ *
+ * - `int k = -1;` (folds_t::public)
+ * - `bool is_train = false;` (folds_t::public)
+ * - `bool is_valid = false;` (folds_t::public)
+ * - `bool is_eval = false;` (folds_t::public)
+ * - `int    num_nodes = -1;` (graph_hdf5::public)
+ * - `double event_weight = 1;` (graph_hdf5::public)
+ * - `long   event_index = -1;` (graph_hdf5::public)
+ * - `std::string hash;` (graph_hdf5::public)
+ * - `std::string filename;` (graph_hdf5::public)
+ * - `std::string edge_index;` (graph_hdf5::public)
+ * - `std::string data_map_graph;` (graph_hdf5::public)
+ * - `std::string data_map_node;` (graph_hdf5::public)
+ * - `std::string data_map_edge;` (graph_hdf5::public)
+ * - `std::string truth_map_graph;` (graph_hdf5::public)
+ * - `std::string truth_map_node;` (graph_hdf5::public)
+ * - `std::string truth_map_edge;` (graph_hdf5::public)
+ * - `std::string data_graph;` (graph_hdf5::public)
+ * - `std::string data_node;` (graph_hdf5::public)
+ * - `std::string data_edge;` (graph_hdf5::public)
+ * - `std::string truth_graph;` (graph_hdf5::public)
+ * - `std::string truth_node;` (graph_hdf5::public)
+ * - `std::string truth_edge;` (graph_hdf5::public)
  */
 
-/** @} */  // end of modules_structs_include_structs_folds_h
+/** @} */

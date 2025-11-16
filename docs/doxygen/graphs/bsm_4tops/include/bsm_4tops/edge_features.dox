@@ -3,25 +3,22 @@
  * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/edge_features.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/edge_features.h
  */
 
 /**
  * @defgroup graphs_bsm_4tops_include_bsm_4tops_edge_features_h edge_features.h
- * @brief edge_features.h - graphs/bsm_4tops/include/bsm_4tops
- * 
+ * @brief edge_features.h
  * @{
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `res_edge()`
- * - `top_edge()`
- * - `det_top_edge()`
- * - `det_res_edge()`
+ * @section functions Functions
+ *
+ * - `void res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij);`
+ * - `void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij);`
+ * - `void det_top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij);`
+ * - `void det_res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij);`
  */
 
-/** @} */  // end of graphs_bsm_4tops_include_bsm_4tops_edge_features_h
+/** @} */

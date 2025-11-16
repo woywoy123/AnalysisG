@@ -3,15 +3,64 @@
  * @brief Documentation for modules/structs/cxx/misc.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/structs/cxx/misc.cxx
  */
 
 /**
  * @defgroup modules_structs_cxx_misc_cxx misc.cxx
- * @brief misc.cxx - modules/structs/cxx
- * 
+ * @brief misc.cxx
  * @{
  */
 
-/** @} */  // end of modules_structs_cxx_misc_cxx
+/**
+ * @section functions Functions
+ *
+ * - `void graph_hdf5_w::flush_data(){ free(this -> hash);`
+ * - `free(this -> hash);`
+ * - `free(this -> filename);`
+ * - `free(this -> edge_index);`
+ * - `free(this -> data_map_graph);`
+ * - `free(this -> data_map_node);`
+ * - `free(this -> data_map_edge);`
+ * - `free(this -> truth_map_graph);`
+ * - `free(this -> truth_map_node);`
+ * - `free(this -> truth_map_edge);`
+ * - `free(this -> data_graph);`
+ * - `free(this -> data_node);`
+ * - `free(this -> data_edge);`
+ * - `free(this -> truth_graph);`
+ * - `free(this -> truth_node);`
+ * - `free(this -> truth_edge);`
+ * - `std::string model_report::print(){ std::string msg = "Run Name: " + this -> run_name;`
+ * - `msg += " Epoch: " + std::to_string(this -> epoch);`
+ * - `msg += " K-Fold: " + std::to_string(this -> k+1);`
+ * - `msg += this -> prx(&this -> loss_graph, "Graph Loss");`
+ * - `msg += this -> prx(&this -> loss_node, "Node Loss");`
+ * - `msg += this -> prx(&this -> loss_edge, "Edge Loss");`
+ * - `msg += this -> prx(&this -> accuracy_graph, "Graph Accuracy");`
+ * - `msg += this -> prx(&this -> accuracy_node, "Node Accuracy");`
+ * - `msg += this -> prx(&this -> accuracy_edge, "Edge Accuracy");`
+ * - `if (this -> current_lr.size()){msg += "Current LR: ";}`
+ * - `for (size_t x(0); x < this -> current_lr.size(); ++x){msg += std::to_string(this -> current_lr[x]) +`
+ * - `std::string model_report::prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string t`
+ * - `for (itx = data -> begin(); itx != data -> end(); ++itx){`
+ * - `if (!itx -> second.size()){return "";}`
+ * - `if (!trig){out += title + ": \n"; trig = true;}`
+ * - `switch (itx -> first){ case mode_enum::training:   out += "Training -> "; break;`
+ * - `for (itf = itx -> second.begin(); itf != itx -> second.end(); ++itf){`
+ * - `out += itf -> first + ": " + std::to_string(itf -> second) + " | ";`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::string msg = "Run Name: " + this -> run_name;` (::private)
+ * - `msg += " Epoch: " + std::to_string(this -> epoch);` (::private)
+ * - `msg += " K-Fold: " + std::to_string(this -> k+1);` (::private)
+ * - `for (size_t x(0); x < this -> current_lr.size(); ++x){msg += std::to_string(this` (::private)
+ * - `bool trig = false;` (::private)
+ * - `std::string out = "";` (::private)
+ * - `out += itf -> first + ": " + std::to_string(itf -> second) + " | ";` (::private)
+ */
+
+/** @} */

@@ -3,22 +3,128 @@
  * @brief Documentation for modules/notification/cxx/notification.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/notification/cxx/notification.cxx
  */
 
 /**
  * @defgroup modules_notification_cxx_notification_cxx notification.cxx
- * @brief notification.cxx - modules/notification/cxx
- * 
+ * @brief notification.cxx
  * @{
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `int()`
+ * @section functions Functions
+ *
+ * - `notification::notification(){} notification::~notification(){}`
+ * - `notification::~notification(){}  void notification::_format(std::string* message){`
+ * - `void notification::_format(std::string* message){ if (this -> shush){return;}`
+ * - `if (this -> shush){return;}`
+ * - `if (this -> bold){ stream << "1;"; }`
+ * - `if (this -> prefix.size()){stream << this -> prefix << "::";}`
+ * - `std::cout << stream.str() << std::endl;`
+ * - `void notification::success(std::string message){ this -> caller = this -> _success;`
+ * - `this -> _format(&message);`
+ * - `void notification::warning(std::string message){ this -> caller = this -> _warning;`
+ * - `void notification::failure(std::string message){ this -> caller = this -> _failure;`
+ * - `void notification::info(std::string message){ this -> caller = this -> _info;`
+ * - `void notification::progressbar(float lProgress, std::string title){ const char cFilled[] = "########`
+ * - `size_t lFilledStart = (sizeof cFilled - 1) * (1 - lProgress);`
+ * - `size_t lEmptyStart  = (sizeof cFilled - 1) * lProgress;`
+ * - `printf("\r %s | [%s%s] %.1f%%", title.c_str(), cFilled + lFilledStart, cEmpty + lEmptyStart, lProgre`
+ * - `fflush(stdout);`
+ * - `void notification::progressbar(std::vector<size_t>* threads, std::vector<size_t>* trgt, std::vector<`
+ * - `for (size_t x(0); x < trgt -> size(); ++x){`
+ * - `float prg = float(threads -> at(x)) / float(trgt -> at(x));`
+ * - `size_t lFilledStart = (sizeof(cFilled) - 1) * (1 - prg);`
+ * - `size_t lEmptyStart  = (sizeof(cFilled) - 1) * prg;`
+ * - `std::cout << title -> at(x) << " [" << cFilled + lFilledStart << cEmpty + lEmptyStart << "] ";`
+ * - `std::cout << std::fixed << std::setprecision(4) << prg*100 << "%\n";`
+ * - `void notification::progressbar1(std::vector<size_t>* threads, size_t l, std::string title){ while (t`
+ * - `while (true){ std::this_thread::sleep_for(std::chrono::milliseconds(100));`
+ * - `std::this_thread::sleep_for(std::chrono::milliseconds(100));`
+ * - `float prgs = float(notification().sum(threads))/float(l);`
+ * - `notification().progressbar(prgs, title);`
+ * - `if (prgs > 0.995){break;}`
+ * - `notification().progressbar(1, title);`
+ * - `void notification::progressbar2(std::vector<size_t>* threads, size_t* l, std::string* title){ while `
+ * - `while (true){ std::this_thread::sleep_for(std::chrono::milliseconds(1));`
+ * - `std::this_thread::sleep_for(std::chrono::milliseconds(1));`
+ * - `float prgs = float(notification().sum(threads))/float(*l);`
+ * - `notification().progressbar(prgs, *title);`
+ * - `notification().progressbar(1, *title);`
+ * - `void notification::progressbar3(std::vector<size_t>* threads, std::vector<size_t>* l, std::vector<st`
+ * - `notification n = notification();`
+ * - `if (!title){return;}`
+ * - `for (size_t x(0); x < l -> size(); ++x){`
+ * - `if (title && (*title)[x]){bi = (*title)[x];}`
+ * - `else {bi = new std::string("Thread (" + std::to_string(x+1) + ")");}`
+ * - `bars.push_back(bi);`
+ * - `while (prgs < 1.0){ std::this_thread::sleep_for(std::chrono::milliseconds(100));`
+ * - `size_t xl = n.sum(l);`
+ * - `size_t xp = n.sum(threads);`
+ * - `if (!xl){continue;}`
+ * - `prgs = float(xp)/float(xl);`
+ * - `for (size_t x(0); x < bars.size(); ++x){`
+ * - `if (!(*threads)[x]){continue;}`
+ * - `if ((*threads)[x] == (*l)[x]){continue;}`
+ * - `vec.push_back(std::string(bars[x] -> c_str()));`
+ * - `prx.push_back((*threads)[x]);`
+ * - `totl.push_back((*l)[x]);`
+ * - `ln = (bars[x] -> size() < ln) ? ln : bars[x] -> size();`
+ * - `prx.push_back(xp);`
+ * - `totl.push_back(xl);`
+ * - `vec.push_back("Total Progress:");`
+ * - `for (size_t x(0); x < prx.size()-1; ++x){`
+ * - `size_t t = vec[x].size();`
+ * - `for (size_t y(t); y < ln; ++y){vec[x]+= " ";}`
+ * - `for (size_t x(0); x < cwhite; ++x){std::cout << "\033[F\x1b[2K";}`
+ * - `n.progressbar(&prx, &totl, &vec);`
+ * - `cwhite = prx.size();`
+ * - `for (size_t x(0); x < bars.size(); ++x){delete bars[x];}`
+ * - `void notification::monitor(std::vector<std::thread*>* thr){ size_t exec = thr -> size();`
+ * - `size_t exec = thr -> size();`
+ * - `while (exec){ exec = thr -> size();`
+ * - `exec = thr -> size();`
+ * - `for (size_t x(0); x < thr -> size(); ++x){`
+ * - `if (!(*thr)[x]){--exec; continue;}`
+ * - `if (!(*thr)[x] -> joinable()){continue;}`
+ * - `(*thr)[x] -> join();`
+ * - `delete (*thr)[x];`
+ * - `(*thr)[x] = nullptr;`
+ * - `int notification::running(std::vector<std::thread*>* thr, std::vector<size_t>* prg, std::vector<size`
+ * - `if (!(*thr)[x]){continue;}`
+ * - `if (!(*thr)[x] -> joinable()){++idx; continue;}`
+ * - `if (!(*trgt)[x] && !(*prg)[x]){continue;}`
+ * - `if ((*trgt)[x] != (*prg)[x]){++idx; continue;}`
+ * - `return int(idx);`
  */
 
-/** @} */  // end of modules_notification_cxx_notification_cxx
+/**
+ * @section variables Variables
+ *
+ * - `bool s = this -> shush;` (::private)
+ * - `size_t lFilledStart = (sizeof cFilled - 1) * (1 - lProgress);` (::private)
+ * - `size_t lEmptyStart  = (sizeof cFilled - 1) * lProgress;` (::private)
+ * - `float prg = float(threads -> at(x)) / float(trgt -> at(x));` (::private)
+ * - `size_t lFilledStart = (sizeof(cFilled) - 1) * (1 - prg);` (::private)
+ * - `size_t lEmptyStart  = (sizeof(cFilled) - 1) * prg;` (::private)
+ * - `float prgs = float(notification().sum(threads))/float(l);` (::private)
+ * - `float prgs = float(notification().sum(threads))/float(*l);` (::private)
+ * - `std::vector<std::string*> bars = {};` (::private)
+ * - `std::string* bi = nullptr;` (::private)
+ * - `else {bi = new std::string("Thread (" + std::to_string(x+1) + ")");}` (::private)
+ * - `float prgs = 0;` (::private)
+ * - `size_t cwhite = 0;` (::private)
+ * - `size_t xl = n.sum(l);` (::private)
+ * - `size_t xp = n.sum(threads);` (::private)
+ * - `std::vector<size_t> prx = {};` (::private)
+ * - `std::vector<size_t> totl = {};` (::private)
+ * - `std::vector<std::string> vec = {};` (::private)
+ * - `size_t ln = 0;` (::private)
+ * - `size_t t = vec[x].size();` (::private)
+ * - `for (size_t y(t); y < ln; ++y){vec[x]+= " ";}` (::private)
+ * - `size_t exec = thr -> size();` (::private)
+ * - `size_t idx = 0;` (::private)
+ */
+
+/** @} */

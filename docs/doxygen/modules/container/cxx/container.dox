@@ -3,15 +3,112 @@
  * @brief Documentation for modules/container/cxx/container.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/container/cxx/container.cxx
  */
 
 /**
  * @defgroup modules_container_cxx_container_cxx container.cxx
- * @brief container.cxx - modules/container/cxx
- * 
+ * @brief container.cxx
  * @{
  */
 
-/** @} */  // end of modules_container_cxx_container_cxx
+/**
+ * @section functions Functions
+ *
+ * - `container::container(){} container::~container(){`
+ * - `container::~container(){ if (this -> meta_data){delete this -> meta_data;}`
+ * - `if (this -> meta_data){delete this -> meta_data;}`
+ * - `std::map<std::string, entry_t>::iterator itr = this -> random_access.begin();`
+ * - `for (; itr != this -> random_access.end(); ++itr){itr -> second.destroy();}`
+ * - `this -> random_access.clear();`
+ * - `if (!this -> merged){return;}`
+ * - `std::map<std::string, selection_template*>::iterator itrs = this -> merged -> begin();`
+ * - `for (; itrs != this -> merged -> end(); ++itrs){delete itrs -> second; itrs -> second = nullptr;}`
+ * - `this -> merged -> clear();`
+ * - `void container::get_events(std::vector<event_template*>* out, std::string _label){ if (_label != thi`
+ * - `if (_label != this -> label && _label.size()){return;}`
+ * - `for (; itr != this -> random_access.end(); ++itr){`
+ * - `out -> insert(out -> end(), rn.begin(), rn.end());`
+ * - `void container::add_meta_data(meta* data, std::string fname){ this -> filename = new std::string(fna`
+ * - `this -> filename = new std::string(fname);`
+ * - `meta* container::get_meta_data(){return this -> meta_data;}`
+ * - `entry_t* container::add_entry(std::string hash){ if (this -> random_access.count(hash)){return &this`
+ * - `if (this -> random_access.count(hash)){return &this -> random_access[hash];}`
+ * - `t -> init();`
+ * - `bool container::add_event_template(event_template* ev, std::string _label){ if (!this -> label.size(`
+ * - `if (!this -> label.size()){this -> label = _label;}`
+ * - `entry_t* evt = this -> add_entry(ev -> hash);`
+ * - `return evt -> has_event(ev);`
+ * - `bool container::add_graph_template(graph_template* gr, std::string _label){ if (!this -> label.size(`
+ * - `entry_t* evt = this -> add_entry(gr -> hash);`
+ * - `return evt -> has_graph(gr);`
+ * - `bool container::add_selection_template(selection_template* sel){ entry_t* evt = this -> add_entry(se`
+ * - `entry_t* evt = this -> add_entry(sel -> hash);`
+ * - `return evt -> has_selection(sel);`
+ * - `void container::compile(size_t* l, int threadIdx){ std::map<std::string, write_t*> handles;`
+ * - `for (event_template* evx : ev -> m_event){evx -> CompileEvent();}`
+ * - `if (ev -> m_selection.size() && !this -> merged){ this -> merged = new std::map<std::string, selecti`
+ * - `this -> merged = new std::map<std::string, selection_template*>();`
+ * - `if (itr == this -> random_access.begin()){ for (selection_template* sel : ev -> m_selection){`
+ * - `for (selection_template* sel : ev -> m_selection){ if (!this -> output_path){break;}`
+ * - `if (!this -> output_path){break;}`
+ * - `std::string pth  = *this -> output_path + "/Selections/" + name + "-" + std::string(sel -> m_event -`
+ * - `if (this -> label.size()){pth += this -> label + "/";}`
+ * - `this -> create_path(pth);`
+ * - `std::vector<std::string> fname = this -> split(*this -> filename, "/");`
+ * - `handles[name] = new write_t();`
+ * - `handles[name] -> create(tree, pth + fname[fname.size()-1]);`
+ * - `for (selection_template* sel : ev -> m_selection){ std::string name = sel -> name;`
+ * - `selection_template* slx = sel -> clone();`
+ * - `if (this -> output_path){slx -> handle = handles[name];}`
+ * - `(*this -> merged)[name] = slx;`
+ * - `sel -> bulk_write(nullptr, nullptr);`
+ * - `if (this -> output_path){sel -> handle = handles[name];}`
+ * - `bool col = sel -> CompileEvent();`
+ * - `if (col){(*this -> merged)[name] -> merger(sel);}`
+ * - `if (this -> output_path && !sel -> p_bulk_write){handles[name] -> write();}`
+ * - `for (graph_template* gr : ev -> m_graph){ gr -> threadIdx = threadIdx;`
+ * - `if (!gr -> preselection){} else if (!gr -> PreSelection()){continue;}`
+ * - `else if (!gr -> PreSelection()){continue;}`
+ * - `gr -> CompileEvent();`
+ * - `gr -> flush_particles();`
+ * - `graph_t* gr_    = gr -> data_export();`
+ * - `gr_ -> hash     = new std::string(ev -> hash);`
+ * - `ev -> m_data.push_back(gr_);`
+ * - `ev -> destroy();`
+ * - `std::map<std::string, write_t*>::iterator itx = handles.begin();`
+ * - `for (; itx != handles.end(); ++itx){`
+ * - `(*this -> merged)[itx -> first] -> bulk_write_out();`
+ * - `(*this -> merged)[itx -> first] -> handle = nullptr;`
+ * - `itx -> second -> close();`
+ * - `void container::fill_selections(std::map<std::string, selection_template*>* inpt){ if (!this -> merg`
+ * - `std::map<std::string, selection_template*>::iterator itr = this -> merged -> begin();`
+ * - `for (; itr != this -> merged -> end(); ++itr){`
+ * - `selection_template* sl = (*inpt)[itr -> first];`
+ * - `sl -> merger(itr -> second);`
+ * - `void container::populate_dataloader(dataloader* dl){ std::map<std::string, entry_t>::iterator itr = `
+ * - `for (size_t x(0); x < data.size(); ++x){dl -> extract_data(data[x]);}`
+ * - `itr -> second.m_data.clear();`
+ * - `size_t container::len(){return this -> random_access.size();}`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::map<std::string, entry_t>::iterator itr = this -> random_access.begin();` (::private)
+ * - `std::map<std::string, selection_template*>::iterator itrs = this -> merged -> be` (::private)
+ * - `std::vector<event_template*> rn = itr -> second.m_event;` (::private)
+ * - `this -> filename = new std::string(fname);` (::private)
+ * - `this -> merged = new std::map<std::string, selection_template*>();` (::private)
+ * - `std::string name = sel -> name;` (::private)
+ * - `std::string tree = sel -> m_event -> tree;` (::private)
+ * - `std::string pth  = *this -> output_path + "/Selections/" + name + "-" + std::str` (::private)
+ * - `std::vector<std::string> fname = this -> split(*this -> filename, "/");` (::private)
+ * - `bool col = sel -> CompileEvent();` (::private)
+ * - `gr_ -> hash     = new std::string(ev -> hash);` (::private)
+ * - `std::map<std::string, write_t*>::iterator itx = handles.begin();` (::private)
+ * - `std::map<std::string, selection_template*>::iterator itr = this -> merged -> beg` (::private)
+ * - `std::vector<graph_t*> data = itr -> second.m_data;` (::private)
+ */
+
+/** @} */

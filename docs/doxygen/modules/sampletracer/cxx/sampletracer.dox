@@ -3,15 +3,81 @@
  * @brief Documentation for modules/sampletracer/cxx/sampletracer.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/sampletracer/cxx/sampletracer.cxx
  */
 
 /**
  * @defgroup modules_sampletracer_cxx_sampletracer_cxx sampletracer.cxx
- * @brief sampletracer.cxx - modules/sampletracer/cxx
- * 
+ * @brief sampletracer.cxx
  * @{
  */
 
-/** @} */  // end of modules_sampletracer_cxx_sampletracer_cxx
+/**
+ * @section functions Functions
+ *
+ * - `sampletracer::sampletracer(){} sampletracer::~sampletracer(){}`
+ * - `sampletracer::~sampletracer(){}  bool sampletracer::add_meta_data(meta* meta_, std::string filename)`
+ * - `bool sampletracer::add_meta_data(meta* meta_, std::string filename){ if (this -> root_container.coun`
+ * - `if (this -> root_container.count(filename)){return false;}`
+ * - `this -> root_container[filename].add_meta_data(meta_, filename);`
+ * - `meta* sampletracer::get_meta_data(std::string filename){ if (!this -> root_container.count(filename)`
+ * - `if (!this -> root_container.count(filename)){return nullptr;}`
+ * - `return this -> root_container[filename].get_meta_data();`
+ * - `std::vector<event_template*> sampletracer::get_events(std::string label){ std::vector<event_template`
+ * - `std::map<std::string, container>::iterator itr = this -> root_container.begin();`
+ * - `for (; itr != this -> root_container.end(); ++itr){itr -> second.get_events(&out, label);}`
+ * - `bool sampletracer::add_event(event_template* ev, std::string label){ return this -> root_container[e`
+ * - `return this -> root_container[ev -> filename].add_event_template(ev, label);`
+ * - `bool sampletracer::add_graph(graph_template* gr, std::string label){ return this -> root_container[g`
+ * - `return this -> root_container[gr -> filename].add_graph_template(gr, label);`
+ * - `bool sampletracer::add_selection(selection_template* sel){ return this -> root_container[sel -> file`
+ * - `return this -> root_container[sel -> filename].add_selection_template(sel);`
+ * - `void sampletracer::compile_objects(int threads){ auto lamb = [](size_t* l, int threadidx, container*`
+ * - `auto lamb = [](size_t* l, int threadidx, container* data){data -> compile(l, threadidx);};`
+ * - `auto flush = [](std::vector<std::string*>* inpt){ for (size_t x(0); x < inpt -> size(); ++x){delete `
+ * - `for (size_t x(0); x < inpt -> size(); ++x){delete (*inpt)[x];}`
+ * - `inpt -> clear();`
+ * - `std::vector<size_t> progres(this -> root_container.size(), 0);`
+ * - `std::vector<size_t> handles(this -> root_container.size(), 0);`
+ * - `std::vector<std::string*> titles_(this -> root_container.size(), nullptr);`
+ * - `std::vector<std::thread*> threads_(this -> root_container.size(), nullptr);`
+ * - `for (size_t x(0); itr != this -> root_container.end(); ++itr, ++x){`
+ * - `progres[x] = itr -> second.len();`
+ * - `std::vector<std::string> vec = this -> split(itr -> first, "/");`
+ * - `titles_[x] = new std::string(vec[vec.size()-1]);`
+ * - `if (!this -> tools::sum(&progres)){ flush(&titles_);`
+ * - `flush(&titles_);`
+ * - `if (this -> shush){ thr = new std::thread(this -> progressbar3, &handles, &progres, nullptr);`
+ * - `thr = new std::thread(this -> progressbar3, &handles, &progres, nullptr);`
+ * - `else {thr = new std::thread(this -> progressbar3, &handles, &progres, &titles_);}`
+ * - `itr = this -> root_container.begin();`
+ * - `for (; itr != this -> root_container.end(); ++itr, ++index, ++tidx){`
+ * - `threads_[index] = new std::thread(lamb, &handles[index], index, &itr -> second);`
+ * - `while (tidx > threads-1){tidx = this -> running(&threads_, &handles, &progres);}`
+ * - `this -> monitor(&threads_);`
+ * - `thr -> join(); delete thr; thr = nullptr;`
+ * - `void sampletracer::populate_dataloader(dataloader* dl){ std::map<std::string, container>::iterator i`
+ * - `for (; itr != this -> root_container.end(); ++itr){itr -> second.populate_dataloader(dl);}`
+ * - `void sampletracer::fill_selections(std::map<std::string, selection_template*>* inpt){ std::map<std::`
+ * - `for (; itr != this -> root_container.end(); ++itr){itr -> second.fill_selections(inpt);}`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::vector<event_template*> out = {};` (::private)
+ * - `std::map<std::string, container>::iterator itr = this -> root_container.begin();` (::private)
+ * - `auto lamb = [](size_t* l, int threadidx, container* data){data -> compile(l, thr` (::private)
+ * - `auto flush = [](std::vector<std::string*>* inpt){` (::private)
+ * - `for (size_t x(0); itr != this -> root_container.end(); ++itr, ++x){` (::private)
+ * - `std::vector<std::string> vec = this -> split(itr -> first, "/");` (::private)
+ * - `titles_[x] = new std::string(vec[vec.size()-1]);` (::private)
+ * - `std::thread* thr = nullptr;` (::private)
+ * - `thr = new std::thread(this -> progressbar3, &handles, &progres, nullptr);` (::private)
+ * - `else {thr = new std::thread(this -> progressbar3, &handles, &progres, &titles_);` (::private)
+ * - `int tidx = 0;` (::private)
+ * - `int index = 0;` (::private)
+ * - `threads_[index] = new std::thread(lamb, &handles[index], index, &itr -> second);` (::private)
+ */
+
+/** @} */

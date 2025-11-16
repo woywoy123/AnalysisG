@@ -3,37 +3,47 @@
  * @brief Documentation for modules/structs/include/structs/report.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/structs/include/structs/report.h
  */
 
 /**
  * @defgroup modules_structs_include_structs_report_h report.h
- * @brief report.h - modules/structs/include/structs
- * 
+ * @brief report.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **model_report**
+ *
+ * - **metrics** (class)
+ * - **model_report** (struct)
  */
 
 /**
- * @section variables Member Variables
- * 
- * **model_report variables:**
- * - Private:
- *   - `k` (int)
- *   - `epoch` (int)
- *   - `is_complete` (bool)
- *   - `waiting_plot` (metrics*)
- *   - `iters` (long)
- *   - `num_evnt` (long)
- *   - `progress` (float)
- * 
+ * @section functions Functions
+ *
+ * - `std::string print();` (model_report::public)
+ * - `std::string prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string title);` (model_report::public)
  */
 
-/** @} */  // end of modules_structs_include_structs_report_h
+/**
+ * @section variables Variables
+ *
+ * - `int k;` (model_report::public)
+ * - `int epoch;` (model_report::public)
+ * - `bool is_complete = false;` (model_report::public)
+ * - `std::vector<double> current_lr = {};` (model_report::public)
+ * - `std::map<mode_enum, std::map<std::string, float>> loss_graph = {};` (model_report::public)
+ * - `std::map<mode_enum, std::map<std::string, float>> loss_node = {};` (model_report::public)
+ * - `std::map<mode_enum, std::map<std::string, float>> loss_edge = {};` (model_report::public)
+ * - `std::map<mode_enum, std::map<std::string, float>> accuracy_graph = {};` (model_report::public)
+ * - `std::map<mode_enum, std::map<std::string, float>> accuracy_node = {};` (model_report::public)
+ * - `std::map<mode_enum, std::map<std::string, float>> accuracy_edge = {};` (model_report::public)
+ * - `std::string run_name;` (model_report::public)
+ * - `std::string mode;` (model_report::public)
+ * - `long iters = 0;` (model_report::public)
+ * - `long num_evnt = 0;` (model_report::public)
+ * - `float progress;` (model_report::public)
+ */
+
+/** @} */

@@ -3,15 +3,40 @@
  * @brief Documentation for templates/metrics/include/metrics/<name>.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/templates/metrics/include/metrics/<name>.h
  */
 
 /**
- * @defgroup templates_metrics_include_metrics_<name>_h <name>.h
- * @brief <name>.h - templates/metrics/include/metrics
- * 
+ * @defgroup templates_metrics_include_metrics__name__h <name>.h
+ * @brief <name>.h
  * @{
  */
 
-/** @} */  // end of templates_metrics_include_metrics_<name>_h
+/**
+ * @section classes Classes and Structures
+ *
+ * - **<name>_metric** (class)
+ */
+
+/**
+ * @section functions Functions
+ *
+ * - `<name>_metric();`
+ * - `~<name>_metric() override;`
+ * - `<name>_metric* clone() override;`
+ * - `void define_metric(metric_t* mtx) override;`
+ * - `void define_variables() override;`
+ * - `void event() override;`
+ * - `void batch() override;`
+ * - `void end() override;`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::string mode = "";` (::private)
+ * - `float <name> = 0;` (::private)
+ * - `float global_<name> = 0;` (::private)
+ */
+
+/** @} */

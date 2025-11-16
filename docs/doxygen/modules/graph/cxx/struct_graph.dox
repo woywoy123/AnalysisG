@@ -3,15 +3,239 @@
  * @brief Documentation for modules/graph/cxx/struct_graph.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/graph/cxx/struct_graph.cxx
  */
 
 /**
  * @defgroup modules_graph_cxx_struct_graph_cxx struct_graph.cxx
- * @brief struct_graph.cxx - modules/graph/cxx
- * 
+ * @brief struct_graph.cxx
  * @{
  */
 
-/** @} */  // end of modules_graph_cxx_struct_graph_cxx
+/**
+ * @section functions Functions
+ *
+ * - `void graph_t::add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int`
+ * - `if (this -> truth_graph){return;}`
+ * - `this -> truth_graph = this -> add_content(data);`
+ * - `void graph_t::add_truth_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>`
+ * - `if (this -> truth_node){return;}`
+ * - `this -> truth_node = this -> add_content(data);`
+ * - `void graph_t::add_truth_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>`
+ * - `if (this -> truth_edge){return;}`
+ * - `this -> truth_edge = this -> add_content(data);`
+ * - `void graph_t::add_data_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>`
+ * - `if (this -> data_graph){return;}`
+ * - `this -> data_graph = this -> add_content(data);`
+ * - `void graph_t::add_data_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>*`
+ * - `if (this -> data_node){return;}`
+ * - `this -> data_node = this -> add_content(data);`
+ * - `void graph_t::add_data_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>*`
+ * - `if (this -> data_edge){return;}`
+ * - `this -> data_edge = this -> add_content(data);`
+ * - `void graph_t::_purge_all(){ this -> _purge_data(this -> data_graph);`
+ * - `this -> _purge_data(this -> data_graph);`
+ * - `this -> _purge_data(this -> data_node);`
+ * - `this -> _purge_data(this -> data_edge);`
+ * - `this -> _purge_data(this -> truth_graph);`
+ * - `this -> _purge_data(this -> truth_node);`
+ * - `this -> _purge_data(this -> truth_edge);`
+ * - `if (this -> data_graph ){delete this -> data_graph;  this -> data_graph  = nullptr;}`
+ * - `if (this -> data_node  ){delete this -> data_node;   this -> data_node   = nullptr;}`
+ * - `if (this -> data_edge  ){delete this -> data_edge;   this -> data_edge   = nullptr;}`
+ * - `if (this -> truth_graph){delete this -> truth_graph; this -> truth_graph = nullptr;}`
+ * - `if (this -> truth_node ){delete this -> truth_node;  this -> truth_node  = nullptr;}`
+ * - `if (this -> truth_edge ){delete this -> truth_edge;  this -> truth_edge  = nullptr;}`
+ * - `if (this -> edge_index ){delete this -> edge_index;  this -> edge_index  = nullptr;}`
+ * - `this -> dev_data_graph.clear();`
+ * - `this -> dev_data_node.clear();`
+ * - `this -> dev_data_edge.clear();`
+ * - `this -> dev_truth_graph.clear();`
+ * - `this -> dev_truth_node.clear();`
+ * - `this -> dev_truth_edge.clear();`
+ * - `this -> dev_edge_index.clear();`
+ * - `this -> dev_event_weight.clear();`
+ * - `this -> dev_batch_index.clear();`
+ * - `if (this -> hash){delete this -> hash;}`
+ * - `if (this -> graph_name){delete this -> graph_name;}`
+ * - `if (!this -> is_owner){return;}`
+ * - `if (!loc -> count(_name)){return nullptr;}`
+ * - `int idx_ = (*loc)[_name];`
+ * - `if (!container -> count(dev_)){return nullptr;}`
+ * - `if (int(container -> at(dev_).size()) <= idx_){return nullptr;}`
+ * - `return &container -> at(dev_).at(idx_);`
+ * - `torch::Tensor* graph_t::has_feature(graph_enum tp, std::string _name, int dev){ std::map<std::string`
+ * - `switch(tp){ case graph_enum::data_edge   : pos_ = this -> data_map_edge  ; dev_mp = &this -> dev_dat`
+ * - `case graph_enum::edge_index  : return (this -> dev_edge_index.count(dev)) ? &this -> dev_edge_index[`
+ * - `case graph_enum::weight      : return (this -> dev_event_weight.count(dev)) ? &this -> dev_event_wei`
+ * - `case graph_enum::batch_index : return (this -> dev_batch_index.count(dev)) ? &this -> dev_batch_inde`
+ * - `case graph_enum::batch_events: return (this -> dev_batched_events.count(dev)) ? &this -> dev_batched`
+ * - `return this -> return_any(pos_, dev_mp, _name, dev);`
+ * - `void graph_t::_purge_data(std::map<int, torch::Tensor*>* data){ if (!data){return;}`
+ * - `if (!data){return;}`
+ * - `std::map<int, torch::Tensor*>::iterator itr = data -> begin();`
+ * - `for (; itr != data -> end(); ++itr){delete itr -> second;}`
+ * - `data -> clear();`
+ * - `void graph_t::_purge_data(std::vector<torch::Tensor*>* data){ if (!data){return;}`
+ * - `for (size_t x(0); x < data -> size(); ++x){`
+ * - `if (!(*data)[x]){continue;}`
+ * - `delete (*data)[x]; (*data)[x] = nullptr;`
+ * - `void graph_t::_purge_data(std::map<int, std::vector<torch::Tensor*>*>* data){ if (!data){return;}`
+ * - `std::map<int, std::vector<torch::Tensor*>*>::iterator itr = data -> begin();`
+ * - `for (; itr != data -> end(); ++itr){`
+ * - `if (!itr -> second){continue;}`
+ * - `this -> _purge_data(itr -> second);`
+ * - `std::vector<torch::Tensor*>* graph_t::add_content(std::map<std::string, torch::Tensor*>* inpt){ std:`
+ * - `std::vector<torch::Tensor*>* out = new std::vector<torch::Tensor*>(inpt -> size(), nullptr);`
+ * - `std::map<std::string, torch::Tensor*>::iterator itr = inpt -> begin();`
+ * - `for (size_t t(0); t < inpt -> size(); ++t, ++itr){(*out)[t] = itr -> second;}`
+ * - `void graph_t::transfer_to_device(torch::TensorOptions* dev){ c10::DeviceType dev_in = dev -> device(`
+ * - `c10::DeviceType dev_in = dev -> device().type();`
+ * - `if (dev_in == c10::kCPU){return;}`
+ * - `int dev_ = (int)dev -> device().index();`
+ * - `bool sm = (dev_in == c10::kCUDA && this -> device == c10::kCUDA);`
+ * - `if (sm){return;}`
+ * - `std::unique_lock<std::mutex> lk(this -> mut);`
+ * - `this -> _transfer_to_device(&this -> dev_data_graph[dev_] , this -> data_graph , dev);`
+ * - `this -> _transfer_to_device(&this -> dev_data_node[dev_]  , this -> data_node  , dev);`
+ * - `this -> _transfer_to_device(&this -> dev_data_edge[dev_]  , this -> data_edge  , dev);`
+ * - `this -> _transfer_to_device(&this -> dev_truth_graph[dev_], this -> truth_graph, dev);`
+ * - `this -> _transfer_to_device(&this -> dev_truth_node[dev_] , this -> truth_node , dev);`
+ * - `this -> _transfer_to_device(&this -> dev_truth_edge[dev_] , this -> truth_edge , dev);`
+ * - `this -> batched_events = std::vector<long>({0});`
+ * - `std::vector<long> bc(this -> num_nodes, 0);`
+ * - `torch::TensorOptions op = torch::TensorOptions(torch::kCPU);`
+ * - `torch::Tensor dt = build_tensor(&evw, torch::kDouble, double(), &op);`
+ * - `torch::Tensor bx = build_tensor(&bc , torch::kLong, long(), &op);`
+ * - `torch::Tensor bi = build_tensor(&this -> batched_events, torch::kLong, long(), &op);`
+ * - `this -> dev_event_weight[dev_]   = dt.clone().to(dev -> device(), true);`
+ * - `this -> dev_batch_index[dev_]    = bx.clone().to(dev -> device(), true);`
+ * - `this -> dev_batched_events[dev_] = bi.clone().to(dev -> device(), true);`
+ * - `this -> dev_edge_index[dev_]     = this -> edge_index -> to(dev -> device(), true);`
+ * - `torch::cuda::synchronize(dev_);`
+ * - `lk.unlock();`
+ * - `void graph_t::_transfer_to_device(std::vector<torch::Tensor>* trgt, std::vector<torch::Tensor*>* src`
+ * - `if (!src || trgt -> size()){return;}`
+ * - `trgt -> reserve(src -> size());`
+ * - `for (size_t x(0); x < src -> size(); ++x){trgt -> push_back((*src)[x] -> to(dev -> device(), true));`
+ * - `void graph_t::meta_serialize(std::map<std::string, int>* data, std::string* out){ if (!data -> size(`
+ * - `if (!data -> size()){*out = "NULL"; return;}`
+ * - `std::map<std::string, int>::iterator it = data -> begin();`
+ * - `for (; it != data -> end(); ++it){*out += it -> first + "|" + std::to_string(it -> second) + "%";}`
+ * - `void graph_t::meta_serialize(std::vector<torch::Tensor*>* data, std::string* out){ if (!data -> size`
+ * - `data_.reserve(data -> size());`
+ * - `for (torch::Tensor* t : *data){data_.push_back(*t);}`
+ * - `std::vector<char> chars = torch::pickle_save(data_);`
+ * - `tools tl = tools();`
+ * - `void graph_t::meta_serialize(torch::Tensor* data, std::string* out){ std::vector<char> chars = torch`
+ * - `std::vector<char> chars = torch::pickle_save(*data);`
+ * - `if (!chars.size()){*out = "NULL"; return;}`
+ * - `void graph_t::serialize(graph_hdf5* m_hdf5){ m_hdf5 -> hash         = this -> hash -> c_str();`
+ * - `m_hdf5 -> hash         = this -> hash -> c_str();`
+ * - `m_hdf5 -> filename     = this -> filename -> c_str();`
+ * - `this -> meta_serialize(this -> edge_index, &m_hdf5 -> edge_index);`
+ * - `this -> meta_serialize(this -> data_map_graph , &m_hdf5 -> data_map_graph );`
+ * - `this -> meta_serialize(this -> data_map_node  , &m_hdf5 -> data_map_node  );`
+ * - `this -> meta_serialize(this -> data_map_edge  , &m_hdf5 -> data_map_edge  );`
+ * - `this -> meta_serialize(this -> truth_map_graph, &m_hdf5 -> truth_map_graph);`
+ * - `this -> meta_serialize(this -> truth_map_node , &m_hdf5 -> truth_map_node );`
+ * - `this -> meta_serialize(this -> truth_map_edge , &m_hdf5 -> truth_map_edge );`
+ * - `this -> meta_serialize(this -> data_graph , &m_hdf5 -> data_graph );`
+ * - `this -> meta_serialize(this -> data_node  , &m_hdf5 -> data_node  );`
+ * - `this -> meta_serialize(this -> data_edge  , &m_hdf5 -> data_edge  );`
+ * - `this -> meta_serialize(this -> truth_graph, &m_hdf5 -> truth_graph);`
+ * - `this -> meta_serialize(this -> truth_node , &m_hdf5 -> truth_node );`
+ * - `this -> meta_serialize(this -> truth_edge , &m_hdf5 -> truth_edge );`
+ * - `void graph_t::meta_deserialize(std::map<std::string, int>* data, std::string* out){ if ((*out) == "N`
+ * - `if ((*out) == "NULL"){return;}`
+ * - `tools t = tools();`
+ * - `std::vector<std::string> line = t.split(*out, "%");`
+ * - `for (size_t x(0); x < line.size()-1; ++x){`
+ * - `std::vector<std::string> c = t.split(line[x], "|");`
+ * - `(*data)[c[0]] = std::stoi(c[1]);`
+ * - `void graph_t::meta_deserialize(std::vector<torch::Tensor*>* data, std::string* out){ if ((*out) == "`
+ * - `std::string tmp = tl.decode64(out);`
+ * - `std::vector<char> pkl(tmp.begin(), tmp.end());`
+ * - `std::vector<torch::Tensor> datav = torch::pickle_load(pkl).toTensorVector();`
+ * - `data -> assign(datav.size(), nullptr);`
+ * - `for (size_t x(0); x < datav.size(); ++x){(*data)[x] = new torch::Tensor(datav[x]);}`
+ * - `datav.clear();`
+ * - `torch::Tensor* graph_t::meta_deserialize(std::string* out){ if ((*out) == "NULL"){return nullptr;}`
+ * - `if ((*out) == "NULL"){return nullptr;}`
+ * - `return new torch::Tensor(torch::pickle_load(pkl).toTensor());`
+ * - `void graph_t::deserialize(graph_hdf5* m_hdf5){ this -> hash         = new std::string(m_hdf5 -> hash`
+ * - `this -> hash         = new std::string(m_hdf5 -> hash);`
+ * - `this -> filename     = new std::string(m_hdf5 -> filename);`
+ * - `this -> data_map_graph  = new std::map<std::string, int>();`
+ * - `this -> data_map_node   = new std::map<std::string, int>();`
+ * - `this -> data_map_edge   = new std::map<std::string, int>();`
+ * - `this -> meta_deserialize(this -> data_map_graph , &m_hdf5 -> data_map_graph );`
+ * - `this -> meta_deserialize(this -> data_map_node  , &m_hdf5 -> data_map_node  );`
+ * - `this -> meta_deserialize(this -> data_map_edge  , &m_hdf5 -> data_map_edge  );`
+ * - `this -> truth_map_graph = new std::map<std::string, int>();`
+ * - `this -> truth_map_node  = new std::map<std::string, int>();`
+ * - `this -> truth_map_edge  = new std::map<std::string, int>();`
+ * - `this -> meta_deserialize(this -> truth_map_graph, &m_hdf5 -> truth_map_graph);`
+ * - `this -> meta_deserialize(this -> truth_map_node , &m_hdf5 -> truth_map_node );`
+ * - `this -> meta_deserialize(this -> truth_map_edge , &m_hdf5 -> truth_map_edge );`
+ * - `this -> edge_index = this -> meta_deserialize(&m_hdf5 -> edge_index);`
+ * - `this -> data_graph = new std::vector<torch::Tensor*>();`
+ * - `this -> data_node  = new std::vector<torch::Tensor*>();`
+ * - `this -> data_edge  = new std::vector<torch::Tensor*>();`
+ * - `this -> meta_deserialize(this -> data_graph, &m_hdf5 -> data_graph );`
+ * - `this -> meta_deserialize(this -> data_node , &m_hdf5 -> data_node  );`
+ * - `this -> meta_deserialize(this -> data_edge , &m_hdf5 -> data_edge  );`
+ * - `this -> truth_graph = new std::vector<torch::Tensor*>();`
+ * - `this -> truth_node  = new std::vector<torch::Tensor*>();`
+ * - `this -> truth_edge  = new std::vector<torch::Tensor*>();`
+ * - `this -> meta_deserialize(this -> truth_graph, &m_hdf5 -> truth_graph);`
+ * - `this -> meta_deserialize(this -> truth_node , &m_hdf5 -> truth_node );`
+ * - `this -> meta_deserialize(this -> truth_edge , &m_hdf5 -> truth_edge );`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `int idx_ = (*loc)[_name];` (::private)
+ * - `std::map<std::string, int>* pos_ = nullptr;` (::private)
+ * - `std::map<int, std::vector<torch::Tensor>>* dev_mp = nullptr;` (::private)
+ * - `std::map<int, torch::Tensor*>::iterator itr = data -> begin();` (::private)
+ * - `std::map<int, std::vector<torch::Tensor*>*>::iterator itr = data -> begin();` (::private)
+ * - `std::vector<torch::Tensor*>* out = new std::vector<torch::Tensor*>(inpt -> size(` (::private)
+ * - `std::map<std::string, torch::Tensor*>::iterator itr = inpt -> begin();` (::private)
+ * - `for (size_t t(0); t < inpt -> size(); ++t, ++itr){(*out)[t] = itr -> second;}` (::private)
+ * - `int dev_ = (int)dev -> device().index();` (::private)
+ * - `bool sm = (dev_in == c10::kCUDA && this -> device == c10::kCUDA);` (::private)
+ * - `this -> batched_events = std::vector<long>({0});` (::private)
+ * - `std::vector<double> evw = {this -> event_weight};` (::private)
+ * - `torch::TensorOptions op = torch::TensorOptions(torch::kCPU);` (::private)
+ * - `torch::Tensor dt = build_tensor(&evw, torch::kDouble, double(), &op);` (::private)
+ * - `torch::Tensor bx = build_tensor(&bc , torch::kLong, long(), &op);` (::private)
+ * - `torch::Tensor bi = build_tensor(&this -> batched_events, torch::kLong, long(), &` (::private)
+ * - `std::map<std::string, int>::iterator it = data -> begin();` (::private)
+ * - `for (; it != data -> end(); ++it){*out += it -> first + "|" + std::to_string(it ` (::private)
+ * - `std::vector<char> chars = torch::pickle_save(data_);` (::private)
+ * - `std::vector<char> chars = torch::pickle_save(*data);` (::private)
+ * - `std::vector<std::string> line = t.split(*out, "%");` (::private)
+ * - `std::vector<std::string> c = t.split(line[x], "|");` (::private)
+ * - `(*data)[c[0]] = std::stoi(c[1]);` (::private)
+ * - `std::string tmp = tl.decode64(out);` (::private)
+ * - `std::vector<torch::Tensor> datav = torch::pickle_load(pkl).toTensorVector();` (::private)
+ * - `for (size_t x(0); x < datav.size(); ++x){(*data)[x] = new torch::Tensor(datav[x]` (::private)
+ * - `this -> hash         = new std::string(m_hdf5 -> hash);` (::private)
+ * - `this -> filename     = new std::string(m_hdf5 -> filename);` (::private)
+ * - `this -> data_map_graph  = new std::map<std::string, int>();` (::private)
+ * - `this -> data_map_node   = new std::map<std::string, int>();` (::private)
+ * - `this -> data_map_edge   = new std::map<std::string, int>();` (::private)
+ * - `this -> truth_map_graph = new std::map<std::string, int>();` (::private)
+ * - `this -> truth_map_node  = new std::map<std::string, int>();` (::private)
+ * - `this -> truth_map_edge  = new std::map<std::string, int>();` (::private)
+ * - `this -> data_graph = new std::vector<torch::Tensor*>();` (::private)
+ * - `this -> data_node  = new std::vector<torch::Tensor*>();` (::private)
+ * - `this -> data_edge  = new std::vector<torch::Tensor*>();` (::private)
+ * - `this -> truth_graph = new std::vector<torch::Tensor*>();` (::private)
+ * - `this -> truth_node  = new std::vector<torch::Tensor*>();` (::private)
+ * - `this -> truth_edge  = new std::vector<torch::Tensor*>();` (::private)
+ */
+
+/** @} */

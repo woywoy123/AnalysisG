@@ -3,22 +3,51 @@
  * @brief Documentation for modules/nusol/conuix/cxx/matrix.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/conuix/cxx/matrix.cxx
  */
 
 /**
  * @defgroup modules_nusol_conuix_cxx_matrix_cxx matrix.cxx
- * @brief matrix.cxx - modules/nusol/conuix/cxx
- * 
+ * @brief matrix.cxx
  * @{
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `mx()`
+ * @section functions Functions
+ *
+ * - `matrix_t::matrix_t(int _r, int _c){ this -> r = _r;`
+ * - `this -> data = alloc(this -> r, this -> c);`
+ * - `matrix_t::~matrix_t(){ this -> data = flush(this -> data, this -> r);`
+ * - `this -> data = flush(this -> data, this -> r);`
+ * - `matrix_t matrix_t::dot(const matrix_t& o){ matrix_t mx(this -> r, o.c);`
+ * - `matrix_t mx(this -> r, o.c);`
+ * - `for (int i(0); i < this -> r; ++i){`
+ * - `for (int j(0); j < o.c; ++j){`
+ * - `for (int k(0); k < this -> c; ++k){`
+ * - `long double& matrix_t::at(int _r, int _c){ if (this -> r < _r || this -> c < _c){`
+ * - `if (this -> r < _r || this -> c < _c){ std::cout << "Invalid memory access: \n";`
+ * - `abort();`
+ * - `const long double& matrix_t::at(int _r, int _c) const { if (this -> r < _r || this -> c < _c){`
+ * - `matrix_t matrix_t::T() const { matrix_t mx(this -> c, this -> r);`
+ * - `matrix_t mx(this -> c, this -> r);`
+ * - `opt(mx.data, this -> data, this -> r, this -> c);`
+ * - `matrix_t& matrix_t::operator=(const matrix_t& o){ if (this == &o){return *this;}`
+ * - `if (this == &o){return *this;}`
+ * - `flush(this -> data, this -> r);`
+ * - `copy(o.data, this -> data, this -> r, this -> c);`
+ * - `matrix_t matrix_t::operator+(const matrix_t& o) const { matrix_t mx(this -> r, this -> c);`
+ * - `matrix_t mx(this -> r, this -> c);`
+ * - `ops(mx.data, this -> data, o.data, this -> r, this -> c, 1);`
+ * - `matrix_t matrix_t::operator+(const matrix_t& o){ matrix_t mx(this -> r, this -> c);`
+ * - `matrix_t matrix_t::operator-(const matrix_t& o) const { matrix_t mx(this -> r, this -> c);`
+ * - `ops(mx.data, this -> data, o.data, this -> r, this -> c, -1);`
+ * - `matrix_t matrix_t::operator-(const matrix_t& o){ matrix_t mx(this -> r, this -> c);`
+ * - `matrix_t matrix_t::operator*(long double s) const { matrix_t mx(this -> r, this -> c);`
+ * - `opm(mx.data, this -> data, this -> r, this -> c, s);`
+ * - `matrix_t matrix_t::operator*(long double s){ matrix_t mx(this -> r, this -> c);`
+ * - `void matrix_t::print(int p){ std::cout << "------------------------" << std::endl;`
+ * - `for (int j(0); j < this -> c; ++j){`
+ * - `std::cout << std::fixed << std::setprecision(p) << this -> data[i][j] << "\t";`
  */
 
-/** @} */  // end of modules_nusol_conuix_cxx_matrix_cxx
+/** @} */

@@ -3,15 +3,53 @@
  * @brief Documentation for pyc/interface/graph.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/pyc/interface/graph.cxx
  */
 
 /**
  * @defgroup pyc_interface_graph_cxx graph.cxx
- * @brief graph.cxx - pyc/interface
- * 
+ * @brief graph.cxx
  * @{
  */
 
-/** @} */  // end of pyc_interface_graph_cxx
+/**
+ * @section functions Functions
+ *
+ * - `changedev(&edge_index); changedev(&edge_scores);`
+ * - `const unsigned int edx = edge_index.size({0});`
+ * - `const unsigned int edy = edge_index.size({1});`
+ * - `if (edx != 2 && edy == 2){edge_index = edge_index.transpose(0, 1).contiguous();}`
+ * - `const unsigned int sdx = edge_scores.size({0});`
+ * - `const unsigned int sdy = edge_scores.size({1});`
+ * - `if (sdx != 2 && sdy == 2){edge_scores = edge_scores.transpose(0, 1).contiguous();}`
+ * - `out = graph_::page_rank(&edge_index, &edge_scores, alpha, threshold, norm_low, timeout, num_cls);`
+ * - `return pyc::std_to_dict(&out);`
+ * - `changedev(&edge_index); changedev(&edge_scores); changedev(&pmc);`
+ * - `if (sdx != 2 && sdy == 2){edge_scores = edge_scores.softmax(-1).transpose(0, 1).contiguous();}`
+ * - `else {edge_scores = edge_scores.softmax(0);}`
+ * - `out = graph_::page_rank_reconstruction(&edge_index, &edge_scores, &pmc, alpha, threshold, norm_low, `
+ * - `changedev(&edge_index);`
+ * - `out = graph_::edge_aggregation(&edge_index, &prediction, &edge_feature);`
+ * - `out = graph_::node_aggregation(&edge_index, &prediction, &node_feature);`
+ * - `changedev(&cluster_map);`
+ * - `out = graph_::unique_aggregation(&cluster_map, &feature);`
+ * - `torch::Tensor pmc = transform_::PxPyPzE(&pmu);`
+ * - `out = graph_::edge_aggregation(&edge_index, &prediction, &pmc);`
+ * - `torch::Tensor pmc = transform_::PxPyPzE(&pt, &eta, &phi, &e);`
+ * - `out = graph_::node_aggregation(&edge_index, &prediction, &pmc);`
+ * - `torch::Tensor pmc = torch::cat({px, py, pz, e}, {-1});`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `const unsigned int edx = edge_index.size({0});` (::private)
+ * - `const unsigned int edy = edge_index.size({1});` (::private)
+ * - `const unsigned int sdx = edge_scores.size({0});` (::private)
+ * - `const unsigned int sdy = edge_scores.size({1});` (::private)
+ * - `torch::Tensor pmc = transform_::PxPyPzE(&pmu);` (::private)
+ * - `torch::Tensor pmc = transform_::PxPyPzE(&pt, &eta, &phi, &e);` (::private)
+ * - `torch::Tensor pmc = torch::cat({px, py, pz, e}, {-1});` (::private)
+ */
+
+/** @} */

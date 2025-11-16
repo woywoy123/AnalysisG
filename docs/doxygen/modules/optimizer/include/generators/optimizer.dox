@@ -3,27 +3,40 @@
  * @brief Documentation for modules/optimizer/include/generators/optimizer.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/optimizer/include/generators/optimizer.h
  */
 
 /**
  * @defgroup modules_optimizer_include_generators_optimizer_h optimizer.h
- * @brief optimizer.h - modules/optimizer/include/generators
- * 
+ * @brief optimizer.h
  * @{
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `import_dataloader()`
- * - `import_model_sessions()`
- * - `training_loop()`
- * - `validation_loop()`
- * - `evaluation_loop()`
- * - `launch_model()`
+ * @section classes Classes and Structures
+ *
+ * - **analysis** (class)
+ * - **optimizer** (class)
  */
 
-/** @} */  // end of modules_optimizer_include_generators_optimizer_h
+/**
+ * @section functions Functions
+ *
+ * - `optimizer();`
+ * - `~optimizer();`
+ * - `void import_dataloader(dataloader* dl);`
+ * - `void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models);`
+ * - `void training_loop(int k, int epoch);`
+ * - `void validation_loop(int k, int epoch);`
+ * - `void evaluation_loop(int k, int epoch);`
+ * - `void launch_model(int k);`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::map<int, model_template*> kfold_sessions = {};` (::private)
+ * - `std::map<std::string, model_report*> reports = {};` (::private)
+ */
+
+/** @} */

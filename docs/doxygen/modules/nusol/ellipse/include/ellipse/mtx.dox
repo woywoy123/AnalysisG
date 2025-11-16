@@ -3,75 +3,77 @@
  * @brief Documentation for modules/nusol/ellipse/include/ellipse/mtx.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/ellipse/include/ellipse/mtx.h
  */
 
 /**
  * @defgroup modules_nusol_ellipse_include_ellipse_mtx_h mtx.h
- * @brief mtx.h - modules/nusol/ellipse/include/ellipse
- * 
+ * @brief mtx.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **mtx**
+ *
+ * - **mtx** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **mtx methods:**
- * - `mtx()` - mtx()
- * - `mtx()` - mtx(int idx, int idy)
- * - `mtx()` - mtx(mtx* in)
- * - `mtx()` - mtx(mtx& in)
- * - `mtx()` - ~mtx()
- * - `trace()` - double trace()
- * - `det()` - double det()
- * - `copy()` - mtx  copy()
- * - `copy()` - void copy(const mtx* ipt, int idx, int idy = -1)
- * - `copy()` - void copy(const mtx* ipt, int idx, int jdy, int idy)
- * - `assign()` - bool assign(int idx, int idy, double val, bool valid = true)
- * - `unique()` - bool unique(int id1, int id2, double v1, double v2)
- * - `cat()` - mtx* cat(const mtx* v2)
- * - `slice()` - mtx* slice(int idx)
- * - `eigenvalues()` - mtx* eigenvalues()
- * - `eigenvector()` - mtx* eigenvector()
- * - `T()` - mtx T()
- * - `inv()` - mtx inv()
- * - `cof()` - mtx cof()
- * - `diag()` - mtx diag()
- * - `dot()` - mtx dot(const mtx& other)
- * - `dot()` - mtx dot(const mtx* other)
- * - `cross()` - mtx cross(mtx* r1)
- * - `cross()` - mtx cross(mtx* r1, mtx* r2)
- * - `valid()` - bool valid(int idx, int idy)
- * - `print()` - void print(int prec = 6, int width = 12)
- * - `m_00()` - double m_00()
- * - `m_01()` - double m_01()
- * - `m_02()` - double m_02()
- * - `m_10()` - double m_10()
- * - `m_11()` - double m_11()
- * - `m_12()` - double m_12()
- * - `m_20()` - double m_20()
- * - `m_21()` - double m_21()
- * - `m_22()` - double m_22()
- * 
+ * @section functions Functions
+ *
+ * - `mtx();`
+ * - `mtx(int idx, int idy);`
+ * - `mtx(mtx* in);`
+ * - `mtx(mtx& in);`
+ * - `~mtx();`
+ * - `double trace();`
+ * - `double det();`
+ * - `mtx  copy();`
+ * - `void copy(const mtx* ipt, int idx, int idy = -1);`
+ * - `void copy(const mtx* ipt, int idx, int jdy, int idy);`
+ * - `bool assign(int idx, int idy, double val, bool valid = true);`
+ * - `bool unique(int id1, int id2, double v1, double v2);`
+ * - `mtx* cat(const mtx* v2);`
+ * - `mtx* slice(int idx);`
+ * - `mtx* eigenvalues();`
+ * - `mtx* eigenvector();`
+ * - `mtx T();`
+ * - `mtx inv();`
+ * - `mtx cof();`
+ * - `mtx diag();`
+ * - `mtx dot(const mtx& other);`
+ * - `mtx dot(const mtx* other);`
+ * - `mtx cross(mtx* r1);`
+ * - `mtx cross(mtx* r1, mtx* r2);`
+ * - `bool valid(int idx, int idy);`
+ * - `void print(int prec = 6, int width = 12);`
+ * - `mtx& operator=(const mtx& o);`
+ * - `double m_00();`
+ * - `double m_01();`
+ * - `double m_02();`
+ * - `double m_10();`
+ * - `double m_11();`
+ * - `double m_12();`
+ * - `double m_20();`
+ * - `double m_21();`
+ * - `double m_22();`
+ * - `friend mtx operator*(double scale , const mtx& o2);`
+ * - `friend mtx operator*(const mtx& o1, double scale);`
+ * - `friend mtx operator+(const mtx& o1, const mtx& o2);`
+ * - `friend mtx operator-(const mtx& o1, const mtx& o2);`
+ * - `friend mtx operator*(const mtx& o1, const mtx& o2);`
  */
 
 /**
- * @section variables Member Variables
- * 
- * **mtx variables:**
- * - Public:
- *   - `dim_i` (int)
- *   - `dim_j` (int)
- *   - `tol` (double)
- * 
+ * @section variables Variables
+ *
+ * - `void copy(const mtx* ipt, int idx, int idy = -1);` (::private)
+ * - `bool assign(int idx, int idy, double val, bool valid = true);` (::private)
+ * - `void print(int prec = 6, int width = 12);` (::private)
+ * - `bool  ** _b = nullptr;` (::private)
+ * - `int dim_i = 0;` (::private)
+ * - `int dim_j = 0;` (::private)
+ * - `double tol = 1e-9;` (::private)
  */
 
-/** @} */  // end of modules_nusol_ellipse_include_ellipse_mtx_h
+/** @} */

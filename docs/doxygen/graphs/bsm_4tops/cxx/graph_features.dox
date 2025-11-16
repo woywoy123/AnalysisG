@@ -3,15 +3,53 @@
  * @brief Documentation for graphs/bsm_4tops/cxx/graph_features.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/graphs/bsm_4tops/cxx/graph_features.cxx
  */
 
 /**
  * @defgroup graphs_bsm_4tops_cxx_graph_features_cxx graph_features.cxx
- * @brief graph_features.cxx - graphs/bsm_4tops/cxx
- * 
+ * @brief graph_features.cxx
  * @{
  */
 
-/** @} */  // end of graphs_bsm_4tops_cxx_graph_features_cxx
+/**
+ * @section functions Functions
+ *
+ * - `void signal_event(bool* o, bsm_4tops* event){ if (event -> Tops.size() != 4){*o = false; return;}`
+ * - `if (event -> Tops.size() != 4){*o = false; return;}`
+ * - `for (size_t x(0); x < t.size(); ++x){`
+ * - `top* t_ = (top*)t[x];`
+ * - `if (!t_ -> from_res){continue;}`
+ * - `void num_tops(int* o, bsm_4tops* event){ *o = event -> Tops.size();`
+ * - `if (*o > 4){*o = 4;}`
+ * - `void num_neutrino(int* o, bsm_4tops* event){ int neutrinos = 0;`
+ * - `for (size_t x(0); x < ch.size(); ++x){`
+ * - `top_children* ch_ = (top_children*)ch[x];`
+ * - `if (!ch_ -> is_nu){continue;}`
+ * - `void num_lepton(int* o, bsm_4tops* event){ int leptons = 0;`
+ * - `if (ch_ -> is_nu){continue;}`
+ * - `if (!ch_ -> is_lep){continue;}`
+ * - `void missing_et(double* o, bsm_4tops* event){*o = event -> met;};`
+ * - `void missing_phi(double* o, bsm_4tops* event){*o = event -> phi;};`
+ * - `void num_jets(double* o, bsm_4tops* event){*o = event -> Jets.size();}`
+ * - `void num_truthjets(double* o, bsm_4tops* event){*o = event -> TruthJets.size();}`
+ * - `void event_number(long* o, bsm_4tops* event){*o = event -> event_number;}`
+ * - `void event_weight(double* o, bsm_4tops* event){*o = event -> weight;}`
+ * - `void num_leps(double* o, bsm_4tops* event){ *o = int(event -> Muons.size()) + int(event -> Electrons`
+ * - `void num_children_leps(double* o, bsm_4tops* event){ *o = 0;`
+ * - `if (ch[x] -> is_nu || !ch[x] -> is_lep){continue;}`
+ * - `(*o)+=1;`
+ * - `void num_quark(double* o, bsm_4tops* event){ *o = 0;`
+ * - `if (ch[x] -> is_nu || ch[x] -> is_lep){continue;}`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::vector<particle_template*> t = event -> Tops;` (::private)
+ * - `int neutrinos = 0;` (::private)
+ * - `std::vector<particle_template*> ch = event -> Children;` (::private)
+ * - `int leptons = 0;` (::private)
+ */
+
+/** @} */

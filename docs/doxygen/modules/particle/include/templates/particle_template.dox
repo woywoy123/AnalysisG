@@ -3,83 +3,101 @@
  * @brief Documentation for modules/particle/include/templates/particle_template.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/particle/include/templates/particle_template.h
  */
 
 /**
  * @defgroup modules_particle_include_templates_particle_template_h particle_template.h
- * @brief particle_template.h - modules/particle/include/templates
- * 
+ * @brief particle_template.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **particle_template** (inherits from tools)
+ *
+ * - **event_template** (class)
+ * - **selection_template** (class)
+ * - **particle_template** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **particle_template methods:**
- * - `particle_template()` - particle_template()
- * - `particle_template()` - explicit particle_template(particle_t* p)
- * - `particle_template()` - explicit particle_template(particle_template* p, bool dump = false)
- * - `particle_template()` - explicit particle_template(double px, double py, double pz, double e)
- * - `particle_template()` - explicit particle_template(double px, double py, double pz)
- * - `particle_template()` - virtual ~particle_template()
- * - `particle_template()` - explicit particle_template(particle_t* p)
- * - `particle_template()` - explicit particle_template(particle_template* p, bool dump = false)
- * - `particle_template()` - explicit particle_template(double px, double py, double pz, double e)
- * - `particle_template()` - explicit particle_template(double px, double py, double pz)
- * - `to_cartesian()` - void to_cartesian()
- * - `to_polar()` - void to_polar()
- * - `is()` - bool is(std::vector<int> p)
- * - `DeltaR()` - double DeltaR(particle_template* p)
- * - `iadd()` - void iadd(particle_template* p)
- * - `register_parent()` - bool register_parent(particle_template* p)
- * - `register_child()` - bool register_child(particle_template* p)
- * - `add_leaf()` - void add_leaf(std::string key, std::string leaf = "")
- * - `apply_type_prefix()` - void apply_type_prefix()
- * - `build()` - virtual void build(std::map<std::string, particle_template*>* event, element_t* el)
- * - `clone()` - virtual particle_template* clone()
- * 
+ * @section functions Functions
+ *
+ * - `particle_template();`
+ * - `virtual ~particle_template();`
+ * - `explicit particle_template(particle_t* p);`
+ * - `explicit particle_template(particle_template* p, bool dump = false);`
+ * - `explicit particle_template(double px, double py, double pz, double e);`
+ * - `explicit particle_template(double px, double py, double pz);`
+ * - `void static set_e(double*, particle_template*);`
+ * - `void static get_e(double*, particle_template*);`
+ * - `void static set_pt(double*, particle_template*);`
+ * - `void static get_pt(double*, particle_template*);`
+ * - `void static set_eta(double*, particle_template*);`
+ * - `void static get_eta(double*, particle_template*);`
+ * - `void static set_phi(double*, particle_template*);`
+ * - `void static get_phi(double*, particle_template*);`
+ * - `void static set_px(double*, particle_template*);`
+ * - `void static get_px(double*, particle_template*);`
+ * - `void static set_py(double*, particle_template*);`
+ * - `void static get_py(double*, particle_template*);`
+ * - `void static set_pz(double*, particle_template*);`
+ * - `void static get_pz(double*, particle_template*);`
+ * - `void to_cartesian();`
+ * - `void to_polar();`
+ * - `void static set_mass(double*, particle_template*);`
+ * - `void static get_mass(double*, particle_template*);`
+ * - `void static get_P(double*, particle_template*);`
+ * - `void static get_beta(double*, particle_template*);`
+ * - `void static set_pdgid(int*, particle_template*);`
+ * - `void static get_pdgid(int*, particle_template*);`
+ * - `void static set_symbol(std::string*, particle_template*);`
+ * - `void static get_symbol(std::string*, particle_template*);`
+ * - `void static set_charge(double*, particle_template*);`
+ * - `void static get_charge(double*, particle_template*);`
+ * - `void static get_hash(std::string*, particle_template*);`
+ * - `bool is(std::vector<int> p);`
+ * - `void static get_isb(bool*, particle_template*);`
+ * - `void static get_islep(bool*, particle_template*);`
+ * - `void static get_isnu(bool*, particle_template*);`
+ * - `void static get_isadd(bool*, particle_template*);`
+ * - `void static get_lepdecay(bool*, particle_template*);`
+ * - `void static set_parents(std::map<std::string, particle_template*>*, particle_template*);`
+ * - `void static get_parents(std::map<std::string, particle_template*>*, particle_template*);`
+ * - `void static set_children(std::map<std::string, particle_template*>*, particle_template*);`
+ * - `void static get_children(std::map<std::string, particle_template*>*, particle_template*);`
+ * - `void static set_type(std::string*, particle_template*);`
+ * - `void static get_type(std::string*, particle_template*);`
+ * - `void static set_index(int*, particle_template*);`
+ * - `void static get_index(int*, particle_template*);`
+ * - `double DeltaR(particle_template* p);`
+ * - `bool operator == (particle_template& p);`
+ * - `g operator + (g& p){ g p2 = g();`
+ * - `g p2 = g();`
+ * - `p2.data.px = double(p.px) + double(this -> px);`
+ * - `p2.data.py = double(p.py) + double(this -> py);`
+ * - `p2.data.pz = double(p.pz) + double(this -> pz);`
+ * - `p2.data.e  = double(p.e ) + double(this -> e);`
+ * - `void operator += (particle_template* p);`
+ * - `void iadd(particle_template* p);`
+ * - `bool register_parent(particle_template* p);`
+ * - `bool register_child(particle_template* p);`
+ * - `void add_leaf(std::string key, std::string leaf = "");`
+ * - `void apply_type_prefix();`
+ * - `std::map<std::string, std::map<std::string, particle_t>> __reduce__();`
+ * - `virtual void build(std::map<std::string, particle_template*>* event, element_t* el);`
+ * - `virtual particle_template* clone();`
  */
 
 /**
- * @section variables Member Variables
- * 
- * **particle_template variables:**
- * - Public:
- *   - `e` (cproperty<double, particle_template>)
- *   - `pt` (cproperty<double, particle_template>)
- *   - `eta` (cproperty<double, particle_template>)
- *   - `phi` (cproperty<double, particle_template>)
- *   - `px` (cproperty<double, particle_template>)
- *   - `py` (cproperty<double, particle_template>)
- *   - `pz` (cproperty<double, particle_template>)
- *   - `mass` (cproperty<double, particle_template>)
- *   - `P` (cproperty<double, particle_template>)
- *   - `beta` (cproperty<double, particle_template>)
- *   - `pdgid` (cproperty<int, particle_template>)
- *   - `symbol` (cproperty<std::string, particle_template>)
- *   - `charge` (cproperty<double, particle_template>)
- *   - `hash` (cproperty<std::string, particle_template>)
- *   - `is_b` (cproperty<bool, particle_template>)
- *   - `is_lep` (cproperty<bool, particle_template>)
- *   - `is_nu` (cproperty<bool, particle_template>)
- *   - `is_add` (cproperty<bool, particle_template>)
- *   - `lep_decay` (cproperty<bool, particle_template>)
- *   - `type` (cproperty<std::string, particle_template>)
- *   - `index` (cproperty<int, particle_template>)
- *   - `p2` (return)
- *   - `data` (particle_t)
- *   - `_is_serial` (bool)
- *   - `_is_marked` (bool)
- * 
+ * @section variables Variables
+ *
+ * - `explicit particle_template(particle_template* p, bool dump = false);` (::private)
+ * - `bool operator == (particle_template& p);` (::private)
+ * - `void add_leaf(std::string key, std::string leaf = "");` (::private)
+ * - `std::map<std::string, std::string> leaves = {};` (::private)
+ * - `bool _is_serial = false;` (::private)
+ * - `bool _is_marked = false;` (::private)
  */
 
-/** @} */  // end of modules_particle_include_templates_particle_template_h
+/** @} */

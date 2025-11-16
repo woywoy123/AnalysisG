@@ -3,22 +3,24 @@
  * @brief Documentation for pyc/cutils/include/utils/utils.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/pyc/cutils/include/utils/utils.h
  */
 
 /**
  * @defgroup pyc_cutils_include_utils_utils_h utils.h
- * @brief utils.h - pyc/cutils/include/utils
- * 
+ * @brief utils.h
  * @{
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `changedev()`
+ * @section functions Functions
+ *
+ * - `torch::Tensor clip(torch::Tensor* inpt, int dim);`
+ * - `torch::Tensor format(std::vector<torch::Tensor>* inpt);`
+ * - `torch::Tensor format(std::vector<torch::Tensor*> inpt);`
+ * - `torch::TensorOptions MakeOp(torch::Tensor* x);`
+ * - `void changedev(torch::Tensor* inpt);`
+ * - `torch::Tensor changedev(std::string dev, torch::Tensor* inx);`
  */
 
-/** @} */  // end of pyc_cutils_include_utils_utils_h
+/** @} */

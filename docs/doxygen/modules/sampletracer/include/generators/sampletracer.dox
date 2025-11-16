@@ -3,29 +3,42 @@
  * @brief Documentation for modules/sampletracer/include/generators/sampletracer.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/sampletracer/include/generators/sampletracer.h
  */
 
 /**
  * @defgroup modules_sampletracer_include_generators_sampletracer_h sampletracer.h
- * @brief sampletracer.h - modules/sampletracer/include/generators
- * 
+ * @brief sampletracer.h
  * @{
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `add_meta_data()`
- * - `get_meta_data()`
- * - `fill_selections()`
- * - `add_event()`
- * - `add_graph()`
- * - `add_selection()`
- * - `populate_dataloader()`
- * - `compile_objects()`
+ * @section classes Classes and Structures
+ *
+ * - **sampletracer** (class)
  */
 
-/** @} */  // end of modules_sampletracer_include_generators_sampletracer_h
+/**
+ * @section functions Functions
+ *
+ * - `sampletracer();`
+ * - `~sampletracer();`
+ * - `bool add_meta_data(meta* meta_, std::string filename);`
+ * - `meta* get_meta_data(std::string filename);`
+ * - `std::vector<event_template*> get_events(std::string label);`
+ * - `void fill_selections(std::map<std::string, selection_template*>* inpt);`
+ * - `bool add_event(event_template* ev, std::string label);`
+ * - `bool add_graph(graph_template* gr, std::string label);`
+ * - `bool add_selection(selection_template* sel);`
+ * - `void populate_dataloader(dataloader* dl);`
+ * - `void compile_objects(int threads);`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::string* output_path = nullptr;` (::private)
+ * - `std::map<std::string, container> root_container = {};` (::private)
+ */
+
+/** @} */

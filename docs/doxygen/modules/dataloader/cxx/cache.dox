@@ -3,15 +3,268 @@
  * @brief Documentation for modules/dataloader/cxx/cache.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/dataloader/cxx/cache.cxx
  */
 
 /**
  * @defgroup modules_dataloader_cxx_cache_cxx cache.cxx
- * @brief cache.cxx - modules/dataloader/cxx
- * 
+ * @brief cache.cxx
  * @{
  */
 
-/** @} */  // end of modules_dataloader_cxx_cache_cxx
+/**
+ * @section functions Functions
+ *
+ * - `bool dataloader::dump_graphs(std::string path, int threads){ auto serialize = []( std::vector<graph_`
+ * - `tools tl = tools();`
+ * - `for (size_t t(0); t < quant -> size(); ++t){`
+ * - `graph_t* gr = (*quant)[t];`
+ * - `data_c -> push_back({});`
+ * - `graph_hdf5* data = &std::get<1>((*data_c)[t]);`
+ * - `gr -> serialize(data);`
+ * - `graph_hdf5_w* grw      = &std::get<0>((*data_c)[t]);`
+ * - `grw -> hash            = const_cast<char*>(data -> hash.data());`
+ * - `grw -> filename        = const_cast<char*>(data -> filename.data());`
+ * - `grw -> edge_index      = const_cast<char*>(data -> edge_index.data());`
+ * - `grw -> data_map_graph  = const_cast<char*>(data -> data_map_graph.data());`
+ * - `grw -> data_map_node   = const_cast<char*>(data -> data_map_node.data());`
+ * - `grw -> data_map_edge   = const_cast<char*>(data -> data_map_edge.data());`
+ * - `grw -> truth_map_graph = const_cast<char*>(data -> truth_map_graph.data());`
+ * - `grw -> truth_map_node  = const_cast<char*>(data -> truth_map_node.data());`
+ * - `grw -> truth_map_edge  = const_cast<char*>(data -> truth_map_edge.data());`
+ * - `grw -> data_graph      = const_cast<char*>(data -> data_graph.data());`
+ * - `grw -> data_node       = const_cast<char*>(data -> data_node.data());`
+ * - `grw -> data_edge       = const_cast<char*>(data -> data_edge.data());`
+ * - `grw -> truth_graph     = const_cast<char*>(data -> truth_graph.data());`
+ * - `grw -> truth_node      = const_cast<char*>(data -> truth_node.data());`
+ * - `grw -> truth_edge      = const_cast<char*>(data -> truth_edge.data());`
+ * - `std::vector<std::string> spl = tl.split(fname, "/");`
+ * - `fname = spl[spl.size()-1];`
+ * - `std::string hash  = tl.hash(fname);`
+ * - `tl.replace(&fname, ".root", ".h5");`
+ * - `fname = (*gr -> graph_name) + "/." + hash + "-" + fname;`
+ * - `if (!fname_index -> count(fname)){(*fname_index)[fname] = new std::vector<int>();}`
+ * - `(*fname_index)[fname] -> push_back(t);`
+ * - `io* wrt = new io();`
+ * - `wrt -> start(fname, "write");`
+ * - `std::vector<std::string> spl = this -> split(fname, "/");`
+ * - `for (size_t l(0); l < datax.size(); ++l){`
+ * - `graph_hdf5_w* h5wrt = &std::get<0>(*datax[l]);`
+ * - `graph_hdf5*   h5_   = &std::get<1>(*datax[l]);`
+ * - `wrt -> write(h5wrt, h5_ -> hash);`
+ * - `wrt -> end();`
+ * - `if (!this -> data_set -> size()){this -> warning("Nothing to do. Skipping..."); return true;}`
+ * - `size_t x = (this -> data_set -> size()/threads);`
+ * - `if (this -> data_set -> size() < size_t(threads)){ x = this -> data_set -> size(); }`
+ * - `std::vector<std::vector<graph_t*>> quant = this -> discretize(this -> data_set, x);`
+ * - `std::vector<std::vector<std::tuple<graph_hdf5_w, graph_hdf5>>*> serials(quant.size(), nullptr);`
+ * - `std::vector<std::map<std::string, std::vector<int>*>> fnames(quant.size());`
+ * - `for (size_t t(0); t < quant.size(); ++t){`
+ * - `fnames.push_back(std::map<std::string, std::vector<int>*>());`
+ * - `serials[t] = new std::vector<std::tuple<graph_hdf5_w, graph_hdf5>>();`
+ * - `serials[t] -> reserve(quant[t].size());`
+ * - `std::vector<size_t> handles(quant.size(), 0);`
+ * - `std::vector<std::thread*> th_(quant.size(), nullptr);`
+ * - `for (size_t t(0); t < th_.size(); ++t){th_[t] = new std::thread(serialize, &quant[t], serials[t], &f`
+ * - `std::thread* prg = new std::thread(this -> progressbar1, &handles, this -> data_set -> size(), title`
+ * - `th_[t] -> join(); delete th_[t];`
+ * - `for (itr = fnames[t].begin(); itr != fnames[t].end(); ++itr){`
+ * - `std::vector<std::string> spl = this -> split(itr -> first, "/");`
+ * - `id = (this -> ends_with(&path, "/")) ? path + id : path + "/" + id;`
+ * - `for (int i : *itr -> second){collect[id].push_back(&(*serials[t])[i]);}`
+ * - `idx += itr -> second -> size();`
+ * - `std::vector<std::map<std::string, std::vector<int>*>>().swap(fnames);`
+ * - `prg -> join(); delete prg;`
+ * - `std::vector<size_t> prdata(collect.size(), 0);`
+ * - `std::vector<size_t> lrdata(collect.size(), 0);`
+ * - `std::vector<std::string*> titles(collect.size(), nullptr);`
+ * - `std::vector<std::thread*> thdata(collect.size(), nullptr);`
+ * - `std::vector<std::string> pth_verify(collect.size(), "");`
+ * - `int dx(0), thrs(0);`
+ * - `for (itf = collect.begin(); itf != collect.end(); ++itf, ++dx){`
+ * - `lrdata[dx] = itf -> second.size();`
+ * - `titles[dx] = new std::string();`
+ * - `prg = new std::thread(this -> progressbar3, &prdata, &lrdata, &titles);`
+ * - `for (itf = collect.begin(); itf != collect.end(); ++itf, ++dx, ++thrs){`
+ * - `thdata[dx] = new std::thread(write, titles[dx], itf -> first, &prdata[dx], itf -> second);`
+ * - `while (thrs >= threads){thrs = this -> running(&thdata, &prdata, &lrdata);}`
+ * - `this -> monitor(&thdata);`
+ * - `for (size_t t(0); t < quant.size(); ++t){delete serials[t]; serials[t] = nullptr;}`
+ * - `for (x = 0; x < pth_verify.size(); ++x){`
+ * - `this -> replace(&nx, "/.", "/");`
+ * - `this -> rename(pth_verify[x], nx);`
+ * - `this -> info("Validating Graph Cache...");`
+ * - `std::map<std::string, graph_t*>* restored = this -> restore_graphs_(pth_verify, threads);`
+ * - `for (x = 0; x < this -> data_set -> size(); ++x){`
+ * - `graph_t* dt = (*this -> data_set)[x];`
+ * - `if (dt -> preselection){continue;}`
+ * - `valid = valid && restored -> count(*dt -> hash);`
+ * - `if (valid){continue;}`
+ * - `std::map<std::string, graph_t*>::iterator itr = restored -> begin();`
+ * - `for (; itr != restored -> end(); ++itr){`
+ * - `grs -> _purge_all();`
+ * - `restored -> clear();`
+ * - `if (valid){this -> success("Graph cache has been validated!"); return true;}`
+ * - `this -> failure("The stored cache could not be verified, manually delete the cache folder");`
+ * - `std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::string> cache_, int th`
+ * - `io* ior = new io();`
+ * - `ior -> start(pth, "read");`
+ * - `for (size_t p(0); p < gr_ev -> size(); ++p){`
+ * - `graph_hdf5_w datar = graph_hdf5_w();`
+ * - `ior -> read(&datar, (*gr_ev)[p]);`
+ * - `graph_hdf5 w      = graph_hdf5();`
+ * - `w.hash            = std::string(datar.hash);`
+ * - `w.filename        = std::string(datar.filename);`
+ * - `w.edge_index      = std::string(datar.edge_index);`
+ * - `w.data_map_graph  = std::string(datar.data_map_graph);`
+ * - `w.data_map_node   = std::string(datar.data_map_node);`
+ * - `w.data_map_edge   = std::string(datar.data_map_edge);`
+ * - `w.truth_map_graph = std::string(datar.truth_map_graph);`
+ * - `w.truth_map_node  = std::string(datar.truth_map_node);`
+ * - `w.truth_map_edge  = std::string(datar.truth_map_edge);`
+ * - `w.data_graph      = std::string(datar.data_graph);`
+ * - `w.data_node       = std::string(datar.data_node);`
+ * - `w.data_edge       = std::string(datar.data_edge);`
+ * - `w.truth_graph     = std::string(datar.truth_graph);`
+ * - `w.truth_node      = std::string(datar.truth_node);`
+ * - `w.truth_edge      = std::string(datar.truth_edge);`
+ * - `datar.flush_data();`
+ * - `graph_t* gx = new graph_t();`
+ * - `gx -> deserialize(&w);`
+ * - `(*c_gr)[p] = gx;`
+ * - `(*prg) = p+1;`
+ * - `if (path.size()){ io* io_g = new io();`
+ * - `io* io_g = new io();`
+ * - `io_g -> start(path, "read");`
+ * - `io_g -> read(&data_k, "kfolds");`
+ * - `io_g -> end();`
+ * - `for (size_t x(0); x < data_k.size(); ++x){`
+ * - `std::string hash = std::string(data_k[x].hash);`
+ * - `data_k[x].flush_data();`
+ * - `if (this -> hash_map.count(hash)){continue;}`
+ * - `if (load_hash.count(hash)){continue;}`
+ * - `if (data_k[x].is_eval && eval){load_hash[hash] = true; continue;}`
+ * - `for (size_t k(0); k < kv.size(); ++k){`
+ * - `if (kv[k] != data_k[x].k+1){continue;}`
+ * - `for (size_t x(0); x < cache_.size(); ++x){`
+ * - `std::string fname_ = spl[spl.size()-1];`
+ * - `if (!this -> has_string(&fname_, "0x")){continue;}`
+ * - `cache_io.push_back(fname);`
+ * - `io ior = io();`
+ * - `ior.start(fname, "read");`
+ * - `data_set_[fname] = ior.dataset_names();`
+ * - `if (load_hash.size()){ std::vector<std::string>* check = &data_set_[fname];`
+ * - `std::vector<std::string>::iterator itx = check -> begin();`
+ * - `for (; itx != check -> end();){itx = (load_hash[*itx]) ? ++itx : check -> erase(itx);}`
+ * - `len_cache += data_set_[fname].size();`
+ * - `trgt.push_back(data_set_[fname].size());`
+ * - `handles.push_back(0);`
+ * - `ior.end();`
+ * - `this -> progressbar(float((x+1)) / float(cache_.size()), "Checking HDF5 size: " + fname_);`
+ * - `std::map<std::string, graph_t*>* restored = new std::map<std::string, graph_t*>();`
+ * - `if (!len_cache){return restored;}`
+ * - `std::thread* prg = new std::thread(this -> progressbar2, &handles, &len_cache, &title);`
+ * - `std::vector<std::thread*> th_(cache_io.size(), nullptr);`
+ * - `std::vector<std::vector<graph_t*>*> cache_rebuild(cache_io.size(), nullptr);`
+ * - `for (size_t x(0); x < cache_io.size(); ++x, ++tidx){`
+ * - `std::vector<std::string> lsx = this -> split(cache_io[x], "/");`
+ * - `title = "Reading HDF5 -> " + lsx[lsx.size()-1];`
+ * - `if (!gr_ev -> size()){continue;}`
+ * - `cache_rebuild[x] = new std::vector<graph_t*>(gr_ev -> size(), nullptr);`
+ * - `th_[x] = new std::thread(threaded_reader, cache_io[x], gr_ev, cache_rebuild[x], &handles[x]);`
+ * - `while (tidx >= threads){tidx = this -> running(&th_, &handles, &trgt);}`
+ * - `this -> monitor(&th_);`
+ * - `for (size_t x(0); x < cache_rebuild.size(); ++x){`
+ * - `if (!datax){continue;}`
+ * - `for (size_t p(0); p < datax -> size(); ++p){`
+ * - `graph_t* gr = (*datax)[p];`
+ * - `if (gr -> preselection){delete gr; continue;}`
+ * - `(*restored)[(*gr -> hash)] = gr;`
+ * - `datax -> clear();`
+ * - `cache_rebuild.clear();`
+ * - `prg -> join(); delete prg; prg = nullptr;`
+ * - `void dataloader::restore_graphs(std::vector<std::string> path, int threads){ std::map<std::string, g`
+ * - `std::map<std::string, graph_t*>* restored = this -> restore_graphs_(path, threads);`
+ * - `for (itr = restored -> begin(); itr != restored -> end(); ++itr){`
+ * - `this -> extract_data(itr -> second);`
+ * - `(*restored)[itr -> first] = nullptr;`
+ * - `this -> success("Restored " + std::to_string(restored -> size()) + " Graphs from cache!");`
+ * - `void dataloader::restore_graphs(std::string path, int threads){ std::vector<std::string> files = thi`
+ * - `std::vector<std::string> files = this -> ls(path, ".h5");`
+ * - `this -> restore_graphs(files, threads);`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `graph_hdf5* data = &std::get<1>((*data_c)[t]);` (::private)
+ * - `graph_hdf5_w* grw      = &std::get<0>((*data_c)[t]);` (::private)
+ * - `std::string fname = data -> filename;` (::private)
+ * - `std::vector<std::string> spl = tl.split(fname, "/");` (::private)
+ * - `std::string hash  = tl.hash(fname);` (::private)
+ * - `if (!fname_index -> count(fname)){(*fname_index)[fname] = new std::vector<int>()` (::private)
+ * - `std::vector<std::string> spl = this -> split(fname, "/");` (::private)
+ * - `graph_hdf5_w* h5wrt = &std::get<0>(*datax[l]);` (::private)
+ * - `graph_hdf5*   h5_   = &std::get<1>(*datax[l]);` (::private)
+ * - `size_t x = (this -> data_set -> size()/threads);` (::private)
+ * - `std::vector<std::vector<graph_t*>> quant = this -> discretize(this -> data_set, ` (::private)
+ * - `serials[t] = new std::vector<std::tuple<graph_hdf5_w, graph_hdf5>>();` (::private)
+ * - `for (size_t t(0); t < th_.size(); ++t){th_[t] = new std::thread(serialize, &quan` (::private)
+ * - `std::string title = "Graph Serialization";` (::private)
+ * - `std::thread* prg = new std::thread(this -> progressbar1, &handles, this -> data_` (::private)
+ * - `size_t idx = 0;` (::private)
+ * - `std::map<std::string, std::vector< std::tuple<graph_hdf5_w, graph_hdf5>* >> coll` (::private)
+ * - `std::vector<std::string> spl = this -> split(itr -> first, "/");` (::private)
+ * - `std::string id = itr -> first;` (::private)
+ * - `titles[dx] = new std::string();` (::private)
+ * - `prg = new std::thread(this -> progressbar3, &prdata, &lrdata, &titles);` (::private)
+ * - `thdata[dx] = new std::thread(write, titles[dx], itf -> first, &prdata[dx], itf -` (::private)
+ * - `for (size_t t(0); t < quant.size(); ++t){delete serials[t]; serials[t] = nullptr` (::private)
+ * - `std::string nx = pth_verify[x];` (::private)
+ * - `std::map<std::string, graph_t*>* restored = this -> restore_graphs_(pth_verify, ` (::private)
+ * - `bool valid = true;` (::private)
+ * - `std::map<std::string, graph_t*>::iterator itr = restored -> begin();` (::private)
+ * - `w.hash            = std::string(datar.hash);` (::private)
+ * - `w.filename        = std::string(datar.filename);` (::private)
+ * - `w.edge_index      = std::string(datar.edge_index);` (::private)
+ * - `w.data_map_graph  = std::string(datar.data_map_graph);` (::private)
+ * - `w.data_map_node   = std::string(datar.data_map_node);` (::private)
+ * - `w.data_map_edge   = std::string(datar.data_map_edge);` (::private)
+ * - `w.truth_map_graph = std::string(datar.truth_map_graph);` (::private)
+ * - `w.truth_map_node  = std::string(datar.truth_map_node);` (::private)
+ * - `w.truth_map_edge  = std::string(datar.truth_map_edge);` (::private)
+ * - `w.data_graph      = std::string(datar.data_graph);` (::private)
+ * - `w.data_node       = std::string(datar.data_node);` (::private)
+ * - `w.data_edge       = std::string(datar.data_edge);` (::private)
+ * - `w.truth_graph     = std::string(datar.truth_graph);` (::private)
+ * - `w.truth_node      = std::string(datar.truth_node);` (::private)
+ * - `w.truth_edge      = std::string(datar.truth_edge);` (::private)
+ * - `std::vector<folds_t> data_k = {};` (::private)
+ * - `std::string path = this -> setting -> training_dataset;` (::private)
+ * - `bool eval = this -> setting -> evaluation;` (::private)
+ * - `bool fold = this -> setting -> validation;` (::private)
+ * - `bool train = this -> setting -> training;` (::private)
+ * - `std::vector<int> kv = this -> setting -> kfold;` (::private)
+ * - `std::string hash = std::string(data_k[x].hash);` (::private)
+ * - `size_t len_cache = 0;` (::private)
+ * - `std::vector<size_t> trgt = {};` (::private)
+ * - `std::vector<size_t> handles = {};` (::private)
+ * - `std::vector<std::string> cache_io = {};` (::private)
+ * - `std::string fname = cache_[x];` (::private)
+ * - `std::string fname_ = spl[spl.size()-1];` (::private)
+ * - `std::vector<std::string>* check = &data_set_[fname];` (::private)
+ * - `std::vector<std::string>::iterator itx = check -> begin();` (::private)
+ * - `std::map<std::string, graph_t*>* restored = new std::map<std::string, graph_t*>(` (::private)
+ * - `std::string title = "Reading HDF5";` (::private)
+ * - `std::thread* prg = new std::thread(this -> progressbar2, &handles, &len_cache, &` (::private)
+ * - `int tidx = 0;` (::private)
+ * - `std::vector<std::string> lsx = this -> split(cache_io[x], "/");` (::private)
+ * - `std::vector<std::string>* gr_ev = &data_set_[cache_io[x]];` (::private)
+ * - `cache_rebuild[x] = new std::vector<graph_t*>(gr_ev -> size(), nullptr);` (::private)
+ * - `th_[x] = new std::thread(threaded_reader, cache_io[x], gr_ev, cache_rebuild[x], ` (::private)
+ * - `std::vector<graph_t*>* datax = cache_rebuild[x];` (::private)
+ * - `std::map<std::string, graph_t*>* restored = this -> restore_graphs_(path, thread` (::private)
+ * - `std::vector<std::string> files = this -> ls(path, ".h5");` (::private)
+ */
+
+/** @} */

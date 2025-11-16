@@ -3,125 +3,102 @@
  * @brief Documentation for modules/nusol/tmp/multisol/include/multisol/multisol.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/tmp/multisol/include/multisol/multisol.h
  */
 
 /**
  * @defgroup modules_nusol_tmp_multisol_include_multisol_multisol_h multisol.h
- * @brief multisol.h - modules/nusol/tmp/multisol/include/multisol
- * 
+ * @brief multisol.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **multisol_t**
- * - **rev_t**
- * - **mass_t**
- * - **geo_t**
- * - **multisol**
+ *
+ * - **multisol_t** (struct)
+ * - **rev_t** (struct)
+ * - **mass_t** (struct)
+ * - **geo_t** (struct)
+ * - **multisol** (class)
  */
 
 /**
- * @section functions Functions and Methods
- * 
- * **geo_t methods:**
- * - `geo_t()` - ~geo_t()
- * - `px()` - double px(double u, double v)
- * - `py()` - double py(double u, double v)
- * - `pz()` - double pz(double u, double v)
- * - `lx()` - double lx(double s)
- * - `ly()` - double ly(double s)
- * - `lz()` - double lz(double s)
- * 
- * **multisol methods:**
- * - `multisol()` - multisol(particle_template* b, particle_template* l)
- * - `multisol()` - ~multisol()
- * - `make_rt()` - void make_rt()
- * - `H_tilde()` - matrix    H_tilde(double t, double z)
- * - `dHdt_tilde()` - matrix dHdt_tilde(double t, double z = 1)
- * - `H()` - matrix    H(double t, double z)
- * - `dHdt()` - matrix dHdt(double t, double z = 1)
- * - `d2Hdt2()` - matrix d2Hdt2(double t, double z = 1)
- * - `v()` - vec3 v          (double t, double z, double phi)
- * - `dv_dt()` - vec3 dv_dt      (double t, double z, double phi)
- * - `dv_dphi()` - vec3 dv_dphi    (double t, double z, double phi)
- * - `d2v_dt_dphi()` - vec3 d2v_dt_dphi(double t, double z, double phi)
- * - `geometry()` - geo_t  geometry(double t, double z)
- * - `intersection()` - geo_t  intersection(multisol* nu, double t1, double z1, double t2, double z2)
- * - `intersection()` - geo_t* intersection(const vec3& r0, const vec3& d, double t, double z)
- * - `center()` - vec3 center(double t, double z)
- * - `normal()` - vec3 normal(double t, double z)
- * - `eigenvalues()` - bool eigenvalues(double t, double z, vec3* real = nullptr, vec3* imag = nullptr)
- * - `dp_dt()` - double dp_dt()
- * - `masses()` - mass_t masses(double t, double z)
- * - `translate()` - rev_t  translate(double sx, double sy)
- * - `export_ellipse()` - void export_ellipse(std::string name, double t, double z)
- * - `export_ellipse()` - void export_ellipse(std::string name, double t, double z, int n_points)
- * 
+ * @section functions Functions
+ *
+ * - `~geo_t();` (geo_t::public)
+ * - `double px(double u, double v);` (geo_t::public)
+ * - `double py(double u, double v);` (geo_t::public)
+ * - `double pz(double u, double v);` (geo_t::public)
+ * - `double lx(double s);` (geo_t::public)
+ * - `double ly(double s);` (geo_t::public)
+ * - `double lz(double s);` (geo_t::public)
+ * - `multisol(particle_template* b, particle_template* l);`
+ * - `~multisol();`
+ * - `void make_rt();`
+ * - `matrix    H_tilde(double t, double z);`
+ * - `matrix dHdt_tilde(double t, double z = 1);`
+ * - `matrix    H(double t, double z);`
+ * - `matrix dHdt(double t, double z = 1);`
+ * - `matrix d2Hdt2(double t, double z = 1);`
+ * - `vec3 v          (double t, double z, double phi); // neutrino ellipse`
+ * - `vec3 dv_dt      (double t, double z, double phi); // neutrino ellipse derivative w.r.t "t"`
+ * - `vec3 dv_dphi    (double t, double z, double phi); // neutrino ellipse derivative w.r.t "phi"`
+ * - `vec3 d2v_dt_dphi(double t, double z, double phi); // neutrino ellipse derivative w.r.t "t" and "phi"`
+ * - `geo_t  geometry(double t, double z);`
+ * - `geo_t  intersection(multisol* nu, double t1, double z1, double t2, double z2);`
+ * - `geo_t* intersection(const vec3& r0, const vec3& d, double t, double z);`
+ * - `vec3 center(double t, double z);`
+ * - `vec3 normal(double t, double z);`
+ * - `bool eigenvalues(double t, double z, vec3* real = nullptr, vec3* imag = nullptr);`
+ * - `double dp_dt(); // returns t.`
+ * - `mass_t masses(double t, double z);`
+ * - `rev_t  translate(double sx, double sy);`
+ * - `void export_ellipse(std::string name, double t, double z);`
+ * - `void export_ellipse(std::string name, double t, double z, int n_points);`
  */
 
 /**
- * @section variables Member Variables
- * 
- * **geo_t variables:**
- * - Private:
- *   - `valid` (bool)
- *   - `_s1` (double)
- *   - `_p1` (double)
- *   - `_d1` (double)
- *   - `asym` (double)
- *   - `nu1` (geo_t*)
- *   - `nu2` (geo_t*)
- * 
- * **mass_t variables:**
- * - Private:
- *   - `mt` (double)
- *   - `mw` (double)
- *   - `sx` (double)
- *   - `sy` (double)
- * 
- * **multisol variables:**
- * - Private:
- *   - `rt` (matrix*)
- *   - `para` (multisol_t*)
- *   - `b_lep` (double)
- *   - `p_lep` (double)
- *   - `m2_lep` (double)
- *   - `e2_lep` (double)
- *   - `b_jet` (double)
- *   - `p_jet` (double)
- *   - `m2_jet` (double)
- *   - `phi_mu` (double)
- *   - `theta_mu` (double)
- *   - `vx_jet` (vec3)
- *   - `o` (double)
- *   - `w` (double)
- * 
- * **multisol_t variables:**
- * - Private:
- *   - `A` (double)
- *   - `D` (double)
- *   - `s0x` (double)
- *   - `psi` (double)
- *   - `lmb1` (double)
- *   - `a_x` (double)
- *   - `a_y` (double)
- *   - `a_w` (double)
- *   - `a_t` (double)
- * 
- * **rev_t variables:**
- * - Private:
- *   - `u` (double)
- *   - `v` (double)
- *   - `u_p` (double)
- *   - `v_p` (double)
- *   - `t` (double)
- *   - `z` (double)
- * 
+ * @section variables Variables
+ *
+ * - `double A = 0, B = 0, C = 0;` (multisol_t::public)
+ * - `double D = 0, E = 0, F = 0;` (multisol_t::public)
+ * - `double s0x = 0, s0y = 0;` (multisol_t::public)
+ * - `double psi = 0, cpsi = 0, spsi = 0;` (multisol_t::public)
+ * - `double lmb1 = -1, lmb2 = 0;` (multisol_t::public)
+ * - `double a_x = 0, b_x = 0, c_x = 0;  // Sx` (multisol_t::public)
+ * - `double a_y = 0, b_y = 0, c_y = 0;  // Sy` (multisol_t::public)
+ * - `double a_w = 0, b_w = 0;  // mW` (multisol_t::public)
+ * - `double a_t = 0, b_t = 0, c_t = 0;  // mT` (multisol_t::public)
+ * - `double u = 0;` (rev_t::public)
+ * - `double v = 0;` (rev_t::public)
+ * - `double u_p = 0;` (rev_t::public)
+ * - `double v_p = 0;` (rev_t::public)
+ * - `double t = 0;` (rev_t::public)
+ * - `double z = 0;` (rev_t::public)
+ * - `double mt = 0;` (mass_t::public)
+ * - `double mw = 0;` (mass_t::public)
+ * - `double sx = 0;` (mass_t::public)
+ * - `double sy = 0;` (mass_t::public)
+ * - `bool valid = false;` (geo_t::public)
+ * - `double _s1 = 0, _s2 = 0;` (geo_t::public)
+ * - `double _p1 = 0, _p2 = 0;` (geo_t::public)
+ * - `double _d1 = 0, _d2 = 0;` (geo_t::public)
+ * - `double asym = 0;` (geo_t::public)
+ * - `matrix dHdt_tilde(double t, double z = 1);` (::public)
+ * - `matrix dHdt(double t, double z = 1);` (::public)
+ * - `matrix d2Hdt2(double t, double z = 1);` (::public)
+ * - `bool eigenvalues(double t, double z, vec3* real = nullptr, vec3* imag = nullptr)` (::public)
+ * - `double b_lep  = 0; // beta lepton` (::public)
+ * - `double p_lep  = 0; // momentum lepton` (::public)
+ * - `double m2_lep = 0; // mass^2 of lepton` (::public)
+ * - `double e2_lep = 0; // energy of lepton` (::public)
+ * - `double b_jet  = 0; // beta bjet` (::public)
+ * - `double p_jet  = 0; // momentum bjet` (::public)
+ * - `double m2_jet = 0; // mass^2 of bjet` (::public)
+ * - `double phi_mu   = 0;` (::public)
+ * - `double theta_mu = 0;` (::public)
+ * - `double o = 0;` (::public)
+ * - `double w = 0;` (::public)
  */
 
-/** @} */  // end of modules_nusol_tmp_multisol_include_multisol_multisol_h
+/** @} */

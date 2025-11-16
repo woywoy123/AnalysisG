@@ -3,15 +3,136 @@
  * @brief Documentation for modules/metric/cxx/base.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/metric/cxx/base.cxx
  */
 
 /**
  * @defgroup modules_metric_cxx_base_cxx base.cxx
- * @brief base.cxx - modules/metric/cxx
- * 
+ * @brief base.cxx
  * @{
  */
 
-/** @} */  // end of modules_metric_cxx_base_cxx
+/**
+ * @section functions Functions
+ *
+ * - `std::map<int, torch::TensorOptions*> metric_template::get_devices(){ std::map<int, bool> devs;`
+ * - `std::map<std::string, model_template*>::iterator itx = this -> lnks.begin();`
+ * - `for (; itx != this -> lnks.end(); ++itx){`
+ * - `if (devs[dx]){continue;}`
+ * - `std::vector<int> metric_template::get_kfolds(){ std::map<int, bool> kdx;`
+ * - `for (itx = this -> _epoch_kfold.begin(); itx != this -> _epoch_kfold.end(); ++itx){`
+ * - `std::map<int, std::map<int, std::string>>::iterator ite = itx -> second.begin();`
+ * - `for (; ite != itx -> second.end(); ++ite){`
+ * - `std::map<int, std::string>::iterator itk = ite -> second.begin();`
+ * - `for (; itk != ite -> second.end(); ++itk){`
+ * - `if (kdx[k]){continue;}`
+ * - `out.push_back(k);`
+ * - `size_t metric_template::size(){ size_t sx = 0;`
+ * - `ite = this -> _epoch_kfold[itx -> first].begin();`
+ * - `for (; ite != this -> _epoch_kfold[itx -> first].end(); ++ite){sx += ite -> second.size();}`
+ * - `std::string enums_to_string(graph_enum gr){ switch(gr){`
+ * - `switch(gr){ case graph_enum::truth_graph:  return "truth::graph::";`
+ * - `bool stx = varx -> size() != req -> size();`
+ * - `if (stx){ for (vit = req -> begin(); vit != req -> end(); ++vit){`
+ * - `for (vit = req -> begin(); vit != req -> end(); ++vit){`
+ * - `(*varx)[vit -> first] = std::vector<variable_t*>(vit -> second.size(), nullptr);`
+ * - `for (size_t t(0); t < vit -> second.size(); ++t){`
+ * - `if (!stx && !(*varx)[vit -> first][t]){continue;}`
+ * - `std::string va_ = vit -> second.at(t);`
+ * - `switch (vit -> first){ case graph_enum::truth_graph: tnx = grx -> has_feature(vit -> first, va_, dv)`
+ * - `case graph_enum::truth_graph: tnx = grx -> has_feature(vit -> first, va_, dv); break;`
+ * - `case graph_enum::truth_node : tnx = grx -> has_feature(vit -> first, va_, dv); break;`
+ * - `case graph_enum::truth_edge : tnx = grx -> has_feature(vit -> first, va_, dv); break;`
+ * - `case graph_enum::data_graph: tnx = grx -> has_feature(vit -> first, va_, dv); break;`
+ * - `case graph_enum::data_node : tnx = grx -> has_feature(vit -> first, va_, dv); break;`
+ * - `case graph_enum::data_edge : tnx = grx -> has_feature(vit -> first, va_, dv); break;`
+ * - `case graph_enum::edge_index  : tnx = grx -> has_feature(vit -> first, va_, dv); break;`
+ * - `case graph_enum::weight      : tnx = grx -> has_feature(vit -> first, va_, dv); break;`
+ * - `case graph_enum::batch_index : tnx = grx -> has_feature(vit -> first, va_, dv); break;`
+ * - `case graph_enum::batch_events: tnx = grx -> has_feature(vit -> first, va_, dv); break;`
+ * - `if (!tnx){ (*mtx) = "\033[1;31m Could not find: " + enums_to_string(vit -> first) + va_ + " (try ena`
+ * - `(*mtx) = "\033[1;31m Could not find: " + enums_to_string(vit -> first) + va_ + " (try enabling infer`
+ * - `std::this_thread::sleep_for(std::chrono::seconds(1));`
+ * - `variable_t* v = (*varx)[vit -> first][t];`
+ * - `if (!v){v = new variable_t();}`
+ * - `else {v -> flush_buffer();}`
+ * - `v -> process(tnx, &va_, nullptr);`
+ * - `if (!stx){continue;}`
+ * - `(*mtx) = "\033[1;32m (Found " + enums_to_string(vit -> first) + va_ + ") Typed: " + v -> as_string()`
+ * - `std::this_thread::sleep_for(std::chrono::milliseconds(100));`
+ * - `(*varx)[vit -> first][t] = v;`
+ * - `void metric_template::execute(metric_t* mtx, metric_template* obj, size_t* prg, std::string* msg){ s`
+ * - `(*prg) = 1;`
+ * - `std::string mf = (*msg);`
+ * - `model_template* mdl = mtx -> mdlx -> clone(1);`
+ * - `mdl -> restore_state();`
+ * - `obj -> _outdir += "/epoch-" + std::to_string(mtx -> epoch) + "/" + name_ + "/";`
+ * - `obj -> create_path(obj -> _outdir);`
+ * - `obj -> _outdir += "kfold-" + std::to_string(mtx -> kfold) + ".root";`
+ * - `obj -> define_variables();`
+ * - `std::string hx = std::string(this -> hash(std::to_string(mtx -> device) + "+" + std::to_string(mtx -`
+ * - `std::map<mode_enum, std::vector<graph_t*>*>::iterator itf = this -> hash_bta[hx].begin();`
+ * - `for (; itf != this -> hash_bta[hx].end(); ++itf){`
+ * - `for (size_t x(0); x < smpl -> size(); ++x, ++(*prg)){`
+ * - `graph_t* gr = smpl -> at(x);`
+ * - `mdl -> forward(gr, false);`
+ * - `this -> construct(&vou, var, mdl, gr, msg);`
+ * - `if (!init){ (*msg) = mf;`
+ * - `(*msg) = mf;`
+ * - `mtx -> build();`
+ * - `(*prg) = 0;`
+ * - `obj -> define_metric(mtx);`
+ * - `obj -> flush_garbage();`
+ * - `obj -> end();`
+ * - `void metric_template::define(std::vector<metric_t*>* vr, std::vector<size_t>* num, std::vector<std::`
+ * - `int dev = this -> lnks[itx -> first] -> m_option -> device().index();`
+ * - `for (; ite != this -> _epoch_kfold[itx -> first].end(); ++ite){`
+ * - `itk = this -> _epoch_kfold[itx -> first][ite -> first].begin();`
+ * - `for (; itk != this -> _epoch_kfold[itx -> first][ite -> first].end(); ++itk){`
+ * - `metric_t* mx = new metric_t();`
+ * - `mx -> index  = (*offset);`
+ * - `std::string hx = std::string(this -> hash(std::to_string(mx -> device) + "+" + std::to_string(mx -> `
+ * - `for (; itf != this -> hash_bta[hx].end(); ++itf){xt += itf -> second -> size();}`
+ * - `(*vr)[*offset] = mx;`
+ * - `(*num)[*offset] = xt;`
+ * - `std::string til = "Epoch::" + std::to_string(ite -> first);`
+ * - `til += "-> K(" + std::to_string(itk -> first) + ")";`
+ * - `(*title)[*offset] = new std::string(til);`
+ * - `(*offset)++;`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `std::map<int, torch::TensorOptions*> out = {};` (::private)
+ * - `std::map<std::string, model_template*>::iterator itx = this -> lnks.begin();` (::private)
+ * - `int dx = itx -> second -> device_index;` (::private)
+ * - `std::vector<int> out = {};` (::private)
+ * - `std::map<int, std::map<int, std::string>>::iterator ite = itx -> second.begin();` (::private)
+ * - `std::map<int, std::string>::iterator itk = ite -> second.begin();` (::private)
+ * - `int k = itk -> first;` (::private)
+ * - `size_t sx = 0;` (::private)
+ * - `bool stx = varx -> size() != req -> size();` (::private)
+ * - `(*varx)[vit -> first] = std::vector<variable_t*>(vit -> second.size(), nullptr);` (::private)
+ * - `int dv = mdl -> device_index;` (::private)
+ * - `std::string va_ = vit -> second.at(t);` (::private)
+ * - `torch::Tensor* tnx = nullptr;` (::private)
+ * - `std::map<graph_enum, std::vector<std::string>>* var = mtx -> vars;` (::private)
+ * - `std::map<graph_enum, std::vector<variable_t*>>  vou = {};` (::private)
+ * - `std::string mf = (*msg);` (::private)
+ * - `std::string name_ = mdl -> name;` (::private)
+ * - `bool init = false;` (::private)
+ * - `obj -> _outdir += "/epoch-" + std::to_string(mtx -> epoch) + "/" + name_ + "/";` (::private)
+ * - `obj -> _outdir += "kfold-" + std::to_string(mtx -> kfold) + ".root";` (::private)
+ * - `std::string hx = std::string(this -> hash(std::to_string(mtx -> device) + "+" + ` (::private)
+ * - `std::map<mode_enum, std::vector<graph_t*>*>::iterator itf = this -> hash_bta[hx]` (::private)
+ * - `std::vector<graph_t*>* smpl = itf -> second;` (::private)
+ * - `int dev = this -> lnks[itx -> first] -> m_option -> device().index();` (::private)
+ * - `size_t xt = 0;` (::private)
+ * - `std::string hx = std::string(this -> hash(std::to_string(mx -> device) + "+" + s` (::private)
+ * - `std::string til = "Epoch::" + std::to_string(ite -> first);` (::private)
+ * - `til += "-> K(" + std::to_string(itk -> first) + ")";` (::private)
+ * - `(*title)[*offset] = new std::string(til);` (::private)
+ */
+
+/** @} */

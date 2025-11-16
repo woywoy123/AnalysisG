@@ -3,15 +3,34 @@
  * @brief Documentation for templates/particles/include/<particle-module>/<particle-name>.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/templates/particles/include/<particle-module>/<particle-name>.h
  */
 
 /**
- * @defgroup templates_particles_include_<particle_module>_<particle_name>_h <particle-name>.h
- * @brief <particle-name>.h - templates/particles/include/<particle-module>
- * 
+ * @defgroup templates_particles_include__particle_module___particle_name__h <particle-name>.h
+ * @brief <particle-name>.h
  * @{
  */
 
-/** @} */  // end of templates_particles_include_<particle_module>_<particle_name>_h
+/**
+ * @section classes Classes and Structures
+ *
+ * - **<particle-name>** (class)
+ */
+
+/**
+ * @section functions Functions
+ *
+ * - `<particle-name>();`
+ * - `~<particle-name>() override;`
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `float key_variable = 0; // some variable of the particle` (::private)
+ */
+
+/** @} */

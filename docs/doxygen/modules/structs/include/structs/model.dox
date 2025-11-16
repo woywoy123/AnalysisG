@@ -3,33 +3,38 @@
  * @brief Documentation for modules/structs/include/structs/model.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/structs/include/structs/model.h
  */
 
 /**
  * @defgroup modules_structs_include_structs_model_h model.h
- * @brief model.h - modules/structs/include/structs
- * 
+ * @brief model.h
  * @{
  */
 
 /**
  * @section classes Classes and Structures
- * 
- * This file defines the following classes/structures:
- * - **model_settings_t**
+ *
+ * - **model_settings_t** (struct)
  */
 
 /**
- * @section variables Member Variables
- * 
- * **model_settings_t variables:**
- * - Private:
- *   - `e_optim` (opt_enum)
- *   - `inference_mode` (bool)
- *   - `is_mc` (bool)
- * 
+ * @section variables Variables
+ *
+ * - `std::string s_optim;` (model_settings_t::public)
+ * - `std::string weight_name;` (model_settings_t::public)
+ * - `std::string tree_name;` (model_settings_t::public)
+ * - `std::string model_name;` (model_settings_t::public)
+ * - `std::string model_device;` (model_settings_t::public)
+ * - `std::string model_checkpoint_path;` (model_settings_t::public)
+ * - `bool inference_mode;` (model_settings_t::public)
+ * - `bool is_mc;` (model_settings_t::public)
+ * - `std::map<std::string, std::string> o_graph;` (model_settings_t::public)
+ * - `std::map<std::string, std::string> o_node;` (model_settings_t::public)
+ * - `std::map<std::string, std::string> o_edge;` (model_settings_t::public)
+ * - `std::vector<std::string> i_graph;` (model_settings_t::public)
+ * - `std::vector<std::string> i_node;` (model_settings_t::public)
+ * - `std::vector<std::string> i_edge;` (model_settings_t::public)
  */
 
-/** @} */  // end of modules_structs_include_structs_model_h
+/** @} */

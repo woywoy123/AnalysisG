@@ -3,15 +3,38 @@
  * @brief Documentation for modules/particle/cxx/cartesian.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/particle/cxx/cartesian.cxx
  */
 
 /**
  * @defgroup modules_particle_cxx_cartesian_cxx cartesian.cxx
- * @brief cartesian.cxx - modules/particle/cxx
- * 
+ * @brief cartesian.cxx
  * @{
  */
 
-/** @} */  // end of modules_particle_cxx_cartesian_cxx
+/**
+ * @section functions Functions
+ *
+ * - `void particle_template::set_px(double* val, particle_template* prt){ prt -> data.px = *val;`
+ * - `void particle_template::get_px(double* val, particle_template* prt){ prt -> to_cartesian();`
+ * - `prt -> to_cartesian();`
+ * - `void particle_template::set_py(double* val, particle_template* prt){ prt -> data.py = *val;`
+ * - `void particle_template::get_py(double* val, particle_template* prt){ prt -> to_cartesian();`
+ * - `void particle_template::set_pz(double* val, particle_template* prt){ prt -> data.pz = *val;`
+ * - `void particle_template::get_pz(double* val, particle_template* prt){ prt -> to_cartesian();`
+ * - `void particle_template::to_cartesian(){ particle_t* p = &this -> data;`
+ * - `if (!p -> cartesian){ return; }`
+ * - `p -> px = (p -> pt)*std::cos(p -> phi);`
+ * - `p -> py = (p -> pt)*std::sin(p -> phi);`
+ * - `p -> pz = (p -> pt)*std::sinh(p -> eta);`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `p -> px = (p -> pt)*std::cos(p -> phi);` (::private)
+ * - `p -> py = (p -> pt)*std::sin(p -> phi);` (::private)
+ * - `p -> pz = (p -> pt)*std::sinh(p -> eta);` (::private)
+ */
+
+/** @} */

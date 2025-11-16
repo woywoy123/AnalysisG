@@ -3,15 +3,85 @@
  * @brief Documentation for modules/nusol/conuix/cxx/eigen.cxx
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/conuix/cxx/eigen.cxx
  */
 
 /**
  * @defgroup modules_nusol_conuix_cxx_eigen_cxx eigen.cxx
- * @brief eigen.cxx - modules/nusol/conuix/cxx
- * 
+ * @brief eigen.cxx
  * @{
  */
 
-/** @} */  // end of modules_nusol_conuix_cxx_eigen_cxx
+/**
+ * @section functions Functions
+ *
+ * - `long double Conuix::Mobius_t::alpha_p(long double u){return this -> a + this -> b * u;}`
+ * - `long double Conuix::Mobius_t::alpha_m(long double u){return this -> c - this -> d * u;}`
+ * - `long double Conuix::Mobius_t::dPl0(long double x, bool use_tanh){ long double f = (use_tanh) ? std::`
+ * - `long double f = (use_tanh) ? std::tanh(x) : x;`
+ * - `long double ap = this -> alpha_p(f);`
+ * - `long double an = this -> alpha_m(f);`
+ * - `return this -> a_ * std::sqrt(1 - x * x) * an - ap / an;`
+ * - `void Conuix::Mobius_t::init(base_t* base){  // eigenvalue initialization long double f = base -> tps`
+ * - `long double f = base -> tpsi * (base -> o - base -> beta);`
+ * - `std::complex<long double> _c = base -> tpsi * (base -> o - base -> beta);`
+ * - `_c = std::sqrt(_c*_c + 4 * base -> o * base -> beta * (1 + base -> tpsi * base -> tpsi));`
+ * - `this -> eig_v1 = (f + _c) / 2.0L;`
+ * - `this -> eig_v2 = (f - _c) / 2.0L;`
+ * - `this -> eig_vx[1] = (this -> eig_v1 + base -> beta * base -> tpsi) / base -> o;`
+ * - `this -> eig_vy[1] = (this -> eig_v2 + base -> beta * base -> tpsi) / base -> o;`
+ * - `std::complex<long double> l = 4 * base -> beta * base -> o * (1 + base -> tpsi * base -> tpsi);`
+ * - `this -> kfactor = (f - std::sqrt(f * f + l)) / (f + std::sqrt(f * f + l));`
+ * - `_c = (base -> o + base -> beta) * base -> tpsi;`
+ * - `_c = std::sqrt(_c * _c + 4 * base -> beta * base -> o);`
+ * - `f = - (base -> o + base -> beta) * base -> tpsi;`
+ * - `this -> f1_pts = (f + _c) / (2 * base -> beta);`
+ * - `this -> f2_pts = (f - _c) / (2 * base -> beta);`
+ * - `this -> mid = - base -> tpsi * (base -> o + base -> beta) / (2 * base -> beta);`
+ * - `this -> a_ = base -> beta * std::pow(base -> cpsi, 3);`
+ * - `auto fx = [this](long double x, long double a_x, long double b_x){ long double ax = this -> alpha_p(`
+ * - `long double ax = this -> alpha_p(x);`
+ * - `long double bx = this -> alpha_m(x);`
+ * - `return a_x * std::sqrt(1 - x * x) * bx * bx - b_x * ax;`
+ * - `auto dfx = [this](long double x, long double a_x, long double b_x, long double c_x){ long double bx `
+ * - `long double sq = std::sqrt(1 - x * x);`
+ * - `return - a_x * (x / sq) * bx * bx - b_x * sq * bx - c_x;`
+ * - `long double tx_ = std::pow(1.0L / base -> cpsi, 3);`
+ * - `long double tx = this -> mid.real();`
+ * - `this -> variable("tx", tx);`
+ * - `for (int i(0); i < 100; ++i){`
+ * - `long double ax =  fx(tx, base -> beta, tx_);`
+ * - `long double bx = dfx(tx, base -> beta, bx_, tx_ * base -> beta);`
+ * - `if (std::fabs(bx) < 10e-15){break;}`
+ * - `if (std::fabs(dt) > 10e-11){continue;}`
+ * - `std::cout << "-> " << std::atanh(tx) << std::endl;`
+ * - `abort();`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `long double f = (use_tanh) ? std::tanh(x) : x;` (::private)
+ * - `long double ap = this -> alpha_p(f);` (::private)
+ * - `long double an = this -> alpha_m(f);` (::private)
+ * - `long double f = base -> tpsi * (base -> o - base -> beta);` (::private)
+ * - `std::complex<long double> _c = base -> tpsi * (base -> o - base -> beta);` (::private)
+ * - `_c = std::sqrt(_c*_c + 4 * base -> o * base -> beta * (1 + base -> tpsi * base -` (::private)
+ * - `std::complex<long double> l = 4 * base -> beta * base -> o * (1 + base -> tpsi *` (::private)
+ * - `this -> kfactor = (f - std::sqrt(f * f + l)) / (f + std::sqrt(f * f + l));` (::private)
+ * - `_c = std::sqrt(_c * _c + 4 * base -> beta * base -> o);` (::private)
+ * - `this -> a_ = base -> beta * std::pow(base -> cpsi, 3);` (::private)
+ * - `auto fx = [this](long double x, long double a_x, long double b_x){` (::private)
+ * - `long double ax = this -> alpha_p(x);` (::private)
+ * - `long double bx = this -> alpha_m(x);` (::private)
+ * - `auto dfx = [this](long double x, long double a_x, long double b_x, long double c` (::private)
+ * - `long double sq = std::sqrt(1 - x * x);` (::private)
+ * - `long double tx_ = std::pow(1.0L / base -> cpsi, 3);` (::private)
+ * - `long double bx_ = 2 * base -> beta * base -> beta * base -> tpsi;` (::private)
+ * - `long double tx = this -> mid.real();` (::private)
+ * - `long double ax =  fx(tx, base -> beta, tx_);` (::private)
+ * - `long double bx = dfx(tx, base -> beta, bx_, tx_ * base -> beta);` (::private)
+ * - `long double dt = ax / bx;` (::private)
+ */
+
+/** @} */

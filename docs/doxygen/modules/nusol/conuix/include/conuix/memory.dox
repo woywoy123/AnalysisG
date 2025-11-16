@@ -3,25 +3,13 @@
  * @brief Documentation for modules/nusol/conuix/include/conuix/memory.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/modules/nusol/conuix/include/conuix/memory.h
  */
 
 /**
  * @defgroup modules_nusol_conuix_include_conuix_memory_h memory.h
- * @brief memory.h - modules/nusol/conuix/include/conuix
- * 
+ * @brief memory.h
  * @{
  */
 
-/**
- * @section functions Functions and Methods
- * 
- * **Standalone functions:**
- * - `copy()`
- * - `ops()`
- * - `opm()`
- * - `opt()`
- */
-
-/** @} */  // end of modules_nusol_conuix_include_conuix_memory_h
+/** @} */

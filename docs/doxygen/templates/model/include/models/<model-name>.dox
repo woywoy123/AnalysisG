@@ -3,15 +3,34 @@
  * @brief Documentation for templates/model/include/models/<model-name>.h
  * 
  * This file is part of the AnalysisG framework.
- * 
  * Location: src/AnalysisG/templates/model/include/models/<model-name>.h
  */
 
 /**
- * @defgroup templates_model_include_models_<model_name>_h <model-name>.h
- * @brief <model-name>.h - templates/model/include/models
- * 
+ * @defgroup templates_model_include_models__model_name__h <model-name>.h
+ * @brief <model-name>.h
  * @{
  */
 
-/** @} */  // end of templates_model_include_models_<model_name>_h
+/**
+ * @section classes Classes and Structures
+ *
+ * - **<model-name>** (class)
+ */
+
+/**
+ * @section functions Functions
+ *
+ * - `<model-name>();`
+ * - `~<model-name>();`
+ * - `model_template* clone() override;`
+ * - `void forward(graph_t*) override;`
+ */
+
+/**
+ * @section variables Variables
+ *
+ * - `torch::nn::Sequential* example = nullptr;` (::private)
+ */
+
+/** @} */
