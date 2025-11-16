@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for pyc/operators/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/pyc/operators/CMakeLists.txt
  *
- * Location: pyc/operators/CMakeLists.txt
+ * **Location:** `src/AnalysisG/pyc/operators/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

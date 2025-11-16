@@ -1,12 +1,18 @@
 /**
  * @file graphs.cxx
- * @brief Documentation for graphs/ssml_mc20/cxx/graphs.cxx
+ * @brief Documentation for src/AnalysisG/graphs/ssml_mc20/cxx/graphs.cxx
  *
- * Location: graphs/ssml_mc20/cxx/graphs.cxx
+ * **Location:** `src/AnalysisG/graphs/ssml_mc20/cxx/graphs.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `graphs.h`
+ * - `graph_features.h`
+ * - `node_features.h`
+ * - `edge_features.h`
  */
+

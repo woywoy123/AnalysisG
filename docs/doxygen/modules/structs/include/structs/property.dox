@@ -1,39 +1,44 @@
 /**
  * @file property.h
- * @brief Documentation for modules/structs/include/structs/property.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/property.h
  *
- * Location: modules/structs/include/structs/property.h
+ * **Location:** `src/AnalysisG/modules/structs/include/structs/property.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class cproperty
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `functional`
+ * - `string`
+ */
+
+/**
+ * @section classes Classes
+ * - **cproperty**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: cproperty
+ * - public: set_setter
+ * - public: set_getter
+ * - public: set_object
+ * - public: T
+ * - public: clear
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - operator
+ * - operator
  *
- * **Methods:**
- * - cproperty() : data() {}
- * - void set_setter(std::function<void(T*, G*)> c = x_setter<T, G>)
- * - void set_getter(std::function<void(T*, G*)> c = x_getter<T, G>)
- * - void set_object(G* _obj){this -> obj = _obj;}
- * - this -> setter(&this -> data, this -> obj)
- * - operator T()
- * - this -> getter(&this -> data, this -> obj)
- * - this -> getter(&this -> data, this -> obj)
- * - void clear()
- * - this -> data = T()
- *
- * **Variables:**
- * - return this -> data
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - std::function<void(T*, G*)> setter
- * - std::function<void(T*, G*)> getter
- *
- * **Variables:**
- * - T data
- * - bool has_getter = false
- * - bool has_setter = false
- *
+ * **Private:**
+ * - data
+ * - obj
+ * - has_getter
+ * - has_setter
  */

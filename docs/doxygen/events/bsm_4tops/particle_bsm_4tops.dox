@@ -1,12 +1,9 @@
 /**
  * @file particle_bsm_4tops.pyx
- * @brief Documentation for events/bsm_4tops/particle_bsm_4tops.pyx
+ * @brief Documentation for src/AnalysisG/events/bsm_4tops/particle_bsm_4tops.pyx
  *
- * Location: events/bsm_4tops/particle_bsm_4tops.pyx
+ * **Location:** `src/AnalysisG/events/bsm_4tops/particle_bsm_4tops.pyx`
+ *
+ * **File Type:** pyx
  */
 
-/**
- * @brief .pyx file
- *
- * This file contains implementation details.
- */

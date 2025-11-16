@@ -1,61 +1,94 @@
 /**
  * @file io.h
- * @brief Documentation for modules/io/include/io/io.h
+ * @brief Documentation for src/AnalysisG/modules/io/include/io/io.h
  *
- * Location: modules/io/include/io/io.h
+ * **Location:** `src/AnalysisG/modules/io/include/io/io.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class io
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `map`
+ * - `string`
+ * - `H5Cpp.h`
+ * - `TFile.h`
+ * - `TTree.h`
+ * - `TBranch.h`
+ * - `TLeaf.h`
+ * - `TTreeReader.h`
+ * - `TTreeReaderArray.h`
+ * - `meta/meta.h`
+ * - `tools/tools.h`
+ * - `structs/folds.h`
+ * - `structs/element.h`
+ * - `structs/settings.h`
+ * - `notification/notification.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **io** (inherits from tools)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: io
+ * - public: write
+ * - public: H5Tclose
+ * - public: write
+ * - public: H5Tclose
+ * - public: read
+ * - public: H5Tclose
+ * - public: read
+ * - public: H5Tclose
+ * - public: read
+ * - public: start
+ * - public: end
+ * - public: dataset_names
+ * - public: check_root_file_paths
+ * - public: scan_keys
+ * - public: root_begin
+ * - public: root_end
+ * - public: trigger_pcm
+ * - public: import_settings
+ * - private: member
+ * - private: member
+ * - private: file_info
+ * - private: dataset
+ * - private: dataset
+ * - private: root_key_paths
+ * - private: root_key_paths
+ * - private: root_key_paths
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - length
+ * - pairs
+ * - dataset
+ * - length
+ * - pairs
+ * - dataset
+ * - pairs
+ * - dataset
+ * - space_r
+ * - length
+ * - pairs
+ * - dataset
+ * - space_r
+ * - enable_pyami
+ * - metacache_path
+ * - current_working_path
+ * - sow_name
+ * - trees
+ * - branches
+ * - leaves
  *
- * **Methods:**
- * - io()
- * - ~io()
- * - void write(std::vector<g>* inpt, std::string set_name)
- * - long long unsigned int length = inpt -> size()
- * - hid_t pairs = this -> member(g())
- * - H5::DataSet* dataset = this -> dataset(set_name, pairs, length)
- * - dataset -> write(inpt -> data(), pairs)
- * - H5Tclose(pairs)
- * - void write(g* inpt, std::string set_name)
- * - hid_t pairs = this -> member(g())
- * - H5::DataSet* dataset = this -> dataset(set_name, pairs, length)
- * - dataset -> write(inpt, pairs)
- * - H5Tclose(pairs)
- * - void read(std::vector<g>* outpt, std::string set_name)
- * - hid_t pairs = this -> member(g())
- * - H5::DataSet* dataset = this -> dataset(set_name)
- * - H5::DataSpace space_r = dataset -> getSpace()
- * - space_r.getSimpleExtentDims(dim_r)
- * - outpt -> assign(length, g())
- * - dataset -> read(outpt -> data(), pairs)
- *
- * **Variables:**
- * - long long unsigned int length = 1
- * - hsize_t dim_r[1]
- * - long long unsigned int length = dim_r[0]
- * - hsize_t dim_r[1]
- * - bool enable_pyami = true
- * - std::string metacache_path = "./"
- * - std::string current_working_path = "."
- * - std::string sow_name = ""
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - hid_t member(folds_t t)
- * - hid_t member(graph_hdf5_w t)
- * - static herr_t file_info(hid_t loc_id, const char* name, const H5L_info_t* linfo, void *opdata)
- * - H5::DataSet* dataset(std::string set_name, hid_t type, long long unsigned int length)
- * - H5::DataSet* dataset(std::string set_name)
- * - void root_key_paths(std::string path)
- * - void root_key_paths(std::string path, TTree* t)
- * - void root_key_paths(std::string path, TBranch* t)
- *
- * **Variables:**
- * - std::map<std::string, H5::DataSet*> data_w
- * - std::map<std::string, H5::DataSet*> data_r
- *
+ * **Private:**
+ * - file
+ * - file_root
  */

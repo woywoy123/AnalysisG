@@ -1,26 +1,42 @@
 /**
  * @file sampletracer.h
- * @brief Documentation for modules/sampletracer/include/generators/sampletracer.h
+ * @brief Documentation for src/AnalysisG/modules/sampletracer/include/generators/sampletracer.h
  *
- * Location: modules/sampletracer/include/generators/sampletracer.h
+ * **Location:** `src/AnalysisG/modules/sampletracer/include/generators/sampletracer.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class sampletracer
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `thread`
+ * - `container/container.h`
+ * - `notification/notification.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **sampletracer** (inherits from tools)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: sampletracer
+ * - public: add_meta_data
+ * - public: get_meta_data
+ * - public: get_events
+ * - public: fill_selections
+ * - public: add_event
+ * - public: add_graph
+ * - public: add_selection
+ * - public: populate_dataloader
+ * - public: compile_objects
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Methods:**
- * - sampletracer()
- * - ~sampletracer()
- * - bool add_meta_data(meta* meta_, std::string filename)
- * - meta* get_meta_data(std::string filename)
- * - std::vector<event_template*> get_events(std::string label)
- * - void fill_selections(std::map<std::string, selection_template*>* inpt)
- * - bool add_event(event_template* ev, std::string label)
- * - bool add_graph(graph_template* gr, std::string label)
- * - bool add_selection(selection_template* sel)
- * - void populate_dataloader(dataloader* dl)
- * - void compile_objects(int threads)
- *
+ * **Public:**
+ * - output_path
  */

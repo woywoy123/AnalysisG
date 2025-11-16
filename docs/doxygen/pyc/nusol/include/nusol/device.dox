@@ -1,21 +1,59 @@
 /**
  * @file device.cuh
- * @brief Documentation for pyc/nusol/include/nusol/device.cuh
+ * @brief Documentation for src/AnalysisG/pyc/nusol/include/nusol/device.cuh
  *
- * Location: pyc/nusol/include/nusol/device.cuh
+ * **Location:** `src/AnalysisG/pyc/nusol/include/nusol/device.cuh`
+ *
+ * **File Type:** cuh
  */
 
 /**
- * @brief struct nusol
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `utils/atomic.cuh`
+ */
+
+/**
+ * @section structs Structures
+ * - **nusol**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: nusol
+ * - public: _makeNuSol
+ * - public: _krot
+ * - public: _amu
+ * - public: _abq
+ * - public: _htilde
+ * - public: _case1
+ * - public: _case2
+ * - public: _leqnulls
+ * - public: _gnulls
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Variables:**
- * - double cos, sin
- * - double x0, x0p
- * - double sx, sy
- * - double w, w_
- * - double x1, y1
- * - double z, o2, eps2
- *
+ * **Public:**
+ * - passed
+ * - b2l
+ * - div_sin
+ * - r
+ * - _div_o2
+ * - z2
+ * - r
+ * - r
+ * - ii
+ * - b2
+ * - val
+ * - val
+ * - ii
+ * - val
+ * - val
+ * - z_div_o
+ * - z_div_o
+ * - val
+ * - val
+ * - q00
  */

@@ -1,12 +1,30 @@
 /**
  * @file <event-name>.h
- * @brief Documentation for templates/events/include/<event-name>/<event-name>.h
+ * @brief Documentation for src/AnalysisG/templates/events/include/<event-name>/<event-name>.h
  *
- * Location: templates/events/include/<event-name>/<event-name>.h
+ * **Location:** `src/AnalysisG/templates/events/include/<event-name>/<event-name>.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief .h file
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `<particle-module`
+ * - `templates/event_template.h`
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: clone
+ * - public: build
+ * - public: CompileEvent
+ */
+
+/**
+ * @section variables Member Variables
  *
- * This file contains implementation details.
+ * **Public:**
+ * - some_particles
+ * - key_name
  */

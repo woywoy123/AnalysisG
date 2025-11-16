@@ -1,32 +1,52 @@
 /**
  * @file grift.h
- * @brief Documentation for models/grift/include/models/grift.h
+ * @brief Documentation for src/AnalysisG/models/grift/include/models/grift.h
  *
- * Location: models/grift/include/models/grift.h
+ * **Location:** `src/AnalysisG/models/grift/include/models/grift.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class grift
- * @extends model_template
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/model_template.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **grift** (inherits from model_template)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: grift
+ * - public: clone
+ * - public: forward
+ * - public: node_encode
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Methods:**
- * - model_template* clone() override
- * - torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn)
- *
- * **Variables:**
- * - int _hidden = 1024
- * - int _xrec = 128
- * - int _xin  = 6
- * - int _xout = 2
- * - int _xtop = 5
- * - double drop_out = 0.01
- * - bool is_mc    = true
- * - bool init     = false
- * - bool pagerank = false
- * - torch::Tensor  x_nulls
- * - torch::Tensor dx_nulls
- * - torch::Tensor te_nulls
- *
+ * **Public:**
+ * - _hidden
+ * - _xrec
+ * - _xin
+ * - _xout
+ * - _xtop
+ * - drop_out
+ * - is_mc
+ * - init
+ * - pagerank
+ * - rnn_x
+ * - rnn_dx
+ * - rnn_txx
+ * - rnn_rxx
+ * - rnn_hxx
+ * - mlp_ntop
+ * - mlp_sig
+ * - x_nulls
+ * - dx_nulls
+ * - te_nulls
  */

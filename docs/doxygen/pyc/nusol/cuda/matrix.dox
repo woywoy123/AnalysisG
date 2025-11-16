@@ -1,12 +1,20 @@
 /**
  * @file matrix.cu
- * @brief Documentation for pyc/nusol/cuda/matrix.cu
+ * @brief Documentation for src/AnalysisG/pyc/nusol/cuda/matrix.cu
  *
- * Location: pyc/nusol/cuda/matrix.cu
+ * **Location:** `src/AnalysisG/pyc/nusol/cuda/matrix.cu`
+ *
+ * **File Type:** cu
  */
 
 /**
- * @brief .cu file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `nusol/base.cuh`
+ * - `nusol/device.cuh`
+ * - `utils/utils.cuh`
+ * - `physics/physics.cuh`
+ * - `operators/operators.cuh`
+ * - `transform/transform.cuh`
  */
+

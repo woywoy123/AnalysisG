@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for modules/metrics/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/modules/metrics/CMakeLists.txt
  *
- * Location: modules/metrics/CMakeLists.txt
+ * **Location:** `src/AnalysisG/modules/metrics/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

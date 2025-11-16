@@ -1,12 +1,15 @@
 /**
  * @file properties.cxx
- * @brief Documentation for modules/metric/cxx/properties.cxx
+ * @brief Documentation for src/AnalysisG/modules/metric/cxx/properties.cxx
  *
- * Location: modules/metric/cxx/properties.cxx
+ * **Location:** `src/AnalysisG/modules/metric/cxx/properties.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/metric_template.h`
  */
+

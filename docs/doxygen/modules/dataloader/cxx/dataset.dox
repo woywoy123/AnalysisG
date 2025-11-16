@@ -1,12 +1,17 @@
 /**
  * @file dataset.cxx
- * @brief Documentation for modules/dataloader/cxx/dataset.cxx
+ * @brief Documentation for src/AnalysisG/modules/dataloader/cxx/dataset.cxx
  *
- * Location: modules/dataloader/cxx/dataset.cxx
+ * **Location:** `src/AnalysisG/modules/dataloader/cxx/dataset.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `generators/dataloader.h`
+ * - `structs/folds.h`
+ * - `io/io.h`
  */
+

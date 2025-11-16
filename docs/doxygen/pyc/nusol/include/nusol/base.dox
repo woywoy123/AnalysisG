@@ -1,12 +1,18 @@
 /**
  * @file base.cuh
- * @brief Documentation for pyc/nusol/include/nusol/base.cuh
+ * @brief Documentation for src/AnalysisG/pyc/nusol/include/nusol/base.cuh
  *
- * Location: pyc/nusol/include/nusol/base.cuh
+ * **Location:** `src/AnalysisG/pyc/nusol/include/nusol/base.cuh`
+ *
+ * **File Type:** cuh
  */
 
 /**
- * @brief .cuh file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `map`
+ * - `string`
+ * - `torch/torch.h`
+ * - `utils/atomic.cuh`
  */
+

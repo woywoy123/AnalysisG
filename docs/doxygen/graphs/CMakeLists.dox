@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for graphs/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/graphs/CMakeLists.txt
  *
- * Location: graphs/CMakeLists.txt
+ * **Location:** `src/AnalysisG/graphs/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

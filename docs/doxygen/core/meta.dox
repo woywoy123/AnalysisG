@@ -1,36 +1,88 @@
 /**
  * @file meta.pyx
- * @brief Documentation for core/meta.pyx
+ * @brief Documentation for src/AnalysisG/core/meta.pyx
  *
- * Location: core/meta.pyx
+ * **Location:** `src/AnalysisG/core/meta.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief class httpx
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - def __init__(self, config):
- * - super(httpx, self).__init__(config)
- * - def connect(self, endpoint):
- *
+ * @section classes Classes
+ * - **httpx**
+ * - **atlas**
+ * - **ami_client**
+ * - **MetaLookup**
+ * - **Data**
+ * - **Meta**
  */
 
 /**
- * @brief class atlas
+ * @section functions Functions and Methods
+ * - private: httpx
+ * - private: __init__
+ * - private: super
+ * - private: connect
+ * - private: atlas
+ * - private: __init__
+ * - private: super
+ * - private: print
+ * - private: __cinit__
+ * - private: __init__
+ * - private: __dealloc__
+ * - private: loadcache
+ * - private: len
+ * - private: savecache
+ * - private: dressmeta
+ * - private: setattr
+ * - private: list_datasets
+ * - private: auth_pyami
+ * - private: __cinit__
+ * - private: __init__
+ * - private: __find__
+ * - private: __call__
+ * - private: DatasetName
+ * - private: CrossSection
+ * - private: ExpectedEvents
+ * - private: SumOfWeights
+ * - private: GenerateData
+ * - private: __cinit__
+ * - private: __init__
+ * - private: __add__
+ * - private: __radd__
+ * - private: isinstance
+ * - private: __populate__
+ * - private: range
+ * - private: deref
+ * - private: __rescale__
+ * - private: prange
+ * - private: weights
+ * - private: weights
+ * - private: data
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section private_members Private Members
- *
- * **Methods:**
- * - def __init__(self):
- * - super(atlas, self).__init__("atlas-replica")
- * - try: self.httpClient = httpx(self.config)
- * - except: print("Failed to Authenticate to PyAMI.")
- * - def __cinit__(self):
- * - self.client = atlas()
- * - def __init__(self): self.type_ = "DAOD_TOPQ1"
- * - def __dealloc__(self): del self.nf
- * - cdef bool loadcache(self, Meta obj):
- *
+ * **Private:**
+ * - chn
+ * - confx
+ * - dsidr
+ * - cached_dsid
+ * - cached_maps
+ * - cached_info
+ * - dsidr
+ * - cached_dsid
+ * - cached_maps
+ * - cached_info
+ * - ref
+ * - ref
+ * - files
+ * - keys
+ * - info
+ * - dsidr
+ * - ami_tags
+ * - command
+ * - hit
+ * - srch
  */

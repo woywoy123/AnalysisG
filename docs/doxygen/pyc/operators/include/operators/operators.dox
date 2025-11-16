@@ -1,12 +1,15 @@
 /**
  * @file operators.h
- * @brief Documentation for pyc/operators/include/operators/operators.h
+ * @brief Documentation for src/AnalysisG/pyc/operators/include/operators/operators.h
  *
- * Location: pyc/operators/include/operators/operators.h
+ * **Location:** `src/AnalysisG/pyc/operators/include/operators/operators.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief .h file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `torch/torch.h`
  */
+

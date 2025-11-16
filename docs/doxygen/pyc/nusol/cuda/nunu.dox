@@ -1,12 +1,19 @@
 /**
  * @file nunu.cu
- * @brief Documentation for pyc/nusol/cuda/nunu.cu
+ * @brief Documentation for src/AnalysisG/pyc/nusol/cuda/nunu.cu
  *
- * Location: pyc/nusol/cuda/nunu.cu
+ * **Location:** `src/AnalysisG/pyc/nusol/cuda/nunu.cu`
+ *
+ * **File Type:** cu
  */
 
 /**
- * @brief .cu file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `nusol/base.cuh`
+ * - `utils/utils.cuh`
+ * - `physics/physics.cuh`
+ * - `operators/operators.cuh`
+ * - `transform/transform.cuh`
  */
+

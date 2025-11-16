@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for models/RecursiveGraphNeuralNetwork/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/models/RecursiveGraphNeuralNetwork/CMakeLists.txt
  *
- * Location: models/RecursiveGraphNeuralNetwork/CMakeLists.txt
+ * **Location:** `src/AnalysisG/models/RecursiveGraphNeuralNetwork/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

@@ -1,12 +1,17 @@
 /**
  * @file pagerank.cuh
- * @brief Documentation for pyc/graph/include/graph/pagerank.cuh
+ * @brief Documentation for src/AnalysisG/pyc/graph/include/graph/pagerank.cuh
  *
- * Location: pyc/graph/include/graph/pagerank.cuh
+ * **Location:** `src/AnalysisG/pyc/graph/include/graph/pagerank.cuh`
+ *
+ * **File Type:** cuh
  */
 
 /**
- * @brief .cuh file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `map`
+ * - `string`
+ * - `torch/torch.h`
  */
+

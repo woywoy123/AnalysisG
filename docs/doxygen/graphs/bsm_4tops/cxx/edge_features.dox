@@ -1,12 +1,17 @@
 /**
  * @file edge_features.cxx
- * @brief Documentation for graphs/bsm_4tops/cxx/edge_features.cxx
+ * @brief Documentation for src/AnalysisG/graphs/bsm_4tops/cxx/edge_features.cxx
  *
- * Location: graphs/bsm_4tops/cxx/edge_features.cxx
+ * **Location:** `src/AnalysisG/graphs/bsm_4tops/cxx/edge_features.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `bsm_4tops/edge_features.h`
+ * - `bsm_4tops/event.h`
+ * - `pyc/pyc.h`
  */
+

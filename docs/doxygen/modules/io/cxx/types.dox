@@ -1,12 +1,15 @@
 /**
  * @file types.cxx
- * @brief Documentation for modules/io/cxx/types.cxx
+ * @brief Documentation for src/AnalysisG/modules/io/cxx/types.cxx
  *
- * Location: modules/io/cxx/types.cxx
+ * **Location:** `src/AnalysisG/modules/io/cxx/types.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `io.h`
  */
+

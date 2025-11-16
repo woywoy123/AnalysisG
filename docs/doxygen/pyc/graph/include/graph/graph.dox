@@ -1,12 +1,17 @@
 /**
  * @file graph.h
- * @brief Documentation for pyc/graph/include/graph/graph.h
+ * @brief Documentation for src/AnalysisG/pyc/graph/include/graph/graph.h
  *
- * Location: pyc/graph/include/graph/graph.h
+ * **Location:** `src/AnalysisG/pyc/graph/include/graph/graph.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief .h file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `map`
+ * - `string`
+ * - `torch/torch.h`
  */
+

@@ -1,46 +1,56 @@
 /**
  * @file conuic.h
- * @brief Documentation for modules/nusol/conuix/include/conuix/conuic.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/conuix/include/conuix/conuic.h
  *
- * Location: modules/nusol/conuix/include/conuix/conuic.h
+ * **Location:** `src/AnalysisG/modules/nusol/conuix/include/conuix/conuic.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class particle_template
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `conuix/struct.h`
+ * - `structs/property.h`
+ * - `complex`
+ * - `math.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **particle_template**
+ * - **conuic**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: conuic
+ * - public: get_RT
+ * - public: Z2
+ * - public: Sx
+ * - public: Sy
+ * - public: debug
+ * - public: solve
+ * - private: set_tau
+ * - private: set_scl
+ * - private: set_lmb
+ * - private: get_tau
+ * - private: get_scl
+ * - private: get_lmb
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Methods:**
- * - conuic(particle_template* jet, particle_template* lep)
- * - ~conuic()
- * - matrix_t get_RT()
- * - long double Z2(long double Sx, long double Sy)
- * - long double Sx(long double Tau, long double Z)
- * - long double Sy(long double Tau, long double Z)
- * - void debug()
- * - void solve()
- *
- * **Variables:**
- * - cproperty<long double, conuic> t;  // tau
- * - cproperty<long double, conuic> z;  // scale
- * - cproperty<long double, conuic> l;  // lambda
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void static set_tau(long double* v, conuic* c)
- * - void static set_scl(long double* v, conuic* c)
- * - void static set_lmb(long double* v, conuic* c)
- * - void static get_tau(long double* v, conuic* c)
- * - void static get_scl(long double* v, conuic* c)
- * - void static get_lmb(long double* v, conuic* c)
- *
- * **Variables:**
- * - long double tau  = 0; // simple hyperbolic parameter
- * - long double stau = 0; // pre-compute sinh
- * - long double ctau = 0; // pre-compute cosh
- * - long double ttau = 0; // pre-compute tanh
- * - long double scale = 0
- * - long double lamb  = 0
- *
+ * **Private:**
+ * - particle_template
+ * - cache
+ * - _jet
+ * - _lep
+ * - tau
+ * - stau
+ * - ctau
+ * - ttau
+ * - scale
+ * - lamb
  */

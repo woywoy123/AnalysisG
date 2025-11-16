@@ -1,87 +1,97 @@
 /**
  * @file struct.h
- * @brief Documentation for modules/nusol/conuix/include/conuix/struct.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/conuix/include/conuix/struct.h
  *
- * Location: modules/nusol/conuix/include/conuix/struct.h
+ * **Location:** `src/AnalysisG/modules/nusol/conuix/include/conuix/struct.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class particle_template
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - virtual void print(int p = 16)
- * - void variable(std::string name, long double val)
- * - void print(int p = 16) override
- * - void print(int p = 16) override
- * - void print(int p = 16) override
- * - long double Z2(long double Sx, long double Sy)
- * - void print(int p) override
- * - long double Sx(long double tau, long double Z)
- * - void print(int p) override
- * - long double Sy(long double tau, long double Z)
- * - void print(int p) override
- * - matrix_t H_Matrix(long double tau, long double Z)
- * - matrix_t H_Tilde(long double tau, long double Z)
- * - void print(int p) override
- * - void init(base_t* base)
- * - long double alpha_p(long double u)
- * - long double alpha_m(long double u)
- * - long double dPl0(long double x, bool use_tanh = false)
- * - long double a_; // beta * cos(psi)**3
- * - long double cos_theta(particle_template* jet, particle_template* lep)
- *
- * **Variables:**
- * - struct atomics_t
- * - int prec = 16
- * - long double beta = 0
- * - long double mass = 0
- * - long double energy = 0
- * - long double phi   = 0
- * - long double theta = 0
- * - matrix_t vec
- * - matrix_t R_T
- * - long double rbl = 0
- * - long double cos = 0
- * - long double sin = 0
- * - long double w   = 0
- * - long double o   = 0
- * - long double w2  = 0
- * - long double o2  = 0
- * - long double beta = 0
- * - long double mass = 0
- * - long double E    = 0
- * - long double tpsi = 0
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `conuix/matrix.h`
+ * - `conuix/htilde.h`
+ * - `iostream`
+ * - `iomanip`
+ * - `string`
  */
 
 /**
- * @brief struct atomics_t
- * @extends Conuix
+ * @section classes Classes
+ * - **particle_template**
+ */
+
+/**
+ * @section structs Structures
+ * - **atomics_t**
+ * - **debug**
+ * - **kinematic_t**
+ * - **rotation_t**
+ * - **base_t**
+ * - **thetapsi_t**
+ * - **pencil_t**
+ * - **Sx_t**
+ * - **Sy_t**
+ * - **H_matrix_t**
+ * - **Mobius_t**
+ * - **atomics_t**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: print
+ * - public: variable
+ * - public: print
+ * - public: print
+ * - public: print
+ * - public: Z2
+ * - public: print
+ * - public: Sx
+ * - public: print
+ * - public: Sy
+ * - public: print
+ * - public: H_Matrix
+ * - public: H_Tilde
+ * - public: print
+ * - public: init
+ * - public: alpha_p
+ * - public: alpha_m
+ * - public: dPl0
+ * - public: cos_theta
+ * - public: atomics_t
+ * - public: x1
+ * - public: y1
+ * - public: GetTauZ
+ * - public: masses
+ * - public: debug_mode
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - atomics_t
+ * - prec
+ * - beta
+ * - mass
+ * - energy
+ * - phi
+ * - theta
+ * - vec
+ * - R_T
+ * - rbl
+ * - cos
+ * - sin
+ * - w
+ * - o
+ * - w2
+ * - o2
+ * - beta
+ * - mass
+ * - E
+ * - tpsi
  *
- * **Methods:**
- * - atomics_t(particle_template* jet, particle_template* lep, double m_nu = 0)
- * - ~atomics_t()
- * - long double x1(long double Z, long double t)
- * - long double y1(long double Z, long double t)
- * - bool GetTauZ(long double sx, long double sy, long double* z, long double* t)
- * - void masses(long double Z, long double t, std::complex<long double>* mw, std::complex<long double>* mt)
- * - void debug_mode(particle_template* jet, particle_template* lep)
- *
- * **Variables:**
- * - Conuix::kinematic_t lp; // === Lepton
- * - Conuix::kinematic_t jt; // === jet
- * - Conuix::kinematic_t nu; // === neutrino
- * - Conuix::base_t     base
- * - Conuix::rotation_t rotation
- * - Conuix::thetapsi_t psi_theta
- * - Conuix::pencil_t pencil
- * - Conuix::Sx_t Sx
- * - Conuix::Sy_t Sy
- * - Conuix::H_matrix_t H_Matrix
- * - Conuix::Mobius_t Mobius
- *
+ * **Private:**
+ * - particle_template
  */

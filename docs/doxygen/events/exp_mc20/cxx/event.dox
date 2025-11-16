@@ -1,12 +1,15 @@
 /**
  * @file event.cxx
- * @brief Documentation for events/exp_mc20/cxx/event.cxx
+ * @brief Documentation for src/AnalysisG/events/exp_mc20/cxx/event.cxx
  *
- * Location: events/exp_mc20/cxx/event.cxx
+ * **Location:** `src/AnalysisG/events/exp_mc20/cxx/event.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `exp_mc20/event.h`
  */
+

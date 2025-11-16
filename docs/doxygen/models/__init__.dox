@@ -1,12 +1,9 @@
 /**
  * @file __init__.pxd
- * @brief Documentation for models/__init__.pxd
+ * @brief Documentation for src/AnalysisG/models/__init__.pxd
  *
- * Location: models/__init__.pxd
+ * **Location:** `src/AnalysisG/models/__init__.pxd`
+ *
+ * **File Type:** pxd
  */
 
-/**
- * @brief .pxd file
- *
- * This file contains implementation details.
- */

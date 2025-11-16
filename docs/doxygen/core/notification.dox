@@ -1,12 +1,14 @@
 /**
  * @file notification.pyx
- * @brief Documentation for core/notification.pyx
+ * @brief Documentation for src/AnalysisG/core/notification.pyx
  *
- * Location: core/notification.pyx
+ * **Location:** `src/AnalysisG/core/notification.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **Notification**
  */
+

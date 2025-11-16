@@ -1,12 +1,14 @@
 /**
  * @file event_template.pyx
- * @brief Documentation for core/event_template.pyx
+ * @brief Documentation for src/AnalysisG/core/event_template.pyx
  *
- * Location: core/event_template.pyx
+ * **Location:** `src/AnalysisG/core/event_template.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **EventTemplate**
  */
+

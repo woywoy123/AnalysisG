@@ -1,12 +1,16 @@
 /**
  * @file solvers.h
- * @brief Documentation for modules/nusol/conuix/include/conuix/solvers.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/conuix/include/conuix/solvers.h
  *
- * Location: modules/nusol/conuix/include/conuix/solvers.h
+ * **Location:** `src/AnalysisG/modules/nusol/conuix/include/conuix/solvers.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief .h file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `complex`
+ * - `cmath`
  */
+

@@ -1,12 +1,16 @@
 /**
  * @file plotting.cxx
- * @brief Documentation for modules/plotting/cxx/plotting.cxx
+ * @brief Documentation for src/AnalysisG/modules/plotting/cxx/plotting.cxx
  *
- * Location: modules/plotting/cxx/plotting.cxx
+ * **Location:** `src/AnalysisG/modules/plotting/cxx/plotting.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `plotting/plotting.h`
+ * - `cmath`
  */
+

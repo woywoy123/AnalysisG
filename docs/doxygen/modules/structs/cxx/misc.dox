@@ -1,12 +1,17 @@
 /**
  * @file misc.cxx
- * @brief Documentation for modules/structs/cxx/misc.cxx
+ * @brief Documentation for src/AnalysisG/modules/structs/cxx/misc.cxx
  *
- * Location: modules/structs/cxx/misc.cxx
+ * **Location:** `src/AnalysisG/modules/structs/cxx/misc.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `element.h`
+ * - `report.h`
+ * - `folds.h`
  */
+

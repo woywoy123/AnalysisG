@@ -1,12 +1,15 @@
 /**
  * @file leptons.cxx
- * @brief Documentation for events/ssml_mc20/cxx/leptons.cxx
+ * @brief Documentation for src/AnalysisG/events/ssml_mc20/cxx/leptons.cxx
  *
- * Location: events/ssml_mc20/cxx/leptons.cxx
+ * **Location:** `src/AnalysisG/events/ssml_mc20/cxx/leptons.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `particles.h`
  */
+

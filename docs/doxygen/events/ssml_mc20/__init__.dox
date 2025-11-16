@@ -1,12 +1,9 @@
 /**
  * @file __init__.pxd
- * @brief Documentation for events/ssml_mc20/__init__.pxd
+ * @brief Documentation for src/AnalysisG/events/ssml_mc20/__init__.pxd
  *
- * Location: events/ssml_mc20/__init__.pxd
+ * **Location:** `src/AnalysisG/events/ssml_mc20/__init__.pxd`
+ *
+ * **File Type:** pxd
  */
 
-/**
- * @brief .pxd file
- *
- * This file contains implementation details.
- */

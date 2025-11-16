@@ -1,70 +1,65 @@
 /**
  * @file event.h
- * @brief Documentation for events/ssml_mc20/include/ssml_mc20/event.h
+ * @brief Documentation for src/AnalysisG/events/ssml_mc20/include/ssml_mc20/event.h
  *
- * Location: events/ssml_mc20/include/ssml_mc20/event.h
+ * **Location:** `src/AnalysisG/events/ssml_mc20/include/ssml_mc20/event.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class ssml_mc20
- * @extends event_template
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `ssml_mc20/particles.h`
+ * - `templates/event_template.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **ssml_mc20** (inherits from event_template)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: ssml_mc20
+ * - public: clone
+ * - public: build
+ * - public: CompileEvent
+ * - private: vectorize
+ * - private: match_object
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - eventNumber
+ * - event_category
+ * - weight_mc
+ * - weight_pileup
+ * - weight_beamspot
+ * - weight_jvt_effSF
+ * - weight_lep_tightSF
+ * - weight_ftag_effSF
+ * - global_trigger_SF
+ * - phi
+ * - met
+ * - met_sum
+ * - HT_all
+ * - pass_ssee
+ * - pass_ssem
+ * - pass_ssmm
+ * - pass_eem_zveto
+ * - pass_eee_zveto
+ * - pass_emm_zveto
+ * - pass_mmm_zveto
  *
- * **Methods:**
- * - ssml_mc20()
- * - virtual ~ssml_mc20()
- * - event_template* clone() override
- * - void build(element_t* el) override
- * - void CompileEvent() override
- *
- * **Variables:**
- * - unsigned long long eventNumber
- * - float event_category
- * - float weight_mc
- * - float weight_pileup
- * - float weight_beamspot
- * - float weight_jvt_effSF
- * - float weight_lep_tightSF
- * - float weight_ftag_effSF
- * - float global_trigger_SF
- * - float phi
- * - float met
- * - float met_sum
- * - float HT_all
- * - int pass_ssee
- * - int pass_ssem
- * - int pass_ssmm
- * - int pass_eem_zveto
- * - int pass_eee_zveto
- * - int pass_emm_zveto
- * - int pass_mmm_zveto
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt)
- * - typename std::map<std::string, G*>::iterator ix = ipt -> begin()
- * - void vectorize(std::map<m, G*>* ipt, std::vector<g*>* vec)
- * - typename std::map<m, G*>::iterator ix = ipt -> begin()
- * - bool match_object(std::map<int, top*>* topx, std::map<std::string, lx*>* objects)
- * - typename std::map<std::string, lx*>::iterator ite = objects -> begin()
- * - tp -> register_child(tx)
- * - tx -> register_parent((particle_template*)tp)
- *
- * **Variables:**
- * - std::map<std::string, jet*>      m_jets
- * - std::map<std::string, muon*>     m_muons
- * - std::map<std::string, electron*> m_electrons
- * - std::map<std::string, lepton*>   m_leptons
- * - std::map<std::string, zboson*>   m_zprime
- * - std::map<std::string, top*>      m_tops
- * - std::map<std::string, parton*>    m_partons
- * - std::map<std::string, truthjet*>  m_truthjets
- * - return data
- * - bool brk = false
- * - int idx = ite -> second -> top_index
- * - std::string ty = ite -> second -> type
- * - return brk
- *
+ * **Private:**
+ * - data
+ * - brk
+ * - idx
+ * - ty
+ * - tx
+ * - tp
+ * - brk
  */

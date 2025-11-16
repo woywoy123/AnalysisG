@@ -1,12 +1,43 @@
 /**
  * @file graph_features.h
- * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/graph_features.h
+ * @brief Documentation for src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graph_features.h
  *
- * Location: graphs/bsm_4tops/include/bsm_4tops/graph_features.h
+ * **Location:** `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graph_features.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief .h file
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/event_template.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **bsm_4tops**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - private: num_tops
+ * - private: num_lepton
+ * - private: num_neutrino
+ * - private: signal_event
+ * - private: missing_et
+ * - private: missing_phi
+ * - private: num_leps
+ * - private: num_jets
+ * - private: num_quark
+ * - private: num_truthjets
+ * - private: num_children_leps
+ * - private: event_number
+ * - private: event_weight
+ */
+
+/**
+ * @section variables Member Variables
  *
- * This file contains implementation details.
+ * **Private:**
+ * - bsm_4tops
  */

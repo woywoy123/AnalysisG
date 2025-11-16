@@ -1,12 +1,19 @@
 /**
  * @file base.cxx
- * @brief Documentation for modules/structs/cxx/base.cxx
+ * @brief Documentation for src/AnalysisG/modules/structs/cxx/base.cxx
  *
- * Location: modules/structs/cxx/base.cxx
+ * **Location:** `src/AnalysisG/modules/structs/cxx/base.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `structs/base.h`
+ * - `TInterpreter.h`
+ * - `iostream`
+ * - `;
+    if (is_abs){shrt += `
  */
+

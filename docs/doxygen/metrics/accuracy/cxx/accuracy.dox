@@ -1,12 +1,15 @@
 /**
  * @file accuracy.cxx
- * @brief Documentation for metrics/accuracy/cxx/accuracy.cxx
+ * @brief Documentation for src/AnalysisG/metrics/accuracy/cxx/accuracy.cxx
  *
- * Location: metrics/accuracy/cxx/accuracy.cxx
+ * **Location:** `src/AnalysisG/metrics/accuracy/cxx/accuracy.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `metrics/accuracy.h`
  */
+

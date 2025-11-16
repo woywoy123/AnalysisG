@@ -1,12 +1,20 @@
 /**
  * @file eigen.cxx
- * @brief Documentation for modules/nusol/conuix/cxx/eigen.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/conuix/cxx/eigen.cxx
  *
- * Location: modules/nusol/conuix/cxx/eigen.cxx
+ * **Location:** `src/AnalysisG/modules/nusol/conuix/cxx/eigen.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `conuix/solvers.h`
+ * - `conuix/conuic.h`
+ * - `iostream`
+ * - `iomanip`
+ * - `string`
+ * - `cmath`
  */
+

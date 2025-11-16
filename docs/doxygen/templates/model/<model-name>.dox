@@ -1,12 +1,9 @@
 /**
  * @file <model-name>.pyx
- * @brief Documentation for templates/model/<model-name>.pyx
+ * @brief Documentation for src/AnalysisG/templates/model/<model-name>.pyx
  *
- * Location: templates/model/<model-name>.pyx
+ * **Location:** `src/AnalysisG/templates/model/<model-name>.pyx`
+ *
+ * **File Type:** pyx
  */
 
-/**
- * @brief .pyx file
- *
- * This file contains implementation details.
- */

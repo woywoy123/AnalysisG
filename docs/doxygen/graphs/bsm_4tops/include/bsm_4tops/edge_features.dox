@@ -1,12 +1,15 @@
 /**
  * @file edge_features.h
- * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/edge_features.h
+ * @brief Documentation for src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/edge_features.h
  *
- * Location: graphs/bsm_4tops/include/bsm_4tops/edge_features.h
+ * **Location:** `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/edge_features.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief .h file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/event_template.h`
  */
+

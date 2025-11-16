@@ -1,12 +1,15 @@
 /**
  * @file entries.cxx
- * @brief Documentation for modules/container/cxx/entries.cxx
+ * @brief Documentation for src/AnalysisG/modules/container/cxx/entries.cxx
  *
- * Location: modules/container/cxx/entries.cxx
+ * **Location:** `src/AnalysisG/modules/container/cxx/entries.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `container/container.h`
  */
+

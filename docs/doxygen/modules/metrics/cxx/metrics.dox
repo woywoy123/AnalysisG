@@ -1,12 +1,16 @@
 /**
  * @file metrics.cxx
- * @brief Documentation for modules/metrics/cxx/metrics.cxx
+ * @brief Documentation for src/AnalysisG/modules/metrics/cxx/metrics.cxx
  *
- * Location: modules/metrics/cxx/metrics.cxx
+ * **Location:** `src/AnalysisG/modules/metrics/cxx/metrics.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `metrics/metrics.h`
+ * - `TError.h`
  */
+

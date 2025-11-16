@@ -1,12 +1,15 @@
 /**
  * @file tools.cxx
- * @brief Documentation for modules/tools/cxx/tools.cxx
+ * @brief Documentation for src/AnalysisG/modules/tools/cxx/tools.cxx
  *
- * Location: modules/tools/cxx/tools.cxx
+ * **Location:** `src/AnalysisG/modules/tools/cxx/tools.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `tools/tools.h`
  */
+

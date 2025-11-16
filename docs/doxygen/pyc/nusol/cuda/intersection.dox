@@ -1,12 +1,18 @@
 /**
  * @file intersection.cu
- * @brief Documentation for pyc/nusol/cuda/intersection.cu
+ * @brief Documentation for src/AnalysisG/pyc/nusol/cuda/intersection.cu
  *
- * Location: pyc/nusol/cuda/intersection.cu
+ * **Location:** `src/AnalysisG/pyc/nusol/cuda/intersection.cu`
+ *
+ * **File Type:** cu
  */
 
 /**
- * @brief .cu file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `nusol/base.cuh`
+ * - `nusol/device.cuh`
+ * - `utils/utils.cuh`
+ * - `operators/operators.cuh`
  */
+

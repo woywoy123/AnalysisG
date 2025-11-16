@@ -1,67 +1,101 @@
 /**
  * @file selection_template.h
- * @brief Documentation for modules/selection/include/templates/selection_template.h
+ * @brief Documentation for src/AnalysisG/modules/selection/include/templates/selection_template.h
  *
- * Location: modules/selection/include/templates/selection_template.h
+ * **Location:** `src/AnalysisG/modules/selection/include/templates/selection_template.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class container
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/particle_template.h`
+ * - `templates/event_template.h`
+ * - `structs/property.h`
+ * - `structs/event.h`
+ * - `structs/enums.h`
+ * - `meta/meta.h`
+ * - `tools/vector_cast.h`
+ * - `tools/merge_cast.h`
+ * - `tools/tools.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **container**
+ * - **selection_template** (inherits from tools)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: selection_template
+ * - public: set_name
+ * - public: get_name
+ * - public: set_hash
+ * - public: get_hash
+ * - public: get_tree
+ * - public: set_weight
+ * - public: get_weight
+ * - public: set_index
+ * - public: clone
+ * - public: selection
+ * - public: strategy
+ * - public: merge
+ * - public: bulk_write
+ * - public: write
+ * - public: write
+ * - public: switch_board
+ * - public: switch_board
+ * - public: switch_board
+ * - public: switch_board
+ * - public: write
+ * - public: write
+ * - public: CompileEvent
+ * - public: build
+ * - public: sum
+ * - public: safe_delete
+ * - public: sum
+ * - public: sum
+ * - public: vectorize
+ * - public: make_unique
+ * - public: downcast
+ * - public: upcast
+ * - public: upcast
+ * - public: get_leptonics
+ * - public: contains
+ * - private: bulk_write_out
+ * - private: merger
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - ox
+ * - operator
+ * - meta_data
+ * - filename
+ * - data
+ * - prt
+ * - hash_
+ * - out
+ * - vec
+ * - out
+ * - prt
+ * - out
+ * - out
+ * - hash_
+ * - out
+ * - out
+ * - true
+ * - false
+ * - threadIdx
  *
- * **Methods:**
- * - selection_template()
- * - virtual ~selection_template()
- * - void static set_name(std::string*, selection_template*)
- * - void static get_name(std::string*, selection_template*)
- * - void static set_hash(std::string*, selection_template*)
- * - void static get_hash(std::string*, selection_template*)
- * - void static get_tree(std::string*, selection_template*)
- * - void static set_weight(double*, selection_template*)
- * - void static get_weight(double*, selection_template*)
- * - void static set_index(long*, selection_template*)
- * - virtual selection_template* clone()
- * - virtual bool selection(event_template* ev)
- * - virtual bool strategy(event_template* ev)
- * - virtual void merge(selection_template* sel)
- * - virtual void bulk_write(const long* idx, std::string* hx)
- * - virtual void write(std::vector<particle_template*>* particles, std::string _name, particle_enum attrs)
- * - void write(std::vector<g*>* particles, std::string _name, particle_enum attrs)
- * - this -> downcast(particles, &ox)
- * - this -> write(&ox, _name, attrs)
- * - void write(g* var, std::string _name)
- *
- * **Variables:**
- * - cproperty<std::string, selection_template> name
- * - cproperty<std::string, selection_template> hash
- * - cproperty<std::string, selection_template> tree
- * - cproperty<double, selection_template> weight
- * - cproperty<long, selection_template> index
- * - std::vector<particle_template*> ox
- * - std::string filename = ""
- * - event_t data
- * - std::map<std::string, bool> maps
- * - std::string hash_ = prt -> hash
- * - return out
- * - return prt -> mass / 1000
- * - return out
- * - std::map<std::string, g*> tmp
- * - typename std::map<std::string, g*>::iterator itr
- * - return out
- * - return true
- * - return false
- * - int threadIdx = -1
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void bulk_write_out()
- * - void merger(selection_template* sl2)
- *
- * **Variables:**
- * - friend container
- * - std::unordered_map<long, std::string> sequence
- * - bool p_bulk_write = true
- *
+ * **Private:**
+ * - container
+ * - container
+ * - p_bulk_write
+ * - handle
+ * - m_event
  */

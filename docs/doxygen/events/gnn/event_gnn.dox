@@ -1,12 +1,14 @@
 /**
  * @file event_gnn.pyx
- * @brief Documentation for events/gnn/event_gnn.pyx
+ * @brief Documentation for src/AnalysisG/events/gnn/event_gnn.pyx
  *
- * Location: events/gnn/event_gnn.pyx
+ * **Location:** `src/AnalysisG/events/gnn/event_gnn.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **EventGNN**
  */
+

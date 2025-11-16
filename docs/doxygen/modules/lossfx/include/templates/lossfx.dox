@@ -1,59 +1,100 @@
 /**
  * @file lossfx.h
- * @brief Documentation for modules/lossfx/include/templates/lossfx.h
+ * @brief Documentation for src/AnalysisG/modules/lossfx/include/templates/lossfx.h
  *
- * Location: modules/lossfx/include/templates/lossfx.h
+ * **Location:** `src/AnalysisG/modules/lossfx/include/templates/lossfx.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class lossfx
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `map`
+ * - `vector`
+ * - `string`
+ * - `tools/tools.h`
+ * - `torch/torch.h`
+ * - `structs/enums.h`
+ * - `structs/optimizer.h`
+ * - `notification/notification.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **lossfx** (inherits from tools)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: lossfx
+ * - public: lossfx
+ * - public: loss_string
+ * - public: optim_string
+ * - public: scheduler_string
+ * - public: loss_opt_string
+ * - public: loss
+ * - public: loss
+ * - public: weight_init
+ * - public: build_optimizer
+ * - public: build_scheduler
+ * - public: build_loss_function
+ * - public: build_loss_function
+ * - public: to
+ * - public: step
+ * - private: interpret
+ * - private: build_adam
+ * - private: build_adagrad
+ * - private: build_adamw
+ * - private: build_lbfgs
+ * - private: build_rmsprop
+ * - private: build_sgd
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ * - private: build_fx_loss
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - variable
+ * - lss_cfg
  *
- * **Methods:**
- * - lossfx()
- * - lossfx(std::string var, std::string enx)
- * - ~lossfx()
- * - loss_enum loss_string(std::string name)
- * - opt_enum optim_string(std::string name)
- * - scheduler_enum scheduler_string(std::string name)
- * - void loss_opt_string(std::string name)
- * - torch::Tensor loss(torch::Tensor* pred, torch::Tensor* truth)
- * - torch::Tensor loss(torch::Tensor* pred, torch::Tensor* truth, loss_enum lss)
- * - void weight_init(torch::nn::Sequential* data, mlp_init method)
- * - torch::optim::Optimizer* build_optimizer(optimizer_params_t* op, std::vector<torch::Tensor>* params)
- * - void build_scheduler(optimizer_params_t* op, torch::optim::Optimizer* opx)
- * - bool build_loss_function(loss_enum lss)
- * - bool build_loss_function()
- * - void to(torch::TensorOptions*)
- * - void step()
- *
- * **Variables:**
- * - std::string variable = ""
- * - loss_opt lss_cfg
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void interpret(std::string* ox)
- * - void build_adam(optimizer_params_t* op, std::vector<torch::Tensor>* params)
- * - void build_adagrad(optimizer_params_t* op, std::vector<torch::Tensor>* params)
- * - void build_adamw(optimizer_params_t* op, std::vector<torch::Tensor>* params)
- * - void build_lbfgs(optimizer_params_t* op, std::vector<torch::Tensor>* params)
- * - void build_rmsprop(optimizer_params_t* op, std::vector<torch::Tensor>* params)
- * - void build_sgd(optimizer_params_t* op, std::vector<torch::Tensor>* params)
- * - void build_fx_loss(torch::nn::BCELossImpl* lossfx_)
- * - void build_fx_loss(torch::nn::BCEWithLogitsLossImpl* lossfx_)
- * - void build_fx_loss(torch::nn::CosineEmbeddingLossImpl* lossfx_)
- * - void build_fx_loss(torch::nn::CrossEntropyLossImpl* lossfx_)
- * - void build_fx_loss(torch::nn::CTCLossImpl* lossfx_)
- * - void build_fx_loss(torch::nn::HingeEmbeddingLossImpl* lossfx_)
- * - void build_fx_loss(torch::nn::HuberLossImpl* lossfx_)
- * - void build_fx_loss(torch::nn::KLDivLossImpl* lossfx_)
- * - void build_fx_loss(torch::nn::L1LossImpl* lossfx_)
- * - void build_fx_loss(torch::nn::MarginRankingLossImpl* lossfx_)
- * - void build_fx_loss(torch::nn::MSELossImpl* lossfx_)
- * - void build_fx_loss(torch::nn::MultiLabelMarginLossImpl* lossfx_)
- * - void build_fx_loss(torch::nn::MultiLabelSoftMarginLossImpl* lossfx_)
- *
+ * **Private:**
+ * - m_adam
+ * - m_adagrad
+ * - m_adamw
+ * - m_lbfgs
+ * - m_rmsprop
+ * - m_sgd
+ * - m_steplr
+ * - m_rlp
+ * - m_lrs
+ * - m_bce
+ * - m_bce_with_logits
+ * - m_cosine_embedding
+ * - m_cross_entropy
+ * - m_ctc
+ * - m_hinge_embedding
+ * - m_huber
+ * - m_kl_div
+ * - m_l1
+ * - m_margin_ranking
+ * - m_mse
  */

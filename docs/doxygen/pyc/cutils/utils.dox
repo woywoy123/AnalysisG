@@ -1,12 +1,15 @@
 /**
  * @file utils.cxx
- * @brief Documentation for pyc/cutils/utils.cxx
+ * @brief Documentation for src/AnalysisG/pyc/cutils/utils.cxx
  *
- * Location: pyc/cutils/utils.cxx
+ * **Location:** `src/AnalysisG/pyc/cutils/utils.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `cutils/utils.h`
  */
+

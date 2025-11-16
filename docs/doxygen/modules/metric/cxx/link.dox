@@ -1,12 +1,16 @@
 /**
  * @file link.cxx
- * @brief Documentation for modules/metric/cxx/link.cxx
+ * @brief Documentation for src/AnalysisG/modules/metric/cxx/link.cxx
  *
- * Location: modules/metric/cxx/link.cxx
+ * **Location:** `src/AnalysisG/modules/metric/cxx/link.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/metric_template.h`
+ * - `templates/model_template.h`
  */
+

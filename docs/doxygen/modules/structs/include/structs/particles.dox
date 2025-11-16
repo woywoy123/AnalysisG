@@ -1,31 +1,53 @@
 /**
  * @file particles.h
- * @brief Documentation for modules/structs/include/structs/particles.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/particles.h
  *
- * Location: modules/structs/include/structs/particles.h
+ * **Location:** `src/AnalysisG/modules/structs/include/structs/particles.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class particle_template
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `string`
+ * - `vector`
+ * - `map`
+ */
+
+/**
+ * @section classes Classes
+ * - **particle_template**
+ */
+
+/**
+ * @section structs Structures
+ * - **particle_t**
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section private_members Private Members
+ * **Public:**
+ * - e
+ * - mass
+ * - px
+ * - py
+ * - pz
+ * - pt
+ * - eta
+ * - phi
+ * - cartesian
+ * - polar
+ * - charge
+ * - pdgid
+ * - index
+ * - type
+ * - hash
+ * - symbol
+ * - lepdef
+ * - nudef
  *
- * **Variables:**
- * - double e = -0.000000000000001
- * - double mass = -1
- * - double px = 0
- * - double py = 0
- * - double pz = 0
- * - double pt = 0
- * - double eta = 0
- * - double phi = 0
- * - bool cartesian = false
- * - bool polar = false
- * - double charge = 0
- * - int pdgid = 0
- * - int index = -1
- * - std::string type = ""
- * - std::string hash = ""
- * - std::string symbol = ""
- *
+ * **Private:**
+ * - particle_template
  */

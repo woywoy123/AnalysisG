@@ -1,124 +1,104 @@
 /**
  * @file multisol.h
- * @brief Documentation for modules/nusol/tmp/multisol.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/multisol.h
  *
- * Location: modules/nusol/tmp/multisol.h
+ * **Location:** `src/AnalysisG/modules/nusol/tmp/multisol.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct multisol_t
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - double A = 0, B = 0, C = 0
- * - double D = 0, E = 0, F = 0
- * - double s0x = 0, s0y = 0
- * - double psi = 0, cpsi = 0, spsi = 0
- * - double lmb1 = -1, lmb2 = 0
- * - double a_x = 0, b_x = 0, c_x = 0;  // Sx
- * - double a_y = 0, b_y = 0, c_y = 0;  // Sy
- * - double a_w = 0, b_w = 0;  // mW
- * - double a_t = 0, b_t = 0, c_t = 0;  // mT
- * - matrix ht1, ht2, ht3; // H-Tilde
- * - matrix hx1, hx2, hx3; // H-Lab
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/particle_template.h`
+ * - `reconstruction/matrix.h`
+ * - `iostream`
+ * - `string`
  */
 
 /**
- * @brief struct rev_t
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - double u = 0
- * - double v = 0
- * - double u_p = 0
- * - double v_p = 0
- * - double t = 0
- * - double z = 0
- *
+ * @section classes Classes
+ * - **multisol**
  */
 
 /**
- * @brief struct mass_t
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - double mt = 0
- * - double mw = 0
- * - double sx = 0
- * - double sy = 0
- *
+ * @section structs Structures
+ * - **multisol_t**
+ * - **rev_t**
+ * - **mass_t**
+ * - **geo_t**
  */
 
 /**
- * @brief struct geo_t
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - ~geo_t()
- * - double px(double u, double v)
- * - double py(double u, double v)
- * - double pz(double u, double v)
- * - double lx(double s)
- * - double ly(double s)
- * - double lz(double s)
- *
- * **Variables:**
- * - vec3 perp1, perp2, center
- * - vec3 r0, d, _pts1, _pts2
- * - bool valid = false
- * - double _s1 = 0, _s2 = 0
- * - double _p1 = 0, _p2 = 0
- * - double _d1 = 0, _d2 = 0
- * - double asym = 0
- *
+ * @section functions Functions and Methods
+ * - public: px
+ * - public: py
+ * - public: pz
+ * - public: lx
+ * - public: ly
+ * - public: lz
+ * - public: multisol
+ * - public: make_rt
+ * - public: H_tilde
+ * - public: dHdt_tilde
+ * - public: H
+ * - public: dHdt
+ * - public: d2Hdt2
+ * - public: v
+ * - public: dv_dt
+ * - public: dv_dphi
+ * - public: d2v_dt_dphi
+ * - public: geometry
+ * - public: intersection
+ * - public: intersection
+ * - public: center
+ * - public: normal
+ * - public: eigenvalues
+ * - public: dp_dt
+ * - public: masses
+ * - public: translate
+ * - public: export_ellipse
+ * - public: export_ellipse
  */
 
 /**
- * @brief class multisol
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - A
+ * - D
+ * - s0x
+ * - psi
+ * - lmb1
+ * - a_x
+ * - a_y
+ * - a_w
+ * - a_t
+ * - u
+ * - v
+ * - u_p
+ * - v_p
+ * - t
+ * - z
+ * - mt
+ * - mw
+ * - sx
+ * - sy
+ * - valid
  *
- * **Methods:**
- * - multisol(particle_template* b, particle_template* l)
- * - ~multisol()
- * - void make_rt()
- * - matrix    H_tilde(double t, double z)
- * - matrix dHdt_tilde(double t, double z = 1)
- * - matrix    H(double t, double z)
- * - matrix dHdt(double t, double z = 1)
- * - matrix d2Hdt2(double t, double z = 1)
- * - vec3 v          (double t, double z, double phi); // neutrino ellipse
- * - vec3 dv_dt      (double t, double z, double phi); // neutrino ellipse derivative w.r.t "t"
- * - vec3 dv_dphi    (double t, double z, double phi); // neutrino ellipse derivative w.r.t "phi"
- * - vec3 d2v_dt_dphi(double t, double z, double phi); // neutrino ellipse derivative w.r.t "t" and "phi"
- * - geo_t  geometry(double t, double z)
- * - geo_t  intersection(multisol* nu, double t1, double z1, double t2, double z2)
- * - geo_t* intersection(const vec3& r0, const vec3& d, double t, double z)
- * - vec3 center(double t, double z)
- * - vec3 normal(double t, double z)
- * - bool eigenvalues(double t, double z, vec3* real = nullptr, vec3* imag = nullptr)
- * - double dp_dt(); // returns t.
- * - mass_t masses(double t, double z)
- *
- * @section private_members Private Members
- *
- * **Variables:**
- * - double b_lep  = 0; // beta lepton
- * - double p_lep  = 0; // momentum lepton
- * - double m2_lep = 0; // mass^2 of lepton
- * - double e2_lep = 0; // energy of lepton
- * - double b_jet  = 0; // beta bjet
- * - double p_jet  = 0; // momentum bjet
- * - double m2_jet = 0; // mass^2 of bjet
- * - double phi_mu   = 0
- * - double theta_mu = 0
- * - vec3 vx_jet
- * - double o = 0
- * - double w = 0
- *
+ * **Private:**
+ * - rt
+ * - para
+ * - b_lep
+ * - p_lep
+ * - m2_lep
+ * - e2_lep
+ * - b_jet
+ * - p_jet
+ * - m2_jet
+ * - phi_mu
+ * - theta_mu
+ * - vx_jet
+ * - o
+ * - w
  */

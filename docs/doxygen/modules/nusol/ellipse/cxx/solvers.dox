@@ -1,12 +1,19 @@
 /**
  * @file solvers.cxx
- * @brief Documentation for modules/nusol/ellipse/cxx/solvers.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/ellipse/cxx/solvers.cxx
  *
- * Location: modules/nusol/ellipse/cxx/solvers.cxx
+ * **Location:** `src/AnalysisG/modules/nusol/ellipse/cxx/solvers.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `ellipse/solvers.h`
+ * - `ellipse/mtx.h`
+ * - `iostream`
+ * - `complex`
+ * - `cmath`
  */
+

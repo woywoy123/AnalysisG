@@ -1,43 +1,67 @@
 /**
  * @file container.h
- * @brief Documentation for modules/container/include/container/container.h
+ * @brief Documentation for src/AnalysisG/modules/container/include/container/container.h
  *
- * Location: modules/container/include/container/container.h
+ * **Location:** `src/AnalysisG/modules/container/include/container/container.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct entry_t
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - std::string hash = ""
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `meta/meta.h`
+ * - `tools/tools.h`
+ * - `templates/graph_template.h`
+ * - `templates/event_template.h`
+ * - `templates/selection_template.h`
+ * - `generators/dataloader.h`
  */
 
 /**
- * @brief class container
- * @extends tools
+ * @section classes Classes
+ * - **container** (inherits from tools)
+ */
+
+/**
+ * @section structs Structures
+ * - **entry_t**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: init
+ * - public: destroy
+ * - public: has_event
+ * - public: has_graph
+ * - public: has_selection
+ * - public: destroy
+ * - public: delete
+ * - public: container
+ * - public: add_meta_data
+ * - public: get_meta_data
+ * - public: add_selection_template
+ * - public: add_event_template
+ * - public: add_graph_template
+ * - public: fill_selections
+ * - public: get_events
+ * - public: populate_dataloader
+ * - public: compile
+ * - public: len
+ * - public: add_entry
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Methods:**
- * - container()
- * - ~container()
- * - void add_meta_data(meta*, std::string)
- * - meta* get_meta_data()
- * - bool add_selection_template(selection_template*)
- * - bool add_event_template(event_template*, std::string label)
- * - bool add_graph_template(graph_template*, std::string label)
- * - void fill_selections(std::map<std::string, selection_template*>* inpt)
- * - void get_events(std::vector<event_template*>*, std::string label)
- * - void populate_dataloader(dataloader* dl)
- * - void compile(size_t* len, int threadIdx)
- * - size_t len()
- * - entry_t* add_entry(std::string hash)
- *
- * **Variables:**
- * - std::string     label    = ""
- * - std::map<std::string, entry_t> random_access
- *
+ * **Public:**
+ * - hash
+ * - m_data
+ * - m_graph
+ * - m_event
+ * - m_selection
+ * - meta_data
+ * - filename
+ * - output_path
+ * - label
  */

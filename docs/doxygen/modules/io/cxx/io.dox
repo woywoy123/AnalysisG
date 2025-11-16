@@ -1,12 +1,18 @@
 /**
  * @file io.cxx
- * @brief Documentation for modules/io/cxx/io.cxx
+ * @brief Documentation for src/AnalysisG/modules/io/cxx/io.cxx
  *
- * Location: modules/io/cxx/io.cxx
+ * **Location:** `src/AnalysisG/modules/io/cxx/io.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `io/io.h`
+ * - `io/cfg.h`
+ * - `TSystem.h`
+ * - `thread`
  */
+

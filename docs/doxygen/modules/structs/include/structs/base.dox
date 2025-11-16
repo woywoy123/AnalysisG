@@ -1,43 +1,89 @@
 /**
  * @file base.h
- * @brief Documentation for modules/structs/include/structs/base.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/base.h
  *
- * Location: modules/structs/include/structs/base.h
+ * **Location:** `src/AnalysisG/modules/structs/include/structs/base.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct bsc_t
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `vector`
+ * - `string`
+ * - `structs/enums.h`
+ */
+
+/**
+ * @section structs Structures
+ * - **bsc_t**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: bsc_t
+ * - public: flush_buffer
+ * - public: as_string
+ * - public: scan_buffer
+ * - public: root_type_translate
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: element
+ * - public: flush_buffer
+ * - public: delete
+ * - public: flush_buffer
+ * - private: _getalt
+ * - private: _getalt
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - vvv_ull
+ * - vvv_ui
+ * - vvv_d
+ * - vvv_l
+ * - vvv_f
+ * - vvv_i
+ * - vvv_b
+ * - vvv_c
+ * - vv_ull
+ * - vv_ui
+ * - vv_d
+ * - vv_l
+ * - vv_f
+ * - vv_i
+ * - vv_b
+ * - vv_c
+ * - v_ull
+ * - v_ui
+ * - v_d
+ * - v_l
  *
- * **Methods:**
- * - bsc_t()
- * - virtual ~bsc_t()
- * - void flush_buffer()
- * - std::string as_string()
- * - std::string scan_buffer()
- * - data_enum root_type_translate(std::string*)
- * - bool element(std::vector<std::vector<std::vector<float>>>*  el)
- * - bool element(std::vector<std::vector<std::vector<double>>>* el)
- * - bool element(std::vector<std::vector<std::vector<long>>>*   el)
- * - bool element(std::vector<std::vector<std::vector<int>>>*    el)
- * - bool element(std::vector<std::vector<std::vector<bool>>>*   el)
- * - bool element(std::vector<std::vector<float>>*  el)
- * - bool element(std::vector<std::vector<double>>* el)
- * - bool element(std::vector<std::vector<long>>*   el)
- * - bool element(std::vector<std::vector<int>>*    el)
- * - bool element(std::vector<std::vector<bool>>*   el)
- * - bool element(std::vector<float>* el)
- * - bool element(std::vector<double>* el)
- * - bool element(std::vector<long>* el)
- * - bool element(std::vector<int>* el)
- *
- * **Variables:**
- * - unsigned long long*                                            ull = nullptr
- * - unsigned int*                                                  ui  = nullptr
- * - long index = 0
- * - bool clear = false
- * - data_enum type = data_enum::unset
- * - return true
- *
+ * **Private:**
+ * - true
+ * - true
  */

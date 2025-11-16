@@ -1,12 +1,14 @@
 /**
  * @file metric_accuracy.pyx
- * @brief Documentation for metrics/accuracy/metric_accuracy.pyx
+ * @brief Documentation for src/AnalysisG/metrics/accuracy/metric_accuracy.pyx
  *
- * Location: metrics/accuracy/metric_accuracy.pyx
+ * **Location:** `src/AnalysisG/metrics/accuracy/metric_accuracy.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **AccuracyMetric**
  */
+

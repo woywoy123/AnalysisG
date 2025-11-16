@@ -1,12 +1,15 @@
 /**
  * @file root.cxx
- * @brief Documentation for modules/typecasting/cxx/root.cxx
+ * @brief Documentation for src/AnalysisG/modules/typecasting/cxx/root.cxx
  *
- * Location: modules/typecasting/cxx/root.cxx
+ * **Location:** `src/AnalysisG/modules/typecasting/cxx/root.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `tools/vector_cast.h`
  */
+

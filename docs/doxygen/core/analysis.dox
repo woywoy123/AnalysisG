@@ -1,12 +1,14 @@
 /**
  * @file analysis.pyx
- * @brief Documentation for core/analysis.pyx
+ * @brief Documentation for src/AnalysisG/core/analysis.pyx
  *
- * Location: core/analysis.pyx
+ * **Location:** `src/AnalysisG/core/analysis.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **Analysis**
  */
+

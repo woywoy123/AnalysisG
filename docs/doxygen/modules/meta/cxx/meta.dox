@@ -1,12 +1,16 @@
 /**
  * @file meta.cxx
- * @brief Documentation for modules/meta/cxx/meta.cxx
+ * @brief Documentation for src/AnalysisG/modules/meta/cxx/meta.cxx
  *
- * Location: modules/meta/cxx/meta.cxx
+ * **Location:** `src/AnalysisG/modules/meta/cxx/meta.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `meta.h`
+ * - `TTreeReader.h`
  */
+

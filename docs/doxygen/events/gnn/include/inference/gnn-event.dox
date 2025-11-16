@@ -1,56 +1,65 @@
 /**
  * @file gnn-event.h
- * @brief Documentation for events/gnn/include/inference/gnn-event.h
+ * @brief Documentation for src/AnalysisG/events/gnn/include/inference/gnn-event.h
  *
- * Location: events/gnn/include/inference/gnn-event.h
+ * **Location:** `src/AnalysisG/events/gnn/include/inference/gnn-event.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class gnn_event
- * @extends event_template
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/event_template.h`
+ * - `inference/gnn-particles.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **gnn_event** (inherits from event_template)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: gnn_event
+ * - public: clone
+ * - public: build
+ * - public: CompileEvent
+ * - private: vectorize
+ * - private: sum
+ * - private: print
+ * - private: print
+ * - private: print
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - num_bjets
+ * - num_jets
+ * - num_leps
+ * - met
+ * - phi
+ * - p_ntops
+ * - p_signal
+ * - s_ntops
+ * - s_signal
+ * - ntops_scores
+ * - signal_scores
+ * - edge_res_scores
+ * - edge_top_scores
+ * - r_tops
+ * - r_zprime
+ * - event_particles
+ * - t_tops
+ * - t_zprime
+ * - t_edge_res
+ * - t_edge_top
  *
- * **Methods:**
- * - gnn_event()
- * - ~gnn_event() override
- * - event_template* clone() override
- * - void build(element_t* el) override
- * - void CompileEvent() override
- *
- * **Variables:**
- * - int   num_bjets = 0
- * - double num_jets = 0
- * - double num_leps = 0
- * - double met      = 0
- * - double phi      = 0
- * - int   p_ntops  = 0
- * - int   p_signal = 0
- * - float s_ntops  = 0
- * - float s_signal = 0
- * - int t_ntops  = 0
- * - bool t_signal = 0
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt)
- * - typename std::map<std::string, G*>::iterator ix = ipt -> begin()
- * - void vectorize(std::map<m, G*>* ipt, std::vector<Gx*>* vec)
- * - typename std::map<m, G*>::iterator ix = ipt -> begin()
- * - void sum(std::vector<g*>* ch, G** out)
- * - (*out) = new G()
- * - maps[ch -> at(x) -> hash] = true
- * - (*out) -> iadd(ch -> at(x))
- * - (*out) -> register_child(ch -> at(x))
- * - void print(std::vector<std::vector<g>>* data)
- * - void print(std::map<g, std::map<g, k>>* data)
- * - int sx = data -> size()
- * - void print(std::map<g, k>* data)
- * - int sx = data -> size()
- *
- * **Variables:**
- * - return data
- * - std::map<std::string, bool> maps
- *
+ * **Private:**
+ * - m_edge_index
+ * - data
+ * - sx
+ * - sx
  */

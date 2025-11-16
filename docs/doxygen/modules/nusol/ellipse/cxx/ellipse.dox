@@ -1,12 +1,16 @@
 /**
  * @file ellipse.cxx
- * @brief Documentation for modules/nusol/ellipse/cxx/ellipse.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/ellipse/cxx/ellipse.cxx
  *
- * Location: modules/nusol/ellipse/cxx/ellipse.cxx
+ * **Location:** `src/AnalysisG/modules/nusol/ellipse/cxx/ellipse.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `reconstruction/nusol.h`
+ * - `ellipse/ellipse.h`
  */
+

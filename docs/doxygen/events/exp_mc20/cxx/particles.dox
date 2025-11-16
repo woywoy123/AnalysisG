@@ -1,12 +1,15 @@
 /**
  * @file particles.cxx
- * @brief Documentation for events/exp_mc20/cxx/particles.cxx
+ * @brief Documentation for src/AnalysisG/events/exp_mc20/cxx/particles.cxx
  *
- * Location: events/exp_mc20/cxx/particles.cxx
+ * **Location:** `src/AnalysisG/events/exp_mc20/cxx/particles.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `particles.h`
  */
+

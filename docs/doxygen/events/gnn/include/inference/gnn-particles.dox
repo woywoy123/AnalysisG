@@ -1,57 +1,43 @@
 /**
  * @file gnn-particles.h
- * @brief Documentation for events/gnn/include/inference/gnn-particles.h
+ * @brief Documentation for src/AnalysisG/events/gnn/include/inference/gnn-particles.h
  *
- * Location: events/gnn/include/inference/gnn-particles.h
+ * **Location:** `src/AnalysisG/events/gnn/include/inference/gnn-particles.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class particle_gnn
- * @extends particle_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - particle_gnn()
- * - ~particle_gnn()
- * - particle_template* clone() override
- * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- *
- * **Variables:**
- * - bool lep = false
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/particle_template.h`
  */
 
 /**
- * @brief class top
- * @extends particle_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - top()
- * - ~top()
- *
- * **Variables:**
- * - float av_score = 0
- * - int n_leps = 0
- * - int n_nodes = 0
- *
+ * @section classes Classes
+ * - **particle_gnn** (inherits from particle_template)
+ * - **top** (inherits from particle_template)
+ * - **zprime** (inherits from particle_template)
  */
 
 /**
- * @brief class zprime
- * @extends particle_template
+ * @section functions Functions and Methods
+ * - public: particle_gnn
+ * - public: clone
+ * - public: build
+ * - public: top
+ * - public: zprime
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Methods:**
- * - zprime()
- * - ~zprime()
- *
- * **Variables:**
- * - float av_score = 0
- * - int n_leps = 0
- * - int n_nodes = 0
- *
+ * **Public:**
+ * - lep
+ * - av_score
+ * - n_leps
+ * - n_nodes
+ * - av_score
+ * - n_leps
+ * - n_nodes
  */

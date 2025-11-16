@@ -1,12 +1,15 @@
 /**
  * @file atomic.cuh
- * @brief Documentation for pyc/cutils/include/utils/atomic.cuh
+ * @brief Documentation for src/AnalysisG/pyc/cutils/include/utils/atomic.cuh
  *
- * Location: pyc/cutils/include/utils/atomic.cuh
+ * **Location:** `src/AnalysisG/pyc/cutils/include/utils/atomic.cuh`
+ *
+ * **File Type:** cuh
  */
 
 /**
- * @brief .cuh file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `torch/torch.h`
  */
+

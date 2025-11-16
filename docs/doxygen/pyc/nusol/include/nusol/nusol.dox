@@ -1,12 +1,18 @@
 /**
  * @file nusol.h
- * @brief Documentation for pyc/nusol/include/nusol/nusol.h
+ * @brief Documentation for src/AnalysisG/pyc/nusol/include/nusol/nusol.h
  *
- * Location: pyc/nusol/include/nusol/nusol.h
+ * **Location:** `src/AnalysisG/pyc/nusol/include/nusol/nusol.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief .h file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `map`
+ * - `tuple`
+ * - `string`
+ * - `torch/torch.h`
  */
+

@@ -1,12 +1,60 @@
 /**
  * @file solvers.h
- * @brief Documentation for modules/nusol/ellipse/include/ellipse/solvers.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/ellipse/include/ellipse/solvers.h
  *
- * Location: modules/nusol/ellipse/include/ellipse/solvers.h
+ * **Location:** `src/AnalysisG/modules/nusol/ellipse/include/ellipse/solvers.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief .h file
+ * @section classes Classes
+ * - **mtx**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - private: find_roots
+ * - private: find_roots
+ * - private: solve_cubic
+ * - private: find_roots
+ * - private: smatx
+ * - private: Rz
+ * - private: Ry
+ * - private: Rx
+ * - private: unit
+ * - private: _arith
+ * - private: _scale
+ * - private: _copy
+ * - private: _copy
+ * - private: _copy
+ * - private: _copy
+ * - private: _matrix
+ * - private: _mask
+ * - private: _trace
+ * - private: _m_00
+ * - private: _m_01
+ * - private: _m_02
+ * - private: _m_10
+ * - private: _m_11
+ * - private: _m_12
+ * - private: _m_20
+ * - private: _m_21
+ * - private: _m_22
+ * - private: _det
+ * - private: swap_index
+ * - private: multisqrt
+ * - private: factor_degenerate
+ * - private: intersections_ellipse_line
+ * - private: intersection_ellipses
+ * - private: intersection_angle
+ * - private: make_ellipse
+ * - private: distance
+ */
+
+/**
+ * @section variables Member Variables
  *
- * This file contains implementation details.
+ * **Private:**
+ * - mtx
  */

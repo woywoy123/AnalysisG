@@ -1,12 +1,15 @@
 /**
  * @file properties.cxx
- * @brief Documentation for modules/graph/cxx/properties.cxx
+ * @brief Documentation for src/AnalysisG/modules/graph/cxx/properties.cxx
  *
- * Location: modules/graph/cxx/properties.cxx
+ * **Location:** `src/AnalysisG/modules/graph/cxx/properties.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/graph_template.h`
  */
+

@@ -1,12 +1,14 @@
 /**
  * @file tools.pyx
- * @brief Documentation for core/tools.pyx
+ * @brief Documentation for src/AnalysisG/core/tools.pyx
  *
- * Location: core/tools.pyx
+ * **Location:** `src/AnalysisG/core/tools.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **Tools**
  */
+

@@ -1,66 +1,64 @@
 /**
  * @file _odeRK.h
- * @brief Documentation for modules/nusol/tmp/multisol/include/multisol/_odeRK.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/multisol/include/multisol/_odeRK.h
  *
- * Location: modules/nusol/tmp/multisol/include/multisol/_odeRK.h
+ * **Location:** `src/AnalysisG/modules/nusol/tmp/multisol/include/multisol/_odeRK.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct ellipse_t
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - void print()
- *
- * **Variables:**
- * - vec3   A,   B,   C
- * - vec3  vA,  vB,  vC
- * - double t
- * - double z = 1.0
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `reconstruction/multisol.h`
+ * - `reconstruction/matrix.h`
+ * - `tools/tools.h`
  */
 
 /**
- * @brief struct recon_t
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - bool is_valid = false
- * - double residual = -1
- * - std::vector<double> t
- * - std::vector<double> z
- * - std::vector<double> phi
- *
+ * @section classes Classes
+ * - **odeRK** (inherits from tools)
  */
 
 /**
- * @brief class odeRK
- * @extends tools
+ * @section structs Structures
+ * - **ellipse_t**
+ * - **recon_t**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: print
+ * - public: odeRK
+ * - public: solve
+ * - public: rk4
+ * - public: update_t
+ * - public: solve_z_phi
+ * - public: residual
+ * - public: derivative
+ * - public: ghost_angle
+ * - public: plane_rk4
+ * - public: plane_align
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - t
+ * - z
+ * - is_valid
+ * - residual
+ * - t
+ * - z
+ * - phi
  *
- * **Methods:**
- * - odeRK(std::vector<multisol*>* sols, vec3 met, int iter, double step)
- * - ~odeRK()
- * - void solve()
- * - void rk4(double dt)
- * - void   update_t()
- * - double solve_z_phi()
- * - double residual(std::vector<double> wg, std::vector<double> phx)
- * - std::vector<ellipse_t> derivative(const std::vector<ellipse_t>& dS)
- * - double ghost_angle(int nui)
- * - std::vector<double> plane_rk4(const std::vector<double>& t_initial)
- * - std::vector<double> plane_align(const std::vector<ellipse_t>& current_state)
- *
- * @section private_members Private Members
- *
- * **Variables:**
- * - vec3 met_
- * - int itr    = 0
- * - int nsx    = 0
- * - double dt_ = 0
- * - double ct  = 0
- *
+ * **Private:**
+ * - met_
+ * - itr
+ * - nsx
+ * - dt_
+ * - ct
+ * - _state
+ * - _data
  */

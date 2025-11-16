@@ -1,12 +1,14 @@
 /**
  * @file io.pyx
- * @brief Documentation for core/io.pyx
+ * @brief Documentation for src/AnalysisG/core/io.pyx
  *
- * Location: core/io.pyx
+ * **Location:** `src/AnalysisG/core/io.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **IO**
  */
+

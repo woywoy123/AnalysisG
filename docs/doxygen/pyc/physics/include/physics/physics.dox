@@ -1,12 +1,15 @@
 /**
  * @file physics.h
- * @brief Documentation for pyc/physics/include/physics/physics.h
+ * @brief Documentation for src/AnalysisG/pyc/physics/include/physics/physics.h
  *
- * Location: pyc/physics/include/physics/physics.h
+ * **Location:** `src/AnalysisG/pyc/physics/include/physics/physics.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief .h file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `torch/torch.h`
  */
+

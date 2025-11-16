@@ -1,12 +1,17 @@
 /**
  * @file notification.cxx
- * @brief Documentation for modules/notification/cxx/notification.cxx
+ * @brief Documentation for src/AnalysisG/modules/notification/cxx/notification.cxx
  *
- * Location: modules/notification/cxx/notification.cxx
+ * **Location:** `src/AnalysisG/modules/notification/cxx/notification.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `notification.h`
+ * - `stddef.h`
+ * - `iomanip`
  */
+

@@ -1,12 +1,15 @@
 /**
  * @file properties.cxx
- * @brief Documentation for modules/selection/cxx/properties.cxx
+ * @brief Documentation for src/AnalysisG/modules/selection/cxx/properties.cxx
  *
- * Location: modules/selection/cxx/properties.cxx
+ * **Location:** `src/AnalysisG/modules/selection/cxx/properties.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/selection_template.h`
  */
+

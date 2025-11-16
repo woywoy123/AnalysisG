@@ -1,12 +1,9 @@
 /**
  * @file <event-name>.pyx
- * @brief Documentation for templates/events/<event-name>.pyx
+ * @brief Documentation for src/AnalysisG/templates/events/<event-name>.pyx
  *
- * Location: templates/events/<event-name>.pyx
+ * **Location:** `src/AnalysisG/templates/events/<event-name>.pyx`
+ *
+ * **File Type:** pyx
  */
 
-/**
- * @brief .pyx file
- *
- * This file contains implementation details.
- */

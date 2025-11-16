@@ -1,12 +1,16 @@
 /**
  * @file RecursiveGraphNeuralNetwork.cxx
- * @brief Documentation for models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
+ * @brief Documentation for src/AnalysisG/models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
  *
- * Location: models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
+ * **Location:** `src/AnalysisG/models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `RecursiveGraphNeuralNetwork.h`
+ * - `pyc/pyc.h`
  */
+

@@ -1,17 +1,39 @@
 /**
  * @file conuix.h
- * @brief Documentation for modules/nusol/tmp/conuix/include/conuix/conuix.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/conuix.h
  *
- * Location: modules/nusol/tmp/conuix/include/conuix/conuix.h
+ * **Location:** `src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/conuix.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct nusol_t
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/particle_template.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **conics**
+ */
+
+/**
+ * @section structs Structures
+ * - **nusol_t**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: conics
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - nusol_t
  *
- * **Methods:**
- * - conics(nusol_t* parameters)
- * - ~conics()
- *
+ * **Private:**
+ * - params
  */

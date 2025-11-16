@@ -1,62 +1,40 @@
 /**
  * @file graphs.h
- * @brief Documentation for graphs/exp_mc20/include/exp_mc20/graphs.h
+ * @brief Documentation for src/AnalysisG/graphs/exp_mc20/include/exp_mc20/graphs.h
  *
- * Location: graphs/exp_mc20/include/exp_mc20/graphs.h
+ * **Location:** `src/AnalysisG/graphs/exp_mc20/include/exp_mc20/graphs.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class graph_jets
- * @extends graph_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - graph_jets()
- * - ~graph_jets() override
- * - graph_template* clone() override
- * - void CompileEvent() override
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/graph_template.h`
+ * - `exp_mc20/event.h`
  */
 
 /**
- * @brief class graph_jets_nonu
- * @extends graph_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - graph_jets_nonu()
- * - ~graph_jets_nonu() override
- * - graph_template* clone() override
- * - void CompileEvent() override
- *
+ * @section classes Classes
+ * - **graph_jets** (inherits from graph_template)
+ * - **graph_jets_nonu** (inherits from graph_template)
+ * - **graph_jets_detector_lep** (inherits from graph_template)
+ * - **graph_detector** (inherits from graph_template)
  */
 
 /**
- * @brief class graph_jets_detector_lep
- * @extends graph_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - graph_jets_detector_lep()
- * - ~graph_jets_detector_lep() override
- * - graph_template* clone() override
- * - void CompileEvent() override
- *
+ * @section functions Functions and Methods
+ * - public: graph_jets
+ * - public: clone
+ * - public: CompileEvent
+ * - public: graph_jets_nonu
+ * - public: clone
+ * - public: CompileEvent
+ * - public: graph_jets_detector_lep
+ * - public: clone
+ * - public: CompileEvent
+ * - public: graph_detector
+ * - public: clone
+ * - public: CompileEvent
  */
 
-/**
- * @brief class graph_detector
- * @extends graph_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - graph_detector()
- * - ~graph_detector() override
- * - graph_template* clone() override
- * - void CompileEvent() override
- *
- */

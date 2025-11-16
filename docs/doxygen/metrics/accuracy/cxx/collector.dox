@@ -1,12 +1,16 @@
 /**
  * @file collector.cxx
- * @brief Documentation for metrics/accuracy/cxx/collector.cxx
+ * @brief Documentation for src/AnalysisG/metrics/accuracy/cxx/collector.cxx
  *
- * Location: metrics/accuracy/cxx/collector.cxx
+ * **Location:** `src/AnalysisG/metrics/accuracy/cxx/collector.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `metrics/accuracy.h`
+ * - `string`
  */
+

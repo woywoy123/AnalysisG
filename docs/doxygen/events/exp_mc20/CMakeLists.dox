@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for events/exp_mc20/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/events/exp_mc20/CMakeLists.txt
  *
- * Location: events/exp_mc20/CMakeLists.txt
+ * **Location:** `src/AnalysisG/events/exp_mc20/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

@@ -1,12 +1,15 @@
 /**
  * @file variable.cxx
- * @brief Documentation for modules/structs/cxx/variable.cxx
+ * @brief Documentation for src/AnalysisG/modules/structs/cxx/variable.cxx
  *
- * Location: modules/structs/cxx/variable.cxx
+ * **Location:** `src/AnalysisG/modules/structs/cxx/variable.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `structs/element.h`
  */
+

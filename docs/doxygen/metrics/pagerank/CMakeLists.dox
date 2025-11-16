@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for metrics/pagerank/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/metrics/pagerank/CMakeLists.txt
  *
- * Location: metrics/pagerank/CMakeLists.txt
+ * **Location:** `src/AnalysisG/metrics/pagerank/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

@@ -1,12 +1,20 @@
 /**
  * @file particle_exp_mc20.pyx
- * @brief Documentation for events/exp_mc20/particle_exp_mc20.pyx
+ * @brief Documentation for src/AnalysisG/events/exp_mc20/particle_exp_mc20.pyx
  *
- * Location: events/exp_mc20/particle_exp_mc20.pyx
+ * **Location:** `src/AnalysisG/events/exp_mc20/particle_exp_mc20.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **Top**
+ * - **Child**
+ * - **PhysicsDetector**
+ * - **PhysicsTruth**
+ * - **Electron**
+ * - **Muon**
+ * - **Jet**
  */
+

@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for modules/roc/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/modules/roc/CMakeLists.txt
  *
- * Location: modules/roc/CMakeLists.txt
+ * **Location:** `src/AnalysisG/modules/roc/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

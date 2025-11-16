@@ -1,12 +1,15 @@
 /**
  * @file base.cuh
- * @brief Documentation for pyc/physics/include/physics/base.cuh
+ * @brief Documentation for src/AnalysisG/pyc/physics/include/physics/base.cuh
  *
- * Location: pyc/physics/include/physics/base.cuh
+ * **Location:** `src/AnalysisG/pyc/physics/include/physics/base.cuh`
+ *
+ * **File Type:** cuh
  */
 
 /**
- * @brief .cuh file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `utils/atomic.cuh`
  */
+

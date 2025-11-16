@@ -1,87 +1,87 @@
 /**
  * @file nusol.h
- * @brief Documentation for modules/nusol/tmp/conuix/include/conuix/nusol.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/nusol.h
  *
- * Location: modules/nusol/tmp/conuix/include/conuix/nusol.h
+ * **Location:** `src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/nusol.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct eig_t
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - double r1 = 0, r2 = 0
- * - double i1 = 0, i2 = 0
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/particle_template.h`
+ * - `conics/matrix.h`
  */
 
 /**
- * @brief struct nuclx_t
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - nuclx_t(particle_template* jet, particle_template* lep)
- * - nuclx_t from_sx_sy(double _sx, double _sy)
- * - double get_t(double _vp, double _up, double _z)
- * - double get_z(double _sx, double _sy)
- * - nuclx_t from_z_t(double _z, double _t)
- * - double get_mt(double _sx, double _sy)
- * - double get_mw(double _sx)
- * - void surface()
- * - void sx()
- * - void sy()
- * - void mw()
- * - void mt()
- * - void polynomial()
- * - void critical_t0()
- * - void H_bar()
- * - void H()
- * - void rotation()
- *
- * **Variables:**
- * - double u = 0, v = 0
- * - double u_p = 0, v_p = 0
- * - double t_v = 0, z_v = 0;  // ---- z < 0 means failed: non-physical
- * - double sx_v = 0, sy_v = 0
- * - double mt_v = 0, mw_v = 0
- * - double A = 0, B = 0, C = 0
- * - double D = 0, E = 0, F = 0
- * - double s0x = 0, s0y = 0
- * - double psi = 0, cpsi = 0, spsi = 0
- * - double lmb1 = -1, lmb2 = 0
- * - double a_x = 0, b_x = 0, c_x = 0;  // Sx
- * - double a_y = 0, b_y = 0, c_y = 0;  // Sy
- * - double a_w = 0, b_w = 0;  // mW
- * - double a_t = 0, b_t = 0, c_t = 0;  // mT
- * - double a_l = 0, b_l = 0, c_l = 0, d_l = 0
- * - double t_0 = 0
- * - matrix_t HBc, HB1, HB2; // pre-rotation
- * - matrix_t Hc, H1, H2;  // post-rotation
- * - matrix_t vec_jet, R_T
- * - double beta_lep = 0, beta_jet = 0
- *
+ * @section classes Classes
+ * - **nuclx**
  */
 
 /**
- * @brief class nuclx
+ * @section structs Structures
+ * - **eig_t**
+ * - **nuclx_t**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: nuclx_t
+ * - public: from_sx_sy
+ * - public: get_t
+ * - public: get_z
+ * - public: from_z_t
+ * - public: get_mt
+ * - public: get_mw
+ * - public: surface
+ * - public: shifts
+ * - public: sx
+ * - public: sy
+ * - public: mw
+ * - public: mt
+ * - public: polynomial
+ * - public: critical_t0
+ * - public: H_bar
+ * - public: H
+ * - public: rotation
+ * - public: nuclx
+ * - public: H
+ * - public: H_tilde
+ * - public: P
+ * - public: dP_dL
+ * - public: dPl0
+ * - private: G
+ * - private: hyperbolic
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - r1
+ * - i1
+ * - u
+ * - u_p
+ * - t_v
+ * - sx_v
+ * - mt_v
+ * - A
+ * - D
+ * - s0x
+ * - psi
+ * - lmb1
+ * - a_x
+ * - a_y
+ * - a_w
+ * - a_t
+ * - a_l
+ * - t_0
+ * - beta_lep
+ * - mass_lep
  *
- * **Methods:**
- * - nuclx(particle_template* bjet, particle_template* lep)
- * - matrix_t H(double z, double t)
- * - matrix_t H_tilde(double z, double t)
- * - double P(double lambda, double t, double z)
- * - double dP_dL(double lambda, double t, double z)
- * - eig_t dPl0(double t, double z)
- * - ~nuclx()
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - double G(double t)
- * - matrix_t hyperbolic(matrix_t* cx, matrix_t* sx, double t)
- *
+ * **Private:**
+ * - data
+ * - jet
+ * - lepton
  */

@@ -1,12 +1,14 @@
 /**
  * @file roc.pyx
- * @brief Documentation for core/roc.pyx
+ * @brief Documentation for src/AnalysisG/core/roc.pyx
  *
- * Location: core/roc.pyx
+ * **Location:** `src/AnalysisG/core/roc.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **ROC**
  */
+

@@ -1,12 +1,15 @@
 /**
  * @file loss_plots.cxx
- * @brief Documentation for modules/metrics/cxx/loss_plots.cxx
+ * @brief Documentation for src/AnalysisG/modules/metrics/cxx/loss_plots.cxx
  *
- * Location: modules/metrics/cxx/loss_plots.cxx
+ * **Location:** `src/AnalysisG/modules/metrics/cxx/loss_plots.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `metrics/metrics.h`
  */
+

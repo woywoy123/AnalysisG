@@ -1,28 +1,47 @@
 /**
  * @file RecursiveGraphNeuralNetwork.h
- * @brief Documentation for models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h
+ * @brief Documentation for src/AnalysisG/models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h
  *
- * Location: models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h
+ * **Location:** `src/AnalysisG/models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class recursivegraphneuralnetwork
- * @extends model_template
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/model_template.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **recursivegraphneuralnetwork** (inherits from model_template)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: recursivegraphneuralnetwork
+ * - public: clone
+ * - public: forward
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Methods:**
- * - recursivegraphneuralnetwork(int rep = 1024, double dpt = 0.1)
- * - ~recursivegraphneuralnetwork()
- * - model_template* clone() override
- *
- * **Variables:**
- * - int _dx     = 26
- * - int _x      = 5
- * - int _output = 2
- * - int _rep    = 256
- * - double res_mass = 0
- * - double drop_out = 0.1
- * - bool is_mc = true
- *
+ * **Public:**
+ * - _dx
+ * - _x
+ * - _output
+ * - _rep
+ * - res_mass
+ * - drop_out
+ * - is_mc
+ * - rnn_x
+ * - rnn_dx
+ * - rnn_merge
+ * - rnn_update
+ * - exotic_mlp
+ * - node_aggr_mlp
+ * - ntops_mlp
+ * - exo_mlp
  */

@@ -1,86 +1,76 @@
 /**
  * @file optimizer.h
- * @brief Documentation for modules/structs/include/structs/optimizer.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/optimizer.h
  *
- * Location: modules/structs/include/structs/optimizer.h
+ * **Location:** `src/AnalysisG/modules/structs/include/structs/optimizer.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct loss_opt
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - loss_enum fx = loss_enum::invalid_loss
- * - bool mean = false
- * - bool sum  = false
- * - bool none = false
- * - bool swap = false
- * - bool full = false
- * - bool batch_mean = false
- * - bool target     = false
- * - bool zero_inf   = false
- * - bool defaults   = true
- * - int ignore = 1000
- * - int blank  = 0
- * - double margin    = 0
- * - double beta      = 0
- * - double eps       = 0
- * - double smoothing = 0
- * - double delta     = 0
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `string`
+ * - `vector`
+ * - `structs/property.h`
+ * - `structs/enums.h`
  */
 
 /**
- * @brief class optimizer_params_t
+ * @section classes Classes
+ * - **optimizer_params_t**
+ */
+
+/**
+ * @section structs Structures
+ * - **loss_opt**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: optimizer_params_t
+ * - private: set_eps
+ * - private: set_lr
+ * - private: set_lr_decay
+ * - private: set_weight_decay
+ * - private: set_initial_accumulator_value
+ * - private: set_beta_hack
+ * - private: set_betas
+ * - private: set_amsgrad
+ * - private: set_max_iter
+ * - private: set_max_eval
+ * - private: set_tolerance_grad
+ * - private: set_tolerance_change
+ * - private: set_history_size
+ * - private: set_centered
+ * - private: set_nesterov
+ * - private: set_alpha
+ * - private: set_momentum
+ * - private: set_dampening
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Methods:**
- * - optimizer_params_t()
- *
- * **Variables:**
- * - std::string optimizer = ""
- * - cproperty<double, optimizer_params_t> lr
- * - cproperty<double, optimizer_params_t> lr_decay
- * - cproperty<double, optimizer_params_t> weight_decay
- * - cproperty<double, optimizer_params_t> initial_accumulator_value
- * - cproperty<double, optimizer_params_t> eps
- * - cproperty<double, optimizer_params_t> tolerance_grad
- * - cproperty<double, optimizer_params_t> tolerance_change
- * - cproperty<double, optimizer_params_t> alpha
- * - cproperty<double, optimizer_params_t> momentum
- * - cproperty<double, optimizer_params_t> dampening
- * - cproperty<bool, optimizer_params_t> amsgrad
- * - cproperty<bool, optimizer_params_t> centered
- * - cproperty<bool, optimizer_params_t> nesterov
- * - cproperty<int, optimizer_params_t> max_iter
- * - cproperty<int, optimizer_params_t> max_eval
- * - cproperty<int, optimizer_params_t> history_size
- * - std::string scheduler = ""
- * - unsigned int step_size = 1
- * - double           gamma = 0.1
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void static set_eps(double*, optimizer_params_t* obj)
- * - void static set_lr(double*, optimizer_params_t* obj)
- * - void static set_lr_decay(double*, optimizer_params_t* obj)
- * - void static set_weight_decay(double*, optimizer_params_t* obj)
- * - void static set_initial_accumulator_value(double*, optimizer_params_t* obj)
- * - void static set_beta_hack(std::vector<float>* val, optimizer_params_t* obj)
- * - void static set_betas(std::tuple<float, float>*, optimizer_params_t* obj)
- * - void static set_amsgrad(bool*, optimizer_params_t* obj)
- * - void static set_max_iter(int*, optimizer_params_t* obj)
- * - void static set_max_eval(int*, optimizer_params_t* obj)
- * - void static set_tolerance_grad(double*, optimizer_params_t* obj)
- * - void static set_tolerance_change(double*, optimizer_params_t* obj)
- * - void static set_history_size(int*, optimizer_params_t* obj)
- * - void static set_centered(bool*, optimizer_params_t* obj)
- * - void static set_nesterov(bool*, optimizer_params_t* obj)
- * - void static set_alpha(double*, optimizer_params_t* obj)
- * - void static set_momentum(double*, optimizer_params_t* obj)
- * - void static set_dampening(double*, optimizer_params_t* obj)
- *
+ * **Public:**
+ * - fx
+ * - mean
+ * - sum
+ * - none
+ * - swap
+ * - full
+ * - batch_mean
+ * - target
+ * - zero_inf
+ * - defaults
+ * - ignore
+ * - blank
+ * - margin
+ * - beta
+ * - eps
+ * - smoothing
+ * - delta
+ * - weight
+ * - optimizer
+ * - scheduler
  */

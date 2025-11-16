@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for templates/particles/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/templates/particles/CMakeLists.txt
  *
- * Location: templates/particles/CMakeLists.txt
+ * **Location:** `src/AnalysisG/templates/particles/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

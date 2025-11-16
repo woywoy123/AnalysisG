@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for core/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/core/CMakeLists.txt
  *
- * Location: core/CMakeLists.txt
+ * **Location:** `src/AnalysisG/core/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

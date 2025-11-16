@@ -1,12 +1,15 @@
 /**
  * @file <particle-name>.cxx
- * @brief Documentation for templates/particles/cxx/<particle-name>.cxx
+ * @brief Documentation for src/AnalysisG/templates/particles/cxx/<particle-name>.cxx
  *
- * Location: templates/particles/cxx/<particle-name>.cxx
+ * **Location:** `src/AnalysisG/templates/particles/cxx/<particle-name>.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `<particle-name`
  */
+

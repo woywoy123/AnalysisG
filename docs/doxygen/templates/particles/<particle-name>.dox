@@ -1,12 +1,9 @@
 /**
  * @file <particle-name>.pyx
- * @brief Documentation for templates/particles/<particle-name>.pyx
+ * @brief Documentation for src/AnalysisG/templates/particles/<particle-name>.pyx
  *
- * Location: templates/particles/<particle-name>.pyx
+ * **Location:** `src/AnalysisG/templates/particles/<particle-name>.pyx`
+ *
+ * **File Type:** pyx
  */
 
-/**
- * @brief .pyx file
- *
- * This file contains implementation details.
- */

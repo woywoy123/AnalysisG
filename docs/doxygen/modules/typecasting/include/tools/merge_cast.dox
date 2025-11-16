@@ -1,12 +1,17 @@
 /**
  * @file merge_cast.h
- * @brief Documentation for modules/typecasting/include/tools/merge_cast.h
+ * @brief Documentation for src/AnalysisG/modules/typecasting/include/tools/merge_cast.h
  *
- * Location: modules/typecasting/include/tools/merge_cast.h
+ * **Location:** `src/AnalysisG/modules/typecasting/include/tools/merge_cast.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief .h file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `string`
+ * - `vector`
+ * - `map`
  */
+

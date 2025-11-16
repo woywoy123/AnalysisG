@@ -1,54 +1,63 @@
 /**
  * @file nusol.h
- * @brief Documentation for modules/nusol/nusol/include/reconstruction/nusol.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/nusol/include/reconstruction/nusol.h
  *
- * Location: modules/nusol/nusol/include/reconstruction/nusol.h
+ * **Location:** `src/AnalysisG/modules/nusol/nusol/include/reconstruction/nusol.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class nusol
- *
- * @section private_members Private Members
- *
- * **Variables:**
- * - class ellipse
- * - class conuix
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `tools/tools.h`
+ * - `notification/notification.h`
+ * - `templates/particle_template.h`
  */
 
 /**
- * @brief struct nusol_t
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - double met = 0
- * - double phi = 0
- * - double mt = 172.68 * 1000
- * - double mw = 80.385 * 1000
- * - double limit = 10000
- * - nusol_enum mode = nusol_enum::undefined
- *
- * @section private_members Private Members
- *
- * **Variables:**
- * - friend ellipse
- * - friend conuix
- * - friend nusol
- * - double met_x = 0
- * - double met_y = 0
- * - double met_z = 0
- *
+ * @section classes Classes
+ * - **nusol**
+ * - **ellipse**
+ * - **conuix**
+ * - **nusol_enum**
+ * - **nusol**
  */
 
 /**
- * @brief class nusol
+ * @section structs Structures
+ * - **nusol_t**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: nusol
+ * - public: solve
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - met
+ * - phi
+ * - mt
+ * - mw
+ * - limit
+ * - mode
+ * - targets
  *
- * **Methods:**
- * - nusol(nusol_t* parameters)
- * - void solve()
- * - ~nusol()
- *
+ * **Private:**
+ * - nusol
+ * - ellipse
+ * - conuix
+ * - ellipse
+ * - conuix
+ * - nusol
+ * - met_x
+ * - met_y
+ * - met_z
+ * - params
+ * - D_nunu
+ * - M_nunu
  */

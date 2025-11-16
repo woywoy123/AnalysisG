@@ -1,12 +1,18 @@
 /**
  * @file matrix.cxx
- * @brief Documentation for modules/nusol/conuix/cxx/matrix.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/conuix/cxx/matrix.cxx
  *
- * Location: modules/nusol/conuix/cxx/matrix.cxx
+ * **Location:** `src/AnalysisG/modules/nusol/conuix/cxx/matrix.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `conuix/matrix.h`
+ * - `conuix/memory.h`
+ * - `iostream`
+ * - `iomanip`
  */
+

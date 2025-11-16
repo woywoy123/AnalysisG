@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for pyc/graph/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/pyc/graph/CMakeLists.txt
  *
- * Location: pyc/graph/CMakeLists.txt
+ * **Location:** `src/AnalysisG/pyc/graph/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

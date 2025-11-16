@@ -1,12 +1,14 @@
 /**
  * @file model_template.pyx
- * @brief Documentation for core/model_template.pyx
+ * @brief Documentation for src/AnalysisG/core/model_template.pyx
  *
- * Location: core/model_template.pyx
+ * **Location:** `src/AnalysisG/core/model_template.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **ModelTemplate**
  */
+

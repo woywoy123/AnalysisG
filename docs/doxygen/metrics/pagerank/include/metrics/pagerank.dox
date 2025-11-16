@@ -1,119 +1,95 @@
 /**
  * @file pagerank.h
- * @brief Documentation for metrics/pagerank/include/metrics/pagerank.h
+ * @brief Documentation for src/AnalysisG/metrics/pagerank/include/metrics/pagerank.h
  *
- * Location: metrics/pagerank/include/metrics/pagerank.h
+ * **Location:** `src/AnalysisG/metrics/pagerank/include/metrics/pagerank.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class pagerank_metric
- * @extends metric_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - pagerank_metric()
- * - ~pagerank_metric() override
- * - pagerank_metric* clone() override
- * - void define_metric(metric_t* mtx) override
- * - void define_variables() override
- * - void event() override
- * - void batch() override
- * - void end() override
- * - std::vector<particle_template*> build_top(std::map<int, std::map<int, particle_template*>>*)
- *
- * **Variables:**
- * - float  alpha    = 0.85
- * - float  norm_lim = 1e-6
- * - size_t max_itr  = 1e6
- * - int kfold = -1
- * - int epoch = -1
- *
- * @section private_members Private Members
- *
- * **Variables:**
- * - std::string mode = ""
- * - int process_mapping = -1
- * - std::vector<int>    top_truth_num_nodes
- * - std::vector<double> top_truth_pt
- * - std::vector<double> top_truth_eta
- * - std::vector<double> top_truth_phi
- * - std::vector<double> top_truth_energy
- * - std::vector<double> top_truth_px
- * - std::vector<double> top_truth_py
- * - std::vector<double> top_truth_pz
- * - std::vector<double> top_truth_mass
- * - std::vector<int>    top_pr_reco_num_nodes
- * - std::vector<double> top_pr_reco_pt
- * - std::vector<double> top_pr_reco_eta
- * - std::vector<double> top_pr_reco_phi
- * - std::vector<double> top_pr_reco_energy
- * - std::vector<double> top_pr_reco_px
- * - std::vector<double> top_pr_reco_py
- * - std::vector<double> top_pr_reco_pz
- * - std::vector<double> top_pr_reco_mass
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/metric_template.h`
  */
 
 /**
- * @brief struct kinematic_t
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - double px = 0
- * - double py = 0
- * - double pz = 0
- * - double mass = 0
- * - double pt  = 0
- * - double eta = 0
- * - double phi = 0
- * - double energy = 0
- * - int num_nodes = 0
- * - double score = 0
- *
+ * @section classes Classes
+ * - **pagerank_metric** (inherits from metric_template)
+ * - **collector** (inherits from tools)
  */
 
 /**
- * @brief struct meta_event_t
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - int process_mapping = -1
- *
+ * @section structs Structures
+ * - **kinematic_t**
+ * - **meta_event_t**
+ * - **sample_t**
  */
 
 /**
- * @brief struct sample_t
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - std::string meta_data = ""
- *
+ * @section functions Functions and Methods
+ * - public: pagerank_metric
+ * - public: clone
+ * - public: define_metric
+ * - public: define_variables
+ * - public: event
+ * - public: batch
+ * - public: end
+ * - public: build_top
+ * - public: collector
+ * - public: set_index
+ * - public: add_truth
+ * - public: add_pagerank
+ * - public: add_nominal
+ * - public: add_process
+ * - public: add_meta
+ * - public: add_file_map
  */
 
 /**
- * @brief class collector
- * @extends tools
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - alpha
+ * - norm_lim
+ * - max_itr
+ * - kfold
+ * - epoch
+ * - px
+ * - py
+ * - pz
+ * - mass
+ * - pt
+ * - eta
+ * - phi
+ * - energy
+ * - num_nodes
+ * - score
+ * - process_mapping
+ * - truth
+ * - pageranked
+ * - nominal
+ * - meta_data
  *
- * **Methods:**
- * - collector()
- * - ~collector()
- * - void set_index(long idx_)
- * - void add_truth(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
- * - void add_pagerank(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
- * - void add_nominal(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
- * - void add_process(int prc, std::string mode, std::string model, int kfold, int epoch)
- * - bool add_meta(std::string data, std::string model, int kfold, int epoch)
- * - void add_file_map(std::string fname, long idx_, std::string mode, std::string model, int kfold, int epoch, bool stat)
- *
- * @section private_members Private Members
- *
- * **Variables:**
- * - long  idx = 0
- *
+ * **Private:**
+ * - mode
+ * - process_mapping
+ * - top_truth_num_nodes
+ * - top_truth_pt
+ * - top_truth_eta
+ * - top_truth_phi
+ * - top_truth_energy
+ * - top_truth_px
+ * - top_truth_py
+ * - top_truth_pz
+ * - top_truth_mass
+ * - top_pr_reco_num_nodes
+ * - top_pr_reco_pt
+ * - top_pr_reco_eta
+ * - top_pr_reco_phi
+ * - top_pr_reco_energy
+ * - top_pr_reco_px
+ * - top_pr_reco_py
+ * - top_pr_reco_pz
+ * - top_pr_reco_mass
  */

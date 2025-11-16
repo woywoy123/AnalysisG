@@ -1,12 +1,14 @@
 /**
  * @file RecursiveGraphNeuralNetwork.pyx
- * @brief Documentation for models/RecursiveGraphNeuralNetwork/RecursiveGraphNeuralNetwork.pyx
+ * @brief Documentation for src/AnalysisG/models/RecursiveGraphNeuralNetwork/RecursiveGraphNeuralNetwork.pyx
  *
- * Location: models/RecursiveGraphNeuralNetwork/RecursiveGraphNeuralNetwork.pyx
+ * **Location:** `src/AnalysisG/models/RecursiveGraphNeuralNetwork/RecursiveGraphNeuralNetwork.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **RecursiveGraphNeuralNetwork**
  */
+

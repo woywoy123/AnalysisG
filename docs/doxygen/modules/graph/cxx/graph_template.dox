@@ -1,12 +1,15 @@
 /**
  * @file graph_template.cxx
- * @brief Documentation for modules/graph/cxx/graph_template.cxx
+ * @brief Documentation for src/AnalysisG/modules/graph/cxx/graph_template.cxx
  *
- * Location: modules/graph/cxx/graph_template.cxx
+ * **Location:** `src/AnalysisG/modules/graph/cxx/graph_template.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/graph_template.h`
  */
+

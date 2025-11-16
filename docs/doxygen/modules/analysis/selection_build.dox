@@ -1,12 +1,15 @@
 /**
  * @file selection_build.cxx
- * @brief Documentation for modules/analysis/selection_build.cxx
+ * @brief Documentation for src/AnalysisG/modules/analysis/selection_build.cxx
  *
- * Location: modules/analysis/selection_build.cxx
+ * **Location:** `src/AnalysisG/modules/analysis/selection_build.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `AnalysisG/analysis.h`
  */
+

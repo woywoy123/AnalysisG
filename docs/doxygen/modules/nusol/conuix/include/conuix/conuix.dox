@@ -1,26 +1,44 @@
 /**
  * @file conuix.h
- * @brief Documentation for modules/nusol/conuix/include/conuix/conuix.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/conuix/include/conuix/conuix.h
  *
- * Location: modules/nusol/conuix/include/conuix/conuix.h
+ * **Location:** `src/AnalysisG/modules/nusol/conuix/include/conuix/conuix.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct nusol_t
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `reconstruction/nusol.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **conuic**
+ * - **conuix**
+ */
+
+/**
+ * @section structs Structures
+ * - **nusol_t**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: conuix
+ * - public: solve
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - nusol_t
  *
- * **Methods:**
- * - conuix(nusol_t* params)
- * - ~conuix()
- * - void solve()
- *
- * **Variables:**
- * - class conuic
- *
- * @section private_members Private Members
- *
- * **Variables:**
- * - std::string prefix = ""
- *
+ * **Private:**
+ * - conuic
+ * - prefix
+ * - params
+ * - cnx
  */

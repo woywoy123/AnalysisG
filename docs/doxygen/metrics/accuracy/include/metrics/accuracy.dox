@@ -1,61 +1,60 @@
 /**
  * @file accuracy.h
- * @brief Documentation for metrics/accuracy/include/metrics/accuracy.h
+ * @brief Documentation for src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h
  *
- * Location: metrics/accuracy/include/metrics/accuracy.h
+ * **Location:** `src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class accuracy_metric
- * @extends metric_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - accuracy_metric()
- * - ~accuracy_metric() override
- * - accuracy_metric* clone() override
- * - void define_metric(metric_t* mtx) override
- * - void define_variables() override
- * - void event() override
- * - void batch() override
- * - void end() override
- *
- * @section private_members Private Members
- *
- * **Variables:**
- * - std::string mode = ""
- * - long idx = 0
- * - float edge_accuracy = 0
- * - float global_edge_accuracy = 0
- * - int ntop_truth = 0
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/metric_template.h`
  */
 
 /**
- * @brief struct cdata_t
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - int kfold = -1
- *
+ * @section classes Classes
+ * - **accuracy_metric** (inherits from metric_template)
+ * - **collector** (inherits from tools)
  */
 
 /**
- * @brief struct cmodel_t
- *
+ * @section structs Structures
+ * - **cdata_t**
+ * - **cmodel_t**
  */
 
 /**
- * @brief class collector
- * @extends tools
+ * @section functions Functions and Methods
+ * - public: accuracy_metric
+ * - public: clone
+ * - public: define_metric
+ * - public: define_variables
+ * - public: event
+ * - public: batch
+ * - public: end
+ * - public: collector
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - kfold
+ * - ntops_truth
+ * - ntop_score
+ * - model_names
+ * - modes
+ * - epochs
+ * - kfolds
  *
- * **Methods:**
- * - collector()
- * - ~collector()
- * - std::map<std::string, std::vector<cdata_t*>> get_plts()
- *
+ * **Private:**
+ * - mode
+ * - idx
+ * - edge_accuracy
+ * - global_edge_accuracy
+ * - ntop_truth
+ * - ntop_scores
+ * - ntops_accuracy
  */

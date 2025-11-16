@@ -1,12 +1,22 @@
 /**
  * @file graph.cxx
- * @brief Documentation for pyc/interface/graph.cxx
+ * @brief Documentation for src/AnalysisG/pyc/interface/graph.cxx
  *
- * Location: pyc/interface/graph.cxx
+ * **Location:** `src/AnalysisG/pyc/interface/graph.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `pyc/pyc.h`
+ * - `utils/utils.cuh`
+ * - `transform/transform.cuh`
+ * - `graph/graph.cuh`
+ * - `graph/pagerank.cuh`
+ * - `utils/utils.h`
+ * - `transform/transform.h`
+ * - `graph/graph.h`
  */
+

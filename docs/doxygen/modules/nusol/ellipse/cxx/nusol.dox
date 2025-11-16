@@ -1,12 +1,18 @@
 /**
  * @file nusol.cxx
- * @brief Documentation for modules/nusol/ellipse/cxx/nusol.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/ellipse/cxx/nusol.cxx
  *
- * Location: modules/nusol/ellipse/cxx/nusol.cxx
+ * **Location:** `src/AnalysisG/modules/nusol/ellipse/cxx/nusol.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/particle_template.h`
+ * - `ellipse/solvers.h`
+ * - `ellipse/nusol.h`
+ * - `ellipse/mtx.h`
  */
+

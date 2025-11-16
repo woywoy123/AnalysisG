@@ -1,12 +1,15 @@
 /**
  * @file jets.cxx
- * @brief Documentation for events/ssml_mc20/cxx/jets.cxx
+ * @brief Documentation for src/AnalysisG/events/ssml_mc20/cxx/jets.cxx
  *
- * Location: events/ssml_mc20/cxx/jets.cxx
+ * **Location:** `src/AnalysisG/events/ssml_mc20/cxx/jets.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `particles.h`
  */
+

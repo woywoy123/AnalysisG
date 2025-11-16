@@ -1,12 +1,17 @@
 /**
  * @file inference_build.cxx
- * @brief Documentation for modules/analysis/inference_build.cxx
+ * @brief Documentation for src/AnalysisG/modules/analysis/inference_build.cxx
  *
- * Location: modules/analysis/inference_build.cxx
+ * **Location:** `src/AnalysisG/modules/analysis/inference_build.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `AnalysisG/analysis.h`
+ * - `ROOT/RDataFrame.hxx`
+ * - `tools/vector_cast.h`
  */
+

@@ -1,38 +1,49 @@
 /**
  * @file event.h
- * @brief Documentation for events/bsm_4tops/include/bsm_4tops/event.h
+ * @brief Documentation for src/AnalysisG/events/bsm_4tops/include/bsm_4tops/event.h
  *
- * Location: events/bsm_4tops/include/bsm_4tops/event.h
+ * **Location:** `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/event.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class bsm_4tops
- * @extends event_template
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `bsm_4tops/particles.h`
+ * - `templates/event_template.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **bsm_4tops** (inherits from event_template)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: bsm_4tops
+ * - public: clone
+ * - public: build
+ * - public: CompileEvent
+ * - private: vectorize
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - Tops
+ * - Children
+ * - TruthJets
+ * - Jets
+ * - Electrons
+ * - Muons
+ * - DetectorObjects
+ * - event_number
+ * - mu
+ * - met
+ * - phi
  *
- * **Methods:**
- * - bsm_4tops()
- * - virtual ~bsm_4tops()
- * - event_template* clone() override
- * - void build(element_t* el) override
- * - void CompileEvent() override
- *
- * **Variables:**
- * - unsigned long long event_number = 0
- * - float mu = 0
- * - float met = 0
- * - float phi = 0
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt)
- * - typename std::map<std::string, G*>::iterator ix = ipt -> begin()
- * - void vectorize(std::map<m, G*>* ipt, std::vector<particle_template*>* vec)
- * - typename std::map<m, G*>::iterator ix = ipt -> begin()
- *
- * **Variables:**
- * - return data
- *
+ * **Private:**
+ * - data
  */

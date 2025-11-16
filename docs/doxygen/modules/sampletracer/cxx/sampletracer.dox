@@ -1,12 +1,15 @@
 /**
  * @file sampletracer.cxx
- * @brief Documentation for modules/sampletracer/cxx/sampletracer.cxx
+ * @brief Documentation for src/AnalysisG/modules/sampletracer/cxx/sampletracer.cxx
  *
- * Location: modules/sampletracer/cxx/sampletracer.cxx
+ * **Location:** `src/AnalysisG/modules/sampletracer/cxx/sampletracer.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `generators/sampletracer.h`
  */
+

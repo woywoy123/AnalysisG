@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for events/gnn/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/events/gnn/CMakeLists.txt
  *
- * Location: events/gnn/CMakeLists.txt
+ * **Location:** `src/AnalysisG/events/gnn/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

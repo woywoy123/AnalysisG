@@ -1,12 +1,16 @@
 /**
  * @file element.cxx
- * @brief Documentation for modules/structs/cxx/element.cxx
+ * @brief Documentation for src/AnalysisG/modules/structs/cxx/element.cxx
  *
- * Location: modules/structs/cxx/element.cxx
+ * **Location:** `src/AnalysisG/modules/structs/cxx/element.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `structs/element.h`
+ * - `structs/meta.h`
  */
+

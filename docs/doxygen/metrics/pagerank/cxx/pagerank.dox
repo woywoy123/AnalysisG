@@ -1,12 +1,16 @@
 /**
  * @file pagerank.cxx
- * @brief Documentation for metrics/pagerank/cxx/pagerank.cxx
+ * @brief Documentation for src/AnalysisG/metrics/pagerank/cxx/pagerank.cxx
  *
- * Location: metrics/pagerank/cxx/pagerank.cxx
+ * **Location:** `src/AnalysisG/metrics/pagerank/cxx/pagerank.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `metrics/pagerank.h`
+ * - `fstream`
  */
+

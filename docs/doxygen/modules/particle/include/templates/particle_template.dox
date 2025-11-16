@@ -1,62 +1,89 @@
 /**
  * @file particle_template.h
- * @brief Documentation for modules/particle/include/templates/particle_template.h
+ * @brief Documentation for src/AnalysisG/modules/particle/include/templates/particle_template.h
  *
- * Location: modules/particle/include/templates/particle_template.h
+ * **Location:** `src/AnalysisG/modules/particle/include/templates/particle_template.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class event_template
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `structs/particles.h`
+ * - `structs/property.h`
+ * - `structs/element.h`
+ * - `tools/tools.h`
+ * - `iostream`
+ * - `sstream`
+ * - `string`
+ * - `cstdlib`
+ * - `cmath`
+ */
+
+/**
+ * @section classes Classes
+ * - **event_template**
+ * - **selection_template**
+ * - **particle_template** (inherits from tools)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: particle_template
+ * - public: particle_template
+ * - public: particle_template
+ * - public: particle_template
+ * - public: particle_template
+ * - public: set_e
+ * - public: get_e
+ * - public: set_pt
+ * - public: get_pt
+ * - public: set_eta
+ * - public: get_eta
+ * - public: set_phi
+ * - public: get_phi
+ * - public: set_px
+ * - public: get_px
+ * - public: set_py
+ * - public: get_py
+ * - public: set_pz
+ * - public: get_pz
+ * - public: to_cartesian
+ * - public: to_polar
+ * - public: set_mass
+ * - public: get_mass
+ * - public: get_P
+ * - public: get_beta
+ * - public: set_pdgid
+ * - public: get_pdgid
+ * - public: set_symbol
+ * - public: get_symbol
+ * - public: set_charge
+ * - public: get_charge
+ * - public: get_hash
+ * - public: is
+ * - public: get_isb
+ * - public: get_islep
+ * - public: get_isnu
+ * - public: get_isadd
+ * - public: get_lepdecay
+ * - public: set_parents
+ * - public: get_parents
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - operator
+ * - p2
+ * - p2
+ * - data
+ * - _is_serial
+ * - _is_marked
  *
- * **Methods:**
- * - particle_template()
- * - virtual ~particle_template()
- * - explicit particle_template(particle_t* p)
- * - explicit particle_template(particle_template* p, bool dump = false)
- * - explicit particle_template(double px, double py, double pz, double e)
- * - explicit particle_template(double px, double py, double pz)
- * - void static set_e(double*, particle_template*)
- * - void static get_e(double*, particle_template*)
- * - void static set_pt(double*, particle_template*)
- * - void static get_pt(double*, particle_template*)
- * - void static set_eta(double*, particle_template*)
- * - void static get_eta(double*, particle_template*)
- * - void static set_phi(double*, particle_template*)
- * - void static get_phi(double*, particle_template*)
- * - void static set_px(double*, particle_template*)
- * - void static get_px(double*, particle_template*)
- * - void static set_py(double*, particle_template*)
- * - void static get_py(double*, particle_template*)
- * - void static set_pz(double*, particle_template*)
- * - void static get_pz(double*, particle_template*)
- *
- * **Variables:**
- * - cproperty<double, particle_template> e
- * - cproperty<double, particle_template> pt
- * - cproperty<double, particle_template> eta
- * - cproperty<double, particle_template> phi
- * - cproperty<double, particle_template> px
- * - cproperty<double, particle_template> py
- * - cproperty<double, particle_template> pz
- * - cproperty<double, particle_template> mass
- * - cproperty<double, particle_template> P
- * - cproperty<double, particle_template> beta
- * - cproperty<int, particle_template> pdgid
- * - cproperty<std::string, particle_template> symbol
- * - cproperty<double, particle_template> charge
- * - cproperty<std::string, particle_template> hash
- * - cproperty<bool, particle_template> is_b
- * - cproperty<bool, particle_template> is_lep
- * - cproperty<bool, particle_template> is_nu
- * - cproperty<bool, particle_template> is_add
- * - cproperty<bool, particle_template> lep_decay
- * - cproperty<std::string, particle_template> type
- *
- * @section private_members Private Members
- *
- * **Variables:**
- * - class selection_template
- *
+ * **Private:**
+ * - event_template
+ * - selection_template
  */

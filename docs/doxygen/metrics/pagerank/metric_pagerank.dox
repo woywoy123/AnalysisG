@@ -1,12 +1,14 @@
 /**
  * @file metric_pagerank.pyx
- * @brief Documentation for metrics/pagerank/metric_pagerank.pyx
+ * @brief Documentation for src/AnalysisG/metrics/pagerank/metric_pagerank.pyx
  *
- * Location: metrics/pagerank/metric_pagerank.pyx
+ * **Location:** `src/AnalysisG/metrics/pagerank/metric_pagerank.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **PageRankMetric**
  */
+

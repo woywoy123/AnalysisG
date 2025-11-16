@@ -1,46 +1,77 @@
 /**
  * @file tools.h
- * @brief Documentation for modules/tools/include/tools/tools.h
+ * @brief Documentation for src/AnalysisG/modules/tools/include/tools/tools.h
  *
- * Location: modules/tools/include/tools/tools.h
+ * **Location:** `src/AnalysisG/modules/tools/include/tools/tools.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class tools
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `iostream`
+ * - `string`
+ * - `vector`
+ * - `cstdint`
+ * - `map`
+ */
+
+/**
+ * @section classes Classes
+ * - **tools**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: tools
+ * - public: create_path
+ * - public: delete_path
+ * - public: is_file
+ * - public: rename
+ * - public: absolute_path
+ * - public: ls
+ * - public: to_string
+ * - public: to_string
+ * - public: replace
+ * - public: has_string
+ * - public: ends_with
+ * - public: has_value
+ * - public: split
+ * - public: split
+ * - public: hash
+ * - public: lower
+ * - public: encode64
+ * - public: encode64
+ * - public: decode64
+ * - public: decode64
+ * - public: discretize
+ * - public: max
+ * - public: min
+ * - public: sum
+ * - public: put
+ * - public: out
+ * - public: put
+ * - public: unique_key
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Methods:**
- * - tools()
- * - ~tools()
- * - static void create_path(std::string path)
- * - static void delete_path(std::string path)
- * - static bool is_file(std::string path)
- * - static void rename(std::string start, std::string target)
- * - static std::string absolute_path(std::string path)
- * - static std::vector<std::string> ls(std::string path, std::string ext = "")
- * - static std::string to_string(double val)
- * - static std::string to_string(double val, int prec)
- * - static void replace(std::string* in, std::string repl_str, std::string repl_with)
- * - static bool has_string(std::string* inpt, std::string trg)
- * - static bool ends_with(std::string* inpt, std::string val)
- * - static bool has_value(std::vector<std::string>* data, std::string trg)
- * - static std::vector<std::string> split(std::string in, std::string delim)
- * - static std::vector<std::string> split(std::string in, size_t n)
- * - static std::string hash(std::string input, int len = 18)
- * - static std::string lower(std::string*)
- * - static std::string encode64(std::string* data)
- * - static std::string encode64(unsigned char const*, unsigned int len)
- *
- * **Variables:**
- * - typename std::vector<std::vector<G>> out
- * - size_t end = ib + N
- * - return out
- * - return ix
- * - return ix
- * - g ix = 0
- * - return ix
- * - return out
- * - typename std::map<g, bool> ch
- *
+ * **Public:**
+ * - n
+ * - out
+ * - end
+ * - out
+ * - ix
+ * - ix
+ * - ix
+ * - ix
+ * - ix
+ * - ix
+ * - ix
+ * - ix
+ * - out
+ * - v
+ * - kx
  */

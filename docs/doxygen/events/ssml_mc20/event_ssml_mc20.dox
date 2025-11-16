@@ -1,12 +1,14 @@
 /**
  * @file event_ssml_mc20.pyx
- * @brief Documentation for events/ssml_mc20/event_ssml_mc20.pyx
+ * @brief Documentation for src/AnalysisG/events/ssml_mc20/event_ssml_mc20.pyx
  *
- * Location: events/ssml_mc20/event_ssml_mc20.pyx
+ * **Location:** `src/AnalysisG/events/ssml_mc20/event_ssml_mc20.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **SSML_MC20**
  */
+

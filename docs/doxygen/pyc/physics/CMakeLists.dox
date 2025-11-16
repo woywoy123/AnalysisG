@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for pyc/physics/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/pyc/physics/CMakeLists.txt
  *
- * Location: pyc/physics/CMakeLists.txt
+ * **Location:** `src/AnalysisG/pyc/physics/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

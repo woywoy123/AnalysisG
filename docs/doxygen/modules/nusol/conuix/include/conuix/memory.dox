@@ -1,12 +1,9 @@
 /**
  * @file memory.h
- * @brief Documentation for modules/nusol/conuix/include/conuix/memory.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/conuix/include/conuix/memory.h
  *
- * Location: modules/nusol/conuix/include/conuix/memory.h
+ * **Location:** `src/AnalysisG/modules/nusol/conuix/include/conuix/memory.h`
+ *
+ * **File Type:** h
  */
 
-/**
- * @brief .h file
- *
- * This file contains implementation details.
- */

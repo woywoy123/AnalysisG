@@ -1,26 +1,46 @@
 /**
  * @file optimizer.h
- * @brief Documentation for modules/optimizer/include/generators/optimizer.h
+ * @brief Documentation for src/AnalysisG/modules/optimizer/include/generators/optimizer.h
  *
- * Location: modules/optimizer/include/generators/optimizer.h
+ * **Location:** `src/AnalysisG/modules/optimizer/include/generators/optimizer.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class analysis
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/model_template.h`
+ * - `generators/dataloader.h`
+ * - `metrics/metrics.h`
+ * - `structs/settings.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **analysis**
+ * - **optimizer** (inherits from tools)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: optimizer
+ * - public: import_dataloader
+ * - public: import_model_sessions
+ * - public: training_loop
+ * - public: validation_loop
+ * - public: evaluation_loop
+ * - public: launch_model
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - m_settings
+ * - metric
+ * - loader
  *
- * **Methods:**
- * - optimizer()
- * - ~optimizer()
- * - void import_dataloader(dataloader* dl)
- * - void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models)
- * - void training_loop(int k, int epoch)
- * - void validation_loop(int k, int epoch)
- * - void evaluation_loop(int k, int epoch)
- * - void launch_model(int k)
- *
- * **Variables:**
- * - settings_t m_settings
- *
+ * **Private:**
+ * - analysis
  */

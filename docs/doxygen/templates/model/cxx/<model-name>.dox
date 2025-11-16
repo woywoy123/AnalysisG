@@ -1,12 +1,15 @@
 /**
  * @file <model-name>.cxx
- * @brief Documentation for templates/model/cxx/<model-name>.cxx
+ * @brief Documentation for src/AnalysisG/templates/model/cxx/<model-name>.cxx
  *
- * Location: templates/model/cxx/<model-name>.cxx
+ * **Location:** `src/AnalysisG/templates/model/cxx/<model-name>.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `<model-name`
  */
+

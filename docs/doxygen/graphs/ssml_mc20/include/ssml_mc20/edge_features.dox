@@ -1,12 +1,9 @@
 /**
  * @file edge_features.h
- * @brief Documentation for graphs/ssml_mc20/include/ssml_mc20/edge_features.h
+ * @brief Documentation for src/AnalysisG/graphs/ssml_mc20/include/ssml_mc20/edge_features.h
  *
- * Location: graphs/ssml_mc20/include/ssml_mc20/edge_features.h
+ * **Location:** `src/AnalysisG/graphs/ssml_mc20/include/ssml_mc20/edge_features.h`
+ *
+ * **File Type:** h
  */
 
-/**
- * @brief .h file
- *
- * This file contains implementation details.
- */

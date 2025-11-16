@@ -1,12 +1,15 @@
 /**
  * @file collector.cxx
- * @brief Documentation for metrics/pagerank/cxx/collector.cxx
+ * @brief Documentation for src/AnalysisG/metrics/pagerank/cxx/collector.cxx
  *
- * Location: metrics/pagerank/cxx/collector.cxx
+ * **Location:** `src/AnalysisG/metrics/pagerank/cxx/collector.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `metrics/pagerank.h`
  */
+

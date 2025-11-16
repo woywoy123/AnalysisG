@@ -1,12 +1,15 @@
 /**
  * @file optimizer.cxx
- * @brief Documentation for modules/structs/cxx/optimizer.cxx
+ * @brief Documentation for src/AnalysisG/modules/structs/cxx/optimizer.cxx
  *
- * Location: modules/structs/cxx/optimizer.cxx
+ * **Location:** `src/AnalysisG/modules/structs/cxx/optimizer.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `structs/optimizer.h`
  */
+

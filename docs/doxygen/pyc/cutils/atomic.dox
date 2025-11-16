@@ -1,12 +1,15 @@
 /**
  * @file atomic.cu
- * @brief Documentation for pyc/cutils/atomic.cu
+ * @brief Documentation for src/AnalysisG/pyc/cutils/atomic.cu
  *
- * Location: pyc/cutils/atomic.cu
+ * **Location:** `src/AnalysisG/pyc/cutils/atomic.cu`
+ *
+ * **File Type:** cu
  */
 
 /**
- * @brief .cu file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `utils/atomic.cuh`
  */
+

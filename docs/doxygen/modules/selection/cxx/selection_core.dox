@@ -1,12 +1,16 @@
 /**
  * @file selection_core.cxx
- * @brief Documentation for modules/selection/cxx/selection_core.cxx
+ * @brief Documentation for src/AnalysisG/modules/selection/cxx/selection_core.cxx
  *
- * Location: modules/selection/cxx/selection_core.cxx
+ * **Location:** `src/AnalysisG/modules/selection/cxx/selection_core.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/selection_template.h`
+ * - `meta/meta.h`
  */
+

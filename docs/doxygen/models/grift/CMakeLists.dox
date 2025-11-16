@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for models/grift/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/models/grift/CMakeLists.txt
  *
- * Location: models/grift/CMakeLists.txt
+ * **Location:** `src/AnalysisG/models/grift/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

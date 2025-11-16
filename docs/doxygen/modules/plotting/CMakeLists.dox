@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for modules/plotting/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/modules/plotting/CMakeLists.txt
  *
- * Location: modules/plotting/CMakeLists.txt
+ * **Location:** `src/AnalysisG/modules/plotting/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

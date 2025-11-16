@@ -1,48 +1,80 @@
 /**
  * @file dataloader.h
- * @brief Documentation for modules/dataloader/include/generators/dataloader.h
+ * @brief Documentation for src/AnalysisG/modules/dataloader/include/generators/dataloader.h
  *
- * Location: modules/dataloader/include/generators/dataloader.h
+ * **Location:** `src/AnalysisG/modules/dataloader/include/generators/dataloader.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class analysis
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `cuda.h`
+ * - `c10/cuda/CUDACachingAllocator.h`
+ * - `tools/tools.h`
+ * - `structs/property.h`
+ * - `structs/settings.h`
+ * - `notification/notification.h`
+ * - `templates/graph_template.h`
+ * - `map`
+ * - `random`
+ * - `algorithm`
+ */
+
+/**
+ * @section classes Classes
+ * - **analysis**
+ * - **model_template**
+ * - **dataloader** (inherits from notification)
+ * - **analysis**
+ */
+
+/**
+ * @section structs Structures
+ * - **model_report**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: dataloader
+ * - public: get_k_train_set
+ * - public: get_k_validation_set
+ * - public: get_test_set
+ * - public: build_batch
+ * - public: safe_delete
+ * - public: generate_test_set
+ * - public: generate_kfold_set
+ * - public: dump_dataset
+ * - public: restore_dataset
+ * - public: get_random
+ * - public: extract_data
+ * - public: datatransfer
+ * - public: datatransfer
+ * - public: dump_graphs
+ * - public: restore_graphs
+ * - public: restore_graphs
+ * - public: start_cuda_server
+ * - private: cuda_memory_server
+ * - private: shuffle
+ * - private: shuffle
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - model_report
  *
- * **Methods:**
- * - dataloader()
- * - ~dataloader()
- * - std::vector<graph_t*>* get_k_train_set(int k)
- * - std::vector<graph_t*>* get_k_validation_set(int k)
- * - std::vector<graph_t*>* get_test_set()
- * - std::vector<graph_t*>* build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep)
- * - static void safe_delete(std::vector<graph_t*>* data)
- * - std::map<std::string, std::vector<graph_t*>>* get_inference()
- * - void generate_test_set(float percentage = 50)
- * - void generate_kfold_set(int k)
- * - void dump_dataset(std::string path)
- * - bool restore_dataset(std::string path)
- * - std::vector<graph_t*> get_random(int num = 5)
- * - void extract_data(graph_t* gr)
- * - void datatransfer(torch::TensorOptions* op, size_t* num_events = nullptr, size_t* prg_events = nullptr)
- * - void datatransfer(std::map<int, torch::TensorOptions*>* ops)
- * - bool dump_graphs(std::string path = "./", int threads = 10)
- * - void restore_graphs(std::vector<std::string> paths, int threads)
- * - void restore_graphs(std::string paths, int threads)
- * - void start_cuda_server()
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void cuda_memory_server()
- * - void shuffle(std::vector<int>* idx)
- * - void shuffle(std::vector<graph_t*>* idx)
- * - std::map<std::string, graph_t*>* restore_graphs_(std::vector<std::string>, int threads)
- *
- * **Variables:**
- * - class model_template
- * - struct model_report
- * - friend class analysis
- *
+ * **Private:**
+ * - analysis
+ * - model_template
+ * - analysis
+ * - setting
+ * - cuda_mem
+ * - test_set
+ * - train_set
+ * - data_index
+ * - gr_test
+ * - data_set
  */

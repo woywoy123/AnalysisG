@@ -1,27 +1,51 @@
 /**
  * @file report.h
- * @brief Documentation for modules/structs/include/structs/report.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/report.h
  *
- * Location: modules/structs/include/structs/report.h
+ * **Location:** `src/AnalysisG/modules/structs/include/structs/report.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class metrics
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `structs/enums.h`
+ * - `string`
+ * - `map`
+ */
+
+/**
+ * @section classes Classes
+ * - **metrics**
+ */
+
+/**
+ * @section structs Structures
+ * - **model_report**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: print
+ * - public: prx
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section private_members Private Members
+ * **Public:**
+ * - k
+ * - epoch
+ * - is_complete
+ * - waiting_plot
+ * - current_lr
+ * - run_name
+ * - mode
+ * - iters
+ * - num_evnt
+ * - progress
  *
- * **Methods:**
- * - std::string print()
- * - std::string prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string title)
- *
- * **Variables:**
- * - int k
- * - int epoch
- * - bool is_complete = false
- * - std::string run_name
- * - std::string mode
- * - long iters = 0
- * - long num_evnt = 0
- * - float progress
- *
+ * **Private:**
+ * - metrics
  */

@@ -1,12 +1,15 @@
 /**
  * @file hdf5.cxx
- * @brief Documentation for modules/io/cxx/hdf5.cxx
+ * @brief Documentation for src/AnalysisG/modules/io/cxx/hdf5.cxx
  *
- * Location: modules/io/cxx/hdf5.cxx
+ * **Location:** `src/AnalysisG/modules/io/cxx/hdf5.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `io.h`
  */
+

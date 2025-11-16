@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for modules/particle/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/modules/particle/CMakeLists.txt
  *
- * Location: modules/particle/CMakeLists.txt
+ * **Location:** `src/AnalysisG/modules/particle/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

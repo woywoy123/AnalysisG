@@ -1,12 +1,19 @@
 /**
  * @file transform.cxx
- * @brief Documentation for pyc/interface/transform.cxx
+ * @brief Documentation for src/AnalysisG/pyc/interface/transform.cxx
  *
- * Location: pyc/interface/transform.cxx
+ * **Location:** `src/AnalysisG/pyc/interface/transform.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `pyc/pyc.h`
+ * - `utils/utils.cuh`
+ * - `transform/transform.cuh`
+ * - `utils/utils.h`
+ * - `transform/transform.h`
  */
+

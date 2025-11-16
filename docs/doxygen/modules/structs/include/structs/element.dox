@@ -1,88 +1,90 @@
 /**
  * @file element.h
- * @brief Documentation for modules/structs/include/structs/element.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/element.h
  *
- * Location: modules/structs/include/structs/element.h
+ * **Location:** `src/AnalysisG/modules/structs/include/structs/element.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct data_t
- * @extends bsc_t
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - data_t()
- * - ~data_t() override
- * - void initialize()
- * - void flush()
- * - bool next()
- *
- * **Variables:**
- * - std::string   leaf_name = ""
- * - std::string branch_name = ""
- * - std::string   tree_name = ""
- * - std::string   leaf_type = ""
- * - std::string        path = ""
- * - int file_index = 0
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void fetch_buffer()
- * - void string_type()
- * - void fetch_buffer(std::vector<T>** data)
- * - TTreeReader r = TTreeReader(this -> tree)
- * - TTreeReaderValue<T> dr(r, this -> branch_name.c_str())
- * - (*data) -> shrink_to_fit()
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `TFile.h`
+ * - `TTree.h`
+ * - `TBranch.h`
+ * - `TLeaf.h`
+ * - `TTreeReaderArray.h`
+ * - `TTreeReader.h`
+ * - `tools/vector_cast.h`
+ * - `structs/base.h`
+ * - `structs/meta.h`
+ * - `iostream`
+ * - `string`
+ * - `vector`
+ * - `map`
  */
 
 /**
- * @brief struct element_t
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - bool next()
- * - void set_meta()
- * - bool boundary()
- * - bool get(std::string key, g* var)
- * - abort()
- *
- * **Variables:**
- * - std::string tree = ""
- * - long event_index = -1
- * - std::string filename = ""
- * - std::cout << "Leaf name: " << d -> leaf_name
- * - std::cout << "|" << d -> leaf_type << std::endl
- *
+ * @section structs Structures
+ * - **data_t**
+ * - **element_t**
+ * - **write_t**
+ * - **writer**
  */
 
 /**
- * @brief struct write_t
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - variable_t* process(std::string* name)
- * - void write()
- * - void create(std::string tr_name, std::string path)
- * - void close()
- *
+ * @section functions Functions and Methods
+ * - public: data_t
+ * - public: initialize
+ * - public: flush
+ * - public: next
+ * - private: fetch_buffer
+ * - private: string_type
+ * - private: fetch_buffer
+ * - private: dr
+ * - public: next
+ * - public: set_meta
+ * - public: boundary
+ * - public: get
+ * - public: abort
+ * - public: process
+ * - public: write
+ * - public: create
+ * - public: close
+ * - public: writer
+ * - public: create
+ * - public: write
+ * - public: process
+ * - private: process
  */
 
 /**
- * @brief struct writer
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - leaf_name
+ * - branch_name
+ * - tree_name
+ * - leaf_type
+ * - path
+ * - fname
+ * - leaf
+ * - branch
+ * - tree
+ * - file
+ * - file_index
+ * - files_s
+ * - files_i
+ * - files_t
+ * - tree
+ * - event_index
+ * - filename
+ * - d
+ * - file
+ * - tree
  *
- * **Methods:**
- * - writer()
- * - ~writer()
- * - void create(std::string* pth)
- * - void write(std::string* tree)
- * - void process(std::string* tree, std::string* name, g* t)
- * - this -> process(tree, name) -> process(t, name, nullptr)
- *
+ * **Private:**
+ * - r
+ * - head
  */

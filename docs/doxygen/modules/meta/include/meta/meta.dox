@@ -1,71 +1,88 @@
 /**
  * @file meta.h
- * @brief Documentation for modules/meta/include/meta/meta.h
+ * @brief Documentation for src/AnalysisG/modules/meta/include/meta/meta.h
  *
- * Location: modules/meta/include/meta/meta.h
+ * **Location:** `src/AnalysisG/modules/meta/include/meta/meta.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class analysis
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `structs/meta.h`
+ * - `structs/folds.h`
+ * - `structs/property.h`
+ * - `rapidjson/document.h`
+ * - `notification/notification.h`
+ * - `tools/tools.h`
+ * - `TFile.h`
+ * - `TTree.h`
+ * - `TBranch.h`
+ * - `TLeaf.h`
+ * - `TH1F.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **analysis**
+ * - **meta** (inherits from tools)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: meta
+ * - public: get_tags
+ * - public: scan_data
+ * - public: scan_sow
+ * - public: parse_json
+ * - public: hash
+ * - private: compiler
+ * - private: parse_float
+ * - private: parse_string
+ * - private: get_isMC
+ * - private: get_found
+ * - private: get_eventNumber
+ * - private: get_event_index
+ * - private: get_totalSize
+ * - private: get_kfactor
+ * - private: get_ecmEnergy
+ * - private: get_genFiltEff
+ * - private: get_completion
+ * - private: get_beam_energy
+ * - private: get_cross_section_pb
+ * - private: get_cross_section_nb
+ * - private: get_cross_section_fb
+ * - private: get_campaign_luminosity
+ * - private: get_dsid
+ * - private: get_nFiles
+ * - private: get_totalEvents
+ * - private: get_datasetNumber
+ * - private: get_derivationFormat
+ * - private: get_AMITag
+ * - private: get_generators
+ * - private: get_identifier
+ * - private: get_DatasetName
+ * - private: get_prodsysStatus
+ * - private: get_dataType
+ * - private: get_version
+ * - private: get_PDF
+ * - private: get_AtlasRelease
+ * - private: get_principalPhysicsGroup
+ * - private: get_physicsShort
+ * - private: get_generatorName
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - rpd
+ * - metacache_path
+ * - meta_data
  *
- * **Methods:**
- * - meta()
- * - ~meta()
- * - const folds_t* get_tags(std::string hash)
- * - void scan_data(TObject* obj)
- * - void scan_sow(TObject* obj)
- * - void parse_json(std::string inpt)
- * - std::string hash(std::string fname)
- *
- * **Variables:**
- * - std::string metacache_path
- * - meta_t meta_data
- * - cproperty<bool, meta> isMC
- * - cproperty<bool, meta> found
- * - cproperty<double, meta> eventNumber
- * - cproperty<double, meta> event_index
- * - cproperty<double, meta> totalSize
- * - cproperty<double, meta> kfactor
- * - cproperty<double, meta> ecmEnergy
- * - cproperty<double, meta> genFiltEff
- * - cproperty<double, meta> completion
- * - cproperty<double, meta> beam_energy
- * - cproperty<double, meta> cross_section_nb
- * - cproperty<double, meta> cross_section_fb
- * - cproperty<double, meta> cross_section_pb
- * - cproperty<double, meta> campaign_luminosity
- * - cproperty<double, meta> sum_of_weights
- * - cproperty<unsigned int, meta> dsid
- * - cproperty<unsigned int, meta> nFiles
- * - cproperty<unsigned int, meta> totalEvents
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void compiler()
- * - float parse_float(std::string key, TTree* tr)
- * - std::string parse_string(std::string key, TTree* tr)
- * - void static get_isMC(bool*, meta*)
- * - void static get_found(bool*, meta*)
- * - void static get_eventNumber(double*, meta*)
- * - void static get_event_index(double*, meta*)
- * - void static get_totalSize(double*, meta*)
- * - void static get_kfactor(double*, meta*)
- * - void static get_ecmEnergy(double*, meta*)
- * - void static get_genFiltEff(double*, meta*)
- * - void static get_completion(double*, meta*)
- * - void static get_beam_energy(double*, meta*)
- * - void static get_cross_section_pb(double*, meta*)
- * - void static get_cross_section_nb(double*, meta*)
- * - void static get_cross_section_fb(double*, meta*)
- * - void static get_campaign_luminosity(double*, meta*)
- * - void static get_dsid(unsigned int*, meta*)
- * - void static get_nFiles(unsigned int*, meta*)
- * - void static get_totalEvents(unsigned int*, meta*)
- *
- * **Variables:**
- * - friend analysis
- *
+ * **Private:**
+ * - analysis
+ * - analysis
+ * - folds
  */

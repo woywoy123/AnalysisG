@@ -1,30 +1,40 @@
 /**
  * @file model.h
- * @brief Documentation for modules/structs/include/structs/model.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/model.h
  *
- * Location: modules/structs/include/structs/model.h
+ * **Location:** `src/AnalysisG/modules/structs/include/structs/model.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct model_settings_t
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `structs/enums.h`
+ * - `string`
+ * - `vector`
+ * - `map`
+ */
+
+/**
+ * @section structs Structures
+ * - **model_settings_t**
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Variables:**
- * - opt_enum    e_optim
- * - std::string s_optim
- * - std::string weight_name
- * - std::string tree_name
- * - std::string model_name
- * - std::string model_device
- * - std::string model_checkpoint_path
- * - bool inference_mode
- * - bool is_mc
- * - std::map<std::string, std::string> o_graph
- * - std::map<std::string, std::string> o_node
- * - std::map<std::string, std::string> o_edge
- * - std::vector<std::string> i_graph
- * - std::vector<std::string> i_node
- * - std::vector<std::string> i_edge
- *
+ * **Public:**
+ * - e_optim
+ * - s_optim
+ * - weight_name
+ * - tree_name
+ * - model_name
+ * - model_device
+ * - model_checkpoint_path
+ * - inference_mode
+ * - is_mc
+ * - i_graph
+ * - i_node
+ * - i_edge
  */

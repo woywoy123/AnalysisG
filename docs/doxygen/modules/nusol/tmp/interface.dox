@@ -1,12 +1,15 @@
 /**
  * @file interface.cxx
- * @brief Documentation for modules/nusol/tmp/interface.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/interface.cxx
  *
- * Location: modules/nusol/tmp/interface.cxx
+ * **Location:** `src/AnalysisG/modules/nusol/tmp/interface.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `nunu/nunu.h`
  */
+

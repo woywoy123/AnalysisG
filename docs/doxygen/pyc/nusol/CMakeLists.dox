@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for pyc/nusol/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/pyc/nusol/CMakeLists.txt
  *
- * Location: pyc/nusol/CMakeLists.txt
+ * **Location:** `src/AnalysisG/pyc/nusol/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

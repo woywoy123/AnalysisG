@@ -1,24 +1,46 @@
 /**
  * @file settings.h
- * @brief Documentation for modules/structs/include/structs/settings.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/settings.h
  *
- * Location: modules/structs/include/structs/settings.h
+ * **Location:** `src/AnalysisG/modules/structs/include/structs/settings.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct settings_t
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `string`
+ * - `vector`
+ */
+
+/**
+ * @section structs Structures
+ * - **settings_t**
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Variables:**
- * - std::string output_path = "./ProjectName"
- * - std::string run_name = ""
- * - std::string sow_name = ""
- * - std::string metacache_path = "./"
- * - bool fetch_meta = false
- * - bool pretagevents = false
- * - int epochs = 10
- * - int kfolds = 10
- * - int batch_size = 1
- *
+ * **Public:**
+ * - output_path
+ * - run_name
+ * - sow_name
+ * - metacache_path
+ * - fetch_meta
+ * - pretagevents
+ * - epochs
+ * - kfolds
+ * - batch_size
+ * - kfold
+ * - num_examples
+ * - train_size
+ * - training
+ * - validation
+ * - evaluation
+ * - continue_training
+ * - training_dataset
+ * - graph_cache
+ * - var_pt
+ * - var_eta
  */

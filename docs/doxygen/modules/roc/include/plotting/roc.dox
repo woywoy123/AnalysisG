@@ -1,37 +1,49 @@
 /**
  * @file roc.h
- * @brief Documentation for modules/roc/include/plotting/roc.h
+ * @brief Documentation for src/AnalysisG/modules/roc/include/plotting/roc.h
  *
- * Location: modules/roc/include/plotting/roc.h
+ * **Location:** `src/AnalysisG/modules/roc/include/plotting/roc.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct roc_t
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - int cls = 0
- * - int kfold = 0
- * - std::string model = ""
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `plotting/plotting.h`
  */
 
 /**
- * @brief class roc
- * @extends plotting
+ * @section classes Classes
+ * - **roc** (inherits from plotting)
+ */
+
+/**
+ * @section structs Structures
+ * - **roc_t**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: roc
+ * - public: get_ROC
+ * - private: generate
+ * - private: v
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - cls
+ * - kfold
+ * - model
+ * - _auc
+ * - tpr_
+ * - fpr_
+ * - truth
+ * - scores
  *
- * **Methods:**
- * - roc()
- * - ~roc()
- * - std::vector<roc_t*> get_ROC()
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - std::vector<std::vector<g>>* generate(size_t x, size_t y)
- * - typename std::vector<g> v(y, 0)
- *
+ * **Private:**
+ * - ptr_roc
  */

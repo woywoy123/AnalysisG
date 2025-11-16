@@ -1,12 +1,19 @@
 /**
  * @file methods.cxx
- * @brief Documentation for modules/analysis/methods.cxx
+ * @brief Documentation for src/AnalysisG/modules/analysis/methods.cxx
  *
- * Location: modules/analysis/methods.cxx
+ * **Location:** `src/AnalysisG/modules/analysis/methods.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `AnalysisG/analysis.h`
+ * - `ROOT/RDataFrame.hxx`
+ * - `tools/vector_cast.h`
+ * - `TFile.h`
+ * - `TTree.h`
  */
+

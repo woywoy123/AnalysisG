@@ -1,12 +1,14 @@
 /**
  * @file grift.pyx
- * @brief Documentation for models/grift/grift.pyx
+ * @brief Documentation for src/AnalysisG/models/grift/grift.pyx
  *
- * Location: models/grift/grift.pyx
+ * **Location:** `src/AnalysisG/models/grift/grift.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **Grift**
  */
+

@@ -1,12 +1,15 @@
 /**
  * @file interfaces.cxx
- * @brief Documentation for modules/particle/cxx/interfaces.cxx
+ * @brief Documentation for src/AnalysisG/modules/particle/cxx/interfaces.cxx
  *
- * Location: modules/particle/cxx/interfaces.cxx
+ * **Location:** `src/AnalysisG/modules/particle/cxx/interfaces.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/particle_template.h`
  */
+

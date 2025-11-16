@@ -1,12 +1,15 @@
 /**
  * @file <event-name>.cxx
- * @brief Documentation for templates/events/cxx/<event-name>.cxx
+ * @brief Documentation for src/AnalysisG/templates/events/cxx/<event-name>.cxx
  *
- * Location: templates/events/cxx/<event-name>.cxx
+ * **Location:** `src/AnalysisG/templates/events/cxx/<event-name>.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `<event-name`
  */
+

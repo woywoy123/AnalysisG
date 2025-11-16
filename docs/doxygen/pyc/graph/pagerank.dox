@@ -1,12 +1,17 @@
 /**
  * @file pagerank.cu
- * @brief Documentation for pyc/graph/pagerank.cu
+ * @brief Documentation for src/AnalysisG/pyc/graph/pagerank.cu
  *
- * Location: pyc/graph/pagerank.cu
+ * **Location:** `src/AnalysisG/pyc/graph/pagerank.cu`
+ *
+ * **File Type:** cu
  */
 
 /**
- * @brief .cu file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `graph/pagerank.cuh`
+ * - `utils/atomic.cuh`
+ * - `utils/utils.cuh`
  */
+

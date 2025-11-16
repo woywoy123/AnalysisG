@@ -1,12 +1,16 @@
 /**
  * @file nusol.cxx
- * @brief Documentation for modules/nusol/tmp/conuix/cxx/nusol.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/conuix/cxx/nusol.cxx
  *
- * Location: modules/nusol/tmp/conuix/cxx/nusol.cxx
+ * **Location:** `src/AnalysisG/modules/nusol/tmp/conuix/cxx/nusol.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `conics/nusol.h`
+ * - `complex`
  */
+

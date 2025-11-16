@@ -1,12 +1,18 @@
 /**
  * @file utils.cuh
- * @brief Documentation for pyc/nusol/include/nusol/utils.cuh
+ * @brief Documentation for src/AnalysisG/pyc/nusol/include/nusol/utils.cuh
  *
- * Location: pyc/nusol/include/nusol/utils.cuh
+ * **Location:** `src/AnalysisG/pyc/nusol/include/nusol/utils.cuh`
+ *
+ * **File Type:** cuh
  */
 
 /**
- * @brief .cuh file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `utils/atomic.cuh`
+ * - `curand_kernel.h`
+ * - `curand.h`
+ * - `math.h`
  */
+

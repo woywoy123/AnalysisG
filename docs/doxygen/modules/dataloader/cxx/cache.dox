@@ -1,12 +1,17 @@
 /**
  * @file cache.cxx
- * @brief Documentation for modules/dataloader/cxx/cache.cxx
+ * @brief Documentation for src/AnalysisG/modules/dataloader/cxx/cache.cxx
  *
- * Location: modules/dataloader/cxx/cache.cxx
+ * **Location:** `src/AnalysisG/modules/dataloader/cxx/cache.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `generators/dataloader.h`
+ * - `structs/folds.h`
+ * - `io/io.h`
  */
+

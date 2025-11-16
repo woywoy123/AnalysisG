@@ -1,210 +1,95 @@
 /**
  * @file particles.h
- * @brief Documentation for events/bsm_4tops/include/bsm_4tops/particles.h
+ * @brief Documentation for src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h
  *
- * Location: events/bsm_4tops/include/bsm_4tops/particles.h
+ * **Location:** `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class truthjetparton
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void assign_vector(std::vector<g*>* inpt, element_t* el)
- * - el -> get("index"   , &_index)
- * - el -> get("pdgid"   , &_pdgid)
- * - el -> get("pt" , &_pt)
- * - el -> get("eta", &_eta)
- * - el -> get("phi", &_phi)
- * - el -> get("e"  , &_e)
- * - g* p          = new g()
- * - inpt -> push_back(p)
- *
- * **Variables:**
- * - class jetparton
- * - class truthjet
- * - class jet
- * - std::vector<int> _index, _pdgid
- * - std::vector<float> _pt, _eta, _phi, _e
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/particle_template.h`
  */
 
 /**
- * @brief class top
- * @extends particle_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - top()
- * - virtual ~top()
- * - particle_template* clone() override
- * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- *
- * **Variables:**
- * - using particle_template::particle_template
- * - bool from_res = false
- * - int status = -1
- *
+ * @section classes Classes
+ * - **truthjetparton** (inherits from particle_template)
+ * - **jetparton** (inherits from particle_template)
+ * - **truthjet** (inherits from particle_template)
+ * - **jet** (inherits from particle_template)
+ * - **top** (inherits from particle_template)
+ * - **top_children** (inherits from particle_template)
+ * - **truthjet** (inherits from particle_template)
+ * - **truthjetparton** (inherits from particle_template)
+ * - **jet** (inherits from particle_template)
+ * - **jetparton** (inherits from particle_template)
+ * - **electron** (inherits from particle_template)
+ * - **muon** (inherits from particle_template)
  */
 
 /**
- * @brief class top_children
- * @extends particle_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - top_children()
- * - virtual ~top_children()
- * - particle_template* clone() override
- * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- *
- * **Variables:**
- * - using particle_template::particle_template
- * - int top_index = -1
- * - cproperty<bool, top_children> from_res
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void static get_from_res(bool*, top_children*)
- *
+ * @section functions Functions and Methods
+ * - private: assign_vector
+ * - public: top
+ * - public: clone
+ * - public: build
+ * - public: top_children
+ * - public: clone
+ * - public: build
+ * - private: get_from_res
+ * - public: truthjet
+ * - public: clone
+ * - public: build
+ * - private: get_from_res
+ * - public: truthjetparton
+ * - public: clone
+ * - public: build
+ * - public: jet
+ * - public: clone
+ * - public: build
+ * - private: get_from_res
+ * - public: jetparton
+ * - public: clone
+ * - public: build
+ * - public: electron
+ * - public: clone
+ * - public: build
+ * - public: muon
+ * - public: clone
+ * - public: build
  */
 
 /**
- * @brief class truthjet
- * @extends particle_template
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - from_res
+ * - status
+ * - TruthJets
+ * - Jets
+ * - top_index
+ * - top_quark_count
+ * - w_boson_count
+ * - top_index
+ * - Tops
+ * - Parton
+ * - truthjet_index
+ * - topchild_index
+ * - Tops
+ * - Parton
+ * - top_index
+ * - btag_DL1r_60
+ * - btag_DL1_60
+ * - btag_DL1r_70
+ * - btag_DL1_70
+ * - btag_DL1r_77
  *
- * **Methods:**
- * - truthjet()
- * - virtual ~truthjet()
- * - particle_template* clone() override
- * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- *
- * **Variables:**
- * - using particle_template::particle_template
- * - int top_quark_count = -1
- * - int w_boson_count = -1
- * - cproperty<bool, truthjet> from_res
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void static get_from_res(bool*, truthjet*)
- *
- */
-
-/**
- * @brief class truthjetparton
- * @extends particle_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - truthjetparton()
- * - virtual ~truthjetparton()
- * - particle_template* clone() override
- * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- *
- * **Variables:**
- * - using particle_template::particle_template
- * - int truthjet_index
- *
- */
-
-/**
- * @brief class jet
- * @extends particle_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - jet()
- * - virtual ~jet()
- * - particle_template* clone() override
- * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- *
- * **Variables:**
- * - using particle_template::particle_template
- * - cproperty<bool, jet> from_res
- * - bool btag_DL1r_60
- * - bool btag_DL1_60
- * - bool btag_DL1r_70
- * - bool btag_DL1_70
- * - bool btag_DL1r_77
- * - bool btag_DL1_77
- * - bool btag_DL1r_85
- * - bool btag_DL1_85
- * - float DL1_b
- * - float DL1_c
- * - float DL1_u
- * - float DL1r_b
- * - float DL1r_c
- * - float DL1r_u
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void static get_from_res(bool*, jet*)
- *
- */
-
-/**
- * @brief class jetparton
- * @extends particle_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - jetparton()
- * - virtual ~jetparton()
- * - particle_template* clone() override
- * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- *
- * **Variables:**
- * - using particle_template::particle_template
- * - int jet_index
- *
- */
-
-/**
- * @brief class electron
- * @extends particle_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - electron()
- * - virtual ~electron()
- * - particle_template* clone() override
- * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- *
- * **Variables:**
- * - using particle_template::particle_template
- * - bool from_res = false
- * - int top_index = -1
- *
- */
-
-/**
- * @brief class muon
- * @extends particle_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - muon()
- * - virtual ~muon()
- * - particle_template* clone() override
- * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
- *
- * **Variables:**
- * - using particle_template::particle_template
- * - bool from_res = false
- * - int top_index = -1
- *
+ * **Private:**
+ * - truthjetparton
+ * - jetparton
+ * - truthjet
+ * - jet
+ * - p
  */

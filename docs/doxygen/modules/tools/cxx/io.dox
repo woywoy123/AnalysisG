@@ -1,26 +1,41 @@
 /**
  * @file io.cxx
- * @brief Documentation for modules/tools/cxx/io.cxx
+ * @brief Documentation for src/AnalysisG/modules/tools/cxx/io.cxx
  *
- * Location: modules/tools/cxx/io.cxx
+ * **Location:** `src/AnalysisG/modules/tools/cxx/io.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief struct stat
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - else {unlink(input_path.c_str());}
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `tools/tools.h`
+ * - `sys/stat.h`
+ * - `filesystem`
+ * - `unistd.h`
  */
 
 /**
- * @brief struct stat
+ * @section structs Structures
+ * - **stat**
+ * - **stat**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: catch
+ * - public: catch
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Methods:**
- * - return (stat (path.c_str(), &buffer) == 0)
- *
+ * **Public:**
+ * - sb
+ * - buffer
+ * - out
+ * - itr
+ * - s
+ * - out
  */

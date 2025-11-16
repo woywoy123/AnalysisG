@@ -1,12 +1,16 @@
 /**
  * @file graph.cxx
- * @brief Documentation for pyc/graph/graph.cxx
+ * @brief Documentation for src/AnalysisG/pyc/graph/graph.cxx
  *
- * Location: pyc/graph/graph.cxx
+ * **Location:** `src/AnalysisG/pyc/graph/graph.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `graph/graph.h`
+ * - `utils/utils.h`
  */
+

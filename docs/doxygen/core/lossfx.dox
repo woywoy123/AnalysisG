@@ -1,12 +1,14 @@
 /**
  * @file lossfx.pyx
- * @brief Documentation for core/lossfx.pyx
+ * @brief Documentation for src/AnalysisG/core/lossfx.pyx
  *
- * Location: core/lossfx.pyx
+ * **Location:** `src/AnalysisG/core/lossfx.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **OptimizerConfig**
  */
+

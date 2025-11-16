@@ -1,12 +1,9 @@
 /**
  * @file CMakeLists.txt
- * @brief Documentation for modules/optimizer/CMakeLists.txt
+ * @brief Documentation for src/AnalysisG/modules/optimizer/CMakeLists.txt
  *
- * Location: modules/optimizer/CMakeLists.txt
+ * **Location:** `src/AnalysisG/modules/optimizer/CMakeLists.txt`
+ *
+ * **File Type:** txt
  */
 
-/**
- * @brief .txt file
- *
- * This file contains implementation details.
- */

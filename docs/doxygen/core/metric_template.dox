@@ -1,12 +1,14 @@
 /**
  * @file metric_template.pyx
- * @brief Documentation for core/metric_template.pyx
+ * @brief Documentation for src/AnalysisG/core/metric_template.pyx
  *
- * Location: core/metric_template.pyx
+ * **Location:** `src/AnalysisG/core/metric_template.pyx`
+ *
+ * **File Type:** pyx
  */
 
 /**
- * @brief .pyx file
- *
- * This file contains implementation details.
+ * @section classes Classes
+ * - **MetricTemplate**
  */
+

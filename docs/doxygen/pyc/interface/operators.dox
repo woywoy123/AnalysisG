@@ -1,12 +1,21 @@
 /**
  * @file operators.cxx
- * @brief Documentation for pyc/interface/operators.cxx
+ * @brief Documentation for src/AnalysisG/pyc/interface/operators.cxx
  *
- * Location: pyc/interface/operators.cxx
+ * **Location:** `src/AnalysisG/pyc/interface/operators.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `pyc/pyc.h`
+ * - `utils/utils.cuh`
+ * - `physics/physics.cuh`
+ * - `operators/operators.cuh`
+ * - `utils/utils.h`
+ * - `physics/physics.h`
+ * - `operators/operators.h`
  */
+

@@ -1,12 +1,15 @@
 /**
  * @file loss_config.cxx
- * @brief Documentation for modules/lossfx/cxx/loss_config.cxx
+ * @brief Documentation for src/AnalysisG/modules/lossfx/cxx/loss_config.cxx
  *
- * Location: modules/lossfx/cxx/loss_config.cxx
+ * **Location:** `src/AnalysisG/modules/lossfx/cxx/loss_config.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/lossfx.h`
  */
+

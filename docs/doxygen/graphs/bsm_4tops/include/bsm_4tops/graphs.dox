@@ -1,124 +1,65 @@
 /**
  * @file graphs.h
- * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/graphs.h
+ * @brief Documentation for src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h
  *
- * Location: graphs/bsm_4tops/include/bsm_4tops/graphs.h
+ * **Location:** `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class graph_tops
- * @extends graph_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - graph_tops()
- * - virtual ~graph_tops()
- * - graph_template* clone() override
- * - void CompileEvent() override
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/graph_template.h`
  */
 
 /**
- * @brief class graph_children
- * @extends graph_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - graph_children()
- * - virtual ~graph_children()
- * - graph_template* clone() override
- * - void CompileEvent() override
- *
+ * @section classes Classes
+ * - **graph_tops** (inherits from graph_template)
+ * - **graph_children** (inherits from graph_template)
+ * - **graph_truthjets** (inherits from graph_template)
+ * - **graph_truthjets_nonu** (inherits from graph_template)
+ * - **graph_jets** (inherits from graph_template)
+ * - **graph_jets_nonu** (inherits from graph_template)
+ * - **graph_jets_detector_lep** (inherits from graph_template)
+ * - **graph_detector** (inherits from graph_template)
  */
 
 /**
- * @brief class graph_truthjets
- * @extends graph_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - graph_truthjets()
- * - virtual ~graph_truthjets()
- * - graph_template* clone() override
- * - void CompileEvent() override
- *
+ * @section functions Functions and Methods
+ * - public: graph_tops
+ * - public: clone
+ * - public: CompileEvent
+ * - public: graph_children
+ * - public: clone
+ * - public: CompileEvent
+ * - public: graph_truthjets
+ * - public: clone
+ * - public: CompileEvent
+ * - public: graph_truthjets_nonu
+ * - public: clone
+ * - public: CompileEvent
+ * - public: graph_jets
+ * - public: clone
+ * - public: CompileEvent
+ * - public: PreSelection
+ * - public: graph_jets_nonu
+ * - public: clone
+ * - public: CompileEvent
+ * - public: graph_jets_detector_lep
+ * - public: clone
+ * - public: CompileEvent
+ * - public: graph_detector
+ * - public: clone
+ * - public: CompileEvent
+ * - public: PreSelection
  */
 
 /**
- * @brief class graph_truthjets_nonu
- * @extends graph_template
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Methods:**
- * - graph_truthjets_nonu()
- * - graph_template* clone() override
- * - virtual ~graph_truthjets_nonu()
- * - void CompileEvent() override
- *
- */
-
-/**
- * @brief class graph_jets
- * @extends graph_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - graph_jets()
- * - virtual ~graph_jets()
- * - graph_template* clone() override
- * - void CompileEvent() override
- * - bool PreSelection() override
- *
- */
-
-/**
- * @brief class graph_jets_nonu
- * @extends graph_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - graph_jets_nonu()
- * - virtual ~graph_jets_nonu()
- * - graph_template* clone() override
- * - void CompileEvent() override
- *
- */
-
-/**
- * @brief class graph_jets_detector_lep
- * @extends graph_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - graph_jets_detector_lep()
- * - virtual ~graph_jets_detector_lep()
- * - graph_template* clone() override
- * - void CompileEvent() override
- *
- */
-
-/**
- * @brief class graph_detector
- * @extends graph_template
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - graph_detector()
- * - virtual ~graph_detector()
- * - graph_template* clone() override
- * - void CompileEvent() override
- * - bool PreSelection() override
- *
- * **Variables:**
- * - bool force_match = false
- * - int num_cuda = 1
- *
+ * **Public:**
+ * - nux
+ * - force_match
+ * - num_cuda
  */

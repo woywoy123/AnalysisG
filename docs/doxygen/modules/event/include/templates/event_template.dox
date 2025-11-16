@@ -1,59 +1,60 @@
 /**
  * @file event_template.h
- * @brief Documentation for modules/event/include/templates/event_template.h
+ * @brief Documentation for src/AnalysisG/modules/event/include/templates/event_template.h
  *
- * Location: modules/event/include/templates/event_template.h
+ * **Location:** `src/AnalysisG/modules/event/include/templates/event_template.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief class event_template
- * @extends tools
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/particle_template.h`
+ * - `structs/property.h`
+ * - `structs/element.h`
+ * - `structs/event.h`
+ * - `tools/tools.h`
+ * - `meta/meta.h`
+ */
+
+/**
+ * @section classes Classes
+ * - **event_template** (inherits from tools)
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: event_template
+ * - public: set_trees
+ * - public: set_branches
+ * - public: get_leaves
+ * - public: add_leaf
+ * - public: set_name
+ * - public: set_hash
+ * - public: get_hash
+ * - public: set_tree
+ * - public: get_tree
+ * - public: set_weight
+ * - public: set_index
+ * - public: clone
+ * - public: build
+ * - public: CompileEvent
+ * - public: register_particle
+ * - public: deregister_particle
+ * - public: flush_particles
+ * - private: build_mapping
+ * - private: flush_leaf_string
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Methods:**
- * - event_template()
- * - virtual ~event_template()
- * - void static set_trees(std::vector<std::string>*, event_template*)
- * - void static set_branches(std::vector<std::string>*, event_template*)
- * - void static get_leaves(std::vector<std::string>*, event_template*)
- * - void add_leaf(std::string key, std::string leaf = "")
- * - void static set_name(std::string*, event_template*)
- * - void static set_hash(std::string*, event_template*)
- * - void static get_hash(std::string*, event_template*)
- * - void static set_tree(std::string*, event_template*)
- * - void static get_tree(std::string*, event_template*)
- * - void static set_weight(double*, event_template*)
- * - void static set_index(long*, event_template*)
- * - virtual event_template* clone()
- * - virtual void build(element_t* el)
- * - virtual void CompileEvent()
- * - std::map<std::string, event_template*> build_event(std::map<std::string, data_t*>* evnt)
- * - void register_particle(std::map<std::string, G*>* object)
- * - G* x = new G()
- * - std::map<std::string, std::string>::iterator itr = x -> leaves.begin()
- *
- * **Variables:**
- * - cproperty<std::string, event_template> name
- * - cproperty<std::string, event_template> hash
- * - cproperty<std::string, event_template> tree
- * - cproperty<double, event_template> weight
- * - cproperty<long, event_template> index
- * - std::map<std::string, std::string> m_trees
- * - std::map<std::string, std::string> m_branches
- * - std::map<std::string, std::string> m_leaves
- * - std::string tp = x -> type
- * - delete itr -> second
- * - event_t data
- * - std::string filename = ""
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void build_mapping(std::map<std::string, data_t*>* evnt)
- * - void flush_leaf_string()
- *
- * **Variables:**
- * - std::map<std::string, particle_template*> particle_generators
- *
+ * **Public:**
+ * - x
+ * - tp
+ * - operator
+ * - data
+ * - meta_data
+ * - filename
  */

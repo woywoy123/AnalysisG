@@ -1,36 +1,49 @@
 /**
  * @file meta.h
- * @brief Documentation for modules/structs/include/structs/meta.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/meta.h
  *
- * Location: modules/structs/include/structs/meta.h
+ * **Location:** `src/AnalysisG/modules/structs/include/structs/meta.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct weights_t
- *
- * @section public_members Public Members
- *
- * **Variables:**
- * - int dsid = -1
- * - bool isAFII = false
- * - std::string generator = ""
- * - std::string ami_tag = ""
- * - float total_events_weighted = -1
- * - float total_events = -1
- * - float processed_events = -1
- * - float processed_events_weighted = -1
- * - float processed_events_weighted_squared = -1
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `iostream`
+ * - `string`
+ * - `vector`
+ * - `map`
  */
 
 /**
- * @brief struct meta_t
+ * @section structs Structures
+ * - **weights_t**
+ * - **meta_t**
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Variables:**
- * - unsigned int dsid = 0
- * - bool isMC = true
- * - std::string derivationFormat = ""
- *
+ * **Public:**
+ * - dsid
+ * - isAFII
+ * - generator
+ * - ami_tag
+ * - total_events_weighted
+ * - total_events
+ * - processed_events
+ * - processed_events_weighted
+ * - processed_events_weighted_squared
+ * - dsid
+ * - isMC
+ * - derivationFormat
+ * - AMITag
+ * - generators
+ * - eventNumber
+ * - event_index
+ * - found
+ * - DatasetName
+ * - totalSize
+ * - kfactor
  */

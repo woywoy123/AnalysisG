@@ -1,12 +1,15 @@
 /**
  * @file particles.cxx
- * @brief Documentation for events/gnn/cxx/particles.cxx
+ * @brief Documentation for src/AnalysisG/events/gnn/cxx/particles.cxx
  *
- * Location: events/gnn/cxx/particles.cxx
+ * **Location:** `src/AnalysisG/events/gnn/cxx/particles.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `gnn-particles.h`
  */
+

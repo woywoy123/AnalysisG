@@ -1,12 +1,20 @@
 /**
  * @file matrix.cxx
- * @brief Documentation for modules/nusol/tmp/multisol/cxx/matrix.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/multisol/cxx/matrix.cxx
  *
- * Location: modules/nusol/tmp/multisol/cxx/matrix.cxx
+ * **Location:** `src/AnalysisG/modules/nusol/tmp/multisol/cxx/matrix.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `reconstruction/solvers.h`
+ * - `reconstruction/matrix.h`
+ * - `reconstruction/mtx.h`
+ * - `iostream`
+ * - `iomanip`
+ * - `math.h`
  */
+

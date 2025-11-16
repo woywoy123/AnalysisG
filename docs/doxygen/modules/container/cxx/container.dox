@@ -1,12 +1,16 @@
 /**
  * @file container.cxx
- * @brief Documentation for modules/container/cxx/container.cxx
+ * @brief Documentation for src/AnalysisG/modules/container/cxx/container.cxx
  *
- * Location: modules/container/cxx/container.cxx
+ * **Location:** `src/AnalysisG/modules/container/cxx/container.cxx`
+ *
+ * **File Type:** cxx
  */
 
 /**
- * @brief .cxx file
- *
- * This file contains implementation details.
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `container/container.h`
+ * - `TSystem.h`
  */
+

@@ -1,64 +1,54 @@
 /**
  * @file matrix.h
- * @brief Documentation for modules/nusol/tmp/matrix.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/matrix.h
  *
- * Location: modules/nusol/tmp/matrix.h
+ * **Location:** `src/AnalysisG/modules/nusol/tmp/matrix.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct vec3
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - vec3 cross(const vec3& o) const
- * - double dot(const vec3& o) const
- * - double mag2() const
- * - double mag() const
- * - void print() const
- *
- * **Variables:**
- * - double x = 0, y = 0, z = 0
- *
+ * @section structs Structures
+ * - **vec3**
+ * - **vec4**
+ * - **matrix**
  */
 
 /**
- * @brief struct vec4
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - double dot(const vec4& o) const
- * - void print()
- *
- * **Variables:**
- * - double x = 0, y = 0, z = 0, w = 0
- *
+ * @section functions Functions and Methods
+ * - public: cross
+ * - public: dot
+ * - public: mag2
+ * - public: mag
+ * - public: print
+ * - public: dot
+ * - public: print
+ * - public: matrix
+ * - public: matrix
+ * - public: print
+ * - public: at
+ * - public: at
+ * - public: rows
+ * - public: cols
+ * - public: mag
+ * - public: I
+ * - public: T
+ * - public: inverse
+ * - public: det
+ * - public: dot
+ * - public: eigenvalues
+ * - public: print
+ * - public: solve_linear
+ * - public: invert_matrix
  */
 
 /**
- * @brief struct matrix
+ * @section variables Member Variables
  *
- * @section public_members Public Members
- *
- * **Methods:**
- * - matrix(int r=3, int c=3)
- * - matrix(const matrix& other)
- * - ~matrix()
- * - void print(int p = 5)
- * - double& at(int r, int c)
- * - const double& at(int r, int c) const
- * - int rows() const
- * - int cols() const
- * - double mag() const
- * - static matrix I(int size)
- * - matrix T() const
- * - matrix inverse()
- * - double det()
- * - matrix dot(const matrix& m)
- * - void eigenvalues(vec3* real, vec3* imag)
- *
- * **Variables:**
- * - int _r = 0, _c = 0
- *
+ * **Public:**
+ * - x
+ * - x
+ * - operator
+ * - data
+ * - _r
  */

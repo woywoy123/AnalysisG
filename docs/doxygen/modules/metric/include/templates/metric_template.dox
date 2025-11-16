@@ -1,108 +1,114 @@
 /**
  * @file metric_template.h
- * @brief Documentation for modules/metric/include/templates/metric_template.h
+ * @brief Documentation for src/AnalysisG/modules/metric/include/templates/metric_template.h
  *
- * Location: modules/metric/include/templates/metric_template.h
+ * **Location:** `src/AnalysisG/modules/metric/include/templates/metric_template.h`
+ *
+ * **File Type:** h
  */
 
 /**
- * @brief struct graph_t
- *
- * @section public_members Public Members
- *
- * **Methods:**
- * - ~metric_t()
- * - g get(graph_enum grx, std::string _name)
- * - g out = g()
- * - std::cout << "\033[1;31m Expected Type: " << v -> as_string()
- * - std::string mode()
- * - std::string* get_filename(long unsigned int idx)
- *
- * **Variables:**
- * - class analysis
- * - class model_template
- * - class metric_template
- * - int kfold = 0
- * - int epoch = 0
- * - int device = 0
- * - return out
- * - size_t idx = this -> v_maps[grx][_name]
- * - return out
- * - return out
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void build()
- *
- * **Variables:**
- * - friend metric_template
- * - friend analysis
- * - mode_enum train_mode
- * - size_t index = 0
- *
+ * @section dependencies Dependencies
+ * This file includes:
+ * - `templates/particle_template.h`
+ * - `notification/notification.h`
+ * - `structs/property.h`
+ * - `structs/element.h`
+ * - `structs/event.h`
+ * - `structs/model.h`
+ * - `structs/enums.h`
+ * - `meta/meta.h`
+ * - `plotting/plotting.h`
+ * - `tools/vector_cast.h`
+ * - `tools/merge_cast.h`
+ * - `tools/tools.h`
  */
 
 /**
- * @brief class metric_template
+ * @section classes Classes
+ * - **analysis**
+ * - **model_template**
+ * - **metric_template** (inherits from tools)
+ * - **metric_template** (inherits from tools)
+ */
+
+/**
+ * @section structs Structures
+ * - **graph_t**
+ * - **metric_t**
+ */
+
+/**
+ * @section functions Functions and Methods
+ * - public: get
+ * - public: mode
+ * - public: get_filename
+ * - private: build
+ * - public: metric_template
+ * - public: clone
+ * - public: define_variables
+ * - public: define_metric
+ * - public: event
+ * - public: batch
+ * - public: end
+ * - public: register_output
+ * - public: write
+ * - public: sum
+ * - public: safe_delete
+ * - public: make_unique
+ * - public: vectorize
+ * - private: flush_garbage
+ * - private: set_name
+ * - private: get_name
+ * - private: set_run_name
+ * - private: get_run_name
+ * - private: set_variables
+ * - private: get_variables
+ * - private: get_output
+ * - private: clone
+ * - private: link
+ * - private: link
+ * - private: execute
+ * - private: size
+ * - private: get_kfolds
+ */
+
+/**
+ * @section variables Member Variables
  *
- * @section public_members Public Members
+ * **Public:**
+ * - graph_t
+ * - kfold
+ * - epoch
+ * - device
+ * - out
+ * - out
+ * - idx
+ * - v
+ * - out
+ * - out
+ * - prt
+ * - hash_
+ * - hash_
+ * - out
+ * - out
+ * - out
+ * - out
  *
- * **Methods:**
- * - metric_template()
- * - virtual ~metric_template()
- * - virtual metric_template* clone()
- * - virtual void define_variables()
- * - virtual void define_metric(metric_t* v)
- * - virtual void event()
- * - virtual void batch()
- * - virtual void end()
- * - void register_output(std::string tree, std::string __name, T* t)
- * - this -> handle = new writer()
- * - this -> handle -> create(&this -> _outdir)
- * - this -> handle -> process(&tree, &__name, t)
- * - void write(std::string tree, std::string __name, T* t, bool fill = false)
- * - this -> handle -> process(&tree, &__name, t)
- * - this -> handle -> write(&tree)
- * - void sum(std::vector<g*>* ch, k** out)
- * - k* prt = new k()
- * - maps[ch -> at(x) -> hash] = true
- * - prt -> iadd(ch -> at(x))
- * - this -> garbage[hash_].push_back((particle_template*)prt)
- *
- * **Variables:**
- * - cproperty<std::string, metric_template> name
- * - cproperty<std::string, metric_template> output_path
- * - std::map<std::string, bool> maps
- * - std::string hash_ = prt -> hash
- * - std::map<std::string, g*> tmp
- * - typename std::map<std::string, g*>::iterator itr
- * - return out
- * - return out
- *
- * @section private_members Private Members
- *
- * **Methods:**
- * - void flush_garbage()
- * - void static set_name(std::string*, metric_template*)
- * - void static get_name(std::string*, metric_template*)
- * - void static set_run_name(std::map<std::string, std::string>*, metric_template*)
- * - void static get_run_name(std::map<std::string, std::string>*, metric_template*)
- * - void static set_variables(std::vector<std::string>*, metric_template*)
- * - void static get_variables(std::vector<std::string>*, metric_template*)
- * - void static get_output(std::string* out, metric_template* ev)
- * - metric_template* clone(int)
- * - bool link(model_template*)
- * - void link(std::string hsx, std::vector<graph_t*>* data, mode_enum mx)
- * - void execute(metric_t* mtx, metric_template* obj, size_t* prg, std::string* msg)
- * - size_t size()
- * - std::map<int, torch::TensorOptions*> get_devices()
- * - std::vector<int> get_kfolds()
- *
- * **Variables:**
- * - friend analysis
- * - std::map<std::string, model_template*> lnks
- * - std::string _name = "metric-template"
- * - std::string _outdir = ""
- *
+ * **Private:**
+ * - analysis
+ * - model_template
+ * - metric_template
+ * - metric_template
+ * - analysis
+ * - train_mode
+ * - pth
+ * - mdlx
+ * - mtx
+ * - index
+ * - batch_files
+ * - analysis
+ * - _name
+ * - _outdir
+ * - handle
  */
