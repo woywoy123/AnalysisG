@@ -1,38 +1,68 @@
 /**
  * @file grift.h
- * @brief Documentation for models/grift/include/models/grift.h
+ * @brief GRIFT (Graph Recurrent Inference for Tops) neural network model
  *
- * @subsection grift_class grift
- * Inherits from model_template
+ * Location: src/AnalysisG/models/grift/include/models/grift.h
  *
- * **Public Members:**
- *
- * **Private Members:**
- * - `grift();`
- * - `~grift();`
- * - `model_template* clone() override;`
- * - `void forward(graph_t*) override;`
- * - `);`
- * - `torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn);`
- * - `int _hidden = 1024;`
- * - `int _xrec = 128;`
- * - `int _xin  = 6;`
- * - `int _xout = 2;`
- * - `int _xtop = 5;`
- * - `double drop_out = 0.01;`
- * - `bool is_mc    = true;`
- * - `bool init     = false;`
- * - `bool pagerank = false;`
- * - `torch::nn::Sequential* rnn_x   = nullptr;`
- * - `torch::nn::Sequential* rnn_dx  = nullptr;`
- * - `torch::nn::Sequential* rnn_txx = nullptr;`
- * - `torch::nn::Sequential* rnn_rxx = nullptr;`
- * - `torch::nn::Sequential* rnn_hxx = nullptr;`
- * - `torch::nn::Sequential* mlp_ntop = nullptr;`
- * - `torch::nn::Sequential* mlp_sig  = nullptr;`
- * - `torch::Tensor  x_nulls;`
- * - `torch::Tensor dx_nulls;`
- * - `torch::Tensor te_nulls;`
- * - `};`
- *
+ * This file defines the GRIFT model, a graph neural network architecture designed
+ * for top quark reconstruction in high-energy physics events.
+ */
+
+/**
+ * @class grift
+ * @brief GRIFT neural network model for top quark reconstruction
+ * 
+ * Inherits from: model_template
+ * 
+ * The GRIFT model uses recurrent neural networks and message passing to process
+ * particle-level information and reconstruct top quark decay chains from detector data.
+ */
+
+/**
+ * @section grift_constructors Constructors and Destructor
+ * 
+ * - **grift()** - Default constructor
+ * - **~grift()** - Destructor
+ */
+
+/**
+ * @section grift_public_methods Public Methods
+ * 
+ * - **model_template* clone()** - Create a deep copy of the model (override)
+ * - **void forward(graph_t*)** - Forward pass through the neural network (override)
+ * - **torch::Tensor message(torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc, torch::Tensor hx_i, torch::Tensor hx_j)** - 
+ *   Compute message passing between graph nodes
+ * - **torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn)** - 
+ *   Encode node features using RNN layers
+ */
+
+/**
+ * @section grift_public_variables Public Member Variables
+ * 
+ * **Neural Network Parameters:**
+ * - **int _hidden** = 1024 - Hidden layer dimension
+ * - **int _xrec** = 128 - Reconstruction feature dimension
+ * - **int _xin** = 6 - Input feature dimension
+ * - **int _xout** = 2 - Output feature dimension
+ * - **int _xtop** = 5 - Top quark feature dimension
+ * - **double drop_out** = 0.01 - Dropout rate for regularization
+ * 
+ * **Configuration:**
+ * - **bool is_mc** = true - Flag indicating Monte Carlo simulation mode
+ * - **bool init** = false - Initialization flag
+ * - **bool pagerank** = false - Flag to enable PageRank algorithm for node importance
+ * 
+ * **Neural Network Layers:**
+ * - **torch::nn::Sequential* rnn_x** = nullptr - RNN for particle features
+ * - **torch::nn::Sequential* rnn_dx** = nullptr - RNN for delta features
+ * - **torch::nn::Sequential* rnn_txx** = nullptr - RNN for track features
+ * - **torch::nn::Sequential* rnn_rxx** = nullptr - RNN for reconstruction features
+ * - **torch::nn::Sequential* rnn_hxx** = nullptr - RNN for hidden features
+ * - **torch::nn::Sequential* mlp_ntop** = nullptr - MLP for top quark classification
+ * - **torch::nn::Sequential* mlp_sig** = nullptr - MLP for sigmoid activation
+ * 
+ * **Null Tensors (for padding):**
+ * - **torch::Tensor x_nulls** - Null tensor for particle features
+ * - **torch::Tensor dx_nulls** - Null tensor for delta features
+ * - **torch::Tensor te_nulls** - Null tensor for track/edge features
  */
