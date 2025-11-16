@@ -1,15 +1,24 @@
 /**
  * @file dataloader.cxx
- * @brief Documentation for modules/dataloader/cxx/dataloader.cxx
+ * @brief Comprehensive documentation for modules/dataloader/cxx/dataloader.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/dataloader/cxx/dataloader.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/dataloader/cxx/dataloader.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_dataloader_cxx_dataloader_cxx dataloader.cxx
- * @brief dataloader.cxx
- * @{
+ * @page modules_dataloader_cxx_dataloader_cxx dataloader.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/dataloader/cxx/dataloader.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

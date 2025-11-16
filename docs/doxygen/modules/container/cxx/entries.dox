@@ -1,15 +1,24 @@
 /**
  * @file entries.cxx
- * @brief Documentation for modules/container/cxx/entries.cxx
+ * @brief Comprehensive documentation for modules/container/cxx/entries.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/container/cxx/entries.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/container/cxx/entries.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_container_cxx_entries_cxx entries.cxx
- * @brief entries.cxx
- * @{
+ * @page modules_container_cxx_entries_cxx entries.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/container/cxx/entries.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

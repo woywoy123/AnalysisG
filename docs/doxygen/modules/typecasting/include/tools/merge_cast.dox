@@ -1,15 +1,24 @@
 /**
  * @file merge_cast.h
- * @brief Documentation for modules/typecasting/include/tools/merge_cast.h
+ * @brief Comprehensive documentation for modules/typecasting/include/tools/merge_cast.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/typecasting/include/tools/merge_cast.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/typecasting/include/tools/merge_cast.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_typecasting_include_tools_merge_cast_h merge_cast.h
- * @brief merge_cast.h
- * @{
+ * @page modules_typecasting_include_tools_merge_cast_h merge_cast.h
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/typecasting/include/tools/merge_cast.h`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

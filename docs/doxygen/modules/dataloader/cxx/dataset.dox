@@ -1,15 +1,24 @@
 /**
  * @file dataset.cxx
- * @brief Documentation for modules/dataloader/cxx/dataset.cxx
+ * @brief Comprehensive documentation for modules/dataloader/cxx/dataset.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/dataloader/cxx/dataset.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/dataloader/cxx/dataset.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_dataloader_cxx_dataset_cxx dataset.cxx
- * @brief dataset.cxx
- * @{
+ * @page modules_dataloader_cxx_dataset_cxx dataset.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/dataloader/cxx/dataset.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

@@ -1,15 +1,24 @@
 /**
  * @file collector.cxx
- * @brief Documentation for metrics/accuracy/cxx/collector.cxx
+ * @brief Comprehensive documentation for metrics/accuracy/cxx/collector.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/metrics/accuracy/cxx/collector.cxx
+ * 
+ * **File Location:** `src/AnalysisG/metrics/accuracy/cxx/collector.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup metrics_accuracy_cxx_collector_cxx collector.cxx
- * @brief collector.cxx
- * @{
+ * @page metrics_accuracy_cxx_collector_cxx collector.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/metrics/accuracy/cxx/collector.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

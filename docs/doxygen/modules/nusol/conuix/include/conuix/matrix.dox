@@ -1,49 +1,54 @@
 /**
  * @file matrix.h
- * @brief Documentation for modules/nusol/conuix/include/conuix/matrix.h
+ * @brief Comprehensive documentation for modules/nusol/conuix/include/conuix/matrix.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/nusol/conuix/include/conuix/matrix.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/nusol/conuix/include/conuix/matrix.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_nusol_conuix_include_conuix_matrix_h matrix.h
- * @brief matrix.h
- * @{
- */
-
-/**
- * @section classes Classes and Structures
- *
- * - **matrix_t** (struct)
- */
-
-/**
- * @section functions_matrix_t matrix_t Methods
- *
- * - [public] `matrix_t(int _r = 3, int _c = 3)`
- * - [public] `~matrix_t()`
- * - [public] `matrix_t dot(const matrix_t& o)`
- * - [public] `matrix_t T() const`
- * - [public] `long double& at(int _r, int _c)`
- * - [public] `const long double& at(int _r, int _c) const`
- * - [public] `matrix_t& operator=(const matrix_t& other)`
- * - [public] `matrix_t operator+(const matrix_t& o)`
- * - [public] `matrix_t operator+(const matrix_t& o) const`
- * - [public] `matrix_t operator-(const matrix_t& o)`
- * - [public] `matrix_t operator-(const matrix_t& o) const`
- * - [public] `matrix_t operator*(long double s)`
- * - [public] `matrix_t operator*(long double s) const`
- * - [public] `void print(int p = 9)`
- */
-
-/**
- * @section variables_matrix_t matrix_t Member Variables
- *
- * **Private:**
+ * @page matrix_t_documentation matrix_t Class Documentation
+ * 
+ * @section matrix_t_overview Overview
+ * 
+ * **Type:** Struct  
+ * **Name:** `matrix_t`  
+ * **Defined in:** `src/AnalysisG/modules/nusol/conuix/include/conuix/matrix.h`
+ * 
+ * @section matrix_t_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection matrix_t_methods_public Public Methods
+ * 
+ * - `matrix_t(int _r = 3, int _c = 3)`
+ * - `~matrix_t()`
+ * - `matrix_t dot(const matrix_t& o)`
+ * - `matrix_t T() const`
+ * - `long double& at(int _r, int _c)`
+ * - `const long double& at(int _r, int _c) const`
+ * - `matrix_t operator+(const matrix_t& o)`
+ * - `matrix_t operator+(const matrix_t& o) const`
+ * - `matrix_t operator-(const matrix_t& o)`
+ * - `matrix_t operator-(const matrix_t& o) const`
+ * - `matrix_t operator*(long double s)`
+ * - `matrix_t operator*(long double s) const`
+ * - `void print(int p = 9)`
+ * 
+ * @section matrix_t_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection matrix_t_variables_private Private Variables
+ * 
  * - `int r = -1;`
  * - `int c = -1;`
  * - `long double** data = nullptr;`
+ * 
  */
 
-/** @} */

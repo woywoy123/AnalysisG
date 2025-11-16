@@ -1,15 +1,56 @@
 /**
  * @file sampletracer.h
- * @brief Documentation for modules/sampletracer/include/generators/sampletracer.h
+ * @brief Comprehensive documentation for modules/sampletracer/include/generators/sampletracer.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/sampletracer/include/generators/sampletracer.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/sampletracer/include/generators/sampletracer.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_sampletracer_include_generators_sampletracer_h sampletracer.h
- * @brief sampletracer.h
- * @{
+ * @page sampletracer_documentation sampletracer Class Documentation
+ * 
+ * @section sampletracer_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `sampletracer`  
+ * **Inherits from:** `tools, 
+    public notification`  
+ * **Defined in:** `src/AnalysisG/modules/sampletracer/include/generators/sampletracer.h`
+ * 
+ * @section sampletracer_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection sampletracer_methods_public Public Methods
+ * 
+ * - `sampletracer()`
+ * - `~sampletracer()`
+ * - `bool add_meta_data(meta* meta_, std::string filename)`
+ * - `meta* get_meta_data(std::string filename)`
+ * - `std::vector<event_template*> get_events(std::string label)`
+ * - `void fill_selections(std::map<std::string, selection_template*>* inpt)`
+ * - `bool add_event(event_template* ev, std::string label)`
+ * - `bool add_graph(graph_template* gr, std::string label)`
+ * - `bool add_selection(selection_template* sel)`
+ * - `void populate_dataloader(dataloader* dl)`
+ * - `void compile_objects(int threads)`
+ * 
+ * @section sampletracer_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection sampletracer_variables_public Public Variables
+ * 
+ * - `std::string* output_path = nullptr;`
+ * 
+ * @subsection sampletracer_variables_private Private Variables
+ * 
+ * - `std::map<std::string, container> root_container = {};`
+ * 
  */
 
-/** @} */

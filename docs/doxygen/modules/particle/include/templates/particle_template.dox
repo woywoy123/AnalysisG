@@ -1,15 +1,105 @@
 /**
  * @file particle_template.h
- * @brief Documentation for modules/particle/include/templates/particle_template.h
+ * @brief Comprehensive documentation for modules/particle/include/templates/particle_template.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/particle/include/templates/particle_template.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/particle/include/templates/particle_template.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_particle_include_templates_particle_template_h particle_template.h
- * @brief particle_template.h
- * @{
+ * @page event_template_documentation event_template Class Documentation
+ * 
+ * @section event_template_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `event_template`  
+ * **Defined in:** `src/AnalysisG/modules/particle/include/templates/particle_template.h`
+ * 
+ * @section event_template_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection event_template_methods_public Public Methods
+ * 
+ * - `particle_template()`
+ * - `virtual ~particle_template()`
+ * - `explicit particle_template(particle_t* p)`
+ * - `explicit particle_template(particle_template* p, bool dump = false)`
+ * - `explicit particle_template(double px, double py, double pz, double e)`
+ * - `explicit particle_template(double px, double py, double pz)`
+ * - `void static set_e(double*, particle_template*)`
+ * - `void static get_e(double*, particle_template*)`
+ * - `void static set_pt(double*, particle_template*)`
+ * - `void static get_pt(double*, particle_template*)`
+ * - `void static set_eta(double*, particle_template*)`
+ * - `void static get_eta(double*, particle_template*)`
+ * - `void static set_phi(double*, particle_template*)`
+ * - `void static get_phi(double*, particle_template*)`
+ * - `void static set_px(double*, particle_template*)`
+ * - `void static get_px(double*, particle_template*)`
+ * - `void static set_py(double*, particle_template*)`
+ * - `void static get_py(double*, particle_template*)`
+ * - `void static set_pz(double*, particle_template*)`
+ * - `void static get_pz(double*, particle_template*)`
+ * - `void to_cartesian()`
+ * - `void to_polar()`
+ * - `void static set_mass(double*, particle_template*)`
+ * - `void static get_mass(double*, particle_template*)`
+ * - `void static get_P(double*, particle_template*)`
+ * - `void static get_beta(double*, particle_template*)`
+ * - `void static set_pdgid(int*, particle_template*)`
+ * - `void static get_pdgid(int*, particle_template*)`
+ * - `void static set_symbol(std::string*, particle_template*)`
+ * - `void static get_symbol(std::string*, particle_template*)`
+ * - `void static set_charge(double*, particle_template*)`
+ * - `void static get_charge(double*, particle_template*)`
+ * - `void static get_hash(std::string*, particle_template*)`
+ * - `bool is(std::vector<int> p)`
+ * - `void static get_isb(bool*, particle_template*)`
+ * - `void static get_islep(bool*, particle_template*)`
+ * - `void static get_isnu(bool*, particle_template*)`
+ * - `void static get_isadd(bool*, particle_template*)`
+ * - `void static get_lepdecay(bool*, particle_template*)`
+ * - `void static set_parents(std::map<std::string, particle_template*>*, particle_template*)`
+ * - `void static get_parents(std::map<std::string, particle_template*>*, particle_template*)`
+ * - `void static set_children(std::map<std::string, particle_template*>*, particle_template*)`
+ * - `void static get_children(std::map<std::string, particle_template*>*, particle_template*)`
+ * - `void static set_type(std::string*, particle_template*)`
+ * - `void static get_type(std::string*, particle_template*)`
+ * - `void static set_index(int*, particle_template*)`
+ * - `void static get_index(int*, particle_template*)`
+ * - `double DeltaR(particle_template* p)`
+ * - `g operator + (g& p)`
+ * - `void iadd(particle_template* p)`
+ * - `bool register_parent(particle_template* p)`
+ * - `bool register_child(particle_template* p)`
+ * - `void add_leaf(std::string key, std::string leaf = "")`
+ * - `void apply_type_prefix()`
+ * - `std::map<std::string, std::map<std::string, particle_t>> __reduce__()`
+ * - `virtual void build(std::map<std::string, particle_template*>* event, element_t* el)`
+ * - `virtual particle_template* clone()`
+ * 
+ * @section event_template_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection event_template_variables_public Public Variables
+ * 
+ * - `cproperty<std::string, particle_template> symbol;`
+ * - `cproperty<std::string, particle_template> hash;`
+ * - `cproperty<std::map<std::string, particle_template*>, particle_template> parents;`
+ * - `cproperty<std::map<std::string, particle_template*>, particle_template> children;`
+ * - `cproperty<std::string, particle_template> type;`
+ * - `std::map<std::string, particle_template*> m_parents;`
+ * - `std::map<std::string, particle_template*> m_children;`
+ * - `std::map<std::string, std::string> leaves = {};`
+ * - `bool _is_serial = false;`
+ * - `bool _is_marked = false;`
+ * 
  */
 
-/** @} */

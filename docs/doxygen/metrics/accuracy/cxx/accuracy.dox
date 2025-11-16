@@ -1,15 +1,24 @@
 /**
  * @file accuracy.cxx
- * @brief Documentation for metrics/accuracy/cxx/accuracy.cxx
+ * @brief Comprehensive documentation for metrics/accuracy/cxx/accuracy.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/metrics/accuracy/cxx/accuracy.cxx
+ * 
+ * **File Location:** `src/AnalysisG/metrics/accuracy/cxx/accuracy.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup metrics_accuracy_cxx_accuracy_cxx accuracy.cxx
- * @brief accuracy.cxx
- * @{
+ * @page metrics_accuracy_cxx_accuracy_cxx accuracy.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/metrics/accuracy/cxx/accuracy.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

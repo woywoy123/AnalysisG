@@ -1,15 +1,24 @@
 /**
  * @file strings.cxx
- * @brief Documentation for modules/tools/cxx/strings.cxx
+ * @brief Comprehensive documentation for modules/tools/cxx/strings.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/tools/cxx/strings.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/tools/cxx/strings.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_tools_cxx_strings_cxx strings.cxx
- * @brief strings.cxx
- * @{
+ * @page modules_tools_cxx_strings_cxx strings.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/tools/cxx/strings.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

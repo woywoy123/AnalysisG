@@ -1,15 +1,101 @@
 /**
  * @file enums.h
- * @brief Documentation for modules/structs/include/structs/enums.h
+ * @brief Comprehensive documentation for modules/structs/include/structs/enums.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/structs/include/structs/enums.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/structs/include/structs/enums.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_structs_include_structs_enums_h enums.h
- * @brief enums.h
- * @{
+ * @page data_enum_documentation data_enum Class Documentation
+ * 
+ * @section data_enum_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `data_enum`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/enums.h`
+ * 
  */
 
-/** @} */
+/**
+ * @page opt_enum_documentation opt_enum Class Documentation
+ * 
+ * @section opt_enum_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `opt_enum`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/enums.h`
+ * 
+ */
+
+/**
+ * @page mlp_init_documentation mlp_init Class Documentation
+ * 
+ * @section mlp_init_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `mlp_init`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/enums.h`
+ * 
+ */
+
+/**
+ * @page loss_enum_documentation loss_enum Class Documentation
+ * 
+ * @section loss_enum_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `loss_enum`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/enums.h`
+ * 
+ */
+
+/**
+ * @page scheduler_enum_documentation scheduler_enum Class Documentation
+ * 
+ * @section scheduler_enum_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `scheduler_enum`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/enums.h`
+ * 
+ */
+
+/**
+ * @page graph_enum_documentation graph_enum Class Documentation
+ * 
+ * @section graph_enum_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `graph_enum`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/enums.h`
+ * 
+ */
+
+/**
+ * @page mode_enum_documentation mode_enum Class Documentation
+ * 
+ * @section mode_enum_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `mode_enum`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/enums.h`
+ * 
+ */
+
+/**
+ * @page particle_enum_documentation particle_enum Class Documentation
+ * 
+ * @section particle_enum_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `particle_enum`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/enums.h`
+ * 
+ */
+

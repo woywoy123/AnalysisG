@@ -1,15 +1,48 @@
 /**
  * @file pyc.h
- * @brief Documentation for pyc/interface/include/pyc/pyc.h
+ * @brief Comprehensive documentation for pyc/interface/include/pyc/pyc.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/pyc/interface/include/pyc/pyc.h
+ * 
+ * **File Location:** `src/AnalysisG/pyc/interface/include/pyc/pyc.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup pyc_interface_include_pyc_pyc_h pyc.h
- * @brief pyc.h
- * @{
+ * @page neutrino_documentation neutrino Class Documentation
+ * 
+ * @section neutrino_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `neutrino`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/pyc/interface/include/pyc/pyc.h`
+ * 
+ * @section neutrino_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection neutrino_methods_public Public Methods
+ * 
+ * - `neutrino()`
+ * - `neutrino(double px, double py, double pz)`
+ * - `virtual ~neutrino()`
+ * 
+ * @section neutrino_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection neutrino_variables_public Public Variables
+ * 
+ * - `double min = 0;`
+ * - `particle_template* bquark = nullptr;`
+ * - `particle_template* lepton = nullptr;`
+ * - `std::vector<neutrino*> alternatives = {};`
+ * - `std::vector<int> top_index = {};`
+ * - `bool from_res = false;`
+ * 
  */
 
-/** @} */

@@ -1,15 +1,50 @@
 /**
  * @file optimizer.h
- * @brief Documentation for modules/optimizer/include/generators/optimizer.h
+ * @brief Comprehensive documentation for modules/optimizer/include/generators/optimizer.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/optimizer/include/generators/optimizer.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/optimizer/include/generators/optimizer.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_optimizer_include_generators_optimizer_h optimizer.h
- * @brief optimizer.h
- * @{
+ * @page analysis_documentation analysis Class Documentation
+ * 
+ * @section analysis_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `analysis`  
+ * **Defined in:** `src/AnalysisG/modules/optimizer/include/generators/optimizer.h`
+ * 
+ * @section analysis_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection analysis_methods_public Public Methods
+ * 
+ * - `optimizer()`
+ * - `~optimizer()`
+ * - `void import_dataloader(dataloader* dl)`
+ * - `void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models)`
+ * - `void training_loop(int k, int epoch)`
+ * - `void validation_loop(int k, int epoch)`
+ * - `void evaluation_loop(int k, int epoch)`
+ * - `void launch_model(int k)`
+ * 
+ * @section analysis_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection analysis_variables_public Public Variables
+ * 
+ * - `std::map<int, model_template*> kfold_sessions = {};`
+ * - `std::map<std::string, model_report*> reports = {};`
+ * - `metrics*    metric = nullptr;`
+ * - `dataloader* loader = nullptr;`
+ * 
  */
 
-/** @} */

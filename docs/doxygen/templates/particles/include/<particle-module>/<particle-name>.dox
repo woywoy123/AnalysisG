@@ -1,15 +1,24 @@
 /**
  * @file <particle-name>.h
- * @brief Documentation for templates/particles/include/<particle-module>/<particle-name>.h
+ * @brief Comprehensive documentation for templates/particles/include/<particle-module>/<particle-name>.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/templates/particles/include/<particle-module>/<particle-name>.h
+ * 
+ * **File Location:** `src/AnalysisG/templates/particles/include/<particle-module>/<particle-name>.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup templates_particles_include__particle_module___particle_name__h <particle-name>.h
- * @brief <particle-name>.h
- * @{
+ * @page templates_particles_include_<particle-module>_<particle-name>_h <particle-name>.h
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/templates/particles/include/<particle-module>/<particle-name>.h`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

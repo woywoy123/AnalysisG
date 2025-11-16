@@ -1,55 +1,94 @@
 /**
  * @file ellipse.h
- * @brief Documentation for modules/nusol/ellipse/include/ellipse/ellipse.h
+ * @brief Comprehensive documentation for modules/nusol/ellipse/include/ellipse/ellipse.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/nusol/ellipse/include/ellipse/ellipse.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/nusol/ellipse/include/ellipse/ellipse.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_nusol_ellipse_include_ellipse_ellipse_h ellipse.h
- * @brief ellipse.h
- * @{
+ * @page nusol_t_documentation nusol_t Class Documentation
+ * 
+ * @section nusol_t_overview Overview
+ * 
+ * **Type:** Struct  
+ * **Name:** `nusol_t`  
+ * **Defined in:** `src/AnalysisG/modules/nusol/ellipse/include/ellipse/ellipse.h`
+ * 
+ * @section nusol_t_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection nusol_t_methods_private Private Methods
+ * 
+ * - `nunu_t()`
+ * - `~nunu_t()`
+ * 
+ * @section nusol_t_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection nusol_t_variables_private Private Variables
+ * 
+ * - `mtx* nu1 = nullptr;`
+ * - `mtx* nu2 = nullptr;`
+ * - `mtx* agl = nullptr;`
+ * - `nuelx* nux1 = nullptr;`
+ * - `nuelx* nux2 = nullptr;`
+ * 
  */
 
 /**
- * @section classes Classes and Structures
- *
- * - **nunu_t** (struct)
- * - **ellipse** (class)
- */
-
-/**
- * @section functions_nunu_t nunu_t Methods
- *
- * - [private] `nunu_t()`
- * - [private] `~nunu_t()`
- */
-
-/**
- * @section functions_ellipse ellipse Methods
- *
- * - [public] `ellipse(nusol_t* parameters)`
- * - [public] `void prepare(double mt, double mw)`
- * - [public] `std::vector<particle_template*> nunu_make()`
- * - [public] `void solve()`
- * - [public] `~ellipse()`
- * - [private] `void flush()`
- * - [private] `void make_neutrinos(mtx* v, mtx* v_)`
- * - [private] `int generate(nuelx* nu1, nuelx* nu2)`
- * - [private] `int intersection(mtx** v, mtx** v_)`
- * - [private] `int angle_cross( mtx** v, mtx** v_)`
- */
-
-/**
- * @section variables_ellipse ellipse Member Variables
- *
- * **Private:**
+ * @page ellipse_documentation ellipse Class Documentation
+ * 
+ * @section ellipse_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `ellipse`  
+ * **Defined in:** `src/AnalysisG/modules/nusol/ellipse/include/ellipse/ellipse.h`
+ * 
+ * @section ellipse_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection ellipse_methods_public Public Methods
+ * 
+ * - `ellipse(nusol_t* parameters)`
+ * - `void prepare(double mt, double mw)`
+ * - `std::vector<particle_template*> nunu_make()`
+ * - `void solve()`
+ * - `~ellipse()`
+ * 
+ * @subsection ellipse_methods_private Private Methods
+ * 
+ * - `void flush()`
+ * - `void make_neutrinos(mtx* v, mtx* v_)`
+ * - `int generate(nuelx* nu1, nuelx* nu2)`
+ * - `int intersection(mtx** v, mtx** v_)`
+ * - `int angle_cross( mtx** v, mtx** v_)`
+ * 
+ * @section ellipse_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection ellipse_variables_private Private Variables
+ * 
+ * - `nusol_t* params = nullptr;`
  * - `std::map<int, std::tuple<nuelx*, nuelx*>> pairings;`
  * - `std::map<double, nunu_t> solvs = {};`
  * - `std::vector<particle_template*> bquarks = {};`
  * - `std::vector<particle_template*> leptons = {};`
  * - `std::vector<nuelx*> engines = {};`
+ * - `nuelx* p_nu1 = nullptr;`
+ * - `nuelx* p_nu2 = nullptr;`
+ * - `mtx* m_nu1 = nullptr;`
+ * - `mtx* m_nu2 = nullptr;`
+ * - `mtx* m_agl = nullptr;`
  * - `int m_lx = 0;`
  * - `int m_bst = -1;`
  * - `double _metx = 0;`
@@ -57,6 +96,6 @@
  * - `double _metz = 0;`
  * - `int n_lp = 0;`
  * - `int n_bs = 0;`
+ * 
  */
 
-/** @} */

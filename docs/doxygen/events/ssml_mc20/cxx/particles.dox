@@ -1,15 +1,24 @@
 /**
  * @file particles.cxx
- * @brief Documentation for events/ssml_mc20/cxx/particles.cxx
+ * @brief Comprehensive documentation for events/ssml_mc20/cxx/particles.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/events/ssml_mc20/cxx/particles.cxx
+ * 
+ * **File Location:** `src/AnalysisG/events/ssml_mc20/cxx/particles.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup events_ssml_mc20_cxx_particles_cxx particles.cxx
- * @brief particles.cxx
- * @{
+ * @page events_ssml_mc20_cxx_particles_cxx particles.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/events/ssml_mc20/cxx/particles.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

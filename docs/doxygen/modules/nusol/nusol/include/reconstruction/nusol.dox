@@ -1,37 +1,85 @@
 /**
  * @file nusol.h
- * @brief Documentation for modules/nusol/nusol/include/reconstruction/nusol.h
+ * @brief Comprehensive documentation for modules/nusol/nusol/include/reconstruction/nusol.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/nusol/nusol/include/reconstruction/nusol.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/nusol/nusol/include/reconstruction/nusol.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_nusol_nusol_include_reconstruction_nusol_h nusol.h
- * @brief nusol.h
- * @{
+ * @page nusol_documentation nusol Class Documentation
+ * 
+ * @section nusol_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `nusol`  
+ * **Defined in:** `src/AnalysisG/modules/nusol/nusol/include/reconstruction/nusol.h`
+ * 
  */
 
 /**
- * @section classes Classes and Structures
- *
- * - **nusol_t** (struct)
- */
-
-/**
- * @section variables_nusol_t nusol_t Member Variables
- *
- * **Public:**
+ * @page nusol_t_documentation nusol_t Class Documentation
+ * 
+ * @section nusol_t_overview Overview
+ * 
+ * **Type:** Struct  
+ * **Name:** `nusol_t`  
+ * **Defined in:** `src/AnalysisG/modules/nusol/nusol/include/reconstruction/nusol.h`
+ * 
+ * @section nusol_t_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection nusol_t_variables_public Public Variables
+ * 
  * - `double met = 0;`
  * - `double phi = 0;`
  * - `double mt = 172.68 * 1000;`
  * - `double mw = 80.385 * 1000;`
  * - `double limit = 10000;`
  * - `std::vector<particle_template*>* targets = nullptr;`
- * **Private:**
+ * 
+ * @subsection nusol_t_variables_private Private Variables
+ * 
  * - `double met_x = 0;`
  * - `double met_y = 0;`
  * - `double met_z = 0;`
+ * 
  */
 
-/** @} */
+/**
+ * @page nusol_documentation nusol Class Documentation
+ * 
+ * @section nusol_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `nusol`  
+ * **Defined in:** `src/AnalysisG/modules/nusol/nusol/include/reconstruction/nusol.h`
+ * 
+ * @section nusol_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection nusol_methods_public Public Methods
+ * 
+ * - `nusol(nusol_t* parameters)`
+ * - `void solve()`
+ * - `~nusol()`
+ * 
+ * @section nusol_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection nusol_variables_private Private Variables
+ * 
+ * - `nusol_t* params = nullptr;`
+ * - `ellipse* D_nunu = nullptr;`
+ * - `conuix*  M_nunu = nullptr;`
+ * 
+ */
+

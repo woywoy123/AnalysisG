@@ -1,15 +1,24 @@
 /**
  * @file <model-name>.h
- * @brief Documentation for templates/model/include/models/<model-name>.h
+ * @brief Comprehensive documentation for templates/model/include/models/<model-name>.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/templates/model/include/models/<model-name>.h
+ * 
+ * **File Location:** `src/AnalysisG/templates/model/include/models/<model-name>.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup templates_model_include_models__model_name__h <model-name>.h
- * @brief <model-name>.h
- * @{
+ * @page templates_model_include_models_<model-name>_h <model-name>.h
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/templates/model/include/models/<model-name>.h`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

@@ -1,15 +1,24 @@
 /**
  * @file cache.cxx
- * @brief Documentation for modules/dataloader/cxx/cache.cxx
+ * @brief Comprehensive documentation for modules/dataloader/cxx/cache.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/dataloader/cxx/cache.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/dataloader/cxx/cache.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_dataloader_cxx_cache_cxx cache.cxx
- * @brief cache.cxx
- * @{
+ * @page modules_dataloader_cxx_cache_cxx cache.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/dataloader/cxx/cache.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

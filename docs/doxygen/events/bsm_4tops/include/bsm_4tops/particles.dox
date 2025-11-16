@@ -1,15 +1,335 @@
 /**
  * @file particles.h
- * @brief Documentation for events/bsm_4tops/include/bsm_4tops/particles.h
+ * @brief Comprehensive documentation for events/bsm_4tops/include/bsm_4tops/particles.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h
+ * 
+ * **File Location:** `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup events_bsm_4tops_include_bsm_4tops_particles_h particles.h
- * @brief particles.h
- * @{
+ * @page truthjetparton_documentation truthjetparton Class Documentation
+ * 
+ * @section truthjetparton_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `truthjetparton`  
+ * **Defined in:** `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h`
+ * 
+ * @section truthjetparton_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection truthjetparton_methods_private Private Methods
+ * 
+ * - `el -> get("index" , &_index)`
+ * - `el -> get("pdgid" , &_pdgid)`
+ * - `el -> get("pt" , &_pt)`
+ * - `el -> get("eta", &_eta)`
+ * - `el -> get("phi", &_phi)`
+ * - `el -> get("e" , &_e)`
+ * - `for (int x(0)`
+ * - `inpt -> push_back(p)`
+ * 
+ * @section truthjetparton_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection truthjetparton_variables_private Private Variables
+ * 
+ * - `std::vector<int> _index, _pdgid;`
+ * - `std::vector<float> _pt, _eta, _phi, _e;`
+ * 
  */
 
-/** @} */
+/**
+ * @page top_documentation top Class Documentation
+ * 
+ * @section top_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `top`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h`
+ * 
+ * @section top_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection top_methods_public Public Methods
+ * 
+ * - `top()`
+ * - `virtual ~top()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section top_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection top_variables_public Public Variables
+ * 
+ * - `bool from_res = false;`
+ * - `int status = -1;`
+ * - `std::vector<truthjet*> TruthJets = {};`
+ * - `std::vector<jet*> Jets = {};`
+ * 
+ */
+
+/**
+ * @page top_children_documentation top_children Class Documentation
+ * 
+ * @section top_children_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `top_children`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h`
+ * 
+ * @section top_children_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection top_children_methods_public Public Methods
+ * 
+ * - `top_children()`
+ * - `virtual ~top_children()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @subsection top_children_methods_private Private Methods
+ * 
+ * - `void static get_from_res(bool*, top_children*)`
+ * 
+ * @section top_children_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection top_children_variables_public Public Variables
+ * 
+ * - `int top_index = -1;`
+ * 
+ */
+
+/**
+ * @page truthjet_documentation truthjet Class Documentation
+ * 
+ * @section truthjet_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `truthjet`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h`
+ * 
+ * @section truthjet_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection truthjet_methods_public Public Methods
+ * 
+ * - `truthjet()`
+ * - `virtual ~truthjet()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @subsection truthjet_methods_private Private Methods
+ * 
+ * - `void static get_from_res(bool*, truthjet*)`
+ * 
+ * @section truthjet_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection truthjet_variables_public Public Variables
+ * 
+ * - `int top_quark_count = -1;`
+ * - `int w_boson_count = -1;`
+ * - `std::vector<int> top_index = {};`
+ * - `std::vector<top*> Tops = {};`
+ * - `std::vector<truthjetparton*> Parton = {};`
+ * 
+ */
+
+/**
+ * @page truthjetparton_documentation truthjetparton Class Documentation
+ * 
+ * @section truthjetparton_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `truthjetparton`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h`
+ * 
+ * @section truthjetparton_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection truthjetparton_methods_public Public Methods
+ * 
+ * - `truthjetparton()`
+ * - `virtual ~truthjetparton()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section truthjetparton_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection truthjetparton_variables_public Public Variables
+ * 
+ * - `int truthjet_index;`
+ * - `std::vector<int> topchild_index = {};`
+ * 
+ */
+
+/**
+ * @page jet_documentation jet Class Documentation
+ * 
+ * @section jet_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `jet`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h`
+ * 
+ * @section jet_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection jet_methods_public Public Methods
+ * 
+ * - `jet()`
+ * - `virtual ~jet()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @subsection jet_methods_private Private Methods
+ * 
+ * - `void static get_from_res(bool*, jet*)`
+ * 
+ * @section jet_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection jet_variables_public Public Variables
+ * 
+ * - `std::vector<top*> Tops = {};`
+ * - `std::vector<jetparton*> Parton = {};`
+ * - `std::vector<int> top_index = {};`
+ * - `bool btag_DL1r_60;`
+ * - `bool btag_DL1_60;`
+ * - `bool btag_DL1r_70;`
+ * - `bool btag_DL1_70;`
+ * - `bool btag_DL1r_77;`
+ * - `bool btag_DL1_77;`
+ * - `bool btag_DL1r_85;`
+ * - `bool btag_DL1_85;`
+ * - `float DL1_b;`
+ * - `float DL1_c;`
+ * - `float DL1_u;`
+ * - `float DL1r_b;`
+ * - `float DL1r_c;`
+ * - `float DL1r_u;`
+ * 
+ */
+
+/**
+ * @page jetparton_documentation jetparton Class Documentation
+ * 
+ * @section jetparton_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `jetparton`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h`
+ * 
+ * @section jetparton_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection jetparton_methods_public Public Methods
+ * 
+ * - `jetparton()`
+ * - `virtual ~jetparton()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section jetparton_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection jetparton_variables_public Public Variables
+ * 
+ * - `int jet_index;`
+ * - `std::vector<int> topchild_index = {};`
+ * 
+ */
+
+/**
+ * @page electron_documentation electron Class Documentation
+ * 
+ * @section electron_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `electron`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h`
+ * 
+ * @section electron_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection electron_methods_public Public Methods
+ * 
+ * - `electron()`
+ * - `virtual ~electron()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section electron_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection electron_variables_public Public Variables
+ * 
+ * - `bool from_res = false;`
+ * - `int top_index = -1;`
+ * 
+ */
+
+/**
+ * @page muon_documentation muon Class Documentation
+ * 
+ * @section muon_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `muon`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h`
+ * 
+ * @section muon_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection muon_methods_public Public Methods
+ * 
+ * - `muon()`
+ * - `virtual ~muon()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section muon_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection muon_variables_public Public Variables
+ * 
+ * - `bool from_res = false;`
+ * - `int top_index = -1;`
+ * 
+ */
+

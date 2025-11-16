@@ -1,15 +1,24 @@
 /**
  * @file transform.cxx
- * @brief Documentation for pyc/transform/transform.cxx
+ * @brief Comprehensive documentation for pyc/transform/transform.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/pyc/transform/transform.cxx
+ * 
+ * **File Location:** `src/AnalysisG/pyc/transform/transform.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup pyc_transform_transform_cxx transform.cxx
- * @brief transform.cxx
- * @{
+ * @page pyc_transform_transform_cxx transform.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/pyc/transform/transform.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

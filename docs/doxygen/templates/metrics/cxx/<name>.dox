@@ -1,15 +1,24 @@
 /**
  * @file <name>.cxx
- * @brief Documentation for templates/metrics/cxx/<name>.cxx
+ * @brief Comprehensive documentation for templates/metrics/cxx/<name>.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/templates/metrics/cxx/<name>.cxx
+ * 
+ * **File Location:** `src/AnalysisG/templates/metrics/cxx/<name>.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup templates_metrics_cxx__name__cxx <name>.cxx
- * @brief <name>.cxx
- * @{
+ * @page templates_metrics_cxx_<name>_cxx <name>.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/templates/metrics/cxx/<name>.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

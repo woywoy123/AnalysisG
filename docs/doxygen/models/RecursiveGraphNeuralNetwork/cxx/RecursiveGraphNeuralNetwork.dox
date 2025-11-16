@@ -1,15 +1,24 @@
 /**
  * @file RecursiveGraphNeuralNetwork.cxx
- * @brief Documentation for models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
+ * @brief Comprehensive documentation for models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
+ * 
+ * **File Location:** `src/AnalysisG/models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup models_RecursiveGraphNeuralNetwork_cxx_RecursiveGraphNeuralNetwork_cxx RecursiveGraphNeuralNetwork.cxx
- * @brief RecursiveGraphNeuralNetwork.cxx
- * @{
+ * @page models_RecursiveGraphNeuralNetwork_cxx_RecursiveGraphNeuralNetwork_cxx RecursiveGraphNeuralNetwork.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

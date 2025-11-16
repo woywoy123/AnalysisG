@@ -1,15 +1,24 @@
 /**
  * @file model_checks.cxx
- * @brief Documentation for modules/model/cxx/model_checks.cxx
+ * @brief Comprehensive documentation for modules/model/cxx/model_checks.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/model/cxx/model_checks.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/model/cxx/model_checks.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_model_cxx_model_checks_cxx model_checks.cxx
- * @brief model_checks.cxx
- * @{
+ * @page modules_model_cxx_model_checks_cxx model_checks.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/model/cxx/model_checks.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

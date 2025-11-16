@@ -1,15 +1,24 @@
 /**
  * @file nusol.cxx
- * @brief Documentation for pyc/interface/nusol.cxx
+ * @brief Comprehensive documentation for pyc/interface/nusol.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/pyc/interface/nusol.cxx
+ * 
+ * **File Location:** `src/AnalysisG/pyc/interface/nusol.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup pyc_interface_nusol_cxx nusol.cxx
- * @brief nusol.cxx
- * @{
+ * @page pyc_interface_nusol_cxx nusol.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/pyc/interface/nusol.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

@@ -1,37 +1,44 @@
 /**
  * @file report.h
- * @brief Documentation for modules/structs/include/structs/report.h
+ * @brief Comprehensive documentation for modules/structs/include/structs/report.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/structs/include/structs/report.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/structs/include/structs/report.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_structs_include_structs_report_h report.h
- * @brief report.h
- * @{
- */
-
-/**
- * @section classes Classes and Structures
- *
- * - **model_report** (struct)
- */
-
-/**
- * @section functions_model_report model_report Methods
- *
- * - [private] `std::string print()`
- * - [private] `std::string prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string title)`
- */
-
-/**
- * @section variables_model_report model_report Member Variables
- *
- * **Private:**
+ * @page metrics_documentation metrics Class Documentation
+ * 
+ * @section metrics_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `metrics`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/report.h`
+ * 
+ * @section metrics_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection metrics_methods_private Private Methods
+ * 
+ * - `std::string print()`
+ * - `std::string prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string title)`
+ * 
+ * @section metrics_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection metrics_variables_private Private Variables
+ * 
  * - `int k;`
  * - `int epoch;`
  * - `bool is_complete = false;`
+ * - `metrics* waiting_plot = nullptr;`
  * - `std::vector<double> current_lr = {};`
  * - `std::map<mode_enum, std::map<std::string, float>> loss_graph = {};`
  * - `std::map<mode_enum, std::map<std::string, float>> loss_node = {};`
@@ -41,9 +48,7 @@
  * - `std::map<mode_enum, std::map<std::string, float>> accuracy_edge = {};`
  * - `std::string run_name;`
  * - `std::string mode;`
- * - `long iters = 0;`
- * - `long num_evnt = 0;`
  * - `float progress;`
+ * 
  */
 
-/** @} */

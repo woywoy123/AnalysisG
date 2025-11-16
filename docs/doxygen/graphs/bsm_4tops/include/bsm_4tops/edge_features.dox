@@ -1,15 +1,24 @@
 /**
  * @file edge_features.h
- * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/edge_features.h
+ * @brief Comprehensive documentation for graphs/bsm_4tops/include/bsm_4tops/edge_features.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/edge_features.h
+ * 
+ * **File Location:** `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/edge_features.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup graphs_bsm_4tops_include_bsm_4tops_edge_features_h edge_features.h
- * @brief edge_features.h
- * @{
+ * @page graphs_bsm_4tops_include_bsm_4tops_edge_features_h edge_features.h
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/edge_features.h`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

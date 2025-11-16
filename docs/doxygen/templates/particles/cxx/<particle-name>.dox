@@ -1,15 +1,24 @@
 /**
  * @file <particle-name>.cxx
- * @brief Documentation for templates/particles/cxx/<particle-name>.cxx
+ * @brief Comprehensive documentation for templates/particles/cxx/<particle-name>.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/templates/particles/cxx/<particle-name>.cxx
+ * 
+ * **File Location:** `src/AnalysisG/templates/particles/cxx/<particle-name>.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup templates_particles_cxx__particle_name__cxx <particle-name>.cxx
- * @brief <particle-name>.cxx
- * @{
+ * @page templates_particles_cxx_<particle-name>_cxx <particle-name>.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/templates/particles/cxx/<particle-name>.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

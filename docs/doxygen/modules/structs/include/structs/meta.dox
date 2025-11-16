@@ -1,28 +1,31 @@
 /**
  * @file meta.h
- * @brief Documentation for modules/structs/include/structs/meta.h
+ * @brief Comprehensive documentation for modules/structs/include/structs/meta.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/structs/include/structs/meta.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/structs/include/structs/meta.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_structs_include_structs_meta_h meta.h
- * @brief meta.h
- * @{
- */
-
-/**
- * @section classes Classes and Structures
- *
- * - **weights_t** (struct)
- * - **meta_t** (struct)
- */
-
-/**
- * @section variables_weights_t weights_t Member Variables
- *
- * **Private:**
+ * @page weights_t_documentation weights_t Class Documentation
+ * 
+ * @section weights_t_overview Overview
+ * 
+ * **Type:** Struct  
+ * **Name:** `weights_t`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/meta.h`
+ * 
+ * @section weights_t_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection weights_t_variables_private Private Variables
+ * 
  * - `int dsid = -1;`
  * - `bool isAFII = false;`
  * - `std::string generator = "";`
@@ -33,12 +36,24 @@
  * - `float processed_events_weighted = -1;`
  * - `float processed_events_weighted_squared = -1;`
  * - `std::map<std::string, float> hist_data = {};`
+ * 
  */
 
 /**
- * @section variables_meta_t meta_t Member Variables
- *
- * **Private:**
+ * @page meta_t_documentation meta_t Class Documentation
+ * 
+ * @section meta_t_overview Overview
+ * 
+ * **Type:** Struct  
+ * **Name:** `meta_t`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/meta.h`
+ * 
+ * @section meta_t_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection meta_t_variables_private Private Variables
+ * 
  * - `unsigned int dsid = 0;`
  * - `bool isMC = true;`
  * - `std::string derivationFormat = "";`
@@ -94,6 +109,6 @@
  * - `std::vector<std::string> fileGUID = {};`
  * - `std::map<std::string, int> LFN = {};`
  * - `std::map<std::string, weights_t> misc = {};`
+ * 
  */
 
-/** @} */

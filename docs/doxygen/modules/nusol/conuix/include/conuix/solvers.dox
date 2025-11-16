@@ -1,15 +1,24 @@
 /**
  * @file solvers.h
- * @brief Documentation for modules/nusol/conuix/include/conuix/solvers.h
+ * @brief Comprehensive documentation for modules/nusol/conuix/include/conuix/solvers.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/nusol/conuix/include/conuix/solvers.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/nusol/conuix/include/conuix/solvers.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_nusol_conuix_include_conuix_solvers_h solvers.h
- * @brief solvers.h
- * @{
+ * @page modules_nusol_conuix_include_conuix_solvers_h solvers.h
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/nusol/conuix/include/conuix/solvers.h`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

@@ -1,28 +1,31 @@
 /**
  * @file optimizer.h
- * @brief Documentation for modules/structs/include/structs/optimizer.h
+ * @brief Comprehensive documentation for modules/structs/include/structs/optimizer.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/structs/include/structs/optimizer.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/structs/include/structs/optimizer.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_structs_include_structs_optimizer_h optimizer.h
- * @brief optimizer.h
- * @{
- */
-
-/**
- * @section classes Classes and Structures
- *
- * - **loss_opt** (struct)
- * - **optimizer_params_t** (class)
- */
-
-/**
- * @section variables_loss_opt loss_opt Member Variables
- *
- * **Private:**
+ * @page loss_opt_documentation loss_opt Class Documentation
+ * 
+ * @section loss_opt_overview Overview
+ * 
+ * **Type:** Struct  
+ * **Name:** `loss_opt`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/optimizer.h`
+ * 
+ * @section loss_opt_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection loss_opt_variables_private Private Variables
+ * 
  * - `bool mean = false;`
  * - `bool sum  = false;`
  * - `bool none = false;`
@@ -40,36 +43,53 @@
  * - `double smoothing = 0;`
  * - `double delta     = 0;`
  * - `std::vector<double> weight = {};`
+ * 
  */
 
 /**
- * @section functions_optimizer_params_t optimizer_params_t Methods
- *
- * - [public] `optimizer_params_t()`
- * - [private] `void static set_eps(double*, optimizer_params_t* obj)`
- * - [private] `void static set_lr(double*, optimizer_params_t* obj)`
- * - [private] `void static set_lr_decay(double*, optimizer_params_t* obj)`
- * - [private] `void static set_weight_decay(double*, optimizer_params_t* obj)`
- * - [private] `void static set_initial_accumulator_value(double*, optimizer_params_t* obj)`
- * - [private] `void static set_beta_hack(std::vector<float>* val, optimizer_params_t* obj)`
- * - [private] `void static set_betas(std::tuple<float, float>*, optimizer_params_t* obj)`
- * - [private] `void static set_amsgrad(bool*, optimizer_params_t* obj)`
- * - [private] `void static set_max_iter(int*, optimizer_params_t* obj)`
- * - [private] `void static set_max_eval(int*, optimizer_params_t* obj)`
- * - [private] `void static set_tolerance_grad(double*, optimizer_params_t* obj)`
- * - [private] `void static set_tolerance_change(double*, optimizer_params_t* obj)`
- * - [private] `void static set_history_size(int*, optimizer_params_t* obj)`
- * - [private] `void static set_centered(bool*, optimizer_params_t* obj)`
- * - [private] `void static set_nesterov(bool*, optimizer_params_t* obj)`
- * - [private] `void static set_alpha(double*, optimizer_params_t* obj)`
- * - [private] `void static set_momentum(double*, optimizer_params_t* obj)`
- * - [private] `void static set_dampening(double*, optimizer_params_t* obj)`
- */
-
-/**
- * @section variables_optimizer_params_t optimizer_params_t Member Variables
- *
- * **Public:**
+ * @page optimizer_params_t_documentation optimizer_params_t Class Documentation
+ * 
+ * @section optimizer_params_t_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `optimizer_params_t`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/optimizer.h`
+ * 
+ * @section optimizer_params_t_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection optimizer_params_t_methods_public Public Methods
+ * 
+ * - `optimizer_params_t()`
+ * 
+ * @subsection optimizer_params_t_methods_private Private Methods
+ * 
+ * - `void static set_eps(double*, optimizer_params_t* obj)`
+ * - `void static set_lr(double*, optimizer_params_t* obj)`
+ * - `void static set_lr_decay(double*, optimizer_params_t* obj)`
+ * - `void static set_weight_decay(double*, optimizer_params_t* obj)`
+ * - `void static set_initial_accumulator_value(double*, optimizer_params_t* obj)`
+ * - `void static set_beta_hack(std::vector<float>* val, optimizer_params_t* obj)`
+ * - `void static set_betas(std::tuple<float, float>*, optimizer_params_t* obj)`
+ * - `void static set_amsgrad(bool*, optimizer_params_t* obj)`
+ * - `void static set_max_iter(int*, optimizer_params_t* obj)`
+ * - `void static set_max_eval(int*, optimizer_params_t* obj)`
+ * - `void static set_tolerance_grad(double*, optimizer_params_t* obj)`
+ * - `void static set_tolerance_change(double*, optimizer_params_t* obj)`
+ * - `void static set_history_size(int*, optimizer_params_t* obj)`
+ * - `void static set_centered(bool*, optimizer_params_t* obj)`
+ * - `void static set_nesterov(bool*, optimizer_params_t* obj)`
+ * - `void static set_alpha(double*, optimizer_params_t* obj)`
+ * - `void static set_momentum(double*, optimizer_params_t* obj)`
+ * - `void static set_dampening(double*, optimizer_params_t* obj)`
+ * 
+ * @section optimizer_params_t_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection optimizer_params_t_variables_public Public Variables
+ * 
  * - `std::string optimizer = "";`
  * - `cproperty<std::tuple<float, float>, optimizer_params_t> betas;`
  * - `cproperty<std::vector<float>, optimizer_params_t> beta_hack;`
@@ -93,6 +113,6 @@
  * - `bool m_centered                  = false;`
  * - `bool m_dampening                 = false;`
  * - `bool m_nesterov                  = false;`
+ * 
  */
 
-/** @} */

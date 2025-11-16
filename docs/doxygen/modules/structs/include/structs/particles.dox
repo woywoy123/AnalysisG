@@ -1,27 +1,31 @@
 /**
  * @file particles.h
- * @brief Documentation for modules/structs/include/structs/particles.h
+ * @brief Comprehensive documentation for modules/structs/include/structs/particles.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/structs/include/structs/particles.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/structs/include/structs/particles.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_structs_include_structs_particles_h particles.h
- * @brief particles.h
- * @{
- */
-
-/**
- * @section classes Classes and Structures
- *
- * - **particle_t** (struct)
- */
-
-/**
- * @section variables_particle_t particle_t Member Variables
- *
- * **Private:**
+ * @page particle_template_documentation particle_template Class Documentation
+ * 
+ * @section particle_template_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/particles.h`
+ * 
+ * @section particle_template_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection particle_template_variables_private Private Variables
+ * 
  * - `double e = -0.000000000000001;`
  * - `double mass = -1;`
  * - `double px = 0;`
@@ -43,6 +47,6 @@
  * - `std::map<std::string, bool> children = {};`
  * - `std::map<std::string, bool> parents = {};`
  * - `std::map<std::string, particle_template*>* data_p = nullptr;`
+ * 
  */
 
-/** @} */

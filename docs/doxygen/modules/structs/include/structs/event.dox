@@ -1,32 +1,35 @@
 /**
  * @file event.h
- * @brief Documentation for modules/structs/include/structs/event.h
+ * @brief Comprehensive documentation for modules/structs/include/structs/event.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/structs/include/structs/event.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/structs/include/structs/event.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_structs_include_structs_event_h event.h
- * @brief event.h
- * @{
- */
-
-/**
- * @section classes Classes and Structures
- *
- * - **event_t** (struct)
- */
-
-/**
- * @section variables_event_t event_t Member Variables
- *
- * **Private:**
+ * @page event_t_documentation event_t Class Documentation
+ * 
+ * @section event_t_overview Overview
+ * 
+ * **Type:** Struct  
+ * **Name:** `event_t`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/event.h`
+ * 
+ * @section event_t_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection event_t_variables_private Private Variables
+ * 
  * - `std::string name = "";`
  * - `double weight = 1;`
- * - `long   index = -1;`
  * - `std::string hash = "";`
  * - `std::string tree = "";`
+ * 
  */
 
-/** @} */

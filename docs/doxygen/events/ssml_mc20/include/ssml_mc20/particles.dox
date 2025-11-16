@@ -1,15 +1,270 @@
 /**
  * @file particles.h
- * @brief Documentation for events/ssml_mc20/include/ssml_mc20/particles.h
+ * @brief Comprehensive documentation for events/ssml_mc20/include/ssml_mc20/particles.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/events/ssml_mc20/include/ssml_mc20/particles.h
+ * 
+ * **File Location:** `src/AnalysisG/events/ssml_mc20/include/ssml_mc20/particles.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup events_ssml_mc20_include_ssml_mc20_particles_h particles.h
- * @brief particles.h
- * @{
+ * @page zboson_documentation zboson Class Documentation
+ * 
+ * @section zboson_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `zboson`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/ssml_mc20/include/ssml_mc20/particles.h`
+ * 
+ * @section zboson_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection zboson_methods_public Public Methods
+ * 
+ * - `zboson()`
+ * - `virtual ~zboson()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
  */
 
-/** @} */
+/**
+ * @page top_documentation top Class Documentation
+ * 
+ * @section top_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `top`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/ssml_mc20/include/ssml_mc20/particles.h`
+ * 
+ * @section top_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection top_methods_public Public Methods
+ * 
+ * - `top()`
+ * - `virtual ~top()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section top_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection top_variables_public Public Variables
+ * 
+ * - `bool from_res = false;`
+ * - `std::vector<particle_template*> jets = {};`
+ * - `std::vector<particle_template*> leptons = {};`
+ * - `std::vector<particle_template*> truthjets = {};`
+ * 
+ */
+
+/**
+ * @page truthjet_documentation truthjet Class Documentation
+ * 
+ * @section truthjet_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `truthjet`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/ssml_mc20/include/ssml_mc20/particles.h`
+ * 
+ * @section truthjet_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection truthjet_methods_public Public Methods
+ * 
+ * - `truthjet()`
+ * - `virtual ~truthjet()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section truthjet_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection truthjet_variables_public Public Variables
+ * 
+ * - `int top_index = -1;`
+ * 
+ */
+
+/**
+ * @page jet_documentation jet Class Documentation
+ * 
+ * @section jet_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `jet`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/ssml_mc20/include/ssml_mc20/particles.h`
+ * 
+ * @section jet_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection jet_methods_public Public Methods
+ * 
+ * - `jet()`
+ * - `virtual ~jet()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * - `static void get_from_res(bool* val, jet* el)`
+ * 
+ * @section jet_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection jet_variables_public Public Variables
+ * 
+ * - `int top_index = -1;`
+ * - `bool btag_77 = false;`
+ * - `bool btag_85 = false;`
+ * - `bool btag_90 = false;`
+ * - `bool sel_85  = false;`
+ * 
+ */
+
+/**
+ * @page electron_documentation electron Class Documentation
+ * 
+ * @section electron_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `electron`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/ssml_mc20/include/ssml_mc20/particles.h`
+ * 
+ * @section electron_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection electron_methods_public Public Methods
+ * 
+ * - `electron()`
+ * - `virtual ~electron()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * - `static void get_from_res(bool* val, electron* el)`
+ * 
+ * @section electron_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection electron_variables_public Public Variables
+ * 
+ * - `int top_index = -1;`
+ * - `int pass_ecids = -1;`
+ * 
+ */
+
+/**
+ * @page muon_documentation muon Class Documentation
+ * 
+ * @section muon_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `muon`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/ssml_mc20/include/ssml_mc20/particles.h`
+ * 
+ * @section muon_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection muon_methods_public Public Methods
+ * 
+ * - `muon()`
+ * - `virtual ~muon()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * - `static void get_from_res(bool* val, muon* el)`
+ * 
+ * @section muon_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection muon_variables_public Public Variables
+ * 
+ * - `int top_index = -1;`
+ * 
+ */
+
+/**
+ * @page parton_documentation parton Class Documentation
+ * 
+ * @section parton_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `parton`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/ssml_mc20/include/ssml_mc20/particles.h`
+ * 
+ * @section parton_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection parton_methods_public Public Methods
+ * 
+ * - `parton()`
+ * - `virtual ~parton()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section parton_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection parton_variables_public Public Variables
+ * 
+ * - `int top_index      = -1;`
+ * - `int jet_index      = -1;`
+ * - `int truthjet_index = -1;`
+ * - `int muon_index     = -1;`
+ * - `int electron_index = -1;`
+ * - `std::map<std::string, jet*> jets;`
+ * - `std::map<std::string, truthjet*> truthjets;`
+ * 
+ */
+
+/**
+ * @page lepton_documentation lepton Class Documentation
+ * 
+ * @section lepton_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `lepton`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/ssml_mc20/include/ssml_mc20/particles.h`
+ * 
+ * @section lepton_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection lepton_methods_public Public Methods
+ * 
+ * - `lepton()`
+ * - `virtual ~lepton()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section lepton_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection lepton_variables_public Public Variables
+ * 
+ * - `int ambiguity = 99;`
+ * 
+ */
+

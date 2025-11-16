@@ -1,15 +1,68 @@
 /**
  * @file notification.h
- * @brief Documentation for modules/notification/include/notification/notification.h
+ * @brief Comprehensive documentation for modules/notification/include/notification/notification.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/notification/include/notification/notification.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/notification/include/notification/notification.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_notification_include_notification_notification_h notification.h
- * @brief notification.h
- * @{
+ * @page notification_documentation notification Class Documentation
+ * 
+ * @section notification_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `notification`  
+ * **Defined in:** `src/AnalysisG/modules/notification/include/notification/notification.h`
+ * 
+ * @section notification_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection notification_methods_public Public Methods
+ * 
+ * - `notification()`
+ * - `~notification()`
+ * - `void success(std::string message)`
+ * - `void warning(std::string message)`
+ * - `void failure(std::string message)`
+ * - `void info(std::string message)`
+ * - `void progressbar(float prog, std::string title)`
+ * - `void progressbar(std::vector<size_t>* threads, std::vector<size_t>* trgt, std::vector<std::string>* title)`
+ * - `int running(std::vector<std::thread*>* thr, std::vector<size_t>* prg, std::vector<size_t>* trgt)`
+ * - `void monitor(std::vector<std::thread*>* thr)`
+ * - `void static progressbar1(std::vector<size_t>* threads, size_t l, std::string title)`
+ * - `void static progressbar2(std::vector<size_t>* threads, size_t* l, std::string* title)`
+ * - `void static progressbar3(std::vector<size_t>* threads, std::vector<size_t>* l, std::vector<std::string*>* title)`
+ * 
+ * @subsection notification_methods_private Private Methods
+ * 
+ * - `void _format(std::string* message)`
+ * - `g sum(std::vector<g>* inpt)`
+ * - `for (size_t t(0)`
+ * 
+ * @section notification_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection notification_variables_public Public Variables
+ * 
+ * - `std::string prefix;`
+ * - `int _warning = 33;`
+ * - `int _failure = 31;`
+ * - `int _success = 32;`
+ * - `int _info = 37;`
+ * - `bool bold = false;`
+ * - `bool shush = false;`
+ * 
+ * @subsection notification_variables_private Private Variables
+ * 
+ * - `int caller;`
+ * 
  */
 
-/** @} */

@@ -1,15 +1,247 @@
 /**
  * @file particles.h
- * @brief Documentation for events/exp_mc20/include/exp_mc20/particles.h
+ * @brief Comprehensive documentation for events/exp_mc20/include/exp_mc20/particles.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/events/exp_mc20/include/exp_mc20/particles.h
+ * 
+ * **File Location:** `src/AnalysisG/events/exp_mc20/include/exp_mc20/particles.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup events_exp_mc20_include_exp_mc20_particles_h particles.h
- * @brief particles.h
- * @{
+ * @page top_documentation top Class Documentation
+ * 
+ * @section top_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `top`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/exp_mc20/include/exp_mc20/particles.h`
+ * 
+ * @section top_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection top_methods_public Public Methods
+ * 
+ * - `top()`
+ * - `virtual ~top()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section top_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection top_variables_public Public Variables
+ * 
+ * - `int top_index = -1;`
+ * 
  */
 
-/** @} */
+/**
+ * @page child_documentation child Class Documentation
+ * 
+ * @section child_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `child`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/exp_mc20/include/exp_mc20/particles.h`
+ * 
+ * @section child_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection child_methods_public Public Methods
+ * 
+ * - `child()`
+ * - `virtual ~child()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section child_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection child_variables_public Public Variables
+ * 
+ * - `std::vector<int> top_index = {};`
+ * 
+ */
+
+/**
+ * @page physics_detector_documentation physics_detector Class Documentation
+ * 
+ * @section physics_detector_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `physics_detector`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/exp_mc20/include/exp_mc20/particles.h`
+ * 
+ * @section physics_detector_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection physics_detector_methods_public Public Methods
+ * 
+ * - `physics_detector()`
+ * - `virtual ~physics_detector()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section physics_detector_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection physics_detector_variables_public Public Variables
+ * 
+ * - `std::vector<int> top_index = {};`
+ * 
+ */
+
+/**
+ * @page physics_truth_documentation physics_truth Class Documentation
+ * 
+ * @section physics_truth_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `physics_truth`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/exp_mc20/include/exp_mc20/particles.h`
+ * 
+ * @section physics_truth_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection physics_truth_methods_public Public Methods
+ * 
+ * - `physics_truth()`
+ * - `virtual ~physics_truth()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section physics_truth_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection physics_truth_variables_public Public Variables
+ * 
+ * - `std::vector<int> top_index = {};`
+ * 
+ */
+
+/**
+ * @page electron_documentation electron Class Documentation
+ * 
+ * @section electron_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `electron`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/exp_mc20/include/exp_mc20/particles.h`
+ * 
+ * @section electron_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection electron_methods_public Public Methods
+ * 
+ * - `electron()`
+ * - `virtual ~electron()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section electron_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection electron_variables_public Public Variables
+ * 
+ * - `float d0 = 0;`
+ * - `int true_type = 0;`
+ * - `float delta_z0 = 0;`
+ * - `int true_origin = 0;`
+ * - `bool is_tight = false;`
+ * - `std::vector<int> top_index = {};`
+ * 
+ */
+
+/**
+ * @page muon_documentation muon Class Documentation
+ * 
+ * @section muon_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `muon`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/exp_mc20/include/exp_mc20/particles.h`
+ * 
+ * @section muon_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection muon_methods_public Public Methods
+ * 
+ * - `muon()`
+ * - `virtual ~muon()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section muon_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection muon_variables_public Public Variables
+ * 
+ * - `float d0 = 0;`
+ * - `int true_type = 0;`
+ * - `float delta_z0 = 0;`
+ * - `int true_origin = 0;`
+ * - `bool is_tight = false;`
+ * - `std::vector<int> top_index = {};`
+ * 
+ */
+
+/**
+ * @page jet_documentation jet Class Documentation
+ * 
+ * @section jet_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `jet`  
+ * **Inherits from:** `particle_template`  
+ * **Defined in:** `src/AnalysisG/events/exp_mc20/include/exp_mc20/particles.h`
+ * 
+ * @section jet_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection jet_methods_public Public Methods
+ * 
+ * - `jet()`
+ * - `virtual ~jet()`
+ * - `particle_template* clone() override`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
+ * 
+ * @section jet_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection jet_variables_public Public Variables
+ * 
+ * - `bool btag_65;`
+ * - `bool btag_70;`
+ * - `bool btag_77;`
+ * - `bool btag_85;`
+ * - `bool btag_90;`
+ * - `int flav;`
+ * - `int label;`
+ * - `std::vector<int> top_index = {};`
+ * 
+ */
+

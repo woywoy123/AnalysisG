@@ -1,15 +1,41 @@
 /**
  * @file conuix.h
- * @brief Documentation for modules/nusol/tmp/conuix/include/conuix/conuix.h
+ * @brief Comprehensive documentation for modules/nusol/tmp/conuix/include/conuix/conuix.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/conuix.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/conuix.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_nusol_tmp_conuix_include_conuix_conuix_h conuix.h
- * @brief conuix.h
- * @{
+ * @page nusol_t_documentation nusol_t Class Documentation
+ * 
+ * @section nusol_t_overview Overview
+ * 
+ * **Type:** Struct  
+ * **Name:** `nusol_t`  
+ * **Defined in:** `src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/conuix.h`
+ * 
+ * @section nusol_t_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection nusol_t_methods_public Public Methods
+ * 
+ * - `conics(nusol_t* parameters)`
+ * - `~conics()`
+ * 
+ * @section nusol_t_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection nusol_t_variables_private Private Variables
+ * 
+ * - `nusol_t* params = nullptr;`
+ * 
  */
 
-/** @} */

@@ -1,15 +1,24 @@
 /**
  * @file graphs.cxx
- * @brief Documentation for graphs/ssml_mc20/cxx/graphs.cxx
+ * @brief Comprehensive documentation for graphs/ssml_mc20/cxx/graphs.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/graphs/ssml_mc20/cxx/graphs.cxx
+ * 
+ * **File Location:** `src/AnalysisG/graphs/ssml_mc20/cxx/graphs.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup graphs_ssml_mc20_cxx_graphs_cxx graphs.cxx
- * @brief graphs.cxx
- * @{
+ * @page graphs_ssml_mc20_cxx_graphs_cxx graphs.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/graphs/ssml_mc20/cxx/graphs.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

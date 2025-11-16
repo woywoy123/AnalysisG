@@ -1,101 +1,64 @@
 /**
  * @file grift.h
- * @brief GRIFT (Graph Reconstruction and Inference for Tops) model header
+ * @brief Comprehensive documentation for models/grift/include/models/grift.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
  * 
- * Location: src/AnalysisG/models/grift/include/models/grift.h
+ * **File Location:** `src/AnalysisG/models/grift/include/models/grift.h`
  * 
- * Defines the GRIFT model class for top quark reconstruction using graph neural networks.
- * GRIFT uses message-passing and recurrent neural networks to reconstruct top quark decay chains
- * from jet and particle data.
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup models_grift_include_models_grift_h grift.h
- * @brief GRIFT Model - Graph Neural Network for Top Quark Reconstruction
+ * @page grift_documentation grift Class Documentation
  * 
- * @{
- */
-
-/**
- * @section classes_grift Classes and Structures
+ * @section grift_overview Overview
  * 
- * This file defines the following class:
- * - **grift** - Main GRIFT model class (inherits from model_template)
- *   - Implements graph neural network for top quark reconstruction
- *   - Uses message-passing between particles
- *   - Employs recurrent neural networks for feature processing
- *   - Supports both Monte Carlo and data modes
- *   - Optional PageRank integration for node importance
- */
-
-/**
- * @section functions_grift Functions and Methods
+ * **Type:** Class  
+ * **Name:** `grift`  
+ * **Inherits from:** `model_template`  
+ * **Defined in:** `src/AnalysisG/models/grift/include/models/grift.h`
  * 
- * **grift class methods:**
+ * @section grift_methods Methods
  * 
- * **Constructors and Destructors:**
- * - `grift()` - Default constructor, initializes GRIFT model
- * - `~grift()` - Destructor, cleans up model resources
+ * This class defines the following methods:
  * 
- * **Core Methods:**
- * - `model_template* clone() override` - Creates a deep copy of the model for distributed training
- * - `void forward(graph_t*) override` - Main forward pass, processes graph data through the network
+ * @subsection grift_methods_public Public Methods
  * 
- * **Neural Network Components:**
- * - `torch::Tensor message(torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc, torch::Tensor hx_i, torch::Tensor hx_j)`
- *   - Computes message between two nodes in the graph
- *   - Parameters:
- *     - trk_i: Features of source node
- *     - trk_j: Features of target node
- *     - pmc: Particle momentum and charge information
- *     - hx_i: Hidden state of source node
- *     - hx_j: Hidden state of target node
- *   - Returns: Message tensor for edge update
- * 
+ * - `grift()`
+ * - `~grift()`
+ * - `model_template* clone() override`
+ * - `void forward(graph_t*) override`
+ * - `torch::Tensor message( torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc, torch::Tensor hx_i, torch::Tensor hx_j )`
  * - `torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn)`
- *   - Encodes node features using recurrent neural network
- *   - Parameters:
- *     - pmc: Particle momentum and charge
- *     - num_node: Number of nodes in graph
- *     - node_rnn: Pointer to RNN state tensor
- *   - Returns: Encoded node features
+ * 
+ * @section grift_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection grift_variables_public Public Variables
+ * 
+ * - `int _hidden = 1024;`
+ * - `int _xrec = 128;`
+ * - `int _xin  = 6;`
+ * - `int _xout = 2;`
+ * - `int _xtop = 5;`
+ * - `double drop_out = 0.01;`
+ * - `bool is_mc    = true;`
+ * - `bool init     = false;`
+ * - `bool pagerank = false;`
+ * - `torch::nn::Sequential* rnn_x   = nullptr;`
+ * - `torch::nn::Sequential* rnn_dx  = nullptr;`
+ * - `torch::nn::Sequential* rnn_txx = nullptr;`
+ * - `torch::nn::Sequential* rnn_rxx = nullptr;`
+ * - `torch::nn::Sequential* rnn_hxx = nullptr;`
+ * - `torch::nn::Sequential* mlp_ntop = nullptr;`
+ * - `torch::nn::Sequential* mlp_sig  = nullptr;`
+ * - `torch::Tensor  x_nulls;`
+ * - `torch::Tensor dx_nulls;`
+ * - `torch::Tensor te_nulls;`
+ * 
  */
 
-/**
- * @section variables_grift Member Variables
- * 
- * **grift class variables:**
- * 
- * **Neural Network Parameters (Public):**
- * - `int _hidden = 1024` - Hidden layer dimension size for neural networks
- * - `int _xrec = 128` - Recurrent state dimension for RNN layers
- * - `int _xin = 6` - Input feature dimension (number of input features per particle)
- * - `int _xout = 2` - Output dimension (binary classification for edges)
- * - `int _xtop = 5` - Top multiplicity classes (number of possible top quarks)
- * - `double drop_out = 0.01` - Dropout rate for regularization (default 1%)
- * 
- * **Model Configuration Flags (Public):**
- * - `bool is_mc = true` - Monte Carlo mode flag (true for MC, false for data)
- * - `bool init = false` - Initialization status flag
- * - `bool pagerank = false` - PageRank integration flag (enables graph centrality features)
- * 
- * **Recurrent Neural Network Layers (Public):**
- * - `torch::nn::Sequential* rnn_x = nullptr` - Primary node feature RNN
- * - `torch::nn::Sequential* rnn_dx = nullptr` - Delta feature RNN (feature differences)
- * - `torch::nn::Sequential* rnn_txx = nullptr` - Temporal feature RNN
- * - `torch::nn::Sequential* rnn_rxx = nullptr` - Recurrent state update RNN
- * - `torch::nn::Sequential* rnn_hxx = nullptr` - Hidden state processing RNN
- * 
- * **Multi-Layer Perceptron Output Layers (Public):**
- * - `torch::nn::Sequential* mlp_ntop = nullptr` - MLP for top multiplicity prediction
- * - `torch::nn::Sequential* mlp_sig = nullptr` - MLP for edge classification (sigmoid output)
- * 
- * **Null Tensors (Public):**
- * - `torch::Tensor x_nulls` - Null tensor for node features (used for padding)
- * - `torch::Tensor dx_nulls` - Null tensor for delta features
- * - `torch::Tensor te_nulls` - Null tensor for temporal/edge features
- */
-
-/** @} */  // end of models_grift_include_models_grift_h

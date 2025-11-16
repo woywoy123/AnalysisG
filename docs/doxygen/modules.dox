@@ -1,0 +1,173 @@
+/**
+ * @defgroup events_module Events Module
+ * @brief Event processing and particle physics event structures
+ *
+ * This module provides event classes for different physics analyses:
+ * - bsm_4tops: BSM 4-top events
+ * - exp_mc20: MC20 experiment events
+ * - gnn_event: GNN inference events
+ * - ssml_mc20: SSML MC20 events
+ */
+
+/**
+ * @defgroup graphs_module Graphs Module
+ * @brief Graph construction from physics events
+ *
+ * This module converts physics events into graph structures for GNN processing:
+ * - graph_bsm_4tops: Graphs for BSM 4-top analysis
+ * - graph_exp_mc20: Graphs for MC20 experiment
+ * - graph_ssml_mc20: Graphs for SSML MC20
+ */
+
+/**
+ * @defgroup models_module Models Module
+ * @brief Neural network model implementations
+ *
+ * This module provides GNN model architectures:
+ * - grift: Graph Interaction For Top physics
+ * - RecursiveGraphNeuralNetwork: Recursive GNN architecture
+ */
+
+/**
+ * @defgroup metrics_module Metrics Module
+ * @brief Performance evaluation and metrics
+ *
+ * This module provides metrics for model evaluation:
+ * - accuracy_metric: Accuracy calculation
+ * - pagerank: PageRank-based metrics
+ */
+
+/**
+ * @defgroup modules_infrastructure Modules Infrastructure
+ * @brief Core framework infrastructure components
+ *
+ * The modules directory contains the core infrastructure with 24 submodules
+ * that provide templates, utilities, and supporting functionality.
+ */
+
+/**
+ * @defgroup modules_particle Particle Module
+ * @ingroup modules_infrastructure
+ * @brief Particle template and kinematics
+ */
+
+/**
+ * @defgroup modules_event Event Module  
+ * @ingroup modules_infrastructure
+ * @brief Event template and processing
+ */
+
+/**
+ * @defgroup modules_graph Graph Module
+ * @ingroup modules_infrastructure
+ * @brief Graph template and data structures
+ */
+
+/**
+ * @defgroup modules_model Model Module
+ * @ingroup modules_infrastructure
+ * @brief Model template and training infrastructure
+ */
+
+/**
+ * @defgroup modules_metric Metric Module
+ * @ingroup modules_infrastructure
+ * @brief Metric template and evaluation
+ */
+
+/**
+ * @defgroup modules_io I/O Module
+ * @ingroup modules_infrastructure  
+ * @brief ROOT file input/output
+ */
+
+/**
+ * @defgroup modules_dataloader Dataloader Module
+ * @ingroup modules_infrastructure
+ * @brief Data loading and batching
+ */
+
+/**
+ * @defgroup modules_optimizer Optimizer Module
+ * @ingroup modules_infrastructure
+ * @brief Training optimization
+ */
+
+/**
+ * @defgroup modules_structs Structs Module
+ * @ingroup modules_infrastructure
+ * @brief Core data structures (element_t, data_t, etc.)
+ */
+
+/**
+ * @defgroup modules_tools Tools Module
+ * @ingroup modules_infrastructure
+ * @brief Utility functions and helpers
+ */
+
+/**
+ * @defgroup modules_nusol NuSol Module
+ * @ingroup modules_infrastructure
+ * @brief Neutrino reconstruction solvers
+ */
+
+/**
+ * @defgroup pyc_module Python-C++ Interface
+ * @brief Python bindings and Cython interfaces
+ *
+ * This module provides Python access to C++ functionality through Cython.
+ */
+
+/**
+ * @defgroup pyc_interface Interface
+ * @ingroup pyc_module
+ * @brief Main Python interface bindings
+ */
+
+/**
+ * @defgroup pyc_graph Graph Bindings
+ * @ingroup pyc_module
+ * @brief Python bindings for graph operations
+ */
+
+/**
+ * @defgroup pyc_operators Operators
+ * @ingroup pyc_module
+ * @brief Tensor operations and operators
+ */
+
+/**
+ * @defgroup pyc_physics Physics
+ * @ingroup pyc_module
+ * @brief Physics calculations and utilities
+ */
+
+/**
+ * @defgroup pyc_transform Transform
+ * @ingroup pyc_module
+ * @brief Data transformation utilities
+ */
+
+/**
+ * @defgroup pyc_nusol NuSol Bindings
+ * @ingroup pyc_module
+ * @brief Python bindings for neutrino solver
+ */
+
+/**
+ * @defgroup pyc_cutils C Utilities
+ * @ingroup pyc_module
+ * @brief C utility function bindings
+ */
+
+/**
+ * @defgroup templates_module Templates
+ * @brief Code templates for framework extensions
+ *
+ * This module provides template code for creating new:
+ * - Events
+ * - Graphs
+ * - Models
+ * - Metrics
+ * - Particles
+ */

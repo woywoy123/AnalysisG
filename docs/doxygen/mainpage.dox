@@ -1,45 +1,89 @@
 /**
- * @mainpage AnalysisG - Graph Neural Network Analysis Framework
+ * @mainpage AnalysisG Framework Documentation
  *
- * @section intro_sec Introduction
+ * @section intro Introduction
  *
- * AnalysisG is a comprehensive Graph Neural Network Analysis Framework designed
- * specifically for High Energy Physics (HEP) applications. The framework provides
- * tools for event processing, graph construction, model development, and analysis
- * in particle physics research.
+ * AnalysisG is a comprehensive Graph Neural Network Analysis Framework for
+ * High Energy Physics (HEP). It provides a complete pipeline from raw physics
+ * events to trained neural network models.
  *
- * @section modules_sec Framework Modules
+ * @section architecture Framework Architecture
  *
- * The framework is organized into several key modules:
+ * The framework is organized into the following major components:
  *
- * @subsection core_modules Core Modules
- * - @ref core_module "Core" - Core functionality and base templates
- * - @ref events_module "Events" - Event processing and particle physics events
- * - @ref graphs_module "Graphs" - Graph construction from physics events
- * - @ref metrics_module "Metrics" - Performance metrics and evaluation
- * - @ref models_module "Models" - Neural network model implementations
+ * @subsection primary_components Primary Components
+ * 
+ * - @ref events_module "Events Module" - Event processing and particle physics data structures
+ * - @ref graphs_module "Graphs Module" - Graph construction from physics events  
+ * - @ref models_module "Models Module" - Neural network model implementations
+ * - @ref metrics_module "Metrics Module" - Performance evaluation and metrics
  *
- * @subsection infrastructure_modules Infrastructure Modules
- * - @ref modules_module "Modules" - Framework infrastructure components
- * - @ref pyc_module "Python-C++ Interface" - Python bindings and interfaces
- * - @ref templates_module "Templates" - Code templates and examples
+ * @subsection infrastructure_components Infrastructure Components
  *
- * @section features_sec Key Features
+ * - @ref modules_infrastructure "Modules Infrastructure" - Core framework components:
+ *   - @ref modules_particle "Particle" - Particle template and kinematics
+ *   - @ref modules_event "Event" - Event template and processing
+ *   - @ref modules_graph "Graph" - Graph template and data structures
+ *   - @ref modules_model "Model" - Model template and training
+ *   - @ref modules_metric "Metric" - Metric template and evaluation
+ *   - @ref modules_io "I/O" - ROOT file reading/writing
+ *   - @ref modules_dataloader "Dataloader" - Data loading and batching
+ *   - @ref modules_optimizer "Optimizer" - Training optimization
+ *   - @ref modules_structs "Structs" - Core data structures
+ *   - @ref modules_tools "Tools" - Utility functions
+ *   - @ref modules_nusol "NuSol" - Neutrino reconstruction
+ *   - And 13 more submodules...
  *
- * - **Event Processing**: Flexible event processing pipeline for HEP data
- * - **Graph Neural Networks**: Graph-based neural network architectures
- * - **Model Training**: Complete training infrastructure with metrics
- * - **Analysis Tools**: Comprehensive analysis and visualization tools
- * - **Python Integration**: Seamless Python-C++ integration via Cython
+ * - @ref pyc_module "Python-C++ Interface" - Python bindings via Cython:
+ *   - @ref pyc_interface "Interface" - Main Python interface
+ *   - @ref pyc_graph "Graph" - Graph Python bindings
+ *   - @ref pyc_operators "Operators" - Tensor operations
+ *   - @ref pyc_physics "Physics" - Physics calculations
+ *   - @ref pyc_transform "Transform" - Data transformations
+ *   - @ref pyc_nusol "NuSol" - Neutrino solver bindings
+ *   - @ref pyc_cutils "C Utils" - Utility functions
  *
- * @section getting_started_sec Getting Started
+ * - @ref templates_module "Templates" - Code templates for extending the framework
  *
- * To get started with AnalysisG, explore the module documentation:
- * - Start with @ref core_module for understanding base templates
- * - See @ref events_module for event processing
- * - Check @ref models_module for implementing neural networks
+ * @section workflow Typical Workflow
  *
- * @section license_sec License
+ * 1. **Event Processing**: Load physics events using event templates
+ * 2. **Graph Construction**: Convert events to graphs using graph templates  
+ * 3. **Model Training**: Train models using the model templates and infrastructure
+ * 4. **Evaluation**: Evaluate performance using metrics
  *
- * See LICENSE file in the repository root for licensing information.
+ * @section getting_started Getting Started
+ *
+ * @subsection step1 Step 1: Understanding Events
+ * Start with the @ref events_module to understand how physics events are represented.
+ * Key classes: bsm_4tops, exp_mc20, gnn_event, ssml_mc20
+ *
+ * @subsection step2 Step 2: Graph Construction  
+ * See @ref graphs_module for converting events to graphs.
+ * Key classes: graph_bsm_4tops, graph_exp_mc20, graph_ssml_mc20
+ *
+ * @subsection step3 Step 3: Models
+ * Explore @ref models_module for neural network architectures.
+ * Key classes: grift, RecursiveGraphNeuralNetwork
+ *
+ * @subsection step4 Step 4: Training
+ * Use @ref modules_infrastructure for the complete training pipeline.
+ *
+ * @section file_organization File Organization
+ *
+ * The framework follows a consistent structure:
+ * ```
+ * src/AnalysisG/
+ * ├── events/       - Event implementations
+ * ├── graphs/       - Graph implementations
+ * ├── models/       - Model implementations
+ * ├── metrics/      - Metric implementations
+ * ├── modules/      - Infrastructure (24 submodules)
+ * ├── pyc/          - Python bindings (7 submodules)
+ * └── templates/    - Code templates
+ * ```
+ *
+ * Each module typically contains:
+ * - `cxx/` - Implementation files (.cxx)
+ * - `include/` - Header files (.h)
  */

@@ -1,15 +1,24 @@
 /**
  * @file solvers.cxx
- * @brief Documentation for modules/nusol/ellipse/cxx/solvers.cxx
+ * @brief Comprehensive documentation for modules/nusol/ellipse/cxx/solvers.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/nusol/ellipse/cxx/solvers.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/nusol/ellipse/cxx/solvers.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_nusol_ellipse_cxx_solvers_cxx solvers.cxx
- * @brief solvers.cxx
- * @{
+ * @page modules_nusol_ellipse_cxx_solvers_cxx solvers.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/nusol/ellipse/cxx/solvers.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

@@ -1,15 +1,116 @@
 /**
  * @file io.h
- * @brief Documentation for modules/io/include/io/io.h
+ * @brief Comprehensive documentation for modules/io/include/io/io.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/io/include/io/io.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/io/include/io/io.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_io_include_io_io_h io.h
- * @brief io.h
- * @{
+ * @page io_documentation io Class Documentation
+ * 
+ * @section io_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `io`  
+ * **Inherits from:** `tools, 
+    public notification`  
+ * **Defined in:** `src/AnalysisG/modules/io/include/io/io.h`
+ * 
+ * @section io_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection io_methods_public Public Methods
+ * 
+ * - `io()`
+ * - `~io()`
+ * - `void write(std::vector<g>* inpt, std::string set_name)`
+ * - `if (!dataset)`
+ * - `dataset -> write(inpt -> data(), pairs)`
+ * - `H5Tclose(pairs)`
+ * - `void write(g* inpt, std::string set_name)`
+ * - `if (!dataset)`
+ * - `dataset -> write(inpt, pairs)`
+ * - `H5Tclose(pairs)`
+ * - `void read(std::vector<g>* outpt, std::string set_name)`
+ * - `if (!dataset)`
+ * - `space_r.getSimpleExtentDims(dim_r)`
+ * - `outpt -> assign(length, g())`
+ * - `dataset -> read(outpt -> data(), pairs)`
+ * - `space_r.close()`
+ * - `H5Tclose(pairs)`
+ * - `void read(g* out, std::string set_name)`
+ * - `if (!dataset)`
+ * - `space_r.getSimpleExtentDims(dim_r)`
+ * - `dataset -> read(out, pairs)`
+ * - `space_r.close()`
+ * - `H5Tclose(pairs)`
+ * - `void read(graph_hdf5_w* out, std::string set_name)`
+ * - `bool start(std::string filename, std::string read_write)`
+ * - `void end()`
+ * - `std::vector<std::string> dataset_names()`
+ * - `std::map<std::string, long> root_size()`
+ * - `void check_root_file_paths()`
+ * - `bool scan_keys()`
+ * - `void root_begin()`
+ * - `void root_end()`
+ * - `void trigger_pcm()`
+ * - `void import_settings(settings_t* params)`
+ * - `std::map<std::string, data_t*>* get_data()`
+ * 
+ * @subsection io_methods_private Private Methods
+ * 
+ * - `hid_t member(folds_t t)`
+ * - `hid_t member(graph_hdf5_w t)`
+ * - `static herr_t file_info(hid_t loc_id, const char* name, const H5L_info_t* linfo, void *opdata)`
+ * - `H5::DataSet* dataset(std::string set_name, hid_t type, long long unsigned int length)`
+ * - `H5::DataSet* dataset(std::string set_name)`
+ * - `void root_key_paths(std::string path)`
+ * - `void root_key_paths(std::string path, TTree* t)`
+ * - `void root_key_paths(std::string path, TBranch* t)`
+ * 
+ * @section io_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection io_variables_public Public Variables
+ * 
+ * - `long long unsigned int length = 1;`
+ * - `hsize_t dim_r[1];`
+ * - `long long unsigned int length = dim_r[0];`
+ * - `hsize_t dim_r[1];`
+ * - `bool enable_pyami = true;`
+ * - `std::string metacache_path = "./";`
+ * - `std::string current_working_path = ".";`
+ * - `std::string sow_name = "";`
+ * - `std::vector<std::string> trees = {};`
+ * - `std::vector<std::string> branches = {};`
+ * - `std::vector<std::string> leaves = {};`
+ * - `std::map<std::string, TFile*> files_open = {};`
+ * - `std::map<std::string, meta*>   meta_data = {};`
+ * - `std::map<std::string, std::map<std::string, TTree*>> tree_data  = {};`
+ * - `std::map<std::string, std::map<std::string, long>> tree_entries = {};`
+ * - `std::map<std::string, std::map<std::string, TBranch*>> branch_data = {};`
+ * - `std::map<std::string, std::map<std::string, TLeaf*>>      leaf_data = {};`
+ * - `std::map<std::string, std::map<std::string, std::string>> leaf_typed = {};`
+ * - `std::map<std::string, bool> root_files = {};`
+ * - `std::map<std::string, std::map<std::string, std::map<std::string, std::vector<std::string>>>> keys;`
+ * 
+ * @subsection io_variables_private Private Variables
+ * 
+ * - `std::map<std::string, H5::DataSet*> data_w;`
+ * - `std::map<std::string, H5::DataSet*> data_r;`
+ * - `H5::H5File* file = nullptr;`
+ * - `TFile* file_root = nullptr;`
+ * - `std::map<std::string, data_t*>*   iters = nullptr;`
+ * - `std::map<std::string, bool> missing_trigger = {};`
+ * - `std::map<std::string, bool> success_trigger = {};`
+ * 
  */
 
-/** @} */

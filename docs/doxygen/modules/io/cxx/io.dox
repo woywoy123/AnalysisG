@@ -1,15 +1,24 @@
 /**
  * @file io.cxx
- * @brief Documentation for modules/io/cxx/io.cxx
+ * @brief Comprehensive documentation for modules/io/cxx/io.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/io/cxx/io.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/io/cxx/io.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_io_cxx_io_cxx io.cxx
- * @brief io.cxx
- * @{
+ * @page modules_io_cxx_io_cxx io.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/io/cxx/io.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

@@ -1,15 +1,24 @@
 /**
  * @file polar.cxx
- * @brief Documentation for modules/particle/cxx/polar.cxx
+ * @brief Comprehensive documentation for modules/particle/cxx/polar.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/particle/cxx/polar.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/particle/cxx/polar.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_particle_cxx_polar_cxx polar.cxx
- * @brief polar.cxx
- * @{
+ * @page modules_particle_cxx_polar_cxx polar.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/particle/cxx/polar.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

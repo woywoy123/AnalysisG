@@ -1,15 +1,24 @@
 /**
  * @file transform.h
- * @brief Documentation for pyc/transform/include/transform/transform.h
+ * @brief Comprehensive documentation for pyc/transform/include/transform/transform.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/pyc/transform/include/transform/transform.h
+ * 
+ * **File Location:** `src/AnalysisG/pyc/transform/include/transform/transform.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup pyc_transform_include_transform_transform_h transform.h
- * @brief transform.h
- * @{
+ * @page pyc_transform_include_transform_transform_h transform.h
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/pyc/transform/include/transform/transform.h`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

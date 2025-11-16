@@ -1,15 +1,24 @@
 /**
  * @file <event-name>.cxx
- * @brief Documentation for templates/events/cxx/<event-name>.cxx
+ * @brief Comprehensive documentation for templates/events/cxx/<event-name>.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/templates/events/cxx/<event-name>.cxx
+ * 
+ * **File Location:** `src/AnalysisG/templates/events/cxx/<event-name>.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup templates_events_cxx__event_name__cxx <event-name>.cxx
- * @brief <event-name>.cxx
- * @{
+ * @page templates_events_cxx_<event-name>_cxx <event-name>.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/templates/events/cxx/<event-name>.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

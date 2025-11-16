@@ -1,15 +1,24 @@
 /**
  * @file element.cxx
- * @brief Documentation for modules/structs/cxx/element.cxx
+ * @brief Comprehensive documentation for modules/structs/cxx/element.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/structs/cxx/element.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/structs/cxx/element.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_structs_cxx_element_cxx element.cxx
- * @brief element.cxx
- * @{
+ * @page modules_structs_cxx_element_cxx element.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/structs/cxx/element.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

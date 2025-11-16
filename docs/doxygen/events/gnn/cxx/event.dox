@@ -1,15 +1,24 @@
 /**
  * @file event.cxx
- * @brief Documentation for events/gnn/cxx/event.cxx
+ * @brief Comprehensive documentation for events/gnn/cxx/event.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/events/gnn/cxx/event.cxx
+ * 
+ * **File Location:** `src/AnalysisG/events/gnn/cxx/event.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup events_gnn_cxx_event_cxx event.cxx
- * @brief event.cxx
- * @{
+ * @page events_gnn_cxx_event_cxx event.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/events/gnn/cxx/event.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

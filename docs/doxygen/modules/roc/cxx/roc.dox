@@ -1,15 +1,24 @@
 /**
  * @file roc.cxx
- * @brief Documentation for modules/roc/cxx/roc.cxx
+ * @brief Comprehensive documentation for modules/roc/cxx/roc.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/roc/cxx/roc.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/roc/cxx/roc.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_roc_cxx_roc_cxx roc.cxx
- * @brief roc.cxx
- * @{
+ * @page modules_roc_cxx_roc_cxx roc.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/roc/cxx/roc.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

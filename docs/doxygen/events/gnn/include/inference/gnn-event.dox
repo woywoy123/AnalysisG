@@ -1,15 +1,126 @@
 /**
  * @file gnn-event.h
- * @brief Documentation for events/gnn/include/inference/gnn-event.h
+ * @brief Comprehensive documentation for events/gnn/include/inference/gnn-event.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/events/gnn/include/inference/gnn-event.h
+ * 
+ * **File Location:** `src/AnalysisG/events/gnn/include/inference/gnn-event.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup events_gnn_include_inference_gnn_event_h gnn-event.h
- * @brief gnn-event.h
- * @{
+ * @page gnn_event_documentation gnn_event Class Documentation
+ * 
+ * @section gnn_event_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `gnn_event`  
+ * **Inherits from:** `event_template`  
+ * **Defined in:** `src/AnalysisG/events/gnn/include/inference/gnn-event.h`
+ * 
+ * @section gnn_event_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection gnn_event_methods_public Public Methods
+ * 
+ * - `gnn_event()`
+ * - `~gnn_event() override`
+ * - `event_template* clone() override`
+ * - `void build(element_t* el) override`
+ * - `void CompileEvent() override`
+ * 
+ * @subsection gnn_event_methods_private Private Methods
+ * 
+ * - `std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt)`
+ * - `for (`
+ * - `void vectorize(std::map<m, G*>* ipt, std::vector<Gx*>* vec)`
+ * - `for (`
+ * - `void sum(std::vector<g*>* ch, G** out)`
+ * - `(*out) = new G()`
+ * - `for (size_t x(0)`
+ * - `if (maps[ch -> at(x) -> hash])`
+ * - `maps[ch -> at(x) -> hash] = true`
+ * - `(*out) -> iadd(ch -> at(x))`
+ * - `(*out) -> register_child(ch -> at(x))`
+ * - `void print(std::vector<std::vector<g>>* data)`
+ * - `for (size_t x(0)`
+ * - `std::cout << (*data)[x][0]`
+ * - `if (x == data -> size()-1)`
+ * - `for (size_t x(0)`
+ * - `std::cout << (*data)[x][1]`
+ * - `if (x == data -> size()-1)`
+ * - `void print(std::map<g, std::map<g, k>>* data)`
+ * - `for (int x(0)`
+ * - `for (int y(0)`
+ * - `std::cout << (*data)[x][y]`
+ * - `if (y == sx-1)`
+ * - `if (x == sx-1)`
+ * - `void print(std::map<g, k>* data)`
+ * - `for (int x(0)`
+ * - `std::cout << (*data)[x]`
+ * - `if (x == sx-1)`
+ * 
+ * @section gnn_event_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection gnn_event_variables_public Public Variables
+ * 
+ * - `int   num_bjets = 0;`
+ * - `double num_jets = 0;`
+ * - `double num_leps = 0;`
+ * - `double met      = 0;`
+ * - `double phi      = 0;`
+ * - `int   p_ntops  = 0;`
+ * - `int   p_signal = 0;`
+ * - `float s_ntops  = 0;`
+ * - `float s_signal = 0;`
+ * - `std::vector<float> ntops_scores  = {};`
+ * - `std::vector<float> signal_scores = {};`
+ * - `std::vector<std::vector<float>> edge_res_scores = {};`
+ * - `std::vector<std::vector<float>> edge_top_scores = {};`
+ * - `std::vector<top*>    r_tops   = {};`
+ * - `std::vector<zprime*> r_zprime = {};`
+ * - `std::vector<particle_gnn*> event_particles = {};`
+ * - `std::vector<top*> t_tops   = {};`
+ * - `std::vector<zprime*> t_zprime = {};`
+ * - `std::vector<int> t_edge_res = {};`
+ * - `std::vector<int> t_edge_top = {};`
+ * - `int t_ntops  = 0;`
+ * - `bool t_signal = 0;`
+ * 
+ * @subsection gnn_event_variables_private Private Variables
+ * 
+ * - `std::vector<std::vector<int>>        m_edge_index = {};`
+ * - `std::map<std::string, particle_gnn*> m_event_particles = {};`
+ * - `std::map<std::string, zprime*>  m_r_zprime = {};`
+ * - `std::map<std::string, zprime*>  m_t_zprime = {};`
+ * - `std::map<std::string, top*>     m_r_tops = {};`
+ * - `std::map<std::string, top*>     m_t_tops = {};`
+ * - `std::map<int, G*> data = {};`
+ * - `std::map<std::string, bool> maps;`
+ * - `std::cout << "[" << std::endl;`
+ * - `std::cout << "[";`
+ * - `std::cout << ", ";`
+ * - `std::cout << "]," << std::endl;`
+ * - `std::cout << "[";`
+ * - `std::cout << ", ";`
+ * - `std::cout << "]" << std::endl;`
+ * - `std::cout << "]" << std::endl;`
+ * - `std::cout << "[" << std::endl;`
+ * - `std::cout << "[";`
+ * - `std::cout << ", ";`
+ * - `std::cout << "]";`
+ * - `std::cout << "," << std::endl;`
+ * - `std::cout << "" << std::endl;`
+ * - `std::cout << "]" << std::endl;`
+ * - `std::cout << "[";`
+ * - `std::cout << ", ";`
+ * - `std::cout << "]" << std::endl;`
+ * 
  */
 
-/** @} */

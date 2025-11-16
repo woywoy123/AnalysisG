@@ -1,15 +1,139 @@
 /**
  * @file lossfx.h
- * @brief Documentation for modules/lossfx/include/templates/lossfx.h
+ * @brief Comprehensive documentation for modules/lossfx/include/templates/lossfx.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/lossfx/include/templates/lossfx.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/lossfx/include/templates/lossfx.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_lossfx_include_templates_lossfx_h lossfx.h
- * @brief lossfx.h
- * @{
+ * @page lossfx_documentation lossfx Class Documentation
+ * 
+ * @section lossfx_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `lossfx`  
+ * **Inherits from:** `tools, 
+    public notification`  
+ * **Defined in:** `src/AnalysisG/modules/lossfx/include/templates/lossfx.h`
+ * 
+ * @section lossfx_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection lossfx_methods_public Public Methods
+ * 
+ * - `lossfx()`
+ * - `lossfx(std::string var, std::string enx)`
+ * - `~lossfx()`
+ * - `loss_enum loss_string(std::string name)`
+ * - `opt_enum optim_string(std::string name)`
+ * - `scheduler_enum scheduler_string(std::string name)`
+ * - `void loss_opt_string(std::string name)`
+ * - `torch::Tensor loss(torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor loss(torch::Tensor* pred, torch::Tensor* truth, loss_enum lss)`
+ * - `void weight_init(torch::nn::Sequential* data, mlp_init method)`
+ * - `torch::optim::Optimizer* build_optimizer(optimizer_params_t* op, std::vector<torch::Tensor>* params)`
+ * - `void build_scheduler(optimizer_params_t* op, torch::optim::Optimizer* opx)`
+ * - `bool build_loss_function(loss_enum lss)`
+ * - `bool build_loss_function()`
+ * - `void to(torch::TensorOptions*)`
+ * - `void step()`
+ * 
+ * @subsection lossfx_methods_private Private Methods
+ * 
+ * - `void interpret(std::string* ox)`
+ * - `void build_adam(optimizer_params_t* op, std::vector<torch::Tensor>* params)`
+ * - `void build_adagrad(optimizer_params_t* op, std::vector<torch::Tensor>* params)`
+ * - `void build_adamw(optimizer_params_t* op, std::vector<torch::Tensor>* params)`
+ * - `void build_lbfgs(optimizer_params_t* op, std::vector<torch::Tensor>* params)`
+ * - `void build_rmsprop(optimizer_params_t* op, std::vector<torch::Tensor>* params)`
+ * - `void build_sgd(optimizer_params_t* op, std::vector<torch::Tensor>* params)`
+ * - `void build_fx_loss(torch::nn::BCELossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::BCEWithLogitsLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::CosineEmbeddingLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::CrossEntropyLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::CTCLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::HingeEmbeddingLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::HuberLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::KLDivLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::L1LossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::MarginRankingLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::MSELossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::MultiLabelMarginLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::MultiLabelSoftMarginLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::MultiMarginLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::NLLLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::PoissonNLLLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::SmoothL1LossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::SoftMarginLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::TripletMarginLossImpl* lossfx_)`
+ * - `void build_fx_loss(torch::nn::TripletMarginWithDistanceLossImpl* lossfx_)`
+ * - `torch::Tensor _fx_loss(torch::nn::BCELossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::BCEWithLogitsLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::CosineEmbeddingLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::CrossEntropyLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::CTCLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::HingeEmbeddingLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::HuberLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::KLDivLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::L1LossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::MarginRankingLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::MSELossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::MultiLabelMarginLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::MultiLabelSoftMarginLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::MultiMarginLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::NLLLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::PoissonNLLLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::SmoothL1LossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::SoftMarginLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::TripletMarginLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * - `torch::Tensor _fx_loss(torch::nn::TripletMarginWithDistanceLossImpl* lossfx_, torch::Tensor* pred, torch::Tensor* truth)`
+ * 
+ * @section lossfx_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection lossfx_variables_public Public Variables
+ * 
+ * - `std::string variable = "";`
+ * 
+ * @subsection lossfx_variables_private Private Variables
+ * 
+ * - `torch::optim::Adam*     m_adam    = nullptr;`
+ * - `torch::optim::Adagrad*  m_adagrad = nullptr;`
+ * - `torch::optim::AdamW*    m_adamw   = nullptr;`
+ * - `torch::optim::LBFGS*    m_lbfgs   = nullptr;`
+ * - `torch::optim::RMSprop*  m_rmsprop = nullptr;`
+ * - `torch::optim::SGD*      m_sgd     = nullptr;`
+ * - `torch::optim::StepLR*                     m_steplr = nullptr;`
+ * - `torch::optim::ReduceLROnPlateauScheduler* m_rlp    = nullptr;`
+ * - `torch::optim::LRScheduler*                m_lrs    = nullptr;`
+ * - `torch::nn::BCELossImpl*                       m_bce                          = nullptr;`
+ * - `torch::nn::BCEWithLogitsLossImpl*             m_bce_with_logits              = nullptr;`
+ * - `torch::nn::CosineEmbeddingLossImpl*           m_cosine_embedding             = nullptr;`
+ * - `torch::nn::CrossEntropyLossImpl*              m_cross_entropy                = nullptr;`
+ * - `torch::nn::CTCLossImpl*                       m_ctc                          = nullptr;`
+ * - `torch::nn::HingeEmbeddingLossImpl*            m_hinge_embedding              = nullptr;`
+ * - `torch::nn::HuberLossImpl*                     m_huber                        = nullptr;`
+ * - `torch::nn::KLDivLossImpl*                     m_kl_div                       = nullptr;`
+ * - `torch::nn::L1LossImpl*                        m_l1                           = nullptr;`
+ * - `torch::nn::MarginRankingLossImpl*             m_margin_ranking               = nullptr;`
+ * - `torch::nn::MSELossImpl*                       m_mse                          = nullptr;`
+ * - `torch::nn::MultiLabelMarginLossImpl*          m_multi_label_margin           = nullptr;`
+ * - `torch::nn::MultiLabelSoftMarginLossImpl*      m_multi_label_soft_margin      = nullptr;`
+ * - `torch::nn::MultiMarginLossImpl*               m_multi_margin                 = nullptr;`
+ * - `torch::nn::NLLLossImpl*                       m_nll                          = nullptr;`
+ * - `torch::nn::PoissonNLLLossImpl*                m_poisson_nll                  = nullptr;`
+ * - `torch::nn::SmoothL1LossImpl*                  m_smooth_l1                    = nullptr;`
+ * - `torch::nn::SoftMarginLossImpl*                m_soft_margin                  = nullptr;`
+ * - `torch::nn::TripletMarginLossImpl*             m_triplet_margin               = nullptr;`
+ * - `torch::nn::TripletMarginWithDistanceLossImpl* m_triplet_margin_with_distance = nullptr;`
+ * 
  */
 
-/** @} */

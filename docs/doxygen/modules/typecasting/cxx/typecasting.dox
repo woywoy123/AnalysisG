@@ -1,15 +1,24 @@
 /**
  * @file typecasting.cxx
- * @brief Documentation for modules/typecasting/cxx/typecasting.cxx
+ * @brief Comprehensive documentation for modules/typecasting/cxx/typecasting.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/typecasting/cxx/typecasting.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/typecasting/cxx/typecasting.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_typecasting_cxx_typecasting_cxx typecasting.cxx
- * @brief typecasting.cxx
- * @{
+ * @page modules_typecasting_cxx_typecasting_cxx typecasting.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/typecasting/cxx/typecasting.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

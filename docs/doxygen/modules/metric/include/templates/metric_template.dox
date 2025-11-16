@@ -1,43 +1,50 @@
 /**
  * @file metric_template.h
- * @brief Documentation for modules/metric/include/templates/metric_template.h
+ * @brief Comprehensive documentation for modules/metric/include/templates/metric_template.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/metric/include/templates/metric_template.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/metric/include/templates/metric_template.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_metric_include_templates_metric_template_h metric_template.h
- * @brief metric_template.h
- * @{
- */
-
-/**
- * @section classes Classes and Structures
- *
- * - **metric_t** (struct)
- */
-
-/**
- * @section functions_metric_t metric_t Methods
- *
- * - [public] `~metric_t()`
- * - [public] `g get(graph_enum grx, std::string _name)`
- * - [public] `g out = g()`
- * - [public] `if (!this -> h_maps[grx][_name])`
- * - [public] `variable_t* v = (*this -> handl)[grx][idx]`
- * - [public] `if (!v)`
- * - [public] `if (v -> element(&out))`
- * - [public] `std::cout << "\033[1`
- * - [public] `std::string mode()`
- * - [public] `std::string* get_filename(long unsigned int idx)`
- * - [private] `void build()`
- */
-
-/**
- * @section variables_metric_t metric_t Member Variables
- *
- * **Public:**
+ * @page graph_t_documentation graph_t Class Documentation
+ * 
+ * @section graph_t_overview Overview
+ * 
+ * **Type:** Struct  
+ * **Name:** `graph_t`  
+ * **Defined in:** `src/AnalysisG/modules/metric/include/templates/metric_template.h`
+ * 
+ * @section graph_t_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection graph_t_methods_public Public Methods
+ * 
+ * - `~metric_t()`
+ * - `g get(graph_enum grx, std::string _name)`
+ * - `if (!this -> h_maps[grx][_name])`
+ * - `if (!v)`
+ * - `if (v -> element(&out))`
+ * - `std::cout << "\033[1`
+ * - `std::string mode()`
+ * - `std::string* get_filename(long unsigned int idx)`
+ * 
+ * @subsection graph_t_methods_private Private Methods
+ * 
+ * - `void build()`
+ * 
+ * @section graph_t_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection graph_t_variables_public Public Variables
+ * 
  * - `int kfold = 0;`
  * - `int epoch = 0;`
  * - `int device = 0;`
@@ -45,14 +52,125 @@
  * - `size_t idx = this -> v_maps[grx][_name];`
  * - `std::cout << "\033[1;31m Variable not found: " << _name << "\033[0m" << std::endl;`
  * - `std::cout << " -> " << _name << "\033[0m" << std::endl;`
- * **Private:**
+ * 
+ * @subsection graph_t_variables_private Private Variables
+ * 
  * - `std::string* pth = nullptr;`
+ * - `model_template* mdlx = nullptr;`
+ * - `metric_template* mtx = nullptr;`
  * - `size_t index = 0;`
  * - `std::vector<std::string*>* batch_files = nullptr;`
  * - `std::map<graph_enum, std::vector<std::string>>* vars = nullptr;`
  * - `std::map<graph_enum, std::vector<variable_t*>>* handl = nullptr;`
  * - `std::map<graph_enum, std::map<std::string, size_t>> v_maps = {};`
  * - `std::map<graph_enum, std::map<std::string, bool>>   h_maps = {};`
+ * 
  */
 
-/** @} */
+/**
+ * @page metric_template_documentation metric_template Class Documentation
+ * 
+ * @section metric_template_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `metric_template`  
+ * **Inherits from:** `tools, 
+    public notification`  
+ * **Defined in:** `src/AnalysisG/modules/metric/include/templates/metric_template.h`
+ * 
+ * @section metric_template_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection metric_template_methods_public Public Methods
+ * 
+ * - `metric_template()`
+ * - `virtual ~metric_template()`
+ * - `virtual metric_template* clone()`
+ * - `virtual void define_variables()`
+ * - `virtual void define_metric(metric_t* v)`
+ * - `virtual void event()`
+ * - `virtual void batch()`
+ * - `virtual void end()`
+ * - `void register_output(std::string tree, std::string __name, T* t)`
+ * - `if (this -> handle)`
+ * - `this -> handle -> create(&this -> _outdir)`
+ * - `this -> handle -> process(&tree, &__name, t)`
+ * - `void write(std::string tree, std::string __name, T* t, bool fill = false)`
+ * - `if (!this -> handle)`
+ * - `this -> handle -> process(&tree, &__name, t)`
+ * - `if (!fill)`
+ * - `this -> handle -> write(&tree)`
+ * - `void sum(std::vector<g*>* ch, k** out)`
+ * - `for (size_t x(0)`
+ * - `if (!ch -> at(x))`
+ * - `if (maps[ch -> at(x) -> hash])`
+ * - `maps[ch -> at(x) -> hash] = true`
+ * - `prt -> iadd(ch -> at(x))`
+ * - `this -> garbage[hash_].push_back((particle_template*)prt)`
+ * - `(*out) = prt`
+ * - `void safe_delete(std::vector<g*>* particles)`
+ * - `for (size_t x(0)`
+ * - `if (particles -> at(x) -> _is_marked)`
+ * - `delete particles -> at(x)`
+ * - `(*particles)[x] = nullptr`
+ * - `std::vector<g*> make_unique(std::vector<g*>* inpt)`
+ * - `for (size_t x(0)`
+ * - `for (itr = tmp.begin()`
+ * - `std::vector<g*> vectorize(std::map<std::string, g*>* in)`
+ * - `for (`
+ * - `std::vector<particle_template*> make_particle( std::vector<std::vector<double>>* pt, std::vector<std::vector<double>>* eta, std::vector<std::vector<double>>* phi, std::vector<std::vector<double>>* energy )`
+ * 
+ * @subsection metric_template_methods_private Private Methods
+ * 
+ * - `void flush_garbage()`
+ * - `void static set_name(std::string*, metric_template*)`
+ * - `void static get_name(std::string*, metric_template*)`
+ * - `void static set_run_name(std::map<std::string, std::string>*, metric_template*)`
+ * - `void static get_run_name(std::map<std::string, std::string>*, metric_template*)`
+ * - `void static set_variables(std::vector<std::string>*, metric_template*)`
+ * - `void static get_variables(std::vector<std::string>*, metric_template*)`
+ * - `void static get_output(std::string* out, metric_template* ev)`
+ * - `void static construct( std::map<graph_enum, std::vector<variable_t*>>* varx, std::map<graph_enum, std::vector<std::string>>* req, model_template* mdl, graph_t* grx, std::string* mtx )`
+ * - `metric_template* clone(int)`
+ * - `bool link(model_template*)`
+ * - `void link(std::string hsx, std::vector<graph_t*>* data, mode_enum mx)`
+ * - `void execute(metric_t* mtx, metric_template* obj, size_t* prg, std::string* msg)`
+ * - `void define( std::vector<metric_t*>* vr, std::vector<size_t>* num, std::vector<std::string*>* title, size_t* offset )`
+ * - `size_t size()`
+ * - `std::map<int, torch::TensorOptions*> get_devices()`
+ * - `std::vector<int> get_kfolds()`
+ * 
+ * @section metric_template_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection metric_template_variables_public Public Variables
+ * 
+ * - `cproperty<std::string, metric_template> name;`
+ * - `cproperty<std::string, metric_template> output_path;`
+ * - `cproperty<std::vector<std::string>, metric_template> variables;`
+ * - `cproperty<std::map<std::string, std::string>, metric_template> run_names;`
+ * - `std::map<std::string, bool> maps;`
+ * - `std::string hash_ = prt -> hash;`
+ * - `std::map<std::string, g*> tmp;`
+ * - `typename std::vector<g*> out = {};`
+ * - `typename std::map<std::string, g*>::iterator itr;`
+ * - `typename std::vector<g*> out = {};`
+ * 
+ * @subsection metric_template_variables_private Private Variables
+ * 
+ * - `std::map<std::string, model_template*> lnks;`
+ * - `std::map<std::string, std::vector<model_template*>> hash_mdl = {};`
+ * - `std::map<std::string, std::map<mode_enum, std::vector<graph_t*>*>> hash_bta = {};`
+ * - `std::map<std::string, std::map<int, std::map<int, std::string>>> _epoch_kfold;`
+ * - `std::map<std::string, std::map<graph_enum, std::vector<std::string>>> _var_type;`
+ * - `std::string _name = "metric-template";`
+ * - `std::string _outdir = "";`
+ * - `std::map<std::string, std::string> _run_names = {};`
+ * - `std::map<std::string, std::string> _variables = {};`
+ * - `std::map<std::string, std::vector<particle_template*>> garbage = {};`
+ * - `writer* handle = nullptr;`
+ * 
+ */
+

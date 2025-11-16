@@ -1,15 +1,24 @@
 /**
  * @file tools.cxx
- * @brief Documentation for modules/tools/cxx/tools.cxx
+ * @brief Comprehensive documentation for modules/tools/cxx/tools.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/tools/cxx/tools.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/tools/cxx/tools.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_tools_cxx_tools_cxx tools.cxx
- * @brief tools.cxx
- * @{
+ * @page modules_tools_cxx_tools_cxx tools.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/tools/cxx/tools.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

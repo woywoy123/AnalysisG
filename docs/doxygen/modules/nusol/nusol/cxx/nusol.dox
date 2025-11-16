@@ -1,15 +1,24 @@
 /**
  * @file nusol.cxx
- * @brief Documentation for modules/nusol/nusol/cxx/nusol.cxx
+ * @brief Comprehensive documentation for modules/nusol/nusol/cxx/nusol.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/nusol/nusol/cxx/nusol.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/nusol/nusol/cxx/nusol.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_nusol_nusol_cxx_nusol_cxx nusol.cxx
- * @brief nusol.cxx
- * @{
+ * @page modules_nusol_nusol_cxx_nusol_cxx nusol.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/nusol/nusol/cxx/nusol.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

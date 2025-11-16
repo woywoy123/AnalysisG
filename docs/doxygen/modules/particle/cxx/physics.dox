@@ -1,15 +1,24 @@
 /**
  * @file physics.cxx
- * @brief Documentation for modules/particle/cxx/physics.cxx
+ * @brief Comprehensive documentation for modules/particle/cxx/physics.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/particle/cxx/physics.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/particle/cxx/physics.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_particle_cxx_physics_cxx physics.cxx
- * @brief physics.cxx
- * @{
+ * @page modules_particle_cxx_physics_cxx physics.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/particle/cxx/physics.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

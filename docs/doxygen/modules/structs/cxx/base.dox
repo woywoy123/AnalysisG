@@ -1,15 +1,24 @@
 /**
  * @file base.cxx
- * @brief Documentation for modules/structs/cxx/base.cxx
+ * @brief Comprehensive documentation for modules/structs/cxx/base.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/structs/cxx/base.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/structs/cxx/base.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_structs_cxx_base_cxx base.cxx
- * @brief base.cxx
- * @{
+ * @page modules_structs_cxx_base_cxx base.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/structs/cxx/base.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

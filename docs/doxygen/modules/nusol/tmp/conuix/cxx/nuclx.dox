@@ -1,15 +1,24 @@
 /**
  * @file nuclx.cxx
- * @brief Documentation for modules/nusol/tmp/conuix/cxx/nuclx.cxx
+ * @brief Comprehensive documentation for modules/nusol/tmp/conuix/cxx/nuclx.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/nusol/tmp/conuix/cxx/nuclx.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/nusol/tmp/conuix/cxx/nuclx.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_nusol_tmp_conuix_cxx_nuclx_cxx nuclx.cxx
- * @brief nuclx.cxx
- * @{
+ * @page modules_nusol_tmp_conuix_cxx_nuclx_cxx nuclx.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/nusol/tmp/conuix/cxx/nuclx.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

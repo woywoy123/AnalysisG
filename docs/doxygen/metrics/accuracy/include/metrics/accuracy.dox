@@ -1,135 +1,138 @@
 /**
  * @file accuracy.h
- * @brief Accuracy metric implementation for model evaluation
+ * @brief Comprehensive documentation for metrics/accuracy/include/metrics/accuracy.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
  * 
- * Location: src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h
+ * **File Location:** `src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h`
  * 
- * Defines classes for computing and collecting accuracy metrics during model training,
- * validation, and evaluation. Supports K-fold cross-validation and tracks accuracy
- * across multiple models, epochs, and top quark multiplicity predictions.
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup metrics_accuracy_include_metrics_accuracy_h accuracy.h
- * @brief Accuracy Metric - Model Performance Evaluation
+ * @page accuracy_metric_documentation accuracy_metric Class Documentation
  * 
- * @{
+ * @section accuracy_metric_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `accuracy_metric`  
+ * **Inherits from:** `metric_template`  
+ * **Defined in:** `src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h`
+ * 
+ * @section accuracy_metric_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection accuracy_metric_methods_public Public Methods
+ * 
+ * - `accuracy_metric()`
+ * - `~accuracy_metric() override`
+ * - `accuracy_metric* clone() override`
+ * - `void define_metric(metric_t* mtx) override`
+ * - `void define_variables() override`
+ * - `void event() override`
+ * - `void batch() override`
+ * - `void end() override`
+ * 
+ * @section accuracy_metric_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection accuracy_metric_variables_private Private Variables
+ * 
+ * - `std::string mode = "";`
+ * - `float edge_accuracy = 0;`
+ * - `float global_edge_accuracy = 0;`
+ * - `int ntop_truth = 0;`
+ * - `std::vector<float> ntop_scores = {};`
+ * - `std::vector<float> ntops_accuracy = {};`
+ * - `std::map<int, int> _global_edge_accuracy = {};`
+ * - `std::map<int, std::map<int, int>> ntop_accuracy = {};`
+ * 
  */
 
 /**
- * @section classes_accuracy Classes and Structures
+ * @page cdata_t_documentation cdata_t Class Documentation
  * 
- * This file defines the following classes and structures:
+ * @section cdata_t_overview Overview
  * 
- * - **accuracy_metric** (inherits from metric_template)
- *   - Computes accuracy metrics for edge and node predictions
- *   - Tracks per-event and global accuracy
- *   - Supports top quark multiplicity accuracy evaluation
+ * **Type:** Struct  
+ * **Name:** `cdata_t`  
+ * **Defined in:** `src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h`
  * 
- * - **cdata_t** (structure)
- *   - Data container for collected metrics
- *   - Stores K-fold specific accuracy data
- *   - Tracks predictions and truth values
+ * @section cdata_t_variables Member Variables
  * 
- * - **cmodel_t** (structure)
- *   - Model-level metric aggregation
- *   - Organizes data by training/validation/evaluation mode
- *   - Supports multiple epochs and K-folds
+ * This class contains the following member variables:
  * 
- * - **collector** (inherits from tools)
- *   - Collects and aggregates metrics across training runs
- *   - Manages multi-model comparison data
- *   - Prepares data for plotting and analysis
+ * @subsection cdata_t_variables_private Private Variables
+ * 
+ * - `int kfold = -1;`
+ * - `std::vector<int> ntops_truth = {};`
+ * - `std::vector<std::vector<double>> ntop_score = {};`
+ * - `std::map<int, std::vector<double>> ntop_edge_accuracy = {};`
+ * - `std::map<int, std::map<int, std::vector<double>>> ntru_npred_matrix = {};`
+ * 
  */
 
 /**
- * @section functions_accuracy Functions and Methods
+ * @page cmodel_t_documentation cmodel_t Class Documentation
  * 
- * **accuracy_metric class methods:**
+ * @section cmodel_t_overview Overview
  * 
- * **Constructors and Destructors:**
- * - `accuracy_metric()` - Default constructor
- * - `~accuracy_metric() override` - Destructor
+ * **Type:** Struct  
+ * **Name:** `cmodel_t`  
+ * **Defined in:** `src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h`
  * 
- * **Core Metric Methods:**
- * - `accuracy_metric* clone() override` - Creates a copy of the metric
- * - `void define_metric(metric_t* mtx) override` - Initializes metric configuration
- * - `void define_variables() override` - Sets up metric variables for data collection
- * - `void event() override` - Computes per-event accuracy metrics
- * - `void batch() override` - Aggregates metrics across batch
- * - `void end() override` - Finalizes and stores computed metrics
+ * @section cmodel_t_variables Member Variables
  * 
- * **collector class methods:**
+ * This class contains the following member variables:
  * 
- * **Constructors and Destructors:**
- * - `collector()` - Default constructor
- * - `~collector()` - Destructor
+ * @subsection cmodel_t_variables_private Private Variables
  * 
- * **Data Management:**
- * - `cdata_t* get_mode(std::string model, std::string mode, int epoch, int kfold)`
- *   - Retrieves metric data for specific model/mode/epoch/kfold combination
- *   - Parameters:
- *     - model: Model identifier
- *     - mode: Training mode (train/validation/evaluation)
- *     - epoch: Epoch number
- *     - kfold: K-fold index
- *   - Returns: Pointer to cdata_t structure
+ * - `std::map<int, std::map<int, cdata_t>> evaluation_kfold_data = {};`
+ * - `std::map<int, std::map<int, cdata_t>> validation_kfold_data = {};`
+ * - `std::map<int, std::map<int, cdata_t>> training_kfold_data   = {};`
  * 
- * - `void add_ntop_truth(std::string mode, std::string model, int epoch, int kfold, int data)`
- *   - Adds ground truth top multiplicity value
+ */
+
+/**
+ * @page collector_documentation collector Class Documentation
  * 
- * - `void add_ntop_edge_accuracy(std::string mode, std::string model, int epoch, int kfold, int ntops, double data)`
- *   - Adds edge accuracy for specific top multiplicity
+ * @section collector_overview Overview
  * 
- * - `void add_ntop_scores(std::string mode, std::string model, int epoch, int kfold, std::vector<double>* data)`
- *   - Adds top multiplicity prediction scores
+ * **Type:** Class  
+ * **Name:** `collector`  
+ * **Inherits from:** `tools`  
+ * **Defined in:** `src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h`
  * 
- * - `void add_ntru_ntop_scores(std::string mode, std::string model, int epoch, int kfold, int ntru, int ntop, double data)`
- *   - Adds confusion matrix entry (true vs predicted top count)
+ * @section collector_methods Methods
  * 
+ * This class defines the following methods:
+ * 
+ * @subsection collector_methods_public Public Methods
+ * 
+ * - `collector()`
+ * - `~collector()`
+ * - `cdata_t* get_mode( std::string model, std::string mode, int epoch, int kfold )`
+ * - `void add_ntop_truth( std::string mode, std::string model, int epoch, int kfold, int data )`
+ * - `void add_ntop_edge_accuracy( std::string mode, std::string model, int epoch, int kfold, int ntops, double data )`
+ * - `void add_ntop_scores( std::string mode, std::string model, int epoch, int kfold, std::vector<double>* data )`
+ * - `void add_ntru_ntop_scores( std::string mode, std::string model, int epoch, int kfold, int ntru, int ntop, double data )`
  * - `std::map<std::string, std::vector<cdata_t*>> get_plts()`
- *   - Retrieves all collected data for plotting
- *   - Returns: Map of model names to collected metric data
+ * 
+ * @section collector_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection collector_variables_public Public Variables
+ * 
+ * - `std::vector<std::string> model_names = {};`
+ * - `std::vector<std::string> modes = {};`
+ * - `std::vector<int> epochs = {};`
+ * - `std::vector<int> kfolds = {};`
+ * - `std::map<std::string, cmodel_t> model_data = {};`
+ * 
  */
 
-/**
- * @section variables_accuracy Member Variables
- * 
- * **accuracy_metric class variables:**
- * 
- * **Private:**
- * - `std::string mode = ""` - Current mode (train/validation/evaluation)
- * - `long idx = 0` - Event index counter
- * - `float edge_accuracy = 0` - Current edge accuracy value
- * - `float global_edge_accuracy = 0` - Global edge accuracy accumulator
- * - `int ntop_truth = 0` - Ground truth top quark count
- * - `std::vector<float> ntop_scores = {}` - Top multiplicity prediction scores
- * - `std::vector<float> ntops_accuracy = {}` - Per-multiplicity accuracy values
- * - `std::map<int, int> _global_edge_accuracy = {}` - Global edge accuracy by multiplicity
- * - `std::map<int, std::map<int, int>> ntop_accuracy = {}` - Confusion matrix for top counts
- * 
- * **cdata_t structure members:**
- * - `int kfold = -1` - K-fold index identifier
- * - `std::vector<int> ntops_truth = {}` - Ground truth top multiplicities
- * - `std::vector<std::vector<double>> ntop_score = {}` - Prediction score matrix
- * - `std::map<int, std::vector<double>> ntop_edge_accuracy = {}` - Edge accuracy by multiplicity
- * - `std::map<int, std::map<int, std::vector<double>>> ntru_npred_matrix = {}` - Confusion matrix data
- * 
- * **cmodel_t structure members:**
- * - `std::map<int, std::map<int, cdata_t>> evaluation_kfold_data = {}` - Evaluation metrics
- * - `std::map<int, std::map<int, cdata_t>> validation_kfold_data = {}` - Validation metrics
- * - `std::map<int, std::map<int, cdata_t>> training_kfold_data = {}` - Training metrics
- * 
- * **collector class variables:**
- * 
- * **Public:**
- * - `std::vector<std::string> model_names = {}` - List of tracked model identifiers
- * - `std::vector<std::string> modes = {}` - List of modes (train/val/eval)
- * - `std::vector<int> epochs = {}` - List of epoch numbers
- * - `std::vector<int> kfolds = {}` - List of K-fold indices
- * - `std::map<std::string, cmodel_t> model_data = {}` - Aggregated metric data by model
- */
-
-/** @} */  // end of metrics_accuracy_include_metrics_accuracy_h

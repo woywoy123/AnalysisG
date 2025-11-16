@@ -1,15 +1,66 @@
 /**
  * @file property.h
- * @brief Documentation for modules/structs/include/structs/property.h
+ * @brief Comprehensive documentation for modules/structs/include/structs/property.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/structs/include/structs/property.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/structs/include/structs/property.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_structs_include_structs_property_h property.h
- * @brief property.h
- * @{
+ * @page cproperty_documentation cproperty Class Documentation
+ * 
+ * @section cproperty_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `cproperty`  
+ * **Defined in:** `src/AnalysisG/modules/structs/include/structs/property.h`
+ * 
+ * @section cproperty_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection cproperty_methods_public Public Methods
+ * 
+ * - `cproperty() : data()`
+ * - `void set_setter(std::function<void(T*, G*)> c = x_setter<T, G>)`
+ * - `void set_getter(std::function<void(T*, G*)> c = x_getter<T, G>)`
+ * - `void set_object(G* _obj)`
+ * - `if (!this -> has_setter)`
+ * - `this -> setter(&this -> data, this -> obj)`
+ * - `T operator+(const T& val)`
+ * - `operator T()`
+ * - `if (!this -> has_getter)`
+ * - `this -> getter(&this -> data, this -> obj)`
+ * - `T* operator&()`
+ * - `if (!this -> has_getter)`
+ * - `this -> getter(&this -> data, this -> obj)`
+ * - `void clear()`
+ * - `if (!this -> has_getter)`
+ * 
+ * @subsection cproperty_methods_private Private Methods
+ * 
+ * - `std::function<void(T*, G*)> setter`
+ * - `std::function<void(T*, G*)> getter`
+ * 
+ * @section cproperty_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection cproperty_variables_public Public Variables
+ * 
+ * - `return *this;`
+ * - `return &this -> data;`
+ * 
+ * @subsection cproperty_variables_private Private Variables
+ * 
+ * - `G* obj = nullptr;`
+ * - `bool has_getter = false;`
+ * - `bool has_setter = false;`
+ * 
  */
 
-/** @} */

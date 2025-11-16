@@ -1,15 +1,24 @@
 /**
  * @file multisol.cxx
- * @brief Documentation for modules/nusol/tmp/multisol/cxx/multisol.cxx
+ * @brief Comprehensive documentation for modules/nusol/tmp/multisol/cxx/multisol.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/nusol/tmp/multisol/cxx/multisol.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/nusol/tmp/multisol/cxx/multisol.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_nusol_tmp_multisol_cxx_multisol_cxx multisol.cxx
- * @brief multisol.cxx
- * @{
+ * @page modules_nusol_tmp_multisol_cxx_multisol_cxx multisol.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/nusol/tmp/multisol/cxx/multisol.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

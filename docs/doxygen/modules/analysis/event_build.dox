@@ -1,15 +1,24 @@
 /**
  * @file event_build.cxx
- * @brief Documentation for modules/analysis/event_build.cxx
+ * @brief Comprehensive documentation for modules/analysis/event_build.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/analysis/event_build.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/analysis/event_build.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_analysis_event_build_cxx event_build.cxx
- * @brief event_build.cxx
- * @{
+ * @page modules_analysis_event_build_cxx event_build.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/analysis/event_build.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

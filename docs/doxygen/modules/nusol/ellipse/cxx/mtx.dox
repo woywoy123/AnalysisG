@@ -1,15 +1,24 @@
 /**
  * @file mtx.cxx
- * @brief Documentation for modules/nusol/ellipse/cxx/mtx.cxx
+ * @brief Comprehensive documentation for modules/nusol/ellipse/cxx/mtx.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/nusol/ellipse/cxx/mtx.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/nusol/ellipse/cxx/mtx.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_nusol_ellipse_cxx_mtx_cxx mtx.cxx
- * @brief mtx.cxx
- * @{
+ * @page modules_nusol_ellipse_cxx_mtx_cxx mtx.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/nusol/ellipse/cxx/mtx.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

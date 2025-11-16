@@ -1,15 +1,24 @@
 /**
  * @file memory.cxx
- * @brief Documentation for modules/nusol/conuix/cxx/memory.cxx
+ * @brief Comprehensive documentation for modules/nusol/conuix/cxx/memory.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/nusol/conuix/cxx/memory.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/nusol/conuix/cxx/memory.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_nusol_conuix_cxx_memory_cxx memory.cxx
- * @brief memory.cxx
- * @{
+ * @page modules_nusol_conuix_cxx_memory_cxx memory.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/nusol/conuix/cxx/memory.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

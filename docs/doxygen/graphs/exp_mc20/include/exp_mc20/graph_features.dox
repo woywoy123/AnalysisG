@@ -1,15 +1,24 @@
 /**
  * @file graph_features.h
- * @brief Documentation for graphs/exp_mc20/include/exp_mc20/graph_features.h
+ * @brief Comprehensive documentation for graphs/exp_mc20/include/exp_mc20/graph_features.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/graphs/exp_mc20/include/exp_mc20/graph_features.h
+ * 
+ * **File Location:** `src/AnalysisG/graphs/exp_mc20/include/exp_mc20/graph_features.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup graphs_exp_mc20_include_exp_mc20_graph_features_h graph_features.h
- * @brief graph_features.h
- * @{
+ * @page graphs_exp_mc20_include_exp_mc20_graph_features_h graph_features.h
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/graphs/exp_mc20/include/exp_mc20/graph_features.h`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

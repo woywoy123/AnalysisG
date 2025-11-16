@@ -1,60 +1,76 @@
 /**
  * @file nusol.h
- * @brief Documentation for modules/nusol/tmp/conuix/include/conuix/nusol.h
+ * @brief Comprehensive documentation for modules/nusol/tmp/conuix/include/conuix/nusol.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/nusol.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/nusol.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_nusol_tmp_conuix_include_conuix_nusol_h nusol.h
- * @brief nusol.h
- * @{
- */
-
-/**
- * @section classes Classes and Structures
- *
- * - **eig_t** (struct)
- * - **nuclx_t** (struct)
- * - **nuclx** (class)
- */
-
-/**
- * @section variables_eig_t eig_t Member Variables
- *
- * **Private:**
+ * @page eig_t_documentation eig_t Class Documentation
+ * 
+ * @section eig_t_overview Overview
+ * 
+ * **Type:** Struct  
+ * **Name:** `eig_t`  
+ * **Defined in:** `src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/nusol.h`
+ * 
+ * @section eig_t_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection eig_t_variables_private Private Variables
+ * 
  * - `double r1 = 0, r2 = 0;`
  * - `double i1 = 0, i2 = 0;`
+ * 
  */
 
 /**
- * @section functions_nuclx_t nuclx_t Methods
- *
- * - [private] `nuclx_t(particle_template* jet, particle_template* lep)`
- * - [private] `nuclx_t from_sx_sy(double _sx, double _sy)`
- * - [private] `double get_t(double _vp, double _up, double _z)`
- * - [private] `double get_z(double _sx, double _sy)`
- * - [private] `nuclx_t from_z_t(double _z, double _t)`
- * - [private] `double get_mt(double _sx, double _sy)`
- * - [private] `double get_mw(double _sx)`
- * - [private] `void surface()`
- * - [private] `void shifts()`
- * - [private] `void sx()`
- * - [private] `void sy()`
- * - [private] `void mw()`
- * - [private] `void mt()`
- * - [private] `void polynomial()`
- * - [private] `void critical_t0()`
- * - [private] `void H_bar()`
- * - [private] `void H()`
- * - [private] `void rotation()`
- */
-
-/**
- * @section variables_nuclx_t nuclx_t Member Variables
- *
- * **Private:**
+ * @page nuclx_t_documentation nuclx_t Class Documentation
+ * 
+ * @section nuclx_t_overview Overview
+ * 
+ * **Type:** Struct  
+ * **Name:** `nuclx_t`  
+ * **Defined in:** `src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/nusol.h`
+ * 
+ * @section nuclx_t_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection nuclx_t_methods_private Private Methods
+ * 
+ * - `nuclx_t(particle_template* jet, particle_template* lep)`
+ * - `nuclx_t from_sx_sy(double _sx, double _sy)`
+ * - `double get_t(double _vp, double _up, double _z)`
+ * - `double get_z(double _sx, double _sy)`
+ * - `nuclx_t from_z_t(double _z, double _t)`
+ * - `double get_mt(double _sx, double _sy)`
+ * - `double get_mw(double _sx)`
+ * - `void surface()`
+ * - `void shifts()`
+ * - `void sx()`
+ * - `void sy()`
+ * - `void mw()`
+ * - `void mt()`
+ * - `void polynomial()`
+ * - `void critical_t0()`
+ * - `void H_bar()`
+ * - `void H()`
+ * - `void rotation()`
+ * 
+ * @section nuclx_t_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection nuclx_t_variables_private Private Variables
+ * 
  * - `double u = 0, v = 0;`
  * - `double u_p = 0, v_p = 0;`
  * - `double t_v = 0, z_v = 0;`
@@ -80,20 +96,46 @@
  * - `double w  = 0, o  = 0;`
  * - `double w2 = 0, o2 = 0;`
  * - `double wr = 0;`
+ * 
  */
 
 /**
- * @section functions_nuclx nuclx Methods
- *
- * - [public] `nuclx(particle_template* bjet, particle_template* lep)`
- * - [public] `matrix_t H(double z, double t)`
- * - [public] `matrix_t H_tilde(double z, double t)`
- * - [public] `double P(double lambda, double t, double z)`
- * - [public] `double dP_dL(double lambda, double t, double z)`
- * - [public] `eig_t dPl0(double t, double z)`
- * - [public] `~nuclx()`
- * - [private] `double G(double t)`
- * - [private] `matrix_t hyperbolic(matrix_t* cx, matrix_t* sx, double t)`
+ * @page nuclx_documentation nuclx Class Documentation
+ * 
+ * @section nuclx_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `nuclx`  
+ * **Defined in:** `src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/nusol.h`
+ * 
+ * @section nuclx_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection nuclx_methods_public Public Methods
+ * 
+ * - `nuclx(particle_template* bjet, particle_template* lep)`
+ * - `matrix_t H(double z, double t)`
+ * - `matrix_t H_tilde(double z, double t)`
+ * - `double P(double lambda, double t, double z)`
+ * - `double dP_dL(double lambda, double t, double z)`
+ * - `eig_t dPl0(double t, double z)`
+ * - `~nuclx()`
+ * 
+ * @subsection nuclx_methods_private Private Methods
+ * 
+ * - `double G(double t)`
+ * - `matrix_t hyperbolic(matrix_t* cx, matrix_t* sx, double t)`
+ * 
+ * @section nuclx_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection nuclx_variables_private Private Variables
+ * 
+ * - `nuclx_t* data = nullptr;`
+ * - `particle_template* jet    = nullptr;`
+ * - `particle_template* lepton = nullptr;`
+ * 
  */
 
-/** @} */

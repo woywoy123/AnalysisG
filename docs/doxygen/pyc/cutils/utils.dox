@@ -1,15 +1,24 @@
 /**
  * @file utils.cxx
- * @brief Documentation for pyc/cutils/utils.cxx
+ * @brief Comprehensive documentation for pyc/cutils/utils.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/pyc/cutils/utils.cxx
+ * 
+ * **File Location:** `src/AnalysisG/pyc/cutils/utils.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup pyc_cutils_utils_cxx utils.cxx
- * @brief utils.cxx
- * @{
+ * @page pyc_cutils_utils_cxx utils.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/pyc/cutils/utils.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

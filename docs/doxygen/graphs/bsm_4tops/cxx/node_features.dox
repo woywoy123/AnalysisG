@@ -1,15 +1,24 @@
 /**
  * @file node_features.cxx
- * @brief Documentation for graphs/bsm_4tops/cxx/node_features.cxx
+ * @brief Comprehensive documentation for graphs/bsm_4tops/cxx/node_features.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/graphs/bsm_4tops/cxx/node_features.cxx
+ * 
+ * **File Location:** `src/AnalysisG/graphs/bsm_4tops/cxx/node_features.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup graphs_bsm_4tops_cxx_node_features_cxx node_features.cxx
- * @brief node_features.cxx
- * @{
+ * @page graphs_bsm_4tops_cxx_node_features_cxx node_features.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/graphs/bsm_4tops/cxx/node_features.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

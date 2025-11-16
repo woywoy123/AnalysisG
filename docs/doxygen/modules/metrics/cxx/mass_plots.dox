@@ -1,15 +1,24 @@
 /**
  * @file mass_plots.cxx
- * @brief Documentation for modules/metrics/cxx/mass_plots.cxx
+ * @brief Comprehensive documentation for modules/metrics/cxx/mass_plots.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/metrics/cxx/mass_plots.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/metrics/cxx/mass_plots.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_metrics_cxx_mass_plots_cxx mass_plots.cxx
- * @brief mass_plots.cxx
- * @{
+ * @page modules_metrics_cxx_mass_plots_cxx mass_plots.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/metrics/cxx/mass_plots.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

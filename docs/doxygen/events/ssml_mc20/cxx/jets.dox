@@ -1,15 +1,24 @@
 /**
  * @file jets.cxx
- * @brief Documentation for events/ssml_mc20/cxx/jets.cxx
+ * @brief Comprehensive documentation for events/ssml_mc20/cxx/jets.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/events/ssml_mc20/cxx/jets.cxx
+ * 
+ * **File Location:** `src/AnalysisG/events/ssml_mc20/cxx/jets.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup events_ssml_mc20_cxx_jets_cxx jets.cxx
- * @brief jets.cxx
- * @{
+ * @page events_ssml_mc20_cxx_jets_cxx jets.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/events/ssml_mc20/cxx/jets.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

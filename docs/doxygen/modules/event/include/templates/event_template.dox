@@ -1,15 +1,90 @@
 /**
  * @file event_template.h
- * @brief Documentation for modules/event/include/templates/event_template.h
+ * @brief Comprehensive documentation for modules/event/include/templates/event_template.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/event/include/templates/event_template.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/event/include/templates/event_template.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_event_include_templates_event_template_h event_template.h
- * @brief event_template.h
- * @{
+ * @page event_template_documentation event_template Class Documentation
+ * 
+ * @section event_template_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `event_template`  
+ * **Inherits from:** `tools`  
+ * **Defined in:** `src/AnalysisG/modules/event/include/templates/event_template.h`
+ * 
+ * @section event_template_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection event_template_methods_public Public Methods
+ * 
+ * - `event_template()`
+ * - `virtual ~event_template()`
+ * - `void static set_trees(std::vector<std::string>*, event_template*)`
+ * - `void static set_branches(std::vector<std::string>*, event_template*)`
+ * - `void static get_leaves(std::vector<std::string>*, event_template*)`
+ * - `void add_leaf(std::string key, std::string leaf = "")`
+ * - `void static set_name(std::string*, event_template*)`
+ * - `void static set_hash(std::string*, event_template*)`
+ * - `void static get_hash(std::string*, event_template*)`
+ * - `void static set_tree(std::string*, event_template*)`
+ * - `void static get_tree(std::string*, event_template*)`
+ * - `void static set_weight(double*, event_template*)`
+ * - `void static set_index(long*, event_template*)`
+ * - `virtual event_template* clone()`
+ * - `virtual void build(element_t* el)`
+ * - `virtual void CompileEvent()`
+ * - `std::vector<particle_template*> double_neutrino( std::vector<particle_template*>* targets, double phi, double met, double limit = 1e3 )`
+ * - `std::map<std::string, event_template*> build_event(std::map<std::string, data_t*>* evnt)`
+ * - `void register_particle(std::map<std::string, G*>* object)`
+ * - `for (`
+ * - `x -> leaves.clear()`
+ * - `void deregister_particle(std::map<std::string, G*>* object)`
+ * - `if (!object -> size())`
+ * - `for (`
+ * - `object -> clear()`
+ * - `void flush_particles()`
+ * 
+ * @subsection event_template_methods_private Private Methods
+ * 
+ * - `void build_mapping(std::map<std::string, data_t*>* evnt)`
+ * - `void flush_leaf_string()`
+ * 
+ * @section event_template_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection event_template_variables_public Public Variables
+ * 
+ * - `cproperty<std::vector<std::string>, event_template> trees;`
+ * - `cproperty<std::vector<std::string>, event_template> branches;`
+ * - `cproperty<std::vector<std::string>, event_template> leaves;`
+ * - `cproperty<std::string, event_template> name;`
+ * - `cproperty<std::string, event_template> hash;`
+ * - `cproperty<std::string, event_template> tree;`
+ * - `std::map<std::string, std::string> m_trees;`
+ * - `std::map<std::string, std::string> m_branches;`
+ * - `std::map<std::string, std::string> m_leaves;`
+ * - `std::string tp = x -> type;`
+ * - `meta* meta_data = nullptr;`
+ * - `std::string filename = "";`
+ * 
+ * @subsection event_template_variables_private Private Variables
+ * 
+ * - `std::map<std::string, particle_template*> garbage = {};`
+ * - `std::map<std::string, bool> next_ = {};`
+ * - `std::map<std::string, particle_template*> particle_generators;`
+ * - `std::map<std::string, std::map<std::string, element_t>> tree_variable_link = {};`
+ * - `std::map<std::string, std::map<std::string, particle_template*>*> particle_link = {};`
+ * 
  */
 
-/** @} */

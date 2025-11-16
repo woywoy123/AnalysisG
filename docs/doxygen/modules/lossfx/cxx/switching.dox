@@ -1,15 +1,24 @@
 /**
  * @file switching.cxx
- * @brief Documentation for modules/lossfx/cxx/switching.cxx
+ * @brief Comprehensive documentation for modules/lossfx/cxx/switching.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/lossfx/cxx/switching.cxx
+ * 
+ * **File Location:** `src/AnalysisG/modules/lossfx/cxx/switching.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_lossfx_cxx_switching_cxx switching.cxx
- * @brief switching.cxx
- * @{
+ * @page modules_lossfx_cxx_switching_cxx switching.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/lossfx/cxx/switching.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

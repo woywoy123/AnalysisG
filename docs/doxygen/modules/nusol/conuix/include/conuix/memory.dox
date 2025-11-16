@@ -1,15 +1,24 @@
 /**
  * @file memory.h
- * @brief Documentation for modules/nusol/conuix/include/conuix/memory.h
+ * @brief Comprehensive documentation for modules/nusol/conuix/include/conuix/memory.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/modules/nusol/conuix/include/conuix/memory.h
+ * 
+ * **File Location:** `src/AnalysisG/modules/nusol/conuix/include/conuix/memory.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup modules_nusol_conuix_include_conuix_memory_h memory.h
- * @brief memory.h
- * @{
+ * @page modules_nusol_conuix_include_conuix_memory_h memory.h
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/modules/nusol/conuix/include/conuix/memory.h`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

@@ -1,15 +1,24 @@
 /**
  * @file operators.cxx
- * @brief Documentation for pyc/operators/operators.cxx
+ * @brief Comprehensive documentation for pyc/operators/operators.cxx
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/pyc/operators/operators.cxx
+ * 
+ * **File Location:** `src/AnalysisG/pyc/operators/operators.cxx`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup pyc_operators_operators_cxx operators.cxx
- * @brief operators.cxx
- * @{
+ * @page pyc_operators_operators_cxx operators.cxx
+ * 
+ * @section overview Overview
+ * 
+ * Source file: `src/AnalysisG/pyc/operators/operators.cxx`
+ * 
+ * This file contains utility functions and definitions for the AnalysisG framework.
+ * 
+ * @note No classes or structs defined in this file.
  */
-
-/** @} */

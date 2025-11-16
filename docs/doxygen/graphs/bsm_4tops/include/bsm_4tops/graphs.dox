@@ -1,15 +1,209 @@
 /**
  * @file graphs.h
- * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/graphs.h
+ * @brief Comprehensive documentation for graphs/bsm_4tops/include/bsm_4tops/graphs.h
  * 
+ * @details
  * This file is part of the AnalysisG framework.
- * Location: src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h
+ * 
+ * **File Location:** `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h`
+ * 
+ * This documentation provides a complete reference for all classes, functions,
+ * and variables defined in this source file.
  */
 
 /**
- * @defgroup graphs_bsm_4tops_include_bsm_4tops_graphs_h graphs.h
- * @brief graphs.h
- * @{
+ * @page graph_tops_documentation graph_tops Class Documentation
+ * 
+ * @section graph_tops_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `graph_tops`  
+ * **Inherits from:** `graph_template`  
+ * **Defined in:** `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h`
+ * 
+ * @section graph_tops_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection graph_tops_methods_public Public Methods
+ * 
+ * - `graph_tops()`
+ * - `virtual ~graph_tops()`
+ * - `graph_template* clone() override`
+ * - `void CompileEvent() override`
+ * 
  */
 
-/** @} */
+/**
+ * @page graph_children_documentation graph_children Class Documentation
+ * 
+ * @section graph_children_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `graph_children`  
+ * **Inherits from:** `graph_template`  
+ * **Defined in:** `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h`
+ * 
+ * @section graph_children_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection graph_children_methods_public Public Methods
+ * 
+ * - `graph_children()`
+ * - `virtual ~graph_children()`
+ * - `graph_template* clone() override`
+ * - `void CompileEvent() override`
+ * 
+ */
+
+/**
+ * @page graph_truthjets_documentation graph_truthjets Class Documentation
+ * 
+ * @section graph_truthjets_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `graph_truthjets`  
+ * **Inherits from:** `graph_template`  
+ * **Defined in:** `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h`
+ * 
+ * @section graph_truthjets_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection graph_truthjets_methods_public Public Methods
+ * 
+ * - `graph_truthjets()`
+ * - `virtual ~graph_truthjets()`
+ * - `graph_template* clone() override`
+ * - `void CompileEvent() override`
+ * 
+ */
+
+/**
+ * @page graph_truthjets_nonu_documentation graph_truthjets_nonu Class Documentation
+ * 
+ * @section graph_truthjets_nonu_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `graph_truthjets_nonu`  
+ * **Inherits from:** `graph_template`  
+ * **Defined in:** `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h`
+ * 
+ * @section graph_truthjets_nonu_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection graph_truthjets_nonu_methods_public Public Methods
+ * 
+ * - `graph_truthjets_nonu()`
+ * - `graph_template* clone() override`
+ * - `virtual ~graph_truthjets_nonu()`
+ * - `void CompileEvent() override`
+ * 
+ */
+
+/**
+ * @page graph_jets_documentation graph_jets Class Documentation
+ * 
+ * @section graph_jets_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `graph_jets`  
+ * **Inherits from:** `graph_template`  
+ * **Defined in:** `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h`
+ * 
+ * @section graph_jets_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection graph_jets_methods_public Public Methods
+ * 
+ * - `graph_jets()`
+ * - `virtual ~graph_jets()`
+ * - `graph_template* clone() override`
+ * - `void CompileEvent() override`
+ * - `bool PreSelection() override`
+ * 
+ */
+
+/**
+ * @page graph_jets_nonu_documentation graph_jets_nonu Class Documentation
+ * 
+ * @section graph_jets_nonu_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `graph_jets_nonu`  
+ * **Inherits from:** `graph_template`  
+ * **Defined in:** `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h`
+ * 
+ * @section graph_jets_nonu_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection graph_jets_nonu_methods_public Public Methods
+ * 
+ * - `graph_jets_nonu()`
+ * - `virtual ~graph_jets_nonu()`
+ * - `graph_template* clone() override`
+ * - `void CompileEvent() override`
+ * 
+ */
+
+/**
+ * @page graph_jets_detector_lep_documentation graph_jets_detector_lep Class Documentation
+ * 
+ * @section graph_jets_detector_lep_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `graph_jets_detector_lep`  
+ * **Inherits from:** `graph_template`  
+ * **Defined in:** `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h`
+ * 
+ * @section graph_jets_detector_lep_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection graph_jets_detector_lep_methods_public Public Methods
+ * 
+ * - `graph_jets_detector_lep()`
+ * - `virtual ~graph_jets_detector_lep()`
+ * - `graph_template* clone() override`
+ * - `void CompileEvent() override`
+ * 
+ */
+
+/**
+ * @page graph_detector_documentation graph_detector Class Documentation
+ * 
+ * @section graph_detector_overview Overview
+ * 
+ * **Type:** Class  
+ * **Name:** `graph_detector`  
+ * **Inherits from:** `graph_template`  
+ * **Defined in:** `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h`
+ * 
+ * @section graph_detector_methods Methods
+ * 
+ * This class defines the following methods:
+ * 
+ * @subsection graph_detector_methods_public Public Methods
+ * 
+ * - `graph_detector()`
+ * - `virtual ~graph_detector()`
+ * - `graph_template* clone() override`
+ * - `void CompileEvent() override`
+ * - `bool PreSelection() override`
+ * 
+ * @section graph_detector_variables Member Variables
+ * 
+ * This class contains the following member variables:
+ * 
+ * @subsection graph_detector_variables_public Public Variables
+ * 
+ * - `std::vector<particle_template*> nux = {};`
+ * - `bool force_match = false;`
+ * - `int num_cuda = 1;`
+ * 
+ */
+
