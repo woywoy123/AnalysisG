@@ -1,87 +1,147 @@
 /**
  * @file element.h
- * @brief Documentation for modules/structs/include/structs/element.h
+ * @brief Data structures for ROOT file I/O and event data management
  * 
  * This file is part of the AnalysisG framework.
+ * 
  * Location: src/AnalysisG/modules/structs/include/structs/element.h
+ * 
+ * Defines core data structures for reading from ROOT files, managing event data,
+ * and writing output. Provides abstraction layer over ROOT's TTree/TBranch/TLeaf
+ * system for efficient data access and manipulation.
  */
 
 /**
  * @defgroup modules_structs_include_structs_element_h element.h
- * @brief element.h
+ * @brief ROOT I/O Data Structures - Event and File Management
+ * 
  * @{
  */
 
 /**
- * @section classes Classes and Structures
- *
- * - **data_t** (struct)
- * - **element_t** (struct)
- * - **write_t** (struct)
- * - **writer** (struct)
+ * @section classes_element Classes and Structures
+ * 
+ * This file defines the following structures:
+ * 
+ * - **data_t** (inherits from bsc_t)
+ *   - Manages data from a single ROOT leaf/branch
+ *   - Handles file navigation and data extraction
+ *   - Provides buffer management for event-by-event reading
+ * 
+ * - **element_t**
+ *   - Container for event-level data from multiple branches
+ *   - Provides type-safe data access via template methods
+ *   - Manages event iteration and boundary detection
+ * 
+ * - **write_t**
+ *   - Structure for writing data to ROOT files
+ *   - Manages TTree and variable associations
+ *   - Handles metadata writing
+ * 
+ * - **writer**
+ *   - High-level interface for ROOT file writing
+ *   - Manages multiple output trees
+ *   - Provides template-based data processing
  */
 
 /**
- * @section functions Functions
- *
- * - `data_t();`
- * - `~data_t() override;`
- * - `void initialize();`
- * - `void flush();`
- * - `bool next();`
- * - `void fetch_buffer();`
- * - `void string_type();`
- * - `void fetch_buffer(std::vector<T>** data){ TTreeReader r = TTreeReader(this -> tree);`
- * - `TTreeReader r = TTreeReader(this -> tree);`
- * - `TTreeReaderValue<T> dr(r, this -> branch_name.c_str());`
- * - `if (*data){(*data) -> clear();}`
- * - `if (!(*data)){(*data) = new std::vector<T>();}`
- * - `while (r.Next()){(*data) -> push_back(*dr);}`
- * - `(*data) -> shrink_to_fit();`
- * - `void set_meta();` (element_t::public)
- * - `bool boundary();` (element_t::public)
- * - `bool get(std::string key, g* var){ if (!this -> handle.count(key)){return false;}` (element_t::public)
- * - `if (!this -> handle.count(key)){return false;}` (element_t::public)
- * - `if (this -> handle[key] -> element(var)){return true;}` (element_t::public)
- * - `for (itr = this -> handle.begin(); itr != this -> handle.end(); ++itr){` (element_t::public)
- * - `abort();` (element_t::public)
- * - `variable_t* process(std::string* name);` (write_t::public)
- * - `void write();` (write_t::public)
- * - `void create(std::string tr_name, std::string path);` (write_t::public)
- * - `void close();` (write_t::public)
- * - `writer();` (writer::public)
- * - `~writer();` (writer::public)
- * - `void create(std::string* pth);` (writer::public)
- * - `void write(std::string* tree);` (writer::public)
- * - `void process(std::string* tree, std::string* name, g* t){ this -> process(tree, name) -> process(t, ` (writer::public)
- * - `this -> process(tree, name) -> process(t, name, nullptr);` (writer::public)
- * - `variable_t* process(std::string* tree, std::string* name);` (writer::private)
+ * @section functions_element Functions and Methods
+ * 
+ * **data_t structure methods:**
+ * 
+ * **Constructors and Destructors:**
+ * - `data_t()` - Default constructor
+ * - `~data_t() override` - Destructor, cleans up ROOT objects
+ * 
+ * **Core Methods:**
+ * - `void initialize()` - Initializes ROOT file/tree/branch/leaf connections
+ * - `void flush()` - Clears cached data and releases buffers
+ * - `bool next()` - Advances to next entry, returns false at end
+ * 
+ * **Private Methods:**
+ * - `void fetch_buffer()` - Fetches data buffer from ROOT
+ * - `void string_type()` - Determines and sets leaf data type
+ * - `template <typename T> void fetch_buffer(std::vector<T>** data)`
+ *   - Template method to fetch typed data vectors
+ *   - Uses TTreeReader for efficient data access
+ *   - Automatically allocates and populates output vector
+ * 
+ * **element_t structure methods:**
+ * 
+ * - `bool next()` - Advances to next event in all managed data streams
+ * - `void set_meta()` - Sets metadata for current event
+ * - `bool boundary()` - Checks if at file/event boundary
+ * - `template <typename g> bool get(std::string key, g* var)`
+ *   - Type-safe data retrieval by key name
+ *   - Returns false if key not found
+ *   - Aborts with error message if type mismatch
+ * 
+ * **write_t structure methods:**
+ * 
+ * - `variable_t* process(std::string* name)` - Processes variable for writing
+ * - `void write()` - Writes current data to ROOT file
+ * - `void create(std::string tr_name, std::string path)` - Creates new output tree
+ * - `void close()` - Closes file and cleans up resources
+ * 
+ * **writer class methods:**
+ * 
+ * **Constructors and Destructors:**
+ * - `writer()` - Default constructor
+ * - `~writer()` - Destructor, closes all open files
+ * 
+ * **Public Methods:**
+ * - `void create(std::string* pth)` - Creates new output file at path
+ * - `void write(std::string* tree)` - Writes data to specified tree
+ * - `template <typename g> void process(std::string* tree, std::string* name, g* t)`
+ *   - Template method to process typed data for output
+ *   - Associates data with tree and variable name
+ * 
+ * **Private Methods:**
+ * - `variable_t* process(std::string* tree, std::string* name)` - Internal processing helper
  */
 
 /**
- * @section variables Variables
- *
- * - `std::string   leaf_name = "";` (::private)
- * - `std::string branch_name = "";` (::private)
- * - `std::string   tree_name = "";` (::private)
- * - `std::string   leaf_type = "";` (::private)
- * - `std::string        path = "";` (::private)
- * - `std::string*      fname = nullptr;` (::private)
- * - `int file_index = 0;` (::private)
- * - `std::vector<std::string>* files_s = nullptr;` (::private)
- * - `std::vector<long>*        files_i = nullptr;` (::private)
- * - `std::vector<TFile*>*      files_t = nullptr;` (::private)
- * - `if (!(*data)){(*data) = new std::vector<T>();}` (::private)
- * - `std::string tree = "";` (element_t::public)
- * - `long event_index = -1;` (element_t::public)
- * - `std::string filename = "";` (element_t::public)
- * - `std::cout << "INVALID DATA TYPE GIVEN FOR: " + key << std::endl;` (element_t::public)
- * - `std::map<std::string, data_t*>::iterator itr;` (element_t::public)
- * - `std::cout << "Leaf name: " << d -> leaf_name;` (element_t::public)
- * - `std::cout << "|" << d -> leaf_type << std::endl;` (element_t::public)
- * - `std::map<std::string, data_t*> handle = {};` (element_t::public)
- * - `std::map<std::string, variable_t*>* data = nullptr;` (write_t::public)
- * - `std::map<std::string, write_t*> handle = {};` (writer::private)
+ * @section variables_element Member Variables
+ * 
+ * **data_t structure members:**
+ * 
+ * **Public:**
+ * - `std::string leaf_name = ""` - Name of the ROOT leaf
+ * - `std::string branch_name = ""` - Name of the ROOT branch
+ * - `std::string tree_name = ""` - Name of the ROOT tree
+ * - `std::string leaf_type = ""` - Data type of the leaf (determined at runtime)
+ * - `std::string path = ""` - File path
+ * - `std::string* fname = nullptr` - Pointer to current filename
+ * - `TLeaf* leaf = nullptr` - Pointer to ROOT TLeaf object
+ * - `TBranch* branch = nullptr` - Pointer to ROOT TBranch object
+ * - `TTree* tree = nullptr` - Pointer to ROOT TTree object
+ * - `TFile* file = nullptr` - Pointer to ROOT TFile object
+ * - `int file_index = 0` - Current file index in chain
+ * - `std::vector<std::string>* files_s = nullptr` - List of file paths
+ * - `std::vector<long>* files_i = nullptr` - List of file indices
+ * - `std::vector<TFile*>* files_t = nullptr` - List of open ROOT files
+ * 
+ * **element_t structure members:**
+ * 
+ * **Public:**
+ * - `std::string tree = ""` - Name of the current tree being read
+ * - `long event_index = -1` - Current event index (-1 before first event)
+ * - `std::string filename = ""` - Current filename being processed
+ * - `std::map<std::string, data_t*> handle = {}` - Map of key names to data handlers
+ * 
+ * **write_t structure members:**
+ * 
+ * **Public:**
+ * - `TFile* file = nullptr` - Output ROOT file pointer
+ * - `TTree* tree = nullptr` - Output ROOT tree pointer
+ * - `meta_t* mtx = nullptr` - Metadata structure pointer
+ * - `std::map<std::string, variable_t*>* data = nullptr` - Map of variables to write
+ * 
+ * **writer class members:**
+ * 
+ * **Private:**
+ * - `write_t* head = nullptr` - Pointer to current write context
+ * - `std::map<std::string, write_t*> handle = {}` - Map of tree names to write contexts
  */
 
-/** @} */
+/** @} */  // end of modules_structs_include_structs_element_h
