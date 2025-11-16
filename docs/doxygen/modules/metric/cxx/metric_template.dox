@@ -2,4 +2,11 @@
  * @file metric_template.cxx
  * @brief Documentation for modules/metric/cxx/metric_template.cxx
  *
+ * Location: modules/metric/cxx/metric_template.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

@@ -2,4 +2,11 @@
  * @file nusol.h
  * @brief Documentation for pyc/nusol/include/nusol/nusol.h
  *
+ * Location: pyc/nusol/include/nusol/nusol.h
+ */
+
+/**
+ * @brief .h file
+ *
+ * This file contains implementation details.
  */

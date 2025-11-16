@@ -2,4 +2,11 @@
  * @file graphs.cxx
  * @brief Documentation for graphs/bsm_4tops/cxx/graphs.cxx
  *
+ * Location: graphs/bsm_4tops/cxx/graphs.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

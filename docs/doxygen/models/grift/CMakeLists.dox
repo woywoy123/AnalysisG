@@ -2,4 +2,11 @@
  * @file CMakeLists.txt
  * @brief Documentation for models/grift/CMakeLists.txt
  *
+ * Location: models/grift/CMakeLists.txt
+ */
+
+/**
+ * @brief .txt file
+ *
+ * This file contains implementation details.
  */

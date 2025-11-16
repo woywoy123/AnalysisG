@@ -2,23 +2,24 @@
  * @file pyc.h
  * @brief Documentation for pyc/interface/include/pyc/pyc.h
  *
- * @subsection neutrino_class neutrino
- * Inherits from particle_template
+ * Location: pyc/interface/include/pyc/pyc.h
+ */
+
+/**
+ * @brief class neutrino
+ * @extends particle_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `neutrino();`
- * - `neutrino(double px, double py, double pz);`
- * - `virtual ~neutrino();`
- * - `double min = 0;`
- * - `long l_idx = -1;`
- * - `long b_idx = -1;`
- * - `particle_template* bquark = nullptr;`
- * - `particle_template* lepton = nullptr;`
- * - `std::vector<neutrino*> alternatives = {};`
- * - `std::vector<int> top_index = {};`
- * - `bool from_res = false;`
- * - `};`
+ * **Methods:**
+ * - neutrino()
+ * - neutrino(double px, double py, double pz)
+ * - virtual ~neutrino()
+ *
+ * **Variables:**
+ * - double min = 0
+ * - long l_idx = -1
+ * - long b_idx = -1
+ * - bool from_res = false
  *
  */

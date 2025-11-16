@@ -2,52 +2,65 @@
  * @file odeRK.h
  * @brief Documentation for modules/nusol/tmp/odeRK.h
  *
- * @subsection ellipse_t_class ellipse_t
+ * Location: modules/nusol/tmp/odeRK.h
+ */
+
+/**
+ * @brief struct ellipse_t
  *
- * **Public Members:**
- * - `vec3   A,   B,   C;`
- * - `vec3  vA,  vB,  vC;`
- * - `double t;`
- * - `double z = 1.0;`
- * - `void print();`
- * - `};`
+ * @section public_members Public Members
  *
- * @subsection recon_t_class recon_t
+ * **Methods:**
+ * - void print()
  *
- * **Public Members:**
- * - `bool is_valid = false;`
- * - `double residual = -1;`
- * - `std::vector<double> t;`
- * - `std::vector<double> z;`
- * - `std::vector<double> phi;`
- * - `};`
+ * **Variables:**
+ * - vec3   A,   B,   C
+ * - vec3  vA,  vB,  vC
+ * - double t
+ * - double z = 1.0
  *
- * @subsection odeRK_class odeRK
- * Inherits from tools
+ */
+
+/**
+ * @brief struct recon_t
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `odeRK(std::vector<multisol*>* sols, vec3 met, int iter, double step);`
- * - `~odeRK();`
- * - `void solve();`
- * - `void rk4(double dt);`
- * - `void   update_t();`
- * - `double solve_z_phi();`
- * - `double residual(std::vector<double> wg, std::vector<double> phx);`
- * - `std::vector<ellipse_t> derivative(const std::vector<ellipse_t>& dS);`
- * - `double ghost_angle(int nui);`
- * - `std::vector<double> plane_rk4(const std::vector<double>& t_initial);`
- * - `std::vector<double> plane_align(const std::vector<ellipse_t>& current_state);`
+ * **Variables:**
+ * - bool is_valid = false
+ * - double residual = -1
+ * - std::vector<double> t
+ * - std::vector<double> z
+ * - std::vector<double> phi
  *
- * **Private Members:**
- * - `vec3 met_;`
- * - `int itr    = 0;`
- * - `int nsx    = 0;`
- * - `double dt_ = 0;`
- * - `double ct  = 0;`
- * - `std::vector<ellipse_t>  _state = {};`
- * - `std::vector<multisol*>* _data  = nullptr;`
- * - `};`
+ */
+
+/**
+ * @brief class odeRK
+ * @extends tools
+ *
+ * @section public_members Public Members
+ *
+ * **Methods:**
+ * - odeRK(std::vector<multisol*>* sols, vec3 met, int iter, double step)
+ * - ~odeRK()
+ * - void solve()
+ * - void rk4(double dt)
+ * - void   update_t()
+ * - double solve_z_phi()
+ * - double residual(std::vector<double> wg, std::vector<double> phx)
+ * - std::vector<ellipse_t> derivative(const std::vector<ellipse_t>& dS)
+ * - double ghost_angle(int nui)
+ * - std::vector<double> plane_rk4(const std::vector<double>& t_initial)
+ * - std::vector<double> plane_align(const std::vector<ellipse_t>& current_state)
+ *
+ * @section private_members Private Members
+ *
+ * **Variables:**
+ * - vec3 met_
+ * - int itr    = 0
+ * - int nsx    = 0
+ * - double dt_ = 0
+ * - double ct  = 0
  *
  */

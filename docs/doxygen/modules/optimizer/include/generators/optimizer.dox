@@ -2,28 +2,25 @@
  * @file optimizer.h
  * @brief Documentation for modules/optimizer/include/generators/optimizer.h
  *
- * @subsection analysis_class analysis
+ * Location: modules/optimizer/include/generators/optimizer.h
+ */
+
+/**
+ * @brief class analysis
  *
- * **Public Members:**
- * - `class analysis;`
- * @subsection optimizer_class optimizer
+ * @section public_members Public Members
  *
- * **Public Members:**
+ * **Methods:**
+ * - optimizer()
+ * - ~optimizer()
+ * - void import_dataloader(dataloader* dl)
+ * - void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models)
+ * - void training_loop(int k, int epoch)
+ * - void validation_loop(int k, int epoch)
+ * - void evaluation_loop(int k, int epoch)
+ * - void launch_model(int k)
  *
- * **Private Members:**
- * - `optimizer();`
- * - `~optimizer();`
- * - `settings_t m_settings;`
- * - `void import_dataloader(dataloader* dl);`
- * - `void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models);`
- * - `void training_loop(int k, int epoch);`
- * - `void validation_loop(int k, int epoch);`
- * - `void evaluation_loop(int k, int epoch);`
- * - `void launch_model(int k);`
- * - `std::map<int, model_template*> kfold_sessions = {};`
- * - `std::map<std::string, model_report*> reports = {};`
- * - `metrics*    metric = nullptr;`
- * - `dataloader* loader = nullptr;`
- * - `};`
+ * **Variables:**
+ * - settings_t m_settings
  *
  */

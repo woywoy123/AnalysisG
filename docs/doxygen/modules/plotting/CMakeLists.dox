@@ -2,4 +2,11 @@
  * @file CMakeLists.txt
  * @brief Documentation for modules/plotting/CMakeLists.txt
  *
+ * Location: modules/plotting/CMakeLists.txt
+ */
+
+/**
+ * @brief .txt file
+ *
+ * This file contains implementation details.
  */

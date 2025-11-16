@@ -2,50 +2,42 @@
  * @file container.h
  * @brief Documentation for modules/container/include/container/container.h
  *
- * @subsection entry_t_class entry_t
+ * Location: modules/container/include/container/container.h
+ */
+
+/**
+ * @brief struct entry_t
  *
- * **Public Members:**
- * - `std::string hash = "";`
- * - `std::vector<graph_t*>                m_data  = {};`
- * - `std::vector<graph_template*>         m_graph = {};`
- * - `std::vector<event_template*>         m_event = {};`
- * - `std::vector<selection_template*> m_selection = {};`
- * - `void init();`
- * - `void destroy();`
- * - `bool has_event(event_template* ev);`
- * - `bool has_graph(graph_template* gr);`
- * - `bool has_selection(selection_template* sel);`
- * - `for (size_t x(0); x < c -> size(); ++x){`
- * - `delete (*c)[x];`
- * - `(*c)[x] = nullptr;`
- * - `std::vector<g*>().swap(*c);`
- * - `};`
+ * @section public_members Public Members
  *
- * @subsection container_class container
- * Inherits from tools
+ * **Variables:**
+ * - std::string hash = ""
  *
- * **Public Members:**
+ */
+
+/**
+ * @brief class container
+ * @extends tools
  *
- * **Private Members:**
- * - `container();`
- * - `~container();`
- * - `void add_meta_data(meta*, std::string);`
- * - `meta* get_meta_data();`
- * - `bool add_selection_template(selection_template*);`
- * - `bool add_event_template(event_template*, std::string label);`
- * - `bool add_graph_template(graph_template*, std::string label);`
- * - `void fill_selections(std::map<std::string, selection_template*>* inpt);`
- * - `void get_events(std::vector<event_template*>*, std::string label);`
- * - `void populate_dataloader(dataloader* dl);`
- * - `void compile(size_t* len, int threadIdx);`
- * - `size_t len();`
- * - `entry_t* add_entry(std::string hash);`
- * - `meta*        meta_data   = nullptr;`
- * - `std::string* filename    = nullptr;`
- * - `std::string* output_path = nullptr;`
- * - `std::string     label    = "";`
- * - `std::map<std::string, entry_t> random_access;`
- * - `std::map<std::string, selection_template*>* merged = nullptr;`
- * - `};`
+ * @section public_members Public Members
+ *
+ * **Methods:**
+ * - container()
+ * - ~container()
+ * - void add_meta_data(meta*, std::string)
+ * - meta* get_meta_data()
+ * - bool add_selection_template(selection_template*)
+ * - bool add_event_template(event_template*, std::string label)
+ * - bool add_graph_template(graph_template*, std::string label)
+ * - void fill_selections(std::map<std::string, selection_template*>* inpt)
+ * - void get_events(std::vector<event_template*>*, std::string label)
+ * - void populate_dataloader(dataloader* dl)
+ * - void compile(size_t* len, int threadIdx)
+ * - size_t len()
+ * - entry_t* add_entry(std::string hash)
+ *
+ * **Variables:**
+ * - std::string     label    = ""
+ * - std::map<std::string, entry_t> random_access
  *
  */

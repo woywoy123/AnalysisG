@@ -2,4 +2,11 @@
  * @file notification.cxx
  * @brief Documentation for modules/notification/cxx/notification.cxx
  *
+ * Location: modules/notification/cxx/notification.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

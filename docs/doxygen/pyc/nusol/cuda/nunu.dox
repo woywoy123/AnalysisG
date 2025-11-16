@@ -2,4 +2,11 @@
  * @file nunu.cu
  * @brief Documentation for pyc/nusol/cuda/nunu.cu
  *
+ * Location: pyc/nusol/cuda/nunu.cu
+ */
+
+/**
+ * @brief .cu file
+ *
+ * This file contains implementation details.
  */

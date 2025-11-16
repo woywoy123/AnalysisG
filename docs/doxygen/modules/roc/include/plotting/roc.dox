@@ -2,36 +2,36 @@
  * @file roc.h
  * @brief Documentation for modules/roc/include/plotting/roc.h
  *
- * @subsection roc_t_class roc_t
+ * Location: modules/roc/include/plotting/roc.h
+ */
+
+/**
+ * @brief struct roc_t
  *
- * **Public Members:**
- * - `int cls = 0;`
- * - `int kfold = 0;`
- * - `std::string model = "";`
- * - `std::vector<double> _auc = {};`
- * - `std::vector<std::vector<double>> tpr_ = {};`
- * - `std::vector<std::vector<double>> fpr_ = {};`
- * - `std::vector<std::vector<int>>*     truth = nullptr;`
- * - `std::vector<std::vector<double>>* scores = nullptr;`
- * - `};`
+ * @section public_members Public Members
  *
- * @subsection roc_class roc
- * Inherits from plotting
+ * **Variables:**
+ * - int cls = 0
+ * - int kfold = 0
+ * - std::string model = ""
  *
- * **Public Members:**
+ */
+
+/**
+ * @brief class roc
+ * @extends plotting
  *
- * **Private Members:**
- * - `roc();`
- * - `~roc();`
- * - `);`
- * - `std::vector<roc_t*> get_ROC();`
- * - `std::map<std::string, std::map<int, std::vector<std::vector<double>>*>> roc_data = {};`
- * - `std::map<std::string, std::map<int, std::vector<std::vector<int>>*>>      labels = {};`
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `std::vector<roc_t*> ptr_roc = {};`
- * - `typename std::vector<g> v(y, 0);`
- * - `return new std::vector<std::vector<g>>(x, v);`
- * - `};`
+ * **Methods:**
+ * - roc()
+ * - ~roc()
+ * - std::vector<roc_t*> get_ROC()
+ *
+ * @section private_members Private Members
+ *
+ * **Methods:**
+ * - std::vector<std::vector<g>>* generate(size_t x, size_t y)
+ * - typename std::vector<g> v(y, 0)
  *
  */

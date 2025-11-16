@@ -2,4 +2,11 @@
  * @file switching.cxx
  * @brief Documentation for modules/lossfx/cxx/switching.cxx
  *
+ * Location: modules/lossfx/cxx/switching.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

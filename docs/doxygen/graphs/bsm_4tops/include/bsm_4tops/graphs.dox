@@ -2,105 +2,123 @@
  * @file graphs.h
  * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/graphs.h
  *
- * @subsection graph_tops_class graph_tops
- * Inherits from graph_template
+ * Location: graphs/bsm_4tops/include/bsm_4tops/graphs.h
+ */
+
+/**
+ * @brief class graph_tops
+ * @extends graph_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `graph_tops();`
- * - `virtual ~graph_tops();`
- * - `graph_template* clone() override;`
- * - `void CompileEvent() override;`
- * - `};`
+ * **Methods:**
+ * - graph_tops()
+ * - virtual ~graph_tops()
+ * - graph_template* clone() override
+ * - void CompileEvent() override
  *
- * @subsection graph_children_class graph_children
- * Inherits from graph_template
+ */
+
+/**
+ * @brief class graph_children
+ * @extends graph_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `graph_children();`
- * - `virtual ~graph_children();`
- * - `graph_template* clone() override;`
- * - `void CompileEvent() override;`
- * - `};`
+ * **Methods:**
+ * - graph_children()
+ * - virtual ~graph_children()
+ * - graph_template* clone() override
+ * - void CompileEvent() override
  *
- * @subsection graph_truthjets_class graph_truthjets
- * Inherits from graph_template
+ */
+
+/**
+ * @brief class graph_truthjets
+ * @extends graph_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `graph_truthjets();`
- * - `virtual ~graph_truthjets();`
- * - `graph_template* clone() override;`
- * - `void CompileEvent() override;`
- * - `};`
+ * **Methods:**
+ * - graph_truthjets()
+ * - virtual ~graph_truthjets()
+ * - graph_template* clone() override
+ * - void CompileEvent() override
  *
- * @subsection graph_truthjets_nonu_class graph_truthjets_nonu
- * Inherits from graph_template
+ */
+
+/**
+ * @brief class graph_truthjets_nonu
+ * @extends graph_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `graph_truthjets_nonu();`
- * - `graph_template* clone() override;`
- * - `virtual ~graph_truthjets_nonu();`
- * - `void CompileEvent() override;`
- * - `};`
+ * **Methods:**
+ * - graph_truthjets_nonu()
+ * - graph_template* clone() override
+ * - virtual ~graph_truthjets_nonu()
+ * - void CompileEvent() override
  *
- * @subsection graph_jets_class graph_jets
- * Inherits from graph_template
+ */
+
+/**
+ * @brief class graph_jets
+ * @extends graph_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `graph_jets();`
- * - `virtual ~graph_jets();`
- * - `graph_template* clone() override;`
- * - `void CompileEvent() override;`
- * - `bool PreSelection() override;`
- * - `};`
+ * **Methods:**
+ * - graph_jets()
+ * - virtual ~graph_jets()
+ * - graph_template* clone() override
+ * - void CompileEvent() override
+ * - bool PreSelection() override
  *
- * @subsection graph_jets_nonu_class graph_jets_nonu
- * Inherits from graph_template
+ */
+
+/**
+ * @brief class graph_jets_nonu
+ * @extends graph_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `graph_jets_nonu();`
- * - `virtual ~graph_jets_nonu();`
- * - `graph_template* clone() override;`
- * - `void CompileEvent() override;`
- * - `};`
+ * **Methods:**
+ * - graph_jets_nonu()
+ * - virtual ~graph_jets_nonu()
+ * - graph_template* clone() override
+ * - void CompileEvent() override
  *
- * @subsection graph_jets_detector_lep_class graph_jets_detector_lep
- * Inherits from graph_template
+ */
+
+/**
+ * @brief class graph_jets_detector_lep
+ * @extends graph_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `graph_jets_detector_lep();`
- * - `virtual ~graph_jets_detector_lep();`
- * - `graph_template* clone() override;`
- * - `void CompileEvent() override;`
- * - `};`
+ * **Methods:**
+ * - graph_jets_detector_lep()
+ * - virtual ~graph_jets_detector_lep()
+ * - graph_template* clone() override
+ * - void CompileEvent() override
  *
- * @subsection graph_detector_class graph_detector
- * Inherits from graph_template
+ */
+
+/**
+ * @brief class graph_detector
+ * @extends graph_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `graph_detector();`
- * - `virtual ~graph_detector();`
- * - `graph_template* clone() override;`
- * - `void CompileEvent() override;`
- * - `bool PreSelection() override;`
- * - `std::vector<particle_template*> nux = {};`
- * - `bool force_match = false;`
- * - `int num_cuda = 1;`
- * - `};`
+ * **Methods:**
+ * - graph_detector()
+ * - virtual ~graph_detector()
+ * - graph_template* clone() override
+ * - void CompileEvent() override
+ * - bool PreSelection() override
+ *
+ * **Variables:**
+ * - bool force_match = false
+ * - int num_cuda = 1
  *
  */

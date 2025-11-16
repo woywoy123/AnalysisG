@@ -2,4 +2,11 @@
  * @file lossfx.pyx
  * @brief Documentation for core/lossfx.pyx
  *
+ * Location: core/lossfx.pyx
+ */
+
+/**
+ * @brief .pyx file
+ *
+ * This file contains implementation details.
  */

@@ -2,4 +2,11 @@
  * @file roc.pyx
  * @brief Documentation for core/roc.pyx
  *
+ * Location: core/roc.pyx
+ */
+
+/**
+ * @brief .pyx file
+ *
+ * This file contains implementation details.
  */

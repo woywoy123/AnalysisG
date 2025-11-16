@@ -2,4 +2,11 @@
  * @file selection_template.cxx
  * @brief Documentation for modules/selection/cxx/selection_template.cxx
  *
+ * Location: modules/selection/cxx/selection_template.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

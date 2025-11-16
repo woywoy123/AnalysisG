@@ -2,4 +2,11 @@
  * @file struct_graph.cxx
  * @brief Documentation for modules/graph/cxx/struct_graph.cxx
  *
+ * Location: modules/graph/cxx/struct_graph.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

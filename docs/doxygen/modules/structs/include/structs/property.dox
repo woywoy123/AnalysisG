@@ -2,40 +2,38 @@
  * @file property.h
  * @brief Documentation for modules/structs/include/structs/property.h
  *
- * @subsection cproperty_class cproperty
+ * Location: modules/structs/include/structs/property.h
+ */
+
+/**
+ * @brief class cproperty
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `cproperty() : data() {};`
- * - `this -> has_setter = true;`
- * - `this -> setter = c;`
- * - `this -> has_getter = true;`
- * - `this -> getter = c;`
- * - `void set_object(G* _obj){this -> obj = _obj;}`
- * - `this -> data = val;`
- * - `if (!this -> has_setter){return *this;}`
- * - `this -> setter(&this -> data, this -> obj);`
- * - `return *this;`
- * - `T    operator+(const T& val){return this -> data + val;}`
- * - `bool operator==(const T& val){return this -> data == val;}`
- * - `bool operator!=(const T& val){return this -> data != val;}`
- * - `if (!this -> has_getter){return this -> data;}`
- * - `this -> getter(&this -> data, this -> obj);`
- * - `return this -> data;`
- * - `if (!this -> has_getter){return &this -> data;}`
- * - `this -> getter(&this -> data, this -> obj);`
- * - `return &this -> data;`
- * - `if (!this -> has_getter){return;}`
- * - `this -> data = T();`
+ * **Methods:**
+ * - cproperty() : data() {}
+ * - void set_setter(std::function<void(T*, G*)> c = x_setter<T, G>)
+ * - void set_getter(std::function<void(T*, G*)> c = x_getter<T, G>)
+ * - void set_object(G* _obj){this -> obj = _obj;}
+ * - this -> setter(&this -> data, this -> obj)
+ * - operator T()
+ * - this -> getter(&this -> data, this -> obj)
+ * - this -> getter(&this -> data, this -> obj)
+ * - void clear()
+ * - this -> data = T()
  *
- * **Private Members:**
- * - `T data;`
- * - `G* obj = nullptr;`
- * - `bool has_getter = false;`
- * - `bool has_setter = false;`
- * - `std::function<void(T*, G*)> setter;`
- * - `std::function<void(T*, G*)> getter;`
- * - `};`
+ * **Variables:**
+ * - return this -> data
+ *
+ * @section private_members Private Members
+ *
+ * **Methods:**
+ * - std::function<void(T*, G*)> setter
+ * - std::function<void(T*, G*)> getter
+ *
+ * **Variables:**
+ * - T data
+ * - bool has_getter = false
+ * - bool has_setter = false
  *
  */

@@ -2,4 +2,11 @@
  * @file grift.pyx
  * @brief Documentation for models/grift/grift.pyx
  *
+ * Location: models/grift/grift.pyx
+ */
+
+/**
+ * @brief .pyx file
+ *
+ * This file contains implementation details.
  */

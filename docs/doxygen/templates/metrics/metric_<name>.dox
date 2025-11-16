@@ -2,4 +2,11 @@
  * @file metric_<name>.pyx
  * @brief Documentation for templates/metrics/metric_<name>.pyx
  *
+ * Location: templates/metrics/metric_<name>.pyx
+ */
+
+/**
+ * @brief .pyx file
+ *
+ * This file contains implementation details.
  */

@@ -2,4 +2,11 @@
  * @file .grift.cxx
  * @brief Documentation for models/grift/cxx/.grift.cxx
  *
+ * Location: models/grift/cxx/.grift.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

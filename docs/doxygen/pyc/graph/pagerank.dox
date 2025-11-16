@@ -2,4 +2,11 @@
  * @file pagerank.cu
  * @brief Documentation for pyc/graph/pagerank.cu
  *
+ * Location: pyc/graph/pagerank.cu
+ */
+
+/**
+ * @brief .cu file
+ *
+ * This file contains implementation details.
  */

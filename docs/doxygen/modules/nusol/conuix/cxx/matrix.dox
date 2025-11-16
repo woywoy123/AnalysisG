@@ -2,4 +2,11 @@
  * @file matrix.cxx
  * @brief Documentation for modules/nusol/conuix/cxx/matrix.cxx
  *
+ * Location: modules/nusol/conuix/cxx/matrix.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

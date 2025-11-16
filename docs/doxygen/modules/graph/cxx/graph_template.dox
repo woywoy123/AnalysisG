@@ -2,4 +2,11 @@
  * @file graph_template.cxx
  * @brief Documentation for modules/graph/cxx/graph_template.cxx
  *
+ * Location: modules/graph/cxx/graph_template.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

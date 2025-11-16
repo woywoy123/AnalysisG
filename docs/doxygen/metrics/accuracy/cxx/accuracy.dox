@@ -2,4 +2,11 @@
  * @file accuracy.cxx
  * @brief Documentation for metrics/accuracy/cxx/accuracy.cxx
  *
+ * Location: metrics/accuracy/cxx/accuracy.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

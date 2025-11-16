@@ -2,60 +2,52 @@
  * @file vector_cast.h
  * @brief Documentation for modules/typecasting/include/tools/vector_cast.h
  *
- * @subsection write_t_class write_t
+ * Location: modules/typecasting/include/tools/vector_cast.h
+ */
+
+/**
+ * @brief struct write_t
  *
- * **Public Members:**
- * - `struct write_t;`
- * @subsection variable_t_class variable_t
- * Inherits from bsc_t
+ * @section public_members Public Members
  *
- * **Public Members:**
+ * **Methods:**
+ * - variable_t()
+ * - variable_t(bool use_external)
+ * - ~variable_t() override
+ * - void create_meta(meta_t* mt)
+ * - void process(torch::Tensor* data, std::string* varname, TTree* tr)
+ * - void process(std::vector<std::vector<float>>*  data, std::string* varname, TTree* tr)
+ * - void process(std::vector<std::vector<double>>* data, std::string* varname, TTree* tr)
+ * - void process(std::vector<std::vector<long>>*   data, std::string* varname, TTree* tr)
+ * - void process(std::vector<std::vector<int>>*    data, std::string* varname, TTree* tr)
+ * - void process(std::vector<std::vector<bool>>*   data, std::string* varname, TTree* tr)
+ * - void process(std::vector<float>*  data, std::string* varname, TTree* tr)
+ * - void process(std::vector<double>* data, std::string* varname, TTree* tr)
+ * - void process(std::vector<long>*   data, std::string* varname, TTree* tr)
+ * - void process(std::vector<int>*    data, std::string* varname, TTree* tr)
+ * - void process(std::vector<bool>*   data, std::string* varname, TTree* tr)
+ * - void process(float*  data, std::string* varname, TTree* tr)
+ * - void process(double* data, std::string* varname, TTree* tr)
+ * - void process(long*   data, std::string* varname, TTree* tr)
+ * - void process(int*    data, std::string* varname, TTree* tr)
+ * - void process(bool*   data, std::string* varname, TTree* tr)
  *
- * **Private Members:**
- * - `variable_t();`
- * - `variable_t(bool use_external);`
- * - `~variable_t() override;`
- * - `void create_meta(meta_t* mt);`
- * - `void build_switch(size_t s, torch::Tensor* tx);`
- * - `void process(torch::Tensor* data, std::string* varname, TTree* tr);`
- * - `void process(std::vector<std::vector<float>>*  data, std::string* varname, TTree* tr);`
- * - `void process(std::vector<std::vector<double>>* data, std::string* varname, TTree* tr);`
- * - `void process(std::vector<std::vector<long>>*   data, std::string* varname, TTree* tr);`
- * - `void process(std::vector<std::vector<int>>*    data, std::string* varname, TTree* tr);`
- * - `void process(std::vector<std::vector<bool>>*   data, std::string* varname, TTree* tr);`
- * - `void process(std::vector<float>*  data, std::string* varname, TTree* tr);`
- * - `void process(std::vector<double>* data, std::string* varname, TTree* tr);`
- * - `void process(std::vector<long>*   data, std::string* varname, TTree* tr);`
- * - `void process(std::vector<int>*    data, std::string* varname, TTree* tr);`
- * - `void process(std::vector<bool>*   data, std::string* varname, TTree* tr);`
- * - `void process(float*  data, std::string* varname, TTree* tr);`
- * - `void process(double* data, std::string* varname, TTree* tr);`
- * - `void process(long*   data, std::string* varname, TTree* tr);`
- * - `void process(int*    data, std::string* varname, TTree* tr);`
- * - `void process(bool*   data, std::string* varname, TTree* tr);`
- * - `std::string variable_name = "";`
- * - `bool failed_branch = false;`
+ * **Variables:**
+ * - std::string variable_name = ""
+ * - bool failed_branch = false
  *
- * **Private Members:**
- * - `friend write_t;`
- * - `bool use_external = false;`
- * - `bool is_triggered = false;`
- * - `TBranch* tb = nullptr;`
- * - `TTree*   tt = nullptr;`
- * - `meta_t* mtx = nullptr;`
- * - `if (!tx){tx = new g();}`
- * - `tensor_to_vector(data, tx, s, prim);`
- * - `if (this -> tb || !this -> tt){return;}`
- * - `this -> tb = this -> tt -> Branch(this -> variable_name.c_str(), tx);`
- * - `this -> failed_branch = !this -> tb;`
- * - `if (!tx){this -> variable_name = *name; tx = new g();}`
- * - `if (!var){return;}`
- * - `*tx = *var;`
- * - `if (this -> tb || !this -> tt){return;}`
- * - `if (tr){this -> tt = tr;}`
- * - `this -> tb = this -> tt -> Branch(this -> variable_name.c_str(), tx);`
- * - `this -> failed_branch = !this -> tb;`
- * - `this -> is_triggered = true;`
- * - `};`
+ * @section private_members Private Members
+ *
+ * **Methods:**
+ * - void add_data(g*& tx, torch::Tensor* data, std::vector<signed long>* s, p prim)
+ * - tensor_to_vector(data, tx, s, prim)
+ * - this -> tb = this -> tt -> Branch(this -> variable_name.c_str(), tx)
+ * - void add_data(g* var, g*& tx, std::string* name, TTree* tr = nullptr)
+ * - this -> tb = this -> tt -> Branch(this -> variable_name.c_str(), tx)
+ *
+ * **Variables:**
+ * - friend write_t
+ * - bool use_external = false
+ * - bool is_triggered = false
  *
  */

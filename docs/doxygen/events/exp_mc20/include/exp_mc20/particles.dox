@@ -2,112 +2,129 @@
  * @file particles.h
  * @brief Documentation for events/exp_mc20/include/exp_mc20/particles.h
  *
- * @subsection top_class top
- * Inherits from particle_template
+ * Location: events/exp_mc20/include/exp_mc20/particles.h
+ */
+
+/**
+ * @brief class top
+ * @extends particle_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `top();`
- * - `virtual ~top();`
- * - `int top_index = -1;`
- * - `particle_template* clone() override;`
- * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
- * - `};`
+ * **Methods:**
+ * - top()
+ * - virtual ~top()
+ * - particle_template* clone() override
+ * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
  *
- * @subsection child_class child
- * Inherits from particle_template
+ * **Variables:**
+ * - int top_index = -1
  *
- * **Public Members:**
+ */
+
+/**
+ * @brief class child
+ * @extends particle_template
  *
- * **Private Members:**
- * - `child();`
- * - `virtual ~child();`
- * - `std::vector<int> top_index = {};`
- * - `particle_template* clone() override;`
- * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
- * - `};`
+ * @section public_members Public Members
  *
- * @subsection physics_detector_class physics_detector
- * Inherits from particle_template
+ * **Methods:**
+ * - child()
+ * - virtual ~child()
+ * - particle_template* clone() override
+ * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
  *
- * **Public Members:**
+ */
+
+/**
+ * @brief class physics_detector
+ * @extends particle_template
  *
- * **Private Members:**
- * - `physics_detector();`
- * - `virtual ~physics_detector();`
- * - `std::vector<int> top_index = {};`
- * - `particle_template* clone() override;`
- * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
- * - `};`
+ * @section public_members Public Members
  *
- * @subsection physics_truth_class physics_truth
- * Inherits from particle_template
+ * **Methods:**
+ * - physics_detector()
+ * - virtual ~physics_detector()
+ * - particle_template* clone() override
+ * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
  *
- * **Public Members:**
+ */
+
+/**
+ * @brief class physics_truth
+ * @extends particle_template
  *
- * **Private Members:**
- * - `physics_truth();`
- * - `virtual ~physics_truth();`
- * - `std::vector<int> top_index = {};`
- * - `particle_template* clone() override;`
- * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
- * - `};`
+ * @section public_members Public Members
  *
- * @subsection electron_class electron
- * Inherits from particle_template
+ * **Methods:**
+ * - physics_truth()
+ * - virtual ~physics_truth()
+ * - particle_template* clone() override
+ * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
  *
- * **Public Members:**
+ */
+
+/**
+ * @brief class electron
+ * @extends particle_template
  *
- * **Private Members:**
- * - `electron();`
- * - `virtual ~electron();`
- * - `float d0 = 0;`
- * - `int true_type = 0;`
- * - `float delta_z0 = 0;`
- * - `int true_origin = 0;`
- * - `bool is_tight = false;`
- * - `std::vector<int> top_index = {};`
- * - `particle_template* clone() override;`
- * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
- * - `};`
+ * @section public_members Public Members
  *
- * @subsection muon_class muon
- * Inherits from particle_template
+ * **Methods:**
+ * - electron()
+ * - virtual ~electron()
+ * - particle_template* clone() override
+ * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
  *
- * **Public Members:**
+ * **Variables:**
+ * - float d0 = 0
+ * - int true_type = 0
+ * - float delta_z0 = 0
+ * - int true_origin = 0
+ * - bool is_tight = false
  *
- * **Private Members:**
- * - `muon();`
- * - `virtual ~muon();`
- * - `float d0 = 0;`
- * - `int true_type = 0;`
- * - `float delta_z0 = 0;`
- * - `int true_origin = 0;`
- * - `bool is_tight = false;`
- * - `std::vector<int> top_index = {};`
- * - `particle_template* clone() override;`
- * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
- * - `};`
+ */
+
+/**
+ * @brief class muon
+ * @extends particle_template
  *
- * @subsection jet_class jet
- * Inherits from particle_template
+ * @section public_members Public Members
  *
- * **Public Members:**
+ * **Methods:**
+ * - muon()
+ * - virtual ~muon()
+ * - particle_template* clone() override
+ * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
  *
- * **Private Members:**
- * - `jet();`
- * - `virtual ~jet();`
- * - `bool btag_65;`
- * - `bool btag_70;`
- * - `bool btag_77;`
- * - `bool btag_85;`
- * - `bool btag_90;`
- * - `int flav;`
- * - `int label;`
- * - `std::vector<int> top_index = {};`
- * - `particle_template* clone() override;`
- * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
- * - `};`
+ * **Variables:**
+ * - float d0 = 0
+ * - int true_type = 0
+ * - float delta_z0 = 0
+ * - int true_origin = 0
+ * - bool is_tight = false
+ *
+ */
+
+/**
+ * @brief class jet
+ * @extends particle_template
+ *
+ * @section public_members Public Members
+ *
+ * **Methods:**
+ * - jet()
+ * - virtual ~jet()
+ * - particle_template* clone() override
+ * - void build(std::map<std::string, particle_template*>* prt, element_t* el) override
+ *
+ * **Variables:**
+ * - bool btag_65
+ * - bool btag_70
+ * - bool btag_77
+ * - bool btag_85
+ * - bool btag_90
+ * - int flav
+ * - int label
  *
  */

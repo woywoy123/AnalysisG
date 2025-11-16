@@ -2,32 +2,27 @@
  * @file RecursiveGraphNeuralNetwork.h
  * @brief Documentation for models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h
  *
- * @subsection recursivegraphneuralnetwork_class recursivegraphneuralnetwork
- * Inherits from model_template
+ * Location: models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h
+ */
+
+/**
+ * @brief class recursivegraphneuralnetwork
+ * @extends model_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `recursivegraphneuralnetwork(int rep = 1024, double dpt = 0.1);`
- * - `~recursivegraphneuralnetwork();`
- * - `model_template* clone() override;`
- * - `void forward(graph_t*) override;`
- * - `);`
- * - `int _dx     = 26;`
- * - `int _x      = 5;`
- * - `int _output = 2;`
- * - `int _rep    = 256;`
- * - `double res_mass = 0;`
- * - `double drop_out = 0.1;`
- * - `bool is_mc = true;`
- * - `torch::nn::Sequential* rnn_x         = nullptr;`
- * - `torch::nn::Sequential* rnn_dx        = nullptr;`
- * - `torch::nn::Sequential* rnn_merge     = nullptr;`
- * - `torch::nn::Sequential* rnn_update    = nullptr;`
- * - `torch::nn::Sequential* exotic_mlp    = nullptr;`
- * - `torch::nn::Sequential* node_aggr_mlp = nullptr;`
- * - `torch::nn::Sequential* ntops_mlp     = nullptr;`
- * - `torch::nn::Sequential* exo_mlp       = nullptr;`
- * - `};`
+ * **Methods:**
+ * - recursivegraphneuralnetwork(int rep = 1024, double dpt = 0.1)
+ * - ~recursivegraphneuralnetwork()
+ * - model_template* clone() override
+ *
+ * **Variables:**
+ * - int _dx     = 26
+ * - int _x      = 5
+ * - int _output = 2
+ * - int _rep    = 256
+ * - double res_mass = 0
+ * - double drop_out = 0.1
+ * - bool is_mc = true
  *
  */

@@ -2,4 +2,11 @@
  * @file particle_template.cxx
  * @brief Documentation for modules/particle/cxx/particle_template.cxx
  *
+ * Location: modules/particle/cxx/particle_template.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

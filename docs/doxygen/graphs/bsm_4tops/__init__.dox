@@ -2,4 +2,11 @@
  * @file __init__.pxd
  * @brief Documentation for graphs/bsm_4tops/__init__.pxd
  *
+ * Location: graphs/bsm_4tops/__init__.pxd
+ */
+
+/**
+ * @brief .pxd file
+ *
+ * This file contains implementation details.
  */

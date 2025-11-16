@@ -2,31 +2,26 @@
  * @file report.h
  * @brief Documentation for modules/structs/include/structs/report.h
  *
- * @subsection metrics_class metrics
+ * Location: modules/structs/include/structs/report.h
+ */
+
+/**
+ * @brief class metrics
  *
- * **Public Members:**
- * - `class metrics;`
- * @subsection model_report_class model_report
+ * @section private_members Private Members
  *
- * **Public Members:**
- * - `int k;`
- * - `int epoch;`
- * - `bool is_complete = false;`
- * - `metrics* waiting_plot = nullptr;`
- * - `std::vector<double> current_lr = {};`
- * - `std::map<mode_enum, std::map<std::string, float>> loss_graph = {};`
- * - `std::map<mode_enum, std::map<std::string, float>> loss_node = {};`
- * - `std::map<mode_enum, std::map<std::string, float>> loss_edge = {};`
- * - `std::map<mode_enum, std::map<std::string, float>> accuracy_graph = {};`
- * - `std::map<mode_enum, std::map<std::string, float>> accuracy_node = {};`
- * - `std::map<mode_enum, std::map<std::string, float>> accuracy_edge = {};`
- * - `std::string run_name;`
- * - `std::string mode;`
- * - `long iters = 0;`
- * - `long num_evnt = 0;`
- * - `float progress;`
- * - `std::string print();`
- * - `std::string prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string title);`
- * - `};`
+ * **Methods:**
+ * - std::string print()
+ * - std::string prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string title)
+ *
+ * **Variables:**
+ * - int k
+ * - int epoch
+ * - bool is_complete = false
+ * - std::string run_name
+ * - std::string mode
+ * - long iters = 0
+ * - long num_evnt = 0
+ * - float progress
  *
  */

@@ -2,4 +2,11 @@
  * @file CMakeLists.txt
  * @brief Documentation for core/CMakeLists.txt
  *
+ * Location: core/CMakeLists.txt
+ */
+
+/**
+ * @brief .txt file
+ *
+ * This file contains implementation details.
  */

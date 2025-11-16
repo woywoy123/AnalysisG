@@ -2,4 +2,11 @@
  * @file event.cxx
  * @brief Documentation for events/gnn/cxx/event.cxx
  *
+ * Location: events/gnn/cxx/event.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

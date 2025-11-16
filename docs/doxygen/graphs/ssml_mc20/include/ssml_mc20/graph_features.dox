@@ -2,4 +2,11 @@
  * @file graph_features.h
  * @brief Documentation for graphs/ssml_mc20/include/ssml_mc20/graph_features.h
  *
+ * Location: graphs/ssml_mc20/include/ssml_mc20/graph_features.h
+ */
+
+/**
+ * @brief .h file
+ *
+ * This file contains implementation details.
  */

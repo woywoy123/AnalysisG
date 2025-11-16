@@ -2,4 +2,11 @@
  * @file CMakeLists.txt
  * @brief Documentation for events/gnn/CMakeLists.txt
  *
+ * Location: events/gnn/CMakeLists.txt
+ */
+
+/**
+ * @brief .txt file
+ *
+ * This file contains implementation details.
  */

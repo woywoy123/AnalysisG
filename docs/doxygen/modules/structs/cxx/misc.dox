@@ -2,4 +2,11 @@
  * @file misc.cxx
  * @brief Documentation for modules/structs/cxx/misc.cxx
  *
+ * Location: modules/structs/cxx/misc.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

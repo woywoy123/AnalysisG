@@ -2,4 +2,11 @@
  * @file edge_features.h
  * @brief Documentation for graphs/exp_mc20/include/exp_mc20/edge_features.h
  *
+ * Location: graphs/exp_mc20/include/exp_mc20/edge_features.h
+ */
+
+/**
+ * @brief .h file
+ *
+ * This file contains implementation details.
  */

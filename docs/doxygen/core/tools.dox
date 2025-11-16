@@ -2,4 +2,11 @@
  * @file tools.pyx
  * @brief Documentation for core/tools.pyx
  *
+ * Location: core/tools.pyx
+ */
+
+/**
+ * @brief .pyx file
+ *
+ * This file contains implementation details.
  */

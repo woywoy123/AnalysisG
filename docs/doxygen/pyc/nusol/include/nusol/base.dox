@@ -2,4 +2,11 @@
  * @file base.cuh
  * @brief Documentation for pyc/nusol/include/nusol/base.cuh
  *
+ * Location: pyc/nusol/include/nusol/base.cuh
+ */
+
+/**
+ * @brief .cuh file
+ *
+ * This file contains implementation details.
  */

@@ -2,4 +2,11 @@
  * @file <event-name>.pyx
  * @brief Documentation for templates/events/<event-name>.pyx
  *
+ * Location: templates/events/<event-name>.pyx
+ */
+
+/**
+ * @brief .pyx file
+ *
+ * This file contains implementation details.
  */

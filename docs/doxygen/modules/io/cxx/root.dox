@@ -2,4 +2,11 @@
  * @file root.cxx
  * @brief Documentation for modules/io/cxx/root.cxx
  *
+ * Location: modules/io/cxx/root.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

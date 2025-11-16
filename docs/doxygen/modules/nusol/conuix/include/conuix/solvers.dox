@@ -2,4 +2,11 @@
  * @file solvers.h
  * @brief Documentation for modules/nusol/conuix/include/conuix/solvers.h
  *
+ * Location: modules/nusol/conuix/include/conuix/solvers.h
+ */
+
+/**
+ * @brief .h file
+ *
+ * This file contains implementation details.
  */

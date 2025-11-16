@@ -2,4 +2,11 @@
  * @file particle_exp_mc20.pyx
  * @brief Documentation for events/exp_mc20/particle_exp_mc20.pyx
  *
+ * Location: events/exp_mc20/particle_exp_mc20.pyx
+ */
+
+/**
+ * @brief .pyx file
+ *
+ * This file contains implementation details.
  */

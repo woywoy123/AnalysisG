@@ -2,71 +2,47 @@
  * @file dataloader.h
  * @brief Documentation for modules/dataloader/include/generators/dataloader.h
  *
- * @subsection analysis_class analysis
+ * Location: modules/dataloader/include/generators/dataloader.h
+ */
+
+/**
+ * @brief class analysis
  *
- * **Public Members:**
- * - `class analysis;`
- * @subsection model_template_class model_template
+ * @section public_members Public Members
  *
- * **Public Members:**
- * - `class model_template;`
- * @subsection model_report_class model_report
+ * **Methods:**
+ * - dataloader()
+ * - ~dataloader()
+ * - std::vector<graph_t*>* get_k_train_set(int k)
+ * - std::vector<graph_t*>* get_k_validation_set(int k)
+ * - std::vector<graph_t*>* get_test_set()
+ * - std::vector<graph_t*>* build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep)
+ * - static void safe_delete(std::vector<graph_t*>* data)
+ * - std::map<std::string, std::vector<graph_t*>>* get_inference()
+ * - void generate_test_set(float percentage = 50)
+ * - void generate_kfold_set(int k)
+ * - void dump_dataset(std::string path)
+ * - bool restore_dataset(std::string path)
+ * - std::vector<graph_t*> get_random(int num = 5)
+ * - void extract_data(graph_t* gr)
+ * - void datatransfer(torch::TensorOptions* op, size_t* num_events = nullptr, size_t* prg_events = nullptr)
+ * - void datatransfer(std::map<int, torch::TensorOptions*>* ops)
+ * - bool dump_graphs(std::string path = "./", int threads = 10)
+ * - void restore_graphs(std::vector<std::string> paths, int threads)
+ * - void restore_graphs(std::string paths, int threads)
+ * - void start_cuda_server()
  *
- * **Public Members:**
- * - `struct model_report;`
- * @subsection dataloader_class dataloader
+ * @section private_members Private Members
  *
- * **Public Members:**
+ * **Methods:**
+ * - void cuda_memory_server()
+ * - void shuffle(std::vector<int>* idx)
+ * - void shuffle(std::vector<graph_t*>* idx)
+ * - std::map<std::string, graph_t*>* restore_graphs_(std::vector<std::string>, int threads)
  *
- * **Private Members:**
- * - `dataloader();`
- * - `~dataloader();`
- * - `std::vector<graph_t*>* get_k_train_set(int k);`
- * - `std::vector<graph_t*>* get_k_validation_set(int k);`
- * - `std::vector<graph_t*>* get_test_set();`
- * - `std::vector<graph_t*>* build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep);`
- * - `static void safe_delete(std::vector<graph_t*>* data);`
- * - `std::map<std::string, std::vector<graph_t*>>* get_inference();`
- * - `void generate_test_set(float percentage = 50);`
- * - `void generate_kfold_set(int k);`
- * - `void dump_dataset(std::string path);`
- * - `bool restore_dataset(std::string path);`
- * - `std::vector<graph_t*> get_random(int num = 5);`
- * - `void extract_data(graph_t* gr);`
- * - `void datatransfer(torch::TensorOptions* op, size_t* num_events = nullptr, size_t* prg_events = nullptr);`
- * - `void datatransfer(std::map<int, torch::TensorOptions*>* ops);`
- * - `bool dump_graphs(std::string path = "./", int threads = 10);`
- * - `void restore_graphs(std::vector<std::string> paths, int threads);`
- * - `void restore_graphs(std::string paths, int threads);`
- * - `void start_cuda_server();`
- *
- * **Private Members:**
- * - `friend class analysis;`
- * - `settings_t* setting = nullptr;`
- * - `std::thread* cuda_mem = nullptr;`
- * - `void cuda_memory_server();`
- * - `);`
- * - `void shuffle(std::vector<int>* idx);`
- * - `void shuffle(std::vector<graph_t*>* idx);`
- * - `std::map<std::string, graph_t*>* restore_graphs_(std::vector<std::string>, int threads);`
- * - `std::map<int, std::vector<graph_t*>*> batched_cache = {};`
- * - `std::map<int, std::vector<graph_t*>*> gr_k_fold_training = {};`
- * - `std::map<int, std::vector<graph_t*>*> gr_k_fold_validation = {};`
- * - `std::map<int, std::vector<int>*> k_fold_training = {};`
- * - `std::map<int, std::vector<int>*> k_fold_validation = {};`
- * - `std::vector<int>* test_set  = nullptr;`
- * - `std::vector<int>* train_set = nullptr;`
- * - `std::vector<int>* data_index = nullptr;`
- * - `std::vector<std::map<std::string, int>*> truth_map_graph = {};`
- * - `std::vector<std::map<std::string, int>*> truth_map_node  = {};`
- * - `std::vector<std::map<std::string, int>*> truth_map_edge  = {};`
- * - `std::vector<std::map<std::string, int>*> data_map_graph = {};`
- * - `std::vector<std::map<std::string, int>*> data_map_node  = {};`
- * - `std::vector<std::map<std::string, int>*> data_map_edge  = {};`
- * - `std::map<std::string, int> hash_map = {};`
- * - `std::vector<graph_t*>*  gr_test = nullptr;`
- * - `std::vector<graph_t*>* data_set = nullptr;`
- * - `std::default_random_engine rnd{};`
- * - `};`
+ * **Variables:**
+ * - class model_template
+ * - struct model_report
+ * - friend class analysis
  *
  */

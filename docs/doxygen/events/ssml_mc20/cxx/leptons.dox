@@ -2,4 +2,11 @@
  * @file leptons.cxx
  * @brief Documentation for events/ssml_mc20/cxx/leptons.cxx
  *
+ * Location: events/ssml_mc20/cxx/leptons.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

@@ -2,4 +2,11 @@
  * @file event_gnn.pyx
  * @brief Documentation for events/gnn/event_gnn.pyx
  *
+ * Location: events/gnn/event_gnn.pyx
+ */
+
+/**
+ * @brief .pyx file
+ *
+ * This file contains implementation details.
  */

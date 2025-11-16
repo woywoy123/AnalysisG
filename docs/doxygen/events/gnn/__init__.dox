@@ -2,4 +2,11 @@
  * @file __init__.pxd
  * @brief Documentation for events/gnn/__init__.pxd
  *
+ * Location: events/gnn/__init__.pxd
+ */
+
+/**
+ * @brief .pxd file
+ *
+ * This file contains implementation details.
  */

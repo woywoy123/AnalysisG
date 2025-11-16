@@ -2,4 +2,11 @@
  * @file <model-name>.cxx
  * @brief Documentation for templates/model/cxx/<model-name>.cxx
  *
+ * Location: templates/model/cxx/<model-name>.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

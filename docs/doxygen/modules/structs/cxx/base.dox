@@ -2,4 +2,11 @@
  * @file base.cxx
  * @brief Documentation for modules/structs/cxx/base.cxx
  *
+ * Location: modules/structs/cxx/base.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

@@ -2,4 +2,11 @@
  * @file matrix.cu
  * @brief Documentation for pyc/nusol/cuda/matrix.cu
  *
+ * Location: pyc/nusol/cuda/matrix.cu
+ */
+
+/**
+ * @brief .cu file
+ *
+ * This file contains implementation details.
  */

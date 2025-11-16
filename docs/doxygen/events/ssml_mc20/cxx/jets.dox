@@ -2,4 +2,11 @@
  * @file jets.cxx
  * @brief Documentation for events/ssml_mc20/cxx/jets.cxx
  *
+ * Location: events/ssml_mc20/cxx/jets.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

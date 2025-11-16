@@ -2,27 +2,25 @@
  * @file io.cxx
  * @brief Documentation for modules/tools/cxx/io.cxx
  *
- * @subsection stat_class stat
+ * Location: modules/tools/cxx/io.cxx
+ */
+
+/**
+ * @brief struct stat
  *
- * **Public Members:**
- * - `struct stat sb;`
- * - `if (S_ISDIR(sb.st_mode)){rmdir(input_path.c_str());}`
- * - `else {unlink(input_path.c_str());}`
- * @subsection stat_class stat
+ * @section public_members Public Members
  *
- * **Public Members:**
- * - `struct stat buffer;`
- * - `return (stat (path.c_str(), &buffer) == 0);`
- * - `if (tools::ends_with(&path, "*")){path = tools::split(path, "*")[0];}`
- * - `std::vector<std::string> out = {};`
- * - `std::filesystem::recursive_directory_iterator itr;`
- * - `try {itr = std::filesystem::recursive_directory_iterator(path);}`
- * - `catch (...) {return {};}`
- * - `std::string s = "";`
- * - `try {s = std::filesystem::canonical(val.path()).string();}`
- * - `catch (...){continue;}`
- * - `if (ext.size() && !tools::ends_with(&s, ext)){continue;}`
- * - `out.push_back(s);`
- * - `return out;`
- * - `return std::filesystem::canonical(path).string();`
+ * **Methods:**
+ * - else {unlink(input_path.c_str());}
+ *
+ */
+
+/**
+ * @brief struct stat
+ *
+ * @section public_members Public Members
+ *
+ * **Methods:**
+ * - return (stat (path.c_str(), &buffer) == 0)
+ *
  */

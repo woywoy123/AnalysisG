@@ -2,4 +2,11 @@
  * @file strings.cxx
  * @brief Documentation for modules/tools/cxx/strings.cxx
  *
+ * Location: modules/tools/cxx/strings.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

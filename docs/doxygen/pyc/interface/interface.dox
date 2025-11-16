@@ -2,4 +2,11 @@
  * @file interface.cxx
  * @brief Documentation for pyc/interface/interface.cxx
  *
+ * Location: pyc/interface/interface.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

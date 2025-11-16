@@ -2,4 +2,11 @@
  * @file loss_config.cxx
  * @brief Documentation for modules/lossfx/cxx/loss_config.cxx
  *
+ * Location: modules/lossfx/cxx/loss_config.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

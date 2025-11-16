@@ -2,4 +2,11 @@
  * @file edge_features.h
  * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/edge_features.h
  *
+ * Location: graphs/bsm_4tops/include/bsm_4tops/edge_features.h
+ */
+
+/**
+ * @brief .h file
+ *
+ * This file contains implementation details.
  */

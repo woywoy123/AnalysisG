@@ -2,58 +2,63 @@
  * @file matrix.h
  * @brief Documentation for modules/nusol/tmp/multisol/include/multisol/matrix.h
  *
- * @subsection vec3_class vec3
+ * Location: modules/nusol/tmp/multisol/include/multisol/matrix.h
+ */
+
+/**
+ * @brief struct vec3
  *
- * **Public Members:**
- * - `double x = 0, y = 0, z = 0;`
- * - `vec3 operator+(const vec3& o) const;`
- * - `vec3 operator-(const vec3& o) const;`
- * - `vec3 operator*(double s) const;`
- * - `vec3 cross(const vec3& o) const;`
- * - `double dot(const vec3& o) const;`
- * - `double mag2() const;`
- * - `double mag() const;`
- * - `void print() const;`
- * - `};`
+ * @section public_members Public Members
  *
- * @subsection vec4_class vec4
+ * **Methods:**
+ * - vec3 cross(const vec3& o) const
+ * - double dot(const vec3& o) const
+ * - double mag2() const
+ * - double mag() const
+ * - void print() const
  *
- * **Public Members:**
- * - `double x = 0, y = 0, z = 0, w = 0;`
- * - `vec4 operator+(const vec4& o) const;`
- * - `vec4 operator-(const vec4& o) const;`
- * - `vec4 operator*(double s) const;`
- * - `double dot(const vec4& o) const;`
- * - `void print();`
- * - `};`
+ * **Variables:**
+ * - double x = 0, y = 0, z = 0
  *
- * @subsection matrix_class matrix
+ */
+
+/**
+ * @brief struct vec4
  *
- * **Public Members:**
- * - `matrix(int r=3, int c=3);`
- * - `matrix(const matrix& other);`
- * - `~matrix();`
- * - `void print(int p = 5);`
- * - `double& at(int r, int c);`
- * - `const double& at(int r, int c) const;`
- * - `int rows() const;`
- * - `int cols() const;`
- * - `double mag() const;`
- * - `static matrix I(int size);`
- * - `matrix T() const;`
- * - `matrix inverse();`
- * - `double det();`
- * - `matrix dot(const matrix& m);`
- * - `void eigenvalues(vec3* real, vec3* imag);`
- * - `matrix& operator=(const matrix& other);`
- * - `matrix  operator+(const matrix& o) const;`
- * - `matrix  operator-(const matrix& o) const;`
- * - `matrix  operator*(const matrix& o) const;`
- * - `matrix  operator*(double s       ) const;`
- * - `vec4    operator*(const vec4& v  ) const;`
- * - `vec3    operator*(const vec3& v  ) const;`
- * - `double** data = nullptr;`
- * - `int _r = 0, _c = 0;`
- * - `};`
+ * @section public_members Public Members
+ *
+ * **Methods:**
+ * - double dot(const vec4& o) const
+ * - void print()
+ *
+ * **Variables:**
+ * - double x = 0, y = 0, z = 0, w = 0
+ *
+ */
+
+/**
+ * @brief struct matrix
+ *
+ * @section public_members Public Members
+ *
+ * **Methods:**
+ * - matrix(int r=3, int c=3)
+ * - matrix(const matrix& other)
+ * - ~matrix()
+ * - void print(int p = 5)
+ * - double& at(int r, int c)
+ * - const double& at(int r, int c) const
+ * - int rows() const
+ * - int cols() const
+ * - double mag() const
+ * - static matrix I(int size)
+ * - matrix T() const
+ * - matrix inverse()
+ * - double det()
+ * - matrix dot(const matrix& m)
+ * - void eigenvalues(vec3* real, vec3* imag)
+ *
+ * **Variables:**
+ * - int _r = 0, _c = 0
  *
  */

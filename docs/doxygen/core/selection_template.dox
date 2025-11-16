@@ -2,4 +2,11 @@
  * @file selection_template.pyx
  * @brief Documentation for core/selection_template.pyx
  *
+ * Location: core/selection_template.pyx
+ */
+
+/**
+ * @brief .pyx file
+ *
+ * This file contains implementation details.
  */

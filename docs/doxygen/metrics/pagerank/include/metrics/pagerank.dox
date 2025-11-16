@@ -2,117 +2,118 @@
  * @file pagerank.h
  * @brief Documentation for metrics/pagerank/include/metrics/pagerank.h
  *
- * @subsection pagerank_metric_class pagerank_metric
- * Inherits from metric_template
+ * Location: metrics/pagerank/include/metrics/pagerank.h
+ */
+
+/**
+ * @brief class pagerank_metric
+ * @extends metric_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `pagerank_metric();`
- * - `~pagerank_metric() override;`
- * - `pagerank_metric* clone() override;`
- * - `void define_metric(metric_t* mtx) override;`
- * - `void define_variables() override;`
- * - `void event() override;`
- * - `void batch() override;`
- * - `void end() override;`
- * - `);`
- * - `std::vector<particle_template*> build_top(std::map<int, std::map<int, particle_template*>>*);`
- * - `std::map<std::string, std::map<std::string, long>> file_maps;`
- * - `std::map<std::string, std::map<std::string, long>> file_stats;`
- * - `float  alpha    = 0.85;`
- * - `float  norm_lim = 1e-6;`
- * - `size_t max_itr  = 1e6;`
- * - `int kfold = -1;`
- * - `int epoch = -1;`
+ * **Methods:**
+ * - pagerank_metric()
+ * - ~pagerank_metric() override
+ * - pagerank_metric* clone() override
+ * - void define_metric(metric_t* mtx) override
+ * - void define_variables() override
+ * - void event() override
+ * - void batch() override
+ * - void end() override
+ * - std::vector<particle_template*> build_top(std::map<int, std::map<int, particle_template*>>*)
  *
- * **Private Members:**
- * - `std::string mode = "";`
- * - `int process_mapping = -1;`
- * - `std::vector<int>    top_truth_num_nodes;`
- * - `std::vector<double> top_truth_pt;`
- * - `std::vector<double> top_truth_eta;`
- * - `std::vector<double> top_truth_phi;`
- * - `std::vector<double> top_truth_energy;`
- * - `std::vector<double> top_truth_px;`
- * - `std::vector<double> top_truth_py;`
- * - `std::vector<double> top_truth_pz;`
- * - `std::vector<double> top_truth_mass;`
- * - `std::vector<int>    top_pr_reco_num_nodes;`
- * - `std::vector<double> top_pr_reco_pt;`
- * - `std::vector<double> top_pr_reco_eta;`
- * - `std::vector<double> top_pr_reco_phi;`
- * - `std::vector<double> top_pr_reco_energy;`
- * - `std::vector<double> top_pr_reco_px;`
- * - `std::vector<double> top_pr_reco_py;`
- * - `std::vector<double> top_pr_reco_pz;`
- * - `std::vector<double> top_pr_reco_mass;`
- * - `std::vector<float>  top_pr_reco_pagerank;`
- * - `std::vector<int>    top_nom_reco_num_nodes;`
- * - `std::vector<double> top_nom_reco_pt;`
- * - `std::vector<double> top_nom_reco_eta;`
- * - `std::vector<double> top_nom_reco_phi;`
- * - `std::vector<double> top_nom_reco_energy;`
- * - `std::vector<double> top_nom_reco_px;`
- * - `std::vector<double> top_nom_reco_py;`
- * - `std::vector<double> top_nom_reco_pz;`
- * - `std::vector<double> top_nom_reco_mass;`
- * - `std::vector<float>  top_nom_reco_score;`
- * - `};`
+ * **Variables:**
+ * - float  alpha    = 0.85
+ * - float  norm_lim = 1e-6
+ * - size_t max_itr  = 1e6
+ * - int kfold = -1
+ * - int epoch = -1
  *
- * @subsection kinematic_t_class kinematic_t
+ * @section private_members Private Members
  *
- * **Public Members:**
- * - `double px = 0;`
- * - `double py = 0;`
- * - `double pz = 0;`
- * - `double mass = 0;`
- * - `double pt  = 0;`
- * - `double eta = 0;`
- * - `double phi = 0;`
- * - `double energy = 0;`
- * - `int num_nodes = 0;`
- * - `double score = 0;`
- * - `};`
+ * **Variables:**
+ * - std::string mode = ""
+ * - int process_mapping = -1
+ * - std::vector<int>    top_truth_num_nodes
+ * - std::vector<double> top_truth_pt
+ * - std::vector<double> top_truth_eta
+ * - std::vector<double> top_truth_phi
+ * - std::vector<double> top_truth_energy
+ * - std::vector<double> top_truth_px
+ * - std::vector<double> top_truth_py
+ * - std::vector<double> top_truth_pz
+ * - std::vector<double> top_truth_mass
+ * - std::vector<int>    top_pr_reco_num_nodes
+ * - std::vector<double> top_pr_reco_pt
+ * - std::vector<double> top_pr_reco_eta
+ * - std::vector<double> top_pr_reco_phi
+ * - std::vector<double> top_pr_reco_energy
+ * - std::vector<double> top_pr_reco_px
+ * - std::vector<double> top_pr_reco_py
+ * - std::vector<double> top_pr_reco_pz
+ * - std::vector<double> top_pr_reco_mass
  *
- * @subsection meta_event_t_class meta_event_t
+ */
+
+/**
+ * @brief struct kinematic_t
  *
- * **Public Members:**
- * - `int process_mapping = -1;`
- * - `std::vector<kinematic_t> truth = {};`
- * - `std::vector<kinematic_t> pageranked = {};`
- * - `std::vector<kinematic_t> nominal = {};`
- * - `};`
+ * @section public_members Public Members
  *
- * @subsection sample_t_class sample_t
+ * **Variables:**
+ * - double px = 0
+ * - double py = 0
+ * - double pz = 0
+ * - double mass = 0
+ * - double pt  = 0
+ * - double eta = 0
+ * - double phi = 0
+ * - double energy = 0
+ * - int num_nodes = 0
+ * - double score = 0
  *
- * **Public Members:**
- * - `std::string meta_data = "";`
- * - `std::map<std::string, std::map<std::string, long>> file_map  = {};`
- * - `std::map<std::string, std::map<std::string, long>> file_stat = {};`
- * - `std::map<std::string, std::map<long, meta_event_t>> data = {};`
- * - `};`
+ */
+
+/**
+ * @brief struct meta_event_t
  *
- * @subsection collector_class collector
- * Inherits from tools
+ * @section public_members Public Members
  *
- * **Public Members:**
+ * **Variables:**
+ * - int process_mapping = -1
  *
- * **Private Members:**
- * - `collector();`
- * - `~collector();`
- * - `void set_index(long idx_);`
- * - `);`
- * - `void add_truth(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch);`
- * - `void add_pagerank(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch);`
- * - `void add_nominal(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch);`
- * - `void add_process(int prc, std::string mode, std::string model, int kfold, int epoch);`
- * - `bool add_meta(std::string data, std::string model, int kfold, int epoch);`
- * - `void add_file_map(std::string fname, long idx_, std::string mode, std::string model, int kfold, int epoch, bool stat);`
+ */
+
+/**
+ * @brief struct sample_t
  *
- * **Private Members:**
- * - `long  idx = 0;`
- * - `std::map<std::string, std::map<int, std::map<int, sample_t>>> data;`
- * - `};`
+ * @section public_members Public Members
+ *
+ * **Variables:**
+ * - std::string meta_data = ""
+ *
+ */
+
+/**
+ * @brief class collector
+ * @extends tools
+ *
+ * @section public_members Public Members
+ *
+ * **Methods:**
+ * - collector()
+ * - ~collector()
+ * - void set_index(long idx_)
+ * - void add_truth(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
+ * - void add_pagerank(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
+ * - void add_nominal(kinematic_t* p, std::string mode, std::string model, int kfold, int epoch)
+ * - void add_process(int prc, std::string mode, std::string model, int kfold, int epoch)
+ * - bool add_meta(std::string data, std::string model, int kfold, int epoch)
+ * - void add_file_map(std::string fname, long idx_, std::string mode, std::string model, int kfold, int epoch, bool stat)
+ *
+ * @section private_members Private Members
+ *
+ * **Variables:**
+ * - long  idx = 0
  *
  */

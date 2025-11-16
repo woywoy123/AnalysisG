@@ -2,4 +2,11 @@
  * @file event_template.pyx
  * @brief Documentation for core/event_template.pyx
  *
+ * Location: core/event_template.pyx
+ */
+
+/**
+ * @brief .pyx file
+ *
+ * This file contains implementation details.
  */

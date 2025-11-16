@@ -2,4 +2,11 @@
  * @file particle_template.pyx
  * @brief Documentation for core/particle_template.pyx
  *
+ * Location: core/particle_template.pyx
+ */
+
+/**
+ * @brief .pyx file
+ *
+ * This file contains implementation details.
  */

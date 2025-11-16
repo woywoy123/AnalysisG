@@ -2,4 +2,11 @@
  * @file transform.cxx
  * @brief Documentation for pyc/transform/transform.cxx
  *
+ * Location: pyc/transform/transform.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

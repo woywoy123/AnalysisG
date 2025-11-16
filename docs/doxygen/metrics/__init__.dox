@@ -2,4 +2,11 @@
  * @file __init__.pxd
  * @brief Documentation for metrics/__init__.pxd
  *
+ * Location: metrics/__init__.pxd
+ */
+
+/**
+ * @brief .pxd file
+ *
+ * This file contains implementation details.
  */

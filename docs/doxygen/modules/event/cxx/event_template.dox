@@ -2,4 +2,11 @@
  * @file event_template.cxx
  * @brief Documentation for modules/event/cxx/event_template.cxx
  *
+ * Location: modules/event/cxx/event_template.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

@@ -2,4 +2,11 @@
  * @file analysis.pyx
  * @brief Documentation for core/analysis.pyx
  *
+ * Location: core/analysis.pyx
+ */
+
+/**
+ * @brief .pyx file
+ *
+ * This file contains implementation details.
  */

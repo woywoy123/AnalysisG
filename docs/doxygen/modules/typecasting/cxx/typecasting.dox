@@ -2,4 +2,11 @@
  * @file typecasting.cxx
  * @brief Documentation for modules/typecasting/cxx/typecasting.cxx
  *
+ * Location: modules/typecasting/cxx/typecasting.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

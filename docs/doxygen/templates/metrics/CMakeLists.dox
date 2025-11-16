@@ -2,4 +2,11 @@
  * @file CMakeLists.txt
  * @brief Documentation for templates/metrics/CMakeLists.txt
  *
+ * Location: templates/metrics/CMakeLists.txt
+ */
+
+/**
+ * @brief .txt file
+ *
+ * This file contains implementation details.
  */

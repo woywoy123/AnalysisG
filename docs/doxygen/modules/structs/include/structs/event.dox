@@ -2,14 +2,19 @@
  * @file event.h
  * @brief Documentation for modules/structs/include/structs/event.h
  *
- * @subsection event_t_class event_t
+ * Location: modules/structs/include/structs/event.h
+ */
+
+/**
+ * @brief struct event_t
  *
- * **Public Members:**
- * - `std::string name = "";`
- * - `double weight = 1;`
- * - `long   index = -1;`
- * - `std::string hash = "";`
- * - `std::string tree = "";`
- * - `};`
+ * @section public_members Public Members
+ *
+ * **Variables:**
+ * - std::string name = ""
+ * - double weight = 1
+ * - long   index = -1
+ * - std::string hash = ""
+ * - std::string tree = ""
  *
  */

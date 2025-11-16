@@ -2,92 +2,87 @@
  * @file element.h
  * @brief Documentation for modules/structs/include/structs/element.h
  *
- * @subsection data_t_class data_t
- * Inherits from bsc_t
+ * Location: modules/structs/include/structs/element.h
+ */
+
+/**
+ * @brief struct data_t
+ * @extends bsc_t
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `data_t();`
- * - `~data_t() override;`
- * - `std::string   leaf_name = "";`
- * - `std::string branch_name = "";`
- * - `std::string   tree_name = "";`
- * - `std::string   leaf_type = "";`
- * - `std::string        path = "";`
- * - `std::string*      fname = nullptr;`
- * - `TLeaf*     leaf = nullptr;`
- * - `TBranch* branch = nullptr;`
- * - `TTree*     tree = nullptr;`
- * - `TFile*     file = nullptr;`
- * - `int file_index = 0;`
- * - `std::vector<std::string>* files_s = nullptr;`
- * - `std::vector<long>*        files_i = nullptr;`
- * - `std::vector<TFile*>*      files_t = nullptr;`
- * - `void initialize();`
- * - `void flush();`
- * - `bool next();`
+ * **Methods:**
+ * - data_t()
+ * - ~data_t() override
+ * - void initialize()
+ * - void flush()
+ * - bool next()
  *
- * **Private Members:**
- * - `void fetch_buffer();`
- * - `void string_type();`
- * - `TTreeReader r = TTreeReader(this -> tree);`
- * - `TTreeReaderValue<T> dr(r, this -> branch_name.c_str());`
- * - `if (*data){(*data) -> clear();}`
- * - `if (!(*data)){(*data) = new std::vector<T>();}`
- * - `while (r.Next()){(*data) -> push_back(*dr);}`
- * - `(*data) -> shrink_to_fit();`
- * - `};`
+ * **Variables:**
+ * - std::string   leaf_name = ""
+ * - std::string branch_name = ""
+ * - std::string   tree_name = ""
+ * - std::string   leaf_type = ""
+ * - std::string        path = ""
+ * - int file_index = 0
  *
- * @subsection element_t_class element_t
+ * @section private_members Private Members
  *
- * **Public Members:**
- * - `std::string tree = "";`
- * - `bool next();`
- * - `void set_meta();`
- * - `long event_index = -1;`
- * - `std::string filename = "";`
- * - `bool boundary();`
- * - `if (!this -> handle.count(key)){return false;}`
- * - `if (this -> handle[key] -> element(var)){return true;}`
- * - `std::cout << "INVALID DATA TYPE GIVEN FOR: " + key << std::endl;`
- * - `std::map<std::string, data_t*>::iterator itr;`
- * - `for (itr = this -> handle.begin(); itr != this -> handle.end(); ++itr){`
- * - `data_t* d = itr -> second;`
- * - `std::cout << "Leaf name: " << d -> leaf_name;`
- * - `std::cout << "|" << d -> leaf_type << std::endl;`
- * - `abort();`
- * - `std::map<std::string, data_t*> handle = {};`
- * - `};`
+ * **Methods:**
+ * - void fetch_buffer()
+ * - void string_type()
+ * - void fetch_buffer(std::vector<T>** data)
+ * - TTreeReader r = TTreeReader(this -> tree)
+ * - TTreeReaderValue<T> dr(r, this -> branch_name.c_str())
+ * - (*data) -> shrink_to_fit()
  *
- * @subsection write_t_class write_t
+ */
+
+/**
+ * @brief struct element_t
  *
- * **Public Members:**
- * - `TFile* file = nullptr;`
- * - `TTree* tree = nullptr;`
- * - `meta_t* mtx = nullptr;`
- * - `std::map<std::string, variable_t*>* data = nullptr;`
- * - `variable_t* process(std::string* name);`
- * - `void write();`
- * - `void create(std::string tr_name, std::string path);`
- * - `void close();`
- * - `};`
+ * @section public_members Public Members
  *
- * @subsection writer_class writer
+ * **Methods:**
+ * - bool next()
+ * - void set_meta()
+ * - bool boundary()
+ * - bool get(std::string key, g* var)
+ * - abort()
  *
- * **Public Members:**
+ * **Variables:**
+ * - std::string tree = ""
+ * - long event_index = -1
+ * - std::string filename = ""
+ * - std::cout << "Leaf name: " << d -> leaf_name
+ * - std::cout << "|" << d -> leaf_type << std::endl
  *
- * **Private Members:**
- * - `writer();`
- * - `~writer();`
- * - `void create(std::string* pth);`
- * - `void write(std::string* tree);`
- * - `this -> process(tree, name) -> process(t, name, nullptr);`
+ */
+
+/**
+ * @brief struct write_t
  *
- * **Private Members:**
- * - `write_t* head = nullptr;`
- * - `std::map<std::string, write_t*> handle = {};`
- * - `variable_t* process(std::string* tree, std::string* name);`
- * - `};`
+ * @section public_members Public Members
+ *
+ * **Methods:**
+ * - variable_t* process(std::string* name)
+ * - void write()
+ * - void create(std::string tr_name, std::string path)
+ * - void close()
+ *
+ */
+
+/**
+ * @brief struct writer
+ *
+ * @section public_members Public Members
+ *
+ * **Methods:**
+ * - writer()
+ * - ~writer()
+ * - void create(std::string* pth)
+ * - void write(std::string* tree)
+ * - void process(std::string* tree, std::string* name, g* t)
+ * - this -> process(tree, name) -> process(t, name, nullptr)
  *
  */

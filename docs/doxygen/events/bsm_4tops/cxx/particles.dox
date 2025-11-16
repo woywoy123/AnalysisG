@@ -2,4 +2,11 @@
  * @file particles.cxx
  * @brief Documentation for events/bsm_4tops/cxx/particles.cxx
  *
+ * Location: events/bsm_4tops/cxx/particles.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

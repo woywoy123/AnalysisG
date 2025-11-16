@@ -2,4 +2,11 @@
  * @file model_lossfx.cxx
  * @brief Documentation for modules/model/cxx/model_lossfx.cxx
  *
+ * Location: modules/model/cxx/model_lossfx.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

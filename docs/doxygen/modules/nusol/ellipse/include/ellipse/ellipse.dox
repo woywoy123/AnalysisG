@@ -2,57 +2,30 @@
  * @file ellipse.h
  * @brief Documentation for modules/nusol/ellipse/include/ellipse/ellipse.h
  *
- * @subsection nusol_t_class nusol_t
+ * Location: modules/nusol/ellipse/include/ellipse/ellipse.h
+ */
+
+/**
+ * @brief struct nusol_t
  *
- * **Public Members:**
- * - `struct nusol_t;`
- * @subsection nunu_t_class nunu_t
+ * @section public_members Public Members
  *
- * **Public Members:**
- * - `nunu_t();`
- * - `~nunu_t();`
- * - `mtx* nu1 = nullptr;`
- * - `mtx* nu2 = nullptr;`
- * - `mtx* agl = nullptr;`
- * - `nuelx* nux1 = nullptr;`
- * - `nuelx* nux2 = nullptr;`
- * - `};`
+ * **Methods:**
+ * - nunu_t()
+ * - ~nunu_t()
  *
- * @subsection ellipse_class ellipse
+ */
+
+/**
+ * @brief class ellipse
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `ellipse(nusol_t* parameters);`
- * - `void prepare(double mt, double mw);`
- * - `std::vector<particle_template*> nunu_make();`
- * - `void solve();`
- * - `~ellipse();`
- *
- * **Private Members:**
- * - `nusol_t* params = nullptr;`
- * - `std::map<int, std::tuple<nuelx*, nuelx*>> pairings;`
- * - `std::map<double, nunu_t> solvs = {};`
- * - `std::vector<particle_template*> bquarks = {};`
- * - `std::vector<particle_template*> leptons = {};`
- * - `std::vector<nuelx*> engines = {};`
- * - `void flush();`
- * - `void make_neutrinos(mtx* v, mtx* v_);`
- * - `int generate(nuelx* nu1, nuelx* nu2);`
- * - `int intersection(mtx** v, mtx** v_);`
- * - `int angle_cross( mtx** v, mtx** v_);`
- * - `nuelx* p_nu1 = nullptr;`
- * - `nuelx* p_nu2 = nullptr;`
- * - `mtx* m_nu1 = nullptr;`
- * - `mtx* m_nu2 = nullptr;`
- * - `mtx* m_agl = nullptr;`
- * - `int m_lx = 0;`
- * - `int m_bst = -1;`
- * - `double _metx = 0;`
- * - `double _mety = 0;`
- * - `double _metz = 0;`
- * - `int n_lp = 0;`
- * - `int n_bs = 0;`
- * - `};`
+ * **Methods:**
+ * - ellipse(nusol_t* parameters)
+ * - void prepare(double mt, double mw)
+ * - std::vector<particle_template*> nunu_make()
+ * - void solve()
+ * - ~ellipse()
  *
  */

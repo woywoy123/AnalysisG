@@ -2,4 +2,11 @@
  * @file CMakeLists.txt
  * @brief Documentation for modules/metric/CMakeLists.txt
  *
+ * Location: modules/metric/CMakeLists.txt
+ */
+
+/**
+ * @brief .txt file
+ *
+ * This file contains implementation details.
  */

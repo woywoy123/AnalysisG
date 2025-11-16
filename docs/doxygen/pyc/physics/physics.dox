@@ -2,4 +2,11 @@
  * @file physics.cxx
  * @brief Documentation for pyc/physics/physics.cxx
  *
+ * Location: pyc/physics/physics.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

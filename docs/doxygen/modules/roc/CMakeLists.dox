@@ -2,4 +2,11 @@
  * @file CMakeLists.txt
  * @brief Documentation for modules/roc/CMakeLists.txt
  *
+ * Location: modules/roc/CMakeLists.txt
+ */
+
+/**
+ * @brief .txt file
+ *
+ * This file contains implementation details.
  */

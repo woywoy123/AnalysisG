@@ -2,4 +2,11 @@
  * @file collector.cxx
  * @brief Documentation for metrics/accuracy/cxx/collector.cxx
  *
+ * Location: metrics/accuracy/cxx/collector.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

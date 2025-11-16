@@ -2,55 +2,53 @@
  * @file nusol.h
  * @brief Documentation for modules/nusol/nusol/include/reconstruction/nusol.h
  *
- * @subsection nusol_class nusol
+ * Location: modules/nusol/nusol/include/reconstruction/nusol.h
+ */
+
+/**
+ * @brief class nusol
  *
- * **Public Members:**
- * - `class nusol;`
- * @subsection ellipse_class ellipse
+ * @section private_members Private Members
  *
- * **Public Members:**
- * - `class ellipse;`
- * @subsection conuix_class conuix
+ * **Variables:**
+ * - class ellipse
+ * - class conuix
  *
- * **Public Members:**
- * - `class conuix;`
- * - `};`
+ */
+
+/**
+ * @brief struct nusol_t
  *
- * @subsection nusol_t_class nusol_t
+ * @section public_members Public Members
  *
- * **Public Members:**
+ * **Variables:**
+ * - double met = 0
+ * - double phi = 0
+ * - double mt = 172.68 * 1000
+ * - double mw = 80.385 * 1000
+ * - double limit = 10000
+ * - nusol_enum mode = nusol_enum::undefined
  *
- * **Private Members:**
- * - `double met = 0;`
- * - `double phi = 0;`
- * - `double mt = 172.68 * 1000;`
- * - `double mw = 80.385 * 1000;`
- * - `double limit = 10000;`
- * - `nusol_enum mode = nusol_enum::undefined;`
- * - `std::vector<particle_template*>* targets = nullptr;`
+ * @section private_members Private Members
  *
- * **Private Members:**
- * - `friend ellipse;`
- * - `friend conuix;`
- * - `friend nusol;`
- * - `double met_x = 0;`
- * - `double met_y = 0;`
- * - `double met_z = 0;`
- * - `};`
+ * **Variables:**
+ * - friend ellipse
+ * - friend conuix
+ * - friend nusol
+ * - double met_x = 0
+ * - double met_y = 0
+ * - double met_z = 0
  *
- * @subsection nusol_class nusol
+ */
+
+/**
+ * @brief class nusol
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `nusol(nusol_t* parameters);`
- * - `void solve();`
- * - `~nusol();`
- *
- * **Private Members:**
- * - `nusol_t* params = nullptr;`
- * - `ellipse* D_nunu = nullptr;`
- * - `conuix*  M_nunu = nullptr;`
- * - `};`
+ * **Methods:**
+ * - nusol(nusol_t* parameters)
+ * - void solve()
+ * - ~nusol()
  *
  */

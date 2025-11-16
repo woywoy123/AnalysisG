@@ -2,20 +2,16 @@
  * @file conuix.h
  * @brief Documentation for modules/nusol/tmp/conuix/include/conuix/conuix.h
  *
- * @subsection nusol_t_class nusol_t
+ * Location: modules/nusol/tmp/conuix/include/conuix/conuix.h
+ */
+
+/**
+ * @brief struct nusol_t
  *
- * **Public Members:**
- * - `struct nusol_t;`
- * @subsection conics_class conics
+ * @section public_members Public Members
  *
- * **Public Members:**
- *
- * **Private Members:**
- * - `conics(nusol_t* parameters);`
- * - `~conics();`
- *
- * **Private Members:**
- * - `nusol_t* params = nullptr;`
- * - `};`
+ * **Methods:**
+ * - conics(nusol_t* parameters)
+ * - ~conics()
  *
  */

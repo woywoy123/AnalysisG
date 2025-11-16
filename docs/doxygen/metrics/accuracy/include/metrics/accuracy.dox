@@ -1,132 +1,61 @@
 /**
  * @file accuracy.h
- * @brief Accuracy metric for evaluating top quark reconstruction performance
+ * @brief Documentation for metrics/accuracy/include/metrics/accuracy.h
  *
- * Location: src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h
+ * Location: metrics/accuracy/include/metrics/accuracy.h
+ */
+
+/**
+ * @brief class accuracy_metric
+ * @extends metric_template
  *
- * This file defines the accuracy metric system for evaluating neural network
- * performance in top quark reconstruction tasks. It includes the main metric
- * class and data structures for collecting and organizing results across
- * training, validation, and evaluation phases.
+ * @section public_members Public Members
+ *
+ * **Methods:**
+ * - accuracy_metric()
+ * - ~accuracy_metric() override
+ * - accuracy_metric* clone() override
+ * - void define_metric(metric_t* mtx) override
+ * - void define_variables() override
+ * - void event() override
+ * - void batch() override
+ * - void end() override
+ *
+ * @section private_members Private Members
+ *
+ * **Variables:**
+ * - std::string mode = ""
+ * - long idx = 0
+ * - float edge_accuracy = 0
+ * - float global_edge_accuracy = 0
+ * - int ntop_truth = 0
+ *
  */
 
 /**
- * @class accuracy_metric
- * @brief Metric for computing reconstruction accuracy
- * 
- * Inherits from: metric_template
- * 
- * Tracks edge-level and node-level accuracy for graph neural network predictions,
- * computing accuracy metrics for top quark multiplicity predictions across batches
- * and epochs.
+ * @brief struct cdata_t
+ *
+ * @section public_members Public Members
+ *
+ * **Variables:**
+ * - int kfold = -1
+ *
  */
 
 /**
- * @section accuracy_metric_constructors Constructors and Destructor
- * 
- * - **accuracy_metric()** - Default constructor
- * - **~accuracy_metric()** - Destructor (override)
+ * @brief struct cmodel_t
+ *
  */
 
 /**
- * @section accuracy_metric_public_methods Public Methods
- * 
- * - **accuracy_metric* clone()** - Create a deep copy of the metric (override)
- * - **void define_metric(metric_t* mtx)** - Define metric configuration (override)
- * - **void define_variables()** - Initialize metric variables (override)
- * - **void event()** - Process single event metrics (override)
- * - **void batch()** - Compute batch-level metrics (override)
- * - **void end()** - Finalize and output metrics at end of epoch (override)
- */
-
-/**
- * @section accuracy_metric_private_variables Private Member Variables
- * 
- * - **std::string mode** = "" - Current phase mode (training/validation/evaluation)
- * - **long idx** = 0 - Event index counter
- * - **float edge_accuracy** = 0 - Current edge accuracy
- * - **float global_edge_accuracy** = 0 - Accumulated global edge accuracy
- * - **int ntop_truth** = 0 - True number of top quarks in current event
- * - **std::vector<float> ntop_scores** = {} - Predicted top quark scores
- * - **std::vector<float> ntops_accuracy** = {} - Accuracy per top quark multiplicity
- * - **std::map<int, int> _global_edge_accuracy** = {} - Global edge accuracy mapping
- * - **std::map<int, std::map<int, int>> ntop_accuracy** = {} - Accuracy matrix for true vs predicted top counts
- */
-
-/**
- * @struct cdata_t
- * @brief Data structure for organizing metric results per k-fold
- * 
- * Stores performance data for a single k-fold cross-validation split, including
- * true top counts, prediction scores, and accuracy matrices.
- */
-
-/**
- * @section cdata_t_members Members
- * 
- * - **int kfold** = -1 - K-fold index identifier
- * - **std::vector<int> ntops_truth** = {} - True top quark multiplicities across events
- * - **std::vector<std::vector<double>> ntop_score** = {} - Prediction scores per event
- * - **std::map<int, std::vector<double>> ntop_edge_accuracy** = {} - Edge accuracy by top multiplicity
- * - **std::map<int, std::map<int, std::vector<double>>> ntru_npred_matrix** = {} - Confusion matrix of true vs predicted counts
- */
-
-/**
- * @struct cmodel_t
- * @brief Data structure for organizing results across all k-folds and epochs
- * 
- * Contains nested maps organizing metric data by epoch and k-fold for each
- * phase of training (training, validation, evaluation).
- */
-
-/**
- * @section cmodel_t_members Members
- * 
- * - **std::map<int, std::map<int, cdata_t>> evaluation_kfold_data** = {} - Evaluation phase data (epoch -> kfold -> data)
- * - **std::map<int, std::map<int, cdata_t>> validation_kfold_data** = {} - Validation phase data (epoch -> kfold -> data)
- * - **std::map<int, std::map<int, cdata_t>> training_kfold_data** = {} - Training phase data (epoch -> kfold -> data)
- */
-
-/**
- * @class collector
- * @brief Collects and organizes accuracy metrics across models and training phases
- * 
- * Inherits from: tools
- * 
- * Central collector for aggregating accuracy metrics from multiple models,
- * epochs, k-folds, and training phases. Provides methods for adding data
- * and retrieving organized results for plotting and analysis.
- */
-
-/**
- * @section collector_constructors Constructors and Destructor
- * 
- * - **collector()** - Default constructor
- * - **~collector()** - Destructor
- */
-
-/**
- * @section collector_public_methods Public Methods
- * 
- * - **cdata_t* get_mode(std::string model, std::string mode, int epoch, int kfold)** - 
- *   Retrieve data for specific model/mode/epoch/kfold combination
- * - **void add_ntop_truth(std::string mode, std::string model, int epoch, int kfold, int data)** - 
- *   Add true top count for an event
- * - **void add_ntop_edge_accuracy(std::string mode, std::string model, int epoch, int kfold, int ntops, double data)** - 
- *   Add edge accuracy for specific top multiplicity
- * - **void add_ntop_scores(std::string mode, std::string model, int epoch, int kfold, std::vector<double>* data)** - 
- *   Add prediction scores for an event
- * - **void add_ntru_ntop_scores(std::string mode, std::string model, int epoch, int kfold, int ntru, int ntop, double data)** - 
- *   Add confusion matrix entry
- * - **std::map<std::string, std::vector<cdata_t*>> get_plts()** - Retrieve all data organized for plotting
- */
-
-/**
- * @section collector_public_variables Public Member Variables
- * 
- * - **std::vector<std::string> model_names** = {} - List of model names being tracked
- * - **std::vector<std::string> modes** = {} - List of phases (training/validation/evaluation)
- * - **std::vector<int> epochs** = {} - List of epoch numbers
- * - **std::vector<int> kfolds** = {} - List of k-fold indices
- * - **std::map<std::string, cmodel_t> model_data** = {} - All collected data organized by model name
+ * @brief class collector
+ * @extends tools
+ *
+ * @section public_members Public Members
+ *
+ * **Methods:**
+ * - collector()
+ * - ~collector()
+ * - std::map<std::string, std::vector<cdata_t*>> get_plts()
+ *
  */

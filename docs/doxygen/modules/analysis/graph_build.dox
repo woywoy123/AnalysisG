@@ -2,4 +2,11 @@
  * @file graph_build.cxx
  * @brief Documentation for modules/analysis/graph_build.cxx
  *
+ * Location: modules/analysis/graph_build.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

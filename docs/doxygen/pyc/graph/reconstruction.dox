@@ -2,4 +2,11 @@
  * @file reconstruction.cu
  * @brief Documentation for pyc/graph/reconstruction.cu
  *
+ * Location: pyc/graph/reconstruction.cu
+ */
+
+/**
+ * @brief .cu file
+ *
+ * This file contains implementation details.
  */

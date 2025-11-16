@@ -2,52 +2,61 @@
  * @file graphs.h
  * @brief Documentation for graphs/ssml_mc20/include/ssml_mc20/graphs.h
  *
- * @subsection graph_jets_class graph_jets
- * Inherits from graph_template
+ * Location: graphs/ssml_mc20/include/ssml_mc20/graphs.h
+ */
+
+/**
+ * @brief class graph_jets
+ * @extends graph_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `graph_jets();`
- * - `~graph_jets() override;`
- * - `graph_template* clone() override;`
- * - `void CompileEvent() override;`
- * - `};`
+ * **Methods:**
+ * - graph_jets()
+ * - ~graph_jets() override
+ * - graph_template* clone() override
+ * - void CompileEvent() override
  *
- * @subsection graph_jets_nonu_class graph_jets_nonu
- * Inherits from graph_template
+ */
+
+/**
+ * @brief class graph_jets_nonu
+ * @extends graph_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `graph_jets_nonu();`
- * - `~graph_jets_nonu() override;`
- * - `graph_template* clone() override;`
- * - `void CompileEvent() override;`
- * - `};`
+ * **Methods:**
+ * - graph_jets_nonu()
+ * - ~graph_jets_nonu() override
+ * - graph_template* clone() override
+ * - void CompileEvent() override
  *
- * @subsection graph_jets_detector_lep_class graph_jets_detector_lep
- * Inherits from graph_template
+ */
+
+/**
+ * @brief class graph_jets_detector_lep
+ * @extends graph_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `graph_jets_detector_lep();`
- * - `~graph_jets_detector_lep() override;`
- * - `graph_template* clone() override;`
- * - `void CompileEvent() override;`
- * - `};`
+ * **Methods:**
+ * - graph_jets_detector_lep()
+ * - ~graph_jets_detector_lep() override
+ * - graph_template* clone() override
+ * - void CompileEvent() override
  *
- * @subsection graph_detector_class graph_detector
- * Inherits from graph_template
+ */
+
+/**
+ * @brief class graph_detector
+ * @extends graph_template
  *
- * **Public Members:**
+ * @section public_members Public Members
  *
- * **Private Members:**
- * - `graph_detector();`
- * - `~graph_detector() override;`
- * - `graph_template* clone() override;`
- * - `void CompileEvent() override;`
- * - `};`
+ * **Methods:**
+ * - graph_detector()
+ * - ~graph_detector() override
+ * - graph_template* clone() override
+ * - void CompileEvent() override
  *
  */

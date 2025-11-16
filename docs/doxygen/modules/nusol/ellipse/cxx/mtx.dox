@@ -2,4 +2,11 @@
  * @file mtx.cxx
  * @brief Documentation for modules/nusol/ellipse/cxx/mtx.cxx
  *
+ * Location: modules/nusol/ellipse/cxx/mtx.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

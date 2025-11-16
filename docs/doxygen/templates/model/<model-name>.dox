@@ -2,4 +2,11 @@
  * @file <model-name>.pyx
  * @brief Documentation for templates/model/<model-name>.pyx
  *
+ * Location: templates/model/<model-name>.pyx
+ */
+
+/**
+ * @brief .pyx file
+ *
+ * This file contains implementation details.
  */

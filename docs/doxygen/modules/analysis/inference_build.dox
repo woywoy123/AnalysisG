@@ -2,4 +2,11 @@
  * @file inference_build.cxx
  * @brief Documentation for modules/analysis/inference_build.cxx
  *
+ * Location: modules/analysis/inference_build.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

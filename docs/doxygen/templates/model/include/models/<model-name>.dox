@@ -2,4 +2,11 @@
  * @file <model-name>.h
  * @brief Documentation for templates/model/include/models/<model-name>.h
  *
+ * Location: templates/model/include/models/<model-name>.h
+ */
+
+/**
+ * @brief .h file
+ *
+ * This file contains implementation details.
  */

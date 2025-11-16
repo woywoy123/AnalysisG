@@ -2,4 +2,11 @@
  * @file base.cuh
  * @brief Documentation for pyc/graph/include/graph/base.cuh
  *
+ * Location: pyc/graph/include/graph/base.cuh
+ */
+
+/**
+ * @brief .cuh file
+ *
+ * This file contains implementation details.
  */

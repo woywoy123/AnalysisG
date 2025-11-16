@@ -2,4 +2,11 @@
  * @file pagerank.cxx
  * @brief Documentation for metrics/pagerank/cxx/pagerank.cxx
  *
+ * Location: metrics/pagerank/cxx/pagerank.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

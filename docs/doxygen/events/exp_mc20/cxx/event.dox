@@ -2,4 +2,11 @@
  * @file event.cxx
  * @brief Documentation for events/exp_mc20/cxx/event.cxx
  *
+ * Location: events/exp_mc20/cxx/event.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

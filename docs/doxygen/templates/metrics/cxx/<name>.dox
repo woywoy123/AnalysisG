@@ -2,4 +2,11 @@
  * @file <name>.cxx
  * @brief Documentation for templates/metrics/cxx/<name>.cxx
  *
+ * Location: templates/metrics/cxx/<name>.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

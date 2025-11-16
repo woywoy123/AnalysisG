@@ -2,4 +2,11 @@
  * @file <event-name>.h
  * @brief Documentation for templates/events/include/<event-name>/<event-name>.h
  *
+ * Location: templates/events/include/<event-name>/<event-name>.h
+ */
+
+/**
+ * @brief .h file
+ *
+ * This file contains implementation details.
  */

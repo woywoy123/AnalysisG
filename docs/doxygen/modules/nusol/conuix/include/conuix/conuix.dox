@@ -2,27 +2,25 @@
  * @file conuix.h
  * @brief Documentation for modules/nusol/conuix/include/conuix/conuix.h
  *
- * @subsection nusol_t_class nusol_t
+ * Location: modules/nusol/conuix/include/conuix/conuix.h
+ */
+
+/**
+ * @brief struct nusol_t
  *
- * **Public Members:**
- * - `struct nusol_t;`
- * @subsection conuic_class conuic
+ * @section public_members Public Members
  *
- * **Public Members:**
- * - `class conuic;`
- * @subsection conuix_class conuix
+ * **Methods:**
+ * - conuix(nusol_t* params)
+ * - ~conuix()
+ * - void solve()
  *
- * **Public Members:**
+ * **Variables:**
+ * - class conuic
  *
- * **Private Members:**
- * - `conuix(nusol_t* params);`
- * - `~conuix();`
- * - `void solve();`
+ * @section private_members Private Members
  *
- * **Private Members:**
- * - `std::string prefix = "";`
- * - `nusol_t* params = nullptr;`
- * - `std::vector<conuic*>* cnx = nullptr;`
- * - `};`
+ * **Variables:**
+ * - std::string prefix = ""
  *
  */

@@ -2,4 +2,11 @@
  * @file conuix.cxx
  * @brief Documentation for modules/nusol/tmp/conuix/cxx/conuix.cxx
  *
+ * Location: modules/nusol/tmp/conuix/cxx/conuix.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

@@ -2,114 +2,66 @@
  * @file selection_template.h
  * @brief Documentation for modules/selection/include/templates/selection_template.h
  *
- * @subsection container_class container
+ * Location: modules/selection/include/templates/selection_template.h
+ */
+
+/**
+ * @brief class container
  *
- * **Public Members:**
- * - `class container;`
- * @subsection selection_template_class selection_template
- * Inherits from tools
+ * @section public_members Public Members
  *
- * **Public Members:**
+ * **Methods:**
+ * - selection_template()
+ * - virtual ~selection_template()
+ * - void static set_name(std::string*, selection_template*)
+ * - void static get_name(std::string*, selection_template*)
+ * - void static set_hash(std::string*, selection_template*)
+ * - void static get_hash(std::string*, selection_template*)
+ * - void static get_tree(std::string*, selection_template*)
+ * - void static set_weight(double*, selection_template*)
+ * - void static get_weight(double*, selection_template*)
+ * - void static set_index(long*, selection_template*)
+ * - virtual selection_template* clone()
+ * - virtual bool selection(event_template* ev)
+ * - virtual bool strategy(event_template* ev)
+ * - virtual void merge(selection_template* sel)
+ * - virtual void bulk_write(const long* idx, std::string* hx)
+ * - virtual void write(std::vector<particle_template*>* particles, std::string _name, particle_enum attrs)
+ * - void write(std::vector<g*>* particles, std::string _name, particle_enum attrs)
+ * - this -> downcast(particles, &ox)
+ * - this -> write(&ox, _name, attrs)
+ * - void write(g* var, std::string _name)
  *
- * **Private Members:**
- * - `selection_template();`
- * - `virtual ~selection_template();`
- * - `cproperty<std::string, selection_template> name;`
- * - `void static set_name(std::string*, selection_template*);`
- * - `void static get_name(std::string*, selection_template*);`
- * - `cproperty<std::string, selection_template> hash;`
- * - `void static set_hash(std::string*, selection_template*);`
- * - `void static get_hash(std::string*, selection_template*);`
- * - `cproperty<std::string, selection_template> tree;`
- * - `void static get_tree(std::string*, selection_template*);`
- * - `cproperty<double, selection_template> weight;`
- * - `void static set_weight(double*, selection_template*);`
- * - `void static get_weight(double*, selection_template*);`
- * - `cproperty<long, selection_template> index;`
- * - `void static set_index(long*, selection_template*);`
- * - `virtual selection_template* clone();`
- * - `virtual bool selection(event_template* ev);`
- * - `virtual bool strategy(event_template* ev);`
- * - `virtual void merge(selection_template* sel);`
- * - `virtual void bulk_write(const long* idx, std::string* hx);`
- * - `virtual void write(std::vector<particle_template*>* particles, std::string _name, particle_enum attrs);`
- * - `std::vector<particle_template*> ox;`
- * - `this -> downcast(particles, &ox);`
- * - `this -> write(&ox, _name, attrs);`
- * - `void switch_board(particle_enum attrs, particle_template* ptr, std::vector<std::vector<double>>* data);`
- * - `void switch_board(particle_enum attrs, particle_template* ptr, std::vector<int>*    data);`
- * - `void switch_board(particle_enum attrs, particle_template* ptr, std::vector<double>* data);`
- * - `void switch_board(particle_enum attrs, particle_template* ptr, std::vector<bool>*   data);`
- * - `if (!this -> handle){return;}`
- * - `this -> handle -> process(&_name) -> process(var, &_name, this -> handle -> tree);`
- * - `if (!this -> handle){return;}`
- * - `this -> handle -> process(&_name) -> process(&var, &_name, this -> handle -> tree);`
- * - `std::vector<std::map<std::string, float>> reverse_hash(std::vector<std::string>* hashes);`
- * - `bool CompileEvent();`
- * - `selection_template* build(event_template* ev);`
- * - `bool operator == (selection_template& p);`
- * - `meta* meta_data = nullptr;`
- * - `std::string filename = "";`
- * - `event_t data;`
- * - `k* prt = new k();`
- * - `prt -> _is_marked = true;`
- * - `std::map<std::string, bool> maps;`
- * - `for (size_t x(0); x < ch -> size(); ++x){`
- * - `if (!ch -> at(x)){continue;}`
- * - `if (maps[ch -> at(x) -> hash]){continue;}`
- * - `maps[ch -> at(x) -> hash] = true;`
- * - `prt -> iadd(ch -> at(x));`
- * - `std::string hash_ = prt -> hash;`
- * - `this -> garbage[hash_].push_back((particle_template*)prt);`
- * - `(*out) = prt;`
- * - `for (size_t x(0); x < particles -> size(); ++x){`
- * - `if (particles -> at(x) -> _is_marked){continue;}`
- * - `delete particles -> at(x);`
- * - `(*particles)[x] = nullptr;`
- * - `g* out = nullptr;`
- * - `typename std::vector<g*> vec = this -> vectorize(ch);`
- * - `this -> sum(&vec, &out);`
- * - `return out;`
- * - `particle_template* prt = nullptr;`
- * - `this -> sum(ch, &prt);`
- * - `return prt -> mass / 1000;`
- * - `typename std::vector<g*> out = {};`
- * - `typename std::map<std::string, g*>::iterator itr = in -> begin();`
- * - `for (; itr != in -> end(); ++itr){out.push_back(itr -> second);}`
- * - `return out;`
- * - `std::map<std::string, g*> tmp;`
- * - `for (size_t x(0); x < inpt -> size(); ++x){`
- * - `std::string hash_ = (*inpt)[x] -> hash;`
- * - `tmp[hash_] = (*inpt)[x];`
- * - `typename std::vector<g*> out = {};`
- * - `typename std::map<std::string, g*>::iterator itr;`
- * - `for (itr = tmp.begin(); itr != tmp.end(); ++itr){out.push_back(itr -> second);}`
- * - `return out;`
- * - `for (size_t x(0); x < inpt -> size(); ++x){out -> push_back((particle_template*)(*inpt)[x]);}`
- * - `typename std::map<std::string, o*>::iterator itx = inpt -> begin();`
- * - `for (; itx != inpt -> end(); ++itx){out -> push_back((g*)itx -> second);}`
- * - `for (size_t x(0); x < inpt -> size(); ++x){out -> push_back((g*)(*inpt)[x]);}`
- * - `typename std::map<std::string, g*>::iterator itr = inpt.begin();`
- * - `for (; itr != inpt.end(); ++itr){`
- * - `if (!itr -> second -> is_lep && !itr -> second -> is_nu){continue;}`
- * - `out -> push_back((particle_template*)itr -> second);`
- * - `for (size_t x(0); x < inpt -> size(); ++x){`
- * - `if ((*inpt)[x] -> hash != pcheck -> hash){continue;}`
- * - `return true;`
- * - `return false;`
- * - `int threadIdx = -1;`
- * - `std::map<std::string, std::map<std::string, float>> passed_weights = {};`
- * - `std::map<std::string, meta_t> matched_meta = {};`
+ * **Variables:**
+ * - cproperty<std::string, selection_template> name
+ * - cproperty<std::string, selection_template> hash
+ * - cproperty<std::string, selection_template> tree
+ * - cproperty<double, selection_template> weight
+ * - cproperty<long, selection_template> index
+ * - std::vector<particle_template*> ox
+ * - std::string filename = ""
+ * - event_t data
+ * - std::map<std::string, bool> maps
+ * - std::string hash_ = prt -> hash
+ * - return out
+ * - return prt -> mass / 1000
+ * - return out
+ * - std::map<std::string, g*> tmp
+ * - typename std::map<std::string, g*>::iterator itr
+ * - return out
+ * - return true
+ * - return false
+ * - int threadIdx = -1
  *
- * **Private Members:**
- * - `friend container;`
- * - `void bulk_write_out();`
- * - `void merger(selection_template* sl2);`
- * - `std::unordered_map<long, std::string> sequence;`
- * - `bool p_bulk_write = true;`
- * - `write_t* handle = nullptr;`
- * - `event_template* m_event = nullptr;`
- * - `std::map<std::string, std::vector<particle_template*>> garbage = {};`
- * - `};`
+ * @section private_members Private Members
+ *
+ * **Methods:**
+ * - void bulk_write_out()
+ * - void merger(selection_template* sl2)
+ *
+ * **Variables:**
+ * - friend container
+ * - std::unordered_map<long, std::string> sequence
+ * - bool p_bulk_write = true
  *
  */

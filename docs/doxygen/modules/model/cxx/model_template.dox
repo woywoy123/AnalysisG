@@ -2,4 +2,11 @@
  * @file model_template.cxx
  * @brief Documentation for modules/model/cxx/model_template.cxx
  *
+ * Location: modules/model/cxx/model_template.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

@@ -2,10 +2,35 @@
  * @file meta.pyx
  * @brief Documentation for core/meta.pyx
  *
- * @subsection httpx_class httpx
+ * Location: core/meta.pyx
+ */
+
+/**
+ * @brief class httpx
  *
- * **Public Members:**
- * @subsection atlas_class atlas
+ * @section private_members Private Members
  *
- * **Public Members:**
+ * **Methods:**
+ * - def __init__(self, config):
+ * - super(httpx, self).__init__(config)
+ * - def connect(self, endpoint):
+ *
+ */
+
+/**
+ * @brief class atlas
+ *
+ * @section private_members Private Members
+ *
+ * **Methods:**
+ * - def __init__(self):
+ * - super(atlas, self).__init__("atlas-replica")
+ * - try: self.httpClient = httpx(self.config)
+ * - except: print("Failed to Authenticate to PyAMI.")
+ * - def __cinit__(self):
+ * - self.client = atlas()
+ * - def __init__(self): self.type_ = "DAOD_TOPQ1"
+ * - def __dealloc__(self): del self.nf
+ * - cdef bool loadcache(self, Meta obj):
+ *
  */

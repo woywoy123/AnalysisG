@@ -2,4 +2,11 @@
  * @file RecursiveGraphNeuralNetwork.cxx
  * @brief Documentation for models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
  *
+ * Location: models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

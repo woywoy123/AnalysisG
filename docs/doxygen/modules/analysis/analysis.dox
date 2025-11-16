@@ -2,4 +2,11 @@
  * @file analysis.cxx
  * @brief Documentation for modules/analysis/analysis.cxx
  *
+ * Location: modules/analysis/analysis.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

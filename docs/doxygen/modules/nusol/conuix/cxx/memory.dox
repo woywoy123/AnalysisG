@@ -2,4 +2,11 @@
  * @file memory.cxx
  * @brief Documentation for modules/nusol/conuix/cxx/memory.cxx
  *
+ * Location: modules/nusol/conuix/cxx/memory.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

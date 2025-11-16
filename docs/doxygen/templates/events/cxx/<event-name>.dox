@@ -2,4 +2,11 @@
  * @file <event-name>.cxx
  * @brief Documentation for templates/events/cxx/<event-name>.cxx
  *
+ * Location: templates/events/cxx/<event-name>.cxx
+ */
+
+/**
+ * @brief .cxx file
+ *
+ * This file contains implementation details.
  */

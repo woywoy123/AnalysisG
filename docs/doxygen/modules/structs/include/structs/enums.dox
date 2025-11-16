@@ -2,4 +2,11 @@
  * @file enums.h
  * @brief Documentation for modules/structs/include/structs/enums.h
  *
+ * Location: modules/structs/include/structs/enums.h
+ */
+
+/**
+ * @brief .h file
+ *
+ * This file contains implementation details.
  */
