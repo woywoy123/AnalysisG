@@ -1,24 +1,5 @@
 /**
  * @file lossfx.cxx
- * @brief Comprehensive documentation for modules/lossfx/cxx/lossfx.cxx
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/lossfx/cxx/lossfx.cxx`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page modules_lossfx_cxx_lossfx_cxx lossfx.cxx
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/modules/lossfx/cxx/lossfx.cxx`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for modules/lossfx/cxx/lossfx.cxx
+ *
  */

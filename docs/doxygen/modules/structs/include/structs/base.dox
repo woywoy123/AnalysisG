@@ -1,85 +1,42 @@
 /**
  * @file base.h
- * @brief Comprehensive documentation for modules/structs/include/structs/base.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/structs/include/structs/base.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page bsc_t_documentation bsc_t Class Documentation
- * 
- * @section bsc_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `bsc_t`  
- * **Defined in:** `src/AnalysisG/modules/structs/include/structs/base.h`
- * 
- * @section bsc_t_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection bsc_t_methods_public Public Methods
- * 
- * - `bsc_t()`
- * - `virtual ~bsc_t()`
- * - `void flush_buffer()`
- * - `std::string as_string()`
- * - `std::string scan_buffer()`
- * - `data_enum root_type_translate(std::string*)`
- * - `bool element(std::vector<std::vector<std::vector<float>>>* el)`
- * - `bool element(std::vector<std::vector<std::vector<double>>>* el)`
- * - `bool element(std::vector<std::vector<std::vector<long>>>* el)`
- * - `bool element(std::vector<std::vector<std::vector<int>>>* el)`
- * - `bool element(std::vector<std::vector<std::vector<bool>>>* el)`
- * - `bool element(std::vector<std::vector<float>>* el)`
- * - `bool element(std::vector<std::vector<double>>* el)`
- * - `bool element(std::vector<std::vector<long>>* el)`
- * - `bool element(std::vector<std::vector<int>>* el)`
- * - `bool element(std::vector<std::vector<bool>>* el)`
- * - `bool element(std::vector<float>* el)`
- * - `bool element(std::vector<double>* el)`
- * - `bool element(std::vector<long>* el)`
- * - `bool element(std::vector<int>* el)`
- * - `bool element(std::vector<char>* el)`
- * - `bool element(std::vector<bool>* el)`
- * - `bool element(double* el)`
- * - `bool element(float* el)`
- * - `bool element(long* el)`
- * - `bool element(int* el)`
- * - `bool element(bool* el)`
- * - `bool element(unsigned long long* el)`
- * - `bool element(unsigned int* el)`
- * - `bool element(char* el)`
- * - `bool flush_buffer(std::vector<T>** data)`
- * - `if (!(*data))`
- * - `if (!this -> clear)`
- * - `delete (*data)`
- * - `bool flush_buffer(T** data)`
- * - `if (!(*data))`
- * - `if (!this -> clear)`
- * - `else`
- * 
- * @subsection bsc_t_methods_private Private Methods
- * 
- * - `bool _getalt(g* v, g* out)`
- * - `if (!v)`
- * - `bool _getalt(std::vector<g>* vv, g* v, g* out)`
- * - `if (!vv && !v)`
- * - `else if (vv && vv -> size() > this -> index)`
- * - `else if (!vv && v)`
- * 
- * @section bsc_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection bsc_t_variables_public Public Variables
- * 
+ * @brief Documentation for modules/structs/include/structs/base.h
+ *
+ * @subsection bsc_t_class bsc_t
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `bsc_t();`
+ * - `virtual ~bsc_t();`
+ * - `void flush_buffer();`
+ * - `std::string as_string();`
+ * - `std::string scan_buffer();`
+ * - `data_enum root_type_translate(std::string*);`
+ * - `bool element(std::vector<std::vector<std::vector<float>>>*  el);`
+ * - `bool element(std::vector<std::vector<std::vector<double>>>* el);`
+ * - `bool element(std::vector<std::vector<std::vector<long>>>*   el);`
+ * - `bool element(std::vector<std::vector<std::vector<int>>>*    el);`
+ * - `bool element(std::vector<std::vector<std::vector<bool>>>*   el);`
+ * - `bool element(std::vector<std::vector<float>>*  el);`
+ * - `bool element(std::vector<std::vector<double>>* el);`
+ * - `bool element(std::vector<std::vector<long>>*   el);`
+ * - `bool element(std::vector<std::vector<int>>*    el);`
+ * - `bool element(std::vector<std::vector<bool>>*   el);`
+ * - `bool element(std::vector<float>* el);`
+ * - `bool element(std::vector<double>* el);`
+ * - `bool element(std::vector<long>* el);`
+ * - `bool element(std::vector<int>* el);`
+ * - `bool element(std::vector<char>* el);`
+ * - `bool element(std::vector<bool>* el);`
+ * - `bool element(double* el);`
+ * - `bool element(float* el);`
+ * - `bool element(long* el);`
+ * - `bool element(int* el);`
+ * - `bool element(bool* el);`
+ * - `bool element(unsigned long long* el);`
+ * - `bool element(unsigned int* el);`
+ * - `bool element(char* el);`
  * - `std::vector<std::vector<std::vector<unsigned long long>>>* vvv_ull = nullptr;`
  * - `std::vector<std::vector<std::vector<unsigned int>>>*       vvv_ui  = nullptr;`
  * - `std::vector<std::vector<std::vector<double>>>*             vvv_d   = nullptr;`
@@ -112,11 +69,27 @@
  * - `int*                                                           i   = nullptr;`
  * - `bool*                                                          b   = nullptr;`
  * - `char*                                                          c   = nullptr;`
+ * - `long index = 0;`
  * - `bool clear = false;`
- * 
- * @subsection bsc_t_variables_private Private Variables
- * 
+ * - `data_enum type = data_enum::unset;`
+ * - `if (!(*data)){return false;}`
+ * - `if (!this -> clear){(*data) -> clear(); return true;}`
+ * - `delete (*data); (*data) = nullptr;`
+ * - `return true;`
+ * - `if (!(*data)){return false;}`
+ * - `if (!this -> clear){(**data) = 0; return true;}`
+ * - `else {delete (*data); (*data) = nullptr;}`
+ * - `return true;`
+ *
+ * **Private Members:**
+ * - `if (!v){return false;}`
  * - `*out = *v;`
- * 
+ * - `return true;`
+ * - `if (!vv && !v){return false;}`
+ * - `else if (vv  && vv -> size() > this -> index){*out = (*vv)[this -> index];}`
+ * - `else if (!vv && v){*out = *v;}`
+ * - `else {return false;}`
+ * - `return true;`
+ * - `};`
+ *
  */
-

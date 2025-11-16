@@ -1,24 +1,5 @@
 /**
  * @file edge_features.cxx
- * @brief Comprehensive documentation for graphs/bsm_4tops/cxx/edge_features.cxx
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/graphs/bsm_4tops/cxx/edge_features.cxx`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page graphs_bsm_4tops_cxx_edge_features_cxx edge_features.cxx
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/graphs/bsm_4tops/cxx/edge_features.cxx`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for graphs/bsm_4tops/cxx/edge_features.cxx
+ *
  */

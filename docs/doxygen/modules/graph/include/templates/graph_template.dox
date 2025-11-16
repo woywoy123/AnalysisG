@@ -1,85 +1,53 @@
 /**
  * @file graph_template.h
- * @brief Comprehensive documentation for modules/graph/include/templates/graph_template.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/graph/include/templates/graph_template.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page graph_template_documentation graph_template Class Documentation
- * 
- * @section graph_template_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `graph_template`  
- * **Defined in:** `src/AnalysisG/modules/graph/include/templates/graph_template.h`
- * 
- * @section graph_template_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection graph_template_methods_public Public Methods
- * 
- * - `torch::Tensor* get_truth_graph(std::string _name, g* mdl)`
- * - `return this -> has_feature(graph_enum::truth_graph, _name, mdl -> device_index)`
- * - `torch::Tensor* get_truth_node(std::string _name, g* mdl)`
- * - `return this -> has_feature(graph_enum::truth_node, _name, mdl -> device_index)`
- * - `torch::Tensor* get_truth_edge(std::string _name, g* mdl)`
- * - `return this -> has_feature(graph_enum::truth_edge, _name, mdl -> device_index)`
- * - `torch::Tensor* get_data_graph(std::string _name, g* mdl)`
- * - `return this -> has_feature(graph_enum::data_graph, _name, mdl -> device_index)`
- * - `torch::Tensor* get_data_node(std::string _name, g* mdl)`
- * - `return this -> has_feature(graph_enum::data_node, _name, mdl -> device_index)`
- * - `torch::Tensor* get_data_edge(std::string _name, g* mdl)`
- * - `return this -> has_feature(graph_enum::data_edge, _name, mdl -> device_index)`
- * - `torch::Tensor* get_edge_index(g* mdl)`
- * - `return this -> has_feature(graph_enum::edge_index, "", mdl -> device_index)`
- * - `torch::Tensor* get_event_weight(g* mdl)`
- * - `return this -> has_feature(graph_enum::weight, "", mdl -> device_index)`
- * - `torch::Tensor* get_batch_index(g* mdl)`
- * - `return this -> has_feature(graph_enum::batch_index, "", mdl -> device_index)`
- * - `torch::Tensor* get_batched_events(g* mdl)`
- * - `return this -> has_feature(graph_enum::batch_events, "", mdl -> device_index)`
- * - `torch::Tensor* has_feature(graph_enum tp, std::string _name, int dev)`
- * - `void add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)`
- * - `void add_truth_node( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)`
- * - `void add_truth_edge( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)`
- * - `void add_data_graph( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)`
- * - `void add_data_node( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)`
- * - `void add_data_edge( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)`
- * - `void transfer_to_device(torch::TensorOptions* dev)`
- * - `void _purge_all()`
- * 
- * @subsection graph_template_methods_private Private Methods
- * 
- * - `void meta_serialize(std::map<std::string, int>* data, std::string* out)`
- * - `void meta_serialize(std::vector<torch::Tensor*>* data, std::string* out)`
- * - `void meta_serialize(torch::Tensor* data, std::string* out)`
- * - `void serialize(graph_hdf5* m_hdf5)`
- * - `void meta_deserialize(std::map<std::string, int>* data, std::string* inpt)`
- * - `void meta_deserialize(std::vector<torch::Tensor*>* data, std::string* inpt)`
- * - `torch::Tensor* meta_deserialize(std::string* inpt)`
- * - `void deserialize(graph_hdf5* m_hdf5)`
- * - `void _purge_data(std::vector<torch::Tensor*>* data)`
- * - `void _purge_data(std::map<int, torch::Tensor*>* data)`
- * - `void _purge_data(std::map<int, std::vector<torch::Tensor*>*>* data)`
- * - `std::vector<torch::Tensor*>* add_content(std::map<std::string, torch::Tensor*>* inpt)`
- * - `void _transfer_to_device( std::vector<torch::Tensor>* trg, std::vector<torch::Tensor*>* data, torch::TensorOptions* dev )`
- * - `torch::Tensor* return_any( std::map<std::string, int>* loc, std::map<int, std::vector<torch::Tensor>>* container, std::string _name, int dev_)`
- * 
- * @section graph_template_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection graph_template_variables_public Public Variables
- * 
+ * @brief Documentation for modules/graph/include/templates/graph_template.h
+ *
+ * @subsection graph_template_class graph_template
+ *
+ * **Public Members:**
+ * - `class graph_template;`
+ * @subsection dataloader_class dataloader
+ *
+ * **Public Members:**
+ * - `class dataloader;`
+ * @subsection container_class container
+ *
+ * **Public Members:**
+ * - `class container;`
+ * @subsection analysis_class analysis
+ *
+ * **Public Members:**
+ * - `class analysis;`
+ * @subsection meta_class meta
+ *
+ * **Public Members:**
+ * - `class meta;`
+ * @subsection graph_t_class graph_t
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `return this -> has_feature(graph_enum::truth_graph, _name, mdl -> device_index);`
+ * - `return this -> has_feature(graph_enum::truth_node, _name, mdl -> device_index);`
+ * - `return this -> has_feature(graph_enum::truth_edge, _name, mdl -> device_index);`
+ * - `return this -> has_feature(graph_enum::data_graph, _name, mdl -> device_index);`
+ * - `return this -> has_feature(graph_enum::data_node, _name, mdl -> device_index);`
+ * - `return this -> has_feature(graph_enum::data_edge, _name, mdl -> device_index);`
+ * - `return this -> has_feature(graph_enum::edge_index, "", mdl -> device_index);`
+ * - `return this -> has_feature(graph_enum::weight, "", mdl -> device_index);`
+ * - `return this -> has_feature(graph_enum::batch_index, "", mdl -> device_index);`
+ * - `return this -> has_feature(graph_enum::batch_events, "", mdl -> device_index);`
+ * - `torch::Tensor* has_feature(graph_enum tp, std::string _name, int dev);`
+ * - `void add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps);`
+ * - `void add_truth_node( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps);`
+ * - `void add_truth_edge( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps);`
+ * - `void add_data_graph( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps);`
+ * - `void add_data_node(  std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps);`
+ * - `void add_data_edge(  std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps);`
+ * - `void transfer_to_device(torch::TensorOptions* dev);`
+ * - `void _purge_all();`
  * - `int       num_nodes = 0;`
+ * - `long    event_index = 0;`
  * - `double event_weight = 1;`
  * - `bool   preselection = false;`
  * - `std::vector<long> batched_events = {};`
@@ -87,10 +55,12 @@
  * - `std::string* hash       = nullptr;`
  * - `std::string* filename   = nullptr;`
  * - `std::string* graph_name = nullptr;`
+ * - `c10::DeviceType device = c10::kCPU;`
  * - `int in_use = 1;`
- * 
- * @subsection graph_template_variables_private Private Variables
- * 
+ *
+ * **Private Members:**
+ * - `friend graph_template;`
+ * - `friend dataloader;`
  * - `bool is_owner = false;`
  * - `std::mutex mut;`
  * - `torch::Tensor* edge_index = nullptr;`
@@ -117,150 +87,149 @@
  * - `std::map<int, torch::Tensor> dev_event_weight = {};`
  * - `std::map<int, torch::Tensor> dev_batched_events = {};`
  * - `std::map<int, bool> device_index = {};`
- * 
- */
-
-/**
- * @page graph_template_documentation graph_template Class Documentation
- * 
- * @section graph_template_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `graph_template`  
- * **Inherits from:** `tools`  
- * **Defined in:** `src/AnalysisG/modules/graph/include/templates/graph_template.h`
- * 
- * @section graph_template_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection graph_template_methods_public Public Methods
- * 
- * - `graph_template()`
- * - `virtual ~graph_template()`
- * - `virtual graph_template* clone()`
- * - `virtual void CompileEvent()`
- * - `virtual bool PreSelection()`
- * - `void define_particle_nodes(std::vector<particle_template*>* prt)`
- * - `void define_topology(std::function<bool(particle_template*, particle_template*)> fx)`
- * - `void flush_particles()`
- * - `G* get_event()`
- * - `void add_graph_truth_feature(O* ev, X fx, std::string _name)`
- * - `cdef.set_getter(fx)`
- * - `cdef.set_object(ev)`
- * - `this -> add_graph_feature(r, "T-" + _name)`
- * - `void add_graph_data_feature(O* ev, X fx, std::string _name)`
- * - `cdef.set_getter(fx)`
- * - `cdef.set_object(ev)`
- * - `this -> add_graph_feature(r, "D-" + _name)`
- * - `void add_node_truth_feature(X fx, std::string _name)`
- * - `for (`
- * - `cdef.set_getter(fx)`
- * - `cdef.set_object((O*)itr -> second)`
- * - `nodes_data.push_back((G)cdef)`
- * - `this -> add_node_feature(nodes_data, "T-" + _name)`
- * - `void add_node_data_feature(X fx, std::string _name)`
- * - `for (`
- * - `cdef.set_getter(fx)`
- * - `cdef.set_object((O*)itr -> second)`
- * - `nodes_data.push_back((G)cdef)`
- * - `this -> add_node_feature(nodes_data, "D-" + _name)`
- * - `void add_edge_truth_feature(X fx, std::string _name)`
- * - `if (!this -> _topological_index.size())`
- * - `for (itr1 = this -> node_particles.begin()`
- * - `for (itr2 = this -> node_particles.begin()`
- * - `if (this -> _topological_index[dx] < 0)`
- * - `std::tuple<O*, O*> p_ij((O*)itr1 -> second, (O*)itr2 -> second)`
- * - `cdef.set_object(&p_ij)`
- * - `cdef.set_getter(fx)`
- * - `edge_data.push_back(cdef)`
- * - `this -> add_edge_feature(edge_data, "T-" + _name)`
- * - `void add_edge_data_feature(X fx, std::string _name)`
- * - `if (!this -> _topological_index.size())`
- * - `for (itr1 = this -> node_particles.begin()`
- * - `for (itr2 = this -> node_particles.begin()`
- * - `if (this -> _topological_index[dx] < 0)`
- * - `std::tuple<O*, O*> p_ij(itr1 -> second, itr2 -> second)`
- * - `cdef.set_object(&p_ij)`
- * - `cdef.set_getter(fx)`
- * - `edge_data.push_back(cdef)`
- * - `this -> add_edge_feature(edge_data, "D-" + _name)`
- * 
- * @subsection graph_template_methods_private Private Methods
- * 
- * - `void add_graph_feature(bool, std::string)`
- * - `void add_graph_feature(std::vector<bool>, std::string)`
- * - `void add_graph_feature(float, std::string)`
- * - `void add_graph_feature(std::vector<float>, std::string)`
- * - `void add_graph_feature(double, std::string)`
- * - `void add_graph_feature(std::vector<double>, std::string)`
- * - `void add_graph_feature(long, std::string)`
- * - `void add_graph_feature(std::vector<long>, std::string)`
- * - `void add_graph_feature(int, std::string)`
- * - `void add_graph_feature(std::vector<int>, std::string)`
- * - `void add_graph_feature(std::vector<std::vector<int>>, std::string)`
- * - `void add_node_feature(bool, std::string)`
- * - `void add_node_feature(std::vector<bool>, std::string)`
- * - `void add_node_feature(float, std::string)`
- * - `void add_node_feature(std::vector<float>, std::string)`
- * - `void add_node_feature(double, std::string)`
- * - `void add_node_feature(std::vector<double>, std::string)`
- * - `void add_node_feature(long, std::string)`
- * - `void add_node_feature(std::vector<long>, std::string)`
- * - `void add_node_feature(int, std::string)`
- * - `void add_node_feature(std::vector<int>, std::string)`
- * - `void add_node_feature(std::vector<std::vector<int>>, std::string)`
- * - `void add_edge_feature(bool, std::string)`
- * - `void add_edge_feature(std::vector<bool>, std::string)`
- * - `void add_edge_feature(float, std::string)`
- * - `void add_edge_feature(std::vector<float>, std::string)`
- * - `void add_edge_feature(double, std::string)`
- * - `void add_edge_feature(std::vector<double>, std::string)`
- * - `void add_edge_feature(long, std::string)`
- * - `void add_edge_feature(std::vector<long>, std::string)`
- * - `void add_edge_feature(int, std::string)`
- * - `void add_edge_feature(std::vector<int>, std::string)`
- * - `void add_edge_feature(std::vector<std::vector<int>>, std::string)`
- * - `torch::Tensor to_tensor(std::vector<G> _data, at::ScalarType _op, g prim)`
- * - `return build_tensor(&_data, _op, prim, this -> op)`
- * - `void static set_name(std::string*, graph_template*)`
- * - `void static set_preselection(bool*, graph_template*)`
- * - `void static get_hash(std::string*, graph_template*)`
- * - `void static get_index(long*, graph_template*)`
- * - `void static get_weight(double*, graph_template*)`
- * - `void static get_tree(std::string*, graph_template*)`
- * - `void static get_preselection(bool*, graph_template*)`
- * - `void static build_export( std::map<std::string, torch::Tensor*>* _truth_t, std::map<std::string, int>* _truth_i, std::map<std::string, torch::Tensor*>* _data_t , std::map<std::string, int>* _data_i, std::map<std::string, torch::Tensor>* _fx )`
- * - `graph_template* build(event_template* el)`
- * - `graph_t* data_export()`
- * 
- * @section graph_template_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection graph_template_variables_public Public Variables
- * 
+ * - `void meta_serialize(std::map<std::string, int>* data, std::string* out);`
+ * - `void meta_serialize(std::vector<torch::Tensor*>* data, std::string* out);`
+ * - `void meta_serialize(torch::Tensor* data, std::string* out);`
+ * - `void serialize(graph_hdf5* m_hdf5);`
+ * - `void meta_deserialize(std::map<std::string, int>* data, std::string* inpt);`
+ * - `void meta_deserialize(std::vector<torch::Tensor*>* data, std::string* inpt);`
+ * - `torch::Tensor* meta_deserialize(std::string* inpt);`
+ * - `void deserialize(graph_hdf5* m_hdf5);`
+ * - `void _purge_data(std::vector<torch::Tensor*>* data);`
+ * - `void _purge_data(std::map<int, torch::Tensor*>* data);`
+ * - `void _purge_data(std::map<int, std::vector<torch::Tensor*>*>* data);`
+ * - `std::vector<torch::Tensor*>* add_content(std::map<std::string, torch::Tensor*>* inpt);`
+ * - `);`
+ * - `std::string _name, int dev_);`
+ * - `};`
+ *
+ * @subsection graph_template_class graph_template
+ * Inherits from tools
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `graph_template();`
+ * - `virtual ~graph_template();`
+ * - `virtual graph_template* clone();`
+ * - `virtual void CompileEvent();`
+ * - `virtual bool PreSelection();`
+ * - `void define_particle_nodes(std::vector<particle_template*>* prt);`
+ * - `void define_topology(std::function<bool(particle_template*, particle_template*)> fx);`
+ * - `void flush_particles();`
+ * - `bool operator == (graph_template& p);`
+ * - `cproperty<long  , graph_template> index;`
+ * - `cproperty<double, graph_template> weight;`
+ * - `cproperty<bool  , graph_template> preselection;`
  * - `cproperty<std::string, graph_template> hash;`
  * - `cproperty<std::string, graph_template> tree;`
  * - `cproperty<std::string, graph_template> name;`
  * - `int threadIdx = -1;`
  * - `std::string filename = "";`
  * - `meta* meta_data = nullptr;`
+ * - `G* get_event(){return (G*)this -> m_event;}`
+ * - `cproperty<G, O> cdef;`
+ * - `cdef.set_getter(fx);`
+ * - `cdef.set_object(ev);`
+ * - `G r = cdef;`
+ * - `this -> add_graph_feature(r, "T-" + _name);`
+ * - `cproperty<G, O> cdef;`
+ * - `cdef.set_getter(fx);`
+ * - `cdef.set_object(ev);`
+ * - `G r = cdef;`
+ * - `this -> add_graph_feature(r, "D-" + _name);`
  * - `std::vector<G> nodes_data = {};`
+ * - `std::map<int, particle_template*>::iterator itr = this -> node_particles.begin();`
+ * - `for (; itr != this -> node_particles.end(); ++itr){`
+ * - `cproperty<G, O> cdef;`
+ * - `cdef.set_getter(fx);`
+ * - `cdef.set_object((O*)itr -> second);`
+ * - `nodes_data.push_back((G)cdef);`
+ * - `this -> add_node_feature(nodes_data, "T-" + _name);`
  * - `std::vector<G> nodes_data = {};`
+ * - `std::map<int, particle_template*>::iterator itr = this -> node_particles.begin();`
+ * - `for (; itr != this -> node_particles.end(); ++itr){`
+ * - `cproperty<G, O> cdef;`
+ * - `cdef.set_getter(fx);`
+ * - `cdef.set_object((O*)itr -> second);`
+ * - `nodes_data.push_back((G)cdef);`
+ * - `this -> add_node_feature(nodes_data, "D-" + _name);`
  * - `int dx = -1;`
  * - `std::vector<G> edge_data = {};`
  * - `std::map<int, particle_template*>::iterator itr1;`
  * - `std::map<int, particle_template*>::iterator itr2;`
+ * - `if (!this -> _topological_index.size()){this -> define_topology(fulltopo);}`
+ * - `for (itr1 = this -> node_particles.begin(); itr1 != this -> node_particles.end(); ++itr1){`
+ * - `for (itr2 = this -> node_particles.begin(); itr2 != this -> node_particles.end(); ++itr2){`
+ * - `++dx;`
+ * - `if (this -> _topological_index[dx] < 0){continue;}`
+ * - `std::tuple<O*, O*> p_ij((O*)itr1 -> second, (O*)itr2 -> second);`
  * - `cproperty<G, std::tuple<O*, O*>> cdef;`
+ * - `cdef.set_object(&p_ij);`
+ * - `cdef.set_getter(fx);`
+ * - `edge_data.push_back(cdef);`
+ * - `this -> add_edge_feature(edge_data, "T-" + _name);`
  * - `int dx = -1;`
  * - `std::vector<G> edge_data = {};`
  * - `std::map<int, particle_template*>::iterator itr1;`
  * - `std::map<int, particle_template*>::iterator itr2;`
+ * - `if (!this -> _topological_index.size()){this -> define_topology(fulltopo);}`
+ * - `for (itr1 = this -> node_particles.begin(); itr1 != this -> node_particles.end(); ++itr1){`
+ * - `for (itr2 = this -> node_particles.begin(); itr2 != this -> node_particles.end(); ++itr2){`
+ * - `++dx;`
+ * - `if (this -> _topological_index[dx] < 0){continue;}`
+ * - `std::tuple<O*, O*> p_ij(itr1 -> second, itr2 -> second);`
  * - `cproperty<G, std::tuple<O*, O*>> cdef;`
- * 
- * @subsection graph_template_variables_private Private Variables
- * 
+ * - `cdef.set_object(&p_ij);`
+ * - `cdef.set_getter(fx);`
+ * - `edge_data.push_back(cdef);`
+ * - `this -> add_edge_feature(edge_data, "D-" + _name);`
+ *
+ * **Private Members:**
+ * - `friend container;`
+ * - `friend analysis;`
+ * - `void add_graph_feature(bool, std::string);`
+ * - `void add_graph_feature(std::vector<bool>, std::string);`
+ * - `void add_graph_feature(float, std::string);`
+ * - `void add_graph_feature(std::vector<float>, std::string);`
+ * - `void add_graph_feature(double, std::string);`
+ * - `void add_graph_feature(std::vector<double>, std::string);`
+ * - `void add_graph_feature(long, std::string);`
+ * - `void add_graph_feature(std::vector<long>, std::string);`
+ * - `void add_graph_feature(int, std::string);`
+ * - `void add_graph_feature(std::vector<int>, std::string);`
+ * - `void add_graph_feature(std::vector<std::vector<int>>, std::string);`
+ * - `void add_node_feature(bool, std::string);`
+ * - `void add_node_feature(std::vector<bool>, std::string);`
+ * - `void add_node_feature(float, std::string);`
+ * - `void add_node_feature(std::vector<float>, std::string);`
+ * - `void add_node_feature(double, std::string);`
+ * - `void add_node_feature(std::vector<double>, std::string);`
+ * - `void add_node_feature(long, std::string);`
+ * - `void add_node_feature(std::vector<long>, std::string);`
+ * - `void add_node_feature(int, std::string);`
+ * - `void add_node_feature(std::vector<int>, std::string);`
+ * - `void add_node_feature(std::vector<std::vector<int>>, std::string);`
+ * - `void add_edge_feature(bool, std::string);`
+ * - `void add_edge_feature(std::vector<bool>, std::string);`
+ * - `void add_edge_feature(float, std::string);`
+ * - `void add_edge_feature(std::vector<float>, std::string);`
+ * - `void add_edge_feature(double, std::string);`
+ * - `void add_edge_feature(std::vector<double>, std::string);`
+ * - `void add_edge_feature(long, std::string);`
+ * - `void add_edge_feature(std::vector<long>, std::string);`
+ * - `void add_edge_feature(int, std::string);`
+ * - `void add_edge_feature(std::vector<int>, std::string);`
+ * - `void add_edge_feature(std::vector<std::vector<int>>, std::string);`
+ * - `return build_tensor(&_data, _op, prim, this -> op);`
+ * - `void static set_name(std::string*, graph_template*);`
+ * - `void static set_preselection(bool*, graph_template*);`
+ * - `void static get_hash(std::string*, graph_template*);`
+ * - `void static get_index(long*, graph_template*);`
+ * - `void static get_weight(double*, graph_template*);`
+ * - `void static get_tree(std::string*, graph_template*);`
+ * - `void static get_preselection(bool*, graph_template*);`
+ * - `);`
  * - `int num_nodes = 0;`
  * - `std::map<std::string, int> nodes = {};`
  * - `std::map<int, particle_template*> node_particles = {};`
@@ -274,6 +243,9 @@
  * - `torch::TensorOptions* op = nullptr;`
  * - `event_template* m_event = nullptr;`
  * - `bool m_preselection = false;`
- * 
+ * - `graph_template* build(event_template* el);`
+ * - `graph_t* data_export();`
+ * - `event_t data;`
+ * - `};`
+ *
  */
-

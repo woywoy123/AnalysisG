@@ -1,24 +1,5 @@
 /**
  * @file misc.cxx
- * @brief Comprehensive documentation for modules/structs/cxx/misc.cxx
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/structs/cxx/misc.cxx`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page modules_structs_cxx_misc_cxx misc.cxx
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/modules/structs/cxx/misc.cxx`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for modules/structs/cxx/misc.cxx
+ *
  */

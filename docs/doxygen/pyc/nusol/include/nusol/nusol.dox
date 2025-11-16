@@ -1,24 +1,5 @@
 /**
  * @file nusol.h
- * @brief Comprehensive documentation for pyc/nusol/include/nusol/nusol.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/pyc/nusol/include/nusol/nusol.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page pyc_nusol_include_nusol_nusol_h nusol.h
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/pyc/nusol/include/nusol/nusol.h`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for pyc/nusol/include/nusol/nusol.h
+ *
  */

@@ -1,69 +1,28 @@
 /**
  * @file io.cxx
- * @brief Comprehensive documentation for modules/tools/cxx/io.cxx
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/tools/cxx/io.cxx`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page stat_documentation stat Class Documentation
- * 
- * @section stat_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `stat`  
- * **Defined in:** `src/AnalysisG/modules/tools/cxx/io.cxx`
- * 
- * @section stat_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection stat_methods_private Private Methods
- * 
- * - `if (S_ISDIR(sb.st_mode))`
- * - `else`
- * 
- */
-
-/**
- * @page stat_documentation stat Class Documentation
- * 
- * @section stat_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `stat`  
- * **Defined in:** `src/AnalysisG/modules/tools/cxx/io.cxx`
- * 
- * @section stat_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection stat_methods_private Private Methods
- * 
- * - `if (tools::ends_with(&path, "*"))`
- * - `try`
- * - `catch (...)`
- * - `for (const std::filesystem::directory_entry& val : itr)`
- * - `try`
- * - `catch (...)`
- * - `if (ext.size() && !tools::ends_with(&s, ext))`
- * - `out.push_back(s)`
- * 
- * @section stat_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection stat_variables_private Private Variables
- * 
+ * @brief Documentation for modules/tools/cxx/io.cxx
+ *
+ * @subsection stat_class stat
+ *
+ * **Public Members:**
+ * - `struct stat sb;`
+ * - `if (S_ISDIR(sb.st_mode)){rmdir(input_path.c_str());}`
+ * - `else {unlink(input_path.c_str());}`
+ * @subsection stat_class stat
+ *
+ * **Public Members:**
+ * - `struct stat buffer;`
+ * - `return (stat (path.c_str(), &buffer) == 0);`
+ * - `if (tools::ends_with(&path, "*")){path = tools::split(path, "*")[0];}`
  * - `std::vector<std::string> out = {};`
  * - `std::filesystem::recursive_directory_iterator itr;`
+ * - `try {itr = std::filesystem::recursive_directory_iterator(path);}`
+ * - `catch (...) {return {};}`
  * - `std::string s = "";`
- * 
+ * - `try {s = std::filesystem::canonical(val.path()).string();}`
+ * - `catch (...){continue;}`
+ * - `if (ext.size() && !tools::ends_with(&s, ext)){continue;}`
+ * - `out.push_back(s);`
+ * - `return out;`
+ * - `return std::filesystem::canonical(path).string();`
  */
-

@@ -1,24 +1,5 @@
 /**
  * @file graph.h
- * @brief Comprehensive documentation for pyc/graph/include/graph/graph.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/pyc/graph/include/graph/graph.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page pyc_graph_include_graph_graph_h graph.h
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/pyc/graph/include/graph/graph.h`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for pyc/graph/include/graph/graph.h
+ *
  */

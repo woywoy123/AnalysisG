@@ -1,31 +1,10 @@
 /**
  * @file roc.h
- * @brief Comprehensive documentation for modules/roc/include/plotting/roc.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/roc/include/plotting/roc.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page roc_t_documentation roc_t Class Documentation
- * 
- * @section roc_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `roc_t`  
- * **Defined in:** `src/AnalysisG/modules/roc/include/plotting/roc.h`
- * 
- * @section roc_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection roc_t_variables_private Private Variables
- * 
+ * @brief Documentation for modules/roc/include/plotting/roc.h
+ *
+ * @subsection roc_t_class roc_t
+ *
+ * **Public Members:**
  * - `int cls = 0;`
  * - `int kfold = 0;`
  * - `std::string model = "";`
@@ -34,48 +13,25 @@
  * - `std::vector<std::vector<double>> fpr_ = {};`
  * - `std::vector<std::vector<int>>*     truth = nullptr;`
  * - `std::vector<std::vector<double>>* scores = nullptr;`
- * 
- */
-
-/**
- * @page roc_documentation roc Class Documentation
- * 
- * @section roc_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `roc`  
- * **Inherits from:** `plotting`  
- * **Defined in:** `src/AnalysisG/modules/roc/include/plotting/roc.h`
- * 
- * @section roc_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection roc_methods_public Public Methods
- * 
- * - `roc()`
- * - `~roc()`
- * - `void build_ROC( std::string name, int kfold, std::vector<int>* label, std::vector<std::vector<double>>* scores )`
- * - `std::vector<roc_t*> get_ROC()`
- * 
- * @subsection roc_methods_private Private Methods
- * 
- * - `std::vector<std::vector<g>>* generate(size_t x, size_t y)`
- * - `typename std::vector<g> v(y, 0)`
- * - `return new std::vector<std::vector<g>>(x, v)`
- * 
- * @section roc_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection roc_variables_public Public Variables
- * 
+ * - `};`
+ *
+ * @subsection roc_class roc
+ * Inherits from plotting
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `roc();`
+ * - `~roc();`
+ * - `);`
+ * - `std::vector<roc_t*> get_ROC();`
  * - `std::map<std::string, std::map<int, std::vector<std::vector<double>>*>> roc_data = {};`
  * - `std::map<std::string, std::map<int, std::vector<std::vector<int>>*>>      labels = {};`
- * 
- * @subsection roc_variables_private Private Variables
- * 
+ *
+ * **Private Members:**
  * - `std::vector<roc_t*> ptr_roc = {};`
- * 
+ * - `typename std::vector<g> v(y, 0);`
+ * - `return new std::vector<std::vector<g>>(x, v);`
+ * - `};`
+ *
  */
-

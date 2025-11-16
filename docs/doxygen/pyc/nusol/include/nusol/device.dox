@@ -1,0 +1,23 @@
+/**
+ * @file device.cuh
+ * @brief Documentation for pyc/nusol/include/nusol/device.cuh
+ *
+ * @subsection nusol_class nusol
+ *
+ * **Public Members:**
+ * - `double cos, sin;`
+ * - `double x0, x0p;`
+ * - `double sx, sy;`
+ * - `double w, w_;`
+ * - `double x1, y1;`
+ * - `double z, o2, eps2;`
+ * - `double pmass[2]  = {0, 0};`
+ * - `double betas[2]  = {0, 0};`
+ * - `double pmu_b[4]  = {0, 0, 0, 0};`
+ * - `double pmu_l[4]  = {0, 0, 0, 0};`
+ * - `double masses[3] = {0, 0, 0};`
+ * - `bool passed = true;`
+ * - `nusol() = default;`
+ * - `};`
+ *
+ */

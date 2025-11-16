@@ -1,24 +1,5 @@
 /**
  * @file sampletracer.cxx
- * @brief Comprehensive documentation for modules/sampletracer/cxx/sampletracer.cxx
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/sampletracer/cxx/sampletracer.cxx`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page modules_sampletracer_cxx_sampletracer_cxx sampletracer.cxx
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/modules/sampletracer/cxx/sampletracer.cxx`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for modules/sampletracer/cxx/sampletracer.cxx
+ *
  */

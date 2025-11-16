@@ -1,60 +1,51 @@
 /**
  * @file metric_template.h
- * @brief Comprehensive documentation for modules/metric/include/templates/metric_template.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/metric/include/templates/metric_template.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page graph_t_documentation graph_t Class Documentation
- * 
- * @section graph_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `graph_t`  
- * **Defined in:** `src/AnalysisG/modules/metric/include/templates/metric_template.h`
- * 
- * @section graph_t_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection graph_t_methods_public Public Methods
- * 
- * - `~metric_t()`
- * - `g get(graph_enum grx, std::string _name)`
- * - `if (!this -> h_maps[grx][_name])`
- * - `if (!v)`
- * - `if (v -> element(&out))`
- * - `std::cout << "\033[1`
- * - `std::string mode()`
- * - `std::string* get_filename(long unsigned int idx)`
- * 
- * @subsection graph_t_methods_private Private Methods
- * 
- * - `void build()`
- * 
- * @section graph_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection graph_t_variables_public Public Variables
- * 
+ * @brief Documentation for modules/metric/include/templates/metric_template.h
+ *
+ * @subsection graph_t_class graph_t
+ *
+ * **Public Members:**
+ * - `struct graph_t;`
+ * @subsection analysis_class analysis
+ *
+ * **Public Members:**
+ * - `class analysis;`
+ * @subsection model_template_class model_template
+ *
+ * **Public Members:**
+ * - `class model_template;`
+ * @subsection metric_template_class metric_template
+ *
+ * **Public Members:**
+ * - `class metric_template;`
+ * @subsection metric_t_class metric_t
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `~metric_t();`
  * - `int kfold = 0;`
  * - `int epoch = 0;`
  * - `int device = 0;`
+ * - `g out = g();`
  * - `std::cout << "\033[1;31m Variable not found: " << _name << "\033[0m" << std::endl;`
+ * - `return out;`
  * - `size_t idx = this -> v_maps[grx][_name];`
+ * - `variable_t* v = (*this -> handl)[grx][idx];`
  * - `std::cout << "\033[1;31m Variable not found: " << _name << "\033[0m" << std::endl;`
+ * - `return out;`
+ * - `if (v -> element(&out)){return out;}`
+ * - `std::cout << "\033[1;31m Expected Type: " << v -> as_string();`
  * - `std::cout << " -> " << _name << "\033[0m" << std::endl;`
- * 
- * @subsection graph_t_variables_private Private Variables
- * 
+ * - `return out;`
+ * - `std::string mode();`
+ * - `std::string* get_filename(long unsigned int idx);`
+ *
+ * **Private Members:**
+ * - `friend metric_template;`
+ * - `friend analysis;`
+ * - `void build();`
+ * - `mode_enum train_mode;`
  * - `std::string* pth = nullptr;`
  * - `model_template* mdlx = nullptr;`
  * - `metric_template* mtx = nullptr;`
@@ -64,102 +55,64 @@
  * - `std::map<graph_enum, std::vector<variable_t*>>* handl = nullptr;`
  * - `std::map<graph_enum, std::map<std::string, size_t>> v_maps = {};`
  * - `std::map<graph_enum, std::map<std::string, bool>>   h_maps = {};`
- * 
- */
-
-/**
- * @page metric_template_documentation metric_template Class Documentation
- * 
- * @section metric_template_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `metric_template`  
- * **Inherits from:** `tools, 
-    public notification`  
- * **Defined in:** `src/AnalysisG/modules/metric/include/templates/metric_template.h`
- * 
- * @section metric_template_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection metric_template_methods_public Public Methods
- * 
- * - `metric_template()`
- * - `virtual ~metric_template()`
- * - `virtual metric_template* clone()`
- * - `virtual void define_variables()`
- * - `virtual void define_metric(metric_t* v)`
- * - `virtual void event()`
- * - `virtual void batch()`
- * - `virtual void end()`
- * - `void register_output(std::string tree, std::string __name, T* t)`
- * - `if (this -> handle)`
- * - `this -> handle -> create(&this -> _outdir)`
- * - `this -> handle -> process(&tree, &__name, t)`
- * - `void write(std::string tree, std::string __name, T* t, bool fill = false)`
- * - `if (!this -> handle)`
- * - `this -> handle -> process(&tree, &__name, t)`
- * - `if (!fill)`
- * - `this -> handle -> write(&tree)`
- * - `void sum(std::vector<g*>* ch, k** out)`
- * - `for (size_t x(0)`
- * - `if (!ch -> at(x))`
- * - `if (maps[ch -> at(x) -> hash])`
- * - `maps[ch -> at(x) -> hash] = true`
- * - `prt -> iadd(ch -> at(x))`
- * - `this -> garbage[hash_].push_back((particle_template*)prt)`
- * - `(*out) = prt`
- * - `void safe_delete(std::vector<g*>* particles)`
- * - `for (size_t x(0)`
- * - `if (particles -> at(x) -> _is_marked)`
- * - `delete particles -> at(x)`
- * - `(*particles)[x] = nullptr`
- * - `std::vector<g*> make_unique(std::vector<g*>* inpt)`
- * - `for (size_t x(0)`
- * - `for (itr = tmp.begin()`
- * - `std::vector<g*> vectorize(std::map<std::string, g*>* in)`
- * - `for (`
- * - `std::vector<particle_template*> make_particle( std::vector<std::vector<double>>* pt, std::vector<std::vector<double>>* eta, std::vector<std::vector<double>>* phi, std::vector<std::vector<double>>* energy )`
- * 
- * @subsection metric_template_methods_private Private Methods
- * 
- * - `void flush_garbage()`
- * - `void static set_name(std::string*, metric_template*)`
- * - `void static get_name(std::string*, metric_template*)`
- * - `void static set_run_name(std::map<std::string, std::string>*, metric_template*)`
- * - `void static get_run_name(std::map<std::string, std::string>*, metric_template*)`
- * - `void static set_variables(std::vector<std::string>*, metric_template*)`
- * - `void static get_variables(std::vector<std::string>*, metric_template*)`
- * - `void static get_output(std::string* out, metric_template* ev)`
- * - `void static construct( std::map<graph_enum, std::vector<variable_t*>>* varx, std::map<graph_enum, std::vector<std::string>>* req, model_template* mdl, graph_t* grx, std::string* mtx )`
- * - `metric_template* clone(int)`
- * - `bool link(model_template*)`
- * - `void link(std::string hsx, std::vector<graph_t*>* data, mode_enum mx)`
- * - `void execute(metric_t* mtx, metric_template* obj, size_t* prg, std::string* msg)`
- * - `void define( std::vector<metric_t*>* vr, std::vector<size_t>* num, std::vector<std::string*>* title, size_t* offset )`
- * - `size_t size()`
- * - `std::map<int, torch::TensorOptions*> get_devices()`
- * - `std::vector<int> get_kfolds()`
- * 
- * @section metric_template_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection metric_template_variables_public Public Variables
- * 
+ * - `};`
+ *
+ * @subsection metric_template_class metric_template
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `metric_template();`
+ * - `virtual ~metric_template();`
+ * - `virtual metric_template* clone();`
+ * - `virtual void define_variables();`
+ * - `virtual void define_metric(metric_t* v);`
+ * - `virtual void event();`
+ * - `virtual void batch();`
+ * - `virtual void end();`
  * - `cproperty<std::string, metric_template> name;`
  * - `cproperty<std::string, metric_template> output_path;`
  * - `cproperty<std::vector<std::string>, metric_template> variables;`
  * - `cproperty<std::map<std::string, std::string>, metric_template> run_names;`
+ * - `if (this -> handle){return this -> handle -> process(&tree, &__name, t);}`
+ * - `this -> handle = new writer();`
+ * - `this -> handle -> create(&this -> _outdir);`
+ * - `this -> handle -> process(&tree, &__name, t);`
+ * - `if (!this -> handle){return;}`
+ * - `this -> handle -> process(&tree, &__name, t);`
+ * - `if (!fill){return;}`
+ * - `this -> handle -> write(&tree);`
+ * - `k* prt = new k();`
+ * - `prt -> _is_marked = true;`
  * - `std::map<std::string, bool> maps;`
+ * - `for (size_t x(0); x < ch -> size(); ++x){`
+ * - `if (!ch -> at(x)){continue;}`
+ * - `if (maps[ch -> at(x) -> hash]){continue;}`
+ * - `maps[ch -> at(x) -> hash] = true;`
+ * - `prt -> iadd(ch -> at(x));`
  * - `std::string hash_ = prt -> hash;`
+ * - `this -> garbage[hash_].push_back((particle_template*)prt);`
+ * - `(*out) = prt;`
+ * - `for (size_t x(0); x < particles -> size(); ++x){`
+ * - `if (particles -> at(x) -> _is_marked){continue;}`
+ * - `delete particles -> at(x);`
+ * - `(*particles)[x] = nullptr;`
  * - `std::map<std::string, g*> tmp;`
+ * - `for (size_t x(0); x < inpt -> size(); ++x){`
+ * - `std::string hash_ = (*inpt)[x] -> hash;`
+ * - `tmp[hash_] = (*inpt)[x];`
  * - `typename std::vector<g*> out = {};`
  * - `typename std::map<std::string, g*>::iterator itr;`
+ * - `for (itr = tmp.begin(); itr != tmp.end(); ++itr){out.push_back(itr -> second);}`
+ * - `return out;`
  * - `typename std::vector<g*> out = {};`
- * 
- * @subsection metric_template_variables_private Private Variables
- * 
+ * - `typename std::map<std::string, g*>::iterator itr = in -> begin();`
+ * - `for (; itr != in -> end(); ++itr){out.push_back(itr -> second);}`
+ * - `return out;`
+ * - `);`
+ *
+ * **Private Members:**
+ * - `friend analysis;`
  * - `std::map<std::string, model_template*> lnks;`
  * - `std::map<std::string, std::vector<model_template*>> hash_mdl = {};`
  * - `std::map<std::string, std::map<mode_enum, std::vector<graph_t*>*>> hash_bta = {};`
@@ -169,8 +122,25 @@
  * - `std::string _outdir = "";`
  * - `std::map<std::string, std::string> _run_names = {};`
  * - `std::map<std::string, std::string> _variables = {};`
+ * - `void flush_garbage();`
+ * - `void static set_name(std::string*, metric_template*);`
+ * - `void static get_name(std::string*, metric_template*);`
+ * - `void static set_run_name(std::map<std::string, std::string>*, metric_template*);`
+ * - `void static get_run_name(std::map<std::string, std::string>*, metric_template*);`
+ * - `void static set_variables(std::vector<std::string>*, metric_template*);`
+ * - `void static get_variables(std::vector<std::string>*, metric_template*);`
+ * - `void static get_output(std::string* out, metric_template* ev);`
+ * - `);`
+ * - `metric_template* clone(int);`
+ * - `bool link(model_template*);`
+ * - `void link(std::string hsx, std::vector<graph_t*>* data, mode_enum mx);`
+ * - `void execute(metric_t* mtx, metric_template* obj, size_t* prg, std::string* msg);`
+ * - `);`
+ * - `size_t size();`
+ * - `std::map<int, torch::TensorOptions*> get_devices();`
+ * - `std::vector<int> get_kfolds();`
  * - `std::map<std::string, std::vector<particle_template*>> garbage = {};`
  * - `writer* handle = nullptr;`
- * 
+ * - `};`
+ *
  */
-

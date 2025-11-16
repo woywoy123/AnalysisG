@@ -1,31 +1,10 @@
 /**
  * @file meta.h
- * @brief Comprehensive documentation for modules/structs/include/structs/meta.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/structs/include/structs/meta.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page weights_t_documentation weights_t Class Documentation
- * 
- * @section weights_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `weights_t`  
- * **Defined in:** `src/AnalysisG/modules/structs/include/structs/meta.h`
- * 
- * @section weights_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection weights_t_variables_private Private Variables
- * 
+ * @brief Documentation for modules/structs/include/structs/meta.h
+ *
+ * @subsection weights_t_class weights_t
+ *
+ * **Public Members:**
  * - `int dsid = -1;`
  * - `bool isAFII = false;`
  * - `std::string generator = "";`
@@ -36,24 +15,11 @@
  * - `float processed_events_weighted = -1;`
  * - `float processed_events_weighted_squared = -1;`
  * - `std::map<std::string, float> hist_data = {};`
- * 
- */
-
-/**
- * @page meta_t_documentation meta_t Class Documentation
- * 
- * @section meta_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `meta_t`  
- * **Defined in:** `src/AnalysisG/modules/structs/include/structs/meta.h`
- * 
- * @section meta_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection meta_t_variables_private Private Variables
- * 
+ * - `};`
+ *
+ * @subsection meta_t_class meta_t
+ *
+ * **Public Members:**
  * - `unsigned int dsid = 0;`
  * - `bool isMC = true;`
  * - `std::string derivationFormat = "";`
@@ -109,6 +75,6 @@
  * - `std::vector<std::string> fileGUID = {};`
  * - `std::map<std::string, int> LFN = {};`
  * - `std::map<std::string, weights_t> misc = {};`
- * 
+ * - `};`
+ *
  */
-

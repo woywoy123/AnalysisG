@@ -1,76 +1,55 @@
 /**
  * @file model_template.h
- * @brief Comprehensive documentation for modules/model/include/templates/model_template.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/model/include/templates/model_template.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page metrics_documentation metrics Class Documentation
- * 
- * @section metrics_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `metrics`  
- * **Defined in:** `src/AnalysisG/modules/model/include/templates/model_template.h`
- * 
- * @section metrics_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection metrics_methods_public Public Methods
- * 
- * - `model_template()`
- * - `virtual ~model_template()`
- * - `virtual model_template* clone()`
- * - `virtual void forward(graph_t* data)`
- * - `virtual void train_sequence(bool mode)`
- * - `void check_features(graph_t*)`
- * - `void set_optimizer(std::string name)`
- * - `void initialize(optimizer_params_t*)`
- * - `void clone_settings(model_settings_t* setd)`
- * - `void import_settings(model_settings_t* setd)`
- * - `void forward(graph_t* data, bool train)`
- * - `void forward(std::vector<graph_t*> data, bool train)`
- * - `void register_module(torch::nn::Sequential* data)`
- * - `void register_module(torch::nn::Sequential* data, mlp_init weight_init)`
- * - `void prediction_graph_feature(std::string, torch::Tensor)`
- * - `void prediction_node_feature(std::string, torch::Tensor)`
- * - `void prediction_edge_feature(std::string, torch::Tensor)`
- * - `void prediction_extra(std::string, torch::Tensor)`
- * - `torch::Tensor* compute_loss(std::string, graph_enum)`
- * - `void evaluation_mode(bool mode = true)`
- * - `void save_state()`
- * - `bool restore_state()`
- * 
- * @subsection metrics_methods_private Private Methods
- * 
- * - `model_template* clone(int)`
- * - `static void set_input_features( std::vector<std::string>*, std::map<std::string, torch::Tensor*>* )`
- * - `static void set_output_features( std::map<std::string, std::string>*, std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* )`
- * - `static void get_name(std::string*, model_template*)`
- * - `static void set_name(std::string*, model_template*)`
- * - `static void get_dev_index(int*, model_template*)`
- * - `static void set_dev_index(int*, model_template*)`
- * - `void assign(std::map<std::string, G>* inpt, graph_enum mode, F* data)`
- * - `for (`
- * - `static void set_device(std::string*, model_template*)`
- * - `torch::Tensor* assign_features(std::string inpt, graph_enum type, graph_t* data)`
- * - `torch::Tensor* assign_features(std::string inpt, graph_enum type, std::vector<graph_t*>* data)`
- * - `void flush_outputs()`
- * 
- * @section metrics_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection metrics_variables_public Public Variables
- * 
+ * @brief Documentation for modules/model/include/templates/model_template.h
+ *
+ * @subsection metrics_class metrics
+ *
+ * **Public Members:**
+ * - `class metrics;`
+ * @subsection analysis_class analysis
+ *
+ * **Public Members:**
+ * - `class analysis;`
+ * @subsection model_template_class model_template
+ *
+ * **Public Members:**
+ * - `class model_template;`
+ * @subsection metric_template_class metric_template
+ *
+ * **Public Members:**
+ * - `class metric_template;`
+ * @subsection optimizer_class optimizer
+ *
+ * **Public Members:**
+ * - `class optimizer;`
+ * @subsection dataloader_class dataloader
+ *
+ * **Public Members:**
+ * - `class dataloader;`
+ * @subsection graph_t_class graph_t
+ *
+ * **Public Members:**
+ * - `struct graph_t;`
+ * @subsection variable_t_class variable_t
+ *
+ * **Public Members:**
+ * - `struct variable_t;`
+ * @subsection optimizer_params_t_class optimizer_params_t
+ *
+ * **Public Members:**
+ * - `struct optimizer_params_t;`
+ * @subsection model_report_class model_report
+ *
+ * **Public Members:**
+ * - `struct model_report;`
+ * @subsection model_template_class model_template
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `model_template();`
+ * - `virtual ~model_template();`
+ * - `cproperty<int, model_template> device_index;`
  * - `cproperty<std::string, model_template> name;`
  * - `cproperty<std::string, model_template> device;`
  * - `int kfold;`
@@ -85,9 +64,54 @@
  * - `std::string tree_name  = "nominal";`
  * - `std::vector<torch::Tensor*> _losses = {};`
  * - `torch::optim::Optimizer* m_optim  = nullptr;`
- * 
- * @subsection metrics_variables_private Private Variables
- * 
+ * - `> o_graph;`
+ * - `> o_node;`
+ * - `> o_edge;`
+ * - `> i_graph;`
+ * - `> i_node;`
+ * - `> i_edge;`
+ * - `virtual model_template* clone();`
+ * - `virtual void forward(graph_t* data);`
+ * - `virtual void train_sequence(bool mode);`
+ * - `void check_features(graph_t*);`
+ * - `void set_optimizer(std::string name);`
+ * - `void initialize(optimizer_params_t*);`
+ * - `void clone_settings(model_settings_t* setd);`
+ * - `void import_settings(model_settings_t* setd);`
+ * - `void forward(graph_t* data, bool train);`
+ * - `void forward(std::vector<graph_t*> data, bool train);`
+ * - `void register_module(torch::nn::Sequential* data);`
+ * - `void register_module(torch::nn::Sequential* data, mlp_init weight_init);`
+ * - `void prediction_graph_feature(std::string, torch::Tensor);`
+ * - `void prediction_node_feature(std::string, torch::Tensor);`
+ * - `void prediction_edge_feature(std::string, torch::Tensor);`
+ * - `void prediction_extra(std::string, torch::Tensor);`
+ * - `torch::Tensor* compute_loss(std::string, graph_enum);`
+ * - `void evaluation_mode(bool mode = true);`
+ * - `void save_state();`
+ * - `bool restore_state();`
+ * - `friend struct graph_t;`
+ * - `friend struct model_report;`
+ * - `friend class metrics;`
+ * - `friend class analysis;`
+ * - `friend class optimizer;`
+ * - `friend class dataloader;`
+ * - `friend class metric_template;`
+ *
+ * **Private Members:**
+ * - `model_template* clone(int);`
+ * - `);`
+ * - `);`
+ * - `static void get_name(std::string*, model_template*);`
+ * - `static void set_name(std::string*, model_template*);`
+ * - `static void get_dev_index(int*, model_template*);`
+ * - `static void set_dev_index(int*, model_template*);`
+ * - `typename std::map<std::string, G>::iterator itr = inpt -> begin();`
+ * - `for (; itr != inpt -> end(); ++itr){this -> assign_features(itr -> first, mode, data);}`
+ * - `static void set_device(std::string*, model_template*);`
+ * - `torch::Tensor* assign_features(std::string inpt, graph_enum type, graph_t* data);`
+ * - `torch::Tensor* assign_features(std::string inpt, graph_enum type, std::vector<graph_t*>* data);`
+ * - `void flush_outputs();`
  * - `lossfx*                  m_loss   = nullptr;`
  * - `torch::TensorOptions*    m_option = nullptr;`
  * - `torch::Tensor*         edge_index = nullptr;`
@@ -95,6 +119,7 @@
  * - `int                  m_device_idx = -2;`
  * - `std::string      s_optim = "";`
  * - `std::string      m_name  = "model-template";`
+ * - `opt_enum         e_optim = opt_enum::invalid_optimizer;`
  * - `std::vector<torch::nn::Sequential*> m_data = {};`
  * - `std::map<std::string, torch::Tensor*> m_i_graph = {};`
  * - `std::map<std::string, torch::Tensor*> m_i_node = {};`
@@ -107,25 +132,6 @@
  * - `std::map<std::string, std::tuple<torch::Tensor*, lossfx*>> m_o_node = {};`
  * - `std::map<std::string, std::tuple<torch::Tensor*, lossfx*>> m_o_edge = {};`
  * - `std::map<graph_enum, std::map<std::string, torch::Tensor>> m_p_loss = {};`
- * 
+ * - `};`
+ *
  */
-
-/**
- * @page graph_t_documentation graph_t Class Documentation
- * 
- * @section graph_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `graph_t`  
- * **Defined in:** `src/AnalysisG/modules/model/include/templates/model_template.h`
- * 
- * @section graph_t_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection graph_t_methods_private Private Methods
- * 
- * - `for (`
- * 
- */
-

@@ -1,31 +1,10 @@
 /**
  * @file settings.h
- * @brief Comprehensive documentation for modules/structs/include/structs/settings.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/structs/include/structs/settings.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page settings_t_documentation settings_t Class Documentation
- * 
- * @section settings_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `settings_t`  
- * **Defined in:** `src/AnalysisG/modules/structs/include/structs/settings.h`
- * 
- * @section settings_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection settings_t_variables_private Private Variables
- * 
+ * @brief Documentation for modules/structs/include/structs/settings.h
+ *
+ * @subsection settings_t_class settings_t
+ *
+ * **Public Members:**
  * - `std::string output_path = "./ProjectName";`
  * - `std::string run_name = "";`
  * - `std::string sow_name = "";`
@@ -56,6 +35,6 @@
  * - `bool debug_mode = false;`
  * - `bool build_cache = false;`
  * - `bool selection_root = false;`
- * 
+ * - `};`
+ *
  */
-

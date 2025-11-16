@@ -1,44 +1,18 @@
 /**
  * @file RecursiveGraphNeuralNetwork.h
- * @brief Comprehensive documentation for models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page recursivegraphneuralnetwork_documentation recursivegraphneuralnetwork Class Documentation
- * 
- * @section recursivegraphneuralnetwork_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `recursivegraphneuralnetwork`  
- * **Inherits from:** `model_template`  
- * **Defined in:** `src/AnalysisG/models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h`
- * 
- * @section recursivegraphneuralnetwork_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection recursivegraphneuralnetwork_methods_public Public Methods
- * 
- * - `recursivegraphneuralnetwork(int rep = 1024, double dpt = 0.1)`
- * - `~recursivegraphneuralnetwork()`
- * - `model_template* clone() override`
- * - `void forward(graph_t*) override`
- * - `torch::Tensor message( torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc, torch::Tensor pmc_i, torch::Tensor pmc_j, torch::Tensor hx_i, torch::Tensor hx_j )`
- * 
- * @section recursivegraphneuralnetwork_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection recursivegraphneuralnetwork_variables_public Public Variables
- * 
+ * @brief Documentation for models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h
+ *
+ * @subsection recursivegraphneuralnetwork_class recursivegraphneuralnetwork
+ * Inherits from model_template
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `recursivegraphneuralnetwork(int rep = 1024, double dpt = 0.1);`
+ * - `~recursivegraphneuralnetwork();`
+ * - `model_template* clone() override;`
+ * - `void forward(graph_t*) override;`
+ * - `);`
  * - `int _dx     = 26;`
  * - `int _x      = 5;`
  * - `int _output = 2;`
@@ -54,6 +28,6 @@
  * - `torch::nn::Sequential* node_aggr_mlp = nullptr;`
  * - `torch::nn::Sequential* ntops_mlp     = nullptr;`
  * - `torch::nn::Sequential* exo_mlp       = nullptr;`
- * 
+ * - `};`
+ *
  */
-

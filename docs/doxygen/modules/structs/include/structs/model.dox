@@ -1,31 +1,11 @@
 /**
  * @file model.h
- * @brief Comprehensive documentation for modules/structs/include/structs/model.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/structs/include/structs/model.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page model_settings_t_documentation model_settings_t Class Documentation
- * 
- * @section model_settings_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `model_settings_t`  
- * **Defined in:** `src/AnalysisG/modules/structs/include/structs/model.h`
- * 
- * @section model_settings_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection model_settings_t_variables_private Private Variables
- * 
+ * @brief Documentation for modules/structs/include/structs/model.h
+ *
+ * @subsection model_settings_t_class model_settings_t
+ *
+ * **Public Members:**
+ * - `opt_enum    e_optim;`
  * - `std::string s_optim;`
  * - `std::string weight_name;`
  * - `std::string tree_name;`
@@ -40,6 +20,6 @@
  * - `std::vector<std::string> i_graph;`
  * - `std::vector<std::string> i_node;`
  * - `std::vector<std::string> i_edge;`
- * 
+ * - `};`
+ *
  */
-

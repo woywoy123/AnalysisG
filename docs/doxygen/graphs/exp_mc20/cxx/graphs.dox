@@ -1,24 +1,5 @@
 /**
  * @file graphs.cxx
- * @brief Comprehensive documentation for graphs/exp_mc20/cxx/graphs.cxx
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/graphs/exp_mc20/cxx/graphs.cxx`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page graphs_exp_mc20_cxx_graphs_cxx graphs.cxx
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/graphs/exp_mc20/cxx/graphs.cxx`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for graphs/exp_mc20/cxx/graphs.cxx
+ *
  */

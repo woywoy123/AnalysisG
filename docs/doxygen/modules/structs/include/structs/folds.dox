@@ -1,66 +1,26 @@
 /**
  * @file folds.h
- * @brief Comprehensive documentation for modules/structs/include/structs/folds.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/structs/include/structs/folds.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page folds_t_documentation folds_t Class Documentation
- * 
- * @section folds_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `folds_t`  
- * **Defined in:** `src/AnalysisG/modules/structs/include/structs/folds.h`
- * 
- * @section folds_t_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection folds_t_methods_private Private Methods
- * 
- * - `void flush_data()`
- * - `if (!this -> hash)`
- * - `free(this -> hash)`
- * 
- * @section folds_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection folds_t_variables_private Private Variables
- * 
+ * @brief Documentation for modules/structs/include/structs/folds.h
+ *
+ * @subsection folds_t_class folds_t
+ *
+ * **Public Members:**
  * - `int k = -1;`
  * - `bool is_train = false;`
  * - `bool is_valid = false;`
  * - `bool is_eval = false;`
  * - `char* hash = nullptr;`
- * 
- */
-
-/**
- * @page graph_hdf5_documentation graph_hdf5 Class Documentation
- * 
- * @section graph_hdf5_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `graph_hdf5`  
- * **Defined in:** `src/AnalysisG/modules/structs/include/structs/folds.h`
- * 
- * @section graph_hdf5_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection graph_hdf5_variables_private Private Variables
- * 
+ * - `if (!this -> hash){return;}`
+ * - `free(this -> hash);`
+ * - `this -> hash = nullptr;`
+ * - `};`
+ *
+ * @subsection graph_hdf5_class graph_hdf5
+ *
+ * **Public Members:**
  * - `int    num_nodes = -1;`
  * - `double event_weight = 1;`
+ * - `long   event_index = -1;`
  * - `std::string hash;`
  * - `std::string filename;`
  * - `std::string edge_index;`
@@ -76,34 +36,14 @@
  * - `std::string truth_graph;`
  * - `std::string truth_node;`
  * - `std::string truth_edge;`
- * 
- */
-
-/**
- * @page graph_hdf5_w_documentation graph_hdf5_w Class Documentation
- * 
- * @section graph_hdf5_w_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `graph_hdf5_w`  
- * **Defined in:** `src/AnalysisG/modules/structs/include/structs/folds.h`
- * 
- * @section graph_hdf5_w_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection graph_hdf5_w_methods_private Private Methods
- * 
- * - `void flush_data()`
- * 
- * @section graph_hdf5_w_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection graph_hdf5_w_variables_private Private Variables
- * 
+ * - `};`
+ *
+ * @subsection graph_hdf5_w_class graph_hdf5_w
+ *
+ * **Public Members:**
  * - `int    num_nodes = -1;`
  * - `double event_weight = 1;`
+ * - `long   event_index = -1;`
  * - `char* hash = nullptr;`
  * - `char* filename = nullptr;`
  * - `char* edge_index = nullptr;`
@@ -119,6 +59,7 @@
  * - `char* truth_graph = nullptr;`
  * - `char* truth_node = nullptr;`
  * - `char* truth_edge = nullptr;`
- * 
+ * - `void flush_data();`
+ * - `};`
+ *
  */
-

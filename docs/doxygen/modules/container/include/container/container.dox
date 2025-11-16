@@ -1,98 +1,51 @@
 /**
  * @file container.h
- * @brief Comprehensive documentation for modules/container/include/container/container.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/container/include/container/container.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page entry_t_documentation entry_t Class Documentation
- * 
- * @section entry_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `entry_t`  
- * **Defined in:** `src/AnalysisG/modules/container/include/container/container.h`
- * 
- * @section entry_t_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection entry_t_methods_private Private Methods
- * 
- * - `void init()`
- * - `void destroy()`
- * - `bool has_event(event_template* ev)`
- * - `bool has_graph(graph_template* gr)`
- * - `bool has_selection(selection_template* sel)`
- * - `void destroy(std::vector<g*>* c)`
- * - `for (size_t x(0)`
- * - `delete (*c)[x]`
- * - `(*c)[x] = nullptr`
- * - `std::vector<g*>().swap(*c)`
- * 
- * @section entry_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection entry_t_variables_private Private Variables
- * 
+ * @brief Documentation for modules/container/include/container/container.h
+ *
+ * @subsection entry_t_class entry_t
+ *
+ * **Public Members:**
  * - `std::string hash = "";`
  * - `std::vector<graph_t*>                m_data  = {};`
  * - `std::vector<graph_template*>         m_graph = {};`
  * - `std::vector<event_template*>         m_event = {};`
  * - `std::vector<selection_template*> m_selection = {};`
- * 
- */
-
-/**
- * @page container_documentation container Class Documentation
- * 
- * @section container_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `container`  
- * **Inherits from:** `tools`  
- * **Defined in:** `src/AnalysisG/modules/container/include/container/container.h`
- * 
- * @section container_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection container_methods_public Public Methods
- * 
- * - `container()`
- * - `~container()`
- * - `void add_meta_data(meta*, std::string)`
- * - `meta* get_meta_data()`
- * - `bool add_selection_template(selection_template*)`
- * - `bool add_event_template(event_template*, std::string label)`
- * - `bool add_graph_template(graph_template*, std::string label)`
- * - `void fill_selections(std::map<std::string, selection_template*>* inpt)`
- * - `void get_events(std::vector<event_template*>*, std::string label)`
- * - `void populate_dataloader(dataloader* dl)`
- * - `void compile(size_t* len, int threadIdx)`
- * - `size_t len()`
- * - `entry_t* add_entry(std::string hash)`
- * 
- * @section container_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection container_variables_public Public Variables
- * 
+ * - `void init();`
+ * - `void destroy();`
+ * - `bool has_event(event_template* ev);`
+ * - `bool has_graph(graph_template* gr);`
+ * - `bool has_selection(selection_template* sel);`
+ * - `for (size_t x(0); x < c -> size(); ++x){`
+ * - `delete (*c)[x];`
+ * - `(*c)[x] = nullptr;`
+ * - `std::vector<g*>().swap(*c);`
+ * - `};`
+ *
+ * @subsection container_class container
+ * Inherits from tools
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `container();`
+ * - `~container();`
+ * - `void add_meta_data(meta*, std::string);`
+ * - `meta* get_meta_data();`
+ * - `bool add_selection_template(selection_template*);`
+ * - `bool add_event_template(event_template*, std::string label);`
+ * - `bool add_graph_template(graph_template*, std::string label);`
+ * - `void fill_selections(std::map<std::string, selection_template*>* inpt);`
+ * - `void get_events(std::vector<event_template*>*, std::string label);`
+ * - `void populate_dataloader(dataloader* dl);`
+ * - `void compile(size_t* len, int threadIdx);`
+ * - `size_t len();`
+ * - `entry_t* add_entry(std::string hash);`
  * - `meta*        meta_data   = nullptr;`
  * - `std::string* filename    = nullptr;`
  * - `std::string* output_path = nullptr;`
  * - `std::string     label    = "";`
  * - `std::map<std::string, entry_t> random_access;`
  * - `std::map<std::string, selection_template*>* merged = nullptr;`
- * 
+ * - `};`
+ *
  */
-

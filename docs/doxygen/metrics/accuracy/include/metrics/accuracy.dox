@@ -1,48 +1,25 @@
 /**
  * @file accuracy.h
- * @brief Comprehensive documentation for metrics/accuracy/include/metrics/accuracy.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page accuracy_metric_documentation accuracy_metric Class Documentation
- * 
- * @section accuracy_metric_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `accuracy_metric`  
- * **Inherits from:** `metric_template`  
- * **Defined in:** `src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h`
- * 
- * @section accuracy_metric_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection accuracy_metric_methods_public Public Methods
- * 
- * - `accuracy_metric()`
- * - `~accuracy_metric() override`
- * - `accuracy_metric* clone() override`
- * - `void define_metric(metric_t* mtx) override`
- * - `void define_variables() override`
- * - `void event() override`
- * - `void batch() override`
- * - `void end() override`
- * 
- * @section accuracy_metric_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection accuracy_metric_variables_private Private Variables
- * 
+ * @brief Documentation for metrics/accuracy/include/metrics/accuracy.h
+ *
+ * @subsection accuracy_metric_class accuracy_metric
+ * Inherits from metric_template
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `accuracy_metric();`
+ * - `~accuracy_metric() override;`
+ * - `accuracy_metric* clone() override;`
+ * - `void define_metric(metric_t* mtx) override;`
+ * - `void define_variables() override;`
+ * - `void event() override;`
+ * - `void batch() override;`
+ * - `void end() override;`
+ *
+ * **Private Members:**
  * - `std::string mode = "";`
+ * - `long idx = 0;`
  * - `float edge_accuracy = 0;`
  * - `float global_edge_accuracy = 0;`
  * - `int ntop_truth = 0;`
@@ -50,89 +27,45 @@
  * - `std::vector<float> ntops_accuracy = {};`
  * - `std::map<int, int> _global_edge_accuracy = {};`
  * - `std::map<int, std::map<int, int>> ntop_accuracy = {};`
- * 
- */
-
-/**
- * @page cdata_t_documentation cdata_t Class Documentation
- * 
- * @section cdata_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `cdata_t`  
- * **Defined in:** `src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h`
- * 
- * @section cdata_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection cdata_t_variables_private Private Variables
- * 
+ * - `};`
+ *
+ * @subsection cdata_t_class cdata_t
+ *
+ * **Public Members:**
  * - `int kfold = -1;`
  * - `std::vector<int> ntops_truth = {};`
  * - `std::vector<std::vector<double>> ntop_score = {};`
  * - `std::map<int, std::vector<double>> ntop_edge_accuracy = {};`
  * - `std::map<int, std::map<int, std::vector<double>>> ntru_npred_matrix = {};`
- * 
- */
-
-/**
- * @page cmodel_t_documentation cmodel_t Class Documentation
- * 
- * @section cmodel_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `cmodel_t`  
- * **Defined in:** `src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h`
- * 
- * @section cmodel_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection cmodel_t_variables_private Private Variables
- * 
+ * - `};`
+ *
+ * @subsection cmodel_t_class cmodel_t
+ *
+ * **Public Members:**
  * - `std::map<int, std::map<int, cdata_t>> evaluation_kfold_data = {};`
  * - `std::map<int, std::map<int, cdata_t>> validation_kfold_data = {};`
  * - `std::map<int, std::map<int, cdata_t>> training_kfold_data   = {};`
- * 
- */
-
-/**
- * @page collector_documentation collector Class Documentation
- * 
- * @section collector_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `collector`  
- * **Inherits from:** `tools`  
- * **Defined in:** `src/AnalysisG/metrics/accuracy/include/metrics/accuracy.h`
- * 
- * @section collector_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection collector_methods_public Public Methods
- * 
- * - `collector()`
- * - `~collector()`
- * - `cdata_t* get_mode( std::string model, std::string mode, int epoch, int kfold )`
- * - `void add_ntop_truth( std::string mode, std::string model, int epoch, int kfold, int data )`
- * - `void add_ntop_edge_accuracy( std::string mode, std::string model, int epoch, int kfold, int ntops, double data )`
- * - `void add_ntop_scores( std::string mode, std::string model, int epoch, int kfold, std::vector<double>* data )`
- * - `void add_ntru_ntop_scores( std::string mode, std::string model, int epoch, int kfold, int ntru, int ntop, double data )`
- * - `std::map<std::string, std::vector<cdata_t*>> get_plts()`
- * 
- * @section collector_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection collector_variables_public Public Variables
- * 
+ * - `};`
+ *
+ * @subsection collector_class collector
+ * Inherits from tools
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `collector();`
+ * - `~collector();`
+ * - `);`
+ * - `);`
+ * - `);`
+ * - `);`
+ * - `);`
+ * - `std::map<std::string, std::vector<cdata_t*>> get_plts();`
  * - `std::vector<std::string> model_names = {};`
  * - `std::vector<std::string> modes = {};`
  * - `std::vector<int> epochs = {};`
  * - `std::vector<int> kfolds = {};`
  * - `std::map<std::string, cmodel_t> model_data = {};`
- * 
+ * - `};`
+ *
  */
-

@@ -1,64 +1,15 @@
 /**
  * @file event.h
- * @brief Comprehensive documentation for events/ssml_mc20/include/ssml_mc20/event.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/events/ssml_mc20/include/ssml_mc20/event.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page ssml_mc20_documentation ssml_mc20 Class Documentation
- * 
- * @section ssml_mc20_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `ssml_mc20`  
- * **Inherits from:** `event_template`  
- * **Defined in:** `src/AnalysisG/events/ssml_mc20/include/ssml_mc20/event.h`
- * 
- * @section ssml_mc20_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection ssml_mc20_methods_public Public Methods
- * 
- * - `ssml_mc20()`
- * - `virtual ~ssml_mc20()`
- * - `event_template* clone() override`
- * - `void build(element_t* el) override`
- * - `void CompileEvent() override`
- * 
- * @subsection ssml_mc20_methods_private Private Methods
- * 
- * - `std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt)`
- * - `for (`
- * - `void vectorize(std::map<m, G*>* ipt, std::vector<g*>* vec)`
- * - `for (`
- * - `bool match_object(std::map<int, top*>* topx, std::map<std::string, lx*>* objects)`
- * - `for (`
- * - `if (ty == "mu" || ty == "el")`
- * - `else if (ty == "jet")`
- * - `else if (ty == "truth_jet")`
- * - `else if (ty == "parton")`
- * - `if (idx < 0 || !topx -> count(idx))`
- * - `if (ty == "mu" || ty == "el")`
- * - `else if (ty == "jet")`
- * - `else if (ty == "truth_jet")`
- * - `else if (ty == "parton")`
- * - `tp -> register_child(tx)`
- * - `tx -> register_parent((particle_template*)tp)`
- * 
- * @section ssml_mc20_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection ssml_mc20_variables_public Public Variables
- * 
+ * @brief Documentation for events/ssml_mc20/include/ssml_mc20/event.h
+ *
+ * @subsection ssml_mc20_class ssml_mc20
+ * Inherits from event_template
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `ssml_mc20();`
+ * - `virtual ~ssml_mc20();`
  * - `unsigned long long eventNumber;`
  * - `float event_category;`
  * - `float weight_mc;`
@@ -99,9 +50,11 @@
  * - `std::vector<particle_template*> Leptons;`
  * - `std::vector<particle_template*> Detector;`
  * - `std::vector<particle_template*> TruthJets;`
- * 
- * @subsection ssml_mc20_variables_private Private Variables
- * 
+ * - `event_template* clone() override;`
+ * - `void build(element_t* el) override;`
+ * - `void CompileEvent() override;`
+ *
+ * **Private Members:**
  * - `std::map<std::string, jet*>      m_jets;`
  * - `std::map<std::string, muon*>     m_muons;`
  * - `std::map<std::string, electron*> m_electrons;`
@@ -111,9 +64,30 @@
  * - `std::map<std::string, parton*>    m_partons;`
  * - `std::map<std::string, truthjet*>  m_truthjets;`
  * - `std::map<int, G*> data = {};`
+ * - `typename std::map<std::string, G*>::iterator ix = ipt -> begin();`
+ * - `for (; ix != ipt -> end(); ++ix){data[int(ix -> second -> index)] = ix -> second;}`
+ * - `return data;`
+ * - `typename std::map<m, G*>::iterator ix = ipt -> begin();`
+ * - `for (; ix != ipt -> end(); ++ix){vec -> push_back(ix -> second);}`
+ * - `typename std::map<std::string, lx*>::iterator ite = objects -> begin();`
  * - `bool brk = false;`
+ * - `for (; ite != objects -> end(); ++ite){`
  * - `int idx = ite -> second -> top_index;`
  * - `std::string ty = ite -> second -> type;`
- * 
+ * - `particle_template* tx = (particle_template*)ite -> second;`
+ * - `brk += idx == -2;`
+ * - `if (ty == "mu" || ty == "el"){this -> Leptons.push_back(tx);}`
+ * - `else if (ty == "jet"){this -> Jets.push_back(tx);}`
+ * - `else if (ty == "truth_jet"){this -> TruthJets.push_back(tx);}`
+ * - `else if (ty == "parton"){this -> TruthChildren.push_back(tx);}`
+ * - `if (idx < 0 || !topx -> count(idx)){continue;}`
+ * - `top* tp = (*topx)[idx];`
+ * - `if (ty == "mu" || ty == "el"){tp -> leptons.push_back(tx);}`
+ * - `else if (ty == "jet"){tp -> jets.push_back(tx);}`
+ * - `else if (ty == "truth_jet"){tp -> truthjets.push_back(tx);}`
+ * - `tp -> register_child(tx);`
+ * - `tx -> register_parent((particle_template*)tp);`
+ * - `return brk;`
+ * - `};`
+ *
  */
-

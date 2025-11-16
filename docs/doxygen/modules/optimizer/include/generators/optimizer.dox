@@ -1,50 +1,29 @@
 /**
  * @file optimizer.h
- * @brief Comprehensive documentation for modules/optimizer/include/generators/optimizer.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/optimizer/include/generators/optimizer.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page analysis_documentation analysis Class Documentation
- * 
- * @section analysis_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `analysis`  
- * **Defined in:** `src/AnalysisG/modules/optimizer/include/generators/optimizer.h`
- * 
- * @section analysis_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection analysis_methods_public Public Methods
- * 
- * - `optimizer()`
- * - `~optimizer()`
- * - `void import_dataloader(dataloader* dl)`
- * - `void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models)`
- * - `void training_loop(int k, int epoch)`
- * - `void validation_loop(int k, int epoch)`
- * - `void evaluation_loop(int k, int epoch)`
- * - `void launch_model(int k)`
- * 
- * @section analysis_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection analysis_variables_public Public Variables
- * 
+ * @brief Documentation for modules/optimizer/include/generators/optimizer.h
+ *
+ * @subsection analysis_class analysis
+ *
+ * **Public Members:**
+ * - `class analysis;`
+ * @subsection optimizer_class optimizer
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `optimizer();`
+ * - `~optimizer();`
+ * - `settings_t m_settings;`
+ * - `void import_dataloader(dataloader* dl);`
+ * - `void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models);`
+ * - `void training_loop(int k, int epoch);`
+ * - `void validation_loop(int k, int epoch);`
+ * - `void evaluation_loop(int k, int epoch);`
+ * - `void launch_model(int k);`
  * - `std::map<int, model_template*> kfold_sessions = {};`
  * - `std::map<std::string, model_report*> reports = {};`
  * - `metrics*    metric = nullptr;`
  * - `dataloader* loader = nullptr;`
- * 
+ * - `};`
+ *
  */
-

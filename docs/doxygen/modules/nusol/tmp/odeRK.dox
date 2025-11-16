@@ -1,107 +1,53 @@
 /**
  * @file odeRK.h
- * @brief Comprehensive documentation for modules/nusol/tmp/odeRK.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/nusol/tmp/odeRK.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page ellipse_t_documentation ellipse_t Class Documentation
- * 
- * @section ellipse_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `ellipse_t`  
- * **Defined in:** `src/AnalysisG/modules/nusol/tmp/odeRK.h`
- * 
- * @section ellipse_t_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection ellipse_t_methods_private Private Methods
- * 
- * - `void print()`
- * 
- * @section ellipse_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection ellipse_t_variables_private Private Variables
- * 
+ * @brief Documentation for modules/nusol/tmp/odeRK.h
+ *
+ * @subsection ellipse_t_class ellipse_t
+ *
+ * **Public Members:**
+ * - `vec3   A,   B,   C;`
+ * - `vec3  vA,  vB,  vC;`
  * - `double t;`
  * - `double z = 1.0;`
- * 
- */
-
-/**
- * @page recon_t_documentation recon_t Class Documentation
- * 
- * @section recon_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `recon_t`  
- * **Defined in:** `src/AnalysisG/modules/nusol/tmp/odeRK.h`
- * 
- * @section recon_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection recon_t_variables_private Private Variables
- * 
+ * - `void print();`
+ * - `};`
+ *
+ * @subsection recon_t_class recon_t
+ *
+ * **Public Members:**
  * - `bool is_valid = false;`
  * - `double residual = -1;`
  * - `std::vector<double> t;`
  * - `std::vector<double> z;`
  * - `std::vector<double> phi;`
- * 
- */
-
-/**
- * @page odeRK_documentation odeRK Class Documentation
- * 
- * @section odeRK_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `odeRK`  
- * **Inherits from:** `tools`  
- * **Defined in:** `src/AnalysisG/modules/nusol/tmp/odeRK.h`
- * 
- * @section odeRK_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection odeRK_methods_public Public Methods
- * 
- * - `odeRK(std::vector<multisol*>* sols, vec3 met, int iter, double step)`
- * - `~odeRK()`
- * - `void solve()`
- * - `void rk4(double dt)`
- * - `void update_t()`
- * - `double solve_z_phi()`
- * - `double residual(std::vector<double> wg, std::vector<double> phx)`
- * - `std::vector<ellipse_t> derivative(const std::vector<ellipse_t>& dS)`
- * - `double ghost_angle(int nui)`
- * - `std::vector<double> plane_rk4(const std::vector<double>& t_initial)`
- * - `std::vector<double> plane_align(const std::vector<ellipse_t>& current_state)`
- * 
- * @section odeRK_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection odeRK_variables_private Private Variables
- * 
+ * - `};`
+ *
+ * @subsection odeRK_class odeRK
+ * Inherits from tools
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `odeRK(std::vector<multisol*>* sols, vec3 met, int iter, double step);`
+ * - `~odeRK();`
+ * - `void solve();`
+ * - `void rk4(double dt);`
+ * - `void   update_t();`
+ * - `double solve_z_phi();`
+ * - `double residual(std::vector<double> wg, std::vector<double> phx);`
+ * - `std::vector<ellipse_t> derivative(const std::vector<ellipse_t>& dS);`
+ * - `double ghost_angle(int nui);`
+ * - `std::vector<double> plane_rk4(const std::vector<double>& t_initial);`
+ * - `std::vector<double> plane_align(const std::vector<ellipse_t>& current_state);`
+ *
+ * **Private Members:**
+ * - `vec3 met_;`
  * - `int itr    = 0;`
  * - `int nsx    = 0;`
  * - `double dt_ = 0;`
  * - `double ct  = 0;`
  * - `std::vector<ellipse_t>  _state = {};`
  * - `std::vector<multisol*>* _data  = nullptr;`
- * 
+ * - `};`
+ *
  */
-

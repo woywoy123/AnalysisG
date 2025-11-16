@@ -1,45 +1,19 @@
 /**
  * @file grift.h
- * @brief Comprehensive documentation for models/grift/include/models/grift.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/models/grift/include/models/grift.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page grift_documentation grift Class Documentation
- * 
- * @section grift_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `grift`  
- * **Inherits from:** `model_template`  
- * **Defined in:** `src/AnalysisG/models/grift/include/models/grift.h`
- * 
- * @section grift_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection grift_methods_public Public Methods
- * 
- * - `grift()`
- * - `~grift()`
- * - `model_template* clone() override`
- * - `void forward(graph_t*) override`
- * - `torch::Tensor message( torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc, torch::Tensor hx_i, torch::Tensor hx_j )`
- * - `torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn)`
- * 
- * @section grift_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection grift_variables_public Public Variables
- * 
+ * @brief Documentation for models/grift/include/models/grift.h
+ *
+ * @subsection grift_class grift
+ * Inherits from model_template
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `grift();`
+ * - `~grift();`
+ * - `model_template* clone() override;`
+ * - `void forward(graph_t*) override;`
+ * - `);`
+ * - `torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn);`
  * - `int _hidden = 1024;`
  * - `int _xrec = 128;`
  * - `int _xin  = 6;`
@@ -59,6 +33,6 @@
  * - `torch::Tensor  x_nulls;`
  * - `torch::Tensor dx_nulls;`
  * - `torch::Tensor te_nulls;`
- * 
+ * - `};`
+ *
  */
-

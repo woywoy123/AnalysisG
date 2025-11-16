@@ -1,24 +1,5 @@
 /**
  * @file graph.cxx
- * @brief Comprehensive documentation for pyc/graph/graph.cxx
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/pyc/graph/graph.cxx`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page pyc_graph_graph_cxx graph.cxx
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/pyc/graph/graph.cxx`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for pyc/graph/graph.cxx
+ *
  */

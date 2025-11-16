@@ -1,126 +1,59 @@
 /**
  * @file matrix.h
- * @brief Comprehensive documentation for modules/nusol/tmp/matrix.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/nusol/tmp/matrix.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page vec3_documentation vec3 Class Documentation
- * 
- * @section vec3_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `vec3`  
- * **Defined in:** `src/AnalysisG/modules/nusol/tmp/matrix.h`
- * 
- * @section vec3_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection vec3_methods_private Private Methods
- * 
- * - `vec3 operator+(const vec3& o) const`
- * - `vec3 operator-(const vec3& o) const`
- * - `vec3 operator*(double s) const`
- * - `vec3 cross(const vec3& o) const`
- * - `double dot(const vec3& o) const`
- * - `double mag2() const`
- * - `double mag() const`
- * - `void print() const`
- * 
- * @section vec3_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection vec3_variables_private Private Variables
- * 
+ * @brief Documentation for modules/nusol/tmp/matrix.h
+ *
+ * @subsection vec3_class vec3
+ *
+ * **Public Members:**
  * - `double x = 0, y = 0, z = 0;`
- * 
- */
-
-/**
- * @page vec4_documentation vec4 Class Documentation
- * 
- * @section vec4_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `vec4`  
- * **Defined in:** `src/AnalysisG/modules/nusol/tmp/matrix.h`
- * 
- * @section vec4_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection vec4_methods_private Private Methods
- * 
- * - `vec4 operator+(const vec4& o) const`
- * - `vec4 operator-(const vec4& o) const`
- * - `vec4 operator*(double s) const`
- * - `double dot(const vec4& o) const`
- * - `void print()`
- * 
- * @section vec4_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection vec4_variables_private Private Variables
- * 
+ * - `vec3 operator+(const vec3& o) const;`
+ * - `vec3 operator-(const vec3& o) const;`
+ * - `vec3 operator*(double s) const;`
+ * - `vec3 cross(const vec3& o) const;`
+ * - `double dot(const vec3& o) const;`
+ * - `double mag2() const;`
+ * - `double mag() const;`
+ * - `void print() const;`
+ * - `};`
+ *
+ * @subsection vec4_class vec4
+ *
+ * **Public Members:**
  * - `double x = 0, y = 0, z = 0, w = 0;`
- * 
- */
-
-/**
- * @page matrix_documentation matrix Class Documentation
- * 
- * @section matrix_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `matrix`  
- * **Defined in:** `src/AnalysisG/modules/nusol/tmp/matrix.h`
- * 
- * @section matrix_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection matrix_methods_private Private Methods
- * 
- * - `matrix(int r=3, int c=3)`
- * - `matrix(const matrix& other)`
- * - `~matrix()`
- * - `void print(int p = 5)`
- * - `double& at(int r, int c)`
- * - `const double& at(int r, int c) const`
- * - `int rows() const`
- * - `int cols() const`
- * - `double mag() const`
- * - `static matrix I(int size)`
- * - `matrix T() const`
- * - `matrix inverse()`
- * - `double det()`
- * - `matrix dot(const matrix& m)`
- * - `void eigenvalues(vec3* real, vec3* imag)`
- * - `matrix operator+(const matrix& o) const`
- * - `matrix operator-(const matrix& o) const`
- * - `matrix operator*(const matrix& o) const`
- * - `matrix operator*(double s ) const`
- * - `vec4 operator*(const vec4& v ) const`
- * - `vec3 operator*(const vec3& v ) const`
- * 
- * @section matrix_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection matrix_variables_private Private Variables
- * 
+ * - `vec4 operator+(const vec4& o) const;`
+ * - `vec4 operator-(const vec4& o) const;`
+ * - `vec4 operator*(double s) const;`
+ * - `double dot(const vec4& o) const;`
+ * - `void print();`
+ * - `};`
+ *
+ * @subsection matrix_class matrix
+ *
+ * **Public Members:**
+ * - `matrix(int r=3, int c=3);`
+ * - `matrix(const matrix& other);`
+ * - `~matrix();`
+ * - `void print(int p = 5);`
+ * - `double& at(int r, int c);`
+ * - `const double& at(int r, int c) const;`
+ * - `int rows() const;`
+ * - `int cols() const;`
+ * - `double mag() const;`
+ * - `static matrix I(int size);`
+ * - `matrix T() const;`
+ * - `matrix inverse();`
+ * - `double det();`
+ * - `matrix dot(const matrix& m);`
+ * - `void eigenvalues(vec3* real, vec3* imag);`
+ * - `matrix& operator=(const matrix& other);`
+ * - `matrix  operator+(const matrix& o) const;`
+ * - `matrix  operator-(const matrix& o) const;`
+ * - `matrix  operator*(const matrix& o) const;`
+ * - `matrix  operator*(double s       ) const;`
+ * - `vec4    operator*(const vec4& v  ) const;`
+ * - `vec3    operator*(const vec3& v  ) const;`
  * - `double** data = nullptr;`
  * - `int _r = 0, _c = 0;`
- * 
+ * - `};`
+ *
  */
-

@@ -1,106 +1,44 @@
 /**
  * @file gnn-particles.h
- * @brief Comprehensive documentation for events/gnn/include/inference/gnn-particles.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/events/gnn/include/inference/gnn-particles.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page particle_gnn_documentation particle_gnn Class Documentation
- * 
- * @section particle_gnn_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `particle_gnn`  
- * **Inherits from:** `particle_template`  
- * **Defined in:** `src/AnalysisG/events/gnn/include/inference/gnn-particles.h`
- * 
- * @section particle_gnn_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection particle_gnn_methods_public Public Methods
- * 
- * - `particle_gnn()`
- * - `~particle_gnn()`
- * - `particle_template* clone() override`
- * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override`
- * 
- * @section particle_gnn_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection particle_gnn_variables_public Public Variables
- * 
+ * @brief Documentation for events/gnn/include/inference/gnn-particles.h
+ *
+ * @subsection particle_gnn_class particle_gnn
+ * Inherits from particle_template
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `particle_gnn();`
+ * - `~particle_gnn();`
  * - `bool lep = false;`
- * 
- */
-
-/**
- * @page top_documentation top Class Documentation
- * 
- * @section top_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `top`  
- * **Inherits from:** `particle_template`  
- * **Defined in:** `src/AnalysisG/events/gnn/include/inference/gnn-particles.h`
- * 
- * @section top_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection top_methods_public Public Methods
- * 
- * - `top()`
- * - `~top()`
- * 
- * @section top_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection top_variables_public Public Variables
- * 
+ * - `particle_template* clone() override;`
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el) override;`
+ * - `};`
+ *
+ * @subsection top_class top
+ * Inherits from particle_template
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `top();`
+ * - `~top();`
  * - `float av_score = 0;`
  * - `int n_leps = 0;`
  * - `int n_nodes = 0;`
- * 
- */
-
-/**
- * @page zprime_documentation zprime Class Documentation
- * 
- * @section zprime_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `zprime`  
- * **Inherits from:** `particle_template`  
- * **Defined in:** `src/AnalysisG/events/gnn/include/inference/gnn-particles.h`
- * 
- * @section zprime_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection zprime_methods_public Public Methods
- * 
- * - `zprime()`
- * - `~zprime()`
- * 
- * @section zprime_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection zprime_variables_public Public Variables
- * 
+ * - `};`
+ *
+ * @subsection zprime_class zprime
+ * Inherits from particle_template
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `zprime();`
+ * - `~zprime();`
  * - `float av_score = 0;`
  * - `int n_leps = 0;`
  * - `int n_nodes = 0;`
- * 
+ * - `};`
+ *
  */
-

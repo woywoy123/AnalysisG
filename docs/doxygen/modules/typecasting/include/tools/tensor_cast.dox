@@ -1,24 +1,5 @@
 /**
  * @file tensor_cast.h
- * @brief Comprehensive documentation for modules/typecasting/include/tools/tensor_cast.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/typecasting/include/tools/tensor_cast.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page modules_typecasting_include_tools_tensor_cast_h tensor_cast.h
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/modules/typecasting/include/tools/tensor_cast.h`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for modules/typecasting/include/tools/tensor_cast.h
+ *
  */

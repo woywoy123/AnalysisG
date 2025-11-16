@@ -1,89 +1,95 @@
 /**
  * @mainpage AnalysisG Framework Documentation
  *
- * @section intro Introduction
+ * @section intro_sec Introduction
  *
- * AnalysisG is a comprehensive Graph Neural Network Analysis Framework for
- * High Energy Physics (HEP). It provides a complete pipeline from raw physics
- * events to trained neural network models.
+ * AnalysisG is a comprehensive C++/CUDA/Python framework for high-energy physics analysis,
+ * specifically designed for particle physics event processing, graph neural networks,
+ * and machine learning applications in the context of LHC data analysis.
  *
- * @section architecture Framework Architecture
+ * @section structure_sec Framework Structure
  *
- * The framework is organized into the following major components:
+ * The framework consists of several major components:
  *
- * @subsection primary_components Primary Components
- * 
- * - @ref events_module "Events Module" - Event processing and particle physics data structures
- * - @ref graphs_module "Graphs Module" - Graph construction from physics events  
- * - @ref models_module "Models Module" - Neural network model implementations
- * - @ref metrics_module "Metrics Module" - Performance evaluation and metrics
+ * @subsection events_subsec Event Processing
+ * - **bsm_4tops**: Beyond Standard Model 4-top quark events
+ * - **exp_mc20**: Experimental MC20 dataset events  
+ * - **gnn**: Graph Neural Network inference events
+ * - **ssml_mc20**: Semi-supervised ML MC20 events
  *
- * @subsection infrastructure_components Infrastructure Components
+ * @subsection graphs_subsec Graph Construction
+ * - **bsm_4tops graphs**: Graph representations for 4-top events
+ * - **exp_mc20 graphs**: Graph representations for MC20 events
+ * - **ssml_mc20 graphs**: Graph representations for SSML events
  *
- * - @ref modules_infrastructure "Modules Infrastructure" - Core framework components:
- *   - @ref modules_particle "Particle" - Particle template and kinematics
- *   - @ref modules_event "Event" - Event template and processing
- *   - @ref modules_graph "Graph" - Graph template and data structures
- *   - @ref modules_model "Model" - Model template and training
- *   - @ref modules_metric "Metric" - Metric template and evaluation
- *   - @ref modules_io "I/O" - ROOT file reading/writing
- *   - @ref modules_dataloader "Dataloader" - Data loading and batching
- *   - @ref modules_optimizer "Optimizer" - Training optimization
- *   - @ref modules_structs "Structs" - Core data structures
- *   - @ref modules_tools "Tools" - Utility functions
- *   - @ref modules_nusol "NuSol" - Neutrino reconstruction
- *   - And 13 more submodules...
+ * @subsection models_subsec Neural Network Models
+ * - **grift**: Graph Iterative Feature Transformation network
+ * - **RecursiveGraphNeuralNetwork**: Recursive GNN architecture
  *
- * - @ref pyc_module "Python-C++ Interface" - Python bindings via Cython:
- *   - @ref pyc_interface "Interface" - Main Python interface
- *   - @ref pyc_graph "Graph" - Graph Python bindings
- *   - @ref pyc_operators "Operators" - Tensor operations
- *   - @ref pyc_physics "Physics" - Physics calculations
- *   - @ref pyc_transform "Transform" - Data transformations
- *   - @ref pyc_nusol "NuSol" - Neutrino solver bindings
- *   - @ref pyc_cutils "C Utils" - Utility functions
+ * @subsection metrics_subsec Performance Metrics
+ * - **accuracy**: Accuracy metrics for model evaluation
+ * - **pagerank**: PageRank-based metrics
  *
- * - @ref templates_module "Templates" - Code templates for extending the framework
+ * @subsection infrastructure_subsec Infrastructure Modules
+ * Core infrastructure components in the modules/ directory:
+ * - **particle**: Particle representation and kinematics
+ * - **event**: Event templates and processing
+ * - **graph**: Graph templates and operations
+ * - **model**: Model templates and training
+ * - **metric**: Metric templates and computation
+ * - **io**: Input/output for ROOT and HDF5
+ * - **dataloader**: Data loading and caching
+ * - **optimizer**: Training optimizers
+ * - **structs**: Core data structures
+ * - **tools**: Utility functions
+ * - **nusol**: Neutrino solver
+ * - **plotting**: Visualization tools
+ * - **roc**: ROC curve analysis
+ * - **meta**: Metadata management
+ * - **lossfx**: Loss functions
+ * - **sampletracer**: Sample tracking
+ * - **typecasting**: Type conversion utilities
+ * - **container**: Data containers
  *
- * @section workflow Typical Workflow
+ * @subsection pyc_subsec Python-C++ Interface
+ * Python bindings with CUDA acceleration in the pyc/ directory:
+ * - **interface**: Main Python bindings
+ * - **graph**: Graph operations (includes CUDA kernels)
+ * - **operators**: Tensor operations (includes CUDA kernels)
+ * - **physics**: Physics calculations (includes CUDA kernels)
+ * - **transform**: Data transformations (includes CUDA kernels)
+ * - **nusol**: Neutrino solver bindings (includes CUDA kernels)
+ * - **cutils**: C utility functions (includes CUDA kernels)
  *
- * 1. **Event Processing**: Load physics events using event templates
- * 2. **Graph Construction**: Convert events to graphs using graph templates  
- * 3. **Model Training**: Train models using the model templates and infrastructure
- * 4. **Evaluation**: Evaluate performance using metrics
+ * @subsection templates_subsec Code Templates
+ * Template files for extending the framework:
+ * - Event templates
+ * - Graph templates
+ * - Model templates
+ * - Metric templates
+ * - Particle templates
  *
- * @section getting_started Getting Started
+ * @section languages_sec Multi-Language Implementation
  *
- * @subsection step1 Step 1: Understanding Events
- * Start with the @ref events_module to understand how physics events are represented.
- * Key classes: bsm_4tops, exp_mc20, gnn_event, ssml_mc20
+ * The framework is implemented across multiple languages:
+ * - **C++**: Core implementation (215 files: .h, .cxx)
+ * - **CUDA**: GPU-accelerated operations (29 files: .cu, .cuh)
+ * - **Cython**: Python bindings (89 files: .pyx, .pxd)
+ * - **CMake**: Build configuration (57 files: CMakeLists.txt)
  *
- * @subsection step2 Step 2: Graph Construction  
- * See @ref graphs_module for converting events to graphs.
- * Key classes: graph_bsm_4tops, graph_exp_mc20, graph_ssml_mc20
+ * Total: 390 source files
  *
- * @subsection step3 Step 3: Models
- * Explore @ref models_module for neural network architectures.
- * Key classes: grift, RecursiveGraphNeuralNetwork
+ * @section getting_started_sec Getting Started
  *
- * @subsection step4 Step 4: Training
- * Use @ref modules_infrastructure for the complete training pipeline.
+ * To use the framework:
+ * 1. Build the C++ core libraries
+ * 2. Compile CUDA kernels for GPU acceleration
+ * 3. Build Cython extensions for Python interface
+ * 4. Import AnalysisG in Python
  *
- * @section file_organization File Organization
+ * @section modules_sec Module Documentation
  *
- * The framework follows a consistent structure:
- * ```
- * src/AnalysisG/
- * ├── events/       - Event implementations
- * ├── graphs/       - Graph implementations
- * ├── models/       - Model implementations
- * ├── metrics/      - Metric implementations
- * ├── modules/      - Infrastructure (24 submodules)
- * ├── pyc/          - Python bindings (7 submodules)
- * └── templates/    - Code templates
- * ```
- *
- * Each module typically contains:
- * - `cxx/` - Implementation files (.cxx)
- * - `include/` - Header files (.h)
+ * Detailed documentation for each module can be found in the Modules section.
+ * Each source file has corresponding documentation describing its classes,
+ * functions, and variables.
  */

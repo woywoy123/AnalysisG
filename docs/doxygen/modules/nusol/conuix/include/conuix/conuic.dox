@@ -1,64 +1,44 @@
 /**
  * @file conuic.h
- * @brief Comprehensive documentation for modules/nusol/conuix/include/conuix/conuic.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/nusol/conuix/include/conuix/conuic.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page particle_template_documentation particle_template Class Documentation
- * 
- * @section particle_template_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `particle_template`  
- * **Defined in:** `src/AnalysisG/modules/nusol/conuix/include/conuix/conuic.h`
- * 
- * @section particle_template_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection particle_template_methods_public Public Methods
- * 
- * - `conuic(particle_template* jet, particle_template* lep)`
- * - `~conuic()`
- * - `matrix_t get_RT()`
- * - `long double Z2(long double Sx, long double Sy)`
- * - `long double Sx(long double Tau, long double Z)`
- * - `long double Sy(long double Tau, long double Z)`
- * - `void debug()`
- * - `void solve()`
- * 
- * @subsection particle_template_methods_private Private Methods
- * 
- * - `void static set_tau(long double* v, conuic* c)`
- * - `void static set_scl(long double* v, conuic* c)`
- * - `void static set_lmb(long double* v, conuic* c)`
- * - `void static get_tau(long double* v, conuic* c)`
- * - `void static get_scl(long double* v, conuic* c)`
- * - `void static get_lmb(long double* v, conuic* c)`
- * 
- * @section particle_template_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection particle_template_variables_private Private Variables
- * 
+ * @brief Documentation for modules/nusol/conuix/include/conuix/conuic.h
+ *
+ * @subsection particle_template_class particle_template
+ *
+ * **Public Members:**
+ * - `class particle_template;`
+ * @subsection conuic_class conuic
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `conuic(particle_template* jet, particle_template* lep);`
+ * - `~conuic();`
+ * - `cproperty<long double, conuic> t;  // tau`
+ * - `cproperty<long double, conuic> z;  // scale`
+ * - `cproperty<long double, conuic> l;  // lambda`
+ * - `matrix_t get_RT();`
+ * - `long double Z2(long double Sx, long double Sy);`
+ * - `long double Sx(long double Tau, long double Z);`
+ * - `long double Sy(long double Tau, long double Z);`
+ * - `void debug();`
+ * - `void solve();`
+ *
+ * **Private Members:**
  * - `atomics_t* cache = nullptr;`
  * - `particle_template* _jet = nullptr;`
  * - `particle_template* _lep = nullptr;`
- * - `long double tau  = 0;`
- * - `long double stau = 0;`
- * - `long double ctau = 0;`
- * - `long double ttau = 0;`
+ * - `void static set_tau(long double* v, conuic* c);`
+ * - `void static set_scl(long double* v, conuic* c);`
+ * - `void static set_lmb(long double* v, conuic* c);`
+ * - `void static get_tau(long double* v, conuic* c);`
+ * - `void static get_scl(long double* v, conuic* c);`
+ * - `void static get_lmb(long double* v, conuic* c);`
+ * - `long double tau  = 0; // simple hyperbolic parameter`
+ * - `long double stau = 0; // pre-compute sinh`
+ * - `long double ctau = 0; // pre-compute cosh`
+ * - `long double ttau = 0; // pre-compute tanh`
  * - `long double scale = 0;`
  * - `long double lamb  = 0;`
- * 
+ * - `};`
+ *
  */
-

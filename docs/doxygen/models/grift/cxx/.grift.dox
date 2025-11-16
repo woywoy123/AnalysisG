@@ -1,24 +1,5 @@
 /**
  * @file .grift.cxx
- * @brief Comprehensive documentation for models/grift/cxx/.grift.cxx
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/models/grift/cxx/.grift.cxx`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page models_grift_cxx__grift_cxx .grift.cxx
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/models/grift/cxx/.grift.cxx`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for models/grift/cxx/.grift.cxx
+ *
  */

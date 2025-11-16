@@ -1,40 +1,14 @@
 /**
  * @file report.h
- * @brief Comprehensive documentation for modules/structs/include/structs/report.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/structs/include/structs/report.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page metrics_documentation metrics Class Documentation
- * 
- * @section metrics_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `metrics`  
- * **Defined in:** `src/AnalysisG/modules/structs/include/structs/report.h`
- * 
- * @section metrics_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection metrics_methods_private Private Methods
- * 
- * - `std::string print()`
- * - `std::string prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string title)`
- * 
- * @section metrics_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection metrics_variables_private Private Variables
- * 
+ * @brief Documentation for modules/structs/include/structs/report.h
+ *
+ * @subsection metrics_class metrics
+ *
+ * **Public Members:**
+ * - `class metrics;`
+ * @subsection model_report_class model_report
+ *
+ * **Public Members:**
  * - `int k;`
  * - `int epoch;`
  * - `bool is_complete = false;`
@@ -48,7 +22,11 @@
  * - `std::map<mode_enum, std::map<std::string, float>> accuracy_edge = {};`
  * - `std::string run_name;`
  * - `std::string mode;`
+ * - `long iters = 0;`
+ * - `long num_evnt = 0;`
  * - `float progress;`
- * 
+ * - `std::string print();`
+ * - `std::string prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string title);`
+ * - `};`
+ *
  */
-

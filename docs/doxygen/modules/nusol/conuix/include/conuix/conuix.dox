@@ -1,44 +1,28 @@
 /**
  * @file conuix.h
- * @brief Comprehensive documentation for modules/nusol/conuix/include/conuix/conuix.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/nusol/conuix/include/conuix/conuix.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page nusol_t_documentation nusol_t Class Documentation
- * 
- * @section nusol_t_overview Overview
- * 
- * **Type:** Struct  
- * **Name:** `nusol_t`  
- * **Defined in:** `src/AnalysisG/modules/nusol/conuix/include/conuix/conuix.h`
- * 
- * @section nusol_t_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection nusol_t_methods_public Public Methods
- * 
- * - `conuix(nusol_t* params)`
- * - `~conuix()`
- * - `void solve()`
- * 
- * @section nusol_t_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection nusol_t_variables_private Private Variables
- * 
+ * @brief Documentation for modules/nusol/conuix/include/conuix/conuix.h
+ *
+ * @subsection nusol_t_class nusol_t
+ *
+ * **Public Members:**
+ * - `struct nusol_t;`
+ * @subsection conuic_class conuic
+ *
+ * **Public Members:**
+ * - `class conuic;`
+ * @subsection conuix_class conuix
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `conuix(nusol_t* params);`
+ * - `~conuix();`
+ * - `void solve();`
+ *
+ * **Private Members:**
  * - `std::string prefix = "";`
  * - `nusol_t* params = nullptr;`
  * - `std::vector<conuic*>* cnx = nullptr;`
- * 
+ * - `};`
+ *
  */
-

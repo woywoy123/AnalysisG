@@ -1,24 +1,5 @@
 /**
  * @file selection_core.cxx
- * @brief Comprehensive documentation for modules/selection/cxx/selection_core.cxx
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/selection/cxx/selection_core.cxx`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page modules_selection_cxx_selection_core_cxx selection_core.cxx
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/modules/selection/cxx/selection_core.cxx`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for modules/selection/cxx/selection_core.cxx
+ *
  */

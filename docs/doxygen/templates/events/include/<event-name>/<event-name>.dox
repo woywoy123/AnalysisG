@@ -1,24 +1,5 @@
 /**
  * @file <event-name>.h
- * @brief Comprehensive documentation for templates/events/include/<event-name>/<event-name>.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/templates/events/include/<event-name>/<event-name>.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page templates_events_include_<event-name>_<event-name>_h <event-name>.h
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/templates/events/include/<event-name>/<event-name>.h`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for templates/events/include/<event-name>/<event-name>.h
+ *
  */

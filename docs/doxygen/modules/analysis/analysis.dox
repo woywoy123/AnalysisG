@@ -1,24 +1,5 @@
 /**
  * @file analysis.cxx
- * @brief Comprehensive documentation for modules/analysis/analysis.cxx
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/analysis/analysis.cxx`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page modules_analysis_analysis_cxx analysis.cxx
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/modules/analysis/analysis.cxx`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for modules/analysis/analysis.cxx
+ *
  */

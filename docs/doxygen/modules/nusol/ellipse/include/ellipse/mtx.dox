@@ -1,86 +1,60 @@
 /**
  * @file mtx.h
- * @brief Comprehensive documentation for modules/nusol/ellipse/include/ellipse/mtx.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/modules/nusol/ellipse/include/ellipse/mtx.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page mtx_documentation mtx Class Documentation
- * 
- * @section mtx_overview Overview
- * 
- * **Type:** Class  
- * **Name:** `mtx`  
- * **Defined in:** `src/AnalysisG/modules/nusol/ellipse/include/ellipse/mtx.h`
- * 
- * @section mtx_methods Methods
- * 
- * This class defines the following methods:
- * 
- * @subsection mtx_methods_public Public Methods
- * 
- * - `mtx()`
- * - `mtx(int idx, int idy)`
- * - `mtx(mtx* in)`
- * - `mtx(mtx& in)`
- * - `~mtx()`
- * - `double trace()`
- * - `double det()`
- * - `mtx copy()`
- * - `void copy(const mtx* ipt, int idx, int idy = -1)`
- * - `void copy(const mtx* ipt, int idx, int jdy, int idy)`
- * - `bool assign(int idx, int idy, double val, bool valid = true)`
- * - `bool unique(int id1, int id2, double v1, double v2)`
- * - `mtx* cat(const mtx* v2)`
- * - `mtx* slice(int idx)`
- * - `mtx* eigenvalues()`
- * - `mtx* eigenvector()`
- * - `mtx T()`
- * - `mtx inv()`
- * - `mtx cof()`
- * - `mtx diag()`
- * - `mtx dot(const mtx& other)`
- * - `mtx dot(const mtx* other)`
- * - `mtx cross(mtx* r1)`
- * - `mtx cross(mtx* r1, mtx* r2)`
- * - `bool valid(int idx, int idy)`
- * - `void print(int prec = 6, int width = 12)`
- * - `double m_00()`
- * - `double m_01()`
- * - `double m_02()`
- * - `double m_10()`
- * - `double m_11()`
- * - `double m_12()`
- * - `double m_20()`
- * - `double m_21()`
- * - `double m_22()`
- * 
- * @subsection mtx_methods_private Private Methods
- * 
- * - `friend mtx operator*(double scale , const mtx& o2)`
- * - `friend mtx operator*(const mtx& o1, double scale)`
- * - `friend mtx operator+(const mtx& o1, const mtx& o2)`
- * - `friend mtx operator-(const mtx& o1, const mtx& o2)`
- * - `friend mtx operator*(const mtx& o1, const mtx& o2)`
- * 
- * @section mtx_variables Member Variables
- * 
- * This class contains the following member variables:
- * 
- * @subsection mtx_variables_public Public Variables
- * 
+ * @brief Documentation for modules/nusol/ellipse/include/ellipse/mtx.h
+ *
+ * @subsection mtx_class mtx
+ *
+ * **Public Members:**
+ *
+ * **Private Members:**
+ * - `mtx();`
+ * - `mtx(int idx, int idy);`
+ * - `mtx(mtx* in);`
+ * - `mtx(mtx& in);`
+ * - `~mtx();`
+ * - `double trace();`
+ * - `double det();`
+ * - `mtx  copy();`
+ * - `void copy(const mtx* ipt, int idx, int idy = -1);`
+ * - `void copy(const mtx* ipt, int idx, int jdy, int idy);`
+ * - `bool assign(int idx, int idy, double val, bool valid = true);`
+ * - `bool unique(int id1, int id2, double v1, double v2);`
+ * - `mtx* cat(const mtx* v2);`
+ * - `mtx* slice(int idx);`
+ * - `mtx* eigenvalues();`
+ * - `mtx* eigenvector();`
+ * - `mtx T();`
+ * - `mtx inv();`
+ * - `mtx cof();`
+ * - `mtx diag();`
+ * - `mtx dot(const mtx& other);`
+ * - `mtx dot(const mtx* other);`
+ * - `mtx cross(mtx* r1);`
+ * - `mtx cross(mtx* r1, mtx* r2);`
+ * - `bool valid(int idx, int idy);`
+ * - `void print(int prec = 6, int width = 12);`
+ * - `mtx& operator=(const mtx& o);`
  * - `double** _m = nullptr;`
  * - `bool  ** _b = nullptr;`
+ * - `double m_00();`
+ * - `double m_01();`
+ * - `double m_02();`
+ * - `double m_10();`
+ * - `double m_11();`
+ * - `double m_12();`
+ * - `double m_20();`
+ * - `double m_21();`
+ * - `double m_22();`
  * - `int dim_i = 0;`
  * - `int dim_j = 0;`
  * - `double tol = 1e-9;`
- * 
+ *
+ * **Private Members:**
+ * - `friend mtx operator*(double scale , const mtx& o2);`
+ * - `friend mtx operator*(const mtx& o1, double scale);`
+ * - `friend mtx operator+(const mtx& o1, const mtx& o2);`
+ * - `friend mtx operator-(const mtx& o1, const mtx& o2);`
+ * - `friend mtx operator*(const mtx& o1, const mtx& o2);`
+ * - `};`
+ *
  */
-

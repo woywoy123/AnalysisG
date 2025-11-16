@@ -1,24 +1,5 @@
 /**
  * @file node_features.h
- * @brief Comprehensive documentation for graphs/ssml_mc20/include/ssml_mc20/node_features.h
- * 
- * @details
- * This file is part of the AnalysisG framework.
- * 
- * **File Location:** `src/AnalysisG/graphs/ssml_mc20/include/ssml_mc20/node_features.h`
- * 
- * This documentation provides a complete reference for all classes, functions,
- * and variables defined in this source file.
- */
-
-/**
- * @page graphs_ssml_mc20_include_ssml_mc20_node_features_h node_features.h
- * 
- * @section overview Overview
- * 
- * Source file: `src/AnalysisG/graphs/ssml_mc20/include/ssml_mc20/node_features.h`
- * 
- * This file contains utility functions and definitions for the AnalysisG framework.
- * 
- * @note No classes or structs defined in this file.
+ * @brief Documentation for graphs/ssml_mc20/include/ssml_mc20/node_features.h
+ *
  */
