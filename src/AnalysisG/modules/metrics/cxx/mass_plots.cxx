@@ -1,8 +1,11 @@
 #include <metrics/metrics.h>
 #include <TRatioPlot.h>
 #include <THStack.h>
+
+#ifdef PYC_CUDA
 #include <c10/cuda/CUDAStream.h>
 #include <c10/cuda/CUDAGuard.h>
+#endif
 
 void metrics::dump_mass_plots(int k){
     std::string out_pth = this -> m_settings.output_path + "masses/"; 

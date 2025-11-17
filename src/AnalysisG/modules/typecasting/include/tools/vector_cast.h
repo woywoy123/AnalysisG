@@ -1,9 +1,12 @@
 #ifndef TYPECASTING_VECTOR_CAST_H
 #define TYPECASTING_VECTOR_CAST_H
 
+#ifdef PYC_CUDA
 #include <c10/core/DeviceType.h>
 #include <c10/cuda/CUDAStream.h>
 #include <ATen/cuda/CUDAContext.h>
+#endif
+
 #include <structs/meta.h>
 #include <structs/base.h>
 #include <torch/torch.h>

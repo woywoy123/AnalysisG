@@ -120,13 +120,6 @@ torch::Tensor Intersecting(torch::Tensor* G, torch::Tensor* g22, torch::Tensor* 
     return G_; 
 }
 
-torch::Tensor Pi_2(torch::Tensor* x){
-    torch::TensorOptions op = MakeOp(x); 
-    const unsigned int dim_i = x -> size(0); 
-    torch::Tensor z = torch::zeros({dim_i, 1}, op); 
-    return torch::acos(z); 
-}
-
 torch::Tensor Rotation(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* base){
     torch::Tensor pmc_b3  = pmc_b -> index( {torch::indexing::Slice(), torch::indexing::Slice(0, 3)}); 
     torch::Tensor pmc_mu3 = pmc_mu -> index({torch::indexing::Slice(), torch::indexing::Slice(0, 3)}); 
@@ -135,7 +128,7 @@ torch::Tensor Rotation(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tenso
     torch::Tensor theta = physics_::Theta(pmc_mu); 
 
     torch::Tensor Rz = operators_::Rz(&muphi); 
-    torch::Tensor rx = Pi_2(&theta) - theta;
+    torch::Tensor rx = operators_::Pi_2(&theta) - theta;
     torch::Tensor Ry = operators_::Ry(&rx); 
 
     torch::Tensor Rx = torch::matmul(Rz, pmc_b3.view({-1, 3, 1}));
@@ -188,14 +181,14 @@ torch::Tensor _H_perp(torch::Tensor* base){
 }
 
 torch::Tensor _N(torch::Tensor* hperp){
-    torch::Tensor H = operators_::Inverse(hperp); 
+    torch::Tensor H = std::get<1>(operators_::Inverse(hperp)); 
     torch::Tensor H_T = torch::transpose(H, 1, 2);    
     H_T = torch::matmul(H_T, Shape(&H_T, {1, 1, -1})); 
     return torch::matmul(H_T, H); 
 }
 
 
-torch::Tensor nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses){
+torch::Tensor nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses, bool null){
 
     torch::Tensor pmx_b  = pmc_b -> view({-1, 4}); 
     torch::Tensor pmx_mu = pmc_mu -> view({-1, 4}); 
@@ -242,7 +235,7 @@ torch::Tensor nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, to
 }
 
 torch::Tensor nusol_::Hperp(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses){
-    torch::Tensor H = nusol_::BaseMatrix(pmc_b, pmc_mu, masses); 
+    torch::Tensor H = nusol_::BaseMatrix(pmc_b, pmc_mu, masses, true); 
     H = Rotation(pmc_b, pmc_mu, &H); 
     H = _H_perp(&H); 
     torch::Tensor nullx = torch::isnan(H).sum(-1).sum(-1) == 0; 
@@ -273,7 +266,7 @@ std::tuple<torch::Tensor, torch::Tensor> nusol_::Intersection(torch::Tensor* A, 
     _A.index_put_({swp}, _tmp);
     
     // Find the non imaginary eigenvalue solutions
-    _tmp = torch::linalg::eigvals(operators_::Inverse(&_A).matmul(_B)); 
+    _tmp = torch::linalg_eigvals(std::get<1>(operators_::Inverse(&_A)).matmul(_B)); 
     torch::Tensor _r = torch::real(_tmp); 
     torch::Tensor msk = torch::isreal(_tmp)*torch::arange(3, 0, -1, op); 
     msk = torch::argmax(msk, -1, true); 
@@ -340,7 +333,7 @@ std::tuple<torch::Tensor, torch::Tensor> nusol_::Intersection(torch::Tensor* A, 
     torch::Tensor _t, d1, V, V_, diag; 
     V = torch::cross(_out.view(dim313), _A.view(dim133), 3); 
     V = torch::transpose(V, 2, 3); 
-    V = std::get<1>(torch::linalg::eig(V));
+    V = std::get<1>(torch::linalg_eig(V));
     V = torch::real(V);
     V = torch::transpose(V, 2, 3); 
     
@@ -400,9 +393,9 @@ std::map<std::string, torch::Tensor> _xNu(
 ){
     
     // Base matrix - the Analytical solutions and constants
-    torch::Tensor base = nusol_::BaseMatrix(pmc_b, pmc_mu, masses); 
+    torch::Tensor base = nusol_::BaseMatrix(pmc_b, pmc_mu, masses, true); 
     torch::Tensor H_base = Rotation(pmc_b, pmc_mu, &base);
-    torch::Tensor Pi2 = Pi_2(&base); 
+    torch::Tensor Pi2 = operators_::Pi_2(&base); 
     torch::Tensor Derivative = operators_::Rz(&Pi2); 
     Derivative = Derivative.matmul(Shape(&Pi2, {1, 1, 0})); 
 
@@ -484,8 +477,8 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
 
     // ---------------- Prepare all needed matrices ----------------- //
     if (!m2){m2 = m1;}
-    H1 = nusol_::BaseMatrix(pmc_b1, pmc_l1, m1); 
-    H2 = nusol_::BaseMatrix(pmc_b2, pmc_l2, m2);
+    H1 = nusol_::BaseMatrix(pmc_b1, pmc_l1, m1, true); 
+    H2 = nusol_::BaseMatrix(pmc_b2, pmc_l2, m2, true);
 
     // --- protection against non-invertible matrices --- //
     none =  (torch::det(H1) == 0);  
@@ -557,4 +550,25 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
     output["H_perp_1"] = H1_perp; 
     output["H_perp_2"] = H2_perp; 
     return output; 
+}
+
+std::map<std::string, torch::Tensor> nusol_::NuNu(
+            torch::Tensor* pmc_b1, torch::Tensor* pmc_b2, torch::Tensor* pmc_mu1, torch::Tensor* pmc_mu2,
+            torch::Tensor* met_xy, double null, torch::Tensor* m1, torch::Tensor* m2,
+            const double step, const double tolerance, const unsigned int timeout)
+{
+    return {}; 
+}
+
+std::map<std::string, torch::Tensor> nusol_::combinatorial(
+               torch::Tensor* edge_index, torch::Tensor* batch , torch::Tensor* pmc, 
+               torch::Tensor* pid       , torch::Tensor* met_xy, 
+               double mT , double mW, double null, double perturb, 
+               long steps, bool gev
+){
+    return {}; 
+}
+
+std::map<std::string, torch::Tensor> nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses){
+    return {}; 
 }

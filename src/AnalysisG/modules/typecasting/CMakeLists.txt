@@ -13,4 +13,8 @@ target_include_directories(ctypecasting PRIVATE include/tools)
 target_include_directories(ctypecasting PUBLIC include)
 target_link_libraries(ctypecasting PUBLIC ${TORCH_LIBRARIES} ${ROOT_LIBRARIES} cstructs)
 target_compile_options(ctypecasting PRIVATE -fPIC)
+
+if(CMAKE_ANALYSISG_CUDA)
+target_compile_definitions(ctypecasting PRIVATE PYC_CUDA ON)
+endif()
 target_compile_options(ctypecasting PRIVATE -Wall -pedantic -Wextra -Wshadow)

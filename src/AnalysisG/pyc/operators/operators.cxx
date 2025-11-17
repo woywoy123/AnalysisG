@@ -1,10 +1,18 @@
 #include <operators/operators.h>
+#include <transform/transform.h>
+#include <physics/physics.h>
 #include <utils/utils.h>
 
 torch::Tensor operators_::Dot(torch::Tensor* v1, torch::Tensor* v2){
     int sx = v2 -> size({-1}); 
     return v1 -> matmul(v2 -> view({-1, sx, sx})); 
 }
+
+torch::Tensor operators_::Cross(torch::Tensor* v1, torch::Tensor* v2){
+    int sx = v2 -> size({-1}); 
+    return v1 -> matmul(v2 -> view({-1, sx, sx})); 
+}
+
 
 torch::Tensor operators_::CosTheta(torch::Tensor* v1, torch::Tensor* v2){
     torch::Tensor v1_2 = ((*v1)*(*v1)).sum(-1);
@@ -83,8 +91,51 @@ torch::Tensor operators_::CoFactors(torch::Tensor* matrix){
     return torch::cat(out, -1).view({-1, 3, 3}); 
 }
 
-torch::Tensor operators_::Determinant(torch::Tensor* matrix){ return torch::det(*matrix); }
-torch::Tensor operators_::Inverse(torch::Tensor* matrix){ return torch::inverse(*matrix); }
+torch::Tensor operators_::Determinant(torch::Tensor* matrix){
+    return torch::det(*matrix); 
+}
+
+std::tuple<torch::Tensor, torch::Tensor> operators_::Eigenvalue(torch::Tensor* matrix){
+    return {torch::ones_like(*matrix), torch::ones_like(*matrix)}; 
+}
+
+std::tuple<torch::Tensor, torch::Tensor> operators_::Inverse(torch::Tensor* matrix){
+    return {*matrix, torch::inverse(*matrix)}; 
+}
+
+torch::Tensor operators_::Pi_2(torch::Tensor* x){
+    torch::TensorOptions op = MakeOp(x); 
+    const unsigned int dim_i = x -> size(0); 
+    torch::Tensor z = torch::zeros({dim_i, 1}, op); 
+    return torch::acos(z); 
+}
+
+torch::Tensor operators_::RT(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* base){
+
+    torch::Tensor pmc_b3  = pmc_b -> index( {torch::indexing::Slice(), torch::indexing::Slice(0, 3)}); 
+    torch::Tensor pmc_mu3 = pmc_mu -> index({torch::indexing::Slice(), torch::indexing::Slice(0, 3)}); 
+
+    torch::Tensor muphi = -transform_::Phi(pmc_mu); 
+    torch::Tensor theta = physics_::Theta(pmc_mu); 
+
+    torch::Tensor Rz = operators_::Rz(&muphi); 
+    torch::Tensor rx = operators_::Pi_2(&theta) - theta;
+    torch::Tensor Ry = operators_::Ry(&rx); 
+
+    torch::Tensor Rx = torch::matmul(Rz, pmc_b3.view({-1, 3, 1}));
+    Rx = torch::matmul(Ry, Rx.view({-1, 3, 1})); 
+    Rx = -torch::atan2(
+            Rx.index({torch::indexing::Slice(), 2}), 
+            Rx.index({torch::indexing::Slice(), 1})
+    ).view({-1, 1}); 
+
+    Rx = operators_::Rx(&Rx); 
+    Rx = torch::transpose(Rx, 1, 2); 
+    Ry = torch::transpose(Ry, 1, 2); 
+    Rz = torch::transpose(Rz, 1, 2); 
+    return torch::matmul(torch::matmul(Rz, torch::matmul(Ry, Rx)), *base); 
+}
+
 
 
 

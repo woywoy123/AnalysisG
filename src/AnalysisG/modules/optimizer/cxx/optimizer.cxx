@@ -1,6 +1,9 @@
 #include <generators/optimizer.h>
+
+#ifdef PYC_CUDA
 #include <c10/cuda/CUDAStream.h>
 #include <c10/cuda/CUDAGuard.h>
+#endif
 
 optimizer::optimizer(){
     this -> prefix = "optimizer"; 

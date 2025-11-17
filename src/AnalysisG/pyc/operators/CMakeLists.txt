@@ -13,6 +13,8 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/operators.cxx
 )
 add_library(pyc_operators ${SOURCE_FILES})
+target_link_libraries(pyc_operators PUBLIC pyc_transform)
+target_link_libraries(pyc_operators PUBLIC pyc_physics)
 endif()
 target_include_directories(pyc_operators PRIVATE include/operators)
 target_include_directories(pyc_operators PUBLIC include)

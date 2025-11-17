@@ -75,3 +75,9 @@ std::map<std::string, torch::Tensor> graph_::node_aggregation(
     torch::Tensor pred = prediction -> index({e_i}).clone(); 
     return graph_::edge_aggregation(edge_index, &pred, node_feature);  
 }
+
+std::map<std::string, torch::Tensor> graph_::unique_aggregation(torch::Tensor* cluster_map, torch::Tensor* features){
+    std::cout << "WARNING!!! NOT IMPLEMENTED IN C++ USE CUDA!!!" << std::endl;
+    return {}; 
+}
+
