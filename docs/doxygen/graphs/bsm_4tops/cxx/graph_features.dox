@@ -1,0 +1,8 @@
+/**
+ * @file graph_features.cxx
+ * @brief Implementation of graph-level feature functions for BSM 4-top events
+ *
+ * Location: src/AnalysisG/graphs/bsm_4tops/cxx/graph_features.cxx
+ *
+ * Implements graph-level truth and observable feature extraction functions.
+ */

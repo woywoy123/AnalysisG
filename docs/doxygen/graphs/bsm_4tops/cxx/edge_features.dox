@@ -1,0 +1,8 @@
+/**
+ * @file edge_features.cxx
+ * @brief Implementation of edge feature functions for BSM 4-top graphs
+ *
+ * Location: src/AnalysisG/graphs/bsm_4tops/cxx/edge_features.cxx
+ *
+ * Implements res_edge, top_edge, det_res_edge, det_top_edge functions for edge classification in graphs.
+ */

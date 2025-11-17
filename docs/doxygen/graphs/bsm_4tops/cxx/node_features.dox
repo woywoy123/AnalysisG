@@ -1,0 +1,8 @@
+/**
+ * @file node_features.cxx
+ * @brief Implementation of node feature functions for BSM 4-top graphs
+ *
+ * Location: src/AnalysisG/graphs/bsm_4tops/cxx/node_features.cxx
+ *
+ * Implements node truth and observable feature extraction functions.
+ */

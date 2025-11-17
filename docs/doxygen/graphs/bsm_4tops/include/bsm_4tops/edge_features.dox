@@ -1,0 +1,31 @@
+/**
+ * @file edge_features.h
+ * @brief Documentation for graphs/bsm_4tops/include/bsm_4tops/edge_features.h
+ *
+ * Location: src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/edge_features.h
+ *
+ * Dependencies:
+ * - templates/event_template.h
+ *
+ * @section functions Edge Truth Feature Functions
+ *
+ * **res_edge**
+ * - Determines if edge connects particles from resonance (Z') decay
+ * - Parameters: int* o (output), std::tuple<particle_template*, particle_template*>* pij (particle pair)
+ * - Returns 1 if both particles have from_res flag true, 0 otherwise
+ *
+ * **top_edge**
+ * - Determines if edge connects particles from same top quark
+ * - Parameters: int* o (output), std::tuple<particle_template*, particle_template*>* pij (particle pair)
+ * - Returns 1 if both particles share same top_index, 0 otherwise
+ *
+ * **det_top_edge**
+ * - Determines if detector-level edge connects to same top via shared children
+ * - Parameters: int* o (output), std::tuple<particle_template*, particle_template*>* pij (particle pair)
+ * - Returns 1 if particles share common child particle, 0 otherwise
+ *
+ * **det_res_edge**
+ * - Determines if detector-level edge connects to same resonance via shared parents
+ * - Parameters: int* o (output), std::tuple<particle_template*, particle_template*>* pij (particle pair)
+ * - Returns 1 if particles share common parent particle, 0 otherwise
+ */
