@@ -1,0 +1,51 @@
+/**
+ * @file event.h
+ * @brief Documentation for events/exp_mc20/include/exp_mc20/event.h
+ * 
+ * **Location:** src/AnalysisG/events/exp_mc20/include/exp_mc20/event.h
+ * 
+ * **Dependencies:**
+ * - exp_mc20/particles.h
+ * - templates/event_template.h
+ * 
+ * ## Classes
+ * 
+ * ### exp_mc20
+ * **Inherits from:** event_template
+ * 
+ * Event container for experimental MC20 data format. Manages top quarks, their decay products, physics objects (truth and detector level), and reconstructed particles.
+ * 
+ * **Public Methods:**
+ * - `exp_mc20()` - Constructor, initializes event name, registers particle maps, adds TTree leaves
+ * - `virtual ~exp_mc20()` - Destructor
+ * - `event_template* clone() override` - Creates a clone of the event
+ * - `void build(element_t* el) override` - Builds event-level quantities from tree element
+ * - `void CompileEvent() override` - Compiles particle relationships, sorts by index, establishes parent-child relationships
+ * 
+ * **Public Member Variables:**
+ * - `std::vector<particle_template*> Tops` - Top quark particles
+ * - `std::vector<particle_template*> TopChildren` - Top decay products
+ * - `std::vector<particle_template*> PhysicsTruth` - Truth-level physics objects
+ * - `std::vector<particle_template*> PhysicsDetector` - Detector-level physics objects
+ * - `std::vector<particle_template*> Jets` - Jet particles
+ * - `std::vector<particle_template*> Leptons` - Lepton particles (electrons and muons)
+ * - `std::vector<particle_template*> Detector` - All detector-level particles
+ * - `unsigned long long event_number` - Event number from data
+ * - `float met_sum` - Sum of missing transverse energy
+ * - `float met` - Missing transverse energy
+ * - `float phi` - MET phi angle
+ * - `float mu` - Average interactions per crossing (pileup)
+ * 
+ * **Private Member Variables:**
+ * - `std::map<std::string, top*> m_tops` - Map of top quarks by hash
+ * - `std::map<std::string, child*> m_children` - Map of top children by hash
+ * - `std::map<std::string, physics_truth*> m_phystru` - Map of truth physics objects
+ * - `std::map<std::string, physics_detector*> m_physdet` - Map of detector physics objects
+ * - `std::map<std::string, jet*> m_jets` - Map of jets by hash
+ * - `std::map<std::string, muon*> m_muons` - Map of muons by hash
+ * - `std::map<std::string, electron*> m_electrons` - Map of electrons by hash
+ * 
+ * **Private Template Methods:**
+ * - `template <typename G> std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt)` - Sorts particles by index
+ * - `template <typename m, typename G, typename g> void vectorize(std::map<m, G*>* ipt, std::vector<g*>* vec)` - Converts map to vector
+ */

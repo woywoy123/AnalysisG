@@ -1,0 +1,42 @@
+/**
+ * @file event.cxx
+ * @brief Implementation for events/exp_mc20/cxx/event.cxx
+ * 
+ * **Location:** src/AnalysisG/events/exp_mc20/cxx/event.cxx
+ * 
+ * **Dependencies:**
+ * - exp_mc20/event.h
+ * 
+ * ## Implementation Details
+ * 
+ * ### Constructor: exp_mc20::exp_mc20()
+ * Initializes the experimental MC20 event:
+ * - Sets event name to "experimental_mc20"
+ * - Adds TTree leaf mappings for event-level quantities (met_sum, met, phi, weight, mu, event_number)
+ * - Sets trees list to {"nominal_Loose"}
+ * - Registers all particle maps (tops, children, physics detector/truth, electrons, muons, jets)
+ * 
+ * ### Destructor: exp_mc20::~exp_mc20()
+ * Empty destructor.
+ * 
+ * ### clone()
+ * Returns a new instance of exp_mc20 event.
+ * 
+ * ### build(element_t* el)
+ * Builds event-level quantities from tree element:
+ * - Reads event_number
+ * - Reads and sets weight
+ * - Reads met_sum, met, phi, mu
+ * 
+ * ### CompileEvent()
+ * Compiles complete event structure:
+ * 1. Sorts tops by index using sort_by_index template
+ * 2. Converts particle maps to vectors (children, truth physics, detector physics)
+ * 3. Establishes parent-child relationships between tops and their children
+ * 4. Links physics truth objects to parent tops based on top_index
+ * 5. Links physics detector objects to parent tops based on top_index
+ * 6. Converts detector particles (electrons, muons, jets) to Detector vector
+ * 7. Matches detector particles to physics detector objects via DeltaR (threshold 0.0001)
+ * 8. Propagates top quark parentage from physics detector to matched detector particles
+ * 9. Fills output vectors: Tops, TopChildren, PhysicsTruth, PhysicsDetector, Jets, Leptons
+ */
