@@ -1,0 +1,22 @@
+/**
+ * @file conuix.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/conuix.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/conuix.h
+ *
+ * Dependencies:
+ * - templates/particle_template.h
+ *
+ * @section classes Classes
+ *
+ * **nusol_t** (struct)
+ *
+ * Methods: conics
+ *
+ * Variables: params
+ * **conics** (class)
+ *
+ * Methods: conics
+ *
+ * Variables: params
+ */

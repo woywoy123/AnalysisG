@@ -1,0 +1,27 @@
+/**
+ * @file conuix.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/conuix/include/conuix/conuix.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/conuix/include/conuix/conuix.h
+ *
+ * Dependencies:
+ * - reconstruction/nusol.h
+ *
+ * @section classes Classes
+ *
+ * **nusol_t** (struct)
+ *
+ * Methods: conuix, solve
+ *
+ * Variables: prefix, params, cnx
+ * **conuic** (class)
+ *
+ * Methods: conuix, solve
+ *
+ * Variables: prefix, params, cnx
+ * **conuix** (class)
+ *
+ * Methods: conuix, solve
+ *
+ * Variables: prefix, params, cnx
+ */

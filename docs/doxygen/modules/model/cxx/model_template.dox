@@ -1,0 +1,9 @@
+/**
+ * @file model_template.cxx
+ * @brief Documentation for src/AnalysisG/modules/model/cxx/model_template.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/model/cxx/model_template.cxx
+ *
+ * Dependencies:
+ * - templates/model_template.h
+ */

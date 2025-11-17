@@ -1,0 +1,10 @@
+/**
+ * @file roc.cxx
+ * @brief Documentation for src/AnalysisG/modules/roc/cxx/roc.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/roc/cxx/roc.cxx
+ *
+ * Dependencies:
+ * - plotting/roc.h
+ * - cmath
+ */

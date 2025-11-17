@@ -1,0 +1,14 @@
+/**
+ * @file eigen.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/conuix/cxx/eigen.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/conuix/cxx/eigen.cxx
+ *
+ * Dependencies:
+ * - conuix/solvers.h
+ * - conuix/conuic.h
+ * - iostream
+ * - iomanip
+ * - string
+ * - cmath
+ */

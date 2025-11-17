@@ -1,0 +1,27 @@
+/**
+ * @file metric_template.h
+ * @brief Documentation for src/AnalysisG/modules/metric/include/templates/metric_template.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/metric/include/templates/metric_template.h
+ *
+ * Dependencies:
+ * - templates/particle_template.h
+ * - notification/notification.h
+ * - structs/property.h
+ * - structs/element.h
+ * - structs/event.h
+ * - structs/model.h
+ * - structs/enums.h
+ * - meta/meta.h
+ * - plotting/plotting.h
+ * - tools/vector_cast.h
+ *
+ * @section classes Classes
+ *
+ * **graph_t** (struct)
+ * **analysis** (class)
+ * **model_template** (class)
+ * **metric_template** (class)
+ * **metric_t** (struct)
+ * **metric_template** (class, inherits from tools)
+ */

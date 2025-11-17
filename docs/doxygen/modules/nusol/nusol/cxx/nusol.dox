@@ -1,0 +1,11 @@
+/**
+ * @file nusol.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/nusol/cxx/nusol.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/nusol/cxx/nusol.cxx
+ *
+ * Dependencies:
+ * - reconstruction/nusol.h
+ * - ellipse/ellipse.h
+ * - conuix/conuix.h
+ */

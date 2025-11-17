@@ -1,0 +1,17 @@
+/**
+ * @file io.cxx
+ * @brief Documentation for src/AnalysisG/modules/tools/cxx/io.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/tools/cxx/io.cxx
+ *
+ * Dependencies:
+ * - tools/tools.h
+ * - sys/stat.h
+ * - filesystem
+ * - unistd.h
+ *
+ * @section classes Classes
+ *
+ * **stat** (struct)
+ * **stat** (struct)
+ */

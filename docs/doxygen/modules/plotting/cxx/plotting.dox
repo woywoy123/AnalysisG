@@ -1,0 +1,10 @@
+/**
+ * @file plotting.cxx
+ * @brief Documentation for src/AnalysisG/modules/plotting/cxx/plotting.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/plotting/cxx/plotting.cxx
+ *
+ * Dependencies:
+ * - plotting/plotting.h
+ * - cmath
+ */

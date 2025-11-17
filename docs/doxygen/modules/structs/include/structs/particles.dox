@@ -1,0 +1,20 @@
+/**
+ * @file particles.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/particles.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/structs/include/structs/particles.h
+ *
+ * Dependencies:
+ * - string
+ * - vector
+ * - map
+ *
+ * @section classes Classes
+ *
+ * **particle_template** (class)
+ *
+ * Variables: e, mass, px, py, pz, pt, eta, phi, cartesian, polar, charge, pdgid, index, type, hash, symbol, lepdef
+ * **particle_t** (struct)
+ *
+ * Variables: e, mass, px, py, pz, pt, eta, phi, cartesian, polar, charge, pdgid, index, type, hash, symbol, lepdef
+ */

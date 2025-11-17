@@ -1,0 +1,9 @@
+/**
+ * @file selection_build.cxx
+ * @brief Documentation for src/AnalysisG/modules/analysis/selection_build.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/analysis/selection_build.cxx
+ *
+ * Dependencies:
+ * - AnalysisG/analysis.h
+ */

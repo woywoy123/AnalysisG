@@ -1,0 +1,11 @@
+/**
+ * @file strings.cxx
+ * @brief Documentation for src/AnalysisG/modules/tools/cxx/strings.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/tools/cxx/strings.cxx
+ *
+ * Dependencies:
+ * - tools/tools.h
+ * - sstream
+ * - string
+ */

@@ -1,0 +1,11 @@
+/**
+ * @file misc.cxx
+ * @brief Documentation for src/AnalysisG/modules/structs/cxx/misc.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/structs/cxx/misc.cxx
+ *
+ * Dependencies:
+ * - element.h
+ * - report.h
+ * - folds.h
+ */

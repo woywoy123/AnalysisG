@@ -1,0 +1,9 @@
+/**
+ * @file typecasting.cxx
+ * @brief Documentation for src/AnalysisG/modules/typecasting/cxx/typecasting.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/typecasting/cxx/typecasting.cxx
+ *
+ * Dependencies:
+ * - vector_cast.h
+ */

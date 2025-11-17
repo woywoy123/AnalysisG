@@ -1,0 +1,10 @@
+/**
+ * @file conuic.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/conuix/cxx/conuic.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/conuix/cxx/conuic.cxx
+ *
+ * Dependencies:
+ * - templates/particle_template.h
+ * - conuix/conuic.h
+ */

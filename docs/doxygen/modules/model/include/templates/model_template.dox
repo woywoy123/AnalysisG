@@ -1,0 +1,108 @@
+/**
+ * @file model_template.h
+ * @brief Documentation for src/AnalysisG/modules/model/include/templates/model_template.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/model/include/templates/model_template.h
+ *
+ * Dependencies:
+ * - notification/notification.h
+ * - templates/graph_template.h
+ * - templates/lossfx.h
+ * - structs/settings.h
+ * - structs/model.h
+ * - c10/cuda/CUDAStream.h
+ * - ATen/cuda/CUDAGraph.h
+ *
+ * @section classes Classes
+ *
+ * **metrics** (class)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **analysis** (class)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **model_template** (class)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **metric_template** (class)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **optimizer** (class)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **dataloader** (class)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **graph_t** (struct)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **variable_t** (struct)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **optimizer_params_t** (struct)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **model_report** (struct)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **model_template** (class, inherits from notification)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **graph_t** (struct)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **model_report** (struct)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **metrics** (class)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **analysis** (class)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **optimizer** (class)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **dataloader** (class)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ * **metric_template** (class)
+ *
+ * Methods: model_template
+ *
+ * Variables: device_index, name, device, kfold, epoch, is_mc, use_pkl, inference_mode, enable_anomaly, retain_graph, model_checkpoint_path, weight_name, tree_name, _losses
+ */

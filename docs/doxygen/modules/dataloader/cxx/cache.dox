@@ -1,0 +1,11 @@
+/**
+ * @file cache.cxx
+ * @brief Documentation for src/AnalysisG/modules/dataloader/cxx/cache.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/dataloader/cxx/cache.cxx
+ *
+ * Dependencies:
+ * - generators/dataloader.h
+ * - structs/folds.h
+ * - io/io.h
+ */

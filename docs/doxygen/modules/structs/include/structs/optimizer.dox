@@ -1,0 +1,23 @@
+/**
+ * @file optimizer.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/optimizer.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/structs/include/structs/optimizer.h
+ *
+ * Dependencies:
+ * - string
+ * - vector
+ * - structs/property.h
+ * - structs/enums.h
+ *
+ * @section classes Classes
+ *
+ * **loss_opt** (struct)
+ *
+ * Variables: fx, mean, sum, none, swap, full, batch_mean, target, zero_inf, defaults, ignore, blank, margin, beta, eps, smoothing, delta, weight
+ * **optimizer_params_t** (class)
+ *
+ * Methods: optimizer_params_t, set_eps, set_lr, set_lr_decay, set_weight_decay, set_initial_accumulator_value, set_beta_hack, set_betas, set_amsgrad, set_max_iter, set_max_eval, set_tolerance_grad, set_tolerance_change, set_history_size, set_centered, set_nesterov, set_alpha, set_momentum, set_dampening
+ *
+ * Variables: optimizer, lr, lr_decay, weight_decay, initial_accumulator_value, eps, tolerance_grad, tolerance_change, alpha, momentum, dampening, amsgrad, centered, nesterov, max_iter, max_eval, history_size, betas, beta_hack, scheduler
+ */

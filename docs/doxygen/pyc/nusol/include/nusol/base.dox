@@ -1,0 +1,12 @@
+/**
+ * @file base.cuh
+ * @brief Documentation for src/AnalysisG/pyc/nusol/include/nusol/base.cuh
+ *
+ * Location: src/AnalysisG/src/AnalysisG/pyc/nusol/include/nusol/base.cuh
+ *
+ * Dependencies:
+ * - map
+ * - string
+ * - torch/torch.h
+ * - utils/atomic.cuh
+ */

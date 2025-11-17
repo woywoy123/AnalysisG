@@ -1,0 +1,11 @@
+/**
+ * @file inference_build.cxx
+ * @brief Documentation for src/AnalysisG/modules/analysis/inference_build.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/analysis/inference_build.cxx
+ *
+ * Dependencies:
+ * - AnalysisG/analysis.h
+ * - ROOT/RDataFrame.hxx
+ * - tools/vector_cast.h
+ */

@@ -1,0 +1,18 @@
+/**
+ * @file event_template.h
+ * @brief Documentation for src/AnalysisG/modules/event/include/templates/event_template.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/event/include/templates/event_template.h
+ *
+ * Dependencies:
+ * - templates/particle_template.h
+ * - structs/property.h
+ * - structs/element.h
+ * - structs/event.h
+ * - tools/tools.h
+ * - meta/meta.h
+ *
+ * @section classes Classes
+ *
+ * **event_template** (class, inherits from tools)
+ */

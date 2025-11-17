@@ -1,0 +1,10 @@
+/**
+ * @file meta.cxx
+ * @brief Documentation for src/AnalysisG/modules/meta/cxx/meta.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/meta/cxx/meta.cxx
+ *
+ * Dependencies:
+ * - meta.h
+ * - TTreeReader.h
+ */

@@ -1,0 +1,9 @@
+/**
+ * @file optimizer_config.cxx
+ * @brief Documentation for src/AnalysisG/modules/lossfx/cxx/optimizer_config.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/lossfx/cxx/optimizer_config.cxx
+ *
+ * Dependencies:
+ * - templates/lossfx.h
+ */

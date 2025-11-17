@@ -1,0 +1,16 @@
+/**
+ * @file matrix.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/matrix.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/matrix.h
+ *
+ * Dependencies:
+ *
+ * @section classes Classes
+ *
+ * **matrix_t** (struct)
+ *
+ * Methods: matrix_t, dot, T, at, at, print
+ *
+ * Variables: _r, _c, operator, r, c, data
+ */

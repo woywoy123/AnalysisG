@@ -1,0 +1,10 @@
+/**
+ * @file selection_template.cxx
+ * @brief Documentation for src/AnalysisG/modules/selection/cxx/selection_template.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/selection/cxx/selection_template.cxx
+ *
+ * Dependencies:
+ * - templates/selection_template.h
+ * - meta/meta.h
+ */

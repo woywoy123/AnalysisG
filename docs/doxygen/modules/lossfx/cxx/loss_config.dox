@@ -1,0 +1,9 @@
+/**
+ * @file loss_config.cxx
+ * @brief Documentation for src/AnalysisG/modules/lossfx/cxx/loss_config.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/lossfx/cxx/loss_config.cxx
+ *
+ * Dependencies:
+ * - templates/lossfx.h
+ */

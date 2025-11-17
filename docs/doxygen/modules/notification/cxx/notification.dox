@@ -1,0 +1,11 @@
+/**
+ * @file notification.cxx
+ * @brief Documentation for src/AnalysisG/modules/notification/cxx/notification.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/notification/cxx/notification.cxx
+ *
+ * Dependencies:
+ * - notification.h
+ * - stddef.h
+ * - iomanip
+ */

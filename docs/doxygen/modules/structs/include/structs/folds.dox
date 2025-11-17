@@ -1,0 +1,21 @@
+/**
+ * @file folds.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/folds.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/structs/include/structs/folds.h
+ *
+ * Dependencies:
+ * - string
+ *
+ * @section classes Classes
+ *
+ * **folds_t** (struct)
+ * **graph_hdf5** (struct)
+ *
+ * Variables: num_nodes, event_weight, event_index, hash, filename, edge_index, data_map_graph, data_map_node, data_map_edge, truth_map_graph, truth_map_node, truth_map_edge, data_graph, data_node, data_edge, truth_graph, truth_node, truth_edge
+ * **graph_hdf5_w** (struct)
+ *
+ * Methods: flush_data
+ *
+ * Variables: num_nodes, event_weight, event_index, hash, filename, edge_index, data_map_graph, data_map_node, data_map_edge, truth_map_graph, truth_map_node, truth_map_edge, data_graph, data_node, data_edge, truth_graph, truth_node, truth_edge
+ */

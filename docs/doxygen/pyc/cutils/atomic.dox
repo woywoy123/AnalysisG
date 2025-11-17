@@ -1,0 +1,9 @@
+/**
+ * @file atomic.cu
+ * @brief Documentation for src/AnalysisG/pyc/cutils/atomic.cu
+ *
+ * Location: src/AnalysisG/src/AnalysisG/pyc/cutils/atomic.cu
+ *
+ * Dependencies:
+ * - utils/atomic.cuh
+ */

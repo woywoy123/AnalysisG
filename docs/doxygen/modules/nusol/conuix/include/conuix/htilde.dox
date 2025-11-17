@@ -1,0 +1,21 @@
+/**
+ * @file htilde.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/conuix/include/conuix/htilde.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/conuix/include/conuix/htilde.h
+ *
+ * Dependencies:
+ * - conuix/matrix.h
+ *
+ * @section classes Classes
+ *
+ * **particle_template** (class)
+ * **kinematic_t** (struct)
+ * **rotation_t** (struct)
+ * **base_t** (struct)
+ * **thetapsi_t** (struct)
+ * **pencil_t** (struct)
+ * **Sx_t** (struct)
+ * **Sy_t** (struct)
+ * **H_matrix_t** (struct)
+ */

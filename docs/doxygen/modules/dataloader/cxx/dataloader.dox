@@ -1,0 +1,12 @@
+/**
+ * @file dataloader.cxx
+ * @brief Documentation for src/AnalysisG/modules/dataloader/cxx/dataloader.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/dataloader/cxx/dataloader.cxx
+ *
+ * Dependencies:
+ * - templates/model_template.h
+ * - structs/report.h
+ * - dataloader.h
+ * - chrono
+ */

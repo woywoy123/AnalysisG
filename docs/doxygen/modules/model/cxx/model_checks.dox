@@ -1,0 +1,9 @@
+/**
+ * @file model_checks.cxx
+ * @brief Documentation for src/AnalysisG/modules/model/cxx/model_checks.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/model/cxx/model_checks.cxx
+ *
+ * Dependencies:
+ * - templates/model_template.h
+ */

@@ -1,0 +1,46 @@
+/**
+ * @file dataloader.h
+ * @brief Documentation for src/AnalysisG/modules/dataloader/include/generators/dataloader.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/dataloader/include/generators/dataloader.h
+ *
+ * Dependencies:
+ * - cuda.h
+ * - c10/cuda/CUDACachingAllocator.h
+ * - tools/tools.h
+ * - structs/property.h
+ * - structs/settings.h
+ * - notification/notification.h
+ * - templates/graph_template.h
+ * - map
+ * - random
+ * - algorithm
+ *
+ * @section classes Classes
+ *
+ * **analysis** (class)
+ *
+ * Methods: dataloader, get_k_train_set, get_k_validation_set, get_test_set, build_batch, safe_delete, get_inference, generate_test_set, generate_kfold_set, dump_dataset, restore_dataset, get_random, extract_data, datatransfer, datatransfer, dump_graphs, restore_graphs, restore_graphs, start_cuda_server, cuda_memory_server
+ *
+ * Variables: percentage, num, num_events, prg_events, path, threads, analysis, setting, cuda_mem, batched_cache
+ * **model_template** (class)
+ *
+ * Methods: dataloader, get_k_train_set, get_k_validation_set, get_test_set, build_batch, safe_delete, get_inference, generate_test_set, generate_kfold_set, dump_dataset, restore_dataset, get_random, extract_data, datatransfer, datatransfer, dump_graphs, restore_graphs, restore_graphs, start_cuda_server, cuda_memory_server
+ *
+ * Variables: percentage, num, num_events, prg_events, path, threads, analysis, setting, cuda_mem, batched_cache
+ * **model_report** (struct)
+ *
+ * Methods: dataloader, get_k_train_set, get_k_validation_set, get_test_set, build_batch, safe_delete, get_inference, generate_test_set, generate_kfold_set, dump_dataset, restore_dataset, get_random, extract_data, datatransfer, datatransfer, dump_graphs, restore_graphs, restore_graphs, start_cuda_server, cuda_memory_server
+ *
+ * Variables: percentage, num, num_events, prg_events, path, threads, analysis, setting, cuda_mem, batched_cache
+ * **dataloader** (class, inherits from notification)
+ *
+ * Methods: dataloader, get_k_train_set, get_k_validation_set, get_test_set, build_batch, safe_delete, get_inference, generate_test_set, generate_kfold_set, dump_dataset, restore_dataset, get_random, extract_data, datatransfer, datatransfer, dump_graphs, restore_graphs, restore_graphs, start_cuda_server, cuda_memory_server
+ *
+ * Variables: percentage, num, num_events, prg_events, path, threads, analysis, setting, cuda_mem, batched_cache
+ * **analysis** (class)
+ *
+ * Methods: dataloader, get_k_train_set, get_k_validation_set, get_test_set, build_batch, safe_delete, get_inference, generate_test_set, generate_kfold_set, dump_dataset, restore_dataset, get_random, extract_data, datatransfer, datatransfer, dump_graphs, restore_graphs, restore_graphs, start_cuda_server, cuda_memory_server
+ *
+ * Variables: percentage, num, num_events, prg_events, path, threads, analysis, setting, cuda_mem, batched_cache
+ */

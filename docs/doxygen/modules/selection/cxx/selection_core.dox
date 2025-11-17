@@ -1,0 +1,10 @@
+/**
+ * @file selection_core.cxx
+ * @brief Documentation for src/AnalysisG/modules/selection/cxx/selection_core.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/selection/cxx/selection_core.cxx
+ *
+ * Dependencies:
+ * - templates/selection_template.h
+ * - meta/meta.h
+ */

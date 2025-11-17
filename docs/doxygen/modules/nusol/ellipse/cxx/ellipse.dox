@@ -1,0 +1,10 @@
+/**
+ * @file ellipse.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/ellipse/cxx/ellipse.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/ellipse/cxx/ellipse.cxx
+ *
+ * Dependencies:
+ * - reconstruction/nusol.h
+ * - ellipse/ellipse.h
+ */

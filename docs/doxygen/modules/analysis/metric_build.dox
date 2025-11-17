@@ -1,0 +1,9 @@
+/**
+ * @file metric_build.cxx
+ * @brief Documentation for src/AnalysisG/modules/analysis/metric_build.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/analysis/metric_build.cxx
+ *
+ * Dependencies:
+ * - AnalysisG/analysis.h
+ */

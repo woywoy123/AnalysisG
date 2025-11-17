@@ -1,0 +1,13 @@
+/**
+ * @file base.cxx
+ * @brief Documentation for src/AnalysisG/modules/structs/cxx/base.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/structs/cxx/base.cxx
+ *
+ * Dependencies:
+ * - structs/base.h
+ * - TInterpreter.h
+ * - iostream
+ * - ;
+    if (is_abs){shrt += 
+ */

@@ -1,0 +1,10 @@
+/**
+ * @file link.cxx
+ * @brief Documentation for src/AnalysisG/modules/metric/cxx/link.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/metric/cxx/link.cxx
+ *
+ * Dependencies:
+ * - templates/metric_template.h
+ * - templates/model_template.h
+ */

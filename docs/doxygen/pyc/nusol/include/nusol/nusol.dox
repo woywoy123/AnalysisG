@@ -1,0 +1,12 @@
+/**
+ * @file nusol.h
+ * @brief Documentation for src/AnalysisG/pyc/nusol/include/nusol/nusol.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/pyc/nusol/include/nusol/nusol.h
+ *
+ * Dependencies:
+ * - map
+ * - tuple
+ * - string
+ * - torch/torch.h
+ */

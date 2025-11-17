@@ -1,0 +1,18 @@
+/**
+ * @file roc.h
+ * @brief Documentation for src/AnalysisG/modules/roc/include/plotting/roc.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/roc/include/plotting/roc.h
+ *
+ * Dependencies:
+ * - plotting/plotting.h
+ *
+ * @section classes Classes
+ *
+ * **roc_t** (struct)
+ *
+ * Variables: cls, kfold, model, _auc
+ * **roc** (class, inherits from plotting)
+ *
+ * Variables: cls, kfold, model, _auc
+ */

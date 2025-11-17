@@ -1,0 +1,13 @@
+/**
+ * @file root.cxx
+ * @brief Documentation for src/AnalysisG/modules/io/cxx/root.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/io/cxx/root.cxx
+ *
+ * Dependencies:
+ * - io.h
+ * - TH1.h
+ * - io/cfg.h
+ * - TSystem.h
+ * - thread
+ */

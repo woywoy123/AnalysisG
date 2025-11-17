@@ -1,0 +1,26 @@
+/**
+ * @file nusol.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/nusol.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/tmp/conuix/include/conuix/nusol.h
+ *
+ * Dependencies:
+ * - templates/particle_template.h
+ * - conics/matrix.h
+ *
+ * @section classes Classes
+ *
+ * **eig_t** (struct)
+ *
+ * Variables: r1, r2, i1, i2
+ * **nuclx_t** (struct)
+ *
+ * Methods: nuclx_t, from_sx_sy, get_t, get_z, from_z_t, get_mt, get_mw, surface, shifts, sx, sy, mw, mt, cosh, sinh, sinh, polynomial, critical_t0, H_bar, H
+ *
+ * Variables: u, v, u_p, v_p, t_v, z_v, sx_v, sy_v, mt_v, mw_v, A, B, C, D, E, F, s0x, s0y, psi, cpsi
+ * **nuclx** (class)
+ *
+ * Methods: nuclx_t, from_sx_sy, get_t, get_z, from_z_t, get_mt, get_mw, surface, shifts, sx, sy, mw, mt, cosh, sinh, sinh, polynomial, critical_t0, H_bar, H
+ *
+ * Variables: u, v, u_p, v_p, t_v, z_v, sx_v, sy_v, mt_v, mw_v, A, B, C, D, E, F, s0x, s0y, psi, cpsi
+ */

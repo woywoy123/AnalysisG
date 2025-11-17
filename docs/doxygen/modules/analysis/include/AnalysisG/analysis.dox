@@ -1,0 +1,26 @@
+/**
+ * @file analysis.h
+ * @brief Documentation for src/AnalysisG/modules/analysis/include/AnalysisG/analysis.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/analysis/include/AnalysisG/analysis.h
+ *
+ * Dependencies:
+ * - string
+ * - generators/sampletracer.h
+ * - generators/dataloader.h
+ * - generators/optimizer.h
+ * - templates/graph_template.h
+ * - templates/event_template.h
+ * - templates/metric_template.h
+ * - templates/selection_template.h
+ * - templates/model_template.h
+ * - structs/settings.h
+ *
+ * @section classes Classes
+ *
+ * **analysis** (class, inherits from notification)
+ *
+ * Methods: analysis, add_samples, add_selection_template, add_event_template, add_graph_template, add_metric_template, add_model, add_model, attach_threads, start, progress, progress_mode, progress_report, is_complete
+ *
+ * Variables: m_settings, meta_data
+ */

@@ -1,0 +1,27 @@
+/**
+ * @file _odeRK.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/multisol/include/multisol/_odeRK.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/tmp/multisol/include/multisol/_odeRK.h
+ *
+ * Dependencies:
+ * - reconstruction/multisol.h
+ * - reconstruction/matrix.h
+ * - tools/tools.h
+ *
+ * @section classes Classes
+ *
+ * **ellipse_t** (struct)
+ *
+ * Methods: print
+ *
+ * Variables: C, vC, t, z
+ * **recon_t** (struct)
+ *
+ * Variables: is_valid, residual, t, z, phi
+ * **odeRK** (class, inherits from tools)
+ *
+ * Methods: odeRK, solve, rk4, update_t, solve_z_phi, residual, derivative, ghost_angle, plane_rk4, plane_align
+ *
+ * Variables: met_, itr, nsx, dt_, ct, _state
+ */

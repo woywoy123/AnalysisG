@@ -1,0 +1,9 @@
+/**
+ * @file interfaces.cxx
+ * @brief Documentation for src/AnalysisG/modules/particle/cxx/interfaces.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/particle/cxx/interfaces.cxx
+ *
+ * Dependencies:
+ * - templates/particle_template.h
+ */

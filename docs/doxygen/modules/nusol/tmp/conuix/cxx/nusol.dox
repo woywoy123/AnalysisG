@@ -1,0 +1,10 @@
+/**
+ * @file nusol.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/conuix/cxx/nusol.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/tmp/conuix/cxx/nusol.cxx
+ *
+ * Dependencies:
+ * - conics/nusol.h
+ * - complex
+ */

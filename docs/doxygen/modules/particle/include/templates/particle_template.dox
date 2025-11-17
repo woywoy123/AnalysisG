@@ -1,0 +1,23 @@
+/**
+ * @file particle_template.h
+ * @brief Documentation for src/AnalysisG/modules/particle/include/templates/particle_template.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/particle/include/templates/particle_template.h
+ *
+ * Dependencies:
+ * - structs/particles.h
+ * - structs/property.h
+ * - structs/element.h
+ * - tools/tools.h
+ * - iostream
+ * - sstream
+ * - string
+ * - cstdlib
+ * - cmath
+ *
+ * @section classes Classes
+ *
+ * **event_template** (class)
+ * **selection_template** (class)
+ * **particle_template** (class, inherits from tools)
+ */

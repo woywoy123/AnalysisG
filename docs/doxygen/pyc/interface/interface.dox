@@ -1,0 +1,13 @@
+/**
+ * @file interface.cxx
+ * @brief Documentation for src/AnalysisG/pyc/interface/interface.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/pyc/interface/interface.cxx
+ *
+ * Dependencies:
+ * - pyc/pyc.h
+ * - tools/tensor_cast.h
+ * - tools/vector_cast.h
+ * - utils/utils.cuh
+ * - utils/utils.h
+ */

@@ -1,0 +1,13 @@
+/**
+ * @file methods.cxx
+ * @brief Documentation for src/AnalysisG/modules/analysis/methods.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/analysis/methods.cxx
+ *
+ * Dependencies:
+ * - AnalysisG/analysis.h
+ * - ROOT/RDataFrame.hxx
+ * - tools/vector_cast.h
+ * - TFile.h
+ * - TTree.h
+ */

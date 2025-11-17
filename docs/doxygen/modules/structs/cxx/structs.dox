@@ -1,0 +1,11 @@
+/**
+ * @file structs.cxx
+ * @brief Documentation for src/AnalysisG/modules/structs/cxx/structs.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/structs/cxx/structs.cxx
+ *
+ * Dependencies:
+ * - element.h
+ * - report.h
+ * - folds.h
+ */

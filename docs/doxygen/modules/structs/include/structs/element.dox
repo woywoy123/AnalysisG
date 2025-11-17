@@ -1,0 +1,29 @@
+/**
+ * @file element.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/element.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/structs/include/structs/element.h
+ *
+ * Dependencies:
+ * - TFile.h
+ * - TTree.h
+ * - TBranch.h
+ * - TLeaf.h
+ * - TTreeReaderArray.h
+ * - TTreeReader.h
+ * - tools/vector_cast.h
+ * - structs/base.h
+ * - structs/meta.h
+ * - iostream
+ *
+ * @section classes Classes
+ *
+ * **data_t** (struct, inherits from bsc_t)
+ * **element_t** (struct)
+ * **write_t** (struct)
+ *
+ * Methods: process, write, create, close
+ *
+ * Variables: file, tree, mtx, data
+ * **writer** (struct)
+ */

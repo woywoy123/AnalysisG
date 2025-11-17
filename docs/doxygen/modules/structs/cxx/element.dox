@@ -1,0 +1,10 @@
+/**
+ * @file element.cxx
+ * @brief Documentation for src/AnalysisG/modules/structs/cxx/element.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/structs/cxx/element.cxx
+ *
+ * Dependencies:
+ * - structs/element.h
+ * - structs/meta.h
+ */

@@ -1,0 +1,9 @@
+/**
+ * @file interface.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/interface.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/tmp/interface.cxx
+ *
+ * Dependencies:
+ * - nunu/nunu.h
+ */

@@ -1,0 +1,19 @@
+/**
+ * @file sampletracer.h
+ * @brief Documentation for src/AnalysisG/modules/sampletracer/include/generators/sampletracer.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/sampletracer/include/generators/sampletracer.h
+ *
+ * Dependencies:
+ * - thread
+ * - container/container.h
+ * - notification/notification.h
+ *
+ * @section classes Classes
+ *
+ * **sampletracer** (class, inherits from tools)
+ *
+ * Methods: sampletracer, add_meta_data, get_meta_data, get_events, fill_selections, add_event, add_graph, add_selection, populate_dataloader, compile_objects
+ *
+ * Variables: output_path, root_container
+ */

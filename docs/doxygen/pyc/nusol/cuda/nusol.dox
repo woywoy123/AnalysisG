@@ -1,0 +1,13 @@
+/**
+ * @file nusol.cu
+ * @brief Documentation for src/AnalysisG/pyc/nusol/cuda/nusol.cu
+ *
+ * Location: src/AnalysisG/src/AnalysisG/pyc/nusol/cuda/nusol.cu
+ *
+ * Dependencies:
+ * - nusol/nusol.cuh
+ * - nusol/base.cuh
+ * - nusol/utils.cuh
+ * - utils/utils.cuh
+ * - physics/physics.cuh
+ */

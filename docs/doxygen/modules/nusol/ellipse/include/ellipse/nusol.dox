@@ -1,0 +1,31 @@
+/**
+ * @file nusol.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/ellipse/include/ellipse/nusol.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/ellipse/include/ellipse/nusol.h
+ *
+ * Dependencies:
+ *
+ * @section classes Classes
+ *
+ * **mtx** (class)
+ *
+ * Methods: wrapper
+ *
+ * Variables: p, m, b, p2, m2, b2, phi, theta, px, py, pz, e, lnk
+ * **particle_template** (class)
+ *
+ * Methods: wrapper
+ *
+ * Variables: p, m, b, p2, m2, b2, phi, theta, px, py, pz, e, lnk
+ * **wrapper** (struct)
+ *
+ * Methods: wrapper
+ *
+ * Variables: p, m, b, p2, m2, b2, phi, theta, px, py, pz, e, lnk
+ * **nuelx** (class)
+ *
+ * Methods: nuelx, nuelx, Sx, dSx_dmW, Sy, dSy_dmW, dSy_dmT, w, w2, om2, Z, Z2, dZ_dmT, dZ_dmW, x0, x1, dx1_dmW, dx1_dmT, y1, dy1_dmW
+ *
+ * Variables: b, l, mw, mt, mw2, mt2, _s, _c, h_tilde, h, r_t, dw_H, dt_H, h_perp, n_matrx, k
+ */

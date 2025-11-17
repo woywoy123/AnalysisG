@@ -1,0 +1,13 @@
+/**
+ * @file nusol.cxx
+ * @brief Documentation for src/AnalysisG/pyc/interface/nusol.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/pyc/interface/nusol.cxx
+ *
+ * Dependencies:
+ * - pyc/pyc.h
+ * - utils/utils.cuh
+ * - nusol/nusol.cuh
+ * - utils/utils.h
+ * - nusol/nusol.h
+ */

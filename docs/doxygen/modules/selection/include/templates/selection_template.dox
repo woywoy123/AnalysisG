@@ -1,0 +1,22 @@
+/**
+ * @file selection_template.h
+ * @brief Documentation for src/AnalysisG/modules/selection/include/templates/selection_template.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/selection/include/templates/selection_template.h
+ *
+ * Dependencies:
+ * - templates/particle_template.h
+ * - templates/event_template.h
+ * - structs/property.h
+ * - structs/event.h
+ * - structs/enums.h
+ * - meta/meta.h
+ * - tools/vector_cast.h
+ * - tools/merge_cast.h
+ * - tools/tools.h
+ *
+ * @section classes Classes
+ *
+ * **container** (class)
+ * **selection_template** (class, inherits from tools)
+ */

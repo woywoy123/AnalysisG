@@ -1,0 +1,15 @@
+/**
+ * @file device.cuh
+ * @brief Documentation for src/AnalysisG/pyc/nusol/include/nusol/device.cuh
+ *
+ * Location: src/AnalysisG/src/AnalysisG/pyc/nusol/include/nusol/device.cuh
+ *
+ * Dependencies:
+ * - utils/atomic.cuh
+ *
+ * @section classes Classes
+ *
+ * **nusol** (struct)
+ *
+ * Variables: sin, x0p, sy, w_, y1, eps2
+ */

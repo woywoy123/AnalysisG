@@ -1,0 +1,10 @@
+/**
+ * @file container.cxx
+ * @brief Documentation for src/AnalysisG/modules/container/cxx/container.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/container/cxx/container.cxx
+ *
+ * Dependencies:
+ * - container/container.h
+ * - TSystem.h
+ */

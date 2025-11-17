@@ -1,0 +1,32 @@
+/**
+ * @file multisol.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/multisol.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/tmp/multisol.h
+ *
+ * Dependencies:
+ * - templates/particle_template.h
+ * - reconstruction/matrix.h
+ * - iostream
+ * - string
+ *
+ * @section classes Classes
+ *
+ * **multisol_t** (struct)
+ *
+ * Variables: A, B, C, D, E, F, s0y, psi, cpsi, spsi, lmb1, lmb2, a_x, b_x, c_x, a_y, b_y, c_y, a_w, b_w
+ * **rev_t** (struct)
+ *
+ * Variables: u, v, u_p, v_p, t, z
+ * **mass_t** (struct)
+ *
+ * Variables: mt, mw, sx, sy
+ * **geo_t** (struct)
+ *
+ * Methods: px, py, pz, L, lx, ly, lz
+ *
+ * Variables: center, _pts2, valid, _s1, _s2, _p1, _p2, _d1, _d2, asym, nu1, nu2
+ * **multisol** (class)
+ *
+ * Variables: A, B, C, D, E, F, s0y, psi, cpsi, spsi, lmb1, lmb2, a_x, b_x, c_x, a_y, b_y, c_y, a_w, b_w
+ */

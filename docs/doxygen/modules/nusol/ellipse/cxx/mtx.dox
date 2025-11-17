@@ -1,0 +1,12 @@
+/**
+ * @file mtx.cxx
+ * @brief Documentation for src/AnalysisG/modules/nusol/ellipse/cxx/mtx.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/ellipse/cxx/mtx.cxx
+ *
+ * Dependencies:
+ * - ellipse/solvers.h
+ * - ellipse/mtx.h
+ * - iostream
+ * - iomanip
+ */

@@ -1,0 +1,10 @@
+/**
+ * @file event_build.cxx
+ * @brief Documentation for src/AnalysisG/modules/analysis/event_build.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/analysis/event_build.cxx
+ *
+ * Dependencies:
+ * - AnalysisG/analysis.h
+ * - ROOT/RDataFrame.hxx
+ */

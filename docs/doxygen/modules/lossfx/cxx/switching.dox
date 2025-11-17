@@ -1,0 +1,9 @@
+/**
+ * @file switching.cxx
+ * @brief Documentation for src/AnalysisG/modules/lossfx/cxx/switching.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/lossfx/cxx/switching.cxx
+ *
+ * Dependencies:
+ * - templates/lossfx.h
+ */

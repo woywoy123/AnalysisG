@@ -1,0 +1,9 @@
+/**
+ * @file sampletracer.cxx
+ * @brief Documentation for src/AnalysisG/modules/sampletracer/cxx/sampletracer.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/sampletracer/cxx/sampletracer.cxx
+ *
+ * Dependencies:
+ * - generators/sampletracer.h
+ */

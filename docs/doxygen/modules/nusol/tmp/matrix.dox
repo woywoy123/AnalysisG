@@ -1,0 +1,26 @@
+/**
+ * @file matrix.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/tmp/matrix.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/tmp/matrix.h
+ *
+ * Dependencies:
+ *
+ * @section classes Classes
+ *
+ * **vec3** (struct)
+ *
+ * Methods: cross, dot, mag2, mag, print
+ *
+ * Variables: x, y, z
+ * **vec4** (struct)
+ *
+ * Methods: dot, print
+ *
+ * Variables: x, y, z, w
+ * **matrix** (struct)
+ *
+ * Methods: matrix, matrix, print, at, at, rows, cols, mag, I, T, inverse, det, dot, eigenvalues
+ *
+ * Variables: r, c, p, operator, data, _r, _c
+ */

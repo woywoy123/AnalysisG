@@ -1,0 +1,79 @@
+/**
+ * @file struct.h
+ * @brief Documentation for src/AnalysisG/modules/nusol/conuix/include/conuix/struct.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/nusol/conuix/include/conuix/struct.h
+ *
+ * Dependencies:
+ * - conuix/matrix.h
+ * - conuix/htilde.h
+ * - iostream
+ * - iomanip
+ * - string
+ *
+ * @section classes Classes
+ *
+ * **particle_template** (class)
+ *
+ * Methods: print, variable
+ *
+ * Variables: p, prec
+ * **atomics_t** (struct)
+ *
+ * Methods: print, variable
+ *
+ * Variables: p, prec
+ * **debug** (struct)
+ *
+ * Methods: print, variable
+ *
+ * Variables: p, prec
+ * **kinematic_t** (struct, inherits from debug)
+ *
+ * Methods: print
+ *
+ * Variables: p, beta, mass, energy
+ * **rotation_t** (struct, inherits from debug)
+ *
+ * Methods: print
+ *
+ * Variables: p, phi, theta, vec, R_T
+ * **base_t** (struct, inherits from debug)
+ *
+ * Methods: print
+ *
+ * Variables: p, rbl, cos, sin, w, o, w2, o2, beta, mass, E, tpsi, cpsi, spsi
+ * **thetapsi_t** (struct)
+ *
+ * Variables: p_sin, m_sin, p_cos, m_cos
+ * **pencil_t** (struct)
+ *
+ * Methods: Z2, print
+ *
+ * Variables: a, b, c, d, e
+ * **Sx_t** (struct)
+ *
+ * Methods: Sx, print
+ *
+ * Variables: a, b, c
+ * **Sy_t** (struct)
+ *
+ * Methods: Sy, print
+ *
+ * Variables: a, b, c
+ * **H_matrix_t** (struct)
+ *
+ * Methods: H_Matrix, H_Tilde, print
+ *
+ * Variables: HBX, HBS, HBC, HTX, HTS, HTC
+ * **Mobius_t** (struct)
+ *
+ * Methods: init, alpha_p, alpha_m, dPl0, cos
+ *
+ * Variables: d, use_tanh, a_, eig_v1, eig_v2, kfactor, f1_pts, f2_pts, mid
+ * **atomics_t** (struct, inherits from Conuix)
+ *
+ * Methods: print, variable
+ *
+ * Variables: p, prec
+ */

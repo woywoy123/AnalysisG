@@ -1,0 +1,9 @@
+/**
+ * @file properties.cxx
+ * @brief Documentation for src/AnalysisG/modules/selection/cxx/properties.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/selection/cxx/properties.cxx
+ *
+ * Dependencies:
+ * - templates/selection_template.h
+ */

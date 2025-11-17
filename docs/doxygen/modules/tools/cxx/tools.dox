@@ -1,0 +1,9 @@
+/**
+ * @file tools.cxx
+ * @brief Documentation for src/AnalysisG/modules/tools/cxx/tools.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/tools/cxx/tools.cxx
+ *
+ * Dependencies:
+ * - tools/tools.h
+ */

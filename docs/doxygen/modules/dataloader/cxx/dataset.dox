@@ -1,0 +1,11 @@
+/**
+ * @file dataset.cxx
+ * @brief Documentation for src/AnalysisG/modules/dataloader/cxx/dataset.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/dataloader/cxx/dataset.cxx
+ *
+ * Dependencies:
+ * - generators/dataloader.h
+ * - structs/folds.h
+ * - io/io.h
+ */

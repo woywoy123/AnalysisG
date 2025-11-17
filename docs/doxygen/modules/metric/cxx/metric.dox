@@ -1,0 +1,9 @@
+/**
+ * @file metric.cxx
+ * @brief Documentation for src/AnalysisG/modules/metric/cxx/metric.cxx
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/metric/cxx/metric.cxx
+ *
+ * Dependencies:
+ * - templates/metric_template.h
+ */

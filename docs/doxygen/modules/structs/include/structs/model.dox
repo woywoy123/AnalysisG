@@ -1,0 +1,18 @@
+/**
+ * @file model.h
+ * @brief Documentation for src/AnalysisG/modules/structs/include/structs/model.h
+ *
+ * Location: src/AnalysisG/src/AnalysisG/modules/structs/include/structs/model.h
+ *
+ * Dependencies:
+ * - structs/enums.h
+ * - string
+ * - vector
+ * - map
+ *
+ * @section classes Classes
+ *
+ * **model_settings_t** (struct)
+ *
+ * Variables: e_optim, s_optim, weight_name, tree_name, model_name, model_device, model_checkpoint_path, inference_mode, is_mc, o_graph, o_node, o_edge, i_graph, i_node, i_edge
+ */
