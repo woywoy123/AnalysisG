@@ -1,0 +1,41 @@
+/**
+ * @file edge_features.h
+ * @brief Edge feature extraction functions for exp_mc20 graphs
+ *
+ * Location: src/AnalysisG/graphs/exp_mc20/include/exp_mc20/edge_features.h
+ *
+ * Dependencies: None (inline static functions)
+ *
+ * @section functions Functions
+ *
+ * **Edge Truth Features:**
+ *
+ * **m_res_edge** (4 overloads):
+ * - void m_res_edge(int* o, jet* t) - Multiplies *o by jet's from_res flag
+ * - void m_res_edge(int* o, electron* t) - Multiplies *o by electron's from_res flag
+ * - void m_res_edge(int* o, muon* t) - Multiplies *o by muon's from_res flag
+ * - void m_res_edge(int* o, particle_template* t) - Checks if any parent top has from_res flag set, multiplies result
+ *
+ * **res_edge**:
+ * - void res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * - Computes resonance edge feature for particle pair
+ * - Gets particle types from both particles in tuple
+ * - Initializes output to 1
+ * - Calls appropriate m_res_edge overload for each particle based on type (parton, jet, el, mu)
+ * - Result is product of both particles' resonance flags
+ *
+ * **m_top_edge** (3 overloads):
+ * - std::vector<int> m_top_edge(jet* t) - Returns {jet's top_index}
+ * - std::vector<int> m_top_edge(electron* t) - Returns {electron's top_index}
+ * - std::vector<int> m_top_edge(muon* t) - Returns {muon's top_index}
+ *
+ * **top_edge**:
+ * - void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * - Computes top quark edge feature for particle pair
+ * - Gets particle types from both particles in tuple
+ * - For each particle: if jet/mu/el calls m_top_edge to get top_index vector, if parton uses particle index
+ * - Compares all combinations of indices from both vectors
+ * - Sets *o = 1 if any matching non-negative indices found (same top), otherwise *o = 0
+ * - Note: Line 60 has bug - sets o1_ instead of o2_ for type2=="parton"
+ * - Note: Line 67 has bug - checks o2_[x] instead of o2_[y]
+ */

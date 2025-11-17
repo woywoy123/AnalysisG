@@ -1,9 +1,0 @@
-/**
- * @file root.cxx
- * @brief Documentation for src/AnalysisG/modules/typecasting/cxx/root.cxx
- *
- * Location: src/AnalysisG/src/AnalysisG/modules/typecasting/cxx/root.cxx
- *
- * Dependencies:
- * - tools/vector_cast.h
- */

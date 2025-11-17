@@ -1,9 +1,0 @@
-/**
- * @file operators.h
- * @brief Documentation for src/AnalysisG/pyc/operators/include/operators/operators.h
- *
- * Location: src/AnalysisG/src/AnalysisG/pyc/operators/include/operators/operators.h
- *
- * Dependencies:
- * - torch/torch.h
- */

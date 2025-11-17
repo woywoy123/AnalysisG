@@ -1,9 +1,0 @@
-/**
- * @file properties.cxx
- * @brief Documentation for src/AnalysisG/modules/event/cxx/properties.cxx
- *
- * Location: src/AnalysisG/src/AnalysisG/modules/event/cxx/properties.cxx
- *
- * Dependencies:
- * - templates/event_template.h
- */

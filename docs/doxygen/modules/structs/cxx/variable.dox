@@ -1,9 +1,0 @@
-/**
- * @file variable.cxx
- * @brief Documentation for src/AnalysisG/modules/structs/cxx/variable.cxx
- *
- * Location: src/AnalysisG/src/AnalysisG/modules/structs/cxx/variable.cxx
- *
- * Dependencies:
- * - structs/element.h
- */

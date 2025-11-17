@@ -1,9 +1,0 @@
-/**
- * @file atomic.cuh
- * @brief Documentation for src/AnalysisG/pyc/cutils/include/utils/atomic.cuh
- *
- * Location: src/AnalysisG/src/AnalysisG/pyc/cutils/include/utils/atomic.cuh
- *
- * Dependencies:
- * - torch/torch.h
- */

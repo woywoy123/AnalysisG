@@ -1,0 +1,83 @@
+/**
+ * @file graph_features.h
+ * @brief Graph-level feature extraction functions for ssml_mc20 event graphs
+ *
+ * Location: src/AnalysisG/graphs/ssml_mc20/include/ssml_mc20/graph_features.h
+ *
+ * Dependencies: None (inline static functions operating on ssml_mc20 events)
+ *
+ * @section functions Functions
+ *
+ * Similar to exp_mc20/graph_features.h but with working signal_event and different variable names.
+ *
+ * **Truth Graph Features:**
+ *
+ * **signal_event**:
+ * - void signal_event(bool* o, ssml_mc20* event)
+ * - Checks if event is signal (4-top event from resonance)
+ * - First checks if Tops.size() != 4, returns false if true
+ * - Iterates through Tops vector, casts each to top pointer
+ * - If any top has from_res flag set, returns true
+ * - If no tops have from_res flag, returns false
+ *
+ * **num_tops**:
+ * - void num_tops(int* o, ssml_mc20* event)
+ * - Returns number of tops, capped at 4
+ * - Sets *o to Tops.size(), then clamps to 4 if larger
+ *
+ * **num_neutrino**:
+ * - void num_neutrino(int* o, ssml_mc20* event)
+ * - Counts neutrinos in TruthChildren
+ * - Iterates through TruthChildren vector
+ * - Increments counter for each particle with is_nu flag set
+ *
+ * **num_lepton**:
+ * - void num_lepton(int* o, ssml_mc20* event)
+ * - Counts leptons (excluding neutrinos) in TruthChildren
+ * - Iterates through TruthChildren vector
+ * - Skips if is_nu is true
+ * - Skips if is_lep is true (Note: This logic seems inverted - should count leptons not skip them)
+ * - Increments counter otherwise
+ *
+ * **Graph Observable Features:**
+ *
+ * **missing_et**:
+ * - void missing_et(double* o, ssml_mc20* event)
+ * - Returns missing transverse energy (event->met)
+ *
+ * **missing_phi**:
+ * - void missing_phi(double* o, ssml_mc20* event)
+ * - Returns missing energy phi angle (event->phi)
+ *
+ * **num_children_leps**:
+ * - void num_children_leps(double* o, ssml_mc20* event)
+ * - Counts charged leptons (excluding neutrinos) in TruthChildren
+ * - Initializes *o to 0
+ * - Iterates through TruthChildren
+ * - Skips if is_nu is true OR is_lep is false
+ * - Increments count for particles that are leptons and not neutrinos
+ *
+ * **num_leps**:
+ * - void num_leps(double* o, ssml_mc20* event)
+ * - Returns number of detector-level leptons (Leptons.size())
+ *
+ * **num_quark**:
+ * - void num_quark(double* o, ssml_mc20* event)
+ * - Counts quarks in TruthChildren (particles that are not leptons or neutrinos)
+ * - Initializes *o to 0
+ * - Iterates through TruthChildren
+ * - Skips if is_nu OR is_lep is true
+ * - Increments count for non-lepton non-neutrino particles (quarks)
+ *
+ * **num_jets**:
+ * - void num_jets(double* o, ssml_mc20* event)
+ * - Returns number of jets (Jets.size())
+ *
+ * **event_number**:
+ * - void event_number(long* o, ssml_mc20* event)
+ * - Returns event number identifier (eventNumber, note different capitalization than exp_mc20)
+ *
+ * **event_weight**:
+ * - void event_weight(double* o, ssml_mc20* event)
+ * - Returns event weight for analysis
+ */

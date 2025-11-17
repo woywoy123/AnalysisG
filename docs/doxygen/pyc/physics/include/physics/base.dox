@@ -1,9 +1,0 @@
-/**
- * @file base.cuh
- * @brief Documentation for src/AnalysisG/pyc/physics/include/physics/base.cuh
- *
- * Location: src/AnalysisG/src/AnalysisG/pyc/physics/include/physics/base.cuh
- *
- * Dependencies:
- * - utils/atomic.cuh
- */

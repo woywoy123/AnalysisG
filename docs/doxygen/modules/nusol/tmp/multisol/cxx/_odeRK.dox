@@ -1,9 +1,0 @@
-/**
- * @file _odeRK.cxx
- * @brief Documentation for src/AnalysisG/modules/nusol/tmp/multisol/cxx/_odeRK.cxx
- *
- * Location: src/AnalysisG/src/AnalysisG/modules/nusol/tmp/multisol/cxx/_odeRK.cxx
- *
- * Dependencies:
- * - reconstruction/odeRK.h
- */

@@ -1,9 +1,0 @@
-/**
- * @file physics.cxx
- * @brief Documentation for src/AnalysisG/modules/particle/cxx/physics.cxx
- *
- * Location: src/AnalysisG/src/AnalysisG/modules/particle/cxx/physics.cxx
- *
- * Dependencies:
- * - templates/particle_template.h
- */

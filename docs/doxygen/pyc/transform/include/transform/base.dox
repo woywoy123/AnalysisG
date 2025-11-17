@@ -1,9 +1,0 @@
-/**
- * @file base.cuh
- * @brief Documentation for src/AnalysisG/pyc/transform/include/transform/base.cuh
- *
- * Location: src/AnalysisG/src/AnalysisG/pyc/transform/include/transform/base.cuh
- *
- * Dependencies:
- * - utils/atomic.cuh
- */
