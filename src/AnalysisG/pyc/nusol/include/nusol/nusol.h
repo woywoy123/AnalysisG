@@ -7,8 +7,8 @@
 #include <torch/torch.h>
 
 namespace nusol_ {
-    torch::Tensor                        BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses, bool null); 
     std::map<std::string, torch::Tensor> BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses); 
+    torch::Tensor                        BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses, bool null); 
     std::map<std::string, torch::Tensor> BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, double mT, double mW, double mN); 
 
     torch::Tensor Hperp(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses); 
