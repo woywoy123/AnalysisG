@@ -148,14 +148,11 @@ std::vector<particle_template*> event_template::double_neutrino(
     para.mode = nusol_enum::conuix; 
 
     nusol* nx = new nusol(&para); 
-    nx -> solve();
-
+    std::vector<particle_template*> nunux = nx -> solve();
     delete nx; 
-    particle_template* nu1 = nullptr; 
-    particle_template* nu2 = nullptr; 
-    if (!nu1 && !nu2){return {};}
-    //this -> garbage[nu1 -> hash] = nu1;
-    //this -> garbage[nu2 -> hash] = nu2; 
-    return {nu1, nu2}; 
+    if (!nunux.size()){return nunux;}
+    this -> garbage[nunux[0] -> hash] = nunux[0];
+    this -> garbage[nunux[1] -> hash] = nunux[1]; 
+    return nunux; 
 }
 

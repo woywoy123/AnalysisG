@@ -22,11 +22,11 @@ atomics_t::atomics_t(particle_template* jet, particle_template* lep, double m_nu
     Conuix::get_sy(&this -> base, &this -> Sy); 
 
     Conuix::get_hmatrix(&this -> base, &this -> rotation, &this -> H_Matrix); 
+    this -> Mobius.init(&this -> base); 
 }
 
-atomics_t::~atomics_t(){
-
-}
+Conuix::debug::~debug(){}
+atomics_t::~atomics_t(){}
 
 void Conuix::debug::print(int p){}
 void Conuix::debug::variable(std::string name, long double val){
@@ -172,6 +172,26 @@ void atomics_t::masses(long double Z, long double t, std::complex<long double>* 
     *mw = std::sqrt(mw_); *mt = std::sqrt(mt_); 
 }
 
+void atomics_t::eigenvector(long double t, matrix_t* vstar, long double* theta_s){
+    long double o_ = this -> base.o;
+    long double b_ = this -> base.beta; 
+    long double c_ = this -> base.cpsi;
+    long double s_ = this -> base.spsi; 
+    long double t_ = this -> base.tpsi; 
+
+    long double a1 = c_ * b_ * std::cosh(t) + s_ * o_ * std::sinh(t);
+    long double mu = o_ * (1 + t_*t_) / (o_ - b_ * t_ * std::tanh(t));
+
+    vstar -> at(0,0) = a1 / (mu - 1);
+    vstar -> at(1,0) = mu / o_; 
+    vstar -> at(2,0) = 1.0L; 
+
+    *theta_s = std::atan2(vstar -> at(1,0), vstar -> at(0,0)); 
+}
+
+
+
+
 void atomics_t::debug_mode(particle_template* jet, particle_template* lep){
     //this -> base.print(16); 
     long double rsx = -9409.045728244519 ; 
@@ -197,7 +217,31 @@ void atomics_t::debug_mode(particle_template* jet, particle_template* lep){
     this -> H_Matrix.H_Matrix(ct, cz).print(); 
     this -> H_Matrix.H_Tilde(ct, cz).print(); 
     this -> Mobius.init(&this -> base); 
+    
+    //this -> variable("tau*"     , this -> Mobius.tstar); 
+    //this -> variable("dPl0*"    , this -> Mobius.dPl0(this -> Mobius.tstar     , true)); 
+    //this -> variable("kfactor-r", this -> Mobius.kfactor.real()); 
+    //this -> variable("kfactor-i", this -> Mobius.kfactor.imag()); 
 
+    //this -> variable("dPl0-mid", this -> Mobius.dPl0(this -> Mobius.mid.real(), false)); 
+    //this -> variable("dPl0-ev1r", this -> Mobius.eig_v1.real()); 
+    //this -> variable("dPl0-ev1i", this -> Mobius.eig_v1.imag()); 
+
+    //this -> variable("dPl0-ev2r", this -> Mobius.eig_v2.real()); 
+    //this -> variable("dPl0-ev2i", this -> Mobius.eig_v2.imag()); 
+
+    long double lx = this -> Mobius.dPdtL0(1, this -> Mobius.tstar);
+    //this -> variable("t*", this -> Mobius.tstar); 
+    //this -> variable("P*", this -> Mobius.P(1, lx, this -> Mobius.tstar)); 
+    //this -> variable("dPdt*", this -> Mobius.dPdt(1, lx, this -> Mobius.tstar)); 
+    //this -> variable("L*", lx); 
+
+    matrix_t vstar(3, 1); 
+    long double theta_s = 0;  
+    this -> eigenvector(this -> Mobius.tstar, &vstar, &theta_s);     
+    
+    vstar.print(16); 
+    this -> variable("theta*", theta_s); 
 
 
 

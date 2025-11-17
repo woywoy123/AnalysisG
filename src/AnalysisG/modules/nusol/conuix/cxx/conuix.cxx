@@ -21,24 +21,26 @@ conuix::conuix(nusol_t* parameters){
 
     int idx = -1; 
     this -> cnx = new std::vector<conuic*>(jets.size() * leps.size(), nullptr);
+    this -> params -> phys_pairs = new std::vector< std::pair<particle_template*, particle_template*> >(); 
     for (size_t i(0); i < jets.size(); ++i){
-        for (size_t j(0); j < leps.size(); ++j){(*this -> cnx)[++idx] = new conuic(jets[i], leps[j]);}
+        for (size_t j(0); j < leps.size(); ++j){
+            conuic* cx = new conuic(jets[i], leps[j]);
+            bool        lx = cx -> converged; 
+            long double lf = cx -> error; 
+            if (lf > 10e-12 || !lx){delete cx; continue;}
+            (*this -> cnx)[++idx] = cx;  
+            params -> phys_pairs -> push_back({jets[i], leps[j]}); 
+        }
     }
 }
 
 conuix::~conuix(){
     for (size_t x(0); x < this -> cnx -> size(); ++x){
+        if (!this -> cnx -> at(x)){continue;}
         delete this -> cnx -> at(x); 
         (*this -> cnx)[x] = nullptr; 
     }
     delete this -> cnx; 
     this -> cnx = nullptr; 
-}
-
-void conuix::solve(){
-    for (size_t x(0); x < this -> cnx -> size(); ++x){
-        this -> cnx -> at(x) -> solve(); 
-    }
-    abort(); 
 }
 

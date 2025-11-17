@@ -24,10 +24,11 @@ cdef extern from "<bsm_4tops/event.h>":
         vector[particle_template*] DetectorObjects
 
         unsigned long long event_number
+        bool reconstruct_nunu
         float mu
         float met
         float phi
 
 
 cdef class BSM4Tops(EventTemplate):
-    pass
+    cdef bsm_4tops* tt

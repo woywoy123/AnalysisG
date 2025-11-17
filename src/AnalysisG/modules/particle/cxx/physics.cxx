@@ -6,7 +6,7 @@ double particle_template::DeltaR(particle_template* part){
     sum = M_PI - std::fabs(sum - M_PI); 
     sum = std::pow(sum, 2);
     sum += std::pow(this -> eta - part -> eta, 2); 
-    return std::pow(sum, 0.5); 
+    return std::sqrt(sum); 
 }
 
 void particle_template::get_e(double* v, particle_template* prt) {
@@ -16,7 +16,7 @@ void particle_template::get_e(double* v, particle_template* prt) {
     p -> e += std::pow(prt -> py, 2); 
     p -> e += std::pow(prt -> pz, 2); 
     if (p -> mass >= 0){p -> e += p -> mass;}
-    p -> e  = std::pow(p -> e, 0.5); 
+    p -> e  = std::sqrt(p -> e); 
     *v = p -> e; 
 }
 
@@ -36,7 +36,7 @@ void particle_template::get_mass(double* val, particle_template* prt){
     p -> mass -= std::pow(prt -> py, 2); 
     p -> mass -= std::pow(prt -> pz, 2); 
     p -> mass += std::pow(prt -> e , 2); 
-    p -> mass = (p -> mass >= 0) ? std::pow(p -> mass, 0.5) : -std::pow(std::abs(p -> mass), 0.5); 
+    p -> mass = (p -> mass >= 0) ? std::sqrt(p -> mass) : -std::sqrt(std::abs(p -> mass)); 
     *val = p -> mass; 
 }
 
@@ -46,7 +46,7 @@ void particle_template::get_P(double* val, particle_template* prt){
     p_ += pl -> px * pl -> px; 
     p_ += pl -> py * pl -> py; 
     p_ += pl -> pz * pl -> pz; 
-    *val = std::pow(p_, 0.5);
+    *val = std::sqrt(p_);
 }
 
 void particle_template::get_beta(double* val, particle_template* prt){ 
@@ -55,6 +55,6 @@ void particle_template::get_beta(double* val, particle_template* prt){
     p_ += pl -> px * pl -> px; 
     p_ += pl -> py * pl -> py; 
     p_ += pl -> pz * pl -> pz; 
-    *val = (pl -> e) ? std::pow(p_ / (pl -> e * pl-> e), 0.5) : -1;
+    *val = (pl -> e) ? std::sqrt(p_ / (pl -> e * pl-> e)) : -1;
 }
 

@@ -15,6 +15,7 @@ enum class nusol_enum {
     undefined
 }; 
 
+
 // event parameters
 struct nusol_t {
 
@@ -30,6 +31,7 @@ struct nusol_t {
 
         nusol_enum mode = nusol_enum::undefined; 
         std::vector<particle_template*>* targets = nullptr;  
+        std::vector< std::pair<particle_template*, particle_template*> >* phys_pairs = nullptr; 
 
     private:
         friend ellipse; 
@@ -48,7 +50,7 @@ class nusol:
 {
     public:
         nusol(nusol_t* parameters); 
-        void solve(); 
+        std::vector<particle_template*> solve(); 
         ~nusol(); 
 
     private:

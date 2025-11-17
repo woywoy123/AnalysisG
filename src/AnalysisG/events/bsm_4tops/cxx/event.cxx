@@ -24,7 +24,11 @@ bsm_4tops::bsm_4tops(){
 
 bsm_4tops::~bsm_4tops(){}
 
-event_template* bsm_4tops::clone(){return (event_template*)new bsm_4tops();}
+event_template* bsm_4tops::clone(){
+    bsm_4tops* ev = new bsm_4tops();
+    ev -> reconstruct_nunu = this -> reconstruct_nunu; 
+    return (event_template*)ev;
+}
 
 void bsm_4tops::build(element_t* el){
     el -> get("event_number", &this -> event_number); 
@@ -154,18 +158,26 @@ void bsm_4tops::CompileEvent(){
     this -> vectorize(&this -> m_Muons    , &this -> DetectorObjects); 
     this -> vectorize(&this -> m_Electrons, &this -> DetectorObjects); 
 
-    if (n_nu != (this -> Electrons.size() + this -> Muons.size()) || n_nu < 1){return;}
+    if (this -> debug_mode){this -> debug_strings();}
+    if (!this -> reconstruct_nunu){return;}
+    std::vector<particle_template*> nux = this -> double_neutrino(&this -> DetectorObjects, this -> phi, this -> met); 
+    for (int x(0); x < nux.size(); ++x){this -> DetectorObjects.push_back(nux[x]);}
+}
+
+void bsm_4tops::debug_strings(){
     std::cout << "-------------- new event ---------------- " << std::endl;
-
     std::cout << " met: " << double(this -> met) << " phi: " << double(this -> phi) << std::endl;
-
     std::cout << "---------- Truth ------------------- " << std::endl;
     std::cout << " neutrinos::::: " << std::endl;
     for (size_t x(0); x < this -> Children.size(); ++x){
         if (!this -> Children[x] -> is_nu){continue;}
         particle_template* p = this -> Children[x]; 
-        std::cout << "px: " << double(p -> px) << " py: " << double(p -> py) << " pz: " << double(p  -> pz) << " e: "
-                  << double(p -> e) << " top-index: " << ((top_children*)this -> Children[x]) -> top_index << std::endl;
+        std::cout << "px: "  << double(p -> px) 
+                  << " py: " << double(p -> py)
+                  << " pz: " << double(p  -> pz) 
+                  << " e: "  << double(p -> e) 
+                  << " top-index: " << ((top_children*)this -> Children[x]) -> top_index 
+                  << std::endl;
     }
 
     std::cout << "------------ leptons ------------- " << std::endl;
@@ -190,8 +202,10 @@ void bsm_4tops::CompileEvent(){
     std::cout << "-------- Detector Objects -------- " << std::endl;
     for (size_t x(0); x < this -> DetectorObjects.size(); ++x){
         particle_template* p = this -> DetectorObjects[x]; 
-        std::cout << "px: " << double(p -> px) << " py: " << double(p -> py) << " pz: " << double(p  -> pz) << " e: " << double(p -> e) << " h: " << std::string(p -> hash) << std::endl;
+        std::cout << " px: " << double(p -> px) 
+                  << " py: " << double(p -> py) 
+                  << " pz: " << double(p  -> pz) 
+                  << " e: "  << double(p -> e) 
+                  << " h: " << std::string(p -> hash) << std::endl;
     }
-    std::vector<particle_template*> nux = this -> double_neutrino(&this -> DetectorObjects, this -> phi, this -> met); 
-    for (int x(0); x < nux.size(); ++x){this -> DetectorObjects.push_back(nux[x]);}
 }

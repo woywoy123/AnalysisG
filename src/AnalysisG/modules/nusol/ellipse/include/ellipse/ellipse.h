@@ -28,8 +28,14 @@ class ellipse {
         void prepare(double mt, double mw); 
         std::vector<particle_template*> nunu_make();
         void solve(); 
-
         ~ellipse(); 
+
+        template <typename g>
+        void clear(g** val){
+            if (!*val){return;}
+            delete *val; 
+            *val = nullptr; 
+        }
 
     private:
         nusol_t* params = nullptr; 

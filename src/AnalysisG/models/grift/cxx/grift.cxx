@@ -19,15 +19,16 @@ grift::grift(){
     int dxx_1 = (this -> _xin + this -> _xrec)*3; 
     this -> rnn_dx = new torch::nn::Sequential({
             {"rnn_dx_l1", torch::nn::Linear(dxx_1, this -> _hidden)}, 
-            {"rnn_dx_r1", torch::nn::ReLU()},
+            {"rnn_dx_s1", torch::nn::Sigmoid()},
             {"rnn_dx_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
-            {"rnn_dx_s2", torch::nn::Sigmoid()},
+            {"rnn_dx_r2", torch::nn::ReLU()},
             {"rnn_dx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"rnn_dx_l3", torch::nn::Linear(this -> _hidden, this -> _xrec)}
     }); 
 
     this -> rnn_hxx = new torch::nn::Sequential({
             {"rnn_hxx_l1", torch::nn::Linear(this -> _xrec*4, this -> _hidden)}, 
+            {"rnn_hxx_r1", torch::nn::ReLU()},
             {"rnn_hxx_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"rnn_hxx_l2", torch::nn::Linear(this -> _hidden, this -> _xrec)}
     }); 
@@ -44,8 +45,8 @@ grift::grift(){
     int dxx_r = this -> _xrec*4; 
     this -> rnn_rxx = new torch::nn::Sequential({
             {"rnn_rxx_l1", torch::nn::Linear(dxx_r, this -> _hidden)}, 
-            {"rnn_rxx_r1", torch::nn::ReLU()},
             {"rnn_rxx_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_rxx_r1", torch::nn::ReLU()},
             {"rnn_rxx_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
             {"rnn_rxx_t2", torch::nn::Sigmoid()},
             {"rnn_rxx_l3", torch::nn::Linear(this -> _hidden, this -> _xout)}
@@ -213,8 +214,8 @@ void grift::forward(graph_t* data){
         node_state = this -> node_encode(gr_.at(key_smx), num_node = (gr_.at(key_idx) > -1).sum({-1}, true), &node_rnn); 
 
         // ------ protection against depleted event graphs ---------- //
-        //if (!skp.index({skp}).size({0})){break;}
         torch::Tensor skp = (norm.sum({-1}, true) > 0).view({-1}); 
+        if (!skp.index({skp}).size({0})){break;}
         node_rnn.index_put_({skp}, node_state.index({skp})); 
         norm.index_put_({src_, dst_}, sel*1); 
 

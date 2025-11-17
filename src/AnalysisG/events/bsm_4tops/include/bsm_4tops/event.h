@@ -19,6 +19,9 @@ class bsm_4tops: public event_template
         std::vector<particle_template*> Muons = {};  
         std::vector<particle_template*> DetectorObjects = {};
 
+        bool debug_mode = false; 
+        bool reconstruct_nunu = true; 
+
         unsigned long long event_number = 0; 
         float mu = 0; 
         float met = 0; 
@@ -27,6 +30,7 @@ class bsm_4tops: public event_template
         event_template* clone() override; 
         void build(element_t* el) override; 
         void CompileEvent() override; 
+        void debug_strings(); 
 
     private: 
         std::map<std::string, top*>            m_Tops = {}; 

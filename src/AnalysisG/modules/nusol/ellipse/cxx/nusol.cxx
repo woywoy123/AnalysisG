@@ -46,26 +46,19 @@ nuelx::nuelx(particle_template* b_, particle_template* l_, double mW, double mT)
 
 nuelx::~nuelx(){
     this -> flush();
-    if (this -> b){delete this -> b;}
-    if (this -> l){delete this -> l;}
-    if (this -> r_t){delete this -> r_t;}
+    this -> clear(&this -> b);
+    this -> clear(&this -> l); 
+    this -> clear(&r_t); 
 }
 
 void nuelx::flush(){
-    if (this -> h      ){delete this -> h;}
-    if (this -> dw_H   ){delete this -> dw_H;}
-    if (this -> dt_H   ){delete this -> dt_H;}
-    if (this -> h_perp ){delete this -> h_perp;}
-    if (this -> h_tilde){delete this -> h_tilde;}
-    if (this -> n_matrx){delete this -> n_matrx;}
-    if (this -> k      ){delete this -> k;}
-    this -> h       = nullptr; 
-    this -> dw_H    = nullptr; 
-    this -> dt_H    = nullptr; 
-    this -> h_perp  = nullptr; 
-    this -> h_tilde = nullptr; 
-    this -> n_matrx = nullptr; 
-    this -> k       = nullptr; 
+    this -> clear(&this -> h      );
+    this -> clear(&this -> dw_H   );
+    this -> clear(&this -> dt_H   );
+    this -> clear(&this -> h_perp );
+    this -> clear(&this -> h_tilde);
+    this -> clear(&this -> n_matrx);
+    this -> clear(&this -> k      );
 }
 
 mtx* nuelx::R_T(){  

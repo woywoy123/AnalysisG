@@ -63,6 +63,13 @@ class nuelx
         void update(double mt, double mw);
         void flush(); 
 
+        template <typename g>
+        void clear(g** val){
+            if (!*val){return;}
+            delete *val; 
+            *val = nullptr; 
+        }
+
         mtx* N(); 
         mtx* H(); 
         mtx* H_perp(); 

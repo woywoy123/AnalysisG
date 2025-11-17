@@ -6,7 +6,7 @@
 #include <cmath>
 
 long double Conuix::Mobius_t::alpha_p(long double u){return this -> a + this -> b * u;}
-long double Conuix::Mobius_t::alpha_m(long double u){return this -> c - this -> d * u;}
+long double Conuix::Mobius_t::alpha_m(long double u){return this -> c + this -> d * u;}
 
 long double Conuix::Mobius_t::dPl0(long double x, bool use_tanh){
     long double f = (use_tanh) ? std::tanh(x) : x; 
@@ -16,6 +16,26 @@ long double Conuix::Mobius_t::dPl0(long double x, bool use_tanh){
 }
 
 
+long double Conuix::Mobius_t::P(long double z, long double l, long double t){
+    long double _z = std::fabs(z); 
+    long double _a = l * l * l; 
+    long double _b = - (_z / this -> c) * l * l; 
+    long double _c =   (_z * _z) * (l / this -> c) * (this -> c * std::sinh(t) + this -> d * std::cosh(t) ) * this -> b_; 
+    long double _d = - (_z * _z * _z) * (1.0L / (this -> b_ * this -> c)) * std::sinh(t);
+    return _a + _b + _c + _d; 
+}
+
+
+long double Conuix::Mobius_t::dPdt(long double z, long double l, long double t){
+    long double _z = std::fabs(z); 
+    long double _a = (l * _z * _z / this -> c) * (this -> c * std::cosh(t) + this -> d * std::sinh(t)) * this -> b_; 
+    long double _b = - (_z * _z * _z) * std::cosh(t) / (this -> c * this -> b_); 
+    return _a + _b; 
+}
+
+long double Conuix::Mobius_t::dPdtL0(long double z, long double t){
+    return (std::fabs(z) / (this -> b_ * this -> b_)) * 1.0L / this -> alpha_m(std::tanh(t)); 
+}
 
 void Conuix::Mobius_t::init(base_t* base){
 
@@ -49,7 +69,11 @@ void Conuix::Mobius_t::init(base_t* base){
     this -> d = -base -> tpsi * base -> beta; 
 
     this -> a_ = base -> beta * std::pow(base -> cpsi, 3); 
-    
+    this -> b_ = base -> cpsi;  
+
+    this -> pole1 =   (base -> o / base -> beta) * ( 1.0L / base -> tpsi); 
+    this -> pole2 = - (base -> o / base -> beta) * base -> tpsi; 
+
     auto fx = [this](long double x, long double a_x, long double b_x){
         long double ax = this -> alpha_p(x); 
         long double bx = this -> alpha_m(x); 
@@ -62,29 +86,25 @@ void Conuix::Mobius_t::init(base_t* base){
         return - a_x * (x / sq) * bx * bx - b_x * sq * bx - c_x; 
     }; 
 
-    long double tx_ = std::pow(1.0L / base -> cpsi, 3); 
+    long double tx_ = std::pow(base -> cpsi, -3); 
     long double bx_ = 2 * base -> beta * base -> beta * base -> tpsi; 
 
     long double tx = this -> mid.real(); 
-    this -> variable("tx", tx); 
     for (int i(0); i < 100; ++i){
         long double ax =  fx(tx, base -> beta, tx_); 
         long double bx = dfx(tx, base -> beta, bx_, tx_ * base -> beta); 
-
         if (std::fabs(bx) < 10e-15){break;}
         long double dt = ax / bx; 
-        tx = tx - dt; 
-        std::cout << tx << " " << ax << " " << bx << std::endl;
+        this -> error = ax;  
+        tx = tx - dt;
         if (std::fabs(dt) > 10e-11){continue;}
+        this -> converged = true; 
         break; 
     }
-    std::cout << "-> " << std::atanh(tx) << std::endl; 
-    abort(); 
-
-
-
-
+    this -> tstar = (this -> converged) ? std::atanh(tx) : -99; 
 }
+
+
 
 
 
@@ -134,15 +154,6 @@ void Conuix::Mobius_t::init(base_t* base){
 //    this -> prec = p; 
 //    this -> variable("P(lambda)", this -> P(1, 1, 0)); 
 //}
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //Conuix::characteristic::dPdtau_t::dPdtau_t(Conuix::base_t* base){

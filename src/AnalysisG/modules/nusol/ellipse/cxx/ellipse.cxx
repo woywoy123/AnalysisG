@@ -12,47 +12,33 @@ ellipse::ellipse(nusol_t* parameters){
     this -> _metx = parameters -> met_x;  
     this -> _mety = parameters -> met_y;
     this -> _metz = parameters -> met_z;  
-  
-    for (size_t x(0); x < parameters -> targets -> size(); ++x){
-        if (!parameters -> targets -> at(x) -> is_lep){continue;}
-        this -> leptons.push_back(parameters -> targets -> at(x));
-    }
 
-    for (size_t x(0); x < parameters -> targets -> size(); ++x){
-        if (!parameters -> targets -> at(x) -> is_b){continue;}
-        this -> bquarks.push_back(parameters -> targets -> at(x));
-    }
-
-    this -> n_lp = this -> leptons.size();
-    this -> n_bs = this -> bquarks.size();
-    this -> engines.reserve(this -> n_lp*this -> n_bs); 
+    this -> engines.reserve(parameters -> phys_pairs -> size()); 
     this -> params = parameters; 
 }
 
 ellipse::~ellipse(){
-    for (size_t x(0); x < this -> engines.size(); ++x){
-        delete this -> engines[x];
-    }
+    for (size_t x(0); x < this -> engines.size(); ++x){delete this -> engines[x];}
     this -> solvs.clear(); 
 }
 
 
 void ellipse::prepare(double mt, double mw){
-    for (int l(0); l < this -> n_lp; ++l){
-        for (int b(0); b < this -> n_bs; ++b){
-            nuelx* nl = new nuelx(this -> bquarks[b], this -> leptons[l], mw, mt); 
-            this -> engines.push_back(nl); 
-        }
+    for (size_t x(0); x < this -> params -> phys_pairs -> size(); ++x){
+        std::pair<particle_template*, particle_template*> p = this -> params -> phys_pairs -> at(x); 
+        this -> engines.push_back(new nuelx(p.first, p.second, mw, mt)); 
     }
-  
+
     int lx = -1; 
     size_t le = this -> engines.size();   
     for (size_t x(0); x < le; ++x){
         for (size_t y(0); y < le; ++y){
-            if (y == x){continue;}
+            if (x < y){continue;}
             this -> pairings[++lx] = std::tuple<nuelx*, nuelx*>(this -> engines[x], this -> engines[y]);  
         }
     } 
+    delete this -> params -> phys_pairs; 
+    this -> params -> phys_pairs = nullptr; 
 }
 
 void ellipse::solve(){
@@ -160,22 +146,14 @@ int ellipse::generate(nuelx* nu1, nuelx* nu2){
 }
 
 void ellipse::flush(){
-    if (this -> m_nu1){delete this -> m_nu1;}
-    if (this -> m_nu2){delete this -> m_nu2;} 
-    if (this -> m_agl){delete this -> m_agl;}
-    this -> m_nu1 = nullptr; 
-    this -> m_nu2 = nullptr; 
-    this -> m_agl = nullptr; 
+    this -> clear(&this -> m_nu1); 
+    this -> clear(&this -> m_nu2);  
+    this -> clear(&this -> m_agl); 
     this -> m_lx   = 0; 
     this -> m_bst  = 0; 
 }
 
 int ellipse::intersection(mtx** v, mtx** v_){
-    auto safe_del = [this](mtx** val) -> void{
-        if (!(*val)){return;}
-        delete (*val); (*val) = nullptr; 
-    }; 
-
     auto make_nu = [this](mtx* S_, mtx* vx) -> mtx*{
         mtx vxt = S_ -> dot(vx -> T()).T();
         return new mtx(vxt);  
@@ -194,25 +172,25 @@ int ellipse::intersection(mtx** v, mtx** v_){
     int n_pts = intersection_ellipses(this -> p_nu1 -> N(), &n_, &lin1, &vx , &sol1); 
     n_pts    += intersection_ellipses(this -> p_nu2 -> N(), &n , &lin2, &vx_, &sol2); 
 
-    if (!vx && !vx_){safe_del(&S); return 0;}
-    safe_del(&sol1); 
-    safe_del(&sol2); 
-    safe_del(&lin1);
-    safe_del(&lin2);
+    if (!vx && !vx_){this -> clear(&S); return 0;}
+    this -> clear(&sol1); 
+    this -> clear(&sol2); 
+    this -> clear(&lin1);
+    this -> clear(&lin2);
 
     if (vx && vx_){
         mtx* _vn = make_nu(S, vx ); 
         mtx*  vn = make_nu(S, vx_); 
         (*v_) = vx_ -> cat(_vn); 
         (*v ) = vx  -> cat( vn); 
-        safe_del(&_vn); safe_del(&vn); 
-        safe_del(&vx_); safe_del(&vx); 
+        this -> clear(&_vn); this -> clear(&vn); 
+        this -> clear(&vx_); this -> clear(&vx); 
         
     }
     
     if (vx ){(*v_) = make_nu(S, vx ); (*v ) = vx ;}
     if (vx_){(*v ) = make_nu(S, vx_); (*v_) = vx_;}
-    safe_del(&S);
+    this -> clear(&S);
     return n_pts; 
 }
 

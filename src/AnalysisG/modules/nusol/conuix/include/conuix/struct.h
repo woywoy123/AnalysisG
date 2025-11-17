@@ -11,6 +11,7 @@ struct atomics_t;
 
 namespace Conuix {
     struct debug {
+        virtual ~debug(); 
         virtual void print(int p = 16);
         void variable(std::string name, long double val); 
         int prec = 16; 
@@ -115,8 +116,16 @@ namespace Conuix {
         // c: Omega       , d: - tpsi * beta_mu 
         long double a, b, c, d;
 
+        long double P(long double z, long double l, long double t); 
+        long double dPdt(long double z, long double l, long double t); 
+        long double dPdtL0(long double z, long double t); 
         long double dPl0(long double x, bool use_tanh = false); 
+
+        long double pole1 = 0; 
+        long double pole2 = 0; 
+
         long double a_; // beta * cos(psi)**3
+        long double b_; // cos(psi)
 
         std::complex<long double> eig_v1; 
         std::complex<long double> eig_v2; 
@@ -130,15 +139,10 @@ namespace Conuix {
         std::complex<long double> f2_pts; 
     
         std::complex<long double> mid; 
-
-
-
-    }; 
-
-
-
-
-
+        long double error = 0;
+        long double tstar = 0; 
+        bool converged = false; 
+    };
 
     long double cos_theta(particle_template* jet, particle_template* lep); 
 }
@@ -146,12 +150,14 @@ namespace Conuix {
 
 struct atomics_t : public Conuix::debug {
     atomics_t(particle_template* jet, particle_template* lep, double m_nu = 0); 
-    ~atomics_t(); 
+    ~atomics_t() override; 
 
     long double x1(long double Z, long double t); 
     long double y1(long double Z, long double t); 
     bool GetTauZ(long double sx, long double sy, long double* z, long double* t); 
     void masses(long double Z, long double t, std::complex<long double>* mw, std::complex<long double>* mt); 
+    void eigenvector(long double tau, matrix_t* vstar, long double* theta_s); 
+
     void debug_mode(particle_template* jet, particle_template* lep); 
 
     // ---- Kinematics of the jet and lepton pairs ---- // 
