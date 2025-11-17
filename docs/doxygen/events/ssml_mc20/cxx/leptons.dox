@@ -1,0 +1,64 @@
+/**
+ * @file leptons.cxx
+ * @brief Implementation of muon, electron, and lepton classes
+ *
+ * Location: src/AnalysisG/events/ssml_mc20/cxx/leptons.cxx
+ *
+ * Dependencies:
+ * - particles.h
+ *
+ * @section implementation Implementation Details
+ *
+ * **muon::muon()**
+ * - Sets type to "mu"
+ * - Registers leaf mappings: eta, phi, charge, pt→_pt_NOSYS, energy→_e_NOSYS, top_index→_truthTopIndex
+ * - Applies "muon" type prefix to all leaves
+ * - Initializes from_res cproperty with getter muon::get_from_res
+ *
+ * **muon::build()**
+ * - Uses pmu() template to build muon collection from pt, eta, phi, energy
+ * - Extracts charge and top_index vectors
+ * - For each muon:
+ *   - Sets index, charge
+ *   - Calculates pdgid = charge × 13 (muon PDG ID)
+ *   - Sets top_index if vector size matches (else -2)
+ *   - Stores in particle map by hash
+ *
+ * **muon::get_from_res()**
+ * - Static getter for from_res cproperty
+ * - Iterates through muon's parent particles
+ * - Checks if any parent top has from_res == true
+ * - Sets *val accordingly
+ *
+ * **electron::electron()**
+ * - Sets type to "el"
+ * - Registers leaf mappings: eta, phi, pt→_pt_NOSYS, energy→_e_NOSYS, charge, top_index→_truthTopIndex, ecids→_passECIDS_NOSYS
+ * - Applies "electron" type prefix
+ * - Initializes from_res cproperty with getter electron::get_from_res
+ *
+ * **electron::build()**
+ * - Uses pmu() template to build electron collection
+ * - Extracts charge, top_index, ecids (ECIDS selection flag) vectors
+ * - For each electron:
+ *   - Sets index, charge
+ *   - Calculates pdgid = charge × 11 (electron PDG ID)
+ *   - Sets pass_ecids from ecid vector
+ *   - Sets top_index if vector size matches (else -2)
+ *   - Stores in particle map by hash
+ *
+ * **electron::get_from_res()**
+ * - Static getter for from_res cproperty
+ * - Same logic as muon::get_from_res
+ *
+ * **lepton::lepton()**
+ * - Sets type to "lepton"
+ * - Registers leaf mappings: eta, phi, pt→_pt_NOSYS, e→_e_NOSYS, charge, ambiguity→_DFCommonAddAmbiguity
+ * - Applies "lepton" type prefix
+ *
+ * **lepton::build()**
+ * - Manually extracts eta, phi, pt, e, charge vectors
+ * - Extracts DFCommonAddAmbiguity (ambiguity flag) vector
+ * - Creates lepton instance for each entry
+ * - Sets index, kinematics (pt, eta, phi, e), charge, ambiguity
+ * - Stores in particle map by hash
+ */

@@ -1,0 +1,135 @@
+/**
+ * @file particles.h
+ * @brief Documentation for events/ssml_mc20/include/ssml_mc20/particles.h
+ *
+ * Location: src/AnalysisG/events/ssml_mc20/include/ssml_mc20/particles.h
+ *
+ * Dependencies:
+ * - templates/particle_template.h
+ *
+ * @section functions Template Helper Functions
+ *
+ * **pmu<g>()**
+ * - Builds particle collection from pt, eta, phi, energy vectors
+ * - Template function for generic particle type g
+ *
+ * **pmu_mass<g>()**
+ * - Builds particle collection from pt, eta, phi, mass vectors
+ * - Filters out entries with negative mass
+ * - Template function for generic particle type g
+ *
+ * @section classes Classes
+ *
+ * **zboson** (inherits from particle_template)
+ * - Z' boson representation
+ *
+ * **top** (inherits from particle_template)
+ * - Top quark representation with decay products
+ *
+ * **truthjet** (inherits from particle_template)
+ * - Truth-level jet from particle-level simulation
+ *
+ * **jet** (inherits from particle_template)
+ * - Reconstructed calorimeter jet
+ *
+ * **electron** (inherits from particle_template)
+ * - Electron candidate
+ *
+ * **muon** (inherits from particle_template)
+ * - Muon candidate
+ *
+ * **parton** (inherits from particle_template)
+ * - Parton-level decay product with W decay daughters and b-quark
+ *
+ * **lepton** (inherits from particle_template)
+ * - Generic lepton object (electron or muon)
+ *
+ * @section methods_zboson Public Methods - zboson
+ * - zboson() - Constructor, registers pt, eta, phi, mass leaves
+ * - ~zboson() - Destructor
+ * - clone() - Creates deep copy
+ * - build() - Builds single Z' boson from ROOT data (only first entry used)
+ *
+ * @section methods_top Public Methods - top
+ * - top() - Constructor, registers pt, eta, phi, mass, from_res leaves
+ * - ~top() - Destructor
+ * - clone() - Creates deep copy
+ * - build() - Builds top quarks from ROOT data
+ *
+ * @section variables_top Public Variables - top
+ * - from_res (bool) - Flag indicating top originates from resonance (Z')
+ * - jets (std::vector<particle_template*>) - Associated reconstructed jets
+ * - leptons (std::vector<particle_template*>) - Associated leptons
+ * - truthjets (std::vector<particle_template*>) - Associated truth jets
+ *
+ * @section methods_truthjet Public Methods - truthjet
+ * - truthjet() - Constructor, registers energy, eta, phi, pt, pdgid leaves
+ * - ~truthjet() - Destructor
+ * - clone() - Creates deep copy
+ * - build() - Builds truth jets from ROOT data
+ *
+ * @section variables_truthjet Public Variables - truthjet
+ * - top_index (int) - Index of associated top quark (-1 if none)
+ *
+ * @section methods_jet Public Methods - jet
+ * - jet() - Constructor, registers kinematics and b-tagging leaves
+ * - ~jet() - Destructor
+ * - clone() - Creates deep copy
+ * - build() - Builds jets from ROOT data with b-tag working points
+ * - get_from_res() - Static getter for from_res cproperty
+ *
+ * @section variables_jet Public Variables - jet
+ * - from_res (cproperty<bool, jet>) - Indicates jet from resonance decay (derived from parent top)
+ * - top_index (int) - Index of associated top quark
+ * - btag_77 (bool) - Passes 77% b-tagging working point
+ * - btag_85 (bool) - Passes 85% b-tagging working point
+ * - btag_90 (bool) - Passes 90% b-tagging working point
+ * - sel_85 (bool) - Selected at 85% working point
+ *
+ * @section methods_electron Public Methods - electron
+ * - electron() - Constructor, registers kinematics, charge, top_index, ecids leaves
+ * - ~electron() - Destructor
+ * - clone() - Creates deep copy
+ * - build() - Builds electrons from ROOT data
+ * - get_from_res() - Static getter for from_res cproperty
+ *
+ * @section variables_electron Public Variables - electron
+ * - from_res (cproperty<bool, electron>) - Indicates electron from resonance decay
+ * - top_index (int) - Index of associated top quark
+ * - pass_ecids (int) - Passes ECIDS selection
+ *
+ * @section methods_muon Public Methods - muon
+ * - muon() - Constructor, registers kinematics, charge, top_index leaves
+ * - ~muon() - Destructor
+ * - clone() - Creates deep copy
+ * - build() - Builds muons from ROOT data
+ * - get_from_res() - Static getter for from_res cproperty
+ *
+ * @section variables_muon Public Variables - muon
+ * - top_index (int) - Index of associated top quark
+ * - from_res (cproperty<bool, muon>) - Indicates muon from resonance decay
+ *
+ * @section methods_parton Public Methods - parton
+ * - parton() - Constructor, registers W decay daughters (w1, w2) and b-quark kinematics and indices
+ * - ~parton() - Destructor
+ * - clone() - Creates deep copy
+ * - build() - Builds partons from ROOT data with decay product matching indices
+ *
+ * @section variables_parton Public Variables - parton
+ * - top_index (int) - Index of associated top quark
+ * - jet_index (int) - Index of matched reconstructed jet
+ * - truthjet_index (int) - Index of matched truth jet
+ * - muon_index (int) - Index of matched muon (for leptonic W decay)
+ * - electron_index (int) - Index of matched electron (for leptonic W decay)
+ * - jets (std::map<std::string, jet*>) - Map of associated jets
+ * - truthjets (std::map<std::string, truthjet*>) - Map of associated truth jets
+ *
+ * @section methods_lepton Public Methods - lepton
+ * - lepton() - Constructor, registers kinematics, charge, ambiguity leaves
+ * - ~lepton() - Destructor
+ * - clone() - Creates deep copy
+ * - build() - Builds leptons from ROOT data
+ *
+ * @section variables_lepton Public Variables - lepton
+ * - ambiguity (int) - DFCommon ambiguity flag (99 default)
+ */

@@ -1,0 +1,28 @@
+/**
+ * @file particles.cxx
+ * @brief Implementation of GNN particle classes
+ *
+ * Location: src/AnalysisG/events/gnn/cxx/particles.cxx
+ *
+ * Dependencies:
+ * - gnn-particles.h
+ *
+ * @section implementation Implementation Details
+ *
+ * **particle_gnn::particle_gnn()**
+ * - Sets type to "gnn-particle"
+ * - Registers leaf mappings: pt→n_i_pt, eta→n_i_eta, phi→n_i_phi, energy→n_i_energy, lep→extra_is_lep
+ *
+ * **particle_gnn::build()**
+ * - Extracts pt, eta, phi, energy vectors from ROOT element
+ * - Extracts lep (lepton flag) vector
+ * - Creates particle_gnn instance for each entry
+ * - Sets index, kinematics (pt, eta, phi, e), and lep flag
+ * - Stores in particle map by hash
+ *
+ * **top::top()**
+ * - Sets type to "top"
+ *
+ * **zprime::zprime()**
+ * - Sets type to "zprime"
+ */
