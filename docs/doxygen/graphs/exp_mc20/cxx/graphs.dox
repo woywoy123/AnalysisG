@@ -1,0 +1,65 @@
+/**
+ * @file graphs.cxx
+ * @brief Implementation of exp_mc20 graph classes
+ *
+ * Location: src/AnalysisG/graphs/exp_mc20/cxx/graphs.cxx
+ *
+ * Dependencies:
+ * - graphs.h
+ * - graph_features.h
+ * - node_features.h
+ * - edge_features.h
+ *
+ * @section implementation Implementation Details
+ *
+ * **graph_jets:**
+ *
+ * Constructor: Sets name to "graph_jets"
+ *
+ * CompileEvent implementation:
+ * - Gets exp_mc20 event via get_event template
+ * - Creates empty nodes vector
+ * - Filters TopChildren: keeps only leptons (is_lep) and neutrinos (is_nu)
+ * - Appends all Jets to nodes vector
+ * - Calls define_particle_nodes to set up graph
+ * - Has commented-out feature addition code for truth and data features:
+ *   - Graph truth: signal_event, num_lepton, num_tops
+ *   - Node truth: top_node, res_node
+ *   - Edge truth: res_edge, top_edge
+ *   - Graph data: missing_et, missing_phi, num_jets, num_children_leps, event_weight, event_number
+ *   - Node data: pt, eta, phi, energy, is_lepton, is_bquark
+ *
+ * **graph_jets_nonu:**
+ *
+ * Constructor: Sets name to "graph_jets_nonu"
+ *
+ * CompileEvent implementation:
+ * - Gets exp_mc20 event via get_event template
+ * - Creates empty nodes vector
+ * - Filters TopChildren: keeps only leptons (is_lep) and excludes neutrinos (!is_nu)
+ * - Appends all Jets to nodes vector
+ * - Calls define_particle_nodes to set up graph
+ * - Has commented-out feature code (same as graph_jets) plus double_neutrino() call
+ *
+ * **graph_jets_detector_lep:**
+ *
+ * Constructor: Sets name to "graph_jets_detector_lep"
+ *
+ * CompileEvent implementation:
+ * - Gets exp_mc20 event via get_event template
+ * - Initializes nodes vector with event Leptons (detector level)
+ * - Filters TopChildren: adds neutrinos (is_nu) to nodes
+ * - Appends all Jets to nodes vector
+ * - Calls define_particle_nodes to set up graph
+ * - Has commented-out feature code (similar to graph_jets with num_leps instead of num_children_leps)
+ *
+ * **graph_detector:**
+ *
+ * Constructor: Sets name to "graph_detector"
+ *
+ * CompileEvent implementation:
+ * - Gets exp_mc20 event via get_event template
+ * - Initializes nodes vector with all Detector particles from event
+ * - Calls define_particle_nodes to set up graph
+ * - Has commented-out feature code (same as graph_jets_detector_lep) plus double_neutrino() call
+ */
