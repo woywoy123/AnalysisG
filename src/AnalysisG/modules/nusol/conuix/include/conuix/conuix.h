@@ -11,7 +11,7 @@ class conuix {
     public: 
         conuix(nusol_t* params); 
         ~conuix(); 
-//        void solve(); 
+        std::vector<particle_template*> nunu_make(); 
     
     private:
         std::string prefix = "";

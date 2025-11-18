@@ -32,6 +32,8 @@ class conuic {
         long double dPdtL0(long double t, long double Z); 
         long double dPl0(long double t); 
         matrix_t Hmatrix(long double t, long double Z); 
+        matrix_t Nmatrix(long double t, long double Z); 
+        bool mass_line(long double mW, long double mT); 
 
         void debug(); 
 

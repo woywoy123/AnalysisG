@@ -22,6 +22,12 @@ struct matrix_t {
         matrix_t operator*(long double s);
         matrix_t operator*(long double s) const;
 
+        matrix_t cross(const matrix_t& o); 
+        matrix_t diag(long double v = 1); 
+        matrix_t coef();  
+        matrix_t inv();  
+       
+        long double det(); 
         void print(int p = 9);
 
     private:

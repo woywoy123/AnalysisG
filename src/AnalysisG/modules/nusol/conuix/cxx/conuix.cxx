@@ -1,6 +1,16 @@
 #include <conuix/conuix.h>
 #include <conuix/conuic.h>
 
+conuix::~conuix(){
+    for (size_t x(0); x < this -> cnx -> size(); ++x){
+        if (!this -> cnx -> at(x)){continue;}
+        delete this -> cnx -> at(x); 
+        (*this -> cnx)[x] = nullptr; 
+    }
+    delete this -> cnx; 
+    this -> cnx = nullptr; 
+}
+
 conuix::conuix(nusol_t* parameters){
     this -> params = parameters; 
     this -> prefix = "Conuix"; 
@@ -27,20 +37,25 @@ conuix::conuix(nusol_t* parameters){
             conuic* cx = new conuic(jets[i], leps[j]);
             bool        lx = cx -> converged; 
             long double lf = cx -> error; 
-            if (lf > 10e-12 || !lx){delete cx; continue;}
+            if (lf > 10e-12 || !lx || !cx -> mass_line(this -> params -> mw, this -> params -> mt)){delete cx; continue;}
             (*this -> cnx)[++idx] = cx;  
             params -> phys_pairs -> push_back({jets[i], leps[j]}); 
         }
     }
-}
-
-conuix::~conuix(){
+    std::vector<conuic*>* cnv = new std::vector<conuic*>(idx+1, nullptr); idx = -1;  
     for (size_t x(0); x < this -> cnx -> size(); ++x){
         if (!this -> cnx -> at(x)){continue;}
-        delete this -> cnx -> at(x); 
-        (*this -> cnx)[x] = nullptr; 
+        (*cnv)[++idx] = this -> cnx -> at(x); 
     }
-    delete this -> cnx; 
-    this -> cnx = nullptr; 
+    delete this -> cnx; this -> cnx = nullptr;
+    this -> cnx = cnv; 
 }
+
+std::vector<particle_template*> conuix::nunu_make(){
+    conuic* c = this -> cnx -> at(0); 
+    matrix_t N = c -> Nmatrix(1, 1); 
+    return {}; 
+}
+
+
 

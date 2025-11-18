@@ -33,7 +33,7 @@ void ellipse::prepare(double mt, double mw){
     size_t le = this -> engines.size();   
     for (size_t x(0); x < le; ++x){
         for (size_t y(0); y < le; ++y){
-            if (x < y){continue;}
+            if (this -> engines[x] -> l -> lnk -> hash == this -> engines[y] -> l -> lnk -> hash){continue;}
             this -> pairings[++lx] = std::tuple<nuelx*, nuelx*>(this -> engines[x], this -> engines[y]);  
         }
     } 
@@ -106,7 +106,7 @@ void ellipse::solve(){
             nx1 -> update(mt1, mw1);   
             nx2 -> update(mt2, mw2);   
             ++x; 
-            if (si != this -> solvs.size() || x < 10){continue;}
+            if (si != this -> solvs.size() || x < 1){continue;}
             break;
         }
     }
@@ -262,7 +262,8 @@ std::vector<particle_template*> ellipse::nunu_make(){
 
     if (!this -> solvs.size()){return nus;}
     std::map<double, nunu_t>::iterator itr = this -> solvs.begin(); 
-    if (itr -> first > this -> params -> limit){return nus;}
+//    std::cout << itr -> first << std::endl;
+//    if (itr -> first > this -> params -> limit){return nus;}
 
     nunu_t* nx = &itr -> second; 
 
@@ -270,7 +271,7 @@ std::vector<particle_template*> ellipse::nunu_make(){
     particle_template* nu2 = new particle_template(nx -> nu2 -> _m[0][0], nx -> nu2 -> _m[0][1], nx -> nu2 -> _m[0][2]); 
     nu1 -> type = "nunu"; 
     nu2 -> type = "nunu"; 
-    
+
     nu1 -> register_parent(nx -> nux1 -> l -> lnk); 
     nu2 -> register_parent(nx -> nux2 -> l -> lnk); 
     nu1 -> register_parent(nx -> nux1 -> b -> lnk); 

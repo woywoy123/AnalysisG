@@ -16,7 +16,7 @@ from AnalysisG.core.notification cimport *
 import pyAMI.client
 import pyAMI.httpclient
 try: import pyAMI_atlas.api
-except: pass
+except: print("WARNING! YOU NEED TO INSTALL PYAMI-ATLAS, see scripts folder!")
 import http.client
 import pickle
 import h5py

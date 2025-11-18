@@ -32,6 +32,17 @@ void opt(
 ); 
 
 
+long double _trace(long double** A); 
+long double _m_00(long double**  M); 
+long double _m_01(long double**  M); 
+long double _m_02(long double**  M); 
+long double _m_10(long double**  M); 
+long double _m_11(long double**  M); 
+long double _m_12(long double**  M); 
+long double _m_20(long double**  M); 
+long double _m_21(long double**  M); 
+long double _m_22(long double**  M); 
+long double _det( long double**  v); 
 
 
 #endif

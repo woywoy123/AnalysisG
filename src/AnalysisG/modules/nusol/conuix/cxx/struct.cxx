@@ -120,11 +120,11 @@ long double Conuix::pencil_t::Z2(long double Sx, long double Sy){
 }
 
 matrix_t Conuix::H_matrix_t::H_Matrix(long double tau, long double Z){
-    return (this -> HBS * std::sinh(tau) + this -> HBC * std::cosh(tau) + this -> HBX) * std::fabs(Z); 
+    return (this -> HTS * std::sinh(tau) + this -> HTC * std::cosh(tau) + this -> HTX) * std::fabs(Z); 
 }
 
 matrix_t Conuix::H_matrix_t::H_Tilde(long double tau, long double Z){
-    return (this -> HTS * std::sinh(tau) + this -> HTC * std::cosh(tau) + this -> HTX) * std::fabs(Z); 
+    return (this -> HBS * std::sinh(tau) + this -> HBC * std::cosh(tau) + this -> HBX) * std::fabs(Z); 
 }
 
 long double Conuix::Sx_t::Sx(long double tau, long double Z){

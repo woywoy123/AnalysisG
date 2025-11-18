@@ -101,6 +101,52 @@ matrix_t matrix_t::operator*(long double s){
     return mx;
 }
 
+matrix_t matrix_t::cross(const matrix_t& o){
+    matrix_t mx(3, 3); 
+    for (int i(0); i < 3; ++i){
+        mx.at(0, i) = o.at(0, 1) * this -> at(2, i) - o.at(0, 2) * this -> at(1, i); 
+        mx.at(1, i) = o.at(0, 2) * this -> at(0, i) - o.at(0, 0) * this -> at(2, i); 
+        mx.at(2, i) = o.at(0, 0) * this -> at(1, i) - o.at(0, 1) * this -> at(0, i); 
+    }    
+   return mx;
+}
+
+long double matrix_t::det(){
+    return _det(this -> data);
+}
+
+matrix_t matrix_t::coef(){
+    matrix_t out(this -> r, this -> c); 
+    out.data[0][0] =   _m_00(this -> data); 
+    out.data[1][0] = - _m_10(this -> data); 
+    out.data[2][0] =   _m_20(this -> data);
+    out.data[0][1] = - _m_01(this -> data); 
+    out.data[1][1] =   _m_11(this -> data); 
+    out.data[2][1] = - _m_21(this -> data);
+    out.data[0][2] =   _m_02(this -> data); 
+    out.data[1][2] = - _m_12(this -> data); 
+    out.data[2][2] =   _m_22(this -> data);
+    return out; 
+}
+
+matrix_t matrix_t::inv(){
+    auto inv3x3 =[this]() -> matrix_t{
+        long double det_ = this -> det();
+        det_ = (!det_) ? 0.0 : 1.0/det_; 
+        matrix_t d = this -> coef() * det_;
+        return d.T();
+    }; 
+    if (this -> c == 3 && this -> r == 3){return inv3x3();}
+    return matrix_t(this -> c, this -> r); 
+}
+
+matrix_t matrix_t::diag(long double v){
+    matrix_t o(this -> c, this -> r); 
+    for (int x(0); x < this -> r; ++x){o.at(x, x) = v;}
+    return o; 
+}
+
+
 void matrix_t::print(int p){
     std::cout << "------------------------" << std::endl;
     for (int i(0); i < this -> r; ++i){
