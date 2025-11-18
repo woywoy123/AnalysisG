@@ -1,0 +1,487 @@
+/**
+ * @file typecasting.dox
+ * @brief Type conversion utilities for AnalysisG framework
+ * @defgroup typecasting Typecasting
+ * @details 
+ * Template-based utilities for type conversions between STL containers, ROOT data structures, 
+ * and PyTorch tensors. Provides generic functions for data merging, tensor padding, and 
+ * ROOT I/O variable management with automatic type deduction.
+ *
+ * **Quick Navigation:**
+ * - @ref io "io" - ROOT/HDF5 I/O (uses variable_t)
+ * - @ref dataloader "dataloader" - Dataset batching (uses tensor conversions)
+ * - @ref pyc "pyc" - CUDA kernels (uses tensor casting)
+ * - @ref structs "structs" - Base structures (bsc_t inheritance)
+ * - @ref tools "tools" - Utility functions
+ *
+ * @page typecasting_page Typecasting Module Documentation
+ *
+ * @section typecasting_intro Introduction
+ *
+ * The **typecasting** module provides template-based type conversion utilities essential 
+ * for AnalysisG's data pipeline. It handles conversions between:
+ * - STL vectors (merging, contracting, summing)
+ * - PyTorch tensors ↔ STL containers (with GPU support)
+ * - ROOT TTree branches ↔ PyTorch tensors
+ * - Ragged arrays → padded tensors
+ *
+ * **Key Components:**
+ * - **merge_cast.h**: Generic data merging/contraction (vectors, maps, primitives)
+ * - **vector_cast.h**: Tensor ↔ vector conversions with variable_t for ROOT I/O
+ * - **tensor_cast.h**: Ragged array padding and tensor construction
+ *
+ * @section typecasting_merge_cast Data Merging (merge_cast.h)
+ *
+ * @subsection merge_cast_merge merge_data()
+ *
+ * **Generic Data Merging:**
+ * ```cpp
+ * template <typename G>
+ * void merge_data(std::vector<G>* out, std::vector<G>* p2);
+ * 
+ * template <typename G>
+ * void merge_data(G* out, G* p2);
+ * 
+ * template <typename g, typename G>
+ * void merge_data(std::map<g, G>* out, std::map<g, G>* p2);
+ * ```
+ *
+ * **Purpose:** Merge data from p2 into out, with specialized behavior per type.
+ *
+ * **Behavior:**
+ * - **Vector**: Appends p2 elements to out (`insert(end, begin, end)`)
+ * - **Primitive**: Copies p2 value to out (`*out = *p2`)
+ * - **Map**: Recursively merges nested maps by key
+ *
+ * **Example:**
+ * ```cpp
+ * // Vector merging
+ * std::vector<float> jets1 = {50.0, 60.0};
+ * std::vector<float> jets2 = {70.0, 80.0};
+ * merge_data(&jets1, &jets2);  // jets1 = {50.0, 60.0, 70.0, 80.0}
+ * 
+ * // Map merging
+ * std::map<std::string, std::vector<float>> data1;
+ * data1["jets"] = {50.0, 60.0};
+ * std::map<std::string, std::vector<float>> data2;
+ * data2["jets"] = {70.0};
+ * merge_data(&data1, &data2);  // data1["jets"] = {50.0, 60.0, 70.0}
+ * ```
+ *
+ * @subsection merge_cast_sum sum_data()
+ *
+ * **Generic Data Summation:**
+ * ```cpp
+ * template <typename G>
+ * void sum_data(G* out, G* p2);
+ * 
+ * template <typename G>
+ * void sum_data(std::vector<G>* out, std::vector<G>* p2);
+ * 
+ * template <typename g, typename G>
+ * void sum_data(std::map<g, G>* out, std::map<g, G>* p2);
+ * ```
+ *
+ * **Behavior:**
+ * - **Primitive**: Addition (`*out += *p2`)
+ * - **Vector**: Concatenation (same as merge_data)
+ * - **Map**: Recursive summation by key
+ *
+ * **Example:**
+ * ```cpp
+ * double weight1 = 1.5;
+ * double weight2 = 2.3;
+ * sum_data(&weight1, &weight2);  // weight1 = 3.8
+ * ```
+ *
+ * @subsection merge_cast_contract contract_data()
+ *
+ * **Vector Flattening:**
+ * ```cpp
+ * template <typename g>
+ * void contract_data(std::vector<g>* out, g* p2);
+ * 
+ * template <typename g>
+ * void contract_data(std::vector<g>* out, std::vector<g>* p2);
+ * 
+ * template <typename g>
+ * void contract_data(std::vector<g>* out, std::vector<std::vector<g>>* p2);
+ * ```
+ *
+ * **Purpose:** Flatten nested vectors into single-dimensional output.
+ *
+ * **Example:**
+ * ```cpp
+ * std::vector<std::vector<float>> nested = {{1.0, 2.0}, {3.0}, {4.0, 5.0}};
+ * std::vector<float> flat;
+ * contract_data(&flat, &nested);  // flat = {1.0, 2.0, 3.0, 4.0, 5.0}
+ * ```
+ *
+ * @subsection merge_cast_reserve reserve_count()
+ *
+ * **Size Calculation:**
+ * ```cpp
+ * template <typename g>
+ * void reserve_count(g* inp, long* ix);
+ * 
+ * template <typename g>
+ * void reserve_count(std::vector<g>* inp, long* ix);
+ * ```
+ *
+ * **Purpose:** Count total elements in nested structure for preallocation.
+ *
+ * **Example:**
+ * ```cpp
+ * std::vector<std::vector<int>> nested = {{1, 2}, {3}, {4, 5, 6}};
+ * long count = 0;
+ * reserve_count(&nested, &count);  // count = 6
+ * ```
+ *
+ * @section typecasting_vector_cast Tensor-Vector Conversions (vector_cast.h)
+ *
+ * @subsection vector_cast_tensor_to_vector tensor_to_vector()
+ *
+ * **Tensor → STL Vector:**
+ * ```cpp
+ * template <typename G, typename g>
+ * bool tensor_to_vector(torch::Tensor* data, std::vector<G>* out, 
+ *                       std::vector<signed long>* dims, g);
+ * 
+ * template <typename g>
+ * void tensor_to_vector(torch::Tensor* data, std::vector<g>* out);
+ * ```
+ *
+ * **Purpose:** Convert PyTorch tensor to STL vector, preserving dimensionality.
+ *
+ * **Features:**
+ * - Automatic CPU transfer (GPU → CPU pinned memory)
+ * - Type deduction from primitive argument
+ * - Preserves nested structure based on dims
+ *
+ * **Example:**
+ * ```cpp
+ * torch::Tensor tensor = torch::tensor({{1.0, 2.0}, {3.0, 4.0}});
+ * std::vector<std::vector<float>> vec;
+ * tensor_to_vector(&tensor, &vec);
+ * // vec = {{1.0, 2.0}, {3.0, 4.0}}
+ * ```
+ *
+ * @subsection vector_cast_chunking chunking()
+ *
+ * **Vector Batching:**
+ * ```cpp
+ * template <typename G>
+ * std::vector<std::vector<G>> chunking(std::vector<G>* v, int N);
+ * ```
+ *
+ * **Purpose:** Split vector into batches of size N.
+ *
+ * **Example:**
+ * ```cpp
+ * std::vector<int> data = {1, 2, 3, 4, 5, 6, 7};
+ * auto batches = chunking(&data, 3);
+ * // batches = {{1, 2, 3}, {4, 5, 6}, {7}}
+ * ```
+ *
+ * @subsection vector_cast_variable_t variable_t Structure
+ *
+ * **ROOT TTree Branch Manager:**
+ * ```cpp
+ * struct variable_t: public bsc_t {
+ *     std::string variable_name;
+ *     bool failed_branch;
+ *     
+ *     void create_meta(meta_t* mt);
+ *     void build_switch(size_t s, torch::Tensor* tx);
+ *     
+ *     // Tensor → ROOT branch
+ *     void process(torch::Tensor* data, std::string* varname, TTree* tr);
+ *     
+ *     // Vector → ROOT branch (overloaded for all types)
+ *     void process(std::vector<float>* data, std::string* varname, TTree* tr);
+ *     void process(std::vector<std::vector<float>>* data, std::string* varname, TTree* tr);
+ *     // ... (double, long, int, bool variants)
+ *     
+ *     // Primitive → ROOT branch
+ *     void process(float* data, std::string* varname, TTree* tr);
+ *     void process(double* data, std::string* varname, TTree* tr);
+ *     // ... (long, int, bool variants)
+ * };
+ * ```
+ *
+ * **Purpose:** Manages conversion from PyTorch tensors/STL vectors to ROOT TTree branches.
+ *
+ * **Workflow:**
+ * 1. Receives torch::Tensor or std::vector
+ * 2. Converts to appropriate bsc_t type
+ * 3. Creates TBranch in TTree
+ * 4. Manages memory and branch lifecycle
+ *
+ * **Example:**
+ * ```cpp
+ * TFile* file = TFile::Open("output.root", "RECREATE");
+ * TTree* tree = new TTree("events", "Event data");
+ * 
+ * variable_t jet_pt_var;
+ * std::string name = "jet_pt";
+ * std::vector<float> jet_pts = {50.0, 60.0, 70.0};
+ * 
+ * jet_pt_var.process(&jet_pts, &name, tree);
+ * tree->Fill();
+ * 
+ * file->Write();
+ * file->Close();
+ * ```
+ *
+ * **Tensor Conversion:**
+ * ```cpp
+ * torch::Tensor tensor = torch::tensor({1.0, 2.0, 3.0});
+ * variable_t var;
+ * std::string name = "values";
+ * var.process(&tensor, &name, tree);
+ * ```
+ *
+ * @section typecasting_tensor_cast Tensor Padding (tensor_cast.h)
+ *
+ * @subsection tensor_cast_build_tensor build_tensor()
+ *
+ * **Ragged Array → Padded Tensor:**
+ * ```cpp
+ * template <typename G, typename g>
+ * static torch::Tensor build_tensor(std::vector<G>* _data, 
+ *                                    at::ScalarType _op, 
+ *                                    g, 
+ *                                    torch::TensorOptions* op);
+ * ```
+ *
+ * **Purpose:** Convert ragged (variable-length) nested vectors to padded tensor.
+ *
+ * **Algorithm:**
+ * 1. **scout_dim()**: Find maximum dimension at each level
+ * 2. **standard()**: Pad shorter vectors with default values (-1)
+ * 3. **as_primitive()**: Flatten to 1D vector
+ * 4. **torch::from_blob()**: Create tensor with inferred shape
+ *
+ * **Example:**
+ * ```cpp
+ * // Ragged jet data (variable number of jets per event)
+ * std::vector<std::vector<float>> jet_pts = {
+ *     {50.0, 60.0, 70.0},    // Event 0: 3 jets
+ *     {40.0, 55.0},          // Event 1: 2 jets
+ *     {65.0, 75.0, 80.0, 90.0}  // Event 2: 4 jets
+ * };
+ * 
+ * torch::TensorOptions opts = torch::TensorOptions().dtype(torch::kFloat32);
+ * torch::Tensor tensor = build_tensor(&jet_pts, torch::kFloat32, float(), &opts);
+ * 
+ * // Result shape: [3, 4] (3 events, max 4 jets)
+ * // tensor = [[50.0, 60.0, 70.0, -1.0],
+ * //           [40.0, 55.0, -1.0, -1.0],
+ * //           [65.0, 75.0, 80.0, 90.0]]
+ * ```
+ *
+ * @subsection tensor_cast_scout_dim scout_dim()
+ *
+ * **Dimension Scouting:**
+ * ```cpp
+ * template <typename g>
+ * void scout_dim(g*, int*);
+ * 
+ * template <typename G>
+ * void scout_dim(const std::vector<G>* vec, int* mx_dim);
+ * ```
+ *
+ * **Purpose:** Recursively find maximum dimension size for padding.
+ *
+ * @subsection tensor_cast_nulls nulls()
+ *
+ * **Padding Insertion:**
+ * ```cpp
+ * template <typename g>
+ * void nulls(g* d, int*);
+ * 
+ * template <typename g>
+ * void nulls(const std::vector<g>* d, int* mx_dim);
+ * ```
+ *
+ * **Purpose:** Pad vectors with default values (-1) to match maximum dimension.
+ *
+ * @subsection tensor_cast_as_primitive as_primitive()
+ *
+ * **Flattening:**
+ * ```cpp
+ * template <typename G, typename g>
+ * void as_primitive(G* data, std::vector<g>* lin, 
+ *                   std::vector<signed long>*, unsigned int);
+ * 
+ * template <typename G, typename g>
+ * static void as_primitive(std::vector<G>* data, std::vector<g>* linear, 
+ *                          std::vector<signed long>* dims, unsigned int depth = 0);
+ * ```
+ *
+ * **Purpose:** Recursively flatten nested structure to 1D primitive vector.
+ *
+ * @section typecasting_usage Usage Examples
+ *
+ * @subsection typecasting_merge_example Data Merging
+ *
+ * **Multi-File Data Aggregation:**
+ * ```cpp
+ * #include <tools/merge_cast.h>
+ * 
+ * std::map<std::string, std::vector<float>> file1_data;
+ * file1_data["jet_pt"] = {50.0, 60.0};
+ * file1_data["jet_eta"] = {1.0, 2.0};
+ * 
+ * std::map<std::string, std::vector<float>> file2_data;
+ * file2_data["jet_pt"] = {70.0};
+ * file2_data["jet_eta"] = {1.5};
+ * 
+ * merge_data(&file1_data, &file2_data);
+ * // file1_data["jet_pt"] = {50.0, 60.0, 70.0}
+ * // file1_data["jet_eta"] = {1.0, 2.0, 1.5}
+ * ```
+ *
+ * @subsection typecasting_tensor_vector Tensor-Vector Pipeline
+ *
+ * **GPU Tensor → ROOT File:**
+ * ```cpp
+ * #include <tools/vector_cast.h>
+ * 
+ * // GPU tensor from model inference
+ * torch::Tensor predictions = model->forward(batch);  // [N, 2] on CUDA
+ * 
+ * // Convert to vector (automatic CPU transfer)
+ * std::vector<std::vector<float>> pred_vec;
+ * tensor_to_vector(&predictions, &pred_vec);
+ * 
+ * // Write to ROOT file
+ * TFile* file = TFile::Open("predictions.root", "RECREATE");
+ * TTree* tree = new TTree("pred", "Predictions");
+ * 
+ * variable_t var;
+ * std::string name = "predictions";
+ * var.process(&pred_vec, &name, tree);
+ * 
+ * for (size_t i = 0; i < pred_vec.size(); ++i) {
+ *     tree->Fill();
+ * }
+ * 
+ * file->Write();
+ * file->Close();
+ * ```
+ *
+ * @subsection typecasting_ragged_padding Ragged Array Handling
+ *
+ * **Variable-Length Jets → Tensor:**
+ * ```cpp
+ * #include <tools/tensor_cast.h>
+ * 
+ * // Read jet data (variable number per event)
+ * std::vector<std::vector<float>> jet_pts;
+ * std::vector<std::vector<float>> jet_etas;
+ * 
+ * for (auto& event : events) {
+ *     jet_pts.push_back(event.jet_pt);   // Variable length
+ *     jet_etas.push_back(event.jet_eta);
+ * }
+ * 
+ * // Convert to padded tensors
+ * torch::TensorOptions opts = torch::TensorOptions().dtype(torch::kFloat32);
+ * torch::Tensor pt_tensor = build_tensor(&jet_pts, torch::kFloat32, float(), &opts);
+ * torch::Tensor eta_tensor = build_tensor(&jet_etas, torch::kFloat32, float(), &opts);
+ * 
+ * // Stack for model input
+ * torch::Tensor features = torch::stack({pt_tensor, eta_tensor}, -1);
+ * // Shape: [num_events, max_jets, 2]
+ * ```
+ *
+ * @subsection typecasting_dataloader Dataloader Integration
+ *
+ * **Dataset Preparation:**
+ * ```cpp
+ * #include <tools/vector_cast.h>
+ * #include <tools/tensor_cast.h>
+ * 
+ * // Read data from ROOT
+ * std::vector<std::vector<float>> node_features_vec;
+ * std::vector<std::vector<long>> edge_index_vec;
+ * 
+ * // ... ROOT reading logic ...
+ * 
+ * // Convert to tensors
+ * torch::TensorOptions opts = torch::TensorOptions().dtype(torch::kFloat32);
+ * torch::Tensor node_features = build_tensor(&node_features_vec, 
+ *                                            torch::kFloat32, float(), &opts);
+ * 
+ * torch::TensorOptions opts_long = torch::TensorOptions().dtype(torch::kLong);
+ * torch::Tensor edge_index = build_tensor(&edge_index_vec, 
+ *                                         torch::kLong, long(), &opts_long);
+ * 
+ * // Create graph data object
+ * graph_data gd;
+ * gd.node_features = node_features;
+ * gd.edge_index = edge_index;
+ * ```
+ *
+ * @section typecasting_specialization Type Specialization
+ *
+ * **Supported Types:**
+ * - **Primitives**: float, double, long, int, bool
+ * - **Vectors**: std::vector<T>
+ * - **Nested Vectors**: std::vector<std::vector<T>>, std::vector<std::vector<std::vector<T>>>
+ * - **Maps**: std::map<K, V> (recursive for nested structures)
+ * - **Tensors**: torch::Tensor (all dtypes, CPU/CUDA)
+ *
+ * **Adding New Types:**
+ * ```cpp
+ * // In variable_t (vector_cast.h):
+ * void process(std::vector<MyType>* data, std::string* varname, TTree* tr);
+ * 
+ * // In merge_cast.h:
+ * void merge_data(MyType* out, MyType* p2) {
+ *     // Custom merge logic
+ * }
+ * ```
+ *
+ * @section typecasting_performance Performance Considerations
+ *
+ * **Memory Management:**
+ * - **Pinned Memory**: tensor_to_vector uses pinned memory for GPU transfers
+ * - **Zero-Copy**: torch::from_blob avoids unnecessary copies
+ * - **Preallocations**: reserve_count enables vector preallocation
+ *
+ * **GPU Transfer Optimization:**
+ * ```cpp
+ * bool _transfer(torch::Tensor* data, torch::Tensor* cpux) {
+ *     // Asynchronous GPU → CPU transfer
+ *     cpux->copy_(*data, /*non_blocking=*/false);
+ *     return true;
+ * }
+ * ```
+ *
+ * @section typecasting_related Related Modules
+ *
+ * - @ref io "io" - ROOT/HDF5 I/O
+ * - @ref dataloader "dataloader" - Dataset batching
+ * - @ref pyc "pyc" - CUDA kernels
+ * - @ref structs "structs" - bsc_t, meta_t
+ * - @ref tools "tools" - Utility functions
+ *
+ * @section typecasting_summary Summary
+ *
+ * The **typecasting** module provides:
+ * - Generic data merging/flattening (merge_cast.h)
+ * - Tensor ↔ vector conversions with GPU support (vector_cast.h)
+ * - ROOT TTree integration via variable_t (vector_cast.h)
+ * - Ragged array padding for tensors (tensor_cast.h)
+ * - Template-based type deduction
+ * - Zero-copy optimizations
+ *
+ * **Core Functions:**
+ * - merge_data(), sum_data(), contract_data() - Data aggregation
+ * - tensor_to_vector() - Tensor → vector conversion
+ * - build_tensor() - Ragged array → padded tensor
+ * - variable_t::process() - ROOT branch creation
+ * - chunking() - Vector batching
+ */

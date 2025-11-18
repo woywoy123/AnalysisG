@@ -1,0 +1,57 @@
+/**
+ * @file
+ * @brief Graph-Implementierungen für BSM 4-Tops Datensätze
+ *
+ * @defgroup graphs_bsm_4tops Graphs: bsm_4tops
+ * @ingroup graphs_module
+ * @details
+ * Sammlung konkreter @ref graph_template -Ableitungen zur Erzeugung unterschiedlicher
+ * Graph-Ansichten für 4-Top-Ereignisse. Enthält Knoten-, Kanten- und Graph-Features
+ * sowie PreSelections für effizientes Filtering.
+ *
+ * Quellen:
+ * - Graphklassen: `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graphs.h`
+ * - Knoten-Features: `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/node_features.h`
+ * - Kanten-Features: `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/edge_features.h`
+ * - Graph-Features: `src/AnalysisG/graphs/bsm_4tops/include/bsm_4tops/graph_features.h`
+ * - Cython: `src/AnalysisG/graphs/bsm_4tops/graph_bsm_4tops.pyx`/`.pxd`
+ *
+ * @page graphs_bsm_4tops_page Graphs: bsm_4tops
+ *
+ * @section gb4t_classes Klassenübersicht
+ * Alle Klassen erben von @ref graph_template und überschreiben mindestens `clone()` und `CompileEvent()`:
+ * - `graph_tops` – Fokus auf Top-Objekten
+ * - `graph_children` – Fokus auf Kinder der Tops
+ * - `graph_truthjets` – Wahrheits-Jets; `graph_truthjets_nonu` – ohne Neutrinos
+ * - `graph_jets` – Rekonstruktion-Jets inkl. `PreSelection()` für Basisschnitte
+ * - `graph_jets_nonu` – Jets ohne Neutrinos
+ * - `graph_jets_detector_lep` – Jets + Detektor-Leptonen kombiniert
+ * - `graph_detector` – Detektorobjekte; besitzt `PreSelection()`, Feld `nux` (Nu-Kandidaten), Flags `force_match`, `num_cuda`
+ *
+ * @section gb4t_features Features
+ * - Knoten-Features (`node_features.h`):
+ *   - Observablen: `pt`, `eta`, `phi`, `energy`, `charge`
+ *   - Labels/Truth: `top_node`, `res_node`, `is_lepton`, `is_bquark`, `is_neutrino`
+ * - Kanten-Features (`edge_features.h`):
+ *   - Labels/Truth: `top_edge`, `res_edge`, `det_top_edge`, `det_res_edge`
+ * - Graph-Features (`graph_features.h`):
+ *   - Zählungen/Observablen: `num_tops`, `num_lepton`, `num_neutrino`, `num_jets`, `num_truthjets`, `missing_et`, `missing_phi`, `event_number`, `event_weight`, `signal_event`
+ *
+ * @section gb4t_workflow Workflow
+ * ```cpp
+ * bsm_4tops evt;  // aus Selektion/IO befüllt
+ * evt.CompileEvent();
+ *
+ * graph_jets g;      // oder graph_tops/graph_truthjets ...
+ * g.set_event(&evt);
+ * if (g.PreSelection()) {     // optional
+ *     g.CompileEvent();       // erzeugt Knoten/Kanten/Features
+ *     // g.nodes(), g.edges(), g.features() -> für Dataloader/Training
+ * }
+ * ```
+ *
+ * @section gb4t_links Verweise
+ * - Event-Struktur: @ref events_bsm_4tops
+ * - Templates: @ref graph_template, @ref event_template
+ * - Selektionen (Beispiele): @ref selections_mc20_matching, @ref selections_mc20_topmatching
+ */

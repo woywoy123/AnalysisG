@@ -1,0 +1,681 @@
+/**
+ * @file structs.dox
+ * @brief Fundamental data structures for AnalysisG framework
+ * @defgroup structs Structs
+ * @details 
+ * Core data structure definitions used throughout AnalysisG, including type systems, 
+ * enumerations, ROOT I/O structures, metadata containers, model settings, optimizer 
+ * configurations, and training reports. Provides foundational types for all modules.
+ *
+ * **Quick Navigation:**
+ * - @ref io "io" - ROOT/HDF5 I/O (uses element_t, data_t)
+ * - @ref meta "meta" - Metadata management (uses meta_t, weights_t)
+ * - @ref model "model" - GNN models (uses model_settings_t)
+ * - @ref optimizer "optimizer" - Training orchestrator (uses optimizer_params_t)
+ * - @ref dataloader "dataloader" - Dataset batching (uses folds_t, graph_hdf5)
+ * - @ref metric "metric" - Performance metrics (uses model_report)
+ * - @ref particle_template "particle_template" - Base particle (uses particle_t)
+ * - @ref tools "tools" - Utility functions (uses bsc_t)
+ *
+ * @page structs_page Structs Module Documentation
+ *
+ * @section structs_intro Introduction
+ *
+ * The **structs** module provides AnalysisG's fundamental data structure definitions. 
+ * These structures form the type system backbone, enabling type-safe I/O operations, 
+ * configuration management, training orchestration, and inter-module communication. 
+ * All 12 header files are essential infrastructure components.
+ *
+ * **Key Components:**
+ * - **base.h**: bsc_t - Universal type container with ROOT I/O support
+ * - **element.h**: data_t, element_t, write_t, writer - ROOT file handling
+ * - **enums.h**: Type enumerations (data_enum, opt_enum, loss_enum, mode_enum, etc.)
+ * - **event.h**: event_t - Event-level data structure
+ * - **folds.h**: folds_t, graph_hdf5 - K-fold and HDF5 structures
+ * - **meta.h**: meta_t, weights_t - Sample metadata
+ * - **model.h**: model_settings_t - Neural network configuration
+ * - **optimizer.h**: optimizer_params_t, loss_opt - Training parameters
+ * - **particles.h**: particle_t - Particle data structure
+ * - **property.h**: cproperty - Configurable property wrapper
+ * - **report.h**: model_report - Training metrics and logs
+ * - **settings.h**: settings_t - Global settings
+ *
+ * @section structs_base Base Type System (base.h)
+ *
+ * @subsection base_bsc_t bsc_t Structure
+ *
+ * **Universal Type Container:**
+ * ```cpp
+ * struct bsc_t {
+ *     // Type identification
+ *     data_enum type;
+ *     long index;
+ *     bool clear;
+ *     
+ *     // Data pointers (all possible types)
+ *     // Primitives
+ *     double* d;   float* f;    long* l;    int* i;
+ *     bool* b;     char* c;      unsigned long long* ull;  unsigned int* ui;
+ *     
+ *     // Vectors
+ *     std::vector<double>* v_d;   std::vector<float>* v_f;
+ *     std::vector<long>* v_l;     std::vector<int>* v_i;
+ *     std::vector<bool>* v_b;     std::vector<char>* v_c;
+ *     // ... (ull, ui variants)
+ *     
+ *     // Vector<Vector>
+ *     std::vector<std::vector<double>>* vv_d;
+ *     std::vector<std::vector<float>>* vv_f;
+ *     // ... (all type variants)
+ *     
+ *     // Vector<Vector<Vector>>
+ *     std::vector<std::vector<std::vector<double>>>* vvv_d;
+ *     // ... (all type variants)
+ *     
+ *     // Methods
+ *     bool element(T* el);          // Overloaded for all types
+ *     void flush_buffer();
+ *     std::string as_string();
+ *     data_enum root_type_translate(std::string*);
+ * };
+ * ```
+ *
+ * **Purpose:** Provides type-erasure for ROOT I/O operations. Allows generic handling 
+ * of arbitrary types through a single interface.
+ *
+ * **Example:**
+ * ```cpp
+ * bsc_t container;
+ * container.type = data_enum::v_d;
+ * container.v_d = new std::vector<double>();
+ * 
+ * double value = 125.3;
+ * container.element(&value);  // Stores value
+ * 
+ * container.flush_buffer();   // Cleans up
+ * ```
+ *
+ * @section structs_element ROOT I/O Structures (element.h)
+ *
+ * @subsection element_data_t data_t Structure
+ *
+ * **ROOT Branch Wrapper:**
+ * ```cpp
+ * struct data_t: public bsc_t {
+ *     std::string leaf_name;
+ *     std::string branch_name;
+ *     std::string tree_name;
+ *     std::string leaf_type;
+ *     std::string path;
+ *     std::string* fname;
+ *     
+ *     TLeaf* leaf;
+ *     TBranch* branch;
+ *     TTree* tree;
+ *     TFile* file;
+ *     
+ *     int file_index;
+ *     std::vector<std::string>* files_s;
+ *     std::vector<long>* files_i;
+ *     std::vector<TFile*>* files_t;
+ *     
+ *     void initialize();
+ *     void flush();
+ *     bool next();
+ * };
+ * ```
+ *
+ * **Example:**
+ * ```cpp
+ * data_t data;
+ * data.branch_name = "jet_pt";
+ * data.tree_name = "nominal";
+ * data.file = TFile::Open("sample.root");
+ * data.initialize();
+ * 
+ * while (data.next()) {
+ *     std::vector<float> jet_pts;
+ *     data.element(&jet_pts);
+ *     // Process jet_pts...
+ * }
+ * ```
+ *
+ * @subsection element_element_t element_t Structure
+ *
+ * **Event-Level Data Handler:**
+ * ```cpp
+ * struct element_t {
+ *     std::string tree;
+ *     long event_index;
+ *     std::string filename;
+ *     std::map<std::string, data_t*> handle;
+ *     
+ *     bool next();
+ *     void set_meta();
+ *     bool boundary();
+ *     
+ *     template <typename g>
+ *     bool get(std::string key, g* var);
+ * };
+ * ```
+ *
+ * **Example:**
+ * ```cpp
+ * element_t event;
+ * event.tree = "nominal";
+ * event.filename = "sample.root";
+ * 
+ * while (event.next()) {
+ *     std::vector<float> jet_pt;
+ *     event.get("jet_pt", &jet_pt);
+ *     
+ *     float met;
+ *     event.get("met_met", &met);
+ * }
+ * ```
+ *
+ * @subsection element_write_t write_t / writer Structures
+ *
+ * **ROOT File Writer:**
+ * ```cpp
+ * struct write_t {
+ *     TFile* file;
+ *     TTree* tree;
+ *     meta_t* mtx;
+ *     std::map<std::string, variable_t*>* data;
+ *     
+ *     variable_t* process(std::string* name);
+ *     void write();
+ *     void create(std::string tr_name, std::string path);
+ *     void close();
+ * };
+ * 
+ * struct writer {
+ *     void create(std::string* pth);
+ *     void write(std::string* tree);
+ *     
+ *     template <typename g>
+ *     void process(std::string* tree, std::string* name, g* t);
+ * };
+ * ```
+ *
+ * **Example:**
+ * ```cpp
+ * writer w;
+ * std::string path = "output.root";
+ * w.create(&path);
+ * 
+ * std::string tree_name = "events";
+ * std::string var_name = "jet_pt";
+ * std::vector<float> jet_pts = {50.0, 60.0, 70.0};
+ * w.process(&tree_name, &var_name, &jet_pts);
+ * 
+ * w.write(&tree_name);
+ * ```
+ *
+ * @section structs_enums Enumerations (enums.h)
+ *
+ * @subsection enums_data_enum data_enum
+ *
+ * **Type System Enumeration:**
+ * ```cpp
+ * enum class data_enum {
+ *     // Primitives
+ *     d, f, l, i, ull, ui, b, c,
+ *     
+ *     // Vectors
+ *     v_d, v_f, v_l, v_i, v_ull, v_ui, v_b, v_c,
+ *     
+ *     // Vector<Vector>
+ *     vv_d, vv_f, vv_l, vv_i, vv_ull, vv_ui, vv_b, vv_c,
+ *     
+ *     // Vector<Vector<Vector>>
+ *     vvv_d, vvv_f, vvv_l, vvv_i, vvv_ull, vvv_ui, vvv_b, vvv_c,
+ *     
+ *     undef, unset
+ * };
+ * ```
+ *
+ * **Naming:** `d`=double, `f`=float, `l`=long, `i`=int, `ull`=unsigned long long, 
+ * `ui`=unsigned int, `b`=bool, `c`=char
+ *
+ * @subsection enums_opt_enum opt_enum
+ *
+ * **Optimizer Types:**
+ * ```cpp
+ * enum class opt_enum {
+ *     adam, adagrad, adamw, lbfgs, rmsprop, sgd,
+ *     invalid_optimizer
+ * };
+ * ```
+ *
+ * @subsection enums_loss_enum loss_enum
+ *
+ * **Loss Functions:**
+ * ```cpp
+ * enum class loss_enum {
+ *     bce, bce_with_logits, cosine_embedding, cross_entropy,
+ *     ctc, hinge_embedding, huber, kl_div, l1, margin_ranking,
+ *     mse, multi_label_margin, multi_label_soft_margin,
+ *     multi_margin, nll, poisson_nll, smooth_l1, soft_margin,
+ *     triplet_margin, triplet_margin_with_distance,
+ *     invalid_loss
+ * };
+ * ```
+ *
+ * @subsection enums_mode_enum mode_enum
+ *
+ * **Training Modes:**
+ * ```cpp
+ * enum class mode_enum {
+ *     training, validation, evaluation
+ * };
+ * ```
+ *
+ * @subsection enums_graph_enum graph_enum
+ *
+ * **Graph Data Types:**
+ * ```cpp
+ * enum class graph_enum {
+ *     data_graph, data_node, data_edge,
+ *     truth_graph, truth_node, truth_edge,
+ *     edge_index, weight, batch_index, batch_events,
+ *     pred_graph, pred_node, pred_edge, pred_extra
+ * };
+ * ```
+ *
+ * @subsection enums_particle_enum particle_enum
+ *
+ * **Particle Properties:**
+ * ```cpp
+ * enum class particle_enum {
+ *     index, pdgid,
+ *     pt, eta, phi, energy, px, pz, py, mass, charge,
+ *     is_b, is_lep, is_nu, is_add,
+ *     pmc, pmu  // Bulk cartesian/polar
+ * };
+ * ```
+ *
+ * @section structs_meta Metadata Structures (meta.h)
+ *
+ * @subsection meta_weights_t weights_t
+ *
+ * **Monte Carlo Weights:**
+ * ```cpp
+ * struct weights_t {
+ *     double cross_section;
+ *     double k_factor;
+ *     double filter_efficiency;
+ *     double luminosity;
+ *     long num_events;
+ *     
+ *     double nominal_weight();  // xs * k * filt_eff * lumi / N
+ * };
+ * ```
+ *
+ * **Example:**
+ * ```cpp
+ * weights_t w;
+ * w.cross_section = 831.76;      // pb
+ * w.k_factor = 1.0;
+ * w.filter_efficiency = 1.0;
+ * w.luminosity = 140.1;          // fb⁻¹
+ * w.num_events = 1000000;
+ * 
+ * double weight = w.nominal_weight();  // Event weight
+ * ```
+ *
+ * @subsection meta_meta_t meta_t
+ *
+ * **Sample Metadata:**
+ * ```cpp
+ * struct meta_t {
+ *     std::string process;
+ *     int dsid;
+ *     std::string campaign;  // mc16, mc20
+ *     
+ *     weights_t weights;
+ *     
+ *     std::vector<std::string> files;
+ *     std::map<std::string, std::string> properties;
+ * };
+ * ```
+ *
+ * @section structs_optimizer Optimizer Structures (optimizer.h)
+ *
+ * @subsection optimizer_loss_opt loss_opt
+ *
+ * **Loss Function Configuration:**
+ * ```cpp
+ * struct loss_opt {
+ *     loss_enum fx;
+ *     
+ *     // Reduction modes
+ *     bool mean, sum, none;
+ *     
+ *     // Loss-specific flags
+ *     bool swap, full, batch_mean, target, zero_inf, defaults;
+ *     
+ *     // Parameters
+ *     int ignore, blank;
+ *     double margin, beta, eps, smoothing, delta;
+ *     std::vector<double> weight;
+ * };
+ * ```
+ *
+ * **Example:**
+ * ```cpp
+ * loss_opt loss;
+ * loss.fx = loss_enum::cross_entropy;
+ * loss.mean = true;
+ * loss.weight = {1.0, 2.0, 1.5};  // Class weights
+ * ```
+ *
+ * @subsection optimizer_params_t optimizer_params_t
+ *
+ * **Optimizer Configuration:**
+ * ```cpp
+ * class optimizer_params_t {
+ * public:
+ *     std::string optimizer;  // "adam", "sgd", etc.
+ *     
+ *     cproperty<double> lr;
+ *     cproperty<double> lr_decay;
+ *     cproperty<double> weight_decay;
+ *     cproperty<double> eps;
+ *     cproperty<double> alpha;
+ *     cproperty<double> momentum;
+ *     cproperty<double> dampening;
+ *     
+ *     cproperty<bool> amsgrad;
+ *     cproperty<bool> centered;
+ *     cproperty<bool> nesterov;
+ *     
+ *     cproperty<int> max_iter;
+ *     cproperty<int> max_eval;
+ *     cproperty<int> history_size;
+ *     
+ *     cproperty<std::tuple<float, float>> betas;
+ *     
+ *     // Scheduler
+ *     std::string scheduler;
+ *     unsigned int step_size;
+ *     double gamma;
+ * };
+ * ```
+ *
+ * **Example:**
+ * ```cpp
+ * optimizer_params_t opt;
+ * opt.optimizer = "adam";
+ * opt.lr = 0.001;
+ * opt.betas = std::make_tuple(0.9f, 0.999f);
+ * opt.weight_decay = 1e-5;
+ * 
+ * opt.scheduler = "steplr";
+ * opt.step_size = 10;
+ * opt.gamma = 0.1;
+ * ```
+ *
+ * @section structs_report Training Report (report.h)
+ *
+ * @subsection report_model_report model_report
+ *
+ * **Training Metrics:**
+ * ```cpp
+ * struct model_report {
+ *     int k;           // K-fold index
+ *     int epoch;
+ *     bool is_complete;
+ *     
+ *     std::vector<double> current_lr;
+ *     
+ *     // Loss maps
+ *     std::map<mode_enum, std::map<std::string, float>> loss_graph;
+ *     std::map<mode_enum, std::map<std::string, float>> loss_node;
+ *     std::map<mode_enum, std::map<std::string, float>> loss_edge;
+ *     
+ *     // Accuracy maps
+ *     std::map<mode_enum, std::map<std::string, float>> accuracy_graph;
+ *     std::map<mode_enum, std::map<std::string, float>> accuracy_node;
+ *     std::map<mode_enum, std::map<std::string, float>> accuracy_edge;
+ *     
+ *     std::string run_name;
+ *     std::string mode;
+ *     long iters;
+ *     long num_evnt;
+ *     float progress;
+ *     
+ *     std::string print();
+ *     std::string prx(std::map<mode_enum, std::map<std::string, float>>* data, 
+ *                     std::string title);
+ * };
+ * ```
+ *
+ * **Example:**
+ * ```cpp
+ * model_report report;
+ * report.epoch = 10;
+ * report.k = 0;  // First fold
+ * 
+ * report.loss_graph[mode_enum::training]["bce"] = 0.25;
+ * report.loss_node[mode_enum::training]["bce"] = 0.18;
+ * report.accuracy_graph[mode_enum::validation]["acc"] = 0.92;
+ * 
+ * std::cout << report.print() << std::endl;
+ * ```
+ *
+ * @section structs_folds K-Fold Structures (folds.h)
+ *
+ * @subsection folds_folds_t folds_t
+ *
+ * **K-Fold Split:**
+ * ```cpp
+ * struct folds_t {
+ *     int kfold;
+ *     std::vector<int> train_indices;
+ *     std::vector<int> val_indices;
+ *     std::vector<int> test_indices;
+ * };
+ * ```
+ *
+ * @subsection folds_graph_hdf5 graph_hdf5 / graph_hdf5_w
+ *
+ * **HDF5 Graph Storage:**
+ * ```cpp
+ * struct graph_hdf5 {
+ *     std::vector<std::vector<double>> node_features;
+ *     std::vector<std::vector<double>> edge_features;
+ *     std::vector<std::vector<long>> edge_index;
+ *     std::vector<long> batch_index;
+ *     // ... truth data ...
+ * };
+ * 
+ * struct graph_hdf5_w {
+ *     // Writer variant with H5::DataSet objects
+ * };
+ * ```
+ *
+ * @section structs_model Model Settings (model.h)
+ *
+ * @subsection model_settings_t model_settings_t
+ *
+ * **Neural Network Configuration:**
+ * ```cpp
+ * struct model_settings_t {
+ *     int input_dim;
+ *     int hidden_dim;
+ *     int output_dim;
+ *     int num_layers;
+ *     
+ *     double dropout;
+ *     std::string activation;  // "relu", "elu", "selu"
+ *     
+ *     bool batch_norm;
+ *     bool layer_norm;
+ *     bool residual;
+ * };
+ * ```
+ *
+ * @section structs_particles Particle Structure (particles.h)
+ *
+ * @subsection particles_particle_t particle_t
+ *
+ * **Particle Data:**
+ * ```cpp
+ * struct particle_t {
+ *     long index;
+ *     int pdgid;
+ *     
+ *     // Kinematics
+ *     double pt, eta, phi, energy;
+ *     double px, py, pz, mass;
+ *     double charge;
+ *     
+ *     // Flags
+ *     bool is_b, is_lep, is_nu, is_add;
+ *     
+ *     particle_template* ptr;
+ * };
+ * ```
+ *
+ * @section structs_property Property Wrapper (property.h)
+ *
+ * @subsection property_cproperty cproperty
+ *
+ * **Configurable Property:**
+ * ```cpp
+ * template <typename T, typename Parent>
+ * class cproperty {
+ * public:
+ *     cproperty(Parent* parent, void (*setter)(T*, Parent*));
+ *     
+ *     cproperty& operator=(const T& value);
+ *     operator T() const;
+ *     
+ * private:
+ *     T value_;
+ *     Parent* parent_;
+ *     void (*setter_)(T*, Parent*);
+ * };
+ * ```
+ *
+ * **Example:**
+ * ```cpp
+ * class MyConfig {
+ *     cproperty<double, MyConfig> learning_rate;
+ *     
+ *     static void set_lr(double* lr, MyConfig* obj) {
+ *         obj->m_lr_modified = true;
+ *         // Validation logic...
+ *     }
+ *     
+ *     bool m_lr_modified = false;
+ * };
+ * ```
+ *
+ * @section structs_event Event Structure (event.h)
+ *
+ * @subsection event_event_t event_t
+ *
+ * **Event-Level Data:**
+ * ```cpp
+ * struct event_t {
+ *     long event_number;
+ *     long run_number;
+ *     double event_weight;
+ *     
+ *     std::vector<particle_t> particles;
+ *     double met_met, met_phi;
+ * };
+ * ```
+ *
+ * @section structs_settings Global Settings (settings.h)
+ *
+ * @subsection settings_settings_t settings_t
+ *
+ * **Framework Settings:**
+ * ```cpp
+ * struct settings_t {
+ *     std::string device;  // "cpu", "cuda"
+ *     int num_threads;
+ *     bool verbose;
+ *     std::string output_path;
+ * };
+ * ```
+ *
+ * @section structs_usage Usage Examples
+ *
+ * **ROOT I/O with element_t:**
+ * ```cpp
+ * element_t event;
+ * event.tree = "nominal";
+ * event.filename = "sample.root";
+ * 
+ * while (event.next()) {
+ *     std::vector<float> jet_pt;
+ *     event.get("jet_pt", &jet_pt);
+ *     
+ *     for (float pt : jet_pt) {
+ *         if (pt > 25.0) {
+ *             // Process jet
+ *         }
+ *     }
+ * }
+ * ```
+ *
+ * **Training Configuration:**
+ * ```cpp
+ * optimizer_params_t opt;
+ * opt.optimizer = "adam";
+ * opt.lr = 0.001;
+ * opt.betas = std::make_tuple(0.9f, 0.999f);
+ * 
+ * loss_opt loss;
+ * loss.fx = loss_enum::bce_with_logits;
+ * loss.mean = true;
+ * 
+ * model_settings_t model;
+ * model.input_dim = 4;
+ * model.hidden_dim = 128;
+ * model.output_dim = 2;
+ * model.num_layers = 3;
+ * ```
+ *
+ * **Training Report:**
+ * ```cpp
+ * model_report report;
+ * report.epoch = 5;
+ * report.loss_graph[mode_enum::training]["total"] = 0.35;
+ * report.accuracy_graph[mode_enum::validation]["acc"] = 0.89;
+ * 
+ * std::cout << report.print() << std::endl;
+ * ```
+ *
+ * @section structs_related Related Modules
+ *
+ * - @ref io "io" - ROOT/HDF5 I/O
+ * - @ref meta "meta" - Metadata management
+ * - @ref model "model" - GNN models
+ * - @ref optimizer "optimizer" - Training orchestrator
+ * - @ref dataloader "dataloader" - Dataset batching
+ * - @ref metric "metric" - Performance metrics
+ * - @ref tools "tools" - Utility functions
+ *
+ * @section structs_summary Summary
+ *
+ * The **structs** module provides:
+ * - Fundamental type system (bsc_t, data_enum)
+ * - ROOT I/O structures (data_t, element_t, writer)
+ * - Training configuration (optimizer_params_t, loss_opt, model_settings_t)
+ * - Metadata containers (meta_t, weights_t)
+ * - Training reports (model_report)
+ * - Particle data structures (particle_t)
+ * - K-fold utilities (folds_t, graph_hdf5)
+ *
+ * **Coverage:**
+ * - 12 header files fully integrated
+ * - Type-safe I/O operations
+ * - Comprehensive enumeration system
+ * - Training infrastructure foundation
+ */

@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for graphs/ssml_mc20 implementation.
+
+@defgroup graphs_ssml_mc20 Graphs: ssml_mc20
+@ingroup graphs_module
+
+@details
+Implements `graph_ssml_mc20` features/edges.
+Source: `src/AnalysisG/graphs/ssml_mc20/`
+*/

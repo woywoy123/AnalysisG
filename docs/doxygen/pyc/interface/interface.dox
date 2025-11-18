@@ -1,0 +1,661 @@
+/**
+ * @file interface.dox
+ * @brief PyTorch C++ interface and Python bindings for PyC CUDA kernels
+ * @defgroup pyc_interface PyC Interface
+ * @details 
+ * C++ interface layer bridging AnalysisG's PyC CUDA kernels with PyTorch via 
+ * LibTorch. Provides Python-accessible functions through torch.ops registration, 
+ * type conversion utilities, and the neutrino particle class for reconstruction.
+ *
+ * **Quick Navigation:**
+ * - @ref pyc_physics "physics" - Relativistic kinematics (P, M, Beta, ΔR)
+ * - @ref pyc_transform "transform" - Coordinate transformations (Cartesian ↔ Polar)
+ * - @ref pyc_operators "operators" - Vector/matrix operations (dot, cross, rotation)
+ * - @ref pyc_nusol "nusol" - Neutrino reconstruction algorithms
+ * - @ref pyc_graph "graph" - Graph aggregation and PageRank
+ * - @ref pyc_cutils "cutils" - CUDA utilities and device management
+ * - @ref pyc_overview "PyC Overview" - Architecture and CUDA acceleration
+ * - @ref particle_template "particle_template" - Base particle class
+ *
+ * @page pyc_interface_page PyC Interface Documentation
+ *
+ * @section interface_intro Introduction
+ *
+ * The **pyc/interface** module is AnalysisG's bridge between high-performance 
+ * CUDA kernels and Python-based PyTorch workflows. It registers all PyC functions 
+ * with PyTorch's operator registry (torch.ops), enabling seamless GPU-accelerated 
+ * computations from Python with automatic differentiation support.
+ *
+ * **Key Features:**
+ * - **PyTorch Integration**: All functions accessible via `torch.ops.{cupyc|tpyc}`
+ * - **Automatic Device Management**: Transparent CPU/CUDA tensor handling
+ * - **Type Conversion**: C++ ↔ PyTorch tensor utilities
+ * - **Neutrino Class**: Specialized particle for top quark reconstruction
+ * - **Namespace Organization**: transform, physics, operators, nusol, graph
+ *
+ * **Design Philosophy:**
+ * The interface layer provides minimal overhead between PyTorch and CUDA kernels. 
+ * Functions accept torch::Tensor arguments, dispatch to optimized CUDA/CPU 
+ * implementations, and return PyTorch-compatible tensors or dictionaries suitable 
+ * for gradient computation.
+ *
+ * @section interface_purpose Purpose and Scope
+ *
+ * **Primary Use Cases:**
+ * 1. **Python Access**: Call CUDA-accelerated functions from PyTorch models
+ * 2. **Type Conversion**: Bridge C++ vectors/maps with PyTorch tensors
+ * 3. **Neutrino Reconstruction**: Top quark decay chain reconstruction
+ * 4. **Custom Operators**: Register domain-specific operations for autograd
+ *
+ * **Module Responsibilities:**
+ * - Register PyC functions with torch.ops (TORCH_LIBRARY macro)
+ * - Convert between std::vector, std::map, and torch::Tensor
+ * - Manage CPU/CUDA device placement
+ * - Provide neutrino particle class for reconstruction algorithms
+ * - Expose nested namespaces (transform, physics, operators, nusol, graph)
+ *
+ * **Architecture:**
+ * ```
+ * Python (torch.ops.cupyc.*)
+ *    ↓
+ * LibTorch (torch::Tensor)
+ *    ↓
+ * pyc::interface (device dispatch)
+ *    ↓
+ * CUDA Kernels / CPU Implementations
+ * ```
+ *
+ * @section interface_neutrino Neutrino Class
+ *
+ * @subsection neutrino_definition Class Definition
+ *
+ * **Specialized Particle for Top Reconstruction:**
+ * ```cpp
+ * class neutrino: public particle_template {
+ * public:
+ *     neutrino();
+ *     neutrino(double px, double py, double pz);
+ *     virtual ~neutrino();
+ *     
+ *     // Reconstruction quality
+ *     double min;                           // Minimization metric
+ *     
+ *     // Parent particle indices
+ *     long l_idx;                           // Lepton index
+ *     long b_idx;                           // B-quark index
+ *     
+ *     // Associated particles
+ *     particle_template* bquark;
+ *     particle_template* lepton;
+ *     
+ *     // Alternative solutions
+ *     std::vector<neutrino*> alternatives;
+ *     std::vector<int> top_index;
+ *     
+ *     // Reconstruction flags
+ *     bool from_res;                        // From resonance constraint
+ * };
+ * ```
+ *
+ * **Field Descriptions:**
+ * - **min**: Minimization metric from reconstruction (lower = better fit)
+ * - **l_idx / b_idx**: Indices into original particle collections
+ * - **bquark / lepton**: Pointers to parent particles in decay chain
+ * - **alternatives**: Other neutrino solutions from same event
+ * - **top_index**: Top quark candidate associations
+ * - **from_res**: Whether solution uses W/top mass constraints
+ *
+ * **Example:**
+ * ```cpp
+ * neutrino* nu = new neutrino(45.2, -30.1, 120.5);  // px, py, pz in GeV
+ * nu->min = 0.05;  // Good reconstruction quality
+ * nu->l_idx = 2;   // Corresponds to 3rd lepton
+ * nu->b_idx = 5;   // Corresponds to 6th b-quark
+ * nu->from_res = true;  // Used W mass constraint
+ * 
+ * // Access parent particles
+ * double top_mass = (nu->e + nu->bquark->e + nu->lepton->e);
+ * ```
+ *
+ * @section interface_conversion Type Conversion Utilities
+ *
+ * @subsection conversion_std_to_dict std_to_dict()
+ *
+ * **Convert C++ Map to PyTorch Dictionary:**
+ * ```cpp
+ * torch::Dict<std::string, torch::Tensor> std_to_dict(
+ *     std::map<std::string, torch::Tensor>* inpt
+ * );
+ * 
+ * torch::Dict<std::string, torch::Tensor> std_to_dict(
+ *     std::map<std::string, torch::Tensor> inpt
+ * );
+ * ```
+ *
+ * **Purpose:** PyTorch functions often return dictionaries for named outputs. 
+ * This utility converts C++ std::map to torch::Dict for Python compatibility.
+ *
+ * **Example:**
+ * ```cpp
+ * std::map<std::string, torch::Tensor> results;
+ * results["energy"] = torch::tensor({100.0, 150.0, 200.0});
+ * results["momentum"] = torch::tensor({50.0, 75.0, 100.0});
+ * 
+ * torch::Dict<std::string, torch::Tensor> py_dict = pyc::std_to_dict(results);
+ * // Python: dict = {"energy": tensor([100, 150, 200]), "momentum": ...}
+ * ```
+ *
+ * @subsection conversion_tensorize tensorize()
+ *
+ * **Convert C++ Vectors to PyTorch Tensors:**
+ * ```cpp
+ * torch::Tensor tensorize(std::vector<double>* inpt);
+ * torch::Tensor tensorize(std::vector<long>* inpt);
+ * torch::Tensor tensorize(std::vector<std::vector<double>>* inpt);
+ * torch::Tensor tensorize(std::vector<std::vector<long>>* inpt);
+ * ```
+ *
+ * **Purpose:** Bridge C++ data structures with PyTorch tensor API.
+ *
+ * **Example:**
+ * ```cpp
+ * // 1D vector → 1D tensor
+ * std::vector<double> masses = {172.5, 173.0, 172.8};
+ * torch::Tensor mass_tensor = pyc::tensorize(&masses);
+ * // shape: [3]
+ * 
+ * // 2D vector → 2D tensor
+ * std::vector<std::vector<double>> particles = {
+ *     {50.0, 30.0, 100.0, 120.0},  // px, py, pz, e
+ *     {60.0, -20.0, 80.0, 110.0}
+ * };
+ * torch::Tensor pmc_tensor = pyc::tensorize(&particles);
+ * // shape: [2, 4]
+ * ```
+ *
+ * @subsection conversion_particle as_pmc() / to_pmc()
+ *
+ * **Extract 4-Momentum from Particles:**
+ * ```cpp
+ * template <typename g>
+ * std::vector<double> as_pmc(g* p) {
+ *     return {p->px, p->py, p->pz, p->e};
+ * }
+ * 
+ * template <typename g>
+ * std::vector<std::vector<double>> to_pmc(std::vector<g*>* p) {
+ *     std::vector<std::vector<double>> atx;
+ *     for (size_t x(0); x < p->size(); ++x) {
+ *         atx.push_back(pyc::as_pmc((*p)[x]));
+ *     }
+ *     return atx;
+ * }
+ * ```
+ *
+ * **Purpose:** Convert particle objects to numerical 4-vectors for tensor operations.
+ *
+ * **Example:**
+ * ```cpp
+ * // Single particle
+ * my_particle* jet = new my_particle();
+ * jet->px = 50.0; jet->py = 30.0; jet->pz = 100.0; jet->e = 120.0;
+ * auto pmc = pyc::as_pmc(jet);  // {50.0, 30.0, 100.0, 120.0}
+ * 
+ * // Particle collection
+ * std::vector<my_particle*> jets = {jet1, jet2, jet3};
+ * auto pmc_matrix = pyc::to_pmc(&jets);
+ * // [[px1, py1, pz1, e1],
+ * //  [px2, py2, pz2, e2],
+ * //  [px3, py3, pz3, e3]]
+ * 
+ * torch::Tensor jet_tensor = pyc::tensorize(&pmc_matrix);
+ * ```
+ *
+ * @section interface_namespaces Namespace Organization
+ *
+ * @subsection namespace_transform pyc::transform
+ *
+ * **Coordinate System Transformations:**
+ * - **separate**: Individual component inputs (px, py, pz, e)
+ * - **combined**: Single tensor input (pmc or pmu)
+ *
+ * **Functions:**
+ * - Cartesian → Polar: `Pt()`, `Eta()`, `Phi()`, `PtEtaPhi()`, `PtEtaPhiE()`
+ * - Polar → Cartesian: `Px()`, `Py()`, `Pz()`, `PxPyPz()`, `PxPyPzE()`
+ *
+ * **Example (Python):**
+ * ```python
+ * import torch
+ * torch.ops.load_library("libcupyc.so")
+ * 
+ * # Cartesian to polar
+ * px = torch.tensor([50.0, 60.0])
+ * py = torch::tensor([30.0, -20.0])
+ * pz = torch.tensor([100.0, 80.0])
+ * 
+ * pt = torch.ops.cupyc.transform_separate_pt(px, py)
+ * eta = torch.ops.cupyc.transform_separate_eta(px, py, pz)
+ * phi = torch.ops.cupyc.transform_separate_phi(px, py)
+ * 
+ * # Combined input
+ * pmc = torch.tensor([[50, 30, 100, 120], [60, -20, 80, 110]])
+ * pmu = torch.ops.cupyc.transform_combined_ptetaphie(pmc)
+ * ```
+ *
+ * @subsection namespace_physics pyc::physics
+ *
+ * **Relativistic Kinematics:**
+ * - **cartesian.separate**: px, py, pz, e as separate tensors
+ * - **cartesian.combined**: pmc = [px, py, pz, e] as single tensor
+ * - **polar.separate**: pt, eta, phi, e as separate tensors
+ * - **polar.combined**: pmu = [pt, eta, phi, e] as single tensor
+ *
+ * **Functions:**
+ * - Momentum: `P2()`, `P()`, `Beta2()`, `Beta()`
+ * - Invariant mass: `M2()`, `M()`, `Mt2()`, `Mt()`
+ * - Angular: `Theta()`, `DeltaR()`
+ *
+ * **Example (Python):**
+ * ```python
+ * # Calculate invariant mass
+ * pmc = torch.tensor([[50, 30, 100, 120], [60, -20, 80, 110]])
+ * mass = torch.ops.cupyc.physics_cartesian_combined_m(pmc)
+ * 
+ * # Calculate ΔR between particles
+ * pmc1 = torch.tensor([[50, 30, 100, 120]])
+ * pmc2 = torch.tensor([[60, -20, 80, 110]])
+ * delta_r = torch.ops.cupyc.physics_cartesian_combined_deltar(pmc1, pmc2)
+ * ```
+ *
+ * @subsection namespace_operators pyc::operators
+ *
+ * **Vector and Matrix Operations:**
+ * - **Vector**: `Dot()`, `CosTheta()`, `SinTheta()`, `Cross()`
+ * - **Rotation**: `Rx()`, `Ry()`, `Rz()`, `RT()` (3D rotations)
+ * - **Matrix**: `CoFactors()`, `Determinant()`, `Inverse()`, `Eigenvalue()`
+ *
+ * **Example (Python):**
+ * ```python
+ * # Dot product
+ * v1 = torch.tensor([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
+ * v2 = torch.tensor([[7.0, 8.0, 9.0], [1.0, 2.0, 3.0]])
+ * dot = torch.ops.cupyc.operators_dot(v1, v2)
+ * 
+ * # Matrix inversion
+ * matrix = torch.tensor([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
+ * inv, det = torch.ops.cupyc.operators_inverse(matrix)
+ * ```
+ *
+ * @subsection namespace_nusol pyc::nusol
+ *
+ * **Neutrino Reconstruction Algorithms:**
+ * - **BaseMatrix()**: W boson basis matrix
+ * - **Nu()**: Single neutrino (semi-leptonic top decay)
+ * - **NuNu()**: Double neutrino (di-leptonic top pair)
+ * - **combinatorial()**: All possible b-lepton pairings
+ *
+ * **Example (Python):**
+ * ```python
+ * # Single neutrino reconstruction
+ * pmc_b = torch.tensor([[50, 30, 100, 120]])   # B-quark
+ * pmc_mu = torch.tensor([[25, -10, 50, 55]])   # Muon
+ * met_xy = torch.tensor([[30.0, 20.0]])        # Missing ET
+ * masses = torch.tensor([[80.4, 172.5]])       # W, top masses
+ * sigma = torch.tensor([[5.0]])                # MET resolution
+ * 
+ * result = torch.ops.cupyc.nusol_nu(pmc_b, pmc_mu, met_xy, masses, sigma, 1e-10)
+ * nu_solutions = result["neutrino"]  # Neutrino 4-momenta
+ * weights = result["weight"]         # Solution weights
+ * ```
+ *
+ * **C++ Template:**
+ * ```cpp
+ * template <typename b, typename l>
+ * std::vector<std::pair<neutrino*, neutrino*>> NuNu(
+ *     std::vector<b*> bquark1, std::vector<b*> bquark2,
+ *     std::vector<l*> lepton1, std::vector<l*> lepton2,
+ *     std::vector<double> met_, std::vector<double> phi_,
+ *     std::vector<std::vector<double>> mass1, 
+ *     std::vector<std::vector<double>> mass2,
+ *     std::string dev, double null, double step, 
+ *     double tolerance, unsigned int timeout
+ * );
+ * ```
+ *
+ * @subsection namespace_graph pyc::graph
+ *
+ * **Graph Neural Network Operations:**
+ * - **edge_aggregation()**: Sum node features along edges
+ * - **node_aggregation()**: Sum edge predictions to nodes
+ * - **unique_aggregation()**: Cluster-based aggregation
+ * - **PageRank()**: Graph-based node importance
+ * - **PageRankReconstruction()**: PageRank with kinematics
+ *
+ * **Sub-namespaces:**
+ * - **polar**: Aggregation with (pt, eta, phi, e) coordinates
+ * - **cartesian**: Aggregation with (px, py, pz, e) coordinates
+ *
+ * **Example (Python):**
+ * ```python
+ * # Edge aggregation
+ * edge_index = torch.tensor([[0, 1, 2], [1, 2, 0]])  # COO format
+ * prediction = torch.tensor([0.8, 0.6, 0.9])         # Edge scores
+ * node_feat = torch.tensor([[1, 2], [3, 4], [5, 6]]) # Node features
+ * 
+ * result = torch.ops.cupyc.graph_edge_aggregation(edge_index, prediction, node_feat)
+ * aggregated = result["aggregated"]  # Per-edge aggregated features
+ * 
+ * # PageRank
+ * result = torch.ops.cupyc.graph_page_rank(edge_index, prediction, alpha=0.85)
+ * scores = result["scores"]  # Node importance scores
+ * ```
+ *
+ * @section interface_python Python Usage
+ *
+ * @subsection python_loading Library Loading
+ *
+ * **Loading CUDA/CPU Libraries:**
+ * ```python
+ * import torch
+ * 
+ * # Load CUDA version
+ * torch.ops.load_library("build/pyc/interface/libcupyc.so")
+ * 
+ * # Or CPU version
+ * torch.ops.load_library("build/pyc/interface/libtpyc.so")
+ * 
+ * # Check available operations
+ * print(dir(torch.ops.cupyc))
+ * # ['transform_separate_pt', 'physics_cartesian_combined_m', ...]
+ * ```
+ *
+ * @subsection python_basic_usage Basic Usage
+ *
+ * **Calling PyC Functions:**
+ * ```python
+ * import torch
+ * torch.ops.load_library("libcupyc.so")
+ * 
+ * # Create tensors (automatically on CUDA if available)
+ * px = torch.tensor([50.0, 60.0, 70.0], device='cuda')
+ * py = torch.tensor([30.0, -20.0, 40.0], device='cuda')
+ * pz = torch.tensor([100.0, 80.0, 90.0], device='cuda')
+ * e = torch.tensor([120.0, 110.0, 130.0], device='cuda')
+ * 
+ * # Calculate invariant mass
+ * mass = torch.ops.cupyc.physics_cartesian_separate_m(px, py, pz, e)
+ * print(f"Masses: {mass}")
+ * 
+ * # Calculate transverse momentum
+ * pt = torch.ops.cupyc.transform_separate_pt(px, py)
+ * print(f"pT: {pt}")
+ * ```
+ *
+ * @subsection python_autograd Automatic Differentiation
+ *
+ * **Gradient Computation:**
+ * ```python
+ * # Enable gradient tracking
+ * px = torch.tensor([50.0], requires_grad=True, device='cuda')
+ * py = torch.tensor([30.0], requires_grad=True, device='cuda')
+ * pz = torch.tensor([100.0], requires_grad=True, device='cuda')
+ * e = torch.tensor([120.0], requires_grad=True, device='cuda')
+ * 
+ * # Compute mass
+ * mass = torch.ops.cupyc.physics_cartesian_separate_m(px, py, pz, e)
+ * 
+ * # Backpropagate
+ * loss = mass.sum()
+ * loss.backward()
+ * 
+ * print(f"∂m/∂px: {px.grad}")
+ * print(f"∂m/∂py: {py.grad}")
+ * ```
+ *
+ * @subsection python_batch_processing Batch Processing
+ *
+ * **Vectorized Operations:**
+ * ```python
+ * # Process 1000 particles in parallel
+ * batch_size = 1000
+ * pmc = torch.randn(batch_size, 4, device='cuda')  # [N, 4]
+ * pmc[:, 3] = torch.abs(pmc[:, 3]) + 100  # Ensure positive energy
+ * 
+ * # Batch invariant mass calculation
+ * masses = torch.ops.cupyc.physics_cartesian_combined_m(pmc)
+ * 
+ * # Batch coordinate transformation
+ * pmu = torch.ops.cupyc.transform_combined_ptetaphie(pmc)
+ * 
+ * print(f"Processed {batch_size} particles")
+ * print(f"Mean mass: {masses.mean().item():.2f} GeV")
+ * ```
+ *
+ * @section interface_cpp CPP Usage
+ *
+ * @subsection cpp_basic C++ Basic Usage
+ *
+ * **Direct Function Calls:**
+ * ```cpp
+ * #include <pyc/pyc.h>
+ * 
+ * // Create tensors
+ * torch::Tensor px = torch::tensor({50.0, 60.0, 70.0});
+ * torch::Tensor py = torch::tensor({30.0, -20.0, 40.0});
+ * torch::Tensor pz = torch::tensor({100.0, 80.0, 90.0});
+ * torch::Tensor e = torch::tensor({120.0, 110.0, 130.0});
+ * 
+ * // Calculate mass
+ * torch::Tensor mass = pyc::physics::cartesian::separate::M(px, py, pz, e);
+ * 
+ * // Convert to vector
+ * auto mass_vec = mass.data_ptr<double>();
+ * for (int i = 0; i < 3; ++i) {
+ *     std::cout << "Mass " << i << ": " << mass_vec[i] << " GeV" << std::endl;
+ * }
+ * ```
+ *
+ * @subsection cpp_particle_conversion Particle Conversion
+ *
+ * **Using Conversion Templates:**
+ * ```cpp
+ * // Convert particles to tensors
+ * std::vector<my_jet*> jets = get_jets();
+ * 
+ * // Extract 4-momenta
+ * auto pmc_vector = pyc::to_pmc(&jets);
+ * 
+ * // Tensorize
+ * torch::Tensor pmc_tensor = pyc::tensorize(&pmc_vector);
+ * 
+ * // Compute invariant mass
+ * torch::Tensor mass = pyc::physics::cartesian::combined::M(pmc_tensor);
+ * 
+ * // Access results
+ * auto mass_accessor = mass.accessor<double, 1>();
+ * for (size_t i = 0; i < jets.size(); ++i) {
+ *     jets[i]->mass = mass_accessor[i];
+ * }
+ * ```
+ *
+ * @subsection cpp_neutrino_recon Neutrino Reconstruction
+ *
+ * **Using NuNu Template:**
+ * ```cpp
+ * std::vector<my_bjet*> bjets1 = {b1, b2};
+ * std::vector<my_bjet*> bjets2 = {b3, b4};
+ * std::vector<my_lepton*> leptons1 = {l1, l2};
+ * std::vector<my_lepton*> leptons2 = {l3, l4};
+ * 
+ * std::vector<double> met = {30.0, 40.0};
+ * std::vector<double> phi = {0.5, 1.2};
+ * std::vector<std::vector<double>> mass1 = {{80.4, 172.5}, {80.4, 172.5}};
+ * std::vector<std::vector<double>> mass2 = {{80.4, 172.5}, {80.4, 172.5}};
+ * 
+ * auto solutions = pyc::nusol::NuNu(
+ *     bjets1, bjets2, leptons1, leptons2,
+ *     met, phi, mass1, mass2,
+ *     "cuda", 1e-10, 1e-9, 1e-6, 1000
+ * );
+ * 
+ * for (auto& [nu1, nu2] : solutions) {
+ *     double top1_mass = (nu1->e + nu1->bquark->e + nu1->lepton->e);
+ *     double top2_mass = (nu2->e + nu2->bquark->e + nu2->lepton->e);
+ *     
+ *     std::cout << "Top 1 mass: " << top1_mass << " GeV" << std::endl;
+ *     std::cout << "Top 2 mass: " << top2_mass << " GeV" << std::endl;
+ * }
+ * ```
+ *
+ * @section interface_device Device Management
+ *
+ * **Automatic Device Placement:**
+ * The interface automatically handles device placement based on tensor location:
+ *
+ * ```python
+ * # CPU execution
+ * pmc_cpu = torch.tensor([[50, 30, 100, 120]], device='cpu')
+ * mass_cpu = torch.ops.tpyc.physics_cartesian_combined_m(pmc_cpu)
+ * 
+ * # GPU execution
+ * pmc_gpu = torch.tensor([[50, 30, 100, 120]], device='cuda')
+ * mass_gpu = torch.ops.cupyc.physics_cartesian_combined_m(pmc_gpu)
+ * ```
+ *
+ * **Device Transfer:**
+ * ```cpp
+ * #include <cutils/utils.cuh>
+ * 
+ * torch::Tensor cpu_tensor = torch::tensor({1.0, 2.0, 3.0});
+ * 
+ * // Transfer to GPU
+ * changedev(&cpu_tensor);  // Now on CUDA
+ * 
+ * // Explicit device specification
+ * torch::Tensor gpu_tensor = changedev("cuda", &cpu_tensor);
+ * ```
+ *
+ * @section interface_registration PyTorch Operator Registration
+ *
+ * **TORCH_LIBRARY Macro:**
+ * Functions are registered using PyTorch's custom operator API:
+ *
+ * ```cpp
+ * TORCH_LIBRARY(cupyc, m) {
+ *     // Transform operations
+ *     m.def("transform_separate_pt", &pyc::transform::separate::Pt);
+ *     m.def("transform_separate_eta", &pyc::transform::separate::Eta);
+ *     
+ *     // Physics operations
+ *     m.def("physics_cartesian_combined_m", &pyc::physics::cartesian::combined::M);
+ *     m.def("physics_cartesian_combined_p", &pyc::physics::cartesian::combined::P);
+ *     
+ *     // Operator operations
+ *     m.def("operators_dot", &pyc::operators::Dot);
+ *     m.def("operators_cross", &pyc::operators::Cross);
+ *     
+ *     // Nusol operations
+ *     m.def("nusol_nu", &pyc::nusol::Nu);
+ *     m.def("nusol_nunu", &pyc::nusol::NuNu);
+ *     
+ *     // Graph operations
+ *     m.def("graph_edge_aggregation", &pyc::graph::edge_aggregation);
+ *     m.def("graph_page_rank", &pyc::graph::PageRank);
+ * }
+ * ```
+ *
+ * **Naming Convention:**
+ * - Library name: `cupyc` (CUDA) or `tpyc` (CPU)
+ * - Function names: `{namespace}_{subspace}_{function}`
+ * - Example: `physics_cartesian_combined_m`
+ *
+ * @section interface_best_practices Best Practices
+ *
+ * **1. Device Consistency:**
+ * ```python
+ * # Ensure all tensors on same device
+ * device = 'cuda' if torch.cuda.is_available() else 'cpu'
+ * px = torch.tensor([50.0], device=device)
+ * py = torch.tensor([30.0], device=device)
+ * ```
+ *
+ * **2. Batch Operations:**
+ * ```python
+ * # Process multiple samples in single call
+ * pmc_batch = torch.stack([pmc1, pmc2, pmc3])  # [3, 4]
+ * mass_batch = torch.ops.cupyc.physics_cartesian_combined_m(pmc_batch)
+ * ```
+ *
+ * **3. Memory Management:**
+ * ```cpp
+ * // Clean up neutrino solutions
+ * for (auto& [nu1, nu2] : solutions) {
+ *     delete nu1->bquark;
+ *     delete nu1->lepton;
+ *     delete nu2->bquark;
+ *     delete nu2->lepton;
+ *     delete nu1;
+ *     delete nu2;
+ * }
+ * ```
+ *
+ * @section interface_troubleshooting Troubleshooting
+ *
+ * **Problem: Library Not Found**
+ * ```python
+ * # Check library path
+ * import os
+ * lib_path = "build/pyc/interface/libcupyc.so"
+ * assert os.path.exists(lib_path), f"Library not found: {lib_path}"
+ * torch.ops.load_library(lib_path)
+ * ```
+ *
+ * **Problem: CUDA Out of Memory**
+ * ```python
+ * # Process in smaller batches
+ * batch_size = 100
+ * for i in range(0, len(data), batch_size):
+ *     batch = data[i:i+batch_size]
+ *     result = torch.ops.cupyc.physics_cartesian_combined_m(batch)
+ *     torch.cuda.empty_cache()  # Free unused memory
+ * ```
+ *
+ * **Problem: Device Mismatch**
+ * ```python
+ * # Ensure consistent device placement
+ * def ensure_device(tensor, device='cuda'):
+ *     if tensor.device.type != device:
+ *         tensor = tensor.to(device)
+ *     return tensor
+ * ```
+ *
+ * @section interface_related Related Modules
+ *
+ * - @ref pyc_physics "physics" - Relativistic kinematics
+ * - @ref pyc_transform "transform" - Coordinate transformations
+ * - @ref pyc_operators "operators" - Vector/matrix operations
+ * - @ref pyc_nusol "nusol" - Neutrino reconstruction
+ * - @ref pyc_graph "graph" - Graph operations
+ * - @ref pyc_cutils "cutils" - CUDA utilities
+ * - @ref particle_template "particle_template" - Base particle class
+ *
+ * @section interface_summary Summary
+ *
+ * The **pyc/interface** module provides:
+ * - PyTorch C++ bindings for all PyC CUDA kernels
+ * - Type conversion utilities (C++ ↔ PyTorch)
+ * - Neutrino particle class for reconstruction
+ * - Automatic CPU/CUDA device management
+ * - Python-accessible functions via torch.ops
+ *
+ * **Key Advantages:**
+ * - **Performance**: Direct CUDA kernel access from Python
+ * - **Integration**: Seamless PyTorch autograd support
+ * - **Flexibility**: Works with both CPU and GPU
+ * - **Type Safety**: Strongly-typed C++ interface
+ *
+ * **Next Steps:**
+ * - Explore @ref pyc_nusol "nusol" for neutrino reconstruction
+ * - Review @ref pyc_physics "physics" for kinematics
+ * - See @ref pyc_graph "graph" for GNN operations
+ */

@@ -1,0 +1,766 @@
+/**
+ * @file container.dox
+ * @brief Data structure for managing events, graphs, and selections per ROOT file
+ * @defgroup container Container
+ * @details 
+ * File-level data container managing event instances, graph representations, and 
+ * selection objects associated with individual ROOT files. Provides hash-based 
+ * random access to entries and template management for batch processing pipelines.
+ *
+ * **Quick Navigation:**
+ * - @ref sampletracer "sampletracer" - Sample tracking system (uses container)
+ * - @ref dataloader "dataloader" - Dataset batching (populated by container)
+ * - @ref event_template "event_template" - Base event class
+ * - @ref graph_template "graph_template" - Base graph class
+ * - @ref selection_template "selection_template" - Base selection class
+ * - @ref meta "meta" - Metadata management
+ * - @ref io "io" - ROOT/HDF5 I/O operations
+ * - @ref tools "tools" - Utility functions
+ *
+ * @page container_page Container Module Documentation
+ *
+ * @section container_intro Introduction
+ *
+ * The **container** module is AnalysisG's file-level data management system, 
+ * responsible for organizing events, graphs, and selections extracted from 
+ * individual ROOT files. It serves as the intermediate layer between raw I/O 
+ * operations and the dataloader, providing efficient hash-based access and 
+ * template instance management.
+ *
+ * **Key Features:**
+ * - **File-Level Organization**: One container per ROOT file
+ * - **Entry Management**: Hash-based random access to event/graph/selection tuples
+ * - **Template Storage**: Maintains instances of event_template, graph_template, selection_template
+ * - **Dataloader Integration**: Populates dataloader with processed data
+ * - **Memory Management**: Automatic cleanup of dynamically allocated templates
+ *
+ * **Design Philosophy:**
+ * The container acts as a "bucket" for all analysis objects derived from a single 
+ * ROOT file. Each file's data is isolated in its own container, enabling parallel 
+ * processing and efficient memory management. The `entry_t` structure groups related 
+ * objects (event, graph, selection) by a unique hash identifier.
+ *
+ * @section container_purpose Purpose and Scope
+ *
+ * **Primary Use Cases:**
+ * 1. **ROOT File Data Management**: Store all objects extracted from one file
+ * 2. **Template Instance Tracking**: Manage event/graph/selection instances
+ * 3. **Dataloader Population**: Transfer processed data to training pipeline
+ * 4. **Sample-Level Processing**: Enable per-file compilation and selection application
+ *
+ * **Module Responsibilities:**
+ * - Associate metadata (cross-section, luminosity) with file data
+ * - Store event_template instances with labels (e.g., "training", "validation")
+ * - Store graph_template instances generated from events
+ * - Store selection_template instances (cuts, filters)
+ * - Provide hash-based lookup for entries
+ * - Populate dataloader with graph_t* data structures
+ *
+ * **Typical Workflow:**
+ * ```
+ * ROOT File → io::read() → container → compile() → dataloader → model
+ * ```
+ *
+ * @section container_architecture Architecture
+ *
+ * @subsection container_entry_structure entry_t Structure
+ *
+ * **Data Grouping by Hash:**
+ * ```cpp
+ * struct entry_t {
+ *     std::string hash;                                 // Unique identifier
+ *     
+ *     // Data containers
+ *     std::vector<graph_t*> m_data;                     // Graph data (for DL)
+ *     std::vector<graph_template*> m_graph;             // Graph templates
+ *     std::vector<event_template*> m_event;             // Event templates
+ *     std::vector<selection_template*> m_selection;     // Selection templates
+ *     
+ *     // Management
+ *     void init();
+ *     void destroy();
+ *     bool has_event(event_template* ev);
+ *     bool has_graph(graph_template* gr);
+ *     bool has_selection(selection_template* sel);
+ *     
+ *     template <typename g>
+ *     void destroy(std::vector<g*>* c);
+ * };
+ * ```
+ *
+ * **Field Descriptions:**
+ * - **hash**: Unique string identifier for this entry (e.g., event number, UUID)
+ * - **m_data**: Processed graph_t* structures ready for deep learning models
+ * - **m_graph**: graph_template instances (may contain multiple graphs per event)
+ * - **m_event**: event_template instances (typically one per entry)
+ * - **m_selection**: selection_template instances applied to this entry
+ *
+ * **Methods:**
+ * - **init()**: Initialize empty vectors
+ * - **destroy()**: Clean up dynamically allocated objects
+ * - **has_event() / has_graph() / has_selection()**: Check for duplicate templates
+ * - **destroy\<g\>()**: Template method for cleaning up typed vectors
+ *
+ * @subsection container_class_structure Class Structure
+ *
+ * **Class Definition:**
+ * ```cpp
+ * class container: public tools {
+ * public:
+ *     container();
+ *     ~container();
+ *     
+ *     // Metadata management
+ *     void add_meta_data(meta*, std::string);
+ *     meta* get_meta_data();
+ *     
+ *     // Template addition
+ *     bool add_selection_template(selection_template*);
+ *     bool add_event_template(event_template*, std::string label);
+ *     bool add_graph_template(graph_template*, std::string label);
+ *     
+ *     // Selection operations
+ *     void fill_selections(std::map<std::string, selection_template*>* inpt);
+ *     
+ *     // Event retrieval
+ *     void get_events(std::vector<event_template*>*, std::string label);
+ *     
+ *     // Dataloader integration
+ *     void populate_dataloader(dataloader* dl);
+ *     
+ *     // Compilation
+ *     void compile(size_t* len, int threadIdx);
+ *     size_t len();
+ *     
+ *     // Entry management
+ *     entry_t* add_entry(std::string hash);
+ *     
+ *     // Members
+ *     meta* meta_data;
+ *     std::string* filename;
+ *     std::string* output_path;
+ *     std::string label;
+ *     
+ *     std::map<std::string, entry_t> random_access;
+ *     std::map<std::string, selection_template*>* merged;
+ * };
+ * ```
+ *
+ * @subsection container_methods Core Methods
+ *
+ * **1. add_meta_data()**
+ * ```cpp
+ * void container::add_meta_data(meta* m, std::string fname)
+ * ```
+ * Associates metadata (cross-section, luminosity, process info) with this container.
+ *
+ * **Parameters:**
+ * - `m`: Pointer to meta object
+ * - `fname`: Filename associated with this metadata
+ *
+ * **Example:**
+ * ```cpp
+ * container cont;
+ * meta* ttbar_meta = new meta();
+ * ttbar_meta->cross_section = 831.76;  // pb
+ * ttbar_meta->process = "ttbar";
+ * 
+ * cont.add_meta_data(ttbar_meta, "ttbar_sample_1.root");
+ * ```
+ *
+ * **2. add_event_template()**
+ * ```cpp
+ * bool container::add_event_template(event_template* ev, std::string label)
+ * ```
+ * Adds an event instance to the container with an associated label.
+ *
+ * **Parameters:**
+ * - `ev`: Pointer to event_template instance
+ * - `label`: Category label (e.g., "train", "validation", "test")
+ *
+ * **Returns:** `true` if event was added, `false` if duplicate
+ *
+ * **Example:**
+ * ```cpp
+ * my_event* evt = new my_event();
+ * evt->event_number = 12345;
+ * // ... populate event ...
+ * 
+ * bool added = cont.add_event_template(evt, "training");
+ * ```
+ *
+ * **3. add_graph_template()**
+ * ```cpp
+ * bool container::add_graph_template(graph_template* gr, std::string label)
+ * ```
+ * Adds a graph instance to the container.
+ *
+ * **Parameters:**
+ * - `gr`: Pointer to graph_template instance
+ * - `label`: Category label for this graph
+ *
+ * **Returns:** `true` if graph was added, `false` if duplicate
+ *
+ * **Example:**
+ * ```cpp
+ * my_graph* g = new my_graph();
+ * g->hash = evt->hash;  // Link to event
+ * // ... build graph from event ...
+ * 
+ * cont.add_graph_template(g, "training");
+ * ```
+ *
+ * **4. add_selection_template()**
+ * ```cpp
+ * bool container::add_selection_template(selection_template* sel)
+ * ```
+ * Adds a selection instance to the container.
+ *
+ * **Parameters:**
+ * - `sel`: Pointer to selection_template instance
+ *
+ * **Returns:** `true` if selection was added, `false` if duplicate
+ *
+ * **Example:**
+ * ```cpp
+ * my_selection* sel = new my_selection();
+ * sel->name = "baseline_cuts";
+ * // ... configure selection criteria ...
+ * 
+ * cont.add_selection_template(sel);
+ * ```
+ *
+ * **5. add_entry()**
+ * ```cpp
+ * entry_t* container::add_entry(std::string hash)
+ * ```
+ * Creates or retrieves an entry with the given hash identifier.
+ *
+ * **Parameters:**
+ * - `hash`: Unique identifier for this entry
+ *
+ * **Returns:** Pointer to entry_t in the random_access map
+ *
+ * **Example:**
+ * ```cpp
+ * std::string event_hash = "evt_12345_run_278880";
+ * entry_t* entry = cont.add_entry(event_hash);
+ * 
+ * entry->m_event.push_back(my_event_ptr);
+ * entry->m_graph.push_back(my_graph_ptr);
+ * ```
+ *
+ * **6. compile()**
+ * ```cpp
+ * void container::compile(size_t* len, int threadIdx)
+ * ```
+ * Compiles all graph templates into graph_t* data structures for model consumption.
+ *
+ * **Parameters:**
+ * - `len`: Pointer to accumulate total number of graphs
+ * - `threadIdx`: Thread index for parallel processing
+ *
+ * **Process:**
+ * 1. Iterate over all entries in random_access
+ * 2. Call `graph_template::compile()` on each graph
+ * 3. Store resulting graph_t* in entry's m_data vector
+ * 4. Update total count via `len`
+ *
+ * **Example:**
+ * ```cpp
+ * size_t total_graphs = 0;
+ * cont.compile(&total_graphs, 0);  // Single-threaded
+ * std::cout << "Compiled " << total_graphs << " graphs" << std::endl;
+ * ```
+ *
+ * **7. populate_dataloader()**
+ * ```cpp
+ * void container::populate_dataloader(dataloader* dl)
+ * ```
+ * Transfers all compiled graph_t* structures to a dataloader for training/inference.
+ *
+ * **Parameters:**
+ * - `dl`: Pointer to dataloader to populate
+ *
+ * **Example:**
+ * ```cpp
+ * dataloader train_loader;
+ * 
+ * for (auto& cont : sample_containers) {
+ *     cont.populate_dataloader(&train_loader);
+ * }
+ * 
+ * train_loader.shuffle();
+ * train_loader.batch(32);
+ * ```
+ *
+ * **8. get_events()**
+ * ```cpp
+ * void container::get_events(std::vector<event_template*>* output, std::string label)
+ * ```
+ * Retrieves all events matching a specific label.
+ *
+ * **Parameters:**
+ * - `output`: Vector to populate with event pointers
+ * - `label`: Label filter (e.g., "training")
+ *
+ * **Example:**
+ * ```cpp
+ * std::vector<event_template*> train_events;
+ * cont.get_events(&train_events, "training");
+ * 
+ * for (auto* ev : train_events) {
+ *     // Process training events
+ * }
+ * ```
+ *
+ * **9. fill_selections()**
+ * ```cpp
+ * void container::fill_selections(std::map<std::string, selection_template*>* inpt)
+ * ```
+ * Applies selection templates to all entries.
+ *
+ * **Parameters:**
+ * - `inpt`: Map of selection_name → selection_template*
+ *
+ * **Example:**
+ * ```cpp
+ * std::map<std::string, selection_template*> selections;
+ * selections["lepton_pt"] = new pt_selection(25.0);
+ * selections["jet_count"] = new jet_count_selection(4);
+ * 
+ * cont.fill_selections(&selections);
+ * // All entries now have these selections applied
+ * ```
+ *
+ * @section container_usage Usage Examples
+ *
+ * @subsection container_basic_workflow Basic Workflow
+ *
+ * **Reading ROOT File into Container:**
+ * ```cpp
+ * #include <container/container.h>
+ * #include <io/io.h>
+ * 
+ * container file_container;
+ * io reader;
+ * 
+ * // Set file path
+ * std::string filepath = "data/ttbar_sample_1.root";
+ * file_container.filename = &filepath;
+ * 
+ * // Add metadata
+ * meta* ttbar_meta = new meta();
+ * ttbar_meta->cross_section = 831.76;
+ * ttbar_meta->dsid = 410470;
+ * file_container.add_meta_data(ttbar_meta, filepath);
+ * 
+ * // Read events from file
+ * reader.open_file(filepath);
+ * for (int i = 0; i < reader.get_entries(); ++i) {
+ *     reader.read_entry(i);
+ *     
+ *     // Create event instance
+ *     my_event* evt = new my_event();
+ *     evt->load_from_tree(&reader);  // Populate from ROOT tree
+ *     
+ *     // Add to container
+ *     file_container.add_event_template(evt, "training");
+ * }
+ * ```
+ *
+ * @subsection container_graph_generation Graph Generation
+ *
+ * **Building Graphs from Events:**
+ * ```cpp
+ * // Retrieve events from container
+ * std::vector<event_template*> events;
+ * file_container.get_events(&events, "training");
+ * 
+ * for (auto* ev_ptr : events) {
+ *     my_event* evt = static_cast<my_event*>(ev_ptr);
+ *     
+ *     // Create graph from event
+ *     my_graph* g = new my_graph();
+ *     g->hash = evt->hash;
+ *     g->build_from_event(evt);  // Construct nodes/edges
+ *     
+ *     // Add to container
+ *     file_container.add_graph_template(g, "training");
+ * }
+ * 
+ * // Compile graphs to graph_t*
+ * size_t n_graphs = 0;
+ * file_container.compile(&n_graphs, 0);
+ * std::cout << "Compiled " << n_graphs << " graphs" << std::endl;
+ * ```
+ *
+ * @subsection container_selection_application Selection Application
+ *
+ * **Applying Event Selections:**
+ * ```cpp
+ * #include <selection/my_selection.h>
+ * 
+ * // Define selections
+ * std::map<std::string, selection_template*> selections;
+ * 
+ * auto* pt_cut = new pt_selection();
+ * pt_cut->threshold = 25.0;  // GeV
+ * pt_cut->name = "lepton_pt_25";
+ * selections["lepton_pt_25"] = pt_cut;
+ * 
+ * auto* jet_cut = new jet_count_selection();
+ * jet_cut->min_jets = 4;
+ * jet_cut->name = "min_4_jets";
+ * selections["min_4_jets"] = jet_cut;
+ * 
+ * // Apply to container
+ * file_container.fill_selections(&selections);
+ * 
+ * // Check which entries pass
+ * for (auto& [hash, entry] : file_container.random_access) {
+ *     bool pass_all = true;
+ *     for (auto* sel : entry.m_selection) {
+ *         if (!sel->pass) {
+ *             pass_all = false;
+ *             break;
+ *         }
+ *     }
+ *     
+ *     if (pass_all) {
+ *         std::cout << "Entry " << hash << " passes all selections" << std::endl;
+ *     }
+ * }
+ * ```
+ *
+ * @subsection container_dataloader_population Dataloader Population
+ *
+ * **Transferring Data to Dataloader:**
+ * ```cpp
+ * #include <dataloader/dataloader.h>
+ * 
+ * dataloader train_loader;
+ * 
+ * // Populate from multiple containers (multi-file)
+ * std::vector<container> file_containers;
+ * for (auto& filepath : training_files) {
+ *     container cont;
+ *     // ... load file into container ...
+ *     file_containers.push_back(cont);
+ * }
+ * 
+ * for (auto& cont : file_containers) {
+ *     cont.populate_dataloader(&train_loader);
+ * }
+ * 
+ * // Configure dataloader
+ * train_loader.batch_size = 32;
+ * train_loader.shuffle();
+ * train_loader.split(0.8, 0.1, 0.1);  // Train/Val/Test
+ * 
+ * std::cout << "Dataloader contains " << train_loader.size() 
+ *           << " graphs" << std::endl;
+ * ```
+ *
+ * @subsection container_entry_lookup Hash-Based Lookup
+ *
+ * **Random Access to Entries:**
+ * ```cpp
+ * // Create entries with unique hashes
+ * for (int i = 0; i < 100; ++i) {
+ *     std::string hash = "event_" + std::to_string(i);
+ *     entry_t* entry = file_container.add_entry(hash);
+ *     
+ *     // Populate entry
+ *     entry->m_event.push_back(create_event(i));
+ * }
+ * 
+ * // Later: retrieve specific entry
+ * std::string target_hash = "event_42";
+ * if (file_container.random_access.count(target_hash)) {
+ *     entry_t& entry = file_container.random_access[target_hash];
+ *     std::cout << "Entry has " << entry.m_event.size() 
+ *               << " events" << std::endl;
+ * }
+ * ```
+ *
+ * @section container_advanced Advanced Topics
+ *
+ * @subsection container_memory_management Memory Management
+ *
+ * **Proper Cleanup:**
+ * The container owns pointers to dynamically allocated templates. Use `entry_t::destroy()` 
+ * to clean up:
+ *
+ * ```cpp
+ * container cont;
+ * // ... populate container ...
+ * 
+ * // Manual cleanup
+ * for (auto& [hash, entry] : cont.random_access) {
+ *     entry.destroy();  // Calls delete on all template pointers
+ * }
+ * cont.random_access.clear();
+ * 
+ * // Or rely on container destructor
+ * // ~container() automatically cleans up
+ * ```
+ *
+ * **Avoiding Double-Free:**
+ * ```cpp
+ * my_event* evt = new my_event();
+ * cont.add_event_template(evt, "training");
+ * 
+ * // Do NOT manually delete evt
+ * // delete evt;  // ❌ Container owns this pointer now
+ * 
+ * // Container destructor will handle cleanup
+ * ```
+ *
+ * @subsection container_multi_threading Parallel Processing
+ *
+ * **Thread-Safe Compilation:**
+ * ```cpp
+ * #include <thread>
+ * 
+ * std::vector<container> file_containers(10);
+ * // ... load 10 files ...
+ * 
+ * size_t total_graphs = 0;
+ * std::mutex count_mutex;
+ * 
+ * std::vector<std::thread> threads;
+ * for (int t = 0; t < 4; ++t) {
+ *     threads.emplace_back([&, t]() {
+ *         for (size_t i = t; i < file_containers.size(); i += 4) {
+ *             size_t local_count = 0;
+ *             file_containers[i].compile(&local_count, t);
+ *             
+ *             std::lock_guard<std::mutex> lock(count_mutex);
+ *             total_graphs += local_count;
+ *         }
+ *     });
+ * }
+ * 
+ * for (auto& th : threads) {
+ *     th.join();
+ * }
+ * 
+ * std::cout << "Total graphs: " << total_graphs << std::endl;
+ * ```
+ *
+ * @subsection container_label_management Label Management
+ *
+ * **Using Labels for Data Splitting:**
+ * ```cpp
+ * // Split events into train/val/test
+ * std::vector<event_template*> all_events = load_events();
+ * 
+ * int n_train = all_events.size() * 0.7;
+ * int n_val = all_events.size() * 0.15;
+ * 
+ * for (size_t i = 0; i < all_events.size(); ++i) {
+ *     std::string label;
+ *     if (i < n_train) {
+ *         label = "training";
+ *     } else if (i < n_train + n_val) {
+ *         label = "validation";
+ *     } else {
+ *         label = "testing";
+ *     }
+ *     
+ *     cont.add_event_template(all_events[i], label);
+ * }
+ * 
+ * // Retrieve only validation events
+ * std::vector<event_template*> val_events;
+ * cont.get_events(&val_events, "validation");
+ * ```
+ *
+ * @section container_integration Integration with Other Modules
+ *
+ * @subsection container_with_sampletracer SampleTracer Integration
+ *
+ * **Multi-File Management:**
+ * ```cpp
+ * #include <sampletracer/sampletracer.h>
+ * 
+ * sampletracer tracer;
+ * 
+ * // Each ROOT file gets its own container
+ * for (auto& filepath : root_files) {
+ *     // Container is managed internally by sampletracer
+ *     tracer.add_file(filepath);
+ * }
+ * 
+ * // Compile all containers in parallel
+ * tracer.compile_objects(4);  // 4 threads
+ * 
+ * // Populate single dataloader from all containers
+ * dataloader dl;
+ * tracer.populate_dataloader(&dl);
+ * ```
+ *
+ * @subsection container_with_io ROOT I/O Integration
+ *
+ * **Reading from ROOT Files:**
+ * ```cpp
+ * #include <io/io.h>
+ * 
+ * io reader;
+ * container cont;
+ * 
+ * reader.open_file("data/sample.root");
+ * reader.set_tree("nominal");
+ * 
+ * for (int i = 0; i < reader.get_entries(); ++i) {
+ *     reader.read_entry(i);
+ *     
+ *     my_event* evt = new my_event();
+ *     evt->event_number = reader.get_int("eventNumber");
+ *     evt->run_number = reader.get_int("runNumber");
+ *     // ... read other branches ...
+ *     
+ *     cont.add_event_template(evt, "data");
+ * }
+ * ```
+ *
+ * @subsection container_with_meta Metadata Association
+ *
+ * **Cross-Section Weighting:**
+ * ```cpp
+ * container cont;
+ * 
+ * // Load metadata from database
+ * meta* sample_meta = meta_database.get("ttbar_410470");
+ * sample_meta->cross_section = 831.76;  // pb
+ * sample_meta->k_factor = 1.0;
+ * sample_meta->filter_efficiency = 1.0;
+ * 
+ * cont.add_meta_data(sample_meta, "ttbar_410470.root");
+ * 
+ * // Later: compute event weights
+ * meta* m = cont.get_meta_data();
+ * double lumi = 140.1;  // fb⁻¹
+ * double weight = m->cross_section * m->k_factor * lumi * 1000.0 / total_events;
+ * ```
+ *
+ * @section container_best_practices Best Practices
+ *
+ * @subsection container_hash_generation Hash Generation
+ *
+ * **Creating Unique Identifiers:**
+ * ```cpp
+ * // Option 1: Event number + run number
+ * std::string hash = "run_" + std::to_string(run_number) + 
+ *                    "_evt_" + std::to_string(event_number);
+ * 
+ * // Option 2: UUID (if no unique event ID)
+ * std::string hash = generate_uuid();
+ * 
+ * // Option 3: Hash of event content
+ * std::string hash = std::to_string(std::hash<std::string>{}(event_repr));
+ * ```
+ *
+ * @subsection container_error_handling Error Handling
+ *
+ * **Checking for Duplicates:**
+ * ```cpp
+ * my_event* evt = new my_event();
+ * // ... populate event ...
+ * 
+ * bool added = cont.add_event_template(evt, "training");
+ * if (!added) {
+ *     std::cerr << "Warning: Duplicate event detected!" << std::endl;
+ *     delete evt;  // Clean up duplicate
+ * }
+ * ```
+ *
+ * @subsection container_performance Performance Optimization
+ *
+ * **Reserve Capacity:**
+ * ```cpp
+ * // If you know the number of events
+ * int expected_events = 10000;
+ * cont.random_access.reserve(expected_events);
+ * ```
+ *
+ * **Batch Compilation:**
+ * ```cpp
+ * // Compile in batches to monitor progress
+ * size_t batch_size = 1000;
+ * size_t total = 0;
+ * 
+ * for (size_t i = 0; i < cont.random_access.size(); i += batch_size) {
+ *     size_t batch_count = 0;
+ *     // ... compile batch ...
+ *     total += batch_count;
+ *     std::cout << "Progress: " << total << " / " 
+ *               << cont.random_access.size() << std::endl;
+ * }
+ * ```
+ *
+ * @section container_troubleshooting Troubleshooting
+ *
+ * @subsection container_common_issues Common Issues
+ *
+ * **Problem: Memory Leaks**
+ * ```cpp
+ * // Check that all templates are properly deleted
+ * for (auto& [hash, entry] : cont.random_access) {
+ *     std::cout << "Entry " << hash << ": "
+ *               << entry.m_event.size() << " events, "
+ *               << entry.m_graph.size() << " graphs" << std::endl;
+ * }
+ * 
+ * // Ensure destroy() is called
+ * for (auto& [hash, entry] : cont.random_access) {
+ *     entry.destroy();
+ * }
+ * ```
+ *
+ * **Problem: Empty Dataloader**
+ * ```cpp
+ * // Check if graphs were compiled
+ * size_t total_graphs = cont.len();
+ * if (total_graphs == 0) {
+ *     std::cerr << "Error: No graphs compiled!" << std::endl;
+ *     
+ *     // Check if events were added
+ *     std::vector<event_template*> events;
+ *     cont.get_events(&events, "training");
+ *     std::cout << "Events in container: " << events.size() << std::endl;
+ * }
+ * ```
+ *
+ * @section container_related Related Modules
+ *
+ * - @ref sampletracer "sampletracer" - Sample tracking (manages multiple containers)
+ * - @ref dataloader "dataloader" - Dataset batching (populated by container)
+ * - @ref event_template "event_template" - Base event class
+ * - @ref graph_template "graph_template" - Base graph class
+ * - @ref selection_template "selection_template" - Base selection class
+ * - @ref meta "meta" - Metadata management
+ * - @ref io "io" - ROOT/HDF5 I/O operations
+ * - @ref tools "tools" - Utility functions
+ *
+ * @section container_summary Summary
+ *
+ * The **container** module provides:
+ * - File-level data management for events, graphs, and selections
+ * - Hash-based random access to entries
+ * - Template instance storage and management
+ * - Dataloader population for training pipelines
+ * - Thread-safe compilation support
+ *
+ * **Key Advantages:**
+ * - **Organization**: Isolates data from individual ROOT files
+ * - **Efficiency**: Hash-based O(1) lookup for entries
+ * - **Flexibility**: Supports labeled data (train/val/test splits)
+ * - **Integration**: Seamlessly connects I/O, processing, and training modules
+ *
+ * **Next Steps:**
+ * - Explore @ref sampletracer "sampletracer" for multi-file management
+ * - Review @ref dataloader "dataloader" for training data preparation
+ * - See @ref io "io" for ROOT file reading
+ */

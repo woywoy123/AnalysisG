@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/mc16/zprime.
+
+@defgroup selections_mc16_zprime Selections: mc16/zprime
+@ingroup selections_module
+
+@details
+MC16 zprime selections.
+Source: `src/AnalysisG/selections/mc16/zprime/`
+*/

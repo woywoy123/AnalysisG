@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/performance/topefficiency.
+
+@defgroup selections_performance_topefficiency Selections: performance/topefficiency
+@ingroup selections_module
+
+@details
+Performance selection for top efficiency.
+Source: `src/AnalysisG/selections/performance/topefficiency/`
+*/

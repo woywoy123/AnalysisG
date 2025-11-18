@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/example/met.
+
+@defgroup selections_example_met Selections: example/met
+@ingroup selections_module
+
+@details
+Example MET selection.
+Source: `src/AnalysisG/selections/example/met/`
+*/

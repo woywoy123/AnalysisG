@@ -1,0 +1,9 @@
+/**
+@file
+@brief Placeholder for the Events module documentation.
+
+@defgroup events_module Events
+@ingroup modules_module
+
+@brief This module contains specific event implementations derived from the event_template.
+*/

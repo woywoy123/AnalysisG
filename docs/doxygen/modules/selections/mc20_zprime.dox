@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/mc20/zprime.
+
+@defgroup selections_mc20_zprime Selections: mc20/zprime
+@ingroup selections_module
+
+@details
+MC20 zprime selections.
+Source: `src/AnalysisG/selections/mc20/zprime/`
+*/

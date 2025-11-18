@@ -1,0 +1,748 @@
+/**
+@file
+@brief Comprehensive documentation for the analysis class - central orchestrator of the AnalysisG framework pipeline.
+
+@defgroup analysis_module analysis
+@ingroup modules_module
+
+@brief The `analysis` module is the primary user-facing interface that orchestrates the complete physics analysis pipeline, from ROOT file ingestion to trained GNN models and performance metrics.
+
+@details
+
+---
+
+# Quick Navigation
+
+| Module | Description | Link |
+|--------|-------------|------|
+| **Analysis** | Pipeline orchestrator | (Current Page) |
+| @ref io_module | ROOT/HDF5 I/O | Provides file scanning |
+| @ref MetaModule | Dataset metadata | Manages sample metadata |
+| @ref event_template_page | Event container | Event factory |
+| @ref selection_template_module | Event selection | Selection logic |
+| @ref graph_template_module | Graph construction | Creates graph_t |
+| @ref dataloader_module | Dataset batching | Prepares training data |
+| @ref model_template_module | GNN models | Training/inference |
+| @ref optimizer_module | Training orchestrator | Manages training |
+| @ref metric_template_module | Performance metrics | Calculates metrics |
+
+**Typical Workflow**: User calls `analysis::start()` → **Sequential pipeline** → `build_events()` → `build_selections()` → `build_graphs()` → `build_model_session()` → `build_metric()`
+
+---
+
+*/
+
+/**
+@page analysis_module_page Analysis Module
+@tableofcontents
+
+@section analysis_intro Introduction
+
+The `analysis` class, defined in `src/AnalysisG/modules/analysis/`, is the central orchestrator of the AnalysisG framework. It serves as the primary user-facing interface for setting up and running a complete physics analysis pipeline, managing data samples, event and graph representations, selection logic, machine learning models, and performance metrics.
+
+The class inherits from `notification` and `tools`, providing logging and file system operation capabilities.
+
+@section analysis_pipeline Analysis Pipeline
+
+The `analysis` class is designed to execute a sequential pipeline. The user configures the analysis by adding the necessary components (samples, templates, etc.), and then calls the `start()` method to initiate the process. The pipeline consists of the following major steps, which are executed internally:
+
+1.  **Project Initialization (`build_project`)**: Sets up the output directory structure for the analysis, including paths for model checkpoints and other results.
+
+2.  **Sample Tracing**: The `sampletracer` component scans the input ROOT files specified by `add_samples`. It identifies the `TTree` and `TBranch` structure and creates a cache of this information. This avoids repeated, slow lookups of the file structure.
+
+3.  **Event Building (`build_events`)**: For each event in the input files, the `io` reader is used to extract the raw data. The appropriate `event_template` (specified by `add_event_template`) is then used as a factory to construct high-level `event_template` objects from this raw data. This is where the particle collections (jets, leptons, etc.) within the event are populated.
+
+4.  **Selection (`build_selections`)**: The selection logic, defined in `selection_template` classes (added via `add_selection_template`), is applied to the collection of built events. Events that do not pass the selection criteria are discarded.
+
+5.  **Graph Building (`build_graphs`)**: For events that pass the selection, the specified `graph_template` (added via `add_graph_template`) is used to convert the event-based data into a graph representation (`graph_t`). This is a crucial step for preparing data for Graph Neural Networks (GNNs).
+
+6.  **Model Training/Inference (`build_model_session`, `build_inference`)**:
+    *   If a model is added with an optimizer (`add_model(..., optimizer_params_t*, ...)`), a training session is initiated. The `dataloader` prepares batches of graphs, and the `optimizer` manages the training loop (forward pass, backpropagation, weight updates).
+    *   If a model is added without an optimizer, it is set up for inference only. The model is loaded, and it is run on the input graphs to produce predictions.
+
+7.  **Metric Calculation (`build_metric`)**: After training or inference, `metric_template` objects (added via `add_metric_template`) are used to evaluate the model's performance. This can include calculating accuracy, ROC curves, or other physics-specific metrics.
+
+@section analysis_configuration Configuring an Analysis
+
+A user configures the analysis by instantiating the `analysis` class and calling its various `add_*` methods:
+
+-   **`add_samples(std::string path, std::string label)`**: Adds data samples to be processed. The path can be a single ROOT file or a wildcard pattern. All samples are associated with a string `label` (e.g., "ttbar", "data").
+
+-   **`add_event_template(event_template* ev, std::string label)`**: Registers an `event_template` subclass to be used for events from samples with the matching `label`.
+
+-   **`add_graph_template(graph_template* gr, std::string label)`**: Registers a `graph_template` to be used for building graphs from events with the matching `label`.
+
+-   **`add_selection_template(selection_template* sel)`**: Adds a class containing selection logic to be applied.
+
+-   **`add_model(...)`**: Adds a machine learning model (`model_template`) for either training or inference.
+
+-   **`add_metric_template(...)`**: Adds a metric to be calculated.
+
+@section analysis_execution Execution and Monitoring
+
+-   **`start()`**: Begins the execution of the entire analysis pipeline. The processing is multi-threaded to improve performance, managed by the `attach_threads()` method.
+-   **`progress()`**: Returns a map indicating the completion percentage of the various stages (e.g., event building, training).
+-   **`progress_mode()`**: Returns a map indicating the current stage of each process.
+-   **`is_complete()`**: Returns a map of booleans indicating if each stage has finished.
+
+@section analysis_usage Example
+
+```cpp
+#include <AnalysisG/analysis.h>
+#include "MyEvent.h"
+#include "MyGraph.h"
+#include "MySelection.h"
+#include "MyModel.h"
+
+int main() {
+    // 1. Create the analysis object
+    analysis* ana = new analysis();
+
+    // 2. Configure the analysis
+    ana->add_samples("/path/to/ttbar/*.root", "ttbar");
+    ana->add_samples("/path/to/data.root", "data");
+
+    ana->add_event_template(new MyEvent(), "ttbar");
+    ana->add_event_template(new MyEvent(), "data");
+
+    ana->add_selection_template(new MySelection());
+    ana->add_graph_template(new MyGraph(), "ttbar");
+
+    optimizer_params_t* optim = new optimizer_params_t();
+    // ... configure optimizer ...
+    ana->add_model(new MyModel(), optim, "run1_training");
+
+    // 3. Start the pipeline
+    ana->start();
+
+    // 4. Monitor progress (optional)
+    while(!ana->is_complete()["training-run1_training"]) {
+        // wait and print progress
+    }
+
+    delete ana;
+    return 0;
+}
+```
+
+---
+
+# Detailed Pipeline Workflow
+
+## Complete Execution Sequence
+
+```
+analysis::start()
+       │
+       ├─► build_project()
+       │   └─► Create output directories
+       │       • ./checkpoints/
+       │       • ./metrics/
+       │       • ./logs/
+       │
+       ├─► Sample Tracing (sampletracer)
+       │   │
+       │   └─► For each sample label:
+       │       ├─► Scan ROOT files
+       │       ├─► Extract TTree structure
+       │       ├─► Cache branch/leaf information
+       │       └─► Store in sample_cache
+       │
+       ├─► build_events()
+       │   │
+       │   └─► Multi-threaded event building:
+       │       ├─► io::get_data(event_idx)
+       │       ├─► event_template::build_event()
+       │       ├─► Populate particle collections
+       │       └─► Store in event_storage
+       │
+       ├─► build_selections()
+       │   │
+       │   └─► For each event:
+       │       ├─► selection_template::selection()
+       │       ├─► If pass: keep event
+       │       └─► If fail: discard event
+       │
+       ├─► build_graphs()
+       │   │
+       │   └─► For each selected event:
+       │       ├─► graph_template::set_event()
+       │       ├─► graph_template::CompileEvent()
+       │       ├─► graph_template::data_export()
+       │       └─► dataloader::add_graph()
+       │
+       ├─► build_model_session() / build_inference()
+       │   │
+       │   ├─► If training:
+       │   │   ├─► dataloader::split_dataset()
+       │   │   ├─► optimizer::import_dataloader()
+       │   │   ├─► optimizer::import_model_sessions()
+       │   │   └─► For each k-fold:
+       │   │       └─► optimizer::launch_model(k)
+       │   │
+       │   └─► If inference:
+       │       ├─► Load model weights
+       │       ├─► For each graph:
+       │       │   └─► model::forward()
+       │       └─► Store predictions
+       │
+       └─► build_metric()
+           │
+           └─► For each metric:
+               ├─► metric::define_variables()
+               ├─► Load required model states
+               ├─► For each event/batch:
+               │   └─► metric::define_metric()
+               ├─► metric::end()
+               └─► Save results
+```
+
+---
+
+# Class Structure
+
+## Inheritance Hierarchy
+
+```
+notification
+    ↓
+  tools
+    ↓
+ analysis
+```
+
+Inherits from:
+- **tools**: Filesystem operations, string utilities
+- **notification**: Colored logging, progress bars
+
+## Member Variables
+
+### Component Storage
+
+| Member | Type | Description |
+|--------|------|-------------|
+| `samples` | `std::map<std::string, std::vector<std::string>>` | Label → file paths |
+| `event_templates` | `std::map<std::string, event_template*>` | Label → event factory |
+| `graph_templates` | `std::map<std::string, graph_template*>` | Label → graph builder |
+| `selection_templates` | `std::vector<selection_template*>` | Selection logic instances |
+| `model_sessions` | `std::map<std::string, model_template*>` | Model name → model instance |
+| `metric_templates` | `std::vector<metric_template*>` | Metric calculators |
+
+### Data Storage
+
+| Member | Type | Description |
+|--------|------|-------------|
+| `event_storage` | `std::vector<event_template*>` | All built events |
+| `selected_events` | `std::vector<event_template*>` | Events passing selection |
+| `graph_storage` | `std::vector<graph_t*>` | All constructed graphs |
+| `dataloader_instances` | `std::map<std::string, dataloader*>` | Per-label dataloaders |
+
+### Configuration
+
+| Member | Type | Description |
+|--------|------|-------------|
+| `project_path` | `std::string` | Output directory root |
+| `num_threads` | `int` | Parallelization level |
+| `verbose` | `bool` | Enable detailed logging |
+
+---
+
+# Core Methods
+
+## Configuration Methods
+
+### add_samples(std::string path, std::string label)
+
+**Purpose**: Register ROOT files for processing
+
+**Parameters**:
+- `path`: File path or wildcard pattern (e.g., `"/data/*.root"`)
+- `label`: String identifier (e.g., `"ttbar"`, `"data"`)
+
+**Behavior**:
+- Expands wildcards using `tools::ls()`
+- Stores paths in `samples[label]`
+- Validates file existence
+
+**Example**:
+```cpp
+ana->add_samples("/data/mc16/ttbar/*.root", "ttbar");
+ana->add_samples("/data/mc16/zjets/*.root", "zjets");
+ana->add_samples("/data/data/*.root", "data");
+```
+
+### add_event_template(event_template* ev, std::string label)
+
+**Purpose**: Register event factory for specific sample type
+
+**Parameters**:
+- `ev`: Pointer to event_template subclass instance
+- `label`: Must match label from `add_samples()`
+
+**Behavior**:
+- Stores in `event_templates[label]`
+- Used during `build_events()` to construct events from ROOT data
+
+**Example**:
+```cpp
+class MyTTbarEvent : public event_template { ... };
+ana->add_event_template(new MyTTbarEvent(), "ttbar");
+```
+
+### add_graph_template(graph_template* gr, std::string label)
+
+**Purpose**: Register graph builder for specific sample type
+
+**Parameters**:
+- `gr`: Pointer to graph_template subclass instance
+- `label`: Sample type identifier
+
+**Example**:
+```cpp
+class TopReconstructionGraph : public graph_template { ... };
+ana->add_graph_template(new TopReconstructionGraph(), "ttbar");
+```
+
+### add_selection_template(selection_template* sel)
+
+**Purpose**: Register selection logic
+
+**Parameters**:
+- `sel`: Pointer to selection_template subclass instance
+
+**Behavior**:
+- Applied to ALL events regardless of label
+- Multiple selections can be added (sequential application)
+
+**Example**:
+```cpp
+class PreSelection : public selection_template { ... };
+class SignalRegion : public selection_template { ... };
+ana->add_selection_template(new PreSelection());
+ana->add_selection_template(new SignalRegion());
+```
+
+### add_model(model_template* model, optimizer_params_t* optim, std::string name)
+
+**Purpose**: Register GNN model for training or inference
+
+**Parameters**:
+- `model`: Pointer to model_template subclass
+- `optim`: Optimizer parameters (nullptr for inference only)
+- `name`: Unique identifier for this training run
+
+**Behavior**:
+- If `optim != nullptr`: Training mode
+- If `optim == nullptr`: Inference mode
+
+**Training Example**:
+```cpp
+optimizer_params_t* params = new optimizer_params_t();
+params->epochs = 100;
+params->learning_rate = 0.001;
+params->k_folds = 5;
+
+ana->add_model(new MyGNN(), params, "training_run1");
+```
+
+**Inference Example**:
+```cpp
+MyGNN* model = new MyGNN();
+model->load_state("checkpoint_epoch99.pt");
+ana->add_model(model, nullptr, "inference_run1");
+```
+
+### add_metric_template(metric_template* metric)
+
+**Purpose**: Register performance metric
+
+**Parameters**:
+- `metric`: Pointer to metric_template subclass
+
+**Example**:
+```cpp
+class AccuracyMetric : public metric_template { ... };
+class ROCMetric : public metric_template { ... };
+ana->add_metric_template(new AccuracyMetric());
+ana->add_metric_template(new ROCMetric());
+```
+
+---
+
+## Execution Methods
+
+### start()
+
+**Purpose**: Execute complete analysis pipeline
+
+**Behavior**:
+1. Validates configuration (all required components present)
+2. Initializes output directory structure
+3. Executes pipeline stages sequentially
+4. Uses multi-threading for parallelizable stages
+5. Monitors progress and logs status
+
+**Thread Management**:
+- Event building: Parallelized across files
+- Graph building: Parallelized across events
+- Training: Single-threaded per fold (multi-GPU within)
+- Metrics: Parallelized across metrics
+
+**Example**:
+```cpp
+ana->start();
+```
+
+### progress()
+
+**Purpose**: Get completion percentage of each stage
+
+**Returns**: `std::map<std::string, double>` - stage name → percentage (0.0-1.0)
+
+**Example**:
+```cpp
+auto prog = ana->progress();
+std::cout << "Event building: " << prog["events"] * 100 << "%" << std::endl;
+std::cout << "Training: " << prog["training-run1"] * 100 << "%" << std::endl;
+```
+
+### is_complete()
+
+**Purpose**: Check if pipeline stages are finished
+
+**Returns**: `std::map<std::string, bool>` - stage name → completion status
+
+**Example**:
+```cpp
+while (!ana->is_complete()["training-run1"]) {
+    std::this_thread::sleep_for(std::chrono::seconds(10));
+    auto prog = ana->progress();
+    std::cout << "Progress: " << prog["training-run1"] * 100 << "%" << std::endl;
+}
+```
+
+---
+
+# Pipeline Stage Details
+
+## Stage 1: Project Initialization
+
+**Method**: `build_project()`
+
+**Purpose**: Setup output directory structure
+
+**Creates**:
+```
+project_path/
+├── checkpoints/         # Model .pt files
+├── metrics/             # Metric output ROOT files
+├── logs/                # Execution logs
+└── cache/               # HDF5 caches
+```
+
+## Stage 2: Sample Tracing
+
+**Component**: `sampletracer`
+
+**Purpose**: Pre-scan ROOT files for structure
+
+**Process**:
+1. Open each ROOT file
+2. List all TTrees
+3. For each TTree: list all TBranches
+4. Cache structure to avoid repeated I/O
+
+**Performance**: ~1 second per file (first run), instant (cached)
+
+## Stage 3: Event Building
+
+**Method**: `build_events()`
+
+**Purpose**: Convert ROOT data → event_template objects
+
+**Algorithm**:
+```cpp
+for (auto& [label, paths] : samples) {
+    event_template* factory = event_templates[label];
+    for (auto& file : paths) {
+        io_reader->open(file);
+        for (int i = 0; i < num_events; i++) {
+            std::map<std::string, data_t*>* raw = io_reader->get_data(i);
+            std::map<std::string, event_template*> events = factory->build_event(raw);
+            for (auto& [tree_name, ev] : events) {
+                event_storage.push_back(ev);
+            }
+        }
+    }
+}
+```
+
+**Parallelization**: Thread pool across files
+
+## Stage 4: Selection
+
+**Method**: `build_selections()`
+
+**Purpose**: Apply cuts to events
+
+**Algorithm**:
+```cpp
+for (auto* event : event_storage) {
+    bool pass = true;
+    for (auto* selection : selection_templates) {
+        selection->set_event(event);
+        if (!selection->selection()) {
+            pass = false;
+            break;
+        }
+    }
+    if (pass) {
+        selected_events.push_back(event);
+    } else {
+        delete event;  // Memory cleanup
+    }
+}
+```
+
+**Memory Management**: Failed events are deleted immediately
+
+## Stage 5: Graph Building
+
+**Method**: `build_graphs()`
+
+**Purpose**: Convert events → graph_t
+
+**Algorithm**:
+```cpp
+for (auto& [label, graph_builder] : graph_templates) {
+    dataloader* loader = new dataloader();
+    for (auto* event : selected_events) {
+        if (event->label != label) continue;
+        
+        graph_builder->set_event(event);
+        graph_builder->CompileEvent();
+        graph_t* g = graph_builder->data_export();
+        
+        loader->add_graph(g);
+    }
+    dataloader_instances[label] = loader;
+}
+```
+
+**Parallelization**: Thread pool across events
+
+## Stage 6: Model Training/Inference
+
+### Training Mode
+
+**Method**: `build_model_session()`
+
+**Triggered**: When `optimizer_params_t*` is not nullptr
+
+**Process**:
+1. Import dataloader into optimizer
+2. Split dataset (k-fold)
+3. For each fold:
+   - Initialize model
+   - Call `optimizer::launch_model(k)`
+   - Train for specified epochs
+   - Save checkpoints
+
+### Inference Mode
+
+**Method**: `build_inference()`
+
+**Triggered**: When `optimizer_params_t*` is nullptr
+
+**Process**:
+1. Load model weights
+2. Set model to eval mode
+3. For each graph:
+   - Call `model::forward()`
+   - Store predictions
+
+## Stage 7: Metrics
+
+**Method**: `build_metric()`
+
+**Purpose**: Evaluate model performance
+
+**Process**:
+```cpp
+for (auto* metric : metric_templates) {
+    // Load required model states
+    for (auto& [key, path] : metric->run_names) {
+        model_template* m = load_model(path);
+        // Run inference
+    }
+    
+    // Calculate metrics
+    for (each graph/batch) {
+        metric->define_metric(data);
+    }
+    
+    metric->end();  // Finalize and save
+}
+```
+
+---
+
+# Complete Usage Examples
+
+## Example 1: Simple Training Pipeline
+
+```cpp
+#include <AnalysisG/analysis.h>
+
+class TopPairEvent : public event_template {
+    // ... event definition ...
+};
+
+class TopPairGraph : public graph_template {
+    void CompileEvent() override {
+        // ... graph construction ...
+    }
+};
+
+class TopPairGNN : public model_template {
+    void forward(graph_t* g) override {
+        // ... GNN architecture ...
+    }
+};
+
+int main() {
+    analysis* ana = new analysis();
+    
+    // Add data
+    ana->add_samples("/data/ttbar/*.root", "signal");
+    ana->add_samples("/data/qcd/*.root", "background");
+    
+    // Add templates
+    ana->add_event_template(new TopPairEvent(), "signal");
+    ana->add_event_template(new TopPairEvent(), "background");
+    ana->add_graph_template(new TopPairGraph(), "signal");
+    ana->add_graph_template(new TopPairGraph(), "background");
+    
+    // Configure training
+    optimizer_params_t* opt = new optimizer_params_t();
+    opt->epochs = 50;
+    opt->learning_rate = 0.001;
+    opt->k_folds = 3;
+    
+    TopPairGNN* model = new TopPairGNN();
+    model->loss_node = \"crossentropyloss\";
+    ana->add_model(model, opt, \"training_v1\");
+    
+    // Execute
+    ana->start();
+    
+    delete ana;
+    return 0;
+}
+```
+
+## Example 2: Inference + Metrics
+
+```cpp
+int main() {
+    analysis* ana = new analysis();
+    
+    // Add test data
+    ana->add_samples(\"/data/test/*.root\", \"test\");
+    ana->add_event_template(new TopPairEvent(), \"test\");
+    ana->add_graph_template(new TopPairGraph(), \"test\");
+    
+    // Load trained model for inference
+    TopPairGNN* model = new TopPairGNN();
+    model->load_state(\"checkpoints/model_epoch49_k2.pt\");
+    ana->add_model(model, nullptr, \"inference_test\");  // nullptr = inference mode
+    
+    // Add metrics
+    class AccuracyMetric : public metric_template {
+        void define_metric(metric_t* v) override {
+            // ... accuracy calculation ...
+        }
+    };
+    ana->add_metric_template(new AccuracyMetric());
+    
+    // Execute
+    ana->start();
+    
+    delete ana;
+    return 0;
+}
+```
+
+---
+
+# Performance Considerations
+
+## Multi-Threading
+
+| Stage | Parallelization | Scaling |
+|-------|----------------|---------|
+| Sample tracing | Per-file | Linear |
+| Event building | Per-file | Linear |
+| Selection | Per-event batch | Near-linear |
+| Graph building | Per-event batch | Near-linear |
+| Training | Per k-fold (external) | Manual |
+| Metrics | Per metric | Linear |
+
+## Memory Management
+
+- **Event Storage**: Deleted immediately if selection fails
+- **Graph Storage**: Managed by dataloader (deduplication)
+- **Model States**: Loaded on-demand, unloaded after metrics
+
+## Disk I/O
+
+- **ROOT Reading**: Cached TTree structure
+- **Checkpoints**: Written per epoch
+- **Metrics**: Streamed to ROOT file
+
+---
+
+# Troubleshooting
+
+## \"No events built\"
+
+**Cause**: Label mismatch between samples and event_template
+
+**Solution**: Ensure labels match exactly:
+```cpp
+ana->add_samples(\"/data/*.root\", \"ttbar\");
+ana->add_event_template(new MyEvent(), \"ttbar\");  // ✓ Same label
+```
+
+## \"Graph template not found for label\"
+
+**Cause**: Missing graph_template for sample label
+
+**Solution**: Add graph_template for each label:
+```cpp
+ana->add_samples(\"/data/*.root\", \"signal\");
+ana->add_graph_template(new MyGraph(), \"signal\");  // ✓ Required
+```
+
+## \"Model training not starting\"
+
+**Cause**: Missing optimizer_params_t
+
+**Solution**: Provide optimizer parameters:
+```cpp
+optimizer_params_t* opt = new optimizer_params_t();
+opt->epochs = 50;
+ana->add_model(model, opt, \"run1\");  // ✓ Optimizer provided
+```
+
+---
+
+@see @ref io_module for ROOT file reading
+@see @ref event_template for event containers
+@see @ref graph_template_module for graph construction
+@see @ref model_template_module for GNN models
+@see @ref optimizer_module for training loops
+@see @ref metric_template_module for metrics
+@see @ref framework_overview for complete pipeline
+
+*/

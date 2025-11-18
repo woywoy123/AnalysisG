@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for models/RecursiveGraphNeuralNetwork implementation.
+
+@defgroup models_rgnn Models: RecursiveGraphNeuralNetwork
+@ingroup models_module
+
+@details
+Implements `RecursiveGraphNeuralNetwork` model bindings.
+Source: `src/AnalysisG/models/RecursiveGraphNeuralNetwork/`
+*/

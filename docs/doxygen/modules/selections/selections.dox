@@ -1,0 +1,9 @@
+/**
+@file
+@brief Placeholder for the Selections module documentation.
+
+@defgroup selections_module Selections
+@ingroup modules_module
+
+@brief This module contains various event selection implementations.
+*/

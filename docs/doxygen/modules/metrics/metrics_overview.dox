@@ -1,0 +1,9 @@
+/**
+@file
+@brief Placeholder for the Metrics module overview documentation.
+
+@defgroup metrics_module Metrics
+@ingroup modules_module
+
+@brief This module contains specific metric implementations like accuracy and pagerank.
+*/

@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/mc16/topjets.
+
+@defgroup selections_mc16_topjets Selections: mc16/topjets
+@ingroup selections_module
+
+@details
+MC16 topjets selections.
+Source: `src/AnalysisG/selections/mc16/topjets/`
+*/

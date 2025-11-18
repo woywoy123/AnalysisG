@@ -1,0 +1,1238 @@
+/**
+@file
+@brief Comprehensive documentation for the lossfx class - factory system for loss functions, optimizers, and learning rate schedulers.
+
+@defgroup lossfx_module lossfx
+@ingroup modules_module
+
+@brief The `lossfx` module provides a sophisticated factory pattern for creating and configuring 20+ LibTorch loss functions, 6 optimizers, and 2 learning rate schedulers from declarative string-based definitions.
+
+@details
+
+---
+
+# Quick Navigation
+
+| Module | Description | Link |
+|--------|-------------|------|
+| **LossFx** | Loss/optimizer factory | (Current Page) |
+| @ref model_template_module | GNN models | Uses lossfx for loss creation |
+| @ref optimizer_module | Training orchestrator | Creates optimizer instances |
+| @ref tools_module | Utilities | Parent class (string parsing) |
+| @ref notification_module | Logging | Parent class |
+
+**Typical Workflow**: User string `"crossentropyloss::(smoothing->0.1)"` → **`lossfx::interpret()`** → `lossfx::build_crossentropy_loss()` → `torch::nn::CrossEntropyLoss`
+
+---
+
+*/
+
+/**
+@page lossfx_module_page LossFx Module
+@tableofcontents
+
+@section lossfx_intro Introduction
+
+The `lossfx` class, defined in `src/AnalysisG/modules/lossfx/`, is the centralized loss-and-optimization factory for AnalysisG's machine learning pipeline, converting compact string specifications into fully-configured PyTorch objects.
+
+@section lossfx_purpose Purpose and Design
+
+The `lossfx` class is the centralized loss-and-optimization factory for AnalysisG's machine learning pipeline. It serves as a declarative interface to LibTorch's extensive collection of loss functions and optimizers, converting compact string specifications into fully-configured PyTorch objects.
+
+**Core Design Philosophy**: 
+Instead of hardcoding loss function selection with nested if-statements or switch-cases throughout model code, `lossfx` enables runtime configuration via simple strings. This allows:
+- **Configuration Files**: Store loss/optimizer settings in JSON/YAML
+- **Multi-Output Models**: Each output can have a different loss function specified independently
+- **Hyperparameter Tuning**: Change loss functions without recompiling code
+- **Experiment Reproducibility**: Loss function configurations are strings that can be logged/versioned
+
+**Capabilities**:
+- **20+ Loss Functions**: BCE, CrossEntropy, MSE, Huber, KLDiv, NLL, Triplet Margin, and more
+- **6 Optimizers**: Adam, AdamW, SGD, LBFGS, RMSprop, Adagrad with full hyperparameter control
+- **2 Schedulers**: StepLR, ReduceLROnPlateau for learning rate decay
+- **String Parsing**: `"crossentropyloss::(ignore->-1|smoothing->0.1|reduction->mean)"`
+- **Templated Builders**: "Dressing" functions eliminate code duplication across similar loss configurations
+- **Weight Initialization**: Xavier, Kaiming, Normal, Uniform initialization for model layers
+
+The implementation is organized across specialized source files:
+
+| **File** | **Purpose** |
+|----------|-------------|
+| `lossfx.h` | Class definition with 20+ loss function pointers, optimizer pointers, configuration structs |
+| `lossfx.cxx` | Constructor, destructor, optimizer/scheduler builders, device transfer, main loss dispatcher |
+| `loss_config.cxx` | 20+ `build_fx_loss()` methods, one per loss type, with templated dressing functions |
+| `optimizer_config.cxx` | 6 `build_*` methods for optimizers, weight initialization functions |
+| `switching.cxx` | String-to-enum converters (`loss_string`, `optim_string`, `scheduler_string`), parameter parser |
+| `loss_switching.cxx` | Loss function dispatcher routing `loss(pred, truth)` to correct implementation |
+
+---
+
+# Class Structure
+
+## Inheritance Hierarchy
+
+```
+notification
+    ↓
+  tools
+    ↓
+ lossfx
+```
+
+Inherits from `tools` (→ `notification`), gaining:
+- **From `tools`**: `split`, `replace`, `lower`, `has_string` for string parsing
+- **From `notification`**: `success`, `warning`, `failure` colored logging
+
+## Member Variables
+
+### Loss Function Implementations (20+)
+```cpp
+torch::nn::BCELossImpl* m_bce;
+torch::nn::BCEWithLogitsLossImpl* m_bce_with_logits;
+torch::nn::CosineEmbeddingLossImpl* m_cosine_embedding;
+torch::nn::CrossEntropyLossImpl* m_cross_entropy;
+torch::nn::CTCLossImpl* m_ctc;
+torch::nn::HingeEmbeddingLossImpl* m_hinge_embedding;
+torch::nn::HuberLossImpl* m_huber;
+torch::nn::KLDivLossImpl* m_kl_div;
+torch::nn::L1LossImpl* m_l1;
+torch::nn::MarginRankingLossImpl* m_margin_ranking;
+torch::nn::MSELossImpl* m_mse;
+torch::nn::MultiLabelMarginLossImpl* m_multi_label_margin;
+torch::nn::MultiLabelSoftMarginLossImpl* m_multi_label_soft_margin;
+torch::nn::MultiMarginLossImpl* m_multi_margin;
+torch::nn::NLLLossImpl* m_nll;
+torch::nn::PoissonNLLLossImpl* m_poisson_nll;
+torch::nn::SmoothL1LossImpl* m_smooth_l1;
+torch::nn::SoftMarginLossImpl* m_soft_margin;
+torch::nn::TripletMarginLossImpl* m_triplet_margin;
+torch::nn::TripletMarginWithDistanceLossImpl* m_triplet_margin_with_distance;
+```
+
+**Purpose**: Only ONE loss implementation pointer is non-null at a time (the one selected via `build_loss_function()`). This design saves memory and clarifies intent.
+
+### Optimizer Implementations (6)
+```cpp
+torch::optim::Adam* m_adam;
+torch::optim::Adagrad* m_adagrad;
+torch::optim::AdamW* m_adamw;
+torch::optim::LBFGS* m_lbfgs;
+torch::optim::RMSprop* m_rmsprop;
+torch::optim::SGD* m_sgd;
+```
+
+**Purpose**: Stores the active optimizer. Typically one optimizer is used per model, but multi-GPU training may create multiple instances.
+
+### Scheduler Implementations (2)
+```cpp
+torch::optim::StepLR* m_steplr;
+torch::optim::ReduceLROnPlateauScheduler* m_rlp;
+torch::optim::LRScheduler* m_lrs;
+```
+
+**Purpose**: Learning rate schedulers that modify optimizer learning rates during training.
+
+### Configuration State
+```cpp
+std::string variable;          // Variable name (e.g., "is_signal" for classification)
+loss_opt lss_cfg;             // Parsed loss configuration options
+```
+
+**loss_opt Structure**:
+```cpp
+struct loss_opt {
+    loss_enum fx;              // Which loss function
+    bool mean, sum, none;      // Reduction types
+    bool swap, full;           // Special flags
+    bool batch_mean, target;
+    bool zero_inf;             // Handle infinite values
+    int ignore;                // Class index to ignore (CrossEntropy)
+    int blank;                 // Blank label (CTC)
+    double margin;             // Margin parameter (Triplet, Hinge)
+    double beta;               // Huber beta parameter
+    double eps;                // Numerical stability epsilon
+    double smoothing;          // Label smoothing (CrossEntropy)
+    std::vector<double> weight; // Per-class weights
+};
+```
+
+**Purpose**: Holds all parsed configuration values after `interpret()` is called. Individual `build_fx_loss()` methods read relevant fields.
+
+---
+
+# String Parsing
+
+## `lossfx(std::string var, std::string val)`
+
+**Purpose**: Constructor that immediately parses a loss function specification string
+
+**Parameters**:
+- `var`: Variable name (e.g., `"is_signal"`)
+- `val`: Loss specification (e.g., `"crossentropyloss::(ignore->-1|smoothing->0.1)"`)
+
+**Example**:
+```cpp
+lossfx* loss = new lossfx("top_label", "crossentropyloss::(ignore->-1|smoothing->0.05)");
+```
+
+**Internal Call Chain**:
+```
+lossfx(var, val)
+  ↓
+interpret(&val)
+  ↓
+loss_string("crossentropyloss") → returns loss_enum::cross_entropy
+  ↓
+split(val, "|") → ["ignore->-1", "smoothing->0.05"]
+  ↓
+For each parameter:
+    loss_opt_string("ignore->-1")
+      ↓
+    Sets lss_cfg.ignore = -1
+    
+    loss_opt_string("smoothing->0.05")
+      ↓
+    Sets lss_cfg.smoothing = 0.05
+```
+
+---
+
+## `interpret(std::string* val)`
+
+**Purpose**: Master parser that extracts loss function name and parameters
+
+**Algorithm**:
+```
+1. Split string by "::" → [loss_name, parameters]
+2. Convert loss_name to lowercase
+3. Call loss_string() to get enum
+4. Store in lss_cfg.fx
+5. If parameters exist:
+   a. Remove parentheses
+   b. Split by "|"
+   c. Call loss_opt_string() for each parameter
+```
+
+**Syntax**: `"<loss_name>::(<param1>|<param2>|...)"`
+
+**Implementation** (in `loss_config.cxx`):
+```cpp
+void lossfx::interpret(std::string* val){
+    std::vector<std::string> v = this->split(*val, "::");
+    
+    // Get loss name
+    std::string loss_name = this->lower(&v[0]);
+    this->lss_cfg.fx = this->loss_string(loss_name);
+    
+    if (v.size() < 2){return;}  // No parameters
+    
+    // Parse parameters
+    std::string params = v[1];
+    this->replace(&params, "(", "");
+    this->replace(&params, ")", "");
+    
+    std::vector<std::string> param_list = this->split(params, "|");
+    for (size_t x(0); x < param_list.size(); ++x){
+        this->loss_opt_string(param_list[x]);
+    }
+}
+```
+
+---
+
+## `loss_string(std::string name)`
+
+**Purpose**: Converts string loss name to `loss_enum`
+
+**Supported Strings** (case-insensitive):
+```cpp
+"bceloss"                       → loss_enum::bce
+"bcewithlogitsloss"             → loss_enum::bce_with_logits
+"cosineembeddingloss"           → loss_enum::cosine_embedding
+"crossentropyloss"              → loss_enum::cross_entropy
+"ctcloss"                       → loss_enum::ctc
+"hingeembeddingloss"            → loss_enum::hinge_embedding
+"huberloss"                     → loss_enum::huber
+"kldivloss"                     → loss_enum::kl_div
+"l1loss"                        → loss_enum::l1
+"marginrankingloss"             → loss_enum::margin_ranking
+"mseloss"                       → loss_enum::mse
+"multilabelmarginloss"          → loss_enum::multi_label_margin
+"multilabelsoftmarginloss"      → loss_enum::multi_label_soft_margin
+"multimarginloss"               → loss_enum::multi_margin
+"nllloss"                       → loss_enum::nll
+"poissonnllloss"                → loss_enum::poisson_nll
+"smoothl1loss"                  → loss_enum::smooth_l1
+"softmarginloss"                → loss_enum::soft_margin
+"tripletmarginloss"             → loss_enum::triplet_margin
+"tripletmarginwithdistanceloss" → loss_enum::triplet_margin_with_distance
+<anything else>                 → loss_enum::invalid_loss
+```
+
+**Implementation** (in `switching.cxx`):
+```cpp
+loss_enum lossfx::loss_string(std::string name){
+    name = this->lower(&name);
+    if(name == "crossentropyloss"){return loss_enum::cross_entropy;}
+    if(name == "mseloss"){return loss_enum::mse;}
+    // ... 18 more comparisons ...
+    return loss_enum::invalid_loss;
+}
+```
+
+---
+
+## `loss_opt_string(std::string vars)`
+
+**Purpose**: Parses individual parameter (e.g., `"ignore->-1"`) and updates `lss_cfg`
+
+**Syntax**: `"<parameter_name> -> <value>"`
+
+**Supported Parameters**:
+
+| **Parameter** | **Type** | **Example** | **Field Updated** |
+|---------------|----------|-------------|-------------------|
+| `mean` | bool | `"mean->true"` | `lss_cfg.mean` |
+| `sum` | bool | `"sum->true"` | `lss_cfg.sum` |
+| `none` | bool | `"none->true"` | `lss_cfg.none` |
+| `swap` | bool | `"swap->true"` | `lss_cfg.swap` |
+| `full` | bool | `"full->true"` | `lss_cfg.full` |
+| `batch_mean` | bool | `"batch_mean->true"` | `lss_cfg.batch_mean` |
+| `target` | bool | `"target->true"` | `lss_cfg.target` |
+| `zero_inf` | bool | `"zero_inf->true"` | `lss_cfg.zero_inf` |
+| `ignore` | int | `"ignore->-1"` | `lss_cfg.ignore` |
+| `blank` | int | `"blank->0"` | `lss_cfg.blank` |
+| `margin` | double | `"margin->0.2"` | `lss_cfg.margin` |
+| `beta` | double | `"beta->1.0"` | `lss_cfg.beta` |
+| `eps` | double | `"eps->1e-8"` | `lss_cfg.eps` |
+| `smoothing` | double | `"smoothing->0.1"` | `lss_cfg.smoothing` |
+| `weight` | vector<double> | `"weight->{1.0, 0.5, 2.0}"` | `lss_cfg.weight` |
+
+**Implementation** (in `switching.cxx`):
+```cpp
+void lossfx::loss_opt_string(std::string vars){
+    auto lambb = [this](std::string* v) -> bool {
+        return this->has_string(v, "true");
+    };
+    auto lambi = [this](std::string* v) -> int {
+        return std::stoi(*v);
+    };
+    auto lambd = [this](std::string* v) -> double {
+        return std::stod(*v);
+    };
+    auto lambv = [this](std::string* v) -> std::vector<double> {
+        this->replace(v, "{", "");
+        this->replace(v, "}", "");
+        std::vector<std::string> vcx = this->split(*v, ",");
+        std::vector<double> vo = {};
+        for (size_t x(0); x < vcx.size(); ++x){
+            this->replace(&vcx[x], " ", "");
+            vo.push_back(std::stod(vcx[x]));
+        }
+        return vo;
+    };
+    
+    std::string _vars = this->lower(&vars);
+    std::vector<std::string> vx = this->split(_vars, "->");
+    if (vx.size() != 2){
+        this->warning("Invalid parameter: " + vars);
+        return;
+    }
+    
+    this->replace(&vx[0], " ", "");
+    std::string name = vx[0];
+    std::string val = vx[1];
+    
+    if (name == "mean"){this->lss_cfg.mean = lambb(&val); return;}
+    if (name == "ignore"){this->lss_cfg.ignore = lambi(&val); return;}
+    if (name == "margin"){this->lss_cfg.margin = lambd(&val); return;}
+    if (name == "weight"){this->lss_cfg.weight = lambv(&val); return;}
+    // ... 14 more parameter checks ...
+    
+    this->warning("Found invalid parameter: " + vars + " skipping");
+}
+```
+
+**Vector Parsing Example**:
+- Input: `"weight->{1.0, 2.0, 0.5}"`
+- After parsing: `lss_cfg.weight = [1.0, 2.0, 0.5]`
+
+---
+
+# Loss Function Building
+
+## `build_loss_function()`
+
+**Purpose**: Creates the loss function instance based on `lss_cfg.fx`
+
+**Algorithm**:
+```
+Switch on lss_cfg.fx:
+    case loss_enum::cross_entropy:
+        Call build_fx_loss(m_cross_entropy)
+        Return true
+    case loss_enum::mse:
+        Call build_fx_loss(m_mse)
+        Return true
+    ... (18 more cases) ...
+    default:
+        Log all supported loss names
+        Return false
+```
+
+**Implementation**:
+```cpp
+bool lossfx::build_loss_function(){
+    return this->build_loss_function(this->lss_cfg.fx);
+}
+
+bool lossfx::build_loss_function(loss_enum lss){
+    switch (lss){
+        case loss_enum::cross_entropy:
+            this->build_fx_loss(this->m_cross_entropy);
+            return true;
+        case loss_enum::mse:
+            this->build_fx_loss(this->m_mse);
+            return true;
+        // ... 18 more cases ...
+        default:
+            break;
+    }
+    
+    this->warning("Invalid Loss Function! Options Are:");
+    this->warning(" -> bceloss");
+    this->warning(" -> crossentropyloss");
+    // ... 18 more warnings ...
+    return false;
+}
+```
+
+---
+
+## `build_fx_loss<T>(T*& ptr)` (Templated Builders)
+
+**Purpose**: Overloaded template methods that construct specific loss function types with parsed options
+
+**Design Pattern**: Each loss type has a dedicated `build_fx_loss()` overload that:
+1. Creates `torch::nn::*LossOptions` struct
+2. Applies relevant options from `lss_cfg` via "dressing" functions
+3. Instantiates `torch::nn::*LossImpl` with configured options
+4. Stores pointer in member variable
+
+**Example 1: CrossEntropyLoss** (in `loss_config.cxx`):
+```cpp
+void lossfx::build_fx_loss(torch::nn::CrossEntropyLossImpl*& fx){
+    torch::nn::CrossEntropyLossOptions op;
+    
+    // Apply reduction
+    this->_dress_reduction(&op);
+    
+    // Apply label smoothing
+    if (this->lss_cfg.smoothing){
+        op.label_smoothing(this->lss_cfg.smoothing);
+    }
+    
+    // Apply ignore index
+    if (this->lss_cfg.ignore != -100){  // -100 is default
+        op.ignore_index(this->lss_cfg.ignore);
+    }
+    
+    // Apply class weights
+    if (this->lss_cfg.weight.size()){
+        torch::Tensor w = torch::tensor(this->lss_cfg.weight);
+        op.weight(w);
+    }
+    
+    fx = new torch::nn::CrossEntropyLossImpl(op);
+}
+```
+
+**Example 2: MSELoss**:
+```cpp
+void lossfx::build_fx_loss(torch::nn::MSELossImpl*& fx){
+    torch::nn::MSELossOptions op;
+    this->_dress_reduction(&op);
+    fx = new torch::nn::MSELossImpl(op);
+}
+```
+
+**Example 3: HuberLoss**:
+```cpp
+void lossfx::build_fx_loss(torch::nn::HuberLossImpl*& fx){
+    torch::nn::HuberLossOptions op;
+    this->_dress_reduction(&op);
+    
+    if (this->lss_cfg.beta){
+        op.delta(this->lss_cfg.beta);
+    }
+    
+    fx = new torch::nn::HuberLossImpl(op);
+}
+```
+
+**Example 4: TripletMarginLoss**:
+```cpp
+void lossfx::build_fx_loss(torch::nn::TripletMarginLossImpl*& fx){
+    torch::nn::TripletMarginLossOptions op;
+    this->_dress_reduction(&op);
+    this->_dress_margin(&op);
+    this->_dress_swap(&op);
+    this->_dress_eps(&op);
+    fx = new torch::nn::TripletMarginLossImpl(op);
+}
+```
+
+---
+
+## Dressing Functions (Template Helpers)
+
+**Purpose**: Eliminate code duplication by applying common option patterns across multiple loss types
+
+### `_dress_reduction<T>(T* op)`
+
+**Purpose**: Sets reduction mode (mean/sum/none)
+
+**Algorithm**:
+```
+If lss_cfg.mean: op->reduction(torch::kMean)
+Else if lss_cfg.sum: op->reduction(torch::kSum)
+Else if lss_cfg.none: op->reduction(torch::kNone)
+Else: default to torch::kMean
+```
+
+**Implementation**:
+```cpp
+template <class g>
+void lossfx::_dress_reduction(g* op){
+    if (this->lss_cfg.mean){
+        op->reduction(torch::kMean);
+    }
+    else if (this->lss_cfg.sum){
+        op->reduction(torch::kSum);
+    }
+    else if (this->lss_cfg.none){
+        op->reduction(torch::kNone);
+    }
+    else {
+        op->reduction(torch::kMean);  // Default
+    }
+}
+```
+
+**Usage**: Applied in 18 out of 20 loss functions (all except CTC and CTCLoss which have different reduction semantics)
+
+---
+
+### `_dress_margin<T>(T* op)`
+
+**Purpose**: Sets margin parameter for ranking/embedding losses
+
+**Implementation**:
+```cpp
+template <class g>
+void lossfx::_dress_margin(g* op){
+    if (this->lss_cfg.margin){
+        op->margin(this->lss_cfg.margin);
+    }
+}
+```
+
+**Used In**: TripletMarginLoss, HingeEmbeddingLoss, MarginRankingLoss, CosineEmbeddingLoss
+
+---
+
+### `_dress_swap<T>(T* op)`
+
+**Purpose**: Sets swap parameter for TripletMarginLoss
+
+**Implementation**:
+```cpp
+template <class g>
+void lossfx::_dress_swap(g* op){
+    if (this->lss_cfg.swap){
+        op->swap(this->lss_cfg.swap);
+    }
+}
+```
+
+**Used In**: TripletMarginLoss
+
+---
+
+### `_dress_eps<T>(T* op)`
+
+**Purpose**: Sets numerical stability epsilon
+
+**Implementation**:
+```cpp
+template <class g>
+void lossfx::_dress_eps(g* op){
+    if (this->lss_cfg.eps){
+        op->eps(this->lss_cfg.eps);
+    }
+}
+```
+
+**Used In**: TripletMarginLoss, KLDivLoss
+
+---
+
+### Additional Dressing Functions
+
+```cpp
+_dress_batch_mean(op);  // CTCLoss
+_dress_target(op);      // PoissonNLLLoss
+_dress_full(op);        // PoissonNLLLoss
+_dress_zero_inf(op);    // CTCLoss, KLDivLoss
+_dress_blank(op);       // CTCLoss
+```
+
+**Design Benefit**: Adding a new loss function requires ~5-10 lines of code (create options, call dressing functions, instantiate). Without dressing functions, each loss would require ~20-30 lines of duplicated option-setting code.
+
+---
+
+## `loss(torch::Tensor* pred, torch::Tensor* truth)`
+
+**Purpose**: Computes loss value by dispatching to the active loss function
+
+**Algorithm**:
+```
+Switch on lss_cfg.fx:
+    case loss_enum::cross_entropy:
+        Return (*m_cross_entropy)(*pred, *truth)
+    case loss_enum::mse:
+        Return (*m_mse)(*pred, *truth)
+    ... (18 more cases) ...
+    default:
+        Return empty tensor
+```
+
+**Implementation** (in `loss_switching.cxx`):
+```cpp
+torch::Tensor lossfx::loss(torch::Tensor* pred, torch::Tensor* truth){
+    switch (this->lss_cfg.fx){
+        case loss_enum::bce:
+            return (*this->m_bce)(*pred, *truth);
+        case loss_enum::cross_entropy:
+            return (*this->m_cross_entropy)(*pred, *truth);
+        case loss_enum::mse:
+            return (*this->m_mse)(*pred, *truth);
+        // ... 17 more cases ...
+        default:
+            return torch::Tensor();
+    }
+}
+```
+
+**Usage Example**:
+```cpp
+torch::Tensor prediction = model->forward(batch);
+torch::Tensor target = batch->get_truth_node("is_signal");
+torch::Tensor loss_value = loss->loss(&prediction, &target);
+loss_value.backward();
+```
+
+---
+
+# Optimizer Building
+
+## `build_optimizer(optimizer_params_t* op, vector<Tensor>* params)`
+
+**Purpose**: Creates an optimizer instance from configuration struct
+
+**Parameters**:
+- `op`: Struct containing optimizer type and hyperparameters
+- `params`: Model parameters to optimize (from `model->parameters()`)
+
+**optimizer_params_t Structure**:
+```cpp
+struct optimizer_params_t {
+    std::string optimizer;     // "adam", "adamw", "sgd", etc.
+    double lr;                 // Learning rate
+    double weight_decay;       // L2 penalty
+    bool m_weight_decay;       // Enable weight decay
+    double momentum;           // SGD momentum
+    bool nesterov;             // Nesterov momentum (SGD)
+    double eps;                // Numerical stability
+    std::vector<double> betas; // Adam beta1/beta2
+    // ... more fields ...
+};
+```
+
+**Algorithm**:
+```
+Switch on optimizer name:
+    case "adam":   build_adam(op, params); return m_adam
+    case "adamw":  build_adamw(op, params); return m_adamw
+    case "sgd":    build_sgd(op, params); return m_sgd
+    case "lbfgs":  build_lbfgs(op, params); return m_lbfgs
+    case "rmsprop": build_rmsprop(op, params); return m_rmsprop
+    case "adagrad": build_adagrad(op, params); return m_adagrad
+    default: return nullptr
+```
+
+**Implementation**:
+```cpp
+torch::optim::Optimizer* lossfx::build_optimizer(
+    optimizer_params_t* op, 
+    std::vector<torch::Tensor>* params
+){
+    opt_enum op_ = this->optim_string(op->optimizer);
+    
+    switch (op_){
+        case opt_enum::adam:
+            this->build_adam(op, params);
+            return this->m_adam;
+        case opt_enum::adamw:
+            this->build_adamw(op, params);
+            return this->m_adamw;
+        case opt_enum::sgd:
+            this->build_sgd(op, params);
+            return this->m_sgd;
+        case opt_enum::lbfgs:
+            this->build_lbfgs(op, params);
+            return this->m_lbfgs;
+        case opt_enum::rmsprop:
+            this->build_rmsprop(op, params);
+            return this->m_rmsprop;
+        case opt_enum::adagrad:
+            this->build_adagrad(op, params);
+            return this->m_adagrad;
+        default:
+            return nullptr;
+    }
+}
+```
+
+---
+
+## Individual Optimizer Builders
+
+### `build_adamw(optimizer_params_t* op, vector<Tensor>* params)`
+
+**Purpose**: Creates AdamW optimizer with decoupled weight decay
+
+**Implementation** (in `optimizer_config.cxx`):
+```cpp
+void lossfx::build_adamw(optimizer_params_t* op, std::vector<torch::Tensor>* params){
+    torch::optim::AdamWOptions opt(*params);
+    opt.lr(op->lr);
+    
+    if (op->m_weight_decay){
+        opt.weight_decay(op->weight_decay);
+    }
+    
+    if (op->betas.size() == 2){
+        opt.betas({op->betas[0], op->betas[1]});
+    }
+    
+    if (op->eps){
+        opt.eps(op->eps);
+    }
+    
+    this->m_adamw = new torch::optim::AdamW(opt);
+}
+```
+
+### `build_sgd(optimizer_params_t* op, vector<Tensor>* params)`
+
+**Purpose**: Creates SGD optimizer with optional momentum/Nesterov
+
+**Implementation**:
+```cpp
+void lossfx::build_sgd(optimizer_params_t* op, std::vector<torch::Tensor>* params){
+    torch::optim::SGDOptions opt(*params);
+    opt.lr(op->lr);
+    
+    if (op->momentum){
+        opt.momentum(op->momentum);
+    }
+    
+    if (op->nesterov){
+        opt.nesterov(op->nesterov);
+    }
+    
+    if (op->m_weight_decay){
+        opt.weight_decay(op->weight_decay);
+    }
+    
+    this->m_sgd = new torch::optim::SGD(opt);
+}
+```
+
+### `build_lbfgs(optimizer_params_t* op, vector<Tensor>* params)`
+
+**Purpose**: Creates L-BFGS optimizer for second-order optimization
+
+**Note**: LBFGS has unique API requiring closure functions, typically used for small models
+
+---
+
+## Learning Rate Schedulers
+
+### `build_scheduler(optimizer_params_t* op, Optimizer* opx)`
+
+**Purpose**: Attaches learning rate scheduler to optimizer
+
+**Supported Schedulers**:
+- **StepLR**: Decays LR by `gamma` every `step_size` epochs
+- **ReduceLROnPlateau**: Decays LR when validation metric plateaus
+
+**Implementation**:
+```cpp
+void lossfx::build_scheduler(optimizer_params_t* op, torch::optim::Optimizer* opx){
+    scheduler_enum spx_ = scheduler_string(op->scheduler);
+    
+    switch(spx_){
+        case scheduler_enum::steplr:
+            this->m_steplr = new torch::optim::StepLR(*opx, op->step_size, op->gamma);
+            return;
+        case scheduler_enum::reducelronplateauscheduler:
+            this->m_rlp = new torch::optim::ReduceLROnPlateauScheduler(*opx);
+            return;
+        default:
+            return;
+    }
+}
+```
+
+### `step()`
+
+**Purpose**: Advances scheduler (call after each epoch)
+
+**Implementation**:
+```cpp
+void lossfx::step(){
+    if (this->m_steplr){
+        this->m_steplr->step();
+    }
+}
+```
+
+**Usage in Training Loop**:
+```cpp
+for (int epoch = 0; epoch < 100; ++epoch){
+    // Training...
+    optimizer->zero_grad();
+    loss.backward();
+    optimizer->step();
+    
+    // Advance scheduler
+    loss_manager->step();  // Decays LR according to scheduler
+}
+```
+
+---
+
+# Weight Initialization
+
+## `weight_init(torch::nn::Sequential* model, std::string type)`
+
+**Purpose**: Applies standard initialization schemes to model layers
+
+**Supported Types**:
+- **"xavier_uniform"**: Xavier/Glorot uniform initialization
+- **"xavier_normal"**: Xavier/Glorot normal initialization
+- **"kaiming_uniform"**: He uniform initialization (good for ReLU)
+- **"kaiming_normal"**: He normal initialization
+- **"normal"**: Normal distribution N(0, σ²)
+- **"uniform"**: Uniform distribution U(-a, a)
+
+**Algorithm** (in `optimizer_config.cxx`):
+```cpp
+void lossfx::weight_init(torch::nn::Sequential* model, std::string type){
+    type = this->lower(&type);
+    
+    for (auto& module : model->modules(false)){  // Iterate layers
+        if (auto* linear = module->as<torch::nn::Linear>()){
+            if (type == "xavier_uniform"){
+                torch::nn::init::xavier_uniform_(linear->weight);
+            }
+            else if (type == "xavier_normal"){
+                torch::nn::init::xavier_normal_(linear->weight);
+            }
+            else if (type == "kaiming_uniform"){
+                torch::nn::init::kaiming_uniform_(linear->weight, 0, torch::kFanIn, torch::kReLU);
+            }
+            else if (type == "kaiming_normal"){
+                torch::nn::init::kaiming_normal_(linear->weight, 0, torch::kFanIn, torch::kReLU);
+            }
+            else if (type == "normal"){
+                torch::nn::init::normal_(linear->weight, 0.0, 0.02);
+            }
+            else if (type == "uniform"){
+                torch::nn::init::uniform_(linear->weight, -0.1, 0.1);
+            }
+            
+            // Initialize bias to zero
+            if (linear->options.bias()){
+                torch::nn::init::zeros_(linear->bias);
+            }
+        }
+    }
+}
+```
+
+**Usage**:
+```cpp
+torch::nn::Sequential model(
+    torch::nn::Linear(128, 64),
+    torch::nn::ReLU(),
+    torch::nn::Linear(64, 10)
+);
+
+lossfx loss_manager;
+loss_manager.weight_init(&model, "kaiming_normal");
+```
+
+---
+
+# Device Management
+
+## `to(torch::TensorOptions* op)`
+
+**Purpose**: Transfers all loss function implementations to specified device (CPU/CUDA)
+
+**Algorithm**:
+```
+For each loss function pointer (20 total):
+    If pointer is non-null:
+        Call loss->to(device, true)  // true = non-blocking
+```
+
+**Implementation**:
+```cpp
+void lossfx::to(torch::TensorOptions* op){
+    if (this->m_cross_entropy){
+        this->m_cross_entropy->to(op->device(), true);
+    }
+    if (this->m_mse){
+        this->m_mse->to(op->device(), true);
+    }
+    // ... 18 more checks ...
+}
+```
+
+**Usage**:
+```cpp
+torch::TensorOptions opt = torch::TensorOptions(torch::kCUDA, 0);
+loss->to(&opt);  // Move loss to GPU 0
+```
+
+---
+
+# Complete Usage Examples
+
+## Example 1: Basic Loss Function
+
+```cpp
+#include <lossfx.h>
+
+int main(){
+    // Create loss function from string
+    lossfx* loss = new lossfx("classification", "crossentropyloss::(ignore->-1|smoothing->0.1)");
+    
+    // Build loss implementation
+    if (!loss->build_loss_function()){
+        std::cerr << "Failed to build loss function!" << std::endl;
+        return 1;
+    }
+    
+    // Create dummy data
+    torch::Tensor pred = torch::randn({32, 10});  // 32 samples, 10 classes
+    torch::Tensor target = torch::randint(0, 10, {32});
+    
+    // Compute loss
+    torch::Tensor loss_value = loss->loss(&pred, &target);
+    std::cout << "Loss: " << loss_value.item<float>() << std::endl;
+    
+    delete loss;
+    return 0;
+}
+```
+
+## Example 2: Multi-Output Model
+
+```cpp
+#include <lossfx.h>
+#include <map>
+
+int main(){
+    // Create different loss functions for different outputs
+    std::map<std::string, lossfx*> losses;
+    
+    losses["top_label"] = new lossfx("top_label", "crossentropyloss::(smoothing->0.05)");
+    losses["jet_pt"] = new lossfx("jet_pt", "mseloss::(reduction->mean)");
+    losses["embedding"] = new lossfx("embedding", "tripletmarginloss::(margin->0.2|swap->true)");
+    
+    // Build all losses
+    for (auto& [name, loss] : losses){
+        loss->build_loss_function();
+    }
+    
+    // In training loop...
+    torch::Tensor total_loss = torch::zeros({1});
+    
+    // Compute loss for each output
+    total_loss += losses["top_label"]->loss(&pred_label, &truth_label);
+    total_loss += losses["jet_pt"]->loss(&pred_pt, &truth_pt) * 0.5;  // Weight
+    total_loss += losses["embedding"]->loss(&anchor, &positive, &negative);
+    
+    total_loss.backward();
+    
+    // Cleanup
+    for (auto& [name, loss] : losses){delete loss;}
+    return 0;
+}
+```
+
+## Example 3: Complete Training Setup
+
+```cpp
+#include <lossfx.h>
+
+int main(){
+    // Setup model parameters
+    std::vector<torch::Tensor> params;
+    // ... populate with model parameters ...
+    
+    // Create loss function
+    lossfx* loss_manager = new lossfx("signal", "bceloss::(reduction->mean)");
+    loss_manager->build_loss_function();
+    
+    // Transfer to GPU
+    torch::TensorOptions opt = torch::TensorOptions(torch::kCUDA, 0);
+    loss_manager->to(&opt);
+    
+    // Create optimizer
+    optimizer_params_t optim_config;
+    optim_config.optimizer = "adamw";
+    optim_config.lr = 1e-3;
+    optim_config.m_weight_decay = true;
+    optim_config.weight_decay = 1e-4;
+    optim_config.betas = {0.9, 0.999};
+    optim_config.eps = 1e-8;
+    
+    torch::optim::Optimizer* optimizer = loss_manager->build_optimizer(&optim_config, &params);
+    
+    // Create scheduler
+    optim_config.scheduler = "steplr";
+    optim_config.step_size = 10;  // Decay every 10 epochs
+    optim_config.gamma = 0.1;     // Multiply LR by 0.1
+    loss_manager->build_scheduler(&optim_config, optimizer);
+    
+    // Training loop
+    for (int epoch = 0; epoch < 50; ++epoch){
+        for (auto& batch : training_data){
+            optimizer->zero_grad();
+            
+            torch::Tensor pred = model->forward(batch);
+            torch::Tensor target = batch->get_target();
+            torch::Tensor loss = loss_manager->loss(&pred, &target);
+            
+            loss.backward();
+            optimizer->step();
+        }
+        
+        // Decay learning rate
+        loss_manager->step();
+        
+        std::cout << "Epoch " << epoch << " complete" << std::endl;
+    }
+    
+    delete loss_manager;
+    return 0;
+}
+```
+
+## Example 4: Configuration from File
+
+```cpp
+#include <lossfx.h>
+#include <json/json.h>  // Assume JSON library
+
+int main(){
+    // Load config from JSON
+    Json::Value config;
+    // ... load config file ...
+    
+    std::string loss_spec = config["training"]["loss"].asString();
+    // e.g., "crossentropyloss::(ignore->-1|weight->{1.0, 0.8, 1.2})"
+    
+    lossfx* loss = new lossfx("output", loss_spec);
+    loss->build_loss_function();
+    
+    // ... training code ...
+    
+    delete loss;
+    return 0;
+}
+```
+
+---
+
+# Performance Characteristics
+
+## String Parsing
+- **Time**: ~1-5 μs per string (negligible)
+- **Overhead**: Parsing happens once during initialization, not during training
+
+## Loss Computation
+- **Time**: Equivalent to native PyTorch (no overhead)
+- **Reason**: `lossfx::loss()` is a thin wrapper that directly calls PyTorch implementation
+
+## Memory
+- **Per lossfx Instance**: ~200 bytes (20 pointers + config struct)
+- **Per Loss Implementation**: ~100-500 bytes (depends on loss type)
+
+---
+
+# Dependencies
+
+## Internal
+- `optimizer_params_t`: Optimizer configuration struct
+- `loss_opt`: Loss configuration struct
+- `model_template`: Provides parameters for optimizer
+- `tools`: String manipulation (parent class)
+- `notification`: Logging (grandparent class)
+
+## External
+- **LibTorch**: All `torch::nn::*Loss`, `torch::optim::*`, `torch::Tensor`
+- **C++17 STL**: `<string>`, `<vector>`, `<map>`
+
+---
+
+# Advanced Topics
+
+## Loss Function Categories
+
+### Classification Losses
+- **CrossEntropyLoss**: Multi-class classification (combines LogSoftmax + NLLLoss)
+- **BCELoss**: Binary classification with sigmoid activation
+- **BCEWithLogitsLoss**: Binary classification without sigmoid (numerically stable)
+- **NLLLoss**: Negative log-likelihood (requires log-probabilities)
+
+### Regression Losses
+- **MSELoss**: Mean squared error (L2 loss)
+- **L1Loss**: Mean absolute error
+- **HuberLoss**: Smooth L1 loss (robust to outliers)
+- **SmoothL1Loss**: Similar to Huber
+
+### Ranking/Embedding Losses
+- **TripletMarginLoss**: Learns embeddings via anchor-positive-negative triplets
+- **CosineEmbeddingLoss**: Cosine similarity-based loss
+- **HingeEmbeddingLoss**: Hinge loss for embeddings
+- **MarginRankingLoss**: Ranking with margin
+
+### Probabilistic Losses
+- **KLDivLoss**: Kullback-Leibler divergence (distribution matching)
+- **PoissonNLLLoss**: Poisson negative log-likelihood
+
+### Sequence Losses
+- **CTCLoss**: Connectionist Temporal Classification (speech recognition, OCR)
+
+---
+
+## Optimizer Comparison
+
+| **Optimizer** | **Use Case** | **Key Parameters** |
+|---------------|--------------|-------------------|
+| **Adam** | General purpose, adaptive | `lr`, `betas`, `eps` |
+| **AdamW** | Adam with correct weight decay | `lr`, `weight_decay`, `betas` |
+| **SGD** | Simple, effective with momentum | `lr`, `momentum`, `nesterov` |
+| **LBFGS** | Second-order, small models | `lr`, `max_iter` |
+| **RMSprop** | Recurrent networks | `lr`, `alpha`, `eps` |
+| **Adagrad** | Sparse data | `lr`, `eps` |
+
+---
+
+# Best Practices
+
+## 1. Use AdamW for Most Tasks
+```cpp
+optim_config.optimizer = "adamw";
+optim_config.lr = 1e-3;
+optim_config.weight_decay = 1e-4;
+```
+AdamW provides good convergence and proper weight decay.
+
+## 2. Label Smoothing for Classification
+```cpp
+lossfx* loss = new lossfx("label", "crossentropyloss::(smoothing->0.1)");
+```
+Prevents overconfidence, improves generalization.
+
+## 3. Ignore Padding in Sequences
+```cpp
+lossfx* loss = new lossfx("tokens", "crossentropyloss::(ignore->0)");  // Ignore index 0
+```
+Essential for variable-length sequences with padding.
+
+## 4. Class Weights for Imbalanced Data
+```cpp
+lossfx* loss = new lossfx("class", "crossentropyloss::(weight->{0.1, 0.9})");
+```
+Upweights minority classes.
+
+## 5. Learning Rate Scheduling
+```cpp
+optim_config.scheduler = "steplr";
+optim_config.step_size = 20;
+optim_config.gamma = 0.5;
+```
+Gradually reduce LR for better convergence.
+
+---
+
+# Common Pitfalls
+
+## 1. Wrong Reduction Mode
+**Symptom**: Loss values unexpectedly large/small
+
+**Solution**: Check `reduction` setting. `mean` is usually correct.
+
+## 2. BCELoss with Logits
+**Symptom**: NaN losses, exploding gradients
+
+**Solution**: Use `BCEWithLogitsLoss` instead of `BCELoss` (numerically stable)
+
+## 3. Forgetting to Call build_loss_function()
+**Symptom**: Segfault when calling `loss()`
+
+**Solution**: Always call `build_loss_function()` after construction
+
+## 4. Not Transferring Loss to Device
+**Symptom**: "Expected tensor on cuda:0 but got cpu"
+
+**Solution**: Call `loss->to(&device_options)`
+
+## 5. Wrong Scheduler Step Timing
+**Symptom**: LR doesn't decay as expected
+
+**Solution**: Call `step()` **after** each epoch, not after each batch
+
+---
+
+# Conclusion
+
+The `lossfx` class is a powerful abstraction that transforms LibTorch's verbose configuration API into a concise, declarative system. By enabling string-based loss/optimizer specifications, it facilitates:
+- **Rapid Experimentation**: Change loss functions without recompilation
+- **Configuration Files**: Store training configurations in JSON/YAML
+- **Multi-Output Models**: Easily assign different losses to different outputs
+- **Reproducibility**: Loss specifications are strings that can be logged and versioned
+
+Key design innovations:
+- **Templated Dressing Functions**: Eliminate 80% of boilerplate code
+- **Enum-Based Dispatch**: Fast, type-safe switching without string comparisons in hot paths
+- **Single Active Loss**: Only one loss implementation instantiated at a time (memory efficient)
+- **Unified Interface**: All 20+ loss functions accessed via single `loss()` method
+
+---
+
+@see model_template
+@see optimizer_params_t
+@see loss_opt
+@see tools
+@see notification
+
+*/

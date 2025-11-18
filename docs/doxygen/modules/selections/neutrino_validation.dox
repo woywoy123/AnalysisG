@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/neutrino/validation.
+
+@defgroup selections_neutrino_validation Selections: neutrino/validation
+@ingroup selections_module
+
+@details
+Neutrino validation selections.
+Source: `src/AnalysisG/selections/neutrino/validation/`
+*/

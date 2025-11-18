@@ -1,0 +1,548 @@
+/**
+ * @file metrics.dox
+ * @brief Training analytics and visualization for AnalysisG models
+ * @defgroup metrics Metrics
+ * @details 
+ * Training performance tracking and ROOT-based visualization for GNN training loops. 
+ * Manages histograms for loss/accuracy metrics across training/validation/evaluation modes, 
+ * generates TGraph-based progress plots, and handles k-fold metric aggregation.
+ *
+ * **Quick Navigation:**
+ * - @ref optimizer "optimizer" - Training orchestrator (uses metrics for logging)
+ * - @ref model "model" - GNN models (performance tracked by metrics)
+ * - @ref structs "structs" - model_report structure
+ * - @ref plotting "plotting" - ROOT visualization utilities
+ * - @ref notification "notification" - Logging infrastructure
+ *
+ * @page metrics_page Metrics Module Documentation
+ *
+ * @section metrics_intro Introduction
+ *
+ * The **metrics** module provides comprehensive training analytics for AnalysisG models. 
+ * It captures loss and accuracy values during training, stores them in ROOT histograms, 
+ * and generates publication-quality plots showing training progression across epochs. 
+ * Supports k-fold cross-validation with per-fold metric tracking.
+ *
+ * **Core Functionality:**
+ * - Real-time metric capture from PyTorch tensors
+ * - ROOT histogram management (TH1F) for all metrics
+ * - Training/validation/evaluation mode separation
+ * - Graph-level, node-level, edge-level metric tracking
+ * - Mass reconstruction metric visualization
+ * - TGraph-based progress plots with multi-mode overlay
+ * - K-fold metric aggregation and reporting
+ *
+ * @section metrics_structures Data Structures
+ *
+ * @subsection metrics_analytics_t analytics_t Structure
+ *
+ * **Per-Fold Analytics Container:**
+ * ```cpp
+ * struct analytics_t {
+ *     model_template* model;
+ *     model_report* report;
+ *     
+ *     int this_epoch;
+ *     
+ *     // Loss histograms
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> loss_graph;
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> loss_node;
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> loss_edge;
+ *     
+ *     // Accuracy histograms
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_graph;
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_node;
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_edge;
+ *     
+ *     // Mass reconstruction metrics
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> pred_mass_edge;
+ *     std::map<mode_enum, std::map<std::string, TH1F*>> truth_mass_edge;
+ *     
+ *     void purge();
+ *     void destroy(std::map<mode_enum, std::map<std::string, TH1F*>>* data);
+ * };
+ * ```
+ *
+ * **Purpose:** Encapsulates all training analytics for a single k-fold iteration. Each 
+ * fold maintains independent histogram sets to prevent cross-contamination of metrics.
+ *
+ * **Histogram Organization:**
+ * - **Outer map key**: mode_enum (training, validation, evaluation)
+ * - **Inner map key**: Loss/metric name ("bce", "mse", "acc")
+ * - **Value**: TH1F* histogram with bins = epochs
+ *
+ * **Example:**
+ * ```cpp
+ * analytics_t analytics;
+ * analytics.this_epoch = 10;
+ * 
+ * // Access training loss histogram for "bce"
+ * TH1F* train_loss = analytics.loss_graph[mode_enum::training]["bce"];
+ * train_loss->Fill(10, 0.25);  // Epoch 10, loss = 0.25
+ * 
+ * // Access validation accuracy
+ * TH1F* val_acc = analytics.accuracy_graph[mode_enum::validation]["acc"];
+ * val_acc->Fill(10, 0.89);
+ * ```
+ *
+ * @section metrics_class metrics Class
+ *
+ * @subsection metrics_overview Class Definition
+ *
+ * **Inheritance:**
+ * ```cpp
+ * class metrics: public tools, public notification
+ * ```
+ *
+ * **Key Members:**
+ * ```cpp
+ * class metrics {
+ * public:
+ *     std::string output_path;
+ *     settings_t m_settings;
+ *     
+ *     const std::vector<Color_t> colors_h = {
+ *         kRed, kGreen, kBlue, kCyan, 
+ *         kViolet, kOrange, kCoffee, kAurora
+ *     };
+ *     
+ *     // Model registration
+ *     model_report* register_model(model_template* model, int kfold);
+ *     
+ *     // Metric capture
+ *     void capture(mode_enum mode, int kfold, int epoch, int smpl_len);
+ *     
+ *     // Plot generation
+ *     void dump_plots(int k);
+ *     void dump_loss_plots(int k);
+ *     void dump_accuracy_plots(int k);
+ *     void dump_mass_plots(int k);
+ * 
+ * private:
+ *     std::map<int, analytics_t> registry;
+ *     
+ *     // Histogram builders
+ *     void build_th1f_loss(...);
+ *     void add_th1f_loss(...);
+ *     void build_th1f_accuracy(...);
+ *     void add_th1f_accuracy(...);
+ *     void build_th1f_mass(...);
+ *     void add_th1f_mass(...);
+ *     
+ *     // Visualization
+ *     void generic_painter(...);
+ *     std::map<std::string, std::vector<TGraph*>> build_graphs(...);
+ * };
+ * ```
+ *
+ * @section metrics_workflow Training Workflow
+ *
+ * @subsection metrics_registration Model Registration
+ *
+ * **register_model():**
+ * ```cpp
+ * model_report* register_model(model_template* model, int kfold);
+ * ```
+ *
+ * **Purpose:** Initialize analytics structures for a model at the start of k-fold training.
+ *
+ * **Workflow:**
+ * 1. Creates analytics_t entry in registry[kfold]
+ * 2. Allocates model_report for progress tracking
+ * 3. Initializes TH1F histograms for all metric types:
+ *    - Loss histograms (graph/node/edge)
+ *    - Accuracy histograms (graph/node/edge)
+ *    - Mass reconstruction histograms (if applicable)
+ * 4. Returns model_report* for optimizer to populate
+ *
+ * **Example:**
+ * ```cpp
+ * metrics metric_tracker;
+ * metric_tracker.output_path = "results/";
+ * 
+ * model_template* my_model = new my_gnn_model();
+ * model_report* report = metric_tracker.register_model(my_model, 0);  // Fold 0
+ * 
+ * // report is now linked to training loop
+ * ```
+ *
+ * @subsection metrics_capture Metric Capture
+ *
+ * **capture():**
+ * ```cpp
+ * void capture(mode_enum mode, int kfold, int epoch, int smpl_len);
+ * ```
+ *
+ * **Purpose:** Extract metrics from model tensors and populate histograms.
+ *
+ * **Parameters:**
+ * - `mode`: training, validation, or evaluation
+ * - `kfold`: K-fold index (0-based)
+ * - `epoch`: Current epoch number
+ * - `smpl_len`: Sample size for normalization
+ *
+ * **Workflow:**
+ * 1. Retrieves analytics_t from registry[kfold]
+ * 2. Extracts loss tensors from model's loss maps:
+ *    - loss_graph_map[mode]
+ *    - loss_node_map[mode]
+ *    - loss_edge_map[mode]
+ * 3. Extracts prediction/truth tensors for accuracy calculation
+ * 4. Fills TH1F histograms at bin = epoch
+ * 5. Updates model_report with current values
+ *
+ * **Example:**
+ * ```cpp
+ * // Inside training loop
+ * for (int epoch = 0; epoch < 100; ++epoch) {
+ *     // Training
+ *     model->train();
+ *     optimizer_step();
+ *     metric_tracker.capture(mode_enum::training, 0, epoch, train_size);
+ *     
+ *     // Validation
+ *     model->eval();
+ *     validation_step();
+ *     metric_tracker.capture(mode_enum::validation, 0, epoch, val_size);
+ * }
+ * ```
+ *
+ * @subsection metrics_visualization Plot Generation
+ *
+ * **dump_plots():**
+ * ```cpp
+ * void dump_plots(int k);
+ * ```
+ *
+ * **Purpose:** Generate all visualization plots for fold k and save to disk.
+ *
+ * **Workflow:**
+ * 1. Calls dump_loss_plots(k)
+ * 2. Calls dump_accuracy_plots(k)
+ * 3. Calls dump_mass_plots(k)
+ *
+ * **dump_loss_plots():**
+ * ```cpp
+ * void dump_loss_plots(int k);
+ * ```
+ *
+ * **Purpose:** Create TGraph overlays showing loss progression across modes.
+ *
+ * **Workflow:**
+ * 1. Retrieves loss histograms from analytics_t
+ * 2. Converts TH1F → TGraph for each metric/mode combination
+ * 3. Overlays training/validation/evaluation curves
+ * 4. Calls generic_painter() with styling
+ * 5. Saves to `{output_path}/fold_{k}_loss_graph.png`
+ *
+ * **Generated Plots:**
+ * - `fold_{k}_loss_graph.png` - Graph-level losses
+ * - `fold_{k}_loss_node.png` - Node-level losses
+ * - `fold_{k}_loss_edge.png` - Edge-level losses
+ *
+ * **dump_accuracy_plots():**
+ * ```cpp
+ * void dump_accuracy_plots(int k);
+ * ```
+ *
+ * **Purpose:** Create TGraph overlays showing accuracy progression.
+ *
+ * **Generated Plots:**
+ * - `fold_{k}_accuracy_graph.png`
+ * - `fold_{k}_accuracy_node.png`
+ * - `fold_{k}_accuracy_edge.png`
+ *
+ * **dump_mass_plots():**
+ * ```cpp
+ * void dump_mass_plots(int k);
+ * ```
+ *
+ * **Purpose:** Visualize mass reconstruction performance (prediction vs truth).
+ *
+ * **Generated Plots:**
+ * - `fold_{k}_mass_reconstruction.png`
+ *
+ * @section metrics_implementation Implementation Details
+ *
+ * @subsection metrics_histogram_building Histogram Construction
+ *
+ * **build_th1f_loss():**
+ * ```cpp
+ * void build_th1f_loss(
+ *     std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* type, 
+ *     graph_enum g_num, int kfold
+ * );
+ * ```
+ *
+ * **Purpose:** Initialize TH1F histograms for all loss functions in a model.
+ *
+ * **Workflow:**
+ * 1. Iterates over loss map (e.g., model->loss_graph)
+ * 2. For each loss name ("bce", "mse"):
+ *    - Creates TH1F with nbins = max_epochs
+ *    - Sets histogram title/labels
+ *    - Stores in analytics.loss_graph[mode][loss_name]
+ * 3. Repeats for all modes (training/validation/evaluation)
+ *
+ * **add_th1f_loss():**
+ * ```cpp
+ * void add_th1f_loss(
+ *     std::map<std::string, torch::Tensor>* type, 
+ *     std::map<std::string, TH1F*>* lss_type,
+ *     int kfold, int smpl_len
+ * );
+ * ```
+ *
+ * **Purpose:** Populate histograms with loss values from current epoch.
+ *
+ * **Workflow:**
+ * 1. Extracts loss tensors from type map
+ * 2. Computes mean loss value (reduces batch dimension)
+ * 3. Normalizes by smpl_len if required
+ * 4. Fills TH1F at bin = current_epoch
+ *
+ * @subsection metrics_accuracy_calc Accuracy Calculation
+ *
+ * **build_th1f_accuracy():**
+ * ```cpp
+ * void build_th1f_accuracy(
+ *     std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* type, 
+ *     graph_enum g_num, int kfold
+ * );
+ * ```
+ *
+ * **Purpose:** Initialize accuracy histograms.
+ *
+ * **add_th1f_accuracy():**
+ * ```cpp
+ * void add_th1f_accuracy(
+ *     torch::Tensor* pred, torch::Tensor* truth, 
+ *     TH1F* hist, int kfold, int smpl_len
+ * );
+ * ```
+ *
+ * **Purpose:** Calculate accuracy and populate histogram.
+ *
+ * **Algorithm:**
+ * ```cpp
+ * torch::Tensor pred_labels = pred->argmax(-1);  // Get predicted class
+ * torch::Tensor correct = (pred_labels == *truth).to(torch::kFloat32);
+ * float accuracy = correct.mean().item<float>();
+ * hist->Fill(epoch, accuracy);
+ * ```
+ *
+ * @subsection metrics_mass_reconstruction Mass Reconstruction Metrics
+ *
+ * **build_th1f_mass():**
+ * ```cpp
+ * void build_th1f_mass(std::string var_name, graph_enum typ, int kfold);
+ * ```
+ *
+ * **Purpose:** Initialize mass reconstruction histograms for particle systems.
+ *
+ * **add_th1f_mass():**
+ * ```cpp
+ * void add_th1f_mass(
+ *     torch::Tensor* pmc, torch::Tensor* edge_index, 
+ *     torch::Tensor* truth, torch::Tensor* pred, 
+ *     int kfold, mode_enum mode, std::string var_name
+ * );
+ * ```
+ *
+ * **Purpose:** Track invariant mass reconstruction quality.
+ *
+ * **Workflow:**
+ * 1. Extracts particle 4-momenta from pmc tensor
+ * 2. Uses edge_index to identify particle pairs
+ * 3. Computes invariant mass: $m = \sqrt{(E_1 + E_2)^2 - |\vec{p}_1 + \vec{p}_2|^2}$
+ * 4. Compares truth vs predicted masses
+ * 5. Fills histograms for distribution analysis
+ *
+ * @subsection metrics_visualization_impl Visualization Implementation
+ *
+ * **generic_painter():**
+ * ```cpp
+ * void generic_painter(
+ *     std::vector<TGraph*> k_graphs,
+ *     std::string path, std::string title, 
+ *     std::string xtitle, std::string ytitle, int epoch
+ * );
+ * ```
+ *
+ * **Purpose:** Unified plotting function for TGraph overlays.
+ *
+ * **Features:**
+ * - Multi-curve overlay with distinct colors
+ * - Legend generation
+ * - Axis labeling and formatting
+ * - Canvas sizing and styling
+ * - PNG/PDF export
+ *
+ * **Example Output:**
+ * ```
+ * Title: "Training Loss - BCE"
+ * X-axis: "Epoch"
+ * Y-axis: "Loss"
+ * Curves: Training (red), Validation (green), Evaluation (blue)
+ * ```
+ *
+ * **build_graphs():**
+ * ```cpp
+ * std::map<std::string, std::vector<TGraph*>> build_graphs(
+ *     std::map<std::string, TH1F*>* train,  std::map<std::string, float>* tr_, 
+ *     std::map<std::string, TH1F*>* valid,  std::map<std::string, float>* va_, 
+ *     std::map<std::string, TH1F*>* eval,   std::map<std::string, float>* ev_, 
+ *     int ep
+ * );
+ * ```
+ *
+ * **Purpose:** Convert TH1F histograms to TGraph objects for each metric.
+ *
+ * **Workflow:**
+ * 1. Iterates over all metric names
+ * 2. For each mode (train/valid/eval):
+ *    - Extracts TH1F histogram
+ *    - Converts to TGraph (x=epoch, y=metric_value)
+ *    - Applies color from colors_h vector
+ *    - Sets marker style and line width
+ * 3. Groups TGraphs by metric name
+ * 4. Returns map: metric_name → [train_graph, valid_graph, eval_graph]
+ *
+ * @section metrics_usage Usage Examples
+ *
+ * @subsection metrics_basic_usage Basic Training Integration
+ *
+ * **Setup:**
+ * ```cpp
+ * #include <metric/metrics.h>
+ * 
+ * metrics metric_tracker;
+ * metric_tracker.output_path = "results/run_001/";
+ * 
+ * model_template* model = new my_gnn_model();
+ * model_report* report = metric_tracker.register_model(model, 0);  // Fold 0
+ * ```
+ *
+ * **Training Loop:**
+ * ```cpp
+ * for (int epoch = 0; epoch < 100; ++epoch) {
+ *     // Training phase
+ *     model->train();
+ *     for (auto& batch : train_loader) {
+ *         optimizer->zero_grad();
+ *         model->forward(batch);
+ *         model->backward();
+ *         optimizer->step();
+ *     }
+ *     metric_tracker.capture(mode_enum::training, 0, epoch, train_loader.size());
+ *     
+ *     // Validation phase
+ *     model->eval();
+ *     torch::NoGradGuard no_grad;
+ *     for (auto& batch : val_loader) {
+ *         model->forward(batch);
+ *     }
+ *     metric_tracker.capture(mode_enum::validation, 0, epoch, val_loader.size());
+ * }
+ * 
+ * // Generate plots
+ * metric_tracker.dump_plots(0);
+ * ```
+ *
+ * @subsection metrics_kfold_usage K-Fold Cross-Validation
+ *
+ * **Multi-Fold Training:**
+ * ```cpp
+ * metrics metric_tracker;
+ * metric_tracker.output_path = "results/kfold_5/";
+ * 
+ * for (int k = 0; k < 5; ++k) {
+ *     model_template* model = new my_gnn_model();
+ *     model_report* report = metric_tracker.register_model(model, k);
+ *     
+ *     // Training loop for fold k
+ *     for (int epoch = 0; epoch < 100; ++epoch) {
+ *         train_step();
+ *         metric_tracker.capture(mode_enum::training, k, epoch, train_size);
+ *         
+ *         validate_step();
+ *         metric_tracker.capture(mode_enum::validation, k, epoch, val_size);
+ *     }
+ *     
+ *     // Evaluation
+ *     evaluate_step();
+ *     metric_tracker.capture(mode_enum::evaluation, k, 0, test_size);
+ *     
+ *     // Generate fold-specific plots
+ *     metric_tracker.dump_plots(k);
+ *     
+ *     delete model;
+ * }
+ * ```
+ *
+ * @subsection metrics_custom_metrics Custom Metric Tracking
+ *
+ * **Accessing Histograms:**
+ * ```cpp
+ * analytics_t& analytics = metric_tracker.registry[0];  // Fold 0
+ * 
+ * // Add custom metric manually
+ * TH1F* custom_metric = new TH1F("custom", "Custom Metric", 100, 0, 100);
+ * analytics.accuracy_graph[mode_enum::training]["f1_score"] = custom_metric;
+ * 
+ * // Populate in training loop
+ * for (int epoch = 0; epoch < 100; ++epoch) {
+ *     float f1 = compute_f1_score();
+ *     custom_metric->Fill(epoch, f1);
+ * }
+ * ```
+ *
+ * @section metrics_output Output Files
+ *
+ * **Generated Plots:**
+ * ```
+ * results/
+ *   fold_0_loss_graph.png
+ *   fold_0_loss_node.png
+ *   fold_0_loss_edge.png
+ *   fold_0_accuracy_graph.png
+ *   fold_0_accuracy_node.png
+ *   fold_0_accuracy_edge.png
+ *   fold_0_mass_reconstruction.png
+ *   fold_1_loss_graph.png
+ *   ...
+ * ```
+ *
+ * **Plot Characteristics:**
+ * - X-axis: Epoch number
+ * - Y-axis: Metric value (loss or accuracy)
+ * - Multiple curves: Training (red), Validation (green), Evaluation (blue)
+ * - Legend with metric names
+ * - Publication-quality resolution
+ *
+ * @section metrics_related Related Modules
+ *
+ * - @ref optimizer "optimizer" - Training orchestrator
+ * - @ref model "model" - GNN models
+ * - @ref structs "structs" - model_report, mode_enum
+ * - @ref plotting "plotting" - ROOT visualization
+ * - @ref notification "notification" - Logging
+ *
+ * @section metrics_summary Summary
+ *
+ * The **metrics** module provides:
+ * - Real-time training metric capture
+ * - ROOT histogram management (TH1F)
+ * - Multi-mode tracking (training/validation/evaluation)
+ * - Graph/node/edge-level granularity
+ * - K-fold cross-validation support
+ * - Automated plot generation (TGraph overlays)
+ * - Mass reconstruction metrics
+ * - Publication-quality visualization
+ *
+ * **Integration Points:**
+ * - **optimizer**: Calls capture() after each epoch
+ * - **model**: Provides loss/accuracy tensors
+ * - **model_report**: Receives aggregated metrics
+ * - **plotting**: Uses ROOT utilities for visualization
+ */

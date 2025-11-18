@@ -1,0 +1,660 @@
+/**
+@file
+@brief Comprehensive documentation for the selection_template class - event-level selection, object disambiguation, and ROOT tree output.
+
+@defgroup selection_template_module selection_template
+@ingroup modules_module
+
+@brief The `selection_template` module provides a sophisticated base class for defining analysis-specific event selection logic, object disambiguation strategies, particle utilities, and kinematic variable output to ROOT trees.
+
+@details
+
+---
+
+# Quick Navigation
+
+| Module | Description | Link |
+|--------|-------------|------|
+| **Selection Template** | Event selection | (Current Page) |
+| @ref event_template_page | Event container | Provides particle collections |
+| @ref particle_template_page | Particle objects | Objects being selected |
+| @ref graph_template_module | Graph construction | Often inherits from selection |
+| @ref MetaModule | Dataset metadata | Used for normalization |
+| @ref io_module | ROOT/HDF5 I/O | Used for tree writing |
+| @ref tools_module | Utilities | Parent class |
+| @ref pyc_physics_page | Physics kinematics | Used in selection cuts |
+
+**Typical Workflow**: `event_template` → **`selection_template::selection()`** → `strategy()` → `write_tree()` OR `graph_template::CompileEvent()`
+
+---
+
+*/
+
+/**
+@page selection_template_module_page Selection Template Module
+@tableofcontents
+
+@section selection_intro Introduction
+
+The `selection_template` class, defined in `src/AnalysisG/modules/selection/`, is the primary mechanism for filtering physics events based on analysis-specific criteria, bridging event reconstruction and statistical analysis.
+
+@section selection_purpose Purpose and Design
+
+The `selection_template` class is the primary mechanism for filtering physics events based on analysis-specific criteria. It bridges event reconstruction and statistical analysis by:
+1. **Event Selection**: Applying cuts on reconstructed objects (jets, leptons, missing energy)
+2. **Object Disambiguation**: Resolving ambiguities when multiple objects could satisfy requirements
+3. **Kinematic Output**: Writing selected event kinematics to ROOT trees for further analysis
+
+**Core Abstractions**:
+- **`selection()`**: Event-level boolean filter (e.g., "require ≥4 jets with $p_T > 25$ GeV")
+- **`strategy()`**: Object-level disambiguation (e.g., "choose 2 highest-$p_T$ b-tagged jets")
+- **Particle utilities**: Vectorization, uniqueness checks, four-vector arithmetic
+- **ROOT tree writing**: Automatic branch creation and bulk event writing
+
+**Design Philosophy**:
+Instead of writing custom ROOT tree management code, users declare desired output branches via `write_t` and focus solely on physics logic. The base class handles:
+- TTree creation and file management
+- Branch type registration
+- Bulk write operations
+- Memory cleanup
+
+**Key Features**:
+- **Hash-Based Deduplication**: `switch_board()` extracts unique particle identifiers to prevent double-counting
+- **Four-Vector Arithmetic**: `sum()` for invariant mass calculations
+- **Particle Vectorization**: `vectorize()` converts `particle_template*` to `TLorentzVector`
+- **Uniqueness Checks**: `make_unique()` filters duplicate particles by hash
+- **Event Metadata**: `event_index`, `hash`, `weight` tracking for downstream analysis
+
+---
+
+# Class Structure
+
+## Inheritance Hierarchy
+
+```
+notification
+    ↓
+  tools
+    ↓
+ physics
+    ↓
+selection_template
+    ↓
+  (User Selections)
+```
+
+Inherits from `physics` (→ `tools` → `notification`), gaining:
+- **From `physics`**: Particle utilities (`sum`, `dot`, `delta_R`)
+- **From `tools`**: String/filesystem operations
+- **From `notification`**: Colored logging
+
+User creates derived classes (e.g., `TopPairSelection`) that implement `selection()` and optionally `strategy()`.
+
+## Member Variables
+
+### Event Metadata
+```cpp
+cproperty<std::string> name;           // Selection name (e.g., "TopPairSelection")
+cproperty<size_t> event_index;        // Current event index in dataset
+cproperty<std::string> hash;          // Event hash for uniqueness checks
+cproperty<double> weight;             // Event weight for MC reweighting
+```
+
+**Purpose**: Tracks event identity across processing pipeline. Hash is computed from run/event/lumi numbers.
+
+### ROOT Tree Output
+```cpp
+write_t write_t;                       // ROOT tree writer helper
+```
+
+**Purpose**: Manages TTree branch registration and writing. User adds branches in constructor:
+```cpp
+this->write_t.add_branch<double>("top_mass");
+this->write_t.add_branch<int>("num_bjets");
+```
+
+### Particle Collections
+```cpp
+std::map<std::string, std::vector<particle_template*>> particles;
+```
+
+**Purpose**: Stores reconstructed objects (jets, leptons) extracted from `graph_t`. Populated by `CompileEvent()` before `selection()` is called.
+
+---
+
+# Core Methods
+
+## Event Selection
+
+### `selection()` (Pure Virtual)
+
+**Purpose**: User-implemented method defining event-level cuts
+
+**Contract**: Return `true` if event passes selection, `false` otherwise
+
+**Typical Structure**:
+```cpp
+bool selection() override {
+    // 1. Extract particle collections
+    std::vector<particle_template*> jets = this->particles["jets"];
+    std::vector<particle_template*> leptons = this->particles["leptons"];
+    
+    // 2. Apply cuts
+    if (jets.size() < 4) return false;
+    if (leptons.size() != 1) return false;
+    
+    // 3. Kinematic requirements
+    if (jets[0]->pt() < 50.0) return false;  // Leading jet > 50 GeV
+    if (leptons[0]->pt() < 25.0) return false;
+    
+    // 4. Compute derived quantities
+    TLorentzVector top_candidate = jets[0]->vector() + jets[1]->vector() + jets[2]->vector();
+    if (std::abs(top_candidate.M() - 172.5) > 30.0) return false;  // Top mass window
+    
+    // 5. Fill output tree
+    this->write_t["top_mass"] = top_candidate.M();
+    this->write_t["num_bjets"] = this->count_bjets(jets);
+    
+    return true;
+}
+```
+
+**Important**: 
+- Called **after** `CompileEvent()` populates `particles` map
+- Return `false` early for failed cuts (performance optimization)
+- Fill `write_t` only if event passes all cuts
+
+---
+
+### `strategy()` (Virtual)
+
+**Purpose**: User-implemented method for object disambiguation
+
+**Use Cases**:
+1. **Multiple candidates**: Event has 5 jets but analysis needs exactly 2 b-jets
+2. **Overlap removal**: Lepton within $\Delta R < 0.4$ of jet
+3. **Best match**: Choose jet pair closest to W-boson mass
+
+**Example 1: Select Two Highest-$p_T$ B-Jets**:
+```cpp
+void strategy() override {
+    std::vector<particle_template*> all_jets = this->particles["jets"];
+    
+    // Filter b-tagged jets
+    std::vector<particle_template*> bjets;
+    for (particle_template* jet : all_jets){
+        if (jet->btag > 0.8) bjets.push_back(jet);
+    }
+    
+    // Sort by pt (descending)
+    std::sort(bjets.begin(), bjets.end(), [](particle_template* a, particle_template* b){
+        return a->pt() > b->pt();
+    });
+    
+    // Keep only top 2
+    if (bjets.size() > 2){
+        bjets.resize(2);
+    }
+    
+    this->particles["selected_bjets"] = bjets;
+}
+```
+
+**Example 2: Overlap Removal**:
+```cpp
+void strategy() override {
+    std::vector<particle_template*> jets = this->particles["jets"];
+    std::vector<particle_template*> leptons = this->particles["leptons"];
+    
+    std::vector<particle_template*> cleaned_jets;
+    for (particle_template* jet : jets){
+        bool overlap = false;
+        for (particle_template* lepton : leptons){
+            double dr = this->delta_R(jet, lepton);
+            if (dr < 0.4){
+                overlap = true;
+                break;
+            }
+        }
+        if (!overlap) cleaned_jets.push_back(jet);
+    }
+    
+    this->particles["jets"] = cleaned_jets;
+}
+```
+
+**When to Use**:
+- **Use `strategy()`**: Complex logic requiring multi-step disambiguation
+- **Use `selection()`**: Simple cuts that can be applied directly
+
+---
+
+## Particle Utilities
+
+### `sum(std::vector<particle_template*> parts) → TLorentzVector`
+
+**Purpose**: Computes four-momentum sum (invariant mass, total energy, etc.)
+
+**Algorithm**:
+```
+sum = (0, 0, 0, 0)
+For each particle p in parts:
+    sum += p->vector()
+Return sum
+```
+
+**Example**:
+```cpp
+std::vector<particle_template*> top_children = {jet1, jet2, jet3};
+TLorentzVector top_candidate = this->sum(top_children);
+
+double top_mass = top_candidate.M();
+double top_pt = top_candidate.Pt();
+```
+
+**Common Use Cases**:
+- **Invariant mass**: $m_{inv} = \sqrt{(E_1 + E_2)^2 - (\vec{p}_1 + \vec{p}_2)^2}$
+- **Missing energy**: $\vec{E}_T^{miss} = -\sum_i \vec{p}_{T,i}$
+- **Composite particles**: $t \to bjj$ (top quark from 3 jets)
+
+---
+
+### `vectorize(particle_template* part) → TLorentzVector`
+
+**Purpose**: Converts `particle_template*` to `TLorentzVector`
+
+**Implementation**:
+```cpp
+TLorentzVector selection_template::vectorize(particle_template* part){
+    TLorentzVector vec;
+    vec.SetPtEtaPhiE(part->pt(), part->eta(), part->phi(), part->e());
+    return vec;
+}
+```
+
+**Example**:
+```cpp
+particle_template* lepton = this->particles["leptons"][0];
+TLorentzVector lep_vec = this->vectorize(lepton);
+
+double transverse_mass = std::sqrt(2 * lep_vec.Pt() * met.Pt() * (1 - std::cos(lep_vec.Phi() - met.Phi())));
+```
+
+---
+
+### `make_unique(std::vector<particle_template*> parts) → std::vector<particle_template*>`
+
+**Purpose**: Removes duplicate particles based on hash
+
+**Algorithm**:
+```
+seen_hashes = {}
+unique_particles = []
+For each particle p in parts:
+    hash = p->hash()
+    If hash not in seen_hashes:
+        unique_particles.append(p)
+        seen_hashes.add(hash)
+Return unique_particles
+```
+
+**Example**:
+```cpp
+std::vector<particle_template*> all_objects = {...};  // May contain duplicates
+std::vector<particle_template*> unique_objects = this->make_unique(all_objects);
+```
+
+**When Needed**: After merging particle collections from multiple sources (e.g., combining "truth_jets" and "reco_jets" may produce duplicates).
+
+---
+
+### `contains(std::vector<particle_template*> parts, particle_template* query) → bool`
+
+**Purpose**: Checks if particle exists in collection (by hash)
+
+**Algorithm**:
+```
+query_hash = query->hash()
+For each particle p in parts:
+    If p->hash() == query_hash:
+        Return true
+Return false
+```
+
+**Example**:
+```cpp
+if (this->contains(selected_bjets, candidate_jet)){
+    // candidate_jet is already in selected_bjets
+}
+```
+
+---
+
+### `switch_board(particle_template* part) → std::vector<std::string>`
+
+**Purpose**: Extracts unique identifiers (hash, barcode, parent indices) for deduplication
+
+**Implementation**:
+```cpp
+std::vector<std::string> selection_template::switch_board(particle_template* part){
+    std::vector<std::string> identifiers;
+    identifiers.push_back(part->hash);
+    identifiers.push_back(std::to_string(part->barcode));
+    identifiers.push_back(std::to_string(part->parent_barcode));
+    identifiers.push_back(std::to_string(part->index));
+    return identifiers;
+}
+```
+
+**Use Case**: Building unique keys for particle tracking across processing stages.
+
+---
+
+## ROOT Tree Writing
+
+### `write()`
+
+**Purpose**: Writes current event's data to ROOT tree
+
+**Algorithm**:
+```
+For each branch in write_t:
+    TTree->Fill(branch_value)
+Increment entry counter
+```
+
+**Example**:
+```cpp
+bool selection() override {
+    if (passes_cuts){
+        this->write_t["jet_pt"] = jets[0]->pt();
+        this->write_t["met"] = event_met;
+        this->write();  // Write to TTree
+        return true;
+    }
+    return false;
+}
+```
+
+---
+
+### `bulk_write(std::vector<graph_t*> events)`
+
+**Purpose**: Writes multiple events in single operation
+
+**Algorithm**:
+```
+For each event in events:
+    If selection(event):
+        write()
+Flush TTree buffer
+```
+
+**Example**:
+```cpp
+std::vector<graph_t*> batch = {...};
+this->bulk_write(batch);  // Process entire batch
+```
+
+**Performance**: Faster than individual `write()` calls due to buffering.
+
+---
+
+# Complete Usage Example
+
+```cpp
+#include <templates/selection_template.h>
+
+class TopPairSelection : public selection_template {
+public:
+    TopPairSelection(){
+        this->name = "TopPairSelection";
+        
+        // Define output branches
+        this->write_t.add_branch<double>("top1_mass");
+        this->write_t.add_branch<double>("top2_mass");
+        this->write_t.add_branch<double>("ttbar_mass");
+        this->write_t.add_branch<int>("num_bjets");
+        this->write_t.add_branch<double>("leading_jet_pt");
+    }
+    
+    void strategy() override {
+        // Overlap removal
+        std::vector<particle_template*> jets = this->particles["jets"];
+        std::vector<particle_template*> leptons = this->particles["leptons"];
+        
+        std::vector<particle_template*> cleaned_jets;
+        for (particle_template* jet : jets){
+            bool overlap = false;
+            for (particle_template* lep : leptons){
+                if (this->delta_R(jet, lep) < 0.4){
+                    overlap = true;
+                    break;
+                }
+            }
+            if (!overlap) cleaned_jets.push_back(jet);
+        }
+        this->particles["jets"] = cleaned_jets;
+        
+        // Select b-jets
+        std::vector<particle_template*> bjets;
+        for (particle_template* jet : cleaned_jets){
+            if (jet->btag > 0.8) bjets.push_back(jet);
+        }
+        
+        // Sort by pt
+        std::sort(bjets.begin(), bjets.end(), [](particle_template* a, particle_template* b){
+            return a->pt() > b->pt();
+        });
+        
+        this->particles["bjets"] = bjets;
+    }
+    
+    bool selection() override {
+        // Get particle collections
+        std::vector<particle_template*> jets = this->particles["jets"];
+        std::vector<particle_template*> bjets = this->particles["bjets"];
+        std::vector<particle_template*> leptons = this->particles["leptons"];
+        
+        // Basic cuts
+        if (jets.size() < 6) return false;
+        if (bjets.size() < 2) return false;
+        if (leptons.size() != 1) return false;
+        
+        // Kinematic cuts
+        if (jets[0]->pt() < 50.0) return false;
+        if (leptons[0]->pt() < 25.0) return false;
+        
+        // Reconstruct top quarks (simplified)
+        // Hadronic top: 3 jets including 1 b-jet
+        std::vector<particle_template*> had_top_jets = {bjets[0], jets[1], jets[2]};
+        TLorentzVector had_top = this->sum(had_top_jets);
+        
+        // Leptonic top: lepton + met + b-jet
+        TLorentzVector lep_top = leptons[0]->vector() + bjets[1]->vector();
+        // Note: MET reconstruction omitted for brevity
+        
+        // Top mass window
+        if (std::abs(had_top.M() - 172.5) > 30.0) return false;
+        
+        // ttbar system
+        TLorentzVector ttbar = had_top + lep_top;
+        
+        // Fill output
+        this->write_t["top1_mass"] = had_top.M();
+        this->write_t["top2_mass"] = lep_top.M();
+        this->write_t["ttbar_mass"] = ttbar.M();
+        this->write_t["num_bjets"] = static_cast<int>(bjets.size());
+        this->write_t["leading_jet_pt"] = jets[0]->pt();
+        
+        this->write();
+        return true;
+    }
+};
+
+int main(){
+    TopPairSelection* sel = new TopPairSelection();
+    
+    // Load events
+    std::vector<graph_t*> events = load_events("data.root");
+    
+    // Process
+    int passed = 0;
+    for (graph_t* event : events){
+        if (sel->selection(event)){
+            passed++;
+        }
+    }
+    
+    std::cout << "Passed: " << passed << " / " << events.size() << std::endl;
+    
+    delete sel;
+    return 0;
+}
+```
+
+---
+
+# Performance Characteristics
+
+## selection() Complexity
+- **Time**: O(N) where N = number of particles
+- **Typical**: 10-100 μs per event
+
+## strategy() Complexity
+- **Time**: O(N log N) if sorting involved
+- **Typical**: 50-200 μs for complex disambiguation
+
+## ROOT Tree Writing
+- **Time**: O(B) where B = number of branches
+- **Overhead**: ~1-5 μs per event (buffered I/O)
+
+## Particle Utilities
+- **`sum()`**: O(N) - linear in number of particles
+- **`make_unique()`**: O(N) - hash set lookup
+- **`contains()`**: O(N) - worst case (no hash map)
+
+---
+
+# Dependencies
+
+## Internal
+- `particle_template`: Reconstructed object base class
+- `graph_t`: Event representation
+- `write_t`: ROOT tree writer
+- `physics`: Four-vector utilities (parent class)
+- `tools`: String/filesystem utilities (grandparent class)
+- `notification`: Logging (great-grandparent class)
+
+## External
+- **ROOT**: `TLorentzVector`, `TTree`, `TFile`
+- **C++17 STL**: `<vector>`, `<map>`, `<string>`, `<algorithm>`
+
+---
+
+# Best Practices
+
+## 1. Early Return for Failed Cuts
+```cpp
+if (jets.size() < 4) return false;  // Fast rejection
+// ... more expensive checks ...
+```
+Improves performance by avoiding unnecessary computation.
+
+## 2. Separate Disambiguation from Selection
+```cpp
+void strategy() override {
+    // Complex object selection logic
+}
+
+bool selection() override {
+    // Simple boolean cuts
+}
+```
+Keeps code maintainable and testable.
+
+## 3. Use Descriptive Branch Names
+```cpp
+this->write_t.add_branch<double>("top_quark_hadronic_mass");  // Good
+this->write_t.add_branch<double>("m1");  // Bad
+```
+
+## 4. Cache Expensive Calculations
+```cpp
+TLorentzVector ttbar = this->sum({top1, top2});  // Compute once
+this->write_t["ttbar_mass"] = ttbar.M();
+this->write_t["ttbar_pt"] = ttbar.Pt();
+```
+
+## 5. Validate Particle Collections
+```cpp
+if (this->particles.find("jets") == this->particles.end()){
+    this->warning("Jets collection not found!");
+    return false;
+}
+```
+
+---
+
+# Common Pitfalls
+
+## 1. Accessing Empty Collections
+**Symptom**: Segfault when accessing `jets[0]`
+
+**Solution**: Check size before indexing
+```cpp
+if (jets.size() == 0) return false;
+double pt = jets[0]->pt();
+```
+
+## 2. Forgetting to Call write()
+**Symptom**: Empty ROOT tree
+
+**Solution**: Call `this->write()` after filling branches
+
+## 3. Modifying Particles Map in selection()
+**Symptom**: Unexpected behavior in downstream code
+
+**Solution**: Use `strategy()` for object modification, `selection()` for read-only cuts
+
+## 4. Incorrect Four-Vector Arithmetic
+**Symptom**: Negative invariant mass
+
+**Solution**: Use `sum()` or ROOT's `TLorentzVector` operators
+```cpp
+TLorentzVector total = vec1 + vec2;  // Correct
+// NOT: TLorentzVector total = {vec1.Px() + vec2.Px(), ...};
+```
+
+## 5. Not Initializing write_t Branches
+**Symptom**: Compilation error or missing branches
+
+**Solution**: Call `add_branch<T>()` in constructor
+```cpp
+this->write_t.add_branch<double>("my_variable");
+```
+
+---
+
+# Conclusion
+
+The `selection_template` class provides a structured framework for event filtering, object disambiguation, and kinematic output in high-energy physics analyses. By separating selection logic (`selection()`), disambiguation (`strategy()`), and output (`write_t`), it enforces clean, maintainable code.
+
+Key innovations:
+- **Declarative Cuts**: Boolean return values make logic explicit
+- **Particle Utilities**: Four-vector arithmetic without boilerplate
+- **Automatic Tree Management**: No manual TBranch registration
+- **Hash-Based Deduplication**: Prevents double-counting across collections
+
+The class is designed for typical ATLAS/CMS analysis workflows, handling object selection (jets, leptons, b-tagging), kinematic reconstruction (top quarks, $t\bar{t}$ system), and histogram filling via ROOT trees.
+
+---
+
+@see particle_template
+@see graph_t
+@see write_t
+@see physics
+@see tools
+@see notification
+
+*/

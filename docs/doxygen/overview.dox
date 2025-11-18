@@ -1,0 +1,400 @@
+/**
+@page framework_overview AnalysisG Framework Overview
+@tableofcontents
+
+# Introduction
+
+AnalysisG is a high-performance C++17/CUDA framework for training Graph Neural Networks (GNNs) on high-energy physics (HEP) event data. It bridges CERN ROOT-based physics analysis with PyTorch's LibTorch machine learning ecosystem, enabling GPU-accelerated training on ATLAS collision data.
+
+---
+
+# Complete Pipeline Workflow
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        PHYSICS DATA INGESTION                          │
+└────────────────────────────────────────────────────────────────────────┘
+                                    │
+        ┌───────────────────────────┴───────────────────────────┐
+        │                                                       │
+        ▼                                                       ▼
+┌──────────────────┐                                  ┌─────────────────┐
+│  io::scan_files()│  Scan ROOT Files                 │  meta::scan_data()│
+│  *.root → TTree  │  ──────────────────────────────▶ │  Extract metadata│
+│                  │  Find TTrees, branches, leaves   │  JSON, SumWeights│
+└────────┬─────────┘                                  └────────┬────────┘
+         │                                                     │
+         │ io::get_data(event_idx)                            │ meta.dsid
+         ▼                                                     │ meta.xsec
+┌──────────────────┐                                          │
+│ event_template   │  Event Container                         │
+│ • Jets           │  ◀────────────────────────────────────────┘
+│ • Leptons        │  Linked to metadata
+│ • MET            │
+└────────┬─────────┘
+         │
+         │
+┌────────┴─────────────────────────────────────────────────────────────┐
+│                    EVENT SELECTION & FILTERING                       │
+└──────────────────────────────────────────────────────────────────────┘
+         │
+         │ Pass to selection or graph builder
+         ▼
+┌──────────────────┐                      ┌─────────────────────────────┐
+│ selection_template│  Event Cuts         │  graph_template::CompileEvent()│
+│ • selection()    │  ──────────────────▶ │  • define_particle_nodes()  │
+│ • strategy()     │  Physics filters    │  • define_topology(lambda)  │
+│ • write_tree()   │                     │  • add_node_data_feature()  │
+└──────────────────┘                      │  • data_export()            │
+         │                                └──────────┬──────────────────┘
+         │ ROOT ntuple                              │
+         ▼                                          │ graph_t*
+┌──────────────────┐                                │
+│  TTree analysis  │                                │
+│  Statistical fit │                                │
+└──────────────────┘                                │
+                                                    │
+┌───────────────────────────────────────────────────┴──────────────────┐
+│                        GRAPH DATASET MANAGEMENT                      │
+└──────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+                          ┌──────────────────────┐
+                          │  dataloader          │
+                          │  • add_graph()       │
+                          │  • split_dataset()   │  K-fold CV
+                          │  • deduplicate()     │  Feature map sharing
+                          │  • train_data(k)     │  Batch construction
+                          │  • CUDA memory mgmt  │  95% threshold
+                          └──────────┬───────────┘
+                                     │
+                                     │ batch_graph_t*
+                                     ▼
+┌──────────────────────────────────────────────────────────────────────┐
+│                         GNN MODEL TRAINING                           │
+└──────────────────────────────────────────────────────────────────────┘
+                                     │
+                ┌────────────────────┴─────────────────────┐
+                │                                          │
+                ▼                                          ▼
+       ┌─────────────────┐                       ┌──────────────────┐
+       │ model_template  │                       │ lossfx factory   │
+       │ • forward()     │  User GNN architecture│ • interpret()    │
+       │ • compute_loss()│ ◀─────────────────────│ • build_*_loss() │
+       │ • train_sequence()                      │ • optimizer()    │
+       └────────┬────────┘                       └──────────────────┘
+                │                                          │
+                │                                          │ Adam/SGD
+                │ Predictions & losses                     │
+                ▼                                          │
+       ┌─────────────────┐                                │
+       │ optimizer_template                               │
+       │ • training_loop() ◀──────────────────────────────┘
+       │ • validation_loop()  Gradient updates
+       │ • evaluation_loop()  Checkpoint saving
+       │ • launch_model(k)    K-fold iteration
+       └─────────┬─────────┘
+                 │
+                 │ Trained model checkpoints
+                 ▼
+       ┌─────────────────┐
+       │  Model inference │
+       │  Physics results │
+       └──────────────────┘
+```
+
+---
+
+# Module Categories
+
+## Core Infrastructure
+| Module | Purpose | Key Features |
+|--------|---------|--------------|
+| @ref notification_module | Logging & progress | ANSI colors, multi-threaded progress bars |
+| @ref tools_module | Utilities | Filesystem, string ops, Base64, hashing |
+| @ref io_module | I/O operations | ROOT reading, HDF5 serialization, metadata caching |
+
+## Data Management
+| Module | Purpose | Key Features |
+|--------|---------|--------------|
+| @ref MetaModule | Dataset metadata | 60+ cproperties, JSON parsing, fold generation |
+| @ref event_template | Event container | Particle factory, TTree integration |
+| @ref particle_template_page | Particle objects | Four-vectors, cproperty system |
+
+## Physics Analysis
+| Module | Purpose | Key Features |
+|--------|---------|--------------|
+| @ref selection_template_module | Event filtering | Selection cuts, strategy pattern, ROOT output |
+| @ref graph_template_module | Graph construction | Lambda topology, cproperty features, device caching |
+| @ref pyc_physics_page | Kinematics | CUDA-accelerated dR, mass, pT calculations |
+
+## Machine Learning
+| Module | Purpose | Key Features |
+|--------|---------|--------------|
+| @ref dataloader_module | Dataset batching | K-fold CV, CUDA memory server, edge offsetting |
+| @ref model_template_module | GNN base class | cproperty I/O, multi-level loss, checkpoints |
+| @ref lossfx_module | Loss factory | 20+ losses, 6 optimizers, string parsing |
+| @ref optimizer_module | Training orchestrator | Train/val/test loops, k-fold iteration |
+
+---
+
+# Typical Analysis Workflow
+
+## 1. Data Preparation
+```cpp
+// Scan ROOT files
+io* reader = new io();
+reader->scan_files("/data/mc16/*.root");
+
+// Extract metadata
+meta* metadata = reader->get_meta("mc16_ttbar.root");
+std::cout << "DSID: " << metadata->dsid() << std::endl;
+std::cout << "Cross-section: " << metadata->xsec() << " pb" << std::endl;
+```
+**Modules Used**: @ref io_module, @ref MetaModule
+
+## 2. Event Selection
+```cpp
+// Define custom selection
+class MySelection : public selection_template {
+public:
+    bool selection() override {
+        event_4tops* ev = this->get_event<event_4tops>();
+        return ev->Jets.size() >= 4 && ev->Leptons.size() == 1;
+    }
+};
+```
+**Modules Used**: @ref selection_template_module, @ref event_template
+
+## 3. Graph Construction
+```cpp
+// Define graph structure
+class MyGraph : public graph_template {
+public:
+    void CompileEvent() override {
+        event_4tops* ev = this->get_event<event_4tops>();
+        
+        // Define nodes
+        this->define_particle_nodes(&ev->Jets);
+        
+        // Define edges (dR < 1.0)
+        this->define_topology([](auto* a, auto* b){
+            return deltaR(a, b) < 1.0;
+        });
+        
+        // Add features
+        this->add_node_data_feature<double>(&particle::pt, "pt");
+        this->add_node_truth_feature<int>(&particle::from_top, "label");
+    }
+};
+```
+**Modules Used**: @ref graph_template_module, @ref pyc_physics_page
+
+## 4. Dataset Management
+```cpp
+// Build dataset
+dataloader* loader = new dataloader();
+for (int i = 0; i < num_events; i++) {
+    graph_builder->set_event(reader->get_data(i));
+    graph_builder->CompileEvent();
+    loader->add_graph(graph_builder->data_export());
+}
+
+// Split into folds
+loader->split_dataset(k_folds=5, train=0.7, val=0.15, test=0.15);
+```
+**Modules Used**: @ref dataloader_module
+
+## 5. Model Definition
+```cpp
+// Define GNN model
+class MyGNN : public model_template {
+public:
+    MyGNN() {
+        // Declare required inputs
+        this->i_node = {"pt", "eta", "phi", "energy"};
+        this->o_node = {"top_score"};  // Node-level prediction
+        
+        // Declare loss function
+        this->loss_node = "crossentropyloss::(reduction->mean)";
+    }
+    
+    void forward(graph_t* g) override {
+        // Your GNN architecture here
+        torch::Tensor x = get_input_node();  // Auto-populated
+        torch::Tensor pred = gnn_layers(x);
+        this->register_output_node(pred);
+    }
+};
+```
+**Modules Used**: @ref model_template_module, @ref lossfx_module
+
+## 6. Training
+```cpp
+// Setup optimizer
+optimizer_template* trainer = new optimizer_template();
+trainer->import_dataloader(loader);
+trainer->import_model_sessions(model);
+
+// Train k-fold CV
+for (int k = 0; k < 5; k++) {
+    trainer->launch_model(k);
+    for (int epoch = 0; epoch < 100; epoch++) {
+        trainer->training_loop(k, epoch);
+        trainer->validation_loop(k, epoch);
+    }
+    trainer->evaluation_loop(k, epoch);
+}
+```
+**Modules Used**: @ref optimizer_module
+
+---
+
+# Key Design Patterns
+
+## cproperty System
+Lazy-evaluation properties enable memory-efficient, type-safe feature access:
+```cpp
+// In event_template
+cproperty<double, particle> pt;  // Lazily computed
+double value = particle->pt();    // Getter triggers computation
+```
+Used in: @ref MetaModule, @ref event_template, @ref particle_template_page, @ref model_template_module
+
+## Factory Pattern
+String-based object creation for runtime configuration:
+```cpp
+lossfx* loss = new lossfx();
+loss->interpret("crossentropyloss::(smoothing->0.1)");
+torch::nn::CrossEntropyLoss fx = loss->get_loss();
+```
+Used in: @ref lossfx_module
+
+## Template Inheritance
+Abstract base classes for user extension:
+```cpp
+class MyEvent : public event_template { ... };
+class MyGraph : public graph_template { ... };
+class MyModel : public model_template { ... };
+```
+Used in: @ref event_template, @ref graph_template_module, @ref model_template_module, @ref selection_template_module
+
+## Lambda Functors
+Declarative edge construction and feature extraction:
+```cpp
+// Topology lambda
+this->define_topology([](auto* a, auto* b){
+    return deltaR(a, b) < 0.8;
+});
+
+// Feature lambda
+this->add_edge_data_feature<double>([](auto* a, auto* b){
+    return (a->vector() + b->vector()).M();
+}, "dijet_mass");
+```
+Used in: @ref graph_template_module
+
+---
+
+# Performance Optimizations
+
+## GPU Acceleration
+- **CUDA Kernels**: @ref pyc_physics_page provides parallel kinematics
+- **Device Caching**: @ref graph_template_module caches tensors per device (O(1) subsequent transfers)
+- **Memory Monitoring**: @ref dataloader_module tracks GPU usage, purges at 95% threshold
+
+## Memory Efficiency
+- **Feature Deduplication**: @ref dataloader_module shares identical feature maps (99.995% memory reduction)
+- **Lazy Evaluation**: @ref MetaModule's cproperty system computes on-demand
+- **Metadata Caching**: @ref io_module caches ROOT scans to HDF5 (100x speedup)
+
+## Multi-Threading
+- **Progress Aggregation**: @ref notification_module's `progressbar1()` for parallel tasks
+- **K-Fold Parallelism**: @ref optimizer_module can train multiple folds concurrently
+- **Batch Transfer**: @ref dataloader_module threaded GPU transfers
+
+---
+
+# External Dependencies
+
+## Machine Learning
+- **LibTorch (C++ PyTorch)**: `torch::Tensor`, `torch::nn::Module`, `torch::optim`
+- **CUDA 11+**: GPU kernels and memory management
+
+## High-Energy Physics
+- **ROOT 6+**: `TFile`, `TTree`, `TBranch`, `TLeaf` for event data
+- **RapidJSON**: Fast JSON parsing for ATLAS metadata
+
+## Serialization & I/O
+- **HDF5 (H5Cpp)**: Binary structured data storage
+- **Base64**: Encoding for tensor serialization
+
+## Standard Library
+- **C++17 STL**: `<filesystem>`, `<thread>`, `<functional>`, `<map>`, `<vector>`
+- **OpenSSL**: SHA-256 hashing (via `tools::hash()`)
+
+---
+
+# Module Dependency Graph
+
+```
+                     notification (logging)
+                            │
+                            ▼
+                        tools (utilities)
+                            │
+              ┌─────────────┼─────────────┬──────────────┐
+              │             │             │              │
+              ▼             ▼             ▼              ▼
+          physics          io          meta        lossfx
+              │             │             │
+              │             └──────┬──────┘
+              │                    │
+              ▼                    ▼
+      selection_template    dataloader
+              │                    │
+              ▼                    │
+      graph_template               │
+              │                    │
+              └──────┬─────────────┘
+                     │
+                     ▼
+              model_template
+                     │
+                     ▼
+            optimizer_template
+```
+
+**Legend**:
+- **Base Classes**: `notification`, `tools` (inherited by most modules)
+- **Data Layer**: `io`, `meta`, `event_template`, `particle_template`
+- **Physics Layer**: `selection_template`, `graph_template`, `physics`
+- **ML Layer**: `dataloader`, `model_template`, `lossfx`, `optimizer_template`
+
+---
+
+# Getting Started
+
+1. **Explore Core Modules**: Start with @ref io_module and @ref MetaModule to understand data ingestion
+2. **Event Representation**: Read @ref event_template and @ref particle_template_page
+3. **Graph Construction**: Deep-dive into @ref graph_template_module for GNN input creation
+4. **Model Training**: Study @ref model_template_module and @ref optimizer_module for training pipelines
+5. **Utilities**: Reference @ref tools_module and @ref notification_module for helper functions
+
+---
+
+# Additional Resources
+
+- **Source Code**: `/workspaces/AnalysisG/src/AnalysisG/`
+- **Examples**: `/workspaces/AnalysisG/studies/`
+- **Tests**: `/workspaces/AnalysisG/test/`
+- **Documentation**: `/workspaces/AnalysisG/docs/`
+
+---
+
+@see @ref modules_module for detailed module documentation
+@see @ref pyc_physics_page for CUDA physics kernels
+@see @ref event_template for event containers
+@see @ref particle_template_page for particle objects
+
+*/

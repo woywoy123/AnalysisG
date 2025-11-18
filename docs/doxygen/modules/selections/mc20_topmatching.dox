@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/mc20/topmatching.
+
+@defgroup selections_mc20_topmatching Selections: mc20/topmatching
+@ingroup selections_module
+
+@details
+MC20 topmatching selections.
+Source: `src/AnalysisG/selections/mc20/topmatching/`
+*/

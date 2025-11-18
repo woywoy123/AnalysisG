@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/mc16/parton.
+
+@defgroup selections_mc16_parton Selections: mc16/parton
+@ingroup selections_module
+
+@details
+MC16 parton selections.
+Source: `src/AnalysisG/selections/mc16/parton/`
+*/
