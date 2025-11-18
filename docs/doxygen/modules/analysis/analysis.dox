@@ -98,6 +98,49 @@ int main() {
     // 1. Create the analysis object
     analysis* ana = new analysis();
 
+    // 2. Configure output and settings
+    ana -> m_settings.output_path = "./MyAnalysis";
+    ana -> m_settings.threads = 8;
+    ana -> m_settings.epochs = 100;
+    ana -> m_settings.batch_size = 32;
+    ana -> m_settings.training = true;
+    
+    // 3. Add input samples
+    ana -> add_samples("/data/ttbar/*.root", "signal");
+    ana -> add_samples("/data/background/*.root", "background");
+    
+    // 4. Register event template
+    MyEvent* evt = new MyEvent();
+    ana -> add_event_template(evt, "signal");
+    
+    // 5. Register graph template
+    MyGraph* grph = new MyGraph();
+    ana -> add_graph_template(grph, "signal");
+    
+    // 6. Add selection logic
+    MySelection* sel = new MySelection();
+    ana -> add_selection_template(sel);
+    
+    // 7. Add model for training
+    MyModel* model = new MyModel();
+    optimizer_params_t* opt = new optimizer_params_t();
+    opt -> learning_rate = 0.001;
+    ana -> add_model(model, opt, "training_run_v1");
+    
+    // 8. Start the analysis pipeline
+    ana -> start();
+    
+    // 9. Monitor progress
+    while (true) {
+        auto prog = ana -> progress();
+        if (ana -> is_complete().size() == prog.size()) break;
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+    
+    delete ana;
+    return 0;
+}
+
     // 2. Configure the analysis
     ana->add_samples("/path/to/ttbar/*.root", "ttbar");
     ana->add_samples("/path/to/data.root", "data");
@@ -457,133 +500,905 @@ project_path/
 ## Stage 3: Event Building
 
 **Method**: `build_events()`
+**Implementation**: `src/AnalysisG/modules/analysis/event_build.cxx`
 
-**Purpose**: Convert ROOT data → event_template objects
+**Purpose**: Convert ROOT data → event_template objects with multi-threaded processing
 
-**Algorithm**:
+**Detailed Algorithm**:
 ```cpp
-for (auto& [label, paths] : samples) {
-    event_template* factory = event_templates[label];
-    for (auto& file : paths) {
-        io_reader->open(file);
-        for (int i = 0; i < num_events; i++) {
-            std::map<std::string, data_t*>* raw = io_reader->get_data(i);
-            std::map<std::string, event_template*> events = factory->build_event(raw);
-            for (auto& [tree_name, ev] : events) {
-                event_storage.push_back(ev);
-            }
-        }
+// 1. Calculate optimal thread distribution
+size_t nevents = sum_of_all_tree_entries();
+size_t avg = nevents / m_settings.threads;
+
+// 2. Distribute files across threads based on event count
+std::vector<std::vector<std::string>> thsmpl;  // thread -> files
+std::vector<size_t> thevnt;                    // thread -> event count
+for (auto& [file, tree_map] : reader->tree_entries) {
+    if (thevnt[current_thread] < avg) {
+        thsmpl[current_thread].push_back(file);
+        thevnt[current_thread] += tree_map[tree_name];
+    } else {
+        current_thread++;
     }
 }
+
+// 3. Lambda executed per thread
+auto lamb = [](vector<string>* files, event_template* evnt_comp) {
+    event_template* evn = evnt_comp->clone();  // Thread-local clone
+    io* rdr = new io();                        // Thread-local I/O reader
+    
+    rdr->import_settings(&m_settings);
+    rdr->trees = requested_trees;
+    rdr->branches = requested_branches;
+    rdr->leaves = requested_leaves;
+    
+    for (auto& file : *files) {
+        rdr->root_files[file] = true;
+    }
+    rdr->check_root_file_paths();
+    
+    // Read events from this file subset
+    std::map<std::string, data_t*>* io_handle = rdr->get_data();
+    while (idx < num_events) {
+        // Build event objects from raw ROOT data
+        auto evnts = evn->build_event(io_handle);
+        if (!evnts.size()) continue;
+        
+        // Process each tree's events
+        for (auto& [tree_name, event] : evnts) {
+            string fname = event->filename;
+            string label = file_labels[fname];
+            
+            // Attach metadata
+            meta* meta_ = meta_data[fname];
+            meta_->folds = tags;  // k-fold assignments
+            
+            // Add to sampletracer (thread-safe)
+            if (tracer->add_event(event, label)) {
+                delete event;  // Moved ownership
+            }
+        }
+        idx++;
+    }
+    delete rdr;
+    delete evn;
+};
+
+// 4. Launch threads
+ROOT::EnableImplicitMT(num_threads);
+std::vector<std::thread*> thrs;
+for (size_t x = 0; x < thsmpl.size(); ++x) {
+    thrs[x] = new std::thread(lamb, &thsmpl[x], event_factory);
+}
+
+// 5. Monitor progress
+std::thread* monitor = new std::thread(progressbar3, &thread_progress, &thread_events);
+monitor_threads(&thrs);
+monitor->join();
 ```
 
-**Parallelization**: Thread pool across files
+**Key Features**:
+- **Load Balancing**: Files distributed by event count, not file count
+- **Thread Safety**: Each thread has its own `io` reader and event template clone
+- **Memory Efficiency**: Events transferred to `sampletracer` immediately, not accumulated
+- **Progress Tracking**: Real-time per-thread progress bars
+- **Metadata Handling**: Automatically attaches dataset metadata and k-fold assignments
+
+**Data Flow**:
+```
+ROOT File
+    ↓ (io::get_data)
+data_t* (raw branch data)
+    ↓ (event_template::build_event)
+event_template* (structured event)
+    ↓ (sampletracer::add_event)
+Stored in sampletracer's event cache
+```
+
+**Parallelization**: Thread pool across files, scales linearly with core count
 
 ## Stage 4: Selection
 
 **Method**: `build_selections()`
+**Implementation**: `src/AnalysisG/modules/analysis/selection_build.cxx`
 
-**Purpose**: Apply cuts to events
+**Purpose**: Apply physics selection cuts and produce analysis outputs
 
-**Algorithm**:
+**Detailed Algorithm**:
 ```cpp
-for (auto* event : event_storage) {
-    bool pass = true;
-    for (auto* selection : selection_templates) {
-        selection->set_event(event);
-        if (!selection->selection()) {
-            pass = false;
-            break;
+// 1. Retrieve all built events from sampletracer
+std::vector<event_template*> events_ = tracer->get_events("");  // "" = all labels
+
+if (!events_.size()) {
+    warning("No Events found for Selection. Skipping...");
+    return;
+}
+
+// 2. Configure ROOT output if requested
+if (m_settings.selection_root) {
+    tracer->output_path = &m_settings.output_path;
+}
+
+// 3. Apply each selection template to all events
+for (auto& [name, sel_template] : selection_names) {
+    for (auto* event : events_) {
+        // Build selection instance for this event
+        selection_template* sel_instance = sel_template->build(event);
+        
+        // Internal process:
+        // - sel_template->selection(event)  // boolean cut logic
+        // - sel_template->strategy(event)   // analysis code (histograms, etc.)
+        // - Produces output ROOT files if enabled
+        
+        if (tracer->add_selection(sel_instance)) {
+            // Selection instance stored in sampletracer
+            // Will be filled with data during fill_selections()
         }
-    }
-    if (pass) {
-        selected_events.push_back(event);
-    } else {
-        delete event;  // Memory cleanup
+        delete sel_instance;  // Cloned and stored internally
     }
 }
+
+// 4. Fill selection ROOT trees (if enabled)
+tracer->compile_objects(threads);
+tracer->fill_selections(&selection_names);
 ```
 
-**Memory Management**: Failed events are deleted immediately
+**Selection Workflow**:
+```
+event_template*
+    ↓
+selection_template::build(event)
+    ↓
+selection_template::selection()  ← User implements cuts
+    ├─ true  → selection_template::strategy()  ← User fills histograms
+    └─ false → Event rejected
+```
+
+**Key Features**:
+- **Two-Stage Design**: 
+  - `selection()`: Returns bool, determines if event passes
+  - `strategy()`: Analysis code, only called if selection passes
+- **ROOT Output**: Optional `.root` files with TTrees for selected events
+- **Flexible Cuts**: Multiple selection templates can be chained
+- **No Early Filtering**: All selections see all events (not sequential filtering)
+
+**Memory Management**: 
+- Selection instances are cloned and managed by `sampletracer`
+- Original event objects remain valid for graph building stage
+- Events are NOT deleted here (needed for next stage)
+
+**Output Structure** (if `selection_root = true`):
+```
+output_path/
+└── selections/
+    ├── SelectionName1/
+    │   ├── sample_label_1.root
+    │   └── sample_label_2.root
+    └── SelectionName2/
+        └── ...
+```
+
+**Use Cases**:
+- Validation plots before training
+- Cut-flow tables
+- Data/MC comparisons
+- Signal region definitions
 
 ## Stage 5: Graph Building
 
 **Method**: `build_graphs()`
+**Implementation**: `src/AnalysisG/modules/analysis/graph_build.cxx`
 
-**Purpose**: Convert events → graph_t
+**Purpose**: Convert event_template objects → graph_t structures for GNN input
 
-**Algorithm**:
+**Detailed Algorithm**:
 ```cpp
-for (auto& [label, graph_builder] : graph_templates) {
-    dataloader* loader = new dataloader();
-    for (auto* event : selected_events) {
-        if (event->label != label) continue;
+// Iterate over each (sample_label, graph_template) pair
+for (auto& [label, graph_templates_map] : graph_labels) {
+    
+    // Get events for this sample label
+    std::vector<event_template*> events_ = tracer->get_events(label);
+    
+    // For each graph type (e.g., "TopRecoGraph", "JetGraph")
+    for (auto& [graph_name, graph_template] : graph_templates_map) {
         
-        graph_builder->set_event(event);
-        graph_builder->CompileEvent();
-        graph_t* g = graph_builder->data_export();
-        
-        loader->add_graph(g);
+        for (auto* event : events_) {
+            std::string filename = event->filename;
+            
+            // Check if graph is already cached
+            std::string cache_key = hash(filename) + "-" + filename;
+            cache_key = graph_name + "/" + cache_key;
+            
+            if (in_cache[filename][cache_key]) {
+                continue;  // Skip, will restore from HDF5 later
+            }
+            
+            // Build graph from event
+            graph_template* gr_instance = graph_template->build(event);
+            
+            // Internal process:
+            // 1. graph_template->set_event(event)
+            // 2. User implements CompileEvent():
+            //    - Define nodes (particles)
+            //    - Define edges (relationships)
+            //    - Set node/edge/graph features
+            // 3. graph_template->data_export() creates graph_t*
+            
+            // Add to sampletracer (deduplication + storage)
+            if (tracer->add_graph(gr_instance, label)) {
+                delete gr_instance;  // Ownership transferred
+            }
+        }
     }
-    dataloader_instances[label] = loader;
 }
+
+// Transfer graphs to dataloader
+tracer->populate_dataloader(loader);
 ```
 
-**Parallelization**: Thread pool across events
+**Graph Construction Flow**:
+```
+event_template (particles, metadata)
+    ↓
+graph_template::build(event)
+    ↓
+graph_template::CompileEvent()  ← User implements
+    ├─ AddNode(particle)          ← Define graph nodes
+    ├─ AddEdge(i, j)              ← Define graph edges
+    ├─ SetNodeFeature(name, tensor)
+    ├─ SetEdgeFeature(name, tensor)
+    └─ SetGraphFeature(name, tensor)
+    ↓
+graph_template::data_export()
+    ↓
+graph_t* (PyTorch-ready tensors)
+    ↓
+sampletracer::add_graph()
+    ↓
+Stored in graph cache
+```
+
+**graph_t Structure**:
+```cpp
+struct graph_t {
+    // Topology
+    torch::Tensor* edge_index;        // [2, num_edges]
+    int num_nodes;
+    
+    // Features
+    std::vector<torch::Tensor*>* data_node;   // Input node features
+    std::vector<torch::Tensor*>* data_edge;   // Input edge features
+    std::vector<torch::Tensor*>* data_graph;  // Input graph features
+    
+    std::vector<torch::Tensor*>* truth_node;  // Target node labels
+    std::vector<torch::Tensor*>* truth_edge;  // Target edge labels
+    std::vector<torch::Tensor*>* truth_graph; // Target graph labels
+    
+    // Metadata
+    long event_index;
+    double event_weight;
+    std::string* hash;
+    std::string* filename;
+    bool preselection;                // Passes pre-selection cuts?
+    
+    // Feature name mappings
+    std::map<std::string, int>* data_map_node;
+    std::map<std::string, int>* truth_map_node;
+    // ... similar for edge/graph
+};
+```
+
+**Caching Mechanism**:
+- Graphs are computationally expensive to build
+- HDF5 cache stores serialized graph_t objects
+- Cache check: `in_cache[filename][graph_name/hashed_filename]`
+- Cache paths: `graph_cache/GraphName/hash-filename.h5`
+
+**Dataloader Population**:
+```cpp
+// After building, transfer to dataloader
+tracer->compile_objects(threads);
+build_dataloader(false);  // false = no k-fold yet
+
+// Options:
+// 1. Cache exists → loader->restore_graphs(cache_path)
+// 2. Build from scratch → Already populated via add_graph()
+// 3. Save new cache → loader->dump_graphs(cache_path)
+```
+
+**Memory Efficiency**:
+- Graphs deduplicated by hash in `sampletracer`
+- Identical events produce identical graphs (same hash)
+- Only unique graphs stored
+
+**Performance**:
+- Graph building: ~10-100ms per event (depends on complexity)
+- Cache restore: ~1-10ms per event
+- Recommendation: Always use caching for large datasets
 
 ## Stage 6: Model Training/Inference
 
 ### Training Mode
 
 **Method**: `build_model_session()`
+**Implementation**: `src/AnalysisG/modules/analysis/optimizer_build.cxx`
 
-**Triggered**: When `optimizer_params_t*` is not nullptr
+**Triggered**: When `add_model(model, optimizer_params_t*, name)` called with non-null optimizer
 
-**Process**:
-1. Import dataloader into optimizer
-2. Split dataset (k-fold)
-3. For each fold:
-   - Initialize model
-   - Call `optimizer::launch_model(k)`
-   - Train for specified epochs
-   - Save checkpoints
+**Detailed Process**:
+```cpp
+// 1. Normalize k-fold specification
+std::vector<int> kfold = m_settings.kfold;
+if (!kfold.size()) {
+    // If not specified, train on all folds
+    for (int k = 0; k < m_settings.kfolds; ++k) {
+        kfold.push_back(k);
+    }
+} else {
+    // Convert from 1-indexed to 0-indexed
+    for (size_t k = 0; k < kfold.size(); ++k) {
+        kfold[k] = kfold[k] - 1;
+    }
+}
+
+// 2. Transfer graphs to GPU devices
+std::map<int, torch::TensorOptions*> dev_map;
+for (auto& [model, optim_params] : model_sessions) {
+    torch::TensorOptions* op = model->m_option;
+    int device_idx = op->device().index();
+    if (!dev_map.count(device_idx)) {
+        dev_map[device_idx] = op;
+    }
+}
+loader->datatransfer(&dev_map);  // Moves graphs to specified devices
+
+// 3. Setup optimizer for each model
+for (size_t x = 0; x < model_sessions.size(); ++x) {
+    std::string run_name = model_session_names[x];
+    
+    optimizer* optim = new optimizer();
+    optim->m_settings = m_settings;
+    optim->m_settings.run_name = run_name;
+    optim->import_dataloader(loader);
+    trainer[run_name] = optim;
+    
+    auto [model_template, optim_params] = model_sessions[x];
+    optim->import_model_sessions(&model_template, &optim_params);
+    
+    // 4. Launch training for each k-fold
+    for (size_t k = 0; k < kfold.size(); ++k) {
+        int k_ = kfold[k];
+        
+        // Get training set for this fold
+        std::vector<graph_t*>* train_set = loader->get_k_train_set(k_);
+        if (!train_set) continue;
+        
+        // Create model report (progress tracking)
+        model_report* report = nullptr;
+        
+        if (m_settings.debug_mode) {
+            // Synchronous (single-threaded for debugging)
+            initialize_loop(optim, k_, model_template, optim_params, &report);
+        } else {
+            // Asynchronous (parallel folds)
+            threads.push_back(new std::thread(
+                initialize_loop, optim, k_, model_template, optim_params, &report
+            ));
+        }
+        
+        // Wait for report object to be created
+        while (!report) {
+            std::this_thread::sleep_for(std::chrono::microseconds(10));
+        }
+        
+        reports[report->run_name + std::to_string(report->k)] = report;
+    }
+}
+
+// 5. Monitor training progress
+// Progress tracking via progress(), progress_mode(), is_complete()
+```
+
+**Training Loop** (inside `initialize_loop`):
+```
+optimizer::launch_model(k)
+    ↓
+For each epoch:
+    ├─ Training Phase:
+    │   ├─ Shuffle training graphs
+    │   ├─ Create batches (batch_size graphs)
+    │   ├─ For each batch:
+    │   │   ├─ model->forward(batch, train=true)
+    │   │   ├─ Compute losses
+    │   │   ├─ loss.backward()
+    │   │   ├─ optimizer.step()
+    │   │   └─ optimizer.zero_grad()
+    │   └─ Record training metrics
+    │
+    ├─ Validation Phase (if enabled):
+    │   ├─ model->eval()
+    │   ├─ For each validation batch:
+    │   │   ├─ model->forward(batch, train=false)
+    │   │   ├─ Compute losses (no gradient)
+    │   │   └─ Record validation metrics
+    │   └─ model->train()
+    │
+    └─ Checkpoint:
+        └─ model->save_state()
+            → output_path/ModelName/run_name/model_epoch{N}_k{K}.pt
+```
+
+**Progress Tracking**:
+```cpp
+// Real-time progress
+auto prog = ana->progress();
+// Returns: {"training-run_name-k0": {75.3, 1507, 2000}, ...}
+//          {stage_name: {percent, current_iter, total_iters}}
+
+auto mode = ana->progress_mode();
+// Returns: {"training-run_name-k0": "Training | k-1 | RunName: run_v1 | Epoch: 42"}
+
+auto complete = ana->is_complete();
+// Returns: {"training-run_name-k0": false, ...}
+```
+
+---
 
 ### Inference Mode
 
 **Method**: `build_inference()`
+**Implementation**: `src/AnalysisG/modules/analysis/inference_build.cxx`
 
-**Triggered**: When `optimizer_params_t*` is nullptr
+**Triggered**: When `add_model(model, nullptr, name)` called (nullptr optimizer)
 
-**Process**:
-1. Load model weights
-2. Set model to eval mode
-3. For each graph:
-   - Call `model::forward()`
-   - Store predictions
+**Detailed Process**:
+```cpp
+// 1. Get inference dataset (all graphs, sorted by event index)
+std::map<std::string, std::vector<graph_t*>>* dl = loader->get_inference();
+// Maps: filename → graphs from that file
+
+size_t num_files = dl->size();
+size_t num_models = model_inference.size();
+size_t total_jobs = num_files * num_models;
+
+// 2. Transfer graphs to GPU devices
+std::map<int, torch::TensorOptions*> ops;
+for (auto& [model_name, model] : model_inference) {
+    int device_idx = model->device_index;
+    ops[device_idx] = model->m_option;
+}
+loader->datatransfer(&ops);
+
+// 3. Setup threads for parallel inference
+std::vector<std::thread*> threads(total_jobs);
+std::vector<size_t> progress(total_jobs, 0);
+
+// 4. For each (file, model) combination
+size_t job_idx = 0;
+for (auto& [filename, graphs] : *dl) {
+    for (auto& [model_name, model] : model_inference) {
+        
+        // Clone model settings
+        model_settings_t settings;
+        model->clone_settings(&settings);
+        model->inference_mode = true;
+        
+        // Batch graphs if batch_size > 1
+        std::vector<graph_t*>* batched = nullptr;
+        if (m_settings.batch_size > 1) {
+            batched = loader->build_batch(&graphs, model, nullptr);
+            for (auto* g : graphs) g->in_use = 0;
+        } else {
+            batched = &graphs;
+        }
+        
+        // Setup output file
+        std::string output_file = m_settings.output_path + "/" + model_name + "/";
+        output_file += extract_path_from(filename);
+        create_path(output_file);
+        
+        // Prepare output features
+        std::vector<variable_t>* content = new std::vector<variable_t>();
+        
+        // Dummy forward pass to initialize model outputs
+        model->forward(graphs[0], false);
+        
+        // Collect input/output feature names
+        add_content(&model->m_i_graph, content, index, "g_i_");
+        add_content(&model->m_i_node,  content, index, "n_i_");
+        add_content(&model->m_i_edge,  content, index, "e_i_");
+        add_content(&model->m_p_graph, content, index, "g_o_");
+        add_content(&model->m_p_node,  content, index, "n_o_");
+        add_content(&model->m_p_edge,  content, index, "e_o_");
+        add_content(&model->m_p_undef, content, index, "extra_");
+        
+        // Launch inference thread
+        threads[job_idx] = new std::thread(
+            execution,           // Static method
+            model, settings, batched, 
+            &progress[job_idx], 
+            output_file, content
+        );
+        
+        job_idx++;
+    }
+}
+
+// 5. Monitor progress
+std::thread* monitor = new std::thread(progressbar3, &progress, &num_data);
+
+// 6. Wait for completion
+monitor_threads(&threads);
+monitor->join();
+```
+
+**Inference Execution** (in `execution` thread):
+```cpp
+static void execution(
+    model_template* model, 
+    model_settings_t settings,
+    std::vector<graph_t*>* graphs,
+    size_t* progress,
+    std::string output_path,
+    std::vector<variable_t>* features
+) {
+    // Setup ROOT output file
+    TFile* file = new TFile((output_path + ".root").c_str(), "RECREATE");
+    TTree* tree = new TTree(settings.tree_name.c_str(), "Inference");
+    
+    // Create branches for all features
+    std::map<std::string, torch::Tensor*> data;
+    for (auto& feature : *features) {
+        // Attach TBranch for this feature
+    }
+    
+    // Run inference on each graph
+    for (size_t i = 0; i < graphs->size(); ++i) {
+        graph_t* g = (*graphs)[i];
+        
+        // Forward pass
+        model->forward(g, false);
+        
+        // Extract predictions
+        for (auto& [name, output_tensor] : model->predictions) {
+            data[name] = output_tensor;
+        }
+        
+        // Fill ROOT tree
+        add_content(&data, features, 0, "", tree);
+        tree->Fill();
+        
+        (*progress)++;
+    }
+    
+    // Save and cleanup
+    tree->Write();
+    file->Close();
+    delete file;
+}
+```
+
+**Output Structure**:
+```
+output_path/
+└── ModelName/
+    └── InferenceRun/
+        ├── sample1/
+        │   ├── file1.root    ← Predictions for file1
+        │   └── file2.root
+        └── sample2/
+            └── ...
+```
+
+**ROOT Output Format**:
+```
+TTree: "nominal" (or custom tree name)
+Branches:
+├── g_i_<name>    ← Input graph features
+├── n_i_<name>    ← Input node features
+├── e_i_<name>    ← Input edge features
+├── g_o_<name>    ← Predicted graph features
+├── n_o_<name>    ← Predicted node features
+├── e_o_<name>    ← Predicted edge features
+├── extra_<name>  ← Custom outputs
+├── edge_index    ← Graph topology
+└── event_weight  ← Event weight
+```
+
+**Performance Optimization**:
+- Parallel inference across (file × model) combinations
+- Configurable batch size for memory efficiency
+- Direct ROOT output (no intermediate storage)
+- Multi-GPU support (automatic device assignment)
 
 ## Stage 7: Metrics
 
-**Method**: `build_metric()`
+**Method**: `build_metric()` and `build_metric_folds()`
+**Implementation**: `src/AnalysisG/modules/analysis/metric_build.cxx`
 
-**Purpose**: Evaluate model performance
+**Purpose**: Evaluate model performance across training/validation/test sets
 
-**Process**:
+**Detailed Process**:
+
+### Step 1: K-Fold Discovery
 ```cpp
-for (auto* metric : metric_templates) {
-    // Load required model states
-    for (auto& [key, path] : metric->run_names) {
-        model_template* m = load_model(path);
-        // Run inference
+void build_metric_folds() {
+    std::vector<int> kfolds = {};
+    
+    // Collect all k-folds requested by metrics
+    for (auto& [name, metric] : metric_names) {
+        std::vector<int> kf = metric->get_kfolds();
+        unique_key(&kf, &kfolds);  // Deduplicate
     }
     
-    // Calculate metrics
-    for (each graph/batch) {
-        metric->define_metric(data);
-    }
-    
-    metric->end();  // Finalize and save
+    m_settings.kfold = kfolds;
 }
 ```
+
+### Step 2: Main Metric Building
+```cpp
+bool build_metric() {
+    // === Device Discovery ===
+    std::map<int, torch::TensorOptions*> dev_map;
+    for (auto& [name, metric] : metric_names) {
+        auto devices = metric->get_devices();
+        for (auto& [dev_idx, options] : devices) {
+            if (!dev_map.count(dev_idx)) {
+                dev_map[dev_idx] = options;
+            }
+        }
+    }
+    
+    // === Prepare Datasets ===
+    build_dataloader(true);  // Generate k-folds if needed
+    loader->datatransfer(&dev_map);  // Move graphs to devices
+    
+    // === Build Batch Caches ===
+    // Metrics may request different (k-fold, device, mode) combinations
+    // Cache batches to avoid rebuilding identical sets
+    
+    std::map<std::string, std::vector<graph_t*>*> tr_batch_cache = {};
+    std::map<std::string, std::vector<graph_t*>*> va_batch_cache = {};
+    std::map<std::string, std::vector<graph_t*>*> ts_batch_cache = {};
+    
+    for (auto& [name, metric] : metric_names) {
+        auto model_hash_map = metric->hash_mdl;  // device+kfold → models
+        auto devices = metric->get_devices();
+        auto kfolds = metric->get_kfolds();
+        
+        // For each (device, k-fold) combination
+        for (auto& [dev_idx, options] : devices) {
+            for (auto k : kfolds) {
+                // Compute hash key
+                std::string hash_key = std::to_string(dev_idx) + "+" + std::to_string(k);
+                hash_key = hash(hash_key);
+                
+                if (!model_hash_map.count(hash_key)) continue;
+                
+                model_template* model = model_hash_map[hash_key][0];
+                
+                // Link or create batched datasets
+                auto link_batch = [&](bool enabled, mode_enum mode, 
+                                     std::map<std::string, std::vector<graph_t*>*>& cache) {
+                    if (!enabled) return;
+                    
+                    if (cache.count(hash_key)) {
+                        // Already built, just link
+                        metric->link(hash_key, cache[hash_key], mode);
+                        return;
+                    }
+                    
+                    // Get raw dataset
+                    std::vector<graph_t*>* raw = nullptr;
+                    switch (mode) {
+                        case mode_enum::training:   raw = loader->get_k_train_set(k); break;
+                        case mode_enum::validation: raw = loader->get_k_validation_set(k); break;
+                        case mode_enum::evaluation: raw = loader->get_test_set(); break;
+                    }
+                    if (!raw) return;
+                    
+                    // Build batches for this model
+                    std::vector<graph_t*>* batched = loader->build_batch(raw, model, nullptr);
+                    
+                    // Cache and link
+                    cache[hash_key] = batched;
+                    metric->link(hash_key, batched, mode);
+                    
+                    // Release raw graphs
+                    for (auto* g : *raw) g->in_use = 0;
+                };
+                
+                link_batch(m_settings.training,   mode_enum::training,   tr_batch_cache);
+                link_batch(m_settings.validation, mode_enum::validation, va_batch_cache);
+                link_batch(m_settings.evaluation, mode_enum::evaluation, ts_batch_cache);
+            }
+        }
+    }
+    
+    // === GPU Server ===
+    loader->start_cuda_server();  // For device transfers during metric computation
+    
+    // === Thread Distribution ===
+    // Metrics are distributed across threads based on device to prevent conflicts
+    
+    size_t total_metrics = 0;
+    for (auto& [name, metric] : metric_names) {
+        total_metrics += metric->size();  // Number of metric_t instances
+    }
+    
+    std::vector<metric_t*> all_metrics(total_metrics);
+    std::vector<size_t> metric_sizes(total_metrics);
+    std::vector<std::string*> metric_titles(total_metrics);
+    
+    // Populate metric arrays
+    size_t idx = 0;
+    for (auto& [name, metric] : metric_names) {
+        metric->define(&all_metrics, &metric_sizes, &metric_titles, &idx);
+    }
+    
+    // Remap to group by device (prevent device conflicts)
+    std::map<int, std::vector<metric_t*>> device_run;
+    std::map<int, std::vector<size_t>> device_sizes;
+    
+    // Count metrics per device
+    for (auto* m : all_metrics) {
+        device_run[m->device].push_back(nullptr);
+    }
+    
+    // Redistribute
+    std::map<int, size_t> device_idx;
+    for (size_t x = 0; x < all_metrics.size(); ++x) {
+        int dev = all_metrics[x]->device;
+        size_t& idx = device_idx[dev];
+        device_run[dev][idx] = all_metrics[x];
+        device_sizes[dev].push_back(metric_sizes[x]);
+        idx++;
+    }
+    
+    // Interleave across devices for thread distribution
+    size_t t = 0;
+    for (auto& [dev, metrics] : device_run) {
+        for (size_t i = 0; i < metrics.size(); ++i) {
+            all_metrics[t] = metrics[i];
+            metric_sizes[t] = device_sizes[dev][i];
+            t++;
+        }
+    }
+    
+    // === Execute Metrics ===
+    std::vector<size_t> progress(total_metrics, 0);
+    std::vector<std::thread*> threads(total_metrics);
+    
+    size_t active = 0;
+    size_t max_threads = m_settings.threads - 1;
+    bool debug = m_settings.debug_mode || !max_threads;
+    
+    std::thread* monitor = nullptr;
+    
+    for (size_t x = 0; x < all_metrics.size(); ++x) {
+        if (debug) {
+            // Synchronous execution
+            execution_metric(all_metrics[x], &progress[x], metric_titles[x]);
+        } else {
+            // Parallel execution
+            threads[x] = new std::thread(
+                execution_metric, 
+                all_metrics[x], 
+                &progress[x], 
+                metric_titles[x]
+            );
+            
+            if (!monitor) {
+                monitor = new std::thread(progressbar3, &progress, &metric_sizes, &metric_titles);
+            }
+            
+            // Throttle to max_threads
+            while (active >= max_threads) {
+                active = running(&threads, &progress, &metric_sizes);
+            }
+            active++;
+        }
+    }
+    
+    // Wait for completion
+    monitor_threads(&threads);
+    if (monitor) {
+        monitor->join();
+        delete monitor;
+    }
+    
+    // === Cleanup ===
+    auto cleanup = [&](std::map<std::string, std::vector<graph_t*>*>& cache) {
+        for (auto& [key, batched] : cache) {
+            loader->safe_delete(batched);
+        }
+        cache.clear();
+    };
+    
+    cleanup(tr_batch_cache);
+    cleanup(va_batch_cache);
+    cleanup(ts_batch_cache);
+    
+    return true;
+}
+```
+
+### Step 3: Metric Execution
+```cpp
+static void execution_metric(metric_t* mt, size_t* progress, std::string* title) {
+    // Load all model checkpoints for this metric
+    for (auto& [key, checkpoint_path] : mt->run_names) {
+        model_template* model = load_model(checkpoint_path);
+        model->restore_state();  // Load weights
+        model->evaluation_mode(true);
+        
+        // Run inference on assigned datasets
+        auto& datasets = mt->datasets;  // training/validation/test
+        for (auto& [mode, graphs] : datasets) {
+            for (auto* graph : *graphs) {
+                model->forward(graph, false);
+                
+                // User-implemented metric calculation
+                mt->parent->define_metric(mt);
+                
+                (*progress)++;
+            }
+        }
+    }
+    
+    // Finalize metric (save ROOT files, compute aggregates, etc.)
+    mt->parent->end();
+}
+```
+
+**Metric Workflow**:
+```
+metric_template::define_variables()
+    ↓ (Called during add_metric_template)
+Specify models, k-folds, datasets to evaluate
+    ↓
+metric_template::link(hash, dataset, mode)
+    ↓ (Called during build_metric)
+Associate datasets with model+k-fold combinations
+    ↓
+metric_template::define_metric(metric_t*)
+    ↓ (Called per graph during execution)
+User computes metric values
+    ↓
+metric_template::end()
+    ↓ (Called after all graphs processed)
+Save results to ROOT files
+```
+
+**Output Structure**:
+```
+output_path/
+└── metrics/
+    └── MetricName/
+        ├── training/
+        │   ├── k0_epoch99.root
+        │   ├── k1_epoch99.root
+        │   └── ...
+        ├── validation/
+        │   └── ...
+        └── evaluation/
+            └── test_set.root
+```
+
+**Key Features**:
+- **Batch Caching**: Identical (k-fold, device) combinations reuse same batches
+- **Device Awareness**: Metrics grouped by device to prevent conflicts
+- **Multi-Model**: Single metric can evaluate multiple models simultaneously
+- **Multi-Dataset**: Training, validation, and test sets evaluated independently
+- **Parallel Execution**: Metrics run concurrently with device-based throttling
+- **Progress Tracking**: Real-time progress bars per metric
+
+**Use Cases**:
+- Accuracy, precision, recall calculation
+- ROC curves and AUC
+- Physics-specific metrics (reconstruction efficiency, mass resolutions)
+- Model comparison across k-folds
+- Overfitting detection (train vs validation performance)
 
 ---
 
@@ -699,6 +1514,312 @@ int main() {
 - **ROOT Reading**: Cached TTree structure
 - **Checkpoints**: Written per epoch
 - **Metrics**: Streamed to ROOT file
+
+---
+
+# Class Dependencies and Internal Architecture
+
+## Dependency Graph
+
+```
+analysis
+├─ notification         [Inherited] Logging, colored output
+├─ tools               [Inherited] File system, string utilities
+│
+├─ io                  [Member] ROOT file I/O
+│   ├─ ROOT::RDataFrame
+│   └─ TTree, TBranch reading
+│
+├─ sampletracer        [Member] Event/graph storage and management
+│   ├─ container       → Stores events/selections/graphs
+│   └─ meta            → Dataset metadata
+│
+├─ dataloader          [Member] Batch generation and k-fold splits
+│   ├─ graph_t*        → Graph storage
+│   └─ folds_t         → K-fold configuration
+│
+├─ optimizer           [Created per model] Training orchestration
+│   ├─ model_template  → GNN architecture
+│   ├─ torch::optim    → PyTorch optimizers
+│   └─ model_report    → Progress tracking
+│
+├─ event_template      [User-provided] Event factory
+│   ├─ particle_template → Physics particles
+│   └─ element_t       → ROOT data wrappers
+│
+├─ graph_template      [User-provided] Graph builder
+│   ├─ event_template  → Input events
+│   └─ graph_t         → Output graphs
+│
+├─ selection_template  [User-provided] Selection logic
+│   ├─ event_template  → Input events
+│   └─ ROOT TTree      → Output files
+│
+├─ model_template      [User-provided] GNN model
+│   ├─ torch::nn       → PyTorch layers
+│   ├─ lossfx          → Loss functions
+│   └─ graph_t         → Input/output
+│
+└─ metric_template     [User-provided] Evaluation metrics
+    ├─ model_template  → Models to evaluate
+    └─ graph_t         → Test data
+```
+
+## Header Dependencies
+
+**File**: `src/AnalysisG/modules/analysis/include/AnalysisG/analysis.h`
+
+```cpp
+#include <generators/sampletracer.h>   // Event/graph storage
+#include <generators/dataloader.h>     // Batch generation
+#include <generators/optimizer.h>      // Training orchestration
+
+#include <templates/graph_template.h>      // Graph builder base
+#include <templates/event_template.h>      // Event factory base
+#include <templates/metric_template.h>     // Metric evaluation base
+#include <templates/selection_template.h>  // Selection logic base
+#include <templates/model_template.h>      // GNN model base
+
+#include <structs/settings.h>          // Configuration struct
+#include <io/io.h>                     // ROOT I/O
+
+#include <notification/notification.h> // [Inherited] Logging
+#include <tools/tools.h>               // [Inherited] Utilities
+```
+
+## Member Variables Detailed
+
+### Core Components
+```cpp
+class analysis : public notification, public tools {
+    private:
+        // === I/O and Storage ===
+        io* reader;                    // ROOT file reader (main thread)
+        sampletracer* tracer;          // Event/graph storage manager
+        dataloader* loader;            // Batch generator and k-fold splitter
+        
+        // === Configuration ===
+        settings_t m_settings;         // Global configuration
+        std::vector<folds_t>* tags;    // Pre-assigned k-fold tags
+        
+        // === User-Provided Templates ===
+        std::map<std::string, std::string> file_labels;
+        // filename → sample_label
+        
+        std::map<std::string, event_template*> event_labels;
+        // sample_label → event factory
+        
+        std::map<std::string, std::map<std::string, graph_template*>> graph_labels;
+        // sample_label → {graph_name → graph builder}
+        
+        std::map<std::string, selection_template*> selection_names;
+        // selection_name → selection logic
+        
+        std::map<std::string, metric_template*> metric_names;
+        // metric_name → metric evaluator
+        
+        // === Model Training ===
+        std::vector<std::string> model_session_names;
+        // run_name for each training session
+        
+        std::vector<std::tuple<model_template*, optimizer_params_t*>> model_sessions;
+        // (model, optimizer_config) for training
+        
+        std::map<std::string, optimizer*> trainer;
+        // run_name → optimizer instance
+        
+        std::map<std::string, model_report*> reports;
+        // "run_name-k{fold}" → progress tracker
+        
+        std::vector<std::thread*> threads;
+        // Active training threads
+        
+        // === Model Inference ===
+        std::map<std::string, model_template*> model_inference;
+        // run_name → model (nullptr optimizer)
+        
+        std::map<std::string, model_template*> model_metrics;
+        // model_name → model for metric evaluation
+        
+        // === Caching ===
+        std::map<std::string, std::map<std::string, bool>> in_cache;
+        // filename → {graph_cache_path → exists?}
+        
+        std::map<std::string, bool> skip_event_build;
+        // filename → skip? (if all graphs cached)
+        
+        std::map<std::string, std::string> graph_types;
+        // graph_name → (placeholder for cache organization)
+        
+        // === Metadata ===
+        std::map<std::string, meta*> meta_data;
+        // filename → dataset metadata
+        
+        // === State ===
+        bool started;  // Has start() been called?
+};
+```
+
+## settings_t Structure
+
+**File**: `src/AnalysisG/modules/structs/include/structs/settings.h`
+
+```cpp
+struct settings_t {
+    // === Output ===
+    std::string output_path = "./ProjectName";
+    std::string run_name = "";
+    
+    // === Metadata ===
+    std::string sow_name = "";           // Sum-of-weights tree name
+    std::string metacache_path = "./";
+    bool fetch_meta = false;
+    bool pretagevents = false;           // Use pre-assigned k-fold tags
+    
+    // === Machine Learning ===
+    int epochs = 10;
+    int kfolds = 10;
+    int batch_size = 1;
+    std::vector<int> kfold = {};         // Specific folds to process
+    
+    int num_examples = 3;                // (unused?)
+    float train_size = 50;               // % for training (rest = test)
+    
+    bool training = true;                // Enable training mode
+    bool validation = true;              // Enable validation during training
+    bool evaluation = true;              // Enable test set evaluation
+    bool continue_training = true;       // Resume from checkpoint
+    
+    std::string training_dataset = "";   // HDF5 dataset path
+    std::string graph_cache = "";        // HDF5 graph cache directory
+    
+    // === Plotting/Histograms ===
+    std::string var_pt = "pt";
+    std::string var_eta = "eta";
+    std::string var_phi = "phi";
+    std::string var_energy = "energy";
+    std::vector<std::string> targets = {};
+    
+    int nbins = 400;
+    int max_range = 400;
+    bool logy = false;
+    
+    // === Performance ===
+    int threads = 10;
+    bool debug_mode = false;             // Single-threaded, verbose
+    bool build_cache = false;            // Force rebuild graph cache
+    bool selection_root = false;         // Save selection ROOT files
+};
+```
+
+## Static Methods
+
+The analysis class contains several static helper methods used internally:
+
+```cpp
+// Add tensor content to ROOT TTree
+static int add_content(
+    std::map<std::string, torch::Tensor*>* data,
+    std::vector<variable_t>* content,
+    int index,
+    std::string prefix,
+    TTree* tt = nullptr
+);
+
+// Add batched tensor content
+static void add_content(
+    std::map<std::string, torch::Tensor*>* data,
+    std::vector<std::vector<torch::Tensor>>* buff,
+    torch::Tensor* edge,
+    torch::Tensor* node,
+    torch::Tensor* batch,
+    std::vector<long> mask
+);
+
+// Inference execution thread
+static void execution(
+    model_template* mdx,
+    model_settings_t mds,
+    std::vector<graph_t*>* data,
+    size_t* prg,
+    std::string output,
+    std::vector<variable_t>* content,
+    std::string* msg
+);
+
+// Metric execution thread
+static void execution_metric(
+    metric_t* mt,
+    size_t* prg,
+    std::string* msg
+);
+
+// Training initialization thread
+static void initialize_loop(
+    optimizer* op,
+    int k,
+    model_template* model,
+    optimizer_params_t* config,
+    model_report** rep
+);
+```
+
+## Private Helper Methods
+
+```cpp
+// Check for existing graph cache files
+void check_cache();
+
+// Setup output directory structure
+void build_project();
+
+// Build events from ROOT files
+void build_events();
+
+// Apply selections to events
+void build_selections();
+
+// Build graphs from events
+void build_graphs();
+
+// Setup dataloader with k-folds
+void build_dataloader(bool training);
+
+// Launch model training sessions
+void build_model_session();
+
+// Run model inference
+void build_inference();
+
+// Build and execute metrics
+bool build_metric();
+void build_metric_folds();
+
+// Load pre-assigned k-fold tags
+void fetchtags();
+
+// Clone template with ownership tracking
+template <typename g>
+void safe_clone(std::map<std::string, g*>* mp, g* in);
+```
+
+## Thread Safety
+
+### Thread-Safe Operations
+- `sampletracer::add_event()` - Mutex-protected
+- `sampletracer::add_graph()` - Mutex-protected
+- `sampletracer::add_selection()` - Mutex-protected
+- `notification` logging methods - Mutex-protected
+
+### Thread-Local Operations
+- `event_template::build_event()` - Each thread clones template
+- `io` reader - Each thread creates own instance
+- Model training - Separate optimizer per (model, k-fold)
+
+### Requires Synchronization
+- `model_report*` access - Polling-based status checks
+- `graph_t::in_use` counter - Atomic operations
+- Device memory transfers - Serialized per device
 
 ---
 

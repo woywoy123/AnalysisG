@@ -1,0 +1,1030 @@
+/**
+ * @page event_module_page Event Module
+ * 
+ * @section event_intro Introduction
+ * 
+ * The **event module** provides the `event_template` class, which serves as the central container 
+ * for physics events in AnalysisG. An event represents a single collision with all associated 
+ * particles (jets, leptons, neutrinos, etc.) organized into type-specific collections. The 
+ * event_template class handles ROOT data extraction, particle instantiation, event-level metadata 
+ * management, and provides the interface for neutrino reconstruction.
+ * 
+ * **Key Features:**
+ * - Centralized event container with type-based particle collections
+ * - Automatic ROOT data extraction and particle building
+ * - Template-based particle registration system
+ * - Multi-tree event handling (nominal, systematic variations)
+ * - Event-level metadata (weight, index, hash)
+ * - Neutrino reconstruction interface (double_neutrino)
+ * - Virtual methods for custom event processing (CompileEvent)
+ * - Memory management for particle collections
+ * 
+ * @section event_files Module Files
+ * 
+ * **Header:**
+ * - `src/AnalysisG/modules/event/include/templates/event_template.h`
+ * 
+ * **Implementation:**
+ * - `src/AnalysisG/modules/event/cxx/event_template.cxx` - Core event building logic
+ * - `src/AnalysisG/modules/event/cxx/properties.cxx` - Property getters/setters
+ * 
+ * @section event_class event_template Class
+ * 
+ * @subsection event_declaration Class Declaration
+ * 
+ * ```cpp
+ * class event_template : public tools {
+ *     public:
+ *         event_template();
+ *         virtual ~event_template();
+ *         
+ *         // Configuration properties
+ *         cproperty<std::vector<std::string>, event_template> trees;     // TTree names to process
+ *         cproperty<std::vector<std::string>, event_template> branches;  // TBranch names (unused)
+ *         cproperty<std::vector<std::string>, event_template> leaves;    // All leaf names (read-only)
+ *         
+ *         // Event metadata
+ *         cproperty<std::string, event_template> name;    // Event template name
+ *         cproperty<std::string, event_template> hash;    // Unique event hash
+ *         cproperty<std::string, event_template> tree;    // Source TTree name
+ *         cproperty<double, event_template> weight;       // Event weight
+ *         cproperty<long, event_template> index;          // Event index
+ *         
+ *         // Internal maps
+ *         std::map<std::string, std::string> m_trees;     // Registered trees
+ *         std::map<std::string, std::string> m_branches;  // Registered branches
+ *         std::map<std::string, std::string> m_leaves;    // type/property -> leaf name
+ *         
+ *         // Virtual methods (override in derived classes)
+ *         virtual event_template* clone();
+ *         virtual void build(element_t* el);
+ *         virtual void CompileEvent();
+ *         
+ *         // Particle collection management
+ *         template <typename G>
+ *         void register_particle(std::map<std::string, G*>* object);
+ *         
+ *         template <typename G>
+ *         void deregister_particle(std::map<std::string, G*>* object);
+ *         
+ *         // Event building
+ *         std::map<std::string, event_template*> build_event(std::map<std::string, data_t*>* evnt);
+ *         
+ *         // Neutrino reconstruction
+ *         std::vector<particle_template*> double_neutrino(
+ *             std::vector<particle_template*>* targets, 
+ *             double phi, 
+ *             double met, 
+ *             double limit = 1e3
+ *         );
+ *         
+ *         // Leaf registration
+ *         void add_leaf(std::string key, std::string leaf = "");
+ *         
+ *         // Operators
+ *         bool operator == (event_template& p);
+ *         
+ *         // Data storage
+ *         event_t data;              // Underlying event_t struct
+ *         meta* meta_data = nullptr; // ATLAS metadata
+ *         std::string filename = ""; // Source ROOT file
+ *         
+ *         void flush_particles();
+ *         
+ *     private:
+ *         void build_mapping(std::map<std::string, data_t*>* evnt);
+ *         void flush_leaf_string();
+ *         
+ *         std::map<std::string, bool> next_;  // Tree exhausted flags
+ *         std::map<std::string, particle_template*> particle_generators;  // Factory templates
+ *         std::map<std::string, std::map<std::string, element_t>> tree_variable_link;  // tree -> type -> element_t
+ *         std::map<std::string, std::map<std::string, particle_template*>*> particle_link;  // type -> particles
+ *         std::map<std::string, particle_template*> garbage;  // Temporary particles
+ * };
+ * ```
+ * 
+ * @section event_constructor Constructor and Destructor
+ * 
+ * @subsection event_constructor_impl Constructor
+ * 
+ * **Source:** `event_template.cxx` lines 4-29
+ * 
+ * ```cpp
+ * event_template::event_template() {
+ *     this -> trees.set_setter(this -> set_trees);
+ *     this -> trees.set_object(this);
+ *     
+ *     this -> branches.set_setter(this -> set_branches);
+ *     this -> branches.set_object(this);
+ *     
+ *     this -> leaves.set_getter(this -> get_leaves);
+ *     this -> leaves.set_object(this);
+ *     
+ *     this -> name.set_setter(this -> set_name);
+ *     this -> name.set_object(this);
+ *     
+ *     this -> hash.set_setter(this -> set_hash);
+ *     this -> hash.set_getter(this -> get_hash);
+ *     this -> hash.set_object(this);
+ *     
+ *     this -> tree.set_setter(this -> set_tree);
+ *     this -> tree.set_getter(this -> get_tree);
+ *     this -> tree.set_object(this);
+ *     
+ *     this -> weight.set_setter(this -> set_weight);
+ *     this -> weight.set_object(this);
+ *     
+ *     this -> index.set_setter(this -> set_index);
+ *     this -> index.set_object(this);
+ * }
+ * ```
+ * 
+ * **Implementation Details:**
+ * - Registers 7 cproperty objects with setters/getters
+ * - `trees` and `branches` are write-only (configuration)
+ * - `leaves` is read-only (computed from registered particles)
+ * - `hash` has both setter and getter (auto-generated or manual)
+ * - `tree` maps to `data.name` (TTree source)
+ * 
+ * @subsection event_destructor Destructor
+ * 
+ * **Source:** `event_template.cxx` lines 31-35
+ * 
+ * ```cpp
+ * event_template::~event_template() {
+ *     if (this -> filename.size()) { this -> flush_particles(); }
+ *     this -> deregister_particle(&this -> particle_generators);
+ *     this -> deregister_particle(&this -> garbage);
+ * }
+ * ```
+ * 
+ * **Implementation Details:**
+ * - If event was built from file (`filename` set), deletes all particle collections
+ * - Deletes particle factory templates (`particle_generators`)
+ * - Deletes temporary particles (`garbage` - neutrinos from reconstruction)
+ * - Prevents memory leaks by cleaning up all allocated particles
+ * 
+ * @section event_properties Property Getters and Setters
+ * 
+ * **Source:** `properties.cxx` lines 1-54
+ * 
+ * @subsection event_trees_property trees Property
+ * 
+ * ```cpp
+ * void event_template::set_trees(std::vector<std::string>* inpt, event_template* ev) {
+ *     for (size_t x(0); x < inpt -> size(); ++x) {
+ *         ev -> m_trees[inpt -> at(x)] = "tree";
+ *     }
+ * }
+ * ```
+ * 
+ * **Purpose:** Register TTree names to process.
+ * - Stores tree names in `m_trees` map
+ * - Value is always "tree" (flag for existence)
+ * - Multiple trees enable systematic variation processing
+ * 
+ * **Example:**
+ * ```cpp
+ * event_template* ev = new event_template();
+ * ev -> trees = {"nominal", "JET_JER_EffectiveNP_1__1up", "JET_JER_EffectiveNP_1__1down"};
+ * ```
+ * 
+ * @subsection event_branches_property branches Property
+ * 
+ * ```cpp
+ * void event_template::set_branches(std::vector<std::string>* inpt, event_template* ev) {
+ *     for (size_t x(0); x < inpt -> size(); ++x) {
+ *         ev -> m_branches[inpt -> at(x)] = "branch";
+ *     }
+ * }
+ * ```
+ * 
+ * **Purpose:** Register TBranch names (currently unused in implementation).
+ * 
+ * @subsection event_leaves_property leaves Property
+ * 
+ * ```cpp
+ * void event_template::add_leaf(std::string key, std::string val) {
+ *     if (!val.size()) { val = key; }
+ *     std::string n = this -> name;
+ *     this -> m_leaves[n + "/" + key] = val;
+ * }
+ * 
+ * void event_template::get_leaves(std::vector<std::string>* inpt, event_template* ev) {
+ *     std::map<std::string, std::string>::iterator itr = ev -> m_leaves.begin();
+ *     for (; itr != ev -> m_leaves.end(); ++itr) {
+ *         inpt -> push_back(itr -> second);
+ *     }
+ * }
+ * ```
+ * 
+ * **Purpose:** Event-level leaf registration (ROOT branch names for event properties).
+ * - Key format: `<event_name>/<property>` (e.g., "ttbar/weight")
+ * - Value: ROOT leaf name (e.g., "mcEventWeight")
+ * - Getter returns all leaf names as vector
+ * 
+ * **Example:**
+ * ```cpp
+ * event_template* ev = new event_template();
+ * ev -> name = "ttbar";
+ * ev -> add_leaf("weight", "mcEventWeight");
+ * ev -> add_leaf("run_number", "runNumber");
+ * 
+ * std::vector<std::string> all_leaves = ev -> leaves;
+ * // Returns: {"mcEventWeight", "runNumber"}
+ * ```
+ * 
+ * @subsection event_name_tree_property name and tree Properties
+ * 
+ * ```cpp
+ * void event_template::set_name(std::string* name, event_template* ev) {
+ *     ev -> data.name = *name;
+ * }
+ * 
+ * void event_template::set_tree(std::string* name, event_template* ev) {
+ *     ev -> data.name = *name;
+ * }
+ * 
+ * void event_template::get_tree(std::string* name, event_template* ev) {
+ *     *name = ev -> data.name;
+ * }
+ * ```
+ * 
+ * **Purpose:** Event template name and source TTree name.
+ * - `name` setter: Sets `data.name` (event template identifier)
+ * - `tree` setter/getter: Maps to `data.name` (TTree source for this event)
+ * - Both map to same underlying field (used in different contexts)
+ * 
+ * @subsection event_hash_property hash Property
+ * 
+ * ```cpp
+ * void event_template::set_hash(std::string* path, event_template* ev) {
+ *     if (ev -> data.hash.size()) { return; }  // Already set
+ *     std::string x = *path + "/" + ev -> to_string(ev -> index);
+ *     ev -> data.hash = ev -> tools::hash(x, 18);  // 18-character hash
+ *     *path = "";  // Clear input path
+ * }
+ * 
+ * void event_template::get_hash(std::string* val, event_template* ev) {
+ *     *val = ev -> data.hash;
+ * }
+ * ```
+ * 
+ * **Purpose:** Generate unique event identifier.
+ * - Hash computed from: `<filepath>/<event_index>`
+ * - Uses `tools::hash()` with 18-character output
+ * - Only computes once (cached in `data.hash`)
+ * - Input path cleared after hashing (setter mutates input)
+ * 
+ * **Example:**
+ * ```cpp
+ * event_template* ev = new event_template();
+ * ev -> index = 12345;
+ * std::string path = "/path/to/file.root";
+ * ev -> hash = path;  // Triggers hashing
+ * std::cout << "Hash: " << ev -> hash << std::endl;  // 18-char hash
+ * ```
+ * 
+ * @subsection event_weight_index_properties weight and index Properties
+ * 
+ * ```cpp
+ * void event_template::set_weight(double* inpt, event_template* ev) {
+ *     ev -> data.weight = *inpt;
+ * }
+ * 
+ * void event_template::set_index(long* inpt, event_template* ev) {
+ *     ev -> data.index = *inpt;
+ * }
+ * ```
+ * 
+ * **Purpose:** Event-level metadata.
+ * - `weight`: Monte Carlo event weight (cross-section * efficiency * luminosity factors)
+ * - `index`: Event index in ROOT TTree (entry number)
+ * 
+ * @section event_particle_management Particle Collection Management
+ * 
+ * @subsection event_register_particle register_particle Template Method
+ * 
+ * **Source:** `event_template.h` lines 59-72
+ * 
+ * ```cpp
+ * template <typename G>
+ * void register_particle(std::map<std::string, G*>* object) {
+ *     G* x = new G();  // Create factory template
+ *     std::string tp = x -> type;  // Get particle type (e.g., "jet", "electron")
+ *     
+ *     // Register all leaves from particle template
+ *     std::map<std::string, std::string>::iterator itr = x -> leaves.begin();
+ *     for (; itr != x -> leaves.end(); ++itr) {
+ *         this -> m_leaves[tp + "/" + itr -> first] = itr -> second;
+ *     }
+ *     x -> leaves.clear();
+ *     
+ *     // Store particle collection pointer and factory template
+ *     this -> particle_link[tp] = (std::map<std::string, particle_template*>*)object;
+ *     this -> particle_generators[tp] = x;
+ * }
+ * ```
+ * 
+ * **Purpose:** Register a particle type and its collection with the event.
+ * 
+ * **Algorithm:**
+ * 1. Create factory instance of particle type `G`
+ * 2. Extract particle type string (e.g., "jet")
+ * 3. Register all particle leaves with event: `<type>/<property> -> ROOT_leaf_name`
+ * 4. Store pointer to particle collection map
+ * 5. Store factory template for cloning
+ * 
+ * **Usage Example:**
+ * ```cpp
+ * class ttbar_event : public event_template {
+ *     public:
+ *         std::map<std::string, jet*> jets;
+ *         std::map<std::string, electron*> electrons;
+ *         std::map<std::string, muon*> muons;
+ *         
+ *         ttbar_event() {
+ *             this -> name = "ttbar";
+ *             this -> register_particle(&jets);
+ *             this -> register_particle(&electrons);
+ *             this -> register_particle(&muons);
+ *         }
+ * };
+ * ```
+ * 
+ * **Result:**
+ * - `m_leaves` contains: `{"jet/pt" -> "jet_pt", "jet/eta" -> "jet_eta", ...}`
+ * - `particle_link` maps: `{"jet" -> &jets, "electron" -> &electrons, ...}`
+ * - `particle_generators` stores factory templates for each type
+ * 
+ * @subsection event_deregister_particle deregister_particle Template Method
+ * 
+ * **Source:** `event_template.h` lines 74-84
+ * 
+ * ```cpp
+ * template <typename G>
+ * void deregister_particle(std::map<std::string, G*>* object) {
+ *     if (!object -> size()) { return; }
+ *     typename std::map<std::string, G*>::iterator itr = object -> begin();
+ *     for (; itr != object -> end(); ++itr) {
+ *         delete itr -> second;
+ *         itr -> second = nullptr;
+ *     }
+ *     object -> clear();
+ * }
+ * ```
+ * 
+ * **Purpose:** Delete all particles in collection and clear map.
+ * - Iterates through particle map
+ * - Deletes each particle pointer
+ * - Nulls pointers (safety)
+ * - Clears map
+ * 
+ * **Usage:** Called automatically in destructor for cleanup.
+ * 
+ * @section event_building Event Building Pipeline
+ * 
+ * @subsection event_build_mapping build_mapping Method
+ * 
+ * **Source:** `event_template.cxx` lines 41-65
+ * 
+ * ```cpp
+ * void event_template::build_mapping(std::map<std::string, data_t*>* evnt) {
+ *     if (this -> tree_variable_link.size()) { return; }  // Already built
+ *     
+ *     std::map<std::string, data_t*>::iterator ite;
+ *     std::map<std::string, std::string>::iterator itl;
+ *     std::vector<std::string> tr = this -> trees;
+ *     
+ *     // For each registered tree
+ *     for (size_t x(0); x < tr.size(); ++x) {
+ *         this -> next_[tr[x]] = false;  // Initialize exhausted flag
+ *         
+ *         // For each data_t in ROOT file
+ *         for (ite = evnt -> begin(); ite != evnt -> end(); ++ite) {
+ *             bool s = tr[x] == ite -> second -> tree_name;
+ *             if (!s) { continue; }  // Skip if wrong tree
+ *             
+ *             // For each registered leaf
+ *             for (itl = this -> m_leaves.begin(); itl != this -> m_leaves.end(); ++itl) {
+ *                 if (ite -> second -> leaf_name != itl -> second) { continue; }
+ *                 
+ *                 std::vector<std::string> type_name = this -> split(itl -> first, "/");
+ *                 // type_name[0] = particle type (e.g., "jet")
+ *                 // type_name[1] = property (e.g., "pt")
+ *                 
+ *                 this -> tree_variable_link[tr[x]][type_name[0]].tree = tr[x];
+ *                 this -> tree_variable_link[tr[x]][type_name[0]].handle[type_name[1]] = ite -> second;
+ *                 break;
+ *             }
+ *         }
+ *     }
+ *     this -> particle_link.clear();  // Will be rebuilt per event
+ * }
+ * ```
+ * 
+ * **Purpose:** Build mapping from trees → particle types → element_t handles.
+ * 
+ * **Algorithm:**
+ * 1. For each registered tree (e.g., "nominal", "systematic_up"):
+ *    - Initialize `next_` flag to false (not exhausted)
+ * 2. For each `data_t` in ROOT file (one per TBranch):
+ *    - Check if `data_t` belongs to current tree
+ * 3. For each registered leaf (from `m_leaves`):
+ *    - Match `data_t.leaf_name` with registered leaf name
+ *    - Parse leaf key to extract: `<type>/<property>` (e.g., "jet/pt")
+ *    - Store in `tree_variable_link[tree][type].handle[property] = data_t*`
+ * 4. Result: `tree_variable_link["nominal"]["jet"]` contains element_t with:
+ *    - `handle["pt"] = jet_pt_data_t*`
+ *    - `handle["eta"] = jet_eta_data_t*`
+ *    - `handle["phi"] = jet_phi_data_t*`
+ * 
+ * **Data Structure After Mapping:**
+ * ```
+ * tree_variable_link = {
+ *     "nominal" -> {
+ *         "jet" -> element_t { 
+ *             tree = "nominal",
+ *             handle = {"pt" -> data_t*, "eta" -> data_t*, ...}
+ *         },
+ *         "electron" -> element_t { ... },
+ *         "muon" -> element_t { ... },
+ *         "ttbar" -> element_t { ... }  // Event-level
+ *     },
+ *     "JET_JER_EffectiveNP_1__1up" -> { ... }
+ * }
+ * ```
+ * 
+ * @subsection event_build_event build_event Method
+ * 
+ * **Source:** `event_template.cxx` lines 67-105
+ * 
+ * ```cpp
+ * std::map<std::string, event_template*> event_template::build_event(
+ *     std::map<std::string, data_t*>* evnt
+ * ) {
+ *     this -> build_mapping(evnt);  // Build tree->type->element_t mapping
+ *     std::map<std::string, event_template*> output = {};
+ *     
+ *     // For each tree
+ *     std::map<std::string, std::map<std::string, element_t>>::iterator itr;
+ *     itr = this -> tree_variable_link.begin();
+ *     for (; itr != this -> tree_variable_link.end(); ++itr) {
+ *         if (this -> next_[itr -> first]) { continue; }  // Tree exhausted
+ *         
+ *         event_template* ev = this -> clone();  // Create event instance
+ *         ev -> tree = itr -> first;  // Set source tree name
+ *         
+ *         // For each particle type (jet, electron, etc.)
+ *         std::map<std::string, element_t>::iterator itrx;
+ *         itrx = this -> tree_variable_link[itr -> first].begin();
+ *         for (; itrx != this -> tree_variable_link[itr -> first].end(); ++itrx) {
+ *             if (!itrx -> second.boundary()) {
+ *                 delete ev; ev = nullptr; break;  // End of tree
+ *             }
+ *             itrx -> second.set_meta();  // Update element_t metadata
+ *             
+ *             if (itrx -> first == std::string(ev -> name)) {
+ *                 // Build event-level data
+ *                 ev -> build(&itrx -> second);
+ *                 ev -> index = itrx -> second.event_index;
+ *                 ev -> hash = itrx -> second.filename;
+ *                 ev -> filename = itrx -> second.filename;
+ *             } else {
+ *                 // Build particle collection
+ *                 std::map<std::string, particle_template*>* builder;
+ *                 builder = new std::map<std::string, particle_template*>();
+ *                 
+ *                 ev -> particle_generators[itrx -> first] -> build(builder, &itrx -> second);
+ *                 
+ *                 std::map<std::string, particle_template*>* m_link;
+ *                 m_link = ev -> particle_link[itrx -> first];
+ *                 m_link -> insert(builder -> begin(), builder -> end());
+ *                 ev -> particle_link[itrx -> first] = builder;
+ *             }
+ *             
+ *             // Advance to next event in tree
+ *             this -> next_[itr -> first] *= this -> tree_variable_link[itr -> first][itrx -> first].next();
+ *         }
+ *         
+ *         if (!ev) { continue; }  // Skip if tree exhausted
+ *         ev -> flush_leaf_string();  // Clean up leaf maps
+ *         output[itr -> first] = ev;
+ *     }
+ *     return output;
+ * }
+ * ```
+ * 
+ * **Purpose:** Build one event per tree from current ROOT entry.
+ * 
+ * **Algorithm:**
+ * 
+ * 1. **Build Mapping** (if not already done):
+ *    - Call `build_mapping()` to create tree → type → element_t structure
+ * 
+ * 2. **For Each Tree** (e.g., "nominal", "systematic_up"):
+ *    - Skip if tree exhausted (`next_[tree] == true`)
+ *    - Clone event template → create fresh event instance
+ *    - Set `ev->tree` to current tree name
+ * 
+ * 3. **For Each Particle Type** (e.g., "jet", "electron", "ttbar"):
+ *    - Check if at end of tree (`boundary()`)
+ *    - Update element_t metadata (`set_meta()`)
+ *    
+ *    **If particle type matches event name** (e.g., "ttbar"):
+ *    - Call `ev->build(element_t*)` to extract event-level data
+ *    - Set event index, hash, filename
+ *    
+ *    **Otherwise** (particle collection):
+ *    - Create empty particle map
+ *    - Call `particle_generators[type]->build(map, element_t*)`
+ *    - Factory template builds all particles from ROOT data
+ *    - Insert built particles into event's particle collection
+ *    - Store particle map pointer in `particle_link`
+ *    
+ * 4. **Advance to Next Event:**
+ *    - Call `element_t.next()` for each particle type
+ *    - Update `next_[tree]` flag (AND all next() results)
+ *    - If any type exhausted, tree is exhausted
+ * 
+ * 5. **Cleanup and Return:**
+ *    - Flush leaf maps (free memory)
+ *    - Return map: `{tree_name → event_template*}`
+ * 
+ * **Return Value Example:**
+ * ```cpp
+ * {
+ *     "nominal" -> event_template* {
+ *         tree = "nominal",
+ *         index = 12345,
+ *         weight = 1.234,
+ *         jets = {hash1 -> jet*, hash2 -> jet*, ...},
+ *         electrons = {hash3 -> electron*, ...}
+ *     },
+ *     "JET_JER_EffectiveNP_1__1up" -> event_template* { ... }
+ * }
+ * ```
+ * 
+ * **Usage in Analysis:**
+ * ```cpp
+ * // In analysis::build_events()
+ * std::map<std::string, data_t*> root_data = ...;
+ * event_template* ev_template = new ttbar_event();
+ * ev_template -> trees = {"nominal", "systematic_up"};
+ * 
+ * while (true) {
+ *     std::map<std::string, event_template*> events = ev_template -> build_event(&root_data);
+ *     if (events.empty()) break;  // End of trees
+ *     
+ *     for (auto& [tree_name, ev] : events) {
+ *         // Process event...
+ *         delete ev;
+ *     }
+ * }
+ * ```
+ * 
+ * @subsection event_build_virtual Virtual build Method
+ * 
+ * **Source:** `event_template.cxx` lines 107-109
+ * 
+ * ```cpp
+ * void event_template::build(element_t*) {
+ *     return;  // Override in derived classes
+ * }
+ * ```
+ * 
+ * **Purpose:** Extract event-level data from ROOT via element_t.
+ * - Override in derived event classes
+ * - Called when particle type matches event name
+ * - Use `element_t` to extract event-level branches (weight, run number, etc.)
+ * 
+ * **Example (derived class):**
+ * ```cpp
+ * class ttbar_event : public event_template {
+ *     public:
+ *         int run_number;
+ *         int event_number;
+ *         
+ *         ttbar_event() {
+ *             this -> name = "ttbar";
+ *             this -> add_leaf("weight", "mcEventWeight");
+ *             this -> add_leaf("run", "runNumber");
+ *             this -> add_leaf("event", "eventNumber");
+ *         }
+ *         
+ *         void build(element_t* el) override {
+ *             double w;
+ *             el -> get("weight", &w);
+ *             this -> weight = w;
+ *             
+ *             std::vector<int> run, evt;
+ *             el -> get("run", &run);
+ *             el -> get("event", &evt);
+ *             this -> run_number = run[0];
+ *             this -> event_number = evt[0];
+ *         }
+ * };
+ * ```
+ * 
+ * @section event_memory_management Memory Management
+ * 
+ * @subsection event_flush_leaf_string flush_leaf_string Method
+ * 
+ * **Source:** `event_template.cxx` lines 111-123
+ * 
+ * ```cpp
+ * void event_template::flush_leaf_string() {
+ *     this -> m_trees = {};
+ *     this -> m_branches = {};
+ *     this -> m_leaves = {};
+ *     
+ *     // Clear particle leaf maps
+ *     std::map<std::string, std::map<std::string, particle_template*>*>::iterator itr;
+ *     for (itr = this -> particle_link.begin(); itr != this -> particle_link.end(); ++itr) {
+ *         std::map<std::string, particle_template*>* pmap = itr -> second;
+ *         std::map<std::string, particle_template*>::iterator itx = pmap -> begin();
+ *         for (; itx != pmap -> end(); ++itx) {
+ *             itx -> second -> leaves = {};
+ *         }
+ *     }
+ *     this -> deregister_particle(&this -> particle_generators);
+ * }
+ * ```
+ * 
+ * **Purpose:** Clean up leaf maps and factory templates after event building.
+ * - Clears `m_trees`, `m_branches`, `m_leaves` (no longer needed)
+ * - Clears `leaves` map in all particles (free memory)
+ * - Deletes particle factory templates
+ * - Called after each event is built to reduce memory footprint
+ * 
+ * @subsection event_flush_particles flush_particles Method
+ * 
+ * **Source:** `event_template.cxx` lines 125-132
+ * 
+ * ```cpp
+ * void event_template::flush_particles() {
+ *     if (this -> next_.size()) { return; }  // Still building events
+ *     
+ *     std::map<std::string, std::map<std::string, particle_template*>*>::iterator itr;
+ *     for (itr = this -> particle_link.begin(); itr != this -> particle_link.end(); ++itr) {
+ *         this -> deregister_particle(itr -> second);
+ *         delete itr -> second;
+ *         itr -> second = nullptr;
+ *     }
+ *     this -> particle_link = {};
+ * }
+ * ```
+ * 
+ * **Purpose:** Delete all particle collections when event processing complete.
+ * - Only deletes if `next_` is empty (no longer building events)
+ * - Calls `deregister_particle()` to delete all particles in each collection
+ * - Deletes the collection map itself
+ * - Clears `particle_link`
+ * - Called in destructor if event was built from file
+ * 
+ * @section event_neutrino_reconstruction Neutrino Reconstruction
+ * 
+ * @subsection event_double_neutrino double_neutrino Method
+ * 
+ * **Source:** `event_template.cxx` lines 138-155
+ * 
+ * ```cpp
+ * std::vector<particle_template*> event_template::double_neutrino(
+ *     std::vector<particle_template*>* targets,
+ *     double phi,
+ *     double met,
+ *     double limit
+ * ) {
+ *     nusol_t para;
+ *     para.met = met;       // Missing transverse energy
+ *     para.phi = phi;       // MET phi angle
+ *     para.limit = limit;   // Search limit
+ *     para.targets = targets;  // Candidate particles (e.g., b-jets)
+ *     para.mode = nusol_enum::conuix;  // Double neutrino mode
+ *     
+ *     nusol* nx = new nusol(&para);
+ *     nx -> solve();
+ *     
+ *     delete nx;
+ *     particle_template* nu1 = nullptr;
+ *     particle_template* nu2 = nullptr;
+ *     if (!nu1 && !nu2) { return {}; }
+ *     // TODO: Extract solutions from nusol
+ *     return {nu1, nu2};
+ * }
+ * ```
+ * 
+ * **Purpose:** Reconstruct two neutrinos from missing energy and candidate particles.
+ * 
+ * **Algorithm:**
+ * 1. Configure nusol_t parameters:
+ *    - `met`: Missing transverse energy magnitude [GeV]
+ *    - `phi`: MET azimuthal angle [rad]
+ *    - `targets`: Candidate particles (e.g., b-jets from top decays)
+ *    - `limit`: Maximum search range [GeV]
+ *    - `mode`: `conuix` (double neutrino conic intersection)
+ * 2. Create nusol solver instance
+ * 3. Call `solve()` to compute neutrino solutions
+ * 4. Extract neutrino 4-momenta (currently TODO)
+ * 5. Store in `garbage` map for cleanup
+ * 6. Return vector of two neutrino pointers
+ * 
+ * **Usage Example:**
+ * ```cpp
+ * // In ttbar event with two leptonically-decaying tops
+ * std::vector<particle_template*> bjets = {bjet1, bjet2};
+ * double met = 120.0;  // GeV
+ * double met_phi = 1.5;  // rad
+ * 
+ * std::vector<particle_template*> neutrinos = event -> double_neutrino(&bjets, met_phi, met);
+ * if (neutrinos.size() == 2) {
+ *     particle_template* nu1 = neutrinos[0];
+ *     particle_template* nu2 = neutrinos[1];
+ *     
+ *     // Reconstruct tops
+ *     particle_template top1 = *lepton1 + *nu1 + *bjet1;
+ *     particle_template top2 = *lepton2 + *nu2 + *bjet2;
+ *     std::cout << "Top1 mass: " << top1.mass << " GeV" << std::endl;
+ *     std::cout << "Top2 mass: " << top2.mass << " GeV" << std::endl;
+ * }
+ * ```
+ * 
+ * **Note:** Implementation incomplete (neutrino extraction TODO). See @ref nusol "nusol module" 
+ * for solver algorithms.
+ * 
+ * @section event_virtual_methods Virtual Methods
+ * 
+ * @subsection event_compile_event CompileEvent Method
+ * 
+ * **Source:** `event_template.cxx` lines 134-136
+ * 
+ * ```cpp
+ * void event_template::CompileEvent() {
+ *     return;  // Override in derived classes
+ * }
+ * ```
+ * 
+ * **Purpose:** Post-processing hook after all particles built.
+ * - Override in derived classes for custom event processing
+ * - Called after `build_event()` completes
+ * - Use for: truth matching, jet cleaning, object selection, feature engineering
+ * 
+ * **Example (derived class):**
+ * ```cpp
+ * class ttbar_event : public event_template {
+ *     public:
+ *         std::map<std::string, jet*> selected_jets;
+ *         
+ *         void CompileEvent() override {
+ *             // Jet cleaning: remove jets within ΔR < 0.4 of leptons
+ *             for (auto& [hash, jet] : jets) {
+ *                 bool overlap = false;
+ *                 for (auto& [ehash, electron] : electrons) {
+ *                     if (jet -> DeltaR(electron) < 0.4) {
+ *                         overlap = true; break;
+ *                     }
+ *                 }
+ *                 if (!overlap) {
+ *                     selected_jets[hash] = jet;
+ *                 }
+ *             }
+ *             
+ *             // Truth matching
+ *             for (auto& [hash, jet] : selected_jets) {
+ *                 // Match to truth particles...
+ *             }
+ *         }
+ * };
+ * ```
+ * 
+ * @subsection event_clone_method Clone Method
+ * 
+ * **Source:** `event_template.cxx` lines 138-140
+ * 
+ * ```cpp
+ * event_template* event_template::clone() {
+ *     return new event_template();
+ * }
+ * ```
+ * 
+ * **Purpose:** Virtual factory method for creating event instances.
+ * - Override in derived classes to return correct type
+ * - Called by `build_event()` to create event instances
+ * 
+ * **Example (derived class):**
+ * ```cpp
+ * class ttbar_event : public event_template {
+ *     public:
+ *         event_template* clone() override {
+ *             return new ttbar_event();
+ *         }
+ * };
+ * ```
+ * 
+ * @section event_operator Equality Operator
+ * 
+ * **Source:** `event_template.cxx` lines 37-39
+ * 
+ * ```cpp
+ * bool event_template::operator == (event_template& p) {
+ *     return this -> hash == p.hash;
+ * }
+ * ```
+ * 
+ * **Purpose:** Compare events by unique hash.
+ * - Two events with same hash are same event (same file + index)
+ * 
+ * @section event_usage_examples Usage Examples
+ * 
+ * @subsection event_example_derived Complete Derived Event Class
+ * 
+ * ```cpp
+ * #include <templates/event_template.h>
+ * 
+ * // Particle classes (derived from particle_template)
+ * class jet : public particle_template { ... };
+ * class electron : public particle_template { ... };
+ * class muon : public particle_template { ... };
+ * 
+ * // Event class
+ * class ttbar_event : public event_template {
+ *     public:
+ *         // Particle collections
+ *         std::map<std::string, jet*> jets;
+ *         std::map<std::string, electron*> electrons;
+ *         std::map<std::string, muon*> muons;
+ *         
+ *         // Event-level variables
+ *         int run_number;
+ *         int event_number;
+ *         double met;
+ *         double met_phi;
+ *         
+ *         ttbar_event() : event_template() {
+ *             // Set event name
+ *             this -> name = "ttbar";
+ *             
+ *             // Register event-level leaves
+ *             this -> add_leaf("weight", "mcEventWeight");
+ *             this -> add_leaf("run", "runNumber");
+ *             this -> add_leaf("event", "eventNumber");
+ *             this -> add_leaf("met", "met_met");
+ *             this -> add_leaf("met_phi", "met_phi");
+ *             
+ *             // Register particle collections
+ *             this -> register_particle(&jets);
+ *             this -> register_particle(&electrons);
+ *             this -> register_particle(&muons);
+ *             
+ *             // Configure trees to process
+ *             this -> trees = {"nominal"};
+ *         }
+ *         
+ *         // Extract event-level data
+ *         void build(element_t* el) override {
+ *             // Weight
+ *             double w;
+ *             el -> get("weight", &w);
+ *             this -> weight = w;
+ *             
+ *             // Run/event numbers
+ *             std::vector<int> run, evt;
+ *             el -> get("run", &run);
+ *             el -> get("event", &evt);
+ *             this -> run_number = run[0];
+ *             this -> event_number = evt[0];
+ *             
+ *             // MET
+ *             std::vector<float> met_val, met_phi_val;
+ *             el -> get("met", &met_val);
+ *             el -> get("met_phi", &met_phi_val);
+ *             this -> met = met_val[0];
+ *             this -> met_phi = met_phi_val[0];
+ *         }
+ *         
+ *         // Post-processing
+ *         void CompileEvent() override {
+ *             // Jet cleaning
+ *             std::vector<std::string> remove_jets;
+ *             for (auto& [jhash, jet] : jets) {
+ *                 for (auto& [ehash, electron] : electrons) {
+ *                     if (jet -> DeltaR(electron) < 0.4) {
+ *                         remove_jets.push_back(jhash);
+ *                         break;
+ *                     }
+ *                 }
+ *             }
+ *             for (auto& hash : remove_jets) {
+ *                 delete jets[hash];
+ *                 jets.erase(hash);
+ *             }
+ *         }
+ *         
+ *         // Factory method
+ *         event_template* clone() override {
+ *             return new ttbar_event();
+ *         }
+ * };
+ * ```
+ * 
+ * @subsection event_example_usage Usage in Analysis
+ * 
+ * ```cpp
+ * #include <modules/analysis/include/analysis/analysis.h>
+ * 
+ * int main() {
+ *     // Create analysis instance
+ *     analysis* ana = new analysis();
+ *     
+ *     // Register event template
+ *     ttbar_event* ev_template = new ttbar_event();
+ *     ana -> add_event_template(ev_template);
+ *     
+ *     // Add input files
+ *     ana -> add_input_file("/path/to/ttbar_data.root");
+ *     
+ *     // Build events
+ *     ana -> build_events();
+ *     
+ *     // Process events
+ *     for (auto& [hash, ev_map] : ana -> events) {
+ *         ttbar_event* ev = (ttbar_event*)ev_map["nominal"];
+ *         
+ *         std::cout << "Event: " << ev -> event_number << std::endl;
+ *         std::cout << "Weight: " << ev -> weight << std::endl;
+ *         std::cout << "Jets: " << ev -> jets.size() << std::endl;
+ *         std::cout << "Electrons: " << ev -> electrons.size() << std::endl;
+ *         std::cout << "MET: " << ev -> met << " GeV" << std::endl;
+ *         
+ *         // Apply selection
+ *         if (ev -> jets.size() >= 4 && ev -> electrons.size() >= 1) {
+ *             // Reconstruct neutrino
+ *             std::vector<particle_template*> bjets = {...};
+ *             auto neutrinos = ev -> double_neutrino(&bjets, ev -> met_phi, ev -> met);
+ *             // ...
+ *         }
+ *     }
+ *     
+ *     delete ana;
+ *     return 0;
+ * }
+ * ```
+ * 
+ * @section event_dependencies Module Dependencies
+ * 
+ * **Depends on:**
+ * - @ref particle "particle_template" - Particle containers
+ * - @ref structs "structs" - event_t, cproperty, element_t
+ * - @ref tools "tools" - hash(), split(), to_string()
+ * - @ref meta "meta" - ATLAS metadata
+ * - @ref io "io" - data_t (ROOT data access)
+ * - @ref nusol "nusol" - Neutrino reconstruction
+ * 
+ * **Used by:**
+ * - @ref analysis "analysis" - Event building pipeline
+ * - @ref selection_template "selection_template" - Event filtering
+ * - @ref graph_template "graph_template" - Graph construction from events
+ * - Concrete event implementations (ttbar, 4tops, zprime, etc.)
+ * 
+ * @section event_thread_safety Thread Safety
+ * 
+ * **Thread-Safe Operations:**
+ * - Read-only property access (after event built)
+ * - `operator==` comparison
+ * - `clone()` factory method
+ * 
+ * **Requires External Synchronization:**
+ * - `build_event()` - Modifies shared `tree_variable_link`, `next_` maps
+ * - `build_mapping()` - Builds shared data structures
+ * - Particle collection access (if modified)
+ * - `double_neutrino()` - Creates particles in `garbage` map
+ * 
+ * **Best Practices:**
+ * - Build events in single thread (ROOT I/O not thread-safe)
+ * - Clone events for multi-threaded processing
+ * - Use thread-local particle collections
+ * - Synchronize access to shared event collections
+ * 
+ * @section event_performance Performance Considerations
+ * 
+ * **Memory Management:**
+ * - `flush_leaf_string()` reduces memory after event building
+ * - `flush_particles()` cleans up when done processing
+ * - Use `deregister_particle()` to free unused collections
+ * - `garbage` map tracks temporary particles for cleanup
+ * 
+ * **Optimization Tips:**
+ * - Register only needed particle types
+ * - Use `CompileEvent()` for expensive one-time calculations
+ * - Minimize particle copying (use pointers/references)
+ * - Process events in batches to amortize overhead
+ * - Cache frequently-accessed properties
+ * 
+ * **Typical Memory Usage:**
+ * - Base event: ~1 KB
+ * - 10 jets × 5 properties: ~1 KB
+ * - 2 leptons × 5 properties: ~200 bytes
+ * - Metadata + maps: ~500 bytes
+ * - **Total per event:** ~3-5 KB (depends on particle counts)
+ * 
+ * */

@@ -148,6 +148,819 @@
  *     std::string tree;
  *     long event_index;
  *     std::string filename;
+ *     std::map<std::string, data_t*> handle;  // key -> data_t
+ *     
+ *     // Methods
+ *     bool next();           // Advance to next event
+ *     void set_meta();       // Set metadata
+ *     bool boundary();       // Check file boundary
+ *     
+ *     template <typename g>
+ *     bool get(std::string key, g* var);  // Get value by key
+ * };
+ * ```
+ *
+ * **Purpose:** Provides event-level access to ROOT data with automatic type handling.
+ *
+ * **Example:**
+ * ```cpp
+ * element_t el;
+ * el.tree = "nominal";
+ * el.handle["jet_pt"] = jet_pt_data_t;
+ * el.handle["jet_eta"] = jet_eta_data_t;
+ * 
+ * while (el.next()) {
+ *     std::vector<float> pts, etas;
+ *     el.get("jet_pt", &pts);
+ *     el.get("jet_eta", &etas);
+ *     // Process jets...
+ * }
+ * ```
+ *
+ * @subsection element_write_t write_t and writer Structures
+ *
+ * **ROOT Output Writers:**
+ * ```cpp
+ * struct write_t {
+ *     TFile* file;
+ *     TTree* tree;
+ *     meta_t* mtx;
+ *     std::map<std::string, variable_t*>* data;
+ *     
+ *     variable_t* process(std::string* name);
+ *     void write();
+ *     void create(std::string tr_name, std::string path);
+ *     void close();
+ * };
+ * 
+ * struct writer {
+ *     writer();
+ *     ~writer();
+ *     void create(std::string* pth);
+ *     void write(std::string* tree);
+ *     
+ *     template <typename g>
+ *     void process(std::string* tree, std::string* name, g* t);
+ * };
+ * ```
+ *
+ * **Purpose:** Simplified ROOT file writing with automatic tree/branch management.
+ *
+ * **Example:**
+ * ```cpp
+ * writer w;
+ * w.create(&output_path);
+ * 
+ * float jet_pt = 125.0;
+ * w.process(&tree_name, &"jet_pt", &jet_pt);
+ * w.write(&tree_name);
+ * ```
+ *
+ * @section structs_enums Enumeration Types (enums.h)
+ *
+ * @subsection enums_data_enum data_enum
+ *
+ * **Type System Enumeration:**
+ * ```cpp
+ * enum class data_enum {
+ *     // Primitives
+ *     d, f, l, i, ull, b, ui, c,
+ *     
+ *     // Vectors (v_)
+ *     v_d, v_f, v_l, v_i, v_ull, v_b, v_ui, v_c,
+ *     
+ *     // Vector<Vector> (vv_)
+ *     vv_d, vv_f, vv_l, vv_i, vv_ull, vv_b, vv_ui, vv_c,
+ *     
+ *     // Vector<Vector<Vector>> (vvv_)
+ *     vvv_d, vvv_f, vvv_l, vvv_i, vvv_ull, vvv_b, vvv_ui, vvv_c,
+ *     
+ *     // Special
+ *     undef, unset
+ * };
+ * ```
+ *
+ * **Mapping:**
+ * - `d` = double, `f` = float, `l` = long, `i` = int
+ * - `ull` = unsigned long long, `ui` = unsigned int
+ * - `b` = bool, `c` = char
+ *
+ * **ROOT Type Translation:**
+ * ```cpp
+ * Float_t     → v_f   (vector<float>)
+ * Double_t    → v_d   (vector<double>)
+ * Int_t       → v_i   (vector<int>)
+ * UInt_t      → v_ui  (vector<unsigned int>)
+ * ULong64_t   → v_ull (vector<unsigned long long>)
+ * Char_t      → v_c   (vector<char>)
+ * ```
+ *
+ * @subsection enums_opt_enum opt_enum
+ *
+ * **Optimizer Types:**
+ * ```cpp
+ * enum class opt_enum {
+ *     adam,      // Adam optimizer
+ *     adagrad,   // Adagrad
+ *     adamw,     // AdamW
+ *     lbfgs,     // L-BFGS
+ *     rmsprop,   // RMSprop
+ *     sgd,       // Stochastic Gradient Descent
+ *     invalid_optimizer
+ * };
+ * ```
+ *
+ * @subsection enums_loss_enum loss_enum
+ *
+ * **Loss Function Types:**
+ * ```cpp
+ * enum class loss_enum {
+ *     bce,                          // Binary Cross Entropy
+ *     bce_with_logits,              // BCE with Logits
+ *     cosine_embedding,             // Cosine Embedding Loss
+ *     cross_entropy,                // Cross Entropy
+ *     ctc,                          // CTC Loss
+ *     hinge_embedding,              // Hinge Embedding
+ *     huber,                        // Huber Loss
+ *     kl_div,                       // KL Divergence
+ *     l1,                           // L1 Loss
+ *     margin_ranking,               // Margin Ranking
+ *     mse,                          // Mean Squared Error
+ *     multi_label_margin,           // Multi-Label Margin
+ *     multi_label_soft_margin,      // Multi-Label Soft Margin
+ *     multi_margin,                 // Multi-Margin Loss
+ *     nll,                          // Negative Log Likelihood
+ *     poisson_nll,                  // Poisson NLL
+ *     smooth_l1,                    // Smooth L1
+ *     soft_margin,                  // Soft Margin
+ *     triplet_margin,               // Triplet Margin
+ *     triplet_margin_with_distance, // Triplet Margin with Distance
+ *     invalid_loss
+ * };
+ * ```
+ *
+ * @subsection enums_graph_enum graph_enum
+ *
+ * **Graph Feature Categories:**
+ * ```cpp
+ * enum class graph_enum {
+ *     // Input features
+ *     data_graph,  data_node,  data_edge,
+ *     
+ *     // Target labels
+ *     truth_graph, truth_node, truth_edge,
+ *     
+ *     // Predictions
+ *     pred_graph,  pred_node,  pred_edge,  pred_extra,
+ *     
+ *     // Structure/metadata
+ *     edge_index,   // Graph topology [2, num_edges]
+ *     weight,       // Event weight
+ *     batch_index,  // Batch assignment
+ *     batch_events  // Batched event indices
+ * };
+ * ```
+ *
+ * @subsection enums_mode_enum mode_enum
+ *
+ * **Training Modes:**
+ * ```cpp
+ * enum class mode_enum {
+ *     training,    // Training dataset
+ *     validation,  // Validation dataset
+ *     evaluation   // Test dataset
+ * };
+ * ```
+ *
+ * @subsection enums_particle_enum particle_enum
+ *
+ * **Particle Properties:**
+ * ```cpp
+ * enum class particle_enum {
+ *     index, pdgid,
+ *     pt, eta, phi, energy,
+ *     px, pz, py,
+ *     mass, charge,
+ *     is_b, is_lep, is_nu, is_add,
+ *     pmc,  // Cartesian bulk write
+ *     pmu   // Polar bulk write
+ * };
+ * ```
+ *
+ * @subsection enums_mlp_init mlp_init
+ *
+ * **Weight Initialization:**
+ * ```cpp
+ * enum class mlp_init {
+ *     uniform,         // Uniform distribution
+ *     normal,          // Normal distribution
+ *     xavier_normal,   // Xavier/Glorot normal
+ *     xavier_uniform,  // Xavier/Glorot uniform
+ *     kaiming_uniform, // He uniform
+ *     kaiming_normal   // He normal
+ * };
+ * ```
+ *
+ * @subsection enums_scheduler_enum scheduler_enum
+ *
+ * **Learning Rate Schedulers:**
+ * ```cpp
+ * enum class scheduler_enum {
+ *     steplr,                        // Step LR
+ *     reducelronplateauscheduler,    // Reduce on Plateau
+ *     lrscheduler,                   // Generic LR Scheduler
+ *     invalid_scheduler
+ * };
+ * ```
+ *
+ * @section structs_particles Particle Structure (particles.h)
+ *
+ * **File:** `src/AnalysisG/modules/structs/include/structs/particles.h`
+ *
+ * ```cpp
+ * struct particle_t {
+ *     // Kinematics
+ *     double e    = -0.000000000000001;
+ *     double mass = -1;
+ *     
+ *     // Cartesian
+ *     double px = 0;
+ *     double py = 0;
+ *     double pz = 0;
+ *     
+ *     // Polar (4-vector)
+ *     double pt  = 0;
+ *     double eta = 0;
+ *     double phi = 0;
+ *     
+ *     // State flags
+ *     bool cartesian = false;  // px,py,pz set
+ *     bool polar = false;      // pt,eta,phi set
+ *     
+ *     // Identification
+ *     double charge = 0;
+ *     int pdgid = 0;
+ *     int index = -1;
+ *     
+ *     std::string type = "";     // Particle type (e.g., "jet", "electron")
+ *     std::string hash = "";     // Unique identifier
+ *     std::string symbol = "";   // Physics symbol (e.g., "e⁻", "μ⁺")
+ *     
+ *     // Particle relationships
+ *     std::vector<int> lepdef = {11, 13, 15};  // Lepton PDG IDs
+ *     std::vector<int> nudef  = {12, 14, 16};  // Neutrino PDG IDs
+ *     
+ *     std::map<std::string, bool> children;     // Hash -> exists
+ *     std::map<std::string, bool> parents;      // Hash -> exists
+ *     
+ *     std::map<std::string, particle_template*>* data_p = nullptr;
+ * };
+ * ```
+ *
+ * **Purpose:** Core data structure for physics particles with full 4-momentum representation.
+ *
+ * **Key Features:**
+ * - Dual representation: Cartesian (px,py,pz) and Polar (pt,eta,phi)
+ * - PDG ID for particle identification
+ * - Parent-child relationship tracking for decay chains
+ * - Configurable lepton/neutrino definitions
+ *
+ * @section structs_event Event Structure (event.h)
+ *
+ * **File:** `src/AnalysisG/modules/structs/include/structs/event.h`
+ *
+ * ```cpp
+ * struct event_t {
+ *     std::string name = "";  // Event template name
+ *     
+ *     // State variables
+ *     double weight = 1;      // MC event weight
+ *     long   index = -1;      // Event index
+ *     
+ *     std::string hash = "";  // Unique event identifier
+ *     std::string tree = "";  // Source TTree name
+ * };
+ * ```
+ *
+ * **Purpose:** Minimal event-level metadata structure.
+ *
+ * @section structs_folds K-Fold Structures (folds.h)
+ *
+ * **File:** `src/AnalysisG/modules/structs/include/structs/folds.h`
+ *
+ * @subsection folds_folds_t folds_t Structure
+ *
+ * ```cpp
+ * struct folds_t {
+ *     int k = -1;            // Fold index (0 to kfolds-1)
+ *     bool is_train = false; // In training set?
+ *     bool is_valid = false; // In validation set?
+ *     bool is_eval = false;  // In evaluation/test set?
+ *     char* hash = nullptr;  // Event hash
+ *     
+ *     void flush_data();     // Free memory
+ * };
+ * ```
+ *
+ * **Purpose:** K-fold assignment for each event (by hash).
+ *
+ * **Usage:**
+ * ```cpp
+ * folds_t fold;
+ * fold.k = 2;  // Fold 2
+ * fold.is_train = true;
+ * fold.hash = event_hash;
+ * ```
+ *
+ * @subsection folds_graph_hdf5 graph_hdf5 Structures
+ *
+ * **HDF5 Graph Serialization:**
+ * ```cpp
+ * struct graph_hdf5 {
+ *     int    num_nodes;
+ *     double event_weight;
+ *     long   event_index;
+ *     
+ *     std::string hash;
+ *     std::string filename;
+ *     std::string edge_index;
+ *     
+ *     // Feature map strings (serialized)
+ *     std::string data_map_graph;
+ *     std::string data_map_node;
+ *     std::string data_map_edge;
+ *     
+ *     std::string truth_map_graph;
+ *     std::string truth_map_node;
+ *     std::string truth_map_edge;
+ *     
+ *     // Feature data strings (serialized tensors)
+ *     std::string data_graph;
+ *     std::string data_node;
+ *     std::string data_edge;
+ *     
+ *     std::string truth_graph;
+ *     std::string truth_node;
+ *     std::string truth_edge;
+ * };
+ * 
+ * struct graph_hdf5_w {
+ *     // Same fields but char* instead of std::string
+ *     // Used for HDF5 writing
+ *     // ...
+ *     void flush_data();  // Free all char* allocations
+ * };
+ * ```
+ *
+ * **Purpose:** Serialize graph_t to/from HDF5 format for caching.
+ *
+ * @section structs_meta Metadata Structures (meta.h)
+ *
+ * **File:** `src/AnalysisG/modules/structs/include/structs/meta.h`
+ *
+ * @subsection meta_weights_t weights_t Structure
+ *
+ * ```cpp
+ * struct weights_t {
+ *     int dsid = -1;                   // Dataset ID
+ *     bool isAFII = false;             // ATLAS Fast Simulation
+ *     
+ *     std::string generator = "";      // Generator name
+ *     std::string ami_tag = "";        // AMI tag
+ *     
+ *     float total_events_weighted = -1;
+ *     float total_events = -1;
+ *     float processed_events = -1;
+ *     float processed_events_weighted = -1;
+ *     float processed_events_weighted_squared = -1;
+ *     
+ *     std::map<std::string, float> hist_data = {};  // Sum-of-weights histograms
+ * };
+ * ```
+ *
+ * **Purpose:** Sum-of-weights information from ROOT files.
+ *
+ * @subsection meta_meta_t meta_t Structure
+ *
+ * ```cpp
+ * struct meta_t {
+ *     // Dataset identification
+ *     unsigned int dsid = 0;
+ *     bool isMC = true;
+ *     
+ *     std::string derivationFormat = "";
+ *     std::string AMITag = "";
+ *     std::string generators = "";
+ *     std::string DatasetName = "";
+ *     
+ *     // File management
+ *     std::map<int, std::string> inputfiles = {};
+ *     std::map<int, int> inputrange = {};
+ *     std::map<std::string, std::string> config = {};
+ *     
+ *     // Event indexing
+ *     double eventNumber = -1;    // ROOT TTree entry
+ *     double event_index = -1;    // Global index
+ *     
+ *     // Search results
+ *     bool found = false;
+ *     
+ *     // Dataset attributes
+ *     double totalSize = 0;
+ *     double kfactor = 0;
+ *     double ecmEnergy = 0;
+ *     double genFiltEff = 0;
+ *     double completion = 0;
+ *     double beam_energy = 0;
+ *     double crossSection = 0;
+ *     double crossSection_mean = 0;
+ *     double campaign_luminosity = 0;
+ *     
+ *     unsigned int nFiles = 0;
+ *     unsigned int totalEvents = 0;
+ *     unsigned int datasetNumber = 0;
+ *     
+ *     // ATLAS metadata
+ *     std::string identifier = "";
+ *     std::string prodsysStatus = "";
+ *     std::string dataType = "";
+ *     std::string version = "";
+ *     std::string PDF = "";
+ *     std::string AtlasRelease = "";
+ *     std::string principalPhysicsGroup = "";
+ *     std::string physicsShort = "";
+ *     std::string generatorName = "";
+ *     std::string geometryVersion = "";
+ *     std::string conditionsTag = "";
+ *     std::string generatorTune = "";
+ *     std::string amiStatus = "";
+ *     std::string beamType = "";
+ *     std::string productionStep = "";
+ *     std::string projectName = "";
+ *     std::string statsAlgorithm = "";
+ *     std::string genFilterNames = "";
+ *     std::string file_type = "";
+ *     std::string sample_name = "";
+ *     std::string logicalDatasetName = "";
+ *     std::string campaign = "";
+ *     
+ *     std::vector<std::string> keywords = {};
+ *     std::vector<std::string> weights = {};
+ *     std::vector<std::string> keyword = {};
+ *     
+ *     // Local file information
+ *     std::vector<int> events = {};
+ *     std::vector<int> run_number = {};
+ *     std::vector<double> fileSize = {};
+ *     std::vector<std::string> fileGUID = {};
+ *     std::map<std::string, int> LFN = {};  // Logical File Names
+ *     
+ *     std::map<std::string, weights_t> misc = {};  // Sum-of-weights data
+ * };
+ * ```
+ *
+ * **Purpose:** Comprehensive ATLAS dataset metadata (from AMI, Rucio, etc.).
+ *
+ * **Key Features:**
+ * - Cross-section and generator information
+ * - File-level tracking (GUID, LFN)
+ * - Sum-of-weights data for normalization
+ * - Campaign and production metadata
+ *
+ * @section structs_model Model Settings (model.h)
+ *
+ * **File:** `src/AnalysisG/modules/structs/include/structs/model.h`
+ *
+ * ```cpp
+ * struct model_settings_t {
+ *     // Optimizer
+ *     opt_enum e_optim;
+ *     std::string s_optim;
+ *     
+ *     // Naming
+ *     std::string weight_name;           // Branch name for event weight
+ *     std::string tree_name;             // TTree name for output
+ *     std::string model_name;            // Model identifier
+ *     std::string model_device;          // "cpu" or "cuda:0"
+ *     std::string model_checkpoint_path; // Checkpoint directory
+ *     
+ *     // Mode flags
+ *     bool inference_mode;  // Inference vs training
+ *     bool is_mc;           // MC vs data
+ *     
+ *     // Feature mappings
+ *     std::map<std::string, std::string> o_graph;  // Output graph features -> loss
+ *     std::map<std::string, std::string> o_node;   // Output node features -> loss
+ *     std::map<std::string, std::string> o_edge;   // Output edge features -> loss
+ *     
+ *     std::vector<std::string> i_graph;  // Input graph feature names
+ *     std::vector<std::string> i_node;   // Input node feature names
+ *     std::vector<std::string> i_edge;   // Input edge feature names
+ * };
+ * ```
+ *
+ * **Purpose:** Model configuration and I/O specification.
+ *
+ * @section structs_optimizer Optimizer Configuration (optimizer.h)
+ *
+ * **File:** `src/AnalysisG/modules/structs/include/structs/optimizer.h`
+ *
+ * @subsection optimizer_loss_opt loss_opt Structure
+ *
+ * ```cpp
+ * struct loss_opt {
+ *     loss_enum fx = loss_enum::invalid_loss;
+ *     
+ *     // Reduction modes
+ *     bool mean = false;
+ *     bool sum  = false;
+ *     bool none = false;
+ *     
+ *     // Loss-specific options
+ *     bool swap = false;
+ *     bool full = false;
+ *     bool batch_mean = false;
+ *     bool target = false;
+ *     bool zero_inf = false;
+ *     bool defaults = true;
+ *     
+ *     int ignore = 1000;  // Ignore index (for cross-entropy)
+ *     int blank  = 0;     // Blank label (for CTC)
+ *     
+ *     double margin = 0;
+ *     double beta = 0;
+ *     double eps = 0;
+ *     double smoothing = 0;
+ *     double delta = 0;
+ *     std::vector<double> weight = {};  // Class weights
+ * };
+ * ```
+ *
+ * **Purpose:** Loss function configuration with PyTorch-compatible options.
+ *
+ * @subsection optimizer_params_t optimizer_params_t Class
+ *
+ * ```cpp
+ * class optimizer_params_t {
+ *     public:
+ *         std::string optimizer = "";  // "adam", "sgd", etc.
+ *         
+ *         // Optimizer hyperparameters (cproperty for validation)
+ *         cproperty<double> lr;                         // Learning rate
+ *         cproperty<double> lr_decay;                   // LR decay
+ *         cproperty<double> weight_decay;               // L2 regularization
+ *         cproperty<double> initial_accumulator_value;  // Adagrad
+ *         cproperty<double> eps;                        // Numerical stability
+ *         cproperty<double> tolerance_grad;             // L-BFGS
+ *         cproperty<double> tolerance_change;           // L-BFGS
+ *         cproperty<double> alpha;                      // RMSprop
+ *         cproperty<double> momentum;                   // SGD
+ *         cproperty<double> dampening;                  // SGD
+ *         
+ *         cproperty<bool> amsgrad;    // Adam variant
+ *         cproperty<bool> centered;   // RMSprop
+ *         cproperty<bool> nesterov;   // SGD
+ *         
+ *         cproperty<int> max_iter;      // L-BFGS
+ *         cproperty<int> max_eval;      // L-BFGS
+ *         cproperty<int> history_size;  // L-BFGS
+ *         
+ *         cproperty<std::tuple<float, float>> betas;  // Adam betas
+ *         
+ *         // LR Scheduler
+ *         std::string scheduler = "";
+ *         unsigned int step_size = 1;   // StepLR
+ *         double gamma = 0.1;           // Decay factor
+ *         
+ *         // Tracking which parameters were set
+ *         bool m_lr = false;
+ *         bool m_lr_decay = false;
+ *         // ... (for all parameters)
+ * };
+ * ```
+ *
+ * **Purpose:** Complete optimizer configuration with all PyTorch optimizer options.
+ *
+ * **Example:**
+ * ```cpp
+ * optimizer_params_t params;
+ * params.optimizer = "adam";
+ * params.lr = 0.001;
+ * params.weight_decay = 1e-5;
+ * params.betas = std::make_tuple(0.9f, 0.999f);
+ * params.scheduler = "steplr";
+ * params.step_size = 10;
+ * params.gamma = 0.5;
+ * ```
+ *
+ * @section structs_property Property Wrapper (property.h)
+ *
+ * **File:** `src/AnalysisG/modules/structs/include/structs/property.h`
+ *
+ * ```cpp
+ * template <typename T, typename G>
+ * class cproperty {
+ *     public:
+ *         cproperty();
+ *         
+ *         // Register callbacks
+ *         void set_setter(std::function<void(T*, G*)> c);
+ *         void set_getter(std::function<void(T*, G*)> c);
+ *         void set_object(G* _obj);
+ *         
+ *         // Operator overloads
+ *         cproperty& operator=(const T& val);  // Assignment triggers setter
+ *         T operator+(const T& val);
+ *         bool operator==(const T& val);
+ *         bool operator!=(const T& val);
+ *         operator T();                         // Conversion triggers getter
+ *         T* operator&();                       // Address-of triggers getter
+ *         
+ *         void clear();
+ *         
+ *     private:
+ *         T data;
+ *         G* obj = nullptr;
+ *         bool has_getter = false;
+ *         bool has_setter = false;
+ *         std::function<void(T*, G*)> setter;
+ *         std::function<void(T*, G*)> getter;
+ * };
+ * ```
+ *
+ * **Purpose:** Python-style property with setter/getter callbacks for validation/side-effects.
+ *
+ * **Example:**
+ * ```cpp
+ * class MyClass {
+ *     public:
+ *         cproperty<double, MyClass> learning_rate;
+ *         
+ *         MyClass() {
+ *             learning_rate.set_object(this);
+ *             learning_rate.set_setter(set_lr);
+ *         }
+ *         
+ *         static void set_lr(double* val, MyClass* obj) {
+ *             if (*val <= 0) throw std::invalid_argument("LR must be > 0");
+ *             obj->internal_lr = *val;
+ *         }
+ *         
+ *     private:
+ *         double internal_lr;
+ * };
+ * ```
+ *
+ * @section structs_report Training Report (report.h)
+ *
+ * **File:** `src/AnalysisG/modules/structs/include/structs/report.h`
+ *
+ * ```cpp
+ * struct model_report {
+ *     int k;                  // K-fold index
+ *     int epoch;              // Current epoch
+ *     bool is_complete = false;
+ *     
+ *     metrics* waiting_plot = nullptr;  // Pending metric plots
+ *     std::vector<double> current_lr = {};  // LR per parameter group
+ *     
+ *     // Loss tracking per mode
+ *     std::map<mode_enum, std::map<std::string, float>> loss_graph;
+ *     std::map<mode_enum, std::map<std::string, float>> loss_node;
+ *     std::map<mode_enum, std::map<std::string, float>> loss_edge;
+ *     
+ *     // Accuracy tracking per mode
+ *     std::map<mode_enum, std::map<std::string, float>> accuracy_graph;
+ *     std::map<mode_enum, std::map<std::string, float>> accuracy_node;
+ *     std::map<mode_enum, std::map<std::string, float>> accuracy_edge;
+ *     
+ *     std::string run_name;
+ *     std::string mode;       // "Training", "Validation", etc.
+ *     
+ *     long iters = 0;         // Current iteration
+ *     long num_evnt = 0;      // Total iterations
+ *     float progress;         // 0.0 - 1.0
+ *     
+ *     std::string print();    // Format report
+ *     std::string prx(std::map<mode_enum, std::map<std::string, float>>* data, 
+ *                     std::string title);
+ * };
+ * ```
+ *
+ * **Purpose:** Real-time training progress and metrics tracking.
+ *
+ * **Usage:**
+ * ```cpp
+ * model_report* rep = reports["training-run1-k0"];
+ * std::cout << "Epoch: " << rep->epoch << std::endl;
+ * std::cout << "Progress: " << rep->progress * 100 << "%" << std::endl;
+ * std::cout << "Train Loss: " << rep->loss_graph[mode_enum::training]["total"] << std::endl;
+ * ```
+ *
+ * @section structs_settings Global Settings (settings.h)
+ *
+ * **Documentation:** See @ref analysis_module_page "analysis module" for complete settings_t documentation.
+ *
+ * The settings_t structure is used throughout the analysis pipeline and contains all
+ * configurable parameters for I/O, training, validation, and output generation.
+ *
+ * ---
+ *
+ * @section structs_usage Complete Usage Example
+ *
+ * ```cpp
+ * // 1. Setup optimizer
+ * optimizer_params_t* opt = new optimizer_params_t();
+ * opt->optimizer = "adam";
+ * opt->lr = 0.001;
+ * opt->betas = std::make_tuple(0.9f, 0.999f);
+ * opt->scheduler = "steplr";
+ * opt->step_size = 10;
+ * opt->gamma = 0.5;
+ * 
+ * // 2. Configure loss
+ * loss_opt loss;
+ * loss.fx = loss_enum::cross_entropy;
+ * loss.mean = true;
+ * loss.ignore = -100;
+ * 
+ * // 3. Setup model settings
+ * model_settings_t model_cfg;
+ * model_cfg.model_name = "GNN_v1";
+ * model_cfg.model_device = "cuda:0";
+ * model_cfg.inference_mode = false;
+ * model_cfg.i_node = {"pt", "eta", "phi"};
+ * model_cfg.o_node = {"is_top"};
+ * 
+ * // 4. Create metadata
+ * meta_t meta;
+ * meta.dsid = 410470;
+ * meta.DatasetName = "ttbar_nonallhad";
+ * meta.crossSection = 831.76;
+ * meta.genFiltEff = 0.543;
+ * 
+ * // 5. Setup k-folds
+ * std::vector<folds_t> folds;
+ * for (int k = 0; k < 5; ++k) {
+ *     folds_t fold;
+ *     fold.k = k;
+ *     fold.is_train = true;
+ *     folds.push_back(fold);
+ * }
+ * 
+ * // 6. Use in analysis
+ * analysis* ana = new analysis();
+ * ana->m_settings.epochs = 100;
+ * ana->m_settings.kfolds = 5;
+ * ana->add_model(model, opt, "training_v1");
+ * ana->start();
+ * 
+ * // 7. Monitor progress
+ * auto progress = ana->progress();
+ * model_report* rep = ana->reports["training-training_v1-k0"];
+ * std::cout << rep->print() << std::endl;
+ * ```
+ *
+ * @section structs_dependencies Module Dependencies
+ *
+ * **Structs are used by:**
+ * - @ref analysis "analysis" - settings_t, optimizer_params_t, model_report
+ * - @ref io "io" - data_t, element_t, write_t, meta_t
+ * - @ref event_template "event_template" - event_t, particle_t, element_t
+ * - @ref graph_template "graph_template" - graph_enum, folds_t
+ * - @ref model_template "model_template" - model_settings_t, loss_opt, opt_enum
+ * - @ref optimizer "optimizer" - optimizer_params_t, model_report
+ * - @ref dataloader "dataloader" - folds_t, graph_hdf5
+ * - @ref metric "metric" - model_report, mode_enum
+ * - @ref particle_template "particle_template" - particle_t, particle_enum
+ * - @ref selection_template "selection_template" - particle_enum, write_t
+ *
+ * **Implementation Files:**
+ * - `src/AnalysisG/modules/structs/cxx/base.cxx` - bsc_t implementation
+ * - `src/AnalysisG/modules/structs/cxx/element.cxx` - data_t, element_t, writer
+ * - `src/AnalysisG/modules/structs/cxx/variable.cxx` - variable_t (ROOT I/O)
+ * - `src/AnalysisG/modules/structs/cxx/optimizer.cxx` - optimizer_params_t
+ * - `src/AnalysisG/modules/structs/cxx/misc.cxx` - Utility functions
+ * - `src/AnalysisG/modules/structs/cxx/structs.cxx` - Report printing
+ *
+ * @section structs_thread_safety Thread Safety
+ *
+ * **Thread-Safe:**
+ * - All structures are POD or contain POD members
+ * - Can be safely copied/passed between threads
+ * - No internal synchronization needed
+ *
+ * **Requires External Synchronization:**
+ * - `data_t` when accessing TTree/TBranch (ROOT not thread-safe)
+ * - `element_t` when iterating (shared state)
+ * - `writer` when writing to same TFile
+ *
+ * **Thread-Local Usage:**
+ * - Each thread should have own `data_t` instance
+ * - Clone structures before passing to threads
+ * - Use thread-local `writer` instances
+ *
+ * */
  *     std::map<std::string, data_t*> handle;
  *     
  *     bool next();
