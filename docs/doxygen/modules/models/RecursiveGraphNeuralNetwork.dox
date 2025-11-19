@@ -1,11 +1,90 @@
 /**
 @file
-@brief Documentation for models/RecursiveGraphNeuralNetwork implementation.
+@brief Implementation-level documentation for the RecursiveGraphNeuralNetwork model.
+@file
+@brief Implementation-level documentation for the RecursiveGraphNeuralNetwork model.
 
-@defgroup models_rgnn Models: RecursiveGraphNeuralNetwork
+@defgroup models_RecursiveGraphNeuralNetwork Models: RecursiveGraphNeuralNetwork
 @ingroup models_module
 
 @details
-Implements `RecursiveGraphNeuralNetwork` model bindings.
-Source: `src/AnalysisG/models/RecursiveGraphNeuralNetwork/`
+The `RecursiveGraphNeuralNetwork` (RGNN) is a modular, extensible, PyTorch/LibTorch-based model for graph-based event analysis in high-energy physics. It recursively aggregates, updates, and classifies graph node and edge features, supporting both signal/background and top quark multiplicity predictions. The model is implemented in C++ (LibTorch), with full Python access via Cython bindings.
+
+**Class and Architecture:**
+- `recursivegraphneuralnetwork` (inherits from @ref model_template)
+	- **Constructor:**
+		- `recursivegraphneuralnetwork(int rep=1024, double drop_out=0.1)`: Initializes all neural network modules (see below) with the given representation size and dropout rate.
+	- **Destructor:**
+		- `~recursivegraphneuralnetwork()`
+	- **Methods:**
+		- `model_template* clone()`: Returns a deep copy of the model, including all architecture and parameter settings.
+		- `void forward(graph_t*)`: Main inference method. Recursively processes the input graph, performs message passing, node/edge aggregation, and produces all predictions and auxiliary outputs. Handles both inference and training modes. Registers all outputs for downstream analysis.
+		- `torch::Tensor message(...)`: Core message-passing function, combining node and edge features, physics-motivated quantities (e.g., invariant mass, ΔR), and neural network transformations. Used at each recursion step.
+	- **Neural Network Modules:**
+		- `rnn_x`, `rnn_dx`, `rnn_merge`, `rnn_update`: Core sequential modules for node/edge feature transformation and recursive updates. Each is a multi-layer perceptron (MLP) with normalization, activation, and dropout.
+		- `exotic_mlp`, `node_aggr_mlp`, `ntops_mlp`, `exo_mlp`: Specialized MLPs for exotic object classification, node aggregation, top multiplicity, and resonance prediction.
+	- **Attributes:**
+		- `_dx`, `_x`, `_output`, `_rep`: Dimensionalities for input, output, and hidden representations. Tunable for different physics tasks.
+		- `res_mass`, `drop_out`: Physics-motivated mass offset and dropout rate.
+		- `is_mc`: Boolean flag for MC/data mode, controls truth label registration.
+
+**Algorithmic and Design Details:**
+- The model performs recursive message passing and edge updates, using physics-motivated features (e.g., 4-vectors, invariant masses, ΔR) and neural network modules for each transformation step.
+- The `forward` method implements a full event-level inference pipeline:
+	1. Node/edge feature extraction from the input graph (see @ref graph_t and @ref pyc).
+	2. Recursive edge pruning and message passing, with dynamic edge selection and node state updates.
+	3. Cluster aggregation and final graph-level predictions (signal, ntops, edge scores, etc.).
+	4. Registration of all intermediate and final predictions, including auxiliary truth labels if in MC mode.
+- All neural network modules are registered with Xavier initialization and can be extended or replaced for custom architectures.
+- The model is designed for extensibility: new modules, features, or aggregation strategies can be added by subclassing or modifying the C++ implementation.
+- Handles both training and inference modes, with explicit control over output registration and truth label handling.
+
+**Cython and Python Integration:**
+- The class is exposed to Python as `RecursiveGraphNeuralNetwork`, with all main attributes accessible as Python properties. The model can be instantiated, configured, and used for inference directly from Python, supporting both batch and event-level workflows.
+
+**Dependency Tracing:**
+- Inherits from @ref model_template (see `src/AnalysisG/core/model_template.pxd` and `model_template.pyx` for all base attributes and methods, including I/O, device management, and naming).
+- Uses `graph_t` (graph data structure, see core/graph_template), `pyc` (physics and graph utilities, see pyc/), and LibTorch neural network modules.
+- All physics-motivated features (e.g., invariant mass, ΔR, 4-vector transformations) are computed via `pyc::physics` and `pyc::transform` modules.
+- Cython bindings for Python integration: see `RecursiveGraphNeuralNetwork.pxd` and `RecursiveGraphNeuralNetwork.pyx` for all exposed properties and methods.
+
+**Extensibility and Limitations:**
+- The architecture is designed for rapid prototyping and extension. New neural modules, aggregation strategies, or physics features can be added with minimal changes.
+- The model assumes input graphs are preprocessed and formatted according to AnalysisG conventions (see @ref graph_t and @ref pyc for details).
+- For custom tasks, users should subclass in C++ or extend the Cython/Python interface as needed.
+
+**Source code:**
+- Header: `src/AnalysisG/models/RecursiveGraphNeuralNetwork/include/models/RecursiveGraphNeuralNetwork.h`
+- Implementation: `src/AnalysisG/models/RecursiveGraphNeuralNetwork/cxx/RecursiveGraphNeuralNetwork.cxx`
+- Cython bindings: `RecursiveGraphNeuralNetwork.pxd`, `RecursiveGraphNeuralNetwork.pyx`
+
+**API Overview:**
+- Constructor: `recursivegraphneuralnetwork(int rep = 1024, double drop_out = 0.1)`
+- `void forward(graph_t*)` – Main logic for forward pass and feature registration
+- `torch::Tensor message(...)` – Message function for recursive aggregation
+- Multiple MLP modules as members (e.g., rnn_x, rnn_dx, rnn_merge, rnn_update, exotic_mlp, node_aggr_mlp, ntops_mlp, exo_mlp)
+
+**Usage Example:**
+```cpp
+recursivegraphneuralnetwork model(256, 0.1);
+model.forward(graph_ptr);
+// Access predictions via model->prediction_graph_feature(...)
+```
+
+**Dependencies:**
+- Multi-stage MLP modules for various aggregation and classification tasks
+- Integration with pyc and graph utilities for physics features and topology
+- Supports both training and inference modes
+
+*/
+- model_template, pyc, torch, graph_t
+
+**Best Practices:**
+- Dropout und Repräsentationsdimension (`rep`) an Problem anpassen
+- Für große Graphen: Batch- und Device-Management beachten
+- Inferenzmodus (`inference_mode`) für zusätzliche Feature-Ausgabe nutzen
+
+@see model_template
+@see pyc
+@see graph_t
 */
