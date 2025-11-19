@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for metrics/pagerank implementation.
+
+@defgroup metrics_pagerank Metrics: pagerank
+@ingroup metrics_module
+
+@details
+Implements pagerank metric with C++ backend.
+Source: `src/AnalysisG/metrics/pagerank/`
+*/

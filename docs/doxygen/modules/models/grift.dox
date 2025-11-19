@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for models/grift implementation.
+
+@defgroup models_grift Models: grift
+@ingroup models_module
+
+@details
+Implements `grift` GNN model bindings.
+Source: `src/AnalysisG/models/grift/`
+*/

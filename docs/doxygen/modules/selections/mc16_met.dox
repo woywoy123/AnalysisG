@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/mc16/met.
+
+@defgroup selections_mc16_met Selections: mc16/met
+@ingroup selections_module
+
+@details
+MC16 MET selections.
+Source: `src/AnalysisG/selections/mc16/met/`
+*/

@@ -1,0 +1,71 @@
+/**
+@file
+@brief Detailed documentation for the CUDA-accelerated graph module.
+*/
+
+/**
+@page pyc_graph_page Graph Module (pyc)
+@tableofcontents
+
+@section pyc_graph_intro Introduction
+
+The Graph module, located in `src/AnalysisG/pyc/graph`, provides a collection of CUDA-accelerated functions for performing graph-based operations, specifically focused on node and edge aggregation tasks common in Graph Neural Networks (GNNs). These functions operate on `torch::Tensor` objects and are designed for high-performance execution on GPUs.
+
+The module is composed of several files:
+-   **`graph.h` / `graph.cuh`**: Public headers declaring the high-level aggregation functions.
+-   **`pagerank.cuh`**: A public header declaring functions related to the PageRank algorithm.
+-   **`base.cuh`**: A private header containing the CUDA `__global__` kernels for the aggregation logic.
+-   **`graph.cu` / `pagerank.cu`**: CUDA implementation files that contain the host-side "dispatcher" logic for launching the kernels.
+
+@section pyc_graph_aggregation Node and Edge Aggregation
+
+A core task in GNNs is to aggregate information from neighboring nodes or edges. This module provides efficient ways to do this based on clustering or prediction information.
+
+-   **`edge_aggregation(...)`**: This function aggregates node features based on edge connectivity and a given prediction tensor. It first builds a "topology" of which nodes belong to which predicted class using the `_prediction_topology` kernel. Then, it sums the features of the nodes within each class using the `_edge_summing` kernel. The result is a map of tensors, where each tensor represents the summed features or indices for a specific class.
+
+-   **`node_aggregation(...)`**: This is a variant of `edge_aggregation`. It transforms the `prediction` tensor based on the source node of each edge and then calls `edge_aggregation`. This is useful for scenarios where predictions are associated with nodes rather than edges.
+
+-   **`unique_aggregation(...)`**: This function provides a more direct way to aggregate features based on a `cluster_map`. It first identifies unique nodes within each cluster using the `_fast_unique` kernel (by marking duplicates with -1). Then, it sums the features of these unique nodes using the `_unique_sum` kernel. This is useful for avoiding double-counting when nodes might appear multiple times in a cluster definition.
+
+@section pyc_graph_pagerank PageRank
+
+The module also includes a custom implementation of a PageRank-like algorithm, tailored for graph-based clustering and reconstruction tasks in physics analysis.
+
+-   **`page_rank(...)`**: This function implements an iterative algorithm to determine the importance of nodes in a graph. It takes an `edge_index` and `edge_scores` as input. The algorithm iteratively updates a "PageRank" score for each node based on the scores of its neighbors. The process continues until the change in scores falls below a `threshold` or a `timeout` is reached. The `alpha` parameter controls the damping factor.
+
+-   **`page_rank_reconstruction(...)`**: This is a specialized version of PageRank that also considers node features (`pmc`) during the aggregation process, likely for reconstructing composite objects (like top quarks) from their constituent particles.
+
+The kernels for PageRank (`_get_max_node`, `_get_remapping`, `_page_rank`) are complex and highly optimized. They involve steps for remapping node indices, calculating the number of nodes per event, and then iteratively updating the PageRank scores in parallel on the GPU.
+
+@section pyc_graph_usage Usage Example
+
+```cpp
+#include <graph/graph.cuh>
+#include <torch/torch.h>
+
+void run_graph_aggregation(
+    torch::Tensor* edge_index, // Shape: [2, num_edges]
+    torch::Tensor* predictions, // Shape: [num_edges, num_classes]
+    torch::Tensor* node_features // Shape: [num_nodes, num_features]
+) {
+    // Move tensors to GPU
+    torch::Tensor d_edge_index = edge_index->to(torch::kCUDA);
+    torch::Tensor d_predictions = predictions->to(torch::kCUDA);
+    torch::Tensor d_node_features = node_features->to(torch::kCUDA);
+
+    // Perform edge aggregation
+    std::map<std::string, torch::Tensor> aggregated_results =
+        graph_::edge_aggregation(&d_edge_index, &d_predictions, &d_node_features);
+
+    // The results map now contains tensors with summed features for each class
+    // e.g., aggregated_results["cls::0::node-sum"]
+}
+```
+
+@section pyc_graph_dependencies Dependencies
+
+-   **LibTorch (`torch/torch.h`)**: For `torch::Tensor` and its associated API.
+-   **`cutils` module**: For host-side utilities like `blk_` to configure kernel launches and `MakeOp` to create tensors.
+-   **`atomic.cuh`**: For low-level `__device__` helper functions used within the kernels.
+
+*/

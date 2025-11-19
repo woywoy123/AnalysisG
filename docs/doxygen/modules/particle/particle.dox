@@ -1,0 +1,1135 @@
+/**
+ * @page particle_module_page Particle Module
+ * 
+ * @section particle_intro Introduction
+ * 
+ * The **particle module** provides the fundamental `particle_template` class for representing 
+ * physics particles with complete 4-momentum kinematics, decay chain tracking, and ROOT I/O 
+ * integration. This module forms the basis for all particle-level physics calculations in 
+ * AnalysisG, supporting both Cartesian (px, py, pz, E) and polar (pt, η, φ, E) representations 
+ * with automatic conversion.
+ * 
+ * **Key Features:**
+ * - Dual kinematic representations (Cartesian ↔ Polar) with lazy evaluation
+ * - Property-based interface using cproperty for validated getters/setters
+ * - Parent-child relationship tracking for decay chains
+ * - PDG ID ↔ particle symbol conversion
+ * - Physics calculations: ΔR, mass, momentum, beta
+ * - Hash-based unique identification
+ * - Deep copy with full decay tree serialization
+ * - ROOT data extraction via element_t integration
+ * 
+ * @section particle_files Module Files
+ * 
+ * **Header:**
+ * - `src/AnalysisG/modules/particle/include/templates/particle_template.h`
+ * 
+ * **Implementation:**
+ * - `src/AnalysisG/modules/particle/cxx/particle_template.cxx` - Core constructors/destructors
+ * - `src/AnalysisG/modules/particle/cxx/cartesian.cxx` - Cartesian coordinate conversions
+ * - `src/AnalysisG/modules/particle/cxx/polar.cxx` - Polar coordinate conversions
+ * - `src/AnalysisG/modules/particle/cxx/physics.cxx` - Physics calculations (ΔR, mass, energy, beta)
+ * - `src/AnalysisG/modules/particle/cxx/interfaces.cxx` - Property getters/setters, PDG/symbol, decay checks
+ * 
+ * @section particle_class particle_template Class
+ * 
+ * @subsection particle_declaration Class Declaration
+ * 
+ * ```cpp
+ * class particle_template : public tools {
+ *     public:
+ *         // Constructors
+ *         particle_template();
+ *         explicit particle_template(particle_t* p);
+ *         explicit particle_template(particle_template* p, bool dump = false);
+ *         explicit particle_template(double px, double py, double pz, double e);
+ *         explicit particle_template(double px, double py, double pz);
+ *         virtual ~particle_template();
+ *         
+ *         // Kinematics (cproperty with automatic conversion)
+ *         cproperty<double, particle_template> e;      // Energy [GeV]
+ *         cproperty<double, particle_template> pt;     // Transverse momentum [GeV]
+ *         cproperty<double, particle_template> eta;    // Pseudorapidity
+ *         cproperty<double, particle_template> phi;    // Azimuthal angle [rad]
+ *         cproperty<double, particle_template> px;     // x-momentum [GeV]
+ *         cproperty<double, particle_template> py;     // y-momentum [GeV]
+ *         cproperty<double, particle_template> pz;     // z-momentum [GeV]
+ *         cproperty<double, particle_template> mass;   // Invariant mass [GeV]
+ *         cproperty<double, particle_template> P;      // Total momentum [GeV] (read-only)
+ *         cproperty<double, particle_template> beta;   // Relativistic beta (read-only)
+ *         
+ *         // Particle identification
+ *         cproperty<int, particle_template> pdgid;            // PDG ID
+ *         cproperty<std::string, particle_template> symbol;   // LaTeX symbol
+ *         cproperty<double, particle_template> charge;        // Electric charge
+ *         cproperty<std::string, particle_template> hash;     // Unique hash (read-only)
+ *         cproperty<std::string, particle_template> type;     // Type string
+ *         cproperty<int, particle_template> index;            // Index in collection
+ *         
+ *         // Particle classification (read-only)
+ *         cproperty<bool, particle_template> is_b;        // Is b-quark?
+ *         cproperty<bool, particle_template> is_lep;      // Is lepton?
+ *         cproperty<bool, particle_template> is_nu;       // Is neutrino?
+ *         cproperty<bool, particle_template> is_add;      // Is additional (not b/lep/nu)?
+ *         cproperty<bool, particle_template> lep_decay;   // Has leptonic decay?
+ *         
+ *         // Decay chain tracking
+ *         cproperty<std::map<std::string, particle_template*>, particle_template> parents;
+ *         cproperty<std::map<std::string, particle_template*>, particle_template> children;
+ *         
+ *         // Physics methods
+ *         double DeltaR(particle_template* p);           // ΔR separation
+ *         bool is(std::vector<int> pdgids);              // Check PDG ID membership
+ *         
+ *         // Coordinate conversion (called automatically by cproperties)
+ *         void to_cartesian();  // Convert polar → cartesian if needed
+ *         void to_polar();      // Convert cartesian → polar if needed
+ *         
+ *         // Operators
+ *         bool operator == (particle_template& p);
+ *         void operator += (particle_template* p);
+ *         template <typename g> g operator + (g& p);
+ *         void iadd(particle_template* p);
+ *         
+ *         // Parent/child registration
+ *         bool register_parent(particle_template* p);
+ *         bool register_child(particle_template* p);
+ *         
+ *         // ROOT I/O
+ *         void add_leaf(std::string key, std::string leaf = "");
+ *         std::map<std::string, std::string> leaves = {};
+ *         void apply_type_prefix();
+ *         
+ *         // Virtual methods (override in derived classes)
+ *         virtual void build(std::map<std::string, particle_template*>* event, element_t* el);
+ *         virtual particle_template* clone();
+ *         
+ *         // Serialization
+ *         std::map<std::string, std::map<std::string, particle_t>> __reduce__();
+ *         
+ *         // Data storage
+ *         particle_t data;  // Underlying particle_t struct
+ *         
+ *         bool _is_serial = false;  // Serialization marker
+ *         bool _is_marked = false;  // Selection marker
+ * };
+ * ```
+ * 
+ * @section particle_constructors Constructors and Initialization
+ * 
+ * @subsection particle_default_constructor Default Constructor
+ * 
+ * **Source:** `particle_template.cxx` lines 3-88
+ * 
+ * ```cpp
+ * particle_template::particle_template() {
+ *     // Register all cproperty setters/getters
+ *     this -> e.set_setter(this -> set_e); 
+ *     this -> e.set_getter(this -> get_e); 
+ *     this -> e.set_object(this);
+ *     // ... (repeat for all properties)
+ *     this -> type = "particle_template";
+ * }
+ * ```
+ * 
+ * **Implementation Details:**
+ * - Registers 18 cproperty objects with setters/getters
+ * - Each cproperty is bound to static setter/getter functions
+ * - Sets default type to "particle_template"
+ * - All kinematic variables initialized to 0 or -1 (via particle_t defaults)
+ * 
+ * **Registered Properties:**
+ * | Property | Setter | Getter | Access |
+ * |----------|--------|--------|--------|
+ * | `e` | `set_e` | `get_e` | Read/Write |
+ * | `mass` | `set_mass` | `get_mass` | Read/Write |
+ * | `pt`, `eta`, `phi` | `set_pt/eta/phi` | `get_pt/eta/phi` | Read/Write (triggers polar↔cart) |
+ * | `px`, `py`, `pz` | `set_px/py/pz` | `get_px/py/pz` | Read/Write (triggers polar↔cart) |
+ * | `P` | - | `get_P` | Read-Only |
+ * | `beta` | - | `get_beta` | Read-Only |
+ * | `pdgid` | `set_pdgid` | `get_pdgid` | Read/Write (auto-converts from symbol) |
+ * | `symbol` | `set_symbol` | `get_symbol` | Read/Write (auto-converts from pdgid) |
+ * | `charge` | `set_charge` | `get_charge` | Read/Write |
+ * | `hash` | - | `get_hash` | Read-Only (auto-generated) |
+ * | `is_b`, `is_lep`, `is_nu`, `is_add`, `lep_decay` | - | getter | Read-Only (computed) |
+ * | `parents`, `children` | setter | getter | Read/Write (manages decay chain) |
+ * | `type`, `index` | setter | getter | Read/Write |
+ * 
+ * @subsection particle_struct_constructor particle_t Constructor
+ * 
+ * **Source:** `particle_template.cxx` line 90
+ * 
+ * ```cpp
+ * particle_template::particle_template(particle_t* p) : particle_template() {
+ *     this -> data = *p;
+ * }
+ * ```
+ * 
+ * **Purpose:** Initialize from existing particle_t struct (e.g., from ROOT input).
+ * 
+ * @subsection particle_copy_constructor Copy Constructor with Deep Copy
+ * 
+ * **Source:** `particle_template.cxx` lines 92-146
+ * 
+ * ```cpp
+ * particle_template::particle_template(particle_template* p, bool dump = false) : particle_template() {
+ *     if (!p) { return; }
+ *     this -> data = p -> data;
+ *     this -> data.children.clear();
+ *     this -> data.parents.clear();
+ *     
+ *     if (!dump) { return; }  // Shallow copy if dump=false
+ *     
+ *     // Deep copy of decay tree
+ *     // ... (full tree traversal and reconstruction)
+ * }
+ * ```
+ * 
+ * **Implementation Details:**
+ * 
+ * 1. **Shallow Copy (dump=false):**
+ *    - Copies particle_t data only
+ *    - Clears parent/child maps (no decay chain)
+ *    - Fast, minimal memory
+ * 
+ * 2. **Deep Copy (dump=true):**
+ *    - Creates or uses existing particle registry (`data_p`)
+ *    - Recursively copies all children particles
+ *    - Recursively copies all parent particles
+ *    - Reconstructs parent-child links using hashes
+ *    - Prevents double-copying via hash-based registry check
+ *    - Maintains `_is_serial` flag for tracking serialized particles
+ * 
+ * **Algorithm (dump=true):**
+ * ```
+ * 1. Copy data from source particle p
+ * 2. Clear parent/child maps (will rebuild)
+ * 3. Get or create particle registry (data_p)
+ * 4. Register self in registry by hash
+ * 5. For each child in p:
+ *    a. Check if already in registry (by hash)
+ *    b. If not, recursively deep-copy child
+ *    c. Register child relationship
+ *    d. Propagate _is_serial flag
+ * 6. For each parent in p:
+ *    a. Check if already in registry (by hash)
+ *    b. If not, recursively deep-copy parent
+ *    c. Register parent relationship
+ *    d. Propagate _is_serial flag
+ * ```
+ * 
+ * **Usage Example:**
+ * ```cpp
+ * particle_template* original = new particle_template();
+ * // ... build decay tree ...
+ * 
+ * // Shallow copy (kinematics only)
+ * particle_template* shallow = new particle_template(original, false);
+ * 
+ * // Deep copy (full decay tree)
+ * particle_template* deep = new particle_template(original, true);
+ * std::cout << "Children copied: " << deep->children.size() << std::endl;
+ * ```
+ * 
+ * @subsection particle_4vec_constructors 4-Vector Constructors
+ * 
+ * **Source:** `particle_template.cxx` lines 156-167
+ * 
+ * ```cpp
+ * // Full 4-vector (px, py, pz, E)
+ * particle_template::particle_template(double _px, double _py, double _pz, double _e) 
+ *     : particle_template() {
+ *     particle_t* p = &this -> data;
+ *     p -> px = _px; p -> py = _py; p -> pz = _pz; p -> e = _e;
+ *     p -> polar = true;  // Mark for polar conversion on next access
+ * }
+ * 
+ * // 3-momentum (px, py, pz), energy computed
+ * particle_template::particle_template(double _px, double _py, double _pz) 
+ *     : particle_template() {
+ *     particle_t* p = &this -> data;
+ *     p -> px = _px; p -> py = _py; p -> pz = _pz; 
+ *     p -> e = this -> e;  // Triggers get_e() to compute energy
+ *     p -> polar = true;
+ * }
+ * ```
+ * 
+ * **Purpose:** Direct initialization from Cartesian 4-momentum.
+ * - Sets `polar = true` to indicate polar coordinates (pt, η, φ) need recomputation
+ * - Energy auto-computed from 3-momentum if not provided (assumes massless if mass not set)
+ * 
+ * @subsection particle_destructor Destructor
+ * 
+ * **Source:** `particle_template.cxx` lines 169-182
+ * 
+ * ```cpp
+ * particle_template::~particle_template() {
+ *     if (!this -> data.data_p) { return; }  // Not managing registry
+ *     
+ *     std::string hash_ = this -> hash;
+ *     (*this -> data.data_p)[hash_] = nullptr;  // Remove self from registry
+ *     
+ *     // Delete all particles in registry
+ *     std::map<std::string, particle_template*>::iterator itr = this -> data.data_p -> begin();
+ *     for (; itr != this -> data.data_p -> end(); ++itr) {
+ *         if (!itr -> second) { continue; }
+ *         delete itr -> second;
+ *         itr -> second = nullptr;
+ *     }
+ *     this -> data.data_p -> clear();
+ *     delete this -> data.data_p;
+ * }
+ * ```
+ * 
+ * **Implementation Details:**
+ * - If particle owns registry (`data_p != nullptr`), deletes entire decay tree
+ * - Prevents double-deletion by nulling pointers before deletion
+ * - Only root particle of tree typically owns registry
+ * - Shared decay trees use same registry (set `data_p = nullptr` to avoid ownership)
+ * 
+ * @section particle_kinematics Kinematic Properties and Conversions
+ * 
+ * @subsection particle_polar_cartesian Polar ↔ Cartesian Conversion
+ * 
+ * The particle_template class maintains two kinematic representations:
+ * - **Cartesian:** (px, py, pz) - momentum components
+ * - **Polar:** (pt, η, φ) - transverse momentum, pseudorapidity, azimuthal angle
+ * 
+ * **Conversion Flags:**
+ * - `data.polar = true` → Polar coordinates need recomputation from Cartesian
+ * - `data.cartesian = true` → Cartesian coordinates need recomputation from Polar
+ * 
+ * **Lazy Evaluation:** Conversions only performed when needed (on property access).
+ * 
+ * @subsubsection particle_to_polar Polar Conversion
+ * 
+ * **Source:** `polar.cxx` lines 36-49
+ * 
+ * ```cpp
+ * void particle_template::to_polar() {
+ *     particle_t* p = &this -> data;
+ *     if (!p -> polar) { return; }  // Already up-to-date
+ *     
+ *     // pt = sqrt(px² + py²)
+ *     p -> pt  = std::pow(p -> px, 2);
+ *     p -> pt += std::pow(p -> py, 2);
+ *     p -> pt  = std::pow(p -> pt, 0.5);
+ *     
+ *     // η = asinh(pz / pt)
+ *     p -> eta = std::asinh(p -> pz / p -> pt);
+ *     
+ *     // φ = atan2(py, px)
+ *     p -> phi = std::atan2(p -> py, p -> px);
+ *     
+ *     p -> polar = false;  // Mark as computed
+ * }
+ * ```
+ * 
+ * **Formulas:**
+ * - $p_T = \sqrt{p_x^2 + p_y^2}$
+ * - $\eta = \text{asinh}\left(\frac{p_z}{p_T}\right)$
+ * - $\phi = \text{atan2}(p_y, p_x)$
+ * 
+ * **Called by:**
+ * - `get_pt()`, `get_eta()`, `get_phi()` property getters
+ * 
+ * @subsubsection particle_to_cartesian Cartesian Conversion
+ * 
+ * **Source:** `cartesian.cxx` lines 33-41
+ * 
+ * ```cpp
+ * void particle_template::to_cartesian() {
+ *     particle_t* p = &this -> data;
+ *     if (!p -> cartesian) { return; }  // Already up-to-date
+ *     
+ *     // px = pt * cos(φ)
+ *     p -> px = (p -> pt) * std::cos(p -> phi);
+ *     
+ *     // py = pt * sin(φ)
+ *     p -> py = (p -> pt) * std::sin(p -> phi);
+ *     
+ *     // pz = pt * sinh(η)
+ *     p -> pz = (p -> pt) * std::sinh(p -> eta);
+ *     
+ *     p -> cartesian = false;  // Mark as computed
+ * }
+ * ```
+ * 
+ * **Formulas:**
+ * - $p_x = p_T \cos(\phi)$
+ * - $p_y = p_T \sin(\phi)$
+ * - $p_z = p_T \sinh(\eta)$
+ * 
+ * **Called by:**
+ * - `get_px()`, `get_py()`, `get_pz()` property getters
+ * - Physics calculations (DeltaR, energy, mass)
+ * 
+ * @subsection particle_property_setters Property Setters (Polar)
+ * 
+ * **Source:** `polar.cxx` lines 3-33
+ * 
+ * ```cpp
+ * void particle_template::set_pt(double* val, particle_template* prt) {
+ *     prt -> data.pt = *val;
+ *     prt -> data.cartesian = true;  // Cartesian now out-of-date
+ * }
+ * 
+ * void particle_template::get_pt(double* val, particle_template* prt) {
+ *     prt -> to_polar();  // Update if needed
+ *     *val = prt -> data.pt;
+ * }
+ * ```
+ * 
+ * **Pattern:** Same for `eta` and `phi`.
+ * - **Setter:** Assigns value and marks `cartesian = true` (Cartesian needs update)
+ * - **Getter:** Calls `to_polar()` to ensure up-to-date, then returns value
+ * 
+ * @subsection particle_property_setters_cart Property Setters (Cartesian)
+ * 
+ * **Source:** `cartesian.cxx` lines 3-31
+ * 
+ * ```cpp
+ * void particle_template::set_px(double* val, particle_template* prt) {
+ *     prt -> data.px = *val;
+ *     prt -> data.polar = true;  // Polar now out-of-date
+ * }
+ * 
+ * void particle_template::get_px(double* val, particle_template* prt) {
+ *     prt -> to_cartesian();  // Update if needed
+ *     *val = prt -> data.px;
+ * }
+ * ```
+ * 
+ * **Pattern:** Same for `py` and `pz`.
+ * - **Setter:** Assigns value and marks `polar = true` (Polar needs update)
+ * - **Getter:** Calls `to_cartesian()` to ensure up-to-date, then returns value
+ * 
+ * @subsection particle_energy_mass Energy and Mass Calculations
+ * 
+ * **Source:** `physics.cxx` lines 13-42
+ * 
+ * @subsubsection particle_energy Energy Calculation
+ * 
+ * ```cpp
+ * void particle_template::get_e(double* v, particle_template* prt) {
+ *     particle_t* p = &prt -> data;
+ *     if (p -> e >= 0) { *v = p -> e; return; }  // Already set
+ *     
+ *     // E² = px² + py² + pz² + m²
+ *     p -> e  = std::pow(prt -> px, 2);
+ *     p -> e += std::pow(prt -> py, 2);
+ *     p -> e += std::pow(prt -> pz, 2);
+ *     if (p -> mass >= 0) { p -> e += p -> mass; }  // Add mass if known
+ *     p -> e  = std::pow(p -> e, 0.5);
+ *     *v = p -> e;
+ * }
+ * ```
+ * 
+ * **Formula:** $E = \sqrt{p_x^2 + p_y^2 + p_z^2 + m^2}$
+ * - If energy already set (e >= 0), returns cached value
+ * - Otherwise computes from momentum and mass
+ * - If mass not set, assumes massless (m = 0)
+ * 
+ * @subsubsection particle_mass Mass Calculation
+ * 
+ * ```cpp
+ * void particle_template::get_mass(double* val, particle_template* prt) {
+ *     particle_t* p = &prt -> data;
+ *     if (p -> mass > -1) { *val = p -> mass; return; }  // Already set
+ *     
+ *     // m² = E² - p²
+ *     p -> mass  = 0;
+ *     p -> mass -= std::pow(prt -> px, 2);
+ *     p -> mass -= std::pow(prt -> py, 2);
+ *     p -> mass -= std::pow(prt -> pz, 2);
+ *     p -> mass += std::pow(prt -> e, 2);
+ *     
+ *     // Handle tachyonic mass (negative m²)
+ *     p -> mass = (p -> mass >= 0) 
+ *         ? std::pow(p -> mass, 0.5) 
+ *         : -std::pow(std::abs(p -> mass), 0.5);
+ *     *val = p -> mass;
+ * }
+ * ```
+ * 
+ * **Formula:** $m = \sqrt{E^2 - p^2}$ where $p^2 = p_x^2 + p_y^2 + p_z^2$
+ * - Returns cached value if mass already set
+ * - Otherwise computes from 4-momentum
+ * - Handles negative m² (tachyonic) by returning negative mass
+ * 
+ * @subsection particle_momentum_beta Total Momentum and Beta
+ * 
+ * **Source:** `physics.cxx` lines 44-66
+ * 
+ * @subsubsection particle_momentum Total Momentum (P)
+ * 
+ * ```cpp
+ * void particle_template::get_P(double* val, particle_template* prt) {
+ *     particle_t* pl = &prt -> data;
+ *     double p_  = 0;
+ *     p_ += pl -> px * pl -> px;
+ *     p_ += pl -> py * pl -> py;
+ *     p_ += pl -> pz * pl -> pz;
+ *     *val = std::pow(p_, 0.5);
+ * }
+ * ```
+ * 
+ * **Formula:** $|p| = \sqrt{p_x^2 + p_y^2 + p_z^2}$
+ * 
+ * @subsubsection particle_beta Relativistic Beta
+ * 
+ * ```cpp
+ * void particle_template::get_beta(double* val, particle_template* prt) {
+ *     particle_t* pl = &prt -> data;
+ *     double p_  = 0;
+ *     p_ += pl -> px * pl -> px;
+ *     p_ += pl -> py * pl -> py;
+ *     p_ += pl -> pz * pl -> pz;
+ *     *val = (pl -> e) ? std::pow(p_ / (pl -> e * pl -> e), 0.5) : -1;
+ * }
+ * ```
+ * 
+ * **Formula:** $\beta = \frac{|p|}{E} = \sqrt{\frac{p^2}{E^2}}$
+ * - Returns -1 if energy is zero (division by zero protection)
+ * 
+ * @section particle_physics Physics Calculations
+ * 
+ * @subsection particle_delta_r ΔR Angular Separation
+ * 
+ * **Source:** `physics.cxx` lines 3-11
+ * 
+ * ```cpp
+ * double particle_template::DeltaR(particle_template* part) {
+ *     // Δφ with 2π wrapping
+ *     double sum = std::fabs(this -> phi - part -> phi);
+ *     sum = std::fmod(sum, 2*M_PI);
+ *     sum = M_PI - std::fabs(sum - M_PI);  // Map to [0, π]
+ *     sum = std::pow(sum, 2);
+ *     
+ *     // ΔR = sqrt(Δφ² + Δη²)
+ *     sum += std::pow(this -> eta - part -> eta, 2);
+ *     return std::pow(sum, 0.5);
+ * }
+ * ```
+ * 
+ * **Formula:** $\Delta R = \sqrt{(\Delta\phi)^2 + (\Delta\eta)^2}$
+ * 
+ * **Implementation Notes:**
+ * - Handles φ wrapping at 2π boundary
+ * - Maps Δφ to [0, π] range (shortest angular path)
+ * - Commonly used for jet/particle separation in HEP
+ * 
+ * **Usage Example:**
+ * ```cpp
+ * particle_template* jet1 = ...;
+ * particle_template* jet2 = ...;
+ * double separation = jet1 -> DeltaR(jet2);
+ * if (separation < 0.4) {
+ *     std::cout << "Jets are overlapping!" << std::endl;
+ * }
+ * ```
+ * 
+ * @section particle_operators Operators
+ * 
+ * @subsection particle_addition Addition Operators
+ * 
+ * **Source:** `particle_template.cxx` lines 184-195
+ * 
+ * @subsubsection particle_operator_plus Templated operator+
+ * 
+ * ```cpp
+ * template <typename g>
+ * g particle_template::operator + (g& p) {
+ *     g p2 = g();
+ *     p2.data.px = double(p.px) + double(this -> px);
+ *     p2.data.py = double(p.py) + double(this -> py);
+ *     p2.data.pz = double(p.pz) + double(this -> pz);
+ *     p2.data.e  = double(p.e)  + double(this -> e);
+ *     p2.data.type = this -> data.type;
+ *     p2.data.polar = true;  // Polar needs update
+ *     return p2;
+ * }
+ * ```
+ * 
+ * **Purpose:** Add two particles' 4-momenta, returning new particle.
+ * - Creates new particle of type `g` (template)
+ * - Adds Cartesian 4-momentum components
+ * - Marks polar coordinates for recomputation
+ * - Preserves `type` from `this`
+ * 
+ * **Example:**
+ * ```cpp
+ * particle_template* lep1 = ...;
+ * particle_template* lep2 = ...;
+ * particle_template Z_candidate = *lep1 + *lep2;
+ * std::cout << "Z mass: " << Z_candidate.mass << " GeV" << std::endl;
+ * ```
+ * 
+ * @subsubsection particle_operator_pluseq In-Place Addition (+=)
+ * 
+ * ```cpp
+ * void particle_template::operator += (particle_template* p) {
+ *     p -> to_cartesian();
+ *     this -> to_cartesian();
+ *     this -> data.px += double(p -> px);
+ *     this -> data.py += double(p -> py);
+ *     this -> data.pz += double(p -> pz);
+ *     this -> data.e  += double(p -> e);
+ *     this -> data.polar = true;
+ * }
+ * 
+ * void particle_template::iadd(particle_template* p) {
+ *     *this += p;
+ * }
+ * ```
+ * 
+ * **Purpose:** In-place 4-momentum addition.
+ * - Ensures both particles use Cartesian representation
+ * - Adds momentum components
+ * - Marks polar for recomputation
+ * - `iadd()` is alias for Python compatibility
+ * 
+ * @subsection particle_operator_eq Equality Operator
+ * 
+ * **Source:** `particle_template.cxx` lines 197-199
+ * 
+ * ```cpp
+ * bool particle_template::operator == (particle_template& p) {
+ *     return this -> hash == p.hash;
+ * }
+ * ```
+ * 
+ * **Purpose:** Compare particles by unique hash (4-momentum based).
+ * 
+ * @section particle_identification Particle Identification
+ * 
+ * @subsection particle_pdgid PDG ID and Symbol
+ * 
+ * **Source:** `interfaces.cxx` lines 3-59
+ * 
+ * @subsubsection particle_pdgid_symbol_map PDG ID ↔ Symbol Mapping
+ * 
+ * ```cpp
+ * std::map<int, std::string> sym = {
+ *     {1, "d"}, {2, "u"}, {3, "s"},
+ *     {4, "c"}, {5, "b"}, {6, "t"},
+ *     {11, "e"}, {12, "$\\nu_{e}$"},
+ *     {13, "$\\mu$"}, {14, "$\\nu_{\\mu}$"},
+ *     {15, "$\\tau$"}, {16, "$\\nu_{\\tau}$"},
+ *     {21, "g"}, {22, "$\\gamma$"}
+ * };
+ * ```
+ * 
+ * **Supported Particles:**
+ * - **Quarks:** d (1), u (2), s (3), c (4), b (5), t (6)
+ * - **Leptons:** e (11), μ (13), τ (15)
+ * - **Neutrinos:** νₑ (12), νμ (14), ντ (16)
+ * - **Bosons:** g (21), γ (22)
+ * 
+ * @subsubsection particle_pdgid_getter PDG ID Getter (from symbol)
+ * 
+ * ```cpp
+ * void particle_template::get_pdgid(int* val, particle_template* prt) {
+ *     particle_t* p = &prt -> data;
+ *     if (p -> pdgid != 0) { *val = p -> pdgid; return; }  // Already set
+ *     if (p -> symbol.size() == 0) { *val = p -> pdgid; return; }  // No symbol
+ *     
+ *     // Lookup pdgid from symbol
+ *     std::map<int, std::string>::iterator it = sym.begin();
+ *     for (; it != sym.end(); ++it) {
+ *         if (it -> second != p -> symbol) { continue; }
+ *         p -> pdgid = it -> first;
+ *         *val = p -> pdgid;
+ *         return;
+ *     }
+ *     *val = p -> pdgid;
+ * }
+ * ```
+ * 
+ * **Logic:**
+ * 1. Return cached pdgid if already set
+ * 2. If symbol is set but pdgid is 0, lookup pdgid from symbol
+ * 3. Update pdgid and return
+ * 
+ * @subsubsection particle_symbol_getter Symbol Getter (from PDG ID)
+ * 
+ * ```cpp
+ * void particle_template::get_symbol(std::string* val, particle_template* prt) {
+ *     particle_t* p = &prt -> data;
+ *     if ((p -> symbol).size() != 0) { *val = p -> symbol; return; }  // Already set
+ *     
+ *     // Lookup symbol from pdgid
+ *     std::stringstream ss;
+ *     ss << sym[std::abs(p -> pdgid)];
+ *     *val = ss.str();
+ * }
+ * ```
+ * 
+ * **Logic:**
+ * 1. Return cached symbol if already set
+ * 2. Otherwise lookup from pdgid (uses absolute value for antiparticles)
+ * 
+ * @subsection particle_classification Particle Classification
+ * 
+ * **Source:** `interfaces.cxx` lines 61-92
+ * 
+ * @subsubsection particle_is_method is() Method
+ * 
+ * ```cpp
+ * bool particle_template::is(std::vector<int> p) {
+ *     for (int& i : p) {
+ *         if (std::abs(i) != std::abs(this -> data.pdgid)) { continue; }
+ *         return true;
+ *     }
+ *     return false;
+ * }
+ * ```
+ * 
+ * **Purpose:** Check if particle PDG ID matches any in provided list (absolute value).
+ * 
+ * @subsubsection particle_classification_getters Classification Property Getters
+ * 
+ * ```cpp
+ * void particle_template::get_isb(bool* val, particle_template* prt) {
+ *     *val = prt -> is({5});  // b-quark (PDG ID = 5)
+ * }
+ * 
+ * void particle_template::get_isnu(bool* val, particle_template* prt) {
+ *     *val = prt -> is(prt -> data.nudef);  // Neutrinos {12, 14, 16}
+ * }
+ * 
+ * void particle_template::get_islep(bool* val, particle_template* prt) {
+ *     *val = prt -> is(prt -> data.lepdef);  // Leptons {11, 13, 15}
+ * }
+ * 
+ * void particle_template::get_isadd(bool* val, particle_template* prt) {
+ *     *val = !(prt -> is_lep || prt -> is_nu || prt -> is_b);  // Additional (other)
+ * }
+ * ```
+ * 
+ * **Defaults (from particle_t):**
+ * - `lepdef = {11, 13, 15}` - e, μ, τ
+ * - `nudef = {12, 14, 16}` - νₑ, νμ, ντ
+ * 
+ * **Note:** These vectors are configurable per particle instance.
+ * 
+ * @subsubsection particle_lep_decay Leptonic Decay Check
+ * 
+ * ```cpp
+ * void particle_template::get_lepdecay(bool* val, particle_template* prt) {
+ *     bool nu  = false;
+ *     bool lep = false;
+ *     std::map<std::string, particle_template*> tmp = prt -> children;
+ *     std::map<std::string, particle_template*>::iterator itr = tmp.begin();
+ *     for (; itr != tmp.end(); ++itr) {
+ *         if (!nu)  { nu  = itr -> second -> is_nu; }
+ *         if (!lep) { lep = itr -> second -> is_lep; }
+ *     }
+ *     *val = (lep && nu);  // Both lepton and neutrino present
+ * }
+ * ```
+ * 
+ * **Purpose:** Identify particles decaying leptonically (e.g., W → ℓν, top → W b → ℓν b).
+ * 
+ * @section particle_decay_chain Decay Chain Management
+ * 
+ * @subsection particle_parent_child Parent/Child Registration
+ * 
+ * **Source:** `interfaces.cxx` lines 136-160
+ * 
+ * @subsubsection particle_register_child register_child()
+ * 
+ * ```cpp
+ * bool particle_template::register_child(particle_template* p) {
+ *     std::string hash_ = p -> hash;
+ *     if (this -> data.children[hash_]) { return false; }  // Already registered
+ *     this -> m_children[hash_] = p;
+ *     this -> data.children[hash_] = true;
+ *     return true;
+ * }
+ * ```
+ * 
+ * **Purpose:** Register a particle as child (decay product).
+ * - Uses hash as unique key
+ * - Stores pointer in `m_children`
+ * - Sets flag in `data.children`
+ * - Returns false if already registered
+ * 
+ * @subsubsection particle_register_parent register_parent()
+ * 
+ * ```cpp
+ * bool particle_template::register_parent(particle_template* p) {
+ *     std::string hash_ = p -> hash;
+ *     if (this -> data.parents[hash_]) { return true; }  // Already registered
+ *     this -> m_parents[hash_] = p;
+ *     this -> data.parents[hash_] = true;
+ *     return true;
+ * }
+ * ```
+ * 
+ * **Purpose:** Register a particle as parent.
+ * - Same logic as `register_child()`
+ * - Used for tracking production chain
+ * 
+ * @subsection particle_parent_child_properties Parent/Child Properties
+ * 
+ * **Source:** `interfaces.cxx` lines 94-134
+ * 
+ * @subsubsection particle_set_parents set_parents()
+ * 
+ * ```cpp
+ * void particle_template::set_parents(
+ *     std::map<std::string, particle_template*>* val, 
+ *     particle_template* prt) {
+ *     
+ *     std::map<std::string, particle_template*>::iterator itr = val -> begin();
+ *     for (; itr != val -> end(); ++itr) {
+ *         prt -> register_parent(itr -> second);
+ *     }
+ *     
+ *     if (val -> size()) { return; }
+ *     prt -> data.parents = {};
+ *     prt -> m_parents = {};
+ * }
+ * ```
+ * 
+ * **Purpose:** Set parents from map (registers all).
+ * - If map is empty, clears all parents
+ * 
+ * @subsubsection particle_get_parents get_parents()
+ * 
+ * ```cpp
+ * void particle_template::get_parents(
+ *     std::map<std::string, particle_template*>* val, 
+ *     particle_template* prt) {
+ *     
+ *     std::map<std::string, particle_template*>::iterator itr = prt -> m_parents.begin();
+ *     for (; itr != prt -> m_parents.end(); ++itr) {
+ *         if (val -> count(itr -> second -> hash)) { continue; }
+ *         (*val)[itr -> second -> hash] = itr -> second;
+ *     }
+ * }
+ * ```
+ * 
+ * **Purpose:** Populate map with all parents (by hash).
+ * - Skips duplicates
+ * 
+ * **Note:** Same pattern for `set_children()` and `get_children()`.
+ * 
+ * @section particle_hash Hash Generation
+ * 
+ * **Source:** `interfaces.cxx` lines 162-176
+ * 
+ * ```cpp
+ * void particle_template::get_hash(std::string* val, particle_template* prt) {
+ *     particle_t* p = &prt -> data;
+ *     if ((p -> hash).size()) { *val = p -> hash; return; }  // Already computed
+ *     
+ *     prt -> to_cartesian();  // Ensure Cartesian is up-to-date
+ *     p -> hash  = prt -> to_string(prt -> px);
+ *     p -> hash += prt -> to_string(prt -> py);
+ *     p -> hash += prt -> to_string(prt -> pz);
+ *     p -> hash += prt -> to_string(prt -> e);
+ *     p -> hash  = prt -> tools::hash(p -> hash);  // Hash via tools::hash()
+ *     *val = p -> hash;
+ * }
+ * ```
+ * 
+ * **Implementation:**
+ * 1. Return cached hash if already computed
+ * 2. Convert to Cartesian (canonical representation)
+ * 3. Concatenate string representations of (px, py, pz, E)
+ * 4. Hash concatenated string using `tools::hash()`
+ * 5. Cache and return
+ * 
+ * **Purpose:** Unique identifier for particle based on 4-momentum.
+ * - Used for decay chain tracking
+ * - Used for event-level particle maps
+ * - Two particles with identical 4-momentum have same hash
+ * 
+ * @section particle_root_io ROOT I/O Integration
+ * 
+ * @subsection particle_leaves Leaf Registration
+ * 
+ * **Source:** `interfaces.cxx` lines 94-98
+ * 
+ * ```cpp
+ * void particle_template::add_leaf(std::string key, std::string leaf) {
+ *     if (!leaf.size()) { leaf = key; }
+ *     this -> leaves[key] = leaf;
+ * }
+ * ```
+ * 
+ * **Purpose:** Register ROOT TBranch name for particle property.
+ * - `key` = internal name (e.g., "pt")
+ * - `leaf` = ROOT branch name (e.g., "jet_pt")
+ * - If `leaf` not provided, uses `key`
+ * 
+ * **Example:**
+ * ```cpp
+ * particle_template* jet = new particle_template();
+ * jet -> add_leaf("pt", "jet_pt");
+ * jet -> add_leaf("eta", "jet_eta");
+ * jet -> add_leaf("phi", "jet_phi");
+ * ```
+ * 
+ * @subsection particle_type_prefix Type Prefix Application
+ * 
+ * **Source:** `particle_template.cxx` lines 201-206
+ * 
+ * ```cpp
+ * void particle_template::apply_type_prefix() {
+ *     std::map<std::string, std::string> lf = {};
+ *     std::map<std::string, std::string>::iterator itr = this -> leaves.begin();
+ *     for (; itr != this -> leaves.end(); ++itr) {
+ *         lf[itr -> first] = this -> type + itr -> second;
+ *     }
+ *     this -> leaves = lf;
+ * }
+ * ```
+ * 
+ * **Purpose:** Prepend particle type to all leaf names.
+ * 
+ * **Example:**
+ * ```cpp
+ * jet -> type = "jet_";
+ * jet -> leaves = {{"pt", "pt"}, {"eta", "eta"}};
+ * jet -> apply_type_prefix();
+ * // Now: leaves = {{"pt", "jet_pt"}, {"eta", "jet_eta"}}
+ * ```
+ * 
+ * @subsection particle_build Virtual Build Method
+ * 
+ * **Source:** `particle_template.cxx` lines 209-211
+ * 
+ * ```cpp
+ * void particle_template::build(
+ *     std::map<std::string, particle_template*>* event, 
+ *     element_t* el) {
+ *     return;  // Override in derived classes
+ * }
+ * ```
+ * 
+ * **Purpose:** Virtual method for extracting particle data from ROOT via element_t.
+ * - Override in derived classes (e.g., jets, electrons, muons)
+ * - `event` = map of all particles in event
+ * - `el` = element_t containing ROOT TTree data
+ * 
+ * **Example (derived class):**
+ * ```cpp
+ * class jet : public particle_template {
+ *     void build(std::map<std::string, particle_template*>* event, element_t* el) {
+ *         std::vector<float> pts, etas, phis;
+ *         el -> get("jet_pt", &pts);
+ *         el -> get("jet_eta", &etas);
+ *         el -> get("jet_phi", &phis);
+ *         
+ *         for (size_t i = 0; i < pts.size(); ++i) {
+ *             jet* j = new jet();
+ *             j -> pt = pts[i];
+ *             j -> eta = etas[i];
+ *             j -> phi = phis[i];
+ *             (*event)[j -> hash] = j;
+ *         }
+ *     }
+ * };
+ * ```
+ * 
+ * @subsection particle_clone Virtual Clone Method
+ * 
+ * **Source:** `particle_template.cxx` line 213
+ * 
+ * ```cpp
+ * particle_template* particle_template::clone() {
+ *     return new particle_template();
+ * }
+ * ```
+ * 
+ * **Purpose:** Virtual factory method for creating new instances.
+ * - Override in derived classes to return correct type
+ * - Used by templating system
+ * 
+ * **Example (derived class):**
+ * ```cpp
+ * class jet : public particle_template {
+ *     particle_template* clone() override {
+ *         return new jet();
+ *     }
+ * };
+ * ```
+ * 
+ * @section particle_serialization Serialization
+ * 
+ * @subsection particle_reduce __reduce__() Method
+ * 
+ * **Source:** `particle_template.cxx` lines 148-154
+ * 
+ * ```cpp
+ * std::map<std::string, std::map<std::string, particle_t>> 
+ * particle_template::__reduce__() {
+ *     std::map<std::string, particle_template*>* tmp = this -> data.data_p;
+ *     this -> data.data_p = nullptr;
+ *     
+ *     particle_template* t = new particle_template(this, true);  // Deep copy
+ *     std::map<std::string, std::map<std::string, particle_t>> out;
+ *     std::map<std::string, particle_template*>::iterator itr = t -> data.data_p -> begin();
+ *     for (; itr != t -> data.data_p -> end(); ++itr) {
+ *         if (itr -> second -> _is_serial) { continue; }  // Skip serialized
+ *         out[itr -> first]["data"] = itr -> second -> data;
+ *     }
+ *     delete t;
+ *     this -> data.data_p = tmp;
+ *     return out;
+ * }
+ * ```
+ * 
+ * **Purpose:** Serialize entire decay tree to map of particle_t structs.
+ * - Creates deep copy of decay tree
+ * - Extracts particle_t data for each particle (by hash)
+ * - Skips particles marked `_is_serial = true`
+ * - Returns map: hash → {"data" → particle_t}
+ * 
+ * **Usage:** Prepare particles for Python pickling or HDF5 serialization.
+ * 
+ * @section particle_usage_examples Usage Examples
+ * 
+ * @subsection particle_example_basic Basic Usage
+ * 
+ * ```cpp
+ * // Create particle from 4-momentum
+ * particle_template* jet = new particle_template(50.0, 30.0, 120.0, 150.0);
+ * 
+ * // Access kinematic properties
+ * std::cout << "pt: " << jet -> pt << " GeV" << std::endl;
+ * std::cout << "eta: " << jet -> eta << std::endl;
+ * std::cout << "phi: " << jet -> phi << std::endl;
+ * std::cout << "mass: " << jet -> mass << " GeV" << std::endl;
+ * 
+ * // Modify kinematics (triggers automatic conversion)
+ * jet -> pt = 60.0;  // Sets pt, marks cartesian = true
+ * std::cout << "px: " << jet -> px << std::endl;  // Computes px from pt
+ * ```
+ * 
+ * @subsection particle_example_decay_chain Decay Chain Building
+ * 
+ * ```cpp
+ * // Create top quark
+ * particle_template* top = new particle_template();
+ * top -> pdgid = 6;
+ * top -> px = 100.0; top -> py = 50.0; top -> pz = 200.0; top -> e = 250.0;
+ * 
+ * // Create W boson (child)
+ * particle_template* W = new particle_template();
+ * W -> pdgid = 24;
+ * W -> px = 80.0; W -> py = 40.0; W -> pz = 150.0; W -> e = 180.0;
+ * 
+ * // Create b quark (child)
+ * particle_template* b = new particle_template();
+ * b -> pdgid = 5;
+ * b -> px = 20.0; b -> py = 10.0; b -> pz = 50.0; b -> e = 70.0;
+ * 
+ * // Register decay chain
+ * top -> register_child(W);
+ * top -> register_child(b);
+ * W -> register_parent(top);
+ * b -> register_parent(top);
+ * 
+ * // Check decay mode
+ * bool leptonic = top -> lep_decay;
+ * std::map<std::string, particle_template*> children = top -> children;
+ * std::cout << "Top has " << children.size() << " children" << std::endl;
+ * ```
+ * 
+ * @subsection particle_example_physics Physics Calculations
+ * 
+ * ```cpp
+ * particle_template* jet1 = new particle_template(50, 30, 100, 120);
+ * particle_template* jet2 = new particle_template(45, 35, 90, 110);
+ * 
+ * // Calculate ΔR separation
+ * double dR = jet1 -> DeltaR(jet2);
+ * std::cout << "ΔR = " << dR << std::endl;
+ * 
+ * // Combine jets
+ * particle_template dijet = *jet1 + *jet2;
+ * std::cout << "Dijet mass: " << dijet.mass << " GeV" << std::endl;
+ * std::cout << "Dijet pt: " << dijet.pt << " GeV" << std::endl;
+ * 
+ * // In-place addition
+ * jet1 -> iadd(jet2);
+ * std::cout << "Combined pt: " << jet1 -> pt << " GeV" << std::endl;
+ * ```
+ * 
+ * @subsection particle_example_classification Particle Classification
+ * 
+ * ```cpp
+ * particle_template* p = new particle_template();
+ * p -> pdgid = 11;  // Electron
+ * 
+ * std::cout << "Is lepton? " << p -> is_lep << std::endl;       // true
+ * std::cout << "Is neutrino? " << p -> is_nu << std::endl;      // false
+ * std::cout << "Is b-quark? " << p -> is_b << std::endl;        // false
+ * std::cout << "Symbol: " << p -> symbol << std::endl;          // "e"
+ * 
+ * // Check multiple PDG IDs
+ * if (p -> is({11, 13, 15})) {
+ *     std::cout << "Is a lepton (e, μ, or τ)" << std::endl;
+ * }
+ * 
+ * // Custom lepton definition
+ * p -> data.lepdef = {11, 13};  // Only e and μ
+ * std::cout << "Is lepton (custom)? " << p -> is_lep << std::endl;
+ * ```
+ * 
+ * @section particle_dependencies Module Dependencies
+ * 
+ * **Depends on:**
+ * - @ref structs "structs" - particle_t, cproperty
+ * - @ref tools "tools" - hash(), to_string()
+ * - @ref io "io" - element_t (ROOT data access)
+ * 
+ * **Used by:**
+ * - @ref event_template "event_template" - Particle containers
+ * - @ref selection_template "selection_template" - Event filtering
+ * - @ref graph_template "graph_template" - GNN node features
+ * - Concrete particle implementations (jets, leptons, neutrinos, etc.)
+ * 
+ * @section particle_thread_safety Thread Safety
+ * 
+ * **Thread-Safe Operations:**
+ * - Read-only property access (after initialization)
+ * - `DeltaR()` calculation
+ * - `is()` classification
+ * - `clone()` factory method
+ * 
+ * **Requires External Synchronization:**
+ * - Property modification (e.g., `pt = ...`)
+ * - Decay chain modification (`register_parent`, `register_child`)
+ * - `build()` method (ROOT I/O not thread-safe)
+ * - Destructor (if particles share registry)
+ * 
+ * **Best Practices:**
+ * - Create separate particle instances per thread
+ * - Use `particle_template(p, false)` for thread-local shallow copies
+ * - Avoid sharing decay trees across threads
+ * - Clone particles before passing to threads
+ * 
+ * @section particle_performance Performance Considerations
+ * 
+ * **Lazy Evaluation:**
+ * - Coordinate conversions only performed when needed
+ * - Energy/mass computed on-demand and cached
+ * - Hash generated once and cached
+ * 
+ * **Memory Management:**
+ * - Deep copy only when `dump=true` (avoid unnecessary copies)
+ * - Shared particle registry via `data_p` pointer
+ * - Destructor deletes entire decay tree if owner
+ * 
+ * **Optimization Tips:**
+ * - Use Cartesian representation for physics calculations (avoids conversions)
+ * - Batch property accesses to minimize conversions
+ * - Reuse particle instances when possible
+ * - Use shallow copies (`dump=false`) when decay chain not needed
+ * 
+ * */

@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for events/gnn implementation.
+
+@defgroup events_gnn Events: gnn
+@ingroup events_module
+
+@details
+Implements `event_gnn` and `particle_gnn` wrappers.
+Source: `src/AnalysisG/events/gnn/`
+*/

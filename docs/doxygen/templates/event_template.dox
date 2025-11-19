@@ -1,0 +1,355 @@
+/**
+@file
+@brief Detailed documentation for the event_template class.
+@defgroup event_template Event Template
+@ingroup templates_module
+*/
+
+/**
+@page event_template_page Event Template
+@tableofcontents
+
+---
+# Quick Navigation
+| Component | Description | Link |
+|-----------|-------------|------|
+| **Event Template** | Event container | (Current Page) |
+| @ref particle_template_page | Particle objects | Created by event |
+| @ref io_module | ROOT reader | Populates events |
+| @ref MetaModule | Metadata | Linked to events |
+| @ref selection_template_module | Event selection | Filters events |
+| @ref graph_template_module | Graph builder | Consumes events |
+| @ref tools_module | Utilities | Parent class |
+
+**Typical Workflow**: `io::get_data(idx)` → **`event_template::build_event()`** → `event.Jets` / `event.Leptons` → `selection()` OR `graph::CompileEvent()`
+
+**Key Methods**:
+- event_template::register_particle() - Declare particle types
+- event_template::build_event() - Factory method
+- event_template::flush_particles() - Memory cleanup
+
+**Common Subclasses**: `event_4tops`, `event_ttbar`, `event_zprime` (user-defined)
+
+---
+
+@section event_template_intro Introduction
+
+The `event_template` class serves as a foundational component for constructing and managing physics events within the AnalysisG framework. It acts as a factory and container for particle objects (`particle_template`), reading data from various sources and assembling them into a coherent event structure. It inherits from the `tools` class, giving it access to a suite of utility functions.
+
+This class is responsible for orchestrating the data-loading process. It interfaces with the low-level `data_t` structures, which hold raw data from ROOT files, and uses this information to build and populate high-level `particle_template` objects. It manages the lifecycle of these particles and provides methods for event-wide operations, such as event cloning and accessing metadata.
+
+@section event_template_properties Property Management
+
+Similar to `particle_template`, the `event_template` uses the `cproperty` system to manage its own properties. This provides a consistent interface for setting and getting event-level information.
+
+- **`trees`**: A list of `TTree` names that this event template is configured to read from.
+- **`branches`**: A list of `TBranch` names to be activated for reading.
+- **`leaves`**: A list of `TLeaf` names that contain the particle data.
+- **`name`**: The name of the current event being processed.
+- **`hash`**: A unique hash identifying the event, often derived from the source filename and event index.
+- **`tree`**: The specific `TTree` from which the current event was read.
+- **`weight`**: The event weight, used for scaling in analysis.
+- **`index`**: The event index within the source file.
+
+@section event_template_building Building Events and Particles
+
+The core functionality of `event_template` revolves around the `build_event` and `register_particle` methods.
+
+- **`register_particle<G>(std::map<std::string, G*>* object)`**: This template method is used to inform the `event_template` about a new type of particle it needs to manage. It takes a map where the constructed particles of type `G` will be stored. The template creates a prototype of the particle `G` to understand its structure (specifically, which leaves it reads from) and sets up the necessary internal mappings.
+
+- **`build_event(std::map<std::string, data_t*>* evnt)`**: This is the main factory method. It takes a map of `data_t` pointers, which represent the raw data read from the file for one event.
+    1. **`build_mapping`**: On the first call, it builds an internal mapping between the requested trees/leaves and the available data in the `evnt` map.
+    2. **Cloning**: It clones itself to create a new, distinct event instance for each `TTree` that needs processing.
+    3. **Particle Construction**: For each registered particle type, it calls the particle's `build` method, which populates the particle maps (e.g., `event->leptons`, `event->jets`) with newly created `particle_template` objects.
+    4. **Metadata**: It links the event to its associated metadata (`meta_data`).
+
+@section event_template_lifecycle Particle Lifecycle Management
+
+The `event_template` owns all the `particle_template` objects it creates.
+- **`flush_particles()`**: This method is responsible for cleaning up memory. It iterates through all registered particle maps and deletes the `particle_template` objects they contain.
+- **`deregister_particle<G>(...)`**: A helper method used by the destructor and `flush_particles` to safely delete particles of a given type `G`.
+- **Garbage Collection**: A `garbage` map is used to keep track of temporary or intermediate particles that might be created during processing, ensuring they are also cleaned up properly.
+
+@section event_template_usage Usage Example
+
+A typical analysis workflow involves subclassing `event_template` to define a specific event topology.
+
+```cpp
+// Define a custom event structure
+class MyEvent : public event_template {
+public:
+    MyEvent() {
+        // Register the particle types this event will contain
+        this->register_particle(&this->leptons);
+        this->register_particle(&this->jets);
+    }
+
+    // Maps to store the particles
+    std::map<std::string, Lepton*> leptons;
+    std::map<std::string, Jet*> jets;
+};
+
+// In the main analysis loop
+// ... an instance of 'io' is used to read data ...
+std::map<std::string, data_t*>* data = io.get_event(i);
+MyEvent factory;
+std::map<std::string, event_template*> events = factory.build_event(data);
+
+MyEvent* event = (MyEvent*)events["nominal_tree"];
+if (event) {
+    std::cout << "Number of jets: " << event->jets.size() << std::endl;
+}
+```
+
+}
+```
+
+@section event_template_advanced Advanced Usage
+
+### Example 1: Custom Event with Multiple Particle Types
+
+```cpp
+class TopPairEvent : public event_template {
+public:
+    TopPairEvent() {
+        // Register all particle types
+        this->register_particle(&this->Jets);
+        this->register_particle(&this->Leptons);
+        this->register_particle(&this->Neutrinos);
+        this->register_particle(&this->MET);
+    }
+    
+    // Particle containers (automatically populated by build_event)
+    std::map<std::string, Jet*> Jets;
+    std::map<std::string, Lepton*> Leptons;
+    std::map<std::string, Neutrino*> Neutrinos;
+    std::map<std::string, MissingET*> MET;
+    
+    // Custom event-level methods
+    int n_jets() const { return Jets.size(); }
+    int n_leptons() const { return Leptons.size(); }
+    
+    // Physics calculations
+    double HT() const {
+        double ht = 0.0;
+        for (auto& [key, jet] : Jets) {
+            ht += jet->pt;
+        }
+        return ht;
+    }
+};
+```
+
+### Example 2: Event Cloning and Tree Handling
+
+```cpp
+// The framework automatically handles events from multiple TTrees
+std::map<std::string, data_t*>* data = io.get_event(event_idx);
+
+TopPairEvent factory;
+std::map<std::string, event_template*> events = factory.build_event(data);
+
+// Access events from different systematics
+TopPairEvent* nominal = (TopPairEvent*)events["nominal"];
+TopPairEvent* jes_up = (TopPairEvent*)events["JES__1up"];
+TopPairEvent* jes_down = (TopPairEvent*)events["JES__1down"];
+
+// Each event is independent
+std::cout << "Nominal HT: " << nominal->HT() << std::endl;
+std::cout << "JES+1σ HT: " << jes_up->HT() << std::endl;
+
+// Clean up
+for (auto& [tree, ev] : events) {
+    delete ev;
+}
+```
+
+### Example 3: Event-Level Metadata Access
+
+```cpp
+void analyze_event(event_template* ev) {
+    // Access metadata
+    std::cout << \"Event hash: \" << ev->hash << std::endl;
+    std::cout << \"Event index: \" << ev->index << std::endl;
+    std::cout << \"Event weight: \" << ev->weight << std::endl;
+    std::cout << \"Source tree: \" << ev->tree << std::endl;
+    
+    // Access linked meta object
+    if (ev->meta_data) {
+        std::cout << \"Sample name: \" << ev->meta_data->sample_name << std::endl;
+        std::cout << \"Cross-section: \" << ev->meta_data->cross_section << std::endl;
+    }
+}
+```
+
+### Example 4: Particle Lifecycle Management
+
+```cpp
+void process_events(io& reader) {
+    MyEvent factory;
+    
+    for (size_t i = 0; i < reader.size(); i++) {
+        std::map<std::string, data_t*>* data = reader.get_event(i);
+        std::map<std::string, event_template*> events = factory.build_event(data);
+        
+        for (auto& [tree_name, ev] : events) {
+            MyEvent* event = (MyEvent*)ev;
+            
+            // Process event
+            analyze(event);
+            
+            // Particles are automatically cleaned up when event is deleted
+            delete event;
+        }
+    }
+}
+```
+
+@section event_template_best_practices Best Practices
+
+### 1. Always Register Particles in Constructor
+
+```cpp
+// ✓ Good: Register in constructor
+class MyEvent : public event_template {
+public:
+    MyEvent() {
+        this->register_particle(&Jets);
+        this->register_particle(&Leptons);
+    }
+    
+    std::map<std::string, Jet*> Jets;
+    std::map<std::string, Lepton*> Leptons;
+};
+
+// ✗ Bad: Forget to register
+class MyEvent : public event_template {
+public:
+    MyEvent() {
+        // Missing register_particle calls!
+    }
+    
+    std::map<std::string, Jet*> Jets;  // Won't be populated!
+};
+```
+
+### 2. Use Factory Pattern
+
+```cpp
+// ✓ Good: Create factory, use it multiple times
+MyEvent factory;
+for (size_t i = 0; i < n_events; i++) {
+    auto data = io.get_event(i);
+    auto events = factory.build_event(data);  // Efficient
+    // ...
+}
+
+// ✗ Bad: Create new factory each time
+for (size_t i = 0; i < n_events; i++) {
+    MyEvent factory;  // Wasteful: rebuilds mappings each iteration!
+    auto data = io.get_event(i);
+    auto events = factory.build_event(data);
+}
+```
+
+### 3. Clean Up Events Properly
+
+```cpp
+// ✓ Good: Delete events when done
+auto events = factory.build_event(data);
+for (auto& [tree, ev] : events) {
+    process(ev);
+    delete ev;  // Automatically calls flush_particles()
+}
+
+// ✗ Bad: Memory leak
+auto events = factory.build_event(data);
+for (auto& [tree, ev] : events) {
+    process(ev);
+}  // Memory leak: events never deleted!
+```
+
+### 4. Access Metadata Safely
+
+```cpp
+// ✓ Good: Check meta_data exists
+if (event->meta_data) {
+    double lumi = event->meta_data->luminosity;
+}
+
+// ✗ Bad: Segfault if meta_data is nullptr
+double lumi = event->meta_data->luminosity;  // Crash if nullptr!
+```
+
+@section event_template_troubleshooting Troubleshooting
+
+### \"Particle maps are empty after build_event()\"
+
+**Cause**: Forgot to call `register_particle()` in constructor
+
+**Solution**: Register all particle types
+```cpp
+class MyEvent : public event_template {
+public:
+    MyEvent() {
+        this->register_particle(&Jets);     // Don't forget!
+        this->register_particle(&Leptons);  // Don't forget!
+    }
+    std::map<std::string, Jet*> Jets;
+    std::map<std::string, Lepton*> Leptons;
+};
+```
+
+### \"Event from wrong tree\"
+
+**Cause**: Not handling multiple trees correctly
+
+**Solution**: Check tree name
+```cpp
+auto events = factory.build_event(data);
+
+// Access specific tree
+if (events.count(\"nominal\")) {
+    MyEvent* ev = (MyEvent*)events[\"nominal\"];
+    // Process nominal event
+}
+```
+
+### \"Memory leak in event loop\"
+
+**Cause**: Not deleting events
+
+**Solution**: Always delete or use RAII
+```cpp
+// Option 1: Manual deletion
+auto events = factory.build_event(data);
+for (auto& [tree, ev] : events) {
+    process(ev);
+    delete ev;  // Essential!
+}
+
+// Option 2: RAII with unique_ptr
+std::map<std::string, std::unique_ptr<event_template>> events_managed;
+for (auto& [tree, ev] : events) {
+    events_managed[tree] = std::unique_ptr<event_template>(ev);
+}  // Automatic cleanup
+```
+
+@section event_template_dependencies Dependencies
+
+- **`particle_template.h`**: The class for the objects that this event template creates and manages. See @ref particle_template_page.
+- **`structs/event.h`**: Contains the `event_t` POD struct, which is the underlying data container for the event's own properties. See @ref event_page.
+- **`structs/element.h`**: The `element_t` class is used internally to handle data from ROOT branches. See @ref element_page.
+- **`tools/tools.h`**: Provides base class with utility functions.
+- **`meta/meta.h`**: The `meta` class for handling metadata associated with the event.
+- **`reconstruction/nusol.h`**: Included for the `double_neutrino` reconstruction algorithm.
+
+@section event_template_seealso See Also
+
+- @ref particle_template_page - Particle objects created by events
+- @ref io_module - Reads data and populates events
+- @ref selection_template_module - Event selection framework
+- @ref graph_template_module - Graph construction from events
+- @ref MetaModule - Event metadata
+
+*/

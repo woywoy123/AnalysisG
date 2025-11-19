@@ -1,0 +1,346 @@
+/**
+ * @file python_bindings_index.dox
+ * @brief Master index for Python (Cython) bindings documentation
+ * @page python_bindings Python Bindings (Cython)
+ *
+ * @section python_bindings_overview Overview
+ *
+ * AnalysisG provides comprehensive Python bindings via **Cython**, exposing high-performance
+ * C++ implementations with Pythonic interfaces. This is NOT simple wrapper code - the Cython
+ * implementations contain sophisticated logic, complex serialization, operator overloads,
+ * and memory management.
+ *
+ * **Statistics:**
+ * - **56 .pyx files**: Python implementation with complex logic
+ * - **104 .pxd files**: Cython declarations and C++ bindings
+ * - **Core Templates**: 5 critical classes (~800 lines total)
+ * - **Implementations**: 36 event/particle/selection classes
+ * - **Models**: 2 GNN implementations
+ * - **Utilities**: 13 helper classes
+ *
+ * @section python_bindings_core Core Templates
+ *
+ * These are the foundational template classes that all user code inherits from.
+ * They are NOT simple wrappers - they contain sophisticated Python-side logic.
+ *
+ * @subsection python_core_templates Template Classes
+ *
+ * | Class | Lines | Complexity | Documentation |
+ * |-------|-------|-----------|---------------|
+ * | @ref particle_template_python "ParticleTemplate" | 310 | **Very High** | ✅ Complete |
+ * | @ref selection_template_python "SelectionTemplate" | 200+ | **Very High** | ✅ Complete |
+ * | @ref model_template_python "ModelTemplate" | ~100 | **Medium** | ✅ Complete |
+ * | @ref event_template_python "EventTemplate" | ~80 | **Medium** | ✅ Complete |
+ * | @ref graph_template_python "GraphTemplate" | ~70 | **Medium** | ✅ Complete |
+ *
+ * **Complexity Factors:**
+ * - **ParticleTemplate (310 lines)**:
+ *   - Complex `__reduce__()` with recursive serialization
+ *   - Operator overloads (`+`, `+=`, `radd`)
+ *   - Parent/children relationship management
+ *   - Memory ownership tracking (`is_owner` flag)
+ *   - Physics methods (DeltaR, invariant mass)
+ *   - Clone with type preservation
+ *
+ * - **SelectionTemplate (200+ lines)**:
+ *   - Complex `InterpretROOT()` (~60 lines) for dynamic branch mapping
+ *   - `__reduce__()` preserving weights and metadata
+ *   - Hash-based weight file lookup
+ *   - Postprocessing hooks
+ *   - Dump/load serialization
+ *
+ * - **ModelTemplate (~100 lines)**:
+ *   - Input/output feature configuration
+ *   - Device management (CPU/CUDA)
+ *   - Checkpoint handling
+ *   - Helper methods (`conv()`, `cond()`) for C++↔Python conversion
+ *   - Automatic naming from class hierarchy
+ *
+ * - **EventTemplate (~80 lines)**:
+ *   - Multi-tree ROOT support
+ *   - Type-flexible properties (Union[str, double])
+ *   - Hash-based equality
+ *   - Deferred branch reading
+ *
+ * - **GraphTemplate (~70 lines)**:
+ *   - Hash-based equality for deduplication
+ *   - Property-based access to C++ members
+ *   - Subclass-aware memory management
+ *
+ * @section python_bindings_utilities Utility Classes
+ *
+ * @subsection python_util_core Core Utilities
+ *
+ * | Class | File | Purpose | Status |
+ * |-------|------|---------|--------|
+ * | Meta | `core/meta.pyx` | Sample metadata, AMI lookup | 🔨 To Document |
+ * | Notification | `core/notification.pyx` | Progress notifications | 🔨 To Document |
+ * | ROC | `core/roc.pyx` | ROC curve calculations | 🔨 To Document |
+ * | OptimizerConfig | `core/lossfx.pyx` | Optimizer configuration | 🔨 To Document |
+ * | Plotting | `core/plotting.pyx` | Plotting utilities | 🔨 To Document |
+ * | Tools | `core/tools.pyx` | String/type conversion helpers | 🔨 To Document |
+ * | Structs | `core/structs.pyx` | C++ struct wrappers | 🔨 To Document |
+ * | IO | `core/io.pyx` | ROOT file I/O | 🔨 To Document |
+ * | Analysis | `core/analysis.pyx` | Analysis orchestration | 🔨 To Document |
+ *
+ * @section python_bindings_implementations Implementations
+ *
+ * @subsection python_impl_events Events and Particles
+ *
+ * **Events:**
+ * | Event Class | File | Purpose | Status |
+ * |-------------|------|---------|--------|
+ * | EventBSM4Tops | `events/bsm_4tops/event_bsm_4tops.pyx` | BSM 4-top analysis | 🔨 To Document |
+ * | ParticleBSM4Tops | `events/bsm_4tops/particle_bsm_4tops.pyx` | BSM 4-top particles | 🔨 To Document |
+ * | EventExpMC20 | `events/exp_mc20/event_exp_mc20.pyx` | Experimental MC20 | 🔨 To Document |
+ * | ParticleExpMC20 | `events/exp_mc20/particle_exp_mc20.pyx` | Experimental particles | 🔨 To Document |
+ * | EventSSML_MC20 | `events/ssml_mc20/event_ssml_mc20.pyx` | SSML MC20 analysis | 🔨 To Document |
+ * | ParticleSSML_MC20 | `events/ssml_mc20/particle_ssml_mc20.pyx` | SSML particles | 🔨 To Document |
+ * | EventGNN | `events/gnn/event_gnn.pyx` | GNN training events | 🔨 To Document |
+ * | ParticleGNN | `events/gnn/particle_gnn.pyx` | GNN particles | 🔨 To Document |
+ *
+ * @subsection python_impl_selections Selections
+ *
+ * **MC16 Selections:**
+ * | Selection | File | Purpose | Status |
+ * |-----------|------|---------|--------|
+ * | TopKinematics | `selections/mc16/topkinematics/topkinematics.pyx` | Top quark kinematics | 🔨 To Document |
+ * | TopMatching | `selections/mc16/topmatching/topmatching.pyx` | Truth-reco matching | 🔨 To Document |
+ * | ChildrenKinematics | `selections/mc16/childrenkinematics/childrenkinematics.pyx` | Decay kinematics | 🔨 To Document |
+ * | DecayModes | `selections/mc16/decaymodes/decaymodes.pyx` | Decay mode classification | 🔨 To Document |
+ * | TopTruthJets | `selections/mc16/toptruthjets/toptruthjets.pyx` | Truth jet matching | 🔨 To Document |
+ * | TopJets | `selections/mc16/topjets/topjets.pyx` | Reco jet selection | 🔨 To Document |
+ * | ZPrime | `selections/mc16/zprime/zprime.pyx` | Z' resonance selection | 🔨 To Document |
+ * | Parton | `selections/mc16/parton/parton.pyx` | Parton-level selection | 🔨 To Document |
+ * | MissingET | `selections/mc16/met/missing_et.pyx` | MET selection | 🔨 To Document |
+ *
+ * **MC20 Selections:**
+ * | Selection | File | Purpose | Status |
+ * |-----------|------|---------|--------|
+ * | Matching | `selections/mc20/matching/matching.pyx` | MC20 matching | 🔨 To Document |
+ * | TopKinematicsMC20 | `selections/mc20/topkinematics/topkinematics_mc20.pyx` | MC20 top kinematics | 🔨 To Document |
+ * | TopMatchingMC20 | `selections/mc20/topmatching/topmatching_mc20.pyx` | MC20 top matching | 🔨 To Document |
+ * | ZPrimeMC20 | `selections/mc20/zprime/zprime_mc20.pyx` | MC20 Z' selection | 🔨 To Document |
+ *
+ * **Other Selections:**
+ * | Selection | File | Purpose | Status |
+ * |-----------|------|---------|--------|
+ * | Regions | `selections/analysis/regions/regions.pyx` | Analysis regions | 🔨 To Document |
+ * | TopEfficiency | `selections/performance/topefficiency/topefficiency.pyx` | Efficiency measurement | 🔨 To Document |
+ * | Combinatorial | `selections/neutrino/combinatorial/combinatorial.pyx` | Neutrino reconstruction | 🔨 To Document |
+ * | Validation | `selections/neutrino/validation/validation.pyx` | Neutrino validation | 🔨 To Document |
+ * | METExample | `selections/example/met/met.pyx` | MET example | 🔨 To Document |
+ *
+ * @subsection python_impl_models Models
+ *
+ * | Model | File | Purpose | Status |
+ * |-------|------|---------|--------|
+ * | RecursiveGraphNeuralNetwork | `models/RecursiveGraphNeuralNetwork/` | Recursive GNN | 🔨 To Document |
+ * | GRIFT | `models/grift/grift.pyx` | GRIFT model | 🔨 To Document |
+ *
+ * @subsection python_impl_graphs Graphs
+ *
+ * | Graph | File | Purpose | Status |
+ * |-------|------|---------|--------|
+ * | GraphBSM4Tops | `graphs/bsm_4tops/graph_bsm_4tops.pyx` | BSM 4-top graph | 🔨 To Document |
+ * | GraphExpMC20 | `graphs/exp_mc20/graph_exp_mc20.pyx` | Experimental graph | 🔨 To Document |
+ * | GraphSSML_MC20 | `graphs/ssml_mc20/graph_ssml_mc20.pyx` | SSML graph | 🔨 To Document |
+ *
+ * @subsection python_impl_metrics Metrics
+ *
+ * | Metric | File | Purpose | Status |
+ * |--------|------|---------|--------|
+ * | MetricPageRank | `metrics/pagerank/metric_pagerank.pyx` | PageRank metric | 🔨 To Document |
+ * | MetricAccuracy | `metrics/accuracy/metric_accuracy.pyx` | Accuracy metric | 🔨 To Document |
+ *
+ * @section python_bindings_features Key Features
+ *
+ * @subsection python_features_serialization Serialization
+ *
+ * Many classes implement sophisticated `__reduce__()` methods for pickle serialization:
+ *
+ * - **ParticleTemplate**: Recursive serialization preserving decay chains
+ * - **SelectionTemplate**: Preserves weights, metadata, and all properties
+ * - **EventTemplate**: Serializes ROOT tree/branch associations
+ *
+ * Example:
+ * ```python
+ * import pickle
+ * 
+ * particle = ParticleTemplate()
+ * particle.Children = [child1, child2]
+ * 
+ * # Serialize (preserves children recursively)
+ * data = pickle.dumps(particle)
+ * 
+ * # Deserialize
+ * restored = pickle.loads(data)
+ * assert len(restored.Children) == 2
+ * ```
+ *
+ * @subsection python_features_operators Operator Overloads
+ *
+ * **ParticleTemplate** provides Pythonic particle arithmetic:
+ * ```python
+ * # Combine 4-momenta
+ * dijet = jet1 + jet2
+ * 
+ * # In-place addition
+ * jet1 += jet2
+ * 
+ * # sum() over lists
+ * fourjet = sum([jet1, jet2, jet3, jet4])
+ * ```
+ *
+ * @subsection python_features_properties Type-Flexible Properties
+ *
+ * Many properties accept **Union[str, double]**:
+ * - **Numeric**: Direct C++ assignment
+ * - **String**: ROOT branch name (deferred reading)
+ *
+ * Example:
+ * ```python
+ * particle = ParticleTemplate()
+ * 
+ * # Direct assignment
+ * particle.pt = 50.0
+ * 
+ * # ROOT branch (deferred)
+ * particle.pt = "jets_pt[0]"
+ * ```
+ *
+ * @subsection python_features_root ROOT Integration
+ *
+ * **SelectionTemplate.InterpretROOT()** provides dynamic branch mapping:
+ * ```python
+ * selection.root_leaves = {
+ *     "njets": lambda self, data: setattr(self, "njets", data[1]),
+ *     "jet_pt": self.build_jets
+ * }
+ * 
+ * selection.InterpretROOT("data.root", "nominal")
+ * # Properties populated from ROOT file
+ * ```
+ *
+ * @subsection python_features_relationships Relationship Tracking
+ *
+ * **ParticleTemplate** manages decay chains:
+ * ```python
+ * top.Children = [b_quark, W_boson]
+ * W_boson.Children = [lepton, neutrino]
+ * 
+ * # Navigate chain
+ * for child in top.Children:
+ *     print(f"Child: {child.pdgid}")
+ *     for grandchild in child.Children:
+ *         print(f"  Grandchild: {grandchild.pdgid}")
+ * ```
+ *
+ * @section python_bindings_memory Memory Management
+ *
+ * All Cython classes use **subclass-aware allocation**:
+ *
+ * ```python
+ * def __cinit__(self):
+ *     if type(self) is not BaseClass:
+ *         return  # Derived class handles allocation
+ *     self.ptr = new cpp_class()
+ * 
+ * def __dealloc__(self):
+ *     if type(self) is not BaseClass:
+ *         return  # Derived class handles cleanup
+ *     del self.ptr
+ * ```
+ *
+ * **Why?**
+ * - Prevents double allocation/deallocation
+ * - Enables clean inheritance
+ * - C++ object created only once per inheritance chain
+ *
+ * **ParticleTemplate** additionally uses `is_owner` flag:
+ * ```python
+ * def __cinit__(self):
+ *     self.is_owner = True  # Track memory ownership
+ * 
+ * def __dealloc__(self):
+ *     if not self.is_owner:
+ *         return  # Don't delete if not owner
+ *     del self.ptr
+ * ```
+ *
+ * @section python_bindings_best_practices Best Practices
+ *
+ * @subsection python_bp_inheritance Inheritance
+ *
+ * Always call `super().__init__()`:
+ * ```python
+ * class MyEvent(EventTemplate):
+ *     def __init__(self):
+ *         super().__init__()  # Essential for C++ allocation
+ *         # Your initialization...
+ * ```
+ *
+ * @subsection python_bp_properties Properties Over Direct Access
+ *
+ * ```python
+ * # Good
+ * event.index = 42
+ * event.Trees = ["nominal"]
+ * 
+ * # Bad (won't work - ptr is private)
+ * # event.ptr.index = 42  # AttributeError
+ * ```
+ *
+ * @subsection python_bp_serialization Serialization
+ *
+ * Use `dump()`/`load()` for SelectionTemplate:
+ * ```python
+ * selection.dump(path="./results", name="my_selection")
+ * restored = selection.load(path="./results", name="my_selection")
+ * ```
+ *
+ * Use `pickle` for ParticleTemplate:
+ * ```python
+ * import pickle
+ * data = pickle.dumps(particle)
+ * restored = pickle.loads(data)
+ * ```
+ *
+ * @section python_bindings_build Building
+ *
+ * **Cython Compilation:**
+ * ```bash
+ * python -m pip install -e .
+ * ```
+ *
+ * **Doxygen Integration:**
+ * - `EXTENSION_MAPPING = pyx=C++ pxd=C++` in Doxyfile
+ * - Doxygen treats .pyx files as C++ for parsing
+ * - Separate .dox files provide detailed Python API documentation
+ *
+ * @section python_bindings_related Related
+ *
+ * - @ref graph_template_python "GraphTemplate Python API"
+ * - @ref event_template_python "EventTemplate Python API"
+ * - @ref particle_template_python "ParticleTemplate Python API"
+ * - @ref selection_template_python "SelectionTemplate Python API"
+ * - @ref model_template_python "ModelTemplate Python API"
+ *
+ * @section python_bindings_summary Summary
+ *
+ * AnalysisG's Cython bindings are **NOT simple wrappers**. They contain:
+ *
+ * - **Complex Logic**: Serialization, operator overloads, relationship management
+ * - **Memory Management**: Ownership tracking, subclass-aware allocation
+ * - **Type Flexibility**: Union types, automatic conversion
+ * - **ROOT Integration**: Dynamic branch mapping, deferred reading
+ * - **Pythonic Interfaces**: Properties, operators, hash/equality
+ *
+ * **Statistics:**
+ * - ✅ **5 Core Templates**: Fully documented (~17,000 lines of .dox)
+ * - 🔨 **9 Utilities**: To be documented
+ * - 🔨 **36 Implementations**: To be documented (events, particles, selections)
+ * - 🔨 **5 Models/Graphs/Metrics**: To be documented
+ *
+ * **Total**: 56 .pyx files, 104 .pxd files requiring comprehensive documentation.
+ */

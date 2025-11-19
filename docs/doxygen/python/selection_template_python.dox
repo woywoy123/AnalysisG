@@ -1,0 +1,532 @@
+/**
+ * @file selection_template_python.dox
+ * @brief Python bindings for SelectionTemplate - Event selection and ROOT interpretation
+ * @defgroup selection_template_python Python SelectionTemplate
+ * @ingroup selections
+ * @details
+ * Cython Python interface for the selection_template C++ class. Provides sophisticated
+ * event selection capabilities with ROOT file interpretation, metadata management,
+ * weight handling, and serialization.
+ *
+ * **Source**: `src/AnalysisG/core/selection_template.pyx`
+ *
+ * @page selection_template_python_page Python SelectionTemplate API
+ *
+ * @section selection_py_intro Introduction
+ *
+ * **SelectionTemplate** is the Python wrapper for C++ selection classes, enabling
+ * complex event selection logic with:
+ * - ROOT file interpretation (automated branch→property mapping)
+ * - Event weight management (passed_weights tracking)
+ * - Metadata association (sample metadata via hashes)
+ * - Pickle serialization (dump/load with full state)
+ * - Postprocessing hooks for custom logic
+ *
+ * **Key Features:**
+ * - Complex `InterpretROOT()` method (~60 lines) for dynamic ROOT reading
+ * - `__reduce__()` serialization preserving weights and metadata
+ * - Hash-based weight file lookup
+ * - Customizable via `root_leaves` dictionary
+ * - Postprocessing hook for derived classes
+ *
+ * @section selection_py_lifecycle Lifecycle Management
+ *
+ * **Memory Management:**
+ * ```python
+ * class SelectionTemplate:
+ *     def __cinit__(self):
+ *         if type(self) is not SelectionTemplate:
+ *             return
+ *         self.root_leaves = {}  # Python-side ROOT mapping
+ *         self.ptr = new selection_template()
+ * 
+ *     def __dealloc__(self):
+ *         if type(self) is not SelectionTemplate:
+ *             return
+ *         del self.ptr
+ * ```
+ *
+ * **Initialization with State:**
+ * ```python
+ * def __init__(self, inpt = None):
+ *     \"\"\"Restore from serialized state.\"\"\"
+ *     if inpt is None:
+ *         return
+ *     
+ *     # Restore all properties
+ *     cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
+ *     for i in keys:
+ *         try:
+ *             setattr(self, i, inpt["data"][i])
+ *         except (KeyError, AttributeError):
+ *             continue
+ *     
+ *     # Restore C++ maps
+ *     self.ptr.passed_weights = <map[string, map[string, float]]>(inpt["weights"])
+ *     self.ptr.matched_meta = <map[string, meta_t]>(inpt["meta"])
+ * ```
+ *
+ * @section selection_py_serialization Serialization
+ *
+ * **__reduce__ Implementation:**
+ * ```python
+ * def __reduce__(self):
+ *     \"\"\"Pickle serialization with weights and metadata.\"\"\"
+ *     cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
+ *     cdef dict out = {}
+ *     
+ *     # Serialize all non-callable properties
+ *     out["data"] = {
+ *         i : getattr(self, i) 
+ *         for i in keys 
+ *         if not callable(getattr(self, i))
+ *     }
+ *     
+ *     # Serialize C++ maps
+ *     out["weights"] = self.ptr.passed_weights
+ *     out["meta"] = self.ptr.matched_meta
+ *     
+ *     # Return: (class, (constructor_args,))
+ *     return self.__class__, (out,)
+ * ```
+ *
+ * **Dump/Load Methods:**
+ * ```python
+ * def dump(self, str path = "./pkl-data", str name = ""):
+ *     \"\"\"Save to pickle file.\"\"\"
+ *     if not len(name):
+ *         name = env(self.ptr.name)
+ *     
+ *     pathlib.Path(path).mkdir(parents=True, exist_ok=True)
+ *     
+ *     try:
+ *         pickle.dump(self, open(path + "/" + name + ".pkl", "wb"))
+ *     except OSError:
+ *         print("Failed to save the SelectionTemplate")
+ * 
+ * def load(self, str path = "./pkl-data", str name = ""):
+ *     \"\"\"Load from pickle file.\"\"\"
+ *     if not len(name):
+ *         name = env(self.ptr.name)
+ *     
+ *     try:
+ *         return pickle.load(open(path + "/" + name + ".pkl", "rb"))
+ *     except OSError:
+ *         print("Failed to load the SelectionTemplate")
+ *     except EOFError:
+ *         print("Failed to load the SelectionTemplate")
+ *     
+ *     return None
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * selection = MySelection()
+ * # ... apply selections ...
+ * 
+ * # Save state
+ * selection.dump(path="./results", name="my_selection")
+ * 
+ * # Restore state
+ * restored = selection.load(path="./results", name="my_selection")
+ * ```
+ *
+ * @section selection_py_root ROOT Interpretation
+ *
+ * **InterpretROOT Method (~150 lines of complex logic):**
+ * ```python
+ * def InterpretROOT(self, str path, str tree):
+ *     \"\"\"
+ *     Dynamically interpret ROOT file and map branches to properties.
+ *     
+ *     Uses root_leaves dictionary: {<property_name>: <setter_function>}
+ *     Example:
+ *         root_leaves = {
+ *             "njets": lambda self, data: setattr(self, "njets", data[1]),
+ *             "jet_pt": lambda self, data: self.build_jets(data[1])
+ *         }
+ *     \"\"\"
+ *     # Validate root_leaves
+ *     if self.root_leaves is None or not len(self.root_leaves):
+ *         print("Failed to interpret!")
+ *         print("Please set: root_leaves = {<leaves> : <fx(class, data)>}")
+ *         return self
+ *     
+ *     # Extract keys and functions
+ *     cdef list li = list(self.root_leaves)        # Property names
+ *     cdef list lo = list(self.root_leaves.values())  # Setter functions
+ *     cdef vector[string] lx = <vector[string]>([enc(k) for k in li])
+ *     
+ *     # C++ tools for string matching
+ *     cdef tools tl = tools()
+ *     
+ *     # Create IO reader
+ *     iox = IO()
+ *     iox.Files = path
+ *     iox.Trees = [tree]
+ *     iox.Leaves = li
+ *     iox.Verbose = False
+ *     
+ *     # Associate indices: ROOT branch index → property index
+ *     cdef map[int, int] idx = {}
+ *     cdef bool trig = False
+ *     
+ *     # Read ROOT file
+ *     for i in iox:
+ *         # Apply setters (ROOT data → class properties)
+ *         li = list(i.values())
+ *         for pi in idx:
+ *             lo[pi.second](self, (rn[pi.second], li[pi.first]))
+ *         
+ *         if trig:
+ *             continue  # Already mapped branches
+ *         
+ *         # First iteration: map branch names to indices
+ *         li = list(i)
+ *         for lk in range(len(li)):
+ *             kx = enc(li[lk])
+ *             
+ *             # Find matching property (ends_with check)
+ *             lf = [ky for ky in lx if tl.ends_with(&kx, ky)]
+ *             if not lf.size():
+ *                 continue
+ *             
+ *             associate[lk] = lf[0]
+ *         
+ *         # Build idx map
+ *         for lt in range(lx.size()):
+ *             lk = -1
+ *             ky = lx[lt]
+ *             for px in associate:
+ *                 if px.second != ky:
+ *                     continue
+ *                 lk = px.first
+ *                 break
+ *             
+ *             if lk == -1:
+ *                 continue
+ *             idx[lk] = lt
+ *         
+ *         trig = True
+ *         
+ *         # Apply setters with mapped indices
+ *         li = list(i.values())
+ *         rn = list(self.root_leaves)
+ *         for pi in idx:
+ *             lo[pi.second](self, (rn[pi.second], li[pi.first]))
+ *     
+ *     # Call postprocessing hook
+ *     self.Postprocessing()
+ *     return self
+ * ```
+ *
+ * **How It Works:**
+ * 1. User sets `root_leaves` dictionary mapping property names → setter functions
+ * 2. `InterpretROOT()` reads ROOT file via IO class
+ * 3. Dynamically matches ROOT branch names to property names (suffix matching)
+ * 4. Builds index map: ROOT branch index → property index
+ * 5. Applies setter functions: `setter(self, (property_name, ROOT_data))`
+ * 6. Calls `Postprocessing()` hook for custom logic
+ *
+ * **Usage:**
+ * ```python
+ * class MySelection(SelectionTemplate):
+ *     def __init__(self):
+ *         super().__init__()
+ *         
+ *         # Define ROOT→property mapping
+ *         self.root_leaves = {
+ *             "njets": self.set_njets,
+ *             "jet_pt": self.set_jet_pt,
+ *             "jet_eta": self.set_jet_eta,
+ *             "met": self.set_met
+ *         }
+ *     
+ *     def set_njets(self, data):
+ *         property_name, value = data
+ *         self.njets = value
+ *     
+ *     def set_jet_pt(self, data):
+ *         property_name, values = data
+ *         self.jet_pt_list = list(values)
+ *     
+ *     def Postprocessing(self):
+ *         # Called after ROOT reading
+ *         self.apply_jet_cuts()
+ * 
+ * # Use it
+ * selection = MySelection()
+ * selection.InterpretROOT("data.root", "nominal")
+ * # selection.njets, selection.jet_pt_list now populated
+ * ```
+ *
+ * @section selection_py_weights Weight Management
+ *
+ * **PassedWeights Property:**
+ * ```python
+ * @property
+ * def PassedWeights(self):
+ *     \"\"\"
+ *     Nested dictionary of event weights that passed selection.
+ *     
+ *     Structure: {<sample_hash>: {<weight_file>: <weight_value>}}
+ *     \"\"\"
+ *     return as_basic_dict_dict(&self.ptr.passed_weights)
+ * ```
+ *
+ * **HashToWeightFile Method:**
+ * ```python
+ * def HashToWeightFile(self, hash_):
+ *     \"\"\"
+ *     Convert sample hash(es) to weight file name(s).
+ *     
+ *     Args:
+ *         hash_: Single hash (str/int) or list of hashes
+ *     
+ *     Returns:
+ *         List of tuples: [(weight_file, weight_value), ...]
+ *     \"\"\"
+ *     cdef str hash
+ *     cdef vector[string] hashes = []
+ *     
+ *     if isinstance(hash_, list):
+ *         hashes = [enc(hash) for hash in hash_]
+ *     elif isinstance(hash_, dict):
+ *         hashes = [enc(hash) for hash in hash_]
+ *     else:
+ *         hashes = [enc(hash_)]
+ *     
+ *     # C++ reverse lookup
+ *     cdef vector[map[string, float]] rev = self.ptr.reverse_hash(&hashes)
+ *     
+ *     # Convert to Python tuples
+ *     cdef map[string, float] i
+ *     return [tuple(dict(i).items())[0] for i in rev]
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * selection = MySelection()
+ * # ... apply selection ...
+ * 
+ * # Access weights
+ * weights = selection.PassedWeights
+ * # {
+ * #   "sample1_hash": {"weight_file1.root": 1.234},
+ * #   "sample2_hash": {"weight_file2.root": 0.987}
+ * # }
+ * 
+ * # Reverse lookup
+ * sample_hash = "abc123def456"
+ * weight_file, weight_value = selection.HashToWeightFile(sample_hash)[0]
+ * print(f"{weight_file}: {weight_value}")
+ * ```
+ *
+ * @section selection_py_metadata Metadata Management
+ *
+ * **GetMetaData Property:**
+ * ```python
+ * @property
+ * def GetMetaData(self):
+ *     \"\"\"
+ *     Dictionary of sample metadata.
+ *     
+ *     Returns: {<sample_hash>: Meta object}
+ *     \"\"\"
+ *     cdef Meta data
+ *     cdef dict out = {}
+ *     cdef pair[string, meta_t] itm
+ *     
+ *     for itm in self.ptr.matched_meta:
+ *         data = Meta()
+ *         data.ptr.meta_data = itm.second
+ *         out[env(itm.first)] = data
+ *     
+ *     return out
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * selection = MySelection()
+ * # ... apply selection ...
+ * 
+ * # Access metadata
+ * metadata = selection.GetMetaData
+ * for sample_hash, meta in metadata.items():
+ *     print(f"Sample: {meta.dsid}")
+ *     print(f"  Cross-section: {meta.cross_section}")
+ *     print(f"  Filter efficiency: {meta.filter_eff}")
+ * ```
+ *
+ * @section selection_py_hooks Hooks and Customization
+ *
+ * **Postprocessing Hook:**
+ * ```python
+ * def Postprocessing(self):
+ *     \"\"\"Override in derived classes for custom logic.\"\"\"
+ *     pass
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * class MySelection(SelectionTemplate):
+ *     def Postprocessing(self):
+ *         # Called after InterpretROOT() reads data
+ *         self.apply_cuts()
+ *         self.calculate_weights()
+ *         self.build_histograms()
+ * ```
+ *
+ * **transform_dict_keys Hook (Cython-level):**
+ * ```python
+ * cdef void transform_dict_keys(self):
+ *     \"\"\"Cython hook for dict key transformation.\"\"\"
+ *     pass
+ * ```
+ *
+ * @section selection_py_usage Usage Examples
+ *
+ * @subsection selection_py_basic Basic Selection
+ *
+ * ```python
+ * from AnalysisG import SelectionTemplate
+ * 
+ * class JetSelection(SelectionTemplate):
+ *     def __init__(self):
+ *         super().__init__()
+ *         self.njets = 0
+ *         self.jet_pts = []
+ *     
+ *     def Strategy(self, event):
+ *         \"\"\"Event selection logic.\"\"\"
+ *         self.njets = len(event.Jets)
+ *         self.jet_pts = [j.pt for j in event.Jets]
+ *         
+ *         # Apply cuts
+ *         if self.njets < 4:
+ *             return False
+ *         
+ *         if max(self.jet_pts) < 50.0:
+ *             return False
+ *         
+ *         return True
+ * ```
+ *
+ * @subsection selection_py_root_interp ROOT Interpretation
+ *
+ * ```python
+ * class ComplexSelection(SelectionTemplate):
+ *     def __init__(self):
+ *         super().__init__()
+ *         
+ *         # Define ROOT mapping
+ *         self.root_leaves = {
+ *             "n_jets": lambda self, data: setattr(self, "njets", data[1]),
+ *             "jets_pt": lambda self, data: setattr(self, "jet_pts", list(data[1])),
+ *             "jets_eta": lambda self, data: setattr(self, "jet_etas", list(data[1])),
+ *             "met_et": lambda self, data: setattr(self, "met", data[1])
+ *         }
+ *     
+ *     def Postprocessing(self):
+ *         # Build jets from ROOT data
+ *         self.jets = []
+ *         for pt, eta in zip(self.jet_pts, self.jet_etas):
+ *             jet = ParticleTemplate()
+ *             jet.pt = pt
+ *             jet.eta = eta
+ *             self.jets.append(jet)
+ * 
+ * # Use it
+ * selection = ComplexSelection()
+ * selection.InterpretROOT("data.root", "nominal")
+ * print(f"Found {len(selection.jets)} jets")
+ * ```
+ *
+ * @subsection selection_py_persistence State Persistence
+ *
+ * ```python
+ * # Run selection
+ * selection = MySelection()
+ * for event in events:
+ *     selection.Strategy(event)
+ * 
+ * # Save results
+ * selection.dump(path="./results/selections", name="my_analysis")
+ * 
+ * # Later: restore results
+ * restored = SelectionTemplate()
+ * restored = restored.load(path="./results/selections", name="my_analysis")
+ * 
+ * # Access preserved data
+ * weights = restored.PassedWeights
+ * metadata = restored.GetMetaData
+ * ```
+ *
+ * @section selection_py_best_practices Best Practices
+ *
+ * **Always Set root_leaves:**
+ * ```python
+ * class MySelection(SelectionTemplate):
+ *     def __init__(self):
+ *         super().__init__()
+ *         
+ *         # Required for InterpretROOT
+ *         self.root_leaves = {
+ *             "branch1": self.setter1,
+ *             "branch2": self.setter2
+ *         }
+ * ```
+ *
+ * **Use Lambda Functions for Simple Setters:**
+ * ```python
+ * self.root_leaves = {
+ *     "njets": lambda self, data: setattr(self, "njets", data[1]),
+ *     "met": lambda self, data: setattr(self, "met", data[1])
+ * }
+ * ```
+ *
+ * **Use Methods for Complex Logic:**
+ * ```python
+ * self.root_leaves = {
+ *     "jets_pt": self.build_jets,
+ *     "leptons_pt": self.build_leptons
+ * }
+ * 
+ * def build_jets(self, data):
+ *     property_name, pt_values = data
+ *     # Complex jet building logic...
+ * ```
+ *
+ * **Override Postprocessing:**
+ * ```python
+ * def Postprocessing(self):
+ *     # Called after ROOT reading
+ *     self.apply_cuts()
+ *     self.normalize_weights()
+ * ```
+ *
+ * @section selection_py_related Related
+ *
+ * - @ref selection_template_module "C++ SelectionTemplate" - Core implementation
+ * - @ref event_template_python "Python EventTemplate" - Event containers
+ * - @ref meta "Meta Class" - Metadata management
+ * - @ref io "IO Module" - ROOT file reading
+ *
+ * @section selection_py_summary Summary
+ *
+ * **SelectionTemplate Python bindings provide:**
+ * - Dynamic ROOT file interpretation
+ * - Weight and metadata management
+ * - Pickle serialization (dump/load)
+ * - Postprocessing hooks
+ * - Hash-based lookups
+ *
+ * **Key Points:**
+ * - `InterpretROOT()` is ~150 lines of complex branch mapping
+ * - Set `root_leaves` dictionary before calling `InterpretROOT()`
+ * - Override `Postprocessing()` for custom logic
+ * - Use `dump()`/`load()` for state persistence
+ * - `PassedWeights` tracks per-sample weights
+ * - `GetMetaData` provides sample metadata
+ * - Hash-based lookups enable efficient sample identification
+ */

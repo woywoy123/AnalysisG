@@ -1,0 +1,107 @@
+/**
+@file
+@brief Vollständige Dokumentation für das pyc-Modul – High-Performance-Physik- und Graph-Utilities für AnalysisG (C++/CUDA/PyTorch).
+
+@defgroup pyc_module pyc
+@ingroup modules_module
+
+@brief Das `pyc`-Modul stellt eine umfangreiche Sammlung von High-Performance-Utilities für numerische Physik, Graph-Operationen und Neutrinorekonstruktion bereit. Es integriert C++17, CUDA und LibTorch für schnelle Tensorberechnungen und ist das Backend für viele AnalysisG-Kernfunktionen.
+
+@details
+
+---
+
+# Übersicht
+
+| Komponente | Zweck | Link |
+|------------|-------|------|
+| **pyc::transform** | Lorentz-Transformationen, Koordinatenwechsel | (Diese Seite) |
+| **pyc::physics**   | Physikalische Größen (Masse, Impuls, Beta, DeltaR, etc.) | (Diese Seite) |
+| **pyc::operators** | Lineare Algebra, Rotationen, Eigenwerte, Determinanten | (Diese Seite) |
+| **pyc::nusol**     | Neutrinorekonstruktion (analytisch & numerisch) | (Diese Seite) |
+| **pyc::graph**     | Graph-Operationen, Aggregation, PageRank | (Diese Seite) |
+| neutrino           | Erweiterter Teilchen-Typ für Neutrinorekonstruktion | (Diese Seite) |
+| particle_template  | Basisklasse für Teilchen | @ref particle_template_page |
+
+---
+
+@section pyc_intro Einführung
+
+Das `pyc`-Modul ist das numerische Rückgrat von AnalysisG. Es bietet:
+- Effiziente Tensorisierung von C++-Datenstrukturen
+- Physikalische Basisfunktionen (Impuls, Masse, Beta, DeltaR, etc.)
+- Lorentz-Transformationen und Koordinatenwechsel (separat & kombiniert)
+- Operatoren für lineare Algebra (Kreuzprodukt, Eigenwerte, Determinanten)
+- High-Level-Graph-Operationen (Aggregation, PageRank, Reconstruction)
+- Flexible Neutrinorekonstruktion (einschließlich analytischer und numerischer Methoden)
+
+@section pyc_api API und Hauptfunktionen
+
+## Tensorisierung und Utilities
+- `pyc::std_to_dict` – Konvertiert std::map in Torch-Dict
+- `pyc::tensorize` – Wandelt Vektoren in Torch-Tensoren um
+- `pyc::as_pmc`, `pyc::to_pmc` – Extrahiert Vierervektoren aus Teilchen
+
+## Transformationsfunktionen
+- `pyc::transform::separate` und `pyc::transform::combined` – Umrechnung zwischen kartesischen und polaren Koordinaten, Lorentz-Boosts
+
+## Physikalische Größen
+- `pyc::physics::cartesian` und `pyc::physics::polar` – Berechnung von $p$, $m$, $\beta$, $\Delta R$, $\theta$, $m_T$, etc. aus verschiedenen Koordinaten
+
+## Operatoren
+- `pyc::operators` – Dot, Cross, Rotationen (Rx, Ry, Rz), Determinante, Eigenwerte, Inverse
+
+## Neutrinorekonstruktion
+- `pyc::nusol` – Methoden für 1- und 2-Neutrino-Rekonstruktion (BaseMatrix, Nu, NuNu, kombinatorisch)
+- Template- und Tensor-APIs für C++ und CUDA
+
+## Graph-Operationen
+- `pyc::graph` – Aggregation von Knoten/Edges, PageRank, Rekonstruktionsalgorithmen
+- Polar- und kartesische Varianten für flexible Feature-Extraktion
+
+## neutrino-Klasse
+- Erweiterung von `particle_template` mit Zusatzfeldern für Rekonstruktionsalgorithmen
+
+@section pyc_usage Beispiel
+
+```cpp
+// Tensorisierung eines Vektors
+std::vector<double> pt = {40.0, 50.0};
+auto tensor = pyc::tensorize(&pt);
+
+// Physikalische Größe berechnen
+auto mass = pyc::physics::cartesian::M(px, py, pz, e);
+
+// Neutrinorekonstruktion
+std::vector<neutrino*> solutions = pyc::nusol::NuNu(...);
+
+// Graph-Aggregation
+auto agg = pyc::graph::edge_aggregation(edge_index, prediction, node_feature);
+```
+
+@section pyc_ext Erweiterbarkeit
+- Neue Operatoren und Physikfunktionen können einfach als Namespaces/Funktionen ergänzt werden
+- CUDA-Implementierungen werden automatisch erkannt, wenn verfügbar
+
+@section pyc_deps Abhängigkeiten
+- **Intern**: `particle_template`, `neutrino`
+- **Extern**: LibTorch, C++ STL, CUDA (optional)
+
+@section pyc_bestpractices Best Practices
+- Immer auf korrekte Tensor-Devices achten (CPU/GPU)
+- Für große Datenmengen: Tensor-APIs bevorzugen
+- Bei Neutrinorekonstruktion: Indizes und Zuordnungen prüfen
+
+@section pyc_pitfalls Häufige Fehler
+- Falsche Tensor-Shape → Laufzeitfehler
+- Device-Mismatch (CPU vs. CUDA)
+- Nicht initialisierte Zeiger bei Template-APIs
+
+@section pyc_conclusion Fazit
+Das pyc-Modul ist das numerische und physikalische Rückgrat von AnalysisG. Es vereint High-Performance-Physik, Graph-Algorithmen und flexible Schnittstellen für C++ und Python.
+
+@see particle_template
+@see neutrino
+@see tools
+@see notification
+*/

@@ -1,0 +1,1149 @@
+/**
+@file
+@brief Comprehensive documentation for the model_template class - abstract base class for all Graph Neural Network models.
+
+@defgroup model_template_module model_template
+@ingroup modules_module
+
+@brief The `model_template` module provides a sophisticated abstract base class for creating Graph Neural Networks (GNNs) with automatic feature assignment, multi-level loss computation, checkpoint management, and device-agnostic training.
+
+@details
+
+---
+
+# Quick Navigation
+
+| Module | Description | Link |
+|--------|-------------|------|
+| **Model Template** | GNN base class | (Current Page) |
+| @ref graph_template_module | Graph construction | Produces input graph_t |
+| @ref dataloader_module | Dataset batching | Provides batched inputs |
+| @ref lossfx_module | Loss functions | Factory for model losses |
+| @ref optimizer_module | Training orchestrator | Calls train_sequence() |
+| @ref MetaModule | Dataset metadata | Provides normalization |
+| @ref tools_module | Utilities | Parent class |
+| @ref notification_module | Logging | Parent class (progress bars) |
+
+**Typical Workflow**: `dataloader::train_data()` → **`model_template::forward()`** → `compute_loss()` → `train_sequence()` → `optimizer::step()`
+
+---
+
+*/
+
+/**
+@page model_template_module_page Model Template Module
+@tableofcontents
+
+@section model_intro Introduction
+
+The `model_template` class, defined in `src/AnalysisG/modules/model/`, is the foundation of all machine learning models in AnalysisG, providing a structured, declarative interface for building Graph Neural Networks tailored to high-energy physics analyses.
+
+@section model_purpose Purpose and Design
+
+The `model_template` class is the foundation of all machine learning models in AnalysisG. It provides a structured, declarative interface for building Graph Neural Networks tailored to high-energy physics analyses, eliminating boilerplate code and enforcing best practices.
+
+**Core Abstractions**:
+1. **Feature Declaration**: Models declare required inputs/outputs via `cproperty` members rather than hardcoding tensor extraction
+2. **Automatic Feature Assignment**: The base class populates input/output maps from `graph_t` objects transparently
+3. **Multi-Level Predictions**: Models can simultaneously predict graph-level, node-level, and edge-level properties with independent loss functions
+4. **Integrated Training Loop**: `train_sequence()` handles loss computation, backpropagation, and optimizer steps automatically
+5. **Checkpoint System**: Full model state (parameters + optimizer) can be saved/restored with single method calls
+
+## Training Pipeline Flow
+
+```
+┌──────────────────────────────┐
+│  dataloader::train_data(k)   │  Step 1: Batch Retrieval
+│  Returns: batch_graph_t*     │  Aggregated graph batch
+│  - edge_index [2, E_total]   │
+│  - data_map_node["pt"]       │
+│  - batch_index [N_total]     │
+└──────────┬───────────────────┘
+           │
+           ▼
+┌──────────────────────────────┐
+│  assign_features(batch)      │  Step 2: Feature Assignment
+│  i_node["pt"] = batch.data_node["pt"]
+│  i_edge["delta_r"] = batch.data_edge["delta_r"]
+│  (Automatic via cproperty)   │
+└──────────┬───────────────────┘
+           │
+           ▼
+┌──────────────────────────────┐
+│  forward(batch)              │  Step 3: User Architecture
+│  • GNN layers (user code)    │  ← You implement this!
+│  • Predictions registered:   │
+│    register_output_node(pred)│
+│    register_output_graph(cls)│
+└──────────┬───────────────────┘
+           │
+           ▼
+┌──────────────────────────────┐
+│  compute_loss()              │  Step 4: Multi-Level Loss
+│  For each output:            │  Independent loss per level
+│    loss_node = CE(pred, truth)
+│    loss_graph = BCE(cls, label)
+│  total_loss = Σ losses       │
+└──────────┬───────────────────┘
+           │
+           ▼
+┌──────────────────────────────┐
+│  train_sequence()            │  Step 5: Optimization
+│  1. zero_grad()              │  Clear gradients
+│  2. loss.backward()          │  Backpropagation
+│  3. optimizer.step()         │  Update weights
+│  4. scheduler.step()         │  Adjust learning rate
+└──────────┬───────────────────┘
+           │
+           ▼
+┌──────────────────────────────┐
+│  optimizer::training_loop()  │  Step 6: Epoch Management
+│  • Iterate batches           │  Outer training loop
+│  • Checkpoint saving         │
+│  • Metrics collection        │
+└──────────────────────────────┘
+```
+
+**See Also**:
+- @ref lossfx_module for loss function creation
+- @ref dataloader_module for batch construction
+- @ref optimizer_module for epoch-level orchestration
+
+---
+
+## Quick Method Reference
+
+| Method | Purpose | Input | Output | User Action |
+|--------|---------|-------|--------|-------------|
+| `forward()` | Define GNN architecture | `graph_t*` | void | **User implements** |
+| `train_sequence()` | Execute train step | `graph_t*` | `torch::Tensor` loss | Framework calls automatically |
+| `assign_features()` | Map graph → inputs | `graph_t*` | void | Framework calls automatically |
+| `register_output_node()` | Register node predictions | `torch::Tensor` | void | **Call in forward()** |
+| `register_output_edge()` | Register edge predictions | `torch::Tensor` | void | **Call in forward()** |
+| `register_output_graph()` | Register graph predictions | `torch::Tensor` | void | **Call in forward()** |
+| `compute_loss()` | Calculate multi-level loss | None (uses registered outputs) | `torch::Tensor` | Framework calls |
+| `get_input_node()` | Get node feature tensor | None | `torch::Tensor` | **Call in forward()** |
+| `get_input_edge()` | Get edge feature tensor | None | `torch::Tensor` | **Call in forward()** |
+| `get_input_graph()` | Get graph feature tensor | None | `torch::Tensor` | **Call in forward()** |
+| `save_state()` | Checkpoint model | filename | void | `model->save_state("checkpoint.pt")` |
+| `load_state()` | Restore from checkpoint | filename | void | `model->load_state("checkpoint.pt")` |
+
+### Key cproperty Members
+
+| Property | Type | Description | Example Value |
+|----------|------|-------------|---------------|
+| `i_node` | `std::vector<std::string>` | Required node input features | `{"pt", "eta", "phi", "energy"}` |
+| `i_edge` | `std::vector<std::string>` | Required edge input features | `{"delta_r", "dijet_mass"}` |
+| `i_graph` | `std::vector<std::string>` | Required graph input features | `{"num_jets", "met"}` |
+| `o_node` | `std::vector<std::string>` | Node output names | `{"top_score"}` |
+| `o_edge` | `std::vector<std::string>` | Edge output names | `{"edge_weight"}` |
+| `o_graph` | `std::vector<std::string>` | Graph output names | `{"signal_prob"}` |
+| `loss_node` | `std::string` | Node loss function | `"crossentropyloss::(reduction->mean)"` |
+| `loss_edge` | `std::string` | Edge loss function | `"mseloss"` |
+| `loss_graph` | `std::string` | Graph loss function | `"bceloss"` |
+
+---
+
+**Design Philosophy**:
+Instead of writing repetitive data extraction and training code, users focus solely on implementing `forward()` (the model architecture). The base class handles:
+- Feature lookup from graph data maps
+- Loss function instantiation per output
+- Gradient flow management
+- Device transfer (CPU ↔ GPU)
+- State serialization
+
+**Key Features**:
+- **cproperty-Based I/O**: Declarative feature specification with compile-time type safety
+- **Multi-Output Support**: Each output (graph/node/edge level) has independent loss function
+- **Device Management**: Automatic tensor transfer to correct device during forward pass
+- **Checkpoint Robustness**: Epoch tracking, loss history, optimizer state saved together
+- **Module Registration**: Automatic discovery of `torch::nn::Sequential` modules for parameter management
+
+The implementation is organized across specialized source files:
+
+| **File** | **Purpose** |
+|----------|-------------|
+| `model_template.h` | Class definition with cproperty members, virtual methods, member variables |
+| `model_template.cxx` | `forward()` dispatch, feature assignment, prediction registration, module discovery |
+| `model_configuration.cxx` | Initialization, checkpoint save/restore, settings cloning |
+| `model_lossfx.cxx` | `compute_loss()`, `train_sequence()` with gradient flow |
+| `model_checks.cxx` | Feature validation (ensures required features exist in graph) |
+
+---
+
+# Class Structure
+
+## Inheritance Hierarchy
+
+```
+notification
+    ↓
+  tools
+    ↓
+model_template
+    ↓
+ (User Models)
+```
+
+Inherits from `tools` (→ `notification`), gaining:
+- **From `tools`**: String utilities, vector helpers, filesystem operations
+- **From `notification`**: Colored logging, progress bars
+
+User creates derived classes (e.g., `MyGNN`) that implement `forward()`.
+
+## Member Variables
+
+### Input Feature Declarations (cproperties)
+```cpp
+cproperty<std::vector<std::string>> i_graph;  // Required graph-level features
+cproperty<std::vector<std::string>> i_node;   // Required node-level features
+cproperty<std::vector<std::string>> i_edge;   // Required edge-level features
+```
+
+**Purpose**: User populates these in derived class constructor to declare required features.
+
+**Example**:
+```cpp
+this->i_node = {"pt", "eta", "phi", "energy"};
+this->i_edge = {"delta_r"};
+```
+
+**Result**: During `forward()`, the base class ensures these features exist in the input graph and makes them accessible via tensor maps.
+
+### Output Feature Declarations (cproperties)
+```cpp
+cproperty<std::map<std::string, std::string>> o_graph;  // Output → loss function
+cproperty<std::map<std::string, std::string>> o_node;   // Output → loss function
+cproperty<std::map<std::string, std::string>> o_edge;   // Output → loss function
+```
+
+**Purpose**: Declares predicted outputs and their associated loss functions.
+
+**Example**:
+```cpp
+this->o_node = {
+    {"is_top", "crossentropyloss::(ignore->-1)"},
+    {"jet_pt_regression", "mseloss"}
+};
+```
+
+**Result**: Base class creates `lossfx` instances for each output and computes losses during `train_sequence()`.
+
+### Tensor Maps (Populated Automatically)
+```cpp
+std::map<std::string, torch::Tensor*> m_i_graph;   // Graph-level input tensors
+std::map<std::string, torch::Tensor*> m_i_node;    // Node-level input tensors
+std::map<std::string, torch::Tensor*> m_i_edge;    // Edge-level input tensors
+
+std::map<std::string, torch::Tensor*> m_o_graph;   // Graph-level truth tensors
+std::map<std::string, torch::Tensor*> m_o_node;    // Node-level truth tensors
+std::map<std::string, torch::Tensor*> m_o_edge;    // Edge-level truth tensors
+
+std::map<std::string, torch::Tensor*> m_p_graph;   // Graph-level predictions
+std::map<std::string, torch::Tensor*> m_p_node;    // Node-level predictions
+std::map<std::string, torch::Tensor*> m_p_edge;    // Edge-level predictions
+```
+
+**Naming Convention**:
+- `m_i_*`: Input features (from `graph_t::data_*`)
+- `m_o_*`: Output truth labels (from `graph_t::truth_*`)
+- `m_p_*`: Predictions (populated by user via `prediction_*_feature()`)
+
+**Access in forward()**:
+```cpp
+void forward(graph_t* data) override {
+    torch::Tensor pt = *this->m_i_node["pt"];
+    torch::Tensor eta = *this->m_i_node["eta"];
+    torch::Tensor x = torch::cat({pt, eta}, -1);
+    // ... GNN layers ...
+}
+```
+
+### Loss Functions
+```cpp
+std::map<std::string, lossfx*> graph_loss;   // Loss functions for graph outputs
+std::map<std::string, lossfx*> node_loss;    // Loss functions for node outputs
+std::map<std::string, lossfx*> edge_loss;    // Loss functions for edge outputs
+```
+
+**Purpose**: Stores `lossfx` instances created from output declarations. Populated during `initialize()`.
+
+### Optimizer and Scheduler
+```cpp
+torch::optim::Optimizer* m_optim;             // Main optimizer (Adam/AdamW/SGD/etc.)
+torch::optim::LRScheduler* m_lrs;             // Learning rate scheduler (optional)
+```
+
+**Lifecycle**: Created via `optimizer_template::build_optimizer()`, accessed during `train_sequence()`.
+
+### Device Configuration
+```cpp
+torch::TensorOptions* m_option;               // Device specification (CPU/CUDA)
+int device_index;                             // CUDA device index (0, 1, 2, ...)
+```
+
+**Purpose**: Ensures all tensors are on correct device during forward/backward passes.
+
+### Graph Structure Pointers
+```cpp
+torch::Tensor* edge_index;                    // Graph connectivity [2, E]
+torch::Tensor* batch_index;                   // Node → graph mapping [N]
+torch::Tensor* event_weight;                  // Per-event weights [B]
+```
+
+**Purpose**: Provided by `graph_t`, accessed by GNN layers for message passing.
+
+### Module Registration
+```cpp
+std::vector<std::string> modules;             // Names of registered modules
+std::map<std::string, torch::nn::Sequential*> m_modules; // Actual module pointers
+```
+
+**Purpose**: Tracks `torch::nn::Sequential` modules added via `register_module()`. Used for parameter extraction and state saving.
+
+### Checkpoint Tracking
+```cpp
+cproperty<int> epoch;                         // Current epoch number
+cproperty<int> validation_epoch;             // Epoch of best validation loss
+cproperty<double> validation_loss;           // Best validation loss value
+cproperty<std::vector<double>> train_losses; // Training loss history
+cproperty<std::vector<double>> val_losses;   // Validation loss history
+```
+
+**Purpose**: Enables checkpoint restoration to exact training state, including loss curves for visualization.
+
+### Configuration
+```cpp
+cproperty<std::string> name;                  // Model name (e.g., "TopClassifier")
+cproperty<int> kfold;                         // Current k-fold index
+cproperty<std::string> optimization_path;     // Directory for checkpoints
+```
+
+---
+
+# Core Methods
+
+## Model Definition
+
+### `forward(graph_t* data)` (Pure Virtual)
+
+**Purpose**: User-implemented method defining model architecture
+
+**Contract**: Must call `prediction_*_feature()` for each declared output
+
+**Typical Structure**:
+```cpp
+void forward(graph_t* data) override {
+    // 1. Extract input features
+    torch::Tensor x = torch::cat({
+        *this->m_i_node["pt"],
+        *this->m_i_node["eta"]
+    }, -1);
+    
+    // 2. Apply GNN layers
+    x = gnn_layer1->forward(x, *this->edge_index);
+    x = torch::relu(x);
+    x = gnn_layer2->forward(x, *this->edge_index);
+    
+    // 3. Register predictions
+    this->prediction_node_feature("is_top", x);
+}
+```
+
+**Important**: Do NOT manually compute losses in `forward()`. Loss computation is handled automatically by `train_sequence()`.
+
+---
+
+### `prediction_graph_feature(std::string name, torch::Tensor pred)`
+
+**Purpose**: Registers a graph-level prediction
+
+**Parameters**:
+- `name`: Output feature name (must match key in `o_graph`)
+- `pred`: Prediction tensor with shape `[batch_size, output_dim]`
+
+**Example**:
+```cpp
+torch::Tensor graph_embedding = global_mean_pool(node_features, *this->batch_index);
+torch::Tensor is_signal = classifier(graph_embedding);  // [B, 2]
+this->prediction_graph_feature("is_signal", is_signal);
+```
+
+**Implementation**:
+```cpp
+void model_template::prediction_graph_feature(std::string name, torch::Tensor pred){
+    this->m_p_graph[name] = new torch::Tensor(pred);
+}
+```
+
+### `prediction_node_feature(std::string name, torch::Tensor pred)`
+
+**Purpose**: Registers a node-level prediction
+
+**Parameters**:
+- `name`: Output feature name (must match key in `o_node`)
+- `pred`: Prediction tensor with shape `[num_nodes, output_dim]`
+
+**Example**:
+```cpp
+torch::Tensor jet_classification = node_classifier(node_embeddings);  // [N, 5]
+this->prediction_node_feature("jet_type", jet_classification);
+```
+
+### `prediction_edge_feature(std::string name, torch::Tensor pred)`
+
+**Purpose**: Registers an edge-level prediction
+
+**Example**:
+```cpp
+torch::Tensor edge_scores = edge_predictor(edge_embeddings);  // [E, 1]
+this->prediction_edge_feature("jet_pairing", edge_scores);
+```
+
+---
+
+## Feature Assignment
+
+### `assign_features(graph_t* data)`
+
+**Purpose**: Automatically populates `m_i_*` and `m_o_*` maps from `graph_t` data
+
+**Algorithm**:
+```
+For each feature name in i_graph:
+    Lookup in data->data_map_graph
+    Store tensor pointer in m_i_graph[name]
+
+For each feature name in i_node:
+    Lookup in data->data_map_node
+    Store tensor pointer in m_i_node[name]
+
+For each feature name in i_edge:
+    Lookup in data->data_map_edge
+    Store tensor pointer in m_i_edge[name]
+
+(Repeat for output truth features using truth_map_*)
+```
+
+**Called Automatically**: Before user's `forward()` is invoked
+
+**Implementation** (in `model_template.cxx`):
+```cpp
+void model_template::assign_features(graph_t* data){
+    // Assign graph-level inputs
+    for (const std::string& feature_name : *this->i_graph){
+        torch::Tensor* tensor = data->get_data_graph(feature_name, this->device_index);
+        this->m_i_graph[feature_name] = tensor;
+    }
+    
+    // Assign node-level inputs
+    for (const std::string& feature_name : *this->i_node){
+        torch::Tensor* tensor = data->get_data_node(feature_name, this->device_index);
+        this->m_i_node[feature_name] = tensor;
+    }
+    
+    // Assign edge-level inputs
+    for (const std::string& feature_name : *this->i_edge){
+        torch::Tensor* tensor = data->get_data_edge(feature_name, this->device_index);
+        this->m_i_edge[feature_name] = tensor;
+    }
+    
+    // Assign truth labels
+    for (const auto& [output_name, loss_fn] : *this->o_graph){
+        torch::Tensor* tensor = data->get_truth_graph(output_name, this->device_index);
+        this->m_o_graph[output_name] = tensor;
+    }
+    
+    for (const auto& [output_name, loss_fn] : *this->o_node){
+        torch::Tensor* tensor = data->get_truth_node(output_name, this->device_index);
+        this->m_o_node[output_name] = tensor;
+    }
+    
+    for (const auto& [output_name, loss_fn] : *this->o_edge){
+        torch::Tensor* tensor = data->get_truth_edge(output_name, this->device_index);
+        this->m_o_edge[output_name] = tensor;
+    }
+    
+    // Assign graph structure
+    this->edge_index = data->get_edge_index(this);
+    this->batch_index = data->get_batch_index(this);
+    this->event_weight = data->get_event_weight(this);
+}
+```
+
+**Error Handling**: If a requested feature is missing, `graph_t::get_*` methods return `nullptr`, which will cause a segfault in `forward()`. Users should validate features with `check_features()` before training.
+
+---
+
+## Training and Loss Computation
+
+### `train_sequence(graph_t* data, model_report* report)`
+
+**Purpose**: The main training method that computes total loss, performs backpropagation, and updates weights
+
+**Algorithm**:
+```
+1. Call assign_features(data) to populate tensor maps
+2. Call user's forward(data) to generate predictions
+3. For each output at each level:
+   a. Call compute_loss() to get individual loss
+   b. Add to total_loss
+   c. Store in loss_breakdown map
+4. If training mode:
+   a. optimizer->zero_grad()
+   b. total_loss.backward()
+   c. (optional) Gradient clipping
+   d. optimizer->step()
+5. Record loss in report
+```
+
+**Implementation** (in `model_lossfx.cxx`):
+```cpp
+void model_template::train_sequence(graph_t* data, model_report* report){
+    // Feature assignment and forward pass
+    this->assign_features(data);
+    this->forward(data);
+    
+    torch::Tensor total_loss = torch::zeros({1}, *this->m_option);
+    std::map<std::string, torch::Tensor> loss_breakdown;
+    
+    // Compute graph-level losses
+    for (const auto& [output_name, loss_fn_str] : *this->o_graph){
+        torch::Tensor loss = this->compute_loss(
+            output_name,
+            this->m_p_graph[output_name],
+            this->m_o_graph[output_name],
+            this->graph_loss[output_name]
+        );
+        total_loss += loss;
+        loss_breakdown["graph_" + output_name] = loss;
+    }
+    
+    // Compute node-level losses
+    for (const auto& [output_name, loss_fn_str] : *this->o_node){
+        torch::Tensor loss = this->compute_loss(
+            output_name,
+            this->m_p_node[output_name],
+            this->m_o_node[output_name],
+            this->node_loss[output_name]
+        );
+        total_loss += loss;
+        loss_breakdown["node_" + output_name] = loss;
+    }
+    
+    // Compute edge-level losses
+    for (const auto& [output_name, loss_fn_str] : *this->o_edge){
+        torch::Tensor loss = this->compute_loss(
+            output_name,
+            this->m_p_edge[output_name],
+            this->m_o_edge[output_name],
+            this->edge_loss[output_name]
+        );
+        total_loss += loss;
+        loss_breakdown["edge_" + output_name] = loss;
+    }
+    
+    // Backpropagation and optimization
+    if (report->mode == "training"){
+        this->m_optim->zero_grad();
+        total_loss.backward();
+        
+        // Optional gradient clipping
+        if (this->gradient_clip_value){
+            torch::nn::utils::clip_grad_value_(
+                this->parameters(),
+                this->gradient_clip_value
+            );
+        }
+        
+        this->m_optim->step();
+    }
+    
+    // Record loss
+    report->loss = total_loss.item<double>();
+    report->loss_breakdown = loss_breakdown;
+}
+```
+
+**Important Notes**:
+- **Zero Grad**: `optimizer->zero_grad()` is called automatically
+- **Gradient Clipping**: Can be enabled via `gradient_clip_value` member
+- **Validation Mode**: When `report->mode == "validation"`, gradients are not computed (PyTorch's `torch::no_grad()` should be set externally)
+
+---
+
+### `compute_loss(std::string name, Tensor* pred, Tensor* truth, lossfx* loss_fn)`
+
+**Purpose**: Computes loss for a single output
+
+**Algorithm**:
+```
+1. Validate pred and truth are non-null
+2. Optionally apply event weighting
+3. Call loss_fn->loss(pred, truth)
+4. Return scalar loss tensor
+```
+
+**Implementation**:
+```cpp
+torch::Tensor model_template::compute_loss(
+    std::string name,
+    torch::Tensor* pred,
+    torch::Tensor* truth,
+    lossfx* loss_fn
+){
+    if (!pred || !truth){
+        this->warning("Missing prediction or truth for: " + name);
+        return torch::zeros({1}, *this->m_option);
+    }
+    
+    torch::Tensor loss = loss_fn->loss(pred, truth);
+    
+    // Apply event weighting if available
+    if (this->event_weight){
+        loss = loss * (*this->event_weight);
+    }
+    
+    return loss.mean();
+}
+```
+
+---
+
+## Initialization and Configuration
+
+### `initialize(settings_t* settings)`
+
+**Purpose**: Configures model from settings struct, creates loss functions and optimizer
+
+**Algorithm**:
+```
+1. Store settings pointer
+2. Set device_index from settings
+3. Create m_option (torch::TensorOptions)
+4. For each output in o_graph/o_node/o_edge:
+   a. Create lossfx instance from loss function string
+   b. Call lossfx->build_loss_function()
+   c. Transfer loss to device via lossfx->to()
+5. Extract model parameters via collect_parameters()
+6. Call build_optimizer() to create optimizer
+7. Call build_scheduler() if scheduler specified
+```
+
+**Implementation** (in `model_configuration.cxx`):
+```cpp
+void model_template::initialize(settings_t* settings){
+    this->settings = settings;
+    this->device_index = settings->device;
+    this->m_option = new torch::TensorOptions(
+        torch::kCUDA,
+        this->device_index
+    );
+    
+    // Create loss functions
+    for (const auto& [name, loss_str] : *this->o_graph){
+        this->graph_loss[name] = new lossfx(name, loss_str);
+        this->graph_loss[name]->build_loss_function();
+        this->graph_loss[name]->to(this->m_option);
+    }
+    
+    for (const auto& [name, loss_str] : *this->o_node){
+        this->node_loss[name] = new lossfx(name, loss_str);
+        this->node_loss[name]->build_loss_function();
+        this->node_loss[name]->to(this->m_option);
+    }
+    
+    for (const auto& [name, loss_str] : *this->o_edge){
+        this->edge_loss[name] = new lossfx(name, loss_str);
+        this->edge_loss[name]->build_loss_function();
+        this->edge_loss[name]->to(this->m_option);
+    }
+    
+    // Create optimizer
+    std::vector<torch::Tensor> params = this->collect_parameters();
+    this->m_optim = this->build_optimizer(&settings->optimizer_params, &params);
+    
+    // Create scheduler
+    if (settings->optimizer_params.scheduler.size()){
+        this->build_scheduler(&settings->optimizer_params, this->m_optim);
+    }
+    
+    this->success("Model initialized: " + *this->name);
+}
+```
+
+---
+
+### `register_module(torch::nn::Sequential* module, std::string name)`
+
+**Purpose**: Registers a `torch::nn::Sequential` module for parameter tracking
+
+**Usage**:
+```cpp
+class MyGNN : public model_template {
+public:
+    MyGNN(){
+        this->gnn_layers = new torch::nn::Sequential(
+            torch::nn::Linear(16, 32),
+            torch::nn::ReLU(),
+            torch::nn::Linear(32, 10)
+        );
+        this->register_module(this->gnn_layers, "gnn_layers");
+    }
+    
+private:
+    torch::nn::Sequential* gnn_layers;
+};
+```
+
+**Purpose of Registration**: Enables `collect_parameters()` to discover module parameters for optimizer and checkpoint saving.
+
+---
+
+### `collect_parameters()`
+
+**Purpose**: Extracts all trainable parameters from registered modules
+
+**Algorithm**:
+```
+For each module in m_modules:
+    Call module->parameters()
+    Append to parameter vector
+Return parameter vector
+```
+
+**Implementation**:
+```cpp
+std::vector<torch::Tensor> model_template::collect_parameters(){
+    std::vector<torch::Tensor> params;
+    
+    for (const auto& [name, module] : this->m_modules){
+        std::vector<torch::Tensor> module_params = module->parameters();
+        params.insert(params.end(), module_params.begin(), module_params.end());
+    }
+    
+    return params;
+}
+```
+
+---
+
+## Checkpoint Management
+
+### `save_state(std::string path)`
+
+**Purpose**: Serializes complete model state to disk
+
+**Saved Components**:
+1. All registered module parameters
+2. Optimizer state (Adam momentum buffers, etc.)
+3. Current epoch number
+4. Best validation loss and epoch
+5. Training/validation loss history
+
+**Algorithm**:
+```
+For each registered module:
+    torch::save(module, path + module_name + ".pt")
+torch::save(optimizer, path + "optimizer.pt")
+Save epoch, losses to metadata file
+```
+
+**Implementation** (in `model_configuration.cxx`):
+```cpp
+void model_template::save_state(std::string path){
+    if (!this->ends_with(&path, "/")){
+        path += "/";
+    }
+    this->create_path(path);
+    
+    // Save modules
+    for (const auto& [name, module] : this->m_modules){
+        std::string module_path = path + name + ".pt";
+        torch::save(*module, module_path);
+        this->success("Saved module: " + name);
+    }
+    
+    // Save optimizer
+    std::string optim_path = path + "optimizer.pt";
+    torch::save(*this->m_optim, optim_path);
+    
+    // Save metadata
+    std::map<std::string, std::string> metadata;
+    metadata["epoch"] = std::to_string(*this->epoch);
+    metadata["validation_loss"] = std::to_string(*this->validation_loss);
+    metadata["validation_epoch"] = std::to_string(*this->validation_epoch);
+    
+    // Save loss history
+    std::string history = "";
+    for (double loss : *this->train_losses){
+        history += std::to_string(loss) + ",";
+    }
+    metadata["train_losses"] = history;
+    
+    history = "";
+    for (double loss : *this->val_losses){
+        history += std::to_string(loss) + ",";
+    }
+    metadata["val_losses"] = history;
+    
+    // Write metadata to file
+    std::ofstream meta_file(path + "metadata.txt");
+    for (const auto& [key, value] : metadata){
+        meta_file << key << "=" << value << std::endl;
+    }
+    meta_file.close();
+    
+    this->success("Checkpoint saved to: " + path);
+}
+```
+
+---
+
+### `restore_state(std::string path)`
+
+**Purpose**: Loads complete model state from checkpoint
+
+**Algorithm**:
+```
+For each registered module:
+    torch::load(module, path + module_name + ".pt")
+torch::load(optimizer, path + "optimizer.pt")
+Load epoch, losses from metadata file
+```
+
+**Implementation**:
+```cpp
+void model_template::restore_state(std::string path){
+    if (!this->ends_with(&path, "/")){
+        path += "/";
+    }
+    
+    // Load modules
+    for (const auto& [name, module] : this->m_modules){
+        std::string module_path = path + name + ".pt";
+        if (!this->is_file(module_path)){
+            this->warning("Module file not found: " + module_path);
+            continue;
+        }
+        torch::load(*module, module_path);
+        module->to(*this->m_option);
+        this->success("Loaded module: " + name);
+    }
+    
+    // Load optimizer
+    std::string optim_path = path + "optimizer.pt";
+    if (this->is_file(optim_path)){
+        torch::load(*this->m_optim, optim_path);
+        this->success("Loaded optimizer state");
+    }
+    
+    // Load metadata
+    std::ifstream meta_file(path + "metadata.txt");
+    std::string line;
+    while (std::getline(meta_file, line)){
+        std::vector<std::string> parts = this->split(line, "=");
+        if (parts.size() != 2){continue;}
+        
+        if (parts[0] == "epoch"){
+            this->epoch = std::stoi(parts[1]);
+        }
+        else if (parts[0] == "validation_loss"){
+            this->validation_loss = std::stod(parts[1]);
+        }
+        else if (parts[0] == "validation_epoch"){
+            this->validation_epoch = std::stoi(parts[1]);
+        }
+        else if (parts[0] == "train_losses"){
+            std::vector<std::string> losses = this->split(parts[1], ",");
+            this->train_losses->clear();
+            for (const std::string& loss_str : losses){
+                if (loss_str.size()){
+                    this->train_losses->push_back(std::stod(loss_str));
+                }
+            }
+        }
+        else if (parts[0] == "val_losses"){
+            std::vector<std::string> losses = this->split(parts[1], ",");
+            this->val_losses->clear();
+            for (const std::string& loss_str : losses){
+                if (loss_str.size()){
+                    this->val_losses->push_back(std::stod(loss_str));
+                }
+            }
+        }
+    }
+    meta_file.close();
+    
+    this->success("Checkpoint restored from: " + path);
+}
+```
+
+---
+
+## Feature Validation
+
+### `check_features(graph_t* data)`
+
+**Purpose**: Validates that all declared input/output features exist in graph
+
+**Algorithm**:
+```
+For each feature in i_graph/i_node/i_edge:
+    Check if feature exists in data->data_map_*
+    If missing: log error
+For each output in o_graph/o_node/o_edge:
+    Check if truth label exists in data->truth_map_*
+    If missing: log error
+Return true if all features found, false otherwise
+```
+
+**Usage** (before training):
+```cpp
+graph_t* sample_graph = training_data[0];
+if (!model->check_features(sample_graph)){
+    std::cerr << "Feature mismatch! Check model declarations." << std::endl;
+    return 1;
+}
+```
+
+---
+
+# Complete Usage Example
+
+```cpp
+#include <templates/model_template.h>
+#include <torch/torch.h>
+
+// Define GNN model
+class TopClassifier : public model_template {
+public:
+    TopClassifier(){
+        this->name = "TopClassifier";
+        
+        // Declare input features
+        this->i_node = {"pt", "eta", "phi", "btag"};
+        
+        // Declare outputs with loss functions
+        this->o_node = {
+            {"is_top", "crossentropyloss::(ignore->-1|smoothing->0.1)"}
+        };
+        
+        // Define architecture
+        this->gnn_encoder = new torch::nn::Sequential(
+            torch::nn::Linear(4, 64),
+            torch::nn::ReLU(),
+            torch::nn::Linear(64, 128),
+            torch::nn::ReLU()
+        );
+        
+        this->classifier = new torch::nn::Sequential(
+            torch::nn::Linear(128, 64),
+            torch::nn::ReLU(),
+            torch::nn::Linear(64, 2)  // Binary: top or not
+        );
+        
+        this->register_module(this->gnn_encoder, "gnn_encoder");
+        this->register_module(this->classifier, "classifier");
+    }
+    
+    void forward(graph_t* data) override {
+        // Extract input features
+        torch::Tensor x = torch::cat({
+            *this->m_i_node["pt"],
+            *this->m_i_node["eta"],
+            *this->m_i_node["phi"],
+            *this->m_i_node["btag"]
+        }, -1);
+        
+        // GNN encoding
+        x = this->gnn_encoder->forward(x);
+        
+        // Classification
+        torch::Tensor logits = this->classifier->forward(x);
+        
+        // Register prediction
+        this->prediction_node_feature("is_top", logits);
+    }
+    
+private:
+    torch::nn::Sequential *gnn_encoder, *classifier;
+};
+
+int main(){
+    // Create model
+    TopClassifier* model = new TopClassifier();
+    
+    // Configure settings
+    settings_t settings;
+    settings.device = 0;  // GPU 0
+    settings.optimizer_params.optimizer = "adamw";
+    settings.optimizer_params.lr = 1e-3;
+    settings.optimizer_params.weight_decay = 1e-4;
+    
+    // Initialize
+    model->initialize(&settings);
+    
+    // Load data
+    dataloader* loader = new dataloader();
+    // ... load graphs ...
+    
+    // Training loop
+    for (int epoch = 0; epoch < 50; ++epoch){
+        model->epoch = epoch;
+        std::vector<graph_t*>* batches = loader->build_batch(train_data, model, &report);
+        
+        for (graph_t* batch : *batches){
+            model_report report;
+            report.mode = "training";
+            model->train_sequence(batch, &report);
+            
+            std::cout << "Loss: " << report.loss << std::endl;
+        }
+        
+        // Validation
+        report.mode = "validation";
+        torch::NoGradGuard no_grad;
+        for (graph_t* batch : *val_batches){
+            model->train_sequence(batch, &report);  // Computes loss without gradients
+        }
+        
+        // Save checkpoint
+        if (report.loss < *model->validation_loss){
+            model->validation_loss = report.loss;
+            model->validation_epoch = epoch;
+            model->save_state("./checkpoints/best/");
+        }
+    }
+    
+    // Restore best checkpoint
+    model->restore_state("./checkpoints/best/");
+    
+    delete model;
+    delete loader;
+    return 0;
+}
+```
+
+---
+
+# Performance Characteristics
+
+## Feature Assignment
+- **Time**: O(F) where F = number of features (~1-10 μs)
+- **Overhead**: Negligible compared to forward pass
+
+## Forward Pass
+- **Time**: Dominated by GNN layer computation
+- **Bottleneck**: Matrix multiplications, message passing
+
+## Loss Computation
+- **Time**: O(O) where O = number of outputs (~10-100 μs per output)
+- **Multi-Output Overhead**: Linear in number of outputs
+
+---
+
+# Dependencies
+
+## Internal
+- `graph_t`: Input data structure
+- `lossfx`: Loss function factory
+- `dataloader`: Batch provider
+- `settings_t`: Configuration
+- `model_report`: Training metrics
+- `tools`: Utilities (parent class)
+- `notification`: Logging (grandparent class)
+
+## External
+- **LibTorch**: All `torch::*` classes
+- **C++17 STL**: `<map>`, `<vector>`, `<string>`, `<fstream>`
+
+---
+
+# Best Practices
+
+## 1. Use cproperties for Feature Declaration
+```cpp
+this->i_node = {"pt", "eta", "phi"};
+```
+Enables compile-time type checking and automatic feature lookup.
+
+## 2. Register All Modules
+```cpp
+this->register_module(my_sequential, "my_sequential");
+```
+Essential for parameter extraction and checkpointing.
+
+## 3. Validate Features Before Training
+```cpp
+if (!model->check_features(sample_graph)){
+    std::cerr << "Feature mismatch!" << std::endl;
+    return 1;
+}
+```
+
+## 4. Save Checkpoints Regularly
+```cpp
+if (epoch % 5 == 0){
+    model->save_state("./checkpoints/epoch_" + std::to_string(epoch) + "/");
+}
+```
+
+## 5. Use Descriptive Output Names
+```cpp
+this->o_node = {{"top_quark_probability", "..."}};  // Good
+this->o_node = {{"out1", "..."}};  // Bad
+```
+
+---
+
+# Common Pitfalls
+
+## 1. Forgetting to Call initialize()
+**Symptom**: Segfault when accessing `m_optim` or loss functions
+
+**Solution**: Always call `initialize()` before training
+
+## 2. Mismatched Output Names
+**Symptom**: Loss computation fails
+
+**Solution**: Ensure `prediction_*_feature()` name matches `o_*` declaration
+
+## 3. Not Registering Modules
+**Symptom**: Parameters not updated during training
+
+**Solution**: Call `register_module()` for all `torch::nn::Sequential`
+
+## 4. Calling backward() Manually
+**Symptom**: Double backpropagation error
+
+**Solution**: Let `train_sequence()` handle backpropagation automatically
+
+## 5. Incorrect Device Transfer
+**Symptom**: "Expected tensor on cuda:0 but got cpu"
+
+**Solution**: Ensure `initialize()` is called with correct settings.device
+
+---
+
+# Conclusion
+
+The `model_template` class provides a high-level, declarative interface for GNN development in particle physics. By abstracting boilerplate code (feature extraction, loss computation, checkpoint management), it enables researchers to focus on model architecture. The cproperty-based I/O system and automatic training loop integration ensure type-safe, maintainable code.
+
+Key innovations:
+- **Declarative Feature Specification**: No manual tensor extraction
+- **Multi-Level Loss Support**: Simultaneous graph/node/edge predictions
+- **Automatic Training Loop**: Loss computation, backprop, optimizer steps handled transparently
+- **Robust Checkpointing**: Full state serialization including loss history
+
+---
+
+@see graph_t
+@see lossfx
+@see dataloader
+@see settings_t
+@see model_report
+@see tools
+@see notification
+
+*/

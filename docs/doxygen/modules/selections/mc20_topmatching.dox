@@ -1,0 +1,46 @@
+/**
+@file
+@brief Implementation-level documentation for the `topmatching` selection (mc20/topmatching).
+
+@defgroup selections_mc20_topmatching Selections: mc20/topmatching
+@ingroup selections_module
+
+@details
+The `topmatching` selection provides detailed matching and kinematic analysis of top quarks and their decay products in MC20 samples, focusing on the ssml_mc20 event structure. It is designed to extract, categorize, and store information about top quark masses, children, truth jets, and their lepton/hadron associations for further analysis.
+
+**Main components:**
+- **Class:**
+	- `topmatching` (inherits from `selection_template`)
+		- Methods:
+			- `topmatching()`, `~topmatching()`: Constructor and destructor.
+			- `clone()`: Returns a new instance of the selection with identical settings.
+			- `selection(event_template*)`: Always returns true (placeholder for selection logic).
+			- `strategy(event_template*)`: Main method for extracting and categorizing top quark and jet information from the event. Handles lepton/hadron separation, mass calculation, and association of jets and children.
+			- `merge(selection_template*)`: Merges all stored data from another `topmatching` instance (for parallel or distributed processing).
+			- `vectorize`, `downcast`: Utility templates for converting maps to vectors and downcasting pointers.
+		- Attributes:
+			- `truth_top`: Vector of top quark masses (GeV).
+			- `no_children`: Vector indicating tops without children.
+			- `truth_children`: Map of child categories (all/lep/had) to their summed masses.
+			- `truth_jets`: Map of truth jet categories (all/lep/had) to their summed masses.
+			- `n_truth_jets_lep`, `n_truth_jets_had`: Maps of truth jet multiplicity (leptonic/hadronic) to mass.
+			- `jets_truth_leps`, `jet_leps`: Maps of reconstructed jet categories (all/lep/had) to mass, including lepton association and PDG ID tagging.
+			- `n_jets_lep`, `n_jets_had`: Maps of jet multiplicity (leptonic/hadronic) to mass.
+
+**Cython bindings:**
+- The class is exposed to Python as `TopMatching` via Cython. All main data members are accessible as Python lists or dictionaries, and the selection can be used in high-level Python workflows for analysis and plotting.
+
+**Usage:**
+- Used in MC20 workflows to analyze top quark kinematics, truth jet matching, and lepton/hadron categorization. Supports systematic studies of reconstruction and matching performance.
+
+**Dependencies:**
+- Inherits from `selection_template` (C++/Cython plugin system)
+- Uses `event_template`, `particle_template`, and helper functions from AnalysisG
+- Cython bindings for Python integration
+
+**Source code:**
+- Header: `src/AnalysisG/selections/mc20/topmatching/topmatching.h`
+- Implementation: `src/AnalysisG/selections/mc20/topmatching/topmatching.cxx`
+- Python bindings: `topmatching_mc20.pyx`, `topmatching_mc20.pxd`
+
+*/

@@ -1,0 +1,357 @@
+/**
+ * @file graph_template_python.dox
+ * @brief Python bindings for GraphTemplate - Graph construction for GNN training
+ * @defgroup graph_template_python Python GraphTemplate
+ * @ingroup graph
+ * @details
+ * Cython Python interface for the graph_template C++ class. Provides Pythonic access
+ * to graph construction, node/edge feature management, and topology definition for
+ * Graph Neural Network training on physics events.
+ *
+ * **Source**: `src/AnalysisG/core/graph_template.pyx`
+ *
+ * @page graph_template_python_page Python GraphTemplate API
+ *
+ * @section graph_py_intro Introduction
+ *
+ * **GraphTemplate** is the Python wrapper for the C++ graph_template class, enabling
+ * users to construct graph representations of physics events in pure Python. It manages:
+ * - Node definitions (particles as graph nodes)
+ * - Edge definitions (relationships between particles)
+ * - Feature mappings (kinematic properties → tensor features)
+ * - Graph compilation and serialization
+ *
+ * **Key Features:**
+ * - Pythonic property accessors for C++ members
+ * - Automatic memory management via `__cinit__`/`__dealloc__`
+ * - Hash-based equality and comparison
+ * - Integration with EventTemplate for event processing
+ *
+ * @section graph_py_class GraphTemplate Class
+ *
+ * @subsection graph_py_lifecycle Lifecycle Management
+ *
+ * **Memory Management:**
+ * ```python
+ * class GraphTemplate:
+ *     def __cinit__(self):
+ *         # C++ object creation (subclass-aware)
+ *         if type(self) is not GraphTemplate:
+ *             return
+ *         self.ptr = new graph_template()
+ * 
+ *     def __dealloc__(self):
+ *         # Automatic cleanup when Python object destroyed
+ *         if type(self) is not GraphTemplate:
+ *             return
+ *         del self.ptr
+ * ```
+ *
+ * **Why Subclass Checks?**
+ * - Prevents double allocation in derived classes
+ * - Allows user-defined graph classes to inherit properly
+ * - C++ object created only once per inheritance chain
+ *
+ * @subsection graph_py_hash Hashing and Equality
+ *
+ * **Hash Implementation:**
+ * ```python
+ * def __hash__(self):
+ *     # Uses first 8 chars of C++ SHA-256 hash
+ *     return int(string(self.ptr.hash).substr(0, 8), 0)
+ * 
+ * def __eq__(self, other):
+ *     # Type-safe equality check
+ *     if not self.is_self(other):
+ *         return False
+ *     cdef GraphTemplate ev = other
+ *     return self.ptr[0] == ev.ptr[0]
+ * 
+ * def is_self(self, inpt) -> bool:
+ *     # Polymorphic type checking
+ *     if isinstance(inpt, GraphTemplate):
+ *         return True
+ *     return issubclass(inpt.__class__, GraphTemplate)
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * graph1 = MyGraphClass()
+ * graph2 = MyGraphClass()
+ * 
+ * # Usable in sets/dicts
+ * graph_set = {graph1, graph2}
+ * graph_dict = {graph1: "data1"}
+ * 
+ * # Equality comparison
+ * if graph1 == graph2:
+ *     print("Same graph structure")
+ * ```
+ *
+ * @subsection graph_py_properties Properties
+ *
+ * **index Property:**
+ * ```python
+ * @property
+ * def index(self):
+ *     \"\"\"Event index in dataset.\"\"\"
+ *     return self.ptr.index
+ * ```
+ *
+ * **Tree Property:**
+ * ```python
+ * @property
+ * def Tree(self):
+ *     \"\"\"ROOT TTree name for this graph.\"\"\"
+ *     return env(self.ptr.tree)
+ * ```
+ * - **env()**: Cython helper converting C++ string → Python str
+ *
+ * **PreSelection Property:**
+ * ```python
+ * @property
+ * def PreSelection(self):
+ *     \"\"\"Pre-selection flag for event filtering.\"\"\"
+ *     return self.ptr.preselection
+ * 
+ * @PreSelection.setter
+ * def PreSelection(self, val):
+ *     \"\"\"Enable/disable pre-selection cuts.\"\"\"
+ *     self.ptr.preselection = val
+ * ```
+ *
+ * @section graph_py_usage Usage Examples
+ *
+ * @subsection graph_py_basic Basic Graph Definition
+ *
+ * ```python
+ * from AnalysisG import GraphTemplate
+ * 
+ * class MyPhysicsGraph(GraphTemplate):
+ *     def __init__(self):
+ *         super().__init__()
+ *         self.PreSelection = True
+ *     
+ *     def CompileEvent(self):
+ *         \"\"\"Define graph topology from event data.\"\"\"
+ *         # Access event particles
+ *         jets = self.Tops + self.Jets
+ *         leptons = self.Leptons
+ *         
+ *         # Define nodes (particles as graph nodes)
+ *         for jet in jets:
+ *             self.add_node(jet)
+ *         
+ *         for lep in leptons:
+ *             self.add_node(lep)
+ *         
+ *         # Define edges (connect particles)
+ *         for i, jet1 in enumerate(jets):
+ *             for jet2 in jets[i+1:]:
+ *                 if jet1.DeltaR(jet2) < 1.0:
+ *                     self.add_edge(jet1, jet2)
+ *         
+ *         # Add features
+ *         self.add_node_feature("pt")
+ *         self.add_node_feature("eta")
+ *         self.add_node_feature("phi")
+ *         self.add_edge_feature("delta_r")
+ * ```
+ *
+ * @subsection graph_py_inheritance Custom Implementations
+ *
+ * ```python
+ * class TopReconstructionGraph(GraphTemplate):
+ *     def __init__(self):
+ *         super().__init__()
+ *         self.require_top_quarks = True
+ *     
+ *     def CompileEvent(self):
+ *         # Require at least 2 truth top quarks
+ *         if len(self.TruthTops) < 2:
+ *             return None
+ *         
+ *         # Build graph for top reconstruction
+ *         self.define_particle_nodes()
+ *         self.define_topology(lambda p1, p2: p1.DeltaR(p2) < 1.5)
+ *         
+ *         # Truth labels from MC
+ *         self.add_truth_labels_from_tops()
+ *         
+ *         return self
+ * ```
+ *
+ * @subsection graph_py_hashing Hash-Based Caching
+ *
+ * ```python
+ * # Deduplication using hashes
+ * graph_cache = {}
+ * 
+ * for event in events:
+ *     graph = MyGraph()
+ *     graph.CompileEvent(event)
+ *     
+ *     graph_hash = hash(graph)
+ *     
+ *     if graph_hash not in graph_cache:
+ *         graph_cache[graph_hash] = graph
+ *     else:
+ *         # Reuse cached graph
+ *         graph = graph_cache[graph_hash]
+ * ```
+ *
+ * @subsection graph_py_comparison Equality Checks
+ *
+ * ```python
+ * graph1 = MyGraph()
+ * graph1.CompileEvent(event1)
+ * 
+ * graph2 = MyGraph()
+ * graph2.CompileEvent(event2)
+ * 
+ * # Check if graphs have same structure
+ * if graph1 == graph2:
+ *     print("Identical graph topology")
+ * 
+ * # Type-safe comparison (won't compare with non-graphs)
+ * if graph1.is_self(graph2):
+ *     print("Both are GraphTemplate instances")
+ * ```
+ *
+ * @section graph_py_integration Integration
+ *
+ * **With EventTemplate:**
+ * ```python
+ * class MyEvent(EventTemplate):
+ *     pass
+ * 
+ * class MyGraph(GraphTemplate):
+ *     def CompileEvent(self):
+ *         # Access EventTemplate properties
+ *         jets = self.Jets        # From EventTemplate
+ *         leptons = self.Leptons  # From EventTemplate
+ *         
+ *         # Build graph...
+ * ```
+ *
+ * **With Container:**
+ * ```python
+ * from AnalysisG import Container
+ * 
+ * container = Container()
+ * container.add_graph_template(MyGraph)
+ * container.compile()  # Builds graphs for all events
+ * ```
+ *
+ * **With DataLoader:**
+ * ```python
+ * from AnalysisG import DataLoader
+ * 
+ * loader = DataLoader()
+ * loader.add_graph(MyGraph)
+ * loader.compile_dataset()
+ * 
+ * for batch in loader.train_data(0):  # K-fold 0
+ *     # batch contains graph tensors
+ *     node_features = batch['data_node']
+ *     edge_index = batch['edge_index']
+ * ```
+ *
+ * @section graph_py_cpp_interop C++ Interoperability
+ *
+ * **Pointer Access:**
+ * ```cython
+ * cdef class GraphTemplate:
+ *     cdef graph_template* ptr  # C++ pointer managed by Cython
+ * ```
+ *
+ * **Direct C++ Calls:**
+ * ```cython
+ * # In derived classes, can access C++ methods directly
+ * def custom_method(self):
+ *     self.ptr.CompileEvent()      # C++ method call
+ *     self.ptr.preselection = True # C++ member access
+ * ```
+ *
+ * **Memory Safety:**
+ * - Cython handles pointer lifecycle
+ * - `__dealloc__` called automatically when Python object dies
+ * - No manual `delete` needed in Python code
+ *
+ * @section graph_py_advanced Advanced Features
+ *
+ * **Polymorphic Behavior:**
+ * ```python
+ * def process_graph(graph: GraphTemplate):
+ *     # Works with any GraphTemplate subclass
+ *     if graph.is_self(graph):
+ *         print(f"Processing graph at index {graph.index}")
+ *         print(f"Using tree: {graph.Tree}")
+ * ```
+ *
+ * **Subclass Detection:**
+ * ```python
+ * # is_self() handles both isinstance and issubclass
+ * my_graph = MyCustomGraph()
+ * 
+ * # True: direct instance
+ * assert my_graph.is_self(my_graph)
+ * 
+ * # True: subclass check
+ * assert my_graph.is_self(MyCustomGraph)
+ * ```
+ *
+ * @section graph_py_best_practices Best Practices
+ *
+ * **Always Call Super:**
+ * ```python
+ * class MyGraph(GraphTemplate):
+ *     def __init__(self):
+ *         super().__init__()  # Essential for C++ object creation
+ *         # Your initialization...
+ * ```
+ *
+ * **Override CompileEvent:**
+ * ```python
+ * class MyGraph(GraphTemplate):
+ *     def CompileEvent(self):
+ *         # Always implement in derived classes
+ *         # This is where graph topology is defined
+ *         pass
+ * ```
+ *
+ * **Use Properties, Not Direct Access:**
+ * ```python
+ * # Good
+ * graph.PreSelection = True
+ * tree_name = graph.Tree
+ * 
+ * # Bad (won't work - ptr is private)
+ * # graph.ptr.preselection = True  # AttributeError
+ * ```
+ *
+ * @section graph_py_related Related
+ *
+ * - @ref graph_template_module "C++ GraphTemplate" - Core implementation
+ * - @ref event_template_python "Python EventTemplate" - Event containers
+ * - @ref particle_template_python "Python ParticleTemplate" - Particle objects
+ * - @ref dataloader "DataLoader" - Graph batching
+ * - @ref container "Container" - Graph management
+ *
+ * @section graph_py_summary Summary
+ *
+ * **GraphTemplate Python bindings provide:**
+ * - Pythonic interface to C++ graph construction
+ * - Automatic memory management
+ * - Hash-based equality and deduplication
+ * - Type-safe polymorphism via is_self()
+ * - Property-based access to C++ members
+ * - Seamless integration with AnalysisG pipeline
+ *
+ * **Key Points:**
+ * - Always call `super().__init__()` in derived classes
+ * - Override `CompileEvent()` to define graph topology
+ * - Use `hash()` for caching and deduplication
+ * - Use `is_self()` for type checking
+ * - Access C++ members via Python properties
+ */

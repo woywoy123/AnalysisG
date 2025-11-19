@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/mc16/decaymodes.
+
+@defgroup selections_mc16_decaymodes Selections: mc16/decaymodes
+@ingroup selections_module
+
+@details
+MC16 decay modes selections.
+Source: `src/AnalysisG/selections/mc16/decaymodes/`
+*/

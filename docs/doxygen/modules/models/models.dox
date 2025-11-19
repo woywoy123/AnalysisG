@@ -1,0 +1,9 @@
+/**
+@file
+@brief Placeholder for the Models module documentation.
+
+@defgroup models_module Models
+@ingroup modules_module
+
+@brief This module contains specific GNN model implementations.
+*/

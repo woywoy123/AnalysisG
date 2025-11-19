@@ -1,0 +1,492 @@
+/**
+ * @file event_template_python.dox
+ * @brief Python bindings for EventTemplate - Physics event containers
+ * @defgroup event_template_python Python EventTemplate
+ * @ingroup events
+ * @details
+ * Cython Python interface for the event_template C++ class. Provides Pythonic access
+ * to physics event data structures, ROOT TTree integration, and event-level properties
+ * like weights, branches, and particle collections.
+ *
+ * **Source**: `src/AnalysisG/core/event_template.pyx`
+ *
+ * @page event_template_python_page Python EventTemplate API
+ *
+ * @section event_py_intro Introduction
+ *
+ * **EventTemplate** is the Python wrapper for C++ event containers, representing
+ * individual physics events from collision data or MC simulation. It manages:
+ * - Event indexing and weighting (MC reweighting, luminosity)
+ * - ROOT TTree/branch associations
+ * - Particle collections (jets, leptons, MET, etc.)
+ * - Event-level metadata and serialization
+ *
+ * **Key Features:**
+ * - Pythonic property accessors for C++ members
+ * - Type-flexible setters (Union[str, double]) with automatic leaf creation
+ * - Hash-based equality for event deduplication
+ * - Multi-tree support for complex ROOT file structures
+ * - Seamless integration with GraphTemplate and SelectionTemplate
+ *
+ * @section event_py_lifecycle Lifecycle Management
+ *
+ * **Memory Management:**
+ * ```python
+ * class EventTemplate:
+ *     def __cinit__(self):
+ *         # C++ object creation (subclass-aware)
+ *         if type(self) is not EventTemplate:
+ *             return
+ *         self.ptr = new event_template()
+ * 
+ *     def __dealloc__(self):
+ *         # Automatic cleanup when Python object destroyed
+ *         if type(self) is not EventTemplate:
+ *             return
+ *         del self.ptr
+ * ```
+ *
+ * **Why Subclass Checks?**
+ * - Prevents double allocation in derived event classes
+ * - Allows user-defined events (e.g., `EventBSM4Tops`) to inherit cleanly
+ * - C++ pointer managed only by most-derived class
+ *
+ * @section event_py_hash Hashing and Equality
+ *
+ * **Hash Implementation:**
+ * ```python
+ * def __hash__(self):
+ *     # Uses first 8 chars of C++ SHA-256 hash
+ *     return int(string(self.ptr.hash).substr(0, 8), 0)
+ * 
+ * def __eq__(self, other):
+ *     # Type-safe equality check
+ *     if not self.is_self(other):
+ *         return False
+ *     cdef EventTemplate ev = other
+ *     return self.ptr[0] == ev.ptr[0]
+ * 
+ * def is_self(self, inpt) -> bool:
+ *     # Polymorphic type checking
+ *     if isinstance(inpt, EventTemplate):
+ *         return True
+ *     return issubclass(inpt.__class__, EventTemplate)
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * event1 = MyEventClass()
+ * event2 = MyEventClass()
+ * 
+ * # Usable in sets/dicts (deduplication)
+ * unique_events = {event1, event2}
+ * event_cache = {event1: "cached_data"}
+ * 
+ * # Equality comparison
+ * if event1 == event2:
+ *     print("Same event configuration")
+ * ```
+ *
+ * @section event_py_properties Properties
+ *
+ * @subsection event_py_prop_basic Basic Properties
+ *
+ * **index Property:**
+ * ```python
+ * @property
+ * def index(self) -> int:
+ *     \"\"\"Event index in dataset (0-based).\"\"\"
+ *     return self.ptr.index
+ * 
+ * @index.setter
+ * def index(self, val: Union[str, double]):
+ *     \"\"\"Set index, or create TTree leaf if string.\"\"\"
+ *     try:
+ *         self.ptr.index = val  # Numeric assignment
+ *     except TypeError:
+ *         # String → create ROOT branch leaf
+ *         self.ptr.leaves = [enc(val)]
+ * ```
+ *
+ * **Type Flexibility:**
+ * - **Numeric**: Direct assignment to C++ member
+ * - **String**: Creates ROOT TBranch for dynamic branch reading
+ *
+ * **weight Property:**
+ * ```python
+ * @property
+ * def weight(self) -> double:
+ *     \"\"\"Event weight (MC reweighting, luminosity).\"\"\"
+ *     return self.ptr.weight
+ * 
+ * @weight.setter
+ * def weight(self, val: Union[str, double]):
+ *     try:
+ *         self.ptr.weight = val
+ *     except TypeError:
+ *         self.ptr.leaves = [enc(val)]
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * # Direct assignment
+ * event.index = 42
+ * event.weight = 1.234
+ * 
+ * # ROOT branch assignment (deferred reading)
+ * event.index = "event_number"
+ * event.weight = "mc_weight"
+ * ```
+ *
+ * @subsection event_py_prop_root ROOT Integration Properties
+ *
+ * **Tree Property:**
+ * ```python
+ * @property
+ * def Tree(self) -> str:
+ *     \"\"\"Primary ROOT TTree name.\"\"\"
+ *     return env(self.ptr.tree)
+ * 
+ * @Tree.setter
+ * def Tree(self, str val):
+ *     self.ptr.tree = enc(val)
+ * ```
+ *
+ * **Trees Property (Multi-Tree Support):**
+ * ```python
+ * @property
+ * def Trees(self) -> list:
+ *     \"\"\"List of ROOT TTree names for event reading.\"\"\"
+ *     cdef string x
+ *     cdef vector[string] p = self.ptr.trees
+ *     return [env(x) for x in p]
+ * 
+ * @Trees.setter
+ * def Trees(self, val: Union[str, list]):
+ *     \"\"\"Set single tree or list of trees.\"\"\"
+ *     cdef str i
+ *     if isinstance(val, str):
+ *         self.ptr.trees = [enc(val)]
+ *     elif isinstance(val, list):
+ *         for i in val:
+ *             self.Trees = i  # Recursive append
+ * ```
+ *
+ * **Branches Property:**
+ * ```python
+ * @property
+ * def Branches(self) -> list:
+ *     \"\"\"List of ROOT TBranch names to read.\"\"\"
+ *     cdef string x
+ *     cdef vector[string] p = self.ptr.branches
+ *     return [env(x) for x in p]
+ * 
+ * @Branches.setter
+ * def Branches(self, val: Union[str, list]):
+ *     \"\"\"Set single branch or list of branches.\"\"\"
+ *     if isinstance(val, str):
+ *         self.ptr.branches = [enc(val)]
+ *     elif isinstance(val, list):
+ *         for i in val:
+ *             self.Branches = i  # Recursive append
+ * ```
+ *
+ * **Name Property:**
+ * ```python
+ * @property
+ * def Name(self):
+ *     \"\"\"Event class name (read-only from C++).\"\"\"
+ *     return env(self.ptr.name)
+ * ```
+ *
+ * @section event_py_usage Usage Examples
+ *
+ * @subsection event_py_basic Basic Event Class
+ *
+ * ```python
+ * from AnalysisG import EventTemplate
+ * 
+ * class MyEvent(EventTemplate):
+ *     def __init__(self):
+ *         super().__init__()
+ *         self.Tree = "nominal"
+ *         self.Branches = ["jets_pt", "jets_eta", "met_et"]
+ *     
+ *     def CompileEvent(self):
+ *         \"\"\"Process event data after ROOT reading.\"\"\"
+ *         # Define particle collections from branches
+ *         self.Jets = self.build_jets()
+ *         self.Leptons = self.build_leptons()
+ *         self.MET = self.build_met()
+ *         
+ *         # Apply event-level cuts
+ *         if len(self.Jets) < 4:
+ *             return None  # Skip event
+ *         
+ *         # Calculate event weight
+ *         self.weight = self.mc_weight * self.lumi_weight
+ *         
+ *         return self
+ * ```
+ *
+ * @subsection event_py_multi_tree Multi-Tree Reading
+ *
+ * ```python
+ * class ComplexEvent(EventTemplate):
+ *     def __init__(self):
+ *         super().__init__()
+ *         
+ *         # Read from multiple TTrees
+ *         self.Trees = ["nominal", "systematics", "truth"]
+ *         
+ *         # Specify branches from each tree
+ *         self.Branches = [
+ *             "jets_pt",           # From nominal
+ *             "syst_weight_up",    # From systematics
+ *             "truth_top_pt"       # From truth
+ *         ]
+ *     
+ *     def CompileEvent(self):
+ *         # Access data from all trees
+ *         jets = self.get_branch_data("jets_pt")
+ *         syst = self.get_branch_data("syst_weight_up")
+ *         truth = self.get_branch_data("truth_top_pt")
+ * ```
+ *
+ * @subsection event_py_deferred Deferred Branch Reading
+ *
+ * ```python
+ * class LazyEvent(EventTemplate):
+ *     def __init__(self):
+ *         super().__init__()
+ *         
+ *         # Use string assignment for deferred reading
+ *         self.index = "event_number"    # Read from ROOT branch
+ *         self.weight = "mc_weight"      # Read from ROOT branch
+ *     
+ *     def CompileEvent(self):
+ *         # Actual values populated during ROOT reading
+ *         print(f"Event {self.index} with weight {self.weight}")
+ * ```
+ *
+ * @subsection event_py_caching Event Deduplication
+ *
+ * ```python
+ * # Deduplication using event hashes
+ * processed_events = set()
+ * 
+ * for raw_event in root_file:
+ *     event = MyEvent()
+ *     event.CompileEvent(raw_event)
+ *     
+ *     event_hash = hash(event)
+ *     
+ *     if event_hash in processed_events:
+ *         continue  # Skip duplicate
+ *     
+ *     processed_events.add(event_hash)
+ *     # Process event...
+ * ```
+ *
+ * @subsection event_py_comparison Event Comparison
+ *
+ * ```python
+ * event1 = MyEvent()
+ * event1.index = 1
+ * event1.weight = 1.5
+ * 
+ * event2 = MyEvent()
+ * event2.index = 1
+ * event2.weight = 1.5
+ * 
+ * # Check if events are identical
+ * if event1 == event2:
+ *     print("Same event configuration")
+ * 
+ * # Type-safe comparison
+ * if event1.is_self(event2):
+ *     print("Both are EventTemplate instances")
+ * ```
+ *
+ * @section event_py_integration Integration
+ *
+ * **With GraphTemplate:**
+ * ```python
+ * class MyGraph(GraphTemplate):
+ *     def CompileEvent(self):
+ *         # Access EventTemplate properties
+ *         jets = self.Jets        # From EventTemplate
+ *         leptons = self.Leptons  # From EventTemplate
+ *         weight = self.weight    # Event weight
+ *         
+ *         # Build graph from event data
+ *         for jet in jets:
+ *             self.add_node(jet)
+ * ```
+ *
+ * **With SelectionTemplate:**
+ * ```python
+ * class MySelection(SelectionTemplate):
+ *     def Strategy(self, event: EventTemplate):
+ *         # Apply cuts to event
+ *         if len(event.Jets) < 4:
+ *             return False
+ *         
+ *         if event.weight < 0:
+ *             return False
+ *         
+ *         return True
+ * ```
+ *
+ * **With IO (ROOT Reading):**
+ * ```python
+ * from AnalysisG import IO
+ * 
+ * io = IO()
+ * io.Files = "data.root"
+ * io.Trees = ["nominal"]
+ * io.EventTemplate = MyEvent
+ * 
+ * for event in io:
+ *     # event is MyEvent instance with ROOT data loaded
+ *     print(f"Event {event.index}: {len(event.Jets)} jets")
+ * ```
+ *
+ * @section event_py_advanced Advanced Features
+ *
+ * **Type Conversion in Setters:**
+ * ```python
+ * # Numeric → direct assignment
+ * event.weight = 1.234  # C++ double assignment
+ * 
+ * # String → ROOT branch creation
+ * event.weight = "mc_weight"  # Deferred reading
+ * 
+ * # Mechanism:
+ * @weight.setter
+ * def weight(self, val: Union[str, double]):
+ *     try:
+ *         self.ptr.weight = val  # Try numeric
+ *     except TypeError:
+ *         # Fall back to branch leaf
+ *         self.ptr.leaves = [enc(val)]
+ * ```
+ *
+ * **Polymorphic Type Checking:**
+ * ```python
+ * def process_event(event):
+ *     # Works with any EventTemplate subclass
+ *     if event.is_self(event):
+ *         print(f"Processing {event.Name}")
+ *         print(f"Index: {event.index}")
+ *         print(f"Weight: {event.weight}")
+ * ```
+ *
+ * **Subclass Detection:**
+ * ```python
+ * my_event = MyCustomEvent()
+ * 
+ * # True: direct instance
+ * assert my_event.is_self(my_event)
+ * 
+ * # True: subclass check
+ * assert my_event.is_self(MyCustomEvent)
+ * 
+ * # False: different type
+ * other_object = "not_an_event"
+ * assert not my_event.is_self(other_object)
+ * ```
+ *
+ * @section event_py_cpp_interop C++ Interoperability
+ *
+ * **Pointer Access:**
+ * ```cython
+ * cdef class EventTemplate:
+ *     cdef event_template* ptr  # C++ pointer
+ * ```
+ *
+ * **Direct C++ Calls (in derived .pyx files):**
+ * ```cython
+ * # In user-defined event classes
+ * def custom_method(self):
+ *     self.ptr.index = 42          # C++ member access
+ *     self.ptr.weight = 1.5        # C++ member access
+ *     self.ptr.tree = b"nominal"   # C++ string assignment
+ * ```
+ *
+ * **Memory Safety:**
+ * - Cython manages pointer lifecycle automatically
+ * - `__dealloc__` called when Python object destroyed
+ * - No manual `delete` needed in Python code
+ * - Subclass checks prevent double-free
+ *
+ * @section event_py_best_practices Best Practices
+ *
+ * **Always Call Super:**
+ * ```python
+ * class MyEvent(EventTemplate):
+ *     def __init__(self):
+ *         super().__init__()  # Essential for C++ allocation
+ *         # Your initialization...
+ * ```
+ *
+ * **Override CompileEvent:**
+ * ```python
+ * class MyEvent(EventTemplate):
+ *     def CompileEvent(self):
+ *         # Define particle collections
+ *         # Apply event-level cuts
+ *         # Calculate weights
+ *         return self  # Or None to skip
+ * ```
+ *
+ * **Use Properties, Not Direct Access:**
+ * ```python
+ * # Good
+ * event.index = 42
+ * event.Trees = ["nominal", "syst"]
+ * 
+ * # Bad (won't work - ptr is private)
+ * # event.ptr.index = 42  # AttributeError
+ * ```
+ *
+ * **Handle Multi-Tree Carefully:**
+ * ```python
+ * # Single tree
+ * event.Tree = "nominal"
+ * 
+ * # Multiple trees (appends)
+ * event.Trees = "nominal"
+ * event.Trees = "syst"  # Now ["nominal", "syst"]
+ * 
+ * # Or assign list directly
+ * event.Trees = ["nominal", "syst"]
+ * ```
+ *
+ * @section event_py_related Related
+ *
+ * - @ref event_template_module "C++ EventTemplate" - Core implementation
+ * - @ref graph_template_python "Python GraphTemplate" - Graph construction
+ * - @ref particle_template_python "Python ParticleTemplate" - Particle objects
+ * - @ref selection_template_python "Python SelectionTemplate" - Event selection
+ * - @ref io "IO Module" - ROOT file reading
+ *
+ * @section event_py_summary Summary
+ *
+ * **EventTemplate Python bindings provide:**
+ * - Pythonic interface to C++ event containers
+ * - Automatic memory management
+ * - Hash-based equality for deduplication
+ * - Type-flexible properties (Union[str, double])
+ * - Multi-tree ROOT support
+ * - Seamless integration with AnalysisG pipeline
+ *
+ * **Key Points:**
+ * - Always call `super().__init__()` in derived classes
+ * - Override `CompileEvent()` to define event processing
+ * - Use `hash()` for caching and deduplication
+ * - Use `is_self()` for type checking
+ * - Access C++ members via Python properties only
+ * - String assignments create ROOT branch leaves (deferred reading)
+ * - Numeric assignments write directly to C++ members
+ */

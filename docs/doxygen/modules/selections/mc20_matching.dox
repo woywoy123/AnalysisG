@@ -1,0 +1,48 @@
+
+/**
+@file
+@brief Implementation-level documentation for the `matching` selection (mc20/matching).
+
+@defgroup selections_mc20_matching Selections: mc20/matching
+@ingroup selections_module
+
+@details
+The `matching` selection implements detailed matching of top quarks and their decay products in various MC20 setups (bsm_4tops, ssml_mc20, exp_mc20). It specializes in the analysis and categorization of top partons, children, truth jets, and reconstructed jets, as well as their lepton association. The implementation is highly modular and uses unified data structures for all matching strategies.
+
+**Main components:**
+- **Structures:**
+	- `object_data_t`: Stores counts, masses, matching information, and PDG-IDs for various top objects.
+	- `buffer_t`: Aggregates all relevant `object_data_t` for the different matching categories (partons, children, truth jets, jets with children, jets with leptons).
+- **Class:**
+	- `matching` (inherits from `selection_template`)
+		- Methods:
+			- `reference(event_template*)`: Matching strategy for bsm_4tops (MC16 reference).
+			- `experimental(event_template*)`: Matching strategy for exp_mc20.
+			- `current(event_template*)`: Matching strategy for ssml_mc20.
+			- `dump(...)`: Extracts and stores all relevant matching information for a top object.
+			- `match_obj(...)`: Performs the actual matching between objects and top quarks, including energy fraction and lepton checks.
+			- `get_pdgid(...)`: Extracts the PDG-IDs of the matched objects.
+			- `merge(selection_template*)`: Merges matching data from multiple selections (e.g., for parallel processing).
+			- `clone()`: Creates a copy of the selection with identical settings.
+			- `strategy(event_template*)`: Dispatcher that calls the appropriate matching strategy depending on the event type.
+		- Attributes:
+			- `energy_constraint`: Minimum energy fraction for matching (default: -1, can be adjusted).
+			- `data`: Instance of `buffer_t` with all matching results.
+
+**Cython bindings:**
+- The class is available in Python via the Cython class `TopMatching` and can be used as a high-level interface. The `EnergyLimit` attribute allows control of the energy cut from Python.
+
+**Usage:**
+- The selection is used in MC20 workflows for matching top quarks and their decay products. It supports different event types (bsm_4tops, ssml_mc20, exp_mc20) and is designed for systematic analysis of matching efficiencies and errors.
+
+**Dependencies:**
+- Inherits from `selection_template` (C++/Cython plugin system)
+- Uses `event_template`, `particle_template`, and various helper functions from AnalysisG
+- Bindings via Cython for Python integration
+
+**Source code:**
+- Header: `src/AnalysisG/selections/mc20/matching/matching.h`
+- Implementation: `src/AnalysisG/selections/mc20/matching/matching.cxx`, `mc20_exp.cxx`, `mc20_ref.cxx`, `mc16_ref.cxx`
+- Python bindings: `matching.pyx`, `matching.pxd`
+
+*/

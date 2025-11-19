@@ -1,0 +1,46 @@
+/**
+ * @file
+ * @brief Graph-Implementierungen für exp_mc20 Datensätze
+ *
+ * @defgroup graphs_exp_mc20 Graphs: exp_mc20
+ * @ingroup graphs_module
+ * @details
+ * Konkrete @ref graph_template -Ableitungen zur Generierung von Graphen für `exp_mc20`-Ereignisse.
+ * Beinhaltet Node-, Edge- und Graph-Features sowie verschiedene Sichten (Jets, Jets ohne Neutrinos,
+ * Jets+Detektor-Leptonen, Detektorobjekte).
+ *
+ * Quellen:
+ * - Graphklassen: `src/AnalysisG/graphs/exp_mc20/include/exp_mc20/graphs.h`
+ * - Knoten-Features: `src/AnalysisG/graphs/exp_mc20/include/exp_mc20/node_features.h`
+ * - Kanten-Features: `src/AnalysisG/graphs/exp_mc20/include/exp_mc20/edge_features.h`
+ * - Graph-Features: `src/AnalysisG/graphs/exp_mc20/include/exp_mc20/graph_features.h`
+ * - Cython: `src/AnalysisG/graphs/exp_mc20/graph_exp_mc20.pyx`/`.pxd`
+ *
+ * @page graphs_exp_mc20_page Graphs: exp_mc20
+ *
+ * @section gmc20_classes Klassenübersicht
+ * - `graph_jets` – Rekonstruktions-Jets
+ * - `graph_jets_nonu` – Jets ohne Neutrinos
+ * - `graph_jets_detector_lep` – Jets kombiniert mit Detektor-Leptonen
+ * - `graph_detector` – Detektorobjekte
+ *
+ * @section gmc20_features Features
+ * - Node (`node_features.h`): `pt`, `eta`, `phi`, `energy`, `top_node`, `is_lepton`, `is_bquark`, `is_neutrino`
+ * - Edge (`edge_features.h`): `top_edge`, `res_edge`
+ * - Graph (`graph_features.h`): `signal_event`, `num_tops`, `num_neutrino`, `num_leps`, `missing_et`, `missing_phi`, `event_number`, `event_weight`
+ *
+ * @section gmc20_workflow Workflow
+ * ```cpp
+ * exp_mc20 evt;  // aus IO/Selektion
+ * evt.CompileEvent();
+ *
+ * graph_jets g;  // Auswahl der Sicht
+ * g.set_event(&evt);
+ * g.CompileEvent();
+ * ```
+ *
+ * @section gmc20_links Verweise
+ * - Event: @ref events_exp_mc20
+ * - Templates: @ref graph_template, @ref event_template
+ * - Selektionen: @ref selections_mc20_matching, @ref selections_mc20_topmatching
+ */

@@ -1,0 +1,680 @@
+/**
+ * @file particle_template_python.dox
+ * @brief Python bindings for ParticleTemplate - Particle physics objects with kinematics
+ * @defgroup particle_template_python Python ParticleTemplate
+ * @ingroup particles
+ * @details
+ * Cython Python interface for the particle_template C++ class. Provides Pythonic access
+ * to particle physics objects (jets, leptons, neutrinos, quarks) with full kinematics,
+ * parent/children relationships, serialization, and operator overloads.
+ *
+ * **Source**: `src/AnalysisG/core/particle_template.pyx` (310 lines)
+ *
+ * @page particle_template_python_page Python ParticleTemplate API
+ *
+ * @section particle_py_intro Introduction
+ *
+ * **ParticleTemplate** is the Python wrapper for C++ particle objects, representing
+ * individual particles in physics events. This is the most complex template class,
+ * featuring:
+ * - Full 4-momentum kinematics (px, py, pz, E, pt, eta, phi, mass)
+ * - Parent/children relationship tracking
+ * - Complex serialization via `__reduce__` (recursive dictionary building)
+ * - Operator overloads (`+`, `+=`, `+=`) for particle combinations
+ * - Memory ownership tracking (`is_owner` flag)
+ * - Physics calculations (DeltaR, invariant mass)
+ * - PDG ID and charge properties
+ *
+ * **Key Features:**
+ * - 310-line implementation with sophisticated logic
+ * - Type-flexible setters (Union[str, double]) with ROOT leaf creation
+ * - Recursive serialization preserving parent/children relationships
+ * - Clone functionality with type preservation
+ * - Property-based lepton/neutrino definitions
+ *
+ * @section particle_py_lifecycle Lifecycle Management
+ *
+ * **Memory Management:**
+ * ```python
+ * class ParticleTemplate:
+ *     def __cinit__(self):
+ *         # C++ object creation (subclass-aware)
+ *         if type(self) is not ParticleTemplate:
+ *             return
+ *         self.ptr = new particle_template()
+ *         self.parents = []
+ *         self.children = []
+ *         self.is_owner = True  # Track memory ownership
+ * 
+ *     def __dealloc__(self):
+ *         # Cleanup only if this instance owns the C++ object
+ *         if type(self) is not ParticleTemplate:
+ *             return
+ *         if not self.is_owner:
+ *             return
+ *         del self.ptr
+ * ```
+ *
+ * **Why `is_owner` Flag?**
+ * - Prevents double-free when particles are shared/cloned
+ * - Allows particles to reference parents without deleting them
+ * - Critical for parent/children relationship management
+ *
+ * @section particle_py_kinematics Kinematic Properties
+ *
+ * @subsection particle_py_kin_basic Basic 4-Momentum
+ *
+ * **Momentum Components:**
+ * ```python
+ * @property
+ * def px(self) -> double:
+ *     \"\"\"X-component of momentum (GeV).\"\"\"
+ *     return self.ptr.px
+ * 
+ * @px.setter
+ * def px(self, val):
+ *     try:
+ *         self.ptr.px = val  # Numeric assignment
+ *     except TypeError:
+ *         # String → ROOT leaf
+ *         self.ptr.add_leaf(b'px', enc(val))
+ * ```
+ *
+ * **All Momentum Properties (same pattern):**
+ * - `px`, `py`, `pz`: Cartesian momentum components
+ * - `pt`: Transverse momentum (perpendicular to beam)
+ * - `eta`: Pseudorapidity (angle from beam axis)
+ * - `phi`: Azimuthal angle
+ * - `e`: Energy
+ * - `Mass`: Invariant mass
+ *
+ * **Usage:**
+ * ```python
+ * jet = ParticleTemplate()
+ * 
+ * # Direct assignment
+ * jet.pt = 50.0   # GeV
+ * jet.eta = 1.2
+ * jet.phi = 0.5
+ * jet.e = 55.0
+ * 
+ * # ROOT branch assignment (deferred)
+ * jet.pt = "jets_pt[0]"
+ * jet.eta = "jets_eta[0]"
+ * ```
+ *
+ * @subsection particle_py_kin_derived Derived Properties
+ *
+ * **Additional Properties:**
+ * ```python
+ * @property
+ * def charge(self) -> int:
+ *     \"\"\"Electric charge (units of e).\"\"\"
+ *     return self.ptr.charge
+ * 
+ * @charge.setter
+ * def charge(self, val):
+ *     try:
+ *         self.ptr.charge = val
+ *     except TypeError:
+ *         self.ptr.add_leaf(b'charge', enc(val))
+ * 
+ * @property
+ * def pdgid(self) -> int:
+ *     \"\"\"PDG particle ID (e.g., 11 = e-, 6 = top).\"\"\"
+ *     return self.ptr.pdgid
+ * 
+ * @pdgid.setter
+ * def pdgid(self, val):
+ *     try:
+ *         self.ptr.pdgid = val
+ *     except TypeError:
+ *         self.ptr.add_leaf(b'pdgid', enc(val))
+ * 
+ * @property
+ * def symbol(self) -> str:
+ *     \"\"\"Particle symbol (e.g., 'e-', 't', 'b').\"\"\"
+ *     return env(self.ptr.symbol)
+ * 
+ * @symbol.setter
+ * def symbol(self, str val):
+ *     self.ptr.symbol = enc(val)
+ * 
+ * @property
+ * def Type(self) -> str:
+ *     \"\"\"Particle type classification.\"\"\"
+ *     return env(self.ptr.data.type)
+ * 
+ * @Type.setter
+ * def Type(self, str val):
+ *     self.ptr.data.type = enc(val)
+ * ```
+ *
+ * @subsection particle_py_kin_lep Lepton/Neutrino Definitions
+ *
+ * **Classification Properties:**
+ * ```python
+ * @property
+ * def lepdef(self) -> list:
+ *     \"\"\"PDG IDs considered leptons (e.g., [11, 13]).\"\"\"
+ *     return list(self.ptr.data.lepdef)
+ * 
+ * @lepdef.setter
+ * def lepdef(self, vector[int] val):
+ *     self.ptr.data.lepdef = val
+ * 
+ * @property
+ * def nudef(self) -> list:
+ *     \"\"\"PDG IDs considered neutrinos (e.g., [12, 14]).\"\"\"
+ *     return list(self.ptr.data.nudef)
+ * 
+ * @nudef.setter
+ * def nudef(self, vector[int] val):
+ *     self.ptr.data.nudef = val
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * particle = ParticleTemplate()
+ * 
+ * # Define what PDG IDs are leptons
+ * particle.lepdef = [11, 13, 15]  # e, mu, tau
+ * 
+ * # Define what PDG IDs are neutrinos
+ * particle.nudef = [12, 14, 16]  # nu_e, nu_mu, nu_tau
+ * 
+ * # Check if particle is lepton/neutrino
+ * if particle.is_lep:
+ *     print("This is a lepton")
+ * if particle.is_nu:
+ *     print("This is a neutrino")
+ * ```
+ *
+ * @section particle_py_relationships Parent/Children Relationships
+ *
+ * **Children Property:**
+ * ```python
+ * @property
+ * def Children(self) -> list:
+ *     \"\"\"List of child particles (decay products).\"\"\"
+ *     if len(self.children):
+ *         return list(set(self.children))  # Deduplicate
+ *     
+ *     # Lazily build from C++ children
+ *     self.children = self.children + self.make_particle(self.ptr.children)
+ *     return list(set(self.children))
+ * 
+ * @Children.setter
+ * def Children(self, inpt):
+ *     cdef ParticleTemplate p
+ *     cdef particle_template* ptx
+ * 
+ *     if not len(inpt):
+ *         self.ptr.children.clear()
+ *         self.children = []
+ *         return
+ * 
+ *     if isinstance(inpt, list):
+ *         for p in inpt:
+ *             ptx = p.ptr
+ *             if not self.ptr.register_child(ptx):
+ *                 continue
+ *             self.children.append(p)
+ *     else:
+ *         self.Children += [inpt]  # Recursive single-item add
+ * ```
+ *
+ * **Parents Property (symmetric implementation):**
+ * ```python
+ * @property
+ * def Parents(self) -> list:
+ *     \"\"\"List of parent particles (progenitors).\"\"\"
+ *     if len(self.parents):
+ *         return list(set(self.parents))
+ *     
+ *     self.parents = self.parents + self.make_particle(self.ptr.parents)
+ *     return list(set(self.parents))
+ * 
+ * @Parents.setter
+ * def Parents(self, inpt):
+ *     cdef ParticleTemplate p
+ *     cdef particle_template* ptx
+ * 
+ *     if not len(inpt):
+ *         self.ptr.parents.clear()
+ *         self.parents = []
+ *         return
+ * 
+ *     if isinstance(inpt, list):
+ *         for p in inpt:
+ *             ptx = p.ptr
+ *             if not self.ptr.register_parent(ptx):
+ *                 continue
+ *             self.parents.append(p)
+ *     else:
+ *         self.Parents += [inpt]
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * # Create particles
+ * top = ParticleTemplate()
+ * top.pdgid = 6
+ * 
+ * b_quark = ParticleTemplate()
+ * b_quark.pdgid = 5
+ * 
+ * W_boson = ParticleTemplate()
+ * W_boson.pdgid = 24
+ * 
+ * # Set decay chain: t → b + W
+ * top.Children = [b_quark, W_boson]
+ * b_quark.Parents = [top]
+ * W_boson.Parents = [top]
+ * 
+ * # Access relationships
+ * print(f"Top has {len(top.Children)} children")
+ * print(f"B-quark parent: {b_quark.Parents[0].pdgid}")
+ * ```
+ *
+ * @section particle_py_serialization Serialization
+ *
+ * **Complex __reduce__ Implementation:**
+ * ```python
+ * def __reduce__(self):
+ *     \"\"\"Pickle serialization with recursive relationships.\"\"\"
+ *     cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
+ *     cdef dict out = {}
+ *     
+ *     # Build dictionary of all properties
+ *     for i in keys:
+ *         try:
+ *             val = getattr(self, i)
+ *             if callable(val):
+ *                 continue
+ *             
+ *             # Special handling for parent/children
+ *             if i in ["Parents", "Children"]:
+ *                 # Recursive serialization
+ *                 out[i] = [p.__reduce__() for p in val]
+ *             else:
+ *                 out[i] = val
+ *         except:
+ *             continue
+ *     
+ *     # Return: (class, (constructor_args,))
+ *     return self.__class__, (out,)
+ * ```
+ *
+ * **Why Complex?**
+ * - Preserves full parent/children decay chains
+ * - Recursively serializes nested particle relationships
+ * - Handles all properties (kinematics, PDG IDs, etc.)
+ * - Supports arbitrary user-defined attributes
+ *
+ * **Usage:**
+ * ```python
+ * import pickle
+ * 
+ * # Create particle with relationships
+ * top = ParticleTemplate()
+ * top.pt = 150.0
+ * top.Children = [b_quark, W_boson]
+ * 
+ * # Serialize
+ * data = pickle.dumps(top)
+ * 
+ * # Deserialize (preserves children)
+ * restored = pickle.loads(data)
+ * assert len(restored.Children) == 2
+ * ```
+ *
+ * @section particle_py_operators Operator Overloads
+ *
+ * **Addition Operators:**
+ * ```python
+ * def __add__(self, other):
+ *     \"\"\"Combine particles: p1 + p2 → composite particle.\"\"\"
+ *     if not self.is_self(other):
+ *         return self
+ *     
+ *     cdef ParticleTemplate p = other
+ *     cdef ParticleTemplate out = self.clone()
+ *     
+ *     # Add 4-momenta
+ *     out.ptr[0] = out.ptr[0] + p.ptr[0]
+ *     
+ *     return out
+ * 
+ * def __iadd__(self, other):
+ *     \"\"\"In-place addition: self += other.\"\"\"
+ *     if not self.is_self(other):
+ *         return self
+ *     
+ *     cdef ParticleTemplate p = other
+ *     self.ptr[0] = self.ptr[0] + p.ptr[0]
+ *     
+ *     return self
+ * 
+ * def __radd__(self, other):
+ *     \"\"\"Right addition: sum([p1, p2, ...]).\"\"\"
+ *     if other == 0:
+ *         return self  # sum() starts with 0
+ *     return self.__add__(other)
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * # Invariant mass calculation
+ * jet1 = ParticleTemplate()
+ * jet1.pt = 50.0
+ * jet1.eta = 1.0
+ * jet1.phi = 0.5
+ * jet1.e = 55.0
+ * 
+ * jet2 = ParticleTemplate()
+ * jet2.pt = 60.0
+ * jet2.eta = -0.5
+ * jet2.phi = 1.2
+ * jet2.e = 65.0
+ * 
+ * # Combine 4-momenta
+ * dijet = jet1 + jet2
+ * print(f"Dijet mass: {dijet.Mass} GeV")
+ * 
+ * # In-place
+ * jet1 += jet2
+ * 
+ * # sum() over list
+ * jets = [jet1, jet2, jet3, jet4]
+ * fourjet_system = sum(jets)
+ * print(f"4-jet mass: {fourjet_system.Mass} GeV")
+ * ```
+ *
+ * @section particle_py_physics Physics Methods
+ *
+ * **DeltaR Calculation:**
+ * ```python
+ * def DeltaR(self, other) -> double:
+ *     \"\"\"Angular separation in (eta, phi) space.\"\"\"
+ *     if not self.is_self(other):
+ *         return -1.0
+ *     
+ *     cdef ParticleTemplate p = other
+ *     return self.ptr.DeltaR(p.ptr[0])
+ * ```
+ *
+ * **Formula:**
+ * $$\\Delta R = \\sqrt{(\\Delta\\eta)^2 + (\\Delta\\phi)^2}$$
+ *
+ * **Usage:**
+ * ```python
+ * jet1 = ParticleTemplate()
+ * jet1.eta = 1.0
+ * jet1.phi = 0.5
+ * 
+ * jet2 = ParticleTemplate()
+ * jet2.eta = 1.5
+ * jet2.phi = 1.0
+ * 
+ * # Check separation
+ * delta_r = jet1.DeltaR(jet2)
+ * 
+ * if delta_r < 0.4:
+ *     print("Jets are overlapping")
+ * elif delta_r < 1.0:
+ *     print("Jets are nearby")
+ * else:
+ *     print("Jets are well-separated")
+ * ```
+ *
+ * @section particle_py_cloning Cloning
+ *
+ * **Clone Method:**
+ * ```python
+ * def clone(self):
+ *     \"\"\"Deep copy preserving type and properties.\"\"\"
+ *     cdef ParticleTemplate out = self.__class__()
+ *     
+ *     # Copy C++ object
+ *     out.ptr[0] = self.ptr[0]
+ *     
+ *     # Copy Python-side relationships
+ *     out.parents = list(self.parents)
+ *     out.children = list(self.children)
+ *     
+ *     return out
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * original = MyCustomParticle()
+ * original.pt = 50.0
+ * original.Custom_Attribute = "data"
+ * 
+ * # Clone preserves type
+ * copy = original.clone()
+ * assert type(copy) == MyCustomParticle
+ * assert copy.pt == 50.0
+ * 
+ * # Modifications don't affect original
+ * copy.pt = 100.0
+ * assert original.pt == 50.0
+ * ```
+ *
+ * @section particle_py_usage Usage Examples
+ *
+ * @subsection particle_py_basic Basic Particle Creation
+ *
+ * ```python
+ * from AnalysisG import ParticleTemplate
+ * 
+ * # Create electron
+ * electron = ParticleTemplate()
+ * electron.pt = 25.0   # GeV
+ * electron.eta = 1.2
+ * electron.phi = 0.5
+ * electron.e = 26.0
+ * electron.charge = -1
+ * electron.pdgid = 11  # e-
+ * electron.symbol = "e-"
+ * 
+ * # Create muon
+ * muon = ParticleTemplate()
+ * muon.pt = 30.0
+ * muon.eta = -0.8
+ * muon.phi = 2.1
+ * muon.e = 31.0
+ * muon.charge = 1
+ * muon.pdgid = -13  # mu+
+ * muon.symbol = "mu+"
+ * ```
+ *
+ * @subsection particle_py_decay Decay Chains
+ *
+ * ```python
+ * # Top quark decay: t → b + W → b + l + nu
+ * top = ParticleTemplate()
+ * top.pdgid = 6
+ * top.pt = 200.0
+ * 
+ * b_quark = ParticleTemplate()
+ * b_quark.pdgid = 5
+ * b_quark.pt = 80.0
+ * 
+ * W = ParticleTemplate()
+ * W.pdgid = 24
+ * W.pt = 120.0
+ * 
+ * lepton = ParticleTemplate()
+ * lepton.pdgid = 11  # electron
+ * lepton.pt = 60.0
+ * 
+ * neutrino = ParticleTemplate()
+ * neutrino.pdgid = 12  # nu_e
+ * neutrino.pt = 60.0
+ * 
+ * # Build chain
+ * top.Children = [b_quark, W]
+ * W.Children = [lepton, neutrino]
+ * 
+ * # Navigate chain
+ * for child in top.Children:
+ *     print(f"Top child: PDG {child.pdgid}")
+ *     if child.pdgid == 24:  # W boson
+ *         for grandchild in child.Children:
+ *             print(f"  W child: PDG {grandchild.pdgid}")
+ * ```
+ *
+ * @subsection particle_py_invariant Invariant Mass Calculations
+ *
+ * ```python
+ * # Higgs → b + bbar
+ * b1 = ParticleTemplate()
+ * b1.pt = 50.0
+ * b1.eta = 1.0
+ * b1.phi = 0.5
+ * b1.Mass = 4.18  # b quark mass
+ * b1.e = math.sqrt(b1.pt**2 + b1.Mass**2)
+ * 
+ * b2 = ParticleTemplate()
+ * b2.pt = 55.0
+ * b2.eta = -0.8
+ * b2.phi = 2.0
+ * b2.Mass = 4.18
+ * b2.e = math.sqrt(b2.pt**2 + b2.Mass**2)
+ * 
+ * # Reconstruct Higgs
+ * higgs_candidate = b1 + b2
+ * print(f"m_bb = {higgs_candidate.Mass:.1f} GeV")
+ * 
+ * # Check if compatible with Higgs mass
+ * if 115 < higgs_candidate.Mass < 135:
+ *     print("Possible Higgs candidate!")
+ * ```
+ *
+ * @subsection particle_py_overlap Overlap Removal
+ *
+ * ```python
+ * jets = [...]  # List of jets
+ * leptons = [...]  # List of leptons
+ * 
+ * # Remove jets overlapping with leptons
+ * clean_jets = []
+ * for jet in jets:
+ *     overlaps = False
+ *     for lepton in leptons:
+ *         if jet.DeltaR(lepton) < 0.4:
+ *             overlaps = True
+ *             break
+ *     
+ *     if not overlaps:
+ *         clean_jets.append(jet)
+ * 
+ * print(f"Cleaned {len(jets)} → {len(clean_jets)} jets")
+ * ```
+ *
+ * @section particle_py_advanced Advanced Features
+ *
+ * **Memory Ownership Tracking:**
+ * ```python
+ * # Primary particle (owns memory)
+ * particle = ParticleTemplate()
+ * assert particle.is_owner == True
+ * 
+ * # Clone (owns its own memory)
+ * clone = particle.clone()
+ * assert clone.is_owner == True
+ * 
+ * # Reference (does not own memory)
+ * reference = particle
+ * reference.is_owner = False  # Manual management
+ * ```
+ *
+ * **Type-Flexible Setters:**
+ * ```python
+ * particle = ParticleTemplate()
+ * 
+ * # Numeric
+ * particle.pt = 50.0  # Direct C++ assignment
+ * 
+ * # String (ROOT branch)
+ * particle.pt = "jets_pt[0]"  # Deferred reading
+ * ```
+ *
+ * **Recursive Serialization:**
+ * ```python
+ * # Deep tree structure
+ * top = ParticleTemplate()
+ * top.Children = [b, W]
+ * W.Children = [lepton, neutrino]
+ * 
+ * # Serialize entire tree
+ * data = pickle.dumps(top)
+ * 
+ * # Restore entire tree
+ * restored = pickle.loads(data)
+ * assert len(restored.Children) == 2
+ * assert len(restored.Children[1].Children) == 2
+ * ```
+ *
+ * @section particle_py_best_practices Best Practices
+ *
+ * **Always Call Super:**
+ * ```python
+ * class MyParticle(ParticleTemplate):
+ *     def __init__(self):
+ *         super().__init__()  # Essential
+ * ```
+ *
+ * **Use Operators for Combinations:**
+ * ```python
+ * # Good
+ * dijet = jet1 + jet2
+ * fourjet = sum([jet1, jet2, jet3, jet4])
+ * 
+ * # Bad (manual)
+ * # dijet = ParticleTemplate()
+ * # dijet.px = jet1.px + jet2.px
+ * # ...
+ * ```
+ *
+ * **Check DeltaR Before Combinations:**
+ * ```python
+ * if jet1.DeltaR(jet2) > 0.4:
+ *     dijet = jet1 + jet2
+ * ```
+ *
+ * **Set Relationships Symmetrically:**
+ * ```python
+ * parent.Children = [child]
+ * child.Parents = [parent]
+ * ```
+ *
+ * @section particle_py_related Related
+ *
+ * - @ref particle_template_module "C++ ParticleTemplate" - Core implementation
+ * - @ref event_template_python "Python EventTemplate" - Event containers
+ * - @ref graph_template_python "Python GraphTemplate" - Graph construction
+ * - @ref selections "Selection Classes" - Event/particle selection
+ *
+ * @section particle_py_summary Summary
+ *
+ * **ParticleTemplate Python bindings provide:**
+ * - Full 4-momentum kinematics
+ * - Parent/children relationship tracking
+ * - Complex recursive serialization
+ * - Operator overloads for combinations
+ * - Physics calculations (DeltaR, invariant mass)
+ * - Memory ownership tracking
+ * - Type-flexible properties
+ *
+ * **Key Points (310-line implementation):**
+ * - Most complex template class in AnalysisG
+ * - Sophisticated `__reduce__` for deep serialization
+ * - Operator overloads enable Pythonic particle math
+ * - DeltaR essential for overlap removal
+ * - Parent/Children enable decay chain navigation
+ * - `is_owner` prevents memory corruption
+ * - Clone preserves derived types
+ */

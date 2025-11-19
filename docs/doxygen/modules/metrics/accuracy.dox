@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for metrics/accuracy implementation.
+
+@defgroup metrics_accuracy Metrics: accuracy
+@ingroup metrics_module
+
+@details
+Implements accuracy metric with C++ backend.
+Source: `src/AnalysisG/metrics/accuracy/`
+*/

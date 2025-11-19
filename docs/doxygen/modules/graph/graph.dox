@@ -1,0 +1,944 @@
+/**
+@file
+@brief Comprehensive documentation for the graph_template class and graph_t struct - transforming physics events into graph representations for GNNs.
+
+@defgroup graph_template_module graph_template
+@ingroup modules_module
+
+@brief The `graph_template` module provides a sophisticated framework for converting high-energy physics events into graph-structured data suitable for GNN processing, featuring particle-to-node mapping, topology definition via lambda functors, and multi-level feature assignment.
+
+@details
+
+---
+
+# Quick Navigation
+
+| Module | Description | Link |
+|--------|-------------|------|
+| **Graph Template** | Graph construction | (Current Page) |
+| @ref event_template_page | Event container | Provides particle collections |
+| @ref particle_template_page | Particle objects | Becomes graph nodes |
+| @ref dataloader_module | Dataset batching | Consumes graph_t objects |
+| @ref model_template_module | GNN models | Reads graph features |
+| @ref selection_template_module | Event selection | Base class for graphs |
+| @ref tools_module | Utilities | Parent class |
+| @ref pyc_physics_page | Physics kinematics | Used for edge features |
+
+**Typical Workflow**: `event_template` → **`graph_template::CompileEvent()`** → `graph_t` → `dataloader::add_graph()` → `model_template::forward()`
+
+---
+
+*/
+
+/**
+@page graph_template_module_page Graph Template Module
+@tableofcontents
+
+@section graph_intro Introduction
+
+The `graph_template` class and `graph_t` struct, defined in `src/AnalysisG/modules/graph/`, form the bridge between physics event representations and Graph Neural Networks, transforming collections of particles (jets, leptons, MET) into graph-structured tensors.
+
+@section graph_purpose Purpose and Design
+
+The `graph_template` class and `graph_t` struct form the bridge between physics event representations and Graph Neural Networks. They transform collections of particles (jets, leptons, MET) into graph-structured tensors that GNNs can process.
+
+**Core Abstractions**:
+1. **Particle-to-Node Mapping**: Physics objects become graph nodes with unique integer IDs
+2. **Topology Definition**: Lambda functors define edge connectivity based on physics criteria
+3. **Multi-Level Features**: Graph/node/edge features for both input data and truth labels
+4. **Device Management**: Automatic tensor transfer between CPU and GPU with caching
+5. **Serialization**: HDF5 export/import for persistent graph storage
+
+**Design Philosophy**:
+Instead of manually constructing adjacency matrices and feature tensors, users declaratively specify:
+- Which particles are nodes (`define_particle_nodes`)
+- How nodes connect (`define_topology`)
+- What features to extract (`add_node_data_feature`, etc.)
+
+The framework handles:
+- Edge index construction in COO format [2, E]
+- Automatic type inference and tensor creation
+- Feature name → tensor mapping
+- Batch index generation for graph batching
+- Memory-efficient device transfer with caching
+
+## Graph Construction Workflow
+
+```
+┌─────────────────────────────┐
+│   event_template            │  Input: Physics Event
+│   Jets: [j1, j2, j3, j4]   │
+│   Leptons: [l1, l2]         │
+└──────────┬──────────────────┘
+           │ CompileEvent()
+           ▼
+┌─────────────────────────────┐
+│  define_particle_nodes()    │  Step 1: Node Mapping
+│  j1→0, j2→1, j3→2, j4→3    │  Particles become integer node IDs
+│  l1→4, l2→5                 │
+└──────────┬──────────────────┘
+           │
+           ▼
+┌─────────────────────────────┐
+│  define_topology(lambda)    │  Step 2: Edge Construction
+│  if dR(i,j) < 1.0:          │  Lambda predicate for connectivity
+│    edges.push([i,j])        │  Creates adjacency list
+│  Result: [[0,1],[0,2],...]  │
+└──────────┬──────────────────┘
+           │
+           ▼
+┌─────────────────────────────┐
+│  add_node_data_feature()    │  Step 3: Feature Extraction
+│  For each node i:           │  cproperty getters → tensors
+│    pt[i] = particles[i].pt()│
+│    eta[i] = particles[i].eta()
+│  data_map_node["pt"] = [tensor]
+└──────────┬──────────────────┘
+           │
+           ▼
+┌─────────────────────────────┐
+│  add_edge_data_feature()    │  Step 4: Edge Features
+│  For each edge (i,j):       │  Lambda computations
+│    dR[e] = deltaR(i,j)      │
+│  data_map_edge["delta_r"] = [tensor]
+└──────────┬──────────────────┘
+           │
+           ▼
+┌─────────────────────────────┐
+│  data_export()              │  Step 5: graph_t Creation
+│  • Convert adjacency list   │  Package into lightweight struct
+│    to COO edge_index [2,E]  │
+│  • Copy feature maps        │
+│  • Add metadata (hash, idx) │
+└──────────┬──────────────────┘
+           │ return graph_t*
+           ▼
+┌─────────────────────────────┐
+│  dataloader::add_graph()    │  Output: Graph Object
+│  Ready for batching & GNN   │
+└─────────────────────────────┘
+```
+
+**Key Features**:
+- **Lambda Topology**: Define connectivity with arbitrary predicates (e.g., `dR < 0.8`)
+- **cproperty Integration**: Feature extraction via compile-time type-safe getters
+- **Multi-Level Architecture**: Simultaneous graph/node/edge features
+- **HDF5 Serialization**: Base64-encoded tensor storage for reproducibility
+- **Device Caching**: Per-device tensor cache eliminates redundant transfers
+
+The module consists of two main components:
+1. **`graph_template`**: The abstract base class that users inherit from to define their graph construction logic
+2. **`graph_t`**: A lightweight data container (`struct`) that holds the actual tensor data and metadata for a single graph
+
+---
+
+# Class Structure
+
+## Quick Method Reference
+
+| Method | Purpose | Input | Output | Typical Usage |
+|--------|---------|-------|--------|---------------|
+| `CompileEvent()` | User implements graph logic | None (uses m_event) | void | Called by framework to build graph |
+| `define_particle_nodes()` | Map particles to nodes | `std::vector<particle*>*` | void | `define_particle_nodes(&ev->Jets)` |
+| `define_topology()` | Create edges via lambda | `std::function<bool(p*,p*)>` | void | `define_topology([](a,b){ return dR(a,b)<1.0; })` |
+| `add_node_data_feature<T,P>()` | Extract node features | cproperty getter, name | void | `add_node_data_feature<double>(&particle::pt, "pt")` |
+| `add_node_truth_feature<T,P>()` | Node labels | cproperty getter, name | void | `add_node_truth_feature<int>(&particle::from_top, "label")` |
+| `add_edge_data_feature<T>()` | Edge features | lambda(p*,p*), name | void | `add_edge_data_feature<double>([](a,b){return dR(a,b);}, "delta_r")` |
+| `add_graph_data_feature<T>()` | Graph scalars | value, name | void | `add_graph_data_feature<int>(ev->Jets.size(), "n_jets")` |
+| `data_export()` | Create graph_t | None | `graph_t*` | `graph_t* g = data_export();` |
+
+### graph_t Struct Methods
+
+| Method | Purpose | Input | Output | Typical Usage |
+|--------|---------|-------|--------|---------------|
+| `get_data_node()` | Retrieve node features | name, device | `torch::Tensor*` | `torch::Tensor* pt = g->get_data_node("pt", 0)` |
+| `get_truth_node()` | Retrieve node labels | name, device | `torch::Tensor*` | `torch::Tensor* label = g->get_truth_node("label", 0)` |
+| `get_edge_index()` | Get connectivity | model | `torch::Tensor` | `torch::Tensor edges = g->get_edge_index(model)` |
+| `transfer_to_device()` | Move to GPU | device | void | `g->transfer_to_device(0)` // CUDA:0 |
+| `serialize()` | Export to HDF5 | None | `std::string` | `std::string json = g->serialize()` |
+| `deserialize()` | Reconstruct graph | JSON string | `graph_t*` | `graph_t* restored = graph_t::deserialize(json)` |
+
+## Inheritance Hierarchy
+
+```
+notification
+    ↓
+  tools
+    ↓
+graph_template
+    ↓
+ (User Graphs)
+```
+
+Inherits from `tools` (→ `notification`), gaining:
+- **From `tools`**: String/filesystem utilities, vector helpers
+- **From `notification`**: Colored logging, progress bars
+
+User creates derived classes (e.g., `TopPairGraph`) that implement `CompileEvent()`.
+
+## Member Variables (graph_template)
+
+### Event Reference
+```cpp
+event_template* m_event;               // Current event being processed
+```
+
+**Purpose**: Stores pointer to event containing particles for graph construction.
+
+### Node Mapping
+```cpp
+std::map<int, particle_template*> node_particles;  // Node ID → Particle pointer
+std::map<particle_template*, int> particle_nodes;  // Particle pointer → Node ID
+```
+
+**Purpose**: Bidirectional mapping between node indices and particle objects. Populated by `define_particle_nodes()`.
+
+**Example**:
+```cpp
+// After define_particle_nodes({jet1, jet2, jet3})
+node_particles[0] = jet1;
+node_particles[1] = jet2;
+node_particles[2] = jet3;
+
+particle_nodes[jet1] = 0;
+particle_nodes[jet2] = 1;
+particle_nodes[jet3] = 2;
+```
+
+### Topology Storage
+```cpp
+std::vector<std::vector<int>> edges;   // Adjacency list representation
+torch::Tensor edge_index;             // COO format [2, E]
+```
+
+**Purpose**: Stores graph connectivity. `edges[i]` contains neighbor list for node `i`. Converted to `edge_index` tensor during `data_export()`.
+
+### Feature Maps
+```cpp
+std::map<std::string, std::vector<torch::Tensor>> data_graph;    // Graph-level input features
+std::map<std::string, std::vector<torch::Tensor>> data_node;     // Node-level input features
+std::map<std::string, std::vector<torch::Tensor>> data_edge;     // Edge-level input features
+
+std::map<std::string, std::vector<torch::Tensor>> truth_graph;   // Graph-level truth labels
+std::map<std::string, std::vector<torch::Tensor>> truth_node;    // Node-level truth labels
+std::map<std::string, std::vector<torch::Tensor>> truth_edge;    // Edge-level truth labels
+```
+
+**Structure**: `data_node["pt"]` contains per-node $p_T$ values as tensors.
+
+### Configuration
+```cpp
+cproperty<std::string> name;           // Graph name (e.g., "TopPairGraph")
+cproperty<bool> self_loops;           // Include self-loops in topology
+cproperty<std::string> filename;      // Source ROOT file path
+```
+
+---
+
+# Core Methods (graph_template)
+
+## Graph Construction
+
+### `CompileEvent()` (Pure Virtual)
+
+**Purpose**: User-implemented method defining complete graph construction logic
+
+**Contract**: Must call `define_particle_nodes()` and `define_topology()`
+
+**Typical Structure**:
+```cpp
+void CompileEvent() override {
+    // 1. Get event (cast to specific type)
+    event_4tops* ev = this->get_event<event_4tops>();
+    
+    // 2. Define nodes
+    this->define_particle_nodes(&ev->Jets);
+    
+    // 3. Define topology
+    this->define_topology([](particle_4tops* i, particle_4tops* j){
+        return delta_R(i, j) < 0.8;
+    });
+    
+    // 4. Add features
+    this->add_node_data_feature<double>(&particle_4tops::pt, "pt");
+    this->add_node_truth_feature<int>(&particle_4tops::from_t, "is_top");
+}
+```
+
+---
+
+### `define_particle_nodes(std::vector<particle_template*>* particles)`
+
+**Purpose**: Registers particles as graph nodes
+
+**Algorithm**:
+```
+node_id = 0
+For each particle p in particles:
+    node_particles[node_id] = p
+    particle_nodes[p] = node_id
+    node_id++
+```
+
+**Example**:
+```cpp
+std::vector<particle_template*> jets = {jet0, jet1, jet2, jet3};
+this->define_particle_nodes(&jets);
+
+// Result:
+// node_particles: {0: jet0, 1: jet1, 2: jet2, 3: jet3}
+// particle_nodes: {jet0: 0, jet1: 1, jet2: 2, jet3: 3}
+```
+
+**Important**: Must be called **before** `define_topology()`.
+
+---
+
+### `define_topology(std::function<bool(T*, T*)> predicate)`
+
+**Purpose**: Constructs edge list based on predicate function
+
+**Algorithm**:
+```
+edges = vector of empty vectors (size = num_nodes)
+For i in 0 to num_nodes-1:
+    For j in 0 to num_nodes-1:
+        If i == j and not self_loops:
+            continue
+        particle_i = node_particles[i]
+        particle_j = node_particles[j]
+        If predicate(particle_i, particle_j):
+            edges[i].append(j)
+```
+
+**Example 1: Fully Connected Graph**:
+```cpp
+this->define_topology([](auto* a, auto* b){
+    return true;  // Connect all pairs
+});
+```
+
+**Example 2: K-Nearest Neighbors in $\eta$-$\phi$ Space**:
+```cpp
+this->define_topology([](particle_4tops* a, particle_4tops* b){
+    double deta = a->eta() - b->eta();
+    double dphi = std::abs(a->phi() - b->phi());
+    if (dphi > M_PI) dphi = 2*M_PI - dphi;
+    double dR = std::sqrt(deta*deta + dphi*dphi);
+    return dR < 0.8;  // Connect within dR = 0.8
+});
+```
+
+**Example 3: Parent-Child Connectivity**:
+```cpp
+this->define_topology([](truth_particle* a, truth_particle* b){
+    return a->parent_barcode == b->barcode;  // Connect parent to child
+});
+```
+
+**Performance**: O(N²) where N = number of nodes. For large graphs (N > 1000), consider spatial hashing or k-d trees.
+
+---
+
+## Feature Addition
+
+### `add_node_data_feature<Type, ParticleClass>(getter, name)`
+
+**Purpose**: Extracts node-level input features using cproperty getter
+
+**Parameters**:
+- `Type`: Feature data type (double, int, bool)
+- `ParticleClass`: Derived particle class (e.g., `particle_4tops`)
+- `getter`: cproperty getter function pointer (e.g., `&particle_4tops::pt`)
+- `name`: Feature name string (e.g., `"pt"`)
+
+**Algorithm**:
+```
+feature_vector = []
+For each node_id in 0 to num_nodes-1:
+    particle = node_particles[node_id]
+    value = (particle->*getter)()  // Call cproperty getter
+    feature_vector.append(value)
+tensor = torch::tensor(feature_vector, dtype=infer_type<Type>())
+data_node[name].push_back(tensor)
+```
+
+**Example**:
+```cpp
+// Extract pt for each jet node
+this->add_node_data_feature<double, particle_4tops>(&particle_4tops::pt, "pt");
+
+// Extracts btag score
+this->add_node_data_feature<double, particle_4tops>(&particle_4tops::btag, "btag_score");
+
+// Extracts integer charge
+this->add_node_data_feature<int, particle_4tops>(&particle_4tops::charge, "charge");
+```
+
+**Result**: `data_node["pt"]` contains tensor of shape `[num_nodes]` with $p_T$ values.
+
+---
+
+### `add_node_truth_feature<Type, ParticleClass>(getter, name)`
+
+**Purpose**: Extracts node-level truth labels for supervised learning
+
+**Example**:
+```cpp
+// Binary classification: is node from top quark?
+this->add_node_truth_feature<int, particle_4tops>(&particle_4tops::from_t, "is_top");
+
+// Multi-class: jet flavor (0=light, 1=c, 2=b)
+this->add_node_truth_feature<int, particle_4tops>(&particle_4tops::flavor, "jet_flavor");
+```
+
+**Result**: `truth_node["is_top"]` contains integer labels for each node.
+
+---
+
+### `add_edge_data_feature<Type>(getter, name)`
+
+**Purpose**: Extracts edge-level input features
+
+**Algorithm**:
+```
+feature_vector = []
+For each edge (src, dst) in edge_index:
+    particle_src = node_particles[src]
+    particle_dst = node_particles[dst]
+    value = compute_edge_feature(particle_src, particle_dst)
+    feature_vector.append(value)
+```
+
+**Example**:
+```cpp
+// Delta R between connected nodes
+this->add_edge_data_feature<double>([](auto* a, auto* b){
+    return delta_R(a, b);
+}, "delta_r");
+
+// Invariant mass of edge
+this->add_edge_data_feature<double>([](auto* a, auto* b){
+    return (a->vector() + b->vector()).M();
+}, "edge_mass");
+```
+
+---
+
+### `add_graph_data_feature<Type>(value, name)`
+
+**Purpose**: Adds graph-level scalar features
+
+**Example**:
+```cpp
+// Number of jets in event
+this->add_graph_data_feature<int>(jets.size(), "num_jets");
+
+// Event missing energy
+this->add_graph_data_feature<double>(event->MET, "met");
+```
+
+**Result**: `data_graph["num_jets"]` contains single scalar value.
+
+---
+
+## Data Export
+
+### `data_export() → graph_t*`
+
+**Purpose**: Converts internal graph representation to `graph_t` struct
+
+**Algorithm**:
+```
+graph = new graph_t()
+graph->num_nodes = node_particles.size()
+
+// Convert adjacency list to COO format
+edge_list = []
+For i in 0 to num_nodes-1:
+    For j in edges[i]:
+        edge_list.append([i, j])
+graph->edge_index = torch::tensor(edge_list).t()  // Transpose to [2, E]
+
+// Copy feature maps
+graph->data_node = data_node
+graph->truth_node = truth_node
+// ... (repeat for graph/edge features)
+
+// Copy metadata
+graph->event_index = this->event_index
+graph->event_weight = this->event_weight
+graph->filename = this->filename
+graph->hash = this->hash
+
+Return graph
+```
+
+**Called Automatically**: After `CompileEvent()` completes, `data_export()` is invoked to create the final `graph_t` object.
+
+---
+
+# graph_t Struct
+
+## Member Variables
+
+### Tensor Storage
+```cpp
+torch::Tensor edge_index;                          // [2, E] - COO format
+torch::Tensor batch_index;                         // [N] - Node → graph mapping
+
+std::map<std::string, torch::Tensor*> data_map_graph;    // Graph input features
+std::map<std::string, torch::Tensor*> data_map_node;     // Node input features
+std::map<std::string, torch::Tensor*> data_map_edge;     // Edge input features
+
+std::map<std::string, torch::Tensor*> truth_map_graph;   // Graph truth labels
+std::map<std::string, torch::Tensor*> truth_map_node;    // Node truth labels
+std::map<std::string, torch::Tensor*> truth_map_edge;    // Edge truth labels
+```
+
+### Device-Specific Caches
+```cpp
+std::map<int, std::map<std::string, torch::Tensor*>> dev_data_node;  // Per-device cache
+std::map<int, std::map<std::string, torch::Tensor*>> dev_truth_node; // ...
+// ... (repeat for graph/edge and all feature types)
+```
+
+**Purpose**: Avoids redundant GPU transfers. Once tensor is transferred to device 0, it's cached in `dev_data_node[0]["pt"]`.
+
+### Metadata
+```cpp
+size_t event_index;                                // Event index in dataset
+double event_weight;                              // MC weight
+std::string filename;                             // Source ROOT file
+std::string hash;                                 // Event hash
+int num_nodes;                                    // Number of nodes
+```
+
+---
+
+## Core Methods (graph_t)
+
+### `get_data_node(std::string name, int device) → torch::Tensor*`
+
+**Purpose**: Retrieves node-level input feature tensor, transferring to device if needed
+
+**Algorithm**:
+```
+If name not in data_map_node:
+    Return nullptr
+
+If device in dev_data_node[device][name]:
+    Return dev_data_node[device][name]  // Cached
+
+tensor = data_map_node[name]
+transferred = tensor->to(device_options(device))
+dev_data_node[device][name] = new torch::Tensor(transferred)
+Return dev_data_node[device][name]
+```
+
+**Example**:
+```cpp
+// Get pt tensor on GPU 0
+torch::Tensor* pt = graph->get_data_node("pt", 0);
+
+// Get eta tensor (will transfer if not cached)
+torch::Tensor* eta = graph->get_data_node("eta", 0);
+```
+
+**Performance**: First call transfers tensor (O(N)), subsequent calls return cached pointer (O(1)).
+
+---
+
+### `get_truth_node(std::string name, int device) → torch::Tensor*`
+
+**Purpose**: Retrieves node-level truth label tensor
+
+**Example**:
+```cpp
+torch::Tensor* labels = graph->get_truth_node("is_top", 0);
+```
+
+---
+
+### `get_edge_index(model_template* model) → torch::Tensor*`
+
+**Purpose**: Returns edge index tensor on model's device
+
+**Implementation**:
+```cpp
+torch::Tensor* graph_t::get_edge_index(model_template* model){
+    int device = model->device_index;
+    if (this->dev_edge_index.find(device) != this->dev_edge_index.end()){
+        return this->dev_edge_index[device];
+    }
+    
+    torch::Tensor* transferred = new torch::Tensor(
+        this->edge_index.to(*model->m_option)
+    );
+    this->dev_edge_index[device] = transferred;
+    return transferred;
+}
+```
+
+---
+
+### `transfer_to_device(torch::TensorOptions* dev)`
+
+**Purpose**: Transfers ALL tensors to specified device
+
+**Algorithm**:
+```
+For each tensor in data_map_node:
+    transferred = tensor->to(dev)
+    dev_data_node[device][name] = new torch::Tensor(transferred)
+
+For each tensor in truth_map_node:
+    transferred = tensor->to(dev)
+    dev_truth_node[device][name] = new torch::Tensor(transferred)
+
+// ... (repeat for graph/edge features)
+
+edge_index_transferred = edge_index.to(dev)
+dev_edge_index[device] = new torch::Tensor(edge_index_transferred)
+```
+
+**Example**:
+```cpp
+torch::TensorOptions opts(torch::kCUDA, 1);  // GPU 1
+graph->transfer_to_device(&opts);
+```
+
+**Use Case**: Pre-loading entire batch to GPU before model forward pass.
+
+---
+
+### `serialize() → std::string`
+
+**Purpose**: Serializes graph to JSON-compatible string for HDF5 storage
+
+**Format**:
+```json
+{
+  "edge_index": "base64_encoded_tensor_bytes",
+  "num_nodes": 42,
+  "data_node": {
+    "pt": "base64_encoded_tensor_bytes",
+    "eta": "base64_encoded_tensor_bytes"
+  },
+  "truth_node": {
+    "is_top": "base64_encoded_tensor_bytes"
+  },
+  "event_index": 1234,
+  "event_weight": 0.987,
+  "filename": "/path/to/data.root",
+  "hash": "abc123def456"
+}
+```
+
+**Algorithm**:
+```
+json = {}
+json["num_nodes"] = num_nodes
+json["edge_index"] = base64_encode(tensor_to_bytes(edge_index))
+
+For each (name, tensor) in data_map_node:
+    json["data_node"][name] = base64_encode(tensor_to_bytes(tensor))
+
+For each (name, tensor) in truth_map_node:
+    json["truth_node"][name] = base64_encode(tensor_to_bytes(tensor))
+
+// ... (repeat for graph/edge features)
+
+json["metadata"] = {event_index, event_weight, filename, hash}
+Return json.dump()
+```
+
+**Example**:
+```cpp
+std::string serialized = graph->serialize();
+// Write to HDF5: h5_dataset.write(serialized);
+```
+
+---
+
+### `deserialize(std::string data) → graph_t*`
+
+**Purpose**: Reconstructs graph from serialized string
+
+**Algorithm**:
+```
+json = parse(data)
+graph = new graph_t()
+
+graph->num_nodes = json["num_nodes"]
+graph->edge_index = bytes_to_tensor(base64_decode(json["edge_index"]))
+
+For each (name, encoded_bytes) in json["data_node"]:
+    tensor = bytes_to_tensor(base64_decode(encoded_bytes))
+    graph->data_map_node[name] = new torch::Tensor(tensor)
+
+// ... (repeat for all feature maps)
+
+graph->event_index = json["metadata"]["event_index"]
+// ... (restore metadata)
+
+Return graph
+```
+
+**Example**:
+```cpp
+std::string serialized = h5_dataset.read();
+graph_t* restored = graph_t::deserialize(serialized);
+```
+
+---
+
+# Complete Usage Example
+
+```cpp
+#include <templates/graph_template.h>
+
+class TopReconstructionGraph : public graph_template {
+public:
+    TopReconstructionGraph(){
+        this->name = "TopReconstructionGraph";
+        this->self_loops = false;
+    }
+    
+    void CompileEvent() override {
+        // Get event
+        event_4tops* ev = this->get_event<event_4tops>();
+        
+        // Require minimum objects
+        if (ev->Jets.size() < 4) return;
+        
+        // Define nodes: all jets
+        this->define_particle_nodes(&ev->Jets);
+        
+        // Define topology: connect jets with dR < 1.0
+        this->define_topology([](particle_4tops* a, particle_4tops* b){
+            double deta = a->eta() - b->eta();
+            double dphi = std::abs(a->phi() - b->phi());
+            if (dphi > M_PI) dphi = 2*M_PI - dphi;
+            return std::sqrt(deta*deta + dphi*dphi) < 1.0;
+        });
+        
+        // Node input features
+        this->add_node_data_feature<double, particle_4tops>(&particle_4tops::pt, "pt");
+        this->add_node_data_feature<double, particle_4tops>(&particle_4tops::eta, "eta");
+        this->add_node_data_feature<double, particle_4tops>(&particle_4tops::phi, "phi");
+        this->add_node_data_feature<double, particle_4tops>(&particle_4tops::e, "energy");
+        this->add_node_data_feature<double, particle_4tops>(&particle_4tops::btag, "btag_score");
+        
+        // Node truth labels
+        this->add_node_truth_feature<int, particle_4tops>(&particle_4tops::from_t, "from_top");
+        this->add_node_truth_feature<int, particle_4tops>(&particle_4tops::from_b, "from_b");
+        
+        // Edge features
+        this->add_edge_data_feature<double>([](auto* a, auto* b){
+            double deta = a->eta() - b->eta();
+            double dphi = std::abs(a->phi() - b->phi());
+            if (dphi > M_PI) dphi = 2*M_PI - dphi;
+            return std::sqrt(deta*deta + dphi*dphi);
+        }, "delta_r");
+        
+        this->add_edge_data_feature<double>([](auto* a, auto* b){
+            return (a->vector() + b->vector()).M();
+        }, "dijet_mass");
+        
+        // Graph-level features
+        this->add_graph_data_feature<int>(ev->Jets.size(), "num_jets");
+        this->add_graph_data_feature<double>(ev->MET, "met");
+        
+        // Graph-level truth
+        this->add_graph_truth_feature<int>(ev->TruthTop.size(), "num_tops");
+    }
+};
+
+int main(){
+    // Create graph builder
+    TopReconstructionGraph* graph_builder = new TopReconstructionGraph();
+    
+    // Load event
+    event_4tops* ev = load_event("ttbar.root", 0);
+    graph_builder->set_event(ev);
+    
+    // Build graph
+    graph_builder->CompileEvent();
+    graph_t* graph = graph_builder->data_export();
+    
+    // Inspect graph
+    std::cout << "Nodes: " << graph->num_nodes << std::endl;
+    std::cout << "Edges: " << graph->edge_index.size(1) << std::endl;
+    
+    // Access features
+    torch::Tensor* pt = graph->get_data_node("pt", 0);
+    std::cout << "Node pt: " << *pt << std::endl;
+    
+    // Serialize to HDF5
+    std::string serialized = graph->serialize();
+    write_to_hdf5("graphs.h5", "event_0", serialized);
+    
+    // Later: deserialize
+    std::string loaded = read_from_hdf5("graphs.h5", "event_0");
+    graph_t* restored = graph_t::deserialize(loaded);
+    
+    delete graph_builder;
+    delete graph;
+    delete restored;
+    return 0;
+}
+```
+
+---
+
+# Performance Characteristics
+
+## Graph Construction
+- **Topology Definition**: O(N²) for N nodes (all-pairs evaluation)
+- **Feature Extraction**: O(N·F) for F features
+- **Edge Index Creation**: O(E) where E = number of edges
+
+## Device Transfer
+- **First Transfer**: O(T) where T = total tensor size
+- **Cached Transfer**: O(1) (returns cached pointer)
+
+## Serialization
+- **Serialize**: O(T) - base64 encoding of all tensors
+- **Deserialize**: O(T) - base64 decoding + tensor reconstruction
+
+## Memory Usage
+- **Graph Storage**: ~(N·F_node + E·F_edge + F_graph) × sizeof(Type)
+- **Device Cache**: Additional factor of D (number of devices)
+
+---
+
+# Dependencies
+
+## Internal
+- `particle_template`: Node source objects
+- `event_template`: Event container
+- `model_template`: Device information for tensor transfer
+- `tools`: String/filesystem utilities (parent class)
+- `notification`: Logging (grandparent class)
+
+## External
+- **LibTorch**: `torch::Tensor`, `torch::TensorOptions`, `torch::kCUDA`
+- **C++17 STL**: `<map>`, `<vector>`, `<functional>`, `<string>`
+- **HDF5** (optional): For `serialize`/`deserialize`
+
+---
+
+# Best Practices
+
+## 1. Pre-Filter Events in PreSelection()
+```cpp
+bool PreSelection() override {
+    event_4tops* ev = this->get_event<event_4tops>();
+    return ev->Jets.size() >= 4;  // Fast rejection
+}
+```
+
+## 2. Use Sparse Topologies for Large Graphs
+```cpp
+// Good: O(N·k) for k-NN
+this->define_topology([this](auto* a, auto* b){
+    return this->is_knn(a, b, k=10);
+});
+
+// Bad: O(N²) for fully connected
+this->define_topology([](auto* a, auto* b){
+    return true;
+});
+```
+
+## 3. Cache Expensive Computations
+```cpp
+// Compute once, use multiple times
+std::vector<TLorentzVector> vectors;
+for (auto* jet : ev->Jets){
+    vectors.push_back(jet->vector());
+}
+
+this->add_edge_data_feature<double>([&vectors](int i, int j){
+    return (vectors[i] + vectors[j]).M();
+}, "dijet_mass");
+```
+
+## 4. Use Descriptive Feature Names
+```cpp
+this->add_node_data_feature<double>(&particle_4tops::pt, "jet_pt_gev");  // Good
+this->add_node_data_feature<double>(&particle_4tops::pt, "x1");          // Bad
+```
+
+## 5. Validate Graph Structure
+```cpp
+if (graph->num_nodes == 0){
+    this->warning("Empty graph created!");
+    return;
+}
+if (graph->edge_index.size(1) == 0){
+    this->warning("No edges in graph!");
+}
+```
+
+---
+
+# Common Pitfalls
+
+## 1. Calling define_topology() Before define_particle_nodes()
+**Symptom**: Segfault or empty edge list
+
+**Solution**: Always call `define_particle_nodes()` first
+
+## 2. Forgetting Self-Loops
+**Symptom**: GNN layer expects self-loops but none exist
+
+**Solution**: Set `this->self_loops = true` in constructor
+
+## 3. Type Mismatch in Feature Extraction
+**Symptom**: Compilation error or incorrect tensor dtype
+
+**Solution**: Match template parameter to getter return type
+```cpp
+// Correct
+this->add_node_data_feature<double, particle_4tops>(&particle_4tops::pt, "pt");
+
+// Wrong
+this->add_node_data_feature<int, particle_4tops>(&particle_4tops::pt, "pt");
+```
+
+## 4. Accessing Features Before data_export()
+**Symptom**: Empty feature maps
+
+**Solution**: Call `data_export()` to populate `graph_t`
+
+## 5. Not Handling Empty Graphs
+**Symptom**: Model crash on zero-node graphs
+
+**Solution**: Check event requirements in `PreSelection()`
+
+---
+
+# Conclusion
+
+The `graph_template` and `graph_t` classes provide a declarative, type-safe framework for converting physics events into graph-structured data. By abstracting topology construction, feature extraction, and device management, they enable researchers to focus on physics-motivated graph designs.
+
+Key innovations:
+- **Lambda Topology**: Arbitrary connectivity predicates without manual edge list construction
+- **cproperty Integration**: Compile-time type-safe feature extraction
+- **Device Caching**: O(1) subsequent transfers to same device
+- **HDF5 Serialization**: Reproducible graph storage with base64 encoding
+
+The framework is optimized for typical HEP workflows: jet clustering graphs (dR-based connectivity), particle lineage graphs (parent-child edges), and event-level classification graphs (fully connected).
+
+---
+
+@see particle_template
+@see event_template
+@see model_template
+@see dataloader
+@see tools
+@see notification
+
+*/

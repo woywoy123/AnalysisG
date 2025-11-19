@@ -1,0 +1,119 @@
+/**
+@file
+@brief Vollständige Dokumentation für die NuSol-Rekonstruktionsmodule – Ellipsen- und Conuix-Ansatz zur Neutrinorekonstruktion.
+
+@defgroup nusol_module nusol
+@ingroup modules_module
+
+@brief Das `nusol`-Modul bietet eine flexible, erweiterbare Schnittstelle zur Neutrinorekonstruktion in Ereignissen mit fehlender Energie. Es unterstützt sowohl den analytischen Ellipsen-Ansatz (arXiv:1305.1878) als auch den verallgemeinerten Conuix-Ansatz für beliebig viele Neutrinos.
+
+@details
+
+---
+
+# Übersicht
+
+| Klasse/Struktur | Zweck | Link |
+|----------------|-------|------|
+| **nusol** | Haupt-Controller für Neutrinorekonstruktion | (Diese Seite) |
+| ellipse | Analytische Lösung für 1 Neutrino | @ref ellipse_module |
+| conuix | Numerische Lösung für n-Neutrino | @ref conuix_module |
+| nusol_t | Parameterstruktur für Rekonstruktion | (Diese Seite) |
+| particle_template | Eingabeobjekte (Lepton, Jet, etc.) | @ref particle_template_page |
+| tools | Hilfsmethoden | @ref tools_module |
+| notification | Logging | @ref notification_module |
+
+**Typischer Workflow**: Initialisiere `nusol_t` → Erzeuge `nusol`-Instanz → rufe `solve()` auf → Ergebnisse aus `ellipse` oder `conuix` auslesen
+
+---
+
+@section nusol_intro Einführung
+
+Das `nusol`-Modul abstrahiert die Neutrinorekonstruktion für verschiedene Topologien (z.B. $t\bar{t}$, $W$-Boson-Zerfälle) und bietet eine einheitliche Schnittstelle für analytische und numerische Methoden.
+
+@section nusol_design Design und Architektur
+
+- **nusol_t**: Struktur mit allen Eingabeparametern (MET, $\phi$, Massen, Zielobjekte, Modus)
+- **nusol**: Controller-Klasse, die je nach Modus (`ellipse`, `conuix`) die passende Methode auswählt und ausführt
+- **ellipse**: Implementiert die analytische Lösung für 1 Neutrino (siehe arXiv:1305.1878)
+- **conuix**: Verallgemeinerter Ansatz für beliebig viele Neutrinos (numerisch)
+
+@section nusol_api API und Methoden
+
+## Struktur `nusol_t`
+```cpp
+struct nusol_t {
+    double met;      // Missing ET
+    double phi;      // Azimutwinkel von MET
+    double mt;       // Top-Quark-Masse (optional, Default: 172.68 GeV)
+    double mw;       // W-Boson-Masse (optional, Default: 80.385 GeV)
+    double limit;    // Numerische Schranke für Conuix
+    nusol_enum mode; // Modus: ellipse, conuix, undefined
+    std::vector<particle_template*>* targets; // Zielobjekte (Lepton, Jet, ...)
+};
+```
+
+## Klasse `nusol`
+```cpp
+class nusol: notification, tools {
+public:
+    nusol(nusol_t* parameters); // Konstruktor mit Parametern
+    void solve();               // Führt die gewählte Methode aus
+    ~nusol();                   // Aufräumen
+private:
+    nusol_t* params;
+    ellipse* D_nunu;
+    conuix*  M_nunu;
+};
+```
+
+- **Konstruktor**: Initialisiert Parameter, berechnet $\text{MET}_x$, $\text{MET}_y$ aus $\phi$
+- **solve()**: Wählt je nach Modus die Methode (`ellipse` oder `conuix`) und ruft deren `solve()` auf
+- **Destruktor**: Gibt Speicher frei
+
+@section nusol_usage Beispiel
+
+```cpp
+nusol_t params;
+params.met = 40.0; // GeV
+params.phi = 2.1;  // rad
+params.mode = nusol_enum::ellipse;
+params.targets = &lepton_jet_vector;
+
+nusol solver(&params);
+solver.solve();
+// Ergebnisse stehen nun in params oder in den jeweiligen Methodenobjekten
+```
+
+@section nusol_ext Erweiterbarkeit
+
+- Neue Methoden können als weitere Klassen (z.B. `ellipse`, `conuix`) hinzugefügt und im Switch-Statement von `nusol::solve()` integriert werden.
+- Die Parameterstruktur `nusol_t` kann um weitere Felder ergänzt werden.
+
+@section nusol_deps Abhängigkeiten
+
+- **Intern**: `particle_template`, `ellipse`, `conuix`, `tools`, `notification`
+- **Extern**: C++ STL, ggf. Eigen/ROOT für numerische Methoden
+
+@section nusol_bestpractices Best Practices
+
+- Immer den Modus (`mode`) explizit setzen
+- Zielobjekte (`targets`) vor Übergabe prüfen
+- Für numerische Methoden (`conuix`) ggf. `limit` anpassen
+
+@section nusol_pitfalls Häufige Fehler
+
+- Fehlende Initialisierung von `targets` → Segfault
+- Falscher Modus → keine Lösung wird berechnet
+- Numerische Instabilität bei zu kleinem/zu großem `limit`
+
+@section nusol_conclusion Fazit
+
+Das `nusol`-Modul bietet eine flexible, erweiterbare und robuste Schnittstelle zur Neutrinorekonstruktion in HEP-Analysen. Es vereint analytische und numerische Ansätze und ist leicht auf neue Methoden erweiterbar.
+
+@see ellipse
+@see conuix
+@see particle_template
+@see tools
+@see notification
+*/

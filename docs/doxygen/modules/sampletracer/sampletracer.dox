@@ -1,0 +1,624 @@
+/**
+ * @file sampletracer.dox
+ * @brief Multi-file sample tracking and parallel compilation orchestrator
+ * @defgroup sampletracer SampleTracer
+ * @details 
+ * High-level orchestration layer managing multiple ROOT files through individual 
+ * container instances. Provides multi-threaded compilation, cross-file selection 
+ * application, and unified dataloader population for large-scale analysis workflows.
+ *
+ * **Quick Navigation:**
+ * - @ref container "container" - File-level data container (managed by sampletracer)
+ * - @ref dataloader "dataloader" - Dataset batching (populated by sampletracer)
+ * - @ref meta "meta" - Metadata management (per-file)
+ * - @ref event_template "event_template" - Base event class
+ * - @ref graph_template "graph_template" - Base graph class
+ * - @ref selection_template "selection_template" - Base selection class
+ * - @ref io "io" - ROOT/HDF5 I/O operations
+ * - @ref notification "notification" - Logging & progress tracking
+ * - @ref tools "tools" - Utility functions
+ *
+ * @page sampletracer_page SampleTracer Module Documentation
+ *
+ * @section sampletracer_intro Introduction
+ *
+ * The **sampletracer** module is AnalysisG's multi-file orchestrator, managing 
+ * collections of ROOT files through individual container instances. It coordinates 
+ * parallel compilation of graphs, applies selections across all samples, and 
+ * aggregates data into a unified dataloader for training/analysis pipelines.
+ *
+ * **Key Features:**
+ * - **Multi-File Management**: One container per ROOT file with hash-based tracking
+ * - **Parallel Compilation**: Multi-threaded graph compilation across files
+ * - **Selection Propagation**: Apply cuts uniformly across all samples
+ * - **Unified Aggregation**: Merge data from all files into single dataloader
+ * - **Metadata Tracking**: Per-file cross-section and process information
+ *
+ * **Design Philosophy:**
+ * The sampletracer abstracts away multi-file complexity, allowing users to treat 
+ * dozens or hundreds of ROOT files as a single logical dataset. Each file maintains 
+ * its own container for memory isolation and parallel processing, while the 
+ * sampletracer provides a unified interface for operations affecting all files.
+ *
+ * @section sampletracer_purpose Purpose and Scope
+ *
+ * **Primary Use Cases:**
+ * 1. **Large Dataset Management**: Process hundreds of ROOT files efficiently
+ * 2. **Monte Carlo Campaigns**: Organize mc16/mc20 samples with metadata
+ * 3. **Parallel Processing**: Compile graphs across files using multiple CPU cores
+ * 4. **Unified Training**: Aggregate data from all samples into single dataloader
+ *
+ * **Module Responsibilities:**
+ * - Maintain map of filename → container
+ * - Store per-file metadata (cross-section, k-factor, filter efficiency)
+ * - Coordinate parallel compilation via thread pool
+ * - Apply selections uniformly across all containers
+ * - Populate single dataloader from all containers
+ * - Track events by label (training/validation/test)
+ *
+ * **Typical Workflow:**
+ * ```
+ * ROOT Files → sampletracer → [containers] → compile_objects() → dataloader → model
+ *              (metadata)     (parallel)      (multi-threaded)
+ * ```
+ *
+ * @section sampletracer_architecture Architecture
+ *
+ * @subsection sampletracer_class_structure Class Structure
+ *
+ * **Class Definition:**
+ * ```cpp
+ * class sampletracer: public tools, public notification {
+ * public:
+ *     sampletracer();
+ *     ~sampletracer();
+ *     
+ *     // Metadata management
+ *     bool add_meta_data(meta* meta_, std::string filename);
+ *     meta* get_meta_data(std::string filename);
+ *     
+ *     // Event retrieval
+ *     std::vector<event_template*> get_events(std::string label);
+ *     
+ *     // Selection operations
+ *     void fill_selections(std::map<std::string, selection_template*>* inpt);
+ *     
+ *     // Template addition
+ *     bool add_event(event_template* ev, std::string label);
+ *     bool add_graph(graph_template* gr, std::string label);
+ *     bool add_selection(selection_template* sel);
+ *     
+ *     // Compilation and aggregation
+ *     void compile_objects(int threads);
+ *     void populate_dataloader(dataloader* dl);
+ *     
+ *     // Members
+ *     std::string* output_path;
+ *     
+ * private:
+ *     std::map<std::string, container> root_container;
+ * };
+ * ```
+ *
+ * **Inheritance:**
+ * - **tools**: Provides utility functions (string manipulation, file operations)
+ * - **notification**: Enables logging, warnings, and progress tracking
+ *
+ * @subsection sampletracer_methods Core Methods
+ *
+ * **1. add_meta_data()**
+ * ```cpp
+ * bool sampletracer::add_meta_data(meta* meta_, std::string filename)
+ * ```
+ * Associates metadata with a specific ROOT file, creating container if needed.
+ *
+ * **Parameters:**
+ * - `meta_`: Pointer to metadata object (cross-section, process, etc.)
+ * - `filename`: ROOT file path (used as container key)
+ *
+ * **Returns:** `true` if metadata added successfully
+ *
+ * **Example:**
+ * ```cpp
+ * sampletracer tracer;
+ * 
+ * // ttbar sample
+ * meta* ttbar_meta = new meta();
+ * ttbar_meta->cross_section = 831.76;  // pb
+ * ttbar_meta->dsid = 410470;
+ * ttbar_meta->process = "ttbar";
+ * tracer.add_meta_data(ttbar_meta, "ttbar_sample_1.root");
+ * 
+ * // Single top sample
+ * meta* single_top_meta = new meta();
+ * single_top_meta->cross_section = 136.02;
+ * single_top_meta->dsid = 410648;
+ * single_top_meta->process = "single_top_tW";
+ * tracer.add_meta_data(single_top_meta, "single_top_sample_1.root");
+ * ```
+ *
+ * **2. add_event() / add_graph() / add_selection()**
+ * ```cpp
+ * bool sampletracer::add_event(event_template* ev, std::string label)
+ * bool sampletracer::add_graph(graph_template* gr, std::string label)
+ * bool sampletracer::add_selection(selection_template* sel)
+ * ```
+ * Routes templates to appropriate container based on associated filename/hash.
+ *
+ * **Parameters:**
+ * - `ev` / `gr` / `sel`: Pointer to template instance
+ * - `label`: Category label (e.g., "training", "validation")
+ *
+ * **Returns:** `true` if template added successfully
+ *
+ * **Example:**
+ * ```cpp
+ * // Event knows which file it came from
+ * my_event* evt = new my_event();
+ * evt->source_file = "ttbar_sample_1.root";
+ * evt->event_number = 12345;
+ * 
+ * tracer.add_event(evt, "training");
+ * // Automatically routed to ttbar_sample_1.root container
+ * 
+ * // Graph references event's source
+ * my_graph* g = new my_graph();
+ * g->hash = evt->hash;
+ * g->source_file = evt->source_file;
+ * 
+ * tracer.add_graph(g, "training");
+ * ```
+ *
+ * **3. get_events()**
+ * ```cpp
+ * std::vector<event_template*> sampletracer::get_events(std::string label)
+ * ```
+ * Retrieves all events matching label from all containers.
+ *
+ * **Parameters:**
+ * - `label`: Label filter (e.g., "training")
+ *
+ * **Returns:** Vector of event pointers from all files
+ *
+ * **Example:**
+ * ```cpp
+ * // Get all training events across all samples
+ * auto train_events = tracer.get_events("training");
+ * 
+ * std::cout << "Total training events: " << train_events.size() << std::endl;
+ * 
+ * // Process events
+ * for (auto* ev : train_events) {
+ *     my_event* evt = static_cast<my_event*>(ev);
+ *     // ... analyze event ...
+ * }
+ * ```
+ *
+ * **4. fill_selections()**
+ * ```cpp
+ * void sampletracer::fill_selections(
+ *     std::map<std::string, selection_template*>* inpt
+ * )
+ * ```
+ * Applies selection templates to all containers uniformly.
+ *
+ * **Parameters:**
+ * - `inpt`: Map of selection_name → selection_template*
+ *
+ * **Example:**
+ * ```cpp
+ * std::map<std::string, selection_template*> cuts;
+ * 
+ * auto* lepton_cut = new pt_selection();
+ * lepton_cut->threshold = 25.0;
+ * lepton_cut->name = "lepton_pt_25";
+ * cuts["lepton_pt_25"] = lepton_cut;
+ * 
+ * auto* jet_cut = new jet_count_selection();
+ * jet_cut->min_jets = 4;
+ * jet_cut->name = "min_4_jets";
+ * cuts["min_4_jets"] = jet_cut;
+ * 
+ * // Apply to all samples
+ * tracer.fill_selections(&cuts);
+ * 
+ * // Selections now stored in all containers
+ * ```
+ *
+ * **5. compile_objects()**
+ * ```cpp
+ * void sampletracer::compile_objects(int threads)
+ * ```
+ * Compiles all graph templates in parallel across specified number of threads.
+ *
+ * **Parameters:**
+ * - `threads`: Number of worker threads (typically # CPU cores)
+ *
+ * **Process:**
+ * 1. Distributes containers across thread pool
+ * 2. Each thread calls `container::compile()` on its subset
+ * 3. Waits for all threads to complete
+ * 4. Aggregates compilation statistics
+ *
+ * **Example:**
+ * ```cpp
+ * tracer.set_verbose(true);
+ * 
+ * int n_threads = 8;  // Use 8 CPU cores
+ * tracer.compile_objects(n_threads);
+ * 
+ * // Output (from notification):
+ * // [INFO] Compiling 50 containers across 8 threads...
+ * // [INFO] Thread 0: 7 containers, 3500 graphs
+ * // [INFO] Thread 1: 6 containers, 3200 graphs
+ * // ...
+ * // [INFO] Total: 50 containers, 25000 graphs compiled
+ * ```
+ *
+ * **Threading Details:**
+ * ```cpp
+ * // Internal implementation sketch
+ * std::vector<std::thread> workers;
+ * std::atomic<size_t> total_graphs(0);
+ * 
+ * for (int t = 0; t < threads; ++t) {
+ *     workers.emplace_back([&, t]() {
+ *         size_t local_count = 0;
+ *         
+ *         // Process every Nth container
+ *         for (auto it = root_container.begin(); 
+ *              it != root_container.end(); ++it) {
+ *             if (std::distance(root_container.begin(), it) % threads == t) {
+ *                 it->second.compile(&local_count, t);
+ *             }
+ *         }
+ *         
+ *         total_graphs += local_count;
+ *     });
+ * }
+ * 
+ * for (auto& worker : workers) {
+ *     worker.join();
+ * }
+ * ```
+ *
+ * **6. populate_dataloader()**
+ * ```cpp
+ * void sampletracer::populate_dataloader(dataloader* dl)
+ * ```
+ * Transfers compiled graphs from all containers to a single dataloader.
+ *
+ * **Parameters:**
+ * - `dl`: Pointer to dataloader to populate
+ *
+ * **Example:**
+ * ```cpp
+ * dataloader train_loader;
+ * 
+ * // Populate from all samples
+ * tracer.populate_dataloader(&train_loader);
+ * 
+ * // Configure dataloader
+ * train_loader.batch_size = 32;
+ * train_loader.shuffle();
+ * train_loader.kfold = 5;
+ * train_loader.split();
+ * 
+ * std::cout << "Dataloader size: " << train_loader.size() << " graphs" << std::endl;
+ * ```
+ *
+ * **7. get_meta_data()**
+ * ```cpp
+ * meta* sampletracer::get_meta_data(std::string filename)
+ * ```
+ * Retrieves metadata for a specific ROOT file.
+ *
+ * **Parameters:**
+ * - `filename`: ROOT file path
+ *
+ * **Returns:** Pointer to metadata object, or nullptr if not found
+ *
+ * **Example:**
+ * ```cpp
+ * meta* ttbar_meta = tracer.get_meta_data("ttbar_sample_1.root");
+ * 
+ * if (ttbar_meta) {
+ *     std::cout << "Cross-section: " << ttbar_meta->cross_section << " pb" << std::endl;
+ *     std::cout << "Process: " << ttbar_meta->process << std::endl;
+ * }
+ * ```
+ *
+ * @section sampletracer_usage Usage Examples
+ *
+ * @subsection sampletracer_basic_workflow Complete Workflow
+ *
+ * **Loading Multiple Samples:**
+ * ```cpp
+ * #include <sampletracer/sampletracer.h>
+ * #include <io/io.h>
+ * 
+ * sampletracer tracer;
+ * tracer.set_verbose(true);
+ * 
+ * // Define samples
+ * std::vector<std::string> ttbar_files = {
+ *     "data/ttbar_sample_1.root",
+ *     "data/ttbar_sample_2.root",
+ *     "data/ttbar_sample_3.root"
+ * };
+ * 
+ * std::vector<std::string> single_top_files = {
+ *     "data/single_top_sample_1.root",
+ *     "data/single_top_sample_2.root"
+ * };
+ * 
+ * // Add metadata
+ * meta* ttbar_meta = new meta();
+ * ttbar_meta->cross_section = 831.76;
+ * ttbar_meta->dsid = 410470;
+ * 
+ * meta* stop_meta = new meta();
+ * stop_meta->cross_section = 136.02;
+ * stop_meta->dsid = 410648;
+ * 
+ * // Load files
+ * io reader;
+ * 
+ * for (auto& filepath : ttbar_files) {
+ *     tracer.add_meta_data(ttbar_meta, filepath);
+ *     
+ *     reader.open_file(filepath);
+ *     for (int i = 0; i < reader.get_entries(); ++i) {
+ *         reader.read_entry(i);
+ *         
+ *         my_event* evt = new my_event();
+ *         evt->load_from_tree(&reader);
+ *         evt->source_file = filepath;
+ *         
+ *         tracer.add_event(evt, "training");
+ *         
+ *         // Build graph
+ *         my_graph* g = new my_graph();
+ *         g->build_from_event(evt);
+ *         g->source_file = filepath;
+ *         
+ *         tracer.add_graph(g, "training");
+ *     }
+ * }
+ * 
+ * // Repeat for single top files
+ * for (auto& filepath : single_top_files) {
+ *     tracer.add_meta_data(stop_meta, filepath);
+ *     // ... same loading process ...
+ * }
+ * 
+ * std::cout << "Loaded " << tracer.get_events("training").size() 
+ *           << " training events" << std::endl;
+ * ```
+ *
+ * @subsection sampletracer_parallel_compilation Parallel Compilation
+ *
+ * **Multi-Threaded Processing:**
+ * ```cpp
+ * #include <thread>
+ * 
+ * int n_threads = std::thread::hardware_concurrency();
+ * std::cout << "Using " << n_threads << " CPU cores" << std::endl;
+ * 
+ * auto start = std::chrono::high_resolution_clock::now();
+ * 
+ * tracer.compile_objects(n_threads);
+ * 
+ * auto end = std::chrono::high_resolution_clock::now();
+ * auto duration = std::chrono::duration_cast<std::chrono::seconds>(end - start);
+ * 
+ * std::cout << "Compilation took " << duration.count() << " seconds" << std::endl;
+ * ```
+ *
+ * @subsection sampletracer_selection_application Selection Application
+ *
+ * **Applying Cuts Across Samples:**
+ * ```cpp
+ * // Define analysis selections
+ * std::map<std::string, selection_template*> analysis_cuts;
+ * 
+ * auto* lepton_pt = new pt_selection();
+ * lepton_pt->threshold = 25.0;
+ * lepton_pt->name = "lepton_pt_25";
+ * analysis_cuts["lepton_pt_25"] = lepton_pt;
+ * 
+ * auto* jet_count = new jet_count_selection();
+ * jet_count->min_jets = 4;
+ * jet_count->name = "min_4_jets";
+ * analysis_cuts["min_4_jets"] = jet_count;
+ * 
+ * auto* met_cut = new met_selection();
+ * met_cut->threshold = 20.0;
+ * met_cut->name = "met_20";
+ * analysis_cuts["met_20"] = met_cut;
+ * 
+ * // Apply to all samples
+ * tracer.fill_selections(&analysis_cuts);
+ * 
+ * // Check pass rates per sample
+ * for (auto& [filename, cont] : tracer.root_container) {
+ *     int total = cont.random_access.size();
+ *     int passed = 0;
+ *     
+ *     for (auto& [hash, entry] : cont.random_access) {
+ *         bool all_pass = true;
+ *         for (auto* sel : entry.m_selection) {
+ *             if (!sel->pass) {
+ *                 all_pass = false;
+ *                 break;
+ *             }
+ *         }
+ *         if (all_pass) passed++;
+ *     }
+ *     
+ *     std::cout << filename << ": " << passed << "/" << total 
+ *               << " (" << 100.0 * passed / total << "%)" << std::endl;
+ * }
+ * ```
+ *
+ * @subsection sampletracer_dataloader_integration Dataloader Integration
+ *
+ * **Training Pipeline Setup:**
+ * ```cpp
+ * dataloader train_loader;
+ * 
+ * // Populate from all samples
+ * tracer.populate_dataloader(&train_loader);
+ * 
+ * // Configure for training
+ * train_loader.batch_size = 32;
+ * train_loader.shuffle();
+ * train_loader.kfold = 5;
+ * train_loader.split();
+ * 
+ * std::cout << "Training samples: " << train_loader.size() << std::endl;
+ * 
+ * // Use in training loop
+ * model gnn;
+ * optimizer opt;
+ * opt.epochs = 100;
+ * 
+ * for (int epoch = 0; epoch < opt.epochs; ++epoch) {
+ *     for (int k = 0; k < train_loader.kfold; ++k) {
+ *         auto train_batch = train_loader.get_fold_train(k);
+ *         auto val_batch = train_loader.get_fold_val(k);
+ *         
+ *         gnn.train(train_batch);
+ *         gnn.evaluate(val_batch);
+ *     }
+ * }
+ * ```
+ *
+ * @section sampletracer_advanced Advanced Topics
+ *
+ * @subsection sampletracer_memory_efficiency Memory Management
+ *
+ * **Chunked Processing for Large Datasets:**
+ * ```cpp
+ * sampletracer tracer;
+ * 
+ * // Process files in chunks to avoid memory exhaustion
+ * std::vector<std::string> all_files = get_all_root_files();
+ * int chunk_size = 10;  // Process 10 files at a time
+ * 
+ * dataloader final_loader;
+ * 
+ * for (size_t i = 0; i < all_files.size(); i += chunk_size) {
+ *     sampletracer chunk_tracer;
+ *     
+ *     // Load chunk
+ *     for (size_t j = i; j < std::min(i + chunk_size, all_files.size()); ++j) {
+ *         load_file_into_tracer(&chunk_tracer, all_files[j]);
+ *     }
+ *     
+ *     // Compile and populate
+ *     chunk_tracer.compile_objects(8);
+ *     chunk_tracer.populate_dataloader(&final_loader);
+ *     
+ *     std::cout << "Processed chunk " << (i / chunk_size + 1) << std::endl;
+ *     // chunk_tracer goes out of scope, freeing memory
+ * }
+ * ```
+ *
+ * @subsection sampletracer_sample_weighting Monte Carlo Weighting
+ *
+ * **Cross-Section Normalization:**
+ * ```cpp
+ * double luminosity = 140.1;  // fb⁻¹
+ * 
+ * for (auto& [filename, cont] : tracer.root_container) {
+ *     meta* m = cont.get_meta_data();
+ *     
+ *     double xs = m->cross_section;  // pb
+ *     double kfactor = m->k_factor;
+ *     double filter_eff = m->filter_efficiency;
+ *     
+ *     int n_events = cont.len();
+ *     double weight = (xs * kfactor * filter_eff * luminosity * 1000.0) / n_events;
+ *     
+ *     std::cout << filename << " weight: " << weight << std::endl;
+ *     
+ *     // Apply weight to all events in this container
+ *     auto events = cont.get_events("training");
+ *     for (auto* ev : events) {
+ *         ev->weight = weight;
+ *     }
+ * }
+ * ```
+ *
+ * @section sampletracer_best_practices Best Practices
+ *
+ * **1. Thread Count Selection:**
+ * ```cpp
+ * // Use physical cores, not hyperthreads
+ * int n_threads = std::thread::hardware_concurrency() / 2;
+ * 
+ * // Or cap at number of containers
+ * n_threads = std::min(n_threads, (int)tracer.root_container.size());
+ * ```
+ *
+ * **2. Progress Monitoring:**
+ * ```cpp
+ * tracer.set_verbose(true);
+ * tracer.set_debug(false);
+ * 
+ * tracer.add_message("Loading samples...");
+ * // ... load files ...
+ * tracer.add_message("Compiling graphs...");
+ * tracer.compile_objects(8);
+ * tracer.add_message("Populating dataloader...");
+ * tracer.populate_dataloader(&dl);
+ * ```
+ *
+ * **3. Error Handling:**
+ * ```cpp
+ * auto events = tracer.get_events("training");
+ * if (events.empty()) {
+ *     std::cerr << "Error: No training events found!" << std::endl;
+ *     return 1;
+ * }
+ * 
+ * // Check containers were created
+ * if (tracer.root_container.empty()) {
+ *     std::cerr << "Error: No containers loaded!" << std::endl;
+ *     return 1;
+ * }
+ * ```
+ *
+ * @section sampletracer_related Related Modules
+ *
+ * - @ref container "container" - File-level data container
+ * - @ref dataloader "dataloader" - Dataset batching
+ * - @ref meta "meta" - Metadata management
+ * - @ref io "io" - ROOT/HDF5 I/O
+ * - @ref event_template "event_template" - Base event class
+ * - @ref graph_template "graph_template" - Base graph class
+ * - @ref selection_template "selection_template" - Base selection class
+ * - @ref notification "notification" - Logging & progress
+ * - @ref tools "tools" - Utility functions
+ *
+ * @section sampletracer_summary Summary
+ *
+ * The **sampletracer** module provides:
+ * - Multi-file orchestration through container management
+ * - Parallel graph compilation across CPU cores
+ * - Unified selection application across all samples
+ * - Single dataloader aggregation from multiple ROOT files
+ * - Per-file metadata tracking for Monte Carlo normalization
+ *
+ * **Key Advantages:**
+ * - **Scalability**: Handles hundreds of ROOT files efficiently
+ * - **Performance**: Multi-threaded compilation reduces processing time
+ * - **Simplicity**: Unified interface abstracts multi-file complexity
+ * - **Flexibility**: Per-file containers enable independent processing
+ *
+ * **Next Steps:**
+ * - Explore @ref container "container" for file-level data management
+ * - Review @ref dataloader "dataloader" for training data preparation
+ * - See @ref io "io" for ROOT file reading
+ */

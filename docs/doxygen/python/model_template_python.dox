@@ -1,0 +1,590 @@
+/**
+ * @file model_template_python.dox
+ * @brief Python bindings for ModelTemplate - GNN model interface
+ * @defgroup model_template_python Python ModelTemplate
+ * @ingroup models
+ * @details
+ * Cython Python interface for the model_template C++ class. Provides GNN (Graph Neural
+ * Network) model configuration with input/output feature definitions, device management,
+ * and checkpoint handling.
+ *
+ * **Source**: `src/AnalysisG/core/model_template.pyx` (~100 lines)
+ *
+ * @page model_template_python_page Python ModelTemplate API
+ *
+ * @section model_py_intro Introduction
+ *
+ * **ModelTemplate** is the Python wrapper for GNN model configuration, managing:
+ * - **Input features**: Graph-level, node-level, edge-level feature lists
+ * - **Output features**: Prediction mappings (graph/node/edge outputs)
+ * - **Device management**: CPU vs. CUDA device selection
+ * - **Checkpoint handling**: Model weight loading and storage
+ * - **Model naming**: Automatic or manual model identification
+ *
+ * **Key Features:**
+ * - Helper methods `conv()` and `cond()` for C++↔Python map conversions
+ * - Auto-naming from `__class__.__name__`
+ * - Device-agnostic interface (CPU/CUDA)
+ * - Checkpoint path/weight name/tree name configuration
+ *
+ * @section model_py_lifecycle Lifecycle Management
+ *
+ * **Memory Management:**
+ * ```python
+ * class ModelTemplate:
+ *     def __cinit__(self):
+ *         self.rename = False  # Track manual rename
+ *         if type(self) is not ModelTemplate:
+ *             return
+ *         self.nn_ptr = new model_template()
+ * 
+ *     def __dealloc__(self):
+ *         if type(self) is not ModelTemplate:
+ *             return
+ *         del self.nn_ptr
+ * ```
+ *
+ * **Why `rename` Flag?**
+ * - Enables automatic naming from class name
+ * - Allows manual override when needed
+ * - Simplifies model identification in multi-model pipelines
+ *
+ * @section model_py_helpers Helper Methods
+ *
+ * **conv() - C++ to Python:**
+ * ```python
+ * cdef dict conv(self, map[string, string]* inpt):
+ *     \"\"\"Convert C++ map<string, string> → Python dict.\"\"\"
+ *     cdef dict out = {}
+ *     cdef pair[string, string] itx
+ *     
+ *     for itx in deref(inpt):
+ *         out[env(itx.first)] = env(itx.second)
+ *     
+ *     return out
+ * ```
+ *
+ * **cond() - Python to C++:**
+ * ```python
+ * cdef map[string, string] cond(self, dict inpt):
+ *     \"\"\"Convert Python dict → C++ map<string, string>.\"\"\"
+ *     cdef str i
+ *     
+ *     # Set model name if not manually renamed
+ *     if not self.rename:
+ *         self.nn_ptr.name = enc(self.__class__.__name__)
+ *     
+ *     return {enc(i) : enc(inpt[i]) for i in inpt}
+ * ```
+ *
+ * **Why Separate Methods?**
+ * - Cython `cdef` methods for performance
+ * - Automatic model naming on every C++ conversion
+ * - Reusable across all property setters
+ *
+ * @section model_py_input Input Feature Properties
+ *
+ * @subsection model_py_i_graph Graph-Level Features
+ *
+ * ```python
+ * @property
+ * def i_graph(self):
+ *     \"\"\"List of graph-level input features.\"\"\"
+ *     return env_vec(&self.nn_ptr.i_graph)
+ * 
+ * @i_graph.setter
+ * def i_graph(self, list inpt):
+ *     self.nn_ptr.i_graph = enc_list(inpt)
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * model = MyGNN()
+ * 
+ * # Set graph-level features
+ * model.i_graph = [
+ *     "n_jets",      # Number of jets in event
+ *     "met",         # Missing transverse energy
+ *     "sum_jet_pt"   # Total jet pT
+ * ]
+ * ```
+ *
+ * @subsection model_py_i_node Node-Level Features
+ *
+ * ```python
+ * @property
+ * def i_node(self):
+ *     \"\"\"List of node-level input features (particle properties).\"\"\"
+ *     return env_vec(&self.nn_ptr.i_node)
+ * 
+ * @i_node.setter
+ * def i_node(self, list inpt):
+ *     self.nn_ptr.i_node = enc_list(inpt)
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * model.i_node = [
+ *     "pt",    # Transverse momentum
+ *     "eta",   # Pseudorapidity
+ *     "phi",   # Azimuthal angle
+ *     "mass",  # Particle mass
+ *     "charge" # Electric charge
+ * ]
+ * ```
+ *
+ * @subsection model_py_i_edge Edge-Level Features
+ *
+ * ```python
+ * @property
+ * def i_edge(self):
+ *     \"\"\"List of edge-level input features (particle relationships).\"\"\"
+ *     return env_vec(&self.nn_ptr.i_edge)
+ * 
+ * @i_edge.setter
+ * def i_edge(self, list inpt):
+ *     self.nn_ptr.i_edge = enc_list(inpt)
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * model.i_edge = [
+ *     "delta_r",    # Angular separation
+ *     "delta_eta",  # Pseudorapidity difference
+ *     "delta_phi",  # Azimuthal angle difference
+ *     "inv_mass"    # Invariant mass of pair
+ * ]
+ * ```
+ *
+ * @section model_py_output Output Feature Properties
+ *
+ * @subsection model_py_o_graph Graph-Level Outputs
+ *
+ * ```python
+ * @property
+ * def o_graph(self):
+ *     \"\"\"Dictionary mapping output names → feature names.\"\"\"
+ *     return self.conv(&self.nn_ptr.o_graph)
+ * 
+ * @o_graph.setter
+ * def o_graph(self, dict inpt):
+ *     self.nn_ptr.o_graph = self.cond(inpt)
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * model.o_graph = {
+ *     "signal_prob": "graph_score",  # Signal vs. background
+ *     "top_mass": "m_top_reco"       # Reconstructed top mass
+ * }
+ * ```
+ *
+ * @subsection model_py_o_node Node-Level Outputs
+ *
+ * ```python
+ * @property
+ * def o_node(self):
+ *     \"\"\"Dictionary mapping node output names → feature names.\"\"\"
+ *     return self.conv(&self.nn_ptr.o_node)
+ * 
+ * @o_node.setter
+ * def o_node(self, dict inpt):
+ *     self.nn_ptr.o_node = self.cond(inpt)
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * model.o_node = {
+ *     "is_top_child": "node_top_label",   # Truth labeling
+ *     "b_tag_score": "node_btag_prob"     # b-jet probability
+ * }
+ * ```
+ *
+ * @subsection model_py_o_edge Edge-Level Outputs
+ *
+ * ```python
+ * @property
+ * def o_edge(self):
+ *     \"\"\"Dictionary mapping edge output names → feature names.\"\"\"
+ *     return self.conv(&self.nn_ptr.o_edge)
+ * 
+ * @o_edge.setter
+ * def o_edge(self, dict inpt):
+ *     self.nn_ptr.o_edge = self.cond(inpt)
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * model.o_edge = {
+ *     "same_top": "edge_top_label",    # Edges within same top decay
+ *     "connection_strength": "edge_weight"  # Predicted edge strength
+ * }
+ * ```
+ *
+ * @section model_py_device Device Management
+ *
+ * **device Property:**
+ * ```python
+ * @property
+ * def device(self):
+ *     \"\"\"Device string (e.g., 'cpu', 'cuda:0').\"\"\"
+ *     return self.nn_ptr.device
+ * 
+ * @device.setter
+ * def device(self, str dev):
+ *     self.nn_ptr.device = enc(dev)
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * model = MyGNN()
+ * 
+ * # CPU
+ * model.device = "cpu"
+ * 
+ * # CUDA GPU 0
+ * model.device = "cuda:0"
+ * 
+ * # CUDA GPU 1
+ * model.device = "cuda:1"
+ * ```
+ *
+ * @section model_py_checkpoint Checkpoint Management
+ *
+ * **checkpoint_path Property:**
+ * ```python
+ * @property
+ * def checkpoint_path(self):
+ *     \"\"\"Path to model checkpoint file.\"\"\"
+ *     return env(self.nn_ptr.model_checkpoint_path)
+ * 
+ * @checkpoint_path.setter
+ * def checkpoint_path(self, str pth):
+ *     self.nn_ptr.model_checkpoint_path = enc(pth)
+ * ```
+ *
+ * **weight_name Property:**
+ * ```python
+ * @property
+ * def weight_name(self):
+ *     \"\"\"Name of weights within checkpoint.\"\"\"
+ *     return env(self.nn_ptr.weight_name)
+ * 
+ * @weight_name.setter
+ * def weight_name(self, str val):
+ *     self.nn_ptr.weight_name = enc(val)
+ * ```
+ *
+ * **tree_name Property:**
+ * ```python
+ * @property
+ * def tree_name(self):
+ *     \"\"\"ROOT TTree name for model outputs.\"\"\"
+ *     return env(self.nn_ptr.tree_name)
+ * 
+ * @tree_name.setter
+ * def tree_name(self, str val):
+ *     self.nn_ptr.tree_name = enc(val)
+ * ```
+ *
+ * **Usage:**
+ * ```python
+ * model = MyGNN()
+ * 
+ * # Set checkpoint
+ * model.checkpoint_path = "./checkpoints/model_epoch50.pth"
+ * model.weight_name = "state_dict"
+ * 
+ * # Set output tree
+ * model.tree_name = "predictions"
+ * ```
+ *
+ * @section model_py_naming Model Naming
+ *
+ * **name Property:**
+ * ```python
+ * @property
+ * def name(self):
+ *     \"\"\"Model name (auto from class or manual).\"\"\"
+ *     if not self.rename:
+ *         return self.__class__.__name__  # Automatic
+ *     return env(self.nn_ptr.name)        # Manual
+ * 
+ * @name.setter
+ * def name(self, str nx):
+ *     self.rename = True
+ *     self.nn_ptr.name = enc(nx)
+ * ```
+ *
+ * **Automatic Naming:**
+ * ```python
+ * class TopRecoGNN(ModelTemplate):
+ *     pass
+ * 
+ * model = TopRecoGNN()
+ * print(model.name)  # "TopRecoGNN"
+ * ```
+ *
+ * **Manual Naming:**
+ * ```python
+ * model = TopRecoGNN()
+ * model.name = "CustomModelName"
+ * print(model.name)  # "CustomModelName"
+ * ```
+ *
+ * @section model_py_usage Usage Examples
+ *
+ * @subsection model_py_basic Basic GNN Configuration
+ *
+ * ```python
+ * from AnalysisG import ModelTemplate
+ * 
+ * class MyGNN(ModelTemplate):
+ *     def __init__(self):
+ *         super().__init__()
+ *         
+ *         # Define input features
+ *         self.i_node = ["pt", "eta", "phi", "mass"]
+ *         self.i_edge = ["delta_r", "inv_mass"]
+ *         self.i_graph = ["met", "n_jets"]
+ *         
+ *         # Define output mappings
+ *         self.o_node = {
+ *             "is_top": "node_top_label"
+ *         }
+ *         self.o_graph = {
+ *             "signal_score": "graph_classification"
+ *         }
+ *         
+ *         # Set device
+ *         self.device = "cuda:0"
+ * ```
+ *
+ * @subsection model_py_checkpoint Checkpoint Loading
+ *
+ * ```python
+ * model = MyGNN()
+ * 
+ * # Configure checkpoint
+ * model.checkpoint_path = "./models/best_model.pth"
+ * model.weight_name = "model_state_dict"
+ * model.tree_name = "predictions"
+ * 
+ * # Model will load weights from checkpoint
+ * # Outputs written to ROOT TTree "predictions"
+ * ```
+ *
+ * @subsection model_py_multi_output Multi-Output Model
+ *
+ * ```python
+ * class ComplexGNN(ModelTemplate):
+ *     def __init__(self):
+ *         super().__init__()
+ *         
+ *         # Node features
+ *         self.i_node = [
+ *             "pt", "eta", "phi", "mass",
+ *             "charge", "pdgid"
+ *         ]
+ *         
+ *         # Edge features
+ *         self.i_edge = [
+ *             "delta_r", "delta_eta", "delta_phi",
+ *             "inv_mass", "delta_pt"
+ *         ]
+ *         
+ *         # Graph features
+ *         self.i_graph = [
+ *             "met", "met_phi", "ht",
+ *             "n_jets", "n_leptons"
+ *         ]
+ *         
+ *         # Multiple outputs
+ *         self.o_node = {
+ *             "is_b_jet": "node_b_label",
+ *             "is_lepton": "node_lep_label",
+ *             "energy_correction": "node_energy_scale"
+ *         }
+ *         
+ *         self.o_edge = {
+ *             "same_top": "edge_top_label",
+ *             "connection_weight": "edge_strength"
+ *         }
+ *         
+ *         self.o_graph = {
+ *             "signal_prob": "graph_signal_score",
+ *             "top_mass": "graph_m_top",
+ *             "event_category": "graph_category"
+ *         }
+ * ```
+ *
+ * @subsection model_py_device_switch Device Switching
+ *
+ * ```python
+ * import torch
+ * 
+ * model = MyGNN()
+ * 
+ * # Start on CPU
+ * model.device = "cpu"
+ * # ... training ...
+ * 
+ * # Switch to GPU if available
+ * if torch.cuda.is_available():
+ *     model.device = "cuda:0"
+ *     print(f"Switched to {model.device}")
+ * ```
+ *
+ * @subsection model_py_naming Model Identification
+ *
+ * ```python
+ * # Automatic naming
+ * class TopRecoGNN(ModelTemplate):
+ *     pass
+ * 
+ * model1 = TopRecoGNN()
+ * print(model1.name)  # "TopRecoGNN"
+ * 
+ * # Manual naming for experiments
+ * model2 = TopRecoGNN()
+ * model2.name = "TopRecoGNN_v2_dropout0.5"
+ * print(model2.name)  # "TopRecoGNN_v2_dropout0.5"
+ * 
+ * # Useful for logging/checkpoints
+ * checkpoint_path = f"./checkpoints/{model2.name}_epoch{epoch}.pth"
+ * ```
+ *
+ * @section model_py_integration Integration
+ *
+ * **With DataLoader:**
+ * ```python
+ * from AnalysisG import DataLoader
+ * 
+ * loader = DataLoader()
+ * loader.add_model(MyGNN)
+ * 
+ * # Model configuration used for data loading
+ * for batch in loader.train_data(0):
+ *     # Batch contains features defined in i_node, i_edge, i_graph
+ *     pass
+ * ```
+ *
+ * **With Container:**
+ * ```python
+ * from AnalysisG import Container
+ * 
+ * container = Container()
+ * container.add_model(MyGNN)
+ * container.compile()
+ * 
+ * # Model predictions written to ROOT file
+ * ```
+ *
+ * **With PyTorch:**
+ * ```python
+ * import torch
+ * import torch.nn as nn
+ * 
+ * class TopRecoGNN(ModelTemplate, nn.Module):
+ *     def __init__(self):
+ *         ModelTemplate.__init__(self)
+ *         nn.Module.__init__(self)
+ *         
+ *         # Define architecture
+ *         self.conv1 = ...
+ *         self.conv2 = ...
+ *         
+ *         # Configure features
+ *         self.i_node = ["pt", "eta", "phi"]
+ *         self.o_node = {"is_top": "node_label"}
+ *     
+ *     def forward(self, data):
+ *         # GNN forward pass
+ *         pass
+ * ```
+ *
+ * @section model_py_cpp_interop C++ Interoperability
+ *
+ * **Pointer Access:**
+ * ```cython
+ * cdef class ModelTemplate:
+ *     cdef model_template* nn_ptr  # C++ pointer
+ *     cdef public bool rename       # Python-side flag
+ * ```
+ *
+ * **Direct C++ Calls (in .pyx):**
+ * ```cython
+ * def custom_method(self):
+ *     self.nn_ptr.device = b"cuda:0"
+ *     self.nn_ptr.i_node.push_back(b"new_feature")
+ * ```
+ *
+ * @section model_py_best_practices Best Practices
+ *
+ * **Define Features in __init__:**
+ * ```python
+ * class MyGNN(ModelTemplate):
+ *     def __init__(self):
+ *         super().__init__()
+ *         
+ *         # Input features
+ *         self.i_node = [...]
+ *         self.i_edge = [...]
+ *         self.i_graph = [...]
+ *         
+ *         # Output mappings
+ *         self.o_node = {...}
+ *         self.o_edge = {...}
+ *         self.o_graph = {...}
+ * ```
+ *
+ * **Use Descriptive Feature Names:**
+ * ```python
+ * # Good
+ * self.i_node = ["pt", "eta", "phi", "mass"]
+ * 
+ * # Bad (unclear)
+ * self.i_node = ["f1", "f2", "f3", "f4"]
+ * ```
+ *
+ * **Set Device Early:**
+ * ```python
+ * def __init__(self):
+ *     super().__init__()
+ *     self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
+ * ```
+ *
+ * **Use Automatic Naming:**
+ * ```python
+ * # Let class name be model name
+ * class TopRecoGNN_v2(ModelTemplate):
+ *     pass
+ * 
+ * # model.name automatically "TopRecoGNN_v2"
+ * ```
+ *
+ * @section model_py_related Related
+ *
+ * - @ref model_template_module "C++ ModelTemplate" - Core implementation
+ * - @ref dataloader "DataLoader" - Data loading with model config
+ * - @ref container "Container" - Model integration
+ * - @ref graph_template_python "Python GraphTemplate" - Graph construction
+ *
+ * @section model_py_summary Summary
+ *
+ * **ModelTemplate Python bindings provide:**
+ * - Input/output feature configuration (lists and dicts)
+ * - Device management (CPU/CUDA)
+ * - Checkpoint handling (path/weight/tree names)
+ * - Automatic/manual naming
+ * - Helper methods for C++↔Python conversion
+ *
+ * **Key Points:**
+ * - `i_node`, `i_edge`, `i_graph`: Input feature lists
+ * - `o_node`, `o_edge`, `o_graph`: Output mapping dicts
+ * - `device`: "cpu" or "cuda:X"
+ * - `checkpoint_path`: Path to model weights
+ * - `name`: Auto from class name or manual
+ * - `conv()` and `cond()`: Internal C++↔Python helpers
+ * - Always call `super().__init__()` in derived classes
+ */

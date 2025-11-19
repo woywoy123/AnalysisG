@@ -1,0 +1,649 @@
+/**
+@file
+@brief Comprehensive documentation for the notification class - ANSI-colored logging, multi-threaded progress bars, and thread management.
+
+@defgroup notification_module notification
+@ingroup modules_module
+
+@brief The `notification` module provides a sophisticated logging and progress tracking system featuring ANSI color-coded console output, multi-threaded progress bars with aggregation, thread monitoring, and configurable verbosity levels.
+
+@details
+
+---
+
+# Quick Navigation
+
+| Module | Description | Link |
+|--------|-------------|------|
+| **Notification** | Logging & progress | (Current Page) |
+| @ref tools_module | Utilities | Direct child class |
+| @ref dataloader_module | Dataset batching | Uses progressbar1() |
+| @ref optimizer_module | Training orchestrator | Uses progressbar() |
+| @ref model_template_module | GNN models | Uses warning()/info() |
+| @ref io_module | ROOT/HDF5 I/O | Uses success()/failure() |
+
+**Typical Usage**: Any AnalysisG class → inherits `notification` → calls `success("message")` → green console output
+
+---
+
+*/
+
+/**
+@page notification_module_page Notification Module
+@tableofcontents
+
+@section notification_intro Introduction
+
+The `notification` class, defined in `src/AnalysisG/modules/notification/`, is a foundational utility providing consistent, color-coded logging and progress tracking across the entire AnalysisG framework, serving as the base class for nearly all major components.
+
+@section notification_purpose Purpose and Design
+
+The `notification` class is a foundational utility providing consistent, color-coded logging and progress tracking across the entire AnalysisG framework. It serves as the base class for nearly all major components, enabling unified user feedback.
+
+**Core Capabilities**:
+1. **ANSI-Colored Logging**: Four message types (success/warning/failure/info) with distinct colors
+2. **Multi-Threaded Progress Bars**: Real-time aggregation of parallel thread progress
+3. **Thread Lifecycle Management**: Automated join/delete for thread vectors
+4. **Configurable Verbosity**: Selective message suppression via `shush` flag
+5. **Message Prefixing**: Automatic source identification (e.g., "dataloader::", "model::")
+
+**Design Philosophy**:
+Instead of scattering `std::cout` and `std::cerr` calls throughout code, the framework standardizes on `notification` methods. This enables:
+- Consistent color coding for rapid visual parsing
+- Centralized verbosity control
+- Automatic prefix injection for debugging
+- Thread-safe progress reporting
+
+**Inheritance Hierarchy**:
+```
+notification (base)
+    ↓
+  tools
+    ↓
+physics, io, meta, dataloader, model_template, etc.
+```
+
+Virtually all user-facing classes inherit from `notification` (directly or via `tools`), gaining logging capabilities without explicit instantiation.
+
+---
+
+# Class Structure
+
+## Member Variables
+
+### Configuration
+```cpp
+cproperty<std::string> prefix;         // Message prefix (e.g., \"dataloader\")
+cproperty<bool> shush;                // Suppress success/info messages
+cproperty<bool> bold;                 // Use bold text formatting
+```
+
+**Purpose**:
+- `prefix`: Identifies message source. Automatically set in derived classes (e.g., `this->prefix = \"model\"`)
+- `shush`: Reduces verbosity in production. Warnings/failures always shown
+- `bold`: Enhances visibility for critical workflows
+
+### ANSI Color Codes
+```cpp
+static const std::string RESET;       // \"\033[0m\"
+static const std::string RED;         // \"\033[31m\"
+static const std::string GREEN;       // \"\033[32m\"
+static const std::string YELLOW;      // \"\033[33m\"
+static const std::string WHITE;       // \"\033[37m\"
+static const std::string BOLD;        // \"\033[1m\"
+```
+
+---
+
+# Core Methods
+
+## Colored Logging
+
+### `success(std::string message)`
+
+**Purpose**: Displays success message in green
+
+**Format**: `prefix::message` in green text
+
+**Algorithm**:
+```
+If shush == true: return
+formatted = _format(message, GREEN)
+std::cout << formatted << std::endl
+```
+
+**Example**:
+```cpp
+class MyModel : public notification {
+public:
+    MyModel(){ this->prefix = \"MyModel\"; }
+    
+    void train(){
+        // ... training code ...
+        this->success(\"Training completed\");
+    }
+};
+// Output: \033[32mMyModel::Training completed\033[0m
+```
+
+**Use Cases**:
+- Checkpoint saved
+- Model training completed
+- File successfully written
+- Validation passed
+
+---
+
+### `warning(std::string message)`
+
+**Purpose**: Displays warning message in yellow
+
+**Format**: `prefix::message` in yellow text
+
+**Always Displayed**: Ignores `shush` flag
+
+**Example**:
+```cpp
+if (batch_size > 1000){
+    this->warning(\"Large batch size may cause OOM\");
+}
+// Output: \033[33mdataloader::Large batch size may cause OOM\033[0m
+```
+
+**Use Cases**:
+- Deprecated API usage
+- Performance concerns
+- Unusual parameter values
+- Missing optional features
+
+---
+
+### `failure(std::string message)`
+
+**Purpose**: Displays error message in red
+
+**Format**: `prefix::message` in red text
+
+**Always Displayed**: Ignores `shush` flag
+
+**Example**:
+```cpp
+if (!file_exists(path)){
+    this->failure(\"File not found: \" + path);
+    return;
+}
+// Output: \033[31mio::File not found: /data/missing.root\033[0m
+```
+
+**Use Cases**:
+- File I/O errors
+- Null pointer access
+- CUDA out of memory
+- Invalid configuration
+
+---
+
+### `info(std::string message)`
+
+**Purpose**: Displays informational message in white/gray
+
+**Format**: `prefix::message` in white text
+
+**Algorithm**:
+```
+If shush == true: return
+formatted = _format(message, WHITE)
+std::cout << formatted << std::endl
+```
+
+**Example**:
+```cpp
+this->info(\"Loading dataset with \" + std::to_string(n_events) + \" events\");
+// Output: \033[37mdataloader::Loading dataset with 10000 events\033[0m
+```
+
+**Use Cases**:
+- Progress milestones
+- Configuration summaries
+- Dataset statistics
+- Device information
+
+---
+
+### `_format(std::string message, std::string color) \u2192 std::string` (Private)
+
+**Purpose**: Applies ANSI formatting to message
+
+**Algorithm**:
+```
+output = \"\"
+If bold: output += BOLD
+output += color
+If prefix not empty:
+    output += prefix + \"::\"
+output += message
+output += RESET
+Return output
+```
+
+**Example**:
+```cpp
+// With prefix=\"model\", bold=true
+_format(\"Initialized\", GREEN)
+// Returns: \"\033[1m\033[32mmodel::Initialized\033[0m\"
+```
+
+---
+
+## Progress Bars
+
+### `progressbar(float progress, std::string title)`
+
+**Purpose**: Single-threaded progress bar display
+
+**Parameters**:
+- `progress`: Float [0.0, 1.0] indicating completion
+- `title`: Description text
+
+**Format**: `title | [####...] XX.X%`
+
+**Algorithm**:
+```
+bar_width = 40
+filled = int(progress * bar_width)
+bar = \"[\" + \"#\" * filled + \" \" * (bar_width - filled) + \"]\"
+percentage = progress * 100
+output = \"\\r\" + title + \" | \" + bar + \" \" + percentage + \"%\"
+std::cout << output << std::flush
+```
+
+**Example**:
+```cpp
+for (int i = 0; i <= 100; ++i){
+    this->progressbar(i / 100.0, \"Processing events\");
+    process_event(i);
+}
+std::cout << std::endl;  // Move to next line
+```
+
+**Output**:
+```
+Processing events | [####################                    ] 50.0%
+```
+
+**Important**: Call with `progress=1.0` and `std::cout << std::endl` to finalize
+
+---
+
+### `progressbar1(std::vector<size_t>* threads, size_t total, std::string title)` (Static)
+
+**Purpose**: Multi-threaded progress bar with aggregation
+
+**Parameters**:
+- `threads`: Vector of per-thread counters
+- `total`: Total number of items to process
+- `title`: Description text
+
+**Algorithm**:
+```
+While true:
+    sum = 0
+    For each counter in threads:
+        sum += counter
+    
+    progress = float(sum) / total
+    display_progressbar(progress, title)
+    
+    If sum >= total: break
+    sleep(100ms)
+```
+
+**Usage Pattern**:
+```cpp
+std::vector<size_t> counters(4, 0);  // 4 threads
+size_t total = 10000;
+
+// Start progress monitor in separate thread
+std::thread* monitor = new std::thread(
+    &notification::progressbar1,
+    &counters,
+    total,
+    \"Loading files\"
+);
+
+// Worker threads
+std::vector<std::thread*> workers;
+for (int i = 0; i < 4; ++i){
+    workers.push_back(new std::thread([&counters, i](){
+        for (int j = 0; j < 2500; ++j){
+            process_item(i, j);
+            counters[i]++;
+        }
+    }));
+}
+
+// Wait for workers
+for (auto* t : workers){
+    t->join();
+    delete t;
+}
+
+// Monitor will auto-exit when sum == total
+monitor->join();
+delete monitor;
+```
+
+**Output**:
+```
+Loading files | [#########################               ] 62.5%
+```
+
+**Performance**: 100ms refresh rate (10 Hz)
+
+---
+
+### `progressbar2(std::vector<size_t>* threads, std::vector<size_t>* totals, std::vector<std::string>* titles)` (Static)
+
+**Purpose**: Multiple simultaneous progress bars
+
+**Parameters**:
+- `threads`: Per-thread counters for each bar
+- `totals`: Total items for each bar
+- `titles`: Descriptions for each bar
+
+**Use Case**: Tracking multiple parallel operations (e.g., training + validation simultaneously)
+
+---
+
+### `progressbar3(...)` (Static)
+
+**Purpose**: Dynamic multi-progress bar with title updates
+
+**Use Case**: Complex workflows with changing task descriptions
+
+---
+
+## Thread Management
+
+### `monitor(std::vector<std::thread*>* thr)`
+
+**Purpose**: Wait for all threads to complete and clean up
+
+**Algorithm**:
+```
+For each thread t in thr:
+    t->join()       // Block until thread completes
+    delete t        // Free memory
+thr->clear()        // Empty vector
+```
+
+**Example**:
+```cpp
+std::vector<std::thread*> workers;
+for (int i = 0; i < 4; ++i){
+    workers.push_back(new std::thread(worker_function, i));
+}
+
+this->monitor(&workers);  // Blocks until all complete
+// workers is now empty
+```
+
+**Use Cases**:
+- Parallel file processing
+- Multi-GPU training
+- Concurrent data loading
+
+---
+
+### `running(std::vector<std::thread*>* thr, std::vector<size_t>* prg, std::vector<size_t>* trgt) \u2192 size_t`
+
+**Purpose**: Counts active threads and joins completed ones
+
+**Algorithm**:
+```
+active = 0
+For i in 0 to thr->size()-1:
+    If prg[i] >= trgt[i]:      // Thread reached target
+        thr[i]->join()
+        delete thr[i]
+        thr[i] = nullptr
+    Else:
+        active++
+Return active
+```
+
+**Example**:
+```cpp
+std::vector<std::thread*> workers(4);
+std::vector<size_t> progress(4, 0);
+std::vector<size_t> targets(4, 1000);
+
+// Start workers
+for (int i = 0; i < 4; ++i){
+    workers[i] = new std::thread([&progress, i](){
+        for (int j = 0; j < 1000; ++j){
+            process(j);
+            progress[i]++;
+        }
+    });
+}
+
+// Poll until all complete
+while (this->running(&workers, &progress, &targets) > 0){
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+```
+
+**Use Cases**:
+- Dynamic thread pool management
+- Progressive cleanup of completed tasks
+- Resource-constrained parallelism
+
+---
+
+# Complete Usage Example
+
+```cpp
+#include <notification/notification.h>
+#include <thread>
+#include <vector>
+
+class DataProcessor : public notification {
+public:
+    DataProcessor(){
+        this->prefix = \"DataProcessor\";
+        this->shush = false;
+        this->bold = true;
+    }
+    
+    void process_files(std::vector<std::string> files){
+        this->info(\"Starting file processing with \" + std::to_string(files.size()) + \" files\");
+        
+        const int n_threads = 4;
+        std::vector<size_t> counters(n_threads, 0);
+        
+        // Start progress monitor
+        std::thread* monitor = new std::thread(
+            &notification::progressbar1,
+            &counters,
+            files.size(),
+            \"Processing files\"
+        );
+        
+        // Distribute files to threads
+        std::vector<std::thread*> workers;
+        size_t chunk_size = files.size() / n_threads;
+        
+        for (int t = 0; t < n_threads; ++t){
+            size_t start = t * chunk_size;
+            size_t end = (t == n_threads - 1) ? files.size() : start + chunk_size;
+            
+            workers.push_back(new std::thread([this, &files, &counters, t, start, end](){
+                for (size_t i = start; i < end; ++i){
+                    try {
+                        this->process_single_file(files[i]);
+                        counters[t]++;
+                    }
+                    catch (std::exception& e){
+                        this->failure(\"Error processing \" + files[i] + \": \" + e.what());
+                    }
+                }
+            }));
+        }
+        
+        // Wait for completion
+        this->monitor(&workers);
+        monitor->join();
+        delete monitor;
+        std::cout << std::endl;
+        
+        this->success(\"All files processed successfully\");
+    }
+    
+private:
+    void process_single_file(const std::string& file){
+        // Simulate processing
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+};
+
+int main(){
+    DataProcessor processor;
+    
+    std::vector<std::string> files;
+    for (int i = 0; i < 100; ++i){
+        files.push_back(\"file_\" + std::to_string(i) + \".root\");
+    }
+    
+    processor.process_files(files);
+    
+    return 0;
+}
+```
+
+**Output**:
+```
+\033[37m\033[1mDataProcessor::Starting file processing with 100 files\033[0m
+Processing files | [########################################] 100.0%
+\033[32m\033[1mDataProcessor::All files processed successfully\033[0m
+```
+
+---
+
+# Performance Characteristics
+
+## Message Logging
+- **Time**: O(1) - simple string concatenation and cout
+- **Overhead**: ~1-5 \u03bcs per message (negligible)
+
+## Progress Bar
+- **Single-threaded**: O(1) per update
+- **Multi-threaded**: O(T) where T = number of threads (aggregation)
+- **Refresh Rate**: 100ms (progressbar1/2/3)
+
+## Thread Management
+- **`monitor()`**: O(T) - joins all threads sequentially
+- **`running()`**: O(T) - checks all thread states
+
+---
+
+# Dependencies
+
+## Internal
+- None (base class)
+
+## External
+- **C++17 STL**: `<iostream>`, `<string>`, `<thread>`, `<chrono>`, `<vector>`
+- **ANSI Terminal**: Requires terminal supporting ANSI escape codes
+
+---
+
+# Best Practices
+
+## 1. Set Prefix in Constructor
+```cpp
+class MyClass : public notification {
+public:
+    MyClass(){ this->prefix = \"MyClass\"; }
+};
+```
+
+## 2. Use Appropriate Message Types
+```cpp
+this->info(\"Configuration loaded\");        // General info
+this->warning(\"Using deprecated API\");     // Non-critical
+this->failure(\"CUDA out of memory\");       // Critical error
+this->success(\"Model saved\");              // Success
+```
+
+## 3. Finalize Progress Bars
+```cpp
+this->progressbar(1.0, \"Complete\");
+std::cout << std::endl;  // Move to next line
+```
+
+## 4. Enable shush in Production
+```cpp
+if (production_mode){
+    this->shush = true;  // Suppress verbose output
+}
+```
+
+## 5. Use monitor() for Thread Cleanup
+```cpp
+this->monitor(&workers);  // Automatic join + delete
+```
+
+---
+
+# Common Pitfalls
+
+## 1. Forgetting std::endl After progressbar()
+**Symptom**: Next output overwrites progress bar
+
+**Solution**: Always call `std::cout << std::endl;` after final update
+
+## 2. Not Deleting Monitor Thread
+**Symptom**: Memory leak
+
+**Solution**: `monitor->join(); delete monitor;`
+
+## 3. Accessing Deleted Threads in running()
+**Symptom**: Segfault
+
+**Solution**: `running()` sets completed threads to nullptr - check before access
+
+## 4. ANSI Codes in Non-Supporting Terminals
+**Symptom**: Garbled output with escape sequences
+
+**Solution**: Detect terminal capabilities or disable colors
+
+## 5. Race Conditions on Progress Counters
+**Symptom**: Incorrect progress percentages
+
+**Solution**: Use `std::atomic<size_t>` for thread-safe counters
+
+---
+
+# Conclusion
+
+The `notification` class provides a unified, color-coded logging and progress tracking system for the entire AnalysisG framework. By standardizing on ANSI-colored output and multi-threaded progress bars, it enables clear, professional user feedback.
+
+Key innovations:
+- **Consistent Color Coding**: Instant visual identification of message severity
+- **Multi-Threaded Progress**: Real-time aggregation of parallel operations
+- **Automatic Thread Cleanup**: Simplified lifecycle management
+- **Configurable Verbosity**: Production-ready output control
+
+The class is designed for typical HEP workflows: parallel file processing, multi-GPU training, long-running analyses with progress tracking.
+
+---
+
+@see tools
+@see analysis
+@see dataloader
+@see model_template
+
+*/
+
+

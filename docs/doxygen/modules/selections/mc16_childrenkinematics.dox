@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/mc16/childrenkinematics.
+
+@defgroup selections_mc16_childrenkinematics Selections: mc16/childrenkinematics
+@ingroup selections_module
+
+@details
+MC16 children kinematics selections.
+Source: `src/AnalysisG/selections/mc16/childrenkinematics/`
+*/

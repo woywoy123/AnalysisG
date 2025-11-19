@@ -1,0 +1,280 @@
+/**
+@file
+@brief Comprehensive documentation for the optimizer_template class - training loop orchestrator for GNN model training.
+
+@defgroup optimizer_module optimizer_template
+@ingroup modules_module
+
+@brief The `optimizer_template` module implements the complete training, validation, and evaluation pipeline for graph neural network models, coordinating dataloader, model instances, and metrics collection for k-fold cross-validation workflows.
+
+@details
+
+---
+
+# Quick Navigation
+
+| Module | Description | Link |
+|--------|-------------|------|
+| **Optimizer** | Training orchestrator | (Current Page) |
+| @ref model_template_module | GNN models | Calls train_sequence() |
+| @ref dataloader_module | Dataset batching | Provides train/val/test splits |
+| @ref lossfx_module | Loss functions | Creates optimizers (Adam/SGD) |
+| @ref MetaModule | Dataset metadata | Provides fold definitions |
+| @ref metric_template_module | Performance metrics | Collects loss/accuracy |
+| @ref tools_module | Utilities | Parent class |
+| @ref notification_module | Logging | Parent class (progress bars) |
+
+**Typical Workflow**: `optimizer::launch_model(k)` → `training_loop()` → `dataloader::train_data()` → `model::forward()` → `model::train_sequence()`
+
+**Note**: This is NOT a mathematical optimizer (Adam/SGD) - those are in @ref lossfx_module. This module coordinates training sessions.
+
+---
+
+*/
+
+/**
+@page optimizer_module_page Optimizer Module
+@tableofcontents
+
+@section optimizer_intro Introduction
+
+The `optimizer_template` class, defined in `src/AnalysisG/modules/optimizer/`, coordinates the interaction between the dataloader, model instances, and metrics collection system to execute k-fold cross-validation training workflows. It manages model checkpointing, learning rate scheduling, gradient computation, and epoch-level orchestration for multi-GPU training scenarios.
+
+@section optimizer_class Class Definition
+ *
+ * ```cpp
+ * class optimizer: 
+ *     public tools,
+ *     public notification
+ * {
+ *     public:
+ *         optimizer();
+ *         ~optimizer();
+ *
+ *         settings_t m_settings; 
+ *         void import_dataloader(dataloader* dl); 
+ *         void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models); 
+ *         
+ *         void training_loop(int k, int epoch); 
+ *         void validation_loop(int k, int epoch);
+ *         void evaluation_loop(int k, int epoch); 
+ *         void launch_model(int k); 
+ *
+ *         std::map<int, model_template*> kfold_sessions = {}; 
+ *         std::map<std::string, model_report*> reports = {}; 
+ *         metrics*    metric = nullptr;  
+ *         dataloader* loader = nullptr; 
+ * };
+ * ```
+ *
+ * ## Member Variables
+ *
+ * | Member | Type | Description |
+ * |--------|------|-------------|
+ * | `m_settings` | `settings_t` | Global training configuration (epochs, batch size, flags) |
+ * | `kfold_sessions` | `std::map<int, model_template*>` | Map of k-fold index to model instance |
+ * | `reports` | `std::map<std::string, model_report*>` | Training progress reports by run_name + k |
+ * | `metric` | `metrics*` | Metrics aggregation engine for loss tracking and plotting |
+ * | `loader` | `dataloader*` | Reference to dataloader for batch generation |
+ *
+ * # Architecture Overview
+ *
+ * ```
+ * ┌─────────────────────────────────────────────────────────────┐
+ * │              OPTIMIZER INITIALIZATION                        │
+ * │  import_dataloader() → Link to dataset manager              │
+ * │  import_model_sessions() → Validate model configuration     │
+ * │  Test model with random samples (feature compatibility)     │
+ * └───────────────────┬─────────────────────────────────────────┘
+ *                     │
+ *                     ▼
+ * ┌─────────────────────────────────────────────────────────────┐
+ * │              TRAINING LOOP EXECUTION                         │
+ * │  launch_model(k) for each k-fold:                           │
+ * │    Epoch Loop (0 to m_settings.epochs):                     │
+ * │      1. training_loop(k, epoch)                             │
+ * │         - Get train set, build batches                      │
+ * │         - Forward pass (gradient enabled)                   │
+ * │         - Backward pass → optimizer.step()                  │
+ * │         - save_state() checkpoint                           │
+ * │      2. validation_loop(k, epoch)                           │
+ * │         - Get validation set                                │
+ * │         - Forward pass (no gradient)                        │
+ * │      3. evaluation_loop(k, epoch)                           │
+ * │         - Get test set                                      │
+ * │         - Forward pass (no gradient)                        │
+ * └───────────────────┬─────────────────────────────────────────┘
+ *                     │
+ *                     ▼
+ * ┌─────────────────────────────────────────────────────────────┐
+ * │              METRICS & REPORTING                             │
+ * │  metric->capture() after each forward                       │
+ * │  model_report tracks progress (mode, epoch, iters)          │
+ * │  dump_plots() in debug mode                                 │
+ * └─────────────────────────────────────────────────────────────┘
+ * ```
+ *
+ * # Core Functionality
+ *
+ * ## 1. Dataloader Import
+ *
+ * Links optimizer to dataloader and initializes metrics.
+ *
+ * ```cpp
+ * void optimizer::import_dataloader(dataloader* dl){
+ *     this -> metric -> m_settings = this -> m_settings; 
+ *     this -> loader = dl;
+ * }
+ * ```
+ *
+ * ## 2. Model Session Validation
+ *
+ * Validates model configuration with random sample testing:
+ *
+ * ```cpp
+ * void optimizer::import_model_sessions(...){
+ *     // Extract base model and config
+ *     model_template* base = std::get<0>(*models); 
+ *     optimizer_params_t* config = std::get<1>(*models); 
+ *     
+ *     // Clone and test with random samples
+ *     model_template* model_k = base -> clone(); 
+ *     model_k -> initialize(config); 
+ *     std::vector<graph_t*> rnd = loader -> get_random(m_settings.num_examples); 
+ *     for (auto* gr : rnd){ model_k -> check_features(gr); }
+ *     delete model_k; 
+ * }
+ * ```
+ *
+ * ## 3. Training Loop
+ *
+ * Executes training with gradient computation:
+ *
+ * ```cpp
+ * void optimizer::training_loop(int k, int epoch){
+ *     std::vector<graph_t*>* smpl = loader -> get_k_train_set(k); 
+ *     model_template* model = kfold_sessions[k]; 
+ *     model -> evaluation_mode(false);
+ *     
+ *     if (m_settings.batch_size > 1){
+ *         smpl = loader -> build_batch(smpl, model, report);
+ *     }
+ *     
+ *     torch::AutoGradMode grd(true); 
+ *     for (auto* gr : *smpl){
+ *         model -> forward(gr, true);  // Gradient enabled
+ *         metric -> capture(mode_enum::training, k, epoch, smpl->size()); 
+ *     }
+ *     model -> save_state(); 
+ * }
+ * ```
+ *
+ * **Gradient Flow**:
+ * ```
+ * forward(graph_t, train=true) 
+ *   → assign features
+ *   → user_forward()
+ *   → train_sequence(true)
+ *       → compute_loss()
+ *       → loss.backward()
+ *       → optimizer.step()
+ *       → optimizer.zero_grad()
+ * ```
+ *
+ * ## 4. Validation Loop
+ *
+ * Inference without gradient computation:
+ *
+ * ```cpp
+ * void optimizer::validation_loop(int k, int epoch){
+ *     model -> evaluation_mode(true); 
+ *     std::vector<graph_t*>* smpl = loader -> get_k_validation_set(k); 
+ *     
+ *     torch::NoGradGuard no_grd;  // Disable gradients
+ *     for (auto* gr : *smpl){
+ *         model -> forward(gr, false);  // No backward pass
+ *         metric -> capture(mode_enum::validation, k, epoch, smpl->size()); 
+ *     }
+ * }
+ * ```
+ *
+ * ## 5. Model Launch
+ *
+ * Orchestrates complete training workflow:
+ *
+ * ```cpp
+ * void optimizer::launch_model(int k){
+ *     for (int ep = 0; ep < m_settings.epochs+1; ++ep){
+ *         if (m_settings.training)  { training_loop(k, ep); }
+ *         if (m_settings.validation){ validation_loop(k, ep); }
+ *         if (m_settings.evaluation){ evaluation_loop(k, ep); }
+ *         
+ *         // Wait for async plotting
+ *         while (reports[run_name]->waiting_plot){ 
+ *             std::this_thread::sleep_for(std::chrono::microseconds(10));
+ *         }
+ *     }
+ *     reports[run_name] -> is_complete = true; 
+ * }
+ * ```
+ *
+ * # Usage Example
+ *
+ * ```cpp
+ * // Setup
+ * dataloader* loader = new dataloader();
+ * loader -> extract_data(graphs);
+ * loader -> generate_kfold_set(5);
+ *
+ * optimizer* trainer = new optimizer();
+ * trainer -> m_settings.epochs = 100;
+ * trainer -> m_settings.batch_size = 32;
+ * trainer -> import_dataloader(loader);
+ *
+ * // Model config
+ * model_template* model = new my_gnn();
+ * model -> i_node = {"pt", "eta", "phi"};
+ * model -> o_graph = {{"mass", "mseloss"}};
+ *
+ * optimizer_params_t* cfg = new optimizer_params_t();
+ * cfg -> optimizer = "adam";
+ * cfg -> learning_rate = 0.001;
+ *
+ * auto tuple = std::make_tuple(model, cfg);
+ * trainer -> import_model_sessions(&tuple);
+ *
+ * // Initialize k-fold sessions
+ * for (int k = 0; k < 5; ++k){
+ *     trainer -> kfold_sessions[k] = model -> clone();
+ *     trainer -> kfold_sessions[k] -> initialize(cfg);
+ * }
+ *
+ * // Launch training
+ * trainer -> launch_model(0);
+ * ```
+ *
+ * # Performance Characteristics
+ *
+ * - **Time Complexity**: O(E × N × B) for E epochs, N samples, B batch size
+ * - **Memory**: Gradients only in training loop via torch::AutoGradMode
+ * - **Checkpointing**: O(M) disk I/O where M = parameter count
+ * - **Multi-GPU**: Each k-fold on independent device
+ *
+ * # Dependencies
+ *
+ * ## Internal
+ * - dataloader: Dataset management and batch construction
+ * - model_template: Base model class
+ * - metrics: Loss tracking and plotting
+ * - structs/settings.h: Global configuration
+ * - structs/report.h: Progress reporting
+ *
+ * ## External
+ * - LibTorch: torch::AutoGradMode, torch::NoGradGuard, torch::optim::Optimizer
+ * - C++ STL: <map>, <vector>, <tuple>, <thread>, <chrono>
+ *
+ * @see dataloader
+ * @see model_template
+ * @see lossfx
+ * @see metrics
+ */
