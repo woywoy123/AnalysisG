@@ -27,7 +27,7 @@ struct nusol_t {
         // ----- for the ellipse method ---- //
         double mt = 172.68 * 1000;
         double mw = 80.385 * 1000; 
-        double limit = 10000; 
+        double limit = 100000; 
 
         nusol_enum mode = nusol_enum::undefined; 
         std::vector<particle_template*>* targets = nullptr;  

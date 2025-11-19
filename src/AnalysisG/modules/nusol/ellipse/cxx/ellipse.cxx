@@ -43,7 +43,7 @@ void ellipse::prepare(double mt, double mw){
 
 void ellipse::solve(){
     auto lamb1 =[this](nuelx* nux1, nuelx* nux2, double mt_, double mw_, double* dz) -> bool{
-        if (mt_ < 0 || mw_ < 0){return false;}
+        if (mt_ <= 100 || mw_ <= 100){return false;}
         double z = nux1 -> Z2(); 
         nux1 -> update(mt_, mw_); 
         this -> generate(nux1, nux2); 
@@ -53,7 +53,7 @@ void ellipse::solve(){
     }; 
 
     auto lamb2 =[this](nuelx* nux1, nuelx* nux2, double mt_, double mw_, double* dz) -> bool{
-        if (mt_ < 0 || mw_ < 0){return false;}
+        if (mt_ <= 100 || mw_ <= 100){return false;}
         double z = nux2 -> Z2(); 
         nux2 -> update(mt_, mw_); 
         this -> generate(nux1, nux2); 
@@ -105,8 +105,9 @@ void ellipse::solve(){
 
             nx1 -> update(mt1, mw1);   
             nx2 -> update(mt2, mw2);   
-            ++x; 
-            if (si != this -> solvs.size() || x < 1){continue;}
+            ++x;
+            
+            if (si != this -> solvs.size() || x < 2){continue;}
             break;
         }
     }
@@ -262,8 +263,7 @@ std::vector<particle_template*> ellipse::nunu_make(){
 
     if (!this -> solvs.size()){return nus;}
     std::map<double, nunu_t>::iterator itr = this -> solvs.begin(); 
-//    std::cout << itr -> first << std::endl;
-//    if (itr -> first > this -> params -> limit){return nus;}
+    //if (itr -> first > this -> params -> limit){return nus;}
 
     nunu_t* nx = &itr -> second; 
 
@@ -273,8 +273,8 @@ std::vector<particle_template*> ellipse::nunu_make(){
     nu2 -> type = "nunu"; 
 
     nu1 -> register_parent(nx -> nux1 -> l -> lnk); 
-    nu2 -> register_parent(nx -> nux2 -> l -> lnk); 
     nu1 -> register_parent(nx -> nux1 -> b -> lnk); 
+    nu2 -> register_parent(nx -> nux2 -> l -> lnk); 
     nu2 -> register_parent(nx -> nux2 -> b -> lnk); 
 
     nus.push_back(nu1); 

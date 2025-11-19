@@ -51,14 +51,25 @@ std::vector<int> m_top_edge(jet*      t){return t -> top_index;  }
 std::vector<int> m_top_edge(muon*     t){return {t -> top_index};}
 std::vector<int> m_top_edge(electron* t){return {t -> top_index};}
 std::vector<int> m_top_edge(truthjet* t){return t -> top_index;  }
-std::vector<int> m_top_edge(particle_template* pn, particle_template* nu){
+std::vector<int> m_top_edge(particle_template* nu){
     std::map<std::string, particle_template*> pnx = nu -> parents;
-    if (!pnx.count(pn -> hash)){return {};} 
-    std::string type1 = pn -> type; 
+    std::map<std::string, particle_template*>::iterator itr = pnx.begin(); 
     std::vector<int> out = {}; 
-    if      (type1 == "jet"){out = m_top_edge((jet*)pn);}
-    else if (type1 == "mu" ){out = m_top_edge((muon*)pn);}
-    else if (type1 == "el" ){out = m_top_edge((electron*)pn);}
+    std::map<int, bool> gth = {}; 
+    for (; itr != pnx.end(); ++itr){
+        std::string type1 = itr -> second -> type; 
+        if      (type1 == "jet"){out = m_top_edge((jet*)itr -> second);}
+        else if (type1 == "mu" ){out = m_top_edge((muon*)itr -> second);}
+        else if (type1 == "el" ){out = m_top_edge((electron*)itr -> second);}
+        for (size_t x(0); x < out.size(); ++x){gth[out[x]] = out[x] > -1;}
+    }
+
+    out = {}; 
+    std::map<int, bool>::iterator itx = gth.begin(); 
+    for (; itx != gth.end(); ++itx){
+        if (!itx -> second){continue;}
+        out.push_back(itx -> first); 
+    }
     return out; 
 }
 
@@ -76,7 +87,7 @@ void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     else if (type1 == "jet"      ){o1_ = m_top_edge((jet*)p1);}
     else if (type1 == "mu"       ){o1_ = m_top_edge((muon*)p1);}
     else if (type1 == "el"       ){o1_ = m_top_edge((electron*)p1);}
-    else if (type1 == "nunu"     ){o1_ = m_top_edge(p2, p1);}
+    else if (type1 == "nunu"     ){o1_ = m_top_edge(p1);}
 
     std::vector<int> o2_ = {};
     if      (type2 == "top"      ){o2_.push_back(m_top_edge((top*)p2));}
@@ -85,7 +96,7 @@ void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     else if (type2 == "jet"      ){o2_ = m_top_edge((jet*)p2);}
     else if (type2 == "mu"       ){o2_ = m_top_edge((muon*)p2);}
     else if (type2 == "el"       ){o2_ = m_top_edge((electron*)p2);}
-    else if (type2 == "nunu"     ){o2_ = m_top_edge(p1, p2);}
+    else if (type2 == "nunu"     ){o2_ = m_top_edge(p2);}
 
     *o = 0;  
     for (size_t x(0); x < o1_.size(); ++x){
