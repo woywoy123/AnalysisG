@@ -11,6 +11,7 @@ grift::grift(){
     this -> rnn_x = new torch::nn::Sequential({
             {"rnn_x_l1", torch::nn::Linear(this -> _xin + this -> _xrec, this -> _hidden)},
             {"rnn_x_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_x_r1", torch::nn::Sigmoid()},
             {"rnn_x_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
             {"rnn_x_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"rnn_x_l3", torch::nn::Linear(this -> _hidden, this -> _xrec)}
@@ -19,26 +20,27 @@ grift::grift(){
     int dxx_1 = (this -> _xin + this -> _xrec)*3; 
     this -> rnn_dx = new torch::nn::Sequential({
             {"rnn_dx_l1", torch::nn::Linear(dxx_1, this -> _hidden)}, 
-            {"rnn_dx_s1", torch::nn::Sigmoid()},
-            {"rnn_dx_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
+            {"rnn_dx_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"rnn_dx_r2", torch::nn::ReLU()},
+            {"rnn_dx_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
             {"rnn_dx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_dx_s1", torch::nn::Tanh()},
             {"rnn_dx_l3", torch::nn::Linear(this -> _hidden, this -> _xrec)}
     }); 
 
     this -> rnn_hxx = new torch::nn::Sequential({
             {"rnn_hxx_l1", torch::nn::Linear(this -> _xrec*4, this -> _hidden)}, 
-            {"rnn_hxx_r1", torch::nn::ReLU()},
             {"rnn_hxx_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_hxx_r1", torch::nn::ReLU()},
             {"rnn_hxx_l2", torch::nn::Linear(this -> _hidden, this -> _xrec)}
     }); 
 
     this -> rnn_txx = new torch::nn::Sequential({
-            {"rnn_txx_l1", torch::nn::Linear(this -> _xrec*4, this -> _hidden)}, 
-            {"rnn_txx_r1", torch::nn::ReLU()},
+            {"rnn_txx_l1", torch::nn::Linear(this -> _xrec*4 + this -> _xout, this -> _hidden)}, 
             {"rnn_txx_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_txx_r1", torch::nn::ReLU()},
             {"rnn_txx_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
-            {"rnn_txx_t2", torch::nn::Sigmoid()},
+            {"rnn_txx_s1", torch::nn::Sigmoid()},
             {"rnn_txx_l3", torch::nn::Linear(this -> _hidden, this -> _xout)}
     }); 
 
@@ -54,29 +56,29 @@ grift::grift(){
 
     this -> mlp_ntop = new torch::nn::Sequential({
             {"ntop_l1", torch::nn::Linear(this -> _xtop + this -> _xrec, this -> _xrec)}, 
-            {"ntop_r1", torch::nn::ReLU()},
             {"ntop_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
+            {"ntop_t1", torch::nn::Sigmoid()},
             {"ntop_l2", torch::nn::Linear(this -> _xrec, this -> _xrec)}, 
-            {"ntop_t2", torch::nn::Sigmoid()},
+            {"ntop_r2", torch::nn::ReLU()},
             {"ntop_l3", torch::nn::Linear(this -> _xrec, this -> _xtop)}
     }); 
 
     this -> mlp_sig = new torch::nn::Sequential({
             {"res_l1", torch::nn::Linear(this -> _xout*2 + dxx_r + this -> _xtop*2, this -> _xrec*2)}, 
-            {"res_r1", torch::nn::ReLU()},
             {"res_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec*2}))}, 
+            {"res_t1", torch::nn::Sigmoid()},
             {"res_l2", torch::nn::Linear(this -> _xrec*2, this -> _xrec)}, 
-            {"res_t2", torch::nn::Sigmoid()},
+            {"res_r2", torch::nn::ReLU()},
             {"res_l3", torch::nn::Linear(this -> _xrec, this -> _xout)}
     }); 
 
-    this -> register_module(this -> rnn_x   );
-    this -> register_module(this -> rnn_dx  );
-    this -> register_module(this -> rnn_hxx ); 
-    this -> register_module(this -> rnn_txx );
-    this -> register_module(this -> rnn_rxx );
-    this -> register_module(this -> mlp_ntop);
-    this -> register_module(this -> mlp_sig );
+    this -> register_module(this -> rnn_x   , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_dx  , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_hxx , mlp_init::xavier_uniform); 
+    this -> register_module(this -> rnn_txx , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_rxx , mlp_init::xavier_uniform);
+    this -> register_module(this -> mlp_ntop, mlp_init::xavier_uniform);
+    this -> register_module(this -> mlp_sig , mlp_init::xavier_uniform);
 
 
 }
@@ -84,7 +86,7 @@ grift::grift(){
 torch::Tensor grift::node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn){
     if (!node_rnn){return torch::cat({pyc::physics::cartesian::combined::M(pmc), pmc, num_node}, {-1}).to(torch::kFloat32);}
     torch::Tensor nox = torch::cat({pyc::physics::cartesian::combined::M(pmc), pmc, num_node, *node_rnn}, {-1}); 
-    return (*this -> rnn_x) -> forward(nox.to(torch::kFloat32));  
+    return (*this -> rnn_x) -> forward(nox.to(torch::kFloat32)) / num_node.to(torch::kFloat32);  
 }
 
 
@@ -158,8 +160,6 @@ void grift::forward(graph_t* data){
     torch::Tensor top_edge = torch::zeros_like(this -> te_nulls.index({null_idx})); 
     torch::Tensor num_node = torch::ones_like(trk); 
     torch::Tensor node_i   = num_node.cumsum({0})-1;
-    torch::Tensor node_i_  = num_node.cumsum({0})-1;  
-
     node_rnn = this -> node_encode(pmc, num_node, &node_rnn); 
 
     // ------ index the edges from 0 to N^2 -1 ------ //
@@ -167,62 +167,55 @@ void grift::forward(graph_t* data){
     torch::Tensor idx_mat = torch::zeros({n_nodes, n_nodes}, src.device()).to(torch::kLong);  
     idx_mat.index_put_({src, dst}, (null_idx+1).cumsum({-1})-1); 
 
-    torch::Tensor norm  = torch::zeros_like(idx_mat); 
-    norm.index_put_({src, dst}, (null_idx+1)); 
-
-    torch::Tensor hx_i   = node_rnn.index({src});
-    torch::Tensor hx_j   = node_rnn.index({dst}); 
-    torch::Tensor node_s = node_rnn; 
-
     const std::string key_idx = "cls::1::node-indices"; 
     const std::string key_smx = "cls::1::node-sum"; 
 
     torch::Dict<std::string, torch::Tensor> gr_; 
     torch::Tensor top_edge_   = top_edge.clone(); 
     torch::Tensor edge_index_ = edge_index.clone();  
+    torch::Tensor sel         = std::get<1>((top_edge_).max({-1})) < 1; 
     while (edge_index_.size({1})){
-        torch::Tensor node_state, hx_ij; 
+        torch::Tensor hx_ij; 
 
         // ----- use the index matrix to map the source and destination edges to the edge index ----- //
         torch::Tensor src_ = edge_index_.index({0}); 
         torch::Tensor dst_ = edge_index_.index({1});
+        torch::Tensor idx = idx_mat.index({src_, dst_}); 
 
+        torch::Tensor rnn_dx = edge_rnn.index({idx}); 
+        torch::Tensor hx_i   = node_rnn.index({src_});
+        torch::Tensor hx_j   = node_rnn.index({dst_});
+        torch::Tensor nx_i   = node_i.index({src_}); 
+        torch::Tensor nx_j   = node_i.index({dst_}); 
+        
         // ------------------ loop states ------------------------ //
         // ------------------ create a new message --------------------- //
-        hx_i  = this -> message(node_i.index({src_}) , node_i_.index({dst_}), pmc, hx_i, node_s.index({dst_})); 
-        hx_j  = this -> message(node_i_.index({src_}), node_i.index({dst_}) , pmc, node_s.index({src_}), hx_j); 
-        hx_ij = this -> message(node_i.index({src_}) , node_i.index({dst_}) , pmc, hx_i, hx_j);   
-        hx_ij = torch::cat({hx_ij, edge_rnn, hx_i, hx_j + hx_i}, {-1});
+        hx_ij  = this -> message(nx_i, nx_j, pmc, hx_i, hx_j); 
+        hx_ij = torch::cat({hx_ij, hx_i, rnn_dx, hx_j - hx_i}, {-1});
 
         // ------------------ check edges for new paths ---------------- //
-        top_edge_ = (*this -> rnn_txx) -> forward(hx_ij); 
-        edge_rnn  = (*this -> rnn_hxx) -> forward(hx_ij); 
+        rnn_dx    = (*this -> rnn_hxx) -> forward(hx_ij); 
+        top_edge_ = (*this -> rnn_txx) -> forward(torch::cat({hx_ij, top_edge.index({idx})}, {-1}));
 
         // ----- update the top_edge prediction weights by index ------- //
-        torch::Tensor idx = idx_mat.index({src_, dst_}); 
+        top_edge = top_edge.clone(); 
         top_edge.index_put_({idx}, top_edge_); 
-        torch::Tensor sel = std::get<1>((top_edge_).max({-1})); 
 
         // ---- check if the new prediction is simply null ---- /
-        sel = sel < 1; 
+        sel = std::get<1>((top_edge_).max({-1})) < 1; 
         if (!sel.index({sel == false}).size({0})){break;}
-        node_s  = node_rnn.clone(); 
-        node_i_ = node_i; 
 
         // ----------- create a new intermediate state of the nodes ----------- //
         gr_ = pyc::graph::edge_aggregation(edge_index, top_edge, pmc); 
-        node_state = this -> node_encode(gr_.at(key_smx), num_node = (gr_.at(key_idx) > -1).sum({-1}, true), &node_rnn); 
-
-        // ------ protection against depleted event graphs ---------- //
-        torch::Tensor skp = (norm.sum({-1}, true) > 0).view({-1}); 
-        if (!skp.index({skp}).size({0})){break;}
-        node_rnn.index_put_({skp}, node_state.index({skp})); 
-        norm.index_put_({src_, dst_}, sel*1); 
+        idx_mat.index_put_({src_, dst_}, -(sel*idx)); 
+        torch::Tensor skp = ((idx_mat < 0).sum({-1}, true) > 0)*1.0; 
+        hx_i = this -> node_encode(gr_.at(key_smx), (gr_.at(key_idx) > -1).sum({-1}, true), &node_rnn); 
+        node_rnn = node_rnn * (1 - skp) + hx_i * skp; 
+        idx = torch::abs(idx_mat.index({dst_, src_})); 
 
         // ------ walk to the next node (nxt) ------- //
-        hx_i        = hx_i.index({sel}); 
-        hx_j        = hx_j.index({sel}); 
-        edge_rnn    = edge_rnn.index({sel});
+        hx_i        = top_edge_.index({torch::indexing::Slice(), 1}).view({-1, 1});
+        edge_rnn.index_put_({idx}, rnn_dx * node_rnn.index({src_}).softmax({-1})); 
         top_edge_   = top_edge_.index({sel}); 
         node_i      = gr_.at(key_idx); 
         edge_index_ = edge_index_.index({torch::indexing::Slice(), sel}); 
