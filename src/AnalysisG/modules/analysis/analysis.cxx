@@ -70,7 +70,8 @@ void analysis::add_selection_template(selection_template* sel){
 }
 
 void analysis::add_metric_template(metric_template* mx, model_template* mdl){
-    this -> safe_clone(&this -> model_metrics, mdl); this -> safe_clone(&this -> metric_names, mx);  
+    this -> safe_clone(&this -> model_metrics, mdl); 
+    this -> safe_clone(&this -> metric_names  , mx);  
     if (this -> metric_names[mx -> name] -> link(this -> model_metrics[mdl -> name])){return;}
     abort();
 }

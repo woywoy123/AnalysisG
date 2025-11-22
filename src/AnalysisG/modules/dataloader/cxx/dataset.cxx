@@ -33,8 +33,8 @@ void dataloader::generate_kfold_set(int k){
             val -> insert(val -> end(), folds[y].begin(), folds[y].end()); 
         }
         this -> success("---------------- k-Fold: " + this -> to_string(x+1) + " ----------------"); 
-        this -> success("-> train: " + this -> to_string(this -> k_fold_training[x] -> size()) + ")"); 
-        this -> success("-> validation: " + this -> to_string(this -> k_fold_validation[x] -> size()) + ")"); 
+        this -> success("-> train: (" + this -> to_string(this -> k_fold_training[x] -> size()) + ")"); 
+        this -> success("-> validation: (" + this -> to_string(this -> k_fold_validation[x] -> size()) + ")"); 
     }
 }
 
@@ -213,8 +213,8 @@ bool dataloader::restore_dataset(std::string path){
     for (; itr != this -> k_fold_training.end(); ++itr){
         int k = itr -> first; 
         this -> success("---------------- k-Fold: " + this -> to_string(k+1) + " ----------------"); 
-        this -> success("-> train: "      + this -> to_string(this -> k_fold_training[k] -> size())   + ")"); 
-        this -> success("-> validation: " + this -> to_string(this -> k_fold_validation[k] -> size()) + ")"); 
+        this -> success("-> train: ("      + this -> to_string(this -> k_fold_training[k] -> size())   + ")"); 
+        this -> success("-> validation: (" + this -> to_string(this -> k_fold_validation[k] -> size()) + ")"); 
     }
     this -> hash_map.clear(); 
     return true;
