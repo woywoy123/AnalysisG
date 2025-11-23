@@ -25,7 +25,6 @@ long double Conuix::Mobius_t::P(long double z, long double l, long double t){
     return _a + _b + _c + _d; 
 }
 
-
 long double Conuix::Mobius_t::dPdt(long double z, long double l, long double t){
     long double _z = std::fabs(z); 
     long double _a = (l * _z * _z / this -> c) * (this -> c * std::cosh(t) + this -> d * std::sinh(t)) * this -> b_; 
@@ -95,8 +94,9 @@ void Conuix::Mobius_t::init(base_t* base){
         long double bx = dfx(tx, base -> beta, bx_, tx_ * base -> beta); 
         if (std::fabs(bx) < 10e-15){break;}
         long double dt = ax / bx; 
-        this -> error = ax;  
+        this -> error = std::fabs(ax);  
         tx = tx - dt;
+        if (std::isnan(std::abs(tx))){break;}
         if (std::fabs(dt) > 10e-11){continue;}
         this -> converged = true; 
         break; 

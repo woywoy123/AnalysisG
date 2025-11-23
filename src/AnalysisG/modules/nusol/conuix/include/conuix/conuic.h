@@ -7,7 +7,6 @@
 
 class particle_template; 
 
-
 class conuic {
     
     public:
@@ -31,14 +30,16 @@ class conuic {
         long double dPdt(long double l, long double t, long double Z); 
         long double dPdtL0(long double t, long double Z); 
         long double dPl0(long double t); 
+        void dPdZ0(long double z, long double t, std::complex<long double>* l1, std::complex<long double>* l2); 
+
         matrix_t Hmatrix(long double t, long double Z); 
         matrix_t Nmatrix(long double t, long double Z); 
-        bool mass_line(long double mW, long double mT); 
+        bool mass_line(long double mW, long double mT, std::complex<long double>* z_ = nullptr, long double* t_ = nullptr); 
 
         void debug(); 
+        atomics_t* cache = nullptr;
 
     private:
-        atomics_t* cache = nullptr;
         particle_template* _jet = nullptr; 
         particle_template* _lep = nullptr; 
 }; 

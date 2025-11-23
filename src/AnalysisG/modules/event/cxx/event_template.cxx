@@ -136,23 +136,26 @@ event_template* event_template::clone(){
 }
 
 
-std::vector<particle_template*> event_template::double_neutrino(
-        std::vector<particle_template*>* targets, double phi, double met, double limit
+std::vector<particle_template*> event_template:: multi_neutrino(
+        std::vector<particle_template*>* targets, double phi, double met, 
+        double mt, double mw, double violation, double limit
 ){
 
     nusol_t para; 
     para.met = met; 
     para.phi = phi;
+    para.mt = mt;
+    para.mw = mw; 
     para.limit = limit; 
     para.targets = targets; 
+    para.violation = violation; 
     para.mode = nusol_enum::conuix; 
 
     nusol* nx = new nusol(&para); 
     std::vector<particle_template*> nunux = nx -> solve();
     delete nx; 
     if (!nunux.size()){return nunux;}
-    this -> garbage[nunux[0] -> hash] = nunux[0];
-    this -> garbage[nunux[1] -> hash] = nunux[1]; 
+    for (size_t x(0); x < nunux.size(); ++x){this -> garbage[nunux[x] -> hash] = nunux[x];}
     return nunux; 
 }
 

@@ -17,7 +17,7 @@ target_include_directories(cellipse PRIVATE include/ellipse)
 target_include_directories(cellipse PUBLIC include)
 
 target_link_libraries(cellipse  PUBLIC cstructs cparticle_template)
-target_link_libraries(cellipse  PRIVATE cnusol)
+target_link_libraries(cellipse  PRIVATE cnusol sconuix)
 
 target_compile_options(cellipse PRIVATE -fPIC)
 target_compile_options(cellipse PRIVATE -Wall -pedantic -Wextra -Wshadow)

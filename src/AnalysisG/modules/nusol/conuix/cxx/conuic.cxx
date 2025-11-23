@@ -82,7 +82,7 @@ matrix_t conuic::Nmatrix(long double t, long double Z){
     return HxT.dot(Cr).dot(Hxi); 
 }
 
-bool conuic::mass_line(long double mW, long double mT){
+bool conuic::mass_line(long double mW, long double mT, std::complex<long double>* z_, long double* t_){
     long double lm = this -> cache -> lp.mass;
     long double lb = this -> cache -> lp.beta;
     long double le = this -> cache -> lp.energy; 
@@ -106,10 +106,38 @@ bool conuic::mass_line(long double mW, long double mT){
 
     long double x = a * (a0 * cs + d0 * ss) - (b - c0 * cs - f0 * ss) * a0;
     long double y = a * (b0 * cs + e0 * ss) - (b - c0 * cs - f0 * ss) * b0;
-    long double t = x/y;
-    if (std::fabs(t) >= 1){return false;}
-
-    std::complex<long double> z = -((mW * mW + lm * lm) / ( 2 * le * lb) + c0) * std::sqrt(std::complex<long double>(1 - t*t)) / (a0 + b0 * t); 
+    //std::complex<long double> zeta = 0.5L * std::log( std::complex<long double>(x + y, 0.0) / std::complex<long double>(y - x, 0.0) ); 
+    //std::complex<long double> tcmx = std::tanh(zeta); 
+    long double t = std::sin(std::atan2(x, y)); 
+    
+    std::complex<long double> z = -((mW * mW + lm * lm) / ( 2 * le * lb) + c0) * std::sqrt((1.0L - t*t)) / (a0 + b0 * t); 
+    if (z_){*z_ = std::abs(z);}
+    if (t_){*t_ = t;}
+    if (std::fabs(x / y) >= 1){return false;}
     return true;
 }
+
+void conuic::dPdZ0(long double z, long double t, std::complex<long double>* l1, std::complex<long double>* l2){
+    long double o_ = this -> cache -> base.o; 
+    long double bl = this -> cache -> lp.beta; 
+    long double ts = this -> cache -> base.tpsi;
+    long double sc = 1.0L / this -> cache -> base.cpsi; 
+    std::complex<long double> a_ = o_ * std::sinh(t) - bl * ts * std::cosh(t);
+    std::complex<long double> b_ = std::sqrt(a_ * a_ - 3 * sc * sc * sc * std::sinh(t)); 
+    std::complex<long double> rp = (a_ + b_) * z * this -> cache -> base.cpsi; 
+    std::complex<long double> rm = (a_ - b_) * z * this -> cache -> base.cpsi; 
+    *l1 = rp; *l2 = rm; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
 

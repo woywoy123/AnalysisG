@@ -152,15 +152,19 @@ std::map<std::string, std::map<std::string, particle_t>> particle_template::__re
 }
 
 particle_template::particle_template(double _px, double _py, double _pz, double _e) : particle_template(){
-    particle_t* p = &this -> data; 
-    p -> px = _px; p -> py = _py; p -> pz = _pz; p -> e = _e; 
-    p -> polar = true; 
+    this -> data.px = _px; 
+    this -> data.py = _py;
+    this -> data.pz = _pz; 
+    this -> data.e  = _e; 
+    this -> data.polar = true; 
 }
 
 particle_template::particle_template(double _px, double _py, double _pz) : particle_template() {
-    particle_t* p = &this -> data; 
-    p -> px = _px; p -> py = _py; p -> pz = _pz; p -> e = this -> e; 
-    p -> polar = true; 
+    this -> data.px = _px; 
+    this -> data.py = _py;
+    this -> data.pz = _pz; 
+    this -> data.e  = this -> e; 
+    this -> data.polar = true; 
 }
 
 particle_template::~particle_template(){

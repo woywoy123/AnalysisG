@@ -12,11 +12,9 @@ class conuix {
         conuix(nusol_t* params); 
         ~conuix(); 
         std::vector<particle_template*> nunu_make(); 
-    
-    private:
-        std::string prefix = "";
-        nusol_t* params = nullptr;
         std::vector<conuic*>* cnx = nullptr; 
+        nusol_t* params = nullptr;
+        std::string prefix = "";
 }; 
 
 

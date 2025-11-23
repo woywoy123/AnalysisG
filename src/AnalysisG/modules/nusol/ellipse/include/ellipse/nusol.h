@@ -1,11 +1,12 @@
 #ifndef HXX_NUSOL
 #define HXX_NUSOL
+#include <conuix/conuic.h>
 
 class mtx; 
 class particle_template;
+class conuic; 
 
-struct wrapper 
-{
+struct wrapper {
     wrapper(particle_template* p_);
     double p  = 0; 
     double m  = 0;
@@ -82,12 +83,15 @@ class nuelx
         void Z2(double* A, double* B, double* C); 
         void misc(); 
 
-        wrapper* b = nullptr;
-        wrapper* l = nullptr; 
-    private:
+        wrapper*  b = nullptr;
+        wrapper*  l = nullptr; 
+        conuic* cnx = nullptr; 
 
         double mw = 0;
         double mt = 0; 
+
+    private:
+
         double mw2 = 0; 
         double mt2 = 0; 
 

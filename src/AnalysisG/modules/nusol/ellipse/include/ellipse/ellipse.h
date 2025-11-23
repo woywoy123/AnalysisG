@@ -7,7 +7,8 @@
 #include <ellipse/mtx.h>
 
 // forward declare the main interface struct.
-struct nusol_t; 
+struct nusol_t;
+class conuic; 
 
 struct nunu_t {
     nunu_t();
@@ -24,11 +25,11 @@ struct nunu_t {
 class ellipse {
 
     public:
-        ellipse(nusol_t* parameters); 
-        void prepare(double mt, double mw); 
-        std::vector<particle_template*> nunu_make();
-        void solve(); 
         ~ellipse(); 
+        ellipse(nusol_t* parameters); 
+
+        void prepare(double mt, double mw, std::vector<conuic*>* vnc = nullptr); 
+        void solve(); 
 
         template <typename g>
         void clear(g** val){
@@ -37,11 +38,11 @@ class ellipse {
             *val = nullptr; 
         }
 
+        std::map<double, nunu_t> solvs = {}; 
+
     private:
         nusol_t* params = nullptr; 
-
         std::map<int, std::tuple<nuelx*, nuelx*>> pairings; 
-        std::map<double, nunu_t> solvs = {}; 
 
         std::vector<particle_template*> bquarks = {}; 
         std::vector<particle_template*> leptons = {};

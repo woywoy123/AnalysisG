@@ -1,5 +1,4 @@
 #include <templates/particle_template.h>
-
 #include <ellipse/solvers.h>
 #include <ellipse/nusol.h>
 #include <ellipse/mtx.h>

@@ -37,7 +37,7 @@ conuix::conuix(nusol_t* parameters){
             conuic* cx = new conuic(jets[i], leps[j]);
             bool        lx = cx -> converged; 
             long double lf = cx -> error; 
-            if (lf > 10e-12 || !lx || !cx -> mass_line(this -> params -> mw, this -> params -> mt)){delete cx; continue;}
+            if (!lx || !cx -> mass_line(this -> params -> mw, this -> params -> mt)){delete cx; continue;}
             (*this -> cnx)[++idx] = cx;  
             params -> phys_pairs -> push_back({jets[i], leps[j]}); 
         }

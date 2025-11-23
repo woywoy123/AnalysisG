@@ -49,9 +49,12 @@ class event_template: public tools
         virtual void build(element_t* el); 
         virtual void CompileEvent(); 
 
-        std::vector<particle_template*> double_neutrino(
-                std::vector<particle_template*>* targets, double phi, double met, double limit = 1e3
+        std::vector<particle_template*> multi_neutrino(
+                std::vector<particle_template*>* targets, double phi, double met, 
+                double mt = 172.68 * 1000, double mw = 80.385 * 1000, 
+                double violation = 1e-4, double limit = 0.1
         ); 
+
         std::map<std::string, event_template*> build_event(std::map<std::string, data_t*>* evnt); 
 
         template <typename G>

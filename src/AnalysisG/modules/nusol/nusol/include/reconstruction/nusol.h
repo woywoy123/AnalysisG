@@ -8,6 +8,8 @@
 class nusol; 
 class ellipse; 
 class conuix; 
+class nuelx; 
+class mtx; 
 
 enum class nusol_enum {
     ellipse,  // https://arxiv.org/pdf/1305.1878
@@ -15,10 +17,8 @@ enum class nusol_enum {
     undefined
 }; 
 
-
 // event parameters
 struct nusol_t {
-
     public: 
         // ----- set these ----- //
         double met = 0; 
@@ -27,7 +27,9 @@ struct nusol_t {
         // ----- for the ellipse method ---- //
         double mt = 172.68 * 1000;
         double mw = 80.385 * 1000; 
-        double limit = 100000; 
+        double violation = 0.00001; 
+        double limit = 0.1; 
+        int iterations = 4; 
 
         nusol_enum mode = nusol_enum::undefined; 
         std::vector<particle_template*>* targets = nullptr;  
@@ -54,6 +56,17 @@ class nusol:
         ~nusol(); 
 
     private:
+        class neutrino : public particle_template {
+            public: 
+                using particle_template::particle_template; 
+                virtual ~neutrino(); 
+                neutrino(nuelx* nu, mtx* mx); 
+                void merge(neutrino* nx); 
+                particle_template* release(); 
+                double score = 0; 
+        }; 
+
+
         nusol_t* params = nullptr; 
         ellipse* D_nunu = nullptr; 
         conuix*  M_nunu = nullptr; 

@@ -52,23 +52,13 @@ std::vector<int> m_top_edge(muon*     t){return {t -> top_index};}
 std::vector<int> m_top_edge(electron* t){return {t -> top_index};}
 std::vector<int> m_top_edge(truthjet* t){return t -> top_index;  }
 std::vector<int> m_top_edge(particle_template* nu){
+    std::vector<int>   out = {}; 
+    if (nu -> index < 0){return out;}
     std::map<std::string, particle_template*> pnx = nu -> parents;
     std::map<std::string, particle_template*>::iterator itr = pnx.begin(); 
-    std::vector<int> out = {}; 
-    std::map<int, bool> gth = {}; 
     for (; itr != pnx.end(); ++itr){
-        std::string type1 = itr -> second -> type; 
-        if      (type1 == "jet"){out = m_top_edge((jet*)itr -> second);}
-        else if (type1 == "mu" ){out = m_top_edge((muon*)itr -> second);}
-        else if (type1 == "el" ){out = m_top_edge((electron*)itr -> second);}
-        for (size_t x(0); x < out.size(); ++x){gth[out[x]] = out[x] > -1;}
-    }
-
-    out = {}; 
-    std::map<int, bool>::iterator itx = gth.begin(); 
-    for (; itx != gth.end(); ++itx){
-        if (!itx -> second){continue;}
-        out.push_back(itx -> first); 
+        if (itr -> second -> type != "top"){continue;}
+        out.push_back(itr -> second -> index);
     }
     return out; 
 }
@@ -97,8 +87,9 @@ void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     else if (type2 == "mu"       ){o2_ = m_top_edge((muon*)p2);}
     else if (type2 == "el"       ){o2_ = m_top_edge((electron*)p2);}
     else if (type2 == "nunu"     ){o2_ = m_top_edge(p2);}
-
     *o = 0;  
+
+    if (type1 == "nunu" && type2 == "nunu"){return;}
     for (size_t x(0); x < o1_.size(); ++x){
         if (o1_[x] < 0){continue;}
         for (size_t y(0); y < o2_.size(); ++y){
