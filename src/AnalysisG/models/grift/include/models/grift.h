@@ -10,14 +10,22 @@ class grift: public model_template
         model_template* clone() override;
         void forward(graph_t*) override; 
 
+        torch::Tensor node_encode(
+                torch::Tensor pmc, torch::Tensor num_node, 
+                torch::Tensor* node_rnn
+        ); 
+        
         torch::Tensor message(
             torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc,
             torch::Tensor hx_i, torch::Tensor hx_j
         ); 
 
-        torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn); 
-
-
+        torch::Tensor update_step(
+            torch::Tensor* node_i, torch::Tensor* idx_mat, 
+            torch::Tensor* edge_index_, torch::Tensor* edge_index, 
+            torch::Tensor* edge_rnn, torch::Tensor* node_dnn, 
+            torch::Tensor* top_edge, torch::Tensor* pmc
+        ); 
 
         // Neural Network Parameters
         int _hidden = 1024; 

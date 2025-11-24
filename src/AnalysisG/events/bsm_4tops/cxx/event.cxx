@@ -235,26 +235,6 @@ void bsm_4tops::CompileEvent(){
             lt -> top_index = -1; 
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 void bsm_4tops::debug_strings(){
