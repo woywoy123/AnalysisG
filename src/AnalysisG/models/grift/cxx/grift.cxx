@@ -150,11 +150,11 @@ torch::Tensor grift::update_step(
     
     // ------------------ create a new message --------------------- //
     hx_ij = this -> message(nx_i, nx_j, *pmc, hx_i, hx_j); 
-    hx_ij = torch::cat({hx_ij, hx_j, hx_j - hx_i, hx_ij - hx_i}, {-1});
+    hx_ij = torch::cat({hx_ij, hx_j, hx_j - hx_i, hx_ij - hx_j}, {-1});
     hx_ij = (*this -> rnn_hxx) -> forward(hx_ij); 
     
     // ------------------ check edges for new paths ---------------- //
-    hx_i = torch::cat({hx_ij, hx_i, hx_ij - hx_i, hx_ij - r_dx, top_edge_}, {-1});
+    hx_i = torch::cat({hx_ij, hx_j, hx_j - hx_i, hx_ij - r_dx, top_edge_}, {-1});
     torch::Tensor top_idx = (*this -> rnn_txx) -> forward(hx_i);
     
     torch::Tensor sel = std::get<1>((top_idx).max({-1})) < 1; 
