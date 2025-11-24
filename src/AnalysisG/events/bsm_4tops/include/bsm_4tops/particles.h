@@ -176,6 +176,8 @@ class electron: public particle_template
 
         electron();
         virtual ~electron();
+        const particle_template* nu = nullptr; 
+
         bool from_res = false; 
         int top_index = -1; 
 
@@ -191,6 +193,8 @@ class muon: public particle_template
 
         muon();
         virtual ~muon();
+        const particle_template* nu = nullptr; 
+
         bool from_res = false; 
         int top_index = -1; 
 

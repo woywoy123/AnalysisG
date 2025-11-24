@@ -46,9 +46,10 @@ class ellipse {
 
         std::vector<particle_template*> bquarks = {}; 
         std::vector<particle_template*> leptons = {};
-        std::vector<nuelx*> engines = {}; 
+        std::vector<nuelx*>             engines = {}; 
 
         void flush(); 
+        void violation_test(mtx* v, nuelx* pnu, mtx* out); 
         void make_neutrinos(mtx* v, mtx* v_); 
         int generate(nuelx* nu1, nuelx* nu2); 
         int intersection(mtx** v, mtx** v_);

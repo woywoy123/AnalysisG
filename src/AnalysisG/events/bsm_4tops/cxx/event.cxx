@@ -49,6 +49,8 @@ void bsm_4tops::CompileEvent(){
     std::map<int, truthjetparton*> _TruthJetPartons = this -> sort_by_index(&this -> m_TruthJetParton); 
     std::map<int, jetparton*>           _JetPartons = this -> sort_by_index(&this -> m_JetParton); 
 
+
+    //double metx(0), mety(0); 
     std::map<int, top_children*>::iterator itc; 
     for (itc = _TopChildren.begin(); itc != _TopChildren.end(); ++itc){
         int index = itc -> second -> top_index; 
@@ -56,6 +58,9 @@ void bsm_4tops::CompileEvent(){
         _Tops[index] -> register_child(itc -> second); 
         itc -> second -> register_parent(_Tops[index]); 
         itc -> second -> index = index; 
+        //if (!itc -> second -> is_nu){continue;}
+        //metx += double(itc -> second -> px); 
+        //mety += double(itc -> second -> py); 
     }
  
     std::map<int, truthjet*>::iterator itj; 
@@ -157,31 +162,45 @@ void bsm_4tops::CompileEvent(){
 
     if (this -> debug_mode){this -> debug_strings();}
     if (!this -> reconstruct_nunu){return;}
-  
+ 
+    double phi_ = this -> phi; //std::atan2(mety, metx);
+    double met_ = this -> met; //std::sqrt(metx * metx + mety * mety); 
+
     std::vector<particle_template*> nux = this -> multi_neutrino(
-            &this -> DetectorObjects, this -> phi, this -> met, 
-            172.68 * 1000, 80.385 * 1000, 0.0001, 0.1
+            &this -> DetectorObjects, phi_, met_, 
+            172.68 * 1000, 80.385 * 1000, 
+            0.00001,// mobius violation factor
+            0.5 // tolerance
     ); 
 
+
+    // fetching the reconstructed neutrinos and checking their truth mapping to the tops.
     for (int x(0); x < nux.size(); ++x){
+        this -> DetectorObjects.push_back(nux[x]);
         std::map<std::string, particle_template*> pox = nux[x] -> parents;
         std::map<std::string, particle_template*>::iterator itr = pox.begin(); 
         std::map<int, bool> top_idx_; 
         for (; itr != pox.end(); ++itr){
             std::string type = itr -> second -> type; 
             std::vector<int> _top_idx = {}; 
-            if      (type == "jet"){_top_idx = ((jet*)itr -> second) -> top_index;}
-            else if (type == "mu"){_top_idx = {((muon*)itr -> second) -> top_index};}
-            else if (type == "el"){_top_idx = {((electron*)itr -> second) -> top_index};}
+            if (type == "mu"){
+                muon* lx = (muon*)itr -> second; 
+                _top_idx = {lx -> top_index}; 
+                lx -> nu = nux[x]; 
+            }
+            else if (type == "el"){
+                electron* lx = (electron*)itr -> second; 
+                _top_idx = {lx -> top_index}; 
+                lx -> nu = nux[x];  
+            }
+            else if (type == "jet"){_top_idx = ((jet*)itr -> second) -> top_index;}
             for (int k(0); k < _top_idx.size(); ++k){top_idx_[_top_idx[k]] = _Tops.count(_top_idx[k]);}
         }
         
-        (&nux[x] -> parents) -> clear(); 
         bool is_fake = true; 
         std::map<int, bool>::iterator itx = top_idx_.begin(); 
         for (; itx != top_idx_.end(); ++itx){
             if (!itx -> second){continue;}
-
             std::map<std::string, particle_template*> tc = _Tops[itx -> first] -> children; 
             std::map<std::string, particle_template*>::iterator itc = tc.begin(); 
             for (; itc != tc.end(); ++itc){
@@ -190,9 +209,52 @@ void bsm_4tops::CompileEvent(){
             }
             nux[x] -> register_parent(_Tops[itx -> first]); 
         }
-        if (is_fake){nux[x] -> index = -1;}
-        this -> DetectorObjects.push_back(nux[x]);
+        if (!is_fake){continue;}
+        pox = nux[x] -> parents;
+        for (itr = pox.begin();  itr != pox.end(); ++itr){
+            std::string type = itr -> second -> type; 
+            if (type == "mu"){    ((muon*)itr -> second) -> top_index = -1;}
+            if (type == "el"){((electron*)itr -> second) -> top_index = -1;}
+        }
+        nux[x] -> index = -2;
     }
+
+    // making sure to delink any leptons if the neutrino algorithm didnt match
+    for (int x(0); x < lep.size(); ++x){
+        particle_template* l = lep[x]; 
+        if (l -> type == "mu"){
+            muon* lt = (muon*)l; 
+            if (lt -> nu){continue;}
+            lt -> from_res  = false; 
+            lt -> top_index = -1; 
+        }
+        if (l -> type == "el"){
+            electron* lt = (electron*)l; 
+            if (lt -> nu){continue;}
+            lt -> from_res  = false; 
+            lt -> top_index = -1; 
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 void bsm_4tops::debug_strings(){

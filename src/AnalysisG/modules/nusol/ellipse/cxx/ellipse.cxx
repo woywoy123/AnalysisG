@@ -196,6 +196,52 @@ int ellipse::angle_cross(mtx** v, mtx** v_){
     return n_rts; 
 }
 
+void ellipse::violation_test(mtx* v, nuelx* pnu, mtx* out){
+    mtx invH = pnu -> H_perp() -> inv().dot(v -> T()); 
+    mtx nux  = pnu -> K() -> dot(v -> T()).T(); 
+
+    int mlx  = 0; 
+    int mbst = -1;
+    long double xd = -1; 
+    for (int x(0); x < invH.dim_j; ++x){
+        particle_template t_ = particle_template(nux._m[x][0], nux._m[x][1], nux._m[x][2]); 
+        t_.iadd(pnu -> l -> lnk);
+        t_.iadd(pnu -> b -> lnk);
+        double mt_ = t_.mass; 
+
+        particle_template w_ = particle_template(nux._m[x][0], nux._m[x][1], nux._m[x][2]); 
+        w_.iadd(pnu -> l -> lnk);
+        double mw_ = w_.mass; 
+
+        long double lx = pnu -> cnx -> dPl0(pnu -> cnx -> cache -> Mobius.tstar); 
+        if (std::abs(lx) > this -> params -> violation){continue;}
+
+        long double t1, z1; 
+        pnu -> cnx -> get_TauZ(pnu -> Sx(), pnu -> Sy(), &z1, &t1); 
+        if (std::fabs(t1) >= 1){continue;}
+        z1 = std::abs(z1); 
+
+        long double l0 = pnu -> cnx -> dPdtL0(t1, z1); 
+        if (std::fabs(pnu -> cnx -> dPdt(l0, t1, z1)) > this -> params -> violation){continue;}
+
+        long double tp_; 
+        std::complex<long double> z_; 
+        pnu -> cnx -> mass_line(mw_, mt_, &z_, &tp_); 
+        z1 = z_.real(); 
+        t1 = tp_; 
+
+        l0 = pnu -> cnx -> dPdtL0(t1, z1); 
+        if (std::fabs(pnu -> cnx -> dPdt(l0, t1, z1)) > this -> params -> violation){continue;}
+        l0 = pnu -> cnx -> dPl0(t1);
+
+        long double dx = std::abs(l0);
+        if (xd > -1 && xd < dx){continue;}
+        out -> copy(&nux, mlx, x, 3); 
+        out -> _m[mlx][3] = double(dx); 
+        mbst = mlx; xd = dx; ++mlx;  
+    }
+}
+
 void ellipse::make_neutrinos(mtx* v, mtx* v_){
     if (!v || !v_){return;}
 

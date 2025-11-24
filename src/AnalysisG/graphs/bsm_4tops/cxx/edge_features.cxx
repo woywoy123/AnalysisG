@@ -53,7 +53,7 @@ std::vector<int> m_top_edge(electron* t){return {t -> top_index};}
 std::vector<int> m_top_edge(truthjet* t){return t -> top_index;  }
 std::vector<int> m_top_edge(particle_template* nu){
     std::vector<int>   out = {}; 
-    if (nu -> index < 0){return out;}
+    if (nu -> index == -2){return out;}
     std::map<std::string, particle_template*> pnx = nu -> parents;
     std::map<std::string, particle_template*>::iterator itr = pnx.begin(); 
     for (; itr != pnx.end(); ++itr){
@@ -89,7 +89,6 @@ void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     else if (type2 == "nunu"     ){o2_ = m_top_edge(p2);}
     *o = 0;  
 
-    if (type1 == "nunu" && type2 == "nunu"){return;}
     for (size_t x(0); x < o1_.size(); ++x){
         if (o1_[x] < 0){continue;}
         for (size_t y(0); y < o2_.size(); ++y){

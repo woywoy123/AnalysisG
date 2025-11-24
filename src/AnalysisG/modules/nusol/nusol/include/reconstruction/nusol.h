@@ -29,7 +29,7 @@ struct nusol_t {
         double mw = 80.385 * 1000; 
         double violation = 0.00001; 
         double limit = 0.1; 
-        int iterations = 4; 
+        int iterations = 10; 
 
         nusol_enum mode = nusol_enum::undefined; 
         std::vector<particle_template*>* targets = nullptr;  
