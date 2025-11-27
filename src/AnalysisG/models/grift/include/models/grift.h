@@ -17,7 +17,13 @@ class grift: public model_template
 
         torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn); 
 
-
+        torch::Tensor recurse(
+            torch::Tensor* node_i,     torch::Tensor* node_s,
+            torch::Tensor* idx_mat,    torch::Tensor* edge_index_, 
+            torch::Tensor* edge_index,
+            torch::Tensor* edge_rnn,   torch::Tensor* node_dnn,
+            torch::Tensor* top_edge,   torch::Tensor* pmc
+        ); 
 
         // Neural Network Parameters
         int _hidden = 1024; 
@@ -27,12 +33,12 @@ class grift: public model_template
         int _xout = 2; 
         int _xtop = 5; 
 
-        double drop_out = 0.01; 
-
         // Misc
         bool is_mc    = true; 
         bool init     = false; 
         bool pagerank = false; 
+    
+        double drop_out = 0; 
 
         torch::nn::Sequential* rnn_x   = nullptr; 
         torch::nn::Sequential* rnn_dx  = nullptr; 
