@@ -48,7 +48,7 @@ class container: public tools
         void fill_selections(std::map<std::string, selection_template*>* inpt); 
         void get_events(std::vector<event_template*>*, std::string label); 
         void populate_dataloader(dataloader* dl);
-        void compile(size_t* len, int threadIdx); 
+        void compile(size_t* len, int threadIdx, int thrd); 
         size_t len(); 
         
         entry_t* add_entry(std::string hash); 

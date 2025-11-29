@@ -189,6 +189,7 @@ void analysis::start(){
     }
 
     int threads_ = this -> m_settings.threads; 
+    int intra_th = this -> m_settings.intra_th; 
     ROOT::EnableImplicitMT(threads_); 
 
     std::string pth_cache = this -> m_settings.graph_cache; 
@@ -197,7 +198,7 @@ void analysis::start(){
     if (pth_cache.size() && !this -> ends_with(&pth_cache, "/")){pth_cache += "/";}
     if (this -> selection_names.size()){this -> build_selections();}
     if (this -> graph_labels.size()){this -> build_graphs();}
-    this -> tracer -> compile_objects(threads_); 
+    this -> tracer -> compile_objects(threads_, intra_th); 
     if (this -> selection_names.size()){return this -> tracer -> fill_selections(&this -> selection_names);} 
     this -> build_dataloader(false); 
     this -> build_metric_folds();
@@ -222,7 +223,9 @@ void analysis::start(){
     if (!this -> build_metric()){return;}
 
     if (this -> model_sessions.size()){
-        if (!this -> loader -> data_set -> size()){return this -> failure("No Dataset was found for training. Aborting...");}
+        if (!this -> loader -> data_set -> size()){
+            return this -> failure("No Dataset was found for training. Aborting...");
+        }
         this -> loader -> restore_dataset(this -> m_settings.training_dataset); 
         this -> build_dataloader(true); 
         this -> loader -> start_cuda_server(); 
@@ -231,7 +234,9 @@ void analysis::start(){
     }
 
     if (this -> model_inference.size()){
-        if (!this -> loader -> data_set -> size()){return this -> failure("No Dataset was found for inference. Aborting...");}
+        if (!this -> loader -> data_set -> size()){
+            return this -> failure("No Dataset was found for inference. Aborting...");
+        }
         this -> loader -> start_cuda_server(); 
         this -> build_inference(); 
     }

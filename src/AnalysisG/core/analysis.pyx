@@ -311,6 +311,12 @@ cdef class Analysis:
     def Threads(self, int val): self.ana.m_settings.threads = val
 
     @property
+    def IntraThreads(self): return self.ana.m_settings.intra_th
+
+    @IntraThreads.setter
+    def IntraThreads(self, int val): self.ana.m_settings.intra_th = val
+
+    @property
     def GraphCache(self): return env(self.ana.m_settings.graph_cache)
 
     @GraphCache.setter

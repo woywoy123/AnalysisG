@@ -40,7 +40,8 @@ struct settings_t {
     int max_range = 400; 
     bool logy = false; 
 
-    int threads = 10; 
+    int  threads = 10; 
+    int  intra_th = -1; 
     bool debug_mode = false;
     bool build_cache = false; 
     bool selection_root = false; 

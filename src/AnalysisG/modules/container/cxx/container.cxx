@@ -62,13 +62,61 @@ bool container::add_selection_template(selection_template* sel){
     return evt -> has_selection(sel);
 }
 
-void container::compile(size_t* l, int threadIdx){
-    std::map<std::string, write_t*> handles;
+void container::compile(size_t* l, int threadIdx, int thrds){
+    auto lmb1 =[this](std::vector<event_template*> comx, size_t* lx) -> void{
+        for (size_t x(0); x < comx.size(); ++x, ++(*lx)){comx[x] -> CompileEvent();}
+    }; 
+
+    auto run = [this](std::vector<std::thread*>* thr) -> int {
+        size_t idx = 0; 
+        for (size_t x(0); x < thr -> size(); ++x){
+            if (!(*thr)[x]){continue;}
+            if (!(*thr)[x] -> joinable()){++idx; continue;}
+            (*thr)[x] -> join(); 
+            delete (*thr)[x]; 
+            (*thr)[x] = nullptr; 
+        }
+        return int(idx); 
+    }; 
+
     std::map<std::string, entry_t>::iterator itr = this -> random_access.begin();  
 
-    for (; itr != this -> random_access.end(); ++itr){
+    if (thrds > 0){
+        std::vector<event_template*> vev = {}; 
+        for (; itr != this -> random_access.end(); ++itr){
+            for (event_template* evx : itr -> second.m_event){vev.push_back(evx);}
+        }
+        std::vector<std::vector<event_template*>> vcx = this -> discretize(&vev, thrds); 
+        std::vector<std::thread*> thx(vcx.size(), nullptr); 
+
+        int tidx = 0;
+        std::vector<size_t> thr(vcx.size(), 0); 
+        for (size_t x(0); x < vcx.size(); ++x, ++tidx){
+            thx[x] = new std::thread(lmb1, vcx[x], &thr[x]);
+            while (tidx > std::abs(thrds-1)){
+                tidx = run(&thx);
+
+                (*l) = 0; 
+                for (size_t y(0); y < thr.size(); ++y){(*l) += thr[y] / 2;}
+            }
+
+        }
+
+        while (tidx){
+            tidx = run(&thx);
+
+            (*l) = 0; 
+            for (size_t x(0); x < thr.size(); ++x){(*l) += thr[x] / 2;}
+        }
+        (*l) = 0; 
+    }
+
+    std::map<std::string, write_t*> handles;
+    for (itr = this -> random_access.begin(); itr != this -> random_access.end(); ++itr){
         entry_t* ev = &itr -> second;  
-        for (event_template* evx : ev -> m_event){evx -> CompileEvent();}
+        if (thrds <= 0){
+            for (event_template* evx : ev -> m_event){evx -> CompileEvent();}
+        }
         if (ev -> m_selection.size() && !this -> merged){
             this -> merged = new std::map<std::string, selection_template*>();
         }
@@ -95,6 +143,7 @@ void container::compile(size_t* l, int threadIdx){
                 (*this -> merged)[name] = slx;
             }
         }
+
         for (selection_template* sel : ev -> m_selection){
             std::string name = sel -> name; 
             sel -> threadIdx = threadIdx; 
@@ -117,6 +166,7 @@ void container::compile(size_t* l, int threadIdx){
             gr_ -> filename = this -> filename; 
             ev -> m_data.push_back(gr_); 
         }
+
         ev -> destroy(); 
         *l += 1; 
     }

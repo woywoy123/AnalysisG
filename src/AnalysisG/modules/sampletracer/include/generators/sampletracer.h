@@ -24,7 +24,7 @@ class sampletracer:
         bool add_selection(selection_template* sel); 
 
         void populate_dataloader(dataloader* dl);  
-        void compile_objects(int threads); 
+        void compile_objects(int threads, int intrath); 
 
         std::string* output_path = nullptr; 
     private:

@@ -11,10 +11,10 @@ grift::grift(){
     this -> rnn_x = new torch::nn::Sequential({
             {"rnn_x_l1", torch::nn::Linear(this -> _xin + this -> _xrec, this -> _xrec + this -> _xin)},
             {"rnn_x_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec + this -> _xin}))}, 
-            {"rnn_x_t2", torch::nn::Tanh()},
             {"rnn_x_l2", torch::nn::Linear(this -> _xrec + this -> _xin, this -> _xrec)}, 
             {"rnn_x_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
             {"rnn_x_r1", torch::nn::LeakyReLU()},
+            {"rnn_x_t1", torch::nn::Tanh()},
             {"rnn_x_l3", torch::nn::Linear(this -> _xrec, this -> _xrec)}
     }); 
 
@@ -22,27 +22,26 @@ grift::grift(){
             {"rnn_dx_l1", torch::nn::Linear(this -> _xrec * 3, this -> _xrec * 3)}, 
             {"rnn_dx_r1", torch::nn::LeakyReLU()},
             {"rnn_dx_t1", torch::nn::Tanh()},
-            {"rnn_dx_l2", torch::nn::Linear(this -> _xrec * 3, this -> _xrec * 3)}, 
-            {"rnn_dx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec * 3}))}, 
-            {"rnn_dx_t2", torch::nn::Tanh()},
-            {"rnn_dx_l3", torch::nn::Linear(this -> _xrec * 3, this -> _xrec)}
+            {"rnn_dx_l2", torch::nn::Linear(this -> _xrec * 3, this -> _xrec * 2)}, 
+            {"rnn_dx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec * 2}))}, 
+            {"rnn_dx_t2", torch::nn::ReLU()},
+            {"rnn_dx_l3", torch::nn::Linear(this -> _xrec * 2, this -> _xrec)}
     }); 
 
     this -> rnn_hxx = new torch::nn::Sequential({
-            {"rnn_hxx_l1", torch::nn::Linear(this -> _xrec*3 + 2, this -> _xrec*3 + 2)}, 
-            {"rnn_hxx_t1", torch::nn::Tanh()},
-            {"rnn_hxx_l2", torch::nn::Linear(this -> _xrec*3 + 2, this -> _xrec * 2)}, 
-            {"rnn_hxx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec * 2}))}, 
-            {"rnn_hxx_r2", torch::nn::LeakyReLU()},
+            {"rnn_hxx_l1", torch::nn::Linear(this -> _xrec*2 + 2, this -> _xrec*2 + 2)}, 
+            {"rnn_hxx_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec * 2 + 2}))}, 
+            {"rnn_hxx_t1", torch::nn::LeakyReLU()},
+            {"rnn_hxx_l2", torch::nn::Linear(this -> _xrec*2 + 2, this -> _xrec * 2)}, 
+            {"rnn_hxx_t2", torch::nn::Tanh()},
             {"rnn_hxx_l3", torch::nn::Linear(this -> _xrec * 2, this -> _xrec)}
     }); 
 
     this -> rnn_txx = new torch::nn::Sequential({
-            {"rnn_txx_l1", torch::nn::Linear(this -> _xrec * 2, this -> _xrec * 2)}, 
+            {"rnn_txx_l1", torch::nn::Linear(this -> _xrec * 3, this -> _xrec * 2)}, 
             {"rnn_txx_r1", torch::nn::LeakyReLU()},
-            {"rnn_txx_t1", torch::nn::Tanh()},
             {"rnn_txx_l2", torch::nn::Linear(this -> _xrec * 2, this -> _xrec)}, 
-            {"rnn_txx_t2", torch::nn::Sigmoid()},
+            {"rnn_txx_t1", torch::nn::Tanh()},
             {"rnn_txx_l3", torch::nn::Linear(this -> _xrec, this -> _xout)}
     }); 
 
@@ -139,7 +138,7 @@ torch::Tensor grift::recurse(
     hx_ij = this -> message(nx_i, nx_j, *pmc, hx_i, hx_j); 
 
     // ------------------ check edges for new state transititons --------------- //
-    torch::Tensor top_idx = (*this -> rnn_txx) -> forward(torch::cat({r_dx, hx_ij - r_dx}, {-1})); 
+    torch::Tensor top_idx = (*this -> rnn_txx) -> forward(torch::cat({hx_i, hx_ij, r_dx - hx_ij}, {-1})); 
     top_edge -> index_put_({idx}, top_idx); 
 
     // ----------- create a new intermediate state of the nodes ----------- //
@@ -160,8 +159,8 @@ torch::Tensor grift::recurse(
     torch::Tensor msk_ = dstx.reshape({-1}) > -1;
 
     // update the intermediary recursion state from i -> j'
-    hx_ij = torch::cat({node_dnn -> index({src_}), hx_ij, node_dnn -> index({dst_}) - node_dnn -> index({src_}), top_idx}, {-1});
-    hx_ij = (*this -> rnn_hxx) -> forward(hx_ij); 
+    hx_ij = torch::cat({node_dnn -> index({src_}), r_dx - hx_ij, top_idx}, {-1});
+    hx_ij = (*this -> rnn_hxx) -> forward(hx_ij) + hx_i; 
  
     // ------ walk to the next node (nxt) ------- //
     edge_rnn -> index_put_({idx}, hx_ij); 

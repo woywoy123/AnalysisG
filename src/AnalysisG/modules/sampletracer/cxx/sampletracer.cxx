@@ -33,8 +33,10 @@ bool sampletracer::add_selection(selection_template* sel){
     return this -> root_container[sel -> filename].add_selection_template(sel); 
 }
 
-void sampletracer::compile_objects(int threads){
-    auto lamb = [](size_t* l, int threadidx, container* data){data -> compile(l, threadidx);}; 
+void sampletracer::compile_objects(int threads, int intrath){
+    auto lamb = [](size_t* l, int threadidx, container* data, int intrath){
+        data -> compile(l, threadidx, intrath);
+    }; 
     auto flush = [](std::vector<std::string*>* inpt){
         for (size_t x(0); x < inpt -> size(); ++x){delete (*inpt)[x];}
         inpt -> clear(); 
@@ -69,7 +71,7 @@ void sampletracer::compile_objects(int threads){
     int index = 0; 
     itr = this -> root_container.begin(); 
     for (; itr != this -> root_container.end(); ++itr, ++index, ++tidx){
-        threads_[index] = new std::thread(lamb, &handles[index], index, &itr -> second); 
+        threads_[index] = new std::thread(lamb, &handles[index], index, &itr -> second, intrath); 
         while (tidx > threads-1){tidx = this -> running(&threads_, &handles, &progres);}
     }
     this -> monitor(&threads_); 
