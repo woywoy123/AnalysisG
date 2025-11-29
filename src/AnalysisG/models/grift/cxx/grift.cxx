@@ -11,10 +11,10 @@ grift::grift(){
     this -> rnn_x = new torch::nn::Sequential({
             {"rnn_x_l1", torch::nn::Linear(this -> _xin + this -> _xrec, this -> _xrec + this -> _xin)},
             {"rnn_x_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec + this -> _xin}))}, 
-            {"rnn_x_r1", torch::nn::LeakyReLU()},
+            {"rnn_x_t2", torch::nn::Tanh()},
             {"rnn_x_l2", torch::nn::Linear(this -> _xrec + this -> _xin, this -> _xrec)}, 
             {"rnn_x_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec}))}, 
-            {"rnn_x_t2", torch::nn::Tanh()},
+            {"rnn_x_r1", torch::nn::LeakyReLU()},
             {"rnn_x_l3", torch::nn::Linear(this -> _xrec, this -> _xrec)}
     }); 
 
@@ -30,18 +30,17 @@ grift::grift(){
 
     this -> rnn_hxx = new torch::nn::Sequential({
             {"rnn_hxx_l1", torch::nn::Linear(this -> _xrec*3 + 2, this -> _xrec*3 + 2)}, 
-            {"rnn_hxx_r1", torch::nn::LeakyReLU()},
             {"rnn_hxx_t1", torch::nn::Tanh()},
             {"rnn_hxx_l2", torch::nn::Linear(this -> _xrec*3 + 2, this -> _xrec * 2)}, 
             {"rnn_hxx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xrec * 2}))}, 
             {"rnn_hxx_r2", torch::nn::LeakyReLU()},
-            {"rnn_hxx_t2", torch::nn::Sigmoid()},
             {"rnn_hxx_l3", torch::nn::Linear(this -> _xrec * 2, this -> _xrec)}
     }); 
 
     this -> rnn_txx = new torch::nn::Sequential({
             {"rnn_txx_l1", torch::nn::Linear(this -> _xrec * 2, this -> _xrec * 2)}, 
-            {"rnn_txx_r1", torch::nn::ReLU()},
+            {"rnn_txx_r1", torch::nn::LeakyReLU()},
+            {"rnn_txx_t1", torch::nn::Tanh()},
             {"rnn_txx_l2", torch::nn::Linear(this -> _xrec * 2, this -> _xrec)}, 
             {"rnn_txx_t2", torch::nn::Sigmoid()},
             {"rnn_txx_l3", torch::nn::Linear(this -> _xrec, this -> _xout)}
@@ -75,20 +74,18 @@ grift::grift(){
             {"res_l3", torch::nn::Linear(this -> _xrec, this -> _xout)}
     }); 
 
-    this -> register_module(this -> rnn_x   ); //, mlp_init::xavier_uniform);
-    this -> register_module(this -> rnn_dx  ); //, mlp_init::xavier_uniform);
-    this -> register_module(this -> rnn_hxx ); //, mlp_init::xavier_uniform); 
-    this -> register_module(this -> rnn_txx ); //, mlp_init::xavier_uniform);
-    this -> register_module(this -> rnn_rxx ); //, mlp_init::xavier_uniform);
-    this -> register_module(this -> mlp_ntop); //, mlp_init::xavier_uniform);
-    this -> register_module(this -> mlp_sig ); //, mlp_init::xavier_uniform);
-
-
+    this -> register_module(this -> rnn_x   , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_dx  , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_hxx , mlp_init::xavier_uniform); 
+    this -> register_module(this -> rnn_txx , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_rxx , mlp_init::xavier_uniform);
+    this -> register_module(this -> mlp_ntop, mlp_init::xavier_uniform);
+    this -> register_module(this -> mlp_sig , mlp_init::xavier_uniform);
 }
 
 torch::Tensor grift::node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn){
     num_node = (num_node > -1).sum({-1}, true); 
-    torch::Tensor mass = torch::abs(pyc::physics::cartesian::combined::M(pmc)); 
+    torch::Tensor mass = pyc::physics::cartesian::combined::M(pmc); 
     if (!node_rnn){return torch::cat({mass, pmc, num_node}, {-1}).to(torch::kFloat32);}
     torch::Tensor nox = torch::cat({mass, pmc, num_node, *node_rnn}, {-1});
     return (*this -> rnn_x) -> forward(nox.to(torch::kFloat32)) * 1.0 / num_node.to(torch::kFloat32);  
@@ -110,7 +107,7 @@ torch::Tensor grift::message(
     aggr = pyc::graph::unique_aggregation(_trk_j, pmc); 
     torch::Tensor fx_j = this -> node_encode(aggr.at(key_smx), aggr.at(key_idx), &hx_j); 
 
-    return (*this -> rnn_dx) -> forward(torch::cat({fx_ij, fx_i, torch::abs(fx_j - fx_i)}, {-1})); 
+    return (*this -> rnn_dx) -> forward(torch::cat({fx_ij, fx_i, fx_j - fx_i}, {-1})); 
 }
 
 
@@ -142,7 +139,7 @@ torch::Tensor grift::recurse(
     hx_ij = this -> message(nx_i, nx_j, *pmc, hx_i, hx_j); 
 
     // ------------------ check edges for new state transititons --------------- //
-    torch::Tensor top_idx = (*this -> rnn_txx) -> forward(torch::cat({hx_ij, r_dx - hx_ij}, {-1})); 
+    torch::Tensor top_idx = (*this -> rnn_txx) -> forward(torch::cat({r_dx, hx_ij - r_dx}, {-1})); 
     top_edge -> index_put_({idx}, top_idx); 
 
     // ----------- create a new intermediate state of the nodes ----------- //
