@@ -11,18 +11,19 @@ class grift: public model_template
         void forward(graph_t*) override; 
 
         torch::Tensor message(
-            torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc,
+            torch::Tensor trk_i, torch::Tensor trk_j, 
+            torch::Tensor pmc,
             torch::Tensor hx_i, torch::Tensor hx_j
         ); 
 
         torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn); 
 
         torch::Tensor recurse(
-            torch::Tensor* node_i,     torch::Tensor* node_s,
-            torch::Tensor* idx_mat,    torch::Tensor* edge_index_, 
-            torch::Tensor* edge_index,
+            torch::Tensor* node_i, torch::Tensor* idx_mat,    
+            torch::Tensor* edge_index_, torch::Tensor* edge_index,
             torch::Tensor* edge_rnn,   torch::Tensor* node_dnn,
-            torch::Tensor* top_edge,   torch::Tensor* pmc
+            torch::Tensor* top_edge,   torch::Tensor* pmc,
+            torch::Tensor* node_s
         ); 
 
         // Neural Network Parameters
