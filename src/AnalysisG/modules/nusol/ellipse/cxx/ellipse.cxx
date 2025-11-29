@@ -29,7 +29,6 @@ void ellipse::prepare(double mt, double mw, std::vector<conuic*>* nxc){
         nuelx* nx = new nuelx(p.first, p.second, mw, mt); 
         if (nxc){nx -> cnx = nxc -> at(x);}
         this -> engines.push_back(nx); 
-
     }
 
     int lx = -1; 
@@ -98,9 +97,8 @@ int ellipse::generate(nuelx* nu1, nuelx* nu2){
     mtx* vi = nullptr; mtx* vi_ = nullptr;
     mtx* vr = nullptr; mtx* vr_ = nullptr;
 
-    int n_pts =this -> intersection(&vi, &vi_); 
-    int n_rts = this -> angle_cross( &vr, &vr_); 
-    this -> m_agl = new mtx(3, n_pts + n_rts); 
+    this -> intersection(&vi, &vi_); 
+    this -> angle_cross( &vr, &vr_); 
 
     mtx* v1 = (vi  && vr ) ? vi  -> cat(vr ) : nullptr;
     mtx* v2 = (vi_ && vr_) ? vi_ -> cat(vr_) : nullptr; 
@@ -127,7 +125,6 @@ int ellipse::generate(nuelx* nu1, nuelx* nu2){
 void ellipse::flush(){
     this -> clear(&this -> m_nu1); 
     this -> clear(&this -> m_nu2);  
-    this -> clear(&this -> m_agl); 
     this -> m_lx   = 0; 
     this -> m_bst  = 0; 
 }
@@ -196,9 +193,11 @@ int ellipse::angle_cross(mtx** v, mtx** v_){
     return n_rts; 
 }
 
-void ellipse::violation_test(mtx* v, nuelx* pnu, mtx* out){
+int ellipse::violation_test(mtx* v, nuelx* pnu, mtx** out){
     mtx invH = pnu -> H_perp() -> inv().dot(v -> T()); 
     mtx nux  = pnu -> K() -> dot(v -> T()).T(); 
+    mtx* ox = new mtx(invH.dim_j, 4); 
+    (*out) = ox; 
 
     int mlx  = 0; 
     int mbst = -1;
@@ -208,6 +207,7 @@ void ellipse::violation_test(mtx* v, nuelx* pnu, mtx* out){
         t_.iadd(pnu -> l -> lnk);
         t_.iadd(pnu -> b -> lnk);
         double mt_ = t_.mass; 
+        if (std::isnan(std::abs(mt_))){continue;}
 
         particle_template w_ = particle_template(nux._m[x][0], nux._m[x][1], nux._m[x][2]); 
         w_.iadd(pnu -> l -> lnk);
@@ -236,107 +236,34 @@ void ellipse::violation_test(mtx* v, nuelx* pnu, mtx* out){
 
         long double dx = std::abs(l0);
         if (xd > -1 && xd < dx){continue;}
-        out -> copy(&nux, mlx, x, 3); 
-        out -> _m[mlx][3] = double(dx); 
+        ox -> copy(&nux, mlx, x, 3); 
+        ox -> _m[mlx][3] = double(dx); 
         mbst = mlx; xd = dx; ++mlx;  
     }
+    return mbst;
 }
 
 void ellipse::make_neutrinos(mtx* v, mtx* v_){
     if (!v || !v_){return;}
+    int mbx1 = this -> violation_test(v , this -> p_nu1, &this -> m_nu1); 
+    int mbx2 = this -> violation_test(v_, this -> p_nu2, &this -> m_nu2); 
+    if (mbx1 < 0 && mbx2 < 0){return;}
 
-    mtx invH1 = this -> p_nu1 -> H_perp() -> inv().dot(v  -> T()); 
-    mtx invH2 = this -> p_nu2 -> H_perp() -> inv().dot(v_ -> T()); 
-
-    mtx nux1  = this -> p_nu1 -> K() -> dot(v  -> T()).T(); 
-    mtx nux2  = this -> p_nu2 -> K() -> dot(v_ -> T()).T(); 
-
-    this -> m_nu1 = new mtx(invH1.dim_j, 4); 
-    this -> m_nu2 = new mtx(invH2.dim_j, 4); 
-    
-    double xd = -1; 
-    for (int x(0); x < invH1.dim_j; ++x){
-        double a1 = std::atan2(invH1._m[1][x], invH1._m[0][x]); 
-        double a2 = std::atan2(invH2._m[1][x], invH2._m[0][x]); 
-        double dx = distance(this -> p_nu1 -> H(), a1, this -> p_nu2 -> H(), a2); 
-        if (std::isnan(dx)){continue;}
-        if (this -> m_agl -> unique(0, 2, a1, dx)){continue;}
-        this -> m_agl -> assign(1, this -> m_lx, a2); 
-
-        particle_template t1_ = particle_template(nux1._m[x][0], nux1._m[x][1], nux1._m[x][2]); 
-        t1_.iadd(this -> p_nu1 -> l -> lnk);
-        t1_.iadd(this -> p_nu1 -> b -> lnk);
-        double mt1_ = t1_.mass; 
-
-        particle_template t2_ = particle_template(nux2._m[x][0], nux2._m[x][1], nux2._m[x][2]); 
-        t2_.iadd(this -> p_nu2 -> l -> lnk); 
-        t2_.iadd(this -> p_nu2 -> b -> lnk); 
-        double mt2_ = t2_.mass; 
-
-        particle_template w1 = particle_template(nux1._m[x][0], nux1._m[x][1], nux1._m[x][2]); 
-        w1.iadd(this -> p_nu1 -> l -> lnk);
-        double mw1_ = w1.mass; 
-
-        particle_template w2 = particle_template(nux2._m[x][0], nux2._m[x][1], nux2._m[x][2]); 
-        w2.iadd(this -> p_nu2 -> l -> lnk); 
-        double mw2_ = w2.mass; 
-
-        long double lx = this -> p_nu1 -> cnx -> dPl0(this -> p_nu1 -> cnx -> cache -> Mobius.tstar); 
-        long double ly = this -> p_nu2 -> cnx -> dPl0(this -> p_nu2 -> cnx -> cache -> Mobius.tstar); 
-        if (std::abs(lx) > this -> params -> violation || std::fabs(ly) > this -> params -> violation){continue;}
-
-        long double t1, t2, z1, z2; 
-        this -> p_nu1 -> cnx -> get_TauZ(this -> p_nu1 -> Sx(), this -> p_nu1 -> Sy(), &z1, &t1); 
-        this -> p_nu2 -> cnx -> get_TauZ(this -> p_nu2 -> Sx(), this -> p_nu2 -> Sy(), &z2, &t2); 
-        if (std::fabs(t1) >= 1 || std::fabs(t2) >= 1){continue;}
-        z1 = std::abs(z1); 
-        z2 = std::abs(z2); 
-
-        long double l0_1 = this -> p_nu1 -> cnx -> dPdtL0(t1, z1); 
-        long double l0_2 = this -> p_nu2 -> cnx -> dPdtL0(t2, z2); 
-
-        if (std::fabs(this -> p_nu1 -> cnx -> dPdt(l0_1, t1, z1)) > this -> params -> violation){continue;};
-        if (std::fabs(this -> p_nu2 -> cnx -> dPdt(l0_2, t2, z2)) > this -> params -> violation){continue;};
-        
-        long double t1p_, t2p_; 
-        std::complex<long double> z1_, z2_; 
-        this -> p_nu1 -> cnx -> mass_line(mw1_, mt1_, &z1_, &t1p_); 
-        this -> p_nu2 -> cnx -> mass_line(mw2_, mt2_, &z2_, &t2p_); 
-
-        t1 = t1p_; 
-        t2 = t2p_; 
-
-        z1 = z1_.real(); 
-        z2 = z2_.real(); 
-
-        l0_1 = this -> p_nu1 -> cnx -> dPdtL0(t1, z1); 
-        l0_2 = this -> p_nu2 -> cnx -> dPdtL0(t2, z2); 
-        if (std::fabs(this -> p_nu1 -> cnx -> dPdt(l0_1, t1, z1)) >= this -> params -> violation){continue;}
-        if (std::fabs(this -> p_nu2 -> cnx -> dPdt(l0_2, t2, z2)) >= this -> params -> violation){continue;} 
-        l0_1 = this -> p_nu1 -> cnx -> dPl0(t1);
-        l0_2 = this -> p_nu2 -> cnx -> dPl0(t2); 
-
-        dx = std::sqrt(std::pow(l0_1, 2) + std::pow(l0_2, 2)); 
-        this -> m_nu1 -> copy(&nux1, this -> m_lx, x, 3); 
-        this -> m_nu1 -> _m[this -> m_lx][3] = double(std::abs(l0_1)); 
-
-        this -> m_nu2 -> copy(&nux2, this -> m_lx, x, 3); 
-        this -> m_nu2 -> _m[this -> m_lx][3] = double(std::abs(l0_2));
-
-        if (xd < 0 || xd > dx){this -> m_bst = this -> m_lx; xd = dx;}
-        this -> m_lx++;  
+    if (mbx1 > -1){
+        double sx = this -> m_nu1 -> _m[mbx1][3];    
+        nunu_t* nx = &this -> solvs[sx]; 
+        if (nx -> nu1){delete nx -> nu1;}
+        nx -> nu1 = new mtx(1, 4);
+        nx -> nu1 -> copy(this -> m_nu1, 0, mbx1, 4); 
+        nx -> nux1 = this -> p_nu1; 
     }
-    if (xd < 0){return;} 
 
-    std::map<double, nunu_t>::iterator itr = this -> solvs.begin(); 
-    if (this -> solvs.size() && xd > itr -> first){return;}
-    nunu_t* nx = &this -> solvs[xd];
-    if (nx -> nu1){delete nx -> nu1;}
-    if (nx -> nu2){delete nx -> nu2;}
-    nx -> nu1 = new mtx(1, 4);
-    nx -> nu1 -> copy(this -> m_nu1, 0, this -> m_bst, 4); 
-    nx -> nu2 = new mtx(1, 4);
-    nx -> nu2 -> copy(this -> m_nu2, 0, this -> m_bst, 4); 
-    nx -> nux1 = this -> p_nu1; 
-    nx -> nux2 = this -> p_nu2; 
+    if (mbx2 > -1){
+        double sx = this -> m_nu2 -> _m[mbx2][3];    
+        nunu_t* nx = &this -> solvs[sx]; 
+        if (nx -> nu2){delete nx -> nu2;}
+        nx -> nu2 = new mtx(1, 4);
+        nx -> nu2 -> copy(this -> m_nu2, 0, mbx2, 4); 
+        nx -> nux2 = this -> p_nu2; 
+    }
 }

@@ -51,7 +51,6 @@ std::vector<particle_template*> nusol::solve(){
         return dx * dx + dy * dy + dz * dz; 
     }; 
 
-
     this -> M_nunu = new conuix( this -> params);    
     this -> D_nunu = new ellipse(this -> params);
     this -> D_nunu -> prepare(this -> params -> mt, this -> params -> mw, this -> M_nunu -> cnx); 
@@ -68,20 +67,23 @@ std::vector<particle_template*> nusol::solve(){
         const nunu_t* nx = &itr -> second; 
         if (itr -> first > this -> params -> limit){continue;}
 
-        std::string hl1 = nx -> nux1 -> b -> lnk -> hash; 
-        neutrino*   nu1 = new neutrino(nx -> nux1, nx -> nu1); 
-        nu_ptrs.push_back(nu1); 
+        if (nx -> nux1){
+            std::string hl1 = nx -> nux1 -> l -> lnk -> hash; 
+            neutrino*   nu1 = new neutrino(nx -> nux1, nx -> nu1); 
+            nu_ptrs.push_back(nu1); 
 
-        lep_jet[hl1][nu1 -> hash] = nu1; 
-        vio_map[nu1 -> score][hl1] = nx -> nux1 -> l -> lnk; 
+            lep_jet[hl1][nu1 -> hash] = nu1; 
+            vio_map[nu1 -> score][hl1] = nx -> nux1 -> l -> lnk; 
+        }
 
+        if (nx -> nux2){
+            std::string hl2 = nx -> nux2 -> l -> lnk -> hash; 
+            neutrino*   nu2 = new neutrino(nx -> nux2, nx -> nu2); 
+            nu_ptrs.push_back(nu2); 
 
-        std::string hl2 = nx -> nux2 -> l -> lnk -> hash; 
-        neutrino*   nu2 = new neutrino(nx -> nux2, nx -> nu2); 
-        nu_ptrs.push_back(nu2); 
-
-        lep_jet[hl2][nu2 -> hash] = nu2; 
-        vio_map[nu2 -> score][hl2] = nx -> nux2 -> l -> lnk; 
+            lep_jet[hl2][nu2 -> hash] = nu2; 
+            vio_map[nu2 -> score][hl2] = nx -> nux2 -> l -> lnk; 
+        }
     }
 
     std::map<std::string, neutrino*> collect; 
@@ -106,13 +108,12 @@ std::vector<particle_template*> nusol::solve(){
                 nu_ptrs[x] = nullptr; 
             }
             if (!nxn){continue;}
-            collect[nxn -> hash] = nxn; 
+            collect[itl -> first] = nxn; 
+            lep_jet[itl -> first] = {}; 
         }
     }
 
-
     std::vector<particle_template*> out; 
-
     std::map<std::string, neutrino*>::iterator itc = collect.begin(); 
     for (; itc != collect.end(); ++itc){
         out.push_back(itc -> second -> release());
@@ -123,7 +124,6 @@ std::vector<particle_template*> nusol::solve(){
         if (!nu_ptrs[x]){continue;}
         delete nu_ptrs[x]; nu_ptrs[x] = nullptr; 
     }
-
     return out; 
 }
 

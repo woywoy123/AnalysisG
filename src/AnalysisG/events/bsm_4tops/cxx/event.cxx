@@ -169,59 +169,62 @@ void bsm_4tops::CompileEvent(){
     std::vector<particle_template*> nux = this -> multi_neutrino(
             &this -> DetectorObjects, phi_, met_, 
             172.68 * 1000, 80.385 * 1000, 
-            0.00001,// mobius violation factor
+            0.0001,// mobius violation factor
             0.5 // tolerance
     ); 
 
-
     // fetching the reconstructed neutrinos and checking their truth mapping to the tops.
     for (int x(0); x < nux.size(); ++x){
-        this -> DetectorObjects.push_back(nux[x]);
-        std::map<std::string, particle_template*> pox = nux[x] -> parents;
-        std::map<std::string, particle_template*>::iterator itr = pox.begin(); 
-        std::map<int, bool> top_idx_; 
-        for (; itr != pox.end(); ++itr){
+        particle_template* nu = nux[x]; 
+        this -> DetectorObjects.push_back(nu);
+        std::map<std::string, particle_template*> pox = nu -> parents;
+        std::map<std::string, particle_template*>::iterator itr;
+
+        int top_x = -1; 
+        jet* jtx = nullptr; 
+        for (itr = pox.begin(); itr != pox.end(); ++itr){
             std::string type = itr -> second -> type; 
-            std::vector<int> _top_idx = {}; 
             if (type == "mu"){
                 muon* lx = (muon*)itr -> second; 
-                _top_idx = {lx -> top_index}; 
-                lx -> nu = nux[x]; 
+                top_x = lx -> top_index; 
+                lx -> nu = nu; 
             }
             else if (type == "el"){
                 electron* lx = (electron*)itr -> second; 
-                _top_idx = {lx -> top_index}; 
-                lx -> nu = nux[x];  
+                top_x = lx -> top_index; 
+                lx -> nu = nu; 
             }
-            else if (type == "jet"){_top_idx = ((jet*)itr -> second) -> top_index;}
-            for (int k(0); k < _top_idx.size(); ++k){top_idx_[_top_idx[k]] = _Tops.count(_top_idx[k]);}
+            else if (type == "jet"){jtx = (jet*)itr -> second;}
         }
         
         bool is_fake = true; 
-        std::map<int, bool>::iterator itx = top_idx_.begin(); 
-        for (; itx != top_idx_.end(); ++itx){
-            if (!itx -> second){continue;}
-            std::map<std::string, particle_template*> tc = _Tops[itx -> first] -> children; 
-            std::map<std::string, particle_template*>::iterator itc = tc.begin(); 
-            for (; itc != tc.end(); ++itc){
-                if (!itc -> second -> is_nu){continue;}
-                is_fake = false; break; 
-            }
-            nux[x] -> register_parent(_Tops[itx -> first]); 
+        if (top_x < 0){nu -> index = -2; continue;}
+        std::map<std::string, particle_template*> tc = _Tops[top_x] -> children; 
+        std::map<std::string, particle_template*>::iterator itf; 
+        for (itf = tc.begin(); itf != tc.end(); ++itf){
+            if (!itf -> second -> is_nu){continue;}
+            nu -> register_parent(_Tops[top_x]); 
+            is_fake = false; break; 
         }
+
         if (!is_fake){continue;}
-        pox = nux[x] -> parents;
-        for (itr = pox.begin();  itr != pox.end(); ++itr){
+        pox = nu -> parents;
+        for (itr = pox.begin(); itr != pox.end(); ++itr){
             std::string type = itr -> second -> type; 
-            if (type == "mu"){    ((muon*)itr -> second) -> top_index = -1;}
-            if (type == "el"){((electron*)itr -> second) -> top_index = -1;}
+            if (type == "mu"){    ((muon*)itr -> second) -> top_index = -1; continue;}
+            if (type == "el"){((electron*)itr -> second) -> top_index = -1; continue;}
         }
-        nux[x] -> index = -2;
+        nu -> index = -2;
+        for (size_t f(0); f < jtx -> top_index.size(); ++f){
+            if (top_x != jtx -> top_index[f]){continue;}
+            jtx -> top_index[f] = -1; 
+        }
     }
 
     // making sure to delink any leptons if the neutrino algorithm didnt match
     for (int x(0); x < lep.size(); ++x){
         particle_template* l = lep[x]; 
+        int* idx = nullptr; 
         if (l -> type == "mu"){
             muon* lt = (muon*)l; 
             if (lt -> nu){continue;}

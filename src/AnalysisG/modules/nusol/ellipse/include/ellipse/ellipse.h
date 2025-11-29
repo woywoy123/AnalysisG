@@ -49,7 +49,7 @@ class ellipse {
         std::vector<nuelx*>             engines = {}; 
 
         void flush(); 
-        void violation_test(mtx* v, nuelx* pnu, mtx* out); 
+        int violation_test(mtx* v, nuelx* pnu, mtx** out); 
         void make_neutrinos(mtx* v, mtx* v_); 
         int generate(nuelx* nu1, nuelx* nu2); 
         int intersection(mtx** v, mtx** v_);
@@ -60,7 +60,6 @@ class ellipse {
         
         mtx* m_nu1 = nullptr;
         mtx* m_nu2 = nullptr;
-        mtx* m_agl = nullptr; 
 
         int m_lx = 0;
         int m_bst = -1; 
