@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/neutrino/combinatorial.
+
+@defgroup selections_neutrino_combinatorial Selections: neutrino/combinatorial
+@ingroup selections_module
+
+@details
+Neutrino combinatorial solver selections.
+Source: `src/AnalysisG/selections/neutrino/combinatorial/`
+*/

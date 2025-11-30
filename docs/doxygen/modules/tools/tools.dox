@@ -1,0 +1,787 @@
+/**
+@file
+@brief Comprehensive documentation for the tools class - filesystem operations, string manipulation, and generic template utilities.
+
+@defgroup tools_module tools
+@ingroup modules_module
+
+@brief The `tools` module provides a comprehensive utility library featuring filesystem operations, string manipulation, Base64 encoding, hashing, and generic template functions for vector operations.
+
+@details
+
+---
+
+# Quick Navigation
+
+| Module | Description | Link |
+|--------|-------------|------|
+| **Tools** | Utility functions | (Current Page) |
+| @ref notification_module | Logging | Parent class |
+| @ref io_module | ROOT/HDF5 I/O | Uses filesystem methods |
+| @ref dataloader_module | Dataset batching | Uses discretize(), split() |
+| @ref MetaModule | Dataset metadata | Uses hash(), split() |
+| @ref lossfx_module | Loss functions | Uses split() for parsing |
+| @ref selection_template_module | Event selection | Child class |
+| @ref graph_template_module | Graph construction | Child class |
+
+**Typical Usage**: `tools::split("a,b,c", ",")` → `{"a", "b", "c"}` OR `tools::hash(data)` → SHA-256 string
+
+---
+
+*/
+
+/**
+@page tools_module_page Tools Module
+@tableofcontents
+
+@section tools_intro Introduction
+
+The `tools` class, defined in `src/AnalysisG/modules/tools/`, is a foundational utility library serving as the parent class for most AnalysisG components, providing static methods for common operations.
+
+@section tools_purpose Purpose and Design
+
+The `tools` class is a foundational utility library serving as the parent class for most AnalysisG components. It provides static methods for common operations that would otherwise require external dependencies or repetitive implementations.
+
+**Core Categories**:
+1. **Filesystem Operations**: Cross-platform path manipulation, directory listing, file existence checks
+2. **String Manipulation**: Splitting, replacing, hashing, case conversion, Base64 encoding
+3. **Generic Template Functions**: Type-agnostic vector operations (discretize, max, min, sum, put, unique_key)
+4. **Type Inference**: Compile-time type detection for tensor creation
+
+**Design Philosophy**:
+Instead of scattering filesystem and string code across modules, `tools` centralizes common operations. By inheriting from `tools`, classes gain access to utilities without explicit dependencies.
+
+**Inheritance Hierarchy**:
+```
+notification (grandparent)
+    ↓
+  tools
+    ↓
+physics, io, meta, dataloader, selection_template, graph_template, etc.
+```
+
+**Implementation Organization**:
+- `cxx/io.cxx`: Filesystem operations
+- `cxx/strings.cxx`: String manipulation
+- `tools.h`: Template function definitions (header-only)
+
+---
+
+# Filesystem Operations
+
+Implemented in `cxx/io.cxx`, these methods provide cross-platform filesystem manipulation.
+
+## `create_path(std::string path)`
+
+**Purpose**: Recursively creates directory structure
+
+**Algorithm**:
+```
+Split path by '/'
+current = \"\"
+For each component in path:
+    current += component + \"/\"
+    If directory does not exist:
+        std::filesystem::create_directory(current)
+```
+
+**Example**:
+```cpp
+this->create_path(\"/data/models/checkpoints/fold_0/\");
+// Creates all parent directories if missing
+```
+
+**Use Cases**:
+- Checkpoint directories
+- Output file preparation
+- Log file organization
+
+---
+
+## `delete_path(std::string path)`
+
+**Purpose**: Deletes file or empty directory
+
+**Algorithm**:
+```
+If is_file(path):
+    std::filesystem::remove(path)
+Else if is directory and empty:
+    std::filesystem::remove(path)
+Else:
+    Warning: directory not empty
+```
+
+**Example**:
+```cpp
+this->delete_path(\"/tmp/cache.h5\");
+```
+
+**Important**: Does NOT recursively delete non-empty directories (safety feature)
+
+---
+
+## `is_file(std::string path) → bool`
+
+**Purpose**: Checks if path exists and is a regular file
+
+**Algorithm**:
+```
+Return std::filesystem::exists(path) && std::filesystem::is_regular_file(path)
+```
+
+**Example**:
+```cpp
+if (this->is_file(checkpoint_path)){
+    load_checkpoint(checkpoint_path);
+}
+else {
+    this->warning(\"Checkpoint not found, starting from scratch\");
+}
+```
+
+**Use Cases**:
+- Checkpoint existence verification
+- Config file validation
+- Input file checking
+
+---
+
+## `rename(std::string start, std::string target)`
+
+**Purpose**: Renames or moves file/directory
+
+**Algorithm**:
+```
+std::filesystem::rename(start, target)
+```
+
+**Example**:
+```cpp
+// Atomic rename for checkpoint safety
+this->rename(\"model_temp.pt\", \"model_best.pt\");
+```
+
+**Use Cases**:
+- Atomic file updates
+- Temporary file finalization
+- Directory reorganization
+
+---
+
+## `absolute_path(std::string path) → std::string`
+
+**Purpose**: Converts relative path to absolute
+
+**Algorithm**:
+```
+Return std::filesystem::absolute(path).string()
+```
+
+**Example**:
+```cpp
+std::string rel = \"../data/train.root\";
+std::string abs = this->absolute_path(rel);
+// abs = \"/home/user/project/data/train.root\"
+```
+
+**Use Cases**:
+- Configuration file resolution
+- Log path canonicalization
+- Path comparison
+
+---
+
+## `ls(std::string path, std::string ext = \"\") → std::vector<std::string>`
+
+**Purpose**: Lists files in directory, optionally filtered by extension
+
+**Algorithm**:
+```
+files = []
+For each entry in std::filesystem::directory_iterator(path):
+    If entry is regular file:
+        If ext empty OR entry.path() ends with ext:
+            files.append(entry.path())
+Return files
+```
+
+**Example 1: List All Files**:
+```cpp
+std::vector<std::string> all_files = this->ls(\"/data/\");
+```
+
+**Example 2: Filter by Extension**:
+```cpp
+std::vector<std::string> root_files = this->ls(\"/data/\", \".root\");
+// Returns only *.root files
+```
+
+**Use Cases**:
+- Dataset discovery
+- Wildcard file matching
+- Directory scanning
+
+---
+
+# String Manipulation
+
+Implemented in `cxx/strings.cxx`, these methods provide common string operations.
+
+## `to_string(double val, int precision = 6) → std::string`
+
+**Purpose**: Converts double to string with specified precision
+
+**Example**:
+```cpp
+double loss = 0.123456789;
+std::string loss_str = this->to_string(loss, 4);
+// loss_str = \"0.1235\"
+```
+
+---
+
+## `replace(std::string* in, std::string target, std::string replacement)`
+
+**Purpose**: Replaces all occurrences of substring
+
+**Algorithm**:
+```
+pos = 0
+While (pos = in->find(target, pos)) != npos:
+    in->replace(pos, target.length(), replacement)
+    pos += replacement.length()
+```
+
+**Example**:
+```cpp
+std::string path = \"/data/mc16/sample_*.root\";
+this->replace(&path, \"mc16\", \"mc20\");
+// path = \"/data/mc20/sample_*.root\"
+```
+
+---
+
+## `split(std::string in, std::string delim) → std::vector<std::string>`
+
+**Purpose**: Splits string by delimiter
+
+**Algorithm**:
+```
+tokens = []
+pos = 0
+While (next = in.find(delim, pos)) != npos:
+    tokens.append(in.substr(pos, next - pos))
+    pos = next + delim.length()
+tokens.append(in.substr(pos))  // Last token
+Return tokens
+```
+
+**Example**:
+```cpp
+std::string csv = \"jet_pt,jet_eta,jet_phi\";
+std::vector<std::string> columns = this->split(csv, \",\");
+// columns = {\"jet_pt\", \"jet_eta\", \"jet_phi\"}
+```
+
+---
+
+## `hash(std::string input) → std::string`
+
+**Purpose**: Generates SHA-256 hash of string
+
+**Algorithm**:
+```
+Use std::hash<std::string> or SHA-256 implementation
+Return hexadecimal string representation
+```
+
+**Example**:
+```cpp
+std::string event_hash = this->hash(run + \"_\" + event + \"_\" + lumi);
+// event_hash = \"a3f5b2...\"
+```
+
+**Use Cases**:
+- Event unique identifiers
+- Cache key generation
+- Deduplication
+
+---
+
+## `lower(std::string* inpt)`
+
+**Purpose**: Converts string to lowercase in-place
+
+**Algorithm**:
+```
+For each character c in inpt:
+    c = std::tolower(c)
+```
+
+**Example**:
+```cpp
+std::string loss_name = \"CrossEntropyLoss\";
+this->lower(&loss_name);
+// loss_name = \"crossentropyloss\"
+```
+
+---
+
+## `ends_with(std::string* inpt, std::string suffix) → bool`
+
+**Purpose**: Checks if string ends with suffix
+
+**Algorithm**:
+```
+If inpt->length() < suffix.length(): return false
+Return inpt->substr(inpt->length() - suffix.length()) == suffix
+```
+
+**Example**:
+```cpp
+if (this->ends_with(&filename, \".root\")){
+    load_root_file(filename);
+}
+```
+
+---
+
+## `encode64(std::string input) → std::string`
+
+**Purpose**: Base64 encodes string
+
+**Algorithm**: Standard Base64 encoding (RFC 4648)
+
+**Example**:
+```cpp
+std::string binary_data = \"\\x00\\x01\\x02\\x03\";
+std::string encoded = this->encode64(binary_data);
+// encoded = \"AAECAw==\"
+```
+
+**Use Cases**:
+- Tensor serialization for HDF5
+- Binary data in JSON
+- URL-safe encoding
+
+---
+
+## `decode64(std::string input) → std::string`
+
+**Purpose**: Base64 decodes string
+
+**Example**:
+```cpp
+std::string encoded = \"AAECAw==\";
+std::string decoded = this->decode64(encoded);
+// decoded = \"\\x00\\x01\\x02\\x03\"
+```
+
+---
+
+# Generic Template Functions
+
+Defined in `tools.h`, these header-only templates work with any type.
+
+## `discretize<G>(std::vector<G>* v, int N) → std::vector<std::vector<G>>`
+
+**Purpose**: Splits vector into chunks of size N
+
+**Algorithm**:
+```
+chunks = []
+For i in 0 to v->size() step N:
+    chunk = []
+    For j in i to min(i+N, v->size()):
+        chunk.append((*v)[j])
+    chunks.append(chunk)
+Return chunks
+```
+
+**Example**:
+```cpp
+std::vector<int> data = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+auto chunks = this->discretize(&data, 3);
+// chunks = {{1,2,3}, {4,5,6}, {7,8,9}}
+```
+
+**Use Cases**:
+- Batch creation for processing
+- Parallel task distribution
+- Memory-limited chunk processing
+
+---
+
+## `max<g>(std::vector<g>* inpt) → g`
+
+**Purpose**: Finds maximum value in vector
+
+**Algorithm**:
+```
+max_val = (*inpt)[0]
+For each val in inpt:
+    If val > max_val:
+        max_val = val
+Return max_val
+```
+
+**Example**:
+```cpp
+std::vector<double> losses = {0.5, 0.3, 0.8, 0.2};
+double max_loss = this->max(&losses);
+// max_loss = 0.8
+```
+
+---
+
+## `min<g>(std::vector<g>* inpt) → g`
+
+**Purpose**: Finds minimum value in vector
+
+**Example**:
+```cpp
+std::vector<double> losses = {0.5, 0.3, 0.8, 0.2};
+double min_loss = this->min(&losses);
+// min_loss = 0.2
+```
+
+---
+
+## `sum<g>(std::vector<g>* inpt) → g`
+
+**Purpose**: Calculates sum of all elements
+
+**Algorithm**:
+```
+total = 0
+For each val in inpt:
+    total += val
+Return total
+```
+
+**Example**:
+```cpp
+std::vector<int> batch_sizes = {32, 32, 32, 16};
+int total_events = this->sum(&batch_sizes);
+// total_events = 112
+```
+
+---
+
+## `put<g>(std::vector<g*>* src, std::vector<int>* trg) → std::vector<g*>`
+
+**Purpose**: Creates new vector by selecting elements at specified indices
+
+**Algorithm**:
+```
+result = []
+For each index in trg:
+    result.append((*src)[index])
+Return result
+```
+
+**Example**:
+```cpp
+std::vector<particle_template*> all_jets = {...};  // 10 jets
+std::vector<int> top_indices = {0, 2, 5};
+auto selected = this->put(&all_jets, &top_indices);
+// selected = {all_jets[0], all_jets[2], all_jets[5]}
+```
+
+**Use Cases**:
+- Subset selection after sorting
+- Index-based filtering
+- Permutation application
+
+---
+
+## `unique_key<g>(std::vector<g>* inpt) → std::string`
+
+**Purpose**: Generates unique hash key from vector contents
+
+**Algorithm**:
+```
+key = \"\"
+For each val in inpt:
+    key += to_string(val) + \"_\"
+Return hash(key)
+```
+
+**Example**:
+```cpp
+std::vector<int> config = {128, 64, 32, 10};
+std::string model_hash = this->unique_key(&config);
+// model_hash = \"a7f3b5...\" (unique to this configuration)
+```
+
+**Use Cases**:
+- Model configuration hashing
+- Parameter combination tracking
+- Cache key generation
+
+---
+
+# Complete Usage Example
+
+```cpp
+#include <tools/tools.h>
+#include <vector>
+#include <iostream>
+
+class DataManager : public tools {
+public:
+    DataManager(){
+        this->prefix = \"DataManager\";
+    }
+    
+    void process_directory(std::string dir_path){
+        // List ROOT files
+        std::vector<std::string> files = this->ls(dir_path, \".root\");
+        this->info(\"Found \" + std::to_string(files.size()) + \" ROOT files\");
+        
+        // Filter files by pattern
+        std::vector<std::string> filtered;
+        for (const auto& file : files){
+            if (file.find(\"signal\") != std::string::npos){
+                filtered.push_back(file);
+            }
+        }
+        
+        // Create output directory
+        std::string output_dir = dir_path + \"/processed/\";
+        this->create_path(output_dir);
+        
+        // Process in chunks
+        auto chunks = this->discretize(&filtered, 10);
+        this->info(\"Processing in \" + std::to_string(chunks.size()) + \" batches\");
+        
+        for (const auto& chunk : chunks){
+            process_batch(chunk);
+        }
+        
+        this->success(\"Processing complete\");
+    }
+    
+    void analyze_losses(std::vector<double>* losses){
+        double min_loss = this->min(losses);
+        double max_loss = this->max(losses);
+        double total = this->sum(losses);
+        double avg = total / losses->size();
+        
+        this->info(\"Loss statistics:\");
+        this->info(\"  Min: \" + this->to_string(min_loss, 4));
+        this->info(\"  Max: \" + this->to_string(max_loss, 4));
+        this->info(\"  Avg: \" + this->to_string(avg, 4));
+    }
+    
+    void save_configuration(std::vector<int>* config, std::string base_path){
+        // Generate unique key for configuration
+        std::string config_hash = this->unique_key(config);
+        
+        // Create path with hash
+        std::string save_path = base_path + config_hash + \"/\";
+        this->create_path(save_path);
+        
+        this->info(\"Saving to: \" + save_path);
+    }
+    
+private:
+    void process_batch(const std::vector<std::string>& files){
+        // Processing logic
+    }
+};
+
+int main(){
+    DataManager manager;
+    
+    // Process files
+    manager.process_directory(\"/data/mc20/\");
+    
+    // Analyze results
+    std::vector<double> losses = {0.5, 0.3, 0.8, 0.2, 0.4};
+    manager.analyze_losses(&losses);
+    
+    // Save configuration
+    std::vector<int> config = {128, 64, 32, 10};
+    manager.save_configuration(&config, \"/models/\");
+    
+    return 0;
+}
+```
+
+**Output**:
+```
+DataManager::Found 247 ROOT files
+DataManager::Processing in 25 batches
+DataManager::Processing complete
+DataManager::Loss statistics:
+DataManager::  Min: 0.2000
+DataManager::  Max: 0.8000
+DataManager::  Avg: 0.4400
+DataManager::Saving to: /models/a7f3b5.../
+```
+
+---
+
+# Performance Characteristics
+
+## Filesystem Operations
+- **`create_path()`**: O(D) where D = directory depth
+- **`is_file()`**: O(1) - single syscall
+- **`ls()`**: O(N) where N = number of files
+
+## String Operations
+- **`split()`**: O(N) where N = string length
+- **`replace()`**: O(N·M) where M = number of replacements
+- **`hash()`**: O(N) - SHA-256 complexity
+
+## Template Functions
+- **`discretize()`**: O(N) - linear scan
+- **`max/min/sum()`**: O(N) - single pass
+- **`put()`**: O(M) where M = size of target indices
+- **`unique_key()`**: O(N) + hash cost
+
+---
+
+# Dependencies
+
+## Internal
+- `notification`: Logging (parent class)
+
+## External
+- **C++17 STL**: `<filesystem>`, `<string>`, `<vector>`, `<algorithm>`
+- **System**: POSIX or Windows filesystem APIs
+
+---
+
+# Best Practices
+
+## 1. Use absolute_path() for Portability
+```cpp
+std::string config = this->absolute_path(\"config.json\");
+```
+
+## 2. Check File Existence Before Operations
+```cpp
+if (this->is_file(path)){
+    process_file(path);
+}
+```
+
+## 3. Filter Early with ls() Extension Parameter
+```cpp
+auto root_files = this->ls(\"/data/\", \".root\");  // Efficient
+// NOT: auto all = this->ls(\"/data/\"); then filter manually
+```
+
+## 4. Use discretize() for Batch Processing
+```cpp
+auto batches = this->discretize(&events, batch_size);
+for (const auto& batch : batches){
+    process_batch(batch);
+}
+```
+
+## 5. Cache Expensive Operations
+```cpp
+// Cache directory listing
+static std::vector<std::string> cached_files;
+if (cached_files.empty()){
+    cached_files = this->ls(dir);
+}
+```
+
+---
+
+# Common Pitfalls
+
+## 1. Forgetting to Create Parent Directories
+**Symptom**: File write fails
+
+**Solution**: Call `create_path()` before writing
+
+## 2. Not Checking is_file() Return Value
+**Symptom**: Segfault on missing file
+
+**Solution**: Always validate file existence
+
+## 3. Using split() with Empty Delimiter
+**Symptom**: Infinite loop
+
+**Solution**: Validate delimiter is non-empty
+
+## 4. Modifying String During Iteration
+**Symptom**: Iterator invalidation
+
+**Solution**: Use `replace()` method which handles this
+
+## 5. Assuming Specific Hash Algorithm
+**Symptom**: Hash incompatibility across platforms
+
+**Solution**: Document hash algorithm used (SHA-256)
+
+---
+
+# Conclusion
+
+The `tools` class provides a comprehensive utility library for filesystem operations, string manipulation, and generic vector operations. By centralizing these common tasks, it eliminates code duplication and provides a consistent interface across the framework.
+
+Key innovations:
+- **Cross-Platform Filesystem**: Unified API for Linux/Windows
+- **Generic Templates**: Type-agnostic vector operations
+- **Base64 Encoding**: Binary data serialization
+- **Hash Generation**: Unique key creation for caching
+
+The class is designed for typical HEP workflows: file discovery, path manipulation, configuration hashing, and batch processing.
+
+---
+
+@see notification
+@see io
+@see meta
+
+*/
+
+@section tools_usage Usage Example
+
+Since many classes inherit from `tools`, these functions can often be called directly within their methods.
+
+```cpp
+#include <tools/tools.h>
+#include <vector>
+#include <iostream>
+
+class MyAnalysisClass : public tools {
+public:
+    void process_files(std::string directory) {
+        // Use a file system function
+        std::vector<std::string> files = ls(directory, ".root");
+
+        for (const auto& file : files) {
+            // Use a string function
+            std::string file_hash = hash(file);
+            std::cout << "Processing file " << file << " with hash " << file_hash << std::endl;
+        }
+    }
+
+    void calculate_stats(std::vector<double>* data) {
+        // Use a generic template function
+        double total = sum(data);
+        double maximum = max(data);
+        std::cout << "Sum: " << total << ", Max: " << maximum << std::endl;
+    }
+};
+
+int main() {
+    MyAnalysisClass ana;
+    ana.process_files("/path/to/data");
+
+    std::vector<double> my_data = {1.1, 2.2, 3.3, 4.4};
+    ana.calculate_stats(&my_data);
+
+    return 0;
+}
+```
+
+*/

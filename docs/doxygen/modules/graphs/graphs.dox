@@ -1,0 +1,9 @@
+/**
+@file
+@brief Placeholder for the Graphs module documentation.
+
+@defgroup graphs_module Graphs
+@ingroup modules_module
+
+@brief This module contains specific graph implementations derived from the graph_template.
+*/

@@ -1,0 +1,394 @@
+/**
+@file
+@brief Detailed documentation for the CUDA utilities module (cutils).
+*/
+
+/**
+@page pyc_cutils_page CUDA Utilities Module (cutils)
+@tableofcontents
+
+---
+
+# Quick Navigation
+
+| Related Modules | Purpose |
+|----------------|---------|  
+| @ref pyc_physics_page | Physics kinematics (uses cutils) |
+| @ref pyc_transform_page | Coordinate transforms (uses cutils) |
+| @ref pyc_operators_page | Tensor operators (uses cutils) |
+| @ref pyc_graph_page | Graph operations (uses cutils) |
+| @ref pyc_nusol_page | Neutrino solver (uses cutils) |
+| @ref pyc_overview | PyC module overview |
+
+---
+
+@section pyc_cutils_intro Introduction
+
+The `cutils` module, located in `src/AnalysisG/pyc/cutils`, is a collection of helper and utility functions that support CUDA-based operations throughout the `pyc` components of the AnalysisG framework. It provides the foundational building blocks for all PyC modules.
+
+**Key Components**:
+1. **Device-side utilities (`atomic.cuh`)**: Header-only library of `__device__` functions called from within CUDA kernels (low-level, performance-critical)
+2. **Host-side utilities (`utils.cuh`, `utils.cu`)**: Helper functions for CPU to manage CUDA devices, configure kernel launches, and manipulate `torch::Tensor` objects
+
+**Purpose**: Eliminate boilerplate code, ensure consistency, optimize kernel launch configurations across all PyC modules
+
+@section pyc_cutils_device Device-Side Functions (`atomic.cuh`)
+
+The `atomic.cuh` header provides a rich set of mathematical and kinematic helper functions that are compiled to run on the GPU. These functions are declared with `__device__`, meaning they can only be called from other `__global__` (kernel) or `__device__` functions. They are designed to be inlined by the CUDA compiler (nvcc) for maximum performance.
+
+Key functionalities include:
+-   **Matrix Operations**:
+    -   `_cofactor(...)`: Calculates the cofactor of a 3x3 matrix, a key component in matrix inversion and determinant calculations.
+-   **Safe Numerics**:
+    -   `_div(...)`: A safe division function that returns 0 if the denominator is 0, preventing division-by-zero errors.
+    -   `_sqrt(...)`: A "signed" square root function that handles negative inputs by returning the negative square root of the absolute value, useful in certain physics contexts.
+    -   `_clp(...)`: A clipping function to round small floating-point numbers, mitigating precision issues.
+-   **Kinematic Calculations**: A large set of functions for converting between different representations of particle kinematics (momentum, pseudorapidity, angles). These are the GPU-equivalents of the calculations seen in `particle_template`.
+    -   `px_`, `py_`, `pz_`: Calculate Cartesian momentum components from polar coordinates (`pt`, `eta`, `phi`).
+    -   `pt_`, `eta_`, `phi_`: Calculate polar coordinates from Cartesian components.
+-   **Rotation Matrix Elements**:
+    -   `_rx`, `_ry`, `_rz`: Calculate the elements of 3D rotation matrices. These are used by the kernels in the `operators` module.
+
+Since these are all `__device__` functions, they do not have corresponding implementations in a `.cu` file. They are directly included and compiled into the kernels that use them.
+
+@section pyc_cutils_host Host-Side Functions (`utils.cuh`, `utils.cu`)
+
+These functions are called from the C++ host code to prepare for and manage CUDA operations.
+
+-   **Kernel Launch Configuration**:
+    -   `blkn(lx, thl)`: Calculates the number of blocks needed in one dimension based on the total number of elements (`lx`) and the number of threads per block (`thl`).
+    -   `blk_(...)`: A set of overloaded helper functions that return a `dim3` struct, which is used to specify the block dimensions for a kernel launch. This simplifies the boilerplate code in dispatcher functions.
+-   **Device Management**:
+    -   `changedev(...)`: Functions to switch the active CUDA device or to move a `torch::Tensor` to a specific device (e.g., "cuda:0", "cuda:1").
+-   **Tensor Manipulation**:
+    -   `MakeOp(torch::Tensor* v)`: Creates a `torch::TensorOptions` object that matches the data type and device of an existing tensor. This is useful for creating output tensors that have the same properties as input tensors.
+    -   `format(...)`: Reshapes and ensures the memory layout of a tensor is contiguous, which is often a requirement for efficient kernel execution.
+
+@section pyc_cutils_api API Reference
+
+### Host-Side Functions (utils.cuh)
+
+#### Kernel Launch Configuration
+
+| Function | Purpose | Input | Output | Typical Usage |
+|----------|---------|-------|--------|---------------|
+| `blkn(lx, thl)` | Blocks needed | elements, threads/block | int blocks | `int blocks = blkn(10000, 256)` |
+| `blk_(lx)` | 1D config | elements | dim3 blocks | `dim3 blk = blk_(10000)` |
+| `blk_(lx, ly)` | 2D config | elements_x, elements_y | dim3 blocks | `dim3 blk = blk_(100, 100)` |
+| `blk_(lx, ly, lz)` | 3D config | elements_x, y, z | dim3 blocks | `dim3 blk = blk_(10, 10, 10)` |
+
+**Default threads per block**: 256 (optimized for modern GPUs)
+
+#### Tensor Creation
+
+| Function | Purpose | Input | Output | Use Case |
+|----------|---------|-------|--------|----------|
+| `MakeOp(v)` | Match tensor properties | `torch::Tensor*` | `TensorOptions` | Create output matching input device/dtype |
+| `format(v, shape)` | Reshape + contiguous | `torch::Tensor*`, shape | `torch::Tensor` | Prepare tensor for kernel input |
+
+#### Device Management
+
+| Function | Purpose | Input | Output | Use Case |
+|----------|---------|-------|--------|----------|
+| `changedev(device)` | Set active device | device index | void | Switch between multi-GPU |
+| `changedev(t, device)` | Move tensor | tensor, device string | `torch::Tensor` | Transfer to specific GPU |
+| `GetDevice(t)` | Query device | `torch::Tensor*` | device index | Determine tensor location |
+
+### Device-Side Functions (atomic.cuh)
+
+#### Safe Numerics
+
+| Function | Formula | Purpose | Handles Edge Case |
+|----------|---------|---------|-------------------|
+| `_div(a, b)` | $a / b$ (if $b \neq 0$, else 0) | Safe division | Division by zero → 0 |
+| `_sqrt(x)` | $\text{sign}(x) \cdot \sqrt{\|x\|}$ | Signed square root | Negative input → $-\sqrt{\|x\|}$ |
+| `_clp(x, eps)` | Round if $\|x\| < \epsilon$ | Precision clipping | Floating-point noise → 0 |
+
+#### Kinematic Functions
+
+| Function | Formula | Input | Output | Use Case |
+|----------|---------|-------|--------|----------|
+| `px_(pt, phi)` | $P_T \cos(\phi)$ | pt, phi | px | Cylindrical → Cartesian |
+| `py_(pt, phi)` | $P_T \sin(\phi)$ | pt, phi | py | Cylindrical → Cartesian |
+| `pz_(pt, eta)` | $P_T \sinh(\eta)$ | pt, eta | pz | Cylindrical → Cartesian |
+| `pt_(px, py)` | $\sqrt{P_x^2 + P_y^2}$ | px, py | pt | Cartesian → Cylindrical |
+| `eta_(px, py, pz)` | $\text{asinh}(P_z / P_T)$ | px, py, pz | eta | Cartesian → Cylindrical |
+| `phi_(px, py)` | $\text{atan2}(P_y, P_x)$ | px, py | phi | Cartesian → Cylindrical |
+
+#### Matrix Operations
+
+| Function | Purpose | Input | Output | Use Case |
+|----------|---------|-------|--------|----------|
+| `_cofactor(M, i, j)` | Cofactor element | 3×3 matrix, indices | scalar | Matrix inversion |
+
+#### Rotation Matrix Elements
+
+| Function | Rotation | Formula | Use Case |
+|----------|----------|---------|----------|
+| `_rx(angle, i, j)` | Around X-axis | Rotation matrix element | 3D rotations |
+| `_ry(angle, i, j)` | Around Y-axis | Rotation matrix element | 3D rotations |
+| `_rz(angle, i, j)` | Around Z-axis | Rotation matrix element | 3D rotations |
+
+@section pyc_cutils_usage Usage Examples
+
+### Example 1: Optimal Kernel Launch
+
+```cpp
+#include <utils/utils.cuh>
+
+// Simple 1D kernel launch
+void dispatch_1d(torch::Tensor* input) {
+    const int N = input->size(0);
+    
+    // Automatically calculates optimal blocks (256 threads/block)
+    auto [blocks, threads] = cutils::blk_(N);
+    
+    my_kernel<<<blocks, threads>>>(
+        input->data_ptr<float>(),
+        N
+    );
+}
+
+// 2D kernel launch (e.g., matrix operations)
+void dispatch_2d(torch::Tensor* matrix) {
+    const int rows = matrix->size(0);
+    const int cols = matrix->size(1);
+    
+    // 2D grid configuration
+    dim3 blocks = cutils::blk_(rows, cols);
+    dim3 threads(16, 16);  // 256 threads total
+    
+    matrix_kernel<<<blocks, threads>>>(
+        matrix->data_ptr<float>(),
+        rows, cols
+    );
+}
+```
+
+### Example 2: Creating Output Tensors
+
+```cpp
+#include <utils/utils.cuh>
+
+torch::Tensor my_operation(torch::Tensor* input) {
+    const int N = input->size(0);
+    
+    // Create output tensor matching input device and dtype
+    torch::Tensor output = torch::empty({N}, cutils::MakeOp(input));
+    
+    // Launch kernel
+    auto [blocks, threads] = cutils::blk_(N);
+    process_kernel<<<blocks, threads>>>(
+        input->data_ptr<float>(),
+        output.data_ptr<float>(),
+        N
+    );
+    
+    return output;
+}
+```
+
+### Example 3: Device-Side Safe Math
+
+```cpp
+#include <utils/atomic.cuh>
+
+__global__ void safe_computation_kernel(
+    const float* __restrict__ px,
+    const float* __restrict__ py,
+    const float* __restrict__ pz,
+    float* __restrict__ eta,
+    const int N
+) {
+    const int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if (tid >= N) return;
+    
+    // Safe division: avoids NaN if pt == 0
+    const float pt = pt_(&px[tid], &py[tid]);
+    const float eta_val = eta_(&px[tid], &py[tid], &pz[tid]);
+    
+    // Clip numerical noise
+    eta[tid] = _clp(eta_val, 1e-8);
+}
+```
+
+### Example 4: Multi-GPU Management
+
+```cpp
+#include <utils/utils.cuh>
+
+void process_on_multiple_gpus(std::vector<torch::Tensor> tensors) {
+    const int num_gpus = torch::cuda::device_count();
+    
+    for (int i = 0; i < tensors.size(); i++) {
+        int target_gpu = i % num_gpus;
+        
+        // Switch to target GPU
+        cutils::changedev(target_gpu);
+        
+        // Move tensor to current device
+        torch::Tensor t_gpu = cutils::changedev(&tensors[i], 
+                                                 "cuda:" + std::to_string(target_gpu));
+        
+        // Process on this GPU
+        auto [blocks, threads] = cutils::blk_(t_gpu.size(0));
+        my_kernel<<<blocks, threads>>>(t_gpu.data_ptr<float>(), t_gpu.size(0));
+    }
+}
+```
+
+### Example 5: Complete Dispatcher Pattern
+
+```cpp
+#include <utils/utils.cuh>
+#include <utils/atomic.cuh>
+
+// Device kernel using atomic.cuh functions
+template <typename scalar_t>
+__global__ void compute_deltaR_kernel(
+    const scalar_t* __restrict__ pmc1,  // [N, 4] - [px, py, pz, E]
+    const scalar_t* __restrict__ pmc2,
+    scalar_t* __restrict__ dR,
+    const int N
+) {
+    const int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if (tid >= N) return;
+    
+    const int idx = tid * 4;
+    
+    // Use device-side kinematic functions
+    const scalar_t pt1 = pt_(&pmc1[idx+0], &pmc1[idx+1]);
+    const scalar_t eta1 = eta_(&pmc1[idx+0], &pmc1[idx+1], &pmc1[idx+2]);
+    const scalar_t phi1 = phi_(&pmc1[idx+0], &pmc1[idx+1]);
+    
+    const scalar_t pt2 = pt_(&pmc2[idx+0], &pmc2[idx+1]);
+    const scalar_t eta2 = eta_(&pmc2[idx+0], &pmc2[idx+1], &pmc2[idx+2]);
+    const scalar_t phi2 = phi_(&pmc2[idx+0], &pmc2[idx+1]);
+    
+    // Calculate deltaR
+    const scalar_t deta = eta1 - eta2;
+    scalar_t dphi = phi1 - phi2;
+    
+    // Handle phi wrap-around using safe division
+    if (dphi > M_PI) dphi -= 2*M_PI;
+    if (dphi < -M_PI) dphi += 2*M_PI;
+    
+    dR[tid] = _sqrt(deta*deta + dphi*dphi);
+}
+
+// Host dispatcher using utils.cuh
+torch::Tensor compute_deltaR(torch::Tensor* pmc1, torch::Tensor* pmc2) {
+    const int N = pmc1->size(0);
+    
+    // Use MakeOp to match input tensor properties
+    torch::Tensor dR = torch::empty({N}, cutils::MakeOp(pmc1));
+    
+    // Use blk_ for optimal kernel configuration
+    auto [blocks, threads] = cutils::blk_(N);
+    
+    // Type dispatch for float/double support
+    AT_DISPATCH_FLOATING_TYPES(pmc1->scalar_type(), "compute_deltaR", ([&] {
+        compute_deltaR_kernel<scalar_t><<<blocks, threads>>>(
+            pmc1->data_ptr<scalar_t>(),
+            pmc2->data_ptr<scalar_t>(),
+            dR.data_ptr<scalar_t>(),
+            N
+        );
+    }));
+    
+    return dR;
+}
+```
+
+@section pyc_cutils_best_practices Best Practices
+
+### 1. Always Use blk_() for Launch Configuration
+
+```cpp
+// ✓ Good: Automatic optimal configuration
+auto [blocks, threads] = cutils::blk_(N);
+kernel<<<blocks, threads>>>(...);
+
+// ✗ Bad: Manual calculation prone to errors
+int threads = 256;
+int blocks = (N + threads - 1) / threads;  // Can overflow for large N
+kernel<<<blocks, threads>>>(...);
+```
+
+### 2. Use MakeOp for Output Tensors
+
+```cpp
+// ✓ Good: Automatically matches input properties
+torch::Tensor output = torch::empty(shape, cutils::MakeOp(input));
+
+// ✗ Bad: Hardcoded device/dtype (fails for CPU input or float64)
+torch::Tensor output = torch::empty(shape, torch::kCUDA);
+```
+
+### 3. Device-Side Safe Math
+
+```cpp
+// ✓ Good: Use _div for safe division
+float ratio = _div(numerator, denominator);  // Returns 0 if denominator == 0
+
+// ✗ Bad: Direct division can produce NaN
+float ratio = numerator / denominator;  // NaN if denominator == 0
+```
+
+### 4. Clip Numerical Noise
+
+```cpp
+// ✓ Good: Clean up floating-point errors
+float result = complex_calculation();
+result = _clp(result, 1e-8);  // Round to 0 if |result| < 1e-8
+
+// ✗ Bad: Accumulate numerical errors
+float result = complex_calculation();  // May have spurious 1e-15 values
+```
+
+@section pyc_cutils_troubleshooting Troubleshooting
+
+### "Kernel launch failure"
+
+**Cause**: Incorrect block/thread configuration
+
+**Solution**: Use `blk_()` helper
+```cpp
+// Incorrect manual calculation
+int blocks = N / 256;  // Wrong: doesn't handle remainder
+
+// Correct using cutils
+auto [blocks, threads] = cutils::blk_(N);  // Handles all cases
+```
+
+### "Unexpected NaN values"
+
+**Cause**: Division by zero or sqrt of negative
+
+**Solution**: Use safe math functions
+```cpp
+// Replace:
+float eta = asinh(pz / pt);  // NaN if pt == 0
+
+// With:
+float eta = eta_(&px, &py, &pz);  // Safe: handles pt == 0
+```
+
+### "Tensor device mismatch"
+
+**Cause**: Output tensor on wrong device
+
+**Solution**: Always use `MakeOp()`
+```cpp
+torch::Tensor output = torch::empty(shape, cutils::MakeOp(input));
+// Guaranteed to be on same device as input
+```
+
+@section pyc_cutils_seealso See Also
+
+- @ref pyc_overview - PyC module architecture
+- @ref pyc_physics_page - Uses cutils for kernel launches
+- @ref pyc_transform_page - Uses atomic.cuh for kinematics
+- All other PyC modules depend on cutils
+
+*/

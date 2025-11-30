@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for events/ssml_mc20 implementation.
+
+@defgroup events_ssml_mc20 Events: ssml_mc20
+@ingroup events_module
+
+@details
+Implements `event_ssml_mc20` and `particle_ssml_mc20` wrappers.
+Source: `src/AnalysisG/events/ssml_mc20/`
+*/

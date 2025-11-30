@@ -1,0 +1,741 @@
+/**
+ * @file roc.dox
+ * @brief ROC curve analysis and visualization for classifier performance evaluation
+ * @defgroup roc ROC
+ * @details 
+ * Receiver Operating Characteristic (ROC) curve generation and analysis for evaluating 
+ * binary and multi-class classifiers. Inherits from plotting to leverage visualization 
+ * infrastructure for publication-quality ROC curves with AUC calculation and k-fold 
+ * cross-validation support.
+ *
+ * **Quick Navigation:**
+ * - @ref plotting "plotting" - Base visualization class
+ * - @ref metric "metric" - Performance metrics (accuracy, precision, recall)
+ * - @ref model "model" - GNN models for classification
+ * - @ref lossfx "lossfx" - Loss functions for training
+ * - @ref optimizer "optimizer" - Training orchestrator
+ * - @ref dataloader "dataloader" - Dataset batching with k-fold support
+ * - @ref analysis "analysis" - Pipeline orchestrator
+ * - @ref notification "notification" - Logging & progress tracking
+ *
+ * @page roc_page ROC Module Documentation
+ *
+ * @section roc_intro Introduction
+ *
+ * The **roc** module provides comprehensive ROC curve analysis for evaluating 
+ * classifier performance across different decision thresholds. It handles binary 
+ * and multi-class classification scenarios, computes Area Under the Curve (AUC) 
+ * metrics, and supports k-fold cross-validation with per-fold ROC curves.
+ *
+ * **Key Features:**
+ * - **ROC Curve Generation**: TPR vs FPR curves for binary/multi-class classifiers
+ * - **AUC Calculation**: Trapezoidal integration for area under the curve
+ * - **K-Fold Support**: Per-fold ROC curves with ensemble averaging
+ * - **Multi-Class Handling**: One-vs-rest ROC curves for each class
+ * - **Visualization Inheritance**: Full access to plotting module aesthetics
+ *
+ * **Design Philosophy:**
+ * The roc module extends the `plotting` class to leverage its histogram and figure 
+ * generation capabilities while adding ROC-specific data structures and algorithms. 
+ * Users can apply all plotting customizations (colors, fonts, legends) while the 
+ * module handles ROC calculation internals.
+ *
+ * @section roc_purpose Purpose and Scope
+ *
+ * **Primary Use Cases:**
+ * 1. **Classifier Evaluation**: Assess model performance across decision thresholds
+ * 2. **Model Comparison**: Compare multiple classifiers on the same dataset
+ * 3. **Threshold Selection**: Identify optimal operating points (e.g., 95% TPR)
+ * 4. **Cross-Validation**: Aggregate ROC curves across k-folds for robust estimates
+ *
+ * **Module Responsibilities:**
+ * - Store classifier scores and ground truth labels per k-fold
+ * - Compute True Positive Rate (TPR) and False Positive Rate (FPR) at varying thresholds
+ * - Calculate AUC using trapezoidal rule integration
+ * - Generate `roc_t` structures containing per-class, per-fold ROC data
+ * - Prepare data for visualization via inherited plotting methods
+ *
+ * **Inheritance Structure:**
+ * ```
+ * tools ───────┐
+ *              ├──► plotting ───► roc
+ * notification ┘
+ * ```
+ *
+ * The `roc` class inherits all visualization properties from `plotting` 
+ * (line styles, colors, titles, etc.) and adds ROC-specific data structures.
+ *
+ * @section roc_architecture Architecture
+ *
+ * @subsection roc_struct_definition roc_t Structure
+ *
+ * **Data Container for ROC Results:**
+ * ```cpp
+ * struct roc_t {
+ *     int cls;                                    // Class index (0-N for multi-class)
+ *     int kfold;                                  // K-fold index (0-K)
+ *     std::string model;                          // Model name/identifier
+ *     
+ *     std::vector<double> _auc;                   // AUC per fold
+ *     std::vector<std::vector<double>> tpr_;      // True Positive Rate per fold
+ *     std::vector<std::vector<double>> fpr_;      // False Positive Rate per fold
+ *     
+ *     std::vector<std::vector<int>>* truth;       // Ground truth labels (ptr)
+ *     std::vector<std::vector<double>>* scores;   // Classifier scores (ptr)
+ * };
+ * ```
+ *
+ * **Field Descriptions:**
+ * - **cls**: Class identifier for multi-class scenarios (one-vs-rest approach)
+ * - **kfold**: Cross-validation fold identifier (e.g., 0-4 for 5-fold CV)
+ * - **model**: String identifier for the classifier (e.g., "GNN_v2", "Baseline")
+ * - **_auc**: Vector of AUC values (one per fold, or single value for non-CV)
+ * - **tpr_**: Nested vector of TPR values at different thresholds per fold
+ * - **fpr_**: Nested vector of FPR values at different thresholds per fold
+ * - **truth**: Pointer to ground truth labels (0/1 for binary, class index for multi-class)
+ * - **scores**: Pointer to classifier output scores (probabilities or logits)
+ *
+ * @subsection roc_class_structure Class Structure
+ *
+ * **Class Definition:**
+ * ```cpp
+ * class roc: public plotting {
+ * public:
+ *     roc();
+ *     ~roc();
+ *     
+ *     // ROC curve generation
+ *     void build_ROC(
+ *         std::string name,                        // Model name
+ *         int kfold,                               // K-fold index
+ *         std::vector<int>* label,                 // Ground truth labels
+ *         std::vector<std::vector<double>>* scores // Classifier scores
+ *     );
+ *     
+ *     // Retrieve computed ROC data
+ *     std::vector<roc_t*> get_ROC();
+ *     
+ *     // Data storage (per model, per fold)
+ *     std::map<std::string, std::map<int, std::vector<std::vector<double>>*>> roc_data;
+ *     std::map<std::string, std::map<int, std::vector<std::vector<int>>*>> labels;
+ *     
+ * private:
+ *     std::vector<roc_t*> ptr_roc;                // Computed ROC results
+ *     
+ *     template <typename g>
+ *     std::vector<std::vector<g>>* generate(size_t x, size_t y);
+ * };
+ * ```
+ *
+ * @subsection roc_methods Core Methods
+ *
+ * **1. build_ROC()**
+ * ```cpp
+ * void roc::build_ROC(
+ *     std::string name, 
+ *     int kfold, 
+ *     std::vector<int>* label, 
+ *     std::vector<std::vector<double>>* scores
+ * )
+ * ```
+ * Computes ROC curve data (TPR, FPR, AUC) for the given classifier scores and labels.
+ *
+ * **Parameters:**
+ * - `name`: Model identifier (used as key in storage maps)
+ * - `kfold`: K-fold index (0-based, e.g., 0-4 for 5-fold CV)
+ * - `label`: Pointer to ground truth labels (0/1 for binary, 0-N for multi-class)
+ * - `scores`: Pointer to classifier output scores (one row per sample, one column per class)
+ *
+ * **Process:**
+ * 1. Stores labels and scores in `labels` and `roc_data` maps
+ * 2. For each class, creates a `roc_t` structure
+ * 3. Computes TPR/FPR pairs by varying decision threshold
+ * 4. Calculates AUC via trapezoidal integration
+ * 5. Stores results in `ptr_roc` vector
+ *
+ * **Example:**
+ * ```cpp
+ * roc roc_analysis;
+ * 
+ * // Binary classification
+ * std::vector<int> labels = {0, 1, 1, 0, 1};
+ * std::vector<std::vector<double>> scores = {
+ *     {0.2},  // Sample 0: score 0.2 for class 1
+ *     {0.8},  // Sample 1: score 0.8 for class 1
+ *     {0.9},  // Sample 2: score 0.9 for class 1
+ *     {0.3},  // Sample 3: score 0.3 for class 1
+ *     {0.7}   // Sample 4: score 0.7 for class 1
+ * };
+ * 
+ * roc_analysis.build_ROC("MyClassifier", 0, &labels, &scores);
+ * ```
+ *
+ * **Multi-Class Example:**
+ * ```cpp
+ * // 3-class classification
+ * std::vector<int> labels = {0, 1, 2, 0, 1};
+ * std::vector<std::vector<double>> scores = {
+ *     {0.7, 0.2, 0.1},  // Sample 0: class 0 probability
+ *     {0.1, 0.8, 0.1},  // Sample 1: class 1 probability
+ *     {0.1, 0.2, 0.7},  // Sample 2: class 2 probability
+ *     {0.6, 0.3, 0.1},  // Sample 3: class 0 probability
+ *     {0.2, 0.7, 0.1}   // Sample 4: class 1 probability
+ * };
+ * 
+ * roc_analysis.build_ROC("MultiClassGNN", 0, &labels, &scores);
+ * // Creates 3 roc_t structures (one-vs-rest for each class)
+ * ```
+ *
+ * **2. get_ROC()**
+ * ```cpp
+ * std::vector<roc_t*> roc::get_ROC()
+ * ```
+ * Retrieves all computed ROC data structures.
+ *
+ * **Returns:** Vector of pointers to `roc_t` structures (one per class per fold)
+ *
+ * **Example:**
+ * ```cpp
+ * auto roc_results = roc_analysis.get_ROC();
+ * 
+ * for (auto* r : roc_results) {
+ *     std::cout << "Class " << r->cls << ", Fold " << r->kfold << std::endl;
+ *     std::cout << "AUC: " << r->_auc[0] << std::endl;
+ *     std::cout << "TPR points: " << r->tpr_[0].size() << std::endl;
+ *     std::cout << "FPR points: " << r->fpr_[0].size() << std::endl;
+ * }
+ * ```
+ *
+ * @section roc_usage Usage Examples
+ *
+ * @subsection roc_binary_classification Binary Classification ROC
+ *
+ * **Single Fold Evaluation:**
+ * ```cpp
+ * #include <plotting/roc.h>
+ * 
+ * roc roc_analysis;
+ * 
+ * // Configure visualization
+ * roc_analysis.filename = "binary_roc";
+ * roc_analysis.output_path = "./Results";
+ * roc_analysis.title = "Signal vs Background ROC";
+ * roc_analysis.xtitle = "False Positive Rate";
+ * roc_analysis.ytitle = "True Positive Rate";
+ * 
+ * // Test set predictions
+ * std::vector<int> test_labels = {0, 1, 1, 0, 1, 0, 1, 1, 0, 0};
+ * std::vector<std::vector<double>> test_scores = {
+ *     {0.1}, {0.9}, {0.8}, {0.2}, {0.95},
+ *     {0.15}, {0.85}, {0.92}, {0.3}, {0.25}
+ * };
+ * 
+ * // Compute ROC
+ * roc_analysis.build_ROC("GNN", 0, &test_labels, &test_scores);
+ * 
+ * // Extract results
+ * auto results = roc_analysis.get_ROC();
+ * roc_t* roc_data = results[0];
+ * 
+ * std::cout << "AUC: " << roc_data->_auc[0] << std::endl;
+ * 
+ * // Plot ROC curve
+ * for (size_t i = 0; i < roc_data->fpr_[0].size(); ++i) {
+ *     roc_analysis.x_data.push_back(roc_data->fpr_[0][i]);
+ *     roc_analysis.y_data.push_back(roc_data->tpr_[0][i]);
+ * }
+ * 
+ * // Add diagonal reference line (random classifier)
+ * // ... plotting code ...
+ * ```
+ *
+ * @subsection roc_kfold K-Fold Cross-Validation ROC
+ *
+ * **Aggregating K-Fold Results:**
+ * ```cpp
+ * roc roc_cv;
+ * roc_cv.filename = "kfold_roc";
+ * roc_cv.title = "5-Fold Cross-Validated ROC";
+ * 
+ * int K = 5;
+ * for (int k = 0; k < K; ++k) {
+ *     // Get fold data
+ *     auto [labels_k, scores_k] = get_fold_data(k);
+ *     
+ *     // Compute ROC for this fold
+ *     roc_cv.build_ROC("GNN", k, &labels_k, &scores_k);
+ * }
+ * 
+ * // Extract per-fold AUCs
+ * auto results = roc_cv.get_ROC();
+ * std::vector<double> aucs;
+ * for (auto* r : results) {
+ *     aucs.push_back(r->_auc[0]);
+ * }
+ * 
+ * double mean_auc = std::accumulate(aucs.begin(), aucs.end(), 0.0) / aucs.size();
+ * double std_auc = compute_stdev(aucs, mean_auc);
+ * 
+ * std::cout << "Mean AUC: " << mean_auc << " ± " << std_auc << std::endl;
+ * 
+ * // Plot all folds with transparency
+ * roc_cv.alpha = 0.3;
+ * for (auto* r : results) {
+ *     // Plot individual fold ROC curves
+ *     // ... plotting code ...
+ * }
+ * 
+ * // Plot mean ROC curve
+ * roc_cv.alpha = 1.0;
+ * roc_cv.line_width = 2.0;
+ * // ... compute mean TPR/FPR ...
+ * ```
+ *
+ * @subsection roc_multiclass Multi-Class ROC Curves
+ *
+ * **One-vs-Rest ROC per Class:**
+ * ```cpp
+ * roc roc_multiclass;
+ * roc_multiclass.filename = "multiclass_roc";
+ * roc_multiclass.title = "Multi-Class Classifier ROC";
+ * 
+ * // 4 classes: electron, muon, tau, jet
+ * std::vector<int> labels = {0, 1, 2, 3, 0, 1, 2, 3, ...};
+ * std::vector<std::vector<double>> scores = {
+ *     {0.8, 0.1, 0.05, 0.05},  // Sample 0: likely electron
+ *     {0.1, 0.7, 0.1, 0.1},    // Sample 1: likely muon
+ *     // ...
+ * };
+ * 
+ * roc_multiclass.build_ROC("ParticleID", 0, &labels, &scores);
+ * 
+ * // Get per-class ROC curves
+ * auto results = roc_multiclass.get_ROC();
+ * 
+ * std::vector<std::string> class_names = {"Electron", "Muon", "Tau", "Jet"};
+ * std::vector<std::string> colors = {"#e41a1c", "#377eb8", "#4daf4a", "#984ea3"};
+ * 
+ * for (size_t cls = 0; cls < class_names.size(); ++cls) {
+ *     roc_t* roc_data = results[cls];
+ *     roc_multiclass.color = colors[cls];
+ *     
+ *     std::cout << class_names[cls] << " AUC: " << roc_data->_auc[0] << std::endl;
+ *     
+ *     // Plot this class's ROC curve
+ *     // ... plotting code with legend entry ...
+ * }
+ * ```
+ *
+ * @subsection roc_model_comparison Model Comparison
+ *
+ * **Comparing Multiple Classifiers:**
+ * ```cpp
+ * roc roc_comparison;
+ * roc_comparison.filename = "model_comparison";
+ * roc_comparison.title = "Classifier Performance Comparison";
+ * 
+ * std::vector<std::string> models = {"GNN", "BDT", "DNN"};
+ * std::vector<std::string> colors = {"#1f77b4", "#ff7f0e", "#2ca02c"};
+ * 
+ * for (size_t i = 0; i < models.size(); ++i) {
+ *     auto [labels, scores] = load_model_predictions(models[i]);
+ *     roc_comparison.build_ROC(models[i], 0, &labels, &scores);
+ * }
+ * 
+ * auto results = roc_comparison.get_ROC();
+ * 
+ * for (size_t i = 0; i < results.size(); ++i) {
+ *     roc_t* r = results[i];
+ *     roc_comparison.color = colors[i];
+ *     
+ *     std::cout << r->model << " AUC: " << r->_auc[0] << std::endl;
+ *     
+ *     // Plot ROC curve with model label
+ *     // ... plotting code ...
+ * }
+ * 
+ * // Add diagonal reference
+ * roc_comparison.linestyle = "--";
+ * roc_comparison.color = "gray";
+ * roc_comparison.x_data = {0.0, 1.0};
+ * roc_comparison.y_data = {0.0, 1.0};
+ * // ... plot diagonal ...
+ * ```
+ *
+ * @section roc_advanced Advanced Topics
+ *
+ * @subsection roc_auc_calculation AUC Calculation
+ *
+ * **Trapezoidal Integration:**
+ * The AUC is computed using the trapezoidal rule:
+ *
+ * \f[
+ * \text{AUC} = \sum_{i=1}^{n-1} \frac{1}{2} (x_{i+1} - x_i) (y_{i+1} + y_i)
+ * \f]
+ *
+ * where \f$ x_i \f$ = FPR and \f$ y_i \f$ = TPR at threshold \f$ t_i \f$.
+ *
+ * **Interpretation:**
+ * - **AUC = 1.0**: Perfect classifier (100% TPR at 0% FPR)
+ * - **AUC = 0.5**: Random classifier (diagonal line)
+ * - **AUC < 0.5**: Worse than random (inverted predictions)
+ *
+ * ```cpp
+ * double calculate_auc(std::vector<double>& fpr, std::vector<double>& tpr) {
+ *     double auc = 0.0;
+ *     for (size_t i = 1; i < fpr.size(); ++i) {
+ *         auc += 0.5 * (fpr[i] - fpr[i-1]) * (tpr[i] + tpr[i-1]);
+ *     }
+ *     return auc;
+ * }
+ * ```
+ *
+ * @subsection roc_threshold_selection Threshold Selection
+ *
+ * **Optimal Operating Points:**
+ *
+ * **1. Youden's Index (Maximize TPR - FPR):**
+ * ```cpp
+ * size_t find_optimal_threshold(roc_t* r) {
+ *     double max_diff = 0.0;
+ *     size_t optimal_idx = 0;
+ *     
+ *     for (size_t i = 0; i < r->tpr_[0].size(); ++i) {
+ *         double diff = r->tpr_[0][i] - r->fpr_[0][i];
+ *         if (diff > max_diff) {
+ *             max_diff = diff;
+ *             optimal_idx = i;
+ *         }
+ *     }
+ *     
+ *     return optimal_idx;
+ * }
+ * ```
+ *
+ * **2. Fixed TPR Target (e.g., 95% signal efficiency):**
+ * ```cpp
+ * size_t find_threshold_for_tpr(roc_t* r, double target_tpr) {
+ *     for (size_t i = 0; i < r->tpr_[0].size(); ++i) {
+ *         if (r->tpr_[0][i] >= target_tpr) {
+ *             return i;
+ *         }
+ *     }
+ *     return r->tpr_[0].size() - 1;
+ * }
+ * ```
+ *
+ * **3. Fixed FPR Target (e.g., 1% false positive rate):**
+ * ```cpp
+ * size_t find_threshold_for_fpr(roc_t* r, double target_fpr) {
+ *     for (size_t i = 0; i < r->fpr_[0].size(); ++i) {
+ *         if (r->fpr_[0][i] <= target_fpr) {
+ *             return i;
+ *         }
+ *     }
+ *     return 0;
+ * }
+ * ```
+ *
+ * @subsection roc_interpolation Interpolation for Averaging
+ *
+ * **Averaging ROC Curves Across K-Folds:**
+ *
+ * To compute mean ROC curves, interpolate all folds to common FPR points:
+ *
+ * ```cpp
+ * std::vector<double> interpolate_tpr(
+ *     std::vector<double>& fpr_orig, 
+ *     std::vector<double>& tpr_orig, 
+ *     std::vector<double>& fpr_target
+ * ) {
+ *     std::vector<double> tpr_interp(fpr_target.size());
+ *     
+ *     for (size_t i = 0; i < fpr_target.size(); ++i) {
+ *         // Linear interpolation
+ *         auto it = std::lower_bound(fpr_orig.begin(), fpr_orig.end(), fpr_target[i]);
+ *         size_t idx = std::distance(fpr_orig.begin(), it);
+ *         
+ *         if (idx == 0) {
+ *             tpr_interp[i] = tpr_orig[0];
+ *         } else if (idx == fpr_orig.size()) {
+ *             tpr_interp[i] = tpr_orig.back();
+ *         } else {
+ *             double t = (fpr_target[i] - fpr_orig[idx-1]) / 
+ *                        (fpr_orig[idx] - fpr_orig[idx-1]);
+ *             tpr_interp[i] = tpr_orig[idx-1] + t * (tpr_orig[idx] - tpr_orig[idx-1]);
+ *         }
+ *     }
+ *     
+ *     return tpr_interp;
+ * }
+ * 
+ * // Average TPR across folds at common FPR points
+ * std::vector<double> common_fpr = linspace(0.0, 1.0, 100);
+ * std::vector<double> mean_tpr(100, 0.0);
+ * 
+ * for (auto* r : roc_results) {
+ *     auto tpr_interp = interpolate_tpr(r->fpr_[0], r->tpr_[0], common_fpr);
+ *     for (size_t i = 0; i < mean_tpr.size(); ++i) {
+ *         mean_tpr[i] += tpr_interp[i] / roc_results.size();
+ *     }
+ * }
+ * ```
+ *
+ * @subsection roc_imbalanced_datasets Imbalanced Datasets
+ *
+ * **Precision-Recall Curves for Imbalance:**
+ * When positive class is rare (e.g., signal << background), ROC curves can be 
+ * overly optimistic. Consider Precision-Recall curves instead:
+ *
+ * \f[
+ * \text{Precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}, \quad
+ * \text{Recall} = \text{TPR} = \frac{\text{TP}}{\text{TP} + \text{FN}}
+ * \f]
+ *
+ * ```cpp
+ * // Compute precision from ROC data
+ * std::vector<double> compute_precision(roc_t* r, int n_pos, int n_neg) {
+ *     std::vector<double> precision;
+ *     
+ *     for (size_t i = 0; i < r->tpr_[0].size(); ++i) {
+ *         double tp = r->tpr_[0][i] * n_pos;
+ *         double fp = r->fpr_[0][i] * n_neg;
+ *         precision.push_back(tp / (tp + fp));
+ *     }
+ *     
+ *     return precision;
+ * }
+ * ```
+ *
+ * @section roc_integration Integration with Other Modules
+ *
+ * @subsection roc_with_model Training Pipeline Integration
+ *
+ * **Evaluate Model During Training:**
+ * ```cpp
+ * #include <model/model.h>
+ * #include <plotting/roc.h>
+ * 
+ * model gnn;
+ * roc roc_eval;
+ * 
+ * // Training loop
+ * for (int epoch = 0; epoch < 100; ++epoch) {
+ *     gnn.train_epoch(train_loader);
+ *     
+ *     // Validation ROC every 10 epochs
+ *     if (epoch % 10 == 0) {
+ *         auto [val_labels, val_scores] = gnn.predict(val_loader);
+ *         roc_eval.build_ROC("Epoch_" + std::to_string(epoch), 0, 
+ *                            &val_labels, &val_scores);
+ *         
+ *         auto results = roc_eval.get_ROC();
+ *         std::cout << "Epoch " << epoch << " AUC: " 
+ *                   << results.back()->_auc[0] << std::endl;
+ *     }
+ * }
+ * ```
+ *
+ * @subsection roc_with_dataloader K-Fold Cross-Validation
+ *
+ * **Automatic K-Fold Evaluation:**
+ * ```cpp
+ * #include <dataloader/dataloader.h>
+ * #include <plotting/roc.h>
+ * 
+ * dataloader dl;
+ * dl.kfold = 5;
+ * dl.split();  // Creates k-fold splits
+ * 
+ * roc roc_cv;
+ * 
+ * for (int k = 0; k < dl.kfold; ++k) {
+ *     auto train_data = dl.get_fold_train(k);
+ *     auto val_data = dl.get_fold_val(k);
+ *     
+ *     // Train model on fold k
+ *     model gnn;
+ *     gnn.train(train_data);
+ *     
+ *     // Evaluate on validation fold
+ *     auto [labels, scores] = gnn.predict(val_data);
+ *     roc_cv.build_ROC("GNN", k, &labels, &scores);
+ * }
+ * 
+ * // Aggregate results
+ * auto results = roc_cv.get_ROC();
+ * double mean_auc = 0.0;
+ * for (auto* r : results) {
+ *     mean_auc += r->_auc[0] / results.size();
+ * }
+ * std::cout << "Cross-Validated AUC: " << mean_auc << std::endl;
+ * ```
+ *
+ * @subsection roc_with_metric Metric Module Compatibility
+ *
+ * **Combining ROC with Other Metrics:**
+ * ```cpp
+ * #include <metrics/metric.h>
+ * #include <plotting/roc.h>
+ * 
+ * metric_template metrics;
+ * roc roc_analysis;
+ * 
+ * // Compute standard metrics
+ * metrics.compute_accuracy(predictions, labels);
+ * metrics.compute_precision_recall(predictions, labels);
+ * 
+ * // Compute ROC/AUC
+ * roc_analysis.build_ROC("Model", 0, &labels, &scores);
+ * auto roc_data = roc_analysis.get_ROC()[0];
+ * 
+ * std::cout << "Accuracy: " << metrics.accuracy << std::endl;
+ * std::cout << "Precision: " << metrics.precision << std::endl;
+ * std::cout << "Recall: " << metrics.recall << std::endl;
+ * std::cout << "AUC: " << roc_data->_auc[0] << std::endl;
+ * ```
+ *
+ * @section roc_best_practices Best Practices
+ *
+ * @subsection roc_threshold_density Threshold Density
+ *
+ * **Number of Thresholds:**
+ * - **Too few**: Coarse ROC curve (poor AUC estimate)
+ * - **Too many**: Computational overhead (minimal benefit)
+ * - **Recommended**: 100-1000 thresholds depending on dataset size
+ *
+ * ```cpp
+ * // Automatically generate thresholds
+ * std::vector<double> generate_thresholds(int n_thresholds = 200) {
+ *     std::vector<double> thresholds(n_thresholds);
+ *     for (int i = 0; i < n_thresholds; ++i) {
+ *         thresholds[i] = i / static_cast<double>(n_thresholds - 1);
+ *     }
+ *     return thresholds;
+ * }
+ * ```
+ *
+ * @subsection roc_visualization_tips Visualization Tips
+ *
+ * **1. Always Include Diagonal Reference:**
+ * ```cpp
+ * roc_analysis.linestyle = "--";
+ * roc_analysis.color = "gray";
+ * roc_analysis.x_data = {0.0, 1.0};
+ * roc_analysis.y_data = {0.0, 1.0};
+ * // Plot diagonal for random classifier baseline
+ * ```
+ *
+ * **2. Add AUC to Legend:**
+ * ```cpp
+ * std::string legend_label = "GNN (AUC = " + 
+ *                            std::to_string(roc_data->_auc[0]).substr(0, 5) + ")";
+ * ```
+ *
+ * **3. Zoom to Interesting Region:**
+ * ```cpp
+ * // For high-performance classifiers, focus on low FPR
+ * roc_analysis.x_min = 0.0;
+ * roc_analysis.x_max = 0.1;  // 0-10% FPR
+ * roc_analysis.y_min = 0.9;
+ * roc_analysis.y_max = 1.0;  // 90-100% TPR
+ * ```
+ *
+ * @subsection roc_statistical_significance Statistical Significance
+ *
+ * **DeLong Test for AUC Comparison:**
+ * Determine if AUC difference between models is statistically significant:
+ *
+ * ```cpp
+ * // Simplified approach: bootstrap confidence intervals
+ * std::vector<double> bootstrap_auc(int n_bootstrap, roc_t* r) {
+ *     std::vector<double> aucs;
+ *     
+ *     for (int i = 0; i < n_bootstrap; ++i) {
+ *         // Resample with replacement
+ *         auto [labels_boot, scores_boot] = bootstrap_sample(r->truth, r->scores);
+ *         
+ *         roc roc_boot;
+ *         roc_boot.build_ROC("Bootstrap", 0, &labels_boot, &scores_boot);
+ *         aucs.push_back(roc_boot.get_ROC()[0]->_auc[0]);
+ *     }
+ *     
+ *     return aucs;
+ * }
+ * 
+ * // 95% CI
+ * auto aucs = bootstrap_auc(1000, roc_data);
+ * std::sort(aucs.begin(), aucs.end());
+ * double ci_lower = aucs[25];   // 2.5th percentile
+ * double ci_upper = aucs[975];  // 97.5th percentile
+ * ```
+ *
+ * @section roc_troubleshooting Troubleshooting
+ *
+ * @subsection roc_common_issues Common Issues
+ *
+ * **Problem: AUC = 0.5 (Random Performance)**
+ * ```cpp
+ * // Check label distribution
+ * int n_pos = std::count(labels.begin(), labels.end(), 1);
+ * int n_neg = labels.size() - n_pos;
+ * std::cout << "Positive: " << n_pos << ", Negative: " << n_neg << std::endl;
+ * 
+ * // Verify scores are not constant
+ * double score_std = compute_stdev(scores);
+ * if (score_std < 1e-6) {
+ *     std::cerr << "Error: Classifier outputs constant scores!" << std::endl;
+ * }
+ * ```
+ *
+ * **Problem: Inverted ROC Curve (AUC < 0.5)**
+ * ```cpp
+ * // Label mismatch: 0/1 may be swapped
+ * // Fix: invert scores or swap labels
+ * for (auto& score : scores) {
+ *     score[0] = 1.0 - score[0];
+ * }
+ * ```
+ *
+ * **Problem: Jagged ROC Curve**
+ * ```cpp
+ * // Insufficient threshold density or small dataset
+ * // Solution: increase test set size or smooth ROC
+ * 
+ * // Check dataset size
+ * if (labels.size() < 100) {
+ *     std::cerr << "Warning: Small test set (" << labels.size() 
+ *               << " samples) may produce unstable ROC" << std::endl;
+ * }
+ * ```
+ *
+ * @section roc_related Related Modules
+ *
+ * - @ref plotting "plotting" - Base visualization class (inherited)
+ * - @ref metric "metric" - Performance metrics (accuracy, F1-score, etc.)
+ * - @ref model "model" - GNN models for classification
+ * - @ref dataloader "dataloader" - Dataset handling with k-fold support
+ * - @ref lossfx "lossfx" - Loss functions for training classifiers
+ * - @ref optimizer "optimizer" - Training orchestrator
+ * - @ref analysis "analysis" - High-level pipeline management
+ *
+ * @section roc_summary Summary
+ *
+ * The **roc** module provides:
+ * - Comprehensive ROC curve analysis for binary and multi-class classifiers
+ * - AUC calculation via trapezoidal integration
+ * - K-fold cross-validation support with per-fold ROC curves
+ * - Seamless integration with plotting module for visualization
+ * - Tools for threshold selection and model comparison
+ *
+ * **Key Advantages:**
+ * - **Ease of Use**: Simple API for ROC computation from scores and labels
+ * - **Flexibility**: Handles binary, multi-class, and k-fold scenarios
+ * - **Visualization**: Inherits full plotting capabilities for publication-quality figures
+ * - **Integration**: Works seamlessly with AnalysisG's training and evaluation pipeline
+ *
+ * **Next Steps:**
+ * - Explore @ref metric "metric" for additional performance metrics
+ * - Review @ref model "model" for classifier training
+ * - See @ref dataloader "dataloader" for k-fold cross-validation setup
+ */

@@ -1,0 +1,61 @@
+/**
+@file
+@brief Detailed documentation for the CUDA-accelerated neutrino reconstruction module (nusol).
+*/
+
+/**
+@page pyc_nusol_page Neutrino Reconstruction Module (nusol)
+@tableofcontents
+
+@section pyc_nusol_intro Introduction
+
+The `nusol` module, located in `src/AnalysisG/pyc/nusol`, is a highly specialized and computationally intensive module for reconstructing the four-momenta of neutrinos in particle physics events. Since neutrinos do not interact with the detector, their presence can only be inferred from the missing transverse energy (MET). This module implements an analytical and numerical solver, accelerated on CUDA, to solve the kinematic equations for top-quark decays involving W bosons, which subsequently decay into a lepton and a neutrino (t -> bW, W -> l+nu).
+
+The module can handle both single-neutrino (`Nu`) and di-neutrino (`NuNu`) reconstruction scenarios. The core of the solver involves finding the intersection of two ellipses, which represent the kinematic constraints in the transverse plane.
+
+The module is structured as follows:
+-   **Public Headers (`nusol.h`, `nusol.cuh`, `base.cuh`)**: Declare the high-level functions available for neutrino reconstruction.
+-   **CUDA Implementation Files (`nusol/cuda/*.cu`)**: The logic is split across multiple files:
+    -   `matrix.cu`: Prepares the kinematic matrices (H-matrix) from input particle momenta.
+    -   `intersection.cu`: Solves for the intersection of two ellipses.
+    -   `nu.cu`: Implements the single-neutrino reconstruction logic.
+    -   `nunu.cu`: Implements the more complex di-neutrino reconstruction logic.
+    -   `nusol.cu`: Contains the top-level `combinatorial` function that orchestrates the entire process.
+-   **Device Headers (`device.cuh`, `utils.cuh`)**:
+    -   `device.cuh`: Defines the core `nusol` data structure and the low-level `__device__` functions that perform the algebraic steps of the solution.
+    -   `utils.cuh`: Provides kernels for generating particle combinations needed for the combinatorial reconstruction.
+
+@section pyc_nusol_solver The Solver Algorithm
+
+The reconstruction is based on solving a system of quadratic equations derived from mass-shell constraints (m_W, m_top) and the measured missing transverse energy (MET).
+1.  **Matrix Formulation**: The problem is formulated in terms of matrices. The `BaseMatrix` function in `matrix.cu` constructs a "H-matrix" from the four-momenta of the b-quark and the lepton. This matrix encodes the geometric constraints of the decay.
+2.  **Elliptical Constraints**: For each top-quark decay, the constraints on the neutrino's transverse momentum (px, py) form an ellipse. In a di-neutrino event, this results in two ellipses.
+3.  **Intersection**: The `Intersection` function (`intersection.cu`) finds the intersection points of these two ellipses. The intersection points correspond to the possible solutions for the transverse momenta of the two neutrinos. This involves solving a quartic equation, which is done analytically.
+4.  **Longitudinal Momentum**: Once the transverse momentum is known, the longitudinal component (pz) can be determined, often resulting in a two-fold ambiguity, leading to up to two solutions per neutrino.
+5.  **Chi-squared Evaluation**: For each potential solution, a chi-squared (`_chi2` kernel in `nu.cu`) or other metric is calculated to determine the most likely solution, often by comparing the reconstructed MET with the measured MET.
+
+@section pyc_nusol_functions Key Functions
+
+-   **`combinatorial(...)`**: This is the main entry point of the module. It takes raw event data (particle momenta, particle IDs, MET) and performs a full combinatorial reconstruction.
+    1.  It uses kernels from `utils.cuh` (`_count`, `_combination`) to generate all valid pairings of leptons and b-quarks that could form a top-quark decay.
+    2.  For each combination, it prepares the inputs and calls either the `Nu` or `NuNu` solver.
+    3.  It returns the reconstructed neutrino four-momenta for the best combinations.
+
+-   **`Nu(...)`**: Solves the single-neutrino case. It constructs the constraint equations and solves for the neutrino's momentum.
+
+-   **`NuNu(...)`**: Solves the di-neutrino case. This is an iterative process (`_nunu_vp_` kernel) that starts with the intersection of the ellipses and refines the solution to find the best fit for the combined MET.
+
+-   **`BaseMatrix(...)`**: A helper function that computes the initial kinematic matrices from the input particle momenta.
+
+@section pyc_nusol_device_code The `nusol` Struct
+
+The `device.cuh` header is central to the module. The `nusol` struct is a container that holds all the parameters of the quadratic system for a single event (masses, particle betas, cosines of opening angles, etc.). The `__device__` functions (`_makeNuSol`, `_htilde`, etc.) operate on this struct to perform the step-by-step algebraic solution directly on the GPU, avoiding costly data transfer between host and device during the calculation.
+
+@section pyc_nusol_dependencies Dependencies
+
+-   **`operators` module**: Used for fundamental tensor operations like dot products and rotations.
+-   **`physics` module**: Used to calculate basic kinematic variables like beta and M^2.
+-   **`transform` module**: Used for coordinate transformations.
+-   **`cutils` module**: For host-side utilities.
+
+*/

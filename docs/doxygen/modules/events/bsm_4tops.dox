@@ -1,0 +1,90 @@
+/**
+ * @file
+ * @brief Event-Implementierung für BSM 4-Tops Physik-Prozesse
+ *
+ * @defgroup events_bsm_4tops Events: bsm_4tops
+ * @ingroup events_module
+ * @details
+ * Diese Implementierung erweitert die @ref event_template um konkrete Event- und Partikel-
+ * Klassen für 4-Top-Signale. Sie definiert Container, Beziehungen und Beobachtungen für
+ * Tops, Kinder, TruthJets, Jets sowie Leptonen und stellt sie der Graph-Konstruktion zur Verfügung.
+ *
+ * Quellen:
+ * - Header: `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/event.h`
+ * - Partikel: `src/AnalysisG/events/bsm_4tops/include/bsm_4tops/particles.h`
+ * - Cython: `src/AnalysisG/events/bsm_4tops/event_bsm_4tops.pyx`/`.pxd`
+ *
+ * @page events_bsm_4tops_page Events: bsm_4tops
+ *
+ * @section ev4t_intro Einführung
+ * Die Klasse `bsm_4tops` erbt von @ref event_template und kapselt die Physikobjekte eines
+ * 4-Top-Ereignisses. Sie implementiert `clone()`, `build(element_t*)` und `CompileEvent()`
+ * und füllt beobachtbare Vektoren für Downstream-Graphen.
+ *
+ * @section ev4t_api Klassen und Mitglieder
+ *
+ * @subsection ev4t_class Event-Klasse `bsm_4tops`
+ * - Basisklasse: @ref event_template
+ * - Öffentliche Mitglieder (Auszug):
+ *   - `std::vector<particle_template*> Tops, Children, TruthJets, Jets, Electrons, Muons, DetectorObjects`
+ *   - Skalargrößen: `event_number`, `mu`, `met`, `phi`
+ * - Wichtige Methoden:
+ *   - `event_template* clone()` – polymorphe Kopie
+ *   - `void build(element_t* el)` – befüllt Partikel aus `element_t`
+ *   - `void CompileEvent()` – finalisiert Indizes/Referenzen und Vektor-Repräsentationen
+ *
+ * @subsection ev4t_particles Partikel-Typen
+ * Definiert in `particles.h` und jeweils abgeleitet von @ref particle_template:
+ * - `top` – mit `from_res`, `status`, Verknüpfungen zu `truthjet` und `jet`
+ * - `top_children` – enthält `top_index` und `from_res` (cproperty)
+ * - `truthjet` – Wahrheits-Jets inkl. Zählungen und `from_res` (cproperty)
+ * - `truthjetparton` – Parton-Infos zu TruthJets
+ * - `jet` – Rekonstruktions-Jets, b-Tagging-Flags und DL1/DL1r Scores; `from_res` (cproperty)
+ * - `jetparton` – Parton-Infos zu Jets
+ * - `electron`, `muon` – Leptonen mit `from_res` und `top_index`
+ *
+ * @section ev4t_build Build-Logik und Hilfsfunktionen
+ * In `event.h` sind generische Utilities implementiert:
+ * - `sort_by_index` – sortiert Map<id,obj> in Map<int,obj*> nach `index`
+ * - `vectorize` – schreibt Inhalte einer Map in Vektor<particle_template*>
+ * - `assign_vector` (Template in `particles.h`) – befüllt Partikelvektoren aus `element_t`
+ *
+ * @section ev4t_workflow Typischer Workflow
+ * ```cpp
+ * // Erstellen und Befüllen aus I/O-Schicht
+ * bsm_4tops evt;
+ * evt.build(el);        // element_t* aus ROOT/HDF5
+ * evt.CompileEvent();   // Relationen, Indizes, Vektorisierung
+ *
+ * // Übergabe an Graph-Konstruktion
+ * graph_tops g;
+ * g.set_event(&evt);
+ * g.CompileEvent();
+ * ```
+ *
+ * @section ev4t_graphs Interaktion mit Graphen
+ * Die bsm_4tops-Eventstruktur wird in den folgenden Graph-Klassen genutzt:
+ * - @ref graphs_bsm_4tops – Übersicht (z. B. @ref graph_tops, @ref graph_children, @ref graph_truthjets)
+ * - Knoten-Features: `node_features.h` (z. B. `pt`, `eta`, `phi`, `top_node`, `res_node`)
+ * - Kanten-Features: `edge_features.h` (z. B. `top_edge`, `res_edge`, `det_top_edge`)
+ * - Graph-Features: `graph_features.h` (z. B. `num_tops`, `signal_event`, `missing_et`)
+ *
+ * @section ev4t_selection Selektionen und Modelle
+ * Diese Event-Klassen werden von Selektionen und Modellen konsumiert:
+ * - Selektionen: @ref selections_module (z. B. @ref selections_mc20_matching)
+ * - Modelle: @ref models_module (z. B. @ref models_grift)
+ *
+ * @section ev4t_example Beispiel (C++)
+ * ```cpp
+ * // Simplifizierter Ablauf
+ * element_t* el = /* aus I/O */ nullptr;
+ * bsm_4tops evt;
+ * evt.build(el);
+ * evt.CompileEvent();
+ *
+ * // Zugriff auf Beobachtungen
+ * auto& jets = evt.Jets;        // vektorisiert
+ * auto& muons = evt.Muons;
+ * auto met = evt.met;
+ * ```
+ */

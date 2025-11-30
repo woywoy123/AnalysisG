@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/mc16/topkinematics.
+
+@defgroup selections_mc16_topkinematics Selections: mc16/topkinematics
+@ingroup selections_module
+
+@details
+MC16 top kinematics selections.
+Source: `src/AnalysisG/selections/mc16/topkinematics/`
+*/

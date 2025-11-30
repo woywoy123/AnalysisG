@@ -1,0 +1,613 @@
+/**
+@page module_interactions Module Interactions and Data Flow
+@tableofcontents
+
+# Introduction
+
+This page documents how AnalysisG modules interact, showing the complete data flow from ROOT files to trained GNN models. Understanding these interactions is crucial for effective framework usage.
+
+---
+
+# Complete Analysis Pipeline
+
+## Phase 1: Data Ingestion
+
+```
+User ROOT Files
+       │
+       ▼
+   io::scan_files("*.root")
+       │
+       ├──────────────────┐
+       │                  │
+       ▼                  ▼
+io::scan_data()    meta::scan_data()
+       │                  │
+       │                  ├─► meta::parse_json()
+       │                  │
+       │                  ├─► meta::compiler()
+       │                  │
+       │                  └─► 60+ cproperty getters
+       │
+       ▼
+io::get_data(event_idx)
+       │
+       ▼
+event_template::build_event()
+       │
+       ├─► particle_template factory
+       │
+       └─► event.Jets, event.Leptons, event.MET
+```
+
+**Key Modules**: @ref io_module, @ref MetaModule, @ref event_template, @ref particle_template_page
+
+**Data Structures**:
+- Input: ROOT TFile → TTree → TBranch → TLeaf
+- Output: `event_template*` with populated particle collections
+- Metadata: `meta_t` struct with 60+ fields
+
+---
+
+## Phase 2: Event Selection (Optional)
+
+```
+event_template*
+       │
+       ▼
+selection_template::selection()
+       │
+       ├──► Boolean: Pass/Fail
+       │
+       ├──► If Pass:
+       │    ├─► selection_template::strategy()
+       │    │   └─► Object disambiguation
+       │    │
+       │    └─► selection_template::write_tree()
+       │        └─► ROOT TTree output
+       │
+       └──► If Fail: Discard event
+```
+
+**Key Modules**: @ref selection_template_module
+
+**Common Use Cases**:
+1. Pre-filter events before graph construction (reduce memory)
+2. Create analysis ntuples for statistical fits
+3. Perform object overlap removal
+
+**Example Selection**:
+```cpp
+bool MySelection::selection() override {
+    event_4tops* ev = get_event<event_4tops>();
+    return ev->Jets.size() >= 4 && ev->Leptons.size() == 1;
+}
+```
+
+---
+
+## Phase 3: Graph Construction
+
+```
+event_template*
+       │
+       ▼
+graph_template::CompileEvent()
+       │
+       ├─► define_particle_nodes(&ev->Jets)
+       │   └─► Particle* → Node ID mapping
+       │
+       ├─► define_topology(lambda)
+       │   └─► Lambda predicate → Edge list
+       │
+       ├─► add_node_data_feature<T>()
+       │   └─► cproperty getter → torch::Tensor
+       │
+       ├─► add_edge_data_feature<T>()
+       │   └─► Lambda computation → torch::Tensor
+       │
+       └─► data_export()
+           └─► graph_t* (COO edge_index, feature maps)
+```
+
+**Key Modules**: @ref graph_template_module, @ref pyc_physics_page
+
+**Critical Methods**:
+- `define_particle_nodes()`: O(N) node assignment
+- `define_topology()`: O(N²) edge construction (can be optimized with spatial indexing)
+- `add_*_feature()`: O(N·F) or O(E·F) feature extraction
+- `data_export()`: O(E) COO format conversion
+
+**Output Structure**:
+```cpp
+struct graph_t {
+    torch::Tensor edge_index;        // [2, E] COO format
+    std::map<std::string, torch::Tensor> data_map_node;   // Node features
+    std::map<std::string, torch::Tensor> truth_map_node;  // Node labels
+    std::map<std::string, torch::Tensor> data_map_edge;   // Edge features
+    // ... (metadata: hash, weight, index)
+};
+```
+
+---
+
+## Phase 4: Dataset Management
+
+```
+Multiple graph_t*
+       │
+       ▼
+dataloader::add_graph(graph_t*)
+       │
+       ├─► Hash deduplication
+       │
+       └─► Central repository
+           │
+           ▼
+dataloader::split_dataset(k=5, train=0.7, val=0.15, test=0.15)
+           │
+           ├─► Fisher-Yates shuffle
+           │
+           ├─► K-fold partitioning
+           │
+           └─► Fold assignments
+               │
+               ▼
+dataloader::deduplicate()
+               │
+               └─► Feature map sharing (99.995% reduction)
+```
+
+**Key Modules**: @ref dataloader_module, @ref MetaModule
+
+**Memory Optimizations**:
+1. **Hash Deduplication**: Prevents duplicate graph storage
+2. **Feature Map Sharing**: Identical tensors share memory
+3. **CUDA Memory Server**: Background monitoring at 95% threshold
+
+**Fold Structure**:
+- Fold 0: Train indices [0,2,4,6,8,...], Val indices [1,9,17,...]
+- Fold 1: Train indices [1,3,5,7,9,...], Val indices [0,8,16,...]
+- Fold 2: Train indices [2,4,6,8,10,...], Val indices [3,11,19,...]
+- ...
+
+---
+
+## Phase 5: Batch Construction
+
+```
+dataloader::train_data(fold=0, batch_idx=0)
+       │
+       ├─► Select N graphs from fold
+       │
+       ├─► Aggregate into single batch
+       │   │
+       │   ├─► Concatenate node features → [N_total, F]
+       │   │
+       │   ├─► Offset edge indices → Correct node references
+       │   │
+       │   ├─► Create batch_index → [N_total]
+       │   │
+       │   └─► Deduplicate feature maps
+       │
+       ├─► Transfer to device (optional)
+       │   │
+       │   └─► CUDA memory check (95% threshold)
+       │
+       └─► Return batch_graph_t*
+```
+
+**Key Modules**: @ref dataloader_module
+
+**Batch Structure**:
+```cpp
+struct batch_graph_t : public graph_t {
+    torch::Tensor batch_index;  // [N_total] - which graph each node belongs to
+    int num_graphs;             // Number of graphs in batch
+    // Inherited: edge_index [2, E_total], feature maps
+};
+```
+
+**Edge Index Offsetting Example**:
+```
+Graph 0: edge_index = [[0,1], [1,0]]  (2 nodes, 2 edges)
+Graph 1: edge_index = [[0,1,2], [1,2,0]]  (3 nodes, 3 edges)
+
+Batch: edge_index = [[0,1,2,3,4], [1,0,3,4,2]]
+       batch_index = [0,0,1,1,1]
+```
+
+---
+
+## Phase 6: Model Training
+
+```
+batch_graph_t*
+       │
+       ▼
+model_template::assign_features(batch)
+       │
+       ├─► i_node["pt"] = batch.data_map_node["pt"]
+       ├─► i_edge["delta_r"] = batch.data_map_edge["delta_r"]
+       └─► i_graph["met"] = batch.data_map_graph["met"]
+       │
+       ▼
+model_template::forward(batch)  ◄── User implements
+       │
+       ├─► GNN layers process graph
+       │
+       ├─► register_output_node(predictions)
+       ├─► register_output_edge(predictions)
+       └─► register_output_graph(predictions)
+       │
+       ▼
+model_template::compute_loss()
+       │
+       ├─► lossfx::loss(pred_node, truth_node)
+       ├─► lossfx::loss(pred_edge, truth_edge)
+       ├─► lossfx::loss(pred_graph, truth_graph)
+       │
+       └─► total_loss = Σ weighted_losses
+       │
+       ▼
+model_template::train_sequence()
+       │
+       ├─► optimizer.zero_grad()
+       ├─► total_loss.backward()
+       ├─► optimizer.step()
+       └─► scheduler.step()
+```
+
+**Key Modules**: @ref model_template_module, @ref lossfx_module
+
+**Loss Function Creation**:
+```cpp
+lossfx* loss_factory = new lossfx();
+loss_factory->interpret("crossentropyloss::(smoothing->0.1|reduction->mean)");
+torch::nn::CrossEntropyLoss loss_fn = loss_factory->get_loss();
+```
+
+**Multi-Output Loss**:
+```
+total_loss = α·loss_node + β·loss_edge + γ·loss_graph
+```
+Each output has independent loss function and weight.
+
+---
+
+## Phase 7: Training Orchestration
+
+```
+optimizer_template::launch_model(fold=0)
+       │
+       ├─► Load model checkpoint (if exists)
+       │
+       └─► for epoch in range(num_epochs):
+           │
+           ├─► optimizer::training_loop(fold, epoch)
+           │   │
+           │   └─► for batch_idx in range(num_batches):
+           │       │
+           │       ├─► batch = dataloader.train_data(fold, batch_idx)
+           │       │
+           │       ├─► model.forward(batch)
+           │       │
+           │       ├─► loss = model.train_sequence()
+           │       │
+           │       └─► metrics.record(loss)
+           │
+           ├─► optimizer::validation_loop(fold, epoch)
+           │   │
+           │   └─► for batch_idx in range(num_val_batches):
+           │       │
+           │       ├─► batch = dataloader.validation_data(fold, batch_idx)
+           │       │
+           │       ├─► model.forward(batch)
+           │       │
+           │       └─► metrics.record(val_loss)
+           │
+           ├─► scheduler.step(val_loss)
+           │
+           └─► model.save_state("checkpoint_fold{fold}_epoch{epoch}.pt")
+```
+
+**Key Modules**: @ref optimizer_module, @ref metric_module
+
+**K-Fold Cross-Validation**:
+```
+for fold in range(5):
+    optimizer.launch_model(fold)
+    # Each fold trains on different 80% of data
+    # Validates on different 10%
+    # Final test on held-out 10%
+```
+
+---
+
+# Module Dependency Graph
+
+## Hierarchical Dependencies
+
+```
+                    ┌─────────────┐
+                    │notification │  Base logging
+                    └──────┬──────┘
+                           │
+                    ┌──────▼──────┐
+                    │   tools     │  Utilities
+                    └──────┬──────┘
+                           │
+         ┌─────────────────┼─────────────────┬──────────────┐
+         │                 │                 │              │
+    ┌────▼────┐      ┌─────▼─────┐    ┌─────▼─────┐  ┌────▼────┐
+    │ physics │      │    io     │    │   meta    │  │ lossfx  │
+    └────┬────┘      └─────┬─────┘    └─────┬─────┘  └─────────┘
+         │                 │                 │
+         │           ┌─────▼─────┐           │
+         │           │  event_   │           │
+         │           │ template  │           │
+         │           └─────┬─────┘           │
+         │                 │                 │
+    ┌────▼────────┐  ┌─────▼─────────┐     │
+    │ selection_  │  │  particle_    │     │
+    │  template   │  │   template    │     │
+    └────┬────────┘  └───────────────┘     │
+         │                                  │
+    ┌────▼────────┐                        │
+    │   graph_    │                        │
+    │  template   │                        │
+    └────┬────────┘                        │
+         │                                  │
+         └──────────┬───────────────────────┘
+                    │
+              ┌─────▼─────┐
+              │dataloader │
+              └─────┬─────┘
+                    │
+              ┌─────▼─────┐
+              │  model_   │
+              │ template  │
+              └─────┬─────┘
+                    │
+              ┌─────▼──────┐
+              │ optimizer_ │
+              │  template  │
+              └────────────┘
+```
+
+## Data Flow Dependencies
+
+```
+ROOT Files ──────────┐
+                     │
+                     ▼
+                ┌────────┐
+                │   io   │
+                └───┬────┘
+                    │
+        ┌───────────┼───────────┐
+        │                       │
+        ▼                       ▼
+    ┌───────┐              ┌──────┐
+    │ meta  │              │event │
+    └───┬───┘              │templ.│
+        │                  └──┬───┘
+        │                     │
+        │                     ▼
+        │              ┌────────────┐
+        │              │ particle   │
+        │              │  template  │
+        │              └──────┬─────┘
+        │                     │
+        │              ┌──────▼──────┐
+        │              │ selection_  │
+        │              │  template   │
+        │              └──────┬──────┘
+        │                     │
+        │              ┌──────▼──────┐
+        │              │   graph_    │
+        │              │  template   │
+        │              └──────┬──────┘
+        │                     │
+        │                     ▼
+        │              ┌────────────┐
+        │              │  graph_t   │
+        │              └──────┬─────┘
+        │                     │
+        └──────┬──────────────┘
+               │
+               ▼
+        ┌─────────────┐
+        │ dataloader  │
+        └──────┬──────┘
+               │
+               ▼
+        ┌─────────────┐
+        │   model_    │
+        │  template   │◄───── lossfx
+        └──────┬──────┘
+               │
+               ▼
+        ┌─────────────┐
+        │ optimizer_  │
+        │  template   │
+        └─────────────┘
+```
+
+---
+
+# Common Usage Patterns
+
+## Pattern 1: Simple Analysis (No ML)
+
+```cpp
+// 1. Scan files
+io* reader = new io();
+reader->scan_files("data/*.root");
+
+// 2. Define selection
+class MySelection : public selection_template {
+    bool selection() override {
+        event_4tops* ev = get_event<event_4tops>();
+        return ev->Jets.size() >= 4;
+    }
+};
+
+// 3. Process events
+MySelection* sel = new MySelection();
+for (int i = 0; i < reader->num_events(); i++) {
+    event_template* ev = reader->get_data(i);
+    sel->set_event(ev);
+    if (sel->selection()) {
+        sel->write_tree();  // Output to ROOT
+    }
+}
+```
+
+**Modules**: @ref io_module, @ref selection_template_module, @ref event_template
+
+---
+
+## Pattern 2: GNN Training
+
+```cpp
+// 1. Build dataset
+dataloader* loader = new dataloader();
+for (int i = 0; i < num_events; i++) {
+    event_template* ev = reader->get_data(i);
+    graph_builder->set_event(ev);
+    graph_builder->CompileEvent();
+    loader->add_graph(graph_builder->data_export());
+}
+loader->split_dataset(5, 0.7, 0.15, 0.15);
+
+// 2. Define model
+class MyGNN : public model_template {
+    void forward(graph_t* g) override {
+        torch::Tensor x = get_input_node();
+        // ... GNN layers ...
+        register_output_node(predictions);
+    }
+};
+
+// 3. Train
+optimizer_template* trainer = new optimizer_template();
+trainer->import_dataloader(loader);
+trainer->import_model_sessions(model);
+for (int k = 0; k < 5; k++) {
+    trainer->launch_model(k);
+}
+```
+
+**Modules**: @ref dataloader_module, @ref graph_template_module, @ref model_template_module, @ref optimizer_module
+
+---
+
+## Pattern 3: Inference on New Data
+
+```cpp
+// 1. Load trained model
+MyGNN* model = new MyGNN();
+model->load_state("checkpoint_fold0_epoch99.pt");
+
+// 2. Process new events
+for (int i = 0; i < num_test_events; i++) {
+    event_template* ev = reader->get_data(i);
+    graph_builder->set_event(ev);
+    graph_builder->CompileEvent();
+    graph_t* g = graph_builder->data_export();
+    
+    // 3. Run inference
+    model->assign_features(g);
+    model->forward(g);
+    
+    // 4. Extract predictions
+    torch::Tensor pred = model->get_output_node("top_score");
+    // ... use predictions ...
+}
+```
+
+**Modules**: @ref model_template_module, @ref graph_template_module
+
+---
+
+# Performance Considerations
+
+## Memory Management
+
+| Module | Memory Optimization | Savings |
+|--------|---------------------|---------|
+| @ref dataloader_module | Feature map deduplication | 99.995% |
+| @ref dataloader_module | CUDA memory server | Prevents OOM |
+| @ref MetaModule | cproperty lazy evaluation | Minimal overhead |
+| @ref graph_template_module | Device caching | O(1) repeated transfers |
+
+## Computation Bottlenecks
+
+| Operation | Complexity | Optimization Strategy |
+|-----------|------------|----------------------|
+| Graph topology | O(N²) | Use sparse predicates (dR cutoff) |
+| Feature extraction | O(N·F) | Batch cproperty calls |
+| Batch construction | O(N+E) | Pre-allocate tensors |
+| GNN forward pass | O(E·F) | GPU acceleration |
+
+---
+
+# Troubleshooting Guide
+
+## "Graph has no edges"
+
+**Cause**: `define_topology()` called before `define_particle_nodes()`
+
+**Solution**: Always call `define_particle_nodes()` first
+
+```cpp
+// ✗ Wrong order
+define_topology(...);
+define_particle_nodes(...);
+
+// ✓ Correct order
+define_particle_nodes(...);
+define_topology(...);
+```
+
+---
+
+## "CUDA out of memory"
+
+**Cause**: Batch too large or memory leak
+
+**Solutions**:
+1. Reduce `dataloader->batch_size`
+2. Check `dataloader->memory_threshold` (default 0.95)
+3. Verify CUDA memory server is running
+4. Call `dataloader->clear_device_cache()`
+
+---
+
+## "Feature not found in graph"
+
+**Cause**: Model requests feature not added in `CompileEvent()`
+
+**Solution**: Ensure all `model->i_node` features are added
+
+```cpp
+// In model constructor
+this->i_node = {"pt", "eta", "phi"};
+
+// In graph CompileEvent()
+add_node_data_feature<double>(&particle::pt, "pt");      // ✓
+add_node_data_feature<double>(&particle::eta, "eta");    // ✓
+add_node_data_feature<double>(&particle::phi, "phi");    // ✓
+// Missing features → runtime error
+```
+
+---
+
+# See Also
+
+- @ref framework_overview for complete pipeline
+- @ref modules_module for detailed module docs
+- @ref pyc_physics_page for CUDA kernels
+
+*/

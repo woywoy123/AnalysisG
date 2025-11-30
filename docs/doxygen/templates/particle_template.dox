@@ -1,0 +1,424 @@
+/**
+@file
+@brief Detailed documentation for the particle_template class.
+
+@defgroup particle_template Particle Template
+@ingroup templates_module
+*/
+
+/**
+@page particle_template_page Particle Template
+@tableofcontents
+
+---
+# Quick Navigation
+| Component | Description | Link |
+|-----------|-------------|------|
+| **Particle Template** | Particle object | (Current Page) |
+| @ref event_template | Event container | Creates particles |
+| @ref selection_template_module | Event selection | Operates on particles |
+| @ref graph_template_module | Graph builder | Maps particles to nodes |
+| @ref io_module | ROOT reader | Reads particle data |
+| @ref pyc_physics_page | Kinematics | Physics calculations |
+| @ref tools_module | Utilities | Parent class |
+
+**Typical Workflow**: `io::get_data()` → `event_template::build_event()` → **`particle_template`** → `selection()` OR `graph::define_particle_nodes()`
+
+**Key Properties** (cproperty system):
+- `pt`, `eta`, `phi`, `e` - Four-momentum components
+- `px`, `py`, `pz` - Cartesian momentum
+- `mass` - Invariant mass
+- `charge`, `pdgid`, `status` - Particle identity
+
+**Kinematic Property System**: Interdependent properties with lazy evaluation. Modifying `pt` automatically invalidates `px`, `py`, `pz`, `e`, `mass` - recalculated on next access.
+
+---
+
+@section particle_template_intro Introduction
+
+The `particle_template` class is a cornerstone of the AnalysisG framework, providing a generic and powerful interface for particle-like objects. It inherits from `element_t`, extending its basic data container capabilities with a rich set of kinematic properties and behaviors. This class is designed to be a versatile wrapper around the plain-old-data (POD) `particle_t` struct, which stores the raw kinematic and identity information.
+
+The primary purpose of `particle_template` is to offer a high-level abstraction for particles, enabling complex kinematic calculations, property management, and seamless integration with the framework's I/O and analysis modules. It makes extensive use of the `cproperty` template to create a sophisticated system of interconnected kinematic variables (e.g., pT, eta, phi, mass, energy, px, py, pz).
+
+@section particle_template_kinematics Kinematic Property System
+
+A key feature of `particle_template` is its dynamic and interconnected kinematic property system, built upon the `cproperty` class. This design ensures that different representations of a particle's momentum and energy are always consistent.
+
+- **Interdependence**: When you modify one kinematic variable (e.g., transverse momentum `pt`), all other dependent variables (e.g., Cartesian components `px`, `py`) are automatically and lazily recomputed upon access.
+- **Lazy Evaluation**: Recalculations are only performed when a property is accessed after a dependency has been changed, optimizing performance by avoiding unnecessary computations.
+- **Callbacks**: The connection is established in the constructor, where getter and setter callbacks (static member functions) are assigned to each `cproperty`. For instance, `pt.set_setter(this->set_pt)` links the `pt` property to the `set_pt` function, which in turn updates the underlying `particle_t` data and invalidates dependent properties.
+
+The following kinematic properties are managed by this system:
+- `pt`: Transverse momentum.
+- `eta`: Pseudorapidity.
+- `phi`: Azimuthal angle.
+- `e`: Energy.
+- `mass`: Mass (calculated from the 4-vector).
+- `px`: Momentum component in the x-direction.
+- `py`: Momentum component in the y-direction.
+- `pz`: Momentum component in the z-direction.
+- `charge`: Electric charge.
+- `pdgid`: Particle Data Group ID.
+- `status`: Status code (generator-specific).
+- `index`: Unique index within an event.
+
+@section particle_template_inheritance Inheritance from element_t
+
+As a subclass of `element_t`, `particle_template` inherits the following capabilities:
+- **ROOT I/O**: It can be directly read from and written to ROOT files. The `element_t` base class handles the connection to `TTree` branches.
+- **Underlying Data Pointer**: It holds a pointer to the actual data container (`particle_t* _data`), which is managed by the `event_template` that owns the particle.
+- **Type Information**: It stores type information, allowing for safe casting and identification at runtime.
+
+@section particle_template_usage Usage Example
+
+`particle_template` objects are typically not created directly by the user. Instead, they are managed by an `event_template` instance, which reads a collection of particles from a data source.
+
+```cpp
+// Assume 'event' is an instance of an event_template subclass
+// and has been populated with data.
+
+// Accessing particles from the event
+for (auto& particle_ptr : event->children) {
+    particle_template* particle = (particle_template*)particle_ptr;
+
+    // Get the transverse momentum (triggers calculation if needed)
+    float pt = particle->pt;
+    std::cout << "Particle pT: " << pt << std::endl;
+
+    // Change the transverse momentum
+    // This will invalidate eta, phi, e, px, py, pz, mass
+    particle->pt = 100.0; // 100 GeV
+
+    // Accessing px will now trigger a recalculation based on the new pT
+    float new_px = particle->px;
+    std::cout << "New Px after changing pT: " << new_px << std::endl;
+}
+```
+
+@section particle_template_advanced Advanced Usage
+
+### Example 1: Custom Particle Properties
+
+```cpp
+class Jet : public particle_template {
+public:
+    Jet() : particle_template() {
+        // Register custom properties
+        this->register_cproperty(\"btag_score\", &this->btag_score);
+        this->register_cproperty(\"jvt\", &this->jvt);
+    }
+    
+    // Standard kinematic properties inherited from particle_template:
+    // pt, eta, phi, e, mass, px, py, pz, charge, pdgid
+    
+    // Custom jet-specific properties
+    cproperty<double> btag_score;
+    cproperty<double> jvt;  // Jet Vertex Tagger
+    
+    // Custom methods
+    bool is_btagged(double threshold = 0.8) const {
+        return btag_score > threshold;
+    }
+    
+    bool is_central() const {
+        return std::abs(eta) < 2.5;
+    }
+};
+```
+
+### Example 2: Kinematic Property Interdependence
+
+```cpp
+void demonstrate_property_cascade() {
+    Jet* jet = new Jet();
+    
+    // Set cylindrical coordinates
+    jet->pt = 100.0;   // 100 GeV
+    jet->eta = 1.5;
+    jet->phi = 0.5;
+    jet->e = 150.0;
+    
+    // Cartesian components automatically calculated (lazy evaluation)
+    std::cout << \"px: \" << jet->px << std::endl;  // Triggers calculation
+    std::cout << \"py: \" << jet->py << std::endl;
+    std::cout << \"pz: \" << jet->pz << std::endl;
+    
+    // Modify Cartesian component
+    jet->px = 50.0;  // Invalidates pt, eta, phi
+    
+    // Cylindrical properties recalculated on access
+    std::cout << \"New pt: \" << jet->pt << std::endl;   // Recalculated
+    std::cout << \"New phi: \" << jet->phi << std::endl; // Recalculated
+    
+    delete jet;
+}
+```
+
+### Example 3: Particle Collections and Sorting
+
+```cpp
+void process_jets(std::map<std::string, Jet*>& jets) {
+    // Convert to vector for sorting
+    std::vector<Jet*> jet_vec;
+    for (auto& [key, jet] : jets) {
+        jet_vec.push_back(jet);
+    }
+    
+    // Sort by pT (descending)
+    std::sort(jet_vec.begin(), jet_vec.end(),
+        [](Jet* a, Jet* b) { return a->pt > b->pt; });
+    
+    // Access leading jets
+    if (jet_vec.size() >= 2) {
+        Jet* leading = jet_vec[0];
+        Jet* subleading = jet_vec[1];
+        
+        std::cout << \"Leading jet pT: \" << leading->pt << \" GeV\" << std::endl;
+        std::cout << \"Subleading jet pT: \" << subleading->pt << \" GeV\" << std::endl;
+    }
+    
+    // Filter by criteria
+    std::vector<Jet*> btag_jets;
+    std::copy_if(jet_vec.begin(), jet_vec.end(),
+        std::back_inserter(btag_jets),
+        [](Jet* j) { return j->is_btagged(0.8) && j->is_central(); });
+    
+    std::cout << \"Number of b-tagged central jets: \" << btag_jets.size() << std::endl;
+}
+```
+
+### Example 4: 4-Vector Arithmetic
+
+```cpp
+double calculate_invariant_mass(particle_template* p1, particle_template* p2) {
+    // Add 4-vectors (E, px, py, pz)
+    double E_sum = p1->e + p2->e;
+    double px_sum = p1->px + p2->px;
+    double py_sum = p1->py + p2->py;
+    double pz_sum = p1->pz + p2->pz;
+    
+    // Invariant mass: m^2 = E^2 - p^2
+    double p2 = px_sum*px_sum + py_sum*py_sum + pz_sum*pz_sum;
+    double m2 = E_sum*E_sum - p2;
+    
+    return std::sqrt(std::max(0.0, m2));  // Protect against numerical errors
+}
+
+void reconstruct_W_boson(Lepton* lep, Neutrino* nu) {
+    double m_W = calculate_invariant_mass(lep, nu);
+    std::cout << \"Reconstructed W mass: \" << m_W << \" GeV\" << std::endl;
+    
+    // Expected: ~80.4 GeV
+    if (std::abs(m_W - 80.4) < 10.0) {
+        std::cout << \"Consistent with W boson!\" << std::endl;
+    }
+}
+```
+
+### Example 5: Angular Separation
+
+```cpp
+double delta_R(particle_template* p1, particle_template* p2) {
+    double deta = p1->eta - p2->eta;
+    double dphi = p1->phi - p2->phi;
+    
+    // Handle phi wrap-around at ±π
+    while (dphi > M_PI) dphi -= 2*M_PI;
+    while (dphi < -M_PI) dphi += 2*M_PI;
+    
+    return std::sqrt(deta*deta + dphi*dphi);
+}
+
+bool is_isolated(Lepton* lep, std::vector<Jet*>& jets, double dR_min = 0.4) {
+    for (auto* jet : jets) {
+        if (delta_R(lep, jet) < dR_min) {
+            return false;  // Jet too close to lepton
+        }
+    }
+    return true;  // No nearby jets
+}
+```
+
+@section particle_template_performance Performance Considerations
+
+### Memory Layout
+
+Each `particle_template` object contains:
+- Pointer to `particle_t` struct (~80 bytes of kinematic data)
+- cproperty objects (~16 bytes each × ~12 properties = ~192 bytes)
+- Virtual function table pointer (~8 bytes)
+
+**Total**: ~280 bytes per particle (actual may vary with padding)
+
+### Lazy Evaluation Benefits
+
+```cpp
+// Scenario 1: Only need pt (fast)
+for (auto& [key, jet] : jets) {
+    if (jet->pt > 30.0) {  // Only calculates pt
+        selected_jets.push_back(jet);
+    }
+}  // px, py, pz never calculated!
+
+// Scenario 2: Need all components (slower)
+for (auto& [key, jet] : jets) {
+    double energy = std::sqrt(
+        jet->px*jet->px +   // Calculates px
+        jet->py*jet->py +   // Calculates py
+        jet->pz*jet->pz +   // Calculates pz
+        jet->mass*jet->mass // Calculates mass
+    );
+}
+```
+
+**Best Practice**: Access only properties you need
+
+### Caching Behavior
+
+Properties are cached after first access:
+```cpp
+jet->pt;  // First access: calculates from px, py (slow)
+jet->pt;  // Second access: returns cached value (fast)
+jet->px = 50.0;  // Invalidates pt cache
+jet->pt;  // Recalculates (slow)
+```
+
+@section particle_template_best_practices Best Practices
+
+### 1. Prefer Cylindrical Coordinates for Detector-Based Cuts
+
+```cpp
+// ✓ Good: Natural for detector geometry
+bool pass_cuts(particle_template* p) {
+    return (p->pt > 25.0 &&
+            std::abs(p->eta) < 2.5 &&
+            p->phi > -M_PI && p->phi < M_PI);
+}
+
+// ✗ Bad: Awkward Cartesian cuts
+bool pass_cuts_cart(particle_template* p) {
+    double pt = std::sqrt(p->px*p->px + p->py*p->py);  // Recalculates!
+    return pt > 25.0;
+}
+```
+
+### 2. Batch Property Access
+
+```cpp
+// ✓ Good: Access properties in logical groups
+double eta_val = p->eta;
+double phi_val = p->phi;
+double dR = std::sqrt(deta*deta + dphi*dphi);
+
+// ✗ Bad: Interleaved access causes cache misses
+double dR = std::sqrt(
+    (p1->eta - p2->eta)*(p1->eta - p2->eta) +  // Cache miss
+    (p1->phi - p2->phi)*(p1->phi - p2->phi)    // Cache miss
+);
+```
+
+### 3. Avoid Unnecessary Modifications
+
+```cpp
+// ✓ Good: Read-only access preserves cache
+for (const auto* jet : jets) {
+    std::cout << jet->pt << std::endl;  // No invalidation
+}
+
+// ✗ Bad: Modification invalidates dependent properties
+for (auto* jet : jets) {
+    jet->pt = jet->pt * 1.0;  // Pointless write, invalidates cache!
+}
+```
+
+### 4. Use Appropriate Precision
+
+```cpp
+// For most physics: double precision sufficient
+cproperty<double> pt;  // ✓
+
+// For large-scale ML: float acceptable
+cproperty<float> pt_ml;  // ✓ (if memory constrained)
+
+// Avoid mixed precision within same particle
+cproperty<double> pt;
+cproperty<float> eta;  // ✗ Inconsistent, error-prone
+```
+
+@section particle_template_troubleshooting Troubleshooting
+
+### \"NaN in kinematic properties\"
+
+**Cause**: Invalid underlying data or division by zero
+
+**Solution**: Validate input
+```cpp
+if (std::isnan(jet->pt) || std::isinf(jet->pt)) {
+    std::cerr << \"Invalid jet pT: \" << jet->pt << std::endl;
+    // Check underlying data
+    std::cerr << \"Raw px: \" << jet->_data->Px << std::endl;
+    std::cerr << \"Raw py: \" << jet->_data->Py << std::endl;
+}
+```
+
+### \"Properties not updating after modification\"
+
+**Cause**: Cache not properly invalidated
+
+**Solution**: Ensure setter is called
+```cpp
+// ✗ Bad: Direct access bypasses setter
+jet->_data->Px = 50.0;  // Doesn't invalidate cache!
+
+// ✓ Good: Use cproperty setter
+jet->px = 50.0;  // Properly invalidates pt, eta, phi
+```
+
+### \"Segmentation fault when accessing property\"
+
+**Cause**: Particle deleted or _data pointer invalid
+
+**Solution**: Check pointer validity
+```cpp
+if (jet && jet->_data) {
+    double pt = jet->pt;  // Safe
+} else {
+    std::cerr << \"Invalid particle pointer!\" << std::endl;
+}
+```
+
+### \"Unexpected property values\"
+
+**Cause**: Coordinate system confusion
+
+**Solution**: Be explicit about coordinates
+```cpp
+// If reading from ROOT in (pt, eta, phi):
+jet->pt = tree_pt;
+jet->eta = tree_eta;
+jet->phi = tree_phi;
+jet->e = tree_e;
+
+// Don't mix with Cartesian:
+// jet->px = tree_px;  // ✗ Would cause inconsistency!
+```
+
+@section particle_template_dependencies Dependencies
+
+- **`element_t`**: The base class providing I/O and data management capabilities. See @ref element_page for details.
+- **`particle_t`**: The underlying POD struct that stores the raw data. See @ref particles_page for details.
+- **`cproperty`**: The template class used to implement the dynamic kinematic properties. See @ref property_page for details.
+- **`tools.h`**: Provides utility functions, such as `tools::hash`, used within the class.
+
+@section particle_template_seealso See Also
+
+- @ref event_template_page - Creates and manages particles
+- @ref pyc_physics_page - GPU-accelerated physics calculations
+- @ref pyc_transform_page - Coordinate transformations
+- @ref selection_template_module - Operates on particle collections
+- @ref graph_template_module - Maps particles to graph nodes
+
+@see element_t
+@see particle_t
+@see cproperty
+*/

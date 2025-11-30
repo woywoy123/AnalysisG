@@ -1,0 +1,11 @@
+/**
+@file
+@brief Documentation for selections/analysis/regions.
+
+@defgroup selections_analysis_regions Selections: analysis/regions
+@ingroup selections_module
+
+@details
+Region selection helpers.
+Source: `src/AnalysisG/selections/analysis/regions/`
+*/

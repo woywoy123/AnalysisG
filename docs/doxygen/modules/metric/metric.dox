@@ -1,0 +1,728 @@
+/**
+@file
+@brief Comprehensive documentation for the metric_template class - abstract base for all performance evaluation metrics.
+
+@defgroup metric_template_module metric_template
+@ingroup modules_module
+
+@brief The `metric_template` module provides an abstract base class for implementing custom performance metrics to evaluate machine learning models and analysis selections.
+
+@details
+
+---
+
+# Quick Navigation
+
+| Module | Description | Link |
+|--------|-------------|------|
+| **Metric Template** | Performance evaluation | (Current Page) |
+| @ref model_template_module | GNN models | Provides predictions |
+| @ref analysis_module | Pipeline orchestrator | Executes metrics |
+| @ref optimizer_module | Training orchestrator | Triggers calculation |
+| @ref dataloader_module | Dataset batching | Provides test data |
+| @ref tools_module | Utilities | Parent class |
+| @ref notification_module | Logging | Parent class |
+
+**Typical Workflow**: `model::forward()` → predictions → **`metric_template::define_metric()`** → calculations → `metric::end()` → results output
+
+---
+
+*/
+
+/**
+@page metric_template_module_page Metric Template Module
+@tableofcontents
+
+@section metric_intro Introduction
+
+The `metric_template` class, defined in `src/AnalysisG/modules/metric/`, is a powerful and flexible component that allows users to define and calculate any conceivable metric for evaluating machine learning models, from simple accuracy calculations to complex physics-based observables.
+
+@section metric_concepts Core Concepts
+
+The `metric_template` is designed to be subclassed, with users implementing virtual methods to define specific metric logic. A key feature is its ability to "link" to one or more `model_template` instances, accessing inputs (data, truth) and outputs (predictions) for performance evaluation.
+
+@section metric_workflow Workflow
+
+1. **Inheritance and Implementation**:
+   - User creates a new class inheriting from `metric_template`
+   - Implements virtual methods called at different pipeline stages:
+     - **`define_variables()`**: (Optional) Declare required variables from model
+     - **`define_metric(metric_t* v)`**: Core calculation logic
+        -   **`event()`**: (Optional) Called once per event, useful for event-level initialization.
+        -   **`batch()`**: (Optional) Called once per batch, useful for batch-level aggregation.
+        -   **`end()`**: Called once at the very end of the analysis, ideal for finalizing calculations (e.g., calculating an average) and writing results to a file.
+
+2.  **Variable Declaration (`variables` cproperty)**:
+    -   Metrics declare their data requirements using a specific string format:
+        `"<ModelName>::<Level>::<Type>::<variable>"`
+    -   **`<ModelName>`**: The name of the `model_template` to get data from.
+    -   **`<Level>`**: `data`, `truth`, or `prediction`.
+    -   **`<Type>`**: `graph`, `node`, `edge`, or `extra`.
+    -   **`<variable>`**: The name of the variable (e.g., `pt`, `energy`, `signal`).
+    -   **Example**: `"GNN_Model_1::prediction::node::signal"` requests the `signal` variable from the node-level predictions of the model named `GNN_Model_1`.
+
+3.  **Data Access (`metric_t` object)**:
+    -   The `define_metric` method receives a `metric_t` object. This object acts as a container for all the data requested by the metric for the current scope (event or batch).
+    -   The `get<type>(graph_enum, name)` method is used to retrieve a specific variable as a vector of the desired type.
+    -   **Example**: `v->get<std::vector<float>>(graph_enum::pred_node, "signal")` retrieves the "signal" predictions.
+
+4.  **Linking to Models (`run_names` cproperty)**:
+    -   A metric must be told which specific trained model states (i.e., which epoch and k-fold) to evaluate. This is configured via the `run_names` cproperty.
+    -   The key is a string identifying the model and state: `"<ModelName>::epoch-<E>::k-<K>.pt"`
+    -   The value is the path to the saved model `.pt` file.
+    -   The framework uses this information to load the correct model weights before running inference and passing the results to the metric.
+
+5.  **Output and Plotting**:
+    -   Metrics can save their results using the `register_output` and `write` methods, which interface with a ROOT-based `writer` class to save data to a `.root` file.
+    -   The framework also includes a `plotting` class, which can be used within the `end()` method to generate histograms and other plots from the calculated metric data.
+
+### Example of a Custom Metric:
+
+```cpp
+#include <templates/metric_template.h>
+
+class MyAccuracyMetric : public metric_template {
+public:
+    // Constructor: Define the variables and model states needed
+    MyAccuracyMetric() {
+        this->name = "MyAccuracy";
+        this->variables = {
+            "MyGNN::prediction::node::is_signal", // Request prediction
+            "MyGNN::truth::node::is_signal"       // Request truth
+        };
+        this->run_names = {
+            {"MyGNN::epoch-10::k-2.pt", "/path/to/model_e10_k2.pt"}
+        };
+    }
+
+    // Keep track of correct predictions
+    int correct = 0;
+    int total = 0;
+
+    // Core logic: Called for each batch
+    void define_metric(metric_t* v) override {
+        // Get the predicted and true signal labels
+        auto pred_signal = v->get<std::vector<float>>(graph_enum::pred_node, "is_signal");
+        auto truth_signal = v->get<std::vector<int>>(graph_enum::truth_node, "is_signal");
+
+        for (size_t i = 0; i < pred_signal.size(); ++i) {
+            bool prediction = pred_signal[i] > 0.5; // Apply threshold
+            if (prediction == (bool)truth_signal[i]) {
+                correct++;
+            }
+            total++;
+        }
+    }
+
+    // Final step: Calculate and print the final accuracy
+    void end() override {
+        double accuracy = (double)correct / total;
+        this->success("Final Accuracy: " + std::to_string(accuracy));
+        
+        // Save the result to a file
+        this->register_output("results", "accuracy", &accuracy);
+        this->write("results", "accuracy", &accuracy, true);
+    }
+};
+```
+
+---
+
+# Class Structure
+
+## Inheritance Hierarchy
+
+```
+notification
+    ↓
+  tools
+    ↓
+metric_template
+    ↓
+ (User Metrics)
+```
+
+Inherits from:
+- **tools**: String utilities, filesystem operations
+- **notification**: Colored logging, progress bars
+
+## Member Variables
+
+### Configuration
+
+| Member | Type | Description |
+|--------|------|-------------|
+| `name` | `cproperty<std::string>` | Metric identifier |
+| `variables` | `cproperty<std::vector<std::string>>` | Required data declarations |
+| `run_names` | `cproperty<std::map<std::string, std::string>>` | Model state → checkpoint path |
+
+### Data Access
+
+| Member | Type | Description |
+|--------|------|-------------|
+| `models` | `std::map<std::string, model_template*>` | Linked model instances |
+| `writer` | `writer*` | ROOT file output handler |
+| `plotter` | `plotting*` | Histogram/plot generator |
+
+---
+
+# Core Methods
+
+## Virtual Methods (User Implements)
+
+### define_variables()
+
+**Purpose**: Declare required data from models
+
+**Pattern**: Populate `variables` cproperty with declaration strings
+
+**Declaration Format**: `\"ModelName::Level::Type::variable\"`
+
+**Components**:
+- **ModelName**: String identifier of model (from model->name)
+- **Level**: `data`, `truth`, or `prediction`
+- **Type**: `graph`, `node`, `edge`, `extra`
+- **variable**: Feature/output name
+
+**Examples**:
+```cpp
+void define_variables() override {
+    this->variables = {
+        \"TopGNN::data::node::pt\",              // Input: node pt
+        \"TopGNN::truth::node::from_top\",       // Truth: node label
+        \"TopGNN::prediction::node::top_score\", // Output: node prediction
+        \"TopGNN::prediction::graph::event_class\" // Output: graph prediction
+    };
+}
+```
+
+### define_metric(metric_t* v)
+
+**Purpose**: Core metric calculation logic
+
+**Called**: Once per event (default) or once per batch
+
+**Parameters**:
+- `v`: metric_t object containing all requested data
+
+**Data Access Methods**:
+```cpp
+// Get vector of values
+template<typename T>
+T get(graph_enum type, std::string name);
+
+// graph_enum options:
+// - graph_enum::data_node
+// - graph_enum::truth_node
+// - graph_enum::pred_node
+// - graph_enum::data_edge
+// - graph_enum::truth_edge
+// - graph_enum::pred_edge
+// - graph_enum::data_graph
+// - graph_enum::truth_graph
+// - graph_enum::pred_graph
+```
+
+**Example**:
+```cpp
+void define_metric(metric_t* v) override {
+    // Get predictions and truth
+    auto pred = v->get<std::vector<float>>(graph_enum::pred_node, \"top_score\");
+    auto truth = v->get<std::vector<int>>(graph_enum::truth_node, \"from_top\");
+    
+    // Calculate metric
+    for (size_t i = 0; i < pred.size(); ++i) {
+        if ((pred[i] > 0.5) == (bool)truth[i]) {
+            correct++;
+        }
+        total++;
+    }
+}
+```
+
+### event()
+
+**Purpose**: Per-event initialization or processing
+
+**Called**: Once per event before define_metric()
+
+**Optional**: Override only if needed
+
+**Use Cases**:
+- Event-level counters
+- Per-event output
+- Event metadata extraction
+
+**Example**:
+```cpp
+int event_count = 0;
+
+void event() override {
+    event_count++;
+    if (event_count % 1000 == 0) {
+        this->info(\"Processed \" + std::to_string(event_count) + \" events\");
+    }
+}
+```
+
+### batch()
+
+**Purpose**: Per-batch aggregation or processing
+
+**Called**: Once per batch after define_metric()
+
+**Optional**: Override only if needed
+
+**Use Cases**:
+- Batch-level statistics
+- Aggregating batch results
+- Clearing temporary storage
+
+### end()
+
+**Purpose**: Finalize calculations and output results
+
+**Called**: Once at end of entire metric evaluation
+
+**Typical Tasks**:
+- Calculate final statistics
+- Generate plots
+- Write output to files
+- Print summary
+
+**Example**:
+```cpp
+void end() override {
+    double accuracy = (double)correct / total;
+    double error = std::sqrt(accuracy * (1-accuracy) / total);
+    
+    this->success(\"Final Accuracy: \" + std::to_string(accuracy));
+    this->info(\"Statistical Error: \" + std::to_string(error));
+    
+    // Save to ROOT file
+    this->register_output(\"results\", \"accuracy\", &accuracy);
+    this->write(\"results\", \"accuracy\", &accuracy, true);
+    
+    // Generate histogram
+    plotting* plt = new plotting();
+    plt->histogram(predictions, \"Prediction Distribution\", 50, 0.0, 1.0);
+    plt->save(\"prediction_histogram.pdf\");
+}
+```
+
+---
+
+# Variable Declaration System
+
+## Declaration String Format
+
+**Pattern**: `\"ModelName::Level::Type::variable\"`
+
+### Level Options
+
+| Level | Description | Example Use Case |
+|-------|-------------|------------------|
+| `data` | Input features | Check input distributions |
+| `truth` | Ground truth labels | Compare with predictions |
+| `prediction` | Model outputs | Calculate performance metrics |
+| `extra` | Additional model info | Access intermediate layers |
+
+### Type Options
+
+| Type | Description | Shape | Example |
+|------|-------------|-------|---------|
+| `graph` | Graph-level scalars | (1,) per graph | Event classification |
+| `node` | Node-level features | (N,) per graph | Node classification |
+| `edge` | Edge-level features | (E,) per graph | Edge prediction |
+| `extra` | Custom outputs | Variable | Attention weights |
+
+### Example Declarations
+
+```cpp
+// Node classification metric
+this->variables = {
+    \"MyGNN::prediction::node::class_prob\",  // Node probabilities
+    \"MyGNN::truth::node::class_label\"       // True labels
+};
+
+// Graph classification metric
+this->variables = {
+    \"MyGNN::prediction::graph::signal_score\",  // Event-level score
+    \"MyGNN::truth::graph::is_signal\"          // True event class
+};
+
+// Multi-level metric
+this->variables = {
+    \"MyGNN::data::node::pt\",                  // Input features
+    \"MyGNN::prediction::node::top_score\",     // Node predictions
+    \"MyGNN::prediction::graph::event_class\",  // Graph prediction
+    \"MyGNN::truth::node::from_top\",           // Node truth
+    \"MyGNN::truth::graph::process_id\"         // Graph truth
+};
+```
+
+---
+
+# Model Linking System
+
+## run_names Configuration
+
+**Purpose**: Specify which trained model states to evaluate
+
+**Format**: `{\"ModelName::epoch-E::k-K.pt\" : \"/path/to/checkpoint.pt\"}`
+
+**Components**:
+- **ModelName**: Must match model->name
+- **epoch-E**: Epoch number
+- **k-K**: K-fold number
+- **.pt**: PyTorch checkpoint extension
+
+**Examples**:
+```cpp
+// Single model state
+this->run_names = {
+    {\"TopGNN::epoch-99::k-0.pt\", \"./checkpoints/model_e99_k0.pt\"}
+};
+
+// Multiple epochs (compare training progress)
+this->run_names = {
+    {\"TopGNN::epoch-10::k-0.pt\", \"./checkpoints/model_e10_k0.pt\"},
+    {\"TopGNN::epoch-50::k-0.pt\", \"./checkpoints/model_e50_k0.pt\"},
+    {\"TopGNN::epoch-99::k-0.pt\", \"./checkpoints/model_e99_k0.pt\"}
+};
+
+// Multiple k-folds (ensemble evaluation)
+this->run_names = {
+    {\"TopGNN::epoch-99::k-0.pt\", \"./checkpoints/model_e99_k0.pt\"},
+    {\"TopGNN::epoch-99::k-1.pt\", \"./checkpoints/model_e99_k1.pt\"},
+    {\"TopGNN::epoch-99::k-2.pt\", \"./checkpoints/model_e99_k2.pt\"},
+    {\"TopGNN::epoch-99::k-3.pt\", \"./checkpoints/model_e99_k3.pt\"},
+    {\"TopGNN::epoch-99::k-4.pt\", \"./checkpoints/model_e99_k4.pt\"}
+};
+```
+
+---
+
+# Complete Usage Examples
+
+## Example 1: Classification Accuracy
+
+```cpp
+#include <templates/metric_template.h>
+
+class ClassificationAccuracy : public metric_template {
+public:
+    ClassificationAccuracy() {
+        this->name = \"Accuracy\";
+        this->variables = {
+            \"MyGNN::prediction::node::class_prob\",
+            \"MyGNN::truth::node::class_label\"
+        };
+        this->run_names = {
+            {\"MyGNN::epoch-99::k-0.pt\", \"./checkpoints/best.pt\"}
+        };
+    }
+    
+private:
+    int correct = 0;
+    int total = 0;
+    
+    void define_metric(metric_t* v) override {
+        auto pred = v->get<std::vector<float>>(graph_enum::pred_node, \"class_prob\");
+        auto truth = v->get<std::vector<int>>(graph_enum::truth_node, \"class_label\");
+        
+        for (size_t i = 0; i < pred.size(); ++i) {
+            bool prediction = pred[i] > 0.5;
+            if (prediction == (bool)truth[i]) {
+                correct++;
+            }
+            total++;
+        }
+    }
+    
+    void end() override {
+        double accuracy = (double)correct / total;
+        this->success(\"Accuracy: \" + std::to_string(accuracy * 100) + \"%\");
+        
+        this->register_output(\"accuracy\", \"value\", &accuracy);
+        this->write(\"accuracy\", \"value\", &accuracy, true);
+    }
+};
+```
+
+## Example 2: ROC Curve
+
+```cpp
+#include <templates/metric_template.h>
+#include <plotting/roc.h>
+
+class ROCMetric : public metric_template {
+public:
+    ROCMetric() {
+        this->name = \"ROC\";
+        this->variables = {
+            \"MyGNN::prediction::graph::signal_score\",
+            \"MyGNN::truth::graph::is_signal\"
+        };
+        this->run_names = {
+            {\"MyGNN::epoch-99::k-0.pt\", \"./checkpoints/best.pt\"}
+        };
+    }
+    
+private:
+    std::vector<float> scores;
+    std::vector<int> labels;
+    
+    void define_metric(metric_t* v) override {
+        auto pred = v->get<std::vector<float>>(graph_enum::pred_graph, \"signal_score\");
+        auto truth = v->get<std::vector<int>>(graph_enum::truth_graph, \"is_signal\");
+        
+        scores.insert(scores.end(), pred.begin(), pred.end());
+        labels.insert(labels.end(), truth.begin(), truth.end());
+    }
+    
+    void end() override {
+        // Calculate ROC curve
+        roc* roc_calc = new roc();
+        roc_calc->add_truth(&labels);
+        roc_calc->add_data(&scores);
+        roc_calc->calculate();
+        
+        double auc = roc_calc->area_under_curve();
+        this->success(\"AUC: \" + std::to_string(auc));
+        
+        // Plot ROC curve
+        plotting* plt = new plotting();
+        plt->plot_roc(roc_calc);
+        plt->save(\"roc_curve.pdf\");
+        
+        delete roc_calc;
+        delete plt;
+    }
+};
+```
+
+## Example 3: Confusion Matrix
+
+```cpp
+#include <templates/metric_template.h>
+
+class ConfusionMatrix : public metric_template {
+public:
+    ConfusionMatrix() {
+        this->name = \"ConfusionMatrix\";
+        this->variables = {
+            \"MyGNN::prediction::node::class\",
+            \"MyGNN::truth::node::class\"
+        };
+        this->run_names = {
+            {\"MyGNN::epoch-99::k-0.pt\", \"./checkpoints/best.pt\"}
+        };
+    }
+    
+private:
+    std::map<std::pair<int,int>, int> matrix;  // (true_class, pred_class) → count
+    
+    void define_metric(metric_t* v) override {
+        auto pred = v->get<std::vector<int>>(graph_enum::pred_node, \"class\");
+        auto truth = v->get<std::vector<int>>(graph_enum::truth_node, \"class\");
+        
+        for (size_t i = 0; i < pred.size(); ++i) {
+            matrix[{truth[i], pred[i]}]++;
+        }
+    }
+    
+    void end() override {
+        this->success(\"Confusion Matrix:\");
+        std::cout << \"True\\\\Pred\\t0\\t1\\t2\" << std::endl;
+        for (int true_class = 0; true_class < 3; true_class++) {
+            std::cout << true_class << \"\\t\\t\";
+            for (int pred_class = 0; pred_class < 3; pred_class++) {
+                std::cout << matrix[{true_class, pred_class}] << \"\\t\";
+            }
+            std::cout << std::endl;
+        }
+    }
+};
+```
+
+## Example 4: Multi-Epoch Comparison
+
+```cpp
+class TrainingProgress : public metric_template {
+public:
+    TrainingProgress() {
+        this->name = \"TrainingProgress\";
+        this->variables = {
+            \"MyGNN::prediction::node::score\",
+            \"MyGNN::truth::node::label\"
+        };
+        
+        // Evaluate multiple epochs
+        this->run_names = {
+            {\"MyGNN::epoch-10::k-0.pt\", \"./checkpoints/e10.pt\"},
+            {\"MyGNN::epoch-20::k-0.pt\", \"./checkpoints/e20.pt\"},
+            {\"MyGNN::epoch-50::k-0.pt\", \"./checkpoints/e50.pt\"},
+            {\"MyGNN::epoch-99::k-0.pt\", \"./checkpoints/e99.pt\"}
+        };
+    }
+    
+private:
+    std::map<int, std::pair<int, int>> epoch_stats;  // epoch → (correct, total)
+    int current_epoch = -1;
+    
+    void define_metric(metric_t* v) override {
+        // Extract epoch from current model state
+        // (Framework provides current run_name being evaluated)
+        
+        auto pred = v->get<std::vector<float>>(graph_enum::pred_node, \"score\");
+        auto truth = v->get<std::vector<int>>(graph_enum::truth_node, \"label\");
+        
+        for (size_t i = 0; i < pred.size(); ++i) {
+            if ((pred[i] > 0.5) == (bool)truth[i]) {
+                epoch_stats[current_epoch].first++;
+            }
+            epoch_stats[current_epoch].second++;
+        }
+    }
+    
+    void end() override {
+        this->success(\"Training Progress:\");
+        for (auto& [epoch, stats] : epoch_stats) {
+            double acc = (double)stats.first / stats.second;
+            std::cout << \"Epoch \" << epoch << \": \" << acc * 100 << \"%\" << std::endl;
+        }
+        
+        // Plot training curve
+        plotting* plt = new plotting();
+        std::vector<double> epochs, accuracies;
+        for (auto& [epoch, stats] : epoch_stats) {
+            epochs.push_back(epoch);
+            accuracies.push_back((double)stats.first / stats.second);
+        }
+        plt->plot(epochs, accuracies, \"Training Accuracy\");
+        plt->save(\"training_curve.pdf\");
+    }
+};
+```
+
+---
+
+# Output Methods
+
+## ROOT File Output
+
+### register_output(std::string branch, std::string name, void* data)
+
+**Purpose**: Register variable for ROOT tree output
+
+**Parameters**:
+- `branch`: Tree/branch name
+- `name`: Variable name
+- `data`: Pointer to data
+
+### write(std::string branch, std::string name, void* data, bool close)
+
+**Purpose**: Write data to ROOT file
+
+**Parameters**:
+- `close`: If true, close ROOT file after writing
+
+**Example**:
+```cpp
+double accuracy = 0.95;
+this->register_output(\"results\", \"accuracy\", &accuracy);
+this->write(\"results\", \"accuracy\", &accuracy, true);
+```
+
+## Plotting System
+
+### histogram()
+
+**Purpose**: Generate histogram
+
+**Example**:
+```cpp
+plotting* plt = new plotting();
+plt->histogram(data, \"Distribution\", num_bins, min, max);
+plt->save(\"histogram.pdf\");
+```
+
+### plot()
+
+**Purpose**: Generate line plot
+
+**Example**:
+```cpp
+plt->plot(x_values, y_values, \"Title\");
+plt->save(\"plot.pdf\");
+```
+
+---
+
+# Best Practices
+
+## 1. Use Descriptive Metric Names
+
+```cpp
+// ✓ Good
+this->name = \"NodeClassificationAccuracy\";
+
+// ✗ Bad
+this->name = \"metric1\";
+```
+
+## 2. Validate Data Before Processing
+
+```cpp
+void define_metric(metric_t* v) override {
+    auto pred = v->get<std::vector<float>>(graph_enum::pred_node, \"score\");
+    auto truth = v->get<std::vector<int>>(graph_enum::truth_node, \"label\");
+    
+    if (pred.size() != truth.size()) {
+        this->failure(\"Size mismatch: pred=\" + std::to_string(pred.size()) + 
+                     \" truth=\" + std::to_string(truth.size()));
+        return;
+    }
+    
+    // ... calculation ...
+}
+```
+
+## 3. Use Streaming for Large Datasets
+
+```cpp
+// ✓ Good: Update running statistics
+void define_metric(metric_t* v) override {
+    // Update mean, variance, etc. incrementally
+}
+
+// ✗ Bad: Store all data in memory
+std::vector<float> all_predictions;  // Can exhaust memory
+```
+
+## 4. Provide Progress Updates
+
+```cpp
+int batch_count = 0;
+
+void batch() override {
+    batch_count++;
+    if (batch_count % 100 == 0) {
+        this->info(\"Processed \" + std::to_string(batch_count) + \" batches\");
+    }
+}
+```
+
+---
+
+@see model_template for model outputs
+@see analysis_module for metric execution
+@see plotting for visualization
+@see roc for ROC curve calculation
+
+*/
+@see `metric_t`
+@see `plotting`
+
+*/
