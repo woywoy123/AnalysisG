@@ -1,0 +1,520 @@
+/**
+ * @defgroup modules_group Modules
+ * @brief Specialized modules extending AnalysisG functionality.
+ *
+ * The Modules directory contains specialized components that extend the framework's
+ * capabilities. Each module provides specific functionality for physics analysis,
+ * machine learning, data handling, and utility operations.
+ *
+ * @section modules_structure Module Structure
+ *
+ * Each module follows a consistent directory structure:
+ *
+ * ```
+ * module_name/
+ * ├── CMakeLists.txt       # Build configuration
+ * ├── include/             # Header files
+ * │   └── templates/       # Template class headers
+ * │       └── module.h
+ * └── cxx/                 # Implementation files
+ *     └── module.cxx
+ * ```
+ *
+ * @section modules_list Available Modules
+ *
+ * - @ref analysis_module - Central analysis orchestration
+ * - @ref container_module - Data container management
+ * - @ref dataloader_module - Data loading and batching
+ * - @ref event_module - Event data structures
+ * - @ref graph_module - Graph construction
+ * - @ref io_module - Input/output operations
+ * - @ref lossfx_module - Loss functions
+ * - @ref meta_module - Metadata handling
+ * - @ref metric_module - Metric calculations
+ * - @ref model_module - ML model templates
+ * - @ref notification_module - Logging system
+ * - @ref optimizer_module - Model optimization
+ * - @ref particle_module - Particle representations
+ * - @ref plotting_module - Visualization
+ * - @ref sampletracer_module - Sample tracking
+ * - @ref selection_module - Event selection
+ * - @ref structs_module - Core structures
+ * - @ref tools_module - Utilities
+ * - @ref typecasting_module - Type conversions
+ */
+
+/**
+ * @defgroup analysis_module Analysis Module
+ * @ingroup modules_group
+ * @brief Central orchestrator for physics analysis workflows.
+ *
+ * @section analysis_overview Overview
+ *
+ * The Analysis module contains the main @ref analysis class, which serves as the
+ * central orchestrator for the entire analysis workflow. It coordinates:
+ *
+ * - Data loading and sample management
+ * - Event processing and reconstruction
+ * - Selection application
+ * - Graph construction
+ * - Model training and inference
+ * - Metric evaluation
+ *
+ * @section analysis_workflow Workflow
+ *
+ * A typical analysis workflow using the analysis class:
+ *
+ * 1. Create an analysis instance
+ * 2. Add data samples with `add_samples()`
+ * 3. Add event templates with `add_event_template()`
+ * 4. Add graph templates with `add_graph_template()`
+ * 5. Add selection templates with `add_selection_template()`
+ * 6. Add models with `add_model()`
+ * 7. Add metrics with `add_metric_template()`
+ * 8. Configure settings via `m_settings`
+ * 9. Start execution with `start()`
+ *
+ * @section analysis_settings Configuration
+ *
+ * The analysis class uses the `settings_t` structure for configuration:
+ *
+ * - Output directory settings
+ * - Threading configuration
+ * - Cache management
+ * - Training parameters
+ *
+ * @see analysis
+ * @see settings_t
+ */
+
+/**
+ * @defgroup container_module Container Module
+ * @ingroup modules_group
+ * @brief Data container management for efficient storage.
+ *
+ * @section container_overview Overview
+ *
+ * The Container module provides data container classes for efficient storage
+ * and management of analysis data, including graphs and tensors.
+ *
+ * @section container_features Features
+ *
+ * - Efficient memory management
+ * - Serialization support (HDF5)
+ * - Batch operations
+ * - Device transfer (CPU/CUDA)
+ *
+ * @see container
+ */
+
+/**
+ * @defgroup dataloader_module DataLoader Module
+ * @ingroup modules_group
+ * @brief Efficient data loading and batching for training.
+ *
+ * @section dataloader_overview Overview
+ *
+ * The DataLoader module provides functionality for efficient data loading,
+ * batching, and shuffling during model training and evaluation.
+ *
+ * @section dataloader_features Features
+ *
+ * - Batch construction from graph data
+ * - Shuffling and randomization
+ * - Multi-threaded loading
+ * - K-fold cross-validation support
+ * - Device placement (CPU/CUDA)
+ *
+ * @section dataloader_batching Batching
+ *
+ * The dataloader creates batches by:
+ * 1. Collecting multiple graphs
+ * 2. Concatenating node features with batch indexing
+ * 3. Adjusting edge indices for the batched graph
+ * 4. Stacking graph-level features
+ *
+ * @see dataloader
+ */
+
+/**
+ * @defgroup event_module Event Module
+ * @ingroup modules_group
+ * @brief Event data structures and processing.
+ *
+ * @section event_overview Overview
+ *
+ * The Event module provides the @ref event_template class, which serves as
+ * the base class for defining event data structures in physics analyses.
+ *
+ * @section event_structure Structure
+ *
+ * An event template defines:
+ *
+ * - **Trees**: ROOT TTree names to read
+ * - **Branches**: Branch names within trees
+ * - **Leaves**: Individual variables to extract
+ * - **Particles**: Particle collections to construct
+ *
+ * @section event_subclassing Creating Custom Events
+ *
+ * To define a custom event type:
+ *
+ * 1. Subclass @ref event_template
+ * 2. In the constructor, call `add_tree()`, `add_branch()`, `add_leaf()`
+ * 3. Register particle types with `register_particle()`
+ * 4. Override `build(element_t*)` to process raw data
+ *
+ * @see event_template
+ */
+
+/**
+ * @defgroup graph_module Graph Module
+ * @ingroup modules_group
+ * @brief Graph construction and manipulation.
+ *
+ * @section graph_overview Overview
+ *
+ * The Graph module provides the @ref graph_template class for constructing
+ * graph representations from physics events.
+ *
+ * @section graph_construction Graph Construction
+ *
+ * To create a graph:
+ *
+ * 1. Subclass @ref graph_template
+ * 2. In `CompileEvent()`, define which particles become nodes
+ * 3. Define the edge topology using `define_topology()`
+ * 4. Add features using `add_node_data_feature()`, `add_edge_data_feature()`, etc.
+ *
+ * @section graph_features Feature Types
+ *
+ * The graph template supports:
+ *
+ * - **Node Data Features** (D-*): Input features for nodes
+ * - **Node Truth Features** (T-*): Target labels for nodes
+ * - **Edge Data Features** (D-*): Input features for edges
+ * - **Edge Truth Features** (T-*): Target labels for edges
+ * - **Graph Data Features** (D-*): Input features for entire graph
+ * - **Graph Truth Features** (T-*): Target labels for graph
+ *
+ * @see graph_template
+ * @see graph_t
+ */
+
+/**
+ * @defgroup io_module IO Module
+ * @ingroup modules_group
+ * @brief Input/output operations for data handling.
+ *
+ * @section io_overview Overview
+ *
+ * The IO module provides functionality for reading and writing data files,
+ * including ROOT files and HDF5 storage.
+ *
+ * @section io_formats Supported Formats
+ *
+ * - **ROOT files**: Reading physics data from ROOT TTrees
+ * - **HDF5 files**: Storing processed graphs and tensors
+ *
+ * @see io
+ */
+
+/**
+ * @defgroup lossfx_module Loss Functions Module
+ * @ingroup modules_group
+ * @brief Loss function implementations for model training.
+ *
+ * @section lossfx_overview Overview
+ *
+ * The Loss Functions module provides various loss function implementations
+ * for training machine learning models in physics applications.
+ *
+ * @section lossfx_functions Available Loss Functions
+ *
+ * The module includes loss functions suitable for:
+ *
+ * - Classification tasks (cross-entropy, focal loss)
+ * - Regression tasks (MSE, MAE)
+ * - Custom physics-informed losses
+ *
+ * @see lossfx
+ */
+
+/**
+ * @defgroup meta_module Meta Module
+ * @ingroup modules_group
+ * @brief Metadata handling and management.
+ *
+ * @section meta_overview Overview
+ *
+ * The Meta module handles metadata associated with samples, events, and
+ * analysis configurations.
+ *
+ * @section meta_information Stored Information
+ *
+ * Metadata includes:
+ *
+ * - Sample identification
+ * - Cross-section weights
+ * - Processing history
+ * - Configuration snapshots
+ *
+ * @see meta
+ */
+
+/**
+ * @defgroup metric_module Metric Module
+ * @ingroup modules_group
+ * @brief Base template for performance metrics.
+ *
+ * @section metric_overview Overview
+ *
+ * The Metric module provides the @ref metric_template class for implementing
+ * custom performance metrics in physics analyses.
+ *
+ * @section metric_types Metric Types
+ *
+ * Common metric types include:
+ *
+ * - Accuracy metrics
+ * - Efficiency measurements
+ * - Physics-specific quantities (mass resolution, etc.)
+ * - ROC curves and AUC
+ *
+ * @see metric_template
+ */
+
+/**
+ * @defgroup model_module Model Module
+ * @ingroup modules_group
+ * @brief Machine learning model templates.
+ *
+ * @section model_overview Overview
+ *
+ * The Model module provides the @ref model_template class for implementing
+ * machine learning models using PyTorch (LibTorch).
+ *
+ * @section model_structure Model Structure
+ *
+ * A model template defines:
+ *
+ * - **Forward pass**: Model architecture and computation
+ * - **Input features**: Which graph features to use
+ * - **Output format**: Predictions at node, edge, or graph level
+ * - **Device placement**: CPU or CUDA execution
+ *
+ * @section model_training Training
+ *
+ * Models are trained using the optimizer module with configurable:
+ *
+ * - Learning rate scheduling
+ * - Batch size
+ * - Number of epochs
+ * - Early stopping criteria
+ *
+ * @see model_template
+ * @see optimizer_params_t
+ */
+
+/**
+ * @defgroup notification_module Notification Module
+ * @ingroup modules_group
+ * @brief Logging and notification system.
+ *
+ * @section notification_overview Overview
+ *
+ * The Notification module provides logging functionality for tracking
+ * analysis progress and debugging.
+ *
+ * @section notification_levels Log Levels
+ *
+ * - Debug
+ * - Info
+ * - Warning
+ * - Error
+ *
+ * @see notification
+ */
+
+/**
+ * @defgroup optimizer_module Optimizer Module
+ * @ingroup modules_group
+ * @brief Model optimization and training loops.
+ *
+ * @section optimizer_overview Overview
+ *
+ * The Optimizer module provides functionality for training machine learning
+ * models, including gradient computation and parameter updates.
+ *
+ * @section optimizer_features Features
+ *
+ * - Multiple optimizer algorithms (Adam, SGD, etc.)
+ * - Learning rate scheduling
+ * - Gradient clipping
+ * - Checkpoint saving
+ * - Training/validation loops
+ *
+ * @see optimizer
+ * @see optimizer_params_t
+ */
+
+/**
+ * @defgroup particle_module Particle Module
+ * @ingroup modules_group
+ * @brief Particle representations and properties.
+ *
+ * @section particle_overview Overview
+ *
+ * The Particle module provides the @ref particle_template class for representing
+ * physics particles in the analysis.
+ *
+ * @section particle_properties Properties
+ *
+ * Typical particle properties include:
+ *
+ * - Four-momentum (pT, eta, phi, E/m)
+ * - Identification (PDG ID, truth matching)
+ * - Quality flags
+ * - Isolation variables
+ *
+ * @section particle_operations Operations
+ *
+ * Particles support operations like:
+ *
+ * - Four-vector addition
+ * - DeltaR calculations
+ * - Invariant mass computation
+ *
+ * @see particle_template
+ */
+
+/**
+ * @defgroup plotting_module Plotting Module
+ * @ingroup modules_group
+ * @brief Visualization utilities.
+ *
+ * @section plotting_overview Overview
+ *
+ * The Plotting module provides utilities for visualizing analysis results,
+ * including histograms and performance plots.
+ *
+ * @see plotting
+ */
+
+/**
+ * @defgroup sampletracer_module SampleTracer Module
+ * @ingroup modules_group
+ * @brief Sample tracking and provenance.
+ *
+ * @section sampletracer_overview Overview
+ *
+ * The SampleTracer module tracks which samples have been processed and
+ * maintains provenance information for reproducibility.
+ *
+ * @section sampletracer_features Features
+ *
+ * - Sample state tracking
+ * - Processing history
+ * - Cache management
+ * - File associations
+ *
+ * @see sampletracer
+ */
+
+/**
+ * @defgroup selection_module Selection Module
+ * @ingroup modules_group
+ * @brief Event selection criteria.
+ *
+ * @section selection_overview Overview
+ *
+ * The Selection module provides the @ref selection_template class for
+ * implementing event selection criteria.
+ *
+ * @section selection_usage Usage
+ *
+ * To create a custom selection:
+ *
+ * 1. Subclass @ref selection_template
+ * 2. Override the selection method
+ * 3. Return true for events that pass the selection
+ *
+ * @section selection_chaining Selection Chaining
+ *
+ * Multiple selections can be combined:
+ *
+ * - Sequential (AND logic)
+ * - Named selections for cutflow analysis
+ *
+ * @see selection_template
+ */
+
+/**
+ * @defgroup structs_module Structs Module
+ * @ingroup modules_group
+ * @brief Core data structures and type definitions.
+ *
+ * @section structs_overview Overview
+ *
+ * The Structs module contains fundamental data structures used throughout
+ * the framework.
+ *
+ * @section structs_types Types
+ *
+ * Key structures include:
+ *
+ * - @ref settings_t: Analysis configuration
+ * - @ref event_t: Event data container
+ * - @ref graph_t: Graph data structure (see @ref graph_module)
+ * - @ref folds_t: K-fold cross-validation data
+ * - @ref optimizer_params_t: Optimizer configuration
+ * - @ref model_report: Training progress reports
+ *
+ * @section structs_property Property System
+ *
+ * The module includes a property system (`cproperty`) for:
+ *
+ * - Type-safe getters and setters
+ * - Lazy evaluation
+ * - Python binding support
+ */
+
+/**
+ * @defgroup tools_module Tools Module
+ * @ingroup modules_group
+ * @brief Utility functions and helpers.
+ *
+ * @section tools_overview Overview
+ *
+ * The Tools module provides utility functions used across the framework.
+ *
+ * @section tools_categories Categories
+ *
+ * - String manipulation
+ * - File path handling
+ * - Mathematical operations
+ * - Timing utilities
+ *
+ * @see tools
+ */
+
+/**
+ * @defgroup typecasting_module Typecasting Module
+ * @ingroup modules_group
+ * @brief Type conversion utilities.
+ *
+ * @section typecasting_overview Overview
+ *
+ * The Typecasting module provides utilities for converting between different
+ * data types, particularly for tensor operations.
+ *
+ * @section typecasting_conversions Conversions
+ *
+ * - Tensor casting: Converting between tensor types
+ * - Vector casting: STL to tensor conversions
+ * - Merge casting: Combining multiple tensors
+ *
+ * @see tensor_cast.h
+ * @see vector_cast.h
+ * @see merge_cast.h
+ */

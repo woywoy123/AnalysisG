@@ -9,24 +9,24 @@ version: 2
 build:
   os: ubuntu-22.04
   tools:
-    python: "3.10"
+    python: "3.11"
+  apt_packages:
+    - doxygen
+    - graphviz
   jobs:
     pre_build:
-      # Generiere Doxygen-Dokumentation vor dem Sphinx-Build
+      # Generate Doxygen documentation before Sphinx build
       - cd docs && doxygen Doxyfile
-      # Fix für XML-Probleme und fehlende index.xml
-      - cd /home/docs/checkouts/readthedocs.org/user_builds/analysisg/checkouts/docs && python fix_breathe_config.py
 
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
-  configuration: conf.py
+  configuration: docs/conf.py
+  fail_on_warning: false
 
 # Dependencies required to build the docs
 python:
   install:
     - requirements: docs/requirements.txt
-    - method: pip
-      path: .
 
 # Additional formats of documentation to generate
 formats:

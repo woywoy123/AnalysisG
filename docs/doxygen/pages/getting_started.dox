@@ -1,0 +1,123 @@
+/**
+ * @page getting_started_page Getting Started with AnalysisG
+ * @brief A step-by-step guide to using the AnalysisG framework.
+ *
+ * @section gs_overview Overview
+ *
+ * AnalysisG is a framework for graph-based analysis in high-energy physics.
+ * This guide walks you through the basic concepts and workflow.
+ *
+ * @section gs_concepts Key Concepts
+ *
+ * @subsection gs_events Events
+ * 
+ * An **event** represents a single physics collision. In AnalysisG, you define
+ * how to read event data by subclassing @ref event_template.
+ *
+ * @subsection gs_particles Particles
+ *
+ * **Particles** are physics objects within an event (electrons, muons, jets, etc.).
+ * Define particle types by subclassing @ref particle_template.
+ *
+ * @subsection gs_graphs Graphs
+ *
+ * **Graphs** transform events into graph structures suitable for machine learning.
+ * Particles become nodes, and relationships become edges. Define graphs by
+ * subclassing @ref graph_template.
+ *
+ * @subsection gs_selections Selections
+ *
+ * **Selections** filter events based on physics criteria. Define selections by
+ * subclassing @ref selection_template.
+ *
+ * @subsection gs_models Models
+ *
+ * **Models** are neural networks that process graph data. Define models by
+ * subclassing @ref model_template.
+ *
+ * @subsection gs_metrics Metrics
+ *
+ * **Metrics** evaluate model performance. Define metrics by subclassing
+ * @ref metric_template.
+ *
+ * @section gs_workflow Typical Workflow
+ *
+ * 1. **Define your data structure**
+ *    - Create event template(s)
+ *    - Create particle template(s)
+ *
+ * 2. **Define your graph representation**
+ *    - Create graph template(s)
+ *    - Specify which particles become nodes
+ *    - Define edge topology
+ *    - Add features (data and truth)
+ *
+ * 3. **Define selections** (optional)
+ *    - Create selection template(s)
+ *    - Implement selection criteria
+ *
+ * 4. **Define your model**
+ *    - Create model template
+ *    - Implement forward pass
+ *
+ * 5. **Configure and run analysis**
+ *    - Create analysis instance
+ *    - Add samples, templates, models
+ *    - Configure settings
+ *    - Start execution
+ *
+ * @section gs_example Minimal Example
+ *
+ * ```cpp
+ * #include <AnalysisG/analysis.h>
+ * #include <templates/event_template.h>
+ * #include <templates/graph_template.h>
+ *
+ * // Minimal event template
+ * class SimpleEvent : public event_template {
+ * public:
+ *     SimpleEvent() {
+ *         name = "simple_event";
+ *     }
+ * };
+ *
+ * // Minimal graph template
+ * class SimpleGraph : public graph_template {
+ * public:
+ *     SimpleGraph() {
+ *         name = "simple_graph";
+ *     }
+ *     void CompileEvent() override {
+ *         // Add features here
+ *     }
+ * };
+ *
+ * int main() {
+ *     analysis ana;
+ *     ana.m_settings.output = "output/";
+ *     ana.add_samples("/data/", "sample");
+ *     ana.add_event_template(new SimpleEvent(), "sample");
+ *     ana.add_graph_template(new SimpleGraph(), "sample");
+ *     ana.start();
+ *     return 0;
+ * }
+ * ```
+ *
+ * @section gs_next_steps Next Steps
+ *
+ * - See @ref event_template_page for detailed event documentation
+ * - See @ref graph_template_page for detailed graph documentation
+ * - See @ref model_template_page for model implementation details
+ * - Check the @ref tutorials_page for more comprehensive examples
+ */
+
+/**
+ * @page tutorials_page Tutorials
+ * @brief Comprehensive tutorials for AnalysisG.
+ *
+ * See the detailed tutorials in the Sphinx documentation for:
+ * - Event Template Creation
+ * - Graph Template Creation
+ * - Model Implementation
+ * - Complete Analysis Setup
+ */

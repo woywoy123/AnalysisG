@@ -1,0 +1,138 @@
+/**
+ * @page structs_page Data Structures Reference
+ * @brief Documentation for core data structures in AnalysisG.
+ *
+ * @section structs_intro Introduction
+ *
+ * The structs module contains fundamental data structures used throughout the
+ * AnalysisG framework. These structures define configuration options, data containers,
+ * and type definitions.
+ *
+ * @section structs_settings Settings Structure
+ *
+ * The `settings_t` structure configures analysis behavior:
+ *
+ * ```cpp
+ * struct settings_t {
+ *     std::string output;       // Output directory path
+ *     int threads;              // Number of processing threads
+ *     int batch_size;           // Default batch size
+ *     bool cache_events;        // Enable event caching
+ *     bool cache_graphs;        // Enable graph caching
+ *     // ... additional settings
+ * };
+ * ```
+ *
+ * @section structs_optimizer Optimizer Parameters
+ *
+ * The `optimizer_params_t` structure configures model training:
+ *
+ * ```cpp
+ * struct optimizer_params_t {
+ *     double learning_rate;     // Initial learning rate
+ *     int epochs;               // Number of training epochs
+ *     int batch_size;           // Training batch size
+ *     std::string optimizer;    // Optimizer type (Adam, SGD, etc.)
+ *     int k_folds;              // Number of cross-validation folds
+ *     bool early_stopping;      // Enable early stopping
+ *     int patience;             // Epochs before early stopping
+ *     // ... additional parameters
+ * };
+ * ```
+ *
+ * @section structs_graph Graph Data Structure
+ *
+ * The `graph_t` structure represents a processed graph:
+ *
+ * ```cpp
+ * struct graph_t {
+ *     int num_nodes;            // Number of nodes in the graph
+ *     long event_index;         // Source event index
+ *     double event_weight;      // Event weight for normalization
+ *     bool preselection;        // Whether graph passed preselection
+ *     
+ *     // Feature access methods
+ *     torch::Tensor* get_data_node(std::string name, model*);
+ *     torch::Tensor* get_truth_node(std::string name, model*);
+ *     torch::Tensor* get_data_edge(std::string name, model*);
+ *     torch::Tensor* get_truth_edge(std::string name, model*);
+ *     torch::Tensor* get_data_graph(std::string name, model*);
+ *     torch::Tensor* get_truth_graph(std::string name, model*);
+ *     torch::Tensor* get_edge_index(model*);
+ *     // ...
+ * };
+ * ```
+ *
+ * @section structs_event Event Data Structure
+ *
+ * The `event_t` structure contains raw event data:
+ *
+ * ```cpp
+ * struct event_t {
+ *     long index;               // Event index
+ *     double weight;            // Event weight
+ *     std::string tree;         // Source TTree name
+ *     std::string hash;         // Event hash for identification
+ *     // ...
+ * };
+ * ```
+ *
+ * @section structs_folds Cross-Validation Folds
+ *
+ * The `folds_t` structure manages k-fold cross-validation:
+ *
+ * ```cpp
+ * struct folds_t {
+ *     int k;                    // Current fold index
+ *     std::string hash;         // Fold identifier
+ *     std::vector<long> train;  // Training indices
+ *     std::vector<long> test;   // Test indices
+ *     // ...
+ * };
+ * ```
+ *
+ * @section structs_property Property System
+ *
+ * The `cproperty` template provides a property system:
+ *
+ * ```cpp
+ * template <typename T, typename O>
+ * class cproperty {
+ * public:
+ *     void set_getter(void (*getter)(T*, O*));
+ *     void set_setter(void (*setter)(T*, O*));
+ *     void set_object(O* obj);
+ *     
+ *     operator T();             // Implicit conversion (getter)
+ *     cproperty& operator=(T);  // Assignment (setter)
+ * };
+ * ```
+ *
+ * Usage example:
+ *
+ * ```cpp
+ * class MyClass {
+ * public:
+ *     cproperty<int, MyClass> value;
+ *     
+ *     MyClass() {
+ *         value.set_getter(get_value);
+ *         value.set_setter(set_value);
+ *         value.set_object(this);
+ *     }
+ *     
+ * private:
+ *     int m_value;
+ *     static void get_value(int* out, MyClass* obj) { *out = obj->m_value; }
+ *     static void set_value(int* in, MyClass* obj) { obj->m_value = *in; }
+ * };
+ * ```
+ *
+ * @section structs_enums Enumerations
+ *
+ * Key enumerations include:
+ *
+ * - `graph_enum`: Types of graph features (node, edge, graph; data, truth)
+ * - `particle_enum`: Particle property types
+ * - `mlp_init`: Neural network initialization methods
+ */

@@ -1,0 +1,88 @@
+/**
+ * @mainpage AnalysisG Framework Documentation
+ *
+ * @section intro_sec Introduction
+ *
+ * AnalysisG is a comprehensive framework designed for graph-based analysis in high-energy physics (HEP).
+ * It provides a flexible and extensible architecture for processing physics event data, constructing
+ * graph representations, applying machine learning models, and evaluating analysis results.
+ *
+ * The framework is built with modern C++ and integrates with PyTorch for machine learning capabilities,
+ * making it suitable for both traditional physics analysis and cutting-edge ML-based approaches.
+ *
+ * @section architecture_sec Architecture Overview
+ *
+ * The AnalysisG framework is organized into two main components:
+ *
+ * - **Core Module** (@ref core_group): Contains the foundational C++ implementations for graph structures,
+ *   nodes, and edges that form the basis of the graph-based analysis approach.
+ *
+ * - **Modules** (@ref modules_group): Contains specialized modules that extend the framework's functionality,
+ *   including event processing, graph building, model training, and metrics evaluation.
+ *
+ * @section getting_started Getting Started
+ *
+ * To begin using AnalysisG, you'll typically:
+ *
+ * 1. Define your event data structure by subclassing @ref event_template
+ * 2. Create particle representations using @ref particle_template
+ * 3. Build graph structures with @ref graph_template
+ * 4. Apply selections using @ref selection_template
+ * 5. Train or apply models using @ref model_template
+ * 6. Evaluate results with @ref metric_template
+ *
+ * @section main_classes Key Classes
+ *
+ * The following are the main classes you'll interact with:
+ *
+ * - @ref analysis: The central orchestrator that manages the entire analysis workflow
+ * - @ref event_template: Base class for defining event data structures
+ * - @ref graph_template: Base class for graph construction from events
+ * - @ref particle_template: Base class for particle representations
+ * - @ref model_template: Base class for machine learning models
+ * - @ref selection_template: Base class for event selection criteria
+ * - @ref metric_template: Base class for performance metrics
+ *
+ * @section modules_overview Modules Overview
+ *
+ * The framework includes the following specialized modules:
+ *
+ * | Module | Description |
+ * |--------|-------------|
+ * | @ref analysis_module | Central analysis orchestration |
+ * | @ref container_module | Data container management |
+ * | @ref dataloader_module | Efficient data loading and batching |
+ * | @ref event_module | Event data structures |
+ * | @ref graph_module | Graph construction and manipulation |
+ * | @ref io_module | Input/output operations |
+ * | @ref lossfx_module | Loss function implementations |
+ * | @ref meta_module | Metadata handling |
+ * | @ref metric_module | Metric calculations |
+ * | @ref model_module | Machine learning models |
+ * | @ref notification_module | Logging and notifications |
+ * | @ref optimizer_module | Model optimization |
+ * | @ref particle_module | Particle representations |
+ * | @ref plotting_module | Visualization utilities |
+ * | @ref sampletracer_module | Sample tracking |
+ * | @ref selection_module | Event selection |
+ * | @ref structs_module | Core data structures |
+ * | @ref tools_module | Utility functions |
+ * | @ref typecasting_module | Type conversion utilities |
+ *
+ * @section dependencies Dependencies
+ *
+ * AnalysisG depends on the following external libraries:
+ *
+ * - **PyTorch (LibTorch)**: For tensor operations and neural network functionality
+ * - **ROOT**: For reading HEP data formats (optional)
+ * - **HDF5**: For efficient data storage
+ * - **Cython**: For Python bindings
+ *
+ * @section license License
+ *
+ * This project is licensed under the terms specified in the LICENSE file.
+ *
+ * @section authors Authors
+ *
+ * AnalysisG Team
+ */

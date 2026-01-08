@@ -1,8 +1,15 @@
-sphinx>=4.0.0
+# Sphinx and extensions for documentation building
+sphinx>=5.0.0
 sphinx_rtd_theme>=1.0.0
-breathe>=4.33.0
-sphinx-tabs>=3.4.0
-exhale>=0.3.0
+
+# Breathe - bridge between Doxygen and Sphinx
+breathe>=4.35.0
+
+# Exhale - automatic API documentation from Doxygen XML
+exhale>=0.3.6
+
+# Markdown support
 recommonmark>=0.7.1
-sphinx-markdown-tables>=0.0.17
+
+# Additional utilities
 lxml>=4.9.0

@@ -1,0 +1,430 @@
+/**
+ * @page templates_page Template Classes
+ * @brief Documentation for the core template classes in AnalysisG.
+ *
+ * @section templates_intro Introduction
+ *
+ * AnalysisG uses a template-based design pattern where base template classes
+ * define the interface and common functionality, while user-defined subclasses
+ * implement analysis-specific logic.
+ *
+ * @section templates_inheritance Inheritance Hierarchy
+ *
+ * @subsection templates_event Event Templates
+ *
+ * ```
+ * tools
+ *   └── event_template
+ *         └── UserDefinedEvent
+ * ```
+ *
+ * @subsection templates_graph Graph Templates
+ *
+ * ```
+ * tools
+ *   └── graph_template
+ *         └── UserDefinedGraph
+ * ```
+ *
+ * @subsection templates_particle Particle Templates
+ *
+ * ```
+ * tools
+ *   └── particle_template
+ *         └── UserDefinedParticle
+ * ```
+ *
+ * @subsection templates_selection Selection Templates
+ *
+ * ```
+ * tools
+ *   └── selection_template
+ *         └── UserDefinedSelection
+ * ```
+ *
+ * @subsection templates_model Model Templates
+ *
+ * ```
+ * torch::nn::Module
+ *   └── model_template
+ *         └── UserDefinedModel
+ * ```
+ *
+ * @subsection templates_metric Metric Templates
+ *
+ * ```
+ * tools
+ *   └── metric_template
+ *         └── UserDefinedMetric
+ * ```
+ *
+ * @section templates_tools Tools Base Class
+ *
+ * The `tools` class provides common utility functions inherited by most templates:
+ *
+ * - String manipulation
+ * - File path handling
+ * - Hash computation
+ * - Timing utilities
+ *
+ * @section templates_notification Notification Base Class
+ *
+ * The `notification` class provides logging functionality:
+ *
+ * - Message logging at various levels
+ * - Progress reporting
+ * - Warning and error tracking
+ */
+
+/**
+ * @page event_template_page Event Template Guide
+ * @brief Detailed guide for using and extending event_template.
+ *
+ * @section event_template_intro Introduction
+ *
+ * The @ref event_template class is the base class for all event data structures
+ * in AnalysisG. It provides the interface for reading physics data from ROOT files
+ * and building structured event representations.
+ *
+ * @section event_template_components Components
+ *
+ * An event template manages three levels of data organization:
+ *
+ * 1. **Trees**: ROOT TTree objects containing the data
+ * 2. **Branches**: Collections of related variables (e.g., "Electrons")
+ * 3. **Leaves**: Individual variables (e.g., "Electrons.pt")
+ *
+ * @section event_template_example Example
+ *
+ * Here's how to create a custom event template:
+ *
+ * ```cpp
+ * class MyEvent : public event_template {
+ * public:
+ *     MyEvent() {
+ *         // Define which tree to read
+ *         add_tree("nominal");
+ *         
+ *         // Define branches (particle collections)
+ *         add_branch("electrons", "el_");
+ *         add_branch("muons", "mu_");
+ *         add_branch("jets", "jet_");
+ *         
+ *         // Define individual leaves
+ *         add_leaf("met", "met_et");
+ *         add_leaf("met_phi", "met_phi");
+ *         
+ *         // Register particle types
+ *         register_particle<Electron>("electrons");
+ *         register_particle<Muon>("muons");
+ *         register_particle<Jet>("jets");
+ *     }
+ *     
+ *     void build(element_t* el) override {
+ *         // Custom event building logic
+ *         // Access raw data via el->data
+ *     }
+ * };
+ * ```
+ *
+ * @section event_template_properties Properties
+ *
+ * Event templates expose several properties:
+ *
+ * | Property | Type | Description |
+ * |----------|------|-------------|
+ * | name | string | Template identifier |
+ * | hash | string | Unique configuration hash |
+ * | tree | string | Primary TTree name |
+ * | weight | double | Event weight |
+ * | index | long | Event index in source |
+ * | leaves | vector<string> | List of leaf names |
+ *
+ * @section event_template_particles Particle Management
+ *
+ * Particles are managed through:
+ *
+ * - `register_particle()`: Register a particle type
+ * - `particle_link`: Access registered particles by collection
+ * - `particle_generators`: Factory functions for particle creation
+ */
+
+/**
+ * @page graph_template_page Graph Template Guide
+ * @brief Detailed guide for using and extending graph_template.
+ *
+ * @section graph_template_intro Introduction
+ *
+ * The @ref graph_template class is used to construct graph representations
+ * from physics events. It defines how particles become nodes, how edges
+ * are constructed, and what features are attached.
+ *
+ * @section graph_template_workflow Workflow
+ *
+ * 1. Receive an event via `build(event_template*)`
+ * 2. Define nodes using `define_particle_nodes()`
+ * 3. Define edges using `define_topology()`
+ * 4. Add features in `CompileEvent()`
+ * 5. Export to `graph_t` structure for ML
+ *
+ * @section graph_template_example Example
+ *
+ * ```cpp
+ * class MyGraph : public graph_template {
+ * public:
+ *     MyGraph() {
+ *         // Define edge topology - here: fully connected
+ *         define_topology([](particle_template* p1, particle_template* p2) {
+ *             return true;  // Connect all nodes
+ *         });
+ *     }
+ *     
+ *     void CompileEvent() override {
+ *         // Get the event
+ *         MyEvent* ev = get_event<MyEvent>();
+ *         
+ *         // Add graph-level features
+ *         add_graph_data_feature<double, MyEvent>(ev, 
+ *             [](MyEvent* e) { return e->met; }, "met");
+ *         
+ *         // Add node-level features (for each particle)
+ *         add_node_data_feature<double, Electron>(
+ *             [](Electron* e) { return e->pt; }, "pt");
+ *         
+ *         // Add edge-level features (for each particle pair)
+ *         add_edge_data_feature<double, Electron>(
+ *             [](std::tuple<Electron*, Electron*>* pair) {
+ *                 return deltaR(std::get<0>(*pair), std::get<1>(*pair));
+ *             }, "deltaR");
+ *         
+ *         // Add truth labels
+ *         add_node_truth_feature<int, Electron>(
+ *             [](Electron* e) { return e->isFromTop ? 1 : 0; }, "from_top");
+ *     }
+ *     
+ *     bool PreSelection() override {
+ *         // Optional: skip graphs that don't pass criteria
+ *         return num_nodes >= 2;
+ *     }
+ * };
+ * ```
+ *
+ * @section graph_template_features Feature Methods
+ *
+ * | Method | Level | Type |
+ * |--------|-------|------|
+ * | add_graph_data_feature | Graph | Input |
+ * | add_graph_truth_feature | Graph | Target |
+ * | add_node_data_feature | Node | Input |
+ * | add_node_truth_feature | Node | Target |
+ * | add_edge_data_feature | Edge | Input |
+ * | add_edge_truth_feature | Edge | Target |
+ *
+ * @section graph_template_topology Topology Definition
+ *
+ * The topology function defines edge connections:
+ *
+ * ```cpp
+ * define_topology([](particle_template* p1, particle_template* p2) {
+ *     // Return true if p1 and p2 should be connected
+ *     // Example: only connect different particles
+ *     return p1 != p2;
+ * });
+ * ```
+ *
+ * @section graph_template_properties Properties
+ *
+ * | Property | Type | Description |
+ * |----------|------|-------------|
+ * | index | long | Event index |
+ * | weight | double | Event weight |
+ * | preselection | bool | PreSelection result |
+ * | hash | string | Graph hash |
+ * | tree | string | Source tree name |
+ * | name | string | Graph template name |
+ */
+
+/**
+ * @page particle_template_page Particle Template Guide
+ * @brief Detailed guide for using and extending particle_template.
+ *
+ * @section particle_template_intro Introduction
+ *
+ * The @ref particle_template class represents physics particles (objects)
+ * within events. It provides the base interface for particle properties
+ * and operations.
+ *
+ * @section particle_template_properties Standard Properties
+ *
+ * Particles typically have:
+ *
+ * - Kinematic properties (pT, eta, phi, E, m)
+ * - Identification (type, charge)
+ * - Quality flags
+ * - Truth information
+ *
+ * @section particle_template_example Example
+ *
+ * ```cpp
+ * class Electron : public particle_template {
+ * public:
+ *     double isolation;
+ *     bool passID;
+ *     int truthType;
+ *     
+ *     Electron() {
+ *         // Initialize properties
+ *     }
+ *     
+ *     static Electron* create() {
+ *         return new Electron();
+ *     }
+ * };
+ * ```
+ *
+ * @section particle_template_operations Operations
+ *
+ * Common particle operations:
+ *
+ * - Four-vector arithmetic
+ * - DeltaR calculations
+ * - Invariant mass computation
+ */
+
+/**
+ * @page model_template_page Model Template Guide
+ * @brief Detailed guide for using and extending model_template.
+ *
+ * @section model_template_intro Introduction
+ *
+ * The @ref model_template class provides the base interface for machine learning
+ * models in AnalysisG. It integrates with PyTorch (LibTorch) for neural network
+ * functionality.
+ *
+ * @section model_template_structure Structure
+ *
+ * A model template defines:
+ *
+ * - Network architecture
+ * - Forward pass logic
+ * - Input/output feature mapping
+ *
+ * @section model_template_example Example
+ *
+ * ```cpp
+ * class MyModel : public model_template {
+ * public:
+ *     torch::nn::Linear fc1, fc2, fc3;
+ *     
+ *     MyModel() {
+ *         fc1 = register_module("fc1", torch::nn::Linear(10, 64));
+ *         fc2 = register_module("fc2", torch::nn::Linear(64, 64));
+ *         fc3 = register_module("fc3", torch::nn::Linear(64, 1));
+ *     }
+ *     
+ *     torch::Tensor forward(graph_t* data) override {
+ *         auto x = *data->get_data_node("features", this);
+ *         x = torch::relu(fc1->forward(x));
+ *         x = torch::relu(fc2->forward(x));
+ *         x = torch::sigmoid(fc3->forward(x));
+ *         return x;
+ *     }
+ * };
+ * ```
+ *
+ * @section model_template_training Training
+ *
+ * Models are trained using the optimizer with parameters:
+ *
+ * ```cpp
+ * optimizer_params_t params;
+ * params.learning_rate = 0.001;
+ * params.epochs = 100;
+ * params.batch_size = 64;
+ * 
+ * analysis ana;
+ * ana.add_model(new MyModel(), &params, "training_run");
+ * ```
+ */
+
+/**
+ * @page selection_template_page Selection Template Guide
+ * @brief Detailed guide for using and extending selection_template.
+ *
+ * @section selection_template_intro Introduction
+ *
+ * The @ref selection_template class defines event selection criteria.
+ * Selections filter events based on physics requirements.
+ *
+ * @section selection_template_example Example
+ *
+ * ```cpp
+ * class DileptonSelection : public selection_template {
+ * public:
+ *     DileptonSelection() {
+ *         name = "dilepton";
+ *     }
+ *     
+ *     bool selection(event_template* ev) override {
+ *         MyEvent* event = (MyEvent*)ev;
+ *         
+ *         // Require at least 2 leptons
+ *         int nLeptons = event->electrons.size() + event->muons.size();
+ *         return nLeptons >= 2;
+ *     }
+ * };
+ * ```
+ *
+ * @section selection_template_chaining Chaining Selections
+ *
+ * Multiple selections can be added to an analysis:
+ *
+ * ```cpp
+ * analysis ana;
+ * ana.add_selection_template(new TriggerSelection());
+ * ana.add_selection_template(new DileptonSelection());
+ * ana.add_selection_template(new JetSelection());
+ * ```
+ *
+ * Events must pass all selections to be processed.
+ */
+
+/**
+ * @page metric_template_page Metric Template Guide
+ * @brief Detailed guide for using and extending metric_template.
+ *
+ * @section metric_template_intro Introduction
+ *
+ * The @ref metric_template class defines performance metrics for evaluating
+ * model performance and analysis results.
+ *
+ * @section metric_template_types Metric Types
+ *
+ * Common metrics include:
+ *
+ * - Classification: Accuracy, precision, recall, F1
+ * - Regression: MSE, MAE, R²
+ * - Physics-specific: Mass resolution, efficiency
+ *
+ * @section metric_template_example Example
+ *
+ * ```cpp
+ * class AccuracyMetric : public metric_template {
+ * public:
+ *     AccuracyMetric() {
+ *         name = "accuracy";
+ *     }
+ *     
+ *     void compute(graph_t* data, torch::Tensor prediction) override {
+ *         auto truth = *data->get_truth_node("label", this);
+ *         auto pred_class = (prediction > 0.5).to(torch::kInt);
+ *         auto correct = (pred_class == truth).sum().item<int>();
+ *         auto total = truth.size(0);
+ *         
+ *         accuracy = (float)correct / total;
+ *     }
+ *     
+ *     float accuracy;
+ * };
+ * ```
+ */

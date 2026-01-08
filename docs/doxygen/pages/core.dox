@@ -1,0 +1,130 @@
+/**
+ * @defgroup core_group Core Module
+ * @brief Core C++ implementations for graph-based analysis.
+ *
+ * The Core module contains the fundamental C++ implementations that form the backbone
+ * of the AnalysisG framework. These classes provide the low-level graph structures,
+ * node and edge representations, and essential algorithms.
+ *
+ * @section core_overview Overview
+ *
+ * The core module implements the basic building blocks for graph-based physics analysis:
+ *
+ * - **Graph**: The main container for nodes and edges, representing the graph structure
+ * - **Node**: Represents individual vertices in the graph (typically particles)
+ * - **Edge**: Represents connections between nodes (typically particle relationships)
+ *
+ * @section core_files Files
+ *
+ * The core module consists of the following source files:
+ *
+ * - `graph.cxx`: Implementation of graph structures and operations
+ * - `node.cxx`: Implementation of node (vertex) functionality
+ * - `edge.cxx`: Implementation of edge (connection) functionality
+ *
+ * @section core_usage Usage
+ *
+ * The core classes are typically not used directly by end users. Instead, they are
+ * wrapped by the higher-level template classes in the modules directory:
+ *
+ * - Use @ref graph_template for graph construction
+ * - Use @ref particle_template for node representations
+ * - Use @ref event_template for event data handling
+ *
+ * @section core_design Design Principles
+ *
+ * The core module follows these design principles:
+ *
+ * 1. **Efficiency**: Optimized for handling large numbers of events and particles
+ * 2. **Flexibility**: Designed to accommodate various graph topologies
+ * 3. **Integration**: Seamless integration with PyTorch tensors for ML workflows
+ * 4. **Memory Management**: Careful handling of dynamic allocations
+ *
+ * @{
+ */
+
+/**
+ * @page core_graph_page Graph Implementation
+ * @brief Documentation for the core graph implementation.
+ *
+ * @section graph_intro Introduction
+ *
+ * The graph implementation in the core module provides the fundamental data structure
+ * for representing physics events as graphs. Each event can be converted into a graph
+ * where particles become nodes and their relationships become edges.
+ *
+ * @section graph_structure Structure
+ *
+ * A graph in AnalysisG consists of:
+ *
+ * - **Nodes**: Represent particles or physics objects
+ * - **Edges**: Represent relationships or connections between particles
+ * - **Features**: Tensors attached to nodes, edges, or the graph itself
+ *
+ * @section graph_features Feature Types
+ *
+ * The framework supports three levels of features:
+ *
+ * 1. **Graph-level features**: Properties of the entire event (e.g., missing ET)
+ * 2. **Node-level features**: Properties of individual particles (e.g., pT, eta, phi)
+ * 3. **Edge-level features**: Properties of particle pairs (e.g., deltaR, invariant mass)
+ *
+ * Each feature level is further divided into:
+ * - **Data features** (D-prefix): Input features for the model
+ * - **Truth features** (T-prefix): Target labels for training
+ */
+
+/**
+ * @page core_node_page Node Implementation
+ * @brief Documentation for the core node implementation.
+ *
+ * @section node_intro Introduction
+ *
+ * Nodes in AnalysisG represent individual physics objects (particles) within an event graph.
+ * Each node can carry multiple features represented as tensors.
+ *
+ * @section node_properties Properties
+ *
+ * Typical node properties include:
+ *
+ * - Kinematic variables (pT, eta, phi, energy)
+ * - Identification flags
+ * - Quality criteria
+ * - Truth-level information (for training)
+ *
+ * @section node_indexing Indexing
+ *
+ * Nodes are indexed sequentially within each graph, starting from 0. The node index
+ * is used to:
+ * - Reference nodes in edge definitions
+ * - Align feature tensors
+ * - Batch multiple graphs together
+ */
+
+/**
+ * @page core_edge_page Edge Implementation
+ * @brief Documentation for the core edge implementation.
+ *
+ * @section edge_intro Introduction
+ *
+ * Edges in AnalysisG represent connections or relationships between nodes (particles)
+ * in an event graph. The framework supports various topologies for edge construction.
+ *
+ * @section edge_topology Topology
+ *
+ * The edge topology defines which nodes are connected. Common topologies include:
+ *
+ * - **Fully connected**: Every node connected to every other node
+ * - **Custom topology**: User-defined connection rules based on physics criteria
+ * - **k-nearest neighbors**: Connections based on distance metrics
+ *
+ * @section edge_index Edge Index
+ *
+ * Edges are represented using a 2xN tensor where:
+ * - Row 0 contains source node indices
+ * - Row 1 contains target node indices
+ *
+ * This format is compatible with PyTorch Geometric conventions.
+ */
+
+/** @} */ // End of core_group

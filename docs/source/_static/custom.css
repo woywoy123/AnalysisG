@@ -1,0 +1,48 @@
+/* Custom CSS for AnalysisG documentation */
+
+/* Improve code block styling */
+.highlight pre {
+    padding: 12px;
+    border-radius: 4px;
+}
+
+/* Better table styling */
+table.docutils {
+    border-collapse: collapse;
+    border: 1px solid #e1e4e5;
+}
+
+table.docutils td, table.docutils th {
+    padding: 8px 12px;
+    border: 1px solid #e1e4e5;
+}
+
+table.docutils th {
+    background-color: #f3f6f6;
+}
+
+/* Improve API documentation readability */
+.rst-content dl.class dt,
+.rst-content dl.function dt,
+.rst-content dl.method dt {
+    background-color: #f0f0f0;
+    padding: 8px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+/* Module grouping */
+.rst-content dl.group dt {
+    background-color: #e8f4f8;
+    padding: 10px;
+    margin-top: 20px;
+    border-left: 4px solid #2980b9;
+}
+
+/* Better inline code */
+.rst-content code.literal {
+    background-color: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 90%;
+}
