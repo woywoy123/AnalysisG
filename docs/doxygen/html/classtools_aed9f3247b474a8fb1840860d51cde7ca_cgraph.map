@@ -1,5 +1,0 @@
-<map id="tools::create_path" name="tools::create_path">
-<area shape="rect" id="Node000001" title="Creates a directory path, including parent directories if needed." alt="" coords="5,5,144,31"/>
-<area shape="rect" id="Node000002" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="192,5,283,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,15,178,15,178,21,144,21"/>
-</map>

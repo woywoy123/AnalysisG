@@ -1,7 +1,0 @@
-<map id="construct_particle" name="construct_particle">
-<area shape="rect" id="Node000001" title=" " alt="" coords="240,31,379,56"/>
-<area shape="rect" id="Node000002" href="$namespacepyc_1_1nusol.html#ad4035a04640174f1d5f9cdc307a3ad0a" title=" " alt="" coords="5,5,192,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="226,36,192,32,192,27,227,31"/>
-<area shape="rect" id="Node000003" href="$namespacepyc_1_1nusol.html#af88804c21a54435a41be99cbc03faf30" title=" " alt="" coords="33,55,165,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="227,55,165,63,164,57,226,50"/>
-</map>

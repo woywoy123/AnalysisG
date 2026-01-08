@@ -1,7 +1,0 @@
-<map id="pyc::operators::Dot" name="pyc::operators::Dot">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,152,56"/>
-<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="215,5,308,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,31,201,24,201,29,153,36"/>
-<area shape="rect" id="Node000003" href="$namespaceoperators__.html#a9c06ae4b1ec4e5f50d3db14bc1da2ef6" title="Computes the dot product of two vectors." alt="" coords="200,55,323,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="153,50,187,55,186,60,152,56"/>
-</map>

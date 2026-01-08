@@ -1,7 +1,0 @@
-<map id="truthjetparton::truthjetparton" name="truthjetparton::truthjetparton">
-<area shape="rect" id="Node000001" title=" " alt="" coords="208,31,419,56"/>
-<area shape="rect" id="Node000002" href="$classtruthjetparton.html#a167dd1e373ba7391b87378288559065a" title="Builds the particle from event data." alt="" coords="7,5,159,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,33,158,29,159,24,194,28"/>
-<area shape="rect" id="Node000003" href="$classtruthjetparton.html#aa9bb1b12640e06b49a6f2d3166410ee1" title="Creates a clone of this particle." alt="" coords="5,55,160,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="194,58,160,62,160,57,194,53"/>
-</map>

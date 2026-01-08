@@ -1,5 +1,0 @@
-<map id="analysis::initialize_loop" name="analysis::initialize_loop">
-<area shape="rect" id="Node000001" title="Static method to initialize a training loop for an optimizer." alt="" coords="5,5,180,31"/>
-<area shape="rect" id="Node000002" href="$classtools.html#a47d3d261edcb898daab56721e18d1e67" title="Checks if a path refers to an existing file." alt="" coords="228,5,328,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,15,214,15,214,21,181,21"/>
-</map>

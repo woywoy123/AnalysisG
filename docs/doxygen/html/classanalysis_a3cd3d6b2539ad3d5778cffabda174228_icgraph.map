@@ -1,5 +1,0 @@
-<map id="analysis::safe_clone" name="analysis::safe_clone">
-<area shape="rect" id="Node000001" title="Templated helper method to safely clone objects (e.g., event or graph templates)." alt="" coords="211,13,365,38"/>
-<area shape="rect" id="Node000002" href="$classanalysis.html#a33de64cfd2bc244ff02feb0cc9b2db58" title="Adds a metric template to the analysis, associating it with a model." alt="" coords="5,5,163,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="197,28,163,28,163,23,197,23"/>
-</map>

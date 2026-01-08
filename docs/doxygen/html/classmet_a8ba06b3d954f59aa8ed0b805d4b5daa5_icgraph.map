@@ -1,7 +1,0 @@
-<map id="met::met" name="met::met">
-<area shape="rect" id="Node000001" title=" " alt="" coords="164,31,247,56"/>
-<area shape="rect" id="Node000002" href="$classmet.html#af4d30ffd6bfeadbd27d72d1dc74e7803" title="Creates a clone of this selection." alt="" coords="15,5,106,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,36,106,29,107,23,151,31"/>
-<area shape="rect" id="Node000003" href="$classmet.html#a54e4795f6e1387cd2aa9e259ef147f3c" title="Alternative selection strategy method." alt="" coords="5,55,116,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,55,117,61,116,56,150,50"/>
-</map>

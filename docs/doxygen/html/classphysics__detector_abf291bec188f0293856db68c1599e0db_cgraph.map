@@ -1,7 +1,0 @@
-<map id="physics_detector::physics_detector" name="physics_detector::physics_detector">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,37,195,77"/>
-<area shape="rect" id="Node000002" href="$classparticle__template.html#a7fda73e06360bffd1bce45e7ba7370a5" title="Adds a leaf (variable) to read for this particle." alt="" coords="243,5,388,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,41,229,35,229,41,196,46"/>
-<area shape="rect" id="Node000003" href="$classparticle__template.html#a83757e8eb32e382a8c0444ede5dda548" title="Applies the particle type as a prefix to leaf names." alt="" coords="243,69,388,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="196,69,229,74,229,79,195,74"/>
-</map>

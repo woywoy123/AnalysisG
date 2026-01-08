@@ -1,7 +1,0 @@
-<map id="io::write_event_h5" name="io::write_event_h5">
-<area shape="rect" id="Node000001" title="Templated method to write event data (vector of objects) to HDF5." alt="" coords="128,31,271,56"/>
-<area shape="rect" id="Node000002" href="$classio.html#acbb361e3301373cce246acf6208b60ea" title="Templated method to write a single object to a dataset." alt="" coords="5,5,80,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,32,80,27,81,21,115,27"/>
-<area shape="rect" id="Node000003" href="$classio.html#a39a32d23eeb4ae8f422bb416256fd9cd" title="Templated method to write a vector of objects to a dataset." alt="" coords="5,55,80,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="115,59,80,64,80,59,114,54"/>
-</map>

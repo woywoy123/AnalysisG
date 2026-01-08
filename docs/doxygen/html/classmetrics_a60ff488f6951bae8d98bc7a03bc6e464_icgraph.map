@@ -1,5 +1,0 @@
-<map id="metrics::dump_mass_plots" name="metrics::dump_mass_plots">
-<area shape="rect" id="Node000001" title="Dumps mass plots for a given k&#45;fold." alt="" coords="208,5,367,45"/>
-<area shape="rect" id="Node000002" href="$classmetrics.html#a8a0b4107864ac5f548ed37a9a4a9372f" title="Dumps all metric plots for a specific k&#45;fold." alt="" coords="5,13,160,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,28,161,28,161,23,194,23"/>
-</map>

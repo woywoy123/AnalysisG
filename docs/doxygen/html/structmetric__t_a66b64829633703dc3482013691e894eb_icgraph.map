@@ -1,8 +1,0 @@
-<map id="metric_t::get" name="metric_t::get">
-<area shape="rect" id="Node000001" title=" " alt="" coords="203,31,308,56"/>
-<area shape="poly" id="edge3_Node000001_Node000001" title=" " alt="" coords="286,20,277,12,255,9,237,11,228,16,226,22,231,29,226,32,220,22,224,13,236,6,255,4,279,8,289,16"/>
-<area shape="rect" id="Node000002" href="$structmetric__t.html#aa02aa3edae560591830a8671e72b333d" title=" " alt="" coords="5,5,155,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,36,155,31,156,26,190,31"/>
-<area shape="rect" id="Node000003" href="$structmetric__t.html#a53a0c02b91b94a055adae0f357747913" title=" " alt="" coords="22,55,138,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="189,55,139,62,138,57,189,50"/>
-</map>

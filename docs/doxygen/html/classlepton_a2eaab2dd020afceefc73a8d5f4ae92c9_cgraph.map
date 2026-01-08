@@ -1,9 +1,0 @@
-<map id="lepton::clone" name="lepton::clone">
-<area shape="rect" id="Node000001" title="Creates a clone of this particle." alt="" coords="5,45,112,70"/>
-<area shape="rect" id="Node000002" href="$classlepton.html#a432429482b4dbc69834cb8730dc264b8" title=" " alt="" coords="160,45,272,70"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,55,146,55,146,60,112,60"/>
-<area shape="rect" id="Node000003" href="$classparticle__template.html#a7fda73e06360bffd1bce45e7ba7370a5" title="Adds a leaf (variable) to read for this particle." alt="" coords="320,5,465,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="272,45,306,38,307,44,273,50"/>
-<area shape="rect" id="Node000004" href="$classparticle__template.html#a83757e8eb32e382a8c0444ede5dda548" title="Applies the particle type as a prefix to leaf names." alt="" coords="320,69,465,109"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="273,65,307,71,306,76,272,70"/>
-</map>

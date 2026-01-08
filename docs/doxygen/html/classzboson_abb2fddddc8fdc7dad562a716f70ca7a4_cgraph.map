@@ -1,9 +1,0 @@
-<map id="zboson::build" name="zboson::build">
-<area shape="rect" id="Node000001" title="Builds the particle from event data." alt="" coords="5,45,113,70"/>
-<area shape="rect" id="Node000002" href="$classzboson.html#a77028e2003cfc7ac4e29b12167ce925e" title=" " alt="" coords="161,45,284,70"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,55,148,55,148,60,114,60"/>
-<area shape="rect" id="Node000003" href="$classparticle__template.html#a7fda73e06360bffd1bce45e7ba7370a5" title="Adds a leaf (variable) to read for this particle." alt="" coords="332,5,477,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="284,44,318,38,319,43,285,49"/>
-<area shape="rect" id="Node000004" href="$classparticle__template.html#a83757e8eb32e382a8c0444ede5dda548" title="Applies the particle type as a prefix to leaf names." alt="" coords="332,69,477,109"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="285,65,319,72,318,77,284,71"/>
-</map>

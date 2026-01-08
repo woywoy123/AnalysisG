@@ -1,7 +1,0 @@
-<map id="parton::parton" name="parton::parton">
-<area shape="rect" id="Node000001" title=" " alt="" coords="160,31,275,56"/>
-<area shape="rect" id="Node000002" href="$classparton.html#ab5267a5b57180a97dbc7608ba8dec22c" title="Builds the particle from event data." alt="" coords="7,5,111,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,35,111,29,111,24,147,29"/>
-<area shape="rect" id="Node000003" href="$classparton.html#a960f9f2386b34406addeb735cc87c079" title="Creates a clone of this particle." alt="" coords="5,55,112,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="147,57,112,62,112,57,146,51"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="childrenkinematics::merge" name="childrenkinematics::merge">
-<area shape="rect" id="Node000001" title="Merges results from another selection." alt="" coords="5,29,152,69"/>
-<area shape="rect" id="Node000002" href="$classselection__template.html#ae5606e994231fae57abe42e4f0ec6202" title="Writes a particle collection to output." alt="" coords="200,29,347,69"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,47,186,47,186,52,152,52"/>
-<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="237,30,234,20,240,11,253,5,273,3,296,6,309,13,306,17,295,11,273,8,255,10,244,15,240,21,242,28"/>
-<area shape="rect" id="Node000003" href="$classselection__template.html#a81497ddb8a1a46c8d4e715cf9733ef61" title="Switch board for dispatching particle attributes." alt="" coords="395,29,541,69"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="347,47,381,47,381,52,347,52"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="431,30,429,20,435,11,448,5,468,3,491,6,503,13,501,17,489,11,468,8,449,10,438,15,434,21,436,28"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="gnn&#45;event.h" name="gnn&#45;event.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="61,5,161,31"/>
-<area shape="rect" id="Node000002" href="$events_2gnn_2cxx_2event_8cxx.html" title=" " alt="" coords="5,79,92,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,43,61,80,57,77,90,39"/>
-<area shape="rect" id="Node000003" href="$topefficiency_8h.html" title="Top efficiency selection class." alt="" coords="116,79,232,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="133,39,166,77,162,80,129,43"/>
-<area shape="rect" id="Node000004" href="$topefficiency_8cxx.html" title="Implementation of the topefficiency class methods." alt="" coords="109,152,239,177"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="177,118,177,152,171,152,171,118"/>
-</map>

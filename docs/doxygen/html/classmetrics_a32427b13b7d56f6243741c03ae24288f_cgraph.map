@@ -1,9 +1,0 @@
-<map id="metrics::register_model" name="metrics::register_model">
-<area shape="rect" id="Node000001" title="Registers a model and initializes its metrics." alt="" coords="5,70,183,95"/>
-<area shape="rect" id="Node000002" href="$classmetrics.html#a248814745baeae2fda75d3086d931ea7" title=" " alt="" coords="252,5,396,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,67,238,44,239,49,146,73"/>
-<area shape="rect" id="Node000003" href="$classmetrics.html#adce5c186860e8f4c09e6759ec60f57a9" title=" " alt="" coords="235,70,413,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="183,80,221,80,221,85,183,85"/>
-<area shape="rect" id="Node000004" href="$classmetrics.html#abe2e54c2a72ecc01c03db7ed3c9704b3" title=" " alt="" coords="231,119,417,145"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="154,93,251,114,250,119,153,98"/>
-</map>

@@ -1,8 +1,0 @@
-<map id="dataloader::extract_data" name="dataloader::extract_data">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,188,55"/>
-<area shape="rect" id="Node000002" href="$classdataloader.html#a60ede9b5c2cacf28b6fd28524f21501f" title=" " alt="" coords="236,22,407,62"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,39,222,39,222,45,188,45"/>
-<area shape="rect" id="Node000003" href="$structs_2cxx_2base_8cxx.html#a4eee7b291ed2cdcd4e3c2496c603c48c" title="Counts occurrences of a substring in a string." alt="" coords="455,29,513,55"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="407,39,441,39,441,45,407,45"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="457,31,451,21,454,11,465,5,484,3,506,6,516,15,512,19,504,11,484,8,467,10,458,15,456,20,461,28"/>
-</map>

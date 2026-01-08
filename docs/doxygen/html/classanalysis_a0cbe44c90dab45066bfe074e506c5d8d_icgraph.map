@@ -1,8 +1,0 @@
-<map id="analysis::check_cache" name="analysis::check_cache">
-<area shape="rect" id="Node000001" title="&lt; Private access specifier for the following members." alt="" coords="361,5,528,31"/>
-<area shape="rect" id="Node000002" href="$classanalysis.html#a401745bb4bcae03160ffa0b5df2887e7" title="Starts the analysis execution." alt="" coords="199,5,313,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="348,21,313,21,313,15,348,15"/>
-<area shape="rect" id="Node000003" href="$classanalysis.html#aa5f5f1de2fe05c9fb8c5c0fffbf7b938" title="Fetches tags, possibly related to data versions, processing stages, or k&#45;folds." alt="" coords="5,5,151,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="185,30,151,30,151,24,185,24"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="164,6,198,7,198,12,164,12"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="graph_jets_nonu" name="graph_jets_nonu">
-<area shape="rect" id="Node000001" title=" " alt="" coords="17,1672,175,1957"/>
-<area shape="rect" id="Node000002" href="$classgraph__template.html" title="Base class for converting physics events into graph representations." alt="" coords="5,519,187,1624"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,1637,84,1671,79,1672,78,1638"/>
-<area shape="poly" id="edge3_Node000001_Node000002" title=" " alt="" coords="99,1637,99,1671,93,1671,93,1637"/>
-<area shape="poly" id="edge4_Node000001_Node000002" title=" " alt="" coords="114,1638,113,1672,108,1671,109,1637"/>
-<area shape="rect" id="Node000003" href="$classtools.html" title="Provides a wide range of utility functions used throughout the framework." alt="" coords="31,5,161,471"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="99,484,99,518,93,518,93,484"/>
-</map>

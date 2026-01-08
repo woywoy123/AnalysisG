@@ -1,7 +1,0 @@
-<map id="nusol.h" name="nusol.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="66,5,135,31"/>
-<area shape="rect" id="Node000002" href="$interface_2nusol_8cxx.html" title=" " alt="" coords="5,79,89,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,43,58,80,54,77,82,40"/>
-<area shape="rect" id="Node000003" href="$nusol_2tensor_2nusol_8cxx.html" title=" " alt="" coords="113,79,197,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="120,40,149,77,144,80,116,43"/>
-</map>

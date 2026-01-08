@@ -1,5 +1,0 @@
-<map id="event_template::set_hash" name="event_template::set_hash">
-<area shape="rect" id="Node000001" title="Static setter for the hash property." alt="" coords="5,5,196,31"/>
-<area shape="rect" id="Node000002" href="$classtools.html#afd037c109d75a9f119ec042e1ba922d9" title="Converts a double value to a string with standard precision." alt="" coords="244,5,363,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,15,230,15,230,21,196,21"/>
-</map>

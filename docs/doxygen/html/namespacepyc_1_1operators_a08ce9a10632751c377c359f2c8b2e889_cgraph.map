@@ -1,7 +1,0 @@
-<map id="pyc::operators::SinTheta" name="pyc::operators::SinTheta">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,185,56"/>
-<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="265,5,358,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,30,250,22,251,28,186,35"/>
-<area shape="rect" id="Node000003" href="$namespaceoperators__.html#a0335a4a853f7cff5faa4bc7bc68e3a8a" title="Computes the sine of the angle between two vectors." alt="" coords="233,55,389,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="186,51,220,55,219,60,186,56"/>
-</map>

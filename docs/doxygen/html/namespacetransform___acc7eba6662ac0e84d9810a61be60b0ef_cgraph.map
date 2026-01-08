@@ -1,7 +1,0 @@
-<map id="transform_::Eta" name="transform_::Eta">
-<area shape="rect" id="Node000001" title="Computes the pseudorapidity (Eta) from x, y, and z components of momentum." alt="" coords="5,31,128,56"/>
-<area shape="rect" id="Node000002" href="$namespacetransform__.html#a7e398b6292d5d34c81497445060ec752" title="Computes the transverse momentum (Pt)." alt="" coords="186,5,301,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,32,172,25,173,31,129,37"/>
-<area shape="rect" id="Node000003" href="$namespacetransform__.html#a86e364c3bd4a1a8785a3cdfb0a1e1573" title="Computes the transverse momentum (Pt) and pseudorapidity (Eta)." alt="" coords="176,55,311,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="129,49,163,54,162,59,128,54"/>
-</map>

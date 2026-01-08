@@ -1,7 +1,0 @@
-<map id="pyc::operators::CosTheta" name="pyc::operators::CosTheta">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,189,56"/>
-<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="271,5,364,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,30,256,22,257,28,190,35"/>
-<area shape="rect" id="Node000003" href="$namespaceoperators__.html#af012532b8e034b7d6cb733360e14f8d7" title="Computes the cosine of the angle between two vectors." alt="" coords="237,55,397,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="190,51,224,54,223,60,189,56"/>
-</map>

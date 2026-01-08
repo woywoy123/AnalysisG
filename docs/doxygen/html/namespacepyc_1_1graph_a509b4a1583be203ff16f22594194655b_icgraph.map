@@ -1,9 +1,0 @@
-<map id="pyc::graph::PageRankReconstruction" name="pyc::graph::PageRankReconstruction">
-<area shape="rect" id="Node000001" title=" " alt="" coords="323,29,581,55"/>
-<area shape="rect" id="Node000002" href="$classgrift.html#a72f7575fbd1d744d4f9053e5b8b7ee38" title="Virtual forward pass method for a single graph." alt="" coords="168,29,275,55"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="309,45,275,45,275,39,309,39"/>
-<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="249,19,241,11,221,8,205,10,196,15,195,20,199,28,195,31,189,21,192,11,203,5,221,3,243,6,252,15"/>
-<area shape="rect" id="Node000003" href="$classgrift.html#ad610edcd0cab14b57197a846ab8a8caf" title=" " alt="" coords="5,29,120,55"/>
-<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="154,54,120,53,120,48,154,48"/>
-<area shape="poly" id="edge4_Node000003_Node000002" title=" " alt="" coords="134,30,168,31,168,36,134,36"/>
-</map>

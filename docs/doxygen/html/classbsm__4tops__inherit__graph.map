@@ -1,7 +1,0 @@
-<map id="bsm_4tops" name="bsm_4tops">
-<area shape="rect" id="Node000001" title=" " alt="" coords="13,1252,152,1797"/>
-<area shape="rect" id="Node000002" href="$classevent__template.html" title="Base template class for event data representation and manipulation." alt="" coords="5,519,160,1204"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,1218,85,1252,80,1252,80,1218"/>
-<area shape="rect" id="Node000003" href="$classtools.html" title="Provides a wide range of utility functions used throughout the framework." alt="" coords="17,5,148,471"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="85,485,85,519,80,519,80,485"/>
-</map>

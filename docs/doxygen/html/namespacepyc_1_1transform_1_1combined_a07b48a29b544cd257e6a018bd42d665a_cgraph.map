@@ -1,7 +1,0 @@
-<map id="pyc::transform::combined::Py" name="pyc::transform::combined::Py">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,219,56"/>
-<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="279,5,372,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,28,265,22,266,28,220,33"/>
-<area shape="rect" id="Node000003" href="$namespacetransform__.html#a51363ab29a6390a86a8ea75573a7a196" title="Computes the y&#45;component of momentum (Py)." alt="" coords="267,55,384,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="220,53,253,57,253,62,219,58"/>
-</map>

@@ -1,4 +1,0 @@
-var dir_613630baaf59b31d614e2703358b74a2 =
-[
-    [ "pyc", "dir_3b2e253c89d3966a338c59f800f4aa16.html", "dir_3b2e253c89d3966a338c59f800f4aa16" ]
-];

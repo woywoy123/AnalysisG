@@ -1,7 +1,0 @@
-<map id="metric_template::set_variables" name="metric_template::set_variables">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,164,63"/>
-<area shape="rect" id="Node000002" href="$classmetric__template.html#a335a5dd4a86a24fd17e981a633cd4df3" title=" " alt="" coords="212,5,376,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,31,198,27,199,32,164,36"/>
-<area shape="rect" id="Node000003" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="249,55,339,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,50,235,58,234,63,164,55"/>
-</map>

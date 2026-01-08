@@ -1,9 +1,0 @@
-<map id="jetparton::build" name="jetparton::build">
-<area shape="rect" id="Node000001" title="Builds the particle from event data." alt="" coords="5,45,127,70"/>
-<area shape="rect" id="Node000002" href="$classjetparton.html#a0de4e3a5886a52264c9109b8c9742096" title=" " alt="" coords="175,45,323,70"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,55,161,55,161,60,127,60"/>
-<area shape="rect" id="Node000003" href="$classparticle__template.html#a7fda73e06360bffd1bce45e7ba7370a5" title="Adds a leaf (variable) to read for this particle." alt="" coords="371,5,516,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="323,43,357,37,358,42,324,48"/>
-<area shape="rect" id="Node000004" href="$classparticle__template.html#a83757e8eb32e382a8c0444ede5dda548" title="Applies the particle type as a prefix to leaf names." alt="" coords="371,69,516,109"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="324,67,358,73,357,78,323,72"/>
-</map>

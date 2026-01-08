@@ -1,9 +1,0 @@
-<map id="merge_cast.h" name="merge_cast.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="65,5,175,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,64,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,33,61,72,57,68,105,29"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="89,79,151,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="123,31,123,65,117,65,117,31"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="176,79,227,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="135,29,180,68,176,72,131,33"/>
-</map>

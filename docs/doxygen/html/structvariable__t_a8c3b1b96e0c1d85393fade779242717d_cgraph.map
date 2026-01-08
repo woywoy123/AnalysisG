@@ -1,9 +1,0 @@
-<map id="variable_t::process" name="variable_t::process">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,151,31"/>
-<area shape="rect" id="Node000002" href="$structvariable__t.html#a35efa1aca52f54be53701f19713efeab" title=" " alt="" coords="199,5,353,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,15,185,15,185,21,151,21"/>
-<area shape="rect" id="Node000003" href="$vector__cast_8h.html#a9888ed684385b240692f6cb6e4c6b82e" title=" " alt="" coords="401,5,532,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="354,15,388,15,388,21,354,21"/>
-<area shape="rect" id="Node000004" href="$vector__cast_8h.html#adc5ffd895fb49094059fd9dc0af67de9" title=" " alt="" coords="580,5,691,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="532,15,566,15,566,21,532,21"/>
-</map>

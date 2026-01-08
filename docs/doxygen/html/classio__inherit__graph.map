@@ -1,7 +1,0 @@
-<map id="io" name="io">
-<area shape="rect" id="Node000001" title="&lt; Inherits from the notification class for logging capabilities." alt="" coords="77,519,246,1444"/>
-<area shape="rect" id="Node000002" href="$classtools.html" title="Provides a wide range of utility functions used throughout the framework." alt="" coords="5,5,136,471"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,484,108,518,102,519,98,485"/>
-<area shape="rect" id="Node000003" href="$classnotification.html" title="Provides logging and messaging functionality with various severity levels." alt="" coords="160,35,344,441"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="228,455,220,519,215,518,223,454"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="bsc_t::root_type_translate" name="bsc_t::root_type_translate">
-<area shape="rect" id="Node000001" title="Translates a ROOT type string to an internal data enumeration." alt="" coords="5,29,196,55"/>
-<area shape="rect" id="Node000002" href="$structs_2cxx_2base_8cxx.html#a4eee7b291ed2cdcd4e3c2496c603c48c" title="Counts occurrences of a substring within a string." alt="" coords="244,29,303,55"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,39,230,39,230,45,196,45"/>
-<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="245,31,239,21,242,11,254,5,273,3,297,6,307,15,303,19,294,11,273,8,255,10,246,15,244,20,249,28"/>
-</map>

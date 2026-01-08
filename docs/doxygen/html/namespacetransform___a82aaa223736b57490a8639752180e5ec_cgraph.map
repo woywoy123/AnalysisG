@@ -1,6 +1,0 @@
-<map id="transform_::Eta" name="transform_::Eta">
-<area shape="rect" id="Node000001" title="Computes the pseudorapidity (Eta) from a momentum tensor." alt="" coords="5,29,128,55"/>
-<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="44,30,40,21,42,11,51,5,67,3,85,6,93,14,89,18,82,11,67,8,53,10,46,14,45,20,49,28"/>
-<area shape="rect" id="Node000002" href="$utils_8cxx.html#aaec9ca2d20716add3c686abd989934d0" title=" " alt="" coords="176,29,221,55"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,39,162,39,162,45,128,45"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="bsm_4tops::bsm_4tops" name="bsm_4tops::bsm_4tops">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,177,60"/>
-<area shape="rect" id="Node000002" href="$classevent__template.html#af57dbc73f9bf6e8ba5126a07e4a327c4" title="Adds a leaf (variable) to the event structure." alt="" coords="225,5,415,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,34,211,29,212,35,178,39"/>
-<area shape="rect" id="Node000003" href="$classevent__template.html#a29bff91e130f4b01eefab555eb5fe9bb" title="Registers a particle for tracking in this event." alt="" coords="229,55,411,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="178,55,215,60,215,65,177,60"/>
-</map>

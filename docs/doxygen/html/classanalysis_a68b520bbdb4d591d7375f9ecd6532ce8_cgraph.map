@@ -1,9 +1,0 @@
-<map id="analysis::build_events" name="analysis::build_events">
-<area shape="rect" id="Node000001" title="Builds or processes event data based on the added event templates and samples." alt="" coords="5,55,172,80"/>
-<area shape="rect" id="Node000002" href="$classtools.html#a408b66ad73b7b4bb962634c14a55b619" title="Converts a relative path to an absolute path." alt="" coords="220,5,375,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,52,229,31,230,36,144,57"/>
-<area shape="rect" id="Node000003" href="$classio.html#a65ca69ec5f12d0f3a463396bcff84d77" title="Ends the current I/O session, closing any open files." alt="" coords="264,55,331,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,65,250,65,250,70,172,70"/>
-<area shape="rect" id="Node000004" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="252,104,343,129"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="144,77,239,100,238,106,142,83"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="buildPCM" name="buildPCM">
-<area shape="rect" id="Node000001" title="Builds a PCM file for the given type." alt="" coords="311,31,393,56"/>
-<area shape="rect" id="Node000002" href="$structs_2cxx_2base_8cxx.html#aa67f17555eea254a2f080d4bfaa19262" title="Builds all required dictionaries." alt="" coords="192,31,263,56"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="297,46,263,46,263,41,297,41"/>
-<area shape="rect" id="Node000003" href="$classanalysis.html#a1391073bb18c75cdad4132e90992fcd3" title="&lt; Public access specifier for the following members." alt="" coords="5,5,144,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="178,38,144,32,145,27,179,33"/>
-<area shape="rect" id="Node000004" href="$classio.html#a38cda1cf4b0ad6920e19780ad985d374" title="Triggers the generation of a ROOT PCM (Precompiled Module) if needed for dictionary generation." alt="" coords="15,55,135,80"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="179,54,136,60,135,55,178,48"/>
-</map>

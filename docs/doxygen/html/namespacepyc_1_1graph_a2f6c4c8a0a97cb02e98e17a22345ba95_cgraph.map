@@ -1,7 +1,0 @@
-<map id="pyc::graph::PageRank" name="pyc::graph::PageRank">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,168,56"/>
-<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="231,5,325,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,30,217,23,218,29,168,35"/>
-<area shape="rect" id="Node000003" href="$namespacepyc.html#ab174cc51f6efef06bdb0ba47ec3fe3bf" title=" " alt="" coords="216,55,340,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="168,51,203,55,202,61,168,56"/>
-</map>

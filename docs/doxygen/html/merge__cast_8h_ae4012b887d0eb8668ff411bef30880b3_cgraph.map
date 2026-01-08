@@ -1,7 +1,0 @@
-<map id="contract_data" name="contract_data">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,116,56"/>
-<area shape="rect" id="Node000002" href="$merge__cast_8h.html#acd9a5341808f2b6416c6c1c9b0fb7d35" title=" " alt="" coords="166,5,277,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,32,152,26,153,32,117,37"/>
-<area shape="rect" id="Node000003" href="$merge__cast_8h.html#a038699fe5eb12405a92cab2300b5a62e" title=" " alt="" coords="164,55,279,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="117,49,151,54,150,59,116,54"/>
-</map>

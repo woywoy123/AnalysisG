@@ -1,6 +1,0 @@
-<map id="physics_::P2" name="physics_::P2">
-<area shape="rect" id="Node000001" title="Computes the square of the momentum magnitude." alt="" coords="5,29,108,55"/>
-<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="34,30,30,21,32,11,41,5,57,3,75,6,83,14,79,18,72,11,57,8,43,10,36,14,35,20,39,28"/>
-<area shape="rect" id="Node000002" href="$utils_8cxx.html#a9c1cdc6384bce6bdc92ca917b3f656bf" title=" " alt="" coords="156,29,223,55"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,39,142,39,142,45,108,45"/>
-</map>

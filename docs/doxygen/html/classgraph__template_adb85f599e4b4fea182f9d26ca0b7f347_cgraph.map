@@ -1,7 +1,0 @@
-<map id="graph_template::data_export" name="graph_template::data_export">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,168,75"/>
-<area shape="rect" id="Node000002" href="$classgraph__template.html#aa7bdd630d146ee5180c61b0b27861659" title=" " alt="" coords="216,5,381,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,41,202,36,203,41,169,46"/>
-<area shape="rect" id="Node000003" href="$bsm__4tops_2include_2bsm__4tops_2graph__features_8h.html#ac4429f2ee44f3a8d00eb820c7c69481d" title=" " alt="" coords="243,70,354,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="169,63,229,71,229,76,168,68"/>
-</map>

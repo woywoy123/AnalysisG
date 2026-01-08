@@ -1,9 +1,0 @@
-<map id="graph_template::double_neutrino" name="graph_template::double_neutrino">
-<area shape="rect" id="Node000001" title="Reconstructs double neutrino momenta for di&#45;leptonic events." alt="" coords="272,69,449,109"/>
-<area shape="rect" id="Node000002" href="$classgraph__truthjets__nonu.html#add03a6d564186c150f7c907737b77eeb" title="Compiles the event into a graph." alt="" coords="35,5,195,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="269,68,191,48,193,43,271,63"/>
-<area shape="rect" id="Node000003" href="$classgraph__jets__nonu.html#a3d76d9b5885af9d1ef9c2a150acc1300" title="Compiles the event into a graph." alt="" coords="19,69,210,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="258,92,210,92,210,87,258,87"/>
-<area shape="rect" id="Node000004" href="$classgraph__detector.html#a9524462481e7c9e42df5cf73f999737e" title="Compiles the event into a graph." alt="" coords="5,134,224,159"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="262,115,225,124,171,137,170,131,223,119,261,110"/>
-</map>

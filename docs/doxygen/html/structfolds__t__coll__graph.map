@@ -1,9 +1,0 @@
-<map id="folds_t" name="folds_t">
-<area shape="rect" id="Node000001" title=" " alt="" coords="29,163,135,228"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,36,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="32,70,55,138,59,147,54,149,50,140,27,72"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="61,5,103,71"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="85,71,85,146,79,146,79,71"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="147,5,201,71"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="172,71,163,106,147,140,138,152,134,149,142,137,158,104,167,70"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="graph_template::clone" name="graph_template::clone">
-<area shape="rect" id="Node000001" title="Creates a clone of this graph template." alt="" coords="219,5,387,31"/>
-<area shape="rect" id="Node000002" href="$classgraph__template.html#a9b26bf6100bf257849c43563d1b1bd70" title=" " alt="" coords="5,5,171,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,21,171,21,171,15,205,15"/>
-</map>

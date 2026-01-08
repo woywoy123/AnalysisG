@@ -1,9 +1,0 @@
-<map id="jetparton::clone" name="jetparton::clone">
-<area shape="rect" id="Node000001" title="Creates a clone of this particle." alt="" coords="5,45,129,70"/>
-<area shape="rect" id="Node000002" href="$classjetparton.html#a0de4e3a5886a52264c9109b8c9742096" title=" " alt="" coords="177,45,325,70"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,55,164,55,164,60,130,60"/>
-<area shape="rect" id="Node000003" href="$classparticle__template.html#a7fda73e06360bffd1bce45e7ba7370a5" title="Adds a leaf (variable) to read for this particle." alt="" coords="373,5,519,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="325,43,359,37,360,42,326,48"/>
-<area shape="rect" id="Node000004" href="$classparticle__template.html#a83757e8eb32e382a8c0444ede5dda548" title="Applies the particle type as a prefix to leaf names." alt="" coords="373,69,519,109"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="326,67,360,73,359,78,325,72"/>
-</map>

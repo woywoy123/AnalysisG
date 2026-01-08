@@ -1,7 +1,0 @@
-<map id="pyc::operators::Rx" name="pyc::operators::Rx">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,145,56"/>
-<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="205,5,298,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,31,191,24,191,29,146,36"/>
-<area shape="rect" id="Node000003" href="$namespaceoperators__.html#a7ce1f1b4f84306a157386ac5fd54ea1a" title="Computes the rotation matrix around the X&#45;axis." alt="" coords="193,55,309,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,50,180,55,179,60,145,56"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="sum_data" name="sum_data">
-<area shape="rect" id="Node000001" title=" " alt="" coords="208,55,295,80"/>
-<area shape="rect" id="Node000002" href="$classdecaymodes.html#a65b4213eb7aa8ede49b8113064824f99" title="Merges results from another selection." alt="" coords="5,5,160,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,53,126,33,128,28,195,48"/>
-<area shape="rect" id="Node000003" href="$classtopefficiency.html#a4565cb0f6f962119593181f2bc313bd0" title="Merges results from another selection." alt="" coords="5,55,160,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="194,70,160,70,160,65,194,65"/>
-<area shape="rect" id="Node000004" href="$merge__cast_8h.html#aa0782a3dc150f9ff00323eb872ec417f" title=" " alt="" coords="39,104,126,129"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="195,86,127,107,125,102,194,81"/>
-</map>

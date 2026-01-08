@@ -1,7 +1,0 @@
-<map id="pyc::operators::Inverse" name="pyc::operators::Inverse">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,176,56"/>
-<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="251,5,344,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,30,237,23,237,28,176,36"/>
-<area shape="rect" id="Node000003" href="$namespaceoperators__.html#aaf20282e41ff4961e01d222feb86bc47" title="Computes the inverse of a matrix." alt="" coords="224,55,371,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="176,51,210,55,210,60,176,56"/>
-</map>

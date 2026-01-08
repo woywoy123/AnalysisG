@@ -1,7 +1,0 @@
-<map id="pyc::operators::Cross" name="pyc::operators::Cross">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,164,56"/>
-<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="233,5,326,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,30,219,23,219,28,164,36"/>
-<area shape="rect" id="Node000003" href="$namespaceoperators__.html#adbe7fd5192c2b058280996ad9529f6ed" title="Computes the cross product of two vectors." alt="" coords="212,55,347,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,50,198,55,198,60,164,56"/>
-</map>

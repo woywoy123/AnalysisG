@@ -1,7 +1,0 @@
-<map id="kinematic_t" name="kinematic_t">
-<area shape="rect" id="Node000001" title=" " alt="" coords="27,177,117,243"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,48,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="24,71,23,111,31,153,35,162,30,164,25,154,18,111,19,71"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="103,5,134,71"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="114,72,92,154,90,162,84,161,87,153,108,70"/>
-</map>

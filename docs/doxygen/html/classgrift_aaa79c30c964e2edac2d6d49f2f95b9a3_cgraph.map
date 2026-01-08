@@ -1,7 +1,0 @@
-<map id="grift::clone" name="grift::clone">
-<area shape="rect" id="Node000001" title="Creates a clone of the model template." alt="" coords="5,13,96,38"/>
-<area shape="rect" id="Node000002" href="$classgrift.html#a8c3babc97f67eedd8105da8e245bdcef" title=" " alt="" coords="144,13,227,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,23,130,23,130,28,96,28"/>
-<area shape="rect" id="Node000003" href="$classmodel__template.html#a456e96f75278fed9c8d6f4dbff885e39" title="Registers a PyTorch sequential module with the model." alt="" coords="275,5,461,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="227,23,261,23,261,28,227,28"/>
-</map>

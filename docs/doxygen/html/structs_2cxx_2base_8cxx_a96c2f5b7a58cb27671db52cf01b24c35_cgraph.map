@@ -1,5 +1,0 @@
-<map id="buildPCM" name="buildPCM">
-<area shape="rect" id="Node000001" title="Builds a PCM file for the given type." alt="" coords="5,5,88,31"/>
-<area shape="rect" id="Node000002" href="$structs_2cxx_2base_8cxx.html#a25eaf56fcdb4b2d9583f6d55ee6bd9b7" title="Builds a dictionary for the given type name." alt="" coords="136,5,216,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,15,122,15,122,21,88,21"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="assign_vector" name="assign_vector">
-<area shape="rect" id="Node000001" title=" " alt="" coords="164,31,276,56"/>
-<area shape="rect" id="Node000002" href="$classtop.html#ab0650ae5f6ec11376daccc4eaec70aca" title="Builds the particle from event data." alt="" coords="19,5,102,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,35,102,27,103,22,151,30"/>
-<area shape="rect" id="Node000003" href="$classtruthjet.html#a28cfe9ad59f100534c62ba702031860c" title="Builds the particle from event data." alt="" coords="5,55,116,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,56,117,62,116,56,150,51"/>
-</map>

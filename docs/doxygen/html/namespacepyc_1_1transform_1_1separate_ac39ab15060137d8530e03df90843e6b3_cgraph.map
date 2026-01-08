@@ -1,7 +1,0 @@
-<map id="pyc::transform::separate::Pt" name="pyc::transform::separate::Pt">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,208,56"/>
-<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="267,5,360,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,28,252,23,253,28,209,34"/>
-<area shape="rect" id="Node000003" href="$namespacetransform__.html#a7e398b6292d5d34c81497445060ec752" title="Computes the transverse momentum (Pt)." alt="" coords="256,55,371,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="209,52,242,56,242,62,208,58"/>
-</map>

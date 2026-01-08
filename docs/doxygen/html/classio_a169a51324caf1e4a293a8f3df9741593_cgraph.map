@@ -1,7 +1,0 @@
-<map id="io::read_event_h5" name="io::read_event_h5">
-<area shape="rect" id="Node000001" title="Templated method to read single event data object from HDF5." alt="" coords="5,5,144,31"/>
-<area shape="rect" id="Node000002" href="$classio.html#a9c5e08cc995a18eff996b3cfcda641eb" title="Generic HDF5 read operation for a vector of objects." alt="" coords="192,5,285,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,15,178,15,178,21,144,21"/>
-<area shape="rect" id="Node000003" href="$classio.html#a1b1fcdf426ced67387cc9579f8f0f3e2" title="&lt; Private access specifier for the following members." alt="" coords="333,5,431,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="286,15,320,15,320,21,286,21"/>
-</map>

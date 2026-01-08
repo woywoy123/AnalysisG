@@ -1,7 +1,0 @@
-<map id="io::write_event_h5" name="io::write_event_h5">
-<area shape="rect" id="Node000001" title="Templated method to write single event data object to HDF5." alt="" coords="5,5,148,31"/>
-<area shape="rect" id="Node000002" href="$classio.html#a6fdc4311aa9426644ffffc6fa45a2bf3" title="Generic HDF5 write operation for a vector of objects." alt="" coords="196,5,291,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,15,182,15,182,21,148,21"/>
-<area shape="rect" id="Node000003" href="$classio.html#a1b1fcdf426ced67387cc9579f8f0f3e2" title="&lt; Private access specifier for the following members." alt="" coords="339,5,436,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="291,15,325,15,325,21,291,21"/>
-</map>

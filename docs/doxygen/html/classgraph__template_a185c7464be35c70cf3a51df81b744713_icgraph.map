@@ -1,7 +1,0 @@
-<map id="graph_template::add_graph_feature" name="graph_template::add_graph_feature">
-<area shape="rect" id="Node000001" title=" " alt="" coords="212,37,369,77"/>
-<area shape="rect" id="Node000002" href="$classgraph__template.html#a1a49a06e30768be2815531f478dbb035" title="Adds a graph&#45;level data feature." alt="" coords="6,5,163,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,46,163,40,164,35,199,40"/>
-<area shape="rect" id="Node000003" href="$classgraph__template.html#aa76fa2728ad46132846ae09e9db93386" title="Adds a graph&#45;level truth feature." alt="" coords="5,69,164,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="199,74,165,80,164,74,198,69"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="matching::merge" name="matching::merge">
-<area shape="rect" id="Node000001" title="Merges results from another selection." alt="" coords="5,37,139,62"/>
-<area shape="rect" id="Node000002" href="$classselection__template.html#ae5606e994231fae57abe42e4f0ec6202" title="Writes a particle collection to output." alt="" coords="187,29,333,69"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,47,173,47,173,52,139,52"/>
-<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="225,30,223,20,228,11,241,5,260,3,282,6,294,13,291,17,280,11,260,8,242,10,232,15,228,21,230,28"/>
-<area shape="rect" id="Node000003" href="$classselection__template.html#a81497ddb8a1a46c8d4e715cf9733ef61" title="Switch board for dispatching particle attributes." alt="" coords="381,29,528,69"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="333,47,367,47,367,52,333,52"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="418,30,416,20,422,11,435,5,455,3,478,6,490,13,487,17,476,11,455,8,436,10,425,15,421,21,423,28"/>
-</map>

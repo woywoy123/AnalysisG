@@ -1,5 +1,0 @@
-<map id="graph_template::build_export" name="graph_template::build_export">
-<area shape="rect" id="Node000001" title=" " alt="" coords="216,5,381,45"/>
-<area shape="rect" id="Node000002" href="$classgraph__template.html#adb85f599e4b4fea182f9d26ca0b7f347" title=" " alt="" coords="5,5,168,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,28,168,28,168,23,202,23"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="graph_t::_purge_data" name="graph_t::_purge_data">
-<area shape="rect" id="Node000001" title=" " alt="" coords="212,31,371,56"/>
-<area shape="rect" id="Node000002" href="$structgraph__t.html#ad3a4eb80d85daea2502643917b6e775d" title="Purge all tensor data and free memory." alt="" coords="11,5,158,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,35,158,30,159,24,199,29"/>
-<area shape="rect" id="Node000003" href="$structgraph__t.html#a15938dd60e01582b3e2ac9c5585397fb" title=" " alt="" coords="5,55,164,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="199,57,164,61,164,55,198,51"/>
-</map>

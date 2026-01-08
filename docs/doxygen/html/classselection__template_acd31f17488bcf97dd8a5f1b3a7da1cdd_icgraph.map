@@ -1,9 +1,0 @@
-<map id="selection_template::set_hash" name="selection_template::set_hash">
-<area shape="rect" id="Node000001" title="Setter for hash." alt="" coords="597,5,744,45"/>
-<area shape="rect" id="Node000002" href="$classselection__template.html#a4562a7ab32d93b5f2ca8a232a244041c" title="Default constructor." alt="" coords="395,5,549,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="583,28,549,28,549,23,583,23"/>
-<area shape="rect" id="Node000003" href="$classselection__template.html#a094ce1eb2b6463f88a8ad5f7dfd8e4b6" title="Creates a clone of this selection." alt="" coords="200,5,347,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="381,28,347,28,347,23,381,23"/>
-<area shape="rect" id="Node000004" href="$classselection__template.html#ae24cee9f302d7509a7009daea0bf0616" title="Builds the selection from an event." alt="" coords="5,5,152,45"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="186,28,152,28,152,23,186,23"/>
-</map>

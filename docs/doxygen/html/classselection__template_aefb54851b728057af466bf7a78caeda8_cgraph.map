@@ -1,5 +1,0 @@
-<map id="selection_template::sum" name="selection_template::sum">
-<area shape="rect" id="Node000001" title="Sums particles and returns the invariant mass in GeV." alt="" coords="5,5,188,31"/>
-<area shape="rect" id="Node000002" href="$classselection__template.html#a84df199f6022f2a5d27979d43de51547" title="Sums particles into a combined particle." alt="" coords="236,5,419,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,15,222,15,222,21,188,21"/>
-</map>

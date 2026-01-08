@@ -1,9 +1,0 @@
-<map id="topkinematics::merge" name="topkinematics::merge">
-<area shape="rect" id="Node000001" title="Merges results from another selection." alt="" coords="5,37,171,62"/>
-<area shape="rect" id="Node000002" href="$classselection__template.html#ae5606e994231fae57abe42e4f0ec6202" title="Writes a particle collection to output." alt="" coords="219,29,365,69"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,47,205,47,205,52,171,52"/>
-<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="255,30,253,20,259,11,272,5,292,3,315,6,327,13,325,17,313,11,292,8,273,10,262,15,258,21,260,28"/>
-<area shape="rect" id="Node000003" href="$classselection__template.html#a81497ddb8a1a46c8d4e715cf9733ef61" title="Switch board for dispatching particle attributes." alt="" coords="413,29,560,69"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="365,47,399,47,399,52,365,52"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="450,30,448,20,454,11,467,5,487,3,510,6,522,13,519,17,508,11,487,8,468,10,457,15,453,21,455,28"/>
-</map>

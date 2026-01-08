@@ -1,7 +1,0 @@
-<map id="tensor_vector" name="tensor_vector">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,116,56"/>
-<area shape="rect" id="Node000002" href="$vector__cast_8h.html#ab5402be55f85d8352acf78801fb839d4" title=" " alt="" coords="179,5,260,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,32,164,24,165,29,117,37"/>
-<area shape="rect" id="Node000003" href="$vector__cast_8h.html#adc5ffd895fb49094059fd9dc0af67de9" title=" " alt="" coords="164,55,275,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="117,49,151,54,150,60,116,54"/>
-</map>

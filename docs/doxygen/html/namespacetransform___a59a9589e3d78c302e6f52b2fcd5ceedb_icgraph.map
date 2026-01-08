@@ -1,7 +1,0 @@
-<map id="transform_::PtEtaPhiE" name="transform_::PtEtaPhiE">
-<area shape="rect" id="Node000001" title="Computes the transverse momentum (Pt), pseudorapidity (Eta), azimuthal angle (Phi),..." alt="" coords="243,45,405,70"/>
-<area shape="rect" id="Node000002" href="$namespacepyc_1_1transform_1_1combined.html#a540024e0d49fe477d984815f6844ea5a" title=" " alt="" coords="5,5,195,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,46,195,42,195,36,229,41"/>
-<area shape="rect" id="Node000003" href="$namespacepyc_1_1transform_1_1separate.html#aa89702a61f7eecf64504a32f99b2f9af" title=" " alt="" coords="9,69,191,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="229,74,192,79,191,74,228,68"/>
-</map>

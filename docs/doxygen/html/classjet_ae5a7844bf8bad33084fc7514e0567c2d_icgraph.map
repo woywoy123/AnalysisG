@@ -1,7 +1,0 @@
-<map id="jet::jet" name="jet::jet">
-<area shape="rect" id="Node000001" title=" " alt="" coords="136,31,200,56"/>
-<area shape="rect" id="Node000002" href="$classjet.html#ad202deb7d9e738435479b50f9603f028" title="Builds the particle from event data." alt="" coords="7,5,86,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,36,86,29,87,24,123,31"/>
-<area shape="rect" id="Node000003" href="$classjet.html#a9b32b4a83c16ee51db8745e30ab1b31d" title="Creates a clone of this particle." alt="" coords="5,55,88,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="123,55,89,62,88,57,122,50"/>
-</map>

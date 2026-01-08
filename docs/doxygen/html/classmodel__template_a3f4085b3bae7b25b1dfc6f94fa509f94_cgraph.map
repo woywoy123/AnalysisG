@@ -1,7 +1,0 @@
-<map id="model_template::forward" name="model_template::forward">
-<area shape="rect" id="Node000001" title="Forward pass for multiple graphs with training mode flag." alt="" coords="5,42,192,67"/>
-<area shape="rect" id="Node000002" href="$classmodel__template.html#ac393d52139a06ce55e9b7872954ef17f" title="Clears all output tensors, freeing memory." alt="" coords="249,5,417,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,40,235,35,236,40,192,46"/>
-<area shape="rect" id="Node000003" href="$classmodel__template.html#ac6d8ddbdaf334cfefbe1e6361fd4ebbb" title="Virtual forward pass method for a single graph." alt="" coords="240,70,427,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="192,63,227,67,226,73,192,68"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="zprime::merge" name="zprime::merge">
-<area shape="rect" id="Node000001" title="Merges results from another selection." alt="" coords="5,37,123,62"/>
-<area shape="rect" id="Node000002" href="$classselection__template.html#ae5606e994231fae57abe42e4f0ec6202" title="Writes a particle collection to output." alt="" coords="171,29,317,69"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,47,157,47,157,52,123,52"/>
-<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="210,30,208,20,213,11,226,5,244,3,265,6,277,13,274,17,263,11,244,8,227,10,217,15,213,21,215,28"/>
-<area shape="rect" id="Node000003" href="$classselection__template.html#a81497ddb8a1a46c8d4e715cf9733ef61" title="Switch board for dispatching particle attributes." alt="" coords="365,29,512,69"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="317,47,351,47,351,52,317,52"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="402,30,400,20,406,11,419,5,439,3,462,6,474,13,471,17,460,11,439,8,420,10,409,15,405,21,407,28"/>
-</map>

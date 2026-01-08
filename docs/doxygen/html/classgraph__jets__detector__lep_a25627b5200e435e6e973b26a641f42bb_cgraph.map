@@ -1,5 +1,0 @@
-<map id="graph_jets_detector_lep::clone" name="graph_jets_detector_lep::clone">
-<area shape="rect" id="Node000001" title="Creates a clone of this graph template." alt="" coords="5,5,156,45"/>
-<area shape="rect" id="Node000002" href="$classgraph__jets__detector__lep.html#a4b2ffb36f8f3386c33b6c086e722f2a6" title=" " alt="" coords="204,5,417,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,23,190,23,190,28,156,28"/>
-</map>

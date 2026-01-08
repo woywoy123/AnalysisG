@@ -1,9 +1,0 @@
-<map id="decaymodes::strategy" name="decaymodes::strategy">
-<area shape="rect" id="Node000001" title="Alternative selection strategy method." alt="" coords="5,55,172,80"/>
-<area shape="rect" id="Node000002" href="$merge__cast_8h.html#a205af11d07be8d10770e7392817fc5c3" title=" " alt="" coords="261,5,361,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,52,247,29,248,35,147,57"/>
-<area shape="rect" id="Node000003" href="$classselection__template.html#a84df199f6022f2a5d27979d43de51547" title="Sums particles into a combined particle." alt="" coords="220,55,403,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,65,207,65,207,70,173,70"/>
-<area shape="rect" id="Node000004" href="$classselection__template.html#acfb4c50041c70205e08f6ccb4a850979" title="Converts a map to a vector." alt="" coords="238,105,385,145"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="139,77,225,100,224,105,138,83"/>
-</map>

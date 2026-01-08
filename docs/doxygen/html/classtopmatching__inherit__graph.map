@@ -1,8 +1,0 @@
-<map id="topmatching" name="topmatching">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,1352,197,1817"/>
-<area shape="rect" id="Node000002" href="$classselection__template.html" title="Base class for implementing event selection criteria." alt="" coords="14,519,189,1304"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,1318,95,1352,90,1352,90,1318"/>
-<area shape="poly" id="edge3_Node000001_Node000002" title=" " alt="" coords="113,1318,113,1352,107,1352,107,1318"/>
-<area shape="rect" id="Node000003" href="$classtools.html" title="Provides a wide range of utility functions used throughout the framework." alt="" coords="36,5,167,471"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="104,485,104,518,99,518,99,485"/>
-</map>

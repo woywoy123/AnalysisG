@@ -1,7 +1,0 @@
-<map id="dataloader::get_k_validation_set" name="dataloader::get_k_validation_set">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,240,56"/>
-<area shape="rect" id="Node000002" href="$classtools.html#a4450b1e48193bef904b44f7a90aaee98" title="Fills a vector with pointers from another vector based on a selection index." alt="" coords="319,5,401,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="240,28,305,21,305,26,241,33"/>
-<area shape="rect" id="Node000003" href="$classdataloader.html#a34eafd55816f8c2649a58c7cb8bc42fe" title=" " alt="" coords="288,55,432,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="241,53,274,56,274,61,240,58"/>
-</map>

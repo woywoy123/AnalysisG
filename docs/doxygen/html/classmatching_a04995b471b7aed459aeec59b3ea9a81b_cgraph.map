@@ -1,9 +1,0 @@
-<map id="matching::match_obj" name="matching::match_obj">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,164,80"/>
-<area shape="rect" id="Node000002" href="$bsm__4tops_2include_2bsm__4tops_2graph__features_8h.html#ae8e5a8c9e20c373fc6c4566c25f8a5e9" title=" " alt="" coords="244,5,327,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,52,230,29,231,34,138,57"/>
-<area shape="rect" id="Node000003" href="$classtools.html#a7b784121d8b368a64995feddc7083469" title="Sums the elements of a vector." alt="" coords="240,55,331,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,65,226,65,226,70,164,70"/>
-<area shape="rect" id="Node000004" href="$classselection__template.html#acfb4c50041c70205e08f6ccb4a850979" title="Converts a map to a vector." alt="" coords="212,105,359,145"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="131,77,203,98,201,103,129,83"/>
-</map>

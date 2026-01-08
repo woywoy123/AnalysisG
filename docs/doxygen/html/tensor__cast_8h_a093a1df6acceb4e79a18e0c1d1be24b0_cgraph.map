@@ -1,7 +1,0 @@
-<map id="standard" name="standard">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,84,56"/>
-<area shape="rect" id="Node000002" href="$tensor__cast_8h.html#a21dae38adc3eda42c21a7791d6b42232" title=" " alt="" coords="145,5,198,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,33,131,23,132,28,85,38"/>
-<area shape="rect" id="Node000003" href="$tensor__cast_8h.html#af14120999422d60b3d0aef376398fca6" title=" " alt="" coords="132,55,211,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="85,48,119,55,118,60,84,53"/>
-</map>

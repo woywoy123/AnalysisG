@@ -1,6 +1,0 @@
-<map id="analysis::safe_clone" name="analysis::safe_clone">
-<area shape="rect" id="Node000001" title="Templated helper method to safely clone objects (e.g., event or graph templates)." alt="" coords="5,29,160,55"/>
-<area shape="rect" id="Node000002" href="$structs_2cxx_2base_8cxx.html#a4eee7b291ed2cdcd4e3c2496c603c48c" title="Counts occurrences of a substring in a string." alt="" coords="208,29,267,55"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,39,194,39,194,45,160,45"/>
-<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="212,31,206,21,209,11,220,5,237,3,258,6,267,15,264,19,256,11,237,8,222,10,213,15,212,20,216,28"/>
-</map>

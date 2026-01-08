@@ -1,7 +1,0 @@
-<map id="graph_::node_aggregation" name="graph_::node_aggregation">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,196,31"/>
-<area shape="rect" id="Node000002" href="$namespacegraph__.html#a7249186f32a05a8ff1601bff5deabdef" title=" " alt="" coords="244,5,435,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,15,230,15,230,21,196,21"/>
-<area shape="rect" id="Node000003" href="$utils_8cxx.html#a1652e53abd2299dd0f10e093948e4fa3" title=" " alt="" coords="483,5,557,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="435,15,469,15,469,21,435,21"/>
-</map>

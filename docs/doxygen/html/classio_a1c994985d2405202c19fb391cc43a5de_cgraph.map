@@ -1,7 +1,0 @@
-<map id="io::root_end" name="io::root_end">
-<area shape="rect" id="Node000001" title="Finalizes ROOT file processing, closing any ROOT files opened by root_begin." alt="" coords="5,31,104,56"/>
-<area shape="rect" id="Node000002" href="$classio.html#a65ca69ec5f12d0f3a463396bcff84d77" title="Ends the current I/O session, closing any open files." alt="" coords="165,5,232,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,32,151,24,152,29,105,37"/>
-<area shape="rect" id="Node000003" href="$classtools.html#abce97603aeadeaa04fa6c6ff6c721eda" title="Empties a vector and all objects it points to." alt="" coords="152,55,245,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="105,49,139,55,138,60,104,54"/>
-</map>

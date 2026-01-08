@@ -1,9 +1,0 @@
-<map id="sampletracer::compile_objects" name="sampletracer::compile_objects">
-<area shape="rect" id="Node000001" title="Compiles objects concurrently using multiple threads." alt="" coords="5,47,173,87"/>
-<area shape="rect" id="Node000002" href="$classtools.html#abce97603aeadeaa04fa6c6ff6c721eda" title="Empties a vector and all objects it points to." alt="" coords="221,5,315,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="162,45,208,32,209,37,163,50"/>
-<area shape="rect" id="Node000003" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="223,55,313,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="174,65,209,65,209,70,174,70"/>
-<area shape="rect" id="Node000004" href="$classtools.html#a7b784121d8b368a64995feddc7083469" title="Sums the elements of a vector." alt="" coords="223,104,313,129"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="163,85,210,98,209,103,162,90"/>
-</map>

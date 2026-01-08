@@ -1,8 +1,0 @@
-<map id="analysis::add_metric_template" name="analysis::add_metric_template">
-<area shape="rect" id="Node000001" title="Adds a metric template to the analysis, associating it with a model." alt="" coords="5,22,163,62"/>
-<area shape="rect" id="Node000002" href="$classanalysis.html#a3cd3d6b2539ad3d5778cffabda174228" title="Templated helper method to safely clone objects (e.g., event or graph templates)." alt="" coords="211,29,365,55"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,39,197,39,197,45,163,45"/>
-<area shape="rect" id="Node000003" href="$structs_2cxx_2base_8cxx.html#a4eee7b291ed2cdcd4e3c2496c603c48c" title="Counts occurrences of a substring in a string." alt="" coords="413,29,472,55"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="366,39,400,39,400,45,366,45"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="417,31,412,21,414,11,425,5,443,3,464,6,473,15,469,19,461,11,443,8,427,10,419,15,417,20,422,28"/>
-</map>

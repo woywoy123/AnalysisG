@@ -1,8 +1,0 @@
-<map id="data_t::string_type" name="data_t::string_type">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,149,55"/>
-<area shape="rect" id="Node000002" href="$classbsc__t.html#a39907da14ea4fb20f71b47d0724bf1f2" title="Translates a ROOT type string to an internal data enumeration." alt="" coords="197,29,388,55"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,39,183,39,183,45,149,45"/>
-<area shape="rect" id="Node000003" href="$structs_2cxx_2base_8cxx.html#a4eee7b291ed2cdcd4e3c2496c603c48c" title="Counts occurrences of a substring within a string." alt="" coords="436,29,495,55"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="388,39,422,39,422,45,388,45"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="437,31,431,21,434,11,446,5,465,3,489,6,499,15,495,19,486,11,465,8,447,10,438,15,436,20,441,28"/>
-</map>
