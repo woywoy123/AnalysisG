@@ -112,6 +112,12 @@ WARN_LOGFILE           =
 
 INPUT                  = ../src/AnalysisG/core \
                          ../src/AnalysisG/modules \
+                         ../src/AnalysisG/pyc \
+                         ../src/AnalysisG/events \
+                         ../src/AnalysisG/graphs \
+                         ../src/AnalysisG/models \
+                         ../src/AnalysisG/selections \
+                         ../src/AnalysisG/metrics \
                          doxygen/pages
 FILE_PATTERNS          = *.h \
                          *.cxx \
@@ -119,6 +125,10 @@ FILE_PATTERNS          = *.h \
                          *.hpp \
                          *.c \
                          *.cc \
+                         *.cu \
+                         *.cuh \
+                         *.pyx \
+                         *.pxd \
                          *.dox \
                          *.md
 RECURSIVE              = YES

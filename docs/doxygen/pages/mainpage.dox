@@ -12,13 +12,22 @@
  *
  * @section architecture_sec Architecture Overview
  *
- * The AnalysisG framework is organized into two main components:
+ * The AnalysisG framework is organized into several main components:
  *
  * - **Core Module** (@ref core_group): Contains the foundational C++ implementations for graph structures,
  *   nodes, and edges that form the basis of the graph-based analysis approach.
  *
  * - **Modules** (@ref modules_group): Contains specialized modules that extend the framework's functionality,
  *   including event processing, graph building, model training, and metrics evaluation.
+ *
+ * - **CUDA Acceleration** (@ref cuda_group): GPU-accelerated physics computations and tensor operations
+ *   for high-performance analysis.
+ *
+ * - **Python Bindings** (@ref cython_group): Cython-based Python interface for seamless integration
+ *   with Python workflows and Jupyter notebooks.
+ *
+ * - **Pre-built Templates** (@ref prebuilt_group): Ready-to-use event, graph, model, and selection
+ *   templates for common HEP analysis tasks.
  *
  * @section getting_started Getting Started
  *
@@ -31,17 +40,25 @@
  * 5. Train or apply models using @ref model_template
  * 6. Evaluate results with @ref metric_template
  *
+ * See @ref getting_started_page for a detailed guide.
+ *
  * @section main_classes Key Classes
  *
  * The following are the main classes you'll interact with:
  *
- * - @ref analysis: The central orchestrator that manages the entire analysis workflow
- * - @ref event_template: Base class for defining event data structures
- * - @ref graph_template: Base class for graph construction from events
- * - @ref particle_template: Base class for particle representations
- * - @ref model_template: Base class for machine learning models
- * - @ref selection_template: Base class for event selection criteria
- * - @ref metric_template: Base class for performance metrics
+ * | Class | Header | Description |
+ * |-------|--------|-------------|
+ * | @ref analysis | `AnalysisG/analysis.h` | Central workflow orchestrator |
+ * | @ref event_template | `templates/event_template.h` | Base class for event data |
+ * | @ref graph_template | `templates/graph_template.h` | Base class for graph construction |
+ * | @ref particle_template | `templates/particle_template.h` | Base class for particles |
+ * | @ref model_template | `templates/model_template.h` | Base class for ML models |
+ * | @ref selection_template | `templates/selection_template.h` | Base class for selections |
+ * | @ref metric_template | `templates/metric_template.h` | Base class for metrics |
+ * | @ref dataloader | `generators/dataloader.h` | Data loading and batching |
+ * | @ref optimizer | `generators/optimizer.h` | Model training |
+ * | @ref sampletracer | `generators/sampletracer.h` | Sample tracking |
+ * | @ref io | `io/io.h` | ROOT/HDF5 I/O operations |
  *
  * @section modules_overview Modules Overview
  *
@@ -69,14 +86,53 @@
  * | @ref tools_module | Utility functions |
  * | @ref typecasting_module | Type conversion utilities |
  *
+ * @section cuda_overview CUDA Acceleration
+ *
+ * AnalysisG provides GPU-accelerated operations for performance-critical computations:
+ *
+ * | Namespace | Description |
+ * |-----------|-------------|
+ * | @ref physics_ | Physics calculations (mass, momentum, angles) |
+ * | @ref transform_ | Coordinate transformations |
+ * | @ref operators_ | Mathematical operators |
+ * | @ref graph_ | Graph operations |
+ * | @ref nusol_ | Neutrino reconstruction |
+ *
+ * See @ref cuda_group for detailed CUDA documentation.
+ *
+ * @section python_overview Python Interface
+ *
+ * The framework provides comprehensive Python bindings via Cython:
+ *
+ * ```python
+ * from AnalysisG.core import Analysis
+ *
+ * ana = Analysis()
+ * ana.OutputPath = "results/"
+ * ana.AddSamples("/data/", "sample")
+ * ana.Start()
+ * ```
+ *
+ * See @ref cython_group for Python API documentation.
+ *
  * @section dependencies Dependencies
  *
  * AnalysisG depends on the following external libraries:
  *
- * - **PyTorch (LibTorch)**: For tensor operations and neural network functionality
- * - **ROOT**: For reading HEP data formats (optional)
- * - **HDF5**: For efficient data storage
- * - **Cython**: For Python bindings
+ * | Library | Version | Purpose |
+ * |---------|---------|---------|
+ * | **PyTorch (LibTorch)** | 1.10+ | Tensor operations, neural networks |
+ * | **ROOT** | 6.x | HEP data format reading |
+ * | **HDF5** | 1.10+ | Efficient data storage |
+ * | **CUDA** | 11.0+ | GPU acceleration (optional) |
+ * | **Cython** | 0.29+ | Python bindings |
+ *
+ * @section pages Additional Documentation
+ *
+ * - @ref getting_started_page - Getting started guide
+ * - @ref templates_page - Template class documentation
+ * - @ref analysis_class_page - Detailed analysis class reference
+ * - @ref python_complete_example - Complete Python example
  *
  * @section license License
  *

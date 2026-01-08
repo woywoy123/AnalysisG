@@ -1,0 +1,375 @@
+/**
+ * @page dataloader_page DataLoader Reference
+ * @brief Comprehensive documentation for the dataloader class.
+ *
+ * @tableofcontents
+ *
+ * @section dataloader_intro Introduction
+ *
+ * The @ref dataloader class manages efficient data loading, batching, and k-fold
+ * cross-validation for machine learning training and evaluation. It handles
+ * graph data transfer between CPU and GPU devices.
+ *
+ * @section dataloader_inheritance Inheritance
+ *
+ * ```
+ * notification
+ *     └──┐
+ *        ├── dataloader
+ *        │
+ * tools ─┘
+ * ```
+ *
+ * @section dataloader_features Features
+ *
+ * - **K-fold Cross-Validation**: Automatic data splitting for cross-validation
+ * - **Train/Test Splitting**: Configurable train/test split ratios
+ * - **Batch Construction**: Efficient batching of graph data
+ * - **GPU Data Transfer**: Automatic tensor transfer to CUDA devices
+ * - **Graph Serialization**: Save/restore graph datasets to/from HDF5
+ * - **CUDA Memory Server**: Background memory management for GPUs
+ *
+ * @section dataloader_methods Public Methods
+ *
+ * @subsection dataloader_kfold K-Fold Methods
+ *
+ * | Method | Parameters | Returns | Description |
+ * |--------|------------|---------|-------------|
+ * | `get_k_train_set()` | k | vector<graph_t*>* | Get training set for fold k |
+ * | `get_k_validation_set()` | k | vector<graph_t*>* | Get validation set for fold k |
+ * | `get_test_set()` | - | vector<graph_t*>* | Get held-out test set |
+ * | `generate_test_set()` | percentage | void | Generate test set with given split |
+ * | `generate_kfold_set()` | k | void | Generate k-fold splits |
+ *
+ * @subsection dataloader_batch Batch Methods
+ *
+ * | Method | Parameters | Returns | Description |
+ * |--------|------------|---------|-------------|
+ * | `build_batch()` | data, model, report | vector<graph_t*>* | Construct batched graphs |
+ * | `get_random()` | num | vector<graph_t*> | Get random sample of graphs |
+ *
+ * @subsection dataloader_io Serialization Methods
+ *
+ * | Method | Parameters | Returns | Description |
+ * |--------|------------|---------|-------------|
+ * | `dump_dataset()` | path | void | Save dataset to HDF5 |
+ * | `restore_dataset()` | path | bool | Load dataset from HDF5 |
+ * | `dump_graphs()` | path, threads | bool | Save graphs with threading |
+ * | `restore_graphs()` | paths, threads | void | Load graphs with threading |
+ *
+ * @subsection dataloader_device Device Transfer
+ *
+ * | Method | Parameters | Description |
+ * |--------|------------|-------------|
+ * | `datatransfer()` | TensorOptions* | Transfer data to device |
+ * | `datatransfer()` | map<int, TensorOptions*>* | Transfer to multiple devices |
+ * | `start_cuda_server()` | - | Start background CUDA memory server |
+ *
+ * @section dataloader_batching Batching Details
+ *
+ * The `build_batch()` method constructs batched graphs by:
+ *
+ * 1. **Collecting Graphs**: Gather N graphs for the batch
+ * 2. **Concatenating Nodes**: Stack all node features [Σn_i, F]
+ * 3. **Adjusting Edge Indices**: Offset edge indices for batched graph
+ * 4. **Creating Batch Index**: Track which nodes belong to which graph
+ * 5. **Stacking Graph Features**: Combine graph-level features [N, G]
+ *
+ * The resulting batched graph is compatible with PyTorch Geometric conventions.
+ *
+ * @section dataloader_kfold_details K-Fold Cross-Validation
+ *
+ * The dataloader supports stratified k-fold cross-validation:
+ *
+ * ```cpp
+ * dataloader dl;
+ * 
+ * // Generate 5-fold splits with 80% train, 20% test
+ * dl.generate_test_set(20);  // 20% for final test
+ * dl.generate_kfold_set(5);  // 5 folds from remaining 80%
+ *
+ * for (int k = 0; k < 5; ++k) {
+ *     auto* train = dl.get_k_train_set(k);
+ *     auto* valid = dl.get_k_validation_set(k);
+ *     // Train on train, validate on valid
+ * }
+ *
+ * auto* test = dl.get_test_set();
+ * // Final evaluation on test
+ * ```
+ *
+ * @section dataloader_serialization Graph Serialization
+ *
+ * Graphs can be serialized to HDF5 for faster subsequent loading:
+ *
+ * ```cpp
+ * dataloader dl;
+ * // ... populate with graphs ...
+ *
+ * // Save to disk
+ * dl.dump_graphs("./graph_cache/", 10);  // 10 threads
+ *
+ * // Later: restore from disk
+ * dataloader dl2;
+ * dl2.restore_graphs("./graph_cache/", 10);
+ * ```
+ *
+ * @see graph_t
+ * @see model_template
+ * @see optimizer
+ */
+
+/**
+ * @page optimizer_page Optimizer Reference
+ * @brief Documentation for the optimizer class and training loop.
+ *
+ * @section optimizer_intro Introduction
+ *
+ * The @ref optimizer class manages the training loop for machine learning models,
+ * including forward/backward passes, gradient updates, and checkpoint management.
+ *
+ * @section optimizer_workflow Training Workflow
+ *
+ * The optimizer executes the following workflow per epoch:
+ *
+ * 1. **Training Loop**: Forward pass → Loss → Backward pass → Update
+ * 2. **Validation Loop**: Forward pass → Metrics (no gradients)
+ * 3. **Checkpoint**: Save model state if improved
+ *
+ * @section optimizer_methods Methods
+ *
+ * | Method | Parameters | Description |
+ * |--------|------------|-------------|
+ * | `import_dataloader()` | dataloader* | Set data source |
+ * | `import_model_sessions()` | tuple<model*, params*>* | Set model and config |
+ * | `training_loop()` | k, epoch | Execute training for fold k, epoch |
+ * | `validation_loop()` | k, epoch | Execute validation |
+ * | `evaluation_loop()` | k, epoch | Execute evaluation |
+ * | `launch_model()` | k | Launch model for fold k |
+ *
+ * @section optimizer_params Optimizer Parameters
+ *
+ * The `optimizer_params_t` structure configures training:
+ *
+ * @subsection optimizer_params_general General Parameters
+ *
+ * | Property | Type | Description |
+ * |----------|------|-------------|
+ * | `optimizer` | string | Optimizer type ("Adam", "SGD", etc.) |
+ * | `lr` | double | Learning rate |
+ * | `weight_decay` | double | L2 regularization |
+ * | `eps` | double | Epsilon for numerical stability |
+ *
+ * @subsection optimizer_params_adam Adam-specific Parameters
+ *
+ * | Property | Type | Description |
+ * |----------|------|-------------|
+ * | `betas` | tuple<float, float> | Beta1, Beta2 for Adam |
+ * | `amsgrad` | bool | Use AMSGrad variant |
+ *
+ * @subsection optimizer_params_sgd SGD-specific Parameters
+ *
+ * | Property | Type | Description |
+ * |----------|------|-------------|
+ * | `momentum` | double | Momentum factor |
+ * | `dampening` | double | Dampening for momentum |
+ * | `nesterov` | bool | Use Nesterov momentum |
+ *
+ * @subsection optimizer_params_lbfgs LBFGS-specific Parameters
+ *
+ * | Property | Type | Description |
+ * |----------|------|-------------|
+ * | `max_iter` | int | Maximum iterations per step |
+ * | `max_eval` | int | Maximum function evaluations |
+ * | `tolerance_grad` | double | Gradient tolerance |
+ * | `tolerance_change` | double | Change tolerance |
+ * | `history_size` | int | History size for L-BFGS |
+ *
+ * @section optimizer_example Example
+ *
+ * ```cpp
+ * optimizer_params_t params;
+ * params.optimizer = "Adam";
+ * params.lr = 0.001;
+ * params.weight_decay = 1e-5;
+ * params.betas = {0.9, 0.999};
+ * params.amsgrad = true;
+ *
+ * optimizer opt;
+ * opt.m_settings = settings;
+ * opt.import_dataloader(&dl);
+ * opt.import_model_sessions(&model_params);
+ *
+ * for (int epoch = 0; epoch < 100; ++epoch) {
+ *     for (int k = 0; k < 5; ++k) {
+ *         opt.training_loop(k, epoch);
+ *         opt.validation_loop(k, epoch);
+ *     }
+ * }
+ * ```
+ *
+ * @see dataloader
+ * @see model_template
+ */
+
+/**
+ * @page io_page IO Reference
+ * @brief Documentation for input/output operations.
+ *
+ * @section io_intro Introduction
+ *
+ * The @ref io class handles all input/output operations in AnalysisG,
+ * supporting both ROOT and HDF5 file formats.
+ *
+ * @section io_formats Supported Formats
+ *
+ * | Format | Read | Write | Use Case |
+ * |--------|------|-------|----------|
+ * | ROOT | ✓ | ✓ | Physics data (ntuples) |
+ * | HDF5 | ✓ | ✓ | Graph data, tensors |
+ *
+ * @section io_root ROOT Operations
+ *
+ * @subsection io_root_read Reading ROOT Files
+ *
+ * ```cpp
+ * io reader;
+ * reader.trees = {"nominal"};
+ * reader.branches = {"jet_", "el_", "mu_"};
+ * reader.leaves = {"met_et", "met_phi"};
+ *
+ * // Open and read
+ * reader.start("data.root", "read");
+ * reader.root_begin();
+ *
+ * // Access data
+ * auto* data = reader.get_data();
+ * // Process entries...
+ *
+ * reader.root_end();
+ * reader.end();
+ * ```
+ *
+ * @section io_hdf5 HDF5 Operations
+ *
+ * @subsection io_hdf5_write Writing HDF5 Data
+ *
+ * ```cpp
+ * io writer;
+ * writer.start("output.h5", "write");
+ *
+ * std::vector<double> values = {...};
+ * writer.write(&values, "dataset_name");
+ *
+ * writer.end();
+ * ```
+ *
+ * @subsection io_hdf5_read Reading HDF5 Data
+ *
+ * ```cpp
+ * io reader;
+ * reader.start("input.h5", "read");
+ *
+ * std::vector<double> values;
+ * reader.read(&values, "dataset_name");
+ *
+ * reader.end();
+ * ```
+ *
+ * @section io_members Key Members
+ *
+ * | Member | Type | Description |
+ * |--------|------|-------------|
+ * | `trees` | vector<string> | TTree names to read |
+ * | `branches` | vector<string> | Branch prefixes |
+ * | `leaves` | vector<string> | Leaf names |
+ * | `meta_data` | map<string, meta*> | Metadata per file |
+ * | `files_open` | map<string, TFile*> | Open ROOT files |
+ *
+ * @see settings_t
+ * @see meta
+ */
+
+/**
+ * @page container_page Container Reference
+ * @brief Documentation for the container class.
+ *
+ * @section container_intro Introduction
+ *
+ * The @ref container class manages collections of events, graphs, and selections
+ * associated with a single input file or sample.
+ *
+ * @section container_structure Structure
+ *
+ * Each container holds:
+ *
+ * - **Metadata**: Sample information (cross-section, etc.)
+ * - **Events**: Processed event_template instances
+ * - **Graphs**: Constructed graph_template instances
+ * - **Selections**: Applied selection_template results
+ *
+ * @section container_entry Entry Structure
+ *
+ * The `entry_t` structure groups related objects:
+ *
+ * ```cpp
+ * struct entry_t {
+ *     std::string hash;                        // Event hash
+ *     std::vector<graph_t*> m_data;            // Graph data
+ *     std::vector<graph_template*> m_graph;    // Graph templates
+ *     std::vector<event_template*> m_event;    // Events
+ *     std::vector<selection_template*> m_selection; // Selections
+ * };
+ * ```
+ *
+ * @section container_methods Methods
+ *
+ * | Method | Description |
+ * |--------|-------------|
+ * | `add_event_template()` | Register event template |
+ * | `add_graph_template()` | Register graph template |
+ * | `add_selection_template()` | Register selection |
+ * | `compile()` | Process all entries |
+ * | `populate_dataloader()` | Transfer graphs to dataloader |
+ *
+ * @see sampletracer
+ * @see entry_t
+ */
+
+/**
+ * @page sampletracer_page SampleTracer Reference
+ * @brief Documentation for sample tracking.
+ *
+ * @section sampletracer_intro Introduction
+ *
+ * The @ref sampletracer class tracks multiple samples (files/directories)
+ * and their associated containers. It serves as the top-level organizer
+ * for multi-sample analyses.
+ *
+ * @section sampletracer_methods Methods
+ *
+ * | Method | Description |
+ * |--------|-------------|
+ * | `add_meta_data()` | Add metadata for a file |
+ * | `get_meta_data()` | Retrieve metadata |
+ * | `add_event()` | Register event template for sample |
+ * | `add_graph()` | Register graph template for sample |
+ * | `add_selection()` | Register selection |
+ * | `compile_objects()` | Process all containers |
+ * | `populate_dataloader()` | Transfer all graphs |
+ *
+ * @section sampletracer_hierarchy Hierarchy
+ *
+ * ```
+ * sampletracer
+ *     └── container (per ROOT file)
+ *             └── entry_t (per event)
+ *                     ├── event_template
+ *                     ├── graph_template
+ *                     ├── graph_t
+ *                     └── selection_template
+ * ```
+ *
+ * @see container
+ * @see meta
+ */

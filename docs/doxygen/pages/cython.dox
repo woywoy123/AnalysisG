@@ -1,0 +1,457 @@
+/**
+ * @defgroup cython_group Cython Python Bindings
+ * @brief Python interface to AnalysisG via Cython.
+ *
+ * AnalysisG provides comprehensive Python bindings through Cython, allowing
+ * users to leverage the full power of the C++ framework from Python.
+ *
+ * @section cython_overview Overview
+ *
+ * The Cython bindings are organized as follows:
+ *
+ * | Location | Contents |
+ * |----------|----------|
+ * | `src/AnalysisG/core/` | Core class bindings (Analysis, templates) |
+ * | `src/AnalysisG/events/` | Pre-built event templates |
+ * | `src/AnalysisG/graphs/` | Pre-built graph templates |
+ * | `src/AnalysisG/models/` | Pre-built neural network models |
+ * | `src/AnalysisG/selections/` | Pre-built selection templates |
+ * | `src/AnalysisG/metrics/` | Pre-built metric templates |
+ *
+ * @section cython_structure File Structure
+ *
+ * Each Cython module consists of:
+ *
+ * - `.pxd` file: C++ declarations (similar to header files)
+ * - `.pyx` file: Python implementation and bindings
+ *
+ * @section cython_core Core Bindings
+ *
+ * The core bindings in `src/AnalysisG/core/` provide:
+ *
+ * | File | Python Class | Description |
+ * |------|--------------|-------------|
+ * | `analysis.pyx` | `Analysis` | Main analysis orchestrator |
+ * | `event_template.pyx` | `EventTemplate` | Base class for events |
+ * | `graph_template.pyx` | `GraphTemplate` | Base class for graphs |
+ * | `particle_template.pyx` | `ParticleTemplate` | Base class for particles |
+ * | `model_template.pyx` | `ModelTemplate` | Base class for ML models |
+ * | `selection_template.pyx` | `SelectionTemplate` | Base class for selections |
+ * | `metric_template.pyx` | `MetricTemplate` | Base class for metrics |
+ * | `meta.pyx` | `Meta` | Metadata handling |
+ * | `lossfx.pyx` | `LossFx` | Loss functions |
+ * | `structs.pyx` | Various structs | Configuration structures |
+ * | `tools.pyx` | `Tools` | Utility functions |
+ * | `io.pyx` | `IO` | Input/output operations |
+ * | `notification.pyx` | `Notification` | Logging system |
+ * | `plotting.pyx` | `Plotting` | Visualization utilities |
+ */
+
+/**
+ * @page python_analysis_page Python Analysis Class
+ * @brief Documentation for using AnalysisG from Python.
+ *
+ * @section python_import Importing
+ *
+ * ```python
+ * from AnalysisG.core import Analysis
+ * from AnalysisG.core import EventTemplate, GraphTemplate
+ * from AnalysisG.core import ModelTemplate, SelectionTemplate
+ * from AnalysisG.core import OptimizerConfig
+ * ```
+ *
+ * @section python_basic Basic Usage
+ *
+ * ```python
+ * from AnalysisG.core import Analysis
+ *
+ * # Create analysis instance
+ * ana = Analysis()
+ *
+ * # Configure settings
+ * ana.OutputPath = "results/"
+ * ana.Threads = 8
+ * ana.Epochs = 100
+ * ana.kFolds = 5
+ * ana.BatchSize = 64
+ *
+ * # Add data samples
+ * ana.AddSamples("/path/to/data/", "sample_label")
+ *
+ * # Add templates
+ * ana.AddEvent(MyEvent(), "sample_label")
+ * ana.AddGraph(MyGraph(), "sample_label")
+ * ana.AddSelection(MySelection())
+ *
+ * # Add model for training
+ * opt = OptimizerConfig()
+ * opt.lr = 0.001
+ * ana.AddModel(MyModel(), opt, "training_run")
+ *
+ * # Start analysis
+ * ana.Start()
+ * ```
+ *
+ * @section python_properties Analysis Properties
+ *
+ * @subsection python_path_props Path Properties
+ *
+ * | Property | Type | Description |
+ * |----------|------|-------------|
+ * | `OutputPath` | str | Output directory path |
+ * | `GraphCache` | str | Graph cache location |
+ * | `TrainingDataset` | str | Pre-built dataset path |
+ *
+ * @subsection python_ml_props Machine Learning Properties
+ *
+ * | Property | Type | Default | Description |
+ * |----------|------|---------|-------------|
+ * | `Epochs` | int | 10 | Number of training epochs |
+ * | `kFolds` | int | 10 | Number of cross-validation folds |
+ * | `kFold` | int/list | [] | Specific fold(s) to run |
+ * | `BatchSize` | int | 1 | Training batch size |
+ * | `TrainSize` | float | 50 | Training/test split % |
+ * | `Training` | bool | True | Enable training |
+ * | `Validation` | bool | True | Enable validation |
+ * | `Evaluation` | bool | True | Enable evaluation |
+ * | `ContinueTraining` | bool | True | Resume from checkpoint |
+ *
+ * @subsection python_runtime_props Runtime Properties
+ *
+ * | Property | Type | Default | Description |
+ * |----------|------|---------|-------------|
+ * | `Threads` | int | 10 | Processing threads |
+ * | `DebugMode` | bool | False | Enable debug output |
+ * | `BuildCache` | bool | False | Build intermediate cache |
+ * | `FetchMeta` | bool | False | Fetch metadata (AMI) |
+ *
+ * @subsection python_plot_props Plotting Properties
+ *
+ * | Property | Type | Default | Description |
+ * |----------|------|---------|-------------|
+ * | `nBins` | int | 400 | Histogram bins |
+ * | `MaxRange` | int | 400 | Max histogram range |
+ * | `Refresh` | int | 10 | Progress refresh rate |
+ * | `VarPt` | str | "pt" | pT variable name |
+ * | `VarEta` | str | "eta" | η variable name |
+ * | `VarPhi` | str | "phi" | φ variable name |
+ * | `VarEnergy` | str | "energy" | Energy variable name |
+ *
+ * @section python_methods Analysis Methods
+ *
+ * | Method | Parameters | Description |
+ * |--------|------------|-------------|
+ * | `AddSamples()` | path, label | Add data files |
+ * | `AddEvent()` | EventTemplate, label | Add event template |
+ * | `AddGraph()` | GraphTemplate, label | Add graph template |
+ * | `AddSelection()` | SelectionTemplate | Add selection |
+ * | `AddModel()` | ModelTemplate, OptimizerConfig, name | Add model for training |
+ * | `AddModelInference()` | ModelTemplate, name | Add model for inference |
+ * | `AddMetric()` | MetricTemplate, ModelTemplate | Add metric |
+ * | `Start()` | - | Begin analysis |
+ */
+
+/**
+ * @page python_event_page Python Event Template
+ * @brief Creating custom event templates in Python.
+ *
+ * @section python_event_basics Basic Event Template
+ *
+ * ```python
+ * from AnalysisG.core import EventTemplate
+ *
+ * class MyEvent(EventTemplate):
+ *     def __init__(self):
+ *         EventTemplate.__init__(self)
+ *         
+ *         # Set event name
+ *         self.name = "my_event"
+ *         
+ *         # Define tree to read
+ *         self.Trees = ["nominal"]
+ *         
+ *         # Define branches (particle collections)
+ *         self.Branches = ["el_", "mu_", "jet_"]
+ *         
+ *         # Define leaves (event-level variables)
+ *         self.Leaves = ["met_et", "met_phi", "eventNumber"]
+ *         
+ *         # Register particle types
+ *         self.Objects = {
+ *             "Electrons": Electron,
+ *             "Muons": Muon,
+ *             "Jets": Jet
+ *         }
+ * ```
+ *
+ * @section python_event_particles Custom Particles
+ *
+ * ```python
+ * from AnalysisG.core import ParticleTemplate
+ *
+ * class Electron(ParticleTemplate):
+ *     def __init__(self):
+ *         ParticleTemplate.__init__(self)
+ *         
+ *         # Define which leaves belong to this particle
+ *         self.Leaves = ["pt", "eta", "phi", "e", "charge", "tight"]
+ *         
+ *     @property
+ *     def PassID(self):
+ *         return self.tight > 0
+ * ```
+ */
+
+/**
+ * @page python_graph_page Python Graph Template
+ * @brief Creating custom graph templates in Python.
+ *
+ * @section python_graph_basics Basic Graph Template
+ *
+ * ```python
+ * from AnalysisG.core import GraphTemplate
+ *
+ * class MyGraph(GraphTemplate):
+ *     def __init__(self):
+ *         GraphTemplate.__init__(self)
+ *         self.name = "my_graph"
+ *     
+ *     def CompileEvent(self, event):
+ *         # Define which particles become nodes
+ *         particles = event.Jets + event.Electrons + event.Muons
+ *         self.DefineNodes(particles)
+ *         
+ *         # Add node features
+ *         self.AddNodeFeature("pt", lambda p: p.pt / 1000)
+ *         self.AddNodeFeature("eta", lambda p: p.eta)
+ *         self.AddNodeFeature("phi", lambda p: p.phi)
+ *         
+ *         # Add edge features
+ *         self.AddEdgeFeature("deltaR", lambda p1, p2: p1.DeltaR(p2))
+ *         
+ *         # Add graph features
+ *         self.AddGraphFeature("met", event.met_et / 1000)
+ *         
+ *         # Add truth labels
+ *         self.AddNodeTruth("is_top", lambda p: int(p.from_top))
+ *     
+ *     def PreSelection(self, event):
+ *         # Return False to skip this graph
+ *         return len(event.Jets) >= 4
+ * ```
+ */
+
+/**
+ * @page python_model_page Python Model Template
+ * @brief Creating custom neural network models in Python.
+ *
+ * @section python_model_basics Basic Model Template
+ *
+ * ```python
+ * from AnalysisG.core import ModelTemplate
+ * import torch
+ * import torch.nn as nn
+ *
+ * class MyModel(ModelTemplate):
+ *     def __init__(self):
+ *         ModelTemplate.__init__(self)
+ *         
+ *         # Define network layers
+ *         self.fc1 = nn.Linear(3, 64)
+ *         self.fc2 = nn.Linear(64, 32)
+ *         self.fc3 = nn.Linear(32, 1)
+ *         
+ *         # Specify input features
+ *         self.i_node = ["pt", "eta", "phi"]
+ *         
+ *         # Specify output mapping
+ *         self.o_node = {"prediction": "is_top"}
+ *         
+ *     def forward(self, data):
+ *         # Get input features
+ *         x = data.node_features  # [N_nodes, 3]
+ *         
+ *         # Forward pass
+ *         x = torch.relu(self.fc1(x))
+ *         x = torch.relu(self.fc2(x))
+ *         x = torch.sigmoid(self.fc3(x))
+ *         
+ *         return {"prediction": x}
+ * ```
+ *
+ * @section python_model_config Model Configuration
+ *
+ * ```python
+ * from AnalysisG.core import OptimizerConfig
+ *
+ * opt = OptimizerConfig()
+ * opt.optimizer = "Adam"
+ * opt.lr = 0.001
+ * opt.weight_decay = 1e-5
+ * opt.amsgrad = True
+ * opt.betas = (0.9, 0.999)
+ * ```
+ */
+
+/**
+ * @defgroup prebuilt_group Pre-built Templates
+ * @brief Ready-to-use templates included with AnalysisG.
+ *
+ * AnalysisG includes several pre-built templates for common use cases
+ * in high-energy physics analysis.
+ *
+ * @section prebuilt_events Pre-built Events
+ *
+ * Located in `src/AnalysisG/events/`:
+ *
+ * | Event | Description |
+ * |-------|-------------|
+ * | `bsm_4tops` | BSM 4-top analysis events |
+ * | `exp_mc20` | Experimental MC20 format |
+ * | `gnn` | GNN-specific event format |
+ * | `ssml_mc20` | SSML MC20 format |
+ *
+ * @section prebuilt_models Pre-built Models
+ *
+ * Located in `src/AnalysisG/models/`:
+ *
+ * | Model | Description |
+ * |-------|-------------|
+ * | `Grift` | Graph Iterative Feature Transformation |
+ * | `RecursiveGraphNeuralNetwork` | Recursive GNN architecture |
+ *
+ * @section prebuilt_selections Pre-built Selections
+ *
+ * Located in `src/AnalysisG/selections/`:
+ *
+ * | Category | Selections |
+ * |----------|------------|
+ * | `example/` | Example MET selection |
+ * | `neutrino/` | Combinatorial, validation selections |
+ * | `performance/` | Top efficiency measurements |
+ *
+ * @section prebuilt_metrics Pre-built Metrics
+ *
+ * Located in `src/AnalysisG/metrics/`:
+ *
+ * | Metric | Description |
+ * |--------|-------------|
+ * | `accuracy` | Classification accuracy |
+ * | `pagerank` | PageRank-based metrics |
+ */
+
+/**
+ * @page python_complete_example Complete Python Example
+ * @brief A complete analysis example in Python.
+ *
+ * @section complete_imports Imports
+ *
+ * ```python
+ * from AnalysisG.core import Analysis
+ * from AnalysisG.core import EventTemplate, ParticleTemplate
+ * from AnalysisG.core import GraphTemplate
+ * from AnalysisG.core import ModelTemplate, OptimizerConfig
+ * from AnalysisG.core import SelectionTemplate
+ * import torch
+ * import torch.nn as nn
+ * ```
+ *
+ * @section complete_particles Define Particles
+ *
+ * ```python
+ * class Jet(ParticleTemplate):
+ *     def __init__(self):
+ *         ParticleTemplate.__init__(self)
+ *         self.Leaves = ["pt", "eta", "phi", "e", "btag"]
+ *         
+ *     @property
+ *     def is_bjet(self):
+ *         return self.btag > 0.7
+ * ```
+ *
+ * @section complete_event Define Event
+ *
+ * ```python
+ * class TTbarEvent(EventTemplate):
+ *     def __init__(self):
+ *         EventTemplate.__init__(self)
+ *         self.name = "ttbar"
+ *         self.Trees = ["nominal"]
+ *         self.Branches = ["jet_"]
+ *         self.Leaves = ["met_et", "met_phi"]
+ *         self.Objects = {"Jets": Jet}
+ * ```
+ *
+ * @section complete_graph Define Graph
+ *
+ * ```python
+ * class JetGraph(GraphTemplate):
+ *     def __init__(self):
+ *         GraphTemplate.__init__(self)
+ *         self.name = "jet_graph"
+ *     
+ *     def CompileEvent(self, event):
+ *         self.DefineNodes(event.Jets)
+ *         self.AddNodeFeature("pt", lambda j: j.pt / 1000)
+ *         self.AddNodeFeature("eta", lambda j: j.eta)
+ *         self.AddNodeFeature("phi", lambda j: j.phi)
+ *         self.AddNodeTruth("is_b", lambda j: int(j.is_bjet))
+ *     
+ *     def PreSelection(self, event):
+ *         return len(event.Jets) >= 4
+ * ```
+ *
+ * @section complete_model Define Model
+ *
+ * ```python
+ * class JetTagger(ModelTemplate):
+ *     def __init__(self):
+ *         ModelTemplate.__init__(self)
+ *         self.fc = nn.Sequential(
+ *             nn.Linear(3, 64),
+ *             nn.ReLU(),
+ *             nn.Linear(64, 32),
+ *             nn.ReLU(),
+ *             nn.Linear(32, 1),
+ *             nn.Sigmoid()
+ *         )
+ *         self.i_node = ["pt", "eta", "phi"]
+ *         self.o_node = {"pred": "is_b"}
+ *     
+ *     def forward(self, data):
+ *         x = data.node_features
+ *         return {"pred": self.fc(x)}
+ * ```
+ *
+ * @section complete_run Run Analysis
+ *
+ * ```python
+ * # Create analysis
+ * ana = Analysis()
+ *
+ * # Configure
+ * ana.OutputPath = "results/"
+ * ana.Epochs = 50
+ * ana.kFolds = 5
+ * ana.BatchSize = 64
+ * ana.Threads = 8
+ *
+ * # Add data
+ * ana.AddSamples("/data/ttbar/", "ttbar")
+ *
+ * # Add templates
+ * ana.AddEvent(TTbarEvent(), "ttbar")
+ * ana.AddGraph(JetGraph(), "ttbar")
+ *
+ * # Configure optimizer
+ * opt = OptimizerConfig()
+ * opt.optimizer = "Adam"
+ * opt.lr = 0.001
+ *
+ * # Add model
+ * ana.AddModel(JetTagger(), opt, "btagger")
+ *
+ * # Run
+ * ana.Start()
+ * ```
+ */

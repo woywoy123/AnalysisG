@@ -22,25 +22,27 @@
  *
  * @section modules_list Available Modules
  *
- * - @ref analysis_module - Central analysis orchestration
- * - @ref container_module - Data container management
- * - @ref dataloader_module - Data loading and batching
- * - @ref event_module - Event data structures
- * - @ref graph_module - Graph construction
- * - @ref io_module - Input/output operations
- * - @ref lossfx_module - Loss functions
- * - @ref meta_module - Metadata handling
- * - @ref metric_module - Metric calculations
- * - @ref model_module - ML model templates
- * - @ref notification_module - Logging system
- * - @ref optimizer_module - Model optimization
- * - @ref particle_module - Particle representations
- * - @ref plotting_module - Visualization
- * - @ref sampletracer_module - Sample tracking
- * - @ref selection_module - Event selection
- * - @ref structs_module - Core structures
- * - @ref tools_module - Utilities
- * - @ref typecasting_module - Type conversions
+ * | Module | Primary Class | Description |
+ * |--------|---------------|-------------|
+ * | analysis | @ref analysis | Central analysis orchestration |
+ * | container | @ref container | Data container management |
+ * | dataloader | @ref dataloader | Data loading and batching |
+ * | event | @ref event_template | Event data structures |
+ * | graph | @ref graph_template, @ref graph_t | Graph construction |
+ * | io | @ref io | Input/output operations |
+ * | lossfx | @ref lossfx | Loss function implementations |
+ * | meta | @ref meta | Metadata handling |
+ * | metric | @ref metric_template, @ref metric_t | Metric calculations |
+ * | model | @ref model_template | ML model templates |
+ * | notification | @ref notification | Logging system |
+ * | optimizer | @ref optimizer | Model optimization |
+ * | particle | @ref particle_template | Particle representations |
+ * | plotting | @ref plotting | Visualization utilities |
+ * | sampletracer | @ref sampletracer | Sample tracking |
+ * | selection | @ref selection_template | Event selection |
+ * | structs | @ref settings_t, @ref optimizer_params_t | Core structures |
+ * | tools | @ref tools | Utility functions |
+ * | typecasting | tensor_cast, vector_cast, merge_cast | Type conversions |
  */
 
 /**

@@ -1,0 +1,284 @@
+/**
+ * @page analysis_class_page Analysis Class Reference
+ * @brief Comprehensive documentation for the analysis class.
+ *
+ * @tableofcontents
+ *
+ * @section analysis_intro Introduction
+ *
+ * The @ref analysis class is the central orchestrator for all physics analysis tasks in AnalysisG.
+ * It manages the complete workflow from data loading through model training to result evaluation.
+ *
+ * @section analysis_inheritance Inheritance
+ *
+ * ```
+ * notification
+ *     └──┐
+ *        ├── analysis
+ *        │
+ * tools ─┘
+ * ```
+ *
+ * The analysis class inherits from:
+ * - @ref notification: For logging and progress reporting
+ * - @ref tools: For utility functions
+ *
+ * @section analysis_lifecycle Lifecycle
+ *
+ * @subsection analysis_construction Construction
+ *
+ * ```cpp
+ * analysis ana;
+ * ```
+ *
+ * The constructor initializes all internal maps and prepares the analysis for configuration.
+ *
+ * @subsection analysis_configuration Configuration Phase
+ *
+ * Configure the analysis through `m_settings`:
+ *
+ * ```cpp
+ * ana.m_settings.output_path = "results/";
+ * ana.m_settings.threads = 8;
+ * ana.m_settings.epochs = 100;
+ * ana.m_settings.kfolds = 5;
+ * ana.m_settings.batch_size = 64;
+ * ana.m_settings.train_size = 80;  // 80% training, 20% testing
+ * ```
+ *
+ * @subsection analysis_setup Setup Phase
+ *
+ * Add samples and templates:
+ *
+ * ```cpp
+ * // Add data samples
+ * ana.add_samples("/data/ttbar/", "ttbar");
+ * ana.add_samples("/data/background/", "bkg");
+ *
+ * // Add event templates
+ * ana.add_event_template(new MyEvent(), "ttbar");
+ * ana.add_event_template(new MyEvent(), "bkg");
+ *
+ * // Add graph templates
+ * ana.add_graph_template(new MyGraph(), "ttbar");
+ * ana.add_graph_template(new MyGraph(), "bkg");
+ *
+ * // Add selection templates
+ * ana.add_selection_template(new DileptonSelection());
+ *
+ * // Add model for training
+ * optimizer_params_t params;
+ * params.lr = 0.001;
+ * ana.add_model(new MyModel(), &params, "model_v1");
+ *
+ * // Add metrics
+ * ana.add_metric_template(new AccuracyMetric(), new MyModel());
+ * ```
+ *
+ * @subsection analysis_execution Execution Phase
+ *
+ * ```cpp
+ * ana.start();
+ * ```
+ *
+ * The `start()` method triggers the complete analysis pipeline:
+ * 1. Cache checking
+ * 2. Project structure building
+ * 3. Event processing
+ * 4. Selection application
+ * 5. Graph construction
+ * 6. Model training/inference
+ * 7. Metric evaluation
+ *
+ * @subsection analysis_monitoring Monitoring
+ *
+ * Monitor progress during execution:
+ *
+ * ```cpp
+ * while (!ana.is_complete()["model_v1"]) {
+ *     auto prog = ana.progress();
+ *     auto mode = ana.progress_mode();
+ *     auto report = ana.progress_report();
+ *     
+ *     std::cout << "Model: " << mode["model_v1"] 
+ *               << " Progress: " << prog["model_v1"][0] << std::endl;
+ *     
+ *     std::this_thread::sleep_for(std::chrono::seconds(5));
+ * }
+ * ```
+ *
+ * @section analysis_public_api Public API Reference
+ *
+ * @subsection analysis_constructors Constructors & Destructor
+ *
+ * | Method | Description |
+ * |--------|-------------|
+ * | `analysis()` | Default constructor, initializes the analysis |
+ * | `~analysis()` | Destructor, cleans up resources |
+ *
+ * @subsection analysis_sample_methods Sample Management
+ *
+ * | Method | Parameters | Description |
+ * |--------|------------|-------------|
+ * | `add_samples()` | `path`, `label` | Add data files/directories with a label |
+ *
+ * @subsection analysis_template_methods Template Registration
+ *
+ * | Method | Parameters | Description |
+ * |--------|------------|-------------|
+ * | `add_event_template()` | `event_template*`, `label` | Register event template for a sample |
+ * | `add_graph_template()` | `graph_template*`, `label` | Register graph template for a sample |
+ * | `add_selection_template()` | `selection_template*` | Register selection (applies to all samples) |
+ * | `add_metric_template()` | `metric_template*`, `model_template*` | Register metric for a model |
+ *
+ * @subsection analysis_model_methods Model Management
+ *
+ * | Method | Parameters | Description |
+ * |--------|------------|-------------|
+ * | `add_model()` | `model_template*`, `optimizer_params_t*`, `run_name` | Add model for training |
+ * | `add_model()` | `model_template*`, `run_name` | Add model for inference only |
+ *
+ * @subsection analysis_execution_methods Execution Control
+ *
+ * | Method | Return Type | Description |
+ * |--------|-------------|-------------|
+ * | `start()` | `void` | Begin analysis execution |
+ * | `attach_threads()` | `void` | Attach processing threads |
+ *
+ * @subsection analysis_progress_methods Progress Monitoring
+ *
+ * | Method | Return Type | Description |
+ * |--------|-------------|-------------|
+ * | `progress()` | `map<string, vector<float>>` | Get numerical progress per model |
+ * | `progress_mode()` | `map<string, string>` | Get current mode per model |
+ * | `progress_report()` | `map<string, string>` | Get text reports per model |
+ * | `is_complete()` | `map<string, bool>` | Check completion status per model |
+ *
+ * @section analysis_settings Settings Reference
+ *
+ * The `m_settings` member is of type @ref settings_t and controls:
+ *
+ * @subsection analysis_settings_paths Path Settings
+ *
+ * | Setting | Type | Default | Description |
+ * |---------|------|---------|-------------|
+ * | `output_path` | string | "./ProjectName" | Output directory |
+ * | `run_name` | string | "" | Name for this run |
+ * | `metacache_path` | string | "./" | Metadata cache location |
+ * | `graph_cache` | string | "" | Graph cache location |
+ * | `training_dataset` | string | "" | Pre-built training dataset path |
+ *
+ * @subsection analysis_settings_ml Machine Learning Settings
+ *
+ * | Setting | Type | Default | Description |
+ * |---------|------|---------|-------------|
+ * | `epochs` | int | 10 | Number of training epochs |
+ * | `kfolds` | int | 10 | Number of cross-validation folds |
+ * | `batch_size` | int | 1 | Training batch size |
+ * | `train_size` | float | 50 | Training/test split percentage |
+ * | `training` | bool | true | Enable training |
+ * | `validation` | bool | true | Enable validation |
+ * | `evaluation` | bool | true | Enable evaluation |
+ * | `continue_training` | bool | true | Resume from checkpoints |
+ *
+ * @subsection analysis_settings_runtime Runtime Settings
+ *
+ * | Setting | Type | Default | Description |
+ * |---------|------|---------|-------------|
+ * | `threads` | int | 10 | Number of processing threads |
+ * | `debug_mode` | bool | false | Enable debug output |
+ * | `build_cache` | bool | false | Build cache for intermediate results |
+ *
+ * @section analysis_internal Internal Architecture
+ *
+ * @subsection analysis_workflow Internal Workflow
+ *
+ * When `start()` is called, the following private methods execute:
+ *
+ * 1. **check_cache()**: Look for cached data to skip reprocessing
+ * 2. **build_project()**: Create output directory structure
+ * 3. **build_events()**: Process raw data into event objects
+ * 4. **build_selections()**: Apply selection criteria
+ * 5. **build_graphs()**: Convert events to graph representations
+ * 6. **build_dataloader()**: Prepare data for training
+ * 7. **build_model_session()**: Configure model training sessions
+ * 8. **build_inference()**: Set up inference pipeline (if applicable)
+ * 9. **build_metric()**: Calculate performance metrics
+ *
+ * @subsection analysis_threading Threading Model
+ *
+ * The analysis uses a multi-threaded approach:
+ * - Event processing runs in parallel across files
+ * - Graph construction is parallelized per event
+ * - Model training uses batched parallel operations
+ * - Metric calculation can run concurrently with training
+ *
+ * @section analysis_examples Examples
+ *
+ * @subsection analysis_example_basic Basic Analysis
+ *
+ * ```cpp
+ * #include <AnalysisG/analysis.h>
+ *
+ * int main() {
+ *     analysis ana;
+ *     
+ *     // Configure
+ *     ana.m_settings.output_path = "results/";
+ *     ana.m_settings.threads = 4;
+ *     
+ *     // Add data
+ *     ana.add_samples("/data/", "sample");
+ *     ana.add_event_template(new MyEvent(), "sample");
+ *     ana.add_graph_template(new MyGraph(), "sample");
+ *     
+ *     // Run
+ *     ana.start();
+ *     
+ *     return 0;
+ * }
+ * ```
+ *
+ * @subsection analysis_example_training Training Example
+ *
+ * ```cpp
+ * #include <AnalysisG/analysis.h>
+ *
+ * int main() {
+ *     analysis ana;
+ *     
+ *     // ML configuration
+ *     ana.m_settings.epochs = 100;
+ *     ana.m_settings.kfolds = 5;
+ *     ana.m_settings.batch_size = 64;
+ *     
+ *     // Setup
+ *     ana.add_samples("/data/signal/", "signal");
+ *     ana.add_samples("/data/background/", "bkg");
+ *     ana.add_event_template(new MyEvent(), "signal");
+ *     ana.add_event_template(new MyEvent(), "bkg");
+ *     ana.add_graph_template(new MyGraph(), "signal");
+ *     ana.add_graph_template(new MyGraph(), "bkg");
+ *     
+ *     // Training configuration
+ *     optimizer_params_t params;
+ *     params.lr = 0.001;
+ *     params.weight_decay = 1e-5;
+ *     
+ *     ana.add_model(new MyModel(), &params, "classifier");
+ *     
+ *     // Run
+ *     ana.start();
+ *     
+ *     return 0;
+ * }
+ * ```
+ *
+ * @see settings_t
+ * @see event_template
+ * @see graph_template
+ * @see model_template
+ * @see selection_template
+ * @see metric_template
+ * @see optimizer_params_t
+ */

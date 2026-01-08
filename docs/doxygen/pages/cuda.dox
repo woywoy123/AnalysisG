@@ -1,0 +1,304 @@
+/**
+ * @defgroup cuda_group CUDA Accelerated Computing
+ * @brief GPU-accelerated operations for physics computations.
+ *
+ * The AnalysisG framework includes extensive CUDA support for accelerating
+ * computationally intensive physics operations. The CUDA modules are organized
+ * into namespaces that provide specific functionality.
+ *
+ * @section cuda_overview Overview
+ *
+ * The CUDA code is located in `src/AnalysisG/pyc/` and provides GPU-accelerated
+ * implementations of:
+ *
+ * - Physics calculations (kinematics, invariant masses)
+ * - Coordinate transformations
+ * - Graph operations (aggregation, reconstruction)
+ * - Neutrino reconstruction (NuSol algorithm)
+ * - Mathematical operators (matrix operations, rotations)
+ *
+ * @section cuda_namespaces Namespaces
+ *
+ * | Namespace | Location | Description |
+ * |-----------|----------|-------------|
+ * | @ref physics_ | `pyc/physics/` | Physics calculations (P, Beta, M, DeltaR, etc.) |
+ * | @ref transform_ | `pyc/transform/` | Coordinate transformations (Cartesian ↔ Polar) |
+ * | @ref operators_ | `pyc/operators/` | Mathematical operators (Dot, Cross, Rotation matrices) |
+ * | @ref graph_ | `pyc/graph/` | Graph operations (aggregation, reconstruction, PageRank) |
+ * | @ref nusol_ | `pyc/nusol/` | Neutrino reconstruction algorithms |
+ *
+ * @section cuda_integration PyTorch Integration
+ *
+ * All CUDA operations are integrated with PyTorch tensors, allowing seamless
+ * GPU acceleration within the ML pipeline. Functions accept `torch::Tensor*`
+ * arguments and return `torch::Tensor` results.
+ *
+ * Example usage in C++:
+ * ```cpp
+ * #include <physics/physics.cuh>
+ *
+ * torch::Tensor pmc = ...; // [N, 4] tensor of (px, py, pz, E)
+ * torch::Tensor mass = physics_::M(&pmc);
+ * torch::Tensor beta = physics_::Beta(&pmc);
+ * ```
+ */
+
+/**
+ * @defgroup physics_cuda Physics CUDA Module
+ * @ingroup cuda_group
+ * @brief GPU-accelerated physics calculations.
+ *
+ * @section physics_functions Available Functions
+ *
+ * The `physics_` namespace provides the following functions:
+ *
+ * @subsection physics_momentum Momentum Functions
+ *
+ * | Function | Parameters | Returns | Description |
+ * |----------|------------|---------|-------------|
+ * | `P2()` | px, py, pz OR pmc | Tensor | Momentum squared |
+ * | `P()` | px, py, pz OR pmc | Tensor | Momentum magnitude |
+ *
+ * @subsection physics_beta Beta Functions
+ *
+ * | Function | Parameters | Returns | Description |
+ * |----------|------------|---------|-------------|
+ * | `Beta2()` | px, py, pz, e OR pmc | Tensor | β² = p²/E² |
+ * | `Beta()` | px, py, pz, e OR pmc | Tensor | β = p/E |
+ *
+ * @subsection physics_mass Mass Functions
+ *
+ * | Function | Parameters | Returns | Description |
+ * |----------|------------|---------|-------------|
+ * | `M2()` | px, py, pz, e OR pmc | Tensor | Invariant mass squared |
+ * | `M()` | px, py, pz, e OR pmc | Tensor | Invariant mass |
+ * | `Mt2()` | pz, e OR pmc | Tensor | Transverse mass squared |
+ * | `Mt()` | pz, e OR pmc | Tensor | Transverse mass |
+ *
+ * @subsection physics_angles Angular Functions
+ *
+ * | Function | Parameters | Returns | Description |
+ * |----------|------------|---------|-------------|
+ * | `Theta()` | pmc OR px, py, pz | Tensor | Polar angle θ |
+ * | `DeltaR()` | pmu1, pmu2 OR η1, η2, φ1, φ2 | Tensor | ΔR = √(Δη² + Δφ²) |
+ *
+ * @section physics_example Example
+ *
+ * ```cpp
+ * #include <physics/physics.cuh>
+ *
+ * // Create momentum tensor [N, 4] = (px, py, pz, E)
+ * torch::Tensor pmc = torch::randn({100, 4}).cuda();
+ *
+ * // Calculate invariant mass
+ * torch::Tensor mass = physics_::M(&pmc);
+ *
+ * // Calculate beta factor
+ * torch::Tensor beta = physics_::Beta(&pmc);
+ *
+ * // Calculate DeltaR between particle pairs
+ * torch::Tensor pmu1 = torch::randn({50, 4}).cuda();
+ * torch::Tensor pmu2 = torch::randn({50, 4}).cuda();
+ * torch::Tensor dR = physics_::DeltaR(&pmu1, &pmu2);
+ * ```
+ */
+
+/**
+ * @defgroup transform_cuda Transform CUDA Module
+ * @ingroup cuda_group
+ * @brief GPU-accelerated coordinate transformations.
+ *
+ * @section transform_functions Available Functions
+ *
+ * The `transform_` namespace provides coordinate transformations between
+ * Cartesian (px, py, pz, E) and polar (pT, η, φ, E) representations.
+ *
+ * @subsection transform_to_cartesian Polar → Cartesian
+ *
+ * | Function | Parameters | Returns | Description |
+ * |----------|------------|---------|-------------|
+ * | `Px()` | pt, phi | Tensor | px = pT·cos(φ) |
+ * | `Py()` | pt, phi | Tensor | py = pT·sin(φ) |
+ * | `Pz()` | pt, eta | Tensor | pz = pT·sinh(η) |
+ * | `PxPyPz()` | pt, eta, phi | Tensor[N,3] | (px, py, pz) |
+ * | `PxPyPzE()` | pt, eta, phi, E | Tensor[N,4] | (px, py, pz, E) |
+ *
+ * @subsection transform_to_polar Cartesian → Polar
+ *
+ * | Function | Parameters | Returns | Description |
+ * |----------|------------|---------|-------------|
+ * | `Pt()` | px, py | Tensor | pT = √(px² + py²) |
+ * | `Phi()` | px, py | Tensor | φ = atan2(py, px) |
+ * | `Eta()` | px, py, pz OR pmc | Tensor | η = arctanh(pz/p) |
+ * | `PtEtaPhi()` | pmc OR px, py, pz | Tensor[N,3] | (pT, η, φ) |
+ * | `PtEtaPhiE()` | pmc OR px, py, pz, E | Tensor[N,4] | (pT, η, φ, E) |
+ *
+ * @section transform_example Example
+ *
+ * ```cpp
+ * #include <transform/transform.cuh>
+ *
+ * // Convert from polar to Cartesian
+ * torch::Tensor pt = torch::randn({100}).cuda();
+ * torch::Tensor eta = torch::randn({100}).cuda();
+ * torch::Tensor phi = torch::randn({100}).cuda();
+ * torch::Tensor E = torch::randn({100}).cuda();
+ *
+ * torch::Tensor pmc = transform_::PxPyPzE(&pt, &eta, &phi, &E);
+ *
+ * // Convert back to polar
+ * torch::Tensor pmu = transform_::PtEtaPhiE(&pmc);
+ * ```
+ */
+
+/**
+ * @defgroup operators_cuda Operators CUDA Module
+ * @ingroup cuda_group
+ * @brief GPU-accelerated mathematical operators.
+ *
+ * @section operators_functions Available Functions
+ *
+ * The `operators_` namespace provides mathematical operations commonly used
+ * in physics calculations.
+ *
+ * @subsection operators_vector Vector Operations
+ *
+ * | Function | Parameters | Returns | Description |
+ * |----------|------------|---------|-------------|
+ * | `Dot()` | v1, v2 | Tensor | Dot product |
+ * | `Cross()` | v1, v2 | Tensor | Cross product |
+ * | `CosTheta()` | v1, v2 | Tensor | Cosine of angle between vectors |
+ * | `SinTheta()` | v1, v2 | Tensor | Sine of angle between vectors |
+ *
+ * @subsection operators_rotation Rotation Matrices
+ *
+ * | Function | Parameters | Returns | Description |
+ * |----------|------------|---------|-------------|
+ * | `Rx()` | angle | Tensor[3,3] | Rotation matrix around X-axis |
+ * | `Ry()` | angle | Tensor[3,3] | Rotation matrix around Y-axis |
+ * | `Rz()` | angle | Tensor[3,3] | Rotation matrix around Z-axis |
+ * | `RT()` | pmu, phi, theta | Tensor | Combined rotation/translation |
+ *
+ * @subsection operators_matrix Matrix Operations
+ *
+ * | Function | Parameters | Returns | Description |
+ * |----------|------------|---------|-------------|
+ * | `CoFactors()` | matrix | Tensor | Cofactor matrix |
+ * | `Determinant()` | matrix | Tensor | Matrix determinant |
+ * | `Inverse()` | matrix | (Tensor, Tensor) | Matrix inverse |
+ * | `Eigenvalue()` | matrix | (Tensor, Tensor) | Eigenvalues |
+ */
+
+/**
+ * @defgroup graph_cuda Graph CUDA Module
+ * @ingroup cuda_group
+ * @brief GPU-accelerated graph operations.
+ *
+ * @section graph_functions Available Functions
+ *
+ * The `graph_` namespace provides operations for graph neural network
+ * post-processing and analysis.
+ *
+ * @subsection graph_aggregation Aggregation Functions
+ *
+ * | Function | Parameters | Returns | Description |
+ * |----------|------------|---------|-------------|
+ * | `edge_aggregation()` | edge_index, prediction, node_feature | map<string, Tensor> | Aggregate by edges |
+ * | `node_aggregation()` | edge_index, prediction, node_feature | map<string, Tensor> | Aggregate by nodes |
+ * | `unique_aggregation()` | cluster_map, features, prediction | map<string, Tensor> | Aggregate unique clusters |
+ *
+ * @subsection graph_reconstruction Reconstruction
+ *
+ * | Function | Parameters | Returns | Description |
+ * |----------|------------|---------|-------------|
+ * | `reconstruction()` | edge_index, truth_edge, pred_edge, node_feature, masses, trk_data | map<string, Tensor> | Full graph reconstruction |
+ *
+ * @section graph_usage Usage
+ *
+ * These functions are typically used for post-processing GNN outputs:
+ *
+ * ```cpp
+ * #include <graph/graph.cuh>
+ *
+ * // After GNN forward pass
+ * torch::Tensor edge_index = ...;  // [2, E]
+ * torch::Tensor prediction = ...;  // [E] edge predictions
+ * torch::Tensor features = ...;    // [N, F] node features
+ *
+ * auto result = graph_::edge_aggregation(edge_index, prediction, features);
+ * torch::Tensor aggregated = result["aggregated"];
+ * ```
+ */
+
+/**
+ * @defgroup nusol_cuda NuSol CUDA Module
+ * @ingroup cuda_group
+ * @brief GPU-accelerated neutrino reconstruction.
+ *
+ * @section nusol_overview Overview
+ *
+ * The NuSol module implements algorithms for reconstructing neutrino momenta
+ * in semi-leptonic and di-leptonic top quark decays. This is essential for
+ * ttbar physics analyses.
+ *
+ * @section nusol_functions Available Functions
+ *
+ * | Function | Description |
+ * |----------|-------------|
+ * | `BaseMatrix()` | Compute base matrix for neutrino solutions |
+ * | `Intersection()` | Find intersection of constraint surfaces |
+ * | `Nu()` | Single neutrino reconstruction |
+ * | `NuNu()` | Double neutrino reconstruction (di-leptonic) |
+ * | `combinatorial()` | Combinatorial neutrino reconstruction |
+ *
+ * @section nusol_algorithm Algorithm
+ *
+ * The neutrino reconstruction uses the following constraints:
+ *
+ * 1. **W boson mass constraint**: m(lν) = m_W
+ * 2. **Top quark mass constraint**: m(blν) = m_t
+ * 3. **Missing ET constraint**: Σpx(ν) = MET_x, Σpy(ν) = MET_y
+ *
+ * For single neutrino (semi-leptonic):
+ * - Uses W and top mass constraints
+ * - Solves quadratic equation for pz(ν)
+ *
+ * For double neutrino (di-leptonic):
+ * - Uses both W mass constraints
+ * - Uses MET constraint
+ * - Solves system of equations iteratively
+ *
+ * @section nusol_example Example
+ *
+ * ```cpp
+ * #include <nusol/nusol.cuh>
+ *
+ * // Semi-leptonic reconstruction
+ * torch::Tensor pmc_b = ...;   // b-jet 4-momentum
+ * torch::Tensor pmc_mu = ...;  // lepton 4-momentum
+ * torch::Tensor met_xy = ...;  // Missing ET (x, y)
+ * torch::Tensor masses = ...;  // [m_top, m_W, m_nu]
+ * torch::Tensor sigma = ...;   // MET resolution
+ *
+ * auto result = nusol_::Nu(&pmc_b, &pmc_mu, &met_xy, &masses, &sigma, 1e-10);
+ * torch::Tensor nu_momentum = result["nu"];
+ * torch::Tensor chi2 = result["chi2"];
+ * ```
+ *
+ * @section nusol_combinatorial Combinatorial Reconstruction
+ *
+ * For events with ambiguous jet-lepton assignments, the `combinatorial()`
+ * function tests all possible combinations:
+ *
+ * ```cpp
+ * auto result = nusol_::combinatorial(
+ *     &edge_index, &batch, &pmc, &pid, &met_xy,
+ *     172.62*1000,  // m_top in MeV
+ *     80.385*1000,  // m_W in MeV
+ *     1e-10,        // null threshold
+ *     1e-3,         // perturbation
+ *     100,          // max steps
+ *     false         // units (false = MeV, true = GeV)
+ * );
+ * ```
+ */
