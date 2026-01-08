@@ -587,8 +587,8 @@ class graph_template: public tools
 
         /**
          * @brief Reconstructs double neutrino momenta for di-leptonic events.
-         * @param mass_top Top quark mass in MeV (default 172.62 GeV).
-         * @param mass_wboson W boson mass in MeV (default 80.385 GeV).
+         * @param mass_top Top quark mass in MeV (default: 172620 MeV = 172.62 GeV).
+         * @param mass_wboson W boson mass in MeV (default: 80385 MeV = 80.385 GeV).
          * @param top_perc Top mass constraint percentage (default 0.85).
          * @param w_perc W mass constraint percentage (default 0.95).
          * @param distance Convergence tolerance (default 1e-8).
